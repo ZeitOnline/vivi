@@ -1,4 +1,4 @@
 <div class="editable"
      cms:cp-module="zeit.content.article.Editable">
-  <p tal:content="structure context/text" >Paragraph contents</p>
+  <p tal:replace="structure view/text" >Paragraph</p>
 </div>

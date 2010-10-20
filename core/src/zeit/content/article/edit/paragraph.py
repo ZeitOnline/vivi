@@ -21,13 +21,13 @@ class Paragraph(zeit.edit.block.Element,
     grokcore.component.adapts(
       zeit.content.article.edit.interfaces.IEditableBody,
       gocept.lxml.interfaces.IObjectified)
-    grokcore.component.name('p')
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IParagraph)
     grokcore.component.provides(
         zeit.content.article.edit.interfaces.IParagraph)
 
     type = 'p'
+    grokcore.component.name(type)
 
     @property
     def text(self):
@@ -43,7 +43,8 @@ class Paragraph(zeit.edit.block.Element,
         try:
             p = lxml.objectify.XML(
                 lxml.etree.tostring(
-                    lxml.html.fromstring('<p>%s</p>' % value)))
+                    lxml.html.fromstring('<%s>%s</%s>' % (
+                        self.type, value, self.type))))
         except lxml.etree.XMLSyntaxError:
             raise ValueError('No valid XML: %s' % (value,))
         p.attrib.update(self.xml.attrib.items())
@@ -54,8 +55,28 @@ class Paragraph(zeit.edit.block.Element,
 class ParagraphFactory(zeit.content.article.edit.block.BlockFactory):
 
     element_type = Paragraph.type
-    title = _('Paragraph')
+    title = _('<p>')
     grokcore.component.name(element_type)
 
     def get_xml(self):
         return lxml.objectify.E.p()
+
+
+class UnorderedList(Paragraph):
+
+    grokcore.component.implements(
+        zeit.content.article.edit.interfaces.IUnorderedList)
+    grokcore.component.provides(
+        zeit.content.article.edit.interfaces.IUnorderedList)
+    type = 'ul'
+    grokcore.component.name(type)
+
+
+class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
+
+    element_type = UnorderedList.type
+    title = _('<ul>')
+    grokcore.component.name(element_type)
+
+    def get_xml(self):
+        return lxml.objectify.E.ul()

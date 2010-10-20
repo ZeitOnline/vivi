@@ -7,10 +7,10 @@ import zeit.content.article.testing
 
 class ParagraphTest(unittest.TestCase):
 
-    def get_paragraph(self, p='<p/>'):
+    def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import Paragraph
         import lxml.objectify
-        body = lxml.objectify.E.body(lxml.objectify.XML(p))
+        body = lxml.objectify.E.body(lxml.objectify.XML('<p>%s</p>' % p))
         return Paragraph(None, body.p)
 
     def test_setting_text_inserts_xml(self):
@@ -24,14 +24,13 @@ class ParagraphTest(unittest.TestCase):
         self.assertEqual(text, p.text)
 
     def test_node_tails_should_be_include_in_text(self):
-        p = self.get_paragraph('<p>Im <strong>Tal</strong> der Buchstaben</p>')
+        p = self.get_paragraph('Im <strong>Tal</strong> der Buchstaben')
         self.assertEqual(u'Im <strong>Tal</strong> der Buchstaben', p.text)
 
-    def test_setting_invalid_xml_raises_valueerror(self):
+    def test_setting_invalid_xml_is_somehow_converted_to_valid_xml(self):
         p = self.get_paragraph()
-        def fail():
-            p.text = u'4 < 3'
-        self.assertRaises(ValueError, fail)
+        p.text = u'<b>4 > 3'
+        self.assertEqual('<b>4 &gt; 3</b>', p.text)
 
     def test_setting_text_should_keep_attributes(self):
         p = self.get_paragraph()
@@ -59,10 +58,18 @@ class ParagraphTest(unittest.TestCase):
         self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement),
                         type(p.xml))
 
+class UnorderedListTest(ParagraphTest):
 
-class TestFactory(zeit.content.article.testing.FunctionalTestCase):
+    def get_paragraph(self, p=''):
+        from zeit.content.article.edit.paragraph import UnorderedList
+        import lxml.objectify
+        body = lxml.objectify.E.body(lxml.objectify.XML('<ul>%s</ul>' % p))
+        return UnorderedList(None, body.ul)
 
-    def test_factory_should_create_p_node(self):
+
+class TestFactories(zeit.content.article.testing.FunctionalTestCase):
+
+    def assert_factory(self, name):
         import zeit.content.article.article
         import zeit.content.article.edit.interfaces
         import zeit.edit.interfaces
@@ -71,10 +78,17 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         body = zeit.content.article.edit.body.EditableBody(
             article, article.xml.body)
         factory = zope.component.getAdapter(
-            body, zeit.edit.interfaces.IElementFactory, 'p')
-        self.assertEqual('Paragraph', factory.title)
-        p = factory()
+            body, zeit.edit.interfaces.IElementFactory, name)
+        self.assertEqual('<%s>' % name, factory.title)
+        block = factory()
         self.assertTrue(
-            zeit.content.article.edit.interfaces.IParagraph.providedBy(p))
-        self.assertEqual('p', p.xml.tag)
-        self.assertEqual('division', p.xml.getparent().tag)
+            zeit.content.article.edit.interfaces.IParagraph.providedBy(block))
+        self.assertEqual(name, block.xml.tag)
+        self.assertEqual('division', block.xml.getparent().tag)
+        return block
+
+    def test_p(self):
+        self.assert_factory('p')
+
+    def test_ul(self):
+        self.assert_factory('ul')

@@ -10,6 +10,7 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'edit.txt',
         'edit.landing.txt',
         'recension.txt',
         package='zeit.content.article.browser',

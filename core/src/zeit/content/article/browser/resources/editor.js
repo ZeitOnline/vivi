@@ -38,10 +38,20 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.context = context_element;
         self.edited_paragraphs = [];
         self.editable = self.merge();
+        self.editable.removeAttribute('cms:cp-module');
         self.editable.contentEditable = true;
         self.editable.focus();
         self.command('styleWithCSS', false);
-        MochiKit.Signal.connect(self.editable, 'onblur', self, self.save);
+        self.init_toolbar();
+        /*MochiKit.Signal.connect(
+            self.editable, 'onblur',
+            self, self.save);*/
+    },
+
+    is_block_editable: function(block) {
+        return !isNull(
+            MochiKit.DOM.getFirstElementByTagAndClassName(
+                'div', 'editable', block));
     },
 
     merge: function() {
@@ -55,7 +65,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         // XXX remove code duplication
         while (i > 0) {
             i -= 1;
-            if (MochiKit.DOM.hasElementClass(blocks[i], 'type-p')) {
+            if (self.is_block_editable(blocks[i])) {
                 paragraphs.push(blocks[i]);
             } else {
                 break;
@@ -64,9 +74,9 @@ zeit.content.article.Editable = gocept.Class.extend({
         paragraphs.reverse();
         paragraphs.push(block);
         i = blocks.indexOf(block);
-        while (i < blocks.length) {
+        while (i < blocks.length-1) {
             i += 1;
-            if (MochiKit.DOM.hasElementClass(blocks[i], 'type-p')) {
+            if (self.is_block_editable(blocks[i])) {
                 paragraphs.push(blocks[i]);
             } else {
                 break;
@@ -79,7 +89,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             null, 'editable', paragraphs[0]);
         forEach(paragraphs.slice(1), function(paragraph) {
             forEach(MochiKit.Selector.findChildElements(
-                paragraph, ['.editable p']), function(p) {
+                paragraph, ['.editable > *']), function(p) {
                 editable.appendChild(p);
             });
             MochiKit.DOM.removeElement(paragraph);
@@ -87,17 +97,60 @@ zeit.content.article.Editable = gocept.Class.extend({
         return editable;
     },
 
-    get_text_list: function() {
+    init_toolbar: function() {
         var self = this;
-        return MochiKit.Base.map(
-            function(p) { return p.innerHTML; },
-            MochiKit.DOM.getElementsByTagAndClassName(
-                'p', null, self.editable));
+        self.toolbar = self.editable.parentNode.insertBefore(
+            DIV({class: 'rte-toolbar', style: 'display: block'}),
+            self.editable);
+        self.toolbar.innerHTML = "\
+            <a rel='command' href='bold'>B</a>\
+            <a rel='command' href='italic'>I</a>\
+            <a rel='command' href='insertunorderedlist'>UL</a>\
+            <a rel='command' href='insertorderedlist'>OL</a>\
+            <a href='#' class='rteButton intertitle'>T</a>\
+            <a href='#' class='rteButton paragraph'>p</a>\
+            <a href='#' class='rteButton link'>a</a>\
+            <a rel='method' href='save' class='rteButton'>save</a>\
+            ";
+        MochiKit.Signal.connect(
+            self.toolbar, 'onclick',
+            self, self.handle_toolbar_click);
     },
 
-    save: function() {
+    handle_toolbar_click: function(event) {
+        log('Toolbar click');
         var self = this;
-        MochiKit.Signal.disconnectAll(self.editable, 'onblur');
+        if (event.target().nodeName != 'A') {
+            return;
+        }
+        event.stop()
+        if (event.target().rel == 'command') {
+            event.stop();
+            var action = event.target().getAttribute('href');
+            self.command(action);
+        } else if (event.target().rel == 'method') {
+            var method = event.target().getAttribute('href');
+            self[method]();
+        }
+    },
+
+    get_text_list: function() {
+        var self = this;
+        var result = []
+        forEach(self.editable.childNodes, function(element) {
+            if (element.nodeType == element.ELEMENT_NODE) {
+                result.push({factory: element.nodeName.toLowerCase(),
+                             text: element.innerHTML});
+            }
+        });
+        return result;
+    },
+
+    save: function(event) {
+        var self = this;
+        log('Saving');
+        // XXX revise disconnect
+        MochiKit.Signal.disconnectAll(self.toolbar);
         // until now, the editor can only be contained in an editable-body.
         var url = $('editable-body').getAttribute('cms:url') + '/@@save_text';
         zeit.edit.makeJSONRequest(url, {

@@ -30,11 +30,14 @@ class SaveText(zeit.edit.browser.view.Action):
         for key in self.paragraphs:
             del self.context[key]
         order = list(self.context.keys())
-        for text in self.text:
+        for new in self.text:
+            factory = new['factory']
+            text = new['text']
             if not text.strip():
                 continue
             factory = zope.component.getAdapter(
-                self.context, zeit.edit.interfaces.IElementFactory, name='p')
+                self.context, zeit.edit.interfaces.IElementFactory,
+                name=factory)
             p = factory()
             p.text = text
             if insert_at is not None:
@@ -46,3 +49,13 @@ class SaveText(zeit.edit.browser.view.Action):
         self.signal(
             None, 'reload',
             'editable-body', self.url(self.context, '@@contents'))
+
+
+class Paragraph(object):
+
+    @property
+    def text(self):
+        return '<%s>%s</%s>' % (
+            self.context.type,
+            self.context.text,
+            self.context.type)

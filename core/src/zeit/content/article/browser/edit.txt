@@ -1,0 +1,27 @@
+UnorderedList
+-------------
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
+...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('@@contents')
+>>> browser.open('editable-body/@@contents')
+
+Add ul, which caused problems:
+
+>>> article = getRootFolder()['workingcopy']['zope.user']['Somalia']
+>>> for p in article.xml.body.division.p[:]:
+...     article.xml.body.division.remove(p)
+>>> article.xml.body.division.ul = ''
+>>> article.xml.body.division.ul.li = ['eins', 'zwei']
+>>> article._p_changed = True
+>>> import transaction
+>>> transaction.commit()
+>>> browser.open('@@contents')
+>>> print browser.contents
+<...
+    <div ...class="block type-ul"...
+    <ul><li...>eins</li><li...>zwei</li></ul>
+    ...
