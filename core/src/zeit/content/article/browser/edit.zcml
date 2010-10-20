@@ -45,6 +45,33 @@
     />
 
   <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="landing-zone"
+    template="edit.body.landing.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="article-landing-zone-drop"
+    class=".edit.BodyLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="article-landing-zone-drop"
+    class=".edit.BlockLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
     for="zeit.content.article.edit.interfaces.IParagraph"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"

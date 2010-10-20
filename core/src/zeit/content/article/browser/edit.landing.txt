@@ -21,6 +21,7 @@ Open an article's editable body. It contains landing zones:
 >>> print browser.contents
 <div id="editable-body"
      cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body">
+     ...
   <div cms:tooltip="" class="block type-p"
      cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/2"
      id="2">
@@ -28,7 +29,7 @@ Open an article's editable body. It contains landing zones:
     ...
   </div>
 </div>
-  <div class="landing-zone action-editable-body-module-droppable"
+  <div class="landing-zone action-editable-body-module-droppable..."
        cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/2/@@landing-zone-drop-module">
   </div>
   <div cms:tooltip="" class="block type-p"
@@ -36,7 +37,7 @@ Open an article's editable body. It contains landing zones:
      id="3">
      ...
 </div>
-  <div class="landing-zone action-editable-body-module-droppable"
+  <div class="landing-zone action-editable-body-module-droppable..."
        cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/3/@@landing-zone-drop-module">
   </div>
   ...

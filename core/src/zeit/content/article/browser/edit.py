@@ -2,7 +2,9 @@
 # See also LICENSE.txt
 
 import lxml.objectify
+import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
+import zeit.edit.browser.landing
 import zeit.edit.browser.view
 import zope.component
 import zope.lifecycleevent
@@ -84,3 +86,31 @@ class SetImage(zeit.edit.browser.view.Action):
         zope.lifecycleevent.modified(self.context)
         self.signal(
             None, 'reload', self.context.__name__, self.url('@@contents'))
+
+
+class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
+
+    uniqueId = zeit.edit.browser.view.Form('uniqueId')
+
+    def create_block(self):
+        content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
+        # Test this:
+        # if content is None:
+        #    raise ValueError(
+        #        _('The object "${name}" does not exist.', mapping=dict(
+        #            name=self.uniqueId)))
+        # XXX what happens if there is no factory?
+        self.block = zope.component.getMultiAdapter(
+            (self.create_in, content),
+            zeit.edit.interfaces.IElement)
+
+class BodyLandingZone(LandingZoneBase):
+    """Handler to drop objects to the body's landing zone."""
+
+    order = 0
+
+
+class BlockLandingZone(LandingZoneBase):
+    """Handler to drop objects after other objects."""
+
+    order = 'after-context'
