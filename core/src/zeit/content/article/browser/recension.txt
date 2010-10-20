@@ -41,6 +41,7 @@ LinkNotFoundError
 
 Mark the article now:
 
+>>> browser.getLink('Edit metadata').click()
 >>> browser.getControl('Has recension content').selected = True
 >>> browser.getControl('Apply').click()
 >>> 'There were errors' in browser.contents

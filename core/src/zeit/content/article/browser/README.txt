@@ -100,6 +100,7 @@ Now, fill the form and add the article:
 >>> browser.getControl('Ressort').displayValue = ['Deutschland']
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl(name='form.actions.add').click()
+>>> browser.getLink('Edit metadata').click()
 >>> browser.getControl('Sub ressort').displayOptions
 ['(no value)', 'Joschka Fisher', 'Integration', 'Meinung', 'Datenschutz', 'US-Wahl', 'Nahost']
 >>> browser.getControl('Sub ressort').displayValue = ['Integration']
@@ -110,8 +111,6 @@ False
 After submitting we're looking at the object in our working copy. The metadata
 edit screen should be displayed:
 
->>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.user/KFZ-Steuer/@@edit.html'
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
@@ -380,6 +379,7 @@ the feeds automatically:
 
 >>> browser.open(article_url)
 >>> browser.getLink('Checkout').click()
+>>> browser.getLink('Edit metadata').click()
 >>> browser.getControl(name='form.teaserTitle').value = 'Trinker zur Kasse'
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()

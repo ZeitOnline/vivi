@@ -9,6 +9,25 @@
   <adapter factory=".comment.comment_browse_location" />
 
   <browser:page
+    name="edit-metadata.html"
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.EditForm"
+    permission="zeit.EditContent"
+    />
+
+  <browser:menuItem
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="Edit metadata"
+    action="@@edit-metadata.html"
+    permission="zeit.EditContent"
+    icon="metadata-edit"
+    />
+  
+
+  <browser:page
     name="view.html"
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
