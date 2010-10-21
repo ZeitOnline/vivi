@@ -109,7 +109,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-common"
     class=".block.EditCommon"
-    template="block.edit-common.pt"
     permission="zeit.EditContent"
     />
 
