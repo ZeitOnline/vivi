@@ -1,5 +1,15 @@
-<div class="landing-zone action-content-droppable"
-     tal:attributes="cms:drop-url string:${context/@@absolute_url}/@@set_image">
-  <img tal:condition="python:context.image"
-       tal:replace="structure context/image/@@preview/tag" />
+<div 
+  tal:condition="context/image"
+  tal:attributes="
+     cms:drop-url string:${context/@@absolute_url}/@@set_image;
+     class string:${context/layout} action-content-droppable">
+     <img tal:replace="structure context/image/@@preview/tag" />
+     <div tal:content="context/image/@@metadata/caption"/>
+</div>
+<div 
+  tal:condition="not:context/image"
+  tal:attributes="
+     cms:drop-url string:${context/@@absolute_url}/@@set_image;
+     class string:${context/layout} landing-zone visible action-content-droppable">
+     <span i18n:translate="">Drag an image to embed.</span>
 </div>
