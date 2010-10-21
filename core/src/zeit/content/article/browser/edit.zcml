@@ -111,6 +111,24 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-layout"
+    class=".edit.EditImage"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="edit-box"
+    class=".edit.EditImageAction"
+    permission="zeit.EditContent"
+    weight="0"
+    />
 
   <browser:resourceDirectory
     name="zeit.content.article"

@@ -89,6 +89,18 @@ class SetImage(zeit.edit.browser.view.Action):
             None, 'reload', self.context.__name__, self.url('@@contents'))
 
 
+class EditImage(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IImage).omit('image')
+
+
+class EditImageAction(zeit.edit.browser.view.EditBoxAction):
+
+    title = _('Edit')
+    action = 'edit-layout'
+
+
 class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
 
     uniqueId = zeit.edit.browser.view.Form('uniqueId')

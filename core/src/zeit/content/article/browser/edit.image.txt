@@ -103,3 +103,26 @@ Each block has its own landing zone, add the image again:
                        'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
               'name': 'reload',
               'when': None}]}
+
+
+Editing
+-------
+
+The layout can be changed in a lightbox:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('Layout').displayOptions
+['(no value)', 'small', 'large', 'Infobox', 'Hochkant']
+>>> browser.getControl('Layout').displayValue = ['large']
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close()...
+
+
+The layout is used as a css-class:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+    <div ...class="large action-content-droppable"...

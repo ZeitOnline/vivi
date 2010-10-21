@@ -23,7 +23,7 @@ Open an article's editable body. It contains landing zones:
 >>> browser.open('editable-body/@@contents')
 >>> contents_url = browser.url
 >>> print browser.contents
-<div id="editable-body"
+<div id="editable-body"...
      cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body">
      ...
   <div cms:tooltip="" class="block type-p"
