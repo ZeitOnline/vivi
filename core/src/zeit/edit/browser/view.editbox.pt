@@ -1,0 +1,12 @@
+<div class="floating edit-common-box">
+
+  <form id="lightbox.form" action="#"
+        tal:condition="not: view/close"
+        tal:attributes="action request/URL"
+        tal:content="structure view/form"/>
+
+  <script language="javascript"
+          tal:condition="view/close">
+    self.close();
+  </script>
+</div>

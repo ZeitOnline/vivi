@@ -1,13 +1,17 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import ZODB.POSException
 import cgi
 import logging
 import simplejson
 import transaction
 import zeit.cms.browser.view
+import zope.app.pagetemplate
+import zope.formlib.form
 import zope.i18n
+import zope.viewlet.viewlet
 
 
 log = logging.getLogger(__name__)
@@ -83,3 +87,29 @@ def validate(context):
         css_class = ''
         messages = ''
     return (css_class, messages)
+
+
+class EditBox(zope.formlib.form.SubPageEditForm):
+    """Base class for an edit box."""
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile('view.editbox.pt')
+    close = False
+    form_fields = NotImplemented
+
+    @property
+    def form(self):
+        return super(EditBox, self).template
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.close = True
+        return super(EditBox, self).handle_edit_action.success(data)
+
+
+class EditBoxAction(zope.viewlet.viewlet.ViewletBase):
+
+    render = zope.app.pagetemplate.ViewPageTemplateFile(
+        'view.editbox-action.pt')
+    title = NotImplemented
+    action = NotImplemented
+    type = 'edit-link'
