@@ -8,7 +8,7 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
     construct: function() {
         var self = this;
         var container_id = 'teaser-list-edit-box-sorter';
-        self.parent = zeit.content.cp.getParentComponent($(container_id));
+        self.parent = zeit.edit.getParentComponent($(container_id));
         arguments.callee.$.construct.call(self, container_id);
     },
 
@@ -61,7 +61,7 @@ zeit.content.cp.teaser.TeaserListDeleteEntry = gocept.Class.extend({
     construct: function(context_element) {
         var self = this;
         var url = context_element.getAttribute('href');
-        self.parent = zeit.content.cp.getParentComponent(context_element);
+        self.parent = zeit.edit.getParentComponent(context_element);
         var d = zeit.content.cp.makeJSONRequest(url, null, self.parent, {
             method: 'POST',
         });
@@ -70,7 +70,7 @@ zeit.content.cp.teaser.TeaserListDeleteEntry = gocept.Class.extend({
 });
 
 
-zeit.content.cp.teaser.TeaserEditBox = zeit.content.cp.LightBoxForm.extend({
+zeit.content.cp.teaser.TeaserEditBox = zeit.edit.LightBoxForm.extend({
 
     __name__: 'zeit.content.cp.teaser.TeaserEditBox',
 

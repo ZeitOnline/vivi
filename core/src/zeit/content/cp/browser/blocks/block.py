@@ -1,34 +1,17 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.content.cp.i18n import MessageFactory as _
-import zeit.edit.browser.view
 import zeit.content.cp.interfaces
-import zope.app.pagetemplate
+import zeit.edit.browser.view
 import zope.component
 import zope.formlib.form
 import zope.viewlet.manager
 
 
-class EditCommon(zope.formlib.form.SubPageEditForm):
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'block.edit-common.pt')
+class EditCommon(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IBlock).omit('type')
-
-    close = False
-
-    @property
-    def form(self):
-        return super(EditCommon, self).template
-
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
-        self.close = True
-        # XXX: dear zope.formlib, are you serious?!
-        return super(EditCommon, self).handle_edit_action.success(data)
 
 
 class SwitchType(object):

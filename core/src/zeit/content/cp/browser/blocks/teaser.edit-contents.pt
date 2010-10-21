@@ -53,7 +53,7 @@
 
   <div>
     <a tal:attributes="href string:$context_url/@@create-teaser-group"
-       cms:cp-module="zeit.content.cp.LightBoxForm"
+       cms:cp-module="zeit.edit.LightBoxForm"
        cms:lightbox-in="cp-forms"
        i18n:translate="">
       Save teasers as group

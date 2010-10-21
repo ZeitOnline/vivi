@@ -6,7 +6,7 @@
    cms:lightbox-reload-url string:$url/@@contents"
    i18n:attributes="title"
    i18n:domain="zeit.cms"
-   cms:cp-module="zeit.content.cp.TabbedLightBoxForm"
+   cms:cp-module="zeit.edit.TabbedLightBoxForm"
    cms:lightbox-in="cp-content">
   <span class="action-title">Edit teaser list</span>
 </a>
