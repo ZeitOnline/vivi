@@ -3,8 +3,12 @@
       class="cp-content-inner">
   <script
     type="text/javascript"
-    tal:attributes="src
-    string:${request/++resource++zeit.content.article}/editor.js"></script>
+    tal:attributes="
+    src string:${request/++resource++zeit.content.article}/editor.js"></script>
+  <link
+    rel="stylesheet" type="text/css"
+    tal:attributes="
+    href string:${request/++resource++zeit.content.article}/editor.css"/>
 
   <div id="article-editor-forms">
     FORMS/Metadata
