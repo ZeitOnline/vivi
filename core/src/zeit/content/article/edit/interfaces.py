@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.content.article.i18n import MessageFactory as _
+import stabledict
+import zc.sourcefactory.basic
 import zeit.content.image.interfaces
 import zeit.edit.interfaces
 import zope.schema
@@ -35,10 +37,29 @@ class IDivision(zeit.edit.interfaces.IBlock):
     teaser = zope.schema.TextLine(title=_('Page teaser'))
 
 
+
+class ImageLayoutSource(zc.sourcefactory.basic.BasicSourceFactory):
+    values = stabledict.StableDict([
+        ('small', _('small')),
+        ('large', _('large')),
+        ('infobox', _('Infobox')),
+        ('upright', _('Hochkant')),
+        ])
+
+    def getValues(self):
+        return self.values.keys()
+
+    def getTitle(self, value):
+        return self.values[value]
+
+
 class IImage(zeit.edit.interfaces.IBlock):
 
     image = zope.schema.Choice(
         title=_("Image"),
         source=zeit.content.image.interfaces.ImageSource())
 
-    # layout = XXX
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=ImageLayoutSource(),
+        required=False)

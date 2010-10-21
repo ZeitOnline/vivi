@@ -29,6 +29,9 @@ class Image(zeit.edit.block.Element,
     type = 'image'
     grokcore.component.name(type)
 
+    layout = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'layout', zeit.content.article.edit.interfaces.IImage['layout'])
+
     @property
     def image(self):
         unique_id = self.xml.get('src')
@@ -39,10 +42,14 @@ class Image(zeit.edit.block.Element,
         node = zope.component.getAdapter(
             value, zeit.cms.content.interfaces.IXMLReference,
             name='image')
+        # We have to save a few attributes before we replace the whole node
         name = self.__name__
+        layout = self.layout
         self.xml.getparent().replace(self.xml, node)
         self.xml = node
+        # Restore saved attributes
         self.__name__ = name
+        self.layout =  layout
         self._p_changed = True
 
 
