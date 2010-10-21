@@ -19,10 +19,6 @@
   top: 0;
 }
 
-#cp-content > .cp-content.inner > .cp-editor-top {
-  width: 100%;
-}
-
 #cp-content .editable-area {
   margin: 0.5em;
   padding: 0.5em;
@@ -42,23 +38,6 @@
   outline: 4px solid #00ee5e;
 }
 
-#lead-outer {
-  width: 64%;
-  float: left;
-}
-
-#informatives-outer {
-  width: 36%;
-  float: left;
-}
-
-#informatives-outer #informatives {
-  margin-top: 4.2em;
-}
-
-#teaser-mosaic {
-  clear: both;
-}
 
 #cp-forms {
   bottom: 1em;
@@ -201,13 +180,6 @@
   display: none;
 }
 
-/* When there is no "other" edit, we show the common. */
-.edit-bar > a.common-link:first-child {
-  background-image: url('page.png');
-  display: block;
-  padding-right: 0.5em;
-}
-
 .editable-area > .landing-zone + .block {
   margin-top: 0;
 }
@@ -326,28 +298,6 @@
   padding-right: .3em;
 }
 
-.edit-bar > .edit-teaser-link {
-  background-image: url('edit-teaserlist-contents.png');
-}
-
-.edit-bar > .countings-link {
-  float: right;
-  font-size: 80%;
-  width: auto;
-}
-
-.edit-bar > .rss-refresh-link {
-  background-image: url('reload.png');
-}
-
-.edit-bar.column-separator {
-  -moz-border-radius: 1em;
-  border: 1px solid black;
-  font-size: 0.5em;
-  margin: auto;
-  text-align: center;
-  width: 80%;
-}
 
 .edit-bar {
   background-color: #f2f2f2;
