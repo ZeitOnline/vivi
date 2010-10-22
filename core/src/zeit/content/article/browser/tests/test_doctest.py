@@ -15,6 +15,7 @@ def test_suite():
         'edit.txt',
         'metadata.head.txt',
         'metadata.navigation.txt',
+        'metadata.texts.txt',
         'recension.txt',
         package='zeit.content.article.browser',
         layer=zeit.content.article.testing.ArticleLayer))

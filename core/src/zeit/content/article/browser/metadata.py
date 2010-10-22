@@ -62,3 +62,12 @@ class Navigation(MetadataForm):
             '__name__', 'serie', 'copyrights', 'product_id')
     # NOTE: keywords have been left out so far as they will be a new mechanism
     # for them.
+
+
+class Texts(MetadataForm):
+
+    legend = _('Texts')
+    prefix = 'texts'
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+            'supertitle', 'title', 'subtitle', 'teaserTitle', 'teaserText')
