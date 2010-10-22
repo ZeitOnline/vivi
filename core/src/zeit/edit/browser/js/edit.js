@@ -84,7 +84,7 @@ zeit.edit.Editor = gocept.Class.extend({
         }
         MochiKit.Signal.signal(self, 'before-reload');
         if (isUndefinedOrNull(url)) {
-            url = context_url + '/contents';
+            url = context_url + '/@@contents';
         }
         var d = zeit.edit.with_lock(
             MochiKit.Async.doSimpleXMLHttpRequest, url);
