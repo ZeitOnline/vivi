@@ -10,8 +10,8 @@
     tal:attributes="
     href string:${request/++resource++zeit.content.article}/editor.css"/>
 
-  <div id="article-editor-forms">
-    FORMS/Metadata
+  <div id="article-editor-forms"
+       tal:content="structure context/@@article-metadata-forms">
   </div>
   <div id="article-editor-text"
        tal:content="structure view/body/@@contents">

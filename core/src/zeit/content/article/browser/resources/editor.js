@@ -2,6 +2,14 @@
 
 zeit.cms.declare_namespace('zeit.content.article');
 
+var wire_forms = function() {
+    forEach($$('#article-metadata .inline-form'), function(container) {
+        //XXX need to make it context aware
+        var url = container.getAttribute('action');
+        var form = new zeit.cms.SubPageForm(url, container);
+    });
+}
+
 
 var ident = MochiKit.Signal.connect(
     zeit.edit.editor, 'script-loading-finished',
@@ -10,6 +18,7 @@ var ident = MochiKit.Signal.connect(
 
     zeit.content.article.body_sorter = new zeit.edit.sortable.BlockSorter(
         'editable-body');
+    wire_forms();
     });
 
 // Initialize module library

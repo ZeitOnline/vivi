@@ -136,4 +136,34 @@
     directory="resources"
     />
 
+  <!-- Metadata -->
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="article-metadata-forms"
+    class=".metadata.Metadata"
+    template="edit.metadata-forms.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".metadata.Metadata"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="head"
+    template="edit.metadata.head.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.metadata.head"
+    class=".metadata.Head"
+    permission="zeit.EditContent"
+    />
+
+
+
 </configure>

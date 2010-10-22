@@ -1,3 +1,49 @@
 .block .block-inner > * {
   margin: 0.5em;
 }
+
+/* override so we don't see a flicker */
+.inline-form.busy {
+  opacity: 1;
+}
+
+.inline-form .widget-outer {
+  margin-bottom: 0.5em;
+  position: relative;
+}
+
+.inline-form .label {
+  clear: both;
+  display: block;
+  float: left;
+  overflow: hidden;
+  padding-top: 0.5em;
+}
+
+.inline-form .label div.error {
+  display: inline;
+}
+
+.inline-form .label div.error:before {
+  content: "("
+}
+
+.inline-form .label div.error:after {
+  content: ")"
+}
+
+.inline-form .widget {
+  margin-left: 25em;
+  padding: 0;
+}
+
+.inline-form div.widget > input,
+.inline-form div.widget > textarea,
+.inline-form div.widget > div > div > select {
+  margin-top: 0;
+}
+
+.inline-form .form-controls {
+  clear: both;
+}
+

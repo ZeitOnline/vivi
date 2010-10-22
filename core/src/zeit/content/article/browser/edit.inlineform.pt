@@ -1,0 +1,33 @@
+<fieldset>
+
+  <legend tal:content="view/legend"
+          i18n:translate="">
+    Legend
+  </legend>
+
+  <div tal:repeat="widget view/widget_data"
+       tal:attributes="class widget/css_class">
+    <div class="label">
+      <label tal:attributes="
+             cms:tooltip widget/widget/hint;
+             for widget/widget/name"
+             tal:content="widget/widget/label"
+             i18n:translate="">
+          Label
+      </label>
+      <div class="error"
+            tal:condition="widget/widget/error"
+            tal:content="structure widget/widget/error">
+        error
+      </div>
+    </div>
+    <div class="widget" tal:content="structure widget/widget"/>
+  </div>
+
+  <div class="form-controls" tal:condition="view/availableActions">
+    <input
+      tal:repeat="action view/actions"
+      tal:replace="structure action/render" />
+   </div>
+
+</fieldset>

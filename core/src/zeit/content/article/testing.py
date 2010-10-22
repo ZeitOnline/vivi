@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.selenium.ztk
 import re
 import shutil
 import tempfile
@@ -78,3 +79,12 @@ class CDSLayer(CDSZCMLLayer):
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ArticleLayer
+
+
+selenium_layer = gocept.selenium.ztk.Layer(ArticleLayer)
+
+
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+
+    layer = selenium_layer
+    skin = 'vivi'
