@@ -6,6 +6,7 @@ import zc.resourcelibrary
 import zeit.cms.content.interfaces
 import zope.app.pagetemplate
 import zope.formlib.form
+import zope.formlib.interfaces
 import zope.interface
 import zope.viewlet.interfaces
 import zope.viewlet.viewlet

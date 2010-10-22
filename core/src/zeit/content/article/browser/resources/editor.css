@@ -43,7 +43,19 @@
   margin-top: 0;
 }
 
+.inline-form .error div.widget > input,
+.inline-form .error div.widget > textarea,
+.inline-form .error div.widget > div > div > select {
+  background-color: red;
+}
+
+.inline-form .dirty div.widget > input,
+.inline-form .dirty div.widget > textarea,
+.inline-form .dirty div.widget > div > div > select {
+  background-color: yellow;
+}
+
 .inline-form .form-controls {
-  clear: both;
+  display: none;
 }
 

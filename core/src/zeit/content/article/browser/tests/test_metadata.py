@@ -35,6 +35,12 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
             [u'(no value)', u'Datenschutz', u'Integration',
              u'Joschka Fisher', u'Meinung'],
             s.getSelectOptions('id=head.sub_ressort'))
+        s.click('head.actions.apply')
+        s.pause(250)
+        self.assertEqual(
+            [u'(no value)', u'Datenschutz', u'Integration',
+             u'Joschka Fisher', u'Meinung'],
+            s.getSelectOptions('id=head.sub_ressort'))
 
     def test_invalid_input_should_display_error_message(self):
         s = self.selenium

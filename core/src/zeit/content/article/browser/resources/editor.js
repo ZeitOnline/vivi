@@ -6,7 +6,8 @@ var wire_forms = function() {
     forEach($$('#article-metadata .inline-form'), function(container) {
         //XXX need to make it context aware
         var url = container.getAttribute('action');
-        var form = new zeit.cms.SubPageForm(url, container);
+        var form = new zeit.cms.SubPageForm(
+            url, container, {save_on_change: true});
     });
 }
 
