@@ -11,14 +11,21 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=head.year')
 
-    def test_form_should_save_entered_data(self):
+    def test_form_should_highlight_changed_data(self):
+        s = self.selenium
+        s.assertValue('id=head.year', '2007')
+        s.assertElementNotPresent('css=.widget-outer.dirty')
+        s.type('id=head.year', '2010')
+        s.click('id=head.volume')
+        s.waitForElementPresent('css=.widget-outer.dirty')
+
+    def test_form_should_save_entered_data_on_blur(self):
         s = self.selenium
         s.assertValue('id=head.year', '2007')
         s.type('id=head.year', '2010')
-        s.click('head.actions.apply')
-        s.pause(250)
-        # XXX there needs to be an indicator which shows that save is in
-        # progress and when it's finished.
+        s.fireEvent('id=head.year', 'blur')
+        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('id=head.year')
         s.assertValue('id=head.year', '2010')
