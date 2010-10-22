@@ -9,6 +9,10 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
         self.update();
     },
 
+    destroy: function() {
+        MochiKit.Signal.disconnectAllTo(self, self.update);
+    },
+
     update: function(event) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
@@ -27,7 +31,7 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
                 self.slave.options[self.slave.options.length] = option;
             });
         });
-    },
+    }
 })
 
 
@@ -37,16 +41,15 @@ zeit.cms.configure_ressort_dropdown = function(prefix) {
     if (isUndefinedOrNull(prefix)) {
         prefix = 'form.'
     }
-    if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[prefix])) {
-        return
-    }
     var master = $(prefix + 'ressort');
     var slave = $(prefix + 'sub_ressort');
     
     if (isNull(master) || isNull(slave)) {
         return
     }
-
+    if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[prefix])) {
+        zeit.cms.master_slave_dropdown[prefix].destroy();
+    }
     var path = window.location.pathname.split('/').slice(0, -1);
     path.push('@@subnavigationupdater.json');
     path = path.join('/');
