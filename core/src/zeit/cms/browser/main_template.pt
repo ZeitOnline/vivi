@@ -49,6 +49,7 @@
           type="image/x-icon" />
         <tal:replace replace="resource_library:zeit.cms" />
         <tal:replace replace="resource_library:zeit.cms.panels" /> 
+        <tal:replace replace="resource_library:zeit.cms.content.dropdown" /> 
         <tal:replace replace="structure provider:gocept.mochikit.javascript" />
 
       </head>
