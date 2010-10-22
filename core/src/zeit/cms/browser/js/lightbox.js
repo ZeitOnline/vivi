@@ -213,7 +213,7 @@ zeit.cms.SubPageForm = Class.extend({
             return
         }
         forEach(MochiKit.Selector.findChildElements(
-            self.form, ['textaera', 'input', 'select']), function(node) {
+            self.form, ['textarea', 'input', 'select']), function(node) {
             self.form_events.push(MochiKit.Signal.connect(
                 node, 'onfocus', function(event) {
                     self.focus_node = event.target();
