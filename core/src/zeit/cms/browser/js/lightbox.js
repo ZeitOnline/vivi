@@ -3,13 +3,19 @@
 
 zeit.cms.SubPageForm = Class.extend({
 
-    construct: function(url, container) {
+
+    construct: function(url, container, options) {
         var self = this;
+        // initialize defaults
+        self.clear_on_load = true;
+        // update options
+        MochiKit.Base.update(self, options);
         self.container = container;
         self.url = url;
         self.events = [];
         self.events.push(
-            connect(self.container, 'onclick', self, self.handle_click));
+            MochiKit.Signal.connect(
+                self.container, 'onclick', self, self.handle_click));
         self.reload();
     },
 
@@ -103,7 +109,9 @@ zeit.cms.SubPageForm = Class.extend({
             }
             self.post_process_html();
             MochiKit.Signal.signal(self, 'after-reload');
-            MochiKit.DOM.removeElementClass(self.container, 'busy');
+            // Delaying the class remove somehow avoids flickering
+            MochiKit.Async.callLater(0,
+                MochiKit.DOM.removeElementClass, self.container, 'busy');
             return result;
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
@@ -112,7 +120,9 @@ zeit.cms.SubPageForm = Class.extend({
 
     replace_content: function(result) {
         var self = this;
-        MochiKit.Signal.disconnectAll(self.form);
+        if (self.form !== self.container) {
+            MochiKit.Signal.disconnectAll(self.form);
+        }
         self.container.innerHTML = result.responseText;
         return result;
     },
@@ -150,6 +160,7 @@ zeit.cms.SubPageForm = Class.extend({
     loading: function(message) {
         var self = this;
         if (!isUndefinedOrNull(message)) {
+            log('messssage', repr(message));
             self.container.innerHTML = message;
         }
         MochiKit.DOM.addElementClass(self.container, 'busy');
@@ -157,17 +168,20 @@ zeit.cms.SubPageForm = Class.extend({
 
     post_process_html: function() {
         var self = this;
-        form = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'form', null, self.container);
-        self.rewire_submit_buttons(form);
+        if (self.container.nodeName == 'FORM') {
+            self.form = self.container;
+        } else {
+            self.form = MochiKit.DOM.getFirstElementByTagAndClassName(
+                'form', null, self.container);
+        }
+        self.rewire_submit_buttons();
         self.eval_javascript_tags();
     },
 
-    rewire_submit_buttons: function(form) {
+    rewire_submit_buttons: function() {
         // Change all submits to buttons to be able to handle them in
         // java script
         var self = this;
-        self.form = form;
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
                 'input', null, self.container),
@@ -177,7 +191,7 @@ zeit.cms.SubPageForm = Class.extend({
                     addElementClass(button, 'submit');
                 }
             });
-        if (!isNull(self.form)) {
+        if (!isNull(self.form) && self.form !== self.container) {
             self.events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
                 // prevent accidental submit
