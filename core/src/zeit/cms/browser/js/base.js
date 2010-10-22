@@ -178,6 +178,7 @@ zeit.cms.log_error = function(err) {
 zeit.cms._imported = {}
 zeit.cms.import = function(src) {
     var d = new MochiKit.Async.Deferred();
+    var ident = null;
     logDebug('Importing', src);
     if (MochiKit.Base.isUndefined(zeit.cms._imported[src])) {
         var head = document.getElementsByTagName('head')[0]
@@ -185,6 +186,10 @@ zeit.cms.import = function(src) {
             var node = MochiKit.DOM.createDOM('SCRIPT', {
                 type: 'text/javascript',
                 src: src
+            });
+            var ident = MochiKit.Signal.connect(node, 'onload', function() {
+                MochiKit.Signal.disconnect(ident);
+                d.callback();
             });
         } else if (!isNull(src.match(/\.css$/))) {
             var node = MochiKit.DOM.createDOM('LINK', {
@@ -195,13 +200,10 @@ zeit.cms.import = function(src) {
         } else {
             throw Error("Don't know how to load: " + src);
         }
-        var ident = MochiKit.Signal.connect(node, 'onload', function() {
-            MochiKit.Signal.disconnect(ident);
-            d.callback();
-        });
         head.appendChild(node);
         zeit.cms._imported[src] = true;
-    } else {
+    }
+    if (ident === null) {
         d.callback();
     }
     return d;
