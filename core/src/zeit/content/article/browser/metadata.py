@@ -50,3 +50,15 @@ class Head(MetadataForm):
                 '    zeit.cms.configure_ressort_dropdown("%s.");'
                 '</script>') % (self.prefix,)
         return result
+
+
+class Navigation(MetadataForm):
+
+    legend = _('Navigation')
+    prefix = 'navigation'
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.interfaces.ICMSContent,
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+            '__name__', 'serie', 'copyrights', 'product_id')
+    # NOTE: keywords have been left out so far as they will be a new mechanism
+    # for them.

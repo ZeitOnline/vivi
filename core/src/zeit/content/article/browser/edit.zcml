@@ -151,9 +151,10 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".metadata.Metadata"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="head"
-    template="edit.metadata.head.pt"
+    name="edit.metadata.head"
+    template="edit.metadata.form-loader.pt"
     permission="zeit.EditContent"
+    weight="10"
     />
 
   <browser:page
@@ -161,6 +162,25 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.metadata.head"
     class=".metadata.Head"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".metadata.Metadata"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.metadata.navigation"
+    template="edit.metadata.form-loader.pt"
+    permission="zeit.EditContent"
+    weight="20"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.metadata.navigation"
+    class=".metadata.Navigation"
     permission="zeit.EditContent"
     />
 
