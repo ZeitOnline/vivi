@@ -14,6 +14,7 @@ def test_suite():
         'edit.landing.txt',
         'edit.txt',
         'metadata.head.txt',
+        'metadata.misc.txt',
         'metadata.navigation.txt',
         'metadata.texts.txt',
         'recension.txt',

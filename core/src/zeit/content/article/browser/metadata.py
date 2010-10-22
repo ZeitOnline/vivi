@@ -71,3 +71,15 @@ class Texts(MetadataForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata).select(
             'supertitle', 'title', 'subtitle', 'teaserTitle', 'teaserText')
+
+
+class Misc(MetadataForm):
+
+    legend = _('Misc.')
+    prefix = 'misc'
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.interfaces.IArticleMetadata).select(
+            'authors', 'color_scheme', 'layout',
+            'commentsAllowed', 'dailyNewsletter', 'foldable', 'minimal_header',
+            'countings', 'is_content', 'banner', 'banner_id')
+

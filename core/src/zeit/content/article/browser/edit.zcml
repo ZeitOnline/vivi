@@ -203,6 +203,25 @@
     permission="zeit.EditContent"
     />
 
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".metadata.Metadata"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.metadata.misc"
+    template="edit.metadata.form-loader.pt"
+    permission="zeit.EditContent"
+    weight="40"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.metadata.misc"
+    class=".metadata.Misc"
+    permission="zeit.EditContent"
+    />
+
 
 
 </configure>
