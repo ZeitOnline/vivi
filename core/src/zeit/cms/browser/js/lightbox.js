@@ -7,7 +7,7 @@ zeit.cms.SubPageForm = Class.extend({
     construct: function(url, container, options) {
         var self = this;
         // initialize defaults
-        self.clear_on_load = true;
+        self.save_on_change = false;
         // update options
         MochiKit.Base.update(self, options);
         self.container = container;
@@ -16,6 +16,7 @@ zeit.cms.SubPageForm = Class.extend({
         self.events.push(
             MochiKit.Signal.connect(
                 self.container, 'onclick', self, self.handle_click));
+        self.form_events = [];
         self.reload();
     },
 
@@ -81,6 +82,11 @@ zeit.cms.SubPageForm = Class.extend({
                 }
                 return element.name + "=" + encodeURIComponent(element.value)
             }, elements);
+        if (isUndefinedOrNull(action)) {
+            var button = MochiKit.Selector.findChildElements(
+                self.container, ['.form-controls input'])[0];
+            action = button.name;
+        }
         data.push(action + '=clicked')
         data = data.join('&');
         var submit_to = self.form.getAttribute('action');
@@ -120,9 +126,9 @@ zeit.cms.SubPageForm = Class.extend({
 
     replace_content: function(result) {
         var self = this;
-        if (self.form !== self.container) {
-            MochiKit.Signal.disconnectAll(self.form);
-        }
+        while (self.form_events.length) {
+            MochiKit.Signal.disconnect(self.form_events.pop());
+        };
         self.container.innerHTML = result.responseText;
         return result;
     },
@@ -175,6 +181,7 @@ zeit.cms.SubPageForm = Class.extend({
                 'form', null, self.container);
         }
         self.rewire_submit_buttons();
+        self.wire_save_on_change();
         self.eval_javascript_tags();
     },
 
@@ -192,12 +199,42 @@ zeit.cms.SubPageForm = Class.extend({
                 }
             });
         if (!isNull(self.form) && self.form !== self.container) {
-            self.events.push(MochiKit.Signal.connect(
+            self.form_events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
                 // prevent accidental submit
                 event.stop()
             }));
         }
+    },
+
+    wire_save_on_change: function() {
+        var self = this;
+        if (!self.save_on_change) {
+            return
+        }
+        forEach(MochiKit.Selector.findChildElements(
+            self.form, ['textaera', 'input', 'select']), function(node) {
+            self.form_events.push(MochiKit.Signal.connect(
+                node, 'onfocus', function(event) {
+                    self.focus_node = event.target();
+            }));
+            self.form_events.push(MochiKit.Signal.connect(
+                node, 'onblur', function(event) {
+                    self.focus_node = null;
+                    MochiKit.Async.callLater(0.25, function() {
+                        // Save iff nothing is focused after the timeout.
+                        if (self.focus_node === null) {
+                            self.handle_submit()
+                        }
+                    });
+            }));
+            self.form_events.push(MochiKit.Signal.connect(
+               node, 'onchange', function(event) {
+                    var outer = MochiKit.DOM.getFirstParentByTagAndClassName(
+                        event.target(), null, 'widget-outer');
+                    MochiKit.DOM.addElementClass(outer, 'dirty');
+            }));
+        });
     },
 
     eval_javascript_tags: function() {
