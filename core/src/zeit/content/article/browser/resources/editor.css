@@ -55,6 +55,10 @@
   background-color: yellow;
 }
 
+.inline-form .dirty div.widget > input[type=checkbox] {
+  outline: 1px solid yellow;
+}
+
 .inline-form .form-controls {
   display: none;
 }
