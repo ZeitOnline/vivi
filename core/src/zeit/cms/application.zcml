@@ -155,7 +155,8 @@
   <include package="z3c.pagelet" />
   <include package="z3c.conditionalviews" />
   <include package="gocept.pagelet" file="meta.zcml" />
-  <include package="z3c.hashedresource" />
+
+  <include package="z3c.noop" />
 
   <include package="lovely.remotetask" />
 
