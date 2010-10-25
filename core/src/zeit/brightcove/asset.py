@@ -10,6 +10,24 @@ import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zope.schema
 
+def get_expires(*videos):
+    """returns the earliest expire date of the two objects."""
+
+    # an expires value might
+    # - not exist on the object (if it's a Playlist)
+    # - exist but be None (if a Video doesn't expire)
+    all_expires = []
+    maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)
+    for video in videos:
+        expires = getattr(video, 'expires', None)
+        if expires is None:
+            expires = maximum
+        all_expires.append(expires)
+    expires = min(all_expires)
+    if expires == maximum:
+        return ''
+    return expires.isoformat()
+
 
 class VideoAsset(zeit.cms.content.dav.DAVPropertiesAdapter):
 
@@ -67,7 +85,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             video = lxml.objectify.E.video()
             video.set('href', href)
             video.set('href2', href2)
-            video.set('expires', self._expires(av.video, av.video_2))
+            video.set('expires', get_expires(av.video, av.video_2))
             # old style ID
             video.set('video_id', v1)
             video.set('video_id_2', v2)
@@ -77,22 +95,3 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         if content is None:
             return ''
         return '%s%s' % (content.id_prefix, content.id)
-
-    # XXX duplicated code from zeit.wysiwyg.html.VideoStep
-    def _expires(self, video1, video2):
-        """returns the earliest expire date of the two objects."""
-
-        # an expires value might
-        # - not exist on the object (if it's a Playlist)
-        # - exist but be None (if a Video doesn't expire)
-        all_expires = []
-        maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)
-        for video in [video1, video2]:
-            expires = getattr(video, 'expires', None)
-            if expires is None:
-                expires = maximum
-            all_expires.append(expires)
-        expires = min(all_expires)
-        if expires == maximum:
-            return ''
-        return expires.isoformat()
