@@ -79,7 +79,7 @@ class Misc(MetadataForm):
     prefix = 'misc'
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata).select(
-            'authors', 'color_scheme', 'layout',
+            'author_references', 'color_scheme', 'layout',
             'commentsAllowed', 'dailyNewsletter', 'foldable', 'minimal_header',
             'countings', 'is_content', 'banner', 'banner_id')
 
