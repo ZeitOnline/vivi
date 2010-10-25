@@ -25,11 +25,11 @@
 }
 
 .inline-form .label div.error:before {
-  content: "("
+  content: "(":
 }
 
 .inline-form .label div.error:after {
-  content: ")"
+  content: ")";
 }
 
 .inline-form .widget {
