@@ -214,20 +214,36 @@ zeit.cms.SubPageForm = Class.extend({
         }
         forEach(MochiKit.Selector.findChildElements(
             self.form, ['textarea', 'input', 'select']), function(node) {
-            self.form_events.push(MochiKit.Signal.connect(
-                node, 'onfocus', function(event) {
-                    self.focus_node = event.target();
-            }));
-            self.form_events.push(MochiKit.Signal.connect(
-                node, 'onblur', function(event) {
-                    self.focus_node = null;
-                    MochiKit.Async.callLater(0.25, function() {
-                        // Save iff nothing is focused after the timeout.
-                        if (self.focus_node === null) {
-                            self.handle_submit()
-                        }
-                    });
-            }));
+            if (node.nodeName == 'INPUT' && node.type == 'button') {
+                return
+            }
+            if (node.nodeName == 'INPUT' && node.type == 'checkbox') {
+                self.form_events.push(MochiKit.Signal.connect(
+                    node, 'onclick', function(event) {
+                        self.focus_node = event.target();
+                        MochiKit.Async.callLater(0.25, function() {
+                            // simulate blur
+                            if (self.focus_node == event.target()) {
+                                self.handle_submit();
+                            }
+                        });
+                }));
+            } else {
+                self.form_events.push(MochiKit.Signal.connect(
+                    node, 'onfocus', function(event) {
+                        self.focus_node = event.target();
+                }));
+                self.form_events.push(MochiKit.Signal.connect(
+                    node, 'onblur', function(event) {
+                        self.focus_node = null;
+                        MochiKit.Async.callLater(0.25, function() {
+                            // Save iff nothing is focused after the timeout.
+                            if (self.focus_node === null) {
+                                self.handle_submit()
+                            }
+                        });
+                }));
+            }
             self.form_events.push(MochiKit.Signal.connect(
                node, 'onchange', function(event) {
                     var outer = MochiKit.DOM.getFirstParentByTagAndClassName(
