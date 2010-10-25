@@ -393,10 +393,10 @@ zeit.edit.TabbedLightBoxForm = zeit.edit.LightBoxForm.extend({
             self.events.push(
                 MochiKit.Signal.connect(
                     tab_view, 'load', function() {
-                    var form = MochiKit.DOM.getFirstElementByTagAndClassName(
+                    self.form = MochiKit.DOM.getFirstElementByTagAndClassName(
                         'form', null, $(tab_view.target_id));
-                    if (!isNull(form)) {
-                        self.rewire_submit_buttons(form);
+                    if (!isNull(self.form)) {
+                        self.rewire_submit_buttons();
                     }
                     $(tab_view.target_id).__handler__ = self;
                     self.eval_javascript_tags();
