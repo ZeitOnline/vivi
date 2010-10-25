@@ -7,6 +7,7 @@ import lxml.objectify
 import pytz
 import zeit.brightcove.interfaces
 import zeit.cms.content.dav
+import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zope.schema
 
