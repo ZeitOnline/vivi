@@ -20,12 +20,15 @@ def get_expires(*videos):
     all_expires = []
     maximum = datetime.datetime(datetime.MAXYEAR, 12, 31, tzinfo=pytz.UTC)
     for video in videos:
+        if video is None:
+            continue
         expires = getattr(video, 'expires', None)
         if expires is None:
             expires = maximum
         all_expires.append(expires)
-    expires = min(all_expires)
-    if expires == maximum:
+    if all_expires:
+        expires = min(all_expires)
+    if not all_expires or expires == maximum:
         return ''
     return expires.isoformat()
 
