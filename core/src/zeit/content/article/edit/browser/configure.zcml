@@ -238,7 +238,7 @@
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="set_video"
-    class=".edit.SetVideo"
+    class=".video.SetVideo"
     permission="zeit.EditContent"
     />
 
@@ -246,7 +246,7 @@
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit"
-    class=".edit.EditVideo"
+    class=".video.EditVideo"
     permission="zeit.EditContent"
     />
 
@@ -256,7 +256,7 @@
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="edit-box"
-    class=".edit.EditVideoAction"
+    class=".video.EditVideoAction"
     permission="zeit.EditContent"
     weight="0"
     />
