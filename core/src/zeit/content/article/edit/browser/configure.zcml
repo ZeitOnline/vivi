@@ -107,7 +107,7 @@
     for="zeit.content.article.edit.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="set_image"
-    class=".edit.SetImage"
+    class=".image.SetImage"
     permission="zeit.EditContent"
     />
 
@@ -115,7 +115,7 @@
     for="zeit.content.article.edit.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-layout"
-    class=".edit.EditImage"
+    class=".image.EditImage"
     permission="zeit.EditContent"
     />
 
@@ -125,7 +125,7 @@
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="edit-box"
-    class=".edit.EditImageAction"
+    class=".image.EditImageAction"
     permission="zeit.EditContent"
     weight="0"
     />
