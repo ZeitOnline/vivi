@@ -9,7 +9,6 @@
       provides="zope.app.publication.interfaces.IHTTPRequestFactory"
       />
 
-
   <interface
     zcml:condition="have zeit.cms.testing"
     interface=".interfaces.ICMSTestingSkin"
