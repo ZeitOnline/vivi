@@ -8,6 +8,13 @@
     <implements interface="zeit.edit.interfaces.IEditable" />
   </class>
 
+  <browser:resourceDirectory
+    name="zeit.content.article.edit"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    directory="resources"
+    />
+
+
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -128,12 +135,6 @@
     class=".image.EditImageAction"
     permission="zeit.EditContent"
     weight="0"
-    />
-
-  <browser:resourceDirectory
-    name="zeit.content.article.edit"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    directory="resources"
     />
 
   <!-- Metadata -->
