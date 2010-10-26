@@ -1,12 +1,16 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import logging
 import UserDict
 import uuid
 import zeit.edit.block
 import zeit.edit.interfaces
 import zope.container.contained
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class Base(UserDict.DictMixin,
@@ -39,7 +43,10 @@ class Base(UserDict.DictMixin,
             node = node[0]
             element = self._get_element_for_node(node)
             if element is None:
-               return None
+                log.warning(
+                    'Could not resolve element for %s (tag=%s)',
+                    key, node.tag)
+                return None
             return zope.container.contained.contained(element, self, key)
         raise KeyError(key)
 
