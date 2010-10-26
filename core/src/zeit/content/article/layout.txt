@@ -2,7 +2,9 @@
 Article Layout
 ==============
 
-[#functional]_
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
 
 The centerpage referenced by an article as its layout is published when the
 article is published.
@@ -60,10 +62,3 @@ is already published:
 False
 >>> IPublishInfo(cp).date_last_published == published_cp
 True
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()

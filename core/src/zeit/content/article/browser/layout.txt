@@ -2,7 +2,8 @@
 Article Layout
 ==============
 
-[#functional]_
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 
 >>> from zope.testbrowser.testing import Browser
 >>> browser = Browser()
@@ -29,9 +30,3 @@ Article Layout
 >>> browser.getLink('View metadata').click()
 >>> '/online/2007/01/island' in browser.contents
 True
-
-
-.. [#functional]
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
