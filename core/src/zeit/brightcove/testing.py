@@ -202,6 +202,15 @@ BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
         product_config))
 
 
+
+def update_repository(root):
+    with zeit.cms.testing.site(root):
+        repository = zope.component.getUtility(
+            zeit.brightcove.interfaces.IRepository)
+        repository.update_from_brightcove()
+        transaction.commit()
+
+
 class BrightcoveLayer(BrightcoveHTTPLayer,
                       BrightcoveZCMLLayer,
                       zeit.solr.testing.SolrMockLayerBase):
@@ -216,12 +225,7 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
 
     @classmethod
     def testSetUp(cls):
-        root = BrightcoveZCMLLayer.setup.getRootFolder()
-        with zeit.cms.testing.site(root):
-            repository = zope.component.getUtility(
-                zeit.brightcove.interfaces.IRepository)
-            repository.update_from_brightcove()
-        transaction.commit()
+        update_repository(BrightcoveZCMLLayer.setup.getRootFolder())
 
     @classmethod
     def testTearDown(cls):
