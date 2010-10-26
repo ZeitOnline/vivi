@@ -1,9 +1,14 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.edit.interfaces
+import gocept.lxml.interfaces
 import martian
+import martian
+import zeit.edit.block
+import zeit.edit.interfaces
 import zope.component.zcml
+import zope.component.zcml
+import zope.interface
 
 
 class NoneGuard(object):
@@ -36,4 +41,20 @@ class GlobalRuleGlobsGrokker(martian.GlobalGrokker):
                 factory=(NoneGuard(func),),
                 provides=zeit.edit.interfaces.IRuleGlob,
                 name=unicode(func.func_name))
+        return True
+
+
+class SimpleElementGrokker(martian.ClassGrokker):
+
+    martian.component(zeit.edit.block.SimpleElement)
+
+    def execute(self, context, config, **kw):
+        for_ = (context.area, gocept.lxml.interfaces.IObjectified)
+        provides = zope.interface.implementedBy(context).declared[0]
+
+        config.action(
+            discriminator=('adapter', for_, provides, context.type),
+            callable=zope.component.provideAdapter,
+            args=(context, for_, provides, context.type),
+            )
         return True

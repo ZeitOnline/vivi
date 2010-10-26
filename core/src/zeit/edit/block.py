@@ -40,6 +40,11 @@ class Element(zope.container.contained.Contained,
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}type')
 
 
+class SimpleElement(Element):
+
+    grokcore.component.baseclass()
+
+
 @grokcore.component.adapter(zeit.edit.interfaces.IElement)
 @grokcore.component.implementer(zeit.edit.interfaces.IArea)
 def area_for_element(context):
