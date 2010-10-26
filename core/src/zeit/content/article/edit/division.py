@@ -24,9 +24,8 @@ class Division(zeit.edit.block.SimpleElement):
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
 
-    element_type = Division.type
+    produces = Division
     title = _('Division')
-    grokcore.component.name(element_type)
 
     def get_xml(self):
         return lxml.objectify.E.division(type='page')

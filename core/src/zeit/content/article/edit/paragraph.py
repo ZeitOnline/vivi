@@ -58,12 +58,8 @@ class Paragraph(zeit.edit.block.Element,
 
 class ParagraphFactory(zeit.content.article.edit.block.BlockFactory):
 
-    element_type = Paragraph.type
+    produces = Paragraph
     title = _('<p>')
-    grokcore.component.name(element_type)
-
-    def get_xml(self):
-        return lxml.objectify.E.p()
 
 
 class UnorderedList(Paragraph):
@@ -78,12 +74,8 @@ class UnorderedList(Paragraph):
 
 class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
 
-    element_type = UnorderedList.type
+    produces = UnorderedList
     title = _('<ul>')
-    grokcore.component.name(element_type)
-
-    def get_xml(self):
-        return lxml.objectify.E.ul()
 
 
 class OrderedList(Paragraph):
@@ -98,13 +90,8 @@ class OrderedList(Paragraph):
 
 class OrderedListFactory(zeit.content.article.edit.block.BlockFactory):
 
-    element_type = OrderedList.type
+    produces = OrderedList
     title = _('<ol>')
-    grokcore.component.name(element_type)
-
-    def get_xml(self):
-        return lxml.objectify.E.ol()
-
 
 class Intertitle(Paragraph):
 
@@ -118,9 +105,5 @@ class Intertitle(Paragraph):
 
 class IntertitleFactory(zeit.content.article.edit.block.BlockFactory):
 
-    element_type = Intertitle.type
+    produces = Intertitle
     title = _('<intertitle>')
-    grokcore.component.name(element_type)
-
-    def get_xml(self):
-        return lxml.objectify.E.intertitle()

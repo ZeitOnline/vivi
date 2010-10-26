@@ -63,13 +63,8 @@ class Video(zeit.edit.block.Element,
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
 
-    element_type = Video.type
+    produces = Video
     title = _('Video')
-    grokcore.component.name(element_type)
-
-    def get_xml(self):
-        return lxml.objectify.E.video()
-
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
