@@ -15,19 +15,12 @@ import zeit.edit.interfaces
 import zope.component
 
 
-class Image(zeit.edit.block.Element,
-            grokcore.component.MultiAdapter):
+class Image(zeit.edit.block.SimpleElement):
 
-    grokcore.component.adapts(
-      zeit.content.article.edit.interfaces.IEditableBody,
-      gocept.lxml.interfaces.IObjectified)
+    area = zeit.content.article.edit.interfaces.IEditableBody
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IImage)
-    grokcore.component.provides(
-        zeit.content.article.edit.interfaces.IImage)
-
     type = 'image'
-    grokcore.component.name(type)
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'layout', zeit.content.article.edit.interfaces.IImage['layout'])
