@@ -4,6 +4,8 @@
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
+  <include file="metadata.zcml" />
+
   <class class="zeit.content.article.article.Article">
     <implements interface="zeit.edit.interfaces.IEditable" />
   </class>
@@ -100,6 +102,8 @@
     permission="zeit.EditContent"
     />
 
+  <!-- image -->
+
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -135,92 +139,6 @@
     class=".image.EditImageAction"
     permission="zeit.EditContent"
     weight="0"
-    />
-
-  <!-- Metadata -->
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="article-metadata-forms"
-    class=".metadata.Metadata"
-    template="edit.metadata-forms.pt"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".metadata.Metadata"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.metadata.head"
-    template="edit.metadata.form-loader.pt"
-    permission="zeit.EditContent"
-    weight="10"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.metadata.head"
-    class=".metadata.Head"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".metadata.Metadata"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.metadata.navigation"
-    template="edit.metadata.form-loader.pt"
-    permission="zeit.EditContent"
-    weight="20"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.metadata.navigation"
-    class=".metadata.Navigation"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".metadata.Metadata"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.metadata.texts"
-    template="edit.metadata.form-loader.pt"
-    permission="zeit.EditContent"
-    weight="30"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.metadata.texts"
-    class=".metadata.Texts"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".metadata.Metadata"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.metadata.misc"
-    template="edit.metadata.form-loader.pt"
-    permission="zeit.EditContent"
-    weight="40"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.metadata.misc"
-    class=".metadata.Misc"
-    permission="zeit.EditContent"
     />
 
   <!-- video -->
