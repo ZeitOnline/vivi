@@ -28,6 +28,8 @@
   <include package="zeit.imp.browser" />
   <include package="zeit.content.gallery" />
   <include package="zeit.content.gallery.browser" />
+  <include package="zeit.content.infobox" />
+  <include package="zeit.content.infobox.browser" />
 
   <include package="zeit.content.cp" />
   <include package="zeit.brightcove" />

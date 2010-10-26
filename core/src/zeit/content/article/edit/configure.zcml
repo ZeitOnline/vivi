@@ -88,4 +88,15 @@
       />
   </class>
 
+  <class class=".reference.Infobox">
+    <require
+      interface=".interfaces.IInfobox"
+      permission="zope.View" 
+      />
+    <require
+      set_schema=".interfaces.IInfobox"
+      permission="zeit.EditContent" 
+      />
+  </class>
+
 </configure>

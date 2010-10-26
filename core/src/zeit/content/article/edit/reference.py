@@ -8,6 +8,7 @@ import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.gallery.interfaces
+import zeit.content.infobox.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
 import zope.component
@@ -63,7 +64,29 @@ class GalleryFactory(zeit.content.article.edit.block.BlockFactory):
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
                             zeit.content.gallery.interfaces.IGallery)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def factor_image_block_from_image(body, context):
+def factor_block_from_gallery(body, context):
     block = GalleryFactory(body)()
+    block.references = context
+    return block
+
+
+class Infobox(Reference):
+
+    grokcore.component.implements(
+        zeit.content.article.edit.interfaces.IInfobox)
+    type = 'infobox'
+
+
+class InfoboxFactory(zeit.content.article.edit.block.BlockFactory):
+
+    produces = Infobox
+    title = _('Infobox')
+
+
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+                            zeit.content.infobox.interfaces.IInfobox)
+@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+def factor_block_from_infobox(body, context):
+    block = InfoboxFactory(body)()
     block.references = context
     return block

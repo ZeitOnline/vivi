@@ -202,5 +202,17 @@
     permission="zeit.EditContent"
     />
 
+  <!-- references / infobox -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    template="edit.infobox.pt"
+    permission="zeit.EditContent"
+    />
+
 
 </configure>

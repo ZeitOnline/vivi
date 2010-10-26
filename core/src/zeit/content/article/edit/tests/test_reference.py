@@ -85,6 +85,14 @@ class TestGallery(ReferenceTest):
         return Gallery
 
 
+class TestInfobox(ReferenceTest):
+
+    @property
+    def test_class(self):
+        from zeit.content.article.edit.reference import Infobox
+        return Infobox
+
+
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
     def assert_factory(self, name, title, interface):
@@ -105,3 +113,7 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
     def test_gallery_factory(self):
         from zeit.content.article.edit.interfaces import IGallery
         self.assert_factory('gallery', 'Gallery', IGallery)
+
+    def test_infobox_factory(self):
+        from zeit.content.article.edit.interfaces import IInfobox
+        self.assert_factory('infobox', 'Infobox', IInfobox)

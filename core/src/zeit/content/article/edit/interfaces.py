@@ -6,6 +6,7 @@ import stabledict
 import zc.sourcefactory.basic
 import zeit.brightcove.interfaces
 import zeit.content.gallery.interfaces
+import zeit.content.infobox.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.interfaces
 import zope.schema
@@ -110,3 +111,11 @@ class IGallery(IReference):
     references = zope.schema.Choice(
         title=_('Gallery'),
         source=zeit.content.gallery.interfaces.gallerySource)
+
+
+class IInfobox(IReference):
+    """block for <infobox/> tags."""
+
+    references = zope.schema.Choice(
+        title=_('Infobox'),
+        source=zeit.content.infobox.interfaces.infoboxSource)
