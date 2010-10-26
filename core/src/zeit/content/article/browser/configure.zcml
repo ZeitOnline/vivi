@@ -4,8 +4,6 @@
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
-  <include file="edit.zcml"/>
-
   <adapter factory=".comment.comment_browse_location" />
 
   <browser:page

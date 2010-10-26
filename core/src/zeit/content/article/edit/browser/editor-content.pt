@@ -4,11 +4,11 @@
   <script
     type="text/javascript"
     tal:attributes="
-    src string:${request/++resource++zeit.content.article}/editor.js"></script>
+    src string:${request/++resource++zeit.content.article.edit}/editor.js"></script>
   <link
     rel="stylesheet" type="text/css"
     tal:attributes="
-    href string:${request/++resource++zeit.content.article}/editor.css"/>
+    href string:${request/++resource++zeit.content.article.edit}/editor.css"/>
 
   <div id="article-editor-forms"
        tal:content="structure context/@@article-metadata-forms">

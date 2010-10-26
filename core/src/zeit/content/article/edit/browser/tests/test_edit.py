@@ -8,7 +8,7 @@ import zeit.content.article.testing
 class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
 
     def get_view(self, body=None):
-        from zeit.content.article.browser.edit import SaveText
+        from zeit.content.article.edit.browser.edit import SaveText
         import lxml.objectify
         import zeit.content.article.article
         import zeit.content.article.edit.body

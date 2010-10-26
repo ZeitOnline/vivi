@@ -131,7 +131,7 @@
     />
 
   <browser:resourceDirectory
-    name="zeit.content.article"
+    name="zeit.content.article.edit"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     directory="resources"
     />
