@@ -16,7 +16,7 @@ class Updater(grokcore.component.Adapter):
     grokcore.component.implements(zeit.solr.interfaces.IUpdater)
 
     def update(self, solr=''):
-        # NOTE: The solr argument is ignored. update() alwas updates the
+        # NOTE: The solr argument is ignored. update() always updates the
         # default, internal solr and the public solr.
         updater = zope.component.getAdapter(
             self.context, zeit.solr.interfaces.IUpdater, name='update')
