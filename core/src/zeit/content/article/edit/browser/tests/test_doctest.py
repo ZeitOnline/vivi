@@ -16,6 +16,7 @@ def test_suite():
         'metadata.misc.txt',
         'metadata.navigation.txt',
         'metadata.texts.txt',
+        'reference.gallery.txt',
         package='zeit.content.article.edit.browser',
         layer=zeit.content.article.testing.ArticleLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(

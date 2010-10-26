@@ -180,4 +180,27 @@
     weight="0"
     />
 
+  <!-- references -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="set_reference"
+    class=".reference.SetReference"
+    permission="zeit.EditContent"
+    />
+
+  <!-- references / gallery -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    template="edit.gallery.pt"
+    permission="zeit.EditContent"
+    />
+
+
 </configure>

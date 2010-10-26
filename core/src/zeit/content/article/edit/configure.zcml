@@ -77,4 +77,15 @@
       />
   </class>
 
+  <class class=".reference.Gallery">
+    <require
+      interface=".interfaces.IGallery"
+      permission="zope.View" 
+      />
+    <require
+      set_schema=".interfaces.IGallery"
+      permission="zeit.EditContent" 
+      />
+  </class>
+
 </configure>

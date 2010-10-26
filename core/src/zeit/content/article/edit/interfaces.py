@@ -5,6 +5,7 @@ from zeit.content.article.i18n import MessageFactory as _
 import stabledict
 import zc.sourcefactory.basic
 import zeit.brightcove.interfaces
+import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.interfaces
 import zope.schema
@@ -95,3 +96,17 @@ class IVideo(zeit.edit.interfaces.IBlock):
         title=_('Layout'),
         source=VideoLayoutSource(),
         required=False)
+
+
+class IReference(zeit.edit.interfaces.IBlock):
+    """A block which references another object."""
+
+    references = zope.schema.Field(title=_('Referenced object.'))
+
+
+class IGallery(IReference):
+    """block for <gallery/> tags."""
+
+    references = zope.schema.Choice(
+        title=_('Gallery'),
+        source=zeit.content.gallery.interfaces.gallerySource)

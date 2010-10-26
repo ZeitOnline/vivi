@@ -46,6 +46,7 @@ setup(
         'zeit.cms>=1.44.0',
         'zeit.connector>1.14.1',
         'zeit.content.cp>=0.33.0',
+        'zeit.content.gallery',
         'zeit.edit',
         'zeit.objectlog>=0.2',
         'zeit.wysiwyg>1.22',
