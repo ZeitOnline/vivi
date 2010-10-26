@@ -11,19 +11,12 @@ import zeit.edit.block
 import zeit.edit.interfaces
 
 
-class Division(zeit.edit.block.Element,
-                grokcore.component.MultiAdapter):
+class Division(zeit.edit.block.SimpleElement):
 
-    grokcore.component.adapts(
-      zeit.content.article.edit.interfaces.IEditableBody,
-      gocept.lxml.interfaces.IObjectified)
-    grokcore.component.name('division')
+    area = zeit.content.article.edit.interfaces.IEditableBody
+    type = 'division'
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IDivision)
-    grokcore.component.provides(
-        zeit.content.article.edit.interfaces.IDivision)
-
-    type = 'division'
 
     teaser = zeit.cms.content.property.ObjectPathAttributeProperty(
       '.', 'teaser', zeit.content.article.edit.interfaces.IDivision['teaser'])
