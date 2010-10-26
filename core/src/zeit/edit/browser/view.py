@@ -68,9 +68,15 @@ class Action(zeit.cms.browser.view.Base):
         except Exception, e:
             log.warning('Error in action', exc_info=True)
             transaction.doom()
-            message = e.args[0]
-            if isinstance(message, zope.i18n.Message):
-                message = zope.i18n.translate(message, context=self.request)
+            message = None
+            if e.args:
+                if isinstance(e.args[0], basestring):
+                    message = e.args[0]
+                if isinstance(message, zope.i18n.Message):
+                    message = zope.i18n.translate(message,
+                                                  context=self.request)
+            if message is None:
+                message = repr(e)
             self.request.response.setStatus(500)
             self.request.response.setHeader('Content-Type', 'text/plain')
             return message
