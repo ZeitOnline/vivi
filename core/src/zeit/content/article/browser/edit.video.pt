@@ -1,0 +1,23 @@
+<div 
+  tal:condition="context/video"
+  tal:attributes="
+     cms:drop-url string:${context/@@absolute_url}/@@set_video;
+     class string:${context/layout} action-content-droppable">
+   <div class="video-image video_1">
+      <img tal:attributes="src context/video/video_still" />
+   </div>
+   <div class="video-image video_2"
+        tal:condition="context/video_2">
+     <img tal:attributes="src context/video_2/video_still" />
+   </div>
+   <div class="video-title"
+        tal:content="context/video/title"></div>
+</div>
+
+<div 
+  tal:condition="not:context/video"
+  tal:attributes="
+     cms:drop-url string:${context/@@absolute_url}/@@set_video;
+     class string:${context/layout} landing-zone visible action-content-droppable">
+     <span i18n:translate="">Drag an video to embed.</span>
+</div>

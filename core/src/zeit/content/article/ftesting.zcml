@@ -24,16 +24,11 @@
   <include package="zeit.content.image.browser" />
 
   <include package="zeit.content.cp" />
+  <include package="zeit.brightcove" />
+  <include package="zeit.solr" />
 
   <include package="zeit.edit" />
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
-
-  <principal
-    id="zope.cds"
-    title="Content-Drehscheibe"
-    login="zope-cds"
-    password="zope-cdspw"
-    />
 
 </configure>

@@ -132,3 +132,31 @@ class BlockLandingZone(LandingZoneBase):
     """Handler to drop objects after other objects."""
 
     order = 'after-context'
+
+
+class SetVideo(zeit.edit.browser.view.Action):
+    """Drop content object on an image."""
+
+    uniqueId = zeit.edit.browser.view.Form('uniqueId')
+
+    def update(self):
+        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
+        self.context.video = content
+        zope.lifecycleevent.modified(self.context)
+        self.signal(
+            None, 'reload', self.context.__name__, self.url('@@contents'))
+
+
+class EditVideo(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IVideo)
+
+
+class EditVideoAction(zeit.edit.browser.view.EditBoxAction):
+
+    title = _('Edit')
+    action = 'edit'
+
+
+

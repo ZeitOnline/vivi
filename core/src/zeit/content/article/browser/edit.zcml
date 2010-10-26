@@ -222,6 +222,43 @@
     permission="zeit.EditContent"
     />
 
+  <!-- video -->
 
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    template="edit.video.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="set_video"
+    class=".edit.SetVideo"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit"
+    class=".edit.EditVideo"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="edit-box"
+    class=".edit.EditVideoAction"
+    permission="zeit.EditContent"
+    weight="0"
+    />
 
 </configure>

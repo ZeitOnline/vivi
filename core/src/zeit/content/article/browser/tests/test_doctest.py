@@ -21,6 +21,10 @@ def test_suite():
         package='zeit.content.article.browser',
         layer=zeit.content.article.testing.ArticleLayer))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+        'edit.video.txt',
+        package='zeit.content.article.browser',
+        layer=zeit.content.article.testing.ArticleBrightcoveLayer))
+    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'layout.txt',
         package='zeit.content.article.browser',
         # we use the CDSLayer since it includes zeit.workflow which we need

@@ -64,4 +64,15 @@
       />
   </class>
 
+  <class class=".video.Video">
+    <require
+      interface=".interfaces.IVideo"
+      permission="zope.View" 
+      />
+    <require
+      set_schema=".interfaces.IVideo"
+      permission="zeit.EditContent" 
+      />
+  </class>
+
 </configure>

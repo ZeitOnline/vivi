@@ -5,8 +5,10 @@ import gocept.selenium.ztk
 import re
 import shutil
 import tempfile
+import zeit.brightcove.testing
 import zeit.cms.testing
 import zeit.content.cp.testing
+import zeit.solr.testing
 import zope.app.testing.functional
 import zope.testing.renormalizing
 
@@ -30,7 +32,32 @@ ArticleLayer = zeit.cms.testing.ZCMLLayer(
     product_config=(
         product_config +
         zeit.content.cp.testing.product_config +
+        zeit.brightcove.testing.product_config +
+        zeit.solr.testing.product_config +
         zeit.cms.testing.cms_product_config))
+
+
+
+class ArticleBrightcoveLayer(zeit.brightcove.testing.BrightcoveHTTPLayer,
+                             ArticleLayer,
+                             zeit.solr.testing.SolrMockLayerBase):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        zeit.brightcove.testing.update_repository(
+            ArticleLayer.setup.getRootFolder())
+
+    @classmethod
+    def testTearDown(cls):
+        pass
 
 
 CDSZCMLLayer = zeit.cms.testing.ZCMLLayer(

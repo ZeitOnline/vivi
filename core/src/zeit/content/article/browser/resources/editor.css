@@ -63,3 +63,34 @@
   display: none;
 }
 
+/* Video block layouts */
+
+.block.type-video .video-image {
+  width: 25%;
+  float: left;
+}
+
+.block.type-video .video-title {
+  display: none;
+}
+
+.block.type-video .video-image img {
+  width: 100%;
+}
+
+.block.type-video .video_2 img {
+  opacity: 0.5;
+}
+
+.block.type-video .large .video-image {
+  width: 50%;
+}
+
+.block.type-video .double .video_2 img {
+  opacity: 1;
+}
+
+.block.type-video .with-links .video-title {
+  clear: both;
+  display: block;
+}
