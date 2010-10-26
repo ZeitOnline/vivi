@@ -17,19 +17,12 @@ import zope.component
 import zope.schema
 
 
-class Video(zeit.edit.block.Element,
-            grokcore.component.MultiAdapter):
+class Video(zeit.edit.block.SimpleElement):
 
-    grokcore.component.adapts(
-      zeit.content.article.edit.interfaces.IEditableBody,
-      gocept.lxml.interfaces.IObjectified)
+    area = zeit.content.article.edit.interfaces.IEditableBody
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IVideo)
-    grokcore.component.provides(
-        zeit.content.article.edit.interfaces.IVideo)
-
     type = 'video'
-    grokcore.component.name(type)
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'format', zope.schema.TextLine())
