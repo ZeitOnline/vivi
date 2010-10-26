@@ -19,19 +19,12 @@ import zope.component
 # the Element classes itself.
 
 
-class Paragraph(zeit.edit.block.Element,
-                grokcore.component.MultiAdapter):
+class Paragraph(zeit.edit.block.SimpleElement):
 
-    grokcore.component.adapts(
-      zeit.content.article.edit.interfaces.IEditableBody,
-      gocept.lxml.interfaces.IObjectified)
+    area = zeit.content.article.edit.interfaces.IEditableBody
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IParagraph)
-    grokcore.component.provides(
-        zeit.content.article.edit.interfaces.IParagraph)
-
     type = 'p'
-    grokcore.component.name(type)
 
     @property
     def text(self):
@@ -66,10 +59,7 @@ class UnorderedList(Paragraph):
 
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IUnorderedList)
-    grokcore.component.provides(
-        zeit.content.article.edit.interfaces.IUnorderedList)
     type = 'ul'
-    grokcore.component.name(type)
 
 
 class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
@@ -82,10 +72,7 @@ class OrderedList(Paragraph):
 
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IOrderedList)
-    grokcore.component.provides(
-        zeit.content.article.edit.interfaces.IOrderedList)
     type = 'ol'
-    grokcore.component.name(type)
 
 
 class OrderedListFactory(zeit.content.article.edit.block.BlockFactory):
@@ -93,14 +80,12 @@ class OrderedListFactory(zeit.content.article.edit.block.BlockFactory):
     produces = OrderedList
     title = _('<ol>')
 
+
 class Intertitle(Paragraph):
 
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IIntertitle)
-    grokcore.component.provides(
-        zeit.content.article.edit.interfaces.IIntertitle)
     type = 'intertitle'
-    grokcore.component.name(type)
 
 
 class IntertitleFactory(zeit.content.article.edit.block.BlockFactory):
