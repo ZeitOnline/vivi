@@ -1,0 +1,14 @@
+<div
+     tal:condition="context/references"
+     tal:attributes="cms:drop-url string:${context/@@absolute_url}/@@set_reference;
+     class string:${context/layout} action-content-droppable">
+  <div class="title"
+       tal:content="context/references/name">
+    Gregor Samsa
+  </div>
+</div>
+<div class="landing-zone visible action-content-droppable"
+     tal:condition="not:context/references"
+     tal:attributes="cms:drop-url string:${context/@@absolute_url}/@@set_reference">
+  <span i18n:translate="">Drag a portraitbox to embed.</span>
+</div>

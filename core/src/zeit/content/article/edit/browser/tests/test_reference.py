@@ -181,6 +181,42 @@ class InfoboxTest(GalleryTest):
         transaction.commit()
 
 
+class PortraitboxTest(GalleryTest):
+
+    expected_type = 'portraitbox'
+
+    def setup_content(self):
+        from zeit.content.portraitbox.portraitbox import Portraitbox
+        import transaction
+        import zeit.cms.testing
+        pb = Portraitbox()
+        root = self.layer.setup.getRootFolder()
+        with zeit.cms.testing.site(root):
+            with zeit.cms.testing.interaction():
+                root['repository']['pb'] = pb
+        self.content_id = 'http://xml.zeit.de/pb'
+        transaction.commit()
+
+    def test_layout_should_be_editable(self):
+        self.setup_content()
+        article = self.get_article(with_empty_block=True)
+        article.xml.body.division[self.expected_type].set(
+            'href', self.content_id)
+        article._p_changed = True
+        self.browser.open(self.contents_url)
+        self.browser.getLink('Edit').click()
+        self.assertEqual(
+            ['(no value)', 'short', 'wide'],
+            self.browser.getControl('Layout').displayOptions)
+        self.browser.getControl('Layout').displayValue = ['wide']
+        self.browser.getControl('Apply').click()
+        self.assert_ellipsis("<...self.close()...")
+        # The layout is used as a css-class:
+        self.browser.open(self.contents_url)
+        self.assert_ellipsis(
+            """...<div ...class="wide ...""")
+
+
 class ImageTest(GalleryTest):
 
     expected_type = 'image'
@@ -212,6 +248,7 @@ class ImageTest(GalleryTest):
         self.browser.open(self.contents_url)
         self.assert_ellipsis(
             """...<div ...class="large ...""")
+
 
 class VideoTest(GalleryTest):
 

@@ -93,6 +93,19 @@ class TestInfobox(ReferenceTest):
         return Infobox
 
 
+class TestPortraitbox(ReferenceTest):
+
+    @property
+    def test_class(self):
+        from zeit.content.article.edit.reference import Portraitbox
+        return Portraitbox
+
+    def test_layout_should_set_attribute(self):
+        ref = self.get_ref()
+        ref.layout = u'wide'
+        self.assertEquals('wide', ref.xml.get('layout'))
+
+
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
     def assert_factory(self, name, title, interface):
@@ -117,3 +130,7 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
     def test_infobox_factory(self):
         from zeit.content.article.edit.interfaces import IInfobox
         self.assert_factory('infobox', 'Infobox', IInfobox)
+
+    def test_portraitbox_factory(self):
+        from zeit.content.article.edit.interfaces import IPortraitbox
+        self.assert_factory('portraitbox', 'Portraitbox', IPortraitbox)

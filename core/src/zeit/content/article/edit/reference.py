@@ -9,6 +9,7 @@ import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.infobox.interfaces
+import zeit.content.portraitbox.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
 import zope.component
@@ -88,5 +89,31 @@ class InfoboxFactory(zeit.content.article.edit.block.BlockFactory):
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
 def factor_block_from_infobox(body, context):
     block = InfoboxFactory(body)()
+    block.references = context
+    return block
+
+
+class Portraitbox(Reference):
+
+    grokcore.component.implements(
+        zeit.content.article.edit.interfaces.IPortraitbox)
+    type = 'portraitbox'
+
+    layout = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'layout',
+        zeit.content.article.edit.interfaces.IPortraitbox['layout'])
+
+
+class PortraitboxFactory(zeit.content.article.edit.block.BlockFactory):
+
+    produces = Portraitbox
+    title = _('Portraitbox')
+
+
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+                            zeit.content.portraitbox.interfaces.IPortraitbox)
+@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+def factor_block_from_portraitbox(body, context):
+    block = PortraitboxFactory(body)()
     block.references = context
     return block

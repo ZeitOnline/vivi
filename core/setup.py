@@ -49,6 +49,7 @@ setup(
         'zeit.content.cp>=0.33.0',
         'zeit.content.infobox',
         'zeit.content.gallery',
+        'zeit.content.portraitbox',
         'zeit.edit',
         'zeit.objectlog>=0.2',
         'zeit.wysiwyg>1.22',

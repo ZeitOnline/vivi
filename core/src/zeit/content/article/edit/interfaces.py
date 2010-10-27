@@ -6,8 +6,9 @@ import stabledict
 import zc.sourcefactory.basic
 import zeit.brightcove.interfaces
 import zeit.content.gallery.interfaces
-import zeit.content.infobox.interfaces
 import zeit.content.image.interfaces
+import zeit.content.infobox.interfaces
+import zeit.content.portraitbox.interfaces
 import zeit.edit.interfaces
 import zope.schema
 
@@ -119,3 +120,24 @@ class IInfobox(IReference):
     references = zope.schema.Choice(
         title=_('Infobox'),
         source=zeit.content.infobox.interfaces.infoboxSource)
+
+
+class PortraitboxLayoutSource(LayoutSourceBase):
+
+    values = stabledict.StableDict([
+        (u'short', _('short')),
+        (u'wide', _('wide')),
+    ])
+
+
+class IPortraitbox(IReference):
+    """block for <infobox/> tags."""
+
+    references = zope.schema.Choice(
+        title=_('Portraitbox'),
+        source=zeit.content.portraitbox.interfaces.portraitboxSource)
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=PortraitboxLayoutSource(),
+        required=False)

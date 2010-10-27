@@ -99,4 +99,15 @@
       />
   </class>
 
+  <class class=".reference.Portraitbox">
+    <require
+      interface=".interfaces.IPortraitbox"
+      permission="zope.View" 
+      />
+    <require
+      set_schema=".interfaces.IPortraitbox"
+      permission="zeit.EditContent" 
+      />
+  </class>
+
 </configure>
