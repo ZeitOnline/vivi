@@ -43,7 +43,6 @@ class GalleryTest(unittest2.TestCase):
         self.layer.setup.setUp()
         self.browser = browser = Browser()
         browser.addHeader('Authorization', 'Basic user:userpw')
-        browser.handleErrors = False
         browser.open('http://localhost:8080/++skin++vivi/repository/online'
                      '/2007/01/Somalia/@@checkout')
         browser.open('@@contents')
