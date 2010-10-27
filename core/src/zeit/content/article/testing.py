@@ -38,8 +38,8 @@ ArticleLayer = zeit.cms.testing.ZCMLLayer(
 
 
 
-class ArticleBrightcoveLayer(zeit.brightcove.testing.BrightcoveHTTPLayer,
-                             ArticleLayer,
+class ArticleBrightcoveLayer(ArticleLayer,
+                             zeit.brightcove.testing.BrightcoveHTTPLayer,
                              zeit.solr.testing.SolrMockLayerBase):
 
     @classmethod

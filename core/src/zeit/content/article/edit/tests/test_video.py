@@ -13,7 +13,10 @@ class VideoTest(unittest.TestCase):
         import lxml.objectify
         tree = lxml.objectify.E.tree(
             lxml.objectify.E.video())
-        return Video(None, tree.video)
+        video = Video(None, tree.video)
+        # Don't validate here. Validation is verified via browser test
+        video._validate = mock.Mock()
+        return video
 
     def test_setting_video_should_set_href(self):
         video = self.get_video()

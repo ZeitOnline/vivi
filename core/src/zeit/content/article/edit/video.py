@@ -33,6 +33,7 @@ class Video(zeit.edit.block.SimpleElement):
 
     @video.setter
     def video(self, value):
+        self._validate('video', value)
         self._set_video('href', value)
 
     @property
@@ -41,6 +42,7 @@ class Video(zeit.edit.block.SimpleElement):
 
     @video_2.setter
     def video_2(self, value):
+        self._validate('video_2', value)
         self._set_video('href2', value)
 
     def _set_video(self, attribute, video):
@@ -52,6 +54,9 @@ class Video(zeit.edit.block.SimpleElement):
             'expires', zeit.brightcove.asset.get_expires(self.video,
                                                          self.video_2))
 
+    def _validate(self, field_name, value):
+        zeit.content.article.edit.interfaces.IVideo[field_name].bind(
+            self).validate(value)
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):

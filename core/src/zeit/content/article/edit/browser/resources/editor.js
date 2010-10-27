@@ -53,9 +53,9 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.editable.focus();
         self.command('styleWithCSS', false);
         self.init_toolbar();
-        /*MochiKit.Signal.connect(
-            self.editable, 'onblur',
-            self, self.save);*/
+        MochiKit.Signal.connect(
+            self.context, 'onblur',
+            self, self.save);
     },
 
     is_block_editable: function(block) {

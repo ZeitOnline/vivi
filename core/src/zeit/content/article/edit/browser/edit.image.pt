@@ -1,7 +1,7 @@
 <div 
   tal:condition="context/image"
   tal:attributes="
-     cms:drop-url string:${context/@@absolute_url}/@@set_image;
+     cms:drop-url string:${context/@@absolute_url}/@@set_reference;
      class string:${context/layout} action-content-droppable">
      <img tal:replace="structure context/image/@@preview/tag" />
      <div tal:content="context/image/@@metadata/caption"/>
@@ -9,7 +9,7 @@
 <div 
   tal:condition="not:context/image"
   tal:attributes="
-     cms:drop-url string:${context/@@absolute_url}/@@set_image;
+     cms:drop-url string:${context/@@absolute_url}/@@set_reference;
      class string:${context/layout} landing-zone visible action-content-droppable">
      <span i18n:translate="">Drag an image to embed.</span>
 </div>

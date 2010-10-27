@@ -117,7 +117,7 @@
   <browser:page
     for="zeit.content.article.edit.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="set_image"
+    name="set_reference"
     class=".image.SetImage"
     permission="zeit.EditContent"
     />
@@ -156,7 +156,7 @@
   <browser:page
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="set_video"
+    name="set_reference"
     class=".video.SetVideo"
     permission="zeit.EditContent"
     />

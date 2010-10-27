@@ -28,6 +28,7 @@ setup(
         'rwproperty>=1.0',
         'setuptools',
         'sprout',
+        'unittest2',
         'z3c.conditionalviews',
         'z3c.etestbrowser',
         'z3c.flashmessage',
