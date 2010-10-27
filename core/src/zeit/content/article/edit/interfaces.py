@@ -5,6 +5,7 @@ from zeit.content.article.i18n import MessageFactory as _
 import stabledict
 import zc.sourcefactory.basic
 import zeit.brightcove.interfaces
+import zeit.cms.content.field
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
@@ -141,3 +142,22 @@ class IPortraitbox(IReference):
         title=_('Layout'),
         source=PortraitboxLayoutSource(),
         required=False)
+
+
+class ValidationError(zope.schema.ValidationError):
+
+    def doc(self):
+        return self.args[0]
+
+
+def validate_rawxml(xml):
+    if xml.tag != 'raw':
+        raise ValidationError(_("The root element must be <raw>."))
+    return True
+
+
+class IRawXML(zeit.edit.interfaces.IBlock):
+
+    xml = zeit.cms.content.field.XMLTree(
+        title=_('XML source'),
+        constraint=validate_rawxml)

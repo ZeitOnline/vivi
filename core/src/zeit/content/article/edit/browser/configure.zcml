@@ -245,4 +245,36 @@
     weight="0"
     />
 
+  <!-- rawxml -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IRawXML"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    class=".edit.ViewRawXML"
+    template="edit.rawxml.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IRawXML"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-rawxml"
+    class=".edit.EditRawXML"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IRawXML"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="edit-box"
+    class=".edit.EditRawXMLAction"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
 </configure>

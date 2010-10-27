@@ -94,3 +94,11 @@
   clear: both;
   display: block;
 }
+
+
+/* xml block */
+.block.type-raw .rawxml {
+  font-family: monospace;
+  font-size: 80%;
+  white-space: pre-wrap;
+}

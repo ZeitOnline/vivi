@@ -1,0 +1,3 @@
+<div class="rawxml"
+     tal:content="view/xml_string">
+</div>

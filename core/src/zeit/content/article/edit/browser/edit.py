@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import copy
+import lxml.etree
 import lxml.objectify
 import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
@@ -106,3 +108,24 @@ class BlockLandingZone(LandingZoneBase):
     """Handler to drop objects after other objects."""
 
     order = 'after-context'
+
+
+class ViewRawXML(object):
+
+    @property
+    def xml_string(self):
+        return lxml.etree.tostring(
+            copy.copy(zope.proxy.removeAllProxies(self.context.xml)),
+            pretty_print=True, encoding=unicode)
+
+
+class EditRawXML(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IRawXML)
+
+
+class EditRawXMLAction(zeit.edit.browser.view.EditBoxAction):
+
+    title = _('Edit')
+    action = 'edit-rawxml'

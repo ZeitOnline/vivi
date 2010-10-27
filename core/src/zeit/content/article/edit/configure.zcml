@@ -110,4 +110,15 @@
       />
   </class>
 
+  <class class=".rawxml.RawXML">
+    <require
+      interface=".interfaces.IRawXML"
+      permission="zope.View" 
+      />
+    <require
+      set_schema=".interfaces.IRawXML"
+      permission="zeit.EditContent" 
+      />
+  </class>
+
 </configure>
