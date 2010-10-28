@@ -164,3 +164,72 @@ Edit the block:
   </div>
   ...
 
+
+Citation
+--------
+
+>>> for p in article.xml.body.division.getchildren():
+...     article.xml.body.division.remove(p)
+>>> article.xml.body.division.citation = ''
+>>> article.xml.body.division.citation.set(
+...     '{http://namespaces.zeit.de/CMS/cp}__name__', 'name')
+>>> article._p_changed = True
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+    <div>
+  <div class="citation citation_1">
+    <div class="text"></div>
+    <div class="attribution"></div>
+    <div class="url">
+      <a></a>
+    </div>
+  </div>
+  <div class="citation citation_2">
+    <div class="text"></div>
+    <div class="attribution"></div>
+    <div class="url">
+      <a></a>
+    </div>
+  </div>
+</div>
+...
+
+The data can be edited:
+
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('Citation', index=0).value = (
+...     'Ein Experte ist ein gewöhnlicher Mann, der - wenn er nicht daheim '
+...     'ist - Ratschläge erteilt.')
+>>> browser.getControl('Attribution', index=0).value = 'Oscar Wilde'
+>>> browser.getControl('URL', index=0).value = 'http://oscar.testing'
+>>> browser.getControl('Citation 2').value = (
+...     'Ein physikalischer Versuch, der knallt, ist allemal mehr wert als '
+...     'ein stiller.')
+>>> browser.getControl('Attribution 2').value = (
+...     'Georg Christoph Lichtenberg')
+>>> browser.getControl('URL 2').value = 'http://licht.testing'
+>>> browser.getControl('Layout').displayValue = ['double']
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close()...
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+    <div class="double">
+  <div class="citation citation_1">
+    <div class="text">Ein Experte ist ein gewöhnlicher Mann, der - wenn er nicht daheim ist - Ratschläge erteilt.</div>
+    <div class="attribution">Oscar Wilde</div>
+    <div class="url">
+      <a href="http://oscar.testing">http://oscar.testing</a>
+    </div>
+  </div>
+  <div class="citation citation_2">
+    <div class="text">Ein physikalischer Versuch, der knallt, ist allemal mehr wert als ein stiller.</div>
+    <div class="attribution">Georg Christoph Lichtenberg</div>
+    <div class="url">
+      <a href="http://licht.testing">http://licht.testing</a>
+    </div>
+  </div>
+</div>
+...

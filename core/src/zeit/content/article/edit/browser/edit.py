@@ -153,3 +153,15 @@ class EditAudioAction(zeit.edit.browser.view.EditBoxAction):
 
     title = _('Edit')
     action = 'edit-audio'
+
+
+class EditCitation(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.ICitation)
+
+
+class EditCitationAction(zeit.edit.browser.view.EditBoxAction):
+
+    title = _('Edit')
+    action = 'edit-citation'

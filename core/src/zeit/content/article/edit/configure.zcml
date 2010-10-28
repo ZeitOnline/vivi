@@ -132,4 +132,15 @@
       />
   </class>
 
+  <class class=".citation.Citation">
+    <require
+      interface=".interfaces.ICitation"
+      permission="zope.View" 
+      />
+    <require
+      set_schema=".interfaces.ICitation"
+      permission="zeit.EditContent" 
+      />
+  </class>
+
 </configure>

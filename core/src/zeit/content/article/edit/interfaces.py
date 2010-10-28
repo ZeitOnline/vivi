@@ -171,3 +171,42 @@ class IAudio(zeit.edit.interfaces.IBlock):
     expires = zope.schema.Datetime(
         title=_('Expires'),
         required=False)
+
+
+class CitationLayoutSource(LayoutSourceBase):
+
+    values = stabledict.StableDict([
+        (u'short', _('short')),
+        (u'wide', _('wide')),
+        (u'double', _('double')),
+    ])
+
+
+class ICitation(zeit.edit.interfaces.IBlock):
+
+    text = zope.schema.Text(
+        title=_('Citation'))
+
+    attribution = zope.schema.TextLine(
+        title=_('Attribution'))
+
+    url = zope.schema.URI(
+        title=_('URL'),
+        required=False)
+
+    text_2 = zope.schema.Text(
+        title=_('Citation 2'),
+        required=False)
+
+    attribution_2 = zope.schema.TextLine(
+        title=_('Attribution 2'),
+        required=False)
+
+    url_2 = zope.schema.URI(
+        title=_('URL 2'),
+        required=False)
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=CitationLayoutSource(),
+        required=False)
