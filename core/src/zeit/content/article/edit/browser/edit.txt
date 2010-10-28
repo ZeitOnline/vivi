@@ -148,7 +148,6 @@ Edit the block:
 >>> browser.getLink('Edit').click()
 >>> browser.getControl('Audio id').value = '1234'
 >>> browser.getControl('Expires').value = '2010-01-01'
->>> browser.handleErrors = False
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close()...
