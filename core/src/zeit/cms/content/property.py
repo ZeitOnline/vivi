@@ -265,3 +265,23 @@ def mapAttributes(*names):
 
     for name in names:
         vars[name] = get_mapper(name)
+
+
+class DAVConverterWrapper(object):
+    """Wraps a property and converts data using dav convert."""
+
+    def __init__(self, wrapped_property, field):
+        self.wrapped_property = wrapped_property
+        self.field = field
+
+    def __get__(self, instance, class_):
+        value = self.wrapped_property.__get__(instance, class_)
+        return self.get_converter(instance).fromProperty(value)
+
+    def __set__(self, instance, value):
+        value = self.get_converter(instance).toProperty(value)
+        self.wrapped_property.__set__(instance, value)
+
+    def get_converter(self, instance):
+        field = self.field.bind(instance)
+        return zeit.cms.content.interfaces.IDAVPropertyConverter(field)
