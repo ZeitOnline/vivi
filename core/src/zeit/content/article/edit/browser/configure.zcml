@@ -277,4 +277,35 @@
     weight="0"
     />
 
+  <!-- audio -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    class=".edit.ViewAudio"
+    template="edit.audio.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-audio"
+    class=".edit.EditAudio"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IAudio"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="edit-box"
+    class=".edit.EditAudioAction"
+    permission="zeit.EditContent"
+    weight="0"
+    />
 </configure>

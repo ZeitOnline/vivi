@@ -1,0 +1,9 @@
+<tal:block i18n:domain="zeit.cms">
+  <div>
+    Audio-Id: <span tal:content="context/audio_id"></span>
+  </div>
+  <div>
+    <span i18n:translate="">Expires</span>:
+    <span tal:content="view/expires"></span>
+  </div>
+</tal:block>

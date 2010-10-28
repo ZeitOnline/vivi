@@ -129,3 +129,27 @@ class EditRawXMLAction(zeit.edit.browser.view.EditBoxAction):
 
     title = _('Edit')
     action = 'edit-rawxml'
+
+
+
+class ViewAudio(object):
+
+    @property
+    def expires(self):
+        expires = self.context.expires
+        if expires:
+            formatter = self.request.locale.dates.getFormatter(
+                'dateTime', length='medium')
+            return formatter.format(expires)
+
+
+class EditAudio(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IAudio)
+
+
+class EditAudioAction(zeit.edit.browser.view.EditBoxAction):
+
+    title = _('Edit')
+    action = 'edit-audio'

@@ -161,3 +161,13 @@ class IRawXML(zeit.edit.interfaces.IBlock):
     xml = zeit.cms.content.field.XMLTree(
         title=_('XML source'),
         constraint=validate_rawxml)
+
+
+class IAudio(zeit.edit.interfaces.IBlock):
+
+    audio_id = zope.schema.TextLine(
+        title=_('Audio id'))
+
+    expires = zope.schema.Datetime(
+        title=_('Expires'),
+        required=False)

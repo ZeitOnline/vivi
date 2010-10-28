@@ -121,4 +121,15 @@
       />
   </class>
 
+  <class class=".audio.Audio">
+    <require
+      interface=".interfaces.IAudio"
+      permission="zope.View" 
+      />
+    <require
+      set_schema=".interfaces.IAudio"
+      permission="zeit.EditContent" 
+      />
+  </class>
+
 </configure>
