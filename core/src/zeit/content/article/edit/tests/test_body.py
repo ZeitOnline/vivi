@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import mock
+import unittest2
 import zeit.content.article.testing
 
 
@@ -91,4 +92,32 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         ob.__name__ = None
         ob.xml = lxml.objectify.E.ob()
         body.add(ob)
+
+
+class TestCleaner(unittest2.TestCase):
+
+    def get_article(self):
+        from zeit.content.article.article import Article
+        return Article()
+
+    def assert_key(self, node, expected):
+        have = node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
+        if expected is None:
+            self.assertIsNone(have)
+        else:
+            self.assertEqual(expected, have)
+
+    def set_key(self, node, key):
+        node.set('{http://namespaces.zeit.de/CMS/cp}__name__', key)
+
+    def clean(self, obj):
+        from zeit.content.article.edit.body import clean_names_on_checkin
+        clean_names_on_checkin(obj)
+
+    def test_should_remove_name_attributes(self):
+        art = self.get_article()
+        art.xml.body.division = ''
+        self.set_key(art.xml.body.division, 'divname')
+        self.clean(art)
+        self.assert_key(art.xml.body.division, None)
 

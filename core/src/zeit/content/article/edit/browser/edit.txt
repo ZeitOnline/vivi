@@ -1,3 +1,7 @@
+====================
+Generic editor tests
+====================
+
 Editor block tests
 ==================
 
@@ -148,7 +152,6 @@ Edit the block:
 >>> browser.getLink('Edit').click()
 >>> browser.getControl('Audio id').value = '1234'
 >>> browser.getControl('Expires').value = '2010-01-01'
->>> browser.handleErrors = False
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close()...
@@ -233,3 +236,36 @@ The data can be edited:
   </div>
 </div>
 ...
+
+
+
+Checkin handling
+================
+
+On checkin all the funky __name__ attributes are removed. Before checkin there
+are __name__ attributes:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article>...
+     <division xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xmlns:ns0="http://namespaces.zeit.de/CMS/cp"
+               type="page"
+               ns0:__name__="b5c8832c-85d1-44f4-8ef3-d5e108c80c20">
+     ...
+
+
+After checkin they're gone:
+
+>>> browser.open('/++skin++vivi/workingcopy/zope.user/Somalia/@@checkin')
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> article = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article>...
+    <division type="page">...
+
