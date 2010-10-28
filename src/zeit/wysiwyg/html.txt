@@ -348,7 +348,22 @@ The other way round:
 Images
 ------
 
-Articles can have inline images[#copyright-and-bu]_. This looks as follows:
+Articles can have images between paragraphs. The metadata of those images is
+copied to the article. To see this, set a copyright and a BU for the image:
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> image = repository['2006']['DSC00109_2.JPG']
+>>> import zeit.cms.checkout.interfaces
+>>> image = zeit.cms.checkout.interfaces.ICheckoutManager(image).checkout()
+>>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
+>>> metadata.copyrights = ((u'ZEIT ONLINE', u'http://zeit.de'),)
+>>> metadata.caption = u'Cap cap cap'
+>>> image = zeit.cms.checkout.interfaces.ICheckinManager(image).checkin()
+
+An article looks as follow:
 
 >>> source = u'''\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -1200,18 +1215,3 @@ about should be visible in the HTML output.
 <p>
   <a href="asdf">foo</a>
 </p>
-
-
-.. [#copyright-and-bu] Set a copyright and a BU for the image
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
-    >>> image = repository['2006']['DSC00109_2.JPG']
-    >>> import zeit.cms.checkout.interfaces
-    >>> image = zeit.cms.checkout.interfaces.ICheckoutManager(image).checkout()
-    >>> metadata = zeit.content.image.interfaces.IImageMetadata(image)
-    >>> metadata.copyrights = ((u'ZEIT ONLINE', u'http://zeit.de'),)
-    >>> metadata.caption = u'Cap cap cap'
-    >>> image = zeit.cms.checkout.interfaces.ICheckinManager(image).checkin()
