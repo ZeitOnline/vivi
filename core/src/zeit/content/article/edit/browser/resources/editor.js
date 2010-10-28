@@ -53,11 +53,25 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.editable.focus();
         self.command('styleWithCSS', false);
         self.init_toolbar();
-        MochiKit.Signal.connect(
-            self.context, 'onblur',
-            self, self.save);
-    },
+        
+        /* This catches the blur-signal in the capturing-phase!
+         * In case you use the toolbar, the editing-mode won't be stopped.
+         */
+        self.editable.parentNode.addEventListener("blur", function(e){
+           var is_in_block =(MochiKit.DOM.getFirstParentByTagAndClassName(
+                   e.explicitOriginalTarget, 
+                   'div', 'block')!=null);
+           
+           console.log ("blur while editing? "+is_in_block);
 
+           if (is_in_block){
+               e.stopPropagation();
+           }else{
+               self.save();
+           }
+        }, true);
+    },
+    
     is_block_editable: function(block) {
         return !isNull(
             MochiKit.DOM.getFirstElementByTagAndClassName(
