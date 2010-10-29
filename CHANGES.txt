@@ -8,6 +8,8 @@ zeit.wysiwyg changes
   to create those images with the WYSIWYG editor and any such image encountered
   is automatically migrated (#8158)
 
+- Put out related list as ``<relateds/>`` as it was supposed to be (#8066).
+
 
 1.39.1 (2010-08-09)
 -------------------

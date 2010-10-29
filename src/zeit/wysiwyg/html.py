@@ -740,12 +740,12 @@ class CitationStep(ConversionStep):
 class RelatedsStep(ConversionStep):
 
     xpath_xml = './/relateds'
-    xpath_html = './/*[contains(@class, "relateds")]'
+    xpath_html = './/*[contains(@class, "related")]'
     weight = +1.5
 
     def to_html(self, node):
         new_node = lxml.objectify.E.div(
-            ' ', **{'class': 'inline-element relateds'})
+            ' ', **{'class': 'inline-element related'})
         lxml.objectify.deannotate(new_node)
         return new_node
 
