@@ -182,7 +182,6 @@ zeit.content.article.Editable = gocept.Class.extend({
         zeit.edit.makeJSONRequest(url, {
             paragraphs: self.edited_paragraphs,
             text: self.get_text_list()});
-
     },
 
     command: function(command, option) {
