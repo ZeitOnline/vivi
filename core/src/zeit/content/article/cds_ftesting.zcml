@@ -25,6 +25,7 @@
 
   <include package="zeit.content.cp" />
   <include package="zeit.edit" />
+  <include package="zeit.wysiwyg" />
   <include package="zeit.workflow" file="ftesting.zcml" />
 
   <principal

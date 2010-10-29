@@ -97,7 +97,7 @@ Edit the xml:
 
 >>> browser.getLink('Edit').click()
 >>> print browser.getControl('XML').value,
-<raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:ns0="http://namespaces.zeit.de/CMS/cp" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" py:pytype="str" ns0:__name__="rxname"></raw>
+<raw xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:ns0="http://namespaces.zeit.de/CMS/cp" py:pytype="str" ns0:__name__="rxname"></raw>
 
 The root tag is validated:
 
@@ -248,12 +248,7 @@ are __name__ attributes:
 >>> import lxml.etree
 >>> print lxml.etree.tostring(article.xml, pretty_print=True),
 <article>...
-     <division xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-               xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-               xmlns:ns0="http://namespaces.zeit.de/CMS/cp"
-               type="page"
-               ns0:__name__="b5c8832c-85d1-44f4-8ef3-d5e108c80c20">
+     <division ... ns0:__name__="b5c8832c-85d1-44f4-8ef3-d5e108c80c20">
      ...
 
 

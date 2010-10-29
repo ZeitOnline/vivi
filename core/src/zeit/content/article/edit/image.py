@@ -8,6 +8,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
+import zeit.content.article.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -58,3 +59,14 @@ def factor_image_block_from_image(body, image):
     block = Factory(body)()
     block.image = image
     return block
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def update_metadata_on_checkout(context, event):
+    __traceback_info__ = (context.uniqueId,)
+    html_content = zeit.wysiwyg.interfaces.IHTMLContent(context, None)
+    if html_content is None:
+        return
+    html_content.html = html_content.html

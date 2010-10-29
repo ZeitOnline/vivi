@@ -27,6 +27,34 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(u'myname', image.__name__)
         self.assertEqual(u'small', image.layout)
 
+    def test_image_nodes_inside_p_are_migrated_on_checkout(self):
+        from zeit.connector.resource import Resource
+        import StringIO
+        import zeit.cms.checkout.helper
+        import zeit.cms.interfaces
+        import zeit.connector.interfaces
+        import zope.component
+        article_xml = """
+        <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+            <head/>
+            <body>
+              <division type="page">
+                <p><image src="myniceimage" /></p>
+              </division>
+            </body>
+        </article>"""
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        connector.add(Resource(
+            'http://xml.zeit.de/article', 'article', 'article',
+            StringIO.StringIO(article_xml)))
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/article')
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            self.assertEqual(
+                ['image'],
+                [el.tag for el in co.xml.body.division.iterchildren()])
+
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
 
