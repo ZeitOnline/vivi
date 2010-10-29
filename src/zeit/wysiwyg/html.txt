@@ -394,8 +394,9 @@ transferred to the title attribute:
 >>> print converter.to_html(article.xml['body'])
 <p>Aus winzigen embryonalen ...</p>
 <p>Fuer menschliche</p>
-<p><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"
-   title="infobox"/></p>
+<p>
+  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="infobox"/>
+</p>
 <p>Zellen ist das toll.</p>
 <p>Selbst wenn </p>
 
@@ -414,15 +415,18 @@ the image is put into the xml:
   <body>
     <title>Title</title>
     <p>Fuer menschliche</p>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large"><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
+      <bu>Cap cap cap</bu>
+      <copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright>
+     </image>
     <p>Zellen ist das toll.</p>
     <p>Aus winzigen embryonalen ...</p>
     <p>Selbst wenn </p>
   </body>
 </article>
 
-There may be old content which has an <image> directly wrapped in a <p> node.
-The converter stripps the <p>.
+There may be old content which has an <image> inside <p> nodes. The <img> is
+extracted and put before the <p>. 
 
 >>> source = u'''\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -444,10 +448,12 @@ The converter stripps the <p>.
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
-<p>Fuer menschliche</p>
-<p><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="large"/></p>
-<p>Zellen ist das toll.</p>
 <p>Aus winzigen embryonalen ...</p>
+<p>
+  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="infobox"/>
+</p>
+<p>Fuer menschliche </p>
+<p> Zellen ist das toll.</p>
 <p>Selbst wenn </p>
 
 Converting html to xml also splits up paragraphs as necessary:
@@ -463,9 +469,12 @@ Converting html to xml also splits up paragraphs as necessary:
   <head/>
   <body>
     <title>Title</title>
-    <p>Fuer menschliche</p>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large"><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image>
-    <p>Zellen ist das toll.</p>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
+        <bu>Cap cap cap</bu>
+        <copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright>
+    </image>
+    <p>Fuer menschliche </p>
+    <p> Zellen ist das toll.</p>
     <p>Aus winzigen embryonalen ...</p>
     <p>Selbst wenn </p>
   </body>
@@ -492,7 +501,9 @@ We are greedy against old paths in the XML:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche</p>
-<p><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
+<p>
+  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+</p>
 <p>Selbst wenn </p>
 
 
@@ -516,7 +527,9 @@ If the image does not longer exists, img-tag with the unique id is rendred:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche</p>
-<p><img src="http://xml.zeit.de/bilder/asdf.jpg"/></p>
+<p>
+  <img src="http://xml.zeit.de/bilder/asdf.jpg"/>
+</p>
 <p>Selbst wenn </p>
 
 
@@ -540,7 +553,9 @@ When the url doesn't belong to the CMS it is put out directly, as well:
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche</p>
-<p><img src="http://images.gocept.com/bilder/asdf.jpg"/></p>
+<p>
+  <img src="http://images.gocept.com/bilder/asdf.jpg"/>
+</p>
 <p>Selbst wenn </p>
 
 
@@ -595,8 +610,7 @@ too:
   </body>
 </article>
 
-Bug: ``<p><strong><img`` was not recognised correctly:
-
+Bug: ``<p><strong><img`` was not recognised correctly. 
 
 >>> converter.from_html(article.xml['body'], '''\
 ...     <p><strong><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
@@ -606,9 +620,11 @@ Bug: ``<p><strong><img`` was not recognised correctly:
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <head/>
   <body>
-    <p><strong/></p>
-    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image>
-    <p><strong>Hurz</strong> foobar </p>
+    <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...>
+        <bu>Cap cap cap</bu>
+        <copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright>
+    </image>
+    <p><strong/><strong> Hurz</strong> foobar </p>
     <p>Selbst wenn </p>
   </body>
 </article>
@@ -617,24 +633,24 @@ Bug: ``<p><strong><img`` was not recognised correctly:
 Recheck the conversion to HTML:
 
 >>> print converter.to_html(article.xml['body'])
-<p><strong/><p>
-<p><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/></p>
-<p><strong>Hurz</strong> foobar </p>
+<p>
+  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+</p>
+<p><strong/><strong> Hurz</strong> foobar </p>
 <p>Selbst wenn </p>
 
 
-Bug: ``<img/>`` without src attribute:
+Bug: ``<img/>`` without src attribute: they are removed:
 
 >>> converter.from_html(article.xml['body'], '''\
 ...     <p><img/></p>
 ...     <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<...<p> <image/>...
->>> print converter.to_html(article.xml['body']),
-<p>
-  <img/>
-</p>
-<p>Selbst wenn </p>
+<article...
+  <body>
+    <p>Selbst wenn </p>
+  </body>
+</article>
 
 
 Embedding videos
