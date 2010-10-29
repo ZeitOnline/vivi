@@ -1231,12 +1231,12 @@ List of relateds
 ...     xml_source=StringIO.StringIO(source))
 >>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> print converter.to_html(article.xml['body'])
-<div class="inline-element relateds">
+<div class="inline-element related">
 </div>
 <p> </p>
 
 >>> converter.from_html(article.xml['body'], """\
-... <div class="inline-element relateds">
+... <div class="inline-element related">
 ... </div>""")
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article...>
