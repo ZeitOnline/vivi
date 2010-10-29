@@ -339,4 +339,19 @@
     permission="zeit.EditContent"
     weight="0"
     />
+
+  <!-- relateds -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IRelateds"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    class=".edit.ViewRelateds"
+    template="edit.relateds.pt"
+    permission="zeit.EditContent"
+    />
+
+
 </configure>

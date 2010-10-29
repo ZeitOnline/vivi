@@ -6,7 +6,9 @@ import copy
 import lxml.etree
 import lxml.objectify
 import zeit.cms.interfaces
+import zeit.cms.related.interfaces
 import zeit.content.article.edit.interfaces
+import zeit.content.article.interfaces
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
 import zope.component
@@ -165,3 +167,12 @@ class EditCitationAction(zeit.edit.browser.view.EditBoxAction):
 
     title = _('Edit')
     action = 'edit-citation'
+
+
+class ViewRelateds(object):
+
+    @property
+    def relateds(self):
+        article = zeit.content.article.interfaces.IArticle(self.context)
+        content = zeit.cms.related.interfaces.IRelatedContent(article)
+        return content.related

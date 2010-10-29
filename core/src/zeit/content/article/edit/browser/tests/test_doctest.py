@@ -11,6 +11,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'edit.landing.txt',
         'edit.txt',
+        'edit.related.txt',
         'metadata.head.txt',
         'metadata.misc.txt',
         'metadata.navigation.txt',

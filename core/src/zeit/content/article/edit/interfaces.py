@@ -210,3 +210,7 @@ class ICitation(zeit.edit.interfaces.IBlock):
         title=_('Layout'),
         source=CitationLayoutSource(),
         required=False)
+
+
+class IRelateds(zeit.edit.interfaces.IBlock):
+    """Related list"""
