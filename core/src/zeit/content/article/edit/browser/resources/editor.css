@@ -1,11 +1,13 @@
 .block .block-inner > * {
-  margin: 0.5em;
 }
 
 /* override so we don't see a flicker */
 .inline-form.busy {
   opacity: 1;
 }
+
+
+/* forms */
 
 .inline-form .widget-outer {
   margin-bottom: 0.5em;
@@ -61,6 +63,59 @@
 
 .inline-form .form-controls {
   display: none;
+}
+
+
+/* editor blocks */
+
+#editable-body {
+  margin-left: 3em;
+}
+
+#article-editor-text .block .edit-bar {
+  visibility: hidden;
+}
+
+#article-editor-text .block .block-inner {
+  border-color: transparent;
+}
+
+#article-editor-text .block:hover .edit-bar,
+#article-editor-text .block.editing .edit-bar {
+  visibility: visible;
+}
+
+#article-editor-text .block:hover .block-inner,
+#article-editor-text .block.editing .block-inner {
+  border-color: #bbbbbb;
+}
+
+#article-editor-text .dragger .center {
+  height: 12px;
+}
+
+#article-editor-text .block {
+  margin-left: 2em;
+}
+
+/* Editable blocks */
+
+.editing .editable > * {
+  margin-top: 4em;
+}
+
+.editing .editable > *:first-child {
+  margin-top: 0em;
+}
+
+.rte-toolbar {
+  left: -2em;
+  position: absolute;
+  width: 2em;
+}
+
+.rte-toolbar > a {
+  display: block;
 }
 
 /* Video block layouts */

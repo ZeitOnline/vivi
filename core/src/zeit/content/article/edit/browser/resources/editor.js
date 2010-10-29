@@ -48,11 +48,14 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.context = context_element;
         self.edited_paragraphs = [];
         self.editable = self.merge();
+        self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
+            self.editable, null, 'block');
         self.editable.removeAttribute('cms:cp-module');
         self.editable.contentEditable = true;
         self.editable.focus();
         self.command('styleWithCSS', false);
         self.init_toolbar();
+        MochiKit.DOM.addElementClass(self.block, 'editing');
         
         /* This catches the blur-signal in the capturing-phase!
          * In case you use the toolbar, the editing-mode won't be stopped.
