@@ -4,7 +4,9 @@ zeit.wysiwyg changes
 1.39.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- ``<image>`` tages are not longer inside of a ``<p>``. That is there is no way
+  to create those images with the WYSIWYG editor and any such image encountered
+  is automatically migrated (#8158)
 
 
 1.39.1 (2010-08-09)
