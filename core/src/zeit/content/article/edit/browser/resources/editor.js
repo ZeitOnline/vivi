@@ -60,18 +60,16 @@ zeit.content.article.Editable = gocept.Class.extend({
         /* This catches the blur-signal in the capturing-phase!
          * In case you use the toolbar, the editing-mode won't be stopped.
          */
-        self.editable.parentNode.addEventListener("blur", function(e){
-           var is_in_block =(MochiKit.DOM.getFirstParentByTagAndClassName(
-                   e.explicitOriginalTarget, 
-                   'div', 'block')!=null);
-           
-           console.log ("blur while editing? "+is_in_block);
-
-           if (is_in_block){
-               e.stopPropagation();
-           }else{
-               self.save();
-           }
+        self.editable.parentNode.addEventListener("blur", function(e) {
+            var clicked_on_block = MochiKit.DOM.getFirstParentByTagAndClassName(
+                   e.explicitOriginalTarget, 'div', 'block');
+            is_in_block = (clicked_on_block == self.block);
+            log ("Blur while editing:", is_in_block);
+            if (is_in_block) {
+                e.stopPropagation();
+            } else {
+                self.save();
+            }
         }, true);
     },
     
@@ -176,6 +174,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     save: function(event) {
         var self = this;
         log('Saving');
+        MochiKit.DOM.addElementClass(self.block, 'busy');
         // XXX revise disconnect
         MochiKit.Signal.disconnectAll(self.toolbar);
         // until now, the editor can only be contained in an editable-body.
