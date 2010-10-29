@@ -25,12 +25,8 @@ class Citation(zeit.edit.block.SimpleElement):
     attribution_2 = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'attribution2',
         zeit.content.article.edit.interfaces.ICitation['attribution_2'])
-    url = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'url',
-        zeit.content.article.edit.interfaces.ICitation['url'])
-    url_2 = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'url2',
-        zeit.content.article.edit.interfaces.ICitation['url_2'])
+    url = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'url')
+    url_2 = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'url2')
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'layout',
         zeit.content.article.edit.interfaces.ICitation['layout'])
