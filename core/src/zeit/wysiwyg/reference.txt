@@ -32,12 +32,13 @@ Create an article that contains an image:
 ...   <body>
 ...     <title>Title</title>
 ...     <p>Aus winzigen embryonalen ...</p>
-...     <p>Fuer menschliche
+...     <p>Fuer menschliche</p>
 ...      <image type="jpg" expires="2100-01-01"
 ...         src="http://xml.zeit.de/2006/DSC00109_2.JPG"
 ...         layout="infobox"
 ...         align="right">
-...         BILD </image> Zellen ist das toll.</p>
+...         BILD </image>
+...         <p>Zellen ist das toll.</p>
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
@@ -72,8 +73,7 @@ Now the changes are propagated to the article:
 >>> gocept.async.tests.process('events')
 >>> article = repository['test']
 >>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
-<...<image...><bu>Cap cap cap</bu>...
-
+<...<image...<bu>Cap cap cap</bu>...
 
 Here we check that each type of possible references is found:
 
@@ -86,12 +86,13 @@ Images
 ...   <body>
 ...     <title>Title</title>
 ...     <p>Aus winzigen embryonalen ...</p>
-...     <p>Fuer menschliche
+...     <p>Fuer menschliche</p>
 ...      <image type="jpg" expires="2100-01-01"
 ...         src="http://xml.zeit.de/2006/DSC00109_2.JPG"
 ...         layout="infobox"
 ...         align="right">
-...         BILD </image> Zellen ist das toll.</p>
+...         BILD </image>
+...         <p>Zellen ist das toll.</p>
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
