@@ -352,11 +352,53 @@ class NestedParagraphsStep(ConversionStep):
             node.getparent().remove(node)
 
 
+class HTMLImageStructureStep(ConversionStep):
+
+    xpath_html = './*//img'
+    weight = 2
+
+    def to_xml(self, node):
+        parent = node.getparent()
+        insert_before = list(node.iterancestors())[-2]
+        insert_before.addprevious(node)
+        if node.tail:
+            # GRRR
+            stripped = lxml.objectify.XML(
+                lxml.etree.tostring(node, encoding=unicode).rsplit(
+                    node.tail, 1)[0])
+            parent.addnext(getattr(lxml.objectify.E, parent.tag)(node.tail))
+            lxml.objectify.deannotate(parent.getnext())
+            node.getparent().replace(node, stripped)
+
+
+class XMLImageStructureStep(ConversionStep):
+
+    xpath_xml = './*//image'
+    weight = -2
+
+    def to_html(self, node):
+        body = node
+        parent = node.getparent()
+        insert_before = None
+        while body.tag != 'body':
+            insert_before = body
+            body = body.getparent()
+        insert_before.addprevious(node)
+        if node.tail:
+            # GRRR
+            stripped = lxml.objectify.XML(
+                lxml.etree.tostring(node, encoding=unicode).rsplit(
+                    node.tail, 1)[0])
+            parent.addnext(lxml.objectify.E.p(node.tail))
+            node.getparent().replace(node, stripped)
+            lxml.objectify.deannotate(parent.getnext())
+
+
 class ImageStep(ConversionStep):
     """Replace XML <image/> by HTML <img/> and vice versa."""
 
-    xpath_xml = './/image'
-    xpath_html = './/img'
+    xpath_xml = './image'
+    xpath_html = './img'
 
     def to_html(self, node):
         unique_id = node.get('src', '')
@@ -378,7 +420,8 @@ class ImageStep(ConversionStep):
         layout = node.get('layout')
         if layout:
             img.set('title', layout)
-        return img
+        # wrap in a <p> so html is happy
+        return lxml.objectify.E.p(img)
 
     def to_xml(self, node):
         repository_url = self.url(self.repository)
