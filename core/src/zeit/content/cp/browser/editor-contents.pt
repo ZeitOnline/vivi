@@ -9,6 +9,10 @@
     type="text/javascript"
     tal:attributes="src
     string:${request/++resource++zeit.content.cp}/library.js"></script>
+  <link
+    rel="stylesheet" type="text/css"
+    tal:attributes="
+    href string:${request/++resource++zeit.content.cp}/editor.css"/>
 
 
   <div class="cp-editor-top">
