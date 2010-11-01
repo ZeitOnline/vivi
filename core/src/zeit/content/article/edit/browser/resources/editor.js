@@ -45,11 +45,13 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     construct: function(context_element) {
         var self = this;
+        self.events = [];
         self.context = context_element;
         self.edited_paragraphs = [];
         self.editable = self.merge();
         self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
             self.editable, null, 'block');
+        log('Editable block', self.block.id);
         self.editable.removeAttribute('cms:cp-module');
         self.editable.contentEditable = true;
         self.editable.focus();
@@ -70,6 +72,8 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.save();
             }
         }, true);
+        self.events.push(MochiKit.Signal.connect(
+            self.editable, 'onkeyup', self, self.handle_keyup));
     },
     
     is_block_editable: function(block) {
@@ -136,9 +140,9 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a href='#' class='rteButton link'>a</a>\
             <a rel='method' href='save' class='rteButton'>save</a>\
             ";
-        MochiKit.Signal.connect(
+        self.events.push(MochiKit.Signal.connect(
             self.toolbar, 'onclick',
-            self, self.handle_toolbar_click);
+            self, self.handle_toolbar_click))
     },
 
     handle_toolbar_click: function(event) {
@@ -158,6 +162,82 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
     },
 
+    handle_keyup: function(event) {
+        var self = this;
+
+        var range = getSelection().getRangeAt(0);
+        var container = range.commonAncestorContainer;
+        var lastNode = (container.nodeType == container.ELEMENT_NODE &&
+                        container.parentNode.nextSibling === null);
+        if (event.key().string == 'KEY_ARROW_DOWN' && 
+            MochiKit.DOM.scrapeText(container).length == range.endOffset) {
+            //var match = editable.parent().nextAll().find(":zeit-editable").filter(":first").click().focus();
+            var blocks = MochiKit.Selector.findChildElements(
+                self.block.parentNode, ['.block']);
+            var block = self.block;
+            var next_block = null;
+            while (block.nextSibling !== null) {
+                block = block.nextSibling;
+                if (block.nodeType != block.ELEMENT_NODE) {
+                    continue
+                }
+                if (MochiKit.DOM.hasElementClass(block, 'block') && 
+                    self.is_block_editable(block)) {
+                   next_block = block;
+                   break
+                }
+            }
+            if (next_block !== null) {
+                log('Next block', next_block.id);
+                // Note id as save may (or probably will) replace the element
+                var next_block_id = next_block.id;
+                self.save();
+                var ident = MochiKit.Signal.connect(
+                    zeit.edit.editor, 'after-reload', function() {
+                    MochiKit.Signal.disconnect(ident);
+                    new zeit.content.article.Editable(
+                        MochiKit.DOM.getFirstElementByTagAndClassName(
+                            'div', 'editable', $(next_block_id)));
+                });
+                event.stop();
+            }
+
+        }
+            /*
+            if (match.length) {
+                var contents = match.children(":first").contents().filter(function() {
+                    return this.nodeType == 3;
+                });
+                if (contents.length) {
+                    var newParent = contents[0];
+                    range = getSelection().getRangeAt(0);
+                    range.setStart(newParent, 0);
+                    range.setEnd(newParent, 0);
+                }
+                self._stopEditing();
+            }
+            return false;
+        }
+        var firstNode = container[0].nodeType == 3 && container.parent().index() == 0;
+        if (event.keyCode == $.ui.keyCode.UP && firstNode && range.startOffset == 0) {
+            var match = editable.parent().prevAll().find(":zeit-editable").filter(":first").click().focus();
+            if (match.length) {
+                var contents = match.children(":last").contents().filter(function() {
+                    return this.nodeType == 3;
+                });
+                if (contents.length) {
+                    var newParent = contents[contents.length - 1];
+                    var offset = $(newParent).text().length;
+                    range = getSelection().getRangeAt(0);
+                    range.setStart(newParent, offset);
+                    range.setEnd(newParent, offset);
+                }
+                self._stopEditing();
+            }
+            return false;
+        }*/
+    },
+
     get_text_list: function() {
         var self = this;
         var result = []
@@ -170,12 +250,13 @@ zeit.content.article.Editable = gocept.Class.extend({
         return result;
     },
 
-    save: function(event) {
+    save: function() {
         var self = this;
         log('Saving');
         MochiKit.DOM.addElementClass(self.block, 'busy');
-        // XXX revise disconnect
-        MochiKit.Signal.disconnectAll(self.toolbar);
+        while (self.events.length) {
+            MochiKit.Signal.disconnect(self.events.pop());
+        }
         // until now, the editor can only be contained in an editable-body.
         var url = $('editable-body').getAttribute('cms:url') + '/@@save_text';
         zeit.edit.makeJSONRequest(url, {
