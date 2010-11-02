@@ -73,7 +73,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             }
         }, true);
         self.events.push(MochiKit.Signal.connect(
-            self.editable, 'onkeyup', self, self.handle_keyup));
+            self.editable, 'onkeydown', self, self.handle_keydown));
     },
     
     is_block_editable: function(block) {
@@ -162,22 +162,32 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
     },
 
-    handle_keyup: function(event) {
+    handle_keydown: function(event) {
         var self = this;
 
         var range = getSelection().getRangeAt(0);
         var container = range.commonAncestorContainer;
-        var lastNode = (container.nodeType == container.ELEMENT_NODE &&
-                        container.parentNode.nextSibling === null);
-        if (event.key().string == 'KEY_ARROW_DOWN' && 
+        // lastnode/firstnodee?
+        var direction = null;
+        if (event.key().string == 'KEY_ARROW_DOWN' &&
+            container.nodeType == container.TEXT_NODE &&  // Last
+            container.parentNode.nextSibling === null &&  // node
             MochiKit.DOM.scrapeText(container).length == range.endOffset) {
-            //var match = editable.parent().nextAll().find(":zeit-editable").filter(":first").click().focus();
+            direction = 'nextSibling';
+        } else if (
+            event.key().string == 'KEY_ARROW_UP' &&
+            container.nodeType == container.TEXT_NODE &&      // First
+            container.parentNode.previousSibling === null &&  // node
+                   range.startOffset == 0) {
+            direction = 'previousSibling';
+        }
+        if (direction !== null) {
             var blocks = MochiKit.Selector.findChildElements(
                 self.block.parentNode, ['.block']);
             var block = self.block;
             var next_block = null;
-            while (block.nextSibling !== null) {
-                block = block.nextSibling;
+            while (block[direction] !== null) {
+                block = block[direction];
                 if (block.nodeType != block.ELEMENT_NODE) {
                     continue
                 }
@@ -203,39 +213,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             }
 
         }
-            /*
-            if (match.length) {
-                var contents = match.children(":first").contents().filter(function() {
-                    return this.nodeType == 3;
-                });
-                if (contents.length) {
-                    var newParent = contents[0];
-                    range = getSelection().getRangeAt(0);
-                    range.setStart(newParent, 0);
-                    range.setEnd(newParent, 0);
-                }
-                self._stopEditing();
-            }
-            return false;
-        }
-        var firstNode = container[0].nodeType == 3 && container.parent().index() == 0;
-        if (event.keyCode == $.ui.keyCode.UP && firstNode && range.startOffset == 0) {
-            var match = editable.parent().prevAll().find(":zeit-editable").filter(":first").click().focus();
-            if (match.length) {
-                var contents = match.children(":last").contents().filter(function() {
-                    return this.nodeType == 3;
-                });
-                if (contents.length) {
-                    var newParent = contents[contents.length - 1];
-                    var offset = $(newParent).text().length;
-                    range = getSelection().getRangeAt(0);
-                    range.setStart(newParent, offset);
-                    range.setEnd(newParent, offset);
-                }
-                self._stopEditing();
-            }
-            return false;
-        }*/
     },
 
     get_text_list: function() {
