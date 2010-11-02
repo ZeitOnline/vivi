@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Mon Aug 16 14:52:11 2010\n"
-"PO-Revision-Date: 2010-08-16 14:54+0100\n"
-"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
+"PO-Revision-Date: 2010-11-02 13:43+0100\n"
+"Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
 "Language-Team: \n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -2067,7 +2067,7 @@ msgstr "CPExtra"
 
 #: zeit/content/cp/interfaces.py:47
 msgid "Snapshot (HP only)"
-msgstr "Bild des Tages (nur HP)"
+msgstr "Momentaufnahme (nur HP)"
 
 #: zeit/content/cp/interfaces.py:494
 #: zeit/content/quiz/quiz.py:51
@@ -3020,150 +3020,221 @@ msgstr "mit Info"
 
 #~ msgid "Embedded image gallery"
 #~ msgstr "Eingebettete Bildergalerie"
+
 #~ msgid "Automatically syndicate into"
 #~ msgstr "Automatisch syndizieren nach"
+
 #~ msgid "automatically-syndicate-description"
 #~ msgstr "Channel, in die das Objekt automatisch syndiziert wird."
+
 #~ msgid "The object was automatically syndicated into"
 #~ msgstr "Das Objekt wurde automatisch syndiziert nach"
+
 #~ msgid "The given id is invalid."
 #~ msgstr "Die angegebene Id ist nicht gültig."
+
 #~ msgid "CAP context"
 #~ msgstr "CAP-Context"
+
 #~ msgid "± Zoom image area"
 #~ msgstr "± Bild-Breich zoomen"
+
 #~ msgid "Development"
 #~ msgstr "Relaunch"
+
 #~ msgid "Sub type"
 #~ msgstr "Sub-Typ"
+
 #~ msgid "Feed"
 #~ msgstr "Channel"
+
 #~ msgid "Box Most Read"
 #~ msgstr "Box „Meistgelesene Artikel“"
+
 #~ msgid "Center-Page"
 #~ msgstr "Center-Page"
+
 #~ msgid "Edit content"
 #~ msgstr "Bearbeiten"
+
 #~ msgid "Centerpage"
 #~ msgstr "Center-Page"
+
 #~ msgid "Label"
 #~ msgstr "Label"
+
 #~ msgid "Style"
 #~ msgstr "Stil"
+
 #~ msgid "Lexical resource query"
 #~ msgstr "Lexical resource query"
+
 #~ msgid "Left column"
 #~ msgstr "Linke Spalte"
+
 #~ msgid "No automatic metadata update"
 #~ msgstr "Keine automatische Aktualisierung der Metadaten"
+
 #~ msgid ""
 #~ "When this object is checked in, its metata will not automatically updated "
 #~ "in the selected channels."
 #~ msgstr ""
 #~ "Beim Checkin werden Metadaten und Teaser in den aktivierten Channels "
 #~ "nicht automatisch aktualisiert."
+
 #~ msgid "Homepage"
 #~ msgstr "Homepage"
+
 #~ msgid "Zeit CMS Search Preferences"
 #~ msgstr "Benutzereinstellungen zur Suche"
+
 #~ msgid "Year/Vol."
 #~ msgstr "Jahr/Ausg."
+
 #~ msgid "search-status-not-corrected"
 #~ msgstr "Muss korrigiert werden"
+
 #~ msgid "search-status-no-images-added"
 #~ msgstr "Braucht Bilder"
+
 #~ msgid "The search had no results."
 #~ msgstr "Die Suche lieferte keine Ergebnisse."
+
 #~ msgid "workflow-state"
 #~ msgstr "Status"
+
 #~ msgid "Sort order"
 #~ msgstr "Sortierung"
+
 #~ msgid "Extended ..."
 #~ msgstr "Erweitert …"
+
 #~ msgid "Extended"
 #~ msgstr "Erweitert"
+
 #~ msgid "Hide ..."
 #~ msgstr "Verstecken …"
+
 #~ msgid "Unique Id"
 #~ msgstr "Eindeutige ID"
+
 #~ msgid "Realive weight of metadata freshness."
 #~ msgstr "Realive weight of metadata freshness."
+
 #~ msgid "Relevance of result"
 #~ msgstr "Relevanz des Ergebnisses"
+
 #~ msgid "Index teaser title"
 #~ msgstr "Kurzteaser-Titel"
+
 #~ msgid "Index teaser text"
 #~ msgstr "Kurzteaser-Text"
+
 #~ msgid "Homepage teaser title"
 #~ msgstr "Homepageteaser-Titel"
+
 #~ msgid "Homepage teaser text"
 #~ msgstr "Homepageteaser-Text"
+
 #~ msgid "Assets and related"
 #~ msgstr "Assets und Related"
+
 #~ msgid "Broken object"
 #~ msgstr "Broken object"
+
 #~ msgid "Add Site Management Folder"
 #~ msgstr "Add Site Management Folder"
+
 #~ msgid "Registrations"
 #~ msgstr "Registrations"
+
 #~ msgid "Registration"
 #~ msgstr "Registration"
+
 #~ msgid "Site-Management Folder"
 #~ msgstr "Site-Management Folder"
+
 #~ msgid "Make a site"
 #~ msgstr "Make a site"
+
 #~ msgid "Manage Site"
 #~ msgstr "Manage Site"
+
 #~ msgid "Find"
 #~ msgstr "Suchen"
+
 #~ msgid "Configure"
 #~ msgstr "Configure"
+
 #~ msgid "Error Reporting Utility for Logging Errors"
 #~ msgstr "Error Reporting Utility for Logging Errors"
+
 #~ msgid "Error Logging Utility"
 #~ msgstr "Error Logging Utility"
+
 #~ msgid "Errors"
 #~ msgstr "Fehler"
+
 #~ msgid "Database Schemas"
 #~ msgstr "Database Schemas"
+
 #~ msgid "Translate"
 #~ msgstr "Translate"
+
 #~ msgid "Import/Export"
 #~ msgstr "Import/Export"
+
 #~ msgid "Synchronize"
 #~ msgstr "Synchronisieren"
+
 #~ msgid "Translation Domain"
 #~ msgstr "Translation Domain"
+
 #~ msgid "A Persistent Translation Domain"
 #~ msgstr "A Persistent Translation Domain"
+
 #~ msgid "Permission"
 #~ msgstr "Permission"
+
 #~ msgid "A Security Permission"
 #~ msgstr "A Security Permission"
+
 #~ msgid "Edit Permission"
 #~ msgstr "Edit Permission"
+
 #~ msgid "Add Permission"
 #~ msgstr "Add Permission"
+
 #~ msgid "Stores Annotations for Principals"
 #~ msgstr "Stores Annotations for Principals"
+
 #~ msgid "Principal Annotation Utility"
 #~ msgstr "Principal Annotation Utility"
+
 #~ msgid "zope.app.dublincore.view-permission"
 #~ msgstr "zope.app.dublincore.view-permission"
+
 #~ msgid "zope.app.dublincore.change-permission"
 #~ msgstr "zope.app.dublincore.change-permission"
+
 #~ msgid "The media type (one of audio or video)"
 #~ msgstr "Medientype (audio oder video)"
+
 #~ msgid "The id of the audio/video."
 #~ msgstr "Video/Audio-Id"
+
 #~ msgid "The date until the audio/video is valid."
 #~ msgstr "Gültigkeitsdatum"
+
 #~ msgid "The format of the audio/video."
 #~ msgstr "Format"
+
 #~ msgid "The title of this feed."
 #~ msgstr "Feed-Titel"
+
 #~ msgid "The timestamp when this feed was last fetched."
 #~ msgstr "The timestamp when this feed was last fetched."
+
 #~ msgid "The corresponding Feed object."
 #~ msgstr "The corresponding Feed object."
 
@@ -3178,16 +3249,21 @@ msgstr "mit Info"
 #, fuzzy
 #~ msgid "Fetch image from"
 #~ msgstr "Autopilot-Teaser beziehen von"
+
 #~ msgid "Edit center page"
 #~ msgstr "Centerpage bearbeiten"
+
 #~ msgid "Remove"
 #~ msgstr "Entfernen"
+
 #~ msgid "${amount} Entries"
 #~ msgstr "${amount} Einträge"
+
 #~ msgid "Total hits between first and last count."
 #~ msgstr "Gesamttreffer zwischen der ersten und letzten Zählung."
+
 #~ msgid "Date the first hit was counted on"
 #~ msgstr "Datum wann der erste Treffer gezählt wurde"
+
 #~ msgid "Date the last hit was counted on"
 #~ msgstr "Datum wann der letzte treffer gezählt wurde"
-
