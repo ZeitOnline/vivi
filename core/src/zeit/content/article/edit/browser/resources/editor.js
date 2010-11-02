@@ -43,12 +43,13 @@ zeit.edit.drop.registerHandler({
 zeit.content.article.Editable = gocept.Class.extend({
     // Inline editing module
 
-    construct: function(context_element) {
+    construct: function(context_element, place_cursor_at_end) {
         var self = this;
         self.events = [];
-        self.context = context_element;
         self.edited_paragraphs = [];
-        self.editable = self.merge();
+        self.initial_paragraph = MochiKit.DOM.getFirstElementByTagAndClassName(
+            null, null, context_element);
+        self.editable = self.merge(context_element);
         self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
             self.editable, null, 'block');
         log('Editable block', self.block.id);
@@ -74,18 +75,43 @@ zeit.content.article.Editable = gocept.Class.extend({
         }, true);
         self.events.push(MochiKit.Signal.connect(
             self.editable, 'onkeydown', self, self.handle_keydown));
+        self.place_cursor(self.initial_paragraph, place_cursor_at_end);
     },
     
+    place_cursor: function(element, place_cursor_at_end) {
+        // Place cursor to the beginnning of element
+        log('Placing cursor to', element.nodeName);
+        var range = getSelection().getRangeAt(0);
+        var direction;
+        if (place_cursor_at_end)  {
+            direction = 'lastChild';
+        } else {
+            direction = 'firstChild';
+        }
+
+        var text_node = element;
+        while (text_node[direction] !== null) {
+            text_node = text_node[direction];
+        };
+        var select_node = text_node.parentNode;
+        var offset = 0;
+        if (place_cursor_at_end)  {
+            offset = text_node.data.length;
+        }
+        range.setStart(text_node, offset);
+        range.setEnd(text_node, offset);
+    },
+
     is_block_editable: function(block) {
         return !isNull(
             MochiKit.DOM.getFirstElementByTagAndClassName(
                 'div', 'editable', block));
     },
 
-    merge: function() {
+    merge: function(context) {
         var self = this;
         var block = MochiKit.DOM.getFirstParentByTagAndClassName(
-            self.context, null, 'block');
+            context, null, 'block');
         var blocks = MochiKit.DOM.getElementsByTagAndClassName(
             null, 'block', block.parentNode);
         var i = blocks.indexOf(block);
@@ -121,6 +147,12 @@ zeit.content.article.Editable = gocept.Class.extend({
                 editable.appendChild(p);
             });
             MochiKit.DOM.removeElement(paragraph);
+        });
+        // Clear out all non element nodes
+        forEach(editable.childNodes, function(child) {
+            if (child.nodeType != child.ELEMENT_NODE) {
+                editable.removeChild(child);
+            }
         });
         return editable;
     },
@@ -169,6 +201,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var container = range.commonAncestorContainer;
         // lastnode/firstnodee?
         var direction = null;
+        var cursor_at_end = false;
         if (event.key().string == 'KEY_ARROW_DOWN' &&
             container.nodeType == container.TEXT_NODE &&  // Last
             container.parentNode.nextSibling === null &&  // node
@@ -178,8 +211,9 @@ zeit.content.article.Editable = gocept.Class.extend({
             event.key().string == 'KEY_ARROW_UP' &&
             container.nodeType == container.TEXT_NODE &&      // First
             container.parentNode.previousSibling === null &&  // node
-                   range.startOffset == 0) {
+            range.startOffset == 0) {
             direction = 'previousSibling';
+            cursor_at_end = true;
         }
         if (direction !== null) {
             var blocks = MochiKit.Selector.findChildElements(
@@ -193,8 +227,8 @@ zeit.content.article.Editable = gocept.Class.extend({
                 }
                 if (MochiKit.DOM.hasElementClass(block, 'block') && 
                     self.is_block_editable(block)) {
-                   next_block = block;
-                   break
+                    next_block = block;
+                    break
                 }
             }
             if (next_block !== null) {
@@ -207,7 +241,8 @@ zeit.content.article.Editable = gocept.Class.extend({
                     MochiKit.Signal.disconnect(ident);
                     new zeit.content.article.Editable(
                         MochiKit.DOM.getFirstElementByTagAndClassName(
-                            'div', 'editable', $(next_block_id)));
+                            'div', 'editable', $(next_block_id)),
+                        cursor_at_end);
                 });
                 event.stop();
             }
