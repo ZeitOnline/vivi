@@ -70,7 +70,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.editable.contentEditable = true;
             self.editable.focus();
             self.command('styleWithCSS', false);
-            self.init_toolbar();
             MochiKit.DOM.addElementClass(self.block, 'editing');
             
             // This catches the blur-signal in the capturing-phase!
@@ -89,7 +88,11 @@ zeit.content.article.Editable = gocept.Class.extend({
             }, true);
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeydown', self, self.handle_keydown));
+            self.events.push(MochiKit.Signal.connect(
+                self.editable, 'onkeyup', self, self.handle_keyup));
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
+            self.init_toolbar();
+            self.relocate_toolbar();
         });
     },
     
@@ -186,13 +189,25 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a rel='method' href='save' class='rteButton'>save</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
-            self.toolbar, 'onclick',
-            self, self.handle_toolbar_click));
+            self.block, 'onclick',
+            self, self.handle_click));
     },
 
-    handle_toolbar_click: function(event) {
-        log('Toolbar click');
+    relocate_toolbar: function() {
         var self = this;
+        var range = getSelection().getRangeAt(0);
+        var container = range.commonAncestorContainer;
+        while (container.nodeType != container.ELEMENT_NODE) {
+            container = container.parentNode;
+        }
+        var pos = MochiKit.Style.getElementPosition(self.toolbar, self.block);
+        pos.y = MochiKit.Style.getElementPosition(container, self.block).y;
+        MochiKit.Style.setElementPosition(self.toolbar, pos);
+    },
+
+    handle_click: function(event) {
+        var self = this;
+        self.relocate_toolbar();
         if (event.target().nodeName != 'A') {
             return;
         }
@@ -257,6 +272,11 @@ zeit.content.article.Editable = gocept.Class.extend({
             }
 
         }
+    },
+
+    handle_keyup: function(event) {
+        var self = this;
+        self.relocate_toolbar();
     },
 
     get_text_list: function() {
