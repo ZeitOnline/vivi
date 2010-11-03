@@ -109,13 +109,39 @@
 }
 
 .rte-toolbar {
+  background-color: #f0f0ee;
+  border :1px solid #cccccc;
   left: -2em;
   position: absolute;
   width: 2em;
 }
 
 .rte-toolbar > a {
+  background: url("rte-icons.gif") no-repeat 20px 20px;
   display: block;
+  height: 20px;
+  text-align: center;
+  width: 20px;
+}
+
+.rte-toolbar > a[href='bold'] {
+  background-position: 0 0;
+  color: transparent;
+}
+
+.rte-toolbar > a[href='italic'] {
+  background-position: -60px 0;
+  color: transparent;
+}
+
+.rte-toolbar > a[href='insertunorderedlist'] {
+  background-position: -20px 0;
+  color: transparent;
+}
+
+.rte-toolbar > a[href='insertorderedlist'] {
+  background-position: -80px 0;
+  color: transparent;
 }
 
 /* Video block layouts */
