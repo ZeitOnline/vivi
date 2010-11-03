@@ -46,9 +46,13 @@ class SaveText(zeit.edit.browser.view.Action):
             text = new['text']
             if not text.strip():
                 continue
-            factory = zope.component.getAdapter(
+            factory = zope.component.queryAdapter(
                 self.context, zeit.edit.interfaces.IElementFactory,
                 name=factory)
+            if factory is None:
+                factory = zope.component.getAdapter(
+                    self.context, zeit.edit.interfaces.IElementFactory,
+                    name='p')
             p = factory()
             p.text = text
             if insert_at is not None:

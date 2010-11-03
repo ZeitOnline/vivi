@@ -98,3 +98,12 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
         with mock.patch('uuid.uuid4', new=self.uuid):
             view.update()
         self.assertEqual('intertitle', view.context['7'].type)
+
+    def test_unknown_factories_are_mapped_to_p(self):
+        view = self.get_view()
+        view.request.form['paragraphs'] = ['2', '3']
+        view.request.form['text'] = [
+            dict(factory='iaminvalid', text='Hinter')]
+        with mock.patch('uuid.uuid4', new=self.uuid):
+            view.update()
+        self.assertEqual('p', view.context['7'].type)
