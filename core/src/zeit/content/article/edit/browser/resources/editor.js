@@ -9,7 +9,7 @@ var wire_forms = function() {
         var form = new zeit.cms.SubPageForm(
             url, container, {save_on_change: true});
     });
-}
+};
 
 
 var ident = MochiKit.Signal.connect(
@@ -35,47 +35,62 @@ zeit.edit.drop.registerHandler({
     url_attribute: 'cms:create-block-url',
     query_arguments: function(draggable) {
         return {'block_type': draggable.getAttribute('cms:block_type')};
-    },
+    }
 });
+
 
 
 
 zeit.content.article.Editable = gocept.Class.extend({
     // Inline editing module
 
+    editor_active_lock: new MochiKit.Async.DeferredLock(),
+
     construct: function(context_element, place_cursor_at_end) {
         var self = this;
-        self.events = [];
-        self.edited_paragraphs = [];
-        self.initial_paragraph = MochiKit.DOM.getFirstElementByTagAndClassName(
-            null, null, context_element);
-        self.editable = self.merge(context_element);
-        self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
-            self.editable, null, 'block');
-        log('Editable block', self.block.id);
-        self.editable.removeAttribute('cms:cp-module');
-        self.editable.contentEditable = true;
-        self.editable.focus();
-        self.command('styleWithCSS', false);
-        self.init_toolbar();
-        MochiKit.DOM.addElementClass(self.block, 'editing');
-        
-        // This catches the blur-signal in the capturing-phase!
-        // In case you use the toolbar, the editing-mode won't be stopped.
-        self.editable.parentNode.addEventListener("blur", function(e) {
-            var clicked_on_block = MochiKit.DOM.getFirstParentByTagAndClassName(
-                   e.explicitOriginalTarget, 'div', 'block');
-            is_in_block = (clicked_on_block == self.block);
-            log("Blur while editing:", is_in_block);
-            if (is_in_block) {
-                e.stopPropagation();
-            } else {
-                self.save();
+        var block_id = MochiKit.DOM.getFirstParentByTagAndClassName(
+            context_element, null, 'block').id;
+        var d = self.editor_active_lock.acquire()
+        log('Waiting for lock');
+        d.addCallback(function() {
+            var block = $(block_id)
+            if (block === null) {
+                // block vanished while waiting for lock.
+                return
             }
-        }, true);
-        self.events.push(MochiKit.Signal.connect(
-            self.editable, 'onkeydown', self, self.handle_keydown));
-        self.place_cursor(self.initial_paragraph, place_cursor_at_end);
+            self.events = [];
+            self.edited_paragraphs = [];
+            self.initial_paragraph = MochiKit.Selector.findChildElements(
+                block, ['.editable > *'])[0];
+            self.editable = self.merge(block);
+            self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
+                self.editable, null, 'block');
+            log('Editable block', self.block.id);
+            self.editable.removeAttribute('cms:cp-module');
+            self.editable.contentEditable = true;
+            self.editable.focus();
+            self.command('styleWithCSS', false);
+            self.init_toolbar();
+            MochiKit.DOM.addElementClass(self.block, 'editing');
+            
+            // This catches the blur-signal in the capturing-phase!
+            // In case you use the toolbar, the editing-mode won't be stopped.
+            self.editable.parentNode.addEventListener("blur", function(e) {
+                var clicked_on_block = 
+                    MochiKit.DOM.getFirstParentByTagAndClassName(
+                       e.explicitOriginalTarget, 'div', 'block');
+                is_in_block = (clicked_on_block == self.block);
+                log("Blur while editing:", is_in_block);
+                if (is_in_block) {
+                    e.stopPropagation();
+                } else {
+                    self.save();
+                }
+            }, true);
+            self.events.push(MochiKit.Signal.connect(
+                self.editable, 'onkeydown', self, self.handle_keydown));
+            self.place_cursor(self.initial_paragraph, place_cursor_at_end);
+        });
     },
     
     place_cursor: function(element, place_cursor_at_end) {
@@ -108,10 +123,8 @@ zeit.content.article.Editable = gocept.Class.extend({
                 'div', 'editable', block));
     },
 
-    merge: function(context) {
+    merge: function(block) {
         var self = this;
-        var block = MochiKit.DOM.getFirstParentByTagAndClassName(
-            context, null, 'block');
         var blocks = MochiKit.DOM.getElementsByTagAndClassName(
             null, 'block', block.parentNode);
         var i = blocks.indexOf(block);
@@ -160,7 +173,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     init_toolbar: function() {
         var self = this;
         self.toolbar = self.editable.parentNode.insertBefore(
-            DIV({class: 'rte-toolbar', style: 'display: block'}),
+            DIV({'class': 'rte-toolbar', 'style': 'display: block'}),
             self.editable);
         self.toolbar.innerHTML = "\
             <a rel='command' href='bold'>B</a>\
@@ -236,14 +249,10 @@ zeit.content.article.Editable = gocept.Class.extend({
                 // Note id as save may (or probably will) replace the element
                 var next_block_id = next_block.id;
                 self.save();
-                var ident = MochiKit.Signal.connect(
-                    zeit.edit.editor, 'after-reload', function() {
-                    MochiKit.Signal.disconnect(ident);
-                    new zeit.content.article.Editable(
-                        MochiKit.DOM.getFirstElementByTagAndClassName(
-                            'div', 'editable', $(next_block_id)),
-                        cursor_at_end);
-                });
+                new zeit.content.article.Editable(
+                    MochiKit.DOM.getFirstElementByTagAndClassName(
+                        'div', 'editable', $(next_block_id)),
+                    cursor_at_end);
                 event.stop();
             }
 
@@ -274,6 +283,11 @@ zeit.content.article.Editable = gocept.Class.extend({
         zeit.edit.makeJSONRequest(url, {
             paragraphs: self.edited_paragraphs,
             text: self.get_text_list()});
+        var ident = MochiKit.Signal.connect(
+            zeit.edit.editor, 'after-reload', function() {
+            MochiKit.Signal.disconnect(ident);
+            self.editor_active_lock.release();
+        });
     },
 
     command: function(command, option) {
