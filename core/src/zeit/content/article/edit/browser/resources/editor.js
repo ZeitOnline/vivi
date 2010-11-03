@@ -187,7 +187,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a rel='command' href='formatBlock/h3'>T</a>\
             <a rel='command' href='formatBlock/p'>P</a>\
             <a href='#' class='rteButton link'>A</a>\
-            <a rel='method' href='save' class='rteButton'>save</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
