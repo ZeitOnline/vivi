@@ -111,9 +111,8 @@
 .rte-toolbar {
   background-color: #f0f0ee;
   border :1px solid #cccccc;
-  left: -2em;
+  left: -21px;
   position: absolute;
-  width: 2em;
 }
 
 .rte-toolbar > a {
