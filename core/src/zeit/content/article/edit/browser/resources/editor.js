@@ -92,7 +92,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.editable, 'onkeyup', self, self.handle_keyup));
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_toolbar();
-            self.relocate_toolbar();
+            self.relocate_toolbar(true);
         });
     },
     
@@ -176,7 +176,8 @@ zeit.content.article.Editable = gocept.Class.extend({
     init_toolbar: function() {
         var self = this;
         self.toolbar = self.editable.parentNode.insertBefore(
-            DIV({'class': 'rte-toolbar', 'style': 'display: block'}),
+            DIV({'class': 'rte-toolbar',
+                 'style': 'display: block; opacity: 0'}),
             self.editable);
         self.toolbar.innerHTML = "\
             <a rel='command' href='bold'>B</a>\
@@ -191,18 +192,27 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
             self, self.handle_click));
+        MochiKit.Visual.appear(self.toolbar);
     },
 
-    relocate_toolbar: function() {
+    relocate_toolbar: function(fast) {
         var self = this;
         var range = getSelection().getRangeAt(0);
         var container = range.commonAncestorContainer;
         while (container.nodeType != container.ELEMENT_NODE) {
             container = container.parentNode;
         }
-        var pos = MochiKit.Style.getElementPosition(self.toolbar, self.block);
-        pos.y = MochiKit.Style.getElementPosition(container, self.block).y;
-        MochiKit.Style.setElementPosition(self.toolbar, pos);
+        var move = {
+            duration: 0.5,
+            mode: 'absolute',
+            x: MochiKit.Style.getElementPosition(self.toolbar, self.block).x,
+            y: MochiKit.Style.getElementPosition(container, self.block).y
+        }
+        if (fast) {
+            MochiKit.Style.setElementPosition(self.toolbar, move);
+        } else {
+            MochiKit.Visual.Move(self.toolbar, move);
+        }
     },
 
     handle_click: function(event) {
