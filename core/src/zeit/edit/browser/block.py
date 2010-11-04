@@ -4,6 +4,7 @@
 import zeit.edit.browser.view
 import zeit.edit.interfaces
 import zope.component
+import zope.interface
 import zope.viewlet.manager
 
 
@@ -17,6 +18,9 @@ class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
     @property
     def css_class(self):
         classes = ['block', 'type-' + self.context.type]
+        for interface in zope.interface.providedBy(self.context):
+            name = '%s.%s' % (interface.__module__, interface.__name__)
+            classes.append(name.replace('.', '-'))
         if self.validation_class:
             classes.append(self.validation_class)
         return ' '.join(classes)
