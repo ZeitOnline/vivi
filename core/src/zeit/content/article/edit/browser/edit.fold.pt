@@ -1,0 +1,9 @@
+<tal:block i18n:domain="zeit.cms">
+  <a class="fold-link" href="#"
+     title="Fold"
+     cms:cp-module="zeit.content.article.FoldBlock"
+     i18n:attributes="title">
+    <span class="action-title"
+          i18n:translate="">Fold</span>
+  </a>
+</tal:block>

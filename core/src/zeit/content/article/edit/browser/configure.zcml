@@ -16,7 +16,6 @@
     directory="resources"
     />
 
-
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -79,6 +78,22 @@
     class=".edit.BlockLandingZone"
     permission="zeit.EditContent"
     />
+
+  <!-- folding -->
+
+  <browser:viewlet
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="fold"
+    class=".edit.Fold"
+    template="edit.fold.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <!-- paragraph -->
 
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IParagraph"

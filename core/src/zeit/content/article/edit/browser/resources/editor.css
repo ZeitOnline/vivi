@@ -72,11 +72,15 @@
   margin-left: 3em;
 }
 
-#article-editor-text .block .edit-bar {
+#article-editor-text
+    .block.zeit-content-article-edit-interfaces-IParagraph 
+    .edit-bar {
   visibility: hidden;
 }
 
-#article-editor-text .block .block-inner {
+#article-editor-text
+  .block.zeit-content-article-edit-interfaces-IParagraph 
+  .block-inner {
   border-color: transparent;
 }
 
@@ -95,9 +99,16 @@
   width: 7px;
 }
 
-
 #article-editor-text .edit-bar > .delete-link {
   background-image: url('delete.png');
+}
+
+#article-editor-text .edit-bar > .fold-link {
+  background-image: url('arrow_down.png');
+}
+
+#article-editor-text .block.folded .edit-bar > .fold-link {
+  background-image: url('arrow_right.png');
 }
 
 #article-editor-text .dragger .center {
@@ -106,6 +117,17 @@
 
 #article-editor-text .block {
   margin-left: 2em;
+}
+
+
+#article-editor-text .block.folded > .block-inner > * {
+  display: none;
+}
+
+#article-editor-text .block.folded > .block-inner > .edit-bar {
+  border-bottom: none;
+  display: block;
+  margin-bottom: 0;
 }
 
 /* Editable blocks */

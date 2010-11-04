@@ -94,7 +94,7 @@ class GalleryTest(unittest2.TestCase):
         self.browser.open('editable-body/@@contents')
         self.assert_ellipsis(
             """<...
-            <div ...class="block type-%s"...""" % self.expected_type)
+            <div ...class="block type-%s...""" % self.expected_type)
 
     def test_empty_block_should_be_landing_zone(self):
         article = self.get_article(with_empty_block=True)
@@ -110,7 +110,7 @@ class GalleryTest(unittest2.TestCase):
                 'when': None}]})
         self.browser.open('@@contents')
         self.assert_ellipsis(
-            """<div ...class="block type-%s"...""" % self.expected_type)
+            """<div ...class="block type-%s...""" % self.expected_type)
 
     def test_only_specific_type_should_be_droppable(self):
         article = self.get_article(with_empty_block=True)
@@ -149,7 +149,7 @@ class GalleryTest(unittest2.TestCase):
         self.browser.open(self.contents_url)
         self.assert_ellipsis(
             """<...
-                <div ...class="block type-%s"...""" % self.expected_type)
+                <div ...class="block type-%s...""" % self.expected_type)
         # Each block has its own landing zone:
         id = data['signals'][0]['args'][0]
         with mock.patch('uuid.uuid4', new=uuid4):

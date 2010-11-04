@@ -332,4 +332,16 @@ zeit.content.article.Editable = gocept.Class.extend({
 
 });
 
+
+zeit.content.article.FoldBlock = gocept.Class.extend({
+
+    construct: function(context) {
+        var self = this;
+        var block = MochiKit.DOM.getFirstParentByTagAndClassName(
+            context, null, 'block');
+        MochiKit.DOM.toggleElementClass('folded', block);
+    }
+});
+
 })();
+

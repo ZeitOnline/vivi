@@ -23,6 +23,15 @@ class EditorContents(object):
             self.context)
 
 
+class Fold(object):
+
+    def render(self):
+        if zeit.content.article.edit.interfaces.IParagraph.providedBy(
+            self.context):
+            return u''
+        return super(Fold, self).render()
+
+
 class SaveText(zeit.edit.browser.view.Action):
 
     text = zeit.edit.browser.view.Form('text')
@@ -68,6 +77,7 @@ class SaveText(zeit.edit.browser.view.Action):
 
 class Paragraph(object):
 
+    css_class = ('hutzenpups',)
     @property
     def text(self):
         return '<%s>%s</%s>' % (
