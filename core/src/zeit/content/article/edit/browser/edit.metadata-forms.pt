@@ -1,5 +1,21 @@
-<div id="article-metadata"
-     class="editable-area"
-     tal:attributes="cms:url string:${context/@@absolute_url}/@@article-metadata-forms">
-  <tal:block replace="structure provider:zeit.edit.contents" />
-</div>
+<tal:block i18n:domain="zeit.cms">
+  <div id="article-metadata"
+       class="editable-area"
+       tal:attributes="cms:url string:${context/@@absolute_url}/@@article-metadata-forms">
+    <div class="edit-bar">
+      <a class="fold-link" href="article-metadata"
+         title="Fold"
+         cms:cp-module="zeit.content.article.FoldBlock"
+         i18n:attributes="title">
+        <span class="action-title"
+              i18n:translate="">
+          Fold
+        </span>
+      </a>
+      <span i18n:translate="">Metadata</span>
+    </div>
+    <div class="block-inner">
+      <tal:block replace="structure provider:zeit.edit.contents" />
+    </div>
+  </div>
+</tal:block>

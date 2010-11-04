@@ -337,10 +337,10 @@ zeit.content.article.FoldBlock = gocept.Class.extend({
 
     construct: function(context) {
         var self = this;
-        var block = MochiKit.DOM.getFirstParentByTagAndClassName(
-            context, null, 'block');
-        MochiKit.DOM.toggleElementClass('folded', block);
+        var id = context.getAttribute('href');
+        MochiKit.DOM.toggleElementClass('folded', id);
     }
+
 });
 
 })();

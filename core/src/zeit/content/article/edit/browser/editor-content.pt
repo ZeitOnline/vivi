@@ -1,6 +1,6 @@
 <div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
       id="cp-content-inner"
-      class="cp-content-inner">
+      class="cp-content-inner article-editor-inner">
   <script
     type="text/javascript"
     tal:attributes="
