@@ -90,6 +90,16 @@
   border-color: #bbbbbb;
 }
 
+#article-editor-text .edit-bar > a {
+  height: 7px;
+  width: 7px;
+}
+
+
+#article-editor-text .edit-bar > .delete-link {
+  background-image: url('delete.png');
+}
+
 #article-editor-text .dragger .center {
   height: 12px;
 }
