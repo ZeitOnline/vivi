@@ -101,7 +101,7 @@ it, is rendered too:
 <div class="landing-zone action-informatives-module-droppable"
      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
 </div>
-  <div ...class="block type-cpextra"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+  <div ...class="block type-cpextra...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
     ...
   <div class="landing-zone action-informatives-module-droppable"
        cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
@@ -121,12 +121,12 @@ Add an audio block after the just created cpextra block now:
 <div class="landing-zone action-informatives-module-droppable"
      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
 </div>
-  <div ...class="block type-cpextra"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+  <div ...class="block type-cpextra...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
     ...
   <div class="landing-zone action-informatives-module-droppable"
        cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
   </div>
-  ...<div...class="block type-audio"...
+  ...<div...class="block type-audio...
 
 
 Creating blocks is also possible in the teaser bar:

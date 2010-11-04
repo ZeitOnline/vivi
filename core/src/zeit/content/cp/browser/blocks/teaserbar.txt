@@ -24,13 +24,13 @@ placeholders:
   <div id="informatives-outer">...
   <div id="teaser-mosaic"...class="editable-area"...
       ...
-      <div...class="block type-placeholder" ... id="<GUID>">
+      <div...class="block type-placeholder... id="<GUID>">
       ...
-      <div...class="block type-placeholder" ... id="<GUID>">
+      <div...class="block type-placeholder... id="<GUID>">
       ...
-      <div...class="block type-placeholder" ... id="<GUID>">
+      <div...class="block type-placeholder... id="<GUID>">
       ...
-      <div...class="block type-placeholder" ... id="<GUID>">
+      <div...class="block type-placeholder... id="<GUID>">
       ...
         <div class="edit">
           <a cms:cp-module="...LoadAndReload"
@@ -48,13 +48,13 @@ Add a real block in the second place:
 <div ...
   <div id="teaser-mosaic"...class="editable-area"...
       ...
-      <div...class="block type-placeholder" ... id="<GUID>">
+      <div...class="block type-placeholder... id="<GUID>">
       ...
       <div...class="block type-teaser... id="<GUID>">
       ...
-      <div...class="block type-placeholder" ... id="<GUID>">
+      <div...class="block type-placeholder... id="<GUID>">
       ...
-      <div...class="block type-placeholder" ... id="<GUID>">
+      <div...class="block type-placeholder... id="<GUID>">
       ...
         <div class="edit">
           <a cms:cp-module="...LoadAndReload"
@@ -74,8 +74,10 @@ Changing the layout of a TeaserBar
 >>> browser.open(contents_url)
 >>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser', 0)
 >>> browser.open(contents_url)
->>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]/div[@class="block type-teaser-bar"]')
+>>> import lxml.cssselect
+>>> select = lxml.cssselect.CSSSelector(
+...     '#teaser-mosaic .block.type-teaser-bar')
+>>> bar_divs = select(browser.etree)
 >>> bar_id = bar_divs[0].get('id')
 >>> bar_url = ('http://localhost/++skin++cms/workingcopy/zope.user/island/'
 ...     'teaser-mosaic/%s/edit-properties' % bar_id)
@@ -100,12 +102,9 @@ First we need a helper function, which counts the number of elements with a
 given CSS class:
 
 >>> def block_count(type_):
+...     select = lxml.cssselect.CSSSelector('.%s' % type_)
 ...     browser.open(contents_url)
-...     blocks = browser.etree.xpath(
-...     '//div[contains(@class, "%s")]' % type_)
-...     # filter false positives (such as type-teaserbar when looking for type-teaser)
-...     blocks = [block for block in blocks
-...         if type_ in block.get('class').split(' ')]
+...     blocks = select(browser.etree)
 ...     return len(blocks)
 
 Our teaser bar contains 3 teaser blocks, although it has the "DMR" Layout which
