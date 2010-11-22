@@ -37,8 +37,7 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
 
     def __iter__(self):
         result = self.query()
-        result = [zeit.cms.interfaces.ICMSContent(x[0]) for x in result]
-        return iter(result)
+        return (zeit.cms.interfaces.ICMSContent(x[0]) for x in result)
 
     def query(self):
         connector = zope.component.getUtility(
