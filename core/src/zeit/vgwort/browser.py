@@ -1,8 +1,8 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from StringIO import StringIO
 from zeit.cms.i18n import MessageFactory as _
+import StringIO
 import csv
 import zeit.cms.browser.menu
 import zeit.vgwort.interfaces
@@ -28,7 +28,7 @@ class Dialect(csv.Dialect):
 class ReportStatus(object):
 
     def __call__(self):
-        result = StringIO()
+        result = StringIO.StringIO()
         source = zope.component.getUtility(
             zeit.vgwort.interfaces.IReportableContentSource)
         output = csv.writer(result, dialect=Dialect())
