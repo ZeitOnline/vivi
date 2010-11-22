@@ -43,6 +43,7 @@ setup(
         'z3c.conditionalviews>=1.0b2.dev-r91510',
         'z3c.etestbrowser',
         'z3c.flashmessage',
+        'z3c.hashedresource',
         'z3c.menu.simple>=0.5.1',
         'z3c.noop',
         'z3c.noop',
