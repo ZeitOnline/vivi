@@ -177,7 +177,7 @@ class IAutomaticallyRenameable(zope.interface.Interface):
     """
 
     renamable = zope.schema.Bool(title=u'Object renamable?')
-    constraint = zope.schema.TextLine(
+    rename_to = zope.schema.TextLine(
         title=_("New file name"),
         required=False,
         constraint=zeit.cms.interface.valid_name)
