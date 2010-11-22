@@ -1,7 +1,12 @@
 Search
 ======
 
-The building blocks are search vars[#connector]_:
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+
+The building blocks are search vars:
 
 >>> from zeit.connector.search import SearchVar
 >>> author = SearchVar('author', 'http://namespaces.zeit.de/CMS/document')
@@ -29,9 +34,3 @@ We expect nothing has changed in the future
 >>> list(connector.search([modified], (modified > future) & (modified < '20 ')))
 []
 
-.. [#connector]
-
-    >>> import zeit.connector.interfaces
-    >>> import zope.component
-    >>> connector = zope.component.getUtility(
-    ...     zeit.connector.interfaces.IConnector)
