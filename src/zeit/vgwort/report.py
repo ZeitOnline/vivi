@@ -17,18 +17,6 @@ import zope.app.appsetup.product
 import zope.interface
 
 
-def SearchVar(name, ns):
-    prefix = 'http://namespaces.zeit.de/CMS/'
-    return zeit.connector.search.SearchVar(name, prefix + ns)
-
-
-PUBLISHED = SearchVar('published', 'workflow')
-FIRST_RELEASED = SearchVar('date_first_released', 'document')
-AUTHOR = SearchVar('author', 'document')
-PRIVATE_TOKEN = SearchVar('private_token', 'vgwort')
-PUBLIC_TOKEN = SearchVar('public_token', 'vgwort')
-REPORTED_ON = SearchVar('reported_on', 'vgwort')
-REPORTED_ERROR = SearchVar('reported_error', 'vgwort')
 
 
 class ReportableContentSource(grokcore.component.GlobalUtility):
@@ -45,11 +33,13 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
         age = self.config['days-before-report']
         age = datetime.date.today() - datetime.timedelta(days=int(age))
         age = age.isoformat()
+        sv = zeit.vgwort.interfaces.SearchVars
         result = connector.search(
-            [PUBLIC_TOKEN, PRIVATE_TOKEN, REPORTED_ON, REPORTED_ERROR],
-            (PUBLISHED == 'yes') & (FIRST_RELEASED < age)
-            & (PRIVATE_TOKEN > '') & (AUTHOR > '')
-            & (REPORTED_ON == '') & (REPORTED_ERROR == ''))
+            [sv.PUBLIC_TOKEN, sv.PRIVATE_TOKEN, sv.REPORTED_ON,
+             sv.REPORTED_ERROR],
+            (sv.PUBLISHED == 'yes') & (sv.FIRST_RELEASED < age)
+            & (sv.PRIVATE_TOKEN > '') & (sv.AUTHOR > '')
+            & (sv.REPORTED_ON == '') & (sv.REPORTED_ERROR == ''))
         return result
 
     def mark_done(self, content):
