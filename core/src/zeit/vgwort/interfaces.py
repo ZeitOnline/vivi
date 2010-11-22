@@ -3,8 +3,24 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.connector.search
 import zope.interface
 import zope.schema
+
+class SearchVars(object):
+
+    def SearchVar(name, ns):
+        prefix = 'http://namespaces.zeit.de/CMS/'
+        return zeit.connector.search.SearchVar(name, prefix + ns)
+
+    PUBLISHED = SearchVar('published', 'workflow')
+    FIRST_RELEASED = SearchVar('date_first_released', 'document')
+    AUTHOR = SearchVar('author', 'document')
+    PRIVATE_TOKEN = SearchVar('private_token', 'vgwort')
+    PUBLIC_TOKEN = SearchVar('public_token', 'vgwort')
+    REPORTED_ON = SearchVar('reported_on', 'vgwort')
+    REPORTED_ERROR = SearchVar('reported_error', 'vgwort')
+
 
 
 class ITokens(zope.interface.Interface):
@@ -92,8 +108,10 @@ class TechnicalError(Exception):
 class IReportableContentSource(zope.interface.Interface):
 
     def __iter__():
-        """returns content objects that are eligble for reporting to VGWort
-        but have not been reported yet.
+        """iteratte over ICMSContent objects that are eligble for reporting
+
+        The iterator does not contain objects which have been reported once.
+
         """
 
     def mark_done(content):
