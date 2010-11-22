@@ -119,8 +119,6 @@ class IBeforeCheckinEvent(ICheckinCheckoutEvent):
 class IAfterCheckinEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked in."""
 
-    old_object = zope.interface.Attribute("The obect before checkin.")
-
 
 class EventBase(zope.component.interfaces.ObjectEvent):
 
