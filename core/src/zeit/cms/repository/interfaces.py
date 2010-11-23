@@ -180,4 +180,4 @@ class IAutomaticallyRenameable(zope.interface.Interface):
     rename_to = zope.schema.TextLine(
         title=_("New file name"),
         required=False,
-        constraint=zeit.cms.interface.valid_name)
+        constraint=zeit.cms.interfaces.valid_name)
