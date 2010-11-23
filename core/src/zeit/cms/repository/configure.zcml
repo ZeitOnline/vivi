@@ -79,5 +79,12 @@
     trusted="yes"
     />
 
+  <class class=".checkout.AutomaticallyRenamable">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IAutomaticallyRenameable" 
+      />
+  </class>
+
 </configure>
 
