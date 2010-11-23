@@ -309,7 +309,7 @@ def invalidate_uncontained_content(event):
 class CMSObjectMover(zope.copypastemove.ObjectMover):
     """Objectmover for ICMSContent."""
 
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
 
 
 
