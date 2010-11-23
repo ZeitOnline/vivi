@@ -69,13 +69,13 @@
   </class>
   
   <adapter
-    factory=".repository.CMSObjectMover"
+    factory=".copypastemove.CMSObjectMover"
     permission="zeit.RenameContent"
     trusted="yes"
     />
 
   <adapter
-    factory=".repository.CMSObjectCopier"
+    factory=".copypastemove.CMSObjectCopier"
     trusted="yes"
     />
 

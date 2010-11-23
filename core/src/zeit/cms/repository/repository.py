@@ -19,7 +19,6 @@ import zope.container.interfaces
 import zope.cachedescriptors.method
 import zope.component
 import zope.component.interfaces
-import zope.copypastemove
 import zope.interface
 import zope.securitypolicy.interfaces
 
@@ -86,20 +85,29 @@ class Container(zope.container.contained.Contained):
         '''See interface `IWriteContainer`'''
         new_id = self._get_id_for_name(name)
         if object.uniqueId is None:
+            # This is a new object as it didn't have a uniqueId, yet.
             object.uniqueId = new_id
             event = True
         else:
+            # This is an existing object which is updated, copied or moved.
             event = False
 
         if new_id == object.uniqueId:
-            # Update resource.
+            # Object only needs opdating.
             self.repository.addContent(object)
+        elif object.__parent__:
+            # As the object has a parent we assume that it should be moved.
+            log.info("Moving %s to %s" % (object.uniqueId, new_id))
+            self.connector.move(object.uniqueId, new_id)
+            event = True
         else:
+            # As the object has a no parent we assume that it should be copied.
             log.info("Copying %s to %s" % (object.uniqueId, new_id))
             self.connector.copy(object.uniqueId, new_id)
             event = True
 
         self._local_unique_map_data.clear()
+        object = self[name]
         if event:
             object, event = zope.container.contained.containedEvent(
                 object, self, name)
@@ -137,6 +145,7 @@ class Container(zope.container.contained.Contained):
 
     @property
     def _local_unique_map(self):
+        __traceback_info__ = (self.uniqueId,)
         if not self._local_unique_map_data:
             self._local_unique_map_data.update(
                 self.connector.listCollection(self.uniqueId))
@@ -304,38 +313,6 @@ def invalidate_uncontained_content(event):
         zeit.cms.repository.interfaces.IRepository)
     if repository is not None:
         repository.uncontained_content.pop(event.id, None)
-
-
-class CMSObjectMover(zope.copypastemove.ObjectMover):
-    """Objectmover for ICMSContent."""
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
-
-
-
-class CMSObjectCopier(zope.copypastemove.ObjectCopier):
-
-    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
-
-    def copyTo(self, target, new_name=None):
-        obj = self.context
-        container = obj.__parent__
-
-        orig_name = obj.__name__
-        if new_name is None:
-            new_name = orig_name
-
-        chooser = zope.container.interfaces.INameChooser(target)
-        new_name = chooser.chooseName(new_name, obj)
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        new = repository.getCopyOf(obj.uniqueId)
-        del new.__parent__
-        del new.__name__
-        target[new_name] = new  # This actually copies.
-        new = target[new_name]
-        zope.event.notify(zope.lifecycleevent.ObjectCopiedEvent(new, obj))
-        return new_name
 
 
 @grokcore.component.adapter(basestring,
