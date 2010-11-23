@@ -284,9 +284,6 @@ Objects can be renamed in a container using IContainerItemRenamer:
 ObjectMovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3b3f970>
     Old: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_new
     New: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_not_so_new_anymore
-BeforeObjectRemovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3b3f970>
-    Old: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_not_so_new_anymore
-    New: None None
 
 >>> list(repository)
 [u'online', u'2006', u'2007', u'i_am_not_so_new_anymore', u'politik.feed',

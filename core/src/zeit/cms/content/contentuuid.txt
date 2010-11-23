@@ -141,3 +141,14 @@ When an object is copied, it gets a new UUID:
 >>> zeit.cms.content.interfaces.IUUID(copied).id == (
 ...     zeit.cms.content.interfaces.IUUID(repository['testcontent']).id)
 False
+
+When an object is moved, it does *not* get a new UUID:
+
+>>> tc_uuid = zeit.cms.content.interfaces.IUUID(repository['testcontent']).id
+>>> import zope.copypastemove.interfaces
+>>> mover = zope.copypastemove.interfaces.IObjectMover(
+...     repository['testcontent'])
+>>> name = mover.moveTo(repository, 'moved-content')
+>>> moved = repository[name]
+>>> zeit.cms.content.interfaces.IUUID(moved).id == tc_uuid
+True
