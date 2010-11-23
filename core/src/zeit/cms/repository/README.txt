@@ -3,8 +3,10 @@ Repository
 ==========
 
 Browsing the repository works by folder classes which on the fly fetch data
-from the backend. The interface to the backend is `os` like [#functional]_.
+from the backend. The interface to the backend is `os` like.
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 
 Repository Containers
 =====================
@@ -57,8 +59,22 @@ True
 Getting Content objects
 =======================
 
-We are getting the objects
-/online/2007/01/lebenslagen-01[#after-construct-event]_:
+Constructing objects sends an event. Create a handler to test this:
+
+>>> import zeit.cms.interfaces
+>>> def after_construct(object, event):
+...     print "Constructing", object.uniqueId
+...     site_manager.unregisterHandler(
+...         after_construct,
+...         (zeit.cms.interfaces.ICMSContent,
+...          zeit.cms.repository.interfaces.IAfterObjectConstructedEvent))
+>>> site_manager = zope.component.getSiteManager()
+>>> site_manager.registerHandler(
+...     after_construct,
+...     (zeit.cms.interfaces.ICMSContent,
+...      zeit.cms.repository.interfaces.IAfterObjectConstructedEvent))
+
+Getting the object /online/2007/01/lebenslagen-01:
 
 >>> content = repository['online']['2007']['01']['lebenslagen-01']
 Constructing http://xml.zeit.de/online/2007/01/lebenslagen-01
@@ -90,21 +106,6 @@ When we get the same object again, we *really* get the *same* object:
 >>> content is repository['online']['2007']['01']['lebenslagen-01']
 True
 
-
-.. [#after-construct-event] Constructing objects sends an event:
-
-    >>> import zeit.cms.interfaces
-    >>> def after_construct(object, event):
-    ...     print "Constructing", object.uniqueId
-    ...     site_manager.unregisterHandler(
-    ...         after_construct,
-    ...         (zeit.cms.interfaces.ICMSContent,
-    ...          zeit.cms.repository.interfaces.IAfterObjectConstructedEvent))
-    >>> site_manager = zope.component.getSiteManager()
-    >>> site_manager.registerHandler(
-    ...     after_construct,
-    ...     (zeit.cms.interfaces.ICMSContent,
-    ...      zeit.cms.repository.interfaces.IAfterObjectConstructedEvent))
 
 Unknown Resource
 ================
@@ -222,7 +223,25 @@ The content does not have a unique id yet:
 >>> print content.uniqueId
 None
 
-After adding it to the repository, it has a unique id[#add-events]_:
+Adding sends an event. Register an event handler for IBeforeObjectAddedEvent
+
+>>> def before_added(object, event):
+...     print "Before add:", object
+>>> def added(object, event):
+...     print type(event).__name__, object
+...     print '    Old:', event.oldParent, event.oldName
+...     print '    New:', event.newParent, event.newName
+>>> site_manager = zope.component.getSiteManager()
+>>> site_manager.registerHandler(
+...     before_added,
+...     (zeit.cms.interfaces.ICMSContent,
+...      zeit.cms.repository.interfaces.IBeforeObjectAddEvent))
+>>> site_manager.registerHandler(
+...     added,
+...     (zeit.cms.interfaces.ICMSContent,
+...      zope.lifecycleevent.interfaces.IObjectMovedEvent))
+
+After adding it to the repository, it has a unique id:
 
 >>> repository['i_am_new'] = content
 Before add: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
@@ -252,25 +271,6 @@ Before add: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x.
 ...         (zeit.cms.interfaces.ICMSContent,
 ...          zeit.cms.repository.interfaces.IBeforeObjectAddEvent))
 True
-
-.. [#add-events] Adding sends an event. Register an event handler for
-    IBeforeObjectAddedEvent
-
-    >>> def before_added(object, event):
-    ...     print "Before add:", object
-    >>> def added(object, event):
-    ...     print type(event).__name__, object
-    ...     print '    Old:', event.oldParent, event.oldName
-    ...     print '    New:', event.newParent, event.newName
-    >>> site_manager = zope.component.getSiteManager()
-    >>> site_manager.registerHandler(
-    ...     before_added,
-    ...     (zeit.cms.interfaces.ICMSContent,
-    ...      zeit.cms.repository.interfaces.IBeforeObjectAddEvent))
-    >>> site_manager.registerHandler(
-    ...     added,
-    ...     (zeit.cms.interfaces.ICMSContent,
-    ...      zope.lifecycleevent.interfaces.IObjectMovedEvent))
 
 
 Renaming objects
@@ -304,8 +304,24 @@ ObjectMovedEvent...
 Deleting Content Object
 =======================
 
+Deleting objects sends an event:
+
+>>> import zeit.cms.interfaces
+>>> def after_remove(object, event):
+...     print "Deleting", object.uniqueId
+...     site_manager.unregisterHandler(
+...         after_remove,
+...         (zeit.cms.interfaces.ICMSContent,
+...          zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent))
+>>> site_manager = zope.component.getSiteManager()
+>>> site_manager.registerHandler(
+...     after_remove,
+...     (zeit.cms.interfaces.ICMSContent,
+...      zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent))
+
+
 Content can be deleted just like with any other container, using
-__delitem__[#after-delete-event]_:
+__delitem__:
 
 >>> 'i_am_new' in repository
 True
@@ -331,22 +347,6 @@ When you try to delete a non existend object, a KeyError is raised:
 Traceback (most recent call last):
     ...
 KeyError: "The resource u'http://xml.zeit.de/i-dont-exist' does not exist."
-
-
-.. [#after-delete-event] Deleting objects sends an event:
-
-    >>> import zeit.cms.interfaces
-    >>> def after_remove(object, event):
-    ...     print "Deleting", object.uniqueId
-    ...     site_manager.unregisterHandler(
-    ...         after_remove,
-    ...         (zeit.cms.interfaces.ICMSContent,
-    ...          zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent))
-    >>> site_manager = zope.component.getSiteManager()
-    >>> site_manager.registerHandler(
-    ...     after_remove,
-    ...     (zeit.cms.interfaces.ICMSContent,
-    ...      zeit.cms.repository.interfaces.IBeforeObjectRemovedEvent))
 
 
 Copying objects
@@ -472,9 +472,3 @@ u'http://xml.zeit.de/online/2007/01/Somalia'
 >>> zeit.cms.interfaces.ICMSContent(
 ...     '/cms/work/online/2007/01/Somalia').uniqueId
 u'http://xml.zeit.de/online/2007/01/Somalia'
-
-
-.. [#functional]:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
