@@ -162,3 +162,22 @@ class IFile(IDAVContent,
     """A file like object in the CMS."""
 
 
+class IAutomaticallyRenameable(zope.interface.Interface):
+    """Indicate if an object can be renamed automatically.
+
+    This interface is used for objects which do not have their final name, yet.
+    For instance when the name should be determined automatically from the
+    object's title but the object needs to be added to the repository before
+    the title becomes available, it is useful to be able to rename the object
+    later.
+
+    NOTE: Renaming is only considered to be a change in the *name*, not in the
+    location (aka directory/folder).
+
+    """
+
+    renamable = zope.schema.Bool(title=u'Object renamable?')
+    rename_to = zope.schema.TextLine(
+        title=_("New file name"),
+        required=False,
+        constraint=zeit.cms.interfaces.valid_name)
