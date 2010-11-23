@@ -3,7 +3,10 @@ Adding a UID to content objects
 ===============================
 
 When checking in objects, unique ids (UIDs) are added
-automatically[#functional]_.
+automatically.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
 
 We need an interaction as checkout manager needs to get the principal:
 
@@ -149,13 +152,3 @@ When an object is moved, it does *not* get a new UUID:
 >>> moved = repository[name]
 >>> zeit.cms.content.interfaces.IUUID(moved).id == tc_uuid
 True
-
-Cleanup
-=======
-
-After the test we restore the old site:
-
-.. [#functional] We need to set the site since we're a functional test:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
