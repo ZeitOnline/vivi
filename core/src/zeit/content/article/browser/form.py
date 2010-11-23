@@ -2,21 +2,13 @@
 # See also LICENSE.txt
 
 from zeit.content.article.i18n import MessageFactory as _
-import StringIO
-import datetime
 import gocept.form.grouped
-import zc.resourcelibrary
 import zeit.cms.browser.form
 import zeit.cms.content.browser.form
-import zeit.cms.content.browser.interfaces
-import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
 import zeit.wysiwyg.interfaces
-import zope.app.appsetup.interfaces
 import zope.formlib.form
-import zope.publisher.interfaces.browser
-import zope.session.interfaces
 
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
