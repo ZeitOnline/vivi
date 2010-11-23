@@ -107,7 +107,6 @@ class Container(zope.container.contained.Contained):
             event = True
 
         self._local_unique_map_data.clear()
-        object = self[name]
         if event:
             object, event = zope.container.contained.containedEvent(
                 object, self, name)
