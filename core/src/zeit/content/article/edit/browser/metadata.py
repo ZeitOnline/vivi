@@ -60,7 +60,7 @@ class Navigation(MetadataForm):
 
     # NOTE: keywords have been left out so far as they will be a new mechanism
     # for them.
-    # TODO: provide Javascript to convert title to rename_to
+    # TODO: provide Javascript to convert title to rename_to (#8327)
 
     @property
     def form_fields(self):
