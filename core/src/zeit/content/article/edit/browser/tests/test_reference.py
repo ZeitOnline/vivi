@@ -1,46 +1,20 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import difflib
-import doctest
 import mock
-import simplejson
 import unittest2
 import zeit.content.article.testing
 
 
-class GalleryTest(unittest2.TestCase):
+class GalleryTest(unittest2.TestCase,
+                  zeit.content.article.testing.BrowserAssertions):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.TestBrowserLayer
 
     expected_type = 'gallery'
 
-    def assert_ellipsis(self, want, got=None):
-        if got is None:
-            got = self.browser.contents
-        # normalize whitespace
-        norm_want = ' '.join(want.split())
-        norm_got = ' '.join(got.split())
-        if doctest._ellipsis_match(norm_want, norm_got):
-            return True
-        # Report ndiff
-        engine = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
-        diff = list(engine.compare(want.splitlines(True),
-                                   got.splitlines(True)))
-        kind = 'ndiff with -expected +actual'
-        diff = [line.rstrip() + '\n' for line in diff]
-        self.fail('Differences (%s):\n' % kind + ''.join(diff))
-
-    def assert_json(self, want, got=None):
-        if got is None:
-            got = self.browser.contents
-        data = simplejson.loads(got)
-        self.assertEqual(want, data)
-        return data
-
     def setUp(self):
         from zope.testbrowser.testing import Browser
-        self.layer.setup.setUp()
         self.browser = browser = Browser()
         browser.addHeader('Authorization', 'Basic user:userpw')
         browser.open('http://localhost:8080/++skin++vivi/repository/online'
@@ -48,9 +22,6 @@ class GalleryTest(unittest2.TestCase):
         browser.open('@@contents')
         self.contents_url = browser.url
         browser.open(self.contents_url)
-
-    def tearDown(self):
-        self.layer.setup.tearDown()
 
     def setup_content(self):
         """Create a gallery (requires folder with images)"""
