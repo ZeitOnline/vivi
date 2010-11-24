@@ -84,6 +84,10 @@
       permission="zope.View"
       interface=".interfaces.IAutomaticallyRenameable" 
       />
+    <require
+      permission="zeit.EditContent"
+      set_schema=".interfaces.IAutomaticallyRenameable"
+      />
   </class>
 
 </configure>
