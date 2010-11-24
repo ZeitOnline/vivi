@@ -68,63 +68,17 @@ arbitrary url and add an article then:
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Article']
 >>> url = menu.value[0]
->>> url
-'http://localhost/++skin++cms/repository/online/2007/01/@@zeit.content.article.Add'
+>>> print url
+http://localhost/++skin++cms/repository/online/2007/01/@@zeit.content.article.Add
 >>> browser.open(url)
 
-We are now looking at the add form. Some fields are filled with suitable
-defaults:
+The article is created and checked out automatically. The editor is open:
 
->>> print browser.contents
-<?xml ...
-<!DOCTYPE ...
-    <title> 01 – Add article </title>
-    ...
+>>> print browser.title.strip()
+e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp – Edit
+>>> print browser.url
+http://localhost/++skin++cms/workingcopy/zope.user/e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp/@@edit.html
 
->>> import datetime
->>> now = datetime.datetime.now()
-
->>> browser.getControl(name='form.year').value
-'2008'
->>> browser.getControl(name='form.volume').value
-'26'
-
-
-Now, fill the form and add the article:
-
->>> browser.getControl(name='form.year').value = '2007'
->>> browser.getControl(name='form.volume').value = '2'
->>> browser.getControl(name='form.__name__').value = 'KFZ-Steuer'
->>> browser.getControl(name='form.title').value = (
-...     'EU <em>unterstuetzt</em> Stinker-Steuer')
->>> browser.getControl('Ressort').displayValue = ['Deutschland']
->>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
->>> browser.getControl(name='form.actions.add').click()
->>> browser.getLink('Edit metadata').click()
->>> browser.getControl('Sub ressort').displayOptions
-['(no value)', 'Joschka Fisher', 'Integration', 'Meinung', 'Datenschutz', 'US-Wahl', 'Nahost']
->>> browser.getControl('Sub ressort').displayValue = ['Integration']
->>> browser.getControl('VG Wort Id').value = 'ada94da'
->>> 'There were errors' in browser.contents
-False
-
-After submitting we're looking at the object in our working copy. The metadata
-edit screen should be displayed:
-
->>> print browser.contents
-<?xml ...
-<!DOCTYPE ...
-    <title>
-       EU &lt;em&gt;unterstuetzt&lt;/em&gt; Stinker-Steuer – Edit article
-   </title>
-    ...
-
->>> browser.getControl(name='form.year').value
-'2007'
->>> browser.getControl(name='form.volume').value
-'2'
->>> browser.getControl(name='form.title').value
-'EU <em>unterstuetzt</em> Stinker-Steuer'
 
 Note that the metadata view screen is not available on checked out articles:
 
@@ -139,9 +93,20 @@ Editing Articles
 
 Let's change some data and save the article:
 
+>>> browser.open('@@edit-metadata.html')
+>>> browser.getControl(name='form.year').value = '2007'
+>>> browser.getControl(name='form.volume').value = '2'
+>>> browser.getControl('Ressort').displayValue = ['Deutschland']
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl('Sub ressort').displayOptions
+['(no value)', 'Joschka Fisher', 'Integration', 'Meinung', 'Datenschutz', 'US-Wahl', 'Nahost']
+>>> browser.getControl('Sub ressort').displayValue = ['Integration']
+>>> browser.getControl('VG Wort Id').value = 'ada94da'
 >>> browser.getControl(name='form.title').value = (
 ...   'EU unterstuetzt Trinker-Steuer')
 >>> browser.getControl('Apply').click()
+>>> 'There were errors' in browser.contents
+False
 
 We get the form back after saving, the data is changed:
 
@@ -284,7 +249,7 @@ We check in the document. We look at the document in the repository then:
 >>> browser.getLink('Checkin').click()
 >>> article_url = browser.url
 >>> article_url
-'http://localhost/++skin++cms/repository/.../KFZ-Steuer/@@view.html'
+'http://localhost/++skin++cms/repository/.../...tmp/@@view.html'
 
 
 Let's make sure the image is linked:
@@ -315,7 +280,7 @@ But a view tab is there:
 
 >>> browser.getLink('View metadata').click()
 >>> browser.url
-'http://localhost/++skin++cms/repository/.../KFZ-Steuer/@@view.html'
+'http://localhost/++skin++cms/repository/.../...tmp/@@view.html'
 
 
 Syndicating
@@ -354,7 +319,7 @@ xml source:
 <channel>
   <title>Politik</title>
   <container>
-    <block ...href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" year="2007" issue="2"...>
+    <block ...href="http://xml.zeit.de/online/2007/01/...tmp" year="2007" issue="2"...>
       <supertitle py:pytype="str">Halle</supertitle>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -400,7 +365,7 @@ at its xml source:
 <channel>
   <title>Politik</title>
   <container>
-    <block ...href="http://xml.zeit.de/online/2007/01/KFZ-Steuer" year="2007" issue="2"...>
+    <block ...href="http://xml.zeit.de/online/2007/01/...tmp" year="2007" issue="2"...>
       <supertitle py:pytype="str">Halle</supertitle>
       <title py:pytype="str">Trinker zur Kasse</title>
       <text xsi:nil="true"/>
@@ -419,23 +384,6 @@ Check the feed back in to have nothing laying around:
 
 >>> browser.getLink('Checkin').click()
 
-
-Javascript validations
-======================
-
-The teaser fields are limited in length. They have special widgets which
-prevent entering more than the allowed length. Makre sure the widget is used:
-
->>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
->>> menu = browser.getControl(name='add_menu')
->>> menu.displayValue = ['Article']
->>> browser.open(menu.value[0])
->>> print browser.contents
-<?xml ...
-<!DOCTYPE ...
-    <title> 01 – Add article </title>...
-        <div class="widget"><div class="show-input-limit" maxlength="170"></div><textarea cols="60" id="form.teaserText" name="form.teaserText" rows="15" ></textarea><script type="text/javascript">new zeit.cms.InputValidation("form.teaserText");</script></div>
-        ...
 
 .. [2] Create an image group. To create it we need to setup the site:
 

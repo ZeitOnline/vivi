@@ -53,7 +53,8 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'text-length')
     pageBreak = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['pageBreak'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'paragraphsperpage')
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'paragraphsperpage',
+        use_default=True)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,

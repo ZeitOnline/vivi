@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import zc.resourcelibrary
 import zeit.cms.content.interfaces
+import zeit.cms.repository.interfaces
 import zope.app.pagetemplate
 import zope.formlib.form
 import zope.formlib.interfaces
@@ -56,12 +57,25 @@ class Navigation(MetadataForm):
 
     legend = _('Navigation')
     prefix = 'navigation'
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.cms.content.interfaces.ICommonMetadata).select(
-            '__name__', 'serie', 'copyrights', 'product_id')
+
     # NOTE: keywords have been left out so far as they will be a new mechanism
     # for them.
+    # TODO: provide Javascript to convert title to rename_to
+
+    @property
+    def form_fields(self):
+        form_fields = zope.formlib.form.FormFields(
+            zeit.cms.interfaces.ICMSContent,
+            zeit.cms.content.interfaces.ICommonMetadata,
+            zeit.cms.repository.interfaces.IAutomaticallyRenameable).select(
+                'rename_to', '__name__',
+                'serie', 'copyrights', 'product_id')
+        if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            self.context).renamable:
+            form_fields = form_fields.omit('__name__')
+        else:
+            form_fields = form_fields.omit('rename_to')
+        return form_fields
 
 
 class Texts(MetadataForm):

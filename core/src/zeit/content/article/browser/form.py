@@ -3,11 +3,14 @@
 
 from zeit.content.article.i18n import MessageFactory as _
 import gocept.form.grouped
+import uuid
 import zeit.cms.browser.form
 import zeit.cms.content.browser.form
 import zeit.cms.interfaces
+import zeit.cms.settings.interfaces
 import zeit.content.article.interfaces
 import zeit.wysiwyg.interfaces
+import zope.browser.interfaces
 import zope.formlib.form
 
 
@@ -35,12 +38,43 @@ class ArticleFormBase(object):
             css_class='column-right checkboxes'))
 
 
-class AddForm(ArticleFormBase,
-              zeit.cms.content.browser.form.CommonMetadataAddForm):
+class AddAndCheckout(zeit.cms.browser.view.Base):
 
-    title = _('Add article')
-    form_fields = ArticleFormBase.form_fields.omit('paragraphs')
-    factory = zeit.content.article.article.Article
+    def __call__(self):
+        article = self.get_article()
+        name = '{0}.tmp'.format(uuid.uuid4())
+        zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            article).renamable = True
+        self.context[name] = article
+        self.redirect(self.url(self.context[name], '@@checkout'))
+
+    def get_article(self):
+        article = zeit.content.article.article.Article()
+        settings = zeit.cms.settings.interfaces.IGlobalSettings(
+            self.context)
+        article.year = settings.default_year
+        article.volume = settings.default_volume
+        article.ressort = self.get_ressort()
+        article.sub_ressort = self.get_sub_ressort(article)
+        return article
+
+    def get_ressort(self):
+        token = self.request.form.get('form.ressort')
+        source = zeit.content.article.interfaces.IArticle['ressort'].source
+        return self._get_value(source, token)
+
+    def get_sub_ressort(self, article):
+        token = self.request.form.get('form.sub_ressort')
+        source = zeit.content.article.interfaces.IArticle['sub_ressort'].source
+        source = source(article)
+        return self._get_value(source, token)
+
+    def _get_value(self, source, token):
+        if not token:
+            return
+        terms = zope.component.getMultiAdapter(
+            (source, self.request), zope.browser.interfaces.ITerms)
+        return terms.getValue(token)
 
 
 class EditForm(ArticleFormBase,

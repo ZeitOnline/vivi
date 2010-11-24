@@ -105,7 +105,7 @@
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.AddForm"
+    class=".form.AddAndCheckout"
     name="zeit.content.article.Add"
     menu="zeit-add-menu" title="Article"
     permission="zeit.AddContent"
