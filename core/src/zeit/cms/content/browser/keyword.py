@@ -1,16 +1,13 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.cachedescriptors.property
-
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.tree
+import zeit.cms.browser.widget
+import zeit.cms.content.keyword
 import zope.app.form.browser.widget
 import zope.app.pagetemplate.viewpagetemplatefile
-
-import zeit.cms.browser.tree
-import zeit.cms.content.keyword
-import zeit.cms.browser.widget
-from zeit.cms.i18n import MessageFactory as _
+import zope.cachedescriptors.property
 
 
 class Tree(zeit.cms.browser.tree.Tree):
