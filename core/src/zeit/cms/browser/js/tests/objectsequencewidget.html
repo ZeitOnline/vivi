@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="resource_library:zeit.cms.javascript"/>
+  </head>
+  <body id="body">
+    <div class="objectsequencewidget" id="testwidget">
+      <input type="hidden" name="testwidget.count" id="testwidget.count" value="0" />
+      <ul>
+      </ul>
+    </div>
+    <script type="text/javascript">
+      var application_url = window.href;
+      var widget = new ObjectSequenceWidget('testwidget');
+    </script>
+
+    <div id="drag">
+      <span class="uniqueId"
+        style="display: none">http://xml.zeit.de/testcontent</span>
+      Drag
+    </div>
+    <div id="drag2">
+      <span class="uniqueId"
+        style="display: none">http://xml.zeit.de/2007</span>
+      Drag-2
+    </div>
+    <script type="text/javascript">
+      zeit.cms.createDraggableContentObject('drag');
+      zeit.cms.createDraggableContentObject('drag2');
+    </script>
+  </body>
+</html>

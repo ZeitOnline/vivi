@@ -53,6 +53,7 @@ MochiKit.Signal.connect(
 
 
 zeit.cms.createDraggableContentObject = function(element, options) {
+    element = $(element);
     var default_options = {
         drop_query_args: {},
         endeffect: null,
@@ -563,7 +564,7 @@ var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
     initialize: function() {
         arguments.callee.$.initialize.call(this);
         var new_li = LI({'class': 'new'},
-                        'Weitere Einträge durch Drag and Drop hinzufügen…');
+                        'Weitere Einträge durch Drag and Drop hinzufügen …');
         appendChildNodes(this.ul_element, new_li);
         this.drop_target = new_li;
     },
