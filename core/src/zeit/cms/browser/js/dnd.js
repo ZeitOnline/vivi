@@ -321,9 +321,11 @@ var ObjectReferenceWidget = Class.extend({
     },
 
     selectObject: function(unique_id) {
-        this.changed = true;
-        this.input.value = unique_id;
-        MochiKit.Signal.signal(this.input, 'onchange');
+        var self = this;
+        self.changed = true;
+        self.input.value = unique_id;
+        self.input.focus();
+        MochiKit.Signal.signal(self.input, 'onchange', {target: self.input});
     },
 
     getObject: function() {
