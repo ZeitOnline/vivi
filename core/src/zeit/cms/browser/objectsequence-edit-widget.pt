@@ -1,17 +1,11 @@
 <div class="objectsequencewidget"
   tal:attributes="id view/name">
   <tal:data tal:repeat="item view/_getFormValue">
-      <input type="hidden"
+      <input type="hidden" class="uniqueId" 
         tal:attributes="
         name string:${view/name}.${repeat/item/index};
         id string:${view/name}.${repeat/item/index};
         value item/uniqueId" 
-        />
-      <input type="hidden"
-        tal:attributes="
-        name string:${view/name}.title.${repeat/item/index};
-        id string:${view/name}.title.${repeat/item/index};
-        value item/title" 
         />
   </tal:data>
   <input tal:replace="structure view/marker" />

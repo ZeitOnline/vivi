@@ -60,6 +60,17 @@
     permission="zope.Public"
     />
 
+  <!-- MultiObjectSequenceWidget -->
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer=".interfaces.ICMSLayer"
+    name="zeit.cms.browser.object-widget-details"
+    class=".widget.ObjectSequenceWidgetDetails"
+    template="objectsequence-widget-details.pt"
+    permission="zope.View"
+    />
+
   <!-- date time -->
   <adapter
     for="zope.schema.interfaces.IDatetime

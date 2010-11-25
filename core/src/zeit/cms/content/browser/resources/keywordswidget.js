@@ -136,4 +136,13 @@ var KeywordsWidget = ObjectSequenceWidgetBase.extend({
         connect(textinput, 'onkeyup', this, 'handleTextinput');
     },
 
+    getTitleFieldName: function(index) {
+        return this.widget_id + '.title.' + index;
+    },
+
+    getTitleField: function(index) {
+        return getElement(this.getTitleFieldName(index));
+    }
+
+
 });

@@ -413,36 +413,68 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
 var ObjectSequenceWidgetBase = Class.extend({
 
     construct: function(widget_id) {
-        var othis = this;
+        var self = this;
+        self.detail_cache = {};
         this.widget_id = widget_id;
         this.element = getElement(widget_id);
         this.ul_element = getFirstElementByTagAndClassName(
             'ul', null, this.element)
         this.initialize();
-        connect(this.element, 'onclick', this, 'handleClick');
+        MochiKit.Signal.connect(this.element, 'onclick', this, 'handleClick');
+
     },
 
     initialize: function() {
-        var othis = this;
-        while (this.ul_element.firstChild != null) {
-            removeElement(this.ul_element.firstChild);
-        }
-        var amount = Number(this.getCountField().value);
-        forEach(range(amount), function(i) {
-            //var value_name = this.widget_id + '.' + i;
-            var title = othis.getTitleField(i).value;
-            appendChildNodes(
-                othis.ul_element,
-                othis.renderElement(i, title));
+        var self = this;
+        self.ul_element.innerHTML = '';
+        forEach(
+            MochiKit.DOM.getElementsByTagAndClassName(
+                'input', 'uniqueId', self.element),
+            function(input) {
+                appendChildNodes(
+                    self.ul_element,
+                    self.renderElement(i, input.value));
         });
     },
 
-    renderElement: function(index, title) {
-        return LI({'class': 'element', 'index': index},
-                  title, 
-                  IMG({'action': 'delete',
+    renderElement: function(index, uniqueId) {
+        var self = this;
+        var li = LI({'class': 'element busy', 'index': index});
+        var content = self.detail_cache[uniqueId];
+        if (isUndefinedOrNull(content)) {
+            var d = MochiKit.Async.doSimpleXMLHttpRequest(
+                application_url + '/@@redirect_to', {
+                unique_id: uniqueId,
+                view: '@@zeit.cms.browser.object-widget-details'});
+            d.addCallback(function(result) {
+                // Store the result for later use. This is just magnitudes
+                // faster than an HTTP request.
+                self.detail_cache[uniqueId] = result.responseText;
+                return result.responseText;
+            });
+        } else {
+            var d = new MochiKit.Async.Deferred()
+            d.callback(content);
+        }
+        d.addCallbacks(
+            function(result) {
+                li.innerHTML = result;
+                return result
+            },
+            function(error) {
+                zeit.cms.log_error(error);
+                li.innerHTML = "Fehler beim Laden";
+                return error
+            });
+        d.addBoth(function(result) {
+            MochiKit.DOM.removeElementClass(li, 'busy');
+            return result
+        });
+        return li;
+
+        /* IMG({'action': 'delete',
                        'index': index,
-                       'src': '/@@/zeit.cms/icons/delete.png'}));
+                       'src': '/@@/zeit.cms/icons/delete.png'})); */
     },
 
     increaseCount: function() {
@@ -471,49 +503,32 @@ var ObjectSequenceWidgetBase = Class.extend({
         return this.widget_id + '.' + index;
     },
 
-    getTitleField: function(index) {
-        return getElement(this.getTitleFieldName(index));
-    },
-
-    getTitleFieldName: function(index) {
-        return this.widget_id + '.title.' + index;
-    },
-
-    add: function(value, title) {
-        var next_id = this.increaseCount() - 1;
+    add: function(value) {
+        var self = this;
+        var next_id = self.increaseCount() - 1;
       
-        var id_field_name = this.getValueFieldName(next_id);
-        var title_field_name = this.getTitleFieldName(next_id);
+        var id_field_name = self.getValueFieldName(next_id);
 
-        appendChildNodes(
-            this.element,
+        MochiKit.DOM.appendChildNodes(
+            self.element,
             INPUT({'type': 'hidden',
+                   'class': 'uniqueId',
                    'name': id_field_name,
                    'id': id_field_name,
-                   'value': value}),
-            INPUT({'type': 'hidden',
-                   'name': title_field_name,
-                   'id': title_field_name,
-                   'value': title}));
-        this.initialize();        
+                   'value': value}));
+        this.initialize();
     },
 
     delete: function(index) {
         var othis = this;
 
         removeElement(this.getValueField(index));
-        removeElement(this.getTitleField(index));
 
         var new_index = 0;
         this.iterFields(function(value_field, title_field) {
             value_field_name = othis.getValueFieldName(new_index);
             value_field.setAttribute('name', value_field_name);
             value_field.setAttribute('id', value_field_name);
-            
-            title_field_name = othis.getTitleFieldName(new_index);
-            title_field.setAttribute('name', title_field_name);
-            title_field.setAttribute('id', title_field_name);
-
             new_index += 1;
         });
         this.decreaseCount()
@@ -526,7 +541,6 @@ var ObjectSequenceWidgetBase = Class.extend({
         var amount = Number(count_field.value)
         forEach(range(amount), function(iteration_index) {
             var value_field = othis.getValueField(iteration_index);
-            var title_field = othis.getTitleField(iteration_index);
             if (value_field === null) {
                 return;
             }
@@ -571,15 +585,7 @@ var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
 
     handleDrop: function(dragged_element) {
         var unique_id = dragged_element.uniqueId;
-        var title_element = getFirstElementByTagAndClassName(
-            null, 'Text', dragged_element);
-        var title;
-        if (title_element == undefined) {
-            title = unique_id;
-        } else {
-            title = scrapeText(title_element)
-        }
-        arguments.callee.$.add.call(this, unique_id, title);
+        arguments.callee.$.add.call(this, unique_id);
     },
 
 });

@@ -24,3 +24,10 @@ class TestObjectSequenceWidget(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent('css=li.element')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
         s.waitForElementPresent('css=li.element[index=1]')
+
+    def test_widget_should_load_details_from_server(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=li.element')
+        s.dragAndDropToObject('id=drag2', 'id=testwidget')
+        s.waitForElementPresent('css=li.element')
+        s.waitForTextPresent('2007')

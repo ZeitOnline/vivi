@@ -255,6 +255,22 @@ class MultiObjectSequenceWidget(
                 % (self.name, self.name, count))
 
 
+class ObjectSequenceWidgetDetails(object):
+
+    def __call__(self):
+        self.request.response.setHeader('Cache-Control', 'private; max-age=60')
+        return self.index()
+
+    @property
+    def title(self):
+        list_repr = zope.component.queryMultiAdapter(
+            (self.context, self.request),
+            zeit.cms.browser.interfaces.IListRepresentation)
+        if list_repr is None:
+            return self.context.uniqueId
+        return list_repr.title
+
+
 class MultiObjectSequenceDisplayWidget(
     MultiObjectSequenceWidgetBase,
     zope.app.form.browser.widget.DisplayWidget):
