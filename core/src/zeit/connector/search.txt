@@ -1,0 +1,187 @@
+========================
+Search string generation
+========================
+
+The `search` module generates search string the DAV server understands.
+
+Search variable
+===============
+
+A search variable is defined by a name and a (XML-) namespace declaration:
+
+>>> from zeit.connector.search import SearchVar
+>>> author = SearchVar('author', 'namespace')
+
+A search variable knows how to render itself for DAV:
+
+>>> author._render()
+'"namespace" "author"'
+
+Some special characters get quoted on rendering:
+
+>>> SearchVar('"sdf\n\tqwe', 'namespace')._render()
+'"namespace" "\\"sdf\\n\\tqwe"'
+
+
+Search term
+===========
+
+Search terms combine an operator and two or more operands (variables or
+constants). They are able to render themselves, too.
+
+Equals
+------
+
+>>> term = (author == 'pm')
+>>> term
+<zeit.connector.search.SearchTerm object at 0x...>
+>>> term._render()
+'(:eq "namespace" "author" "pm")'
+
+
+Not equals
+----------
+
+>>> (author != 'pm')._render()
+'(:ne "namespace" "author" "pm")'
+
+
+Less than
+---------
+
+>>> (author < 'pm')._render()
+'(:lt "namespace" "author" "pm")'
+
+
+Greater than
+------------
+
+>>> (author > 'pm')._render()
+'(:gt "namespace" "author" "pm")'
+
+
+range
+-----
+
+>>> author.range('a', 'z')._render()
+'(:range "namespace" "author" "a" "z")'
+
+
+bind
+----
+
+>>> author.bind('_')._render()
+'(:bind "namespace" "author" "_")'
+
+
+Search symbol
+=============
+
+A search symbol is rendered without quotes, it is used to when binding
+result variables:
+
+>>> from zeit.connector.search import SearchSymbol
+>>> SearchSymbol('asdf')._render()
+'asdf'
+
+>>> author.bind(SearchSymbol('_'))._render()
+'(:bind "namespace" "author" _)'
+
+
+Search expression
+=================
+
+Search expressions combine multiple search terms using boolean operators:
+
+>>> year = SearchVar('year', 'ns')
+>>> expr = (year > '2000') & (year < '2010')
+>>> expr
+<zeit.connector.search.SearchExpr object at 0x...>
+>>> expr._render()
+'(:and (:gt "ns" "year" "2000") (:lt "ns" "year" "2010"))'
+
+There can be more than two terms:
+
+>>> expr = (year == '2009') | (year == '2010') | (year == '2011')
+>>> expr._render()
+'(:or (:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010")) (:eq "ns" "year" "2011"))'
+
+There is a pretty print function so the rendered result is human readable:
+
+>>> print expr._pprint()
+(:or
+  (:or
+    (:eq "ns" "year" "2009")
+    (:eq "ns" "year" "2010"))
+  (:eq "ns" "year" "2011"))
+
+
+The DAV server expects the expressions to be n-ary opertors, so they have to
+be "cooked":
+
+>>> expr._collect()._render()
+'(:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010") (:eq "ns" "year" "2011"))'
+
+"Cooking" changes the expression so it needs to to be done only once:
+
+>>> expr._render()
+'(:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010") (:eq "ns" "year" "2011"))'
+
+But calling it again does not hurt:
+
+>>> expr._collect()._render()
+'(:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010") (:eq "ns" "year" "2011"))'
+
+The human readable variant uses the "cooked" expression, too:
+
+>>> print expr._pprint()
+(:or
+  (:eq "ns" "year" "2009")
+  (:eq "ns" "year" "2010")
+  (:eq "ns" "year" "2011"))
+
+Even new terms can be added after "cooking":
+
+>>> expr = expr | (year == '2008') | (year == '2007')
+>>> print expr._pprint()
+(:or
+  (:or
+    (:or
+      (:eq "ns" "year" "2009")
+      (:eq "ns" "year" "2010")
+      (:eq "ns" "year" "2011"))
+    (:eq "ns" "year" "2008"))
+  (:eq "ns" "year" "2007"))
+
+But then the expression has to be "cooked" again:
+
+>>> print expr._collect()._pprint()
+(:or
+  (:eq "ns" "year" "2009")
+  (:eq "ns" "year" "2010")
+  (:eq "ns" "year" "2011")
+  (:eq "ns" "year" "2008")
+  (:eq "ns" "year" "2007"))
+
+"And" and "or" might be mixed, too:
+
+>>> expr2 = ((author == 'pm') & (year == '2010')) | (author == 'ab') | \
+...     (author == 'qw')
+>>> print expr2._pprint()
+(:or
+  (:or
+    (:and
+      (:eq "namespace" "author" "pm")
+      (:eq "ns" "year" "2010"))
+    (:eq "namespace" "author" "ab"))
+  (:eq "namespace" "author" "qw"))
+
+"Cooking" is needed here, too:
+
+>>> print expr2._collect()._pprint()
+(:or
+  (:and
+    (:eq "namespace" "author" "pm")
+    (:eq "ns" "year" "2010"))
+  (:eq "namespace" "author" "ab")
+  (:eq "namespace" "author" "qw"))
