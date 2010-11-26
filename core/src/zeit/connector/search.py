@@ -51,10 +51,12 @@ class SearchExpr(object):
         return self
 
     def _render(self):
+        self._collect()
         return '(:' + ' '.join( [self.operator,] + \
                                     [o._render() for o in self.operands] ) + ')'
 
     def _pprint(self, prfix=''):
+        self._collect()
         return prfix + '(:' + self.operator + "\n" + \
             '\n'.join([o._pprint(prfix+'  ') for o in self.operands]) + ')'
 

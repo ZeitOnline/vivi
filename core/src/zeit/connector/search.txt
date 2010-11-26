@@ -100,39 +100,20 @@ Search expressions combine multiple search terms using boolean operators:
 >>> expr._render()
 '(:and (:gt "ns" "year" "2000") (:lt "ns" "year" "2010"))'
 
-There can be more than two terms:
+There can be more than two terms. The operator is n-ary, so the string gets
+"cooked" to contain only one `or` operator:
 
 >>> expr = (year == '2009') | (year == '2010') | (year == '2011')
 >>> expr._render()
-'(:or (:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010")) (:eq "ns" "year" "2011"))'
-
-There is a pretty print function so the rendered result is human readable:
-
->>> print expr._pprint()
-(:or
-  (:or
-    (:eq "ns" "year" "2009")
-    (:eq "ns" "year" "2010"))
-  (:eq "ns" "year" "2011"))
-
-
-The DAV server expects the expressions to be n-ary opertors, so they have to
-be "cooked":
-
->>> expr._collect()._render()
 '(:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010") (:eq "ns" "year" "2011"))'
 
-"Cooking" changes the expression so it needs to to be done only once:
+The "cooking" is done every time the `render` method is called. But this
+does not hurt:
 
 >>> expr._render()
 '(:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010") (:eq "ns" "year" "2011"))'
 
-But calling it again does not hurt:
-
->>> expr._collect()._render()
-'(:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010") (:eq "ns" "year" "2011"))'
-
-The human readable variant uses the "cooked" expression, too:
+There is a pretty print function so the rendered result is human readable:
 
 >>> print expr._pprint()
 (:or
@@ -140,21 +121,10 @@ The human readable variant uses the "cooked" expression, too:
   (:eq "ns" "year" "2010")
   (:eq "ns" "year" "2011"))
 
+
 Even new terms can be added after "cooking":
 
 >>> expr = expr | (year == '2008') | (year == '2007')
->>> print expr._pprint()
-(:or
-  (:or
-    (:or
-      (:eq "ns" "year" "2009")
-      (:eq "ns" "year" "2010")
-      (:eq "ns" "year" "2011"))
-    (:eq "ns" "year" "2008"))
-  (:eq "ns" "year" "2007"))
-
-But then the expression has to be "cooked" again:
-
 >>> print expr._collect()._pprint()
 (:or
   (:eq "ns" "year" "2009")
@@ -168,17 +138,6 @@ But then the expression has to be "cooked" again:
 >>> expr2 = ((author == 'pm') & (year == '2010')) | (author == 'ab') | \
 ...     (author == 'qw')
 >>> print expr2._pprint()
-(:or
-  (:or
-    (:and
-      (:eq "namespace" "author" "pm")
-      (:eq "ns" "year" "2010"))
-    (:eq "namespace" "author" "ab"))
-  (:eq "namespace" "author" "qw"))
-
-"Cooking" is needed here, too:
-
->>> print expr2._collect()._pprint()
 (:or
   (:and
     (:eq "namespace" "author" "pm")
