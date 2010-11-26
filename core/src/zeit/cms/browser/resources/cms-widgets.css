@@ -463,22 +463,26 @@ table.properties textarea {
   padding-left: 0;
 }
 .objectsequencewidget ul {
-  min-height: 40px;
-  padding-left: 5em;
+  min-height: 3em;
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 .objectsequencewidget li {
   padding-bottom: 0.5em;
 }
 
-.objectsequencewidget img[action="delete"] {
-  margin-left: 1em;
-  margin-bottom: -0.5em;
+.objectsequencewidget li a[rel="delete"] {
   cursor: pointer;
-  opacity: 0.3;
+  display: block;
+  float: left;
+  height: 16px;
+  margin-left: -16px;
+  width: 16px;
 }
 
-.objectsequencewidget img[action="delete"]:hover {
-  opacity: 1;
+.objectsequencewidget li:hover a[rel="delete"] {
+  background: transparent url(icons/cross.png) no-repeat;
 }
 
 .object-widget.droppable-active input[type=text],

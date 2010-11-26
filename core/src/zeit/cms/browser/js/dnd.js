@@ -429,6 +429,7 @@ var ObjectSequenceWidgetBase = Class.extend({
     initialize: function() {
         var self = this;
         self.ul_element.innerHTML = '';
+        var i = 0;
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
                 'input', 'uniqueId', self.element),
@@ -436,6 +437,7 @@ var ObjectSequenceWidgetBase = Class.extend({
                 appendChildNodes(
                     self.ul_element,
                     self.renderElement(i, input.value));
+                i += 1;
         });
     },
 
@@ -461,6 +463,9 @@ var ObjectSequenceWidgetBase = Class.extend({
         d.addCallbacks(
             function(result) {
                 li.innerHTML = result;
+                li.insertBefore(
+                    A({href: index, rel: "delete"}),
+                    li.firstChild);
                 return result
             },
             function(error) {
@@ -473,10 +478,6 @@ var ObjectSequenceWidgetBase = Class.extend({
             return result
         });
         return li;
-
-        /* IMG({'action': 'delete',
-                       'index': index,
-                       'src': '/@@/zeit.cms/icons/delete.png'})); */
     },
 
     increaseCount: function() {
@@ -525,17 +526,17 @@ var ObjectSequenceWidgetBase = Class.extend({
     delete: function(index) {
         var self = this;
 
-        removeElement(this.getValueField(index));
+        removeElement(self.getValueField(index));
 
         var new_index = 0;
-        this.iterFields(function(value_field, title_field) {
+        self.iterFields(function(value_field) {
             value_field_name = self.getValueFieldName(new_index);
             value_field.setAttribute('name', value_field_name);
             value_field.setAttribute('id', value_field_name);
             new_index += 1;
         });
-        this.decreaseCount()
-        this.initialize();
+        self.decreaseCount()
+        self.initialize();
         self.changed();
     },
 
@@ -548,17 +549,21 @@ var ObjectSequenceWidgetBase = Class.extend({
             if (value_field === null) {
                 return;
             }
-            callable(value_field, title_field);
+            callable(value_field);
         });
     },
 
     handleClick: function(event) {
+        var self = this;
         var target = event.target();
-        var action = target.getAttribute('action');
-        var index = target.getAttribute('index');
-        if (action && index) {
-            var func = bind(action, this);
-            func(index);
+        if (target.nodeName == 'A' &&
+            target.rel) {
+            var action = target.rel;
+            var argument = target.getAttribute('href');
+        }
+        if (action && argument) {
+            self[action](argument);
+            event.stop();
         }
     },
 
