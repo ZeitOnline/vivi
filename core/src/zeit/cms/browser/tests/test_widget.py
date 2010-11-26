@@ -69,3 +69,26 @@ class TestObjectSequenceWidget(zeit.cms.testing.SeleniumTestCase):
         s.click('css=a[rel=delete]')
         s.waitForValue('css=input[name=testwidget.count]', '0')
 
+    def test_elements_should_be_sortable(self):
+        s = self.selenium
+        s.dragAndDropToObject('id=drag', 'id=testwidget')
+        s.dragAndDropToObject('id=drag2', 'id=testwidget')
+        s.assertOrdered('css=li.element[index=0]', 'css=li.element[index=1]')
+        s.dragAndDropToObject('css=li.element[index=0]',
+                              'css=li.element[index=1]')
+        s.assertOrdered('css=li.element[index=1]', 'css=li.element[index=0]')
+
+    def test_sorting_should_update_hidden_field_indexes(self):
+        s = self.selenium
+        s.dragAndDropToObject('id=drag', 'id=testwidget')
+        s.dragAndDropToObject('id=drag2', 'id=testwidget')
+        s.assertValue('css=input[name=testwidget.0]',
+                      'http://xml.zeit.de/testcontent')
+        s.assertValue('css=input[name=testwidget.1]',
+                      'http://xml.zeit.de/2007')
+        s.dragAndDropToObject('css=li.element[index=0]',
+                              'css=li.element[index=1]')
+        s.assertValue('css=input[name=testwidget.0]',
+                      'http://xml.zeit.de/2007')
+        s.assertValue('css=input[name=testwidget.1]',
+                      'http://xml.zeit.de/testcontent')

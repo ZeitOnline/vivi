@@ -428,6 +428,7 @@ var ObjectSequenceWidgetBase = Class.extend({
 
     initialize: function() {
         var self = this;
+        MochiKit.Sortable.destroy(self.ul_element);
         self.ul_element.innerHTML = '';
         var i = 0;
         forEach(
@@ -439,11 +440,16 @@ var ObjectSequenceWidgetBase = Class.extend({
                     self.renderElement(i, input.value));
                 i += 1;
         });
+        MochiKit.Sortable.create(
+            self.ul_element, {
+            onUpdate: function() { self.update_order_from_ul() }
+            });
     },
 
     renderElement: function(index, uniqueId) {
         var self = this;
-        var li = LI({'class': 'element busy', 'index': index});
+        var li_id = self.widget_id + '_sort_li_' + index;
+        var li = LI({'class': 'element busy', 'index': index, 'id': li_id});
         var content = self.detail_cache[uniqueId];
         if (isUndefinedOrNull(content)) {
             var d = MochiKit.Async.doSimpleXMLHttpRequest(
@@ -573,6 +579,24 @@ var ObjectSequenceWidgetBase = Class.extend({
             self.getCountField(), 'onchange', {target: self.getCountField()});
     },
 
+    update_order_from_ul: function() {
+        var self = this;
+        var ordered_ids = [];
+        forEach(
+            MochiKit.DOM.getElementsByTagAndClassName(
+                'li', null, self.ul_element),
+            function(li) {
+                var index = li.getAttribute('index');
+                if (!isUndefinedOrNull(index)) {
+                    ordered_ids.push(self.getValueField(index).value);
+                }
+        });
+        for (var i=0; i<ordered_ids.length; i++) {
+            self.getValueField(i).value = ordered_ids[i];
+        }
+        self.changed();
+    }
+
 });
 
 
@@ -598,8 +622,12 @@ var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
     },
 
     handleDrop: function(dragged_element) {
+        var self = this;
+        if (MochiKit.DOM.isChildNode(dragged_element, self.ul_element)) {
+            return
+        }
         var unique_id = dragged_element.uniqueId;
-        arguments.callee.$.add.call(this, unique_id);
+        arguments.callee.$.add.call(self, unique_id);
     },
 
 });

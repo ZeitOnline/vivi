@@ -469,6 +469,7 @@ table.properties textarea {
   padding: 0;
 }
 .objectsequencewidget li {
+  cursor: move;
   padding-bottom: 0.5em;
 }
 
