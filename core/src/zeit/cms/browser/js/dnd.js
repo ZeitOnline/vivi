@@ -517,22 +517,24 @@ var ObjectSequenceWidgetBase = Class.extend({
                    'id': id_field_name,
                    'value': value}));
         this.initialize();
+        self.changed();
     },
 
     delete: function(index) {
-        var othis = this;
+        var self = this;
 
         removeElement(this.getValueField(index));
 
         var new_index = 0;
         this.iterFields(function(value_field, title_field) {
-            value_field_name = othis.getValueFieldName(new_index);
+            value_field_name = self.getValueFieldName(new_index);
             value_field.setAttribute('name', value_field_name);
             value_field.setAttribute('id', value_field_name);
             new_index += 1;
         });
         this.decreaseCount()
         this.initialize();
+        self.changed();
     },
 
     iterFields: function(callable) {
@@ -558,6 +560,11 @@ var ObjectSequenceWidgetBase = Class.extend({
         }
     },
 
+    changed: function() {
+        var self = this;
+        MochiKit.Signal.signal(
+            self.getCountField(), 'onchange', {target: self.getCountField()});
+    },
 
 });
 

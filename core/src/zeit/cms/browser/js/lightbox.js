@@ -249,6 +249,10 @@ zeit.cms.SubPageForm = Class.extend({
                     var outer = MochiKit.DOM.getFirstParentByTagAndClassName(
                         event.target(), null, 'widget-outer');
                     MochiKit.DOM.addElementClass(outer, 'dirty');
+                    if (event.target().nodeName == 'INPUT' &&
+                        event.target().type == 'hidden') {
+                        self.handle_submit();
+                    }
             }));
         });
     },
