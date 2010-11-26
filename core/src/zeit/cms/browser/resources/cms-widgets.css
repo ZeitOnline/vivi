@@ -469,9 +469,7 @@ table.properties textarea {
 .objectsequencewidget li {
   padding-bottom: 0.5em;
 }
-.objectsequencewidget {
-  background: white url("icons/drop-widget.png") no-repeat 1em center;
-}
+
 .objectsequencewidget img[action="delete"] {
   margin-left: 1em;
   margin-bottom: -0.5em;
