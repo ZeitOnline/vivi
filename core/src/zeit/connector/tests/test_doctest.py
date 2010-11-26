@@ -13,7 +13,7 @@ def test_suite():
         'connector.txt',
         'locking.txt',
         'resource.txt',
-        'search.txt',
+        'search-ft.txt',
         'uuid.txt',
         )
     suite.addTest(real)
@@ -43,5 +43,9 @@ def test_suite():
 
     import zeit.connector.connector
     suite.addTest(doctest.DocTestSuite(zeit.connector.connector))
+    suite.addTest(doctest.DocFileSuite(
+        'search.txt',
+        optionflags=doctest.ELLIPSIS, # doctest.NORMALIZE_WHITESPACE
+        package='zeit.connector'))
 
     return suite
