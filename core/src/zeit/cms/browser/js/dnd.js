@@ -412,9 +412,11 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
 
 var ObjectSequenceWidgetBase = Class.extend({
 
+    // global detail cache
+    detail_cache: {},
+
     construct: function(widget_id) {
         var self = this;
-        self.detail_cache = {};
         this.widget_id = widget_id;
         this.element = getElement(widget_id);
         this.ul_element = getFirstElementByTagAndClassName(
