@@ -76,27 +76,27 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent('css=li.element')
         s.waitForTextPresent('2007')
 
-    def test_delete_should_remove_text(self):
+    def test_remove_should_remove_text(self):
         s = self.selenium
         s.assertElementNotPresent('css=li.element')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
         s.waitForElementPresent('css=li.element')
-        s.click('css=a[rel=delete]')
+        s.click('css=a[rel=remove]')
         s.waitForElementNotPresent('css=li.element')
 
-    def test_delete_should_removee_hidden_field_with_unique_id(self):
+    def test_remove_should_removee_hidden_field_with_unique_id(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForElementPresent('css=input[name=testwidget.0]')
-        s.click('css=a[rel=delete]')
+        s.click('css=a[rel=remove]')
         s.waitForElementNotPresent('css=input[name=testwidget.0]')
 
-    def test_delete_should_decrease_count(self):
+    def test_remove_should_decrease_count(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForValue('css=input[name=testwidget.count]', '1')
-        s.waitForElementPresent('css=a[rel=delete]')
-        s.click('css=a[rel=delete]')
+        s.waitForElementPresent('css=a[rel=remove]')
+        s.click('css=a[rel=remove]')
         s.waitForValue('css=input[name=testwidget.count]', '0')
 
     def test_elements_should_be_sortable(self):

@@ -473,7 +473,7 @@ table.properties textarea {
   padding-bottom: 0.5em;
 }
 
-.objectsequencewidget li a[rel="delete"] {
+.objectsequencewidget li a[rel="remove"] {
   cursor: pointer;
   display: block;
   float: left;
@@ -482,7 +482,7 @@ table.properties textarea {
   width: 16px;
 }
 
-.objectsequencewidget li:hover a[rel="delete"] {
+.objectsequencewidget li:hover a[rel="remove"] {
   background: transparent url(icons/cross.png) no-repeat;
 }
 
