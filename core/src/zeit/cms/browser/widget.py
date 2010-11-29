@@ -288,6 +288,36 @@ class MultiObjectSequenceDisplayWidget(
         return self._toFormValue(value)
 
 
+
+DROP_TEMPLATE = u"""\
+<div class="drop-object-widget" id="%(name)s">
+    <input type="hidden" name="%(name)s" value="%(value)s" />
+    <div class="object-reference"></div>
+</div>
+<script>new zeit.cms.DropObjectWidget("%(name)s");</script>
+"""
+
+
+class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
+
+    def __call__(self):
+        return DROP_TEMPLATE % {
+            'name': self.name,
+            'value': self._getFormValue(),
+        }
+
+    def _toFieldValue(self, input):
+        if input == self._missing:
+            return self.context.missing_value
+        return zeit.cms.interfaces.ICMSContent(input, None)
+
+    def _toFormValue(self, value):
+        if value == self.context.missing_value:
+            return self._missing
+        return value.uniqueId
+
+
+
 DATETIME_WIDGET_ADDITIONAL = """\
 <input type="button" value="%(label)s"
     onclick="javascript:var date = new Date();

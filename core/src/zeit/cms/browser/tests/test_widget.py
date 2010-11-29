@@ -122,3 +122,30 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
                       'http://xml.zeit.de/2007')
         s.assertValue('css=input[name=testwidget.1]',
                       'http://xml.zeit.de/testcontent')
+
+
+
+class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestDropObjectWidget, self).setUp()
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/dropobjectwidget.html')
+
+    def test_no_value_should_create_empty_class(self):
+        s = self.selenium
+        s.waitForElementPresent('css=#testwidget.empty')
+
+    def test_drop_should_set_input_value(self):
+        s = self.selenium
+        s.dragAndDropToObject('id=drag', 'id=testwidget')
+        s.waitForValue('name=testwidget',
+                       'http://xml.zeit.de/testcontent')
+
+    def test_delete_should_clear_input_value(self):
+        s = self.selenium
+        s.dragAndDropToObject('id=drag', 'id=testwidget')
+        s.waitForNotValue('name=testwidget', '')
+        s.waitForElementPresent('css=#testwidget a')
+        s.click('css=#testwidget a')
+        s.waitForValue('name=testwidget', '')

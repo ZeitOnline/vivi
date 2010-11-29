@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="resource_library:zeit.cms.javascript"/>
+  </head>
+  <body id="body">
+    <div id="testwidget" style="width: 20em; height:20em;">
+      <input type="hidden" name="testwidget" value="" />
+      <div class="object-reference"></div>
+    </div>
+    <script type="text/javascript">
+      var application_url = '../../../';
+      var widget = new zeit.cms.DropObjectWidget('testwidget');
+    </script>
+
+    <div id="drag">
+      <span class="uniqueId"
+        style="display: none">http://xml.zeit.de/testcontent</span>
+      Drag
+    </div>
+    <div id="drag2">
+      <span class="uniqueId"
+        style="display: none">http://xml.zeit.de/2007</span>
+      Drag-2
+    </div>
+    <script type="text/javascript">
+      zeit.cms.createDraggableContentObject('drag');
+      zeit.cms.createDraggableContentObject('drag2');
+    </script>
+  </body>
+</html>
