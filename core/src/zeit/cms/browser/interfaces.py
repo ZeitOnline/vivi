@@ -23,6 +23,15 @@ class ICMSLayer(zope.publisher.interfaces.browser.IBrowserRequest):
     """Master Layer for CMS skin"""
 
 
+class IGlobalSearchLayer(zope.publisher.interfaces.browser.IBrowserRequest):
+    """A for UI elements which require a search to be available.
+
+    This layer is exists to migrate elements to use the global search once it
+    becomes available (#6380).
+
+    """
+
+
 class ICMSTestingSkin(ICMSOldStyles,
                       ICMSLayer,
                       z3c.hashedresource.interfaces.IHashedResourceSkin,
