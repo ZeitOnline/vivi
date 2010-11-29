@@ -185,19 +185,8 @@ class MultiObjectSequenceWidgetBase(object):
     def _toFormValue(self, value):
         result = []
         for obj in value:
-            list_repr = zope.component.queryMultiAdapter(
-                (obj, self.request),
-                zeit.cms.browser.interfaces.IListRepresentation)
-            if list_repr is None:
-                title = obj.uniqueId
-                url = None
-            else:
-                title = list_repr.title
-                url = list_repr.url
-            result.append(
-                {'uniqueId': obj.uniqueId,
-                 'title': title,
-                 'url': url})
+            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
+                result.append({'uniqueId': obj.uniqueId})
         return result
 
 
@@ -246,8 +235,9 @@ class MultiObjectSequenceWidget(
         return result
 
     def _toFieldValue(self, value):
-        return tuple(zeit.cms.interfaces.ICMSContent(unique_id)
-                     for unique_id in value)
+        field_value = tuple(zeit.cms.interfaces.ICMSContent(unique_id, None)
+                            for unique_id in value)
+        return tuple(value for value in field_value if value is not None)
 
     @property
     def marker(self):

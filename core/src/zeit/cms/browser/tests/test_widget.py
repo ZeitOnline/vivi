@@ -2,13 +2,42 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
+import unittest2
 import zeit.cms.testing
 
 
-class TestObjectSequenceWidget(zeit.cms.testing.SeleniumTestCase):
+class TestObjectSequenceWidget(unittest2.TestCase):
+
+    def test_to_form_value_ignores_non_cms_content(self):
+        from zeit.cms.browser.widget import MultiObjectSequenceWidget
+        import zeit.cms.interfaces
+        import zope.interface
+        context = mock.Mock()
+        context.__name__ = 'name'
+        widget = MultiObjectSequenceWidget(
+            context, mock.Mock(), mock.Mock(), mock.Mock())
+        content = mock.Mock()
+        zope.interface.alsoProvides(content, zeit.cms.interfaces.ICMSContent)
+        result = widget._toFormValue([mock.sentinel.foo, content])
+        self.assertEqual([{'uniqueId': content.uniqueId}], result)
+
+    def test_to_field_value_ignores_non_cms_content(self):
+        from zeit.cms.browser.widget import MultiObjectSequenceWidget
+        import zeit.cms.interfaces
+        import zope.interface
+        context = mock.Mock()
+        context.__name__ = 'name'
+        widget = MultiObjectSequenceWidget(
+            context, mock.Mock(), mock.Mock(), mock.Mock())
+        self.assertEqual(
+            (), widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar]))
+
+
+class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestObjectSequenceWidget, self).setUp()
+        super(TestObjectSequenceWidgetJavascript, self).setUp()
         self.open(
             '/@@/zeit.cms.javascript.base/tests/objectsequencewidget.html')
 
@@ -66,6 +95,7 @@ class TestObjectSequenceWidget(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForValue('css=input[name=testwidget.count]', '1')
+        s.waitForElementPresent('css=a[rel=delete]')
         s.click('css=a[rel=delete]')
         s.waitForValue('css=input[name=testwidget.count]', '0')
 
