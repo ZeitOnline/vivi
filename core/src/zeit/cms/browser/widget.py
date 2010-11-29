@@ -16,6 +16,7 @@ import zope.app.form.browser.sequencewidget
 import zope.app.form.browser.widget
 import zope.app.form.interfaces
 import zope.app.pagetemplate
+import zope.cachedescriptors.property
 import zope.component
 import zope.interface
 import zope.schema
