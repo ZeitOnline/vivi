@@ -54,7 +54,7 @@
 .inline-form .dirty div.widget > input,
 .inline-form .dirty div.widget > textarea,
 .inline-form .dirty div.widget > div > div > select,
-.inline-form .dirty div.widget > .object-widget > .object-reference {
+.inline-form .dirty div.widget > .objectsequencewidget {
   background-color: yellow;
 }
 

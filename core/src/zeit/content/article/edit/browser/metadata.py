@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zc.resourcelibrary
+import zeit.cms.asset.browser
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zope.app.pagetemplate
@@ -97,3 +98,24 @@ class Misc(MetadataForm):
             'commentsAllowed', 'dailyNewsletter', 'foldable', 'minimal_header',
             'countings', 'is_content', 'banner', 'banner_id')
 
+class Assets(MetadataForm,
+             zeit.cms.asset.browser.form.AssetBase):
+
+    legend = _('Assets')
+    prefix = 'assets'
+
+    @staticmethod
+    def sequence_widget(context, request):
+        """Custom factory until we can register the widget globally."""
+        return zeit.cms.browser.widget.MultiObjectSequenceWidget(
+            context,
+            context.value_type,
+            context.value_type.source,
+            request)
+
+    @property
+    def form_fields(self):
+        form_fields = super(Assets, self).form_fields
+        form_fields['related'].custom_widget = self.sequence_widget
+        form_fields['images'].custom_widget = self.sequence_widget
+        return form_fields.omit('badges')

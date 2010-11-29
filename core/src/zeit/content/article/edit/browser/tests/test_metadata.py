@@ -55,3 +55,41 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.type('id=head.year', 'ASDF')
         s.click('head.actions.apply')
         s.waitForElementPresent('css=.inline-form div.error')
+
+    def test_relateds_should_be_addable(self):
+        s = self.selenium
+        # Prepare clipboard
+        s.click('id=clip-add-folder-link')
+        s.type('id=clip-add-folder-title', 'Favoriten')
+        s.click('id=clip-add-folder-submit')
+        s.waitForElementPresent('css=#ClipboardPanel li[uniqueId="Favoriten"]')
+        s.click('css=#ClipboardPanel li[uniqueId="Favoriten"]')
+        s.waitForElementPresent('css=#ClipboardPanel li[action=collapse]')
+
+        # Clip two elements
+        self.open('/repository/online/2007/01/eta-zapatero')
+        s.dragAndDropToObject(
+            'css=#breadcrumbs li:last-child a',
+            'css=#ClipboardPanel li[uniqueId="Favoriten"]')
+        s.waitForElementPresent('css=#ClipboardPanel ul > li > ul > li')
+        self.open('/repository/online/2007/01/Saarland')
+        s.dragAndDropToObject(
+            'css=#breadcrumbs li:last-child a',
+            'css=#ClipboardPanel li[uniqueId="Favoriten"] a')
+        s.waitForElementPresent('css=#ClipboardPanel ul > li > ul > li + li')
+
+        # Open editor again
+        s.clickAndWait('css=#WorkingcopyPanel td a')
+        self.selenium.waitForElementPresent('id=assets.related')
+
+        # Add elements to widget
+        s.dragAndDropToObject(
+            'css=#ClipboardPanel ul > li > ul > li > ul > li:first-child',
+            'xpath=//*[@id="assets.related"]//ul')
+        s.waitForElementPresent(
+            'xpath=//*[@id="assets.related"]//li[1]')
+        s.dragAndDropToObject(
+            'css=#ClipboardPanel ul > li > ul > li ul > li:nth-child(2)',
+            'xpath=//*[@id="assets.related"]//ul')
+        s.waitForElementPresent(
+            'xpath=//*[@id="assets.related"]//li[2]')
