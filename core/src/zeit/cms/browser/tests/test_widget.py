@@ -34,6 +34,8 @@ class TestObjectSequenceWidget(unittest2.TestCase):
             (), widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar]))
 
 
+
+
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
@@ -149,3 +151,39 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent('css=#testwidget a')
         s.click('css=#testwidget a')
         s.waitForValue('name=testwidget', '')
+
+
+class TestDropObjectWidgetIntegration(unittest2.TestCase,
+                                      zeit.cms.testing.FunctionalTestCase):
+
+    def get_choice(self):
+        import zeit.cms.content.contentsource
+        import zope.schema
+        return zope.schema.Choice(
+            source=zeit.cms.content.contentsource.cmsContentSource)
+
+    def test_widget_should_be_available_with_search(self):
+        from zeit.cms.browser.widget import DropObjectWidget
+        import zeit.cms.browser.interfaces
+        import zope.app.form.browser.interfaces
+        import zope.interface
+        import zope.publisher.browser
+        choice = self.get_choice()
+        request = zope.publisher.browser.TestRequest()
+        zope.interface.alsoProvides(
+            request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        widget = zope.component.getMultiAdapter(
+            (choice, request),
+            zope.app.form.browser.interfaces.IInputWidget)
+        self.assertIsInstance(widget, DropObjectWidget)
+
+    def test_widget_should_not_be_available_without_search(self):
+        from zeit.cms.browser.widget import DropObjectWidget
+        import zope.app.form.browser.interfaces
+        import zope.publisher.browser
+        choice = self.get_choice()
+        request = zope.publisher.browser.TestRequest()
+        widget = zope.component.getMultiAdapter(
+            (choice, request),
+            zope.app.form.browser.interfaces.IInputWidget)
+        self.assertNotIsInstance(widget, DropObjectWidget)

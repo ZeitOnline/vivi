@@ -300,6 +300,10 @@ DROP_TEMPLATE = u"""\
 
 class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
+    def __init__(self, context, source, request):
+        super(DropObjectWidget, self).__init__(context, request)
+        self.source = source
+
     def __call__(self):
         return DROP_TEMPLATE % {
             'name': self.name,

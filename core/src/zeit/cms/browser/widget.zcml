@@ -60,6 +60,18 @@
     permission="zope.Public"
     />
 
+  <!-- DropObjectWidget -->
+
+  <adapter
+    for="
+    zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.IGlobalSearchLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.DropObjectWidget"
+    permission="zope.Public"
+    />
+
   <!-- MultiObjectSequenceWidget -->
 
   <browser:page
