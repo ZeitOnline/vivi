@@ -473,8 +473,8 @@ table.properties textarea {
   padding-bottom: 0.5em;
 }
 
-+.objectsequencewidget li a[rel="remove"],
-+.drop-object-widget .object-reference a[rel="remove"] {
+.objectsequencewidget li a[rel="remove"],
+.drop-object-widget .object-reference a[rel="remove"] {
   cursor: pointer;
   display: block;
   float: left;
