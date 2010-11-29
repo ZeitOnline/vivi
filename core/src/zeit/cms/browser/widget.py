@@ -266,6 +266,8 @@ class MultiObjectSequenceDisplayWidget(
     MultiObjectSequenceWidgetBase,
     zope.app.form.browser.widget.DisplayWidget):
 
+    # XXX I'm pretty sure there are no tests for this widget.
+
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'objectsequence-display-widget.pt')
 
