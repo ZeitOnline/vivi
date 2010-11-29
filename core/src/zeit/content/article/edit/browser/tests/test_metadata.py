@@ -93,3 +93,8 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
             'xpath=//*[@id="assets.related"]//ul')
         s.waitForElementPresent(
             'xpath=//*[@id="assets.related"]//li[2]')
+
+    def test_galleries_should_use_drop_widget(self):
+        s = self.selenium
+        s.waitForElementPresent(
+            'css=.drop-object-widget input[name="assets.gallery"]')
