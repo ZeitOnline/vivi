@@ -410,7 +410,7 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
 
 
 
-var ObjectSequenceWidgetBase = Class.extend({
+zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
     // global detail cache
     detail_cache: {},
@@ -418,12 +418,18 @@ var ObjectSequenceWidgetBase = Class.extend({
     construct: function(widget_id) {
         var self = this;
         this.widget_id = widget_id;
-        this.element = getElement(widget_id);
+        this.element = $(widget_id);
         this.ul_element = getFirstElementByTagAndClassName(
             'ul', null, this.element)
         this.initialize();
+        // XXX Need to unregister those events
         MochiKit.Signal.connect(this.element, 'onclick', this, 'handleClick');
-
+        new MochiKit.DragAndDrop.Droppable(self.element, {
+            hoverclass: 'drop-widget-hover',
+            ondrop: function(element, last_active_element, event) {
+                self.handleDrop(element);
+            },
+        });
     },
 
     initialize: function() {
@@ -444,6 +450,9 @@ var ObjectSequenceWidgetBase = Class.extend({
             self.ul_element, {
             onUpdate: function() { self.update_order_from_ul() }
             });
+        var new_li = LI({'class': 'new'},
+                        'Weitere Einträge durch Drag and Drop hinzufügen …');
+        appendChildNodes(self.ul_element, new_li);
     },
 
     renderElement: function(index, uniqueId) {
@@ -573,6 +582,17 @@ var ObjectSequenceWidgetBase = Class.extend({
         }
     },
 
+    handleDrop: function(dragged_element) {
+        var self = this;
+        if (MochiKit.DOM.isChildNode(dragged_element, self.ul_element)) {
+            return
+        }
+        var unique_id = dragged_element.uniqueId;
+        if (unique_id) {
+            self.add.call(self, unique_id);
+        }
+    },
+
     changed: function() {
         var self = this;
         MochiKit.Signal.signal(
@@ -596,41 +616,6 @@ var ObjectSequenceWidgetBase = Class.extend({
         }
         self.changed();
     }
-
-});
-
-
-var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
-
-    construct: function(widget_id) {
-        arguments.callee.$.construct.call(this, widget_id)
-        var othis = this;
-        new Droppable(this.element, {
-            hoverclass: 'drop-widget-hover',
-            ondrop: function(element, last_active_element, event) {
-                othis.handleDrop(element);
-            },
-        });
-    },
-
-    initialize: function() {
-        arguments.callee.$.initialize.call(this);
-        var new_li = LI({'class': 'new'},
-                        'Weitere Einträge durch Drag and Drop hinzufügen …');
-        appendChildNodes(this.ul_element, new_li);
-        this.drop_target = new_li;
-    },
-
-    handleDrop: function(dragged_element) {
-        var self = this;
-        if (MochiKit.DOM.isChildNode(dragged_element, self.ul_element)) {
-            return
-        }
-        var unique_id = dragged_element.uniqueId;
-        if (unique_id) {
-            arguments.callee.$.add.call(self, unique_id);
-        }
-    },
 
 });
 

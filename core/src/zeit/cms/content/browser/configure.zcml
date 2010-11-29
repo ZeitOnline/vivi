@@ -17,12 +17,6 @@
     allowed_interface="zeit.cms.browser.interfaces.ITree"
     />
 
-  <resourceLibrary
-    name="zeit.cms.KeywordsWidget"
-    require="mochikit gocept.mochikit.lightbox">
-    <directory source="resources" include="keywordswidget.js" />
-  </resourceLibrary>
-
   <adapter
     for="
     zope.schema.interfaces.ITuple

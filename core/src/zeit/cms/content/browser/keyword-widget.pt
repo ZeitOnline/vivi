@@ -1,7 +1,6 @@
 <div class="keywordwidget"
   i18n:domain="zeit.cms"
   tal:attributes="id view/name">
-  <tal:block replace="resource_library:zeit.cms.KeywordsWidget" />
   <tal:data tal:repeat="item view/_getFormValue">
     <input type="hidden"
       tal:attributes="

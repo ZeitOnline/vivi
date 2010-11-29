@@ -15,6 +15,6 @@
   </ul>
 </div>
 <script tal:content="string:
-  var widget = new ObjectSequenceWidget('${view/name}', self);
+  var widget = new zeit.cms.ObjectSequenceWidget('${view/name}', self);
 ">
 </script>
