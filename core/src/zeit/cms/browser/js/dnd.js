@@ -627,7 +627,9 @@ var ObjectSequenceWidget = ObjectSequenceWidgetBase.extend({
             return
         }
         var unique_id = dragged_element.uniqueId;
-        arguments.callee.$.add.call(self, unique_id);
+        if (unique_id) {
+            arguments.callee.$.add.call(self, unique_id);
+        }
     },
 
 });
