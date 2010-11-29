@@ -66,6 +66,10 @@ class KeywordsWidget(zeit.cms.browser.widget.MultiObjectSequenceWidget):
     template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
         'keyword-widget.pt')
 
+    def __init__(self, context, field, schema, request):
+        # XXX make the tests pass. This widget is going to vanish soon (#8374)
+        super(KeywordsWidget, self).__init__(context, None, request)
+
     def _toFieldValue(self, value):
         keywords = zope.component.getUtility(
             zeit.cms.content.interfaces.IKeywords)

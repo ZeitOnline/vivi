@@ -16,7 +16,7 @@ class TestObjectSequenceWidget(unittest2.TestCase):
         context = mock.Mock()
         context.__name__ = 'name'
         widget = MultiObjectSequenceWidget(
-            context, mock.Mock(), mock.Mock(), mock.Mock())
+            context, mock.Mock(), mock.Mock())
         content = mock.Mock()
         zope.interface.alsoProvides(content, zeit.cms.interfaces.ICMSContent)
         result = widget._toFormValue([mock.sentinel.foo, content])
@@ -29,11 +29,46 @@ class TestObjectSequenceWidget(unittest2.TestCase):
         context = mock.Mock()
         context.__name__ = 'name'
         widget = MultiObjectSequenceWidget(
-            context, mock.Mock(), mock.Mock(), mock.Mock())
+            context, mock.Mock(), mock.Mock())
         self.assertEqual(
             (), widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar]))
 
 
+class TestObjectSequenceWidgetIntegration(unittest2.TestCase,
+                                          zeit.cms.testing.FunctionalTestCase):
+
+    def get_field(self):
+        import zeit.cms.content.contentsource
+        import zope.schema
+        return zope.schema.Tuple(
+            value_type=zope.schema.Choice(
+                source=zeit.cms.content.contentsource.cmsContentSource))
+
+    def test_widget_should_be_available_with_search(self):
+        from zeit.cms.browser.widget import MultiObjectSequenceWidget
+        import zeit.cms.browser.interfaces
+        import zope.app.form.browser.interfaces
+        import zope.interface
+        import zope.publisher.browser
+        field = self.get_field()
+        request = zope.publisher.browser.TestRequest()
+        zope.interface.alsoProvides(
+            request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        widget = zope.component.getMultiAdapter(
+            (field, request),
+            zope.app.form.browser.interfaces.IInputWidget)
+        self.assertIsInstance(widget, MultiObjectSequenceWidget)
+
+    def test_widget_should_not_be_available_without_search(self):
+        from zeit.cms.browser.widget import MultiObjectSequenceWidget
+        import zope.app.form.browser.interfaces
+        import zope.publisher.browser
+        field = self.get_field()
+        request = zope.publisher.browser.TestRequest()
+        widget = zope.component.getMultiAdapter(
+            (field, request),
+            zope.app.form.browser.interfaces.IInputWidget)
+        self.assertNotIsInstance(widget, MultiObjectSequenceWidget)
 
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
@@ -78,27 +113,27 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent('css=li.element')
         s.waitForTextPresent('2007')
 
-    def test_delete_should_remove_text(self):
+    def test_remove_should_remove_text(self):
         s = self.selenium
         s.assertElementNotPresent('css=li.element')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
         s.waitForElementPresent('css=li.element')
-        s.click('css=a[rel=delete]')
+        s.click('css=a[rel=remove]')
         s.waitForElementNotPresent('css=li.element')
 
-    def test_delete_should_removee_hidden_field_with_unique_id(self):
+    def test_remove_should_removee_hidden_field_with_unique_id(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForElementPresent('css=input[name=testwidget.0]')
-        s.click('css=a[rel=delete]')
+        s.click('css=a[rel=remove]')
         s.waitForElementNotPresent('css=input[name=testwidget.0]')
 
-    def test_delete_should_decrease_count(self):
+    def test_remove_should_decrease_count(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForValue('css=input[name=testwidget.count]', '1')
-        s.waitForElementPresent('css=a[rel=delete]')
-        s.click('css=a[rel=delete]')
+        s.waitForElementPresent('css=a[rel=remove]')
+        s.click('css=a[rel=remove]')
         s.waitForValue('css=input[name=testwidget.count]', '0')
 
     def test_elements_should_be_sortable(self):
@@ -144,7 +179,7 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s.waitForValue('name=testwidget',
                        'http://xml.zeit.de/testcontent')
 
-    def test_delete_should_clear_input_value(self):
+    def test_remove_should_clear_input_value(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForNotValue('name=testwidget', '')

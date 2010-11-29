@@ -74,6 +74,17 @@
 
   <!-- MultiObjectSequenceWidget -->
 
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.IGlobalSearchLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.MultiObjectSequenceWidget"
+    permission="zope.Public"
+    />
+
+
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
     layer=".interfaces.ICMSLayer"
