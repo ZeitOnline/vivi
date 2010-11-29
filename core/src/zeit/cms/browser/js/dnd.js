@@ -10,21 +10,20 @@ MochiKit.Signal.connect(
     }
     var pane_clone_from = draggable.element.pane_element;
     var uniqueId = draggable.element.textContent;
-    if (pane_clone_from.nodeName == 'TR') {
-        var dim = null;
-    } else {
-        var dim = MochiKit.Style.getElementDimensions(pane_clone_from); 
+    var dim = null;
+    if (pane_clone_from.nodeName != 'TR') {
+        dim = MochiKit.Style.getElementDimensions(pane_clone_from); 
     }
 
     var div = $('drag-pane');
     if (div) {
         div.parentNode.removeChild(div);
     }
-    div = DIV({id: 'drag-pane', class: 'content-drag-pane'});
+    div = DIV({'id': 'drag-pane', 'class': 'content-drag-pane'});
     div.appendChild(pane_clone_from.cloneNode(true));
     div.dragged_element = draggable.element;
     div.uniqueId = uniqueId;
-    div.drop_query_args = draggable.element.drop_query_args || {}
+    div.drop_query_args = draggable.element.drop_query_args || {};
     
     draggable.element = div;
     draggable.offset = [-10, -10];
@@ -44,7 +43,7 @@ MochiKit.Signal.connect(
         var element = draggable.element;
         var dragged_element = element.dragged_element;
         if (isUndefinedOrNull(dragged_element)) {
-            return
+            return;
         }
         draggable.element = dragged_element;
         MochiKit.Visual.fade(element);
@@ -59,7 +58,7 @@ zeit.cms.createDraggableContentObject = function(element, options) {
         endeffect: null,
         handle: element,
         starteffect: null,
-        zindex: null,
+        zindex: null
     };
     MochiKit.Base.update(default_options, options);
     var drop_query_args = default_options['drop_query_args'];
@@ -72,7 +71,7 @@ zeit.cms.createDraggableContentObject = function(element, options) {
     //element.uniqueId = unique_id_element.textContent;
     return new MochiKit.DragAndDrop.Draggable(
         unique_id_element, default_options);
-}
+};
 
 
 zeit.cms.TableSorter = gocept.Class.extend({
@@ -96,7 +95,7 @@ zeit.cms.TableSorter = gocept.Class.extend({
                     if (tbody.nodeName != 'TBODY') {
                         // TODO: i18n
                         alert('The table can only be sorted. ' +
-                              'Adding is not possible.')
+                              'Adding is not possible.');
                         return;
                     }
                     var before = null;
@@ -112,7 +111,7 @@ zeit.cms.TableSorter = gocept.Class.extend({
                     }
                     othis.dropped(element);
                 },
-                hoverclass: 'tablesort-hover',
+                hoverclass: 'tablesort-hover'
             });
         });
     
@@ -120,7 +119,8 @@ zeit.cms.TableSorter = gocept.Class.extend({
 
     dropped: function(element) {
         // pass
-    },
+    }
+
 });
 
 
@@ -142,7 +142,8 @@ zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
             self, 'zeit.cms.ObjectReferenceWidget.selected',
             unique_id, node);
         return null;
-    },
+    }
+
 });
 
 
@@ -173,7 +174,7 @@ var ObjectReferenceWidget = Class.extend({
             hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
                     self.handleDrop(element);
-            },
+            }
         });
 
         self.events.push(
@@ -193,7 +194,7 @@ var ObjectReferenceWidget = Class.extend({
         if (isUndefinedOrNull(self.add_view)) {
             MochiKit.DOM.hideElement(addbutton);
         } else {
-            MochiKit.DOM.addElementClass(self.element, 'add-button')
+            MochiKit.DOM.addElementClass(self.element, 'add-button');
         }
 
         // self saves a click and shows the object browser initially
@@ -228,11 +229,11 @@ var ObjectReferenceWidget = Class.extend({
 
     handleClick: function(event) {
         var target = event.target();
-        var action;
+        var action = null;
         var argument;
         if (target.nodeName == 'INPUT' && target.type == 'button') {
             event.stop();
-            var action = target.getAttribute('name');
+            action = target.getAttribute('name');
             var func = bind(action, this);
             func(event);
         }
@@ -247,36 +248,36 @@ var ObjectReferenceWidget = Class.extend({
         } else { 
             MochiKit.Style.makePositioned(element);
             var pos = MochiKit.Style.getElementPosition(element);
-            var element = element.cloneNode(true);
-            $('body').appendChild(element);
-            MochiKit.Style.setElementPosition(element, pos);
-            MochiKit.Style.makeClipping(element);
+            var cloned_element = element.cloneNode(true);
+            $('body').appendChild(cloned_element);
+            MochiKit.Style.setcloned_elementPosition(cloned_element, pos);
+            MochiKit.Style.makeClipping(cloned_element);
             self.lightbox.close();
             self.lightbox = null;
             // Visual candy
-            var pos = MochiKit.Style.getElementPosition(self.input);
-            var move = new MochiKit.Visual.Move(element, {
+            pos = MochiKit.Style.getcloned_elementPosition(self.input);
+            var move = new MochiKit.Visual.Move(cloned_element, {
                 mode: 'absolute',
                 sync: true,
                 x: pos.x,
-                y: pos.y,
+                y: pos.y
             });
-            var shrink = MochiKit.Visual.Scale(element, 0, {
+            var shrink = MochiKit.Visual.Scale(cloned_element, 0, {
                 sync: true
             });
             new MochiKit.Visual.Parallel([move, shrink], {
                 afterFinish: function() {
                     self.selectObject(unique_id);
-                    element.parentNode.removeChild(element);
-                },
-            })
+                    cloned_element.parentNode.removeChild(cloned_element);
+                }
+            });
         }
     },
 
     browseObjects: function(event) {
         var self = this;
         if (zeit.cms.activate_objectbrowser()) {
-            return
+            return;
         }
         var url = self.default_browsing_url;
         if (url.indexOf('@@') == -1) {
@@ -304,16 +305,16 @@ var ObjectReferenceWidget = Class.extend({
         var new_window = event.modifier().any;
         var unique_id = this.getObject();
         if (!unique_id) {
-            return
+            return;
         }
         // XXX i18n
         var msg = 'Your changes have not been saved, yet. Continue?';
         if (this.changed && !confirm(msg)) {
-            return
+            return;
         }
         var qs = MochiKit.Base.queryString({
             'unique_id': unique_id});
-        var url = application_url + '/redirect_to?' + qs
+        var url = application_url + '/redirect_to?' + qs;
         if (new_window) {
             window.open(url);
         } else {
@@ -342,9 +343,9 @@ var ObjectReferenceWidget = Class.extend({
         var qs = MochiKit.Base.queryString({
             'unique_id': unique_id,
             'view': '@@drag-pane.html'});
-        var url = application_url + '/redirect_to?' + qs
+        var url = application_url + '/redirect_to?' + qs;
         return url;
-    },
+    }
 });
 
 
@@ -366,7 +367,7 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
             hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
                     self.handleDrop(element);
-            },
+            }
         });
         self.setObject();
         if (!isUndefinedOrNull(parent_component)) {
@@ -389,25 +390,24 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
     setObject: function() {
         var unique_id =  zeit.cms.getCookie(this.widget_id);
         if (!unique_id) {
-            return
+            return;
         }
         var count = new Number(this.form[this.widget_id + '.count'].value);
         if (count <= 0) {
-            return
+            return;
         }
         var field_nr = count - 1;
 
         var input = this.form[this.widget_id + '.' + field_nr + '.'];
         var widget = input.object_reference_widget;
         if (widget.getObject()) {
-            return
+            return;
         }
         widget.selectObject(unique_id);
         zeit.cms.setCookie(this.widget_id, '');
-    },
+    }
 
 });
-
 
 
 zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
@@ -420,7 +420,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         this.widget_id = widget_id;
         this.element = $(widget_id);
         this.ul_element = getFirstElementByTagAndClassName(
-            'ul', null, this.element)
+            'ul', null, this.element);
         this.initialize();
         // XXX Need to unregister those events
         MochiKit.Signal.connect(this.element, 'onclick', this, 'handleClick');
@@ -428,7 +428,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             hoverclass: 'drop-widget-hover',
             ondrop: function(element, last_active_element, event) {
                 self.handleDrop(element);
-            },
+            }
         });
     },
 
@@ -448,7 +448,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         });
         MochiKit.Sortable.create(
             self.ul_element, {
-            onUpdate: function() { self.update_order_from_ul() }
+            onUpdate: function() { self.update_order_from_ul(); }
             });
         var new_li = LI({'class': 'new'},
                         'Weitere Einträge durch Drag and Drop hinzufügen …');
@@ -457,11 +457,12 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
     renderElement: function(index, uniqueId) {
         var self = this;
+        var d;
         var li_id = self.widget_id + '_sort_li_' + index;
         var li = LI({'class': 'element busy', 'index': index, 'id': li_id});
         var content = self.detail_cache[uniqueId];
         if (isUndefinedOrNull(content)) {
-            var d = MochiKit.Async.doSimpleXMLHttpRequest(
+            d = MochiKit.Async.doSimpleXMLHttpRequest(
                 application_url + '/@@redirect_to', {
                 unique_id: uniqueId,
                 view: '@@zeit.cms.browser.object-widget-details'});
@@ -472,45 +473,45 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
                 return result.responseText;
             });
         } else {
-            var d = new MochiKit.Async.Deferred()
+            d = new MochiKit.Async.Deferred();
             d.callback(content);
         }
         d.addCallbacks(
             function(result) {
                 li.innerHTML = result;
                 li.insertBefore(
-                    A({href: index, rel: "delete"}),
+                    A({href: index, rel: "remove"}),
                     li.firstChild);
-                return result
+                return result;
             },
             function(error) {
                 zeit.cms.log_error(error);
                 li.innerHTML = "Fehler beim Laden";
-                return error
+                return error;
             });
         d.addBoth(function(result) {
             MochiKit.DOM.removeElementClass(li, 'busy');
-            return result
+            return result;
         });
         return li;
     },
 
     increaseCount: function() {
-        var count_field = this.getCountField()
+        var count_field = this.getCountField();
         var count = Number(count_field.value);
         count_field.value = count + 1;
         return count_field.value;
     },
     
     decreaseCount: function() {
-        var count_field = this.getCountField()
+        var count_field = this.getCountField();
         var count = Number(count_field.value);
         count_field.value = count - 1;
         return count_field.value;
     },
 
     getCountField: function() {
-        return getElement(this.widget_id + '.count')
+        return getElement(this.widget_id + '.count');
     },
 
     getValueField: function(index) {
@@ -538,7 +539,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         self.changed();
     },
 
-    delete: function(index) {
+    remove: function(index) {
         var self = this;
 
         removeElement(self.getValueField(index));
@@ -550,7 +551,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             value_field.setAttribute('id', value_field_name);
             new_index += 1;
         });
-        self.decreaseCount()
+        self.decreaseCount();
         self.initialize();
         self.changed();
     },
@@ -558,7 +559,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     iterFields: function(callable) {
         var othis = this;
         var count_field = this.getCountField();
-        var amount = Number(count_field.value)
+        var amount = new Number(count_field.value);
         forEach(range(amount), function(iteration_index) {
             var value_field = othis.getValueField(iteration_index);
             if (value_field === null) {
@@ -585,7 +586,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     handleDrop: function(dragged_element) {
         var self = this;
         if (MochiKit.DOM.isChildNode(dragged_element, self.ul_element)) {
-            return
+            return;
         }
         var unique_id = dragged_element.uniqueId;
         if (unique_id) {
@@ -622,9 +623,9 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
 // Connect breadcrumbs
 MochiKit.Signal.connect(window, 'onload', function(event) {
-    var breadcrumbs = $('breadcrumbs')
-    if (breadcrumbs == null) {
-        return
+    var breadcrumbs = $('breadcrumbs');
+    if (breadcrumbs === null) {
+        return;
     }
     var lis = breadcrumbs.getElementsByTagName('li');
     forEach(lis, function(li) {
