@@ -20,6 +20,7 @@
   float: left;
   overflow: hidden;
   padding-top: 0.5em;
+  width: 12em;
 }
 
 .inline-form .label div.error {
