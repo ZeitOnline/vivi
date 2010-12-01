@@ -475,17 +475,22 @@ table.properties textarea {
 
 .objectsequencewidget li a[rel="remove"],
 .drop-object-widget .object-reference a[rel="remove"] {
+  background: transparent url(icons/cross.png) no-repeat;
   cursor: pointer;
-  display: block;
+  display: none;
   float: left;
   height: 16px;
   margin-left: -16px;
   width: 16px;
 }
 
+.drop-object-widget.droppable-active .object-reference:hover a[rel="remove"] {
+  display: none;
+}
+
 .objectsequencewidget li:hover a[rel="remove"],
 .drop-object-widget .object-reference:hover a[rel="remove"] {
-  background: transparent url(icons/cross.png) no-repeat;
+  display: block;
 }
 
 .object-widget.droppable-active input[type=text],
@@ -510,10 +515,13 @@ table.properties textarea {
     width: 10em;
 }
 
+.drop-object-widget {
+  border: 1px solid transparent;
+}
 
-.drop-object-widget.empty .object-reference {
-  border: 1px solid yellow;
-  height: 2em;
+.drop-object-widget.landing-zone {
+  visibility: visible;
+  border: transparent;
 }
 
 

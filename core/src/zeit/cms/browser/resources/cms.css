@@ -657,3 +657,54 @@ li.busy {
 .tab-content{
   padding: 10px 5px;
 }
+
+/* Landing zone styles
+ *
+ * Visible / invislbe
+ */
+
+
+.landing-zone {
+  border: 1px solid #00ee5e;
+  visibility: hidden;
+}
+
+
+.landing-zone.visible {
+  border: 1px dashed #00ee5e;
+  color: #00ee5e;
+  cursor: default;
+  display: block;
+  height: auto;
+  margin: 1em 0;
+  padding: 1em;
+  visibility: visible;
+}
+
+
+.landing-zone.droppable-active {
+  border-style: solid;
+  background-color: #d7ffda;
+  display: block;
+  visibility: visible;
+}
+
+.landing-zone.hover-content {
+  border-color: #00ee5e;
+  outline: 4px solid #00ee5e;
+  display: block;
+  visibility: visible;
+  z-index: 1;
+}
+
+.landing-zone.hover-content.visible {
+  height: auto;
+}
+
+.droppable-active {
+  border: 1px solid #00ee5e;
+}
+
+.hover-content {
+  outline: 4px solid #00ee5e;
+}
