@@ -81,7 +81,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     def test_widget_should_render_note_about_new_items(self):
         s = self.selenium
         s.waitForTextPresent(
-            u'Weitere Einträge durch Drag and Drop hinzufügen')
+            u'Ziehen Sie Inhalte hierher um sie zu verknüpfen.')
 
     def test_widget_should_insert_dropped_objects(self):
         s = self.selenium

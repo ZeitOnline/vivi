@@ -447,7 +447,9 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         // XXX Need to unregister those events
         MochiKit.Signal.connect(this.element, 'onclick', this, 'handleClick');
         new MochiKit.DragAndDrop.Droppable(self.element, {
-            hoverclass: 'drop-widget-hover',
+            accept: ['uniqueId', 'content-drag-pane'],
+            activeclass: 'droppable-active',
+            hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
                 self.handleDrop(element);
             }
@@ -472,9 +474,16 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             self.ul_element, {
             onUpdate: function() { self.update_order_from_ul(); }
             });
-        var new_li = LI({'class': 'new'},
-                        'Weitere Einträge durch Drag and Drop hinzufügen …');
-        appendChildNodes(self.ul_element, new_li);
+        if (i == 0) {
+            self.ul_element.appendChild(LI(
+                {'class': 'new'},
+                'Ziehen Sie Inhalte hierher um sie zu verknüpfen.'));
+            MochiKit.DOM.addElementClass(self.element, 'landing-zone');
+            MochiKit.DOM.addElementClass(self.element, 'visible');
+        } else {
+            MochiKit.DOM.removeElementClass(self.element, 'landing-zone');
+            MochiKit.DOM.removeElementClass(self.element, 'visible');
+        }
     },
 
     renderElement: function(index, uniqueId) {

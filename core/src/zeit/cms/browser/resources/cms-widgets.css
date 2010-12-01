@@ -463,34 +463,32 @@ table.properties textarea {
   padding-left: 0;
 }
 .objectsequencewidget ul {
-  min-height: 3em;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 .objectsequencewidget li {
   cursor: move;
-  padding-bottom: 0.5em;
 }
 
 .objectsequencewidget li a[rel="remove"],
 .drop-object-widget .object-reference a[rel="remove"] {
-  background: transparent url(icons/cross.png) no-repeat;
   cursor: pointer;
-  display: none;
+  display: block;
   float: left;
   height: 16px;
   margin-left: -16px;
   width: 16px;
 }
 
-.drop-object-widget.droppable-active .object-reference:hover a[rel="remove"] {
+.objectsequencewidget.droppable-active a[rel="remove"],
+.drop-object-widget.droppable-active  a[rel="remove"] {
   display: none;
 }
 
 .objectsequencewidget li:hover a[rel="remove"],
 .drop-object-widget .object-reference:hover a[rel="remove"] {
-  display: block;
+  background: transparent url(icons/cross.png) no-repeat;
 }
 
 .object-widget.droppable-active input[type=text],
