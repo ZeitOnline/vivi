@@ -33,6 +33,7 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
     def test_change_in_ressort_should_update_subressort_list(self):
         s = self.selenium
         s.assertSelectedLabel('id=head.ressort', 'International')
+        s.pause(100)
         self.assertEqual(
             [u'(no value)', u'Meinung', u'Nahost', u'US-Wahl'],
             s.getSelectOptions('id=head.sub_ressort'))
