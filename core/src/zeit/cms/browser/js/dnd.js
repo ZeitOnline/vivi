@@ -495,7 +495,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             function(result) {
                 li.innerHTML = result;
                 li.insertBefore(
-                    A({href: index, rel: "remove"}),
+                    A({href: index, rel: "remove", title: "Entfernen"}),
                     li.firstChild);
                 return result;
             },
@@ -703,7 +703,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
                 function(result) {
                     self.details.innerHTML = result;
                     self.details.insertBefore(
-                        A({href: '#', rel: "remove"}),
+                        A({href: '#', rel: "remove", title: "Entfernen"}),
                         self.details.firstChild);
                     return result;
                 },

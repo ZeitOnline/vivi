@@ -309,6 +309,7 @@ table.properties textarea {
 }
 
 #drag-pane {
+  -moz-box-shadow: 5px 5px 10px #666;
   background-color: transparent;
   opacity: 0.9;
   overflow: hidden;
@@ -462,22 +463,26 @@ table.properties textarea {
   list-style: none;
   padding-left: 0;
 }
+
 .objectsequencewidget ul {
   list-style: none;
   margin: 0;
   padding: 0;
 }
+
 .objectsequencewidget li {
   cursor: move;
+  position: relative;
 }
 
 .objectsequencewidget li a[rel="remove"],
 .drop-object-widget .object-reference a[rel="remove"] {
   cursor: pointer;
   display: block;
-  float: left;
   height: 16px;
-  margin-left: -16px;
+  position: absolute;
+  right: 1em;
+  top: 1em;
   width: 16px;
 }
 
@@ -488,7 +493,9 @@ table.properties textarea {
 
 .objectsequencewidget li:hover a[rel="remove"],
 .drop-object-widget .object-reference:hover a[rel="remove"] {
-  background: transparent url(icons/cross.png) no-repeat;
+  -moz-box-shadow: 5px 5px 10px #666;
+  background: white url(icons/cross.png) no-repeat center center;
+  border: 1px solid #bbb;
 }
 
 .object-widget.droppable-active input[type=text],
@@ -510,9 +517,11 @@ table.properties textarea {
 
 
 .object-widget .object-reference {
+    position: relative;
     width: 10em;
 }
 
+.objectsequencewidget,
 .drop-object-widget {
   border: 1px solid transparent;
 }

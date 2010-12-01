@@ -2,9 +2,58 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import contextlib
 import mock
 import unittest2
 import zeit.cms.testing
+
+
+class TestObjectDetails(unittest2.TestCase,
+                        zeit.cms.testing.FunctionalTestCase,
+                        zeit.cms.testing.BrowserAssertions):
+
+    def setUp(self):
+        from zope.testbrowser.testing import Browser
+        super(TestObjectDetails, self).setUp()
+        self.layer.setup.setUp()
+        self.browser = browser = Browser()
+        browser.addHeader('Authorization', 'Basic user:userpw')
+        browser.handleErrors = False
+        browser.open(
+            'http://localhost:8080/++skin++vivi/repository/testcontent/')
+
+    def tearDown(self):
+        self.layer.setup.tearDown()
+
+    @contextlib.contextmanager
+    def get_content(self):
+        from zeit.cms.checkout.helper import checked_out
+        import zeit.cms.interfaces
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                content = zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/testcontent')
+                with checked_out(content) as co:
+                    yield co
+
+    def test_should_contain_teaser_title(self):
+        with self.get_content() as co:
+            co.teaserTitle = u'test title'
+        self.browser.open('@@zeit.cms.browser.object-widget-details')
+        self.assert_ellipsis(
+            '...<div class="teaser_title">test title</div>...')
+
+    def test_should_contain_super_title(self):
+        with self.get_content() as co:
+            co.supertitle = u'super'
+        self.browser.open('@@zeit.cms.browser.object-widget-details')
+        self.assert_ellipsis(
+            '...<div class="supertitle">...super...</div>...')
+
+    def test_should_contain_workflow_information(self):
+        self.browser.open('@@zeit.cms.browser.object-widget-details')
+        self.assert_ellipsis(
+            '...class="publish-state"...Not published...')
 
 
 class TestObjectSequenceWidget(unittest2.TestCase):

@@ -1,3 +1,24 @@
-<span class="title"
-      tal:content="view/title">
-</span>
+<div class="content-details" i18n:domain="zeit.cms">
+  <div class="graphical_preview"
+       tal:condition="view/graphical_preview_url">
+    <img tal:attributes="src view/graphical_preview_url"/>
+  </div>
+  <div class="supertitle">
+    <img tal:replace="structure context/@@zmi_icon|nothing"/>
+    <span tal:replace ="structure provider:zeit.cms.workflow-indicator" />
+    <span tal:replace="view/supertitle"/>
+  </div>
+  <div class="teaser_title"
+       tal:content="view/teaser_title">
+  </div>
+  <div class="goto-object object-link">
+    <a tal:attributes="href context/@@absolute_url" i18n:translate="">
+      CMS
+    </a>
+  </div>
+  <div class="preview object-link">
+    <a tal:attributes="href view/preview_url" i18n:translate="">
+      Preview
+    </a>
+  </div>
+</div>
