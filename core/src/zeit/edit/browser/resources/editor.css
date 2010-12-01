@@ -29,6 +29,15 @@
   border-style: solid;
 }
 
+#cp-content .block.droppable-active,
+#cp-content .block.hover-content {
+  border: none;
+}
+
+#cp-content .block.hover-content {
+  outline: none;
+}
+
 #cp-content .block.droppable-active > *,
 #cp-content .block.hover-content > * {
   border: 1px solid #00ee5e;
@@ -162,10 +171,8 @@
 }
 
 .editable-area > .landing-zone {
-  border: 1px solid #00ee5e;
   height: 1em;
   margin: 0.25em 0;
-  visibility: hidden;
 }
 
 .lightbox > div.tab-content {
@@ -182,17 +189,6 @@
 
 .editable-area > .landing-zone + .block {
   margin-top: 0;
-}
-
-.landing-zone.visible {
-  border: 1px dashed #00ee5e;
-  color: #00ee5e;
-  cursor: default;
-  display: block;
-  height: auto;
-  margin: 1em 0;
-  padding: 1em;
-  visibility: visible;
 }
 
 .block .landing-zone {
@@ -213,24 +209,6 @@
   padding: 1em;
 }
 
-.landing-zone.droppable-active {
-  border-style: solid;
-  background-color: #d7ffda;
-  display: block;
-  visibility: visible;
-}
-
-.landing-zone.hover-content {
-  border-color: #00ee5e;
-  outline: 4px solid #00ee5e;
-  display: block;
-  visibility: visible;
-  z-index: 1;
-}
-
-.landing-zone.hover-content.visible {
-  height: auto;
-}
 
 .edit {
   border-bottom: 1px solid #bbb;
