@@ -10,6 +10,7 @@
 /* forms */
 
 .inline-form .widget-outer {
+  clear: both;
   margin-bottom: 0.5em;
   position: relative;
 }
@@ -117,8 +118,8 @@
   height: 12px;
 }
 
-.article-editor-inner .block,
-.article-editor-inner .landing-zone {
+#article-editor-text .block,
+#article-editor-text .landing-zone {
   margin-left: 2em;
 }
 
