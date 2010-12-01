@@ -8,28 +8,6 @@
   padding: 1em 0 0 0;
 }
 
-.search_entry:hover {
-  border: 1px solid #bbb;
-  //outline: 2px solid #ddd;
-}
-
-.search_entry {
-  background: #fff;
-  border: 1px solid #e4e4e4;
-  cursor: move;
-  margin-bottom: .8em;
-  padding: 1em;
-  overflow: hidden;
-
-  -moz-border-radius-bottomleft: 5px;
-  -moz-border-radius-bottomright: 5px;
-  -moz-border-radius-topleft: 5px;
-  -moz-border-radius-topright: 5px;
-
-}
-
-
-
 .search_result .search_entry {
   margin: 10px;
 }
@@ -38,43 +16,12 @@
 	background-color: #F2F2F2;
 }
 
-.search_entry .supertitle {
-  display: block;
-  font-weight: 400;
-  height: 30px;
-  line-height: 30px;
-  margin-bottom: .5em;
-  vertical-align: middle;}
 
-.search_entry .supertitle img {
-  margin-right: .5em;
-  vertical-align: middle;}
-
-.supertitle img:last-child {
-  margin-right: 12px;
-}
-
-.toggle_favorited.favorited, .toggle_favorited.not_favorited {
+.toggle_favorited.favorited,
+.toggle_favorited.not_favorited {
   margin-right: .8em;
   padding: 0.214em;
 }
-
-.search_entry .teaser_title {
-  font-size: 1.2em;
-  font-weight: 700;
-  margin-bottom: .3em;
-}
-
-.search_entry .teaser_text {
-  font-size: 1em;
-  margin-top: 0.3em;
-  margin-bottom:0.5em;
-}
-
-.search_entry .graphical_preview {
-  float: right;
-}
-
 
 .search_entry .recent_links {
   float: left;
@@ -344,36 +291,6 @@
 
 .zeit-find-search .object-link {
   float: right;
-  padding-left: 3em;
-  background-repeat: no-repeat;
-  background-position: 1.25em center;
-}
-
-.zeit-find-search .object-link > a {
-  color: #4c4c4c;
-}
-
-.zeit-find-search .preview {
-  background-image: url(preview.png);
- padding-left: 3px;
-
-}
-
-.zeit-find-search .preview a {
-  text-indent: -10px;
-  margin-left: 15px;
-  padding-left: 17px;
-}
-
-.zeit-find-search .goto-object {
-  background-image: url(show-original.png);
- padding-left: 5px;
-}
-
-.zeit-find-search .goto-object a {
-  text-indent: -10px;
-  margin-left: 15px;
-  padding-left: 15px;
 }
 
 .related_links.expanded {

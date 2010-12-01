@@ -1,5 +1,5 @@
 {.repeated section results}
-<div class="search_entry">
+<div class="search_entry content-details">
   <span class="uniqueId">{uniqueId}</span>
   {.section graphical_preview_url}
     <div class="graphical_preview">

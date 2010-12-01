@@ -4,7 +4,7 @@ zeit.find changes
 0.21.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Moved reusable styles to zeit.cms.
 
 
 0.21.0 (2010-08-16)
