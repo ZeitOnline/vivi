@@ -3,11 +3,12 @@
 
 import mock
 import unittest2
+import zeit.cms.testing
 import zeit.content.article.testing
 
 
 class GalleryTest(unittest2.TestCase,
-                  zeit.content.article.testing.BrowserAssertions):
+                  zeit.cms.testing.BrowserAssertions):
 
     layer = zeit.content.article.testing.TestBrowserLayer
 
