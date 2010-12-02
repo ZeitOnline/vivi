@@ -12,7 +12,9 @@
     {.end}
     <a href="#" class="{favorited_css_class}"></a>
     <img src="{publication_status}" />
-    {supertitle}
+    <span class="text">
+      {supertitle}
+    </span>
   </div>
   <div class="teaser_title">
     {teaser_title}
