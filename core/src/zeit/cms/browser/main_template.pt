@@ -41,6 +41,9 @@
           type="text/javascript"
           src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/jquery-ui.min.js">
         </script>
+        <style type="text/css" media="all">
+          @import url("http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.5/themes/base/jquery-ui.css");
+        </style>
         <!-- zc.resourcelibrary -->
         <script type="text/javascript" tal:content="string:
           var application_url = '${request/getApplicationURL}';
