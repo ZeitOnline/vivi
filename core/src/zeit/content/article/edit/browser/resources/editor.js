@@ -26,7 +26,7 @@ var ident = MochiKit.Signal.connect(
 MochiKit.Signal.connect(
     window, 'cp-editor-loaded', function() {
     zeit.edit.library.create(
-        'article', context_url + '/editable-body', 'Artikel');
+        'article-modules', context_url + '/editable-body', 'Artikel');
 });
 
 zeit.edit.drop.registerHandler({
