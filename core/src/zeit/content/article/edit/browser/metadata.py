@@ -99,6 +99,12 @@ class Misc(MetadataForm):
             'commentsAllowed', 'dailyNewsletter', 'foldable', 'minimal_header',
             'countings', 'is_content', 'banner', 'banner_id')
 
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(Misc, self).__call__()
+
+
 class Assets(MetadataForm,
              zeit.cms.asset.browser.form.AssetBase):
 
