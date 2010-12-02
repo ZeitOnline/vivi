@@ -748,10 +748,14 @@ li.busy {
 .content-details .supertitle {
   display: block;
   font-weight: 400;
-  height: 30px;
-  line-height: 30px;
   margin-bottom: .5em;
-  vertical-align: middle;}
+  vertical-align: middle;
+}
+
+
+.content-details .supertitle .text {
+  white-space: nowrap;
+}
 
 .content-details .supertitle img {
   margin-right: .5em;
