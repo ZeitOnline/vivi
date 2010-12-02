@@ -1,0 +1,6 @@
+cat > .hgignore
+syntax: glob
+.installed.cfg
+bin
+develop-eggs
+parts
