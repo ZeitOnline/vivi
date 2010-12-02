@@ -107,3 +107,23 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
         with mock.patch('uuid.uuid4', new=self.uuid):
             view.update()
         self.assertEqual('p', view.context['7'].type)
+
+
+class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestTextEditing, self).setUp()
+        s = self.selenium
+        self.open('/repository')
+        s.select('id=add_menu', 'label=Article')
+        s.waitForPageToLoad()
+
+    def test_landing_zone_should_take_modules(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=.block.type-p')
+        s.click('link=Module')
+        s.waitForElementPresent('css=#article-modules .module:contains(<p>)')
+        s.dragAndDropToObject(
+            'css=#article-modules .module:contains(<p>)',
+            'css=#article-editor-text .landing-zone.visible')
+        s.waitForElementPresent('css=.block.type-p')
