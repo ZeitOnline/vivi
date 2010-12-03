@@ -344,4 +344,3 @@ zeit.content.article.FoldBlock = gocept.Class.extend({
 });
 
 })();
-
