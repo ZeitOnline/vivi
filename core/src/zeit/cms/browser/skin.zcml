@@ -63,7 +63,27 @@
 
   <!-- resource libraries -->
 
-  <include package="gocept.mochikit" />
+  <resourceLibrary
+    name="jquery"
+    layer=".interfaces.ICMSLayer">
+    <directory
+      source="js/jquery"
+      include="
+      jquery-1.4.2.min.js
+      jquery-ui-1.8.6.custom.min.js
+      ui-lightness/jquery-ui-1.8.6.custom.css"
+      />
+  </resourceLibrary>
+
+  <resourceLibrary
+    name="mochikit"
+    layer=".interfaces.ICMSLayer"
+    require="jquery">
+    <directory
+      source="js"
+      include="MochiKit.js"
+      />
+  </resourceLibrary>
 
   <resourceLibrary
     name="zeit.cms.javascript.base"
@@ -78,12 +98,26 @@
     require="zeit.cms.javascript.base">
     <directory source="js" include="objectbrowser.js" />
   </resourceLibrary>
+  
+  <!-- fake libraries -->
+  <resourceLibrary name="mochikit.Sortable" require="mochikit"/>
+  <resourceLibrary name="mochikit.DragAndDrop"
+                   require="mochikit">
+    <directory source="js" />
+  </resourceLibrary>
+  <resourceLibrary name="gocept.mochikit.jsclass"
+                   require="zeit.cms.javascript" >
+    <directory source="js" />
+  </resourceLibrary>
+  <resourceLibrary name="gocept.mochikit.lightbox"
+                   require="zeit.cms.javascript" >
+    <directory source="js" />
+  </resourceLibrary>
 
   <resourceLibrary
     name="zeit.cms.javascript"
     layer=".interfaces.ICMSLayer"
-    require="mochikit.DragAndDrop gocept.mochikit.jsclass
-    gocept.mochikit.lightbox zeit.cms.javascript.base
+    require="zeit.cms.javascript.base
     zeit.cms.javascript.objectbrowser">
     <directory source="js" include="
       tooltip.js

@@ -51,7 +51,6 @@
         <tal:replace replace="resource_library:zeit.cms.panels" /> 
         <tal:replace replace="resource_library:zeit.cms.content.dropdown" /> 
         <tal:replace replace="resource_library:zc.datetimewidget" /> 
-        <tal:replace replace="structure provider:gocept.mochikit.javascript" />
 
       </head>
       <body id="body"

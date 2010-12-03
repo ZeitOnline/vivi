@@ -83,12 +83,12 @@
 
   <!-- Teaser copying -->
   <resourceLibrary name="zeit.cms.content.teaser"
-    require="gocept.mochikit.jsclass mochikit">
+    require="zeit.cms.javascript.base">
     <directory source="resources" include="teaser.js" />
   </resourceLibrary>
 
   <resourceLibrary name="zeit.cms.content.validation"
-    require="gocept.mochikit.jsclass mochikit">
+    require="mochikit">
     <directory source="resources" include="inputlimit.js" />
   </resourceLibrary>
 

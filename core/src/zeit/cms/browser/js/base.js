@@ -1,47 +1,3 @@
-/** patch mochikit ***/
-
-(function() {
-
-    var signal = function (src, sig) {
-        var self = MochiKit.Signal;
-        var observers = self._observers;
-        src = MochiKit.DOM.getElement(src);
-        var args = MochiKit.Base.extend(null, arguments, 2);
-        var errors = [];
-        self._lock += 1;
-        for (var i = 0; i < observers.length; i++) {
-            var ident = observers[i];
-            if (ident.source === src && ident.signal === sig &&
-                    ident.connected) {
-                try {
-                    ident.listener.apply(src, args);
-                } catch (e) {
-                    errors.push(e);
-                }
-            }
-        }
-        self._lock -= 1;
-        if (self._dirty && !self._lock) {
-            self._dirty = false;
-            for (var i = observers.length - 1; i >= 0; i--) {
-                if (!observers[i].connected) {
-                    observers.splice(i, 1);
-                }
-            }
-        }
-        if (errors.length == 1) {
-            throw errors[0];
-        } else if (errors.length > 1) {
-            var e = new Error("Multiple errors thrown in handling 'sig', see errors property");
-            e.errors = errors;
-            throw e;
-        }
-    }
-
-    MochiKit.Signal.signal = signal;
-})();
-
-
 (function() {
     var declare_namespace = function(namespace) {
         var obj = window;
@@ -53,9 +9,37 @@
         });
     }
     declare_namespace('zeit.cms');
+    declare_namespace('gocept');
     zeit.cms.declare_namespace = declare_namespace;
+
+    gocept.Class = function() {};
+    gocept.Class.prototype.construct = function() {};
+    gocept.Class.extend = function(def) {
+        var classDef = function() {
+            if (arguments[0] !== gocept.Class) {
+                this.construct.apply(this, arguments); }
+            };
+
+        var proto = new this(gocept.Class);
+        var superClass = this.prototype;
+
+        for (var n in def) {
+            var item = def[n];                      
+            if (item instanceof Function) item.$ = superClass;
+            proto[n] = item;
+        }
+
+        classDef.prototype = proto;
+
+        //Give this new class the same static extend method    
+        classDef.extend = this.extend;      
+        return classDef;
+    };
+
 })();
 
+
+Class = gocept.Class;
 
 zeit.cms.resolveDottedName = function(name) {
     // Resolve *absolute* dotted name

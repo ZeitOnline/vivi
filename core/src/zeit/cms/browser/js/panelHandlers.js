@@ -2,7 +2,7 @@
 // See also LICENSE.txt
 // $Id$
 
-zeit.cms.PanelHandler = Class.extend({
+zeit.cms.PanelHandler = gocept.Class.extend({
 
     construct: function(base_url) {
         this.url = base_url + '/panel_handlers';
