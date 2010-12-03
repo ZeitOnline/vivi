@@ -88,6 +88,16 @@ Adding the same name again creates a different folder:
 ...
 
 
+Folder listing:
+
+>>> browser.open('http://localhost/++skin++vivi/repository/foo/bar/authors/S/William_Shakespeare-2/')
+>>> print browser.contents
+<...
+    <td>
+      William Shakespeare
+    </td>
+    ...
+
 Using authors
 =============
 

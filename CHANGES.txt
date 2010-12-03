@@ -4,7 +4,7 @@ zeit.content.author changes
 0.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix rendering of a folder listing with authors in it.
 
 
 0.1.1 (2010-08-09)
