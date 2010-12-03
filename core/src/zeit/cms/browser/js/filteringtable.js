@@ -2,7 +2,7 @@
 // See also LICENSE.txt
 // General Javascript functions for filtering tables
 
-zeit.cms.FilteringTable = Class.extend({
+zeit.cms.FilteringTable = gocept.Class.extend({
 
     construct: function() {
         this.contentElement = getFirstElementByTagAndClassName(

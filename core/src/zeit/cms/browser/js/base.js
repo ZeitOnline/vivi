@@ -8,9 +8,38 @@
             obj = obj[name];
         });
     }
+    declare_namespace('gocept');
     declare_namespace('zeit.cms');
     zeit.cms.declare_namespace = declare_namespace;
+
+    gocept.Class = function() {};
+    gocept.Class.prototype.construct = function() {};
+    gocept.Class.extend = function(def) {
+        var classDef = function() {
+            if (arguments[0] !== gocept.Class) {
+                this.construct.apply(this, arguments); }
+            };
+
+        var proto = new this(gocept.Class);
+        var superClass = this.prototype;
+
+        for (var n in def) {
+            var item = def[n];                      
+            if (item instanceof Function) item.$ = superClass;
+            proto[n] = item;
+        }
+
+        classDef.prototype = proto;
+
+        //Give this new class the same static extend method    
+        classDef.extend = this.extend;      
+        return classDef;
+    };
+
 })();
+
+
+Class = gocept.Class;
 
 
 zeit.cms.ScrollStateRestorer = gocept.Class.extend({

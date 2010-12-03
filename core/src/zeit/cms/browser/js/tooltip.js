@@ -36,7 +36,7 @@ zeit.cms.hideToolTip = function(signals) {
 };
 
 
-zeit.cms.ToolTip = Class.extend({
+zeit.cms.ToolTip = gocept.Class.extend({
 
     construct: function(context, url_getter) {
         var self = this;

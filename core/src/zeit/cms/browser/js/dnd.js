@@ -145,7 +145,7 @@ zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
 });
 
 
-var ObjectReferenceWidget = Class.extend({
+var ObjectReferenceWidget = gocept.Class.extend({
     // Widget for referencing one object via unique id.
     // 
     // This is also thought to be used multiple times in one formlib field,
@@ -345,7 +345,7 @@ var ObjectReferenceWidget = Class.extend({
 });
 
 
-zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
+zeit.cms.ObjectReferenceSequenceWidget = gocept.Class.extend({
 
     construct: function(widget_id, parent_component) {
         var self = this;
@@ -407,7 +407,7 @@ zeit.cms.ObjectReferenceSequenceWidget = Class.extend({
 
 
 
-var ObjectSequenceWidgetBase = Class.extend({
+var ObjectSequenceWidgetBase = gocept.Class.extend({
 
     construct: function(widget_id) {
         var othis = this;

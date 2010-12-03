@@ -25,7 +25,6 @@ setup(
         'gocept.fckeditor',
         'gocept.form[formlib]>=0.7.5',
         'gocept.lxml>=0.2.1',
-        'gocept.mochikit>=1.4.2.2',
         'gocept.pagelet',
         'gocept.runner',
         'grokcore.component',
