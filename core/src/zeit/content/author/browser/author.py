@@ -17,7 +17,7 @@ class AuthorListRepresentation(
     grokcore.component.implements(
         zeit.cms.browser.interfaces.IListRepresentation)
 
-    ressort = page = volume = year = u''
+    ressort = page = volume = year = author = u''
 
     @property
     def title(self):
