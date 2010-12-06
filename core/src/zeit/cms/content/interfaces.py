@@ -53,7 +53,7 @@ class IKeywords(zope.interface.Interface):
 
 
 class IAuthorType(zeit.cms.interfaces.ICMSContentType):
-    pass
+    """Interface type for authors."""
 
 
 class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
