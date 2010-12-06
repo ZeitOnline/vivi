@@ -127,3 +127,9 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
             'css=#article-modules .module:contains(<p>)',
             'css=#article-editor-text .landing-zone.visible')
         s.waitForElementPresent('css=.block.type-p')
+
+    def test_create_paragraph_link_should_create_paragraph(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=.block.type-p')
+        s.click('link=Create paragraph')
+        s.waitForElementPresent('css=.block.type-p')
