@@ -106,4 +106,14 @@
     permission="zope.View"
     />
 
+  <!-- autocomplete -->
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="simple_find"
+    class=".autocomplete.SimpleFind"
+    permission="zope.View"
+  />
+
+
 </configure>

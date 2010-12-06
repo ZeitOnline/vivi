@@ -16,8 +16,10 @@ setup(
     namespace_packages = ['zeit'],
     install_requires=[
         'gocept.selenium',
+        'grokcore.component',
         'python-cjson',
         'setuptools',
+        'unittest2',
         'zc.iso8601',
         'zeit.cms>1.44.0',
         'zeit.solr>=0.18.0',

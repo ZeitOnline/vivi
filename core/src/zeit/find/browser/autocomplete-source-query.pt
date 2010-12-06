@@ -1,0 +1,5 @@
+<div§
+  class="autcomplete-source-query"
+  tal:condition="view/should_autocomplete">
+  <input class="autocomplete" type="text"
+</div>
