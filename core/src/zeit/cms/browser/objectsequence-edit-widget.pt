@@ -13,6 +13,10 @@
   <ul>
     <!-- data will be inserted here by javascript -->
   </ul>
+  <div 
+    tal:condition="view/query_view"
+    tal:content="structure view/query_view">
+  </div>
 </div>
 <script tal:content="string:
   var widget = new zeit.cms.ObjectSequenceWidget('${view/name}', self);

@@ -84,7 +84,8 @@ class TestObjectSequenceWidget(unittest2.TestCase):
 
 
 class TestObjectSequenceWidgetIntegration(unittest2.TestCase,
-                                          zeit.cms.testing.FunctionalTestCase):
+                                          zeit.cms.testing.FunctionalTestCase,
+                                          zeit.cms.testing.BrowserAssertions):
 
     def get_field(self):
         import zeit.cms.content.contentsource
@@ -93,8 +94,7 @@ class TestObjectSequenceWidgetIntegration(unittest2.TestCase,
             value_type=zope.schema.Choice(
                 source=zeit.cms.content.contentsource.cmsContentSource))
 
-    def test_widget_should_be_available_with_search(self):
-        from zeit.cms.browser.widget import MultiObjectSequenceWidget
+    def get_widget(self, value=()):
         import zeit.cms.browser.interfaces
         import zope.app.form.browser.interfaces
         import zope.interface
@@ -106,6 +106,12 @@ class TestObjectSequenceWidgetIntegration(unittest2.TestCase,
         widget = zope.component.getMultiAdapter(
             (field, request),
             zope.app.form.browser.interfaces.IInputWidget)
+        widget.setRenderedValue(value)
+        return widget
+
+    def test_widget_should_be_available_with_search(self):
+        from zeit.cms.browser.widget import MultiObjectSequenceWidget
+        widget = self.get_widget()
         self.assertIsInstance(widget, MultiObjectSequenceWidget)
 
     def test_widget_should_not_be_available_without_search(self):
@@ -118,6 +124,29 @@ class TestObjectSequenceWidgetIntegration(unittest2.TestCase,
             (field, request),
             zope.app.form.browser.interfaces.IInputWidget)
         self.assertNotIsInstance(widget, MultiObjectSequenceWidget)
+
+    def test_widget_should_render_source_query_view(self):
+        import zeit.cms.content.interfaces
+        import zope.component
+        import zope.formlib.interfaces
+        import zope.publisher.interfaces.browser
+        adapter = mock.Mock()
+        adapter.return_value = mock.Mock(return_value='mock')
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.registerAdapter(
+            adapter,
+            (zeit.cms.content.interfaces.INamedCMSContentSource,
+             zope.publisher.interfaces.browser.IBrowserRequest),
+            zope.formlib.interfaces.ISourceQueryView)
+        self.addCleanup(lambda: gsm.unregisterAdapter(
+            adapter,
+            (zeit.cms.content.interfaces.INamedCMSContentSource,
+             zope.publisher.interfaces.browser.IBrowserRequest),
+            zope.formlib.interfaces.ISourceQueryView))
+        widget = self.get_widget()
+        result = widget()
+        adapter.assert_called()
+        self.assert_ellipsis('...<div>mock</div>...', result)
 
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):

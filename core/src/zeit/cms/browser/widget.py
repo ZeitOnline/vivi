@@ -19,6 +19,7 @@ import zope.app.form.interfaces
 import zope.app.pagetemplate
 import zope.cachedescriptors.property
 import zope.component
+import zope.formlib.interfaces
 import zope.interface
 import zope.schema
 import zope.schema.interfaces
@@ -244,6 +245,12 @@ class MultiObjectSequenceWidget(
         count = len(self._getFormValue())
         return ('<input type="hidden" id="%s.count" name="%s.count" value="%d" />'
                 % (self.name, self.name, count))
+
+    @zope.cachedescriptors.property.Lazy
+    def query_view(self):
+        return zope.component.queryMultiAdapter(
+            (self.source, self.request),
+            zope.formlib.interfaces.ISourceQueryView)
 
 
 class ObjectSequenceWidgetDetails(zeit.cms.browser.view.Base):
