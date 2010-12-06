@@ -60,6 +60,7 @@ class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
 
     check_interfaces = IAuthorType
     name = 'authors'
+    autocomplete = True
 
 
 authorSource = AuthorSource()
