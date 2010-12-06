@@ -1,5 +1,45 @@
 /* Lightbox */
 
+.lightbox-shade {
+    z-index: 2;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: black;
+    opacity: 0.7;
+}
+
+.lightbox-header {
+    z-index: 4;
+    background-color: #ddd;
+    position: fixed;
+    top: 7.5em;
+    left: 10em;
+    right: 10em;
+    text-align:right;
+    padding: 0.5em;
+}
+
+.lightbox-header .CloseButton {
+    background: url("icons/close.png");
+    width: 17px;
+    height: 17px;
+    display: block;
+    float: right;
+}
+
+.lightbox {
+    z-index: 3;
+    background-color: white;
+    position: fixed;
+    top: 10em;
+    left: 10em;
+    right: 10em;
+    bottom: 7.5em;
+}
+
 .lightbox-header {
     z-index: 3;
 }
