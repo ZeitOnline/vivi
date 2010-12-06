@@ -57,11 +57,12 @@ class JSON(Base):
 
         # use template indicated in JSON if it's there,
         # otherwise use class template
-        template = result.pop('template', None)
-        if template is None:
-            template = self.template
-        if template is not None:
-            result['template_url'] = self.resources[template]()
+        if isinstance(result, dict):
+            template = result.pop('template', None)
+            if template is None:
+                template = self.template
+            if template is not None:
+                result['template_url'] = self.resources[template]()
         return cjson.encode(result)
 
     def json(self):
