@@ -238,6 +238,33 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.assertValue('css=input[name=testwidget.1]',
                       'http://xml.zeit.de/testcontent')
 
+class TestObjectSequenceWidgetAutocompleteJavascript(
+    zeit.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestObjectSequenceWidgetAutocompleteJavascript, self).setUp()
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/'
+            'objectsequencewidget-autocomplete.html')
+
+    def test_input_should_activate_autocomplete(self):
+        s = self.selenium
+        s.waitForElementPresent('css=.autocomplete.ui-autocomplete-input')
+
+    def test_input_should_autocomplete_on_type(self):
+        s = self.selenium
+        s.typeKeys('css=.autocomplete', 'a')
+        s.waitForElementPresent('css=ul.ui-autocomplete')
+
+    def test_selecting_autocomplete_should_add_object(self):
+        s = self.selenium
+        s.typeKeys('css=.autocomplete', 'a')
+        s.waitForElementPresent('link=*Test Autor*')
+        s.mouseOver('link=*Test Autor*')
+        s.click('link=*Test Autor*')
+        s.waitForElementPresent('id=testwidget.0')
+        s.assertValue('id=testwidget.0',
+                      'http://xml.zeit.de/autoren/A/Test_Autor/index')
 
 
 class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):

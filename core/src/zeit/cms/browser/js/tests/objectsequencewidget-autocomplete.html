@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="resource_library:zeit.cms.javascript"/>
+  </head>
+  <body id="body">
+    <div class="objectsequencewidget" id="testwidget">
+      <input type="hidden" name="testwidget.count" id="testwidget.count" value="0" />
+      <ul>
+      </ul>
+      <input type="text" class="autocomplete"
+        cms:autocomplete-source="objectsequencewidget-autocomplete.json" />
+    </div>
+    <script type="text/javascript">
+      var application_url = '../../../';
+      var widget = new zeit.cms.ObjectSequenceWidget('testwidget');
+    </script>
+  </body>
+</html>

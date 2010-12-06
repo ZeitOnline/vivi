@@ -464,6 +464,19 @@ table.properties textarea {
   padding-left: 0;
 }
 
+
+
+
+.objectsequencewidget input.autocomplete {
+  width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.objectsequencewidget input.autocomplete[value=""]:before {
+  content: "Type to add …";
+}
+
 .objectsequencewidget ul {
   list-style: none;
   margin: 0;

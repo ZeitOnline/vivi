@@ -439,19 +439,36 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
     construct: function(widget_id) {
         var self = this;
-        this.widget_id = widget_id;
-        this.element = $(widget_id);
-        this.ul_element = getFirstElementByTagAndClassName(
-            'ul', null, this.element);
-        this.initialize();
+        self.widget_id = widget_id;
+        self.element = $(widget_id);
+        self.ul_element = getFirstElementByTagAndClassName(
+            'ul', null, self.element);
+    
+        self.initialize_autocomplete();
+        self.initialize();
         // XXX Need to unregister those events
-        MochiKit.Signal.connect(this.element, 'onclick', this, 'handleClick');
+        MochiKit.Signal.connect(self.element, 'onclick', self, 'handleClick');
         new MochiKit.DragAndDrop.Droppable(self.element, {
             accept: ['uniqueId', 'content-drag-pane'],
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
                 self.handleDrop(element);
+            }
+        });
+    },
+
+    initialize_autocomplete: function() {
+        var self = this;
+        self.autocomplete = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'input', 'autocomplete', self.element);
+        if (isNull(self.autocomplete)) {
+            return;
+        }
+        jQuery(self.autocomplete).autocomplete({
+            source: self.autocomplete.getAttribute('cms:autocomplete-source'),
+            select: function(event, ui) {
+                self.add(ui.item.value);
             }
         });
     },
@@ -474,7 +491,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             self.ul_element, {
             onUpdate: function() { self.update_order_from_ul(); }
             });
-        if (i == 0) {
+        if (i == 0 && isNull(self.autocomplete)) {
             self.ul_element.appendChild(LI(
                 {'class': 'new'},
                 'Ziehen Sie Inhalte hierher um sie zu verknüpfen.'));

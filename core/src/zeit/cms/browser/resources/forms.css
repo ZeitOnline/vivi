@@ -16,6 +16,10 @@ textarea{
 /*font:100% Monaco,"Courier New",Courier,monospace;*/
     
 
+input:-moz-placeholder[type="text"] {
+  color: inherit;
+}
+
 input[type="text"] {
     font-family:"Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
     visibility:visible;

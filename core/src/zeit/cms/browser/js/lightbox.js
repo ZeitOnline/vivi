@@ -301,7 +301,9 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         }
         forEach(MochiKit.Selector.findChildElements(
             self.form, ['textarea', 'input', 'select']), function(node) {
-            if (node.nodeName == 'INPUT' && node.type == 'button') {
+            if (node.nodeName == 'INPUT' && (
+                    node.type == 'button' ||
+                    MochiKit.DOM.hasElementClass(node, 'autocomplete'))) {
                 return
             }
             if (node.nodeName == 'INPUT' && node.type == 'checkbox') {
