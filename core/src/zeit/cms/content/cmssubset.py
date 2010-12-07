@@ -3,7 +3,6 @@
 # $Id$
 
 import sprout.htmlsubset
-import sprout.silvasubset
 
 MARKUP_BASE = ('i', 'em')
 MARKUP_LINK = ('a', )
@@ -36,10 +35,40 @@ class AHandler(sprout.htmlsubset.SubsetHandler):
         node.appendChild(node.ownerDocument.createTextNode(data))
 
 
+class BrHandler(sprout.htmlsubset.SubsetHandler):
+
+    parsed_name = 'br'
+
+    def startElementNS(self, name, qname, attrs):
+        node = self.parent()
+        child = node.ownerDocument.createElement('br')
+        node.appendChild(child)
+        self.setResult(child)
+
+
+class MarkupTextHandler(sprout.htmlsubset.SubsetHandler):
+
+    def startElementNS(self, name, qname, attrs):
+        node = self.parent()
+        child = node.ownerDocument.createElement(self.tree_name)
+        node.appendChild(child)
+        self.setResult(child)
+
+    def characters(self, data):
+        node = self.result()
+        node.appendChild(node.ownerDocument.createTextNode(data))
+
+
+def markupTextHandlerClass(parsed_name, tree_name):
+    """Construct subclass able to handle element of name."""
+    return type('%s_handler_class' % parsed_name, (MarkupTextHandler,),
+                {'tree_name': tree_name, 'parsed_name': parsed_name})
+
+
 def create_cms_subset():
     subset = sprout.htmlsubset.Subset()
     for name in MARKUP_BASE:
-        handler = sprout.silvasubset.markupTextHandlerClass(
+        handler = markupTextHandlerClass(
             name, MARKUP_TEXT_TRANSLATION.get(name, name))
         element = sprout.htmlsubset.Element(
             name, [], [], MARKUP_HEADING, handler)
@@ -48,8 +77,7 @@ def create_cms_subset():
         sprout.htmlsubset.Element(
             'a', ['href'], ['target'], MARKUP_BASE, AHandler))
     subset.registerElement(
-        sprout.htmlsubset.Element('br', [], [], [],
-                                  sprout.silvasubset.BrHandler))
+        sprout.htmlsubset.Element('br', [], [], [], BrHandler))
     # 'block' tag is used to produce fake surrounding tag, real one will
     # be something else. Need to register allowed elements for it
     subset.registerElement(
