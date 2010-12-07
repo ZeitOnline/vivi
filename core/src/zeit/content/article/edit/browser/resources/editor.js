@@ -39,8 +39,6 @@ zeit.edit.drop.registerHandler({
 });
 
 
-
-
 zeit.content.article.Editable = gocept.Class.extend({
     // Inline editing module
 
@@ -211,7 +209,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             mode: 'absolute',
             x: MochiKit.Style.getElementPosition(self.toolbar, self.block).x,
             y: MochiKit.Style.getElementPosition(container, self.block).y
-        }
+        };
         if (fast) {
             MochiKit.Style.setElementPosition(self.toolbar, move);
         } else {
@@ -291,12 +289,24 @@ zeit.content.article.Editable = gocept.Class.extend({
     handle_keyup: function(event) {
         var self = this;
         self.relocate_toolbar();
+        self.fix_html();
+    },
+
+    fix_html: function() {
+        var self = this;
+        forEach(
+            MochiKit.DOM.getElementsByTagAndClassName(null, null, self.editable),
+            function(element) {
+                element.removeAttribute('class');
+                element.removeAttribute('style');
+        });
     },
 
     get_text_list: function() {
         var self = this;
         var result = [];
         var text_collector = '';
+        self.fix_html();
         forEach(self.editable.childNodes, function(element) {
             if (element.nodeType == element.ELEMENT_NODE) {
                 if (MochiKit.Style.getStyle(element, 'display') == 'inline') {

@@ -126,13 +126,18 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
         s.select('id=add_menu', 'label=Article')
         s.waitForPageToLoad()
 
-    def create(self):
+    def create(self, contents=None):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
         s.waitForElementPresent('link=Create paragraph')
         s.click('link=Create paragraph')
         s.waitForElementPresent('css=.block.type-p')
         s.click('css=.block.type-p .editable')
+        if contents:
+            s.getEval(
+                "this.browserbot.findElement("
+                "  'css=.block.type-p .editable').innerHTML = '{0}'".format(
+                    contents.replace("'", "\\'")))
 
     def save(self, locator='css=.block.type-p .editable'):
         self.selenium.getEval(
@@ -195,3 +200,18 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
         s.assertElementPresent('css=.editable p > strong:contains(had)')
         s.assertElementNotPresent('css=.editable p:contains(foo Mary)')
         s.assertElementNotPresent('css=.editable p:contains(lamb. bar)')
+
+    def test_class_attributes_should_be_removed_on_keyup(self):
+        s = self.selenium
+        self.create("<h4 class='title'>blubbel</h4>")
+        s.assertElementPresent('css=.block.type-p h4.title:contains(blubbel)')
+        s.fireEvent('css=.block.type-p .editable', 'keyup')
+        s.assertElementNotPresent(
+            'css=.block.type-p h4.title:contains(blubbel)')
+
+    def test_style_attributes_should_be_removed_on_keyup(self):
+        s = self.selenium
+        self.create("<h4 style='display: inline'>blubbel</h4>")
+        s.assertElementPresent('css=.block.type-p h4[style]')
+        s.fireEvent('css=.block.type-p .editable', 'keyup')
+        s.assertElementNotPresent('css=.block.type-p h4[style]')
