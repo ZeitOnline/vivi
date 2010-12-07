@@ -92,6 +92,14 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         ob.__name__ = None
         ob.xml = lxml.objectify.E.ob()
         body.add(ob)
+        # XXX assertion?!
+
+    def test_nested_elements_should_be_ignored(self):
+        body = self.get_body(
+            '<division><p>I have <p>another para</p> in me</p></division>')
+        self.assertEqual([u'2'], body.keys())
+
+
 
 
 class TestCleaner(unittest2.TestCase):
