@@ -118,6 +118,20 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
         s.select('id=add_menu', 'label=Article')
         s.waitForPageToLoad()
 
+    def create(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=.block.type-p')
+        s.waitForElementPresent('link=Create paragraph')
+        s.click('link=Create paragraph')
+        s.waitForElementPresent('css=.block.type-p')
+        s.click('css=.block.type-p .editable')
+
+    def save(self, locator='css=.block.type-p .editable'):
+        self.selenium.getEval(
+            "window.MochiKit.Signal.signal("
+            "   this.browserbot.findElement('{0}'), 'save')".format(locator))
+        self.selenium.waitForElementNotPresent('xpath=//*[@contenteditable]')
+
     def test_landing_zone_should_take_modules(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
@@ -131,5 +145,45 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
     def test_create_paragraph_link_should_create_paragraph(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
+        s.waitForElementPresent('link=Create paragraph')
         s.click('link=Create paragraph')
         s.waitForElementPresent('css=.block.type-p')
+
+    def test_typed_text_should_be_saved(self):
+        s = self.selenium
+        self.create()
+        s.typeKeys('css=.block.type-p .editable p', 'Mary had a little lamb.')
+        self.save()
+        s.waitForElementPresent('css=.editable p:contains(Mary had)')
+
+    def test_text_nodes_should_become_paragraphs(self):
+        s = self.selenium
+        self.create()
+        s.getEval("this.browserbot.findElement("
+                  "  'css=.block.type-p .editable').innerHTML = "
+                  "   'Mary<p>had a little</p>'")
+        self.save()
+        s.waitForElementPresent('css=.editable p:contains(Mary)')
+
+    def test_top_level_inline_styles_should_be_joined_to_paragraph(self):
+        s = self.selenium
+        self.create()
+        s.getEval("this.browserbot.findElement("
+                  "  'css=.block.type-p .editable').innerHTML = "
+                  "   'Mary <strong>had</strong> a little lamb.'")
+        self.save()
+        s.waitForElementPresent('css=.editable p:contains(Mary had a)')
+        s.assertElementPresent('css=.editable p > strong:contains(had)')
+
+    def test_top_level_inline_styles_should_not_joined_to_existing_p(self):
+        s = self.selenium
+        self.create()
+        s.getEval(
+            "this.browserbot.findElement("
+            " 'css=.block.type-p .editable').innerHTML = "
+            " '<p>foo</p>Mary <strong>had</strong> a little lamb. <p>bar</p>'")
+        self.save()
+        s.waitForElementPresent('css=.editable p:contains(Mary had a)')
+        s.assertElementPresent('css=.editable p > strong:contains(had)')
+        s.assertElementNotPresent('css=.editable p:contains(foo Mary)')
+        s.assertElementNotPresent('css=.editable p:contains(lamb. bar)')

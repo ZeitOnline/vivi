@@ -93,6 +93,11 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_toolbar();
             self.relocate_toolbar(true);
+            // This handler is there to support saving during selenium tests as
+            // it doesn't seem to be possible to synthesize an blur event which
+            // triggers the capuring phase handler.
+            self.events.push(MochiKit.Signal.connect(
+                self.editable, 'save', self, self.save));
         });
     },
     
@@ -291,12 +296,35 @@ zeit.content.article.Editable = gocept.Class.extend({
     get_text_list: function() {
         var self = this;
         var result = [];
+        var text_collector = '';
         forEach(self.editable.childNodes, function(element) {
             if (element.nodeType == element.ELEMENT_NODE) {
-                result.push({factory: element.nodeName.toLowerCase(),
-                             text: element.innerHTML});
+                if (MochiKit.Style.getStyle(element, 'display') == 'inline') {
+                    // Inline style on top level. That's not allow. Either wrap
+                    // it in a <p> or append it to the last p
+                    text_collector += 
+                        '<' + element.nodeName.toLowerCase() + '>' +
+                        element.innerHTML +
+                        '</' + element.nodeName.toLowerCase() + '>';
+                } else {
+                    // display: block
+                    if (text_collector.length) {
+                        result.push({factory: 'p',
+                                     text: text_collector});
+                        text_collector = '';
+                    }
+                    result.push({factory: element.nodeName.toLowerCase(),
+                                 text: element.innerHTML});
+                }
+            } else if (element.nodeType == element.TEXT_NODE) {
+                text_collector += element.data;
             }
         });
+        if (text_collector.length) {
+            result.push({factory: 'p',
+                         text: text_collector});
+            text_collector = '';
+        }
         return result;
     },
 
