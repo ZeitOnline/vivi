@@ -100,13 +100,7 @@ class GalleryTest(unittest2.TestCase,
         article = self.get_article()
         self.setup_content()
         self.assert_ellipsis(
-            """<...
-              <div class="landing-zone visible action-content-droppable"
-                 cms:drop-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@article-landing-zone-drop">
-              Landing Zone
-            </div>
-            ...""")
-
+            """...cms:drop-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@article-landing-zone-drop"...""")
         uuid4 = mock.Mock(side_effect=lambda: uuid4.call_count)
         with mock.patch('uuid.uuid4', new=uuid4):
             self.browser.open(
