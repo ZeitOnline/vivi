@@ -58,6 +58,11 @@ class ParagraphTest(unittest.TestCase):
         self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement),
                         type(p.xml))
 
+    def test_setting_html_with_block_elements_should_keep_p_as_xml_tag(self):
+        p = self.get_paragraph()
+        p.text = u'<h3>I am </h3><p>I am the best.</p>'
+        self.assertEqual(p.type, p.xml.tag)
+
 
 class UnorderedListTest(ParagraphTest):
 

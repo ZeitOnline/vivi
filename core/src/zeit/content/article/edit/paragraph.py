@@ -45,6 +45,7 @@ class Paragraph(zeit.edit.block.SimpleElement):
         except lxml.etree.XMLSyntaxError:
             raise ValueError('No valid XML: %s' % (value,))
         p.attrib.update(self.xml.attrib.items())
+        p.tag = self.type
         self.xml.getparent().replace(self.xml, p)
         self.xml = p
 
