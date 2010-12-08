@@ -29,8 +29,8 @@ class ParagraphTest(unittest.TestCase):
 
     def test_setting_invalid_xml_is_somehow_converted_to_valid_xml(self):
         p = self.get_paragraph()
-        p.text = u'<b>4 > 3'
-        self.assertEqual('<b>4 &gt; 3</b>', p.text)
+        p.text = u'<em>4 > 3'
+        self.assertEqual('<em>4 &gt; 3</em>', p.text)
 
     def test_setting_text_should_keep_attributes(self):
         p = self.get_paragraph()
@@ -67,6 +67,42 @@ class ParagraphTest(unittest.TestCase):
         p = self.get_paragraph()
         p.text = u'a > b'
         self.assertEqual('a &gt; b', p.text)
+
+    def test_b_should_be_replaced_by_strong(self):
+        p = self.get_paragraph()
+        p.text = u'I am <b>strong</b>.'
+        self.assertEqual('I am <strong>strong</strong>.', p.text)
+
+    def test_i_should_be_replaced_by_em(self):
+        p = self.get_paragraph()
+        p.text = u'I am <i>strong</i>.'
+        self.assertEqual('I am <em>strong</em>.', p.text)
+
+    def test_u_should_be_allowed(self):
+        p = self.get_paragraph()
+        p.text = u'I am <u>underlined</u>.'
+        self.assertEqual('I am <u>underlined</u>.', p.text)
+
+    def test_br_should_be_allowed(self):
+        p = self.get_paragraph()
+        p.text = u'I am <br/>here and<br/>here.'
+        self.assertEqual('I am <br/>here and<br/>here.', p.text)
+
+    def test_a_witout_href_should_be_escaped(self):
+        p = self.get_paragraph()
+        p.text = u'A stupid <a>link</a>.'
+        self.assertEqual(u'A stupid &lt;a&gt;link.', p.text)
+
+    def test_a_with_href_should_be_allowed(self):
+        p = self.get_paragraph()
+        p.text = u'A working <a href="#">link'
+        self.assertEqual(u'A working <a href="#">link</a>', p.text)
+
+    def test_a_target_should_be_allowed(self):
+        p = self.get_paragraph()
+        p.text = u'A working <a href="#" target="_blank">link'
+        self.assertEqual(u'A working <a href="#" target="_blank">link</a>',
+                         p.text)
 
 
 class UnorderedListTest(ParagraphTest):

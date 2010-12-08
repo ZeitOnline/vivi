@@ -9,6 +9,7 @@ import lxml.etree
 import lxml.html
 import lxml.objectify
 import xml.sax.saxutils
+import zeit.cms.content.cmssubset
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.edit.block
@@ -18,6 +19,16 @@ import zope.component
 
 # XXX The factory registration could be much easier with a custom grokker for
 # the Element classes itself.
+
+
+paragraph_subset = zeit.cms.content.cmssubset.create_subset(
+    zeit.cms.content.cmssubset.AHandler,
+    zeit.cms.content.cmssubset.BrHandler,
+    zeit.cms.content.cmssubset.markupTextHandlerClass('i', 'em'),
+    zeit.cms.content.cmssubset.markupTextHandlerClass('em'),
+    zeit.cms.content.cmssubset.markupTextHandlerClass('strong'),
+    zeit.cms.content.cmssubset.markupTextHandlerClass('b', 'strong'),
+    zeit.cms.content.cmssubset.markupTextHandlerClass('u'))
 
 
 class Paragraph(zeit.edit.block.SimpleElement):
@@ -37,12 +48,11 @@ class Paragraph(zeit.edit.block.SimpleElement):
 
     @text.setter
     def text(self, value):
-        # XXX I guess we need to munge at least <a href> here in some way.
+        import xml.dom.minidom
+        dom = xml.dom.minidom.parseString('<p/>')
+        value = paragraph_subset.filteredParse(value, dom.firstChild)
         try:
-            p = lxml.objectify.XML(
-                lxml.etree.tostring(
-                    lxml.html.fromstring('<%s>%s</%s>' % (
-                        self.type, value, self.type))))
+            p = lxml.objectify.XML(value.toxml())
         except lxml.etree.XMLSyntaxError:
             raise ValueError('No valid XML: %s' % (value,))
         p.attrib.update(self.xml.attrib.items())
