@@ -91,7 +91,7 @@ class ParagraphTest(unittest.TestCase):
     def test_a_witout_href_should_be_escaped(self):
         p = self.get_paragraph()
         p.text = u'A stupid <a>link</a>.'
-        self.assertEqual(u'A stupid &lt;a&gt;link.', p.text)
+        self.assertEqual(u'A stupid <a href="#">link</a>.', p.text)
 
     def test_a_with_href_should_be_allowed(self):
         p = self.get_paragraph()
@@ -104,6 +104,10 @@ class ParagraphTest(unittest.TestCase):
         self.assertEqual(u'A working <a href="#" target="_blank">link</a>',
                          p.text)
 
+    def test_unknown_elements_should_be_removed(self):
+        p = self.get_paragraph()
+        p.text = u'A <sub>subtext</sub> is filtered'
+        self.assertEqual(u'A subtext is filtered', p.text)
 
 class UnorderedListTest(ParagraphTest):
 

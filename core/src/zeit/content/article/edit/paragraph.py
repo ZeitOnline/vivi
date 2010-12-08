@@ -8,6 +8,7 @@ import grokcore.component
 import lxml.etree
 import lxml.html
 import lxml.objectify
+import sprout.htmlsubset
 import xml.sax.saxutils
 import zeit.cms.content.cmssubset
 import zeit.content.article.edit.block
@@ -20,6 +21,11 @@ import zope.component
 # XXX The factory registration could be much easier with a custom grokker for
 # the Element classes itself.
 
+class Subset(sprout.htmlsubset.Subset):
+
+    def isAllowed(self, container_name, name):
+        return True
+
 
 paragraph_subset = zeit.cms.content.cmssubset.create_subset(
     zeit.cms.content.cmssubset.AHandler,
@@ -28,7 +34,8 @@ paragraph_subset = zeit.cms.content.cmssubset.create_subset(
     zeit.cms.content.cmssubset.markupTextHandlerClass('em'),
     zeit.cms.content.cmssubset.markupTextHandlerClass('strong'),
     zeit.cms.content.cmssubset.markupTextHandlerClass('b', 'strong'),
-    zeit.cms.content.cmssubset.markupTextHandlerClass('u'))
+    zeit.cms.content.cmssubset.markupTextHandlerClass('u'),
+    subset_class=Subset)
 
 
 class Paragraph(zeit.edit.block.SimpleElement):
@@ -50,7 +57,7 @@ class Paragraph(zeit.edit.block.SimpleElement):
     def text(self, value):
         import xml.dom.minidom
         dom = xml.dom.minidom.parseString('<p/>')
-        value = paragraph_subset.filteredParse(value, dom.firstChild)
+        value = paragraph_subset.parse(value, dom.firstChild)
         try:
             p = lxml.objectify.XML(value.toxml())
         except lxml.etree.XMLSyntaxError:
