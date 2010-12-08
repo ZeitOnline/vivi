@@ -3,6 +3,7 @@
 
 import sprout.htmlsubset
 
+
 class AHandler(sprout.htmlsubset.SubsetHandler):
     """Handle <a>."""
 
@@ -13,7 +14,7 @@ class AHandler(sprout.htmlsubset.SubsetHandler):
     def startElementNS(self, name, qname, attrs):
         node = self.parent()
         child = node.ownerDocument.createElement('a')
-        child.setAttribute('href', attrs[(None, 'href')])
+        child.setAttribute('href', attrs.get((None, 'href'), '#'))
         if attrs.has_key((None, 'target')):
             child.setAttribute('target', attrs[(None, 'target')])
         node.appendChild(child)
@@ -57,8 +58,11 @@ def markupTextHandlerClass(parsed_name, tree_name=None):
 
 
 
-def create_subset(*markup):
-    subset = sprout.htmlsubset.Subset()
+def create_subset(*markup, **kw):
+    subset_class = kw.get('subset_class')
+    if subset_class is None:
+        subset_class = sprout.htmlsubset.Subset
+    subset = subset_class()
     all_names = tuple(h.parsed_name for h in markup)
     for handler in markup:
         required_attributes = getattr(handler, 'required_attributes', ())
