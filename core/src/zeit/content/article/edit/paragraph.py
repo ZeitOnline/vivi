@@ -8,6 +8,7 @@ import grokcore.component
 import lxml.etree
 import lxml.html
 import lxml.objectify
+import xml.sax.saxutils
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.edit.block
@@ -30,7 +31,7 @@ class Paragraph(zeit.edit.block.SimpleElement):
     def text(self):
         # The copy.copy magically removes unnecessary namespace declarations.
         p_text = self.xml.text or ''
-        text = p_text + ''.join(
+        text = xml.sax.saxutils.escape(p_text) + ''.join(
             lxml.etree.tostring(copy.copy(c)) for c in self.xml.iterchildren())
         return unicode(text)
 

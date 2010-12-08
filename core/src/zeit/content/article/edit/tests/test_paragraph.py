@@ -63,6 +63,11 @@ class ParagraphTest(unittest.TestCase):
         p.text = u'<h3>I am </h3><p>I am the best.</p>'
         self.assertEqual(p.type, p.xml.tag)
 
+    def test_simple_text_should_be_escaped_correctly(self):
+        p = self.get_paragraph()
+        p.text = u'a > b'
+        self.assertEqual('a &gt; b', p.text)
+
 
 class UnorderedListTest(ParagraphTest):
 
