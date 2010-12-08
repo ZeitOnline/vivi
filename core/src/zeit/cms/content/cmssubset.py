@@ -3,22 +3,12 @@
 
 import sprout.htmlsubset
 
-MARKUP_BASE = ('i', 'em')
-MARKUP_LINK = ('a', )
-MARKUP_BR = ('br',)
-
-MARKUP_HEADING = MARKUP_BASE + MARKUP_LINK + MARKUP_BR
-
-# Replace left hand side tags in user input by right hand side:
-MARKUP_TEXT_TRANSLATION = {
-    'i': 'em',
-}
-
-
 class AHandler(sprout.htmlsubset.SubsetHandler):
     """Handle <a>."""
 
     parsed_name = 'a'
+    required_attributes = ('href',)
+    optional_attributes = ('target',)
 
     def startElementNS(self, name, qname, attrs):
         node = self.parent()
@@ -58,31 +48,32 @@ class MarkupTextHandler(sprout.htmlsubset.SubsetHandler):
         node.appendChild(node.ownerDocument.createTextNode(data))
 
 
-def markupTextHandlerClass(parsed_name, tree_name):
+def markupTextHandlerClass(parsed_name, tree_name=None):
     """Construct subclass able to handle element of name."""
+    if tree_name is None:
+        tree_name = parsed_name
     return type('%s_handler_class' % parsed_name, (MarkupTextHandler,),
                 {'tree_name': tree_name, 'parsed_name': parsed_name})
 
 
-def create_cms_subset():
+
+def create_subset(*markup):
     subset = sprout.htmlsubset.Subset()
-    for name in MARKUP_BASE:
-        handler = markupTextHandlerClass(
-            name, MARKUP_TEXT_TRANSLATION.get(name, name))
+    all_names = tuple(h.parsed_name for h in markup)
+    for handler in markup:
+        required_attributes = getattr(handler, 'required_attributes', ())
+        optional_attributes = getattr(handler, 'optional_attributes', ())
         element = sprout.htmlsubset.Element(
-            name, [], [], MARKUP_HEADING, handler)
+            handler.parsed_name, required_attributes, optional_attributes,
+            all_names, handler)
         subset.registerElement(element)
     subset.registerElement(
         sprout.htmlsubset.Element(
-            'a', ['href'], ['target'], MARKUP_BASE, AHandler))
-    subset.registerElement(
-        sprout.htmlsubset.Element('br', [], [], [], BrHandler))
-    # 'block' tag is used to produce fake surrounding tag, real one will
-    # be something else. Need to register allowed elements for it
-    subset.registerElement(
-        sprout.htmlsubset.Element(
-            'block', [], [], MARKUP_HEADING, sprout.htmlsubset.BlockHandler))
+            'block', [], [], all_names, sprout.htmlsubset.BlockHandler))
     return subset
 
 
-CMS_SUBSET = create_cms_subset()
+CMS_SUBSET = create_subset(AHandler,
+                           BrHandler,
+                           markupTextHandlerClass('i', 'em'),
+                           markupTextHandlerClass('em'))
