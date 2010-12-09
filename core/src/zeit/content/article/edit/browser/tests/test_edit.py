@@ -243,4 +243,3 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
         s.assertElementPresent('xpath=//a[@href="http://example.com/"]')
         s.click('xpath=//a[@href="unlink"]')
         s.waitForElementNotPresent('xpath=//a[@href="http://example.com/"]')
-        
