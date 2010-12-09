@@ -98,4 +98,12 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
     def test_galleries_should_use_drop_widget(self):
         s = self.selenium
         s.waitForElementPresent(
-            'css=.drop-object-widget input[name="assets.gallery"]')
+           'css=.drop-object-widget input[name="assets.gallery"]')
+
+    def test_metadata_should_be_foldable_and_unfoldable(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=#article-metadata.folded')
+        s.click('css=#article-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#article-metadata.folded')
+        s.click('css=#article-metadata .edit-bar .fold-link')
+        s.waitForElementNotPresent('css=#article-metadata.folded')
