@@ -5,6 +5,11 @@ import mock
 import zeit.content.article.testing
 
 
+def css_path(css):
+    import lxml.cssselect
+    return lxml.cssselect.CSSSelector(css).path
+
+
 class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
 
     def get_view(self, body=None):
@@ -243,6 +248,18 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
         s.assertElementPresent('xpath=//a[@href="http://example.com/"]')
         s.click('xpath=//a[@href="unlink"]')
         s.waitForElementNotPresent('xpath=//a[@href="http://example.com/"]')
+
+    def test_consequent_paragraphs_should_be_editable_together(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=.block.type-p')
+        s.waitForElementPresent('link=Create paragraph')
+        s.click('link=Create paragraph')
+        s.waitForElementPresent('css=.block.type-p')
+        s.click('link=Create paragraph')
+        s.waitForXpathCount(css_path('.block.type-p'), 2)
+        s.click('css=.block.type-p .editable')
+        s.assertXpathCount(css_path('.block.type-p'), 1)
+        s.assertXpathCount(css_path('.block.type-p .editable > *'), 2)
 
 
 class TestFolding(zeit.content.article.testing.SeleniumTestCase):
