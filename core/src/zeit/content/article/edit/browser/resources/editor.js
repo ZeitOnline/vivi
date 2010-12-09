@@ -88,14 +88,15 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.editable, 'onkeydown', self, self.handle_keydown));
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeyup', self, self.handle_keyup));
+            self.events.push(MochiKit.Signal.connect(
+                self.editable, 'save', self, self.save));
+            self.fix_html();
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_toolbar();
             self.relocate_toolbar(true);
             // This handler is there to support saving during selenium tests as
             // it doesn't seem to be possible to synthesize an blur event which
             // triggers the capuring phase handler.
-            self.events.push(MochiKit.Signal.connect(
-                self.editable, 'save', self, self.save));
         });
     },
     
@@ -189,12 +190,38 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a rel='command' href='insertorderedlist'>OL</a>\
             <a rel='command' href='formatBlock/h3'>T</a>\
             <a rel='command' href='formatBlock/p'>P</a>\
-            <a href='#' class='rteButton link'>A</a>\
+            <a rel='method' href='insert_link'>A</a>\
+            <a rel='command' href='unlink'>A</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
             self, self.handle_click));
         MochiKit.Visual.appear(self.toolbar);
+        self.update_toolbar();
+    },
+
+    update_toolbar: function() {
+        var self = this;
+        var element = self.get_selected_container();
+        log('got', element.nodeName);
+		if (element.nodeType == element.TEXT_NODE) {
+            element = element.parentNode;
+        }
+        forEach(MochiKit.DOM.getElementsByTagAndClassName(
+            'a', null, self.toolbar), function(action) {
+            MochiKit.DOM.removeElementClass(action, 'active');
+        });
+        while(!isNull(element) && element != self.editable) {
+            log('checking', element.nodeName);
+            forEach(MochiKit.DOM.getElementsByTagAndClassName(
+                'a', null, self.toolbar), function(action) {
+                if (action.innerHTML == element.nodeName) {
+                    MochiKit.DOM.addElementClass(action, 'active');
+                }
+            });
+            element = element.parentNode;
+		}
+         
     },
 
     relocate_toolbar: function(fast) {
@@ -219,6 +246,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     handle_click: function(event) {
         var self = this;
+        self.update_toolbar();
         self.relocate_toolbar();
         if (event.target().nodeName != 'A') {
             return;
@@ -288,17 +316,33 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     handle_keyup: function(event) {
         var self = this;
+        self.update_toolbar();
         self.relocate_toolbar();
         self.fix_html();
     },
 
     fix_html: function() {
         var self = this;
+        var replace_element = function(element, new_name) {
+            var new_element = MochiKit.DOM.swapDOM(
+                element,
+                MochiKit.DOM.createDOM(new_name));
+            while(element.firstChild) {
+                new_element.appendChild(element.firstChild);
+            }
+        };
         forEach(
-            MochiKit.DOM.getElementsByTagAndClassName(null, null, self.editable),
+            MochiKit.DOM.getElementsByTagAndClassName(
+                null, null, self.editable),
             function(element) {
                 element.removeAttribute('class');
                 element.removeAttribute('style');
+                // Yeah, I luv it!
+                if (element.nodeName == 'EM') {
+                    replace_element(element, 'I');
+                } else if (element.nodeName == 'STRONG') {
+                    replace_element(element, 'B');
+                }
         });
     },
 
@@ -357,6 +401,41 @@ zeit.content.article.Editable = gocept.Class.extend({
         });
     },
 
+    get_selected_container: function() {
+        var container;
+        var range = getSelection().getRangeAt(0);
+        if ((range.startContainer.nodeType ==
+             range.startContainer.ELEMENT_NODE) &&
+             (range.startContainer == range.endContainer) &&
+             (range.startOffset + 1 == range.endOffset)) {
+             // There is one single element inside the range, use that.
+             container = range.startContainer.childNodes[range.startOffset];
+        } else {
+            container = range.commonAncestorContainer;
+        }
+        return container;
+    },
+
+    insert_link: function() {
+        var self = this;
+        var container = self.get_selected_container();
+        var link;
+        if (container.nodeName == 'A') {
+            link = container;
+        } else {
+            link = MochiKit.DOM.getFirstParentByTagAndClassName(
+                container, 'a', null);
+        }
+        var href = '';
+        if (link) {
+            href = container.href;
+        }
+        href = prompt("Link", href);
+        if (href) {
+            self.command('createLink', href);
+        }
+    },
+
     command: function(command, option) {
         var self = this;
         log("Executing", command, option);
@@ -365,7 +444,8 @@ zeit.content.article.Editable = gocept.Class.extend({
         } catch(e) {
             window.console && console.log(e);
 		}
-		//this._updateToolbar();
+        self.editable.focus();
+		self.update_toolbar();
     }
 
 });

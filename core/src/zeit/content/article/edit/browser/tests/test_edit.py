@@ -215,3 +215,32 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
         s.assertElementPresent('css=.block.type-p h4[style]')
         s.fireEvent('css=.block.type-p .editable', 'keyup')
         s.assertElementNotPresent('css=.block.type-p h4[style]')
+
+    def test_links_should_be_addable(self):
+        s = self.selenium
+        self.create('<p>I want to link something</p>')
+        s.getEval("""(function(s) {
+            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+            var range = window.getSelection().getRangeAt(0);
+            range.setStart(p.firstChild, 10);
+            range.setEnd(p.firstChild, 14);
+        })(this);""")
+        s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
+        s.answerOnNextPrompt('http://example.com/')
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForElementPresent('xpath=//a[@href="http://example.com/"]')
+
+    def test_links_should_be_removable(self):
+        s = self.selenium
+        self.create('<p>I want to <a href="http://example.com/">link</a> '
+                    'something</p>')
+        s.getEval("""(function(s) {
+            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+            var range = window.getSelection().getRangeAt(0);
+            range.setStart(p, 1);
+            range.setEnd(p, 2);
+        })(this);""")
+        s.assertElementPresent('xpath=//a[@href="http://example.com/"]')
+        s.click('xpath=//a[@href="unlink"]')
+        s.waitForElementNotPresent('xpath=//a[@href="http://example.com/"]')
+        

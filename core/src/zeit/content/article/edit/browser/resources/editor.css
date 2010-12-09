@@ -29,7 +29,7 @@
 }
 
 .inline-form .label div.error:before {
-  content: "(":
+  content: "(";
 }
 
 .inline-form .label div.error:after {
@@ -177,6 +177,22 @@
 .rte-toolbar > a[href='insertorderedlist'] {
   background-position: -80px 0;
   color: transparent;
+}
+
+.rte-toolbar > a[href='insert_link'] {
+  background: url('world_link.png') no-repeat 2px 2px;
+  color: transparent;
+}
+
+.rte-toolbar > a[href='unlink'] {
+  background: url('world_delete.png') no-repeat 2px 2px;
+  color: transparent;
+}
+
+.rte-toolbar a:hover, 
+.rte-toolbar a.active {
+  outline: 1px solid #0A246A;
+  background-color:#C2CBE0;
 }
 
 .editable *:empty:before {
