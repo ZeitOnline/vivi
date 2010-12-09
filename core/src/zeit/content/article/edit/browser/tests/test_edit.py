@@ -261,6 +261,35 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
         s.assertXpathCount(css_path('.block.type-p'), 1)
         s.assertXpathCount(css_path('.block.type-p .editable > *'), 2)
 
+    def _skip_test_joined_paragraphs_should_be_movable_together_while_edited(
+        self):
+        s = self.selenium
+        # Prepare content: p, p, division, p, p
+        s.assertElementNotPresent('css=.block.type-p')
+        s.waitForElementPresent('link=Create paragraph')
+        s.click('link=Create paragraph')
+        s.waitForElementPresent('css=.block.type-p')
+        s.click('link=Create paragraph')
+        s.waitForXpathCount(css_path('.block.type-p'), 2)
+        s.click('link=Module')
+        s.waitForElementPresent('css=#article-modules .module')
+        s.dragAndDropToObject(
+            'css=#article-modules .module[cms\\:block_type=division]',
+            'css=#article-editor-text .landing-zone.visible')
+        s.waitForElementPresent('css=.block.type-division')
+        s.click('link=Create paragraph')
+        s.waitForXpathCount(css_path('.block.type-p'), 3)
+        s.click('link=Create paragraph')
+        s.waitForXpathCount(css_path('.block.type-p'), 4)
+        # Start editing
+        s.click('css=.block.type-p .editable')
+        height = s.getElementHeight('css=.block.type-p')
+        s.click('css=.block.type-p .dragger')
+        # XXX This doesn't sort in the test but in the real word. Don't know
+        # why, yet
+        s.dragAndDrop('css=.block.type-p .dragger',
+                      '0,{0}'.format(height*2))
+
 
 class TestFolding(zeit.content.article.testing.SeleniumTestCase):
 

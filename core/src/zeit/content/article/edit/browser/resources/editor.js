@@ -89,7 +89,11 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeyup', self, self.handle_keyup));
             self.events.push(MochiKit.Signal.connect(
-                self.editable, 'save', self, self.save));
+                self.editable, 'save', function() {self.save();}));
+            self.events.push(MochiKit.Signal.connect(
+                zeit.edit.editor, 'before-reload', function() {
+                    self.save(/*no_reload=*/true);
+                }));
             self.fix_html();
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_toolbar();
@@ -159,6 +163,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.edited_paragraphs = MochiKit.Base.map(
             function(element) { return element.id; },
             paragraphs);
+        paragraphs[0].block_ids = self.edited_paragraphs;
         var editable = MochiKit.DOM.getFirstElementByTagAndClassName(
             null, 'editable', paragraphs[0]);
         forEach(paragraphs.slice(1), function(paragraph) {
@@ -382,23 +387,35 @@ zeit.content.article.Editable = gocept.Class.extend({
         return result;
     },
 
-    save: function() {
+    save: function(no_reload) {
         var self = this;
         log('Saving');
         MochiKit.DOM.addElementClass(self.block, 'busy');
         while (self.events.length) {
             MochiKit.Signal.disconnect(self.events.pop());
         }
-        // until now, the editor can only be contained in an editable-body.
-        var url = $('editable-body').getAttribute('cms:url') + '/@@save_text';
-        zeit.edit.makeJSONRequest(url, {
-            paragraphs: self.edited_paragraphs,
-            text: self.get_text_list()});
         var ident = MochiKit.Signal.connect(
             zeit.edit.editor, 'after-reload', function() {
             MochiKit.Signal.disconnect(ident);
             self.editor_active_lock.release();
+            // Warg. This tries to avoid a giant 10cm cursor blinking in the
+            // page. Apparrently we really to focus something else and can blur
+            // that one then.
+            $('fulltext').focus();
+            $('fulltext').blur();
         });
+        // until now, the editor can only be contained in an editable-body.
+        var url = $('editable-body').getAttribute('cms:url') + '/@@save_text';
+        var data = {paragraphs: self.edited_paragraphs,
+                    text: self.get_text_list()};
+        if (no_reload) {
+            data = MochiKit.Base.serializeJSON(data);
+            zeit.edit.with_lock(
+                MochiKit.Async.doXHR,
+                url, {method: 'POST', sendContent: data});
+        } else {
+            zeit.edit.makeJSONRequest(url, data);
+        }
     },
 
     get_selected_container: function() {
@@ -483,7 +500,7 @@ zeit.content.article.FoldBlock = gocept.Class.extend({
 MochiKit.Signal.connect(
     zeit.edit.editor, 'after-reload',
     function() {
-        zeit.content.article.FoldBlock.prototype.restore_folding()
+        zeit.content.article.FoldBlock.prototype.restore_folding();
     });
 
 })();
