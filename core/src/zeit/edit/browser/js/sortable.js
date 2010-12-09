@@ -94,8 +94,15 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
 
     serialize: function() {
         var self = this;
-        return MochiKit.Base.map(
-            function(e) { return e.id }, self.get_sortable_nodes());
+        var ids = [];
+        forEach(self.get_sortable_nodes(), function(e) {
+            if (e.block_ids) {
+                ids.push.apply(ids, e.block_ids);
+            } else {
+                ids.push(e.id);
+            }
+        });
+        return ids;
     },
 
     options: function() {
