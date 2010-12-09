@@ -107,3 +107,12 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementPresent('css=#article-metadata.folded')
         s.click('css=#article-metadata .edit-bar .fold-link')
         s.waitForElementNotPresent('css=#article-metadata.folded')
+
+    def test_fold_should_survive_page_load(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=#article-metadata.folded')
+        s.click('css=#article-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#article-metadata.folded')
+        s.open(s.getLocation())
+        s.waitForElementPresent('css=#article-metadata.folded')
+
