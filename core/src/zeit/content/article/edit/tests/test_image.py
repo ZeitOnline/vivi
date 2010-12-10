@@ -39,6 +39,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             <head/>
             <body>
               <division type="page">
+                <p>A leading para</p>
                 <p><image src="myniceimage" /></p>
               </division>
             </body>
@@ -52,7 +53,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             'http://xml.zeit.de/article')
         with zeit.cms.checkout.helper.checked_out(article) as co:
             self.assertEqual(
-                ['image'],
+                ['p', 'image'],
                 [el.tag for el in co.xml.body.division.iterchildren()])
 
 

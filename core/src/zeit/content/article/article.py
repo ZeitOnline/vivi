@@ -121,7 +121,7 @@ class PageBreakStep(zeit.wysiwyg.html.ConversionStep):
 
     zope.component.adapts(zeit.content.article.interfaces.IArticle)
 
-    weight = -1.1
+    weight = -3
     xpath_xml = '.'
     xpath_html = '.'
 
