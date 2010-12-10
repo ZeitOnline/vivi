@@ -27,13 +27,13 @@ zeit.content.cp.BlockHover = gocept.Class.extend({
     },
 
     get_block: function(element) {
-        var class = 'block';
-        if (MochiKit.DOM.hasElementClass(element, class)) {
-            return element
+        var css_class = 'block';
+        if (MochiKit.DOM.hasElementClass(element, css_class)) {
+            return element;
         }
         return MochiKit.DOM.getFirstParentByTagAndClassName(
-            element, null, class);
-    },
+            element, null, css_class);
+    }
 });
 
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
@@ -66,7 +66,7 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
                 overlap: 'horizontal',
                 update_url: url + '/@@updateOrder',
                 reload_id: bar.parentNode.id,
-                reload_url: url + '/@@contents',
+                reload_url: url + '/@@contents'
             });
             self.sorters.push(sorter);
         });
@@ -75,12 +75,12 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
     disconnect: function() {
         var self = this;
         while (self.sorters.length) {
-            var sorter = self.sorters.pop()
+            var sorter = self.sorters.pop();
             log("Destroying sorter " + sorter.container);
             sorter.__context__.deactivate();
             sorter.__context__.destroy();
         }
-    },
+    }
     
 });
 
@@ -105,7 +105,7 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
         log('added ' + id);
         if (isNull($(id))) {
             log("Added but not found: " + id);
-            return
+            return;
         }
         log('Added ' + id + $(id));
         MochiKit.Style.setOpacity($(id), 0.0);
@@ -149,30 +149,33 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     if (exit) {
         MochiKit.Async.callLater(
             0.25, zeit.content.cp.makeBoxesEquallyHigh, container);
-        return
+        return;
     }
 
     var max_height = 0;
     var blocks = [];
     forEach($(container).childNodes, function(block) {
-        if (block.nodeType != block.ELEMENT_NODE)
-            return
-        if (!MochiKit.DOM.hasElementClass(block, 'block'))
-            return
-        var block = MochiKit.DOM.getFirstElementByTagAndClassName(
+        if (block.nodeType != block.ELEMENT_NODE) {
+            return;
+        }
+        if (!MochiKit.DOM.hasElementClass(block, 'block')) {
+            return;
+        }
+        var block_inner = MochiKit.DOM.getFirstElementByTagAndClassName(
             'div', 'block-inner', block);
-        if (isNull(block))
-            return
-        blocks.push(block);
-        var height = MochiKit.Style.getStyle(block, 'height');
-        MochiKit.Style.setStyle(block, {'height': 'auto'});
-        var dim = MochiKit.Style.getElementDimensions(block, true);
-        MochiKit.Style.setStyle(block, {'height': height});
+        if (isNull(block)) {
+            return;
+        }
+        blocks.push(block_inner);
+        var height = MochiKit.Style.getStyle(block_inner, 'height');
+        MochiKit.Style.setStyle(block_inner, {'height': 'auto'});
+        var dim = MochiKit.Style.getElementDimensions(block_inner, true);
+        MochiKit.Style.setStyle(block_inner, {'height': height});
         max_height = Math.max(max_height, dim.h);
     }); 
 
     forEach(blocks, function(block) {
-        var new_dim = new MochiKit.Style.Dimensions(null, max_height)
+        var new_dim = new MochiKit.Style.Dimensions(null, max_height);
         MochiKit.Style.setElementDimensions(block, new_dim);
     });
 };
@@ -188,10 +191,10 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
                 try {
                     zeit.content.cp.makeBoxesEquallyHigh(bar);
                 } catch (e) {
-                    log("Error", e)
+                    log("Error", e);
                 }
         });
-    }
+    };
 
     var ident = MochiKit.Signal.connect(
         window, 'cp-editor-initialized',
