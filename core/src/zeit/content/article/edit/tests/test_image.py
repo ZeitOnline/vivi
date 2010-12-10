@@ -1,3 +1,4 @@
+# coding: utf8
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -55,6 +56,45 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(
                 ['p', 'image'],
                 [el.tag for el in co.xml.body.division.iterchildren()])
+
+    def _skip_test_image_nodes_should_keep_reference_with_strange_chars(self):
+        # Broken due to error in zeit.wysiwyg. I'm not going to fix this (now)
+        # becuase zeit.wysiwyg shouldn't be used for article (#8194) and
+        # filenames with non us-asscii charachters are almost never used.
+        from zeit.connector.resource import Resource
+        import StringIO
+        import zeit.cms.checkout.helper
+        import zeit.cms.interfaces
+        import zeit.connector.interfaces
+        import zope.component
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        connector.move(u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+                       u'http://xml.zeit.de/2006/ÄÖÜ.JPG')
+        article_xml = u"""
+        <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+            <head/>
+            <body>
+              <division type="page">
+                <p>A leading para</p>
+                <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />
+              </division>
+            </body>
+        </article>"""
+        connector.add(Resource(
+            'http://xml.zeit.de/article', 'article', 'article',
+            StringIO.StringIO(article_xml)))
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/article')
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            self.assertEqual(
+                u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
+                co.xml.body.division.image.get('src'))
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/article')
+        self.assertEqual(
+            u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
+            article.xml.body.division.image.get('src'))
 
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
