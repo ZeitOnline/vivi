@@ -1,5 +1,5 @@
 <tal:resource replace="resource_library:zeit.edit" />
-<div id="cp-content" >
+<div id="cp-content">
 </div>
 <div id="cp-forms">
 </div>
