@@ -1,14 +1,12 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.component
-import zope.interface
 
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.content.infobox.interfaces
+import zope.component
+import zope.interface
 
 
 class InfoboxReference(object):
