@@ -34,5 +34,5 @@ class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def infoboxreference_browse_location(context, source):
     return zope.component.queryMultiAdapter(
-        (context.context, source),
+        (context.__parent__, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
