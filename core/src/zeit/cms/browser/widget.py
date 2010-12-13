@@ -182,18 +182,7 @@ def objectDisplayWidgetMultiplexer(context, field, request):
         zope.app.form.interfaces.IDisplayWidget)
 
 
-class MultiObjectSequenceWidgetBase(object):
-
-    def _toFormValue(self, value):
-        result = []
-        for obj in value:
-            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
-                result.append({'uniqueId': obj.uniqueId})
-        return result
-
-
 class MultiObjectSequenceWidget(
-    MultiObjectSequenceWidgetBase,
     zope.app.form.browser.widget.SimpleInputWidget):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
@@ -208,6 +197,13 @@ class MultiObjectSequenceWidget(
 
     def hasInput(self):
         return self.name + '.count' in self.request.form
+
+    def _toFormValue(self, value):
+        result = []
+        for obj in value:
+            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
+                result.append({'uniqueId': obj.uniqueId})
+        return result
 
     def _getFormValue(self):
         """Returns a value suitable for use in an HTML form.
@@ -299,19 +295,14 @@ class ObjectSequenceWidgetDetails(zeit.cms.browser.view.Base):
 
 
 class MultiObjectSequenceDisplayWidget(
-    MultiObjectSequenceWidgetBase,
     zope.app.form.browser.widget.DisplayWidget):
-
-    # XXX I'm pretty sure there are no tests for this widget.
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'objectsequence-display-widget.pt')
 
-    def __init__(self, context, field, schema, request):
-        super(MultiObjectSequenceDisplayWidget, self).__init__(
-            context, request)
-        self.field = field
-        self.schema = schema
+    def __init__(self, context, source, request):
+        super(MultiObjectSequenceDisplayWidget, self).__init__(context, request)
+        self.source = source
 
     def __call__(self):
         return self.template()
@@ -321,8 +312,11 @@ class MultiObjectSequenceDisplayWidget(
             value = self._data
         else:
             value = self.context.default
-        return self._toFormValue(value)
-
+        result = []
+        for obj in value:
+            if zeit.cms.interfaces.ICMSContent.providedBy(obj):
+                result.append(obj)
+        return result
 
 
 DROP_TEMPLATE = u"""\

@@ -84,6 +84,15 @@
     permission="zope.Public"
     />
 
+  <adapter
+    for="
+    zope.schema.interfaces.ITuple
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.MultiObjectSequenceDisplayWidget"
+    permission="zope.Public"
+    />
 
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"

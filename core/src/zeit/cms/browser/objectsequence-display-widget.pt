@@ -2,11 +2,7 @@
   tal:attributes="id view/name">
   <ul>
     <li tal:repeat="item view/get_values">
-      <a href="#"
-        tal:attributes="href item/url"
-        tal:content="item/title">
-        Bild titel
-      </a>
+      <span tal:replace="structure item/@@zeit.cms.browser.object-widget-details" />
     </li>
   </ul>
 </div>

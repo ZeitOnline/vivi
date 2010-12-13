@@ -82,10 +82,11 @@ class KeywordsWidget(zeit.cms.browser.widget.MultiObjectSequenceWidget):
 class KeywordsDisplayWidget(
     zeit.cms.browser.widget.MultiObjectSequenceDisplayWidget):
 
-    template = zope.app.pagetemplate.viewpagetemplatefile.ViewPageTemplateFile(
-        'keyword-display-widget.pt')
+    def __init__(self, context, field, schema, request):
+        # XXX make the tests pass. This widget is going to vanish soon (#8374)
+        super(KeywordsDisplayWidget, self).__init__(context, None, request)
 
-    def _toFormValue(self, value):
+    def get_value(self, value):
         return value
 
 

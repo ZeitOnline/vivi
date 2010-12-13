@@ -18,7 +18,6 @@ class TestObjectDetails(unittest2.TestCase,
         self.layer.setup.setUp()
         self.browser = browser = Browser()
         browser.addHeader('Authorization', 'Basic user:userpw')
-        browser.handleErrors = False
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/testcontent/')
 
@@ -327,3 +326,81 @@ class TestDropObjectWidgetIntegration(unittest2.TestCase,
             (choice, request),
             zope.app.form.browser.interfaces.IInputWidget)
         self.assertNotIsInstance(widget, DropObjectWidget)
+
+
+class TestObjectSequenceDisplayWidget(unittest2.TestCase):
+
+    def get_content(self):
+        import zeit.cms.interfaces
+        import zope.interface
+        content = mock.Mock()
+        zope.interface.alsoProvides(
+            content, zeit.cms.interfaces.ICMSContent)
+        return content
+
+    def get_widget(self):
+        from zeit.cms.browser.widget import MultiObjectSequenceDisplayWidget
+        context = mock.Mock()
+        context.__name__ = 'name'
+        return MultiObjectSequenceDisplayWidget(
+            context, mock.Mock(), mock.Mock())
+
+    def test_get_values_should_ignore_non_cms_content(self):
+        widget = self.get_widget()
+        widget._data = (mock.sentinel.foo, mock.sentinel.bar)
+        self.assertEqual([], widget.get_values())
+
+    def test_get_values_should_returnd_data_if_set(self):
+        widget = self.get_widget()
+        content = self.get_content()
+        content2 = self.get_content()
+        widget._data = (content, content2)
+        self.assertEqual([content, content2], widget.get_values())
+
+    def test_get_values_should_returnd_default_if_no_data_set(self):
+        widget = self.get_widget()
+        content = self.get_content()
+        content2 = self.get_content()
+        widget.context.default = (content, content2)
+
+
+
+class TestObjectSequenceDisplayWidgetIntegration(
+    unittest2.TestCase,
+    zeit.cms.testing.FunctionalTestCase,
+    zeit.cms.testing.BrowserAssertions):
+
+    def get_field(self):
+        import zeit.cms.content.contentsource
+        import zope.schema
+        return zope.schema.Tuple(
+            value_type=zope.schema.Choice(
+                source=zeit.cms.content.contentsource.cmsContentSource))
+
+    def get_widget(self):
+        import zeit.cms.browser.interfaces
+        import zope.formlib.interfaces
+        import zope.interface
+        import zope.publisher.browser
+        field = self.get_field()
+        request = zope.publisher.browser.TestRequest()
+        zope.interface.alsoProvides(
+            request, zeit.cms.browser.interfaces.ICMSLayer)
+        widget = zope.component.getMultiAdapter(
+            (field, request),
+            zope.formlib.interfaces.IDisplayWidget)
+        return widget
+
+    def get_content(self):
+        import zeit.cms.interfaces
+        return zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent')
+
+    def test_should_render_details_for_referenced_items(self):
+        widget = self.get_widget()
+        zeit.cms.testing.set_site(self.getRootFolder())
+        content = self.get_content()
+        widget._data = (content,)
+        with zeit.cms.testing.interaction():
+            self.assert_ellipsis(
+                '...<div class="content-details...supertitle...', widget())
