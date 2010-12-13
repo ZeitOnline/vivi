@@ -46,7 +46,7 @@ def content_browse_location(context, source):
     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def reference_browse_location(context, source):
     return zope.component.queryMultiAdapter(
-        (context.context, source),
+        (context.__parent__, source),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
 
