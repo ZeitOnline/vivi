@@ -5,8 +5,11 @@ Infobox
 An infobox contains multiple blocks with additional information to an article.
 
 The infobox has an attribute `contents` which contains the actuall data as a
-tuple of tuples *yikes* [#functional]_:
+tuple of tuples *yikes*:
 
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
 >>> import zeit.content.infobox.infobox
 >>> ib = zeit.content.infobox.infobox.Infobox()
 
@@ -90,9 +93,3 @@ Of course we'll get the data back, in unicode:
 ((u'Infor...
  (u'Fehle...
   u'<p>Prue...
-
-.. [#functional] Functional test setup:
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()
