@@ -116,3 +116,13 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.open(s.getLocation())
         s.waitForElementPresent('css=#article-metadata.folded')
 
+    def test_unfold_should_be_stored(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=#article-metadata.folded')
+        s.click('css=#article-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#article-metadata.folded')
+        s.click('css=#article-metadata .edit-bar .fold-link')
+        s.waitForElementNotPresent('css=#article-metadata.folded')
+        s.open(s.getLocation())
+        s.waitForElementPresent('css=#article-metadata')
+        s.assertElementNotPresent('css=#article-metadata.folded')

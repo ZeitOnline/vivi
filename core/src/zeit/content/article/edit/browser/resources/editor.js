@@ -475,7 +475,7 @@ zeit.content.article.FoldBlock = gocept.Class.extend({
         var id = context.getAttribute('href');
         MochiKit.DOM.toggleElementClass('folded', id);
         sessionStorage['folding.' + id] =
-            MochiKit.DOM.hasElementClass(id, 'folded');
+            MochiKit.DOM.hasElementClass(id, 'folded')?'yes':'';
     },
 
     // @staticmethod
