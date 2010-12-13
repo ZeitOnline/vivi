@@ -1,15 +1,12 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.listing
+import zeit.cms.repository.interfaces
+import zeit.content.portraitbox.interfaces
 import zope.component
 import zope.publisher.interfaces.browser
-
-import zeit.cms.repository.interfaces
-import zeit.cms.browser.listing
-import zeit.cms.browser.interfaces
-
-import zeit.content.portraitbox.interfaces
 
 
 class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
