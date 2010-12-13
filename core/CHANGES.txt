@@ -4,6 +4,8 @@ zeit.content.portraitbox changes
 1.22.6 (unreleased)
 -------------------
 
+- Define security for PortraitboxReference (for #8412).
+
 - Simplified tests and removed footnote (#7844).
 
 

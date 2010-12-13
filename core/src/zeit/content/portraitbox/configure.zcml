@@ -28,16 +28,25 @@
     component=".interfaces.portraitboxSource"
     name="zeit.content.portraitbox"
     />
-  <adapter factory=".reference.PortraitboxReference" />
   <adapter
     factory=".reference.PortraitboxReference"
     for="zeit.cms.content.interfaces.ITemplate"
     />
-  <adapter factory=".reference.portraitbox_reference_to_webdav_properties" />
 
   <interface
     interface=".interfaces.IPortraitboxReference"
     type="zeit.cms.asset.interfaces.IAssetInterface"
     />
+
+  <class class=".reference.PortraitboxReference">
+    <require
+      interface=".interfaces.IPortraitboxReference"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IPortraitboxReference"
+      permission="zeit.EditContent"
+      />
+  </class>
 
 </configure>

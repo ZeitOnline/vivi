@@ -99,3 +99,14 @@ content:
 
 >>> pb_ref.portraitbox == pb
 True
+
+Security
+++++++++
+
+>>> import zope.security
+>>> import zope.security.proxy
+>>> proxied = zope.security.proxy.ProxyFactory(pb_ref)
+>>> zope.security.canAccess(pb_ref, 'portraitbox')
+False
+>>> zope.security.canWrite(pb_ref, 'portraitbox')
+False
