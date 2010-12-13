@@ -505,6 +505,7 @@ class DAVPropertiesAdapter(grokcore.component.Adapter):
     def __new__(cls, context):
         # Trusted adapter
         instance = object.__new__(cls)
+        instance.__parent__ = context
         if zope.security.proxy.removeSecurityProxy(context) is context:
             # Context is unwrapped. Basically do nothing special here.
             instance.__init__(context)
