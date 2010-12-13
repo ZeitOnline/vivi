@@ -5,8 +5,6 @@
 import zope.interface
 import zope.schema
 
-import zc.form.field
-
 import zeit.cms.content.contentsource
 import zeit.content.image.interfaces
 from zeit.cms.i18n import MessageFactory as _

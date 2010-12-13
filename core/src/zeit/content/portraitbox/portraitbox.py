@@ -4,7 +4,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import lxml.objectify
-import rwproperty
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces

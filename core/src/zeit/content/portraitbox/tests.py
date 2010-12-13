@@ -1,7 +1,6 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zope.testing import doctest
 import pkg_resources
 import unittest
 import zeit.cms.content.tests.test_contentsource

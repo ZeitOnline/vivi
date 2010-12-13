@@ -10,7 +10,6 @@ import zeit.cms.browser.listing
 import zeit.cms.browser.interfaces
 
 import zeit.content.portraitbox.interfaces
-import zeit.content.portraitbox.reference
 
 
 class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):

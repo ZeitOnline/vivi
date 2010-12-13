@@ -4,10 +4,7 @@
 import zeit.cms.content.dav
 import grokcore.component
 import zeit.cms.interfaces
-import zeit.connector.interfaces
 import zeit.content.portraitbox.interfaces
-import zope.component
-import zope.interface
 
 
 class PortraitboxReference(zeit.cms.content.dav.DAVPropertiesAdapter):
