@@ -27,12 +27,20 @@
     component=".interfaces.infoboxSource"
     name="zeit.content.infobox"
     />
-  <adapter factory=".reference.InfoboxReference" />
   <adapter
     factory=".reference.InfoboxReference"
     for="zeit.cms.content.interfaces.ITemplate"
     />
-  <adapter factory=".reference.infobox_reference_to_webdav_properties" />
+  <class class=".reference.InfoboxReference">
+    <require
+      interface=".interfaces.IInfoboxReference"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IInfoboxReference"
+      permission="zeit.EditContent"
+      />
+  </class>
 
   <interface
     interface=".interfaces.IInfoboxReference"

@@ -4,7 +4,7 @@ zeit.content.infobox changes
 1.23.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Define security for InfoboxReference (for #8412).
 
 
 1.23.2 (2010-05-03)
