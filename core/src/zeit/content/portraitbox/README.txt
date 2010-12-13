@@ -100,8 +100,8 @@ content:
 >>> pb_ref.portraitbox == pb
 True
 
-PortraitboxReference should have security desclarations
-+++++++++++++++++++++++++++++++++++++++++++++++++++++++
+PortraitboxReference should have security declarations
+++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 >>> import zope.security
 >>> import zope.security.proxy
