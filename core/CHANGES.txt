@@ -4,7 +4,7 @@ zeit.content.portraitbox changes
 1.22.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Simplified tests and removed footnote (#7844).
 
 
 1.22.5 (2010-05-03)

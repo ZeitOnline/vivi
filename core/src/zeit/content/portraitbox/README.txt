@@ -3,7 +3,16 @@ Portraitbox
 
 A portraitbox contains of title, text and an image.
 
-Let's instanciate a box and verify the xml[#functional]_:
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+
+Let's instanciate a box and verify the xml:
 
 >>> import lxml.etree
 >>> import zeit.content.portraitbox.portraitbox
@@ -90,23 +99,3 @@ content:
 
 >>> pb_ref.portraitbox == pb
 True
-
-
-
-
-Clean up:
-
->>> zope.security.management.endInteraction()
->>> zope.app.component.hooks.setSite(old_site)
-
-
-.. [#functional] Functional test setup
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
-    >>> principal = zeit.cms.testing.create_interaction()
-
-    >>> import zope.component
-    >>> import zeit.cms.repository.interfaces
-    >>> repository = zope.component.getUtility(
-    ...     zeit.cms.repository.interfaces.IRepository)
