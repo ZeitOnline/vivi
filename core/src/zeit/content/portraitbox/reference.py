@@ -12,7 +12,6 @@ import zope.interface
 
 class PortraitboxReference(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    #grokcore.component.context(zeit.cms.interfaces.ICMSContent)
     grokcore.component.implements(
         zeit.content.portraitbox.interfaces.IPortraitboxReference)
 
