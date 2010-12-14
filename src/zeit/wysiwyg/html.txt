@@ -1093,6 +1093,24 @@ nothing bad happens:
   </body>
 </article>
 
+Empty xml should convert to html:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <portraitbox/>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> html = converter.to_html(article.xml['body'])
+
+
+And back:
+
+>>> ignored = converter.from_html(article.xml['body'], html)
 
 
 Infobox
@@ -1164,6 +1182,24 @@ Gallery
     </gallery>
   </body>
 </article>
+
+Empty xml should convert to html:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <gallery/>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> html = converter.to_html(article.xml['body'])
+
+And back:
+
+>>> ignore = converter.from_html(article.xml['body'], html)
 
 Citation
 --------
