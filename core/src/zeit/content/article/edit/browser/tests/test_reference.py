@@ -52,8 +52,8 @@ class GalleryTest(unittest2.TestCase,
         import transaction
         article = self.layer.setup.getRootFolder()[
             'workingcopy']['zope.user']['Somalia']
-        for p in article.xml.body.division.getchildren():
-            article.xml.body.division.remove(p)
+        for p in article.xml.findall('//division/*'):
+            p.getparent().remove(p)
         if with_empty_block:
             article.xml.body.division[self.expected_type] = ''
             article.xml.body.division[self.expected_type].set(
@@ -136,6 +136,19 @@ class GalleryTest(unittest2.TestCase,
         # Assertion is that no error is raised
         self.browser.handleErrors = False
         self.browser.getLink('Checkin').click()
+
+    def test_should_be_visible_in_read_only_mode(self):
+        article = self.get_article(with_empty_block=True)
+        self.setup_content()
+        self.browser.open(
+            'editable-body/blockname/@@set_reference?uniqueId=%s' %
+            self.content_id)
+        self.browser.open(self.article_url)
+        self.browser.getLink('Checkin').click()
+        self.browser.open('@@edit.html')
+        self.browser.open('@@contents')
+        self.assert_ellipsis(
+            """<div ...class="block type-%s...""" % self.expected_type)
 
 
 class InfoboxTest(GalleryTest):

@@ -100,8 +100,7 @@ class Portraitbox(Reference):
     type = 'portraitbox'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'layout',
-        zeit.content.article.edit.interfaces.IPortraitbox['layout'])
+        '.', 'layout', zope.schema.TextLine())
 
 
 class PortraitboxFactory(zeit.content.article.edit.block.BlockFactory):

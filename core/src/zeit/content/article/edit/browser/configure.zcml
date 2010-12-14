@@ -22,7 +22,7 @@
     name="contents"
     class=".edit.EditorContents"
     template="editor-content.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:page
@@ -48,7 +48,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
     template="edit.body.contents-provider.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     weight="0"
     />
 
@@ -103,7 +103,7 @@
     name="contents"
     class=".edit.Paragraph"
     template="edit.paragraph.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:viewlet
@@ -114,7 +114,7 @@
     name="contents"
     class=".edit.Intertitle"
     template="edit.paragraph.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <!-- image -->
@@ -126,7 +126,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
     template="edit.image.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:page
@@ -165,7 +165,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
     template="edit.video.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:page
@@ -214,7 +214,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
     template="edit.gallery.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <!-- references / infobox -->
@@ -226,7 +226,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
     template="edit.infobox.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <!-- references / portraitbox -->
@@ -238,7 +238,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
     template="edit.portraitbox.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:page
@@ -270,7 +270,7 @@
     name="contents"
     class=".edit.ViewRawXML"
     template="edit.rawxml.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:page
@@ -302,7 +302,7 @@
     name="contents"
     class=".edit.ViewAudio"
     template="edit.audio.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:page
@@ -333,7 +333,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
     template="edit.citation.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:page
@@ -365,8 +365,7 @@
     name="contents"
     class=".edit.ViewRelateds"
     template="edit.relateds.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
-
 
 </configure>

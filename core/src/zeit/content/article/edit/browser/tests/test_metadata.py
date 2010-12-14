@@ -1,6 +1,9 @@
+# coding: utf8
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import unittest2
+import zeit.cms.testing
 import zeit.content.article.testing
 
 
@@ -126,3 +129,55 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.open(s.getLocation())
         s.waitForElementPresent('css=#article-metadata')
         s.assertElementNotPresent('css=#article-metadata.folded')
+
+
+class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(ReadonlyTest, self).setUp()
+        self.open('/repository/online/2007/01/Somalia/')
+        self.open('/repository/online/2007/01/Somalia/@@edit.html')
+
+    def assert_widget_text(self, widget_id, text):
+        path = 'xpath=//label[@for="{0}"]/../../*[@class="widget"]'.format(
+            widget_id)
+        self.selenium.waitForElementPresent(path)
+        self.selenium.assertText(path, text)
+
+    def test_head_should_be_readonly_visible(self):
+        self.assert_widget_text("head.year", '2007')
+        self.assert_widget_text("head.ressort", 'International')
+
+    def test_navigation_should_readonly_visible(self):
+        self.assert_widget_text("navigation.__name__", 'Somalia')
+        self.assert_widget_text("navigation.copyrights", 'ZEIT online')
+
+    def test_texts_should_be_readonly_visible(self):
+        self.assert_widget_text('texts.title', u'Rückkehr der Warlords')
+        self.assert_widget_text('texts.subtitle', 'Im Zuge des*')
+
+    def test_misc_should_be_readonly_visible(self):
+        s = self.selenium
+        s.waitForElementPresent('xpath=//input[@id="misc.commentsAllowed"]')
+        s.assertAttribute(
+            'xpath=//input[@id="misc.commentsAllowed"]@disabled', 'disabled')
+        s.assertNotChecked('xpath=//input[@id="misc.commentsAllowed"]')
+        s.assertAttribute(
+            'xpath=//input[@id="misc.banner"]@disabled', 'disabled')
+        s.assertChecked('xpath=//input[@id="misc.banner"]')
+
+    def test_assets_should_be_readonly_visible(self):
+        from zeit.cms.checkout.helper import checked_out
+        from zeit.cms.related.interfaces import IRelatedContent
+        import zeit.cms.interfaces
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                content = zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+                with checked_out(content) as co:
+                    IRelatedContent(co).related = (
+                        zeit.cms.interfaces.ICMSContent(
+                            'http://xml.zeit.de/testcontent'),)
+        s = self.selenium
+        s.open(s.getLocation())
+        self.assert_widget_text('assets.related', 'testcontent*')

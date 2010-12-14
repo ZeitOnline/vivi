@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import mock
+import unittest2
 import zeit.content.article.testing
 
 
@@ -381,3 +382,40 @@ class TestFolding(zeit.content.article.testing.SeleniumTestCase):
 
     def test_video_should_survive_page_load(self):
         self.assert_fold_survives_page_load('video')
+
+
+class TestReadonlyVisible(unittest2.TestCase,
+                 zeit.cms.testing.BrowserAssertions):
+
+    layer = zeit.content.article.testing.TestBrowserLayer
+
+    def assert_visible(self, block):
+        from zeit.content.article.article import Article
+        article = Article()
+        article.xml.body.division = ''
+        article.xml.body.division.set('type', 'page')
+        article.xml.body.division[block] = ''
+        root = self.layer.setup.getRootFolder()
+        with zeit.cms.testing.site(root):
+            with zeit.cms.testing.interaction():
+                root['repository']['article'] = article
+        from zope.testbrowser.testing import Browser
+        browser = Browser()
+        browser.addHeader('Authorization', 'Basic user:userpw')
+        browser.open(
+            'http://localhost:8080/++skin++vivi/repository/article/@@contents')
+        self.assert_ellipsis(
+            '...<div ...class="block type-{0}...'.format(block),
+            browser.contents)
+
+    def test_raw_xml_should_be_visible_in_readonly_mode(self):
+        self.assert_visible('raw')
+
+    def test_audio_should_be_visible_in_readonly_mode(self):
+        self.assert_visible('audio')
+
+    def test_citation_should_be_visible_in_readonly_mode(self):
+        self.assert_visible('citation')
+
+    def test_relateds_should_be_visible_in_readonly_mode(self):
+        self.assert_visible('relateds')

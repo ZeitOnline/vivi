@@ -77,7 +77,12 @@ class SaveText(zeit.edit.browser.view.Action):
 
 class Paragraph(object):
 
-    css_class = ('hutzenpups',)
+    @property
+    def cms_module(self):
+        if self.request.interaction.checkPermission(
+            'zeit.EditContent', self.context):
+            return "zeit.content.article.Editable"
+
     @property
     def text(self):
         return '<%s>%s</%s>' % (
@@ -86,7 +91,7 @@ class Paragraph(object):
             self.context.type)
 
 
-class Intertitle(object):
+class Intertitle(Paragraph):
 
     @property
     def text(self):

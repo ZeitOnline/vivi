@@ -42,7 +42,8 @@ class Head(MetadataForm):
     legend = _('Head')
     prefix = 'head'
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).select(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'year', 'volume', 'ressort', 'sub_ressort', 'page')
 
     def render(self):
@@ -69,7 +70,8 @@ class Navigation(MetadataForm):
         form_fields = zope.formlib.form.FormFields(
             zeit.cms.interfaces.ICMSContent,
             zeit.cms.content.interfaces.ICommonMetadata,
-            zeit.cms.repository.interfaces.IAutomaticallyRenameable).select(
+            zeit.cms.repository.interfaces.IAutomaticallyRenameable,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
                 'rename_to', '__name__',
                 'serie', 'copyrights', 'product_id')
         if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
@@ -85,7 +87,8 @@ class Texts(MetadataForm):
     legend = _('Texts')
     prefix = 'texts'
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).select(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'supertitle', 'title', 'subtitle', 'teaserTitle', 'teaserText')
 
 
@@ -94,7 +97,8 @@ class Misc(MetadataForm):
     legend = _('Misc.')
     prefix = 'misc'
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.interfaces.IArticleMetadata).select(
+        zeit.content.article.interfaces.IArticleMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'author_references', 'color_scheme', 'layout',
             'commentsAllowed', 'dailyNewsletter', 'foldable', 'minimal_header',
             'countings', 'is_content', 'banner', 'banner_id')
@@ -105,8 +109,7 @@ class Misc(MetadataForm):
         return super(Misc, self).__call__()
 
 
-class Assets(MetadataForm,
-             zeit.cms.asset.browser.form.AssetBase):
+class Assets(MetadataForm):
 
     legend = _('Assets')
     prefix = 'assets'
@@ -118,5 +121,11 @@ class Assets(MetadataForm,
 
     @property
     def form_fields(self):
-        form_fields = super(Assets, self).form_fields
-        return form_fields.omit('badges')
+        interfaces = []
+        for name, interface in zope.component.getUtilitiesFor(
+            zeit.cms.asset.interfaces.IAssetInterface):
+            interfaces.append(interface)
+        return zope.formlib.form.FormFields(
+            *interfaces,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).omit(
+                'badges')
