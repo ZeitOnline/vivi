@@ -20,6 +20,7 @@ class GalleryTest(unittest2.TestCase,
         browser.addHeader('Authorization', 'Basic user:userpw')
         browser.open('http://localhost:8080/++skin++vivi/repository/online'
                      '/2007/01/Somalia/@@checkout')
+        self.article_url = browser.url
         browser.open('@@contents')
         self.contents_url = browser.url
         browser.open(self.contents_url)
@@ -128,6 +129,13 @@ class GalleryTest(unittest2.TestCase,
                                    'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
                           'name': 'reload',
                           'when': None}]})
+
+    def test_checkin_should_work_with_empty_block(self):
+        article = self.get_article(with_empty_block=True)
+        self.browser.open(self.article_url)
+        # Assertion is that no error is raised
+        self.browser.handleErrors = False
+        self.browser.getLink('Checkin').click()
 
 
 class InfoboxTest(GalleryTest):
