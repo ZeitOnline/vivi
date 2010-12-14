@@ -115,6 +115,8 @@ class HTMLConverter(object):
     def _retrieve_content(self, ids):
         result = []
         for id in ids:
+            if not id:
+                continue
             if not id.startswith(zeit.cms.interfaces.ID_NAMESPACE):
                 continue
             obj = zeit.cms.interfaces.ICMSContent(id, None)
@@ -664,7 +666,7 @@ class ReferenceStep(ConversionStep):
         return new_node
 
     def to_xml(self, node):
-        unique_id = node.xpath('*[contains(@class, "href")]')[0].text
+        unique_id = node.xpath('*[contains(@class, "href")]')[0].text or ''
 
         factory = getattr(lxml.objectify.E, self.content_type)
         new_node = factory(href=unique_id)
@@ -693,7 +695,7 @@ class PortraitboxStep(ReferenceStep):
 
     def to_xml(self, node):
         new_node = super(PortraitboxStep, self).to_xml(node)
-        layout = node.xpath('*[@class="layout"]')[0].text
+        layout = node.xpath('*[@class="layout"]')[0].text or ''
         new_node.set('layout', layout)
         return new_node
 
