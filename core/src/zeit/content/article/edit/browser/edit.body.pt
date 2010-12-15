@@ -1,5 +1,6 @@
 <div id="editable-body"
-     class="editable-area"
-     tal:attributes="cms:url context/@@absolute_url">
+     tal:attributes="
+     cms:url context/@@absolute_url;
+     class view/body_css_class">
   <tal:block replace="structure provider:zeit.edit.contents" />
 </div>

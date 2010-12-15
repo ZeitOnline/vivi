@@ -29,6 +29,7 @@
     for="zeit.content.article.edit.interfaces.IEditableBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
+    class=".edit.Body"
     template="edit.body.pt"
     permission="zeit.EditContent"
     />

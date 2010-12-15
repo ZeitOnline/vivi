@@ -428,6 +428,10 @@ class TestReadonlyVisible(unittest2.TestCase,
         browser = self.create_block('raw')
         self.assertNotIn('landing-zone', browser.contents)
 
+    def test_blocks_should_not_be_sortable(self):
+        browser = self.create_block('raw')
+        self.assertNotIn('action-block-sorter', browser.contents)
+
 
 class TestDivision(zeit.content.article.testing.SeleniumTestCase):
 

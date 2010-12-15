@@ -133,6 +133,17 @@ class Body(object):
     def writeable(self):
         return zope.security.canAccess(self.context, 'add')
 
+    @zope.cachedescriptors.property.Lazy
+    def sortable(self):
+        return zope.security.canAccess(self.context, 'updateOrder')
+
+    @property
+    def body_css_class(self):
+        css_class = ['editable-area']
+        if self.sortable:
+            css_class.append('action-block-sorter')
+        return ' '.join(css_class)
+
 
 class BlockLandingZone(LandingZoneBase):
     """Handler to drop objects after other objects."""

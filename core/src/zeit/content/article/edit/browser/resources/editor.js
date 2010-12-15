@@ -12,13 +12,9 @@ var wire_forms = function() {
 };
 
 
-var ident = MochiKit.Signal.connect(
-    zeit.edit.editor, 'script-loading-finished',
+var ident = MochiKit.Signal.connect(window, 'script-loading-finished',
     function() {
         MochiKit.Signal.disconnect(ident);
-
-        zeit.content.article.body_sorter = new zeit.edit.sortable.BlockSorter(
-            'editable-body');
         wire_forms();
 });
 
