@@ -328,4 +328,37 @@
     permission="zope.View"
     />
 
+  <!-- division -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IDivision"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    template="edit.division.pt"
+    permission="zope.View"
+    />
+
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IDivision"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-division"
+    class=".edit.EditDivision"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IDivision"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="edit-box"
+    class=".edit.EditDivisionAction"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+
 </configure>

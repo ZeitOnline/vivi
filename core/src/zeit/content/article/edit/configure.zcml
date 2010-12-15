@@ -53,6 +53,10 @@
       interface=".interfaces.IDivision"
       permission="zope.View" 
       />
+    <require
+      set_schema=".interfaces.IDivision"
+      permission="zeit.EditContent"
+      />
   </class>
 
   <class class=".image.Image">

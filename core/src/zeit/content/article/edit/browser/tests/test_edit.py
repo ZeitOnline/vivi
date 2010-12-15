@@ -419,3 +419,33 @@ class TestReadonlyVisible(unittest2.TestCase,
 
     def test_relateds_should_be_visible_in_readonly_mode(self):
         self.assert_visible('relateds')
+
+
+class TestDivision(zeit.content.article.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestDivision, self).setUp()
+        s = self.selenium
+        self.open('/repository')
+        s.select('id=add_menu', 'label=Article')
+        s.waitForPageToLoad()
+
+    def create_division(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=.block.type-division')
+        s.click('link=Module')
+        s.waitForElementPresent(
+            'css=#article-modules .module[cms\\:block_type=division]')
+        s.dragAndDropToObject(
+            'css=#article-modules .module[cms\\:block_type=division]',
+            'css=#article-editor-text .landing-zone.visible')
+        s.waitForElementPresent('css=.block.type-division')
+
+    def test_division_should_have_editable_teaser(self):
+        self.create_division()
+        s = self.selenium
+        s.click('link=Edit')
+        s.waitForElementPresent('id=form.teaser')
+        s.type('id=form.teaser', "Division teaser")
+        s.click('id=form.actions.apply')
+        s.waitForTextPresent('Division teaser')

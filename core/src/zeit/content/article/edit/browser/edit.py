@@ -195,3 +195,15 @@ class ViewRelateds(object):
         article = zeit.content.article.interfaces.IArticle(self.context)
         content = zeit.cms.related.interfaces.IRelatedContent(article)
         return content.related
+
+
+class EditDivision(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IDivision)
+
+
+class EditDivisionAction(zeit.edit.browser.view.EditBoxAction):
+
+    title = _('Edit')
+    action = 'edit-division'
