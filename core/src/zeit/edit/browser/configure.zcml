@@ -137,7 +137,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="block-factories.json"
     class=".library.BlockFactories"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:view
