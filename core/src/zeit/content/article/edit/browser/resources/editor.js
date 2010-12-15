@@ -17,10 +17,10 @@ var ident = MochiKit.Signal.connect(
     function() {
         MochiKit.Signal.disconnect(ident);
 
-    zeit.content.article.body_sorter = new zeit.edit.sortable.BlockSorter(
-        'editable-body');
-    wire_forms();
-    });
+        zeit.content.article.body_sorter = new zeit.edit.sortable.BlockSorter(
+            'editable-body');
+        wire_forms();
+});
 
 // Initialize module library
 MochiKit.Signal.connect(
