@@ -35,7 +35,7 @@
     name="edit.html"
     class=".editor.Editor"
     template="editor.pt"
-    permission="zeit.EditContent"
+    permission="zope.View"
     menu="zeit-context-views" title="Edit contents"
     />
 
