@@ -11,8 +11,10 @@ import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
+import zope.cachedescriptors.property
 import zope.component
 import zope.lifecycleevent
+import zope.security
 
 
 class EditorContents(object):
@@ -123,6 +125,13 @@ class BodyLandingZone(LandingZoneBase):
     """Handler to drop objects to the body's landing zone."""
 
     order = 0
+
+
+class Body(object):
+
+    @zope.cachedescriptors.property.Lazy
+    def writeable(self):
+        return zope.security.canAccess(self.context, 'add')
 
 
 class BlockLandingZone(LandingZoneBase):

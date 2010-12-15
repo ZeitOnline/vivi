@@ -389,7 +389,7 @@ class TestReadonlyVisible(unittest2.TestCase,
 
     layer = zeit.content.article.testing.TestBrowserLayer
 
-    def assert_visible(self, block):
+    def create_block(self, block):
         from zeit.content.article.article import Article
         article = Article()
         article.xml.body.division = ''
@@ -404,6 +404,10 @@ class TestReadonlyVisible(unittest2.TestCase,
         browser.addHeader('Authorization', 'Basic user:userpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/article/@@contents')
+        return browser
+
+    def assert_visible(self, block):
+        browser = self.create_block(block)
         self.assert_ellipsis(
             '...<div ...class="block type-{0}...'.format(block),
             browser.contents)
@@ -419,6 +423,10 @@ class TestReadonlyVisible(unittest2.TestCase,
 
     def test_relateds_should_be_visible_in_readonly_mode(self):
         self.assert_visible('relateds')
+
+    def test_landing_zone_after_block_should_not_be_visible(self):
+        browser = self.create_block('raw')
+        self.assertNotIn('landing-zone', browser.contents)
 
 
 class TestDivision(zeit.content.article.testing.SeleniumTestCase):

@@ -47,6 +47,7 @@
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
+    class=".edit.Body"
     template="edit.body.contents-provider.pt"
     permission="zope.View"
     weight="0"
