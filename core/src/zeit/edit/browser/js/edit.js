@@ -120,7 +120,7 @@ zeit.edit.Editor = gocept.Class.extend({
             return dl;
         });
         d.addCallback(function(result) {
-            MochiKit.Signal.signal(self, 'script-loading-finished');
+            MochiKit.Signal.signal(window, 'script-loading-finished', self);
             return result;
         });
         d.addCallback(function(result) {
