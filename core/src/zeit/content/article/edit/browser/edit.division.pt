@@ -1,0 +1,2 @@
+<hr/>
+<div tal:content="context/teaser"/>
