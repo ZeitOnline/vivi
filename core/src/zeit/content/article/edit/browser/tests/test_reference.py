@@ -13,6 +13,7 @@ class GalleryTest(unittest2.TestCase,
     layer = zeit.content.article.testing.TestBrowserLayer
 
     expected_type = 'gallery'
+    attribute = 'href'
 
     def setUp(self):
         from zope.testbrowser.testing import Browser
@@ -145,10 +146,34 @@ class GalleryTest(unittest2.TestCase,
             self.content_id)
         self.browser.open(self.article_url)
         self.browser.getLink('Checkin').click()
-        self.browser.open('@@edit.html')
         self.browser.open('@@contents')
         self.assert_ellipsis(
             """<div ...class="block type-%s...""" % self.expected_type)
+
+    def test_reference_should_be_stored_by_set_ref(self):
+        article = self.get_article(with_empty_block=True)
+        self.setup_content()
+        self.browser.open(
+            'editable-body/blockname/@@set_reference?uniqueId={0}'.format(
+                self.content_id))
+        self.assertEqual(
+            self.content_id,
+            article.xml.body.division[self.expected_type].get(self.attribute))
+
+    def test_reference_should_be_stored_after_checkin(self):
+        import zeit.cms.interfaces
+        article = self.get_article(with_empty_block=True)
+        self.setup_content()
+        self.browser.open(
+            'editable-body/blockname/@@set_reference?uniqueId={0}'.format(
+                self.content_id))
+        self.browser.open(self.article_url)
+        self.browser.getLink('Checkin').click()
+        with zeit.cms.testing.site(self.layer.setup.getRootFolder()):
+            article = zeit.cms.interfaces.ICMSContent(article.uniqueId)
+        self.assertEqual(
+            self.content_id,
+            article.xml.body.division[self.expected_type].get(self.attribute))
 
 
 class InfoboxTest(GalleryTest):
@@ -158,7 +183,6 @@ class InfoboxTest(GalleryTest):
     def setup_content(self):
         from zeit.content.infobox.infobox import Infobox
         import transaction
-        import zeit.cms.testing
         ib = Infobox()
         ib.supertitle = u'infobox title'
         root = self.layer.setup.getRootFolder()
@@ -207,6 +231,7 @@ class PortraitboxTest(GalleryTest):
 class ImageTest(GalleryTest):
 
     expected_type = 'image'
+    attribute = 'src'
 
     def setup_content(self):
         self.content_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
