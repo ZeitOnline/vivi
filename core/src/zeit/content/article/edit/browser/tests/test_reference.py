@@ -175,6 +175,15 @@ class GalleryTest(unittest2.TestCase,
             self.content_id,
             article.xml.body.division[self.expected_type].get(self.attribute))
 
+    def test_empty_block_should_not_provide_drop_in_readonly_mode(self):
+        article = self.get_article(with_empty_block=True)
+        self.browser.open(self.article_url)
+        self.browser.getLink('Checkin').click()
+        self.browser.open('@@contents')
+        self.assert_ellipsis(
+            '<div ...class="block type-{0}...No content referenced...'.format(
+                self.expected_type))
+
 
 class InfoboxTest(GalleryTest):
 
@@ -261,6 +270,11 @@ class ImageTest(GalleryTest):
         self.assert_ellipsis(
             """...<div ...class="large ...""")
 
+    def test_empty_block_should_not_provide_drop_in_readonly_mode(self):
+        # Disable inherited test because empty images are removed during
+        # checkin. This will change hopefully once #8194 is implemented.
+        pass
+
 
 class VideoTest(GalleryTest):
 
@@ -297,11 +311,5 @@ class VideoTest(GalleryTest):
         self.assert_ellipsis("<...self.close()...")
         self.browser.open(self.contents_url)
         self.assert_ellipsis(
-            """<...
-               <div class="video-image video_1">
-                  <img src="http://videostillurl" />
-               </div>
-               <div class="video-image video_2">
-                  <img src="http://videostillurl" />
-               </div>
-            ...""")
+            """...<a href="http://video.zeit.de/video/1234">
+               ...<a href="http://video.zeit.de/video/6789">...""")

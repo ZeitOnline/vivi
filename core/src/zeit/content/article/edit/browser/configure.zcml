@@ -119,24 +119,6 @@
 
   <!-- image -->
 
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IImage"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    template="edit.image.pt"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="zeit.content.article.edit.interfaces.IImage"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="set_reference"
-    class=".image.SetImage"
-    permission="zeit.EditContent"
-    />
-
   <browser:page
     for="zeit.content.article.edit.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -164,6 +146,7 @@
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
+    class=".video.View"
     template="edit.video.pt"
     permission="zope.View"
     />
@@ -205,41 +188,18 @@
     permission="zeit.EditContent"
     />
 
-  <!-- references / gallery -->
-
   <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IGallery"
+    for="zeit.content.article.edit.interfaces.IReference"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="contents"
-    template="edit.gallery.pt"
-    permission="zope.View"
-    />
-
-  <!-- references / infobox -->
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IInfobox"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    template="edit.infobox.pt"
+    class=".reference.View"
+    template="edit.reference.pt"
     permission="zope.View"
     />
 
   <!-- references / portraitbox -->
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IPortraitbox"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    template="edit.portraitbox.pt"
-    permission="zope.View"
-    />
 
   <browser:page
     for="zeit.content.article.edit.interfaces.IPortraitbox"

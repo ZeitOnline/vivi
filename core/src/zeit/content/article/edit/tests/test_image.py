@@ -17,14 +17,14 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         image = Image(None, tree.image)
         image.__name__ = u'myname'
         image.layout = u'small'
-        image.image = zeit.cms.interfaces.ICMSContent(
+        image.references = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
         self.assertEqual(
             'http://xml.zeit.de/2006/DSC00109_2.JPG',
             image.xml.get('src'))
         self.assertEqual(
             'http://xml.zeit.de/2006/DSC00109_2.JPG',
-            image.image.uniqueId)
+            image.references.uniqueId)
         self.assertEqual(u'myname', image.__name__)
         self.assertEqual(u'small', image.layout)
 

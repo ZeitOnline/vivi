@@ -18,6 +18,14 @@ class IEditableBody(zeit.edit.interfaces.IArea):
     """Editable representation of an article's body."""
 
 
+class ILayoutable(zope.interface.Interface):
+    """A block with layout information."""
+
+    layout = zope.interface.Attribute(
+        "Layout should be a string, limitations etc. defined on  more specific"
+        " interfaces")
+
+
 class IParagraph(zeit.edit.interfaces.IBlock):
     """<p/> element."""
 
@@ -51,28 +59,6 @@ class LayoutSourceBase(zc.sourcefactory.basic.BasicSourceFactory):
         return self.values[value]
 
 
-class ImageLayoutSource(LayoutSourceBase):
-
-    values = stabledict.StableDict([
-        ('small', _('small')),
-        ('large', _('large')),
-        ('infobox', _('Infobox')),
-        ('upright', _('Hochkant')),
-        ])
-
-
-class IImage(zeit.edit.interfaces.IBlock):
-
-    image = zope.schema.Choice(
-        title=_("Image"),
-        source=zeit.content.image.interfaces.ImageSource())
-
-    layout = zope.schema.Choice(
-        title=_('Layout'),
-        source=ImageLayoutSource(),
-        required=False)
-
-
 class VideoLayoutSource(LayoutSourceBase):
 
     values = stabledict.StableDict([
@@ -83,7 +69,7 @@ class VideoLayoutSource(LayoutSourceBase):
     ])
 
 
-class IVideo(zeit.edit.interfaces.IBlock):
+class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
 
     video = zope.schema.Choice(
         title=_('Video'),
@@ -105,6 +91,28 @@ class IReference(zeit.edit.interfaces.IBlock):
     """A block which references another object."""
 
     references = zope.schema.Field(title=_('Referenced object.'))
+
+
+class ImageLayoutSource(LayoutSourceBase):
+
+    values = stabledict.StableDict([
+        ('small', _('small')),
+        ('large', _('large')),
+        ('infobox', _('Infobox')),
+        ('upright', _('Hochkant')),
+        ])
+
+
+class IImage(IReference, ILayoutable):
+
+    references = zope.schema.Choice(
+        title=_("Image"),
+        source=zeit.content.image.interfaces.ImageSource())
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=ImageLayoutSource(),
+        required=False)
 
 
 class IGallery(IReference):
@@ -131,7 +139,7 @@ class PortraitboxLayoutSource(LayoutSourceBase):
     ])
 
 
-class IPortraitbox(IReference):
+class IPortraitbox(IReference, ILayoutable):
     """block for <infobox/> tags."""
 
     references = zope.schema.Choice(

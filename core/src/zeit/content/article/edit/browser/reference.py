@@ -5,8 +5,10 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.view
+import zope.cachedescriptors.property
 import zope.formlib.form
 import zope.lifecycleevent
+import zope.security
 
 
 class SetReference(zeit.edit.browser.view.Action):
@@ -32,3 +34,28 @@ class EditPortraitboxAction(zeit.edit.browser.view.EditBoxAction):
 
     title = _('Edit')
     action = 'edit-layout'
+
+
+class View(object):
+    """View for reference blocks."""
+
+    @zope.cachedescriptors.property.Lazy
+    def writable(self):
+        return zope.security.canWrite(self.context, 'references')
+
+    @zope.cachedescriptors.property.Lazy
+    def has_content(self):
+        return self.context.references is not None
+
+    @property
+    def css_class(self):
+        css_class = []
+        if zeit.content.article.edit.interfaces.ILayoutable.providedBy(
+            self.context):
+            if self.context.layout:
+                css_class.append(self.context.layout)
+        if self.writable:
+            css_class.append('action-content-droppable')
+            if not self.has_content:
+                css_class.append('landing-zone visible')
+        return ' '.join(css_class)

@@ -26,12 +26,12 @@ class Image(zeit.edit.block.SimpleElement):
         '.', 'layout', zeit.content.article.edit.interfaces.IImage['layout'])
 
     @property
-    def image(self):
+    def references(self):
         unique_id = self.xml.get('src')
         return zeit.cms.interfaces.ICMSContent(unique_id, None)
 
-    @image.setter
-    def image(self, value):
+    @references.setter
+    def references(self, value):
         node = zope.component.getAdapter(
             value, zeit.cms.content.interfaces.IXMLReference,
             name='image')
@@ -57,7 +57,7 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
 def factor_image_block_from_image(body, image):
     block = Factory(body)()
-    block.image = image
+    block.references = image
     return block
 
 

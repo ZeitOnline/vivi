@@ -1,0 +1,19 @@
+<div 
+  tal:attributes="
+  class view/css_class;
+  cms:drop-url string:${context/@@absolute_url}/@@set_reference">
+  <tal:reference condition="context/references">
+    <div tal:replace="structure context/references/@@object-details">
+      Blubbel
+    </div>
+  </tal:reference>
+  <tal:noref condition="not:context/references">
+    <tal:writable condition="view/writable">
+      <span i18n:translate="">Drag content to embed.</span>
+    </tal:writable>
+    <tal:notwritable condition="not:view/writable">
+      <span i18n:translate="">No content referenced.</span>
+    </tal:notwritable>
+      
+  </tal:noref>
+</div>

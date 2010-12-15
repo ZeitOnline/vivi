@@ -5,7 +5,9 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.view
+import zope.cachedescriptors.property
 import zope.lifecycleevent
+import zope.security
 
 
 class SetVideo(zeit.edit.browser.view.Action):
@@ -31,3 +33,16 @@ class EditVideoAction(zeit.edit.browser.view.EditBoxAction):
 
     title = _('Edit')
     action = 'edit'
+
+
+class View(zeit.content.article.edit.browser.reference.View):
+
+    @zope.cachedescriptors.property.Lazy
+    def writable(self):
+        return zope.security.canWrite(self.context, 'video')
+
+    @zope.cachedescriptors.property.Lazy
+    def has_content(self):
+        return (self.context.video is not None or
+                self.context.video_2 is not None)
+
