@@ -536,18 +536,8 @@ class VideoStep(ConversionStep):
                   'contains(@class, "video")]')
 
     def to_html(self, node):
-        def get_url(id_attr, player_attr):
-            # XXX since #7381 we store the full URL itself (href/href2),
-            # so this function could be removed, we only keep it for
-            # backwards compatibility with existing articles
-            id_ = node.get(id_attr, '')
-            player = 'playlist' if node.get(player_attr) == 'pls' else 'video'
-            if id_:
-                id_ = 'http://video.zeit.de/%s/%s' % (player, id_)
-            return id_
-
-        id1 = get_url('videoID', 'player')
-        id2 = get_url('videoID2', 'player2')
+        id1 = node.get('href') or ''
+        id2 = node.get('href2') or ''
         expires = self.datetime_to_html(node.get('expires'))
         format = node.get('format') or ''
 
@@ -592,9 +582,7 @@ class VideoStep(ConversionStep):
             format = unicode(nodes[0])
         new_node = lxml.objectify.E.video(
             href=id1, href2=id2,
-            expires=expires, format=format,
-            videoID=old_id, videoID2=old_id2,
-            player=player1, player2=player2)
+            expires=expires, format=format)
         return new_node
 
     # XXX duplicated code in zeit.brightcove.asset

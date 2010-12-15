@@ -663,7 +663,7 @@ Videos are represented with the ``<video>`` tag in XML:
 ...   <head/>
 ...   <body>
 ...     <p>No bo po co to.</p>
-...     <video videoID="20080402334ddf" expires="2000-11-30T12:00:00Z"
+...     <video href="http://video.zeit.de/video/20080402334ddf" expires="2000-11-30T12:00:00Z"
 ...        format="large"/>
 ...     <p>Foo bar</p>
 ...     </body>
@@ -693,7 +693,7 @@ When there is no expires or format, or empty ones, empty divs are rendered:
 ...   <head/>
 ...   <body>
 ...     <p>No bo po co to.</p>
-...     <video videoID="20080402334ddf"/>
+...     <video href="http://video.zeit.de/video/20080402334ddf"/>
 ...     <p>Foo bar</p>
 ...     </body>
 ... </article>'''
@@ -726,9 +726,8 @@ On the way back the divs become a video node:
   <head/>
   <body>
     <p>No bo po co to.</p>
-    <video videoID2="" format="" expires="2009-01-01T00:00:00+01:00"
-      videoID="2345" player2="" player="pls"
-      href2="" href="http://video.zeit.de/playlist/2345"/>
+    <video href2="" href="http://video.zeit.de/playlist/2345"
+          expires="2009-01-01T00:00:00+01:00" format=""/>
     <p>Foo bar</p>
   </body>
 </article>
@@ -747,9 +746,8 @@ If no expires date is entered, it is taken from the content object instead:
   <head/>
   <body>
     <p>No bo po co to.</p>
-    <video videoID2="" format="" expires="2010-01-01T00:00:00+00:00"
-      videoID="1" player2="" player="vid" href2=""
-      href="http://video.zeit.de/video/1"/>
+    <video href2="" href="http://video.zeit.de/video/1"
+        expires="2010-01-01T00:00:00+00:00" format=""/>
     <p>Foo bar</p>
   </body>
 </article>
@@ -762,7 +760,8 @@ Double video
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 ...   <head/>
 ...   <body>
-...     <video videoID="20080402334ddf" videoID2="2009second"/>
+...     <video href="http://video.zeit.de/video/20080402334ddf"
+...            href2="http://video.zeit.de/video/2009second"/>
 ...     </body>
 ... </article>'''
 >>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
@@ -789,10 +788,9 @@ Double video
 <article ...>
   <head/>
   <body>
-    <video videoID2="second" format="" expires="2009-01-01T00:00:00+01:00"
-      videoID="my-fine-videoid" player2="pls" player="vid"
-      href2="http://video.zeit.de/playlist/second"
-      href="http://video.zeit.de/video/my-fine-videoid"/>
+    <video href2="http://video.zeit.de/playlist/second"
+      href="http://video.zeit.de/video/my-fine-videoid"
+      expires="2009-01-01T00:00:00+01:00" format=""/>
   </body>
 </article>
 

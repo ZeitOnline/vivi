@@ -10,6 +10,9 @@ zeit.wysiwyg changes
 
 - Put out related list as ``<relateds/>`` as it was supposed to be (#8066).
 
+- Drop backward compatibility for <video> tags with videoId and player
+  attributes. Only href and href2 are supported now.
+
 
 1.39.1 (2010-08-09)
 -------------------
