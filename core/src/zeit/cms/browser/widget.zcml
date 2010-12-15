@@ -97,7 +97,7 @@
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
     layer=".interfaces.ICMSLayer"
-    name="zeit.cms.browser.object-widget-details"
+    name="object-details"
     class=".widget.ObjectSequenceWidgetDetails"
     template="objectsequence-widget-details.pt"
     permission="zope.View"

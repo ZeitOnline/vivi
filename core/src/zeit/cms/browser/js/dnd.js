@@ -419,7 +419,7 @@ zeit.cms.load_object_details = function(uniqueId) {
         d = MochiKit.Async.doSimpleXMLHttpRequest(
             application_url + '/@@redirect_to', {
             unique_id: uniqueId,
-            view: '@@zeit.cms.browser.object-widget-details'});
+            view: '@@object-details'});
         d.addCallback(function(result) {
             // Store the result for later use. This is just magnitudes
             // faster than an HTTP request.

@@ -2,7 +2,7 @@
   tal:attributes="id view/name">
   <ul>
     <li tal:repeat="item view/get_values">
-      <span tal:replace="structure item/@@zeit.cms.browser.object-widget-details" />
+      <span tal:replace="structure item/@@object-details" />
     </li>
   </ul>
 </div>
