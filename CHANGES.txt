@@ -13,6 +13,8 @@ zeit.wysiwyg changes
 - Drop backward compatibility for <video> tags with videoId and player
   attributes. Only href and href2 are supported now.
 
+- Empty elements (like <gallery/>) are converted in a useful way now.
+
 
 1.39.1 (2010-08-09)
 -------------------
