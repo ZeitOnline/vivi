@@ -38,19 +38,19 @@ class TestObjectDetails(unittest2.TestCase,
     def test_should_contain_teaser_title(self):
         with self.get_content() as co:
             co.teaserTitle = u'test title'
-        self.browser.open('@@zeit.cms.browser.object-widget-details')
+        self.browser.open('@@object-details')
         self.assert_ellipsis(
             '...<div class="teaser_title">test title</div>...')
 
     def test_should_contain_super_title(self):
         with self.get_content() as co:
             co.supertitle = u'super'
-        self.browser.open('@@zeit.cms.browser.object-widget-details')
+        self.browser.open('@@object-details')
         self.assert_ellipsis(
             '...<div class="supertitle">...super...</div>...')
 
     def test_should_contain_workflow_information(self):
-        self.browser.open('@@zeit.cms.browser.object-widget-details')
+        self.browser.open('@@object-details')
         self.assert_ellipsis(
             '...class="publish-state"...Not published...')
 
