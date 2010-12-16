@@ -9,7 +9,8 @@
   <include package="grokcore.view" file="meta.zcml" />
   <include package="grokcore.view"/>
   <include file="meta.zcml" />
-  <grok:grok package="zeit.cms" />
+
+  <grok:grok package="." />
 
   <!-- Include requirements -->
   <include package="zeit.cms" file="securitypolicy.zcml" />
