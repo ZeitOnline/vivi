@@ -4,6 +4,8 @@
 
   <grok:grok package=".meta" />
   <grok:grok package="." />
+
+  <include package="zeit.find" />
   <include package=".browser" />
 
 </configure>
