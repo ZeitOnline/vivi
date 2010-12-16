@@ -126,7 +126,11 @@ class RulesManager(grokcore.component.GlobalUtility):
     def get_rules(self):
         rules = []
         config = zope.app.appsetup.product.getProductConfiguration('zeit.edit')
-        url = config['rules-url']
+        if not config:
+            return []
+        url = config.get('rules-url')
+        if not url:
+            return []
         file_rules = urllib2.urlopen(url)
         log.info('Loading rules from %s' % url)
         noop = True

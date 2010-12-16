@@ -53,11 +53,16 @@ warning_if(True, "A warning")
 
 class RulesManagerTest(unittest.TestCase):
 
-    def get_processed_rules(self, rules):
+    def setUp(self):
         import gocept.cache.method
-        import zeit.edit.rule
-        rm = zeit.edit.rule.RulesManager()
         gocept.cache.method.clear()
+
+    def get_manager(self):
+        import zeit.edit.rule
+        return zeit.edit.rule.RulesManager()
+
+    def get_processed_rules(self, rules):
+        rm = self.get_manager()
         with mock.patch('zope.app.appsetup.product.getProductConfiguration') \
                 as gpc:
             gpc.return_value = {'rules-url': mock.sentinel.rulesurl}
@@ -79,3 +84,17 @@ applicable(True)
     def test_invalid_rules_file_should_yield_empty_ruleset(self):
         rules = self.get_processed_rules("if 1=2")
         self.assertEqual(0, len(rules))
+
+    def test_unset_product_config_should_not_fail(self):
+        rm = self.get_manager()
+        with mock.patch('zope.app.appsetup.product.getProductConfiguration') \
+                as gpc:
+            gpc.return_value = None
+            self.assertEqual([], rm.get_rules())
+
+    def test_unset_url_should_not_fail(self):
+        rm = self.get_manager()
+        with mock.patch('zope.app.appsetup.product.getProductConfiguration') \
+                as gpc:
+            gpc.return_value = {'foo': 'bar'}
+            self.assertEqual([], rm.get_rules())
