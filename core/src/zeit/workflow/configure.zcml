@@ -21,7 +21,8 @@
 
   <class class=".workflow.ContentWorkflow">
     <require
-      permission="zope.View" interface=".interfaces.IContentWorkflow"
+      permission="zope.View"
+      interface=".interfaces.IContentWorkflow"
       />
     <require
       permission="zeit.workflow.Publish"
