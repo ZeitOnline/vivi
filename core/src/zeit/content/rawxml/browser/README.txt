@@ -20,6 +20,7 @@ Add a raw xml:
 >>> browser.getControl('File name').value = 'rawxml'
 >>> browser.getControl('Title').value = 'This is raw feed foo'
 >>> browser.getControl('XML').value = '<block><feed/></block>'
+>>> browser.handleErrors = False
 >>> browser.getControl("Add").click()
 
 We're now at the edit page:

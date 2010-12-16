@@ -4,7 +4,8 @@ zeit.content.rawxml changes
 0.3.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- RawXML implements the IDAVContent interface now which is required to put
+  instances into the DAV.
 
 
 0.3.5 (2010-05-03)
