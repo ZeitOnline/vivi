@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import lovely.remotetask.interfaces
+import zc.resourcelibrary
 import zeit.cms.browser.menu
 import zeit.cms.checkout.interfaces
 import zeit.cms.workflow.interfaces
@@ -21,6 +22,7 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     # XXX duplicated from zeit.cms.checkout.browser.MenuItem
     def render(self):
         if self.is_visible():
+            zc.resourcelibrary.need('zeit.content.cp.publish')
             return super(MenuItem, self).render()
         return ''
 

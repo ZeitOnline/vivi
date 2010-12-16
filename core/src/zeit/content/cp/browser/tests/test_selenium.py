@@ -25,8 +25,9 @@ class TestDottedName(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
 
         # Test a name that we know that exists
+        # XXX should be moved to zeit.cms
         s.verifyEval(
-            'new (window.zeit.content.cp.resolveDottedName("zeit.content.cp.Editor"))',
+            'new (window.zeit.cms.resolveDottedName("zeit.edit.Editor"))',
             '[object Object]')
 
 
@@ -302,6 +303,8 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
                       '0,%s' % delta_y)
         s.waitForAttribute(path + '[1]@id', bar2)
         s.verifyAttribute(path + '[2]@id', bar1)
+        # Wait for JS to re-start sortables
+        s.pause(400)
 
         # Drag bar3 to the first position.
         # 2 1 3 -> 3 2 1
@@ -522,18 +525,18 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
                 'css=#lead .landing-zone')
             s.waitForTextPresent('c%s teaser' % i)
 
-    def test_editor_should_be_reloaded_after_publishing(self):
+    def test_publish_should_show_error_message(self):
         s = self.selenium
         self.open_centerpage()
-
-        # try it first with too few items to see the error message
         s.click('xpath=//a[@title="Publish"]')
         s.waitForElementPresent('css=div.lightbox')
         s.waitForElementPresent('publish.errors')
         s.verifyText('publish.errors',
                      'Cannot publish since validation rules are violated.')
-        s.click('css=a.CloseButton')
 
+    def test_editor_should_be_reloaded_after_publishing(self):
+        s = self.selenium
+        self.open_centerpage()
         # satisfy the rules and publish
         self._fill_lead()
         s.click('xpath=//a[@title="Publish"]')

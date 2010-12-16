@@ -9,6 +9,10 @@
     type="text/javascript"
     tal:attributes="src
     string:${request/++resource++zeit.content.cp}/library.js"></script>
+  <script
+    type="text/javascript"
+    tal:attributes="src
+    string:${request/++resource++zeit.content.cp}/teaser.js"></script>
   <link
     rel="stylesheet" type="text/css"
     tal:attributes="

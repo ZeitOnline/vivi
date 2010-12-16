@@ -1,5 +1,4 @@
-zeit.content.cp.publish = {};
-
+zeit.cms.declare_namespace('zeit.content.cp.publish');
 
 zeit.content.cp.publish.Publisher = Class.extend({
     construct: function() {

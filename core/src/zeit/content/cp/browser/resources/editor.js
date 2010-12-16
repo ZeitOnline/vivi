@@ -36,7 +36,7 @@ zeit.content.cp.BlockHover = gocept.Class.extend({
     }
 });
 
-MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
+MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     zeit.content.cp.block_hover = new zeit.content.cp.BlockHover();
 });
 
@@ -85,7 +85,7 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
 });
 
 
-MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
+MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     zeit.content.cp.lead_sorter = new zeit.edit.sortable.BlockSorter(
         'lead');
     zeit.content.cp.informatives_sorter = new zeit.edit.sortable.BlockSorter(
@@ -122,7 +122,7 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     };
 
     var ident = MochiKit.Signal.connect(
-        window, 'cp-editor-initialized',
+        window, 'script-loading-finished',
         function() {
             MochiKit.Signal.disconnect(ident);
             MochiKit.Signal.connect(
@@ -197,7 +197,7 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     };
 
     var ident = MochiKit.Signal.connect(
-        window, 'cp-editor-initialized',
+        window, 'script-loading-finished',
         function() {
             MochiKit.Signal.disconnect(ident);
             MochiKit.Signal.connect(

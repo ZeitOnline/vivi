@@ -1,9 +1,9 @@
-zeit.content.cp.teaser = {};
+zeit.cms.declare_namespace('zeit.content.cp.teaser');
 
-zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
+zeit.content.cp.teaser.Sortable = zeit.edit.sortable.Sortable.extend({
 
     __name__: 'zeit.content.cp.teaser.Sortable',
-    context: zeit.content.cp.in_context.Lightbox,
+    context: zeit.edit.context.Lightbox,
 
     construct: function() {
         var self = this;
@@ -47,7 +47,7 @@ zeit.content.cp.teaser.Sortable = zeit.content.cp.Sortable.extend({
             ['li.action-content-droppable']);
         forEach(elements, function(element) {
             self.dnd_objects.push(
-                new zeit.content.cp.drop.Droppable(
+                new zeit.edit.drop.Droppable(
                     element, element, self.parent));
         });
     },
@@ -62,7 +62,7 @@ zeit.content.cp.teaser.TeaserListDeleteEntry = gocept.Class.extend({
         var self = this;
         var url = context_element.getAttribute('href');
         self.parent = zeit.edit.getParentComponent(context_element);
-        var d = zeit.content.cp.makeJSONRequest(url, null, self.parent, {
+        var d = zeit.edit.makeJSONRequest(url, null, self.parent, {
             method: 'POST',
         });
         // XXX error handling
@@ -99,10 +99,10 @@ zeit.content.cp.teaser.TeaserEditBox = zeit.edit.LightBoxForm.extend({
 });
 
 
-zeit.content.cp.teaser.Drag = zeit.content.cp.ContentActionBase.extend({
+zeit.content.cp.teaser.Drag = zeit.edit.context.ContentActionBase.extend({
 
     __name__: 'zeit.content.cp.teaser.Drag',
-    context: zeit.content.cp.in_context.Editor,
+    context: zeit.edit.context.Editor,
 
     connect: function() {
         var self = this;
@@ -152,17 +152,17 @@ zeit.content.cp.teaser.Drag = zeit.content.cp.ContentActionBase.extend({
             return
         }
         var base_url = block.getAttribute('cms:url');
-        var d = zeit.content.cp.makeJSONRequest(
+        var d = zeit.edit.makeJSONRequest(
             base_url + '/@@delete', {uniqueId: draggable_element.uniqueId});
         return d;
     };
 
     var ident = MochiKit.Signal.connect(
-        window, 'cp-editor-initialized', function() {
+        window, 'script-loading-finished', function() {
         MochiKit.Signal.disconnect(ident);
         zeit.content.cp.teaser.drag = new zeit.content.cp.teaser.Drag();
         MochiKit.Signal.connect(
-            zeit.content.cp.drop.content_drop_handler, 'drop-finished',
+            zeit.edit.drop.content_drop_handler, 'drop-finished',
             remove_from_cp);
     });
 })();

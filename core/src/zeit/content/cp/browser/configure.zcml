@@ -52,9 +52,15 @@
              zeit.find
              zc.datetimewidget
     ">
+    <directory source="resources" />
+  </resourceLibrary>
+
+  <resourceLibrary
+    name="zeit.content.cp.publish"
+    require="zeit.cms">
     <directory
       source="resources"
-      include="editor.css editor.js drop.js teaser.js library.js publish.js"/>
+      include="publish.js"/>
   </resourceLibrary>
 
 
@@ -167,7 +173,7 @@
   <browser:viewlet
     name="Publish"
     for="zeit.content.cp.interfaces.ICenterPage"
-    view=".editor.Editor"
+    view="zeit.edit.browser.editor.Editor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".publish.MenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
