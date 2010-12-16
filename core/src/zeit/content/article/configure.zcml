@@ -5,6 +5,7 @@
 
   <!-- include zeit.edit early to make sure the grokkers are grokked. -->
   <include package="zeit.edit" />
+  <include package="zeit.wysiwyg" />
   <grok:grok package=".edit.meta" />
 
   <grok:grok package="." />
