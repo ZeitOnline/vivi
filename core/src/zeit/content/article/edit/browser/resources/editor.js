@@ -3,7 +3,7 @@
 zeit.cms.declare_namespace('zeit.content.article');
 
 var wire_forms = function() {
-    forEach($$('#article-metadata .inline-form'), function(container) {
+    forEach($$('#article-editor-forms .inline-form'), function(container) {
         //XXX need to make it context aware
         var url = container.getAttribute('action');
         var form = new zeit.cms.SubPageForm(

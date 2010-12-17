@@ -4,7 +4,7 @@
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
-  <include file="metadata.zcml" />
+  <include file="form.zcml" />
 
   <class class="zeit.content.article.article.Article">
     <implements interface="zeit.edit.interfaces.IEditable" />

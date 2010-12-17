@@ -1,0 +1,18 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <include file="metadata.zcml" />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="article-forms"
+    class=".form.ArticleForms"
+    template="edit.forms-provider.pt"
+    permission="zope.View"
+    />
+
+</configure>
+

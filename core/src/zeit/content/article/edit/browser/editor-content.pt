@@ -11,7 +11,7 @@
     href string:${request/++resource++zeit.content.article.edit}/editor.css"/>
 
   <div id="article-editor-forms"
-       tal:content="structure context/@@article-metadata-forms">
+       tal:content="structure context/@@article-forms">
   </div>
   <div id="article-editor-text"
        tal:content="structure view/body/@@contents">
