@@ -3,9 +3,16 @@ zeit.cms changes
 
 editor-ng branch changes
 ------------------------
+
+- Publish is not allowed in ILocalContent via the security machinery now (for
+  #8413).
+
+- Improved ObjectReferenceSequenceWidget so it became usable again.
+
+- Included JQuery as well as MochiKit for the best of both worlds.
+
 - Added a DAVConverterWrapper for XML properties to make it easy to use the
   DAV converter infrastructure with XML properties.
-
 
 1.47.1 (unreleased)
 -------------------
