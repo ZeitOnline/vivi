@@ -36,7 +36,7 @@
     name="edit.form.assets"
     template="edit.metadata.form-loader.pt"
     permission="zope.View"
-    weight="40"
+    weight="10"
     />
 
   <browser:page
@@ -44,6 +44,77 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.assets"
     class=".form.Assets"
+    permission="zope.View"
+    />
+
+  <!-- workflow -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="workflow"
+    class=".form.WorkflowForms"
+    template="edit.forms.pt"
+    permission="zope.View"
+    weight="50"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-status"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.workflow-status"
+    class=".form.WorkflowStatus"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-settings"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.workflow-settings"
+    class=".form.WorkflowSettings"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-log"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="50"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.workflow-log"
+    class=".form.WorkflowLog"
     permission="zope.View"
     />
 

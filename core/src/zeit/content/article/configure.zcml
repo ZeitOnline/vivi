@@ -141,4 +141,15 @@
     name="zeit.content.article.cds.remove_if_not_published"
     />
 
+  <class class=".cds.CDSWorkflow">
+    <require
+      interface=".interfaces.ICDSWorkflow"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ICDSWorkflow"
+      permission="zeit.workflow.Publish"
+      />
+  </class>
+
 </configure>

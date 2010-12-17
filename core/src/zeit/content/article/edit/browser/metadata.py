@@ -13,6 +13,8 @@ import zope.formlib.interfaces
 class Metadata(object):
     """metadata forms view."""
 
+    title = _('Metadata')
+
 
 class Head(zeit.content.article.edit.browser.form.InlineForm):
 

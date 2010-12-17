@@ -127,9 +127,16 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 
 selenium_layer = gocept.selenium.ztk.Layer(ArticleLayer)
+selenium_workflow_layer = gocept.selenium.ztk.Layer(CDSLayer)
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
     layer = selenium_layer
     skin = 'vivi'
+
+    def assert_widget_text(self, widget_id, text):
+        path = 'xpath=//label[@for="{0}"]/../../*[@class="widget"]'.format(
+            widget_id)
+        self.selenium.waitForElementPresent(path)
+        self.selenium.assertText(path, text)

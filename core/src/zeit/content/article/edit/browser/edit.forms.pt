@@ -13,7 +13,7 @@
           Fold
         </span>
       </a>
-      <span i18n:translate="" tal:content="view/__name__">Metadata</span>
+      <span i18n:translate="" tal:content="view/title">Metadata</span>
     </div>
     <div class="block-inner">
       <tal:block replace="structure provider:zeit.edit.contents" />

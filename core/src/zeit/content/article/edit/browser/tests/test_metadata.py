@@ -138,12 +138,6 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia/')
         self.open('/repository/online/2007/01/Somalia/@@edit.html')
 
-    def assert_widget_text(self, widget_id, text):
-        path = 'xpath=//label[@for="{0}"]/../../*[@class="widget"]'.format(
-            widget_id)
-        self.selenium.waitForElementPresent(path)
-        self.selenium.assertText(path, text)
-
     def test_head_should_be_readonly_visible(self):
         self.assert_widget_text("head.year", '2007')
         self.assert_widget_text("head.ressort", 'International')

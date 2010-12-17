@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.asset.browser
 import zeit.cms.browser.interfaces
+import zeit.content.article.interfaces
 import zope.app.pagetemplate
 import zope.formlib.form
 import zope.formlib.interfaces
@@ -11,7 +12,7 @@ import zope.interface
 
 
 class ArticleForms(object):
-    pass
+    """View which includes all article forms."""
 
 
 class InlineForm(zope.formlib.form.SubPageEditForm):
@@ -33,7 +34,9 @@ class InlineForm(zope.formlib.form.SubPageEditForm):
 
 
 class AssetForms(object):
-    pass
+    """Article asset forms."""
+
+    title = _('Assets')
 
 
 class Assets(InlineForm):
@@ -56,3 +59,52 @@ class Assets(InlineForm):
             *interfaces,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).omit(
                 'badges')
+
+
+class WorkflowForms(object):
+    """Article workflow forms."""
+
+    title = _('Workflow')
+
+
+class WorkflowStatus(InlineForm):
+
+
+    legend = _('Status')
+    prefix = 'workflow-status'
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.IContentWorkflow,
+            zeit.cms.workflow.interfaces.IModified,
+            zeit.cms.content.interfaces.ISemanticChange,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE) +
+        zope.formlib.form.FormFields(
+            zope.dublincore.interfaces.IDCTimes, for_display=True)).select(
+                'last_modified_by', 'date_last_modified',
+                'last_semantic_change', 'created',
+                'published', 'date_last_published', 'date_first_released',
+                'edited', 'corrected', 'refined', 'images_added')
+
+
+class WorkflowSettings(InlineForm):
+
+    legend = _('Settings')
+    prefix = 'worfklow-settings'
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.IContentWorkflow,
+            zeit.content.article.interfaces.ICDSWorkflow,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+                'release_period', 'urgent', 'export_cds'))
+
+
+class WorkflowLog(InlineForm):
+
+    legend = _('Log')
+    prefix = 'worfklow-log'
+
+    form_fields = zope.formlib.form.FormFields(
+            zeit.objectlog.interfaces.ILog,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
