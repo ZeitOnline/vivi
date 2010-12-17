@@ -1,6 +1,12 @@
 zeit.cms changes
 ================
 
+editor-ng branch changes
+------------------------
+- Added a DAVConverterWrapper for XML properties to make it easy to use the
+  DAV converter infrastructure with XML properties.
+
+
 1.47.1 (unreleased)
 -------------------
 
@@ -15,8 +21,9 @@ zeit.cms changes
 - A view on workingcopy objects used to lookup objects directly in the
   repository. Replaced this by an ICMSContent() adapter lookup (#7826)
 
-- Added a DAVConverterWrapper for XML properties to make it easy to use the
-  DAV converter infrastructure with XML properties.
+- Improve HTTP test layer: stores errors in a list instead of printing them
+  (for #8085).
+
 
 1.47.0 (2010-08-16)
 -------------------
