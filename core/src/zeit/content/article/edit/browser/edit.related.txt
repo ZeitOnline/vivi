@@ -35,7 +35,6 @@ Add relateds to the article:
 >>> import zeit.cms.related.interfaces
 >>> relateds = zeit.cms.related.interfaces.IRelatedContent(article)
 >>> relateds.related = (getRootFolder()['repository']['testcontent'],)
->>> browser.handleErrors = False
 >>> browser.reload()
 >>> print browser.contents
 <...
