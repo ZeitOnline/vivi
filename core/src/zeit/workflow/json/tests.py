@@ -6,14 +6,14 @@ import lovely.remotetask.interfaces
 import transaction
 import zeit.cms.testing
 import zeit.workflow.interfaces
-import zeit.workflow.tests
+import zeit.workflow.testing
 import zope.security.management
 import zope.testbrowser.testing
 
 
 class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.workflow.tests.WorkflowLayer
+    layer = zeit.workflow.testing.WorkflowLayer
 
     def setUp(self):
         super(JSONTestCase, self).setUp()

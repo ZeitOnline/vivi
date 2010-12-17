@@ -1,82 +1,12 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import os
-import pkg_resources
-import stat
-import tempfile
 import threading
 import time
 import transaction
-import unittest
 import zeit.cms.testing
 import zeit.workflow.publish
-import zope.app.testing.functional
-
-product_config = """
-<product-config zeit.workflow>
-    path-prefix work
-</product-config>
-"""
-
-WorkflowBaseLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config )
-
-
-class WorkflowScriptsLayer(object):
-    """Layer which copies the publish/retract scripts and makes them
-    executable."""
-
-    @classmethod
-    def setUp(cls):
-        cls._tempfiles = []
-        product_config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.workflow')
-        product_config['publish-script'] = cls._make_copy('publish.sh')
-        product_config['retract-script'] = cls._make_copy('retract.sh')
-
-    @classmethod
-    def tearDown(cls):
-        del cls._tempfiles
-
-
-    @classmethod
-    def testSetUp(cls):
-        pass
-
-    @classmethod
-    def testTearDown(cls):
-        pass
-
-    @classmethod
-    def _make_copy(cls, script):
-        source = pkg_resources.resource_string(__name__, script)
-        destination = tempfile.NamedTemporaryFile(suffix=script)
-        destination.write(source)
-        destination.flush()
-        os.chmod(destination.name, stat.S_IRUSR|stat.S_IXUSR)
-        cls._tempfiles.append(destination)
-        return destination.name
-
-
-class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
-
-    @classmethod
-    def setUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        pass
-
-    @classmethod
-    def testTearDown(cls):
-        pass
+import zeit.workflow.testing
 
 
 class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
@@ -91,7 +21,7 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
 
 class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = WorkflowLayer
+    layer = zeit.workflow.testing.WorkflowLayer
 
     def setUp(self):
         super(PublishRetractLockingTest, self).setUp()
@@ -111,6 +41,7 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEquals(1, len(self.task.test_log))
 
     def test_parallel_with_same_obj(self):
+        import zope.component
         t1 = threading.Thread(
             target=self.run_task_in_thread, args=(1, self.desc))
         t2 = threading.Thread(
@@ -139,14 +70,3 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
         t1.join()
         t2.join()
         self.assertEquals(2, len(self.task.test_log))
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt',
-        'dependency.txt',
-        'syndication.txt',
-        layer=WorkflowLayer))
-    suite.addTest(unittest.makeSuite(PublishRetractLockingTest))
-    return suite
