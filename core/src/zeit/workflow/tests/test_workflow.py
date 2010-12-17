@@ -25,5 +25,3 @@ class PermissionTest(zeit.cms.testing.FunctionalTestCase):
             'http://xml.zeit.de/testcontent')
         self.assertTrue(
             zope.security.checkPermission('zeit.workflow.Publish', content))
-
-
