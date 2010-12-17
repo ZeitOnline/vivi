@@ -195,7 +195,7 @@ def import_main():
     return import_and_schedule()
 
 
-class CDSWorkflow(object):
+class CDSWorkflow(zeit.cms.content.dav.DAVPropertiesAdapter):
     """Workflow extension for the CDS."""
 
     zope.interface.implements(zeit.content.article.interfaces.ICDSWorkflow)
@@ -214,9 +214,3 @@ class CDSWorkflow(object):
                 self.context)
             if metadata.product_id == 'ZEDE':
                 self.export_cds = True
-
-
-@zope.component.adapter(CDSWorkflow)
-@zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
-def cdsworkflow_properties(context):
-    return zeit.connector.interfaces.IWebDAVProperties(context.context)

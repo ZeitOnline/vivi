@@ -140,7 +140,5 @@
     factory=".cds.RemoveIfNotPublishedTask"
     name="zeit.content.article.cds.remove_if_not_published"
     />
-  <adapter factory=".cds.CDSWorkflow" />
-  <adapter factory=".cds.cdsworkflow_properties" />
 
 </configure>
