@@ -15,6 +15,9 @@ zeit.cms changes
 - A view on workingcopy objects used to lookup objects directly in the
   repository. Replaced this by an ICMSContent() adapter lookup (#7826)
 
+- Improve HTTP test layer: stores errors in a list instead of printing them
+  (for #8085).
+
 
 1.47.0 (2010-08-16)
 -------------------
