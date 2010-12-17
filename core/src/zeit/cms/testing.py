@@ -58,6 +58,16 @@ def ZCMLLayer(
     return layer
 
 
+class HTTPServer(BaseHTTPServer.HTTPServer):
+
+    def __init__(self, *args):
+        BaseHTTPServer.HTTPServer.__init__(self, *args)
+        self.errors = []
+
+    def handle_error(self, request, client_address):
+        self.errors.append((request, client_address))
+
+
 def HTTPServerLayer(request_handler):
     """Factory for a layer which opens a HTTP port."""
     module = stack = inspect.stack()[1][0].f_globals['__name__']
@@ -67,10 +77,9 @@ def HTTPServerLayer(request_handler):
         cls.httpd_running = True
         def run():
             server_address = ('localhost', port)
-            httpd = BaseHTTPServer.HTTPServer(
-                server_address, request_handler)
+            cls.httpd = HTTPServer(server_address, request_handler)
             while cls.httpd_running:
-                httpd.handle_request()
+                cls.httpd.handle_request()
         t = threading.Thread(target=run)
         t.daemon = True
         t.start()
@@ -80,14 +89,18 @@ def HTTPServerLayer(request_handler):
     def tearDown(cls):
         cls.httpd_running = False
         try:
-            urllib2.urlopen('http://localhost:%s/die' % port)
+            urllib2.urlopen('http://localhost:%s/die' % port, timeout=1)
         except urllib2.URLError:
             pass
+
+    def testTearDown(cls):
+        cls.httpd.errors[:] = []
 
     layer = type('HTTPLayer(%s)' % port, (object,), dict(
         __module__=module,
         setUp=classmethod(setUp),
         tearDown=classmethod(tearDown),
+        testTearDown=classmethod(testTearDown),
     ))
     return layer, port
 
