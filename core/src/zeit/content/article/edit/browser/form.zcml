@@ -14,5 +14,38 @@
     permission="zope.View"
     />
 
+  <!-- assets -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="assets"
+    class=".form.AssetForms"
+    template="edit.forms.pt"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.AssetForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.assets"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="40"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.assets"
+    class=".form.Assets"
+    permission="zope.View"
+    />
+
 </configure>
 

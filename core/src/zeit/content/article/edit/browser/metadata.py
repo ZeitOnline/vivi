@@ -2,42 +2,19 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import zc.resourcelibrary
-import zeit.cms.asset.browser
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
-import zope.app.pagetemplate
+import zeit.content.article.edit.browser.form
 import zope.formlib.form
 import zope.formlib.interfaces
-import zope.interface
-import zope.viewlet.interfaces
-import zope.viewlet.viewlet
 
 
 class Metadata(object):
     """metadata forms view."""
 
 
-class MetadataForm(zope.formlib.form.SubPageEditForm):
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile('edit.inlineform.pt')
-
-    @property
-    def widget_data(self):
-        result = []
-        for widget in self.widgets:
-            css_class = ['widget-outer']
-            if widget.error():
-                css_class.append('error')
-            result.append(dict(
-                css_class=' '.join(css_class),
-                widget=widget,
-            ))
-        return result
-
-
-class Head(MetadataForm):
+class Head(zeit.content.article.edit.browser.form.InlineForm):
 
     legend = _('Head')
     prefix = 'head'
@@ -56,7 +33,7 @@ class Head(MetadataForm):
         return result
 
 
-class Navigation(MetadataForm):
+class Navigation(zeit.content.article.edit.browser.form.InlineForm):
 
     legend = _('Navigation')
     prefix = 'navigation'
@@ -82,7 +59,7 @@ class Navigation(MetadataForm):
         return form_fields
 
 
-class Texts(MetadataForm):
+class Texts(zeit.content.article.edit.browser.form.InlineForm):
 
     legend = _('Texts')
     prefix = 'texts'
@@ -92,7 +69,7 @@ class Texts(MetadataForm):
             'supertitle', 'title', 'subtitle', 'teaserTitle', 'teaserText')
 
 
-class Misc(MetadataForm):
+class Misc(zeit.content.article.edit.browser.form.InlineForm):
 
     legend = _('Misc.')
     prefix = 'misc'
@@ -107,25 +84,3 @@ class Misc(MetadataForm):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super(Misc, self).__call__()
-
-
-class Assets(MetadataForm):
-
-    legend = _('Assets')
-    prefix = 'assets'
-
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(Assets, self).__call__()
-
-    @property
-    def form_fields(self):
-        interfaces = []
-        for name, interface in zope.component.getUtilitiesFor(
-            zeit.cms.asset.interfaces.IAssetInterface):
-            interfaces.append(interface)
-        return zope.formlib.form.FormFields(
-            *interfaces,
-            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).omit(
-                'badges')

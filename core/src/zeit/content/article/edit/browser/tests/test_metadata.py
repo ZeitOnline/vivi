@@ -105,30 +105,30 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_metadata_should_be_foldable_and_unfoldable(self):
         s = self.selenium
-        s.assertElementNotPresent('css=#article-metadata.folded')
-        s.click('css=#article-metadata .edit-bar .fold-link')
-        s.waitForElementPresent('css=#article-metadata.folded')
-        s.click('css=#article-metadata .edit-bar .fold-link')
-        s.waitForElementNotPresent('css=#article-metadata.folded')
+        s.assertElementNotPresent('css=#article-form-metadata.folded')
+        s.click('css=#article-form-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#article-form-metadata.folded')
+        s.click('css=#article-form-metadata .edit-bar .fold-link')
+        s.waitForElementNotPresent('css=#article-form-metadata.folded')
 
     def test_fold_should_survive_page_load(self):
         s = self.selenium
-        s.assertElementNotPresent('css=#article-metadata.folded')
-        s.click('css=#article-metadata .edit-bar .fold-link')
-        s.waitForElementPresent('css=#article-metadata.folded')
+        s.assertElementNotPresent('css=#article-form-metadata.folded')
+        s.click('css=#article-form-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#article-form-metadata.folded')
         s.open(s.getLocation())
-        s.waitForElementPresent('css=#article-metadata.folded')
+        s.waitForElementPresent('css=#article-form-metadata.folded')
 
     def test_unfold_should_be_stored(self):
         s = self.selenium
-        s.assertElementNotPresent('css=#article-metadata.folded')
-        s.click('css=#article-metadata .edit-bar .fold-link')
-        s.waitForElementPresent('css=#article-metadata.folded')
-        s.click('css=#article-metadata .edit-bar .fold-link')
-        s.waitForElementNotPresent('css=#article-metadata.folded')
+        s.assertElementNotPresent('css=#article-form-metadata.folded')
+        s.click('css=#article-form-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#article-form-metadata.folded')
+        s.click('css=#article-form-metadata .edit-bar .fold-link')
+        s.waitForElementNotPresent('css=#article-form-metadata.folded')
         s.open(s.getLocation())
-        s.waitForElementPresent('css=#article-metadata')
-        s.assertElementNotPresent('css=#article-metadata.folded')
+        s.waitForElementPresent('css=#article-form-metadata')
+        s.assertElementNotPresent('css=#article-form-metadata.folded')
 
 
 class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
