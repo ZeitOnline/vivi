@@ -356,11 +356,19 @@ DATETIME_WIDGET_ADDITIONAL = """\
 <input type="button" value="%(label)s"
     onclick="javascript:var date = new Date();
         %(increase)s;
-        $('%(field)s').value = date.print('%%Y-%%m-%%d %%H:%%M:%%S');" />
+        $('%(field)s').value = date.print('%%Y-%%m-%%d %%H:%%M:%%S');
+        $('%(field)s').focus();
+        MochiKit.Signal.signal(
+            '%(field)s', 'onchange', {target: $('%(field)s')});
+        " />
 """
 DATETIME_WIDGET_INFTY = u"""\
 <input type="button" value="∞"
-    onclick="javascript:$('%(field)s').value = '';" />
+    onclick="javascript:$('%(field)s').value = '';
+        $('%(field)s').focus();
+        MochiKit.Signal.signal(
+            '%(field)s', 'onchange', {target: $('%(field)s')});
+    " />
 """
 class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
     """A datetime widget with additional buttons."""
@@ -380,6 +388,11 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
         return (u'<div class="dateTimeWidget">'
                 + html + week + month + infty
                 + '</div>')
+
+    def _configuration(self):
+        conf = super(DatetimeWidget, self)._configuration()
+        conf.onClose = "zeit.cms.get_datetime_close('{0}')".format(self.name)
+        return conf
 
 
 def CheckboxWidget(context, request):

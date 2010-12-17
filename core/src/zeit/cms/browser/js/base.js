@@ -203,3 +203,13 @@ zeit.cms.get_application_url = function() {
     return application_url;
 
 };
+
+
+zeit.cms.get_datetime_close = function(id) {
+    var closer = function(cal) {
+        cal.hide();
+        $(id).focus();
+        MochiKit.Signal.signal(id, 'onchange', {target: $(id)});
+    }
+    return closer;
+};
