@@ -86,7 +86,11 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
 
     checkout: function(context) {
         var self = this;
-        return self._redirect_step(context + '/@@checkout?redirect=False');
+        var d = self._redirect_step(context + '/@@checkout?redirect=False');
+        d.addCallback(function(result) {
+            return result + '/@@edit.html';
+        });
+        return d;
     },
 
     reload: function(context) {
