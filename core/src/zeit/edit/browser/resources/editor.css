@@ -175,11 +175,11 @@
   margin: 0.25em 0;
 }
 
-.lightbox > div.tab-content {
+#cp-content .lightbox > div.tab-content {
   overflow-y: auto;
 }
 
-.lightbox h1 {
+#cp-content .lightbox h1 {
   margin-top: 0px;
 }
 
@@ -195,7 +195,7 @@
   margin: 1em 0 0 0;
 }
 
-.lightbox .landing-zone {
+#cp-content .lightbox .landing-zone {
   border: 1px solid #00ee5e;
   height: 0.5em;
   padding: 0;
@@ -203,7 +203,7 @@
   visibility: hidden;
 }
 
-.lightbox .landing-zone.visible {
+#cp-content .lightbox .landing-zone.visible {
   margin-top: 1em;
   height: 1em;
   padding: 1em;
