@@ -1,7 +1,9 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.selenium.ztk
 import zeit.cms.testing
+
 
 product_config = """
 <product-config zeit.workflow>
@@ -72,3 +74,6 @@ class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
     @classmethod
     def testTearDown(cls):
         pass
+
+
+selenium_layer = gocept.selenium.ztk.Layer(WorkflowLayer)

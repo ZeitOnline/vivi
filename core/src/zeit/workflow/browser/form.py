@@ -30,11 +30,7 @@ def workflow_form_factory(context, request):
         zeit.workflow.browser.interfaces.IWorkflowForm)
 
 
-class WorkflowForm(zeit.cms.browser.form.EditForm):
-
-    zope.interface.implements(zeit.workflow.browser.interfaces.IWorkflowForm)
-
-    title = _("Workflow")
+class WorkflowFormActions(object):
 
     @zope.formlib.form.action(_('Save state only'),
                               name='save')
@@ -85,6 +81,15 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
     @property
     def info(self):
         return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+
+
+class WorkflowForm(zeit.cms.browser.form.EditForm,
+                   WorkflowFormActions):
+
+    zope.interface.implements(zeit.workflow.browser.interfaces.IWorkflowForm)
+
+    title = _("Workflow")
+
 
 
 class ContentWorkflow(WorkflowForm):

@@ -82,4 +82,44 @@
     class=".nagios.TaskQueueLength"
     permission="zope.Public"
     />
+
+  <!-- 1 click publishing -->
+ 
+  <resourceLibrary
+    name="zeit.workflow.publish"
+    require="zeit.cms">
+    <directory
+      source="resources"
+      include="publish.js"/>
+  </resourceLibrary>
+
+  <browser:viewlet
+    name="Publish"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".publish.MenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.workflow.Publish"
+    icon="/@@/zeit.cms/icons/page_white_lightning.png"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="publish.html"
+    class=".publish.Publish"
+    template="publish.pt"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="flash-publish-errors"
+    class=".publish.FlashPublishErrors"
+    template="publish.pt"
+    permission="zeit.workflow.Publish"
+    />
+    
+
 </configure>
