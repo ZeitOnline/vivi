@@ -2,14 +2,15 @@
 <h1 i18n:translate="">Publish</h1>
 
 <tal:block condition="view/can_publish">
-<ol>
-<li id="publish.checkin" i18n:translate="">Checking in</li>
-<li id="publish.publish" i18n:translate="">Publishing</li>
-<li id="publish.checkout" i18n:translate="">Checking out</li>
+<ol id="worklist">
+  <li action="checkin" i18n:translate="">Checking in</li>
+  <li action="publish" i18n:translate="">Publishing</li>
+  <li action="checkout" i18n:translate="">Checking out</li>
+  <li action="reload" i18n:translate="">Reloading</li>
 </ol>
 
 <script type="text/javascript">
-new zeit.content.cp.publish.Publisher();
+  new zeit.workflow.publish.Publisher('worklist');
 </script>
 </tal:block>
 

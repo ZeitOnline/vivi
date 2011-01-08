@@ -60,8 +60,8 @@ zeit.content.cp.publish.Publisher = Class.extend({
 
     checkout: function(context) {
         var self = this;
-        self._redirect_step(context + '/@@checkout?redirect=False', 'checkout',
-                            bind(self.reload_editor, self));
+        self._redirect_step(
+        context + '/@@checkout?redirect=False&came_from=view.html');
     },
 
     reload_editor: function(url) {

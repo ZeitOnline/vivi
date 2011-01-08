@@ -55,14 +55,6 @@
     <directory source="resources" />
   </resourceLibrary>
 
-  <resourceLibrary
-    name="zeit.content.cp.publish"
-    require="zeit.cms">
-    <directory
-      source="resources"
-      include="publish.js"/>
-  </resourceLibrary>
-
 
   <!-- Editor -->
 
@@ -177,10 +169,9 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".publish.MenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
-    permission="zeit.workflow.Publish"
+    permission="zeit.EditContent"
     icon="/@@/zeit.cms/icons/page_white_lightning.png"
     />
-
 
   <browser:page
     for="zeit.content.cp.interfaces.ICenterPage"
@@ -188,18 +179,11 @@
     name="publish.html"
     class=".publish.Publish"
     template="publish.pt"
-    permission="zeit.workflow.Publish"
+    permission="zeit.EditContent"
     />
 
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="flash-publish-errors"
-    class=".publish.FlashPublishErrors"
-    template="publish.pt"
-    permission="zeit.workflow.Publish"
-    />
-    
+  <!-- /1-click publishing -->
+
   <browser:icon
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSOldStyles"

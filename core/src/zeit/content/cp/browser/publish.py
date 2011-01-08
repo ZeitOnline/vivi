@@ -22,7 +22,7 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     # XXX duplicated from zeit.cms.checkout.browser.MenuItem
     def render(self):
         if self.is_visible():
-            zc.resourcelibrary.need('zeit.content.cp.publish')
+            zc.resourcelibrary.need('zeit.workflow.publish')
             return super(MenuItem, self).render()
         return ''
 
@@ -32,16 +32,3 @@ class Publish(object):
     def can_publish(self):
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         return info.can_publish()
-
-
-class FlashPublishErrors(zeit.cms.browser.view.Base):
-
-    def __call__(self, job):
-        job = int(job)
-        tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name='general')
-        if tasks.getStatus(job) != lovely.remotetask.interfaces.COMPLETED:
-            return
-        error = tasks.getResult(job)
-        if error is not None:
-            self.send_message(error, type='error')
