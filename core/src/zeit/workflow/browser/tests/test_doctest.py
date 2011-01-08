@@ -12,5 +12,6 @@ def test_suite():
         'README.txt',
         'indicator.txt',
         'nagios.txt',
+        package='zeit.workflow.browser',
         layer=zeit.workflow.testing.WorkflowLayer))
     return suite
