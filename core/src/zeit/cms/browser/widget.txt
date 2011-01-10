@@ -246,19 +246,32 @@ in one month:
   inputField: 'field.',
   button: 'field._trigger',
   ifFormat: '%Y-%m-%d %H:%M:%S',
+  onClose: zeit.cms.get_datetime_close('field.'),
   showsTime: true
 });
 </script>
 <input type="button" value="1W"
     onclick="javascript:var date = new Date();
         date.setDate(date.getDate() + 7);
-        $('field.').value = date.print('%Y-%m-%d %H:%M:%S');" />
+        $('field.').value = date.print('%Y-%m-%d %H:%M:%S');
+        $('field.').focus();
+        MochiKit.Signal.signal(
+            'field.', 'onchange', {target: $('field.')});
+          " />
 <input type="button" value="1M"
     onclick="javascript:var date = new Date();
         date.setMonth(date.getMonth() + 1);
-        $('field.').value = date.print('%Y-%m-%d %H:%M:%S');" />
+        $('field.').value = date.print('%Y-%m-%d %H:%M:%S');
+        $('field.').focus();
+        MochiKit.Signal.signal(
+            'field.', 'onchange', {target: $('field.')});
+        " />
 <input type="button" value="∞"
-    onclick="javascript:$('field.').value = '';" />
+    onclick="javascript:$('field.').value = '';
+        $('field.').focus();
+        MochiKit.Signal.signal(
+            'field.', 'onchange', {target: $('field.')});
+    " />
 </div>
 
 
