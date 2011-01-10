@@ -30,7 +30,7 @@ class Published(zope.viewlet.viewlet.ViewletBase):
             return u''
         title = self.messages[status]
         title = zope.i18n.translate(title, context=self.request)
-        cms_resources= zope.component.getAdapter(
+        cms_resources = zope.component.getAdapter(
             self.request, name='zeit.cms')
         return (u'<img class="publish-state" src="%s/icons/%s.png" title="%s" '
                 '/>' % (cms_resources(), status, title))
