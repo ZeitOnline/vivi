@@ -385,7 +385,7 @@ class TestObjectSequenceDisplayWidgetIntegration(
         field = self.get_field()
         request = zope.publisher.browser.TestRequest()
         zope.interface.alsoProvides(
-            request, zeit.cms.browser.interfaces.ICMSLayer)
+            request, zeit.cms.browser.interfaces.IViviSkin)
         widget = zope.component.getMultiAdapter(
             (field, request),
             zope.formlib.interfaces.IDisplayWidget)
