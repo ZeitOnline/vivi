@@ -1250,6 +1250,40 @@ Citation
   </body>
 </article>
 
+Empty citation should not break:
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <citation/>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> html = converter.to_html(article.xml['body'])
+>>> print html,
+<div class="inline-element citation">
+  <div class="text"> </div>
+  <div class="text2"> </div>
+  <div class="attribution"> </div>
+  <div class="attribution2"> </div>
+  <div class="url"> </div>
+  <div class="url2"> </div>
+  <div class="layout"> </div>
+</div>
+<p> </p>
+
+>>> converter.from_html(article.xml['body'], html)
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article ...>
+  <head/>
+  <body>
+    <citation/>
+  </body>
+</article>
+
 
 List of relateds
 ----------------

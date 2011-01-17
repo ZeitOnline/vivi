@@ -4,6 +4,9 @@ zeit.wysiwyg changes
 1.39.2 (unreleased)
 -------------------
 
+- Fixed bug: Empty citations caused xsi:nil when converted to HTML and an error when
+  converted back to XML.
+
 - ``<image>`` tages are not longer inside of a ``<p>``. That is there is no way
   to create those images with the WYSIWYG editor and any such image encountered
   is automatically migrated (#8158)
