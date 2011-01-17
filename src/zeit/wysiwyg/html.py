@@ -1,5 +1,5 @@
 # coding: utf8
-# Copyright (c) 2008-2010 gocept gmbh & co. kg
+# Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.content.util import objectify_soup_fromstring
