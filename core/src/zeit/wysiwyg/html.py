@@ -712,7 +712,7 @@ class CitationStep(ConversionStep):
         children = []
         for name in self.attributes:
             children.append(lxml.objectify.E.div(
-                node.get(name), **{'class': name}))
+                node.get(name) or ' ', **{'class': name}))
         new_node = lxml.objectify.E.div(
             *children, **{'class': 'inline-element citation'})
         lxml.objectify.deannotate(new_node)
@@ -722,7 +722,8 @@ class CitationStep(ConversionStep):
         values = {}
         for name in self.attributes:
             value = node.xpath('*[@class="%s"]' % name)[0].text
-            values[name] = value
+            if value and value.strip():
+                values[name] = value.strip()
         new_node = lxml.objectify.E.citation(**values)
         return new_node
 
