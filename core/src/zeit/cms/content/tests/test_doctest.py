@@ -20,7 +20,6 @@ def test_suite():
         'liveproperty.txt',
         'lxmlpickle.txt',
         'metadata.txt',
-        'semanticchange.txt',
         'sources.txt',
         'xmlsupport.txt',
         package='zeit.cms.content'))
