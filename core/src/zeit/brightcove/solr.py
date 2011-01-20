@@ -54,12 +54,12 @@ class Index(object):
     interface = zeit.brightcove.interfaces.IVideo
 
     def process(self, value, node):
-        child_node = lxml.objectify.E.field(value, name=self.solr_field_name)
+        child_node = lxml.objectify.E.field(value, name=self.solr)
         lxml.objectify.deannotate(child_node)
         node.append(child_node)
 
     @property
-    def solr_field_name(self):
+    def solr(self):
         return getattr(self.__class__, 'grokcore.component.directive.name')
 
 

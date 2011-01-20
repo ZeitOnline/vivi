@@ -4,6 +4,8 @@ zeit.brightcove changes
 0.8.1 (unreleased)
 ------------------
 
+- Change indexes as the interface requires an solr attribute now (#8559)
+
 
 0.8.0 (2010-08-16)
 ------------------
