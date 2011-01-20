@@ -1,7 +1,6 @@
 zeit.brightcove changes
 =======================
 
-
 0.9.0 (unreleased)
 ------------------
 
@@ -10,6 +9,8 @@ zeit.brightcove changes
 
 - Extracted ``get_expires`` to get the me earliest expires date from a list of
   playlists and videos.
+
+- Change indexes as the interface requires an solr attribute now (#8559)
 
 
 0.8.0 (2010-08-16)
