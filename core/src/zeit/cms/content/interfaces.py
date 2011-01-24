@@ -6,6 +6,7 @@ import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.tagging.interfaces
 import zope.component.interfaces
 import zope.i18nmessageid
 import zope.interface
@@ -18,10 +19,6 @@ import zope.schema
 
 from zeit.cms.content.contentsource import ICMSContentSource
 from zeit.cms.content.contentsource import INamedCMSContentSource
-
-
-class IKeywordInterface(zope.interface.interfaces.IInterface):
-    """The interface of the keyword interface."""
 
 
 class IKeyword(zope.interface.Interface):
@@ -114,12 +111,12 @@ class ICommonMetadata(zope.interface.Interface):
         default=(u'',),
         description=_(u'overwritten if any non-freetext authors are set'))
 
-    keywords = zope.schema.Tuple(
+    keywords = zope.schema.FrozenSet(
         title=_("Keywords"),
         required=False,
-        default=(),
-        unique=True,
-        value_type=zope.schema.Object(IKeyword))
+        default=frozenset(),
+        value_type=zope.schema.Choice(
+            source=zeit.cms.tagging.interfaces.TagsForContent()))
 
     serie = zope.schema.Choice(
         title=_("Serie"),

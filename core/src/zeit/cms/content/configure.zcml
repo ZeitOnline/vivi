@@ -39,10 +39,6 @@
 
   <!-- Keywords -->
 
-  <interface
-    interface=".interfaces.IKeyword"
-    type=".interfaces.IKeywordInterface" />
-
   <class class=".keyword.Keyword">
     <allow interface=".interfaces.IKeyword" />
   </class>

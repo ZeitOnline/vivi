@@ -8,20 +8,13 @@
   <include file="template.zcml" />
 
   <!-- Keyword widget -->
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    name="keyword-browser.html"
-    class=".keyword.Tree"
-    template="keyword-tree.pt"
-    permission="zope.Public"
-    allowed_interface="zeit.cms.browser.interfaces.ITree"
-    />
+  <!--
 
   <adapter
     for="
     zope.schema.interfaces.ITuple
-    zope.schema.interfaces.IObject
-    zeit.cms.content.interfaces.IKeywordInterface
+    zope.schema.interfaces.IChoice
+    zeit.cms.tagging.interfaces.ITagSource
     zope.publisher.interfaces.browser.IBrowserRequest"
     provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
     factory=".keyword.KeywordsWidget"
@@ -31,21 +24,14 @@
   <adapter
     for="
     zope.schema.interfaces.ITuple
-    zope.schema.interfaces.IObject
-    zeit.cms.content.interfaces.IKeywordInterface
+    zope.schema.interfaces.IChoice
+    zeit.cms.tagging.interfaces.ITagSource
     zope.publisher.interfaces.browser.IBrowserRequest"
     provides="zope.app.form.interfaces.IDisplayWidget"
     factory=".keyword.KeywordsDisplayWidget"
     permission="zope.Public"
     />
-
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    name="keyword-typeahead"
-    class=".keyword.TypeaheadSearch"
-    template="keyword-typeahead.pt"
-    permission="zope.Public"
-    />
+  -->
 
 
   <!-- XML tree editing widget -->
