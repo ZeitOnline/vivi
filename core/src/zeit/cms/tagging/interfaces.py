@@ -43,8 +43,8 @@ class ITag(zope.interface.Interface):
     type = zope.schema.TextLine(
         title=u"Tag type (person, topic, keyword, ...)")
 
-    active = zope.schema.Bool(
-        title=u'Active')
+    disabled = zope.schema.Bool(
+        title=u'Disabled')
 
 
 class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
@@ -52,3 +52,6 @@ class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
     def getValues(self, context):
         tagger = ITagger(context)
         return (tagger[code] for code in tagger)
+
+    def getTitle(self, context, value):
+        return value.label
