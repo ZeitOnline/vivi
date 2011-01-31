@@ -8,7 +8,9 @@ class Tags(object):
     """Property which stores tag data in DAV."""
 
     def __get__(self, instance, class_):
-        tagger = zeit.cms.tagging.interfaces.ITagger(instance)
+        tagger = zeit.cms.tagging.interfaces.ITagger(instance, None)
+        if tagger is None:
+            return frozenset()
         return frozenset(tag for tag in tagger.values() if not tag.disabled)
 
     def __set__(self, instance, value):
