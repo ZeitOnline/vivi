@@ -50,7 +50,9 @@ class ITag(zope.interface.Interface):
 class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     def getValues(self, context):
-        tagger = ITagger(context)
+        tagger = ITagger(context, None)
+        if tagger is None:
+            return []
         return (tagger[code] for code in tagger)
 
     def getTitle(self, context, value):
