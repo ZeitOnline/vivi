@@ -21,34 +21,6 @@ from zeit.cms.content.contentsource import ICMSContentSource
 from zeit.cms.content.contentsource import INamedCMSContentSource
 
 
-class IKeyword(zope.interface.Interface):
-
-    code = zope.schema.TextLine()
-    label = zope.schema.TextLine()
-
-    inTaxonomy = zope.schema.Bool(
-        title=_("Keyword is contained in the taxonomy"),
-        default=False)
-
-IKeyword.narrower = zope.schema.List(value_type=zope.schema.Object(IKeyword))
-IKeyword.broader = value_type=zope.schema.Object(IKeyword, required=False)
-
-
-class IKeywords(zope.interface.Interface):
-
-    root = zope.schema.Object(
-        IKeyword,
-        title=_('Root of ontology'))
-
-    def __getitem__(code):
-        """return IKeyword with given code."""
-
-    def find_keywords(searchterm):
-        """Returns a list of keywords which contain the searchterm
-           string.
-        """
-
-
 class IAuthorType(zeit.cms.interfaces.ICMSContentType):
     """Interface type for authors."""
 

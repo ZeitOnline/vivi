@@ -36,14 +36,6 @@
   <adapter factory=".contentuuid.properties" />
   <adapter factory=".contentuuid.SimpleUUID" />
   <adapter factory=".contentuuid.uuid_to_content" />
-
-  <!-- Keywords -->
-
-  <class class=".keyword.Keyword">
-    <allow interface=".interfaces.IKeyword" />
-  </class>
-
-  <utility factory=".keyword.KeywordUtility" />
   
 
   <!-- Templates -->

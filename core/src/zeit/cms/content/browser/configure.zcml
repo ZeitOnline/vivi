@@ -7,33 +7,6 @@
 
   <include file="template.zcml" />
 
-  <!-- Keyword widget -->
-  <!--
-
-  <adapter
-    for="
-    zope.schema.interfaces.ITuple
-    zope.schema.interfaces.IChoice
-    zeit.cms.tagging.interfaces.ITagSource
-    zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
-    factory=".keyword.KeywordsWidget"
-    permission="zope.Public"
-    />
-
-  <adapter
-    for="
-    zope.schema.interfaces.ITuple
-    zope.schema.interfaces.IChoice
-    zeit.cms.tagging.interfaces.ITagSource
-    zope.publisher.interfaces.browser.IBrowserRequest"
-    provides="zope.app.form.interfaces.IDisplayWidget"
-    factory=".keyword.KeywordsDisplayWidget"
-    permission="zope.Public"
-    />
-  -->
-
-
   <!-- XML tree editing widget -->
   <adapter
     for="zeit.cms.content.field.IXMLTree
