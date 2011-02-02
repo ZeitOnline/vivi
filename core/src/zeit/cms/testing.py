@@ -95,6 +95,7 @@ def HTTPServerLayer(request_handler):
 
     def testTearDown(cls):
         cls.httpd.errors[:] = []
+        request_handler.tearDown()
 
     layer = type('HTTPLayer(%s)' % port, (object,), dict(
         __module__=module,
@@ -111,6 +112,9 @@ class BaseHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+    @classmethod
+    def tearDown(cls):
+        pass
 
 
 cms_product_config = string.Template("""\
