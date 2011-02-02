@@ -14,6 +14,9 @@ editor-ng branch changes
 - Added a DAVConverterWrapper for XML properties to make it easy to use the
   DAV converter infrastructure with XML properties.
 
+- Testing: HTTPLayer calls tearDown on the request handler during testTearDown
+  now.
+
 1.47.1 (unreleased)
 -------------------
 
