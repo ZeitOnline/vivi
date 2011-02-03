@@ -38,3 +38,10 @@ class TestTagsForContent(unittest.TestCase):
         self.assertEqual(
             mock.sentinel.label,
             self.get_source().getTitle(mock.sentinel.context, tag))
+
+    def test_get_token_should_return_code(self):
+        tag = mock.Mock()
+        tag.code = mock.sentinel.code
+        self.assertEqual(
+            mock.sentinel.code,
+            self.get_source().getToken(mock.sentinel.context, tag))

@@ -65,3 +65,6 @@ class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     def getTitle(self, context, value):
         return value.label
+
+    def getToken(self, context, value):
+        return value.code
