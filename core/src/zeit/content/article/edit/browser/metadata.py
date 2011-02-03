@@ -52,7 +52,7 @@ class Navigation(zeit.content.article.edit.browser.form.InlineForm):
             zeit.cms.repository.interfaces.IAutomaticallyRenameable,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
                 'rename_to', '__name__',
-                'serie', 'copyrights', 'product_id')
+                'serie', 'product_id', 'copyrights')
         if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
             self.context).renamable:
             form_fields = form_fields.omit('__name__')
