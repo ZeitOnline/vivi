@@ -63,3 +63,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase,
         s.clickAndWait('name=form.actions.apply')
         self.assertTrue(tags['t1'].disabled)
         self.assertFalse(tags['t2'].disabled)
+
+    def test_view_should_not_break_without_tagger(self):
+        self.open_content()
+        self.selenium.assertTextPresent('Keywords')
