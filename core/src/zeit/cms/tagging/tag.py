@@ -10,11 +10,15 @@ class Tags(object):
     def __get__(self, instance, class_):
         tagger = zeit.cms.tagging.interfaces.ITagger(instance, None)
         if tagger is None:
-            return frozenset()
-        return frozenset(tag for tag in tagger.values() if not tag.disabled)
+            return ()
+        return tuple(tag for tag in tagger.values() if not tag.disabled)
 
     def __set__(self, instance, value):
         tagger = zeit.cms.tagging.interfaces.ITagger(instance)
         for tag in list(tagger.values()):  # list to avoid dictionary changed
-                                           #  during iteration
+                                           # during iteration
             tag.disabled = (tag not in value)
+            tag.weight = 0
+        for weight, tag in enumerate(reversed(value), start=1):
+            tag.weight = weight
+

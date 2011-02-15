@@ -32,6 +32,7 @@
   <include package=".relation" />
   <include package=".settings" />
   <include package=".sitecontrol" />
+  <include package=".tagging" />
 
 
   <!-- configuration -->

@@ -83,10 +83,10 @@ class ICommonMetadata(zope.interface.Interface):
         default=(u'',),
         description=_(u'overwritten if any non-freetext authors are set'))
 
-    keywords = zope.schema.FrozenSet(
+    keywords = zope.schema.Tuple(
         title=_("Keywords"),
         required=False,
-        default=frozenset(),
+        default=(),
         value_type=zope.schema.Choice(
             source=zeit.cms.tagging.interfaces.TagsForContent()))
 

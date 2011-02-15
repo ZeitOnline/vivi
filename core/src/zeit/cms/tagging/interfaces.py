@@ -55,7 +55,14 @@ class ITag(zope.interface.Interface):
         default=0)
 
 
+class ITagsForContent(zope.schema.interfaces.IIterableSource):
+    pass
+
+
 class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+        zope.interface.implements(ITagsForContent)
 
     def getValues(self, context):
         tagger = ITagger(context, None)
