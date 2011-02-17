@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zc.resourcelibrary
 import grokcore.component
 import xml.sax.saxutils
 import zeit.cms.browser.interfaces
@@ -23,23 +24,26 @@ class Widget(grokcore.component.MultiAdapter,
 
     def __call__(self):
         """See IBrowserWidget."""
+        zc.resourcelibrary.need('zeit.cms.tagger')
         value = self._getFormValue()
         contents = []
 
-        contents.append(self._div('update', 'Update tags'))
+        contents.append(self._div(
+            'update', '<a href="#update_tags">Update tags</a>',
+            id="{0}.update".format(self.name)))
         contents.append(self._div('value', self.renderValue(value)))
         contents.append(self._emptyMarker())
         contents.append(('<script type="text/javascript">'
-                        'MochiKit.Sortable.create("{0}")'
+                         'new zeit.cms.tagging.Widget("{0}");'
                         '</script').format(self.name))
 
-        return self._div(self.cssClass, "\n".join(contents))
+        return self._div(self.cssClass, "\n".join(contents), id=self.name)
 
     def renderValue(self, value):
         rendered_items = self.renderItems(value)
         return u'<ol id={1}>{0}</ol>'.format(
             ''.join(rendered_items),
-            xml.sax.saxutils.quoteattr(self.name))
+            xml.sax.saxutils.quoteattr(self.name + ".list"))
 
     def _renderItem(self, index, text, value, name, cssClass, checked=False):
         """Render an item of the list."""
@@ -54,5 +58,7 @@ class UpdateTags(zeit.cms.browser.view.JSON):
         tagger = zeit.cms.tagging.interfaces.ITagger(self.context)
         tagger.update()
         return dict(tags=[
-            dict(code=tag.code, label=tag.label)
+            dict(code=tag.code,
+                 label=tag.label,
+                 disabled=tag.disabled)
             for tag in tagger.values()])

@@ -9,14 +9,17 @@ import zeit.cms.testing
 class TestWidget(zeit.cms.testing.SeleniumTestCase,
                  unittest2.TestCase):
 
+    def get_tag(self, code):
+        tag = mock.Mock()
+        tag.code = tag.label = code
+        tag.disabled = False
+        return tag
+
     def setup_tags(self, *codes):
         import stabledict
         tags = stabledict.StableDict()
         for code in codes:
-            tag = mock.Mock()
-            tag.code = tag.label = code
-            tag.disabled = False
-            tags[code] = tag
+            tags[code] = self.get_tag(code)
         patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
         self.addCleanup(patcher.stop)
         tagger = patcher.start()
@@ -67,3 +70,30 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase,
     def test_view_should_not_break_without_tagger(self):
         self.open_content()
         self.selenium.assertTextPresent('Keywords')
+
+    def test_update_should_load_tags(self):
+        tags = self.setup_tags()
+        self.open_content()
+        s = self.selenium
+        tags['t1'] = self.get_tag('t1')
+        s.click('link=Update tags')
+        s.waitForTextPresent('t1')
+
+    def test_update_should_honour_disabled_tags(self):
+        tags = self.setup_tags()
+        self.open_content()
+        s = self.selenium
+        tags['t1'] = self.get_tag('t1')
+        tags['t1'].disabled = True
+        s.click('link=Update tags')
+        s.waitForElementPresent('id=form.keywords.0')
+        s.assertNotChecked('id=form.keywords.0')
+
+    def test_save_should_work_after_update(self):
+        tags = self.setup_tags('t1', 't2', 't3', 't4')
+        self.open_content()
+        s = self.selenium
+        s.click('link=Update tags')
+        s.pause(100)
+        s.clickAndWait('name=form.actions.apply')
+        s.assertChecked('id=form.keywords.0')
