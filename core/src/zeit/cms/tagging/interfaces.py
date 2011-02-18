@@ -2,7 +2,9 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
+import zc.sourcefactory.source
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema.interfaces
@@ -75,3 +77,21 @@ class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     def getToken(self, context, value):
         return value.code
+
+
+class IWhitelist(zope.schema.interfaces.IIterableSource):
+    """Tag whitelist
+
+    The whitelist contains all selectable tags.
+
+    """
+
+
+class Whitelist(zc.sourcefactory.basic.BasicSourceFactory):
+
+    class source_class(zc.sourcefactory.source.FactoredSource):
+        zope.interface.implements(IWhitelist)
+
+    def getValues(self):
+        # XXX currently there are no tags, see #8624
+        return []
