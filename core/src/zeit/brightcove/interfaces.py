@@ -105,13 +105,12 @@ class IVideo(IBrightcoveContent,
         missing_value='',
         source=zeit.cms.content.sources.ProductSource())
 
-    keywords = zope.schema.Tuple(
+    keywords = zope.schema.FrozenSet(
         title=_("Keywords"),
         required=False,
-        default=(),
-        unique=True,
-        value_type=zope.schema.Object(
-            zeit.cms.content.interfaces.IKeyword))
+        default=None,
+        value_type=zope.schema.Choice(
+            source=zeit.cms.tagging.interfaces.Whitelist()))
 
     dailyNewsletter = zope.schema.Bool(
         title=_("Daily newsletter"),
