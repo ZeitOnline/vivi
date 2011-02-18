@@ -12,7 +12,8 @@
 
   <resourceLibrary
     name="zeit.cms.tagger"
-    layer="zeit.cms.browser.interfaces.ICMSLayer">
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    require="zeit.cms.javascript.base">
     <directory
       source="resources"
       include="tag.js"

@@ -118,7 +118,8 @@
     name="zeit.cms.javascript"
     layer=".interfaces.ICMSLayer"
     require="zeit.cms.javascript.base
-    zeit.cms.javascript.objectbrowser">
+    zeit.cms.javascript.objectbrowser
+    zeit.cms.tagger">
     <directory source="js" include="
       tooltip.js
       lightbox.js
