@@ -10,16 +10,23 @@
             var self = this;
             self.id = id;
             self.list = $(id + ".list");
+            self.empty_marker = jQuery(
+                'input[name="' + id + '-empty-marker"]')[0];
             self._sortable();
             MochiKit.Signal.connect(id, 'onclick', self, self.handle_click);
-            
         },
 
         _sortable: function() {
             var self = this;
             jQuery(self.list).sortable({
                 items: '> li',
-                axis: 'y'
+                axis: 'y',
+                scroll: false,
+                update: function(event, ui) {
+                    MochiKit.Signal.signal(
+                        self.empty_marker, 'onchange',
+                        {target: self.empty_marker});
+                }
             });
         },
 
