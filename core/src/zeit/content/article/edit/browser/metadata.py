@@ -40,8 +40,6 @@ class Navigation(zeit.content.article.edit.browser.form.InlineForm):
     legend = _('Navigation')
     prefix = 'navigation'
 
-    # NOTE: keywords have been left out so far as they will be a new mechanism
-    # for them.
     # TODO: provide Javascript to convert title to rename_to (#8327)
 
     @property
@@ -51,7 +49,7 @@ class Navigation(zeit.content.article.edit.browser.form.InlineForm):
             zeit.cms.content.interfaces.ICommonMetadata,
             zeit.cms.repository.interfaces.IAutomaticallyRenameable,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-                'rename_to', '__name__',
+                'rename_to', '__name__', 'keywords',
                 'serie', 'product_id', 'copyrights')
         if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
             self.context).renamable:

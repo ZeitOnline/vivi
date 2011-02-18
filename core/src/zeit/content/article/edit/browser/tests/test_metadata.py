@@ -2,6 +2,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
 import unittest2
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -175,3 +176,37 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         s = self.selenium
         s.open(s.getLocation())
         self.assert_widget_text('assets.related', 'testcontent*')
+
+
+class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
+                  unittest2.TestCase):
+
+    def get_tag(self, code):
+        tag = mock.Mock()
+        tag.code = tag.label = code
+        tag.disabled = False
+        return tag
+
+    def setup_tags(self, *codes):
+        import stabledict
+        tags = stabledict.StableDict()
+        for code in codes:
+            tags[code] = self.get_tag(code)
+        patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
+        self.addCleanup(patcher.stop)
+        tagger = patcher.start()
+        tagger.return_value = tags
+        return tags
+
+    def test_sorting_should_trigger_write(self):
+        s = self.selenium
+        tags = self.setup_tags('t1', 't2', 't3')
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s.waitForElementPresent('id=navigation.keywords')
+        s.dragAndDropToObject("xpath=//li[contains(., 't1')]",
+                              "xpath=//li[contains(., 't3')]")
+        s.assertTextPresent('t2*t3*t1')
+        s.pause(500)
+        self.assertEqual(3, tags['t2'].weight)
+        self.assertEqual(2, tags['t3'].weight)
+        self.assertEqual(1, tags['t1'].weight)
