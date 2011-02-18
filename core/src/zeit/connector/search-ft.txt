@@ -1,0 +1,36 @@
+Search
+======
+
+>>> import zeit.connector.interfaces
+>>> import zope.component
+>>> connector = zope.component.getUtility(
+...     zeit.connector.interfaces.IConnector)
+
+The building blocks are search vars:
+
+>>> from zeit.connector.search import SearchVar
+>>> author = SearchVar('author', 'http://namespaces.zeit.de/CMS/document')
+>>> volume = SearchVar('volume', 'http://namespaces.zeit.de/CMS/document')
+>>> year = SearchVar('year', 'http://namespaces.zeit.de/CMS/document')
+>>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/CMS/document')
+>>> modified = SearchVar(
+...     'date-last-modified', 'http://namespaces.zeit.de/CMS/document')
+>>> etag = SearchVar('getetag', 'DAV:')
+
+Queries are built of basic terms involving search vars stitched together into
+expressions (note that we get dummy values at the moment):
+
+>>> [res for res in connector.search([author, volume, ressort],
+...  (year == '2007') & (volume == '07') & (author == 'pm'))]
+[(u'http://xml.zeit.de/2007/07/inderzeit', 'pm', '07', 'Inhaltsverzeichnis')]
+
+
+We expect nothing has changed in the future
+
+>>> import datetime
+>>> import pytz
+>>> future = (datetime.datetime.now(pytz.UTC) + datetime.timedelta(
+...           seconds=360)).isoformat()
+>>> list(connector.search([modified], (modified > future) & (modified < '20 ')))
+[]
+

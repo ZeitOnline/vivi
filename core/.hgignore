@@ -3,3 +3,6 @@ syntax: glob
 bin
 develop-eggs
 parts
+*.egg-info
+*.pyc
+*~

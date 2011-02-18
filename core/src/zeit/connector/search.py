@@ -1,25 +1,18 @@
 # search.py
 # format a search spec as S-expression
 
-import re
-
-# repr(str) would just nearly do, but it tends to
-# chose whether to use single or double quote. Meh.
-
-quotetable = { '\\\\': '\\\\', # Careful!
-               '"' :  '\\"',
-               '\n': '\\n',
-               '\t': '\\t',
-               # add others as necessary
-}
-
-
-quotepatt = re.compile('[' + ''.join(quotetable.keys()) + ']')
+quotetable = (('"',  '\\"'),
+              ('\n', '\\n'),
+              ('\t', '\\t'),
+              # add others as necessary
+              )
 
 
 def quotestring(str):
     "Returns escaped and double-quoted string"
-    return '"' + re.sub(quotepatt, lambda(x): quotetable[x.group()], str) + '"'
+    for orig, target in quotetable:
+        str = str.replace(orig, target)
+    return '"' + str + '"'
 
 
 def render(x):
@@ -58,10 +51,12 @@ class SearchExpr(object):
         return self
 
     def _render(self):
+        self._collect()
         return '(:' + ' '.join( [self.operator,] + \
                                     [o._render() for o in self.operands] ) + ')'
 
     def _pprint(self, prfix=''):
+        self._collect()
         return prfix + '(:' + self.operator + "\n" + \
             '\n'.join([o._pprint(prfix+'  ') for o in self.operands]) + ')'
 

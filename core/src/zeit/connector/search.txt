@@ -1,36 +1,146 @@
-Search
-======
+========================
+Search string generation
+========================
 
->>> import zeit.connector.interfaces
->>> import zope.component
->>> connector = zope.component.getUtility(
-...     zeit.connector.interfaces.IConnector)
+The `search` module generates search string the DAV server understands.
 
-The building blocks are search vars:
+Search variable
+===============
+
+A search variable is defined by a name and a (XML-) namespace declaration:
 
 >>> from zeit.connector.search import SearchVar
->>> author = SearchVar('author', 'http://namespaces.zeit.de/CMS/document')
->>> volume = SearchVar('volume', 'http://namespaces.zeit.de/CMS/document')
->>> year = SearchVar('year', 'http://namespaces.zeit.de/CMS/document')
->>> ressort = SearchVar('ressort', 'http://namespaces.zeit.de/CMS/document')
->>> modified = SearchVar(
-...     'date-last-modified', 'http://namespaces.zeit.de/CMS/document')
->>> etag = SearchVar('getetag', 'DAV:')
+>>> author = SearchVar('author', 'namespace')
 
-Queries are built of basic terms involving search vars stitched together into
-expressions (note that we get dummy values at the moment):
+A search variable knows how to render itself for DAV:
 
->>> [res for res in connector.search([author, volume, ressort],
-...  (year == '2007') & (volume == '07') & (author == 'pm'))]
-[(u'http://xml.zeit.de/2007/07/inderzeit', 'pm', '07', 'Inhaltsverzeichnis')]
+>>> author._render()
+'"namespace" "author"'
+
+Some special characters get quoted on rendering:
+
+>>> SearchVar('"sdf\n\tqwe', 'namespace')._render()
+'"namespace" "\\"sdf\\n\\tqwe"'
 
 
-We expect nothing has changed in the future
+Search term
+===========
 
->>> import datetime
->>> import pytz
->>> future = (datetime.datetime.now(pytz.UTC) + datetime.timedelta(
-...           seconds=360)).isoformat()
->>> list(connector.search([modified], (modified > future) & (modified < '20 ')))
-[]
+Search terms combine an operator and two or more operands (variables or
+constants). They are able to render themselves, too.
 
+Equals
+------
+
+>>> term = (author == 'pm')
+>>> term
+<zeit.connector.search.SearchTerm object at 0x...>
+>>> term._render()
+'(:eq "namespace" "author" "pm")'
+
+
+Not equals
+----------
+
+>>> (author != 'pm')._render()
+'(:ne "namespace" "author" "pm")'
+
+
+Less than
+---------
+
+>>> (author < 'pm')._render()
+'(:lt "namespace" "author" "pm")'
+
+
+Greater than
+------------
+
+>>> (author > 'pm')._render()
+'(:gt "namespace" "author" "pm")'
+
+
+range
+-----
+
+>>> author.range('a', 'z')._render()
+'(:range "namespace" "author" "a" "z")'
+
+
+bind
+----
+
+>>> author.bind('_')._render()
+'(:bind "namespace" "author" "_")'
+
+
+Search symbol
+=============
+
+A search symbol is rendered without quotes, it is used to when binding
+result variables:
+
+>>> from zeit.connector.search import SearchSymbol
+>>> SearchSymbol('asdf')._render()
+'asdf'
+
+>>> author.bind(SearchSymbol('_'))._render()
+'(:bind "namespace" "author" _)'
+
+
+Search expression
+=================
+
+Search expressions combine multiple search terms using boolean operators:
+
+>>> year = SearchVar('year', 'ns')
+>>> expr = (year > '2000') & (year < '2010')
+>>> expr
+<zeit.connector.search.SearchExpr object at 0x...>
+>>> expr._render()
+'(:and (:gt "ns" "year" "2000") (:lt "ns" "year" "2010"))'
+
+There can be more than two terms. The operator is n-ary, so the string gets
+"cooked" to contain only one `or` operator:
+
+>>> expr = (year == '2009') | (year == '2010') | (year == '2011')
+>>> expr._render()
+'(:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010") (:eq "ns" "year" "2011"))'
+
+The "cooking" is done every time the `render` method is called. But this
+does not hurt:
+
+>>> expr._render()
+'(:or (:eq "ns" "year" "2009") (:eq "ns" "year" "2010") (:eq "ns" "year" "2011"))'
+
+There is a pretty print function so the rendered result is human readable:
+
+>>> print expr._pprint()
+(:or
+  (:eq "ns" "year" "2009")
+  (:eq "ns" "year" "2010")
+  (:eq "ns" "year" "2011"))
+
+
+Even new terms can be added after "cooking":
+
+>>> expr = expr | (year == '2008') | (year == '2007')
+>>> print expr._collect()._pprint()
+(:or
+  (:eq "ns" "year" "2009")
+  (:eq "ns" "year" "2010")
+  (:eq "ns" "year" "2011")
+  (:eq "ns" "year" "2008")
+  (:eq "ns" "year" "2007"))
+
+"And" and "or" might be mixed, too:
+
+>>> expr2 = ((author == 'pm') & (year == '2010')) | (author == 'ab') | \
+...     (author == 'qw')
+>>> print expr2._pprint()
+(:or
+  (:and
+    (:eq "namespace" "author" "pm")
+    (:eq "ns" "year" "2010"))
+  (:eq "namespace" "author" "ab")
+  (:eq "namespace" "author" "qw"))

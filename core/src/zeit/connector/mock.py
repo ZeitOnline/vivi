@@ -242,7 +242,7 @@ class Connector(object):
         return self._locked.get(id, (None, None, False))
 
     def search(self, attributes, expression):
-        print  "Searching: ", expression._collect()._render()
+        print  "Searching: ", expression._render()
 
         unique_ids = [
             u'http://xml.zeit.de/online/2007/01/Somalia',

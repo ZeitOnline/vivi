@@ -459,7 +459,7 @@ class Connector(object):
             davlock = self._get_dav_lock(id)
         except KeyError:
             # The resource does not exist on the server. This means it *cannot*
-            # be locked. 
+            # be locked.
             davlock = {}
         owner = davlock.get('owner')
         timeout = davlock.get('timeout')
@@ -509,7 +509,7 @@ class Connector(object):
 
         davres = zeit.connector.dav.davresource.DAVResult(
                conn.search(self._roots.get('search', self._roots['default']),
-                            body=expr._collect()._render()))
+                            body=expr._render()))
         for url, resp in davres.responses.items():
             try:
                 id = self._loc2id(urlparse.urljoin(self._roots['default'], url))
