@@ -16,7 +16,6 @@ def test_suite():
         'dav.txt',
         'dublincore.txt',
         'field.txt',
-        'keyword.txt',
         'liveproperty.txt',
         'lxmlpickle.txt',
         'metadata.txt',

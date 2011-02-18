@@ -4,7 +4,7 @@
 import grokcore.component
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
-import zeit.cms.content.keyword
+import zeit.cms.tagging.tag
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zope.browser.interfaces
@@ -54,7 +54,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
 
-    keywords = zeit.cms.content.keyword.KeywordsProperty()
+    keywords = zeit.cms.tagging.tag.Tags()
 
     title = zeit.cms.content.property.Structure(
         '.body.title',

@@ -4,7 +4,9 @@ Default form
 The form automatically assigns year and volume from the global settings:
 
 >>> import zope.publisher.browser
->>> request = zope.publisher.browser.TestRequest()
+>>> import zeit.cms.browser.interfaces
+>>> request = zope.publisher.browser.TestRequest(
+...     skin=zeit.cms.browser.interfaces.IViviSkin)
 >>> import zeit.cms.content.browser.form
 >>> form = zeit.cms.content.browser.form.CommonMetadataAddForm(
 ...    getRootFolder(), request)

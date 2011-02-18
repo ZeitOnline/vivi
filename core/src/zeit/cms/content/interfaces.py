@@ -6,6 +6,7 @@ import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.tagging.interfaces
 import zope.component.interfaces
 import zope.i18nmessageid
 import zope.interface
@@ -18,38 +19,6 @@ import zope.schema
 
 from zeit.cms.content.contentsource import ICMSContentSource
 from zeit.cms.content.contentsource import INamedCMSContentSource
-
-
-class IKeywordInterface(zope.interface.interfaces.IInterface):
-    """The interface of the keyword interface."""
-
-
-class IKeyword(zope.interface.Interface):
-
-    code = zope.schema.TextLine()
-    label = zope.schema.TextLine()
-
-    inTaxonomy = zope.schema.Bool(
-        title=_("Keyword is contained in the taxonomy"),
-        default=False)
-
-IKeyword.narrower = zope.schema.List(value_type=zope.schema.Object(IKeyword))
-IKeyword.broader = value_type=zope.schema.Object(IKeyword, required=False)
-
-
-class IKeywords(zope.interface.Interface):
-
-    root = zope.schema.Object(
-        IKeyword,
-        title=_('Root of ontology'))
-
-    def __getitem__(code):
-        """return IKeyword with given code."""
-
-    def find_keywords(searchterm):
-        """Returns a list of keywords which contain the searchterm
-           string.
-        """
 
 
 class IAuthorType(zeit.cms.interfaces.ICMSContentType):
@@ -118,8 +87,8 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Keywords"),
         required=False,
         default=(),
-        unique=True,
-        value_type=zope.schema.Object(IKeyword))
+        value_type=zope.schema.Choice(
+            source=zeit.cms.tagging.interfaces.TagsForContent()))
 
     serie = zope.schema.Choice(
         title=_("Serie"),

@@ -69,9 +69,9 @@
     <directory
       source="js/jquery"
       include="
-      jquery-1.4.2.min.js
-      jquery-ui-1.8.6.custom.min.js
-      ui-lightness/jquery-ui-1.8.6.custom.css"
+      jquery-1.5.0.min.js
+      jquery-ui-1.8.9.custom.min.js
+      ui-lightness/jquery-ui-1.8.9.custom.css"
       />
   </resourceLibrary>
 
@@ -118,7 +118,8 @@
     name="zeit.cms.javascript"
     layer=".interfaces.ICMSLayer"
     require="zeit.cms.javascript.base
-    zeit.cms.javascript.objectbrowser">
+    zeit.cms.javascript.objectbrowser
+    zeit.cms.tagger">
     <directory source="js" include="
       tooltip.js
       lightbox.js
