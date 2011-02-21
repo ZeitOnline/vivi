@@ -210,3 +210,22 @@ class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
         self.assertEqual(3, tags['t2'].weight)
         self.assertEqual(2, tags['t3'].weight)
         self.assertEqual(1, tags['t1'].weight)
+
+
+class AuthorTest(zeit.content.article.testing.SeleniumTestCase,
+                 unittest2.TestCase):
+
+    def setUp(self):
+        super(AuthorTest, self).setUp()
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.selenium.waitForElementPresent('id=misc.author_references')
+
+    def test_authors_should_be_inline_addable(self):
+        s = self.selenium
+        s.click('//*[@id="misc.author_references"]//a[@rel = "show_add_view"]')
+        s.waitForElementVisible('id=form.firstname')
+        s.type('id=form.firstname', 'Ben')
+        s.type('id=form.lastname', 'Utzer')
+        s.click('id=form.actions.add')
+        s.waitForElementNotVisible('css=div.lightbox')
+        s.assertTextPresent('Ben Utzer')
