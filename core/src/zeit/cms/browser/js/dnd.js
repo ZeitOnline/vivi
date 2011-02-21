@@ -441,13 +441,14 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         var self = this;
         self.widget_id = widget_id;
         self.element = $(widget_id);
-        self.ul_element = getFirstElementByTagAndClassName(
+        self.ul_element = MochiKit.DOM.getFirstElementByTagAndClassName(
             'ul', null, self.element);
     
         self.initialize_autocomplete();
         self.initialize();
         // XXX Need to unregister those events
-        MochiKit.Signal.connect(self.element, 'onclick', self, 'handleClick');
+        MochiKit.Signal.connect(
+            self.element, 'onclick', self, self.handleClick);
         new MochiKit.DragAndDrop.Droppable(self.element, {
             accept: ['uniqueId', 'content-drag-pane'],
             activeclass: 'droppable-active',
@@ -648,6 +649,18 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             self.getValueField(i).value = ordered_ids[i];
         }
         self.changed();
+    },
+
+    show_add_view: function(add_view) {
+        var self = this;
+        var url = window.application_url + '/@@' + add_view;
+        self.lightbox = new zeit.cms.ObjectAddForm(url, $('body'));
+        self.lightbox.events.push(MochiKit.Signal.connect(
+            self.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
+            function(uniqueId) {
+                self.add(uniqueId);
+                self.lightbox.close();
+            }));
     }
 
 });
