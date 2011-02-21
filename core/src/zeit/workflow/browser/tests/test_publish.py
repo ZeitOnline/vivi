@@ -32,7 +32,6 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
                     'http://xml.zeit.de/testcontent')
                 IContentWorkflow(content).urgent = True
 
-
     def test_action_should_be_available(self):
         self.selenium.assertElementPresent('link=Publish')
 
@@ -71,4 +70,3 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
                          'Error during publish/retract: OSError*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
-
