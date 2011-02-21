@@ -7,7 +7,9 @@ editor-ng branch changes
 - Publish is not allowed in ILocalContent via the security machinery now (for
   #8413).
 
-- Improved ObjectReferenceSequenceWidget so it became usable again.
+- Improved ObjectSequenceWidget so it became usable again.
+
+- Added in-place add functionality to ObjectSequenceWidget (#8402).
 
 - Included JQuery as well as MochiKit for the best of both worlds.
 

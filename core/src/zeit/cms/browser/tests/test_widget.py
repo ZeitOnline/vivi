@@ -93,19 +93,20 @@ class TestObjectSequenceWidgetIntegration(unittest2.TestCase,
             value_type=zope.schema.Choice(
                 source=zeit.cms.content.contentsource.cmsContentSource))
 
-    def get_widget(self, value=()):
+    def get_widget(self, field=None):
         import zeit.cms.browser.interfaces
         import zope.app.form.browser.interfaces
         import zope.interface
         import zope.publisher.browser
-        field = self.get_field()
+        if field is None:
+            field = self.get_field()
         request = zope.publisher.browser.TestRequest()
         zope.interface.alsoProvides(
             request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         widget = zope.component.getMultiAdapter(
             (field, request),
             zope.app.form.browser.interfaces.IInputWidget)
-        widget.setRenderedValue(value)
+        widget.setRenderedValue(())
         return widget
 
     def test_widget_should_be_available_with_search(self):
@@ -146,6 +147,15 @@ class TestObjectSequenceWidgetIntegration(unittest2.TestCase,
         result = widget()
         adapter.assert_called()
         self.assert_ellipsis('...<div>mock</div>...', result)
+
+    def test_widget_should_render_add_view(self):
+        field = self.get_field()
+        field.value_type.setTaggedValue(
+            'zeit.cms.addform.contextfree', 'zeit.test.add_me')
+        widget = self.get_widget(field)
+        result = widget()
+        self.assert_ellipsis(
+            '...<a rel="show_add_view"...href="zeit.test.add_me"...', result)
 
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
@@ -264,6 +274,37 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
         s.waitForElementPresent('id=testwidget.0')
         s.assertValue('id=testwidget.0',
                       'http://xml.zeit.de/autoren/A/Test_Autor/index')
+
+
+class TestObjectSequenceWidgetAddView(zeit.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestObjectSequenceWidgetAddView, self).setUp()
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/'
+            'objectsequencewidget-add.html')
+
+    def test_clicking_add_view_should_show_lightbox(self):
+        s = self.selenium
+        s.click('link=Add new')
+        s.waitForTextPresent('Kropfelmopf')
+
+    def test_selecting_object_adds_it_to_widget_list(self):
+        s = self.selenium
+        s.assertElementNotPresent(
+            '//a[contains(@href, "/repository/testcontent")]')
+
+        s.click('link=Add new')
+        s.waitForTextPresent('Kropfelmopf')
+        s.getEval("""
+var window = selenium.browserbot.getCurrentWindow();
+var widget = window.widget;
+window.MochiKit.Signal.signal(
+    widget.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
+    'http://xml.zeit.de/testcontent');
+""")
+        s.waitForElementPresent(
+            '//a[contains(@href, "/repository/testcontent")]')
 
 
 class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
