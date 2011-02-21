@@ -248,6 +248,11 @@ class MultiObjectSequenceWidget(
             (self.source, self.request),
             zope.formlib.interfaces.ISourceQueryView)
 
+    @zope.cachedescriptors.property.Lazy
+    def add_view(self):
+        return self.context.value_type.queryTaggedValue(
+            'zeit.cms.addform.contextfree')
+
 
 class ObjectSequenceWidgetDetails(zeit.cms.browser.view.Base):
     """Render details about an content object."""
