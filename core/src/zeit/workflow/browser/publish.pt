@@ -14,7 +14,7 @@
 
 <div id="publish.errors">
   <tal:block tal:condition="not: view/can_publish">
-    <p i18n:translate="">Cannot publish since validation rules are violated.</p>
+    <p i18n:translate="publish-preconditions-not-met">Cannot publish since preconditions for publishing are not met.</p>
   </tal:block>
 </div>
 </div>

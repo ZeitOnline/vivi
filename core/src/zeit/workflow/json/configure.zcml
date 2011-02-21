@@ -13,6 +13,14 @@
 
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
+    name="retract"
+    class=".publish.Publish"
+    attribute="retract"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
     name="can-publish"
     class=".publish.Publish"
     attribute="can_publish"

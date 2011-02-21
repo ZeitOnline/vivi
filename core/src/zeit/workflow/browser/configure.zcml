@@ -84,7 +84,7 @@
     />
 
   <!-- 1 click publishing -->
- 
+
   <resourceLibrary
     name="zeit.workflow.publish"
     require="zeit.cms">
@@ -97,7 +97,7 @@
     name="Publish"
     for="zeit.cms.repository.interfaces.IRepositoryContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".publish.MenuItem"
+    class=".publish.PublishMenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.workflow.Publish"
     icon="/@@/zeit.cms/icons/page_white_lightning.png"
@@ -120,6 +120,23 @@
     template="publish.pt"
     permission="zeit.workflow.Publish"
     />
-    
+
+  <browser:viewlet
+    name="Retract"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".publish.RetractMenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.workflow.Publish"
+    icon="/@@/zeit.cms/icons/missing.gif"
+    />
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="retract.html"
+    template="retract.pt"
+    permission="zeit.workflow.Publish"
+    />
 
 </configure>

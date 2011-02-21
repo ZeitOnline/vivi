@@ -8,17 +8,24 @@ import zeit.workflow.interfaces
 class Publish(object):
 
     def publish(self):
-        return cjson.encode(self._publish(self.context))
+        return cjson.encode(self._publish())
 
     def can_publish(self):
-        return cjson.encode(self._can_publish(self.context))
+        return cjson.encode(self.publish_info.can_publish())
 
-    def _publish(self, content):
-        if not self._can_publish(content):
+    def retract(self):
+        return cjson.encode(self._retract())
+
+    @property
+    def publish_info(self):
+        return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+
+    def _publish(self):
+        if not self.publish_info.can_publish():
             return False
-        publish = zeit.cms.workflow.interfaces.IPublish(content)
+        publish = zeit.cms.workflow.interfaces.IPublish(self.context)
         return publish.publish()
 
-    def _can_publish(self, content):
-        info = zeit.cms.workflow.interfaces.IPublishInfo(content)
-        return info.can_publish()
+    def _retract(self):
+        publish = zeit.cms.workflow.interfaces.IPublish(self.context)
+        return publish.retract()

@@ -1,0 +1,13 @@
+<div i18n:domain="zeit.cms"> <!-- lightbox -->
+<h1 i18n:translate="">Retract</h1>
+
+<ol id="worklist">
+  <li action="retract" i18n:translate="">Retract</li>
+  <li action="reload" i18n:translate="">Reloading</li>
+</ol>
+
+<script type="text/javascript">
+  new zeit.workflow.publish.Publisher('worklist');
+</script>
+
+</div>

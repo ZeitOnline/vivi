@@ -36,17 +36,27 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
 
     publish: function(context) {
         var self = this;
+        return self._start_job(context, 'publish');
+    },
+
+    retract: function(context) {
+        var self = this;
+        return self._start_job(context, 'retract');
+    },
+
+    _start_job: function(context, action) {
+        var self = this;
         if (isNull(context)) {
             context = window.context_url;
         }
-        var d = MochiKit.Async.loadJSONDoc(context + '/@@publish');
+        var d = MochiKit.Async.loadJSONDoc(context + '/@@' + action);
         d.addCallbacks(function(job) {
             if (job == false) {
-                throw new Error('Veröffentlichen nicht möglich');
+                throw new Error('500 Internal Server Error');
             }
             return MochiKit.Async.callLater(
                 1, function() {
-                    return self.poll_until_publish_complete(job)
+                    return self.poll_until_complete(job)
                 });
             },
             function(err) {
@@ -59,7 +69,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         return d;
     },
 
-    poll_until_publish_complete: function(job) {
+    poll_until_complete: function(job) {
         var self = this;
         var d = MochiKit.Async.loadJSONDoc(
             application_url + '/@@publish-status', {'job': job});
@@ -70,7 +80,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             }
             // XXX check for error cases as well.
             return MochiKit.Async.callLater(
-                1, bind(self.poll_until_publish_complete, self), job);
+                1, bind(self.poll_until_complete, self), job);
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
         return d;

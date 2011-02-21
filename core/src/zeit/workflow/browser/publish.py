@@ -8,14 +8,14 @@ import zeit.cms.workflow.interfaces
 import zope.component
 
 
-class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
+class PublishMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
     sort = -1
     lightbox = '@@publish.html'
 
     def render(self):
         zc.resourcelibrary.need('zeit.workflow.publish')
-        return super(MenuItem, self).render()
+        return super(PublishMenuItem, self).render()
 
 
 class Publish(object):
@@ -36,3 +36,21 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
         error = tasks.getResult(job)
         if error is not None:
             self.send_message(error, type='error')
+
+
+class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
+
+    sort = -1
+    lightbox = '@@retract.html'
+
+    @property
+    def visible(self):
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        return info.published
+
+    def render(self):
+        if self.visible:
+            zc.resourcelibrary.need('zeit.workflow.publish')
+            return super(RetractMenuItem, self).render()
+        else:
+            return ''
