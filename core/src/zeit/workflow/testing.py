@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import os
 import zeit.cms.testing
 
 product_config = """
@@ -29,8 +30,9 @@ class WorkflowScriptsLayer(object):
 
     @classmethod
     def tearDown(cls):
+        for f in cls._tempfiles:
+            os.remove(f.name)
         del cls._tempfiles
-
 
     @classmethod
     def testSetUp(cls):
@@ -47,9 +49,9 @@ class WorkflowScriptsLayer(object):
         import stat
         import tempfile
         source = pkg_resources.resource_string(__name__, script)
-        destination = tempfile.NamedTemporaryFile(suffix=script)
+        destination = tempfile.NamedTemporaryFile(suffix=script, delete=False)
         destination.write(source)
-        destination.flush()
+        destination.close()
         os.chmod(destination.name, stat.S_IRUSR|stat.S_IXUSR)
         cls._tempfiles.append(destination)
         return destination.name
