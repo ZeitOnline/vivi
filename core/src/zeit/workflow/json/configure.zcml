@@ -29,7 +29,7 @@
 
   <browser:page
     for="zope.location.interfaces.ISite"
-    name="publish-status"
+    name="job-status"
     class=".task.Status"
     attribute="getStatus"
     permission="zeit.workflow.Publish"
@@ -37,7 +37,7 @@
 
   <browser:page
     for="zope.location.interfaces.ISite"
-    name="publish-error"
+    name="job-error"
     class=".task.Status"
     attribute="getError"
     permission="zeit.workflow.Publish"
@@ -45,7 +45,7 @@
 
   <browser:page
     for="zope.location.interfaces.ISite"
-    name="publish-result"
+    name="job-result"
     class=".task.Status"
     attribute="getResult"
     permission="zeit.workflow.Publish"

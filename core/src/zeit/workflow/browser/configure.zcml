@@ -115,7 +115,7 @@
   <browser:page
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="flash-publish-errors"
+    name="flash-job-errors"
     class=".publish.FlashPublishErrors"
     template="publish.pt"
     permission="zeit.workflow.Publish"

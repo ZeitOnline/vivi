@@ -75,9 +75,9 @@ class RemoteTaskTest(JSONTestCase):
             'http://localhost/repository/online/2007/01/Somalia/@@publish')
 
         status = self.call_json(
-            'http://localhost/@@publish-status?job=%s' % job)
+            'http://localhost/@@job-status?job=%s' % job)
         self.assertEqual('queued', status)
         self.process()
         status = self.call_json(
-            'http://localhost/@@publish-status?job=%s' % job)
+            'http://localhost/@@job-status?job=%s' % job)
         self.assertEqual('completed', status)

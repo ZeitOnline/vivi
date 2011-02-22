@@ -72,11 +72,11 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
     poll_until_complete: function(job) {
         var self = this;
         var d = MochiKit.Async.loadJSONDoc(
-            application_url + '/@@publish-status', {'job': job});
+            application_url + '/@@job-status', {'job': job});
         // status is defined in lovely.remotetask.interfaces
         d.addCallback(function(status) {
             if (status == 'completed') {
-                return self.check_publish_error(job);
+                return self.check_job_error(job);
             }
             // XXX check for error cases as well.
             return MochiKit.Async.callLater(
@@ -86,10 +86,10 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         return d;
     },
 
-    check_publish_error: function(job) {
+    check_job_error: function(job) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
-            application_url + '/@@flash-publish-errors', {'job': job});
+            application_url + '/@@flash-job-errors', {'job': job});
         d.addErrback(function(err) {zeit.cms.log_error(err); return err});
         return d;
     },
