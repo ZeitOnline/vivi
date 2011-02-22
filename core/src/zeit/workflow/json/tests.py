@@ -66,6 +66,15 @@ class PublishJSONTest(JSONTestCase):
         except ValueError:
             self.fail('a job id should be returned')
 
+    def test_retract_should_return_job_id(self):
+        result = self.call_json(
+            'http://localhost/repository/online/2007/01/Somalia/@@retract')
+        self.assertNotEqual(False, result)
+        try:
+            int(result)
+        except ValueError:
+            self.fail('a job id should be returned')
+
 
 class RemoteTaskTest(JSONTestCase):
 
