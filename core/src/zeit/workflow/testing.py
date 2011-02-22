@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import gocept.selenium.ztk
+import os
 import zeit.cms.testing
 
 
@@ -13,7 +14,7 @@ product_config = """
 
 WorkflowBaseLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config )
+    product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
 class WorkflowScriptsLayer(object):
@@ -31,8 +32,9 @@ class WorkflowScriptsLayer(object):
 
     @classmethod
     def tearDown(cls):
+        for f in cls._tempfiles:
+            os.remove(f.name)
         del cls._tempfiles
-
 
     @classmethod
     def testSetUp(cls):
@@ -49,9 +51,9 @@ class WorkflowScriptsLayer(object):
         import stat
         import tempfile
         source = pkg_resources.resource_string(__name__, script)
-        destination = tempfile.NamedTemporaryFile(suffix=script)
+        destination = tempfile.NamedTemporaryFile(suffix=script, delete=False)
         destination.write(source)
-        destination.flush()
+        destination.close()
         os.chmod(destination.name, stat.S_IRUSR|stat.S_IXUSR)
         cls._tempfiles.append(destination)
         return destination.name
