@@ -3,10 +3,8 @@
 
 import gocept.lxml.interfaces
 import martian
-import martian
 import zeit.edit.block
 import zeit.edit.interfaces
-import zope.component.zcml
 import zope.component.zcml
 import zope.interface
 
