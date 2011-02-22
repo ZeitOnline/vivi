@@ -184,6 +184,15 @@ class GalleryTest(unittest2.TestCase,
             '<div ...class="block type-{0}...No content referenced...'.format(
                 self.expected_type))
 
+    def test_contents_should_not_have_cache_control_header(self):
+        self.get_article(with_empty_block=True)
+        self.setup_content()
+        self.browser.open(
+            'editable-body/blockname/@@set_reference?uniqueId={0}'.format(
+                self.content_id))
+        self.browser.open('@@contents')
+        self.assertNotIn('Cache-Control', self.browser.headers)
+
 
 class InfoboxTest(GalleryTest):
 
