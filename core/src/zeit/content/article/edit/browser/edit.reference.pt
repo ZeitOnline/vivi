@@ -1,4 +1,4 @@
-<div 
+<div
   tal:attributes="
   class view/css_class;
   cms:drop-url string:${context/@@absolute_url}/@@set_reference">
@@ -14,6 +14,6 @@
     <tal:notwritable condition="not:view/writable">
       <span i18n:translate="">No content referenced.</span>
     </tal:notwritable>
-      
+
   </tal:noref>
 </div>
