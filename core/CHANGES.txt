@@ -3,6 +3,7 @@ zeit.brightcove changes
 
 0.9.0 (unreleased)
 ------------------
+- Changed mapping forlast-semantic-change to date_first_released
 
 - Videos can be checked out now by the system. This allows to create free
   teasers of videos (#7826).

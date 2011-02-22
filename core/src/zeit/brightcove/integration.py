@@ -186,11 +186,11 @@ class SemanticChange(object):
 
     @property
     def last_semantic_change(self):
-        return self.context.date_last_modified
+        return self.context.date_first_released
 
     @last_semantic_change.setter
     def last_semantic_change(self, value):
-        self.context.date_last_modified = value
+        self.context.date_first_released = value
 
 
 class CommonMetadataVideo(CommonMetadata):
