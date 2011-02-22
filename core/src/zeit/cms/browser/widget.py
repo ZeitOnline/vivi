@@ -257,10 +257,6 @@ class MultiObjectSequenceWidget(
 class ObjectSequenceWidgetDetails(zeit.cms.browser.view.Base):
     """Render details about an content object."""
 
-    def __call__(self):
-        self.request.response.setHeader('Cache-Control', 'private; max-age=60')
-        return self.index()
-
     @zope.cachedescriptors.property.Lazy
     def list_repr(self):
         return zope.component.queryMultiAdapter(
