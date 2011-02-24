@@ -223,9 +223,8 @@ class AuthorTest(zeit.content.article.testing.SeleniumTestCase,
     def test_authors_should_be_inline_addable(self):
         s = self.selenium
         s.click('//*[@id="misc.author_references"]//a[@rel = "show_add_view"]')
-        s.waitForElementVisible('id=form.firstname')
+        s.waitForElementPresent('id=form.firstname')
         s.type('id=form.firstname', 'Ben')
         s.type('id=form.lastname', 'Utzer')
         s.click('id=form.actions.add')
-        s.waitForElementNotVisible('css=div.lightbox')
-        s.assertTextPresent('Ben Utzer')
+        s.waitForTextPresent('Ben Utzer')

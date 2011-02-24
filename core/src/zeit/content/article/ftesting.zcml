@@ -40,4 +40,7 @@
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
 
+  <include package="zeit.content.author" />
+  <include package="zeit.content.author.browser" />
+
 </configure>

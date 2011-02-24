@@ -46,6 +46,7 @@ setup(
         'zeit.brightcove',
         'zeit.cms>=1.44.0',
         'zeit.connector>1.14.1',
+        'zeit.content.author',
         'zeit.content.cp>=0.33.0',
         'zeit.content.infobox',
         'zeit.content.gallery',

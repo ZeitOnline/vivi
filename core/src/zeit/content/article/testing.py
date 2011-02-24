@@ -7,6 +7,7 @@ import shutil
 import tempfile
 import zeit.brightcove.testing
 import zeit.cms.testing
+import zeit.content.author.testing
 import zeit.content.cp.testing
 import zeit.solr.testing
 import zope.app.testing.functional
@@ -34,6 +35,7 @@ ArticleLayer = zeit.cms.testing.ZCMLLayer(
         zeit.content.cp.testing.product_config +
         zeit.brightcove.testing.product_config +
         zeit.solr.testing.product_config +
+        zeit.content.author.testing.product_config +
         zeit.cms.testing.cms_product_config))
 
 
