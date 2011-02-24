@@ -8,6 +8,7 @@ import logging
 import sys
 import urllib2
 import zeit.edit.interfaces
+import zeit.workflow.timebased
 import zope.app.appsetup.product
 import zope.component
 import zope.interface
@@ -212,3 +213,12 @@ class RecursiveValidator(object):
     @property
     def children(self):
         return iter(self.context)
+
+
+class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
+
+    def can_publish(self):
+        validator = zeit.edit.interfaces.IValidator(self.context)
+        if validator.status == ERROR:
+            return False
+        return True

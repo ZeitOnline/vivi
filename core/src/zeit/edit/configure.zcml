@@ -8,4 +8,15 @@
   <include package="zeit.find" />
   <include package=".browser" />
 
+  <class class=".rule.ValidatingWorkflow">
+    <require
+      permission="zope.View"
+      interface="zeit.workflow.interfaces.ITimeBasedPublishing"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema="zeit.workflow.interfaces.ITimeBasedPublishing"
+      />
+  </class>
+
 </configure>
