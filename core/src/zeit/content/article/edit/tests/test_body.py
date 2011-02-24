@@ -24,8 +24,8 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         import zeit.content.article.article
         import zeit.content.article.edit.body
         if not body:
-            body  = ("<division><p>Para1</p><p/></division>"
-                     "<division><p>Para2</p><p/></division>")
+            body = ("<division><p>Para1</p><p/></division>"
+                    "<division><p>Para2</p><p/></division>")
         article = zeit.content.article.article.Article()
         article.xml.body = lxml.objectify.XML(
             '<body>%s</body>' % body)
@@ -100,8 +100,6 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual([u'2'], body.keys())
 
 
-
-
 class TestCleaner(unittest2.TestCase):
 
     def get_article(self):
@@ -128,4 +126,3 @@ class TestCleaner(unittest2.TestCase):
         self.set_key(art.xml.body.division, 'divname')
         self.clean(art)
         self.assert_key(art.xml.body.division, None)
-
