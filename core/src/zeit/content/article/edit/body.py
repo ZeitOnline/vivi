@@ -9,6 +9,7 @@ import z3c.traverser.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.container
+import zeit.edit.rule
 import zope.publisher.interfaces
 
 
@@ -139,3 +140,13 @@ def clean_names_on_checkin(context):
     for element in _find_name_attributes(context.xml):
         del element.attrib['{http://namespaces.zeit.de/CMS/cp}__name__']
 
+
+class ArticleValidator(zeit.edit.rule.RecursiveValidator,
+                       grokcore.component.Adapter):
+
+    grokcore.component.context(zeit.content.article.interfaces.IArticle)
+
+    @property
+    def children(self):
+        body = zeit.content.article.edit.interfaces.IEditableBody(self.context)
+        return body.values()

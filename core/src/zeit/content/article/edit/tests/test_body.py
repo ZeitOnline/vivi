@@ -126,3 +126,22 @@ class TestCleaner(unittest2.TestCase):
         self.set_key(art.xml.body.division, 'divname')
         self.clean(art)
         self.assert_key(art.xml.body.division, None)
+
+
+class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_children_should_return_elements(self):
+        import lxml.objectify
+        import zeit.content.article.article
+        import zeit.content.article.edit.body
+        import zeit.edit.interfaces
+
+        body = '<division type="page"><p>Para1</p><p>Para2</p></division>'
+        article = zeit.content.article.article.Article()
+        article.xml.body = lxml.objectify.XML('<body>%s</body>' % body)
+        body = zeit.content.article.edit.body.EditableBody(
+            article, article.xml.body)
+        validator = zeit.edit.interfaces.IValidator(article)
+        self.assertEqual(
+            [x.__name__ for x in body.values()],
+            [x.__name__ for x in validator.children])
