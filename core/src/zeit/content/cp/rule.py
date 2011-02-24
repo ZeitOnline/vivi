@@ -92,26 +92,14 @@ def is_published(context):
     return is_published_inner
 
 
-class CenterPageValidator(object):
+class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
 
-    zope.interface.implements(zeit.edit.interfaces.IValidator)
     zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
 
-    status = None
-
-    def __init__(self, context):
-        self.messages = []
-        self.context = context
-        areas = context.values()
-        for item in itertools.chain(areas, *[a.values() for a in areas]):
-            validator = zeit.edit.interfaces.IValidator(item)
-            if validator.status and self.status != zeit.edit.rule.ERROR:
-                # Set self status when there was an error or warning, but only
-                # if there was no error before. If there was an error the whole
-                # validation will stay in error state
-                self.status = validator.status
-            if validator.messages:
-                self.messages.extend(validator.messages)
+    @property
+    def children(self):
+        areas = self.context.values()
+        return itertools.chain(areas, *[a.values() for a in areas])
 
 
 class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
