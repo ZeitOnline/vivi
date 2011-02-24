@@ -18,6 +18,7 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.edit" />
+  <include package="zeit.workflow" />
 
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />

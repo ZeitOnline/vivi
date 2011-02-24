@@ -52,6 +52,17 @@
 
   <subscriber handler=".article.updateTextLengthOnChange" />
 
+  <class class=".article.ValidatingContentWorkflow">
+    <require like_class="zeit.edit.rule.ValidatingWorkflow" />
+  </class>
+
+  <adapter
+    factory=".article.ValidatingContentWorkflow"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    for=".interfaces.IArticle"
+    trusted="yes"
+    />
+
    <!-- recensions -->
 
   <adapter

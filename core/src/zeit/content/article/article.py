@@ -20,6 +20,7 @@ import zeit.cms.type
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.interfaces
+import zeit.edit.rule
 import zeit.workflow.dependency
 import zeit.workflow.interfaces
 import zeit.wysiwyg.html
@@ -232,3 +233,14 @@ class SearchableText(grokcore.component.Adapter):
             if text:
                 main_text.append(text)
         return main_text
+
+
+class ValidatingContentWorkflow(zeit.edit.rule.ValidatingWorkflow):
+
+    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+
+    def can_publish(self):
+        cwf = zeit.workflow.interfaces.IContentWorkflow(self.context)
+        if not cwf.can_publish():
+            return False
+        return super(ValidatingContentWorkflow, self).can_publish()
