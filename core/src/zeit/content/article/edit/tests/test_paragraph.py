@@ -130,20 +130,20 @@ class UnorderedListTest(ParagraphTest):
 class OrderedListTest(UnorderedListTest):
 
     def get_paragraph(self, p=''):
-        from zeit.content.article.edit.paragraph import UnorderedList
+        from zeit.content.article.edit.paragraph import OrderedList
         import lxml.objectify
         body = lxml.objectify.E.body(lxml.objectify.XML('<ol>%s</ol>' % p))
-        return UnorderedList(None, body.ol)
+        return OrderedList(None, body.ol)
 
 
 class IntertitleTest(ParagraphTest):
 
     def get_paragraph(self, p=''):
-        from zeit.content.article.edit.paragraph import UnorderedList
+        from zeit.content.article.edit.paragraph import Intertitle
         import lxml.objectify
         body = lxml.objectify.E.body(lxml.objectify.XML(
             '<intertitle>%s</intertitle>' % p))
-        return UnorderedList(None, body.intertitle)
+        return Intertitle(None, body.intertitle)
 
 
 class TestFactories(zeit.content.article.testing.FunctionalTestCase):
