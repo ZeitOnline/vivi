@@ -69,6 +69,10 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def log_message(self, format, *args):
         pass
 
+    @classmethod
+    def tearDown(cls):
+        pass
+
 
 HTTPLayer, httpd_port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
 
