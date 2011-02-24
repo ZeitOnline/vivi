@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import lxml.objectify
 import unittest
 import zeit.content.article.testing
 
@@ -9,17 +10,16 @@ class ParagraphTest(unittest.TestCase):
 
     def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import Paragraph
-        import lxml.objectify
         body = lxml.objectify.E.body(lxml.objectify.XML('<p>%s</p>' % p))
         return Paragraph(None, body.p)
 
     def test_setting_text_inserts_xml(self):
         p = self.get_paragraph()
         self.assertEquals(u'', p.text)
-        text =  u'The quick brown fox jumps over the lazy dog.'
+        text = u'The quick brown fox jumps over the lazy dog.'
         p.text = text
         self.assertEqual(text, p.text)
-        text =  u'The quick brown <em>fox</em> jumps over the lazy dog.'
+        text = u'The quick brown <em>fox</em> jumps over the lazy dog.'
         p.text = text
         self.assertEqual(text, p.text)
 
@@ -50,11 +50,16 @@ class ParagraphTest(unittest.TestCase):
         self.assertTrue(isinstance(p.text, unicode))
 
     def test_setting_html_should_create_proper_xml(self):
-        import lxml.objectify
         p = self.get_paragraph()
         p.text = u'I am <strong>strong</strong><br>I am the best.'
         self.assertEqual(u'I am <strong>strong</strong><br/>I am the best.',
                          p.text)
+
+    def test_xml_part_of_larger_tree_should_be_updated_in_place(self):
+        from zeit.content.article.edit.paragraph import Paragraph
+        body = lxml.objectify.E.body(lxml.objectify.XML('<p>bar</p>'))
+        p = Paragraph(None, body.p)
+        p.text = 'foo'
         self.assertTrue(isinstance(p.xml, lxml.objectify.ObjectifiedElement),
                         type(p.xml))
 
@@ -63,51 +68,43 @@ class ParagraphTest(unittest.TestCase):
         p.text = u'<h3>I am </h3><p>I am the best.</p>'
         self.assertEqual(p.type, p.xml.tag)
 
-    def test_simple_text_should_be_escaped_correctly(self):
+    def compare(self, input, expected):
         p = self.get_paragraph()
-        p.text = u'a > b'
-        self.assertEqual('a &gt; b', p.text)
+        p.text = input
+        self.assertEqual(expected, p.text)
+
+    def test_simple_text_should_be_escaped_correctly(self):
+        self.compare(u'a > b', 'a &gt; b')
 
     def test_b_should_be_replaced_by_strong(self):
-        p = self.get_paragraph()
-        p.text = u'I am <b>strong</b>.'
-        self.assertEqual('I am <strong>strong</strong>.', p.text)
+        self.compare(u'I am <b>strong</b>.', 'I am <strong>strong</strong>.')
 
     def test_i_should_be_replaced_by_em(self):
-        p = self.get_paragraph()
-        p.text = u'I am <i>strong</i>.'
-        self.assertEqual('I am <em>strong</em>.', p.text)
+        self.compare(u'I am <i>strong</i>.', 'I am <em>strong</em>.')
 
     def test_u_should_be_allowed(self):
-        p = self.get_paragraph()
-        p.text = u'I am <u>underlined</u>.'
-        self.assertEqual('I am <u>underlined</u>.', p.text)
+        self.compare(u'I am <u>underlined</u>.', 'I am <u>underlined</u>.')
 
     def test_br_should_be_allowed(self):
-        p = self.get_paragraph()
-        p.text = u'I am <br/>here and<br/>here.'
-        self.assertEqual('I am <br/>here and<br/>here.', p.text)
+        self.compare(u'I am <br/>here and<br/>here.',
+                     'I am <br/>here and<br/>here.')
 
     def test_a_witout_href_should_be_escaped(self):
-        p = self.get_paragraph()
-        p.text = u'A stupid <a>link</a>.'
-        self.assertEqual(u'A stupid <a href="#">link</a>.', p.text)
+        self.compare(u'A stupid <a>link</a>.',
+                     u'A stupid <a href="#">link</a>.')
 
     def test_a_with_href_should_be_allowed(self):
-        p = self.get_paragraph()
-        p.text = u'A working <a href="#">link'
-        self.assertEqual(u'A working <a href="#">link</a>', p.text)
+        self.compare(u'A working <a href="#">link',
+                     u'A working <a href="#">link</a>')
 
     def test_a_target_should_be_allowed(self):
-        p = self.get_paragraph()
-        p.text = u'A working <a href="#" target="_blank">link'
-        self.assertEqual(u'A working <a href="#" target="_blank">link</a>',
-                         p.text)
+        self.compare(u'A working <a href="#" target="_blank">link',
+                     u'A working <a href="#" target="_blank">link</a>')
 
     def test_unknown_elements_should_be_removed(self):
-        p = self.get_paragraph()
-        p.text = u'A <sub>subtext</sub> is filtered'
-        self.assertEqual(u'A subtext is filtered', p.text)
+        self.compare(u'A <sub>subtext</sub> is filtered',
+                     u'A subtext is filtered')
+
 
 class UnorderedListTest(ParagraphTest):
 
@@ -117,8 +114,20 @@ class UnorderedListTest(ParagraphTest):
         body = lxml.objectify.E.body(lxml.objectify.XML('<ul>%s</ul>' % p))
         return UnorderedList(None, body.ul)
 
+    def compare(self, input, expected):
+        input = u'<li>%s</li>' % input
+        expected = u'<li>%s</li>' % expected
+        p = self.get_paragraph()
+        p.text = input
+        self.assertEqual(expected, p.text)
 
-class OrderedListTest(ParagraphTest):
+    def test_li_should_be_allowed(self):
+        p = self.get_paragraph()
+        p.text = '<li>foo</li>'
+        self.assertEqual('<li>foo</li>', p.text)
+
+
+class OrderedListTest(UnorderedListTest):
 
     def get_paragraph(self, p=''):
         from zeit.content.article.edit.paragraph import UnorderedList

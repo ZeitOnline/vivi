@@ -3,39 +3,60 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import copy
-import gocept.lxml.interfaces
 import grokcore.component
 import lxml.etree
-import lxml.html
+import lxml.html.builder
+import lxml.html.clean
+import lxml.html.soupparser
 import lxml.objectify
-import sprout.htmlsubset
 import xml.sax.saxutils
-import zeit.cms.content.cmssubset
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
-import zope.component
 
 
-# XXX The factory registration could be much easier with a custom grokker for
-# the Element classes itself.
+def apply_filter(steps, tree):
+    """Apply a series of filtering steps on an lxml tree.
+    Filter steps can either work in-place or return a replacement tree.
 
-class Subset(sprout.htmlsubset.Subset):
+    XXX it would be nice if this were uniformly in-place, but
+    I guess keep_only_inline_tags can't be written like that.
+    """
+    for step in steps:
+        result = step(tree)
+        if result is not None:
+            tree = result
+    return tree
 
-    def isAllowed(self, container_name, name):
-        return True
+
+def translate_formatting_tags(tree):
+    mapping = {
+        'i': 'em',
+        'b': 'strong'
+    }
+    for el in tree.iter():
+        if el.tag in mapping:
+            el.tag = mapping[el.tag]
 
 
-paragraph_subset = zeit.cms.content.cmssubset.create_subset(
-    zeit.cms.content.cmssubset.AHandler,
-    zeit.cms.content.cmssubset.BrHandler,
-    zeit.cms.content.cmssubset.markupTextHandlerClass('i', 'em'),
-    zeit.cms.content.cmssubset.markupTextHandlerClass('em'),
-    zeit.cms.content.cmssubset.markupTextHandlerClass('strong'),
-    zeit.cms.content.cmssubset.markupTextHandlerClass('b', 'strong'),
-    zeit.cms.content.cmssubset.markupTextHandlerClass('u'),
-    subset_class=Subset)
+def escape_missing_href(tree):
+    for el in tree.iter():
+        if el.tag == 'a' and 'href' not in el.attrib:
+            el.attrib['href'] = '#'
+
+
+def keep_allowed_tags(tree, allowed_tags):
+    remove_tags = lxml.html.clean.Cleaner(
+        allow_tags=set(allowed_tags), remove_unknown_tags=False)
+    # Cleaner requires the tree-root to have a parent, on which it assembles
+    # the remaining parts (without the dropped tags)
+    container = lxml.html.builder.E.body(tree)
+    remove_tags(tree)
+    return container
+
+
+inline_tags = ['a', 'br', 'i', 'em', 'strong', 'b', 'u']
 
 
 class Paragraph(zeit.edit.block.SimpleElement):
@@ -44,6 +65,19 @@ class Paragraph(zeit.edit.block.SimpleElement):
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IParagraph)
     type = 'p'
+
+    allowed_tags = inline_tags
+
+    def __init__(self, *args, **kw):
+        self.filter_steps = [
+            self.keep_allowed_tags,
+            translate_formatting_tags,
+            escape_missing_href
+        ]
+        super(Paragraph, self).__init__(*args, **kw)
+
+    def keep_allowed_tags(self, tree):
+        return keep_allowed_tags(tree, self.allowed_tags)
 
     @property
     def text(self):
@@ -55,15 +89,11 @@ class Paragraph(zeit.edit.block.SimpleElement):
 
     @text.setter
     def text(self, value):
-        import xml.dom.minidom
-        dom = xml.dom.minidom.parseString('<p/>')
-        value = paragraph_subset.parse(value, dom.firstChild)
-        try:
-            p = lxml.objectify.XML(value.toxml())
-        except lxml.etree.XMLSyntaxError:
-            raise ValueError('No valid XML: %s' % (value,))
-        p.attrib.update(self.xml.attrib.items())
+        p = lxml.html.soupparser.fromstring(value)
+        p = apply_filter(self.filter_steps, p)
         p.tag = self.type
+        p.attrib.update(self.xml.attrib.items())
+        p = lxml.objectify.fromstring(lxml.etree.tostring(p))
         self.xml.getparent().replace(self.xml, p)
         self.xml = p
 
@@ -79,6 +109,7 @@ class UnorderedList(Paragraph):
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IUnorderedList)
     type = 'ul'
+    allowed_tags = inline_tags + ['li']
 
 
 class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
@@ -87,7 +118,7 @@ class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
     title = _('<ul>')
 
 
-class OrderedList(Paragraph):
+class OrderedList(UnorderedList):
 
     grokcore.component.implements(
         zeit.content.article.edit.interfaces.IOrderedList)
