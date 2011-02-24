@@ -98,3 +98,49 @@ applicable(True)
                 as gpc:
             gpc.return_value = {'foo': 'bar'}
             self.assertEqual([], rm.get_rules())
+
+
+class RecursiveValidatorTest(unittest.TestCase):
+
+    def setUp(self):
+        import zeit.edit.interfaces
+        import zope.component
+
+        self.validator = mock.Mock()
+        self.validator().status = None
+        self.validator().messages = []
+        self.validator.reset_mock()
+        zope.component.provideAdapter(
+            self.validator,
+            adapts=(mock.Mock,),
+            provides=zeit.edit.interfaces.IValidator)
+
+    def test_should_call_validator_for_all_children(self):
+        from zeit.edit.rule import RecursiveValidator
+        m1 = mock.Mock()
+        m2 = mock.Mock()
+        RecursiveValidator([m1, m2])
+        self.assertEqual(
+            [((m1,), {}), ((m2,), {})], self.validator.call_args_list)
+
+    def test_should_accumulate_messages(self):
+        from zeit.edit.rule import RecursiveValidator
+        self.validator().messages = [mock.sentinel.message]
+        validator = RecursiveValidator([mock.Mock(), mock.Mock()])
+        self.assertEqual(
+            [mock.sentinel.message, mock.sentinel.message], validator.messages)
+
+    def test_error_overrides_warning(self):
+        from zeit.edit.rule import RecursiveValidator, ERROR, WARNING
+
+        v1 = mock.Mock()
+        v1.status = ERROR
+        v1.messages = []
+        v2 = mock.Mock()
+        v2.status = WARNING
+        v2.messages = []
+        results = [v1, v2]
+        self.validator.side_effect = lambda x: results.pop()
+
+        validator = RecursiveValidator([mock.Mock(), mock.Mock()])
+        self.assertEqual(ERROR, validator.status)

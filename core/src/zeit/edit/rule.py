@@ -186,3 +186,29 @@ class Validator(grokcore.component.Adapter):
                 self.status = status.status
             if status.message:
                 self.messages.append(status.message)
+
+
+class RecursiveValidator(object):
+    """A RecursiveValidator iterates through (some definition of) children of
+    its context and generates its result from the validation of those."""
+
+    zope.interface.implements(zeit.edit.interfaces.IValidator)
+
+    status = None
+
+    def __init__(self, context):
+        self.context = context
+        self.messages = []
+        for item in self.children:
+            validator = zeit.edit.interfaces.IValidator(item)
+            if validator.status and self.status != ERROR:
+                # Set self status when there was an error or warning, but only
+                # if there was no error before. If there was an error the whole
+                # validation will stay in error state
+                self.status = validator.status
+            if validator.messages:
+                self.messages.extend(validator.messages)
+
+    @property
+    def children(self):
+        return iter(self.context)
