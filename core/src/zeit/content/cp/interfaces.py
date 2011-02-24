@@ -74,10 +74,6 @@ class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
 centerPageSource = CenterPageSource()
 
 
-class IValidatingWorkflow(zeit.workflow.interfaces.ITimeBasedPublishing):
-    pass
-
-
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
     pass
 

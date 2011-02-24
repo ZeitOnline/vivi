@@ -100,12 +100,3 @@ class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
     def children(self):
         areas = self.context.values()
         return itertools.chain(areas, *[a.values() for a in areas])
-
-
-class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
-
-    def can_publish(self):
-        validator = zeit.edit.interfaces.IValidator(self.context)
-        if validator.status == zeit.edit.rule.ERROR:
-            return False
-        return True

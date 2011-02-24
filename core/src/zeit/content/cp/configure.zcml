@@ -24,17 +24,6 @@
       permission="zeit.EditContent" />
   </class>
 
-  <class class=".rule.ValidatingWorkflow">
-    <require
-      permission="zope.View"
-      interface=".interfaces.IValidatingWorkflow"
-      />
-    <require
-      permission="zeit.workflow.Publish"
-      set_schema=".interfaces.IValidatingWorkflow"
-      />
-  </class>
-
   <utility
     component=".interfaces.centerPageSource"
     name="zeit.content.cp"
@@ -45,8 +34,8 @@
     factory=".centerpage.cp_references"
     name="zeit.content.cp.centerpage"
     />
-  <adapter factory=".rule.ValidatingWorkflow"
-    provides=".interfaces.IValidatingWorkflow"
+  <adapter factory="zeit.edit.rule.ValidatingWorkflow"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
     for=".interfaces.ICenterPage"
     trusted="yes"
     />
@@ -178,8 +167,8 @@
       />
   </class>
 
-  <adapter factory=".rule.ValidatingWorkflow"
-    provides=".interfaces.IValidatingWorkflow"
+  <adapter factory="zeit.edit.rule.ValidatingWorkflow"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
     for=".interfaces.IFeed"
     trusted="yes"
     />
