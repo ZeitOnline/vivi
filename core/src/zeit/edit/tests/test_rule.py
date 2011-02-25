@@ -4,6 +4,8 @@
 import StringIO
 import mock
 import unittest
+import zeit.edit.testing
+import zope.interface
 
 
 class RuleTest(unittest.TestCase):
@@ -49,6 +51,98 @@ warning_if(True, "A warning")
 """)
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
         self.assertEquals('An error message', s.message)
+
+
+class GlobTest(zeit.edit.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(GlobTest, self).setUp()
+
+        import lxml.objectify
+        import zeit.edit.block
+        import zeit.edit.container
+
+        self.xml = lxml.objectify.XML("""
+<body xmlns:cms="http://namespaces.zeit.de/CMS/cp">
+  <p cms:type="foo">Para1</p>
+</body>
+""")
+
+        self.area = type('DummyArea', (dict,), {})()
+        self.area.__name__ = 'testarea'
+        self.area.__parent__ = None
+        zope.interface.alsoProvides(self.area, zeit.edit.interfaces.IArea)
+        self.block = zeit.edit.block.SimpleElement(
+            self.area, self.xml.p)
+        self.block.__name__ = 'bar'
+        self.area['bar'] = self.block
+
+    def test_type(self):
+        import zeit.edit.rule
+        r = zeit.edit.rule.Rule("""
+warning_if(type == 'foo')
+error_if(True)
+""")
+        s = r.apply(self.block)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
+
+    def test_is_block(self):
+        import zeit.edit.rule
+        r = zeit.edit.rule.Rule("""
+error_if(is_block)
+""")
+        s = r.apply(self.block)
+        self.assertEqual(None, s.status)
+
+        zope.interface.alsoProvides(self.block, zeit.edit.interfaces.IBlock)
+        s = r.apply(self.block)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
+
+    def test_is_area(self):
+        import zeit.edit.rule
+        r = zeit.edit.rule.Rule("""
+error_if(is_area)
+""")
+        s = r.apply(self.block)
+        self.assertEqual(None, s.status)
+
+        s = r.apply(self.area)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
+
+    def test_area(self):
+        pass
+
+    def test_count(self):
+        pass
+
+    def test_position(self):
+        pass
+
+    def test_is_published(self):
+        import zeit.cms.interfaces
+        import zeit.edit.rule
+
+        r = zeit.edit.rule.Rule("""
+error_unless(is_published(context))
+""")
+        tc = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+        s = r.apply(tc)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
+        zeit.cms.workflow.interfaces.IPublishInfo(tc).published = True
+        r.status = None
+        s = r.apply(tc)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
+
+    def test_globs_should_never_return_none(self):
+        import zeit.edit.rule
+        r = zeit.edit.rule.Rule("""
+applicable(type != 'foo')
+error_if(True, type)
+""")
+        del self.block.xml.attrib['{http://namespaces.zeit.de/CMS/cp}type']
+        s = r.apply(self.block)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
+        self.assertEqual('__NONE__', s.message)
 
 
 class RulesManagerTest(unittest.TestCase):

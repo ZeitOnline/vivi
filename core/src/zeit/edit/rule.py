@@ -7,6 +7,7 @@ import grokcore.component
 import logging
 import sys
 import urllib2
+import zeit.cms.workflow.interfaces
 import zeit.edit.interfaces
 import zeit.workflow.timebased
 import zope.app.appsetup.product
@@ -222,3 +223,51 @@ class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         if validator.status == ERROR:
             return False
         return True
+
+
+@glob(zeit.edit.interfaces.IElement)
+def type(context):
+    return context.type
+
+
+@glob(zeit.edit.interfaces.IBlock)
+def is_block(context):
+    return True
+
+
+@glob(zope.interface.Interface)
+def is_block(context):
+    return False
+
+
+@glob(zeit.edit.interfaces.IArea)
+def is_area(context):
+    return True
+
+
+@glob(zope.interface.Interface)
+def is_area(context):
+    return False
+
+
+@glob(zeit.edit.interfaces.IElement)
+def area(context):
+    return zeit.edit.interfaces.IArea(context).__name__
+
+
+@glob(zeit.edit.interfaces.IContainer)
+def count(context):
+    return len(context)
+
+
+@glob(zeit.edit.interfaces.IElement)
+def position(context):
+    return context.__parent__.keys().index(context.__name__) + 1
+
+
+@glob(zope.interface.Interface)
+def is_published(context):
+    def is_published_inner(obj):
+        pi = zeit.cms.workflow.interfaces.IPublishInfo(obj, None)
+        return pi is not None and pi.published
+    return is_published_inner

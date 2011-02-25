@@ -18,5 +18,8 @@
   <include package="zeit.find" />
   <include package="zeit.edit" />
 
+  <include package="zeit.cms.testcontenttype" />
+  <include package="zeit.workflow" />
+
 </configure>
 
