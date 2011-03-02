@@ -2,11 +2,12 @@
 # See also LICENSE.txt
 
 from zeit.edit.rule import glob
+import zeit.content.article.interfaces
 import zeit.content.article.edit.interfaces
 import zope.interface
 
 
-@glob(zeit.content.article.edit.interfaces.IArticle)
+@glob(zeit.content.article.interfaces.IArticle)
 def article(context):
     return True
 
