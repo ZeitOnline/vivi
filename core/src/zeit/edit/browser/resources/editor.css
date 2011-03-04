@@ -24,6 +24,11 @@
   padding: 0.5em;
 }
 
+div div.landing-zone:first-child {
+    font-size:14px;
+    padding-top:15px;
+}
+
 #cp-content .hover > * {
   outline: 2px solid #eee;
   border-style: solid;
@@ -212,8 +217,8 @@
 
 .edit {
   border-bottom: 1px solid #bbb;
-  margin-bottom: .3em;
-  padding-top: .3em;
+  margin-bottom: 0px;
+  padding-top: 0px;
 
 }
 
