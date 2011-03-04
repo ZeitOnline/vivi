@@ -72,7 +72,43 @@
 /* editor blocks */
 
 #editable-body {
-  margin-left: 3em;
+  /*margin-left: 3em;*/
+}
+
+#cp-content #article-editor-forms div {
+    padding:0;
+}
+
+#article-editor-forms {
+    margin-left:6px;
+    margin-right:6px;
+}
+
+#article-editor-forms div div.edit-bar {
+    height: 20px;
+    border-bottom: 1px solid #BBBBBB; 
+}
+
+#article-editor-forms div div.edit-bar a{
+    margin:4px;
+    margin-top:5px;
+}
+
+#article-form-workflow,
+#article-form-assets,
+#article-form-metadata {
+ border:1px solid #BBBBBB;
+}
+
+#article-form-workflow.folded,
+#article-form-assets.folded,
+#article-form-metadata.folded {
+ border-bottom:0;
+
+}
+
+.article-editor-inner {
+    padding-left:1em;
 }
 
 .article-editor-inner
@@ -100,6 +136,14 @@
 .article-editor-inner .edit-bar > a {
   height: 7px;
   width: 7px;
+  margin:0;
+  padding:0;
+  margin-top:1px;
+  margin-right:2px;
+}
+
+.edit-bar {
+    margin:0;
 }
 
 .article-editor-inner .edit-bar > .delete-link {
@@ -115,17 +159,18 @@
 }
 
 .article-editor-inner .dragger .center {
-  height: 12px;
+  height: 9px;
 }
 
 #article-editor-text .block,
 #article-editor-text .landing-zone {
-  margin-left: 2em;
+  margin-left: 0em;
 }
 
 
 .article-editor-inner .folded > .block-inner > * {
   display: none;
+
 }
 
 .article-editor-inner .folded > .block-inner > .edit-bar {
@@ -134,10 +179,34 @@
   margin-bottom: 0;
 }
 
+.editable-area > .landing-zone {
+  height: 4px;
+
+}
+
 /* Editable blocks */
 
+.block-inner{
+  font-size:14px;
+}
+.block-inner h3{
+
+font-size:24px;
+}
+
+.block-inner p,
+.block-inner h3 {
+ padding-left:10px;
+ margin:0;
+}
+
+.editing .block-inner p,
+.editing .block-inner h3{
+ margin-top:24px;
+}
+
+
 .editing .editable > * {
-  margin-top: 4em;
 }
 
 .editing .editable > *:first-child {
