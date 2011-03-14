@@ -14,7 +14,6 @@ import zope.interface
 
 class CPExtraBlock(zeit.content.cp.blocks.block.Block):
 
-
     zope.interface.implements(zope.container.interfaces.IContained,
                               zeit.content.cp.interfaces.ICPExtraBlock)
 
@@ -28,9 +27,8 @@ class CPExtraBlock(zeit.content.cp.blocks.block.Block):
         self.xml['cp_extra'] = lxml.objectify.E.cp_extra(id=value)
 
 
-CPExtraBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion,
-    'cpextra', _('CP extra'), module='')
+zeit.content.cp.blocks.block.register_element_factory(
+    zeit.content.cp.interfaces.IRegion, 'cpextra', _('CP extra'), module='')
 
 
 @grokcore.component.subscribe(

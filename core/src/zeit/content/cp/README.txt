@@ -91,11 +91,12 @@ afterwards configured.
 
 Blocks are created using a block factory:
 
->>> lead = cp['lead']
+>>> informatives = cp['informatives']
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='placeholder')
+...     informatives, zeit.content.cp.interfaces.IElementFactory,
+...     name='placeholder')
 >>> factory.title is None
 True
 >>> block = factory()
@@ -104,12 +105,12 @@ True
 
 Creating the block automatically adds it to the container:
 
->>> block.__name__ in lead
+>>> block.__name__ in informatives
 True
 
 It is not possible to add the block again:
 
->>> lead.add(block)
+>>> informatives.add(block)
 Traceback (most recent call last):
     ...
 DuplicateIDError: '6ec3b591-6415-47bc-b521-d40b16c5df89'
@@ -118,41 +119,42 @@ DuplicateIDError: '6ec3b591-6415-47bc-b521-d40b16c5df89'
 Teaser block
 ------------
 
->>> lead = cp['lead']
+>>> informatives = cp['informatives']
 >>> import zeit.content.cp.interfaces
 >>> import zope.component
 >>> factory = zope.component.getAdapter(
-...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+...     informatives, zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser')
 >>> factory.title
 u'List of teasers'
 >>> block = factory()
 >>> block
-<zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>
+<zeit.content.cp.blocks.teaser.AutoPilotTeaserBlock object at 0x...>
 >>> block.type
 'teaser'
 
 After calling the factory a corresponding XML node has been created:
 
->>> print lxml.etree.tostring(lead.xml, pretty_print=True),
-<region ... area="lead">
+>>> print lxml.etree.tostring(informatives.xml, pretty_print=True),
+<region ... area="informatives">
   <container cp:type="placeholder" module="placeholder" cp:__name__="..."/>
-  <container cp:type="teaser" module="leader" cp:__name__="..."/>
+  <container cp:type="teaser" module="large" ... cp:__name__="..."/>
 </region>
 
 
 Modules are accessible via __getitem__ [#invalid-raises-error]_:
 
->>> lead[block.__name__]
-<zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>
+>>> informatives[block.__name__]
+<zeit.content.cp.blocks.teaser.AutoPilotTeaserBlock object at 0x...>
 
 The area can also be iterated:
 
->>> list(lead.itervalues())
+>>> list(informatives.itervalues())
 [<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
- <zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>]
->>> lead.values()
+ <zeit.content.cp.blocks.teaser.AutoPilotTeaserBlock object at 0x...>]
+>>> informatives.values()
 [<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
- <zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>]
+ <zeit.content.cp.blocks.teaser.AutoPilotTeaserBlock object at 0x...>]
 
 It is possible to get the center page from the block by adapting to ICenterPage:
 
@@ -162,17 +164,17 @@ It is possible to get the center page from the block by adapting to ICenterPage:
 The ``__parent__`` of a block is the area:
 
 >>> block.__parent__
-<zeit.content.cp.area.Lead object at 0x...>
+<zeit.content.cp.area.Informatives object at 0x...>
 
 
 Areas support ordering of their contents via the ``updateOrder`` method:
 
 >>> transaction.commit()
->>> ph_key, block_key = lead.keys()
+>>> ph_key, block_key = informatives.keys()
 >>> block.__name__ == block_key
 True
->>> lead.updateOrder([block_key, ph_key])
->>> lead.keys() == [block_key, ph_key]
+>>> informatives.updateOrder([block_key, ph_key])
+>>> informatives.keys() == [block_key, ph_key]
 True
 >>> cp._p_changed
 True
@@ -188,12 +190,12 @@ True
 Blocks can be removed using __delitem__:
 
 >>> transaction.commit()
->>> len(lead)
+>>> len(informatives)
 2
->>> del lead[block.__name__]
->>> len(lead)
+>>> del informatives[block.__name__]
+>>> len(informatives)
 1
->>> lead.values()
+>>> informatives.values()
 [<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>]
 >>> cp._p_changed
 True
@@ -423,7 +425,7 @@ Searching:  (:eq "http://namespaces.zeit.de/CMS/zeit.content.cp" "type" "topicpa
 
 .. [#invalid-raises-error]
 
-    >>> lead['foo']
+    >>> informatives['foo']
     Traceback (most recent call last):
         ...
     KeyError: 'foo'
@@ -431,12 +433,12 @@ Searching:  (:eq "http://namespaces.zeit.de/CMS/zeit.content.cp" "type" "topicpa
 .. [#invalid-arguments-to-updateorder] Invalid arguments to update order raise
     errors as defined in the interface:
 
-    >>> lead.updateOrder(124)
+    >>> informatives.updateOrder(124)
     Traceback (most recent call last):
         ...
     TypeError: order must be tuple or list, got <type 'int'>.
 
-    >>> lead.updateOrder(['abc', 'def'])
+    >>> informatives.updateOrder(['abc', 'def'])
     Traceback (most recent call last):
         ...
     ValueError: order must have the same keys.

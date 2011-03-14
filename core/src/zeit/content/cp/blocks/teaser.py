@@ -256,9 +256,8 @@ class AutoPilotTeaserBlock(TeaserBlock):
                         break
 
 
-TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IContainer, 'teaser',
-    _('List of teasers'))
+zeit.content.cp.blocks.block.register_element_factory(
+    zeit.content.cp.interfaces.IContainer, 'teaser', _('List of teasers'))
 
 
 @grokcore.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
