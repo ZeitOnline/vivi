@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -8,6 +7,7 @@ import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.container.interfaces
 import zope.interface
+
 
 class XMLBlock(zeit.content.cp.blocks.block.Block):
 
