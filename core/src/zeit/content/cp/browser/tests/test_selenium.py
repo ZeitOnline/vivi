@@ -63,7 +63,6 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.pause(100)
         s.verifyElementNotPresent('css=div.block.hover')
 
-
     def test_common_data_edit_form(self):
         self.create_teaserlist()
         s = self.selenium
@@ -170,7 +169,6 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForOrdered(li('c1', True), li('c2'))
         s.verifyOrdered(li('c2', True), li('c3'))
 
-
     def test_inplace_teaser_editing_with_save(self):
         s = self.selenium
         self.create_filled_teaserlist()
@@ -273,7 +271,6 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyOrdered(block1, block2)
         s.verifyOrdered(block2, block4)
 
-
     def test_mosaic(self):
         self.open_centerpage()
         s = self.selenium
@@ -312,7 +309,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyAttribute(path + '[2]@id', bar2)
         s.verifyAttribute(path + '[3]@id', bar1)
 
-        # Make sure the drag survives page reloads. 
+        # Make sure the drag survives page reloads.
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('css=div.landing-zone')
         s.verifyAttribute(path + '[1]@id', bar3)
@@ -330,7 +327,6 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
             '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone')
         s.waitForElementPresent('css=.block.type-teaser')
         block2 = s.getAttribute('css=.block.type-teaser@id')
-
 
         # Add a second teaser list
         s.dragAndDropToObject(
@@ -560,7 +556,6 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
 
 
 class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
-
 
     def test_source_removed_when_dropped_to_cp(self):
         self.create_filled_teaserlist()
