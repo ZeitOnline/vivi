@@ -484,6 +484,22 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementNotPresent('css=.lightbox')
 
 
+class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_add_xml_to_lead(self):
+        self.open_centerpage()
+
+        s = self.selenium
+        s.click('link=Module')
+        s.click('link=Aufmacher')
+        module = self.get_module('lead', 'XML')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module,
+            'css=.landing-zone.action-lead-module-droppable')
+        s.waitForElementPresent('css=div.type-xml')
+
+
 class TestSidebar(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_sidebar_should_be_folded_away(self):

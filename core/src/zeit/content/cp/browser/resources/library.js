@@ -43,6 +43,7 @@ MochiKit.Signal.connect(
 
     var tabs = new zeit.cms.Tabs('cp-library');
     create_library('all', context_url, 'Alle');
+    create_library_for_element('lead', 'Aufmacher');
     create_library_for_element('informatives', 'Informatives');
     create_library_for_element('teaser-mosaic', 'Mosaic');
 
@@ -69,7 +70,15 @@ MochiKit.Signal.connect(
 });
 
 (function()  {
-    zeit.content.cp.drop.registerHandler({ 
+    zeit.content.cp.drop.registerHandler({
+        accept: ['lead-module'],
+        activated_by: 'action-lead-module-droppable',
+        url_attribute: 'cms:create-block-url',
+        query_arguments: function(draggable) {
+            return {'block_type': draggable.getAttribute('cms:block_type')};
+        },
+    });
+    zeit.content.cp.drop.registerHandler({
         accept: ['informatives-module'],
         activated_by: 'action-informatives-module-droppable',
         url_attribute: 'cms:create-block-url',
@@ -77,7 +86,7 @@ MochiKit.Signal.connect(
             return {'block_type': draggable.getAttribute('cms:block_type')};
         },
     });
-    zeit.content.cp.drop.registerHandler({ 
+    zeit.content.cp.drop.registerHandler({
         accept: ['teaser-mosaic-module'],
         activated_by: 'action-teaser-mosaic-module-droppable',
         url_attribute: 'cms:create-block-url',
