@@ -42,14 +42,17 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     construct: function(context_element, place_cursor_at_end) {
         var self = this;
-        var block_id = MochiKit.DOM.getFirstParentByTagAndClassName(
+        self.block_id = MochiKit.DOM.getFirstParentByTagAndClassName(
             context_element, null, 'block').id;
         var d = self.editor_active_lock.acquire();
-        log('Waiting for lock');
+        log('Waiting for lock', self.block_id);
         d.addCallback(function() {
-            var block = $(block_id);
+            log('Lock acquired', self.block_id);
+            var block = $(self.block_id);
             if (block === null) {
                 // block vanished while waiting for lock.
+                self.editor_active_lock.release();
+                log('block vanished', self.block_id);
                 return;
             }
             self.events = [];
@@ -84,6 +87,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.editable, 'onkeydown', self, self.handle_keydown));
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeyup', self, self.handle_keyup));
+            // This handler is there to support saving during selenium tests as
+            // it doesn't seem to be possible to synthesize an blur event which
+            // triggers the capuring phase handler:
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'save', function() {self.save();}));
             self.events.push(MochiKit.Signal.connect(
@@ -94,9 +100,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_toolbar();
             self.relocate_toolbar(true);
-            // This handler is there to support saving during selenium tests as
-            // it doesn't seem to be possible to synthesize an blur event which
-            // triggers the capuring phase handler.
         });
     },
 
@@ -385,14 +388,16 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     save: function(no_reload) {
         var self = this;
-        log('Saving');
+        log('Saving', self.block_id);
         MochiKit.DOM.addElementClass(self.block, 'busy');
         while (self.events.length) {
             MochiKit.Signal.disconnect(self.events.pop());
         }
+        log('disconnected event handlers');
         var ident = MochiKit.Signal.connect(
             zeit.edit.editor, 'after-reload', function() {
             MochiKit.Signal.disconnect(ident);
+            log('Release lock', self.block_id);
             self.editor_active_lock.release();
             // Warg. This tries to avoid a giant 10cm cursor blinking in the
             // page. Apparrently we really to focus something else and can blur
