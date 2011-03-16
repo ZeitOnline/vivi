@@ -76,7 +76,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     MochiKit.DOM.getFirstParentByTagAndClassName(
                        e.explicitOriginalTarget, 'div', 'block');
                 is_in_block = (clicked_on_block == self.block);
-                log("Blur while editing:", is_in_block);
+                log("Blur while editing:", is_in_block, self.block_id);
                 if (is_in_block) {
                     e.stopPropagation();
                 } else {
@@ -94,6 +94,22 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.editable, 'save', function() {self.save();}));
             self.events.push(MochiKit.Signal.connect(
                 zeit.edit.editor, 'before-reload', function() {
+                    // XXX giant hack around strange browser behaviour.
+                    //
+                    // Reproduction recipe for the bug: While a block is
+                    // contentEditable, drag it around to change sorting. This
+                    // will result in a blinking cursor being left somewhere on
+                    // the page. In spite of investigating this at length, we
+                    // have no idea what causes this, so far.
+                    //
+                    // To get rid of this stray cursor, we focus-then-blur
+                    // something else (we scientifcally chose the
+                    // fulltext-search input box at random). Synthesizing a
+                    // blur on self.editable or similar has no effect, and the
+                    // "something else" we dash off to needs to be an <input
+                    // type="text">.
+                    $('fulltext').focus();
+                    $('fulltext').blur();
                     self.save(/*no_reload=*/true);
                 }));
             self.fix_html();
@@ -399,11 +415,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             MochiKit.Signal.disconnect(ident);
             log('Release lock', self.block_id);
             self.editor_active_lock.release();
-            // Warg. This tries to avoid a giant 10cm cursor blinking in the
-            // page. Apparrently we really to focus something else and can blur
-            // that one then.
-            $('fulltext').focus();
-            $('fulltext').blur();
         });
         // until now, the editor can only be contained in an editable-body.
         var url = $('editable-body').getAttribute('cms:url') + '/@@save_text';
