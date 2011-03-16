@@ -3,11 +3,9 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
-import copy
 import grokcore.component
 import lxml.etree
 import lxml.objectify
-import persistent
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.dav
@@ -74,7 +72,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             value = el.text
             if value:
                 properties[(name, ns)] = value
-
 
 
 class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -191,6 +188,7 @@ class DivisionStep(zeit.wysiwyg.html.ConversionStep):
         new_node = lxml.etree.Element('division', **{'type': 'page',
                                                      'teaser': teaser})
         return new_node
+
 
 class LayoutDependency(object):
 
