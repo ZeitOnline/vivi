@@ -162,6 +162,10 @@
   height: 9px;
 }
 
+.article-editor-inner .editing .edit-bar > a {
+  display: none;
+}
+
 #article-editor-text .block,
 #article-editor-text .landing-zone {
   margin-left: 0em;
