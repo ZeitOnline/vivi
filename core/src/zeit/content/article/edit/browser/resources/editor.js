@@ -65,11 +65,11 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.editable.focus();
             self.command('styleWithCSS', false);
             MochiKit.DOM.addElementClass(self.block, 'editing');
-            
+
             // This catches the blur-signal in the capturing-phase!
             // In case you use the toolbar, the editing-mode won't be stopped.
             self.editable.parentNode.addEventListener("blur", function(e) {
-                var clicked_on_block = 
+                var clicked_on_block =
                     MochiKit.DOM.getFirstParentByTagAndClassName(
                        e.explicitOriginalTarget, 'div', 'block');
                 is_in_block = (clicked_on_block == self.block);
@@ -99,7 +99,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             // triggers the capuring phase handler.
         });
     },
-    
+
     place_cursor: function(element, place_cursor_at_end) {
         // Place cursor to the beginnning of element
         log('Placing cursor to', element.nodeName);
@@ -222,7 +222,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             });
             element = element.parentNode;
 		}
-         
+
     },
 
     relocate_toolbar: function(fast) {
@@ -294,7 +294,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 if (block.nodeType != block.ELEMENT_NODE) {
                     continue;
                 }
-                if (MochiKit.DOM.hasElementClass(block, 'block') && 
+                if (MochiKit.DOM.hasElementClass(block, 'block') &&
                     self.is_block_editable(block)) {
                     next_block = block;
                     break;
@@ -357,7 +357,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 if (MochiKit.Style.getStyle(element, 'display') == 'inline') {
                     // Inline style on top level. That's not allow. Either wrap
                     // it in a <p> or append it to the last p
-                    text_collector += 
+                    text_collector +=
                         '<' + element.nodeName.toLowerCase() + '>' +
                         element.innerHTML +
                         '</' + element.nodeName.toLowerCase() + '>';
