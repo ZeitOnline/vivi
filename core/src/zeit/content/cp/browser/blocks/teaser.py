@@ -46,6 +46,7 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
     interface = zeit.content.cp.interfaces.ITeaserBlock
 
     form_fields = ()
+    close = False
 
     @property
     def form(self):
@@ -68,6 +69,11 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
                 token=terms.getTerm(layout).token,
             ))
         return result
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.close = True
+        return super(EditProperties, self).handle_edit_action.success(data)
 
 
 class AutoPilotEditProperties(EditProperties):

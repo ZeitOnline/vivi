@@ -20,4 +20,9 @@
     <div class="visual-clear"></div>
   </div>
 
+  <script language="javascript"
+          tal:condition="view/close">
+    self.close();
+  </script>
+
 </div>
