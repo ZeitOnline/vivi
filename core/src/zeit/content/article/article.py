@@ -50,10 +50,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     textLength = zeit.cms.content.dav.DAVProperty(
         zeit.content.article.interfaces.IArticle['textLength'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'text-length')
-    pageBreak = zeit.cms.content.dav.DAVProperty(
-        zeit.content.article.interfaces.IArticle['pageBreak'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'paragraphsperpage',
-        use_default=True)
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,
@@ -123,6 +119,8 @@ class PageBreakStep(zeit.wysiwyg.html.ConversionStep):
     xpath_xml = '.'
     xpath_html = '.'
 
+    DEFAULT_DIVISONS_PER_PAGE = 7
+
     def to_html(self, root):
         # pull up children behind their divisions
         for division in root.xpath('division[@type="page"]'):
@@ -147,14 +145,10 @@ class PageBreakStep(zeit.wysiwyg.html.ConversionStep):
                 else:
                     division.append(node)
         else:
-            per_page = (
-                self.context.pageBreak
-                or zeit.content.article.interfaces.IArticleMetadata[
-                    'pageBreak'].default)
             # one division must always exist
-            i = per_page + 1
+            i = self.DEFAULT_DIVISONS_PER_PAGE + 1
             for node in root.iterchildren():
-                if i > per_page:
+                if i > self.DEFAULT_DIVISONS_PER_PAGE:
                     division = lxml.etree.Element(
                         'division', **{'type': 'page'})
                     root.insert(root.index(node), division)

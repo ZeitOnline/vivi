@@ -179,40 +179,20 @@ Page breaking only applies to Articles, not to other content types:
   <p>2</p>
 </body>
 
-If the HTML does not supply any page breaks, an appropriate amount is inserted
-according to IArticleMetadata.pageBreak:
-
->>> article = zeit.content.article.article.Article()
->>> article.pageBreak = 2
->>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
->>> converter.from_html(article.xml['body'], """\
-...   <p>1</p>
-...   <p>2</p>
-...   <p>3</p>
-...   <p>4</p>
-... """)
->>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
-<body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <division type="page">
-    <p>1</p>
-    <p>2</p>
-  </division>
-  <division type="page">
-    <p>3</p>
-    <p>4</p>
-  </division>
-</body>
-
 Only <p> tags count toward the page break:
 
 >>> article = zeit.content.article.article.Article()
->>> article.pageBreak = 2
 >>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
 >>> converter.from_html(article.xml['body'], """\
 ...   <p>1</p>
 ...   <h3>Heading</h3>
 ...   <p>2</p>
 ...   <p>3</p>
+...   <p>4</p>
+...   <p>5</p>
+...   <p>6</p>
+...   <p>7</p>
+...   <p>8</p>
 ... """)
 >>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
 <body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -220,9 +200,14 @@ Only <p> tags count toward the page break:
     <p>1</p>
     <intertitle>Heading</intertitle>
     <p>2</p>
+    <p>3</p>
+    <p>4</p>
+    <p>5</p>
+    <p>6</p>
+    <p>7</p>
   </division>
   <division type="page">
-    <p>3</p>
+    <p>8</p>
   </division>
 </body>
 
@@ -230,7 +215,6 @@ If the HTML contains page breaks, those are preserved and no additional ones
 are added:
 
 >>> article = zeit.content.article.article.Article()
->>> article.pageBreak = 2
 >>> converter = zeit.wysiwyg.interfaces.IHTMLConverter(article)
 >>> converter.from_html(article.xml['body'], """\
 ...   <p>1</p>
@@ -238,6 +222,10 @@ are added:
 ...   <p>2</p>
 ...   <p>3</p>
 ...   <p>4</p>
+...   <p>5</p>
+...   <p>6</p>
+...   <p>7</p>
+...   <p>8</p>
 ... """)
 >>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
 <body xmlns:py="http://codespeak.net/lxml/objectify/pytype">
@@ -248,6 +236,10 @@ are added:
     <p>2</p>
     <p>3</p>
     <p>4</p>
+    <p>5</p>
+    <p>6</p>
+    <p>7</p>
+    <p>8</p>
   </division>
 </body>
 

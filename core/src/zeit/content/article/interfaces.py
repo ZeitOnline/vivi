@@ -18,12 +18,6 @@ ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
-    pageBreak = zope.schema.Int(
-        title=_("Pagebreak"),
-        description=_("Paragraphs per page until a pagebreak."),
-        min=1,
-        default=7)
-
     paragraphs = zope.schema.Int(
         title=_("Paragraphsamount"),
         description=_("Amount of paragraphs in total."),
