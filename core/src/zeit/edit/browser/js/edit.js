@@ -337,22 +337,6 @@ zeit.edit.LightBoxForm = zeit.cms.LightboxForm.extend({
         return d;
     },
 
-    handle_submit: function(action) {
-        var self = this;
-        var d = arguments.callee.$.handle_submit.call(self, action)
-        d.addCallback(function(result) {
-            if (isNull(result)) {
-                return null;
-            }
-            var errors = MochiKit.DOM.getFirstElementByTagAndClassName(
-                'ul', 'errors', self.form);
-            if (isNull(errors)) {
-                self.close();
-            }
-            return result;
-        });
-    },
-
     on_close: function() {
         var self = this;
         log("closing lightbox");
