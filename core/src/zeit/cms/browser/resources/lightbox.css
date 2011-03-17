@@ -38,6 +38,7 @@
     left: 10em;
     right: 10em;
     bottom: 7.5em;
+    overflow-y: auto;
 }
 
 :focus {
