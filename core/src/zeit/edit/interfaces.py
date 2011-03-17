@@ -38,7 +38,8 @@ class IBlock(IElement):
 
 class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
                 zope.container.interfaces.IContained,
-                zope.container.interfaces.IReadContainer):
+                zope.container.interfaces.IReadContainer,
+                IElement):
     """Area on the CP which can be edited.
 
     This references a <region> or <cluster>
