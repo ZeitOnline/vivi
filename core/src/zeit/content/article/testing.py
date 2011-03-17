@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import gocept.selenium.ztk
+import pkg_resources
 import re
 import shutil
 import tempfile
@@ -18,8 +19,10 @@ product_config = """
 <product-config zeit.content.article>
     cds-import-valid-path $$ressort/$$year/$$volume
     cds-import-invalid-path cds/invalid/$$year/$$volume
+    source-book-recession-categories file://%s
 </product-config>
-"""
+""" % pkg_resources.resource_filename(
+    __name__, '/tests/recension_categories.xml')
 
 
 checker = zope.testing.renormalizing.RENormalizing([
