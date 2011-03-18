@@ -18,6 +18,17 @@ We need a testbrowser first:
     There are no book information items, yet.
     ...
 
+As long as an article does not have recensions yet, its has_recensions property
+is False:
+
+>>> import zeit.cms.checkout.interfaces
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> with zeit.cms.testing.interaction():
+...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
+...     print somalia.has_recensions
+None
+
 Let's add one:
 
 >>> browser.getLink('Add').click()
@@ -36,6 +47,14 @@ Let's add one:
       Der Schwarm [edit]
     </a>
     ...
+
+After adding the first recensions, has_recensions is set (it's needed for
+XSLT). XXX Note that it currently is never removed again.
+
+>>> with zeit.cms.testing.interaction():
+...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
+...     print somalia.has_recensions
+True
 
 Let's edit and add some more information:
 

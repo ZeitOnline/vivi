@@ -92,6 +92,8 @@
       />
   </class>
 
+  <subscriber handler=".recension.set_has_recension" />
+
   <!-- generation -->
 
   <utility 

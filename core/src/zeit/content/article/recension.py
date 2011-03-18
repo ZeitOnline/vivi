@@ -8,6 +8,7 @@ import zeit.cms.content.xmlsupport
 import zeit.content.article.interfaces
 import zope.component
 import zope.interface
+import zope.lifecycleevent
 import zope.publisher.interfaces
 import zope.security.proxy
 
@@ -39,6 +40,8 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
         xml_repr = zeit.cms.content.interfaces.IXMLRepresentation(recension)
         self.xml['body'].append(xml_repr.xml)
         self._p_changed = True
+        zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(
+            recension, self, recension.__name__))
 
     @property
     def entries(self):
@@ -136,3 +139,12 @@ class RecensionTraverser(object):
                 pass
 
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
+
+
+@zope.component.adapter(zeit.content.article.interfaces.IBookRecension,
+                        zope.lifecycleevent.IObjectAddedEvent)
+def set_has_recension(context, event):
+    # XXX Recension does not provide ILocation, so we fudge a little to get to
+    # the article
+    article = event.newParent.__parent__
+    article.has_recensions = True
