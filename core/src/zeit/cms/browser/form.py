@@ -90,8 +90,10 @@ class FormBase(zeit.cms.browser.view.Base):
             self.send_message(self.status)
 
 
-class AddForm(FormBase, gocept.form.grouped.AddForm):
-    """Add form."""
+class AddFormBase(object):
+    """This class provides mechanics for adding that are independent of
+    rendering the form as a whole page or subpage/lightbox form.
+    """
 
     factory = None
     next_view = None
@@ -157,6 +159,10 @@ class AddForm(FormBase, gocept.form.grouped.AddForm):
         else:
             view = 'view.html'
         return self.url(self._created_object, '@@' + view)
+
+
+class AddForm(AddFormBase, FormBase, gocept.form.grouped.AddForm):
+    """Add form."""
 
 
 class EditForm(FormBase, gocept.form.grouped.EditForm):
