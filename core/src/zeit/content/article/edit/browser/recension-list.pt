@@ -1,6 +1,10 @@
 <div id="recensions" i18n:domain="zeit.cms"
   tal:define="can_edit python:request.interaction.checkPermission(
     'zeit.EditContent', context)">
+  <link
+    rel="stylesheet" type="text/css"
+    tal:attributes="
+    href string:${request/++resource++zeit.cms.recension}/recension.css"/>
   <div class="recension"
     tal:condition="view/recensions"
     tal:repeat="recension view/recensions">
