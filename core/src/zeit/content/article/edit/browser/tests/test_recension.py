@@ -10,14 +10,12 @@ import zeit.content.article.testing
 
 class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
 
-    def setUp(self):
-        super(RecensionTest, self).setUp()
+    def create_recension(self):
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 with zeit.cms.checkout.helper.checked_out(
                     zeit.cms.interfaces.ICMSContent(
                         'http://xml.zeit.de/online/2007/01/Somalia')) as co:
-                    co.has_recensions = True # XXX remove
                     recension = zeit.content.article.recension.BookRecension()
                     recension.authors = ['William Shakespeare']
                     recension.title = 'Hamlet'
@@ -32,12 +30,14 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementPresent('css=.recension')
 
     def test_recensions_should_be_listed(self):
+        self.create_recension()
         s = self.selenium
         s.assertText('css=a.RecensionTitle', 'William Shakespeare: Hamlet*')
         s.assertText('css=dd.publisher', 'Suhrkamp')
         s.assertText('css=dd.location', 'Berlin')
 
     def test_edit_recension_should_happen_in_lightbox(self):
+        self.create_recension()
         s = self.selenium
         s.click('css=a.RecensionTitle')
         s.waitForElementPresent('id=lightbox.form')
@@ -47,6 +47,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.waitForText('css=dd.year', '2001')
 
     def test_submitting_for_list_widget_should_work(self):
+        self.create_recension()
         s = self.selenium
         s.click('css=a.RecensionTitle')
         s.waitForElementPresent('id=lightbox.form')
@@ -59,12 +60,15 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_add_recension_should_happen_in_lightbox(self):
         s = self.selenium
-        s.click('css=#recensions a:contains(Add new)')
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        add_link = 'css=#recensions a:contains(Add new)'
+        s.waitForElementPresent(add_link)
+        s.click(add_link)
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.authors.0.', 'Lord Byron')
         s.type('form.title', 'Poems')
         s.select('form.category', 'Belletristik')
         s.click('name=form.actions.add')
         s.waitForElementNotPresent('id=lightbox.form')
-        s.waitForText(
-            'css=a.RecensionTitle:last-of-type', 'Lord Byron: Poems*')
+        s.waitForElementPresent('css=a.RecensionTitle')
+        s.assertText('css=a.RecensionTitle', 'Lord Byron: Poems*')
