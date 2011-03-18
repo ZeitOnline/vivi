@@ -21,3 +21,19 @@ class Edit(zeit.content.article.browser.recension.FormBase,
         gocept.form.grouped.RemainingFields(
             _('Raw data'),
             css_class='fullWidth'),)
+
+
+class Add(zeit.content.article.browser.recension.FormBase,
+          zeit.edit.browser.view.AddBox):
+
+    title = _('Add book information')
+    form_fields = (
+        zeit.content.article.browser.recension.FormBase.form_fields.omit(
+            'raw_data'))
+    factory = zeit.content.article.recension.BookRecension
+
+    def add(self, obj):
+        self.context.append(obj)
+        # prevent redirect
+        self._finished_add = False
+        return obj

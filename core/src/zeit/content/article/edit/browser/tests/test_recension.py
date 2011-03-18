@@ -56,3 +56,15 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('form.actions.apply')
         s.waitForElementNotPresent('id=lightbox.form')
         s.waitForText('css=a.RecensionTitle', '*Byron*')
+
+    def test_add_recension_should_happen_in_lightbox(self):
+        s = self.selenium
+        s.click('css=#recensions a:contains(Add new)')
+        s.waitForElementPresent('id=lightbox.form')
+        s.type('form.authors.0.', 'Lord Byron')
+        s.type('form.title', 'Poems')
+        s.select('form.category', 'Belletristik')
+        s.click('name=form.actions.add')
+        s.waitForElementNotPresent('id=lightbox.form')
+        s.waitForText(
+            'css=a.RecensionTitle:last-of-type', 'Lord Byron: Poems*')
