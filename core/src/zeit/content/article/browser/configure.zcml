@@ -144,7 +144,7 @@
     for="zeit.content.article.interfaces.IBookRecensionContainer"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".recension.Add"
-    name="add"
+    name="add-old"
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Add"
     />
@@ -153,7 +153,7 @@
     for="zeit.content.article.interfaces.IBookRecension"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".recension.Edit"
-    name="edit.html"
+    name="edit-old.html"
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Edit"
     />

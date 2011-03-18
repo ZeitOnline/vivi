@@ -70,7 +70,7 @@ Let's add one:
             <div id="content">
     <div class="recensions">
   <div class="recension">
-    <a href=".../@@edit.html" title="Edit" class="RecensionTitle">
+    <a href=".../@@edit-old.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
       Der Schwarm [edit]
     </a>
@@ -89,7 +89,7 @@ Let's edit and add some more information:
             <div id="content">
     <div class="recensions">
   <div class="recension">
-    <a href=".../@@edit.html" title="Edit" class="RecensionTitle">
+    <a href=".../@@edit-old.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
       Der Schwarm [edit]
     </a>
@@ -147,7 +147,7 @@ Let's add another recension:
             <div id="content">
     <div class="recensions">
   <div class="recension">
-    <a href=".../recensions/0/@@edit.html" title="Edit" class="RecensionTitle">
+    <a href=".../recensions/0/@@edit-old.html" title="Edit" class="RecensionTitle">
       Frank Schwanitz:
       Der Schwarm [edit]
     </a>
@@ -161,7 +161,7 @@ Let's add another recension:
       <dd class="price">24.90</dd>
       ...
   <div class="recension">
-    <a href=".../recensions/1/@@edit.html" title="Edit" class="RecensionTitle">
+    <a href=".../recensions/1/@@edit-old.html" title="Edit" class="RecensionTitle">
       Theodor W. Adorno:
       Minima Moralia [edit]
     </a>

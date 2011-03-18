@@ -1,3 +1,4 @@
+
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
@@ -116,6 +117,48 @@
     name="edit.form.workflow-log"
     class=".form.WorkflowLog"
     permission="zope.View"
+    />
+
+  <!-- recensions -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="recensions"
+    class=".recension.RecensionForms"
+    template="edit.forms.pt"
+    permission="zope.View"
+    weight="50"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".recension.RecensionForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.recension-list"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.recension-list"
+    class="zeit.content.article.browser.recension.Overview"
+    template="recension-list.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IBookRecension"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".recension.Edit"
+    name="edit.html"
+    permission="zeit.EditContent"
     />
 
 </configure>
