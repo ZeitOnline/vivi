@@ -112,6 +112,40 @@ class EditBox(zope.formlib.form.SubPageEditForm):
         return super(EditBox, self).handle_edit_action.success(data)
 
 
+class AddBox(zeit.cms.browser.form.AddFormBase,
+             zope.formlib.form.AddFormBase):
+    """Base class for an add box."""
+
+    # there is no SubPageAddForm, so we set this up analog to SubPageEditForm
+    zope.interface.implements(zope.formlib.interfaces.ISubPageForm)
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile('view.editbox.pt')
+    close = False
+    form_fields = NotImplemented
+
+    @property
+    def form(self):
+        return super(AddBox, self).template
+
+    @zope.formlib.form.action(_('Add'))
+    def handle_add(self, action, data):
+        self.close = True
+        return super(AddBox, self).handle_add.success(data)
+
+    def add(self):
+        result = super(AddBox, self).add()
+        # prevent redirect
+        self._finished_add = False
+        return result
+
+    def setUpWidgets(self, ignore_request=False):
+        # XXX bug in zope.formlib.form.AddFormBase: setUpWidgets does not call
+        # super, thus self.adapters is not initialized, but
+        # zeit.cms.browser.form.AddFormBase needs it
+        self.adapters = {}
+        super(AddBox, self).setUpWidgets(ignore_request)
+
+
 class EditBoxAction(zope.viewlet.viewlet.ViewletBase):
 
     render = zope.app.pagetemplate.ViewPageTemplateFile(
