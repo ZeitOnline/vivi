@@ -113,57 +113,9 @@
 
   <!-- Recensions -->
 
-  <gocept:pagelet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="recensions.html"
-    class=".recension.Overview"
-    template="recension-overview.pt"
-    permission="zope.View" 
-    />
-
-  <browser:menuItem
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    action="@@recensions.html"
-    menu="zeit-context-views"
-    title="Recensions"
-    filter="context/has_recensions"
-    permission="zope.View" 
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IBookRecensionContainer"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".recension.RecensionIndex"
-    name="index.html"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IBookRecensionContainer"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".recension.Add"
-    name="add-old"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Add"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IBookRecension"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".recension.Edit"
-    name="edit-old.html"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit"
-    />
-
   <resourceLibrary name="zeit.cms.recension">
     <directory source="resources" include="recension.css" />
   </resourceLibrary>
-
-  <adapter factory=".recension.edit_view_name" name="recensions.html" />
-  <adapter factory=".recension.display_view_name" name="recensions.html" />
 
   <!-- workflow -->
   <adapter

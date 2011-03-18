@@ -148,7 +148,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.recension-list"
-    class="zeit.content.article.browser.recension.Overview"
+    class=".recension.Overview"
     template="recension-list.pt"
     permission="zope.View"
     />

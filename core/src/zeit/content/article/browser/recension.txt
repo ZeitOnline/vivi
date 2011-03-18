@@ -8,69 +8,30 @@ We need a testbrowser first:
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 
-Also set the product config:
+>>> browser.open('http://localhost/++skin++vivi/repository/online'
+...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('edit.form.recension-list')
+>>> listing = browser.url
 
->>> import os.path
->>> import zope.app.appsetup.product
->>> config = zope.app.appsetup.product._configs['zeit.content.article'] = {}
->>> config['source-book-recession-categories'] = 'file://%s' % (
-...     os.path.join(os.path.dirname(__file__), 'book-categories.xml'))
-
-The recensions UI is not "enabled" by default on articles. The user first has
-to mark the article to use recentions. Open an article in the repository:
-
->>> browser.open('http://localhost:8080/++skin++cms/repository/online'
-...              '/2007/01/Somalia/')
-
-There are no recensions, yet:
-
->>> browser.getLink('Recensions')
-Traceback (most recent call last):
-    ...
-LinkNotFoundError
-
-Check the article out:
-
->>> browser.getLink('Checkout').click()
-
-There is still no recention tab:
->>> browser.getLink('Recensions')
-Traceback (most recent call last):
-    ...
-LinkNotFoundError
-
-Mark the article now:
-
->>> browser.getLink('Edit metadata').click()
->>> browser.getControl('Has recension content').selected = True
->>> browser.getControl('Apply').click()
->>> 'There were errors' in browser.contents
-False
-
-
-After saving the recentions tab appears:
-
->>> browser.getLink('Recensions').click()
 >>> print browser.contents
-<?xml ...
+<...
     There are no book information items, yet.
     ...
 
 Let's add one:
 
->>> browser.getControl('Add').click()
+>>> browser.getLink('Add').click()
 >>> browser.getControl('Title').value = 'Der Schwarm'
 >>> browser.getControl(name='form.authors.0.').value = 'Frank Schwanitz'
 >>> browser.getControl('ZEIT category').displayValue
 ['(no value)']
 >>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
 >>> browser.getControl(name='form.actions.add').click()
+>>> browser.open(listing)
 >>> print browser.contents
-<?xml ...
-            <div id="content">
-    <div class="recensions">
+<div id="recensions">...
   <div class="recension">
-    <a href=".../@@edit-old.html" title="Edit" class="RecensionTitle">
+    <a...>
       Frank Schwanitz:
       Der Schwarm [edit]
     </a>
@@ -84,12 +45,11 @@ Let's edit and add some more information:
 >>> browser.getControl('Year').value = '2004'
 >>> browser.getControl('Price').value = '24.90'
 >>> browser.getControl('Apply').click()
+>>> browser.open(listing)
 >>> print browser.contents
-<?xml ...
-            <div id="content">
-    <div class="recensions">
+<div id="recensions">...
   <div class="recension">
-    <a href=".../@@edit-old.html" title="Edit" class="RecensionTitle">
+    <a...>
       Frank Schwanitz:
       Der Schwarm [edit]
     </a>
@@ -109,6 +69,7 @@ just a TextLine but we need lxml 2.0 for this.
 
 Let's have a look at the source code:
 
+>>> browser.open('@@edit.html')
 >>> browser.getLink('Source').click()
 >>> print browser.getControl('XML Source').value.replace('\r\n', '\n')
 <article>...
@@ -132,8 +93,8 @@ Let's have a look at the source code:
 
 Let's add another recension:
 
->>> browser.getLink('Recensions').click()
->>> browser.getControl('Add').click()
+>>> browser.open(listing)
+>>> browser.getLink('Add').click()
 >>> browser.getControl('Title').value = 'Minima Moralia'
 >>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
 >>> browser.getControl(name='form.authors.0.').value = 'Theodor W. Adorno'
@@ -142,12 +103,11 @@ Let's add another recension:
 >>> browser.getControl('Year').value = '2001'
 >>> browser.getControl('Price').value = '13.80'
 >>> browser.getControl(name='form.actions.add').click()
+>>> browser.open(listing)
 >>> print browser.contents
-<?xml ...
-            <div id="content">
-    <div class="recensions">
+<div id="recensions">...
   <div class="recension">
-    <a href=".../recensions/0/@@edit-old.html" title="Edit" class="RecensionTitle">
+    <a...>
       Frank Schwanitz:
       Der Schwarm [edit]
     </a>
@@ -161,7 +121,7 @@ Let's add another recension:
       <dd class="price">24.90</dd>
       ...
   <div class="recension">
-    <a href=".../recensions/1/@@edit-old.html" title="Edit" class="RecensionTitle">
+    <a...>
       Theodor W. Adorno:
       Minima Moralia [edit]
     </a>
@@ -174,53 +134,3 @@ Let's add another recension:
     ...
     <dd class="price">13.80</dd>
   ...
-
-
-Let's check in. We don't have an edit link or add button then (note that we're
-automatically at the recensions page):
-
->>> browser.getLink('Checkin').click()
->>> print browser.contents
-<?xml ...
-            <div id="content">
-    <div class="recensions">
-  <div class="recension">
-    <div class="RecensionTitle">
-      Frank Schwanitz:
-      Der Schwarm
-    </div>
-    ...
-      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
-      ...
-      <dd class="location">Koeln</dd>
-      ...
-      <dd class="year">2004</dd>
-      ...
-      <dd class="price">24.90</dd>
-      ...
-  <div class="recension">
-    <div class="RecensionTitle">
-      Theodor W. Adorno:
-      Minima Moralia
-    </div>
-    ...
-    <dd class="publisher">Suhrkamp</dd>
-    ...
-    <dd class="location">Zuerich</dd>
-    ...
-    <dd class="year">2001</dd>
-    ...
-    <dd class="price">13.80</dd>
-  ...
-
->>> browser.getControl('Add')
-Traceback (most recent call last):
-    ...
-LookupError: label 'Add'
-
-
-After checking out from the recensions page, they can be edited directly:
-
->>> browser.getLink('Checkout').click()
->>> print browser.title.strip()
-Rückkehr der Warlords – Recensions

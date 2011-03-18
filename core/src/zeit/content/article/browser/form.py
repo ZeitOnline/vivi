@@ -22,7 +22,8 @@ class ArticleFormBase(object):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata,
         zeit.cms.interfaces.ICMSContent).omit('textLength',
-                                              'author_references')
+                                              'author_references',
+                                              'has_recensions')
 
     field_groups = (
         base.navigation_fields,
