@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import zeit.content.article.interfaces
+import zeit.content.article.recension
 import zope.cachedescriptors.property
 import zope.component
 
