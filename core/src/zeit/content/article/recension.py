@@ -108,12 +108,11 @@ class RecensionContainerTraverser(object):
         self.request = request
 
     def publishTraverse(self, request, name):
-        if self.context.has_recensions:
-            recensions = (
-                zeit.content.article.interfaces.IBookRecensionContainer(
-                    self.context))
-            if name == recensions.__name__:
-                return recensions
+        recensions = (
+            zeit.content.article.interfaces.IBookRecensionContainer(
+                self.context))
+        if name == recensions.__name__:
+            return recensions
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
 
