@@ -9,6 +9,8 @@ zeit.content.cp changes
 - Freie Teaser werden jetzt nur noch in der CP gespeichert. Es gibt keine extra
   Objekte im DAV mehr dafür (#7826)
 
+- Das Raw-Modul kann jetzt auch im Aufmacher verwendet werden (#8781)
+
 
 0.42.0 (2010-08-16)
 -------------------
