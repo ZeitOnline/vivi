@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -12,4 +11,5 @@ def test_suite():
         'teaser-two-column-layout.txt',
         'teaser-teasergroup-support.txt',
         'xml.txt',
+        package=zeit.content.cp.blocks,
     )

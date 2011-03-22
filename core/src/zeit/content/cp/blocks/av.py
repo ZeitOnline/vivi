@@ -59,8 +59,11 @@ class VideoBlock(AVBlock):
         if len(self.xml.getchildren()) == 0:
             self.xml.append(lxml.objectify.E.video())
 
-VideoBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'video', _('Videoblock'))
+
+zeit.content.cp.blocks.block.register_element_factory(
+    [zeit.content.cp.interfaces.IInformatives,
+     zeit.content.cp.interfaces.ITeaserBar],
+    'video', _('Videoblock'))
 
 
 class AudioBlock(AVBlock):
@@ -78,5 +81,7 @@ class AudioBlock(AVBlock):
             self.xml.append(lxml.objectify.E.audio())
 
 
-AudioBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'audio', _('Audioblock'))
+zeit.content.cp.blocks.block.register_element_factory(
+    [zeit.content.cp.interfaces.IInformatives,
+     zeit.content.cp.interfaces.ITeaserBar],
+    'audio', _('Audioblock'))

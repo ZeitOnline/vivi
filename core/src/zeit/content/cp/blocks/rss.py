@@ -72,5 +72,6 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
             zeit.content.cp.interfaces.IFeedManager).get_feed(self.url)
 
 
-RSSBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'rss', _('RSS block'))
+zeit.content.cp.blocks.block.register_element_factory(
+    [zeit.content.cp.interfaces.IInformatives,
+    zeit.content.cp.interfaces.ITeaserBar], 'rss', _('RSS block'))

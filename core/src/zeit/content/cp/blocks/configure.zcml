@@ -13,7 +13,6 @@
       permission="zope.View" />
   </class>
 
-  <adapter factory=".placeholder.PlaceHolderFactory" name="placeholder" />
   <adapter
     provides="..interfaces.IElement"
     name="placeholder"
@@ -49,7 +48,6 @@
   <adapter factory=".teaser.CenterpageFeed" />
   <adapter factory=".teaser.cp_xi_include" name="xi:include" />
   <adapter factory=".teaser.feed_xi_include" name="xi:include" />
-  <adapter factory=".teaser.TeaserBlockFactory" name="teaser" />
   <adapter
     provides="..interfaces.IElement"
     name="teaser"
@@ -115,7 +113,6 @@
       set_schema="..interfaces.IRSSBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".rss.RSSBlockFactory" name="rss" />
   <adapter
     provides="..interfaces.IElement"
     name="rss"
@@ -147,7 +144,6 @@
       set_schema="..interfaces.IVideoBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".av.VideoBlockFactory" name="video" />
   <adapter
     provides="..interfaces.IElement"
     name="video"
@@ -163,7 +159,6 @@
       set_schema="..interfaces.IAVBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".av.AudioBlockFactory" name="audio" />
   <adapter
     provides="..interfaces.IElement"
     name="audio"
@@ -179,7 +174,6 @@
       set_schema="..interfaces.IQuizBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".quiz.QuizBlockFactory" name="quiz" />
   <adapter
     provides="..interfaces.IElement"
     name="quiz"
@@ -195,7 +189,6 @@
       set_schema="..interfaces.IFullGraphicalBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".fullgraphical.FullGraphicalFactory" name="fullgraphical" />
   <adapter
     provides="..interfaces.IElement"
     name="fullgraphical"
@@ -211,7 +204,6 @@
       set_schema="..interfaces.ICPExtraBlock"
       permission="zeit.EditContent"/>
   </class>
-  <adapter factory=".cpextra.CPExtraBlockFactory" name="cpextra" />
   <adapter
     provides="..interfaces.IElement"
     name="cpextra"

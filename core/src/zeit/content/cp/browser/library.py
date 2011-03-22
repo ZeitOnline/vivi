@@ -74,7 +74,7 @@ class CPBlockFactories(BlockFactories):
 
     def get_adapters(self):
         adapters = []
-        for name in ('informatives', 'teaser-mosaic'):
+        for name in ('lead', 'informatives', 'teaser-mosaic'):
             region = self.context[name]
             view = zope.component.getMultiAdapter(
                 (region, self.request), name=self.__name__)

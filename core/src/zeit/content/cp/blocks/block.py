@@ -2,10 +2,12 @@
 # See also LICENSE.txt
 
 import gocept.lxml.interfaces
+import grokcore.component as grok
 import lxml.objectify
+import sys
 import zeit.cms.content.property
-import zeit.content.cp.interfaces
 import zeit.content.cp.centerpage
+import zeit.content.cp.interfaces
 import zope.component
 import zope.interface
 
@@ -36,16 +38,33 @@ class ElementFactory(object):
         return content
 
 
-def elementFactoryFactory(adapts, element_type, title=None, module=None):
-    """A factory which creates a content factory."""
+def register_element_factory(
+    adapts, element_type, title=None, module=None, frame=None):
+    if isinstance(adapts, zope.interface.interface.InterfaceClass):
+        adapts = [adapts]
     if module is None:
         module = element_type
-    class_name = '%sFactory' % element_type.capitalize()
-    factory = type(class_name, (ElementFactory,), dict(
-        title=title,
-        element_type=element_type,
-        module=module))
-    factory = zope.component.adapter(adapts)(factory)
+    if frame is None:
+        frame = sys._getframe(1)
+
+    for interface in adapts:
+        name = '%s%sFactory' % (interface.__name__, element_type.capitalize())
+        frame.f_locals[name] = create_factory_class(
+            element_type, interface, name, frame.f_locals['__name__'],
+            title, module)
+
+
+def create_factory_class(element_type, adapts, name, module, title, cp_module):
+    class factory(grok.Adapter, ElementFactory):
+        grok.context(adapts)
+        grok.name(element_type)
+    factory.title = title
+    factory.element_type = element_type
+    factory.module = cp_module
+    factory.__name__ = name
+    # so that the grokkers will pick it up
+    factory.__grok_module__ = module
+
     return factory
 
 

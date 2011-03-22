@@ -25,6 +25,7 @@ setup(
         'gocept.mochikit>=1.4.2.2',
         'gocept.runner>-0.4',
         'gocept.selenium>=0.6',
+        'grokcore.component',
         'lxml',
         'python-cjson',
         'setuptools',

@@ -22,8 +22,10 @@ class QuizBlock(zeit.content.cp.blocks.block.Block):
         '.block', xml_reference_name='related', attributes=('href',))
 
 
-QuizBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'quiz', _('Quizblock'))
+zeit.content.cp.blocks.block.register_element_factory(
+    [zeit.content.cp.interfaces.IInformatives,
+     zeit.content.cp.interfaces.ITeaserBar],
+    'quiz', _('Quizblock'))
 
 
 @grokcore.component.adapter(zeit.content.cp.interfaces.IQuizBlock)
