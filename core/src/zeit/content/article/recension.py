@@ -25,7 +25,6 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
         self.__parent__ = context
         self.__name__ = 'recensions'
 
-
     def __getitem__(self, index):
         return self._create_recension(index, self.entries[index])
 
@@ -70,7 +69,6 @@ class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
     default_template = (
         u'<entry xmlns="http://namespaces.zeit.de/bibinfo" '
         u'xmlns:py="http://codespeak.net/lxml/objectify/pytype" />')
-
 
     authors = zeit.cms.content.property.SimpleMultiProperty(
         '.auth-info.author')
