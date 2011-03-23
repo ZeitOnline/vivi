@@ -11,6 +11,8 @@ zeit.content.cp changes
 
 - Das Raw-Modul kann jetzt auch im Aufmacher verwendet werden (#8781)
 
+- Layout-Berechnung im Aufmacher korrigiert (#8844).
+
 
 0.42.0 (2010-08-16)
 -------------------

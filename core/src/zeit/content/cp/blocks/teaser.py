@@ -336,13 +336,13 @@ def apply_layout(context, event):
     if (cp_type == 'archive-print-volume') or (cp_type == 'archive-print-year'):
         return
     # We are leaders!
-    content = [content for content in context.values()
-               if zeit.content.cp.interfaces.ITeaserBlock.providedBy(content)]
+    content = list(context.values())
     if len(content) == 0:
         return
     first = content[0]
     buttons = zeit.content.cp.layout.get_layout('buttons')
-    if first.layout == buttons or first.layout is None:
+    if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(first) and
+        (first.layout == buttons or first.layout is None)):
         first.layout = zeit.content.cp.layout.get_layout('leader')
     for elem in content[1:]:
         elem.layout = buttons
