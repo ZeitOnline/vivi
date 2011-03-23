@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-0.9.0 (unreleased)
+0.9.0 (2011-03-23)
 ------------------
 
 - Changed mapping for ``last-semantic-change`` to ``date_first_released``
