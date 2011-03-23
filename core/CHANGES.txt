@@ -3,7 +3,8 @@ zeit.brightcove changes
 
 0.9.0 (unreleased)
 ------------------
-- Changed mapping forlast-semantic-change to date_first_released
+
+- Changed mapping for ``last-semantic-change`` to ``date_first_released``
 
 - Videos can be checked out now by the system. This allows to create free
   teasers of videos (#7826).
@@ -11,7 +12,7 @@ zeit.brightcove changes
 - Extracted ``get_expires`` to get the me earliest expires date from a list of
   playlists and videos.
 
-- Change indexes as the interface requires an solr attribute now (#8559)
+- Change indexes as the interface requires an solr attribute now (for #8559)
 
 
 0.8.0 (2010-08-16)
