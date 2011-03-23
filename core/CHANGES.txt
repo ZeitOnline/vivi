@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.47.1 (unreleased)
+1.48.0 (2011-03-23)
 -------------------
 
 -  Generalised how checkout/checkin works so it also works for non-dav content
