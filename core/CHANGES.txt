@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.42.1 (unreleased)
+0.43.0 (2011-03-23)
 -------------------
 
 - TeaserBockProxy adapts to ICommonMetadata now. 
