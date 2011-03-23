@@ -7,7 +7,7 @@ zeit.brightcove changes
 - Changed mapping for ``last-semantic-change`` to ``date_first_released``
 
 - Videos can be checked out now by the system. This allows to create free
-  teasers of videos (#7826).
+  teasers of videos (for #7826).
 
 - Extracted ``get_expires`` to get the me earliest expires date from a list of
   playlists and videos.
