@@ -47,3 +47,12 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
              self.teasers2.__name__,
              self.teasers3.__name__])
         self.assertEqual('buttons', self.teasers1.layout.id)
+
+    def test_layout_should_only_be_assigned_to_teasers(self):
+        xml = self.factory('xml')
+        self.lead.updateOrder(
+            [self.teasers1.__name__,
+             xml.__name__,
+             self.teasers2.__name__,
+             self.teasers3.__name__])
+        self.assertFalse(hasattr(xml, 'layout'))

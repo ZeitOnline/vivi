@@ -345,6 +345,8 @@ def apply_layout(context, event):
         (first.layout == buttons or first.layout is None)):
         first.layout = zeit.content.cp.layout.get_layout('leader')
     for elem in content[1:]:
+        if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(elem):
+            continue
         elem.layout = buttons
 
 
