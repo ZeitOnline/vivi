@@ -3,7 +3,7 @@
 
   <div class="landing-zone action-content-droppable action-lead-module-droppable"
        tal:attributes="cms:drop-url string:${item/@@absolute_url}/landing-zone-drop;
-                       cms:create-block-url string:${context/@@absolute_url}/landing-zone-drop-module"
+                       cms:create-block-url string:${item/@@absolute_url}/landing-zone-drop-module"
        i18n:translate="">
   </div>
 
