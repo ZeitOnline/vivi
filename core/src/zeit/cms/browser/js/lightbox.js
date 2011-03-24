@@ -201,6 +201,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 return null;
             }
             self.post_process_html();
+            MochiKit.Signal.signal(window, 'changed');
             MochiKit.Signal.signal(self, 'after-reload');
             // Delaying the class remove somehow avoids flickering
             MochiKit.Async.callLater(0,
