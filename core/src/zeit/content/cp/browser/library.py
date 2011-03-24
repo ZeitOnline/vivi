@@ -82,7 +82,6 @@ class CPBlockFactories(BlockFactories):
         return adapters
 
 
-
 class BlockLandingZone(zeit.content.cp.browser.landing.LandingZone):
 
     block_type = zeit.content.cp.browser.view.Form('block_type')
