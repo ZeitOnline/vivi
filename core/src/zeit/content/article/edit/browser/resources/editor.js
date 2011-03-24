@@ -4,19 +4,22 @@ zeit.cms.declare_namespace('zeit.content.article');
 
 var wire_forms = function() {
     forEach($$('#article-editor-forms .inline-form'), function(container) {
+        if (MochiKit.DOM.hasElementClass(container, 'wired')) {
+            return;
+        }
         //XXX need to make it context aware
         var url = container.getAttribute('action');
         var form = new zeit.cms.SubPageForm(
             url, container, {save_on_change: true});
+        MochiKit.DOM.addElementClass(container, 'wired');
     });
 };
 
 
-var ident = MochiKit.Signal.connect(window, 'script-loading-finished',
-    function() {
-        MochiKit.Signal.disconnect(ident);
-        wire_forms();
+MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+    wire_forms();
 });
+
 
 // Initialize module library
 MochiKit.Signal.connect(
