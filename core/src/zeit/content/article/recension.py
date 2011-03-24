@@ -22,8 +22,9 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
 
     def __init__(self, context):
         self.context = context
-        self.__parent__ = context
         self.__name__ = 'recensions'
+        # set parent last so we don't trigger a write
+        self.__parent__ = context
 
     def __getitem__(self, index):
         return self._create_recension(index, self.entries[index])
@@ -55,7 +56,11 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
     def _create_recension(self, index, node):
         recension = BookRecension()
         recension.xml = node
-        return zope.location.location.located(recension, self, unicode(index))
+        recension = zope.location.location.located(
+            recension, self, unicode(index))
+        # located() sets __parent__ first, so it has triggered a false write
+        recension._p_changed = False
+        return recension
 
 
 class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
