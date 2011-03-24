@@ -197,6 +197,9 @@ def cp_type(context):
 def is_published(context):
     def is_published_inner(obj):
         pi = zeit.cms.workflow.interfaces.IPublishInfo(obj, None)
+        if isinstance(pi, zeit.workflow.publishinfo.NotPublishablePublishInfo):
+            # for the purposes of the validation rules
+            return True
         return pi is not None and pi.published
     return is_published_inner
 

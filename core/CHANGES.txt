@@ -7,6 +7,9 @@ zeit.content.cp changes
 - Bugfix: Raw-Modul im Aufmacher bekommt kein Layout mehr zugewiesen, das kann
   nämlich nicht funktionieren (#8844).
 
+- is_published für Validation-Rules ignoriert NotPublishablePublishInfos
+  (#8843).
+
 
 0.43.0 (2011-03-23)
 -------------------
