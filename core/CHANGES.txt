@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.43.1 (unreleased)
+0.43.1 (2011-03-24)
 -------------------
 
 - Bugfix: Raw-Modul im Aufmacher bekommt kein Layout mehr zugewiesen, das kann
