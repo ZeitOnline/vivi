@@ -2,7 +2,7 @@ zeit.cms.all_tabs = {}
 
 zeit.cms.Tabs = gocept.Class.extend({
     // Knows about all tabs
-    
+
     construct: function(container) {
         log("initializing tabs");
         var self = this;
