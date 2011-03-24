@@ -125,6 +125,7 @@ zeit.edit.Editor = gocept.Class.extend({
         });
         d.addCallback(function(result) {
             MochiKit.Signal.signal(self, 'after-reload');
+            MochiKit.Signal.signal(window, 'changed');
             return result;
         });
         d.addErrback(function(error) {
