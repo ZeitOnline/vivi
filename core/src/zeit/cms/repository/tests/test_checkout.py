@@ -1,7 +1,6 @@
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest2
 import zeit.cms.testing
 
 
@@ -38,8 +37,7 @@ class DefaultAdapterTests(zeit.cms.testing.FunctionalTestCase):
             self.fail('TypeError not raised')
 
 
-class TestRenameOnCheckin(zeit.cms.testing.FunctionalTestCase,
-                          unittest2.TestCase):
+class TestRenameOnCheckin(zeit.cms.testing.FunctionalTestCase):
 
     def get_content(self, name='testcontent'):
         import zeit.cms.interfaces

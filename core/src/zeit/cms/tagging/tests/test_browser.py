@@ -2,12 +2,10 @@
 # See also LICENSE.txt
 
 import mock
-import unittest2
 import zeit.cms.testing
 
 
-class TestWidget(zeit.cms.testing.SeleniumTestCase,
-                 unittest2.TestCase):
+class TestWidget(zeit.cms.testing.SeleniumTestCase):
 
     def get_tag(self, code):
         tag = mock.Mock()

@@ -8,14 +8,14 @@ import unittest2
 import zeit.cms.testing
 
 
-class TestObjectDetails(unittest2.TestCase,
-                        zeit.cms.testing.FunctionalTestCase,
+class TestObjectDetails(zeit.cms.testing.FunctionalTestCase,
                         zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
         from zope.testbrowser.testing import Browser
+        import zope.security.management
         super(TestObjectDetails, self).setUp()
-        self.layer.setup.setUp()
+        zope.security.management.endInteraction()
         self.browser = browser = Browser()
         browser.addHeader('Authorization', 'Basic user:userpw')
         browser.open(
@@ -82,9 +82,13 @@ class TestObjectSequenceWidget(unittest2.TestCase):
             (), widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar]))
 
 
-class TestObjectSequenceWidgetIntegration(unittest2.TestCase,
-                                          zeit.cms.testing.FunctionalTestCase,
+class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
                                           zeit.cms.testing.BrowserAssertions):
+
+    def setUp(self):
+        import zope.security.management
+        super(TestObjectSequenceWidgetIntegration, self).setUp()
+        zope.security.management.endInteraction()
 
     def get_field(self):
         import zeit.cms.content.contentsource
@@ -247,6 +251,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.assertValue('css=input[name=testwidget.1]',
                       'http://xml.zeit.de/testcontent')
 
+
 class TestObjectSequenceWidgetAutocompleteJavascript(
     zeit.cms.testing.SeleniumTestCase):
 
@@ -333,8 +338,12 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s.waitForValue('name=testwidget', '')
 
 
-class TestDropObjectWidgetIntegration(unittest2.TestCase,
-                                      zeit.cms.testing.FunctionalTestCase):
+class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        import zope.security.management
+        super(TestDropObjectWidgetIntegration, self).setUp()
+        zope.security.management.endInteraction()
 
     def get_choice(self):
         import zeit.cms.content.contentsource
@@ -405,11 +414,14 @@ class TestObjectSequenceDisplayWidget(unittest2.TestCase):
         widget.context.default = (content, content2)
 
 
-
 class TestObjectSequenceDisplayWidgetIntegration(
-    unittest2.TestCase,
     zeit.cms.testing.FunctionalTestCase,
     zeit.cms.testing.BrowserAssertions):
+
+    def setUp(self):
+        import zope.security.management
+        super(TestObjectSequenceDisplayWidgetIntegration, self).setUp()
+        zope.security.management.endInteraction()
 
     def get_field(self):
         import zeit.cms.content.contentsource

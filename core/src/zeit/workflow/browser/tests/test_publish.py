@@ -6,8 +6,7 @@ import zeit.cms.testing
 import zeit.workflow.testing
 
 
-class TestPublish(zeit.cms.testing.SeleniumTestCase,
-                  unittest2.TestCase):
+class TestPublish(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.workflow.testing.selenium_layer
     skin = 'vivi'
@@ -72,8 +71,7 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
             config['zeit.workflow']['publish-script'] = old_script
 
 
-class TestRetract(zeit.cms.testing.SeleniumTestCase,
-                  unittest2.TestCase):
+class TestRetract(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.workflow.testing.selenium_layer
     skin = 'vivi'
