@@ -20,6 +20,7 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
             repository['testcontent'])
         self.content = manager.checkout()
         self.content.year = 2001
+        self.content.volume = 7
         self.undo = zeit.edit.interfaces.IUndo(self.content)
         transaction.commit()
         self.workingcopy = zeit.cms.checkout.interfaces.IWorkingcopy(None)
@@ -46,6 +47,18 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
         transaction.commit()
         content = self.workingcopy['testcontent']
         self.assertEqual(2001, content.year)
+
+    def test_reverts_changes_of_multiple_transactions(self):
+        self.content.year = 2010
+        transaction.commit()
+        self.content.volume = 42
+        transaction.commit()
+
+        self.undo.revert(self.undo.history[-2]['tid'])
+        transaction.commit()
+        content = self.workingcopy['testcontent']
+        self.assertEqual(2001, content.year)
+        self.assertEqual(7, content.volume)
 
     def test_no_changes_found_should_raise(self):
         # the checkout is the first transaction ever, there is no state before
