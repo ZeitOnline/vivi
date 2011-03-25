@@ -68,9 +68,14 @@ class GlobTest(zeit.edit.testing.FunctionalTestCase):
 </body>
 """)
 
-        self.area = type('DummyArea', (dict,), {})()
+        Area = type('DummyArea', (dict,), {})
+        page = Area()
+        page.__parent__ = None
+        self.area = Area()
         self.area.__name__ = 'testarea'
-        self.area.__parent__ = None
+        self.area.__parent__ = page
+        self.area.type = 'area'
+        page['testarea'] = self.area
         zope.interface.alsoProvides(self.area, zeit.edit.interfaces.IArea)
         self.block = zeit.edit.block.SimpleElement(
             self.area, self.xml.p)
