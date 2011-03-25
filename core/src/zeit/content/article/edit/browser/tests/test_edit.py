@@ -3,6 +3,7 @@
 
 import mock
 import unittest2
+import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 
 
@@ -123,33 +124,12 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('p', view.context['7'].type)
 
 
-class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
+class TestTextEditing(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestTextEditing, self).setUp()
-        s = self.selenium
-        self.open('/repository')
-        s.select('id=add_menu', 'label=Article')
-        s.waitForPageToLoad()
-
-    def create(self, contents=None):
-        s = self.selenium
-        s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('css=.block.type-p .editable')
-        if contents:
-            s.getEval(
-                "this.browserbot.findElement("
-                "  'css=.block.type-p .editable').innerHTML = '{0}'".format(
-                    contents.replace("'", "\\'")))
-
-    def save(self, locator='css=.block.type-p .editable'):
-        self.selenium.getEval(
-            "window.MochiKit.Signal.signal("
-            "   this.browserbot.findElement('{0}'), 'save')".format(locator))
-        self.selenium.waitForElementNotPresent('xpath=//*[@contenteditable]')
+        self.add_article()
 
     def test_landing_zone_should_take_modules(self):
         s = self.selenium
@@ -321,14 +301,12 @@ class TestTextEditing(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementPresent('xpath=//*[@contenteditable]')
 
 
-class TestFolding(zeit.content.article.testing.SeleniumTestCase):
+class TestFolding(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestFolding, self).setUp()
-        s = self.selenium
-        self.open('/repository')
-        s.select('id=add_menu', 'label=Article')
-        s.waitForPageToLoad()
+        self.add_article()
 
     def assert_foldable(self, block):
         s = self.selenium
@@ -462,14 +440,12 @@ class TestReadonlyVisible(unittest2.TestCase,
         self.assertNotIn('action-block-sorter', browser.contents)
 
 
-class TestDivision(zeit.content.article.testing.SeleniumTestCase):
+class TestDivision(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestDivision, self).setUp()
-        s = self.selenium
-        self.open('/repository')
-        s.select('id=add_menu', 'label=Article')
-        s.waitForPageToLoad()
+        self.add_article()
 
     def create_division(self):
         s = self.selenium
