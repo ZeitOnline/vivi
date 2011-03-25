@@ -178,8 +178,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.assert_widget_text('assets.related', 'testcontent*')
 
 
-class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
-                  unittest2.TestCase):
+class KeywordTest(zeit.content.article.testing.SeleniumTestCase):
 
     def get_tag(self, code):
         tag = mock.Mock()
@@ -212,8 +211,7 @@ class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
         self.assertEqual(1, tags['t1'].weight)
 
 
-class AuthorTest(zeit.content.article.testing.SeleniumTestCase,
-                 unittest2.TestCase):
+class AuthorTest(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
         super(AuthorTest, self).setUp()
