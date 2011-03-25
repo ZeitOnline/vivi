@@ -64,6 +64,7 @@ class IWorkingcopy(zope.container.interfaces.IContainer):
 
     """
 
+
 class ILocalContent(zope.interface.Interface):
     """Locally (workingcopy) stored content.
 
