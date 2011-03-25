@@ -25,7 +25,17 @@ class Undo(grok.Adapter):
     @property
     def history(self):
         # XXX how many entries should we ask for?
-        return self._connection.db().history(self.context._p_oid, 20)
+        history = self._connection.db().history(self.context._p_oid, 20)
+
+        result = []
+        for entry in history:
+            source = entry
+            if 'extension' in entry:
+                source = entry['extension']
+            description = source.get('request_info', None)
+            result.append(dict(tid=entry['tid'],
+                               description=description))
+        return result
 
     def revert(self, tid):
         self._revert_xml(tid)
