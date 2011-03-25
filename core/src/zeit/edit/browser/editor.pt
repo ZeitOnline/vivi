@@ -9,6 +9,7 @@
     tabs.add(new zeit.cms.Tab('cp-search', 'Inhalte'));
     MochiKit.DOM.addElementClass('cp-search', 'zeit-find-search');
     tabs.add(new zeit.cms.Tab('cp-library', 'Module'));
+    tabs.add(new zeit.cms.Tab('cp-undo', 'Undo'));
     zeit.find.init_full_search();
   })();
 </script>

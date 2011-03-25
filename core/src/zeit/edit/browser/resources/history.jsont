@@ -1,0 +1,7 @@
+<div class="history">
+<ul>
+{.repeated section history}
+<li><a cms:cp-module="zeit.edit.LoadAndReload" href="{context_url}/@@revert?tid={tid}">{description}</li>
+{.end}
+</ul>
+</div>
