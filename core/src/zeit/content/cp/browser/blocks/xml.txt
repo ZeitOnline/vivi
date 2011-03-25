@@ -90,6 +90,26 @@ Broken markup is sanitized:
 ...http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;...
 
 
+Regression: XML blocks in the lead area
+---------------------------------------
+
+The lead area applies layouts to the teasers in it (according to some rules
+that differentiate the first and all other blocks), but it should not try to do
+that to XML blocks, because they don't have a layout.
+These calls should just run through without raising HTTP 500.
+
+>>> browser.open(contents_url)
+>>> browser.open('lead/@@landing-zone-drop-module'
+...              '?block_type=xml')
+>>> browser.open(contents_url)
+>>> browser.open('lead/@@landing-zone-drop-module'
+...              '?block_type=teaser')
+>>> browser.open(contents_url)
+>>> browser.open('lead/@@landing-zone-drop-module'
+...              '?block_type=xml')
+
+
+
 .. [#helper_functions]
 
     >>> def update_xml(m, r):

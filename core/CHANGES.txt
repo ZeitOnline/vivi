@@ -1,13 +1,33 @@
 zeit.content.cp changes
 =======================
 
-0.42.1 (unreleased)
+0.43.2 (unreleased)
 -------------------
 
-- TeaserBockProxy adapts to ICommonMetadata now. 
+- Nothing changed yet.
+
+
+0.43.1 (2011-03-24)
+-------------------
+
+- Bugfix: Raw-Modul im Aufmacher bekommt kein Layout mehr zugewiesen, das kann
+  nämlich nicht funktionieren (#8844).
+
+- is_published für Validation-Rules ignoriert NotPublishablePublishInfos
+  (#8843).
+
+
+0.43.0 (2011-03-23)
+-------------------
+
+- TeaserBockProxy adapts to ICommonMetadata now.
 
 - Freie Teaser werden jetzt nur noch in der CP gespeichert. Es gibt keine extra
   Objekte im DAV mehr dafür (#7826)
+
+- Das Raw-Modul kann jetzt auch im Aufmacher verwendet werden (#8781)
+
+- Layout-Berechnung im Aufmacher korrigiert (#8844).
 
 
 0.42.0 (2010-08-16)

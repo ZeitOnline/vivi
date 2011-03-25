@@ -257,9 +257,8 @@ class AutoPilotTeaserBlock(TeaserBlock):
                         break
 
 
-TeaserBlockFactory = zeit.content.cp.blocks.block.elementFactoryFactory(
-    zeit.content.cp.interfaces.IRegion, 'teaser',
-    _('List of teasers'))
+zeit.content.cp.blocks.block.register_element_factory(
+    zeit.edit.interfaces.IContainer, 'teaser', _('List of teasers'))
 
 
 @grokcore.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
@@ -269,7 +268,6 @@ def cms_content_iter(context):
         yield teaser
         if zeit.content.cp.interfaces.IXMLTeaser.providedBy(teaser):
             yield zeit.cms.interfaces.ICMSContent(teaser.original_uniqueId)
-
 
 
 @grokcore.component.adapter(zeit.content.cp.interfaces.IAutoPilotTeaserBlock)
@@ -338,15 +336,17 @@ def apply_layout(context, event):
     if (cp_type == 'archive-print-volume') or (cp_type == 'archive-print-year'):
         return
     # We are leaders!
-    content = [content for content in context.values()
-               if zeit.content.cp.interfaces.ITeaserBlock.providedBy(content)]
+    content = list(context.values())
     if len(content) == 0:
         return
     first = content[0]
     buttons = zeit.content.cp.layout.get_layout('buttons')
-    if first.layout == buttons or first.layout is None:
+    if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(first) and
+        (first.layout == buttons or first.layout is None)):
         first.layout = zeit.content.cp.layout.get_layout('leader')
     for elem in content[1:]:
+        if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(elem):
+            continue
         elem.layout = buttons
 
 

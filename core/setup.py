@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.cp',
-    version='0.42.1dev',
+    version='0.43.2dev',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://intra.gocept.com/projects/projects/zeit-cms',
@@ -25,6 +25,7 @@ setup(
         'gocept.mochikit>=1.4.2.2',
         'gocept.runner>-0.4',
         'gocept.selenium>=0.6',
+        'grokcore.component',
         'lxml',
         'python-cjson',
         'setuptools',

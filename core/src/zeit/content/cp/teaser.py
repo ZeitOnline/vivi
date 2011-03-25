@@ -43,7 +43,6 @@ class XMLTeaser(zope.container.contained.Contained,
     original_uniqueId = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', '{http://namespaces.zeit.de/CMS/link}href')
 
-
     def __init__(self, context, xml, name):
         self.xml = xml
         self.__name__ = name
