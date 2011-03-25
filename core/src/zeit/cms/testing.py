@@ -17,6 +17,7 @@ import sys
 import threading
 import time
 import transaction
+import unittest2
 import urllib2
 import xml.sax.saxutils
 import zeit.connector.interfaces
@@ -204,7 +205,8 @@ def FunctionalDocFileSuite(*paths, **kw):
     return test
 
 
-class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
+class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
+                         unittest2.TestCase):
 
     layer = cms_layer
     product_config = {}
@@ -223,7 +225,8 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase):
         super(FunctionalTestCase, self).tearDown()
 
 
-class SeleniumTestCase(gocept.selenium.ztk.TestCase):
+class SeleniumTestCase(gocept.selenium.ztk.TestCase,
+                       unittest2.TestCase):
 
     layer = selenium_layer
     skin = 'cms'
