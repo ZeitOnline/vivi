@@ -9,6 +9,7 @@ import sys
 import urllib2
 import zeit.cms.workflow.interfaces
 import zeit.edit.interfaces
+import zeit.workflow.publishinfo
 import zeit.workflow.timebased
 import zope.app.appsetup.product
 import zope.component
@@ -269,5 +270,8 @@ def position(context):
 def is_published(context):
     def is_published_inner(obj):
         pi = zeit.cms.workflow.interfaces.IPublishInfo(obj, None)
+        if pi.__class__ is zeit.workflow.publishinfo.NotPublishablePublishInfo:
+            # for the purposes of the validation rules
+            return True
         return pi is not None and pi.published
     return is_published_inner
