@@ -100,3 +100,17 @@ class IRulesManager(zope.interface.Interface):
     rules = zope.schema.List(title=u"A list of rules.")
 
 
+class IUndo(zope.interface.Interface):
+
+    history = zope.interface.Attribute(
+        """A list of history entries. A history entry is a dict with the keys:
+        tid: transaction identifier which can be passed to revert()
+        description: a human-readable description what happened in this
+        transaction
+
+        The entries are sorted with the most recent one first.
+        """)
+
+    def revert(tid):
+        """Revert the object to the state it had before the given transaction
+        id (i.e. undo any changes made up to and including this transaction)"""
