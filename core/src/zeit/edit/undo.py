@@ -33,8 +33,11 @@ class Undo(grok.Adapter):
 
     @property
     def history(self):
-        # XXX how many entries should we ask for?
-        history = self._connection.db().history(self.context._p_oid, 20)
+        # since undo only applies to working copy objects, we want to make sure
+        # we get all transactions since the object has been checked out (which
+        # is expected to be a rather small number). If this proves
+        # unperformant, we'll need to think of something else.
+        history = self._connection.db().history(self.context._p_oid, 1000)
 
         result = []
         for entry in history:
