@@ -41,7 +41,8 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         s.click('//*[@id="cp-undo"]//li[position() = last()]/a')
         s.waitForXpathCount('//*[@id="cp-undo"]//a', 4)
-        s.assertText('//*[@id="cp-undo"]//li[1]/a', 'revert')
+        s.assertText('//*[@id="cp-undo"]//li[1]/a',
+                     'revert up to "edit metadata (head)"')
 
         # we're back to the 'before' state
         s.assertValue('id=head.year', '2008')
