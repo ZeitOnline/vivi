@@ -130,6 +130,13 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.edit.interfaces.IContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".container.UpdateOrder"
+    permission="zeit.EditContent"
+    />
 
   <!-- library -->
 
