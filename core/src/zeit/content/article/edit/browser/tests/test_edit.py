@@ -242,7 +242,7 @@ class TestTextEditing(
         s.assertXpathCount(css_path('.block.type-p'), 1)
         s.assertXpathCount(css_path('.block.type-p .editable > *'), 2)
 
-    def _skip_test_joined_paragraphs_should_be_movable_together_while_edited(
+    def test_joined_paragraphs_should_be_movable_together_while_edited(
         self):
         s = self.selenium
         # Prepare content: p, p, division, p, p
@@ -266,8 +266,6 @@ class TestTextEditing(
         s.click('css=.block.type-p .editable')
         height = s.getElementHeight('css=.block.type-p')
         s.click('css=.block.type-p .dragger')
-        # XXX This doesn't sort in the test but in the real word. Don't know
-        # why, yet
         s.dragAndDrop('css=.block.type-p .dragger',
                       '0,{0}'.format(height*2))
 
