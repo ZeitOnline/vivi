@@ -9,9 +9,9 @@ import zope.component
 class LandingZone(zeit.edit.browser.view.Action):
 
     def update(self):
-        self.undo_description = _(
-            "add '${type}' block", mapping=dict(type=self.block_type))
         self.create_block()
+        self.undo_description = _(
+            "add '${type}' block", mapping=dict(type=self.block.type))
         self.initialize_block()
         self.update_order()
         self.signal('after-reload', 'added', self.block.__name__)
