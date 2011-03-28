@@ -25,15 +25,21 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
         transaction.commit()
         self.workingcopy = zeit.cms.checkout.interfaces.IWorkingcopy(None)
 
-    def test_history_lists_transactions(self):
-        history = self.undo.history
-        self.assertEqual(1, len(history))
-        entry = history[0]
-        self.assertTrue('description' in entry)
+    def test_history_lists_only_marked_transactions(self):
+        self.assertEqual(0, len(self.undo.history))
+
+        self.content._p_changed = True
+        zeit.edit.undo.mark_transaction_undoable('foo')
+        transaction.commit()
+
+        self.assertEqual(1, len(self.undo.history))
+        entry = self.undo.history[0]
+        self.assertEqual('foo', entry['description'])
         self.assertTrue('tid' in entry)
 
     def test_reverts_change_in_xml(self):
         self.content.xml = lxml.objectify.XML('<foo/>')
+        zeit.edit.undo.mark_transaction_undoable('edit xml')
         transaction.commit()
         self.undo.revert(self.undo.history[0]['tid'])
         transaction.commit()
@@ -42,6 +48,7 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_reverts_change_in_dav_property(self):
         self.content.year = 2010
+        zeit.edit.undo.mark_transaction_undoable('edit year')
         transaction.commit()
         self.undo.revert(self.undo.history[0]['tid'])
         transaction.commit()
@@ -50,11 +57,13 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_reverts_changes_of_multiple_transactions(self):
         self.content.year = 2010
+        zeit.edit.undo.mark_transaction_undoable('edit year')
         transaction.commit()
         self.content.volume = 42
+        zeit.edit.undo.mark_transaction_undoable('edit volume')
         transaction.commit()
 
-        self.undo.revert(self.undo.history[-2]['tid'])
+        self.undo.revert(self.undo.history[-1]['tid'])
         transaction.commit()
         content = self.workingcopy['testcontent']
         self.assertEqual(2001, content.year)
@@ -63,5 +72,6 @@ class UndoTest(zeit.edit.testing.FunctionalTestCase):
     def test_no_changes_found_should_raise(self):
         # the checkout is the first transaction ever, there is no state before
         # that
+        history = self.content._p_jar.db().history(self.content._p_oid, 20)
         with self.assertRaisesRegexp(ValueError, 'No state.*found'):
-            self.undo.revert(self.undo.history[-1]['tid'])
+            self.undo.revert(history[-1]['tid'])

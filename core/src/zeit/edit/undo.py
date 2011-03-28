@@ -2,21 +2,30 @@
 # See also LICENSE.txt
 
 import grokcore.component as grok
+import transaction
 import zeit.cms.checkout.interfaces
 import zeit.connector.interfaces
 import zeit.edit.interfaces
 
 
+UNDOABLE_TRANSACTION = 'zeit.edit.undo: '
+
+
 class Undo(grok.Adapter):
-    """This class provides ZODB-based undo (more precisely: reverting all
-    changes up to and including a given transaction), but only for a clearly
-    defined scope of objects. It reverts:
+    """Provides ZODB-based undo (more precisely: reverting all changes up to
+    and including a given transaction), but only for a clearly defined scope of
+    objects. It reverts:
     - the 'xml' attribute
     - the WebDAVProperties
 
     This should be all that's needed for objects of the
     zeit.cms.content.interfaces.IXMLContent variety, but please check before
     you apply it to something.
+
+    Only transactions whose description starts with 'zeit.edit.undo: ' are
+    considered. This is a string-based interface, so other modules may use this
+    without having to depend on us; mark_transaction_undoable() is only
+    provided for convenience.
     """
 
     grok.context(zeit.cms.checkout.interfaces.ILocalContent)
@@ -29,12 +38,11 @@ class Undo(grok.Adapter):
 
         result = []
         for entry in history:
-            source = entry
-            if 'extension' in entry:
-                source = entry['extension']
-            description = source.get('request_info', None)
-            result.append(dict(tid=entry['tid'],
-                               description=description))
+            if not entry['description'].startswith(UNDOABLE_TRANSACTION):
+                continue
+            description = entry['description'].replace(
+                UNDOABLE_TRANSACTION, '', 1)
+            result.append(dict(tid=entry['tid'], description=description))
         return result
 
     def revert(self, tid):
@@ -66,3 +74,7 @@ class Undo(grok.Adapter):
             raise ValueError('No state of %r before tid %r found' % (obj, tid))
         data, tid, next = result
         return self._connection._reader.getState(data)
+
+
+def mark_transaction_undoable(action):
+    transaction.get().note(UNDOABLE_TRANSACTION + action)
