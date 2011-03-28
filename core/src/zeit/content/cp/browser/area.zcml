@@ -78,12 +78,4 @@
     weight="90"
     />
 
-  <browser:page
-    for="zeit.edit.interfaces.IContainer"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="updateOrder"
-    class=".area.UpdateOrder"
-    permission="zeit.EditContent"
-    />
-
 </configure>
