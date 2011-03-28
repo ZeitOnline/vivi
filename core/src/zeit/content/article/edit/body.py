@@ -83,6 +83,7 @@ class EditableBody(zeit.edit.container.Base,
             self.keys()
         item.__name__ = name
         self.xml.division[:][-1].append(item.xml)
+        self._p_changed = True
         return name
 
     def _delete(self, key):
@@ -95,6 +96,7 @@ class EditableBody(zeit.edit.container.Base,
             for child in item.xml.iterchildren():
                 prev.append(child)
         item.xml.getparent().remove(item.xml)
+        self._p_changed = True
         return item
 
 
