@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.edit.interfaces
 import zope.security.proxy
@@ -30,7 +31,16 @@ class Revert(zeit.edit.browser.view.Action):
     tid = zeit.edit.browser.view.Form('tid')
 
     def update(self):
-        zeit.edit.interfaces.IUndo(
-            zope.security.proxy.getObject(self.context)).revert(
-            self.tid.decode('base64'))
+        tid = self.tid.decode('base64')
+        undo = zeit.edit.interfaces.IUndo(
+            zope.security.proxy.getObject(self.context))
+
+        for entry in undo.history:
+            if entry['tid'] == tid:
+                self.undo_description = _(
+                    'revert up to "${action}"', mapping=dict(
+                        action=entry['description']))
+                break
+
+        undo.revert(tid)
         self.signal(None, 'reload')
