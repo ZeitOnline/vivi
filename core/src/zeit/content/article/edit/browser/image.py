@@ -12,6 +12,7 @@ class EditImage(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IImage).omit('references')
+    undo_description = _('edit image')
 
 
 class EditImageAction(zeit.edit.browser.view.EditBoxAction):

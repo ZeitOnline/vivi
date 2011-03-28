@@ -15,9 +15,14 @@ class ArticleForms(object):
     """View which includes all article forms."""
 
 
-class InlineForm(zope.formlib.form.SubPageEditForm):
+class InlineForm(zope.formlib.form.SubPageEditForm,
+                 zeit.edit.browser.view.UndoableMixin):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('edit.inlineform.pt')
+
+    def __call__(self):
+        self.mark_transaction_undoable()
+        return super(InlineForm, self).__call__()
 
     @property
     def widget_data(self):
@@ -43,6 +48,7 @@ class Assets(InlineForm):
 
     legend = _('Assets')
     prefix = 'assets'
+    undo_description = _('edit assets')
 
     def __call__(self):
         zope.interface.alsoProvides(
@@ -69,9 +75,9 @@ class WorkflowForms(object):
 
 class WorkflowStatus(InlineForm):
 
-
     legend = _('Status')
     prefix = 'workflow-status'
+    undo_description = _('edit workflow status')
 
     form_fields = (
         zope.formlib.form.FormFields(
@@ -91,6 +97,7 @@ class WorkflowSettings(InlineForm):
 
     legend = _('Settings')
     prefix = 'worfklow-settings'
+    undo_description = _('edit workflow settings')
 
     form_fields = (
         zope.formlib.form.FormFields(
@@ -104,6 +111,7 @@ class WorkflowLog(InlineForm):
 
     legend = _('Log')
     prefix = 'worfklow-log'
+    undo_description = None
 
     form_fields = zope.formlib.form.FormFields(
             zeit.objectlog.interfaces.ILog,

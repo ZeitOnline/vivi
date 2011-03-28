@@ -34,6 +34,7 @@ class EditPortraitboxAction(zeit.edit.browser.view.EditBoxAction):
 
     title = _('Edit')
     action = 'edit-layout'
+    undo_description = _('edit portraitbox')
 
 
 class View(object):

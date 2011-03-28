@@ -36,6 +36,8 @@ class Fold(object):
 
 class SaveText(zeit.edit.browser.view.Action):
 
+    undo_description = _('edit body text')
+
     text = zeit.edit.browser.view.Form('text')
     paragraphs = zeit.edit.browser.view.Form('paragraphs')
 
@@ -164,13 +166,13 @@ class EditRawXML(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IRawXML)
+    undo_description = _('edit XML block')
 
 
 class EditRawXMLAction(zeit.edit.browser.view.EditBoxAction):
 
     title = _('Edit')
     action = 'edit-rawxml'
-
 
 
 class ViewAudio(object):
@@ -188,6 +190,7 @@ class EditAudio(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IAudio)
+    undo_description = _('edit audio block')
 
 
 class EditAudioAction(zeit.edit.browser.view.EditBoxAction):
@@ -206,6 +209,7 @@ class EditCitationAction(zeit.edit.browser.view.EditBoxAction):
 
     title = _('Edit')
     action = 'edit-citation'
+    undo_description = _('edit citation block')
 
 
 class ViewRelateds(object):
@@ -221,6 +225,7 @@ class EditDivision(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IDivision)
+    undo_description = _('edit page break')
 
 
 class EditDivisionAction(zeit.edit.browser.view.EditBoxAction):

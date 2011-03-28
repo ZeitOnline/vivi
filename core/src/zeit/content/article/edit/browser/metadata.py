@@ -20,6 +20,7 @@ class Head(zeit.content.article.edit.browser.form.InlineForm):
 
     legend = _('Head')
     prefix = 'head'
+    undo_description = _('edit metadata (head)')
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
@@ -39,6 +40,7 @@ class Navigation(zeit.content.article.edit.browser.form.InlineForm):
 
     legend = _('Navigation')
     prefix = 'navigation'
+    undo_description = _('edit metadata (navigation)')
 
     # TODO: provide Javascript to convert title to rename_to (#8327)
 
@@ -63,6 +65,7 @@ class Texts(zeit.content.article.edit.browser.form.InlineForm):
 
     legend = _('Texts')
     prefix = 'texts'
+    undo_description = _('edit metadata (texts)')
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
@@ -73,6 +76,7 @@ class Misc(zeit.content.article.edit.browser.form.InlineForm):
 
     legend = _('Misc.')
     prefix = 'misc'
+    undo_description = _('edit metadata (misc)')
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
