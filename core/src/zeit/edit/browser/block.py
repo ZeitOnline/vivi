@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.edit.browser.view
 import zeit.edit.interfaces
 import zope.component
@@ -31,6 +32,9 @@ class Add(zeit.edit.browser.view.Action):
     type = zeit.edit.browser.view.Form('type')
 
     def update(self):
+        self.undo_description = _(
+            "add '${type}' block",
+            mapping=dict(type=self.context[self.key].type))
         factory = zope.component.getAdapter(
             self.context, zeit.edit.interfaces.IElementFactory,
             name=self.type)
@@ -43,6 +47,9 @@ class Delete(zeit.edit.browser.view.Action):
     key = zeit.edit.browser.view.Form('key')
 
     def update(self):
+        self.undo_description = _(
+            "delete '${type}' block",
+            mapping=dict(type=self.context[self.key].type))
         del self.context[self.key]
         self.signal('before-reload', 'deleted', self.key)
         self.signal(

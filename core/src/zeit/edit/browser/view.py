@@ -42,7 +42,39 @@ class Form(object):
         return value
 
 
-class Action(zeit.cms.browser.view.Base):
+class UndoableMixin(object):
+    """Provides support for marking transactions undoable.
+
+    This is supposed to be mixed into view base classes, which should call
+    mark_transaction_undoable() at a convenient time in their workflow. Their
+    subclasses, in turn, should set undo_description, using an i18n message.
+
+    (This separates the what from the when, so the actual views only need to
+    care about setting the appropriate description, which is all that matters
+    to them.)
+
+    Using i18n is counter-intuitive since one should usually save the base
+    version and translate it upon output, but we would have to invent a format
+    to store mappings, too, and that's just too complicated. We can get away
+    with translating on save because these messages are seen by one user only
+    (since they apply only to local content and the working copy is
+    user-specific), and are expected to live for only a very short time anyway
+    (until the next checkin).
+    """
+
+    # if not None this transaction will be listed in the undo history with this
+    # description
+    undo_description = NotImplemented
+
+    def mark_transaction_undoable(self):
+        if self.undo_description is NotImplemented:
+            self.undo_description = self.__class__.__name__
+        if self.undo_description:
+            zeit.edit.undo.mark_transaction_undoable(zope.i18n.translate(
+                self.undo_description, context=self.request))
+
+
+class Action(zeit.cms.browser.view.Base, UndoableMixin):
 
     def signal_context_reload(self):
         self.signal(
@@ -63,6 +95,7 @@ class Action(zeit.cms.browser.view.Base):
         self.signals = []
         try:
             self.update()
+            self.mark_transaction_undoable()
         except ZODB.POSException.ConflictError:
             raise
         except Exception, e:
@@ -95,7 +128,7 @@ def validate(context):
     return (css_class, messages)
 
 
-class EditBox(zope.formlib.form.SubPageEditForm):
+class EditBox(zope.formlib.form.SubPageEditForm, UndoableMixin):
     """Base class for an edit box."""
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('view.editbox.pt')
@@ -109,11 +142,13 @@ class EditBox(zope.formlib.form.SubPageEditForm):
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
         self.close = True
+        self.mark_transaction_undoable()
         return super(EditBox, self).handle_edit_action.success(data)
 
 
 class AddBox(zeit.cms.browser.form.AddFormBase,
-             zope.formlib.form.AddFormBase):
+             zope.formlib.form.AddFormBase,
+             UndoableMixin):
     """Base class for an add box."""
 
     # there is no SubPageAddForm, so we set this up analog to SubPageEditForm
@@ -130,6 +165,7 @@ class AddBox(zeit.cms.browser.form.AddFormBase,
     @zope.formlib.form.action(_('Add'))
     def handle_add(self, action, data):
         self.close = True
+        self.mark_transaction_undoable()
         return super(AddBox, self).handle_add.success(data)
 
     def add(self):

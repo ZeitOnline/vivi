@@ -1,12 +1,16 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.edit.browser.view
 import zope.component
+
 
 class LandingZone(zeit.edit.browser.view.Action):
 
     def update(self):
+        self.undo_description = _(
+            "add '${type}' block", mapping=dict(type=self.block_type))
         self.create_block()
         self.initialize_block()
         self.update_order()
