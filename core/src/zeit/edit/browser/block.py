@@ -34,7 +34,7 @@ class Add(zeit.edit.browser.view.Action):
     def update(self):
         self.undo_description = _(
             "add '${type}' block",
-            mapping=dict(type=self.context[self.key].type))
+            mapping=dict(type=self.type))
         factory = zope.component.getAdapter(
             self.context, zeit.edit.interfaces.IElementFactory,
             name=self.type)
