@@ -27,8 +27,7 @@ zeit.content.article.html.to_xml = function(tree) {
 
 zeit.content.article.html.change_tag = function(element, new_name) {
     var new_element = MochiKit.DOM.swapDOM(
-        element,
-        MochiKit.DOM.createDOM(new_name));
+        element, MochiKit.DOM.createDOM(new_name));
     while (element.firstChild) {
         new_element.appendChild(element.firstChild);
     }
