@@ -53,3 +53,21 @@ class HTMLConvertTest(
         self.convert()
         s.assertElementPresent('css=.editable p p:contains(bar)')
         s.assertXpathCount('//*[@class="editable"]//br', 0)
+
+    def test_a_witout_href_should_be_escaped(self):
+        s = self.selenium
+        self.create('<p>A stupid <a>link</a>.</p>')
+        self.convert()
+        s.assertAttribute('css=.editable p a@href', '#')
+
+    def test_a_with_href_should_be_allowed(self):
+        s = self.selenium
+        self.create('<p>A working <a href="foo">link</a>.</p>')
+        self.convert()
+        s.assertAttribute('css=.editable p a@href', 'foo')
+
+    def test_a_target_should_be_allowed(self):
+        s = self.selenium
+        self.create('<p>A working <a href="foo" target="_blank">link</a>.</p>')
+        self.convert()
+        s.assertAttribute('css=.editable p a@target', '_blank')

@@ -30,12 +30,6 @@ def apply_filter(steps, tree):
     return tree
 
 
-def escape_missing_href(tree):
-    for el in tree.iter():
-        if el.tag == 'a' and 'href' not in el.attrib:
-            el.attrib['href'] = '#'
-
-
 def keep_allowed_tags(tree, allowed_tags):
     remove_tags = lxml.html.clean.Cleaner(
         allow_tags=set(allowed_tags), remove_unknown_tags=False)
@@ -61,7 +55,6 @@ class Paragraph(zeit.edit.block.SimpleElement):
     def __init__(self, *args, **kw):
         self.filter_steps = [
             self.keep_allowed_tags,
-            escape_missing_href
         ]
         super(Paragraph, self).__init__(*args, **kw)
 

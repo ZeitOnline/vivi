@@ -83,18 +83,6 @@ class ParagraphTest(unittest.TestCase):
         self.compare(u'I am <br/>here and<br/>here.',
                      'I am <br/>here and<br/>here.')
 
-    def test_a_witout_href_should_be_escaped(self):
-        self.compare(u'A stupid <a>link</a>.',
-                     u'A stupid <a href="#">link</a>.')
-
-    def test_a_with_href_should_be_allowed(self):
-        self.compare(u'A working <a href="#">link',
-                     u'A working <a href="#">link</a>')
-
-    def test_a_target_should_be_allowed(self):
-        self.compare(u'A working <a href="#" target="_blank">link',
-                     u'A working <a href="#" target="_blank">link</a>')
-
     def test_unknown_elements_should_be_removed(self):
         self.compare(u'A <sub>subtext</sub> is filtered',
                      u'A subtext is filtered')
