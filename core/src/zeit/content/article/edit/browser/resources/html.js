@@ -5,6 +5,7 @@ zeit.cms.declare_namespace('zeit.content.article.html');
 
 zeit.content.article.html.to_xml = function(tree) {
     var steps = [
+        wrap_toplevel_children_in_p,
         translate_tags,
         kill_empty_p,
         replace_double_br_with_p,
@@ -27,6 +28,8 @@ zeit.content.article.html.change_tag = function(element, new_name) {
     }
 };
 
+
+// conversion steps
 
 function translate_tags(tree) {
     var mapping = {
@@ -88,6 +91,33 @@ function escape_missing_href(tree) {
 };
 
 
+function wrap_toplevel_children_in_p(tree) {
+    var collect = [];
+
+    var wrap_in_p = function(items) {
+        var p = MochiKit.DOM.createDOM('p')
+        while (items.length) {
+            p.appendChild(items.shift());
+        }
+        return p;
+    };
+
+    forEach(tree.childNodes, function(el) {
+        if (el.nodeType == el.TEXT_NODE || display(el) == 'inline') {
+            collect.push(el);
+        } else {
+            if (collect.length) {
+                MochiKit.DOM.insertSiblingNodesBefore(el, wrap_in_p(collect));
+            }
+        }
+    });
+
+    if (collect.length) {
+        tree.appendChild(wrap_in_p(collect));
+    }
+};
+
+
 // helper functions
 
 function tag(element) {
@@ -111,5 +141,13 @@ function nextSiblingElement(element) {
     }
     return null;
 };
+
+
+function display(element) {
+    if (element.nodeType != element.ELEMENT_NODE) {
+        return null;
+    }
+    return MochiKit.Style.getStyle(element, 'display')
+}
 
 })();

@@ -363,39 +363,16 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     get_text_list: function() {
         var self = this;
-        var result = [];
-        var text_collector = '';
+
         self.fix_html();
         var tree = self.editable.cloneNode(/*deep=*/true);
         zeit.content.article.html.to_xml(tree);
-        forEach(tree.childNodes, function(element) {
-            if (element.nodeType == element.ELEMENT_NODE) {
-                if (MochiKit.Style.getStyle(element, 'display') == 'inline') {
-                    // Inline style on top level. That's not allow. Either wrap
-                    // it in a <p> or append it to the last p
-                    text_collector +=
-                        '<' + element.nodeName.toLowerCase() + '>' +
-                        element.innerHTML +
-                        '</' + element.nodeName.toLowerCase() + '>';
-                } else {
-                    // display: block
-                    if (text_collector.length) {
-                        result.push({factory: 'p',
-                                     text: text_collector});
-                        text_collector = '';
-                    }
-                    result.push({factory: element.nodeName.toLowerCase(),
-                                 text: element.innerHTML});
-                }
-            } else if (element.nodeType == element.TEXT_NODE) {
-                text_collector += element.data;
-            }
-        });
-        if (text_collector.length) {
-            result.push({factory: 'p',
-                         text: text_collector});
-            text_collector = '';
-        }
+
+        var result = MochiKit.Base.map(function(el) {
+            return {factory: el.nodeName.toLowerCase(),
+                    text: el.innerHTML};
+        }, tree.childNodes);
+
         return result;
     },
 

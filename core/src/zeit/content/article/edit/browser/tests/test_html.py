@@ -71,3 +71,26 @@ class HTMLConvertTest(
         self.create('<p>A working <a href="foo" target="_blank">link</a>.</p>')
         self.convert()
         s.assertAttribute('css=.editable p a@target', '_blank')
+
+    def test_text_nodes_should_become_paragraphs(self):
+        s = self.selenium
+        self.create('Mary<p>had a little</p>')
+        self.convert()
+        s.assertElementPresent('css=.editable p:contains(Mary)')
+
+    def test_top_level_inline_styles_are_joined_to_paragraph(self):
+        s = self.selenium
+        self.create('Mary <strong>had</strong> a little lamb.')
+        self.convert()
+        s.assertElementPresent('css=.editable p:contains(Mary had a)')
+        s.assertElementPresent('css=.editable p > strong:contains(had)')
+
+    def test_top_level_inline_styles_are_not_joined_to_existing_p(self):
+        s = self.selenium
+        self.create(
+            '<p>foo</p>Mary <strong>had</strong> a little lamb. <p>bar</p>')
+        self.convert()
+        s.assertElementPresent('css=.editable p:contains(Mary had a)')
+        s.assertElementPresent('css=.editable p > strong:contains(had)')
+        s.assertElementNotPresent('css=.editable p:contains(foo Mary)')
+        s.assertElementNotPresent('css=.editable p:contains(lamb. bar)')

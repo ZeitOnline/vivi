@@ -146,38 +146,6 @@ class TestTextEditing(
         self.save()
         s.waitForElementPresent('css=.editable p:contains(Mary had)')
 
-    def test_text_nodes_should_become_paragraphs(self):
-        s = self.selenium
-        self.create()
-        s.getEval("this.browserbot.findElement("
-                  "  'css=.block.type-p .editable').innerHTML = "
-                  "   'Mary<p>had a little</p>'")
-        self.save()
-        s.waitForElementPresent('css=.editable p:contains(Mary)')
-
-    def test_top_level_inline_styles_should_be_joined_to_paragraph(self):
-        s = self.selenium
-        self.create()
-        s.getEval("this.browserbot.findElement("
-                  "  'css=.block.type-p .editable').innerHTML = "
-                  "   'Mary <strong>had</strong> a little lamb.'")
-        self.save()
-        s.waitForElementPresent('css=.editable p:contains(Mary had a)')
-        s.assertElementPresent('css=.editable p > strong:contains(had)')
-
-    def test_top_level_inline_styles_should_not_joined_to_existing_p(self):
-        s = self.selenium
-        self.create()
-        s.getEval(
-            "this.browserbot.findElement("
-            " 'css=.block.type-p .editable').innerHTML = "
-            " '<p>foo</p>Mary <strong>had</strong> a little lamb. <p>bar</p>'")
-        self.save()
-        s.waitForElementPresent('css=.editable p:contains(Mary had a)')
-        s.assertElementPresent('css=.editable p > strong:contains(had)')
-        s.assertElementNotPresent('css=.editable p:contains(foo Mary)')
-        s.assertElementNotPresent('css=.editable p:contains(lamb. bar)')
-
     def test_class_attributes_should_be_removed_on_keyup(self):
         s = self.selenium
         self.create("<h4 class='title'>blubbel</h4>")
