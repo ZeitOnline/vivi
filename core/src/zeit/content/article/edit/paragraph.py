@@ -30,22 +30,6 @@ def apply_filter(steps, tree):
     return tree
 
 
-def translate_double_br(tree):
-    br = None
-    for el in tree.iter():
-        if el.tag == 'br':
-            if br is None:
-                if not el.tail:
-                    br = el
-            else:
-                p = el.getparent()
-                p.insert(p.index(el), lxml.html.builder.E.p(el.tail))
-                p.remove(br)
-                p.remove(el)
-        else:
-            br = None
-
-
 def escape_missing_href(tree):
     for el in tree.iter():
         if el.tag == 'a' and 'href' not in el.attrib:
@@ -77,7 +61,6 @@ class Paragraph(zeit.edit.block.SimpleElement):
     def __init__(self, *args, **kw):
         self.filter_steps = [
             self.keep_allowed_tags,
-            translate_double_br,
             escape_missing_href
         ]
         super(Paragraph, self).__init__(*args, **kw)

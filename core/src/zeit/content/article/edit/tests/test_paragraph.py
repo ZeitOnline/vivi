@@ -99,10 +99,6 @@ class ParagraphTest(unittest.TestCase):
         self.compare(u'A <sub>subtext</sub> is filtered',
                      u'A subtext is filtered')
 
-    def test_double_br_should_be_replaced_by_p(self):
-        self.compare(u'foo<br><br>bar',
-                     u'foo<p>bar</p>')
-
 
 class UnorderedListTest(ParagraphTest):
 

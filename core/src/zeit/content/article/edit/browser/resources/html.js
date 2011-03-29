@@ -7,9 +7,12 @@ zeit.content.article.html.to_xml = function(tree) {
     var steps = [
         translate_tags,
         kill_empty_p,
+        replace_double_br_with_p,
     ];
 
-    forEach(steps, function(step) { step(tree); });
+    forEach(steps, function(step) {
+        step(tree);
+    });
     return tree;
 };
 
@@ -24,6 +27,17 @@ zeit.content.article.html.change_tag = function(element, new_name) {
 };
 
 
+function tag(element) {
+    if (MochiKit.Base.isNull(element)) {
+        return null;
+    }
+    if (element.nodeType != element.ELEMENT_NODE) {
+        return element.nodeType;
+    }
+    return element.nodeName.toLowerCase();
+};
+
+
 function translate_tags(tree) {
     var mapping = {
         'b': 'strong',
@@ -33,9 +47,8 @@ function translate_tags(tree) {
     };
 
     forEach(tree.childNodes, function(el) {
-        var tag = el.nodeName.toLowerCase();
-        if (tag in mapping) {
-            zeit.content.article.html.change_tag(el, mapping[tag]);
+        if (tag(el) in mapping) {
+            zeit.content.article.html.change_tag(el, mapping[tag(el)]);
         }
         translate_tags(el);
     });
@@ -44,10 +57,41 @@ function translate_tags(tree) {
 
 function kill_empty_p(tree) {
     forEach(tree.childNodes, function(el) {
-        var tag = el.nodeName.toLowerCase();
-        if (tag == 'p' && ! el.hasChildNodes()) {
+        if (tag(el) == 'p' && ! el.hasChildNodes()) {
             MochiKit.DOM.removeElement(el);
+        } else {
+            kill_empty_p(el);
         }
+    });
+};
+
+
+function nextSiblingElement(element) {
+    var el = element.nextSibling;
+    while (el) {
+        if (el.nodeType == el.ELEMENT_NODE) {
+            return el;
+        }
+        el = el.nextSibling;
+    }
+    return null;
+};
+
+
+function replace_double_br_with_p(tree) {
+    forEach(tree.childNodes, function(el) {
+        var sibling = nextSiblingElement(el);
+        if (! (tag(el) == 'br' && tag(sibling) == 'br')) {
+            replace_double_br_with_p(el);
+            return;
+        }
+
+        var p = MochiKit.DOM.createDOM('p')
+        if (tag(sibling.nextSibling) == el.TEXT_NODE) {
+            p.appendChild(sibling.nextSibling);
+        }
+        MochiKit.DOM.removeElement(el);
+        MochiKit.DOM.swapDOM(sibling, p);
     });
 };
 
