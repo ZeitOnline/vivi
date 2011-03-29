@@ -30,16 +30,6 @@ def apply_filter(steps, tree):
     return tree
 
 
-def translate_formatting_tags(tree):
-    mapping = {
-        'i': 'em',
-        'b': 'strong'
-    }
-    for el in tree.iter():
-        if el.tag in mapping:
-            el.tag = mapping[el.tag]
-
-
 def translate_double_br(tree):
     br = None
     for el in tree.iter():
@@ -87,7 +77,6 @@ class Paragraph(zeit.edit.block.SimpleElement):
     def __init__(self, *args, **kw):
         self.filter_steps = [
             self.keep_allowed_tags,
-            translate_formatting_tags,
             translate_double_br,
             escape_missing_href
         ]

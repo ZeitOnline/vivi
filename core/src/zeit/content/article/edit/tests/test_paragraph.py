@@ -76,12 +76,6 @@ class ParagraphTest(unittest.TestCase):
     def test_simple_text_should_be_escaped_correctly(self):
         self.compare(u'a > b', 'a &gt; b')
 
-    def test_b_should_be_replaced_by_strong(self):
-        self.compare(u'I am <b>strong</b>.', 'I am <strong>strong</strong>.')
-
-    def test_i_should_be_replaced_by_em(self):
-        self.compare(u'I am <i>strong</i>.', 'I am <em>strong</em>.')
-
     def test_u_should_be_allowed(self):
         self.compare(u'I am <u>underlined</u>.', 'I am <u>underlined</u>.')
 
