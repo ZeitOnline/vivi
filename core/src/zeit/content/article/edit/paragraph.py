@@ -16,21 +16,10 @@ import zeit.edit.block
 import zeit.edit.interfaces
 
 
-def apply_filter(steps, tree):
-    """Apply a series of filtering steps on an lxml tree.
-    Filter steps can either work in-place or return a replacement tree.
-
-    XXX it would be nice if this were uniformly in-place, but
-    I guess keep_only_inline_tags can't be written like that.
-    """
-    for step in steps:
-        result = step(tree)
-        if result is not None:
-            tree = result
-    return tree
-
-
 def keep_allowed_tags(tree, allowed_tags):
+    # XXX from an architecture point of view this should be done on the client
+    # (see javascript:zeit.content.article.html), but being able to use
+    # lxml.html.clean is just so convenient.
     remove_tags = lxml.html.clean.Cleaner(
         allow_tags=set(allowed_tags), remove_unknown_tags=False)
     # Cleaner requires the tree-root to have a parent, on which it assembles
@@ -72,7 +61,7 @@ class Paragraph(zeit.edit.block.SimpleElement):
     @text.setter
     def text(self, value):
         p = lxml.html.soupparser.fromstring(value)
-        p = apply_filter(self.filter_steps, p)
+        p = self.keep_allowed_tags(p)
         p.tag = self.type
         p.attrib.update(self.xml.attrib.items())
         p = lxml.objectify.fromstring(lxml.etree.tostring(p))
