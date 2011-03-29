@@ -39,3 +39,10 @@ class HTMLConvertTest(
         self.create('<p><i>foo</i></p>')
         self.convert()
         s.assertElementPresent('css=.editable p em:contains(foo)')
+
+    def test_double_p_is_removed(self):
+        s = self.selenium
+        self.create('<p><p>foo</p>')
+        self.convert()
+        s.assertElementPresent('css=.editable p:contains(foo)')
+        s.assertXpathCount('//*[@class="editable"]//p', 1)
