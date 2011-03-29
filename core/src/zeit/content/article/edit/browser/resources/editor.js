@@ -346,14 +346,6 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     fix_html: function() {
         var self = this;
-        var replace_element = function(element, new_name) {
-            var new_element = MochiKit.DOM.swapDOM(
-                element,
-                MochiKit.DOM.createDOM(new_name));
-            while(element.firstChild) {
-                new_element.appendChild(element.firstChild);
-            }
-        };
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
                 null, null, self.editable),
@@ -362,9 +354,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                 element.removeAttribute('style');
                 // Yeah, I luv it!
                 if (element.nodeName == 'EM') {
-                    replace_element(element, 'I');
+                    zeit.content.article.html.change_tag(element, 'I');
                 } else if (element.nodeName == 'STRONG') {
-                    replace_element(element, 'B');
+                    zeit.content.article.html.change_tag(element, 'B');
                 }
         });
     },
@@ -374,7 +366,9 @@ zeit.content.article.Editable = gocept.Class.extend({
         var result = [];
         var text_collector = '';
         self.fix_html();
-        forEach(self.editable.childNodes, function(element) {
+        var tree = self.editable.cloneNode(/*deep=*/true);
+        zeit.content.article.html.to_xml(tree);
+        forEach(tree.childNodes, function(element) {
             if (element.nodeType == element.ELEMENT_NODE) {
                 if (MochiKit.Style.getStyle(element, 'display') == 'inline') {
                     // Inline style on top level. That's not allow. Either wrap

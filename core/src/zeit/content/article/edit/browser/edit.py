@@ -53,9 +53,6 @@ class SaveText(zeit.edit.browser.view.Action):
         order = list(self.context.keys())
         for new in self.text:
             factory = new['factory']
-            if factory == 'h3':
-                # Okay, that's not a very nice one. XXX
-                factory = 'intertitle'
             text = new['text']
             if not text.strip():
                 continue
