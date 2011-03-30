@@ -15,9 +15,20 @@ import zope.formlib.form
 
 class GalleryFormBase(object):
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.interfaces.ICMSContent,
-        zeit.content.gallery.interfaces.IGalleryMetadata)
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.cms.interfaces.ICMSContent,
+            zeit.content.gallery.interfaces.IGalleryMetadata)
+        + zope.formlib.form.FormFields(
+            zeit.content.gallery.interfaces.IMaxLengthHTMLContent))
+
+    field_groups = (
+        zeit.cms.content.browser.form.CommonMetadataAddForm.field_groups
+        + (gocept.form.grouped.Fields(
+            _("Text"),
+            ('html',),
+            css_class='full-width wide-widgets'),)
+        )
 
 
 class AddGallery(GalleryFormBase,
@@ -60,12 +71,9 @@ class DisplayImageWidget(zope.app.form.browser.widget.DisplayWidget):
 class EditEntry(zeit.cms.browser.form.EditForm):
 
     title = _("Edit gallery entry")
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.gallery.interfaces.IGalleryEntry).omit(
-            'thumbnail', 'text') +
-        zope.formlib.form.FormFields(
-            zeit.wysiwyg.interfaces.IHTMLContent))
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.gallery.interfaces.IGalleryEntry).omit(
+        'thumbnail', 'text')
     form_fields['image'].custom_widget = DisplayImageWidget
 
     redirect_to_parent_after_edit = True
@@ -77,3 +85,11 @@ class EditEntry(zeit.cms.browser.form.EditForm):
             fields=('image', 'layout', 'caption', 'title', 'html'),
             css_class='full-width wide-widgets'),
     )
+
+    def setUpWidgets(self):
+        # XXX backwards compatibility only, should probably be removed at some
+        # point (see #8858)
+        if self.context.text is not None and self.context.text.countchildren():
+            self.form_fields += zope.formlib.form.FormFields(
+                zeit.wysiwyg.interfaces.IHTMLContent)
+        super(EditEntry, self).setUpWidgets()

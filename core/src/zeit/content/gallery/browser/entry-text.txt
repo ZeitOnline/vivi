@@ -1,0 +1,68 @@
+=================================
+Text property for gallery entries
+=================================
+
+#8858 decided that gallery entries should not have a text property anymore.
+(However, one should still be able to edit already existing text on existing
+entries.)
+
+Setup
+=====
+
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> from zeit.content.gallery.browser.testing import add_folder, add_image
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> add_folder(browser, 'gallery')
+>>> _ = add_image(browser, '01.jpg')
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> menu = browser.getControl(name='add_menu')
+>>> menu.displayValue = ['Gallery']
+>>> browser.open(menu.value[0])
+>>> browser.getControl('File name').value = 'island'
+>>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
+>>> browser.getControl('Ressort').displayValue = ['Reisen']
+>>> browser.getControl('Daily newsletter').selected = True
+>>> browser.getControl(name="form.image_folder").value = (
+...     'http://xml.zeit.de/online/2007/01/gallery')
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl(name="form.actions.add").click()
+
+
+Entries without text
+====================
+
+Normally, gallery entries do not show a text widget:
+
+>>> browser.getLink('Images').click()
+>>> browser.handleErrors = False
+>>> browser.getLink('Edit image').click()
+>>> browser.getControl('Text')
+Traceback (most recent call last):
+  ...
+LookupError: label 'Text'
+
+
+Entries with text
+=================
+
+If an entry already has text, the widget is displayed:
+
+>>> import lxml.objectify
+>>> import transaction
+>>> import zeit.cms.testing
+>>> import zope.event
+>>> import zope.lifecycleevent
+>>> zeit.cms.testing.set_site()
+>>> workingcopy = getRootFolder()['workingcopy']['zope.user']
+>>> image = workingcopy['island']['01.jpg']
+>>> image.text = lxml.objectify.XML('<text><p>foo</p></text>')
+>>> # galleries are old and don't have xmlsupport.Persistent :-(
+>>> zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(image))
+>>> transaction.commit()
+>>> image = workingcopy['island']['01.jpg']
+
+>>> browser.reload()
+>>> print browser.getControl('Text').value
+<p>foo</p>

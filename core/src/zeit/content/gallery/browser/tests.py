@@ -49,6 +49,7 @@ def test_suite():
     suite.addTest(unittest.makeSuite(TestTicketAuthorization))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
+        'entry-text.txt',
         'imp.txt',
         'ticket.txt',
         'upload.txt',

@@ -91,6 +91,13 @@ Traceback (most recent call last):
 LinkNotFoundError
 
 
+The 'text' field enforces a maximum length:
+
+>>> browser.getControl('Text').value = 'a' * 300
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...<li class="error">Text is too long</li>...
+
 
 Editing a gallery
 =================
@@ -100,8 +107,6 @@ Each entry can be edited on the overview page:
 >>> browser.getLink('Images').click()
 >>> browser.getLink('Edit image').click()
 >>> browser.getControl('Title').value = 'The man man'
->>> browser.getControl('Text').value = (
-...     '<p><strong>Der Mann am Stein</strong></p>')
 >>> browser.getControl('Layout').displayOptions
 ['(no value)', 'Hidden', 'Image only']
 >>> browser.getControl('Layout').displayValue = ['Image only']
@@ -114,7 +119,6 @@ After saving we're back at the overview:
 <?xml version="1.0"?>...
 <div class="caption">Mann/Stein</div>...
 <div class="title">The man man</div>...
-<strong>Der Mann am Stein</strong>...
 
 
 

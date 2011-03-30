@@ -3,7 +3,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import copy
-import gocept.lxml.interfaces
 import grokcore.component
 import lxml.etree
 import lxml.objectify
@@ -23,6 +22,7 @@ import zope.component
 import zope.interface
 import zope.lifecycleevent
 import zope.location.location
+import zope.security.proxy
 
 
 # A gallery used to be a center page, that's why we initialize it with such a
@@ -37,7 +37,6 @@ GALLERY_TEMPLATE = u"""\
         </column>
     </body>
 </gallery>"""
-
 
 
 class Gallery(zeit.cms.content.metadata.CommonMetadata):
@@ -329,12 +328,26 @@ class EntryXMLRepresentation(object):
         node['image'] = zope.component.getAdapter(
             self.context.image,
             zeit.cms.content.interfaces.IXMLReference, name='image')
-        node['thumbnail']  = zope.component.getAdapter(
+        node['thumbnail'] = zope.component.getAdapter(
             self.context.thumbnail,
             zeit.cms.content.interfaces.IXMLReference, name='image')
         if self.context.layout:
             node.set('layout', self.context.layout)
         return node
+
+
+class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
+
+    zope.component.adapts(zeit.content.gallery.interfaces.IGallery)
+
+    def get_tree(self):
+        # we can't express that 'body' is allowed for IGallery objects as a
+        # security declaration, since that would have to apply to the objectify
+        # element
+        body = zope.security.proxy.getObject(self.context).xml.body
+        if 'text' not in body:
+            body.append(lxml.objectify.E.text())
+        return body['text']
 
 
 class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
@@ -343,14 +356,6 @@ class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
 
     def get_tree(self):
         return self.context.text
-
-
-class EntryHTMLConverter(zeit.wysiwyg.html.HTMLConverter):
-
-    zope.component.adapts(zeit.content.gallery.interfaces.IGalleryEntry)
-
-    def _html_getnodes(self, tree):
-        return tree.iterchildren()
 
 
 @zope.component.adapter(

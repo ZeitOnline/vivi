@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import lxml.html.soupparser
 import zeit.cms.content.contentsource
 import zeit.cms.content.field
 import zeit.cms.content.interfaces
@@ -9,6 +10,8 @@ import zeit.cms.interfaces
 import zeit.content.gallery.source
 import zeit.content.image.interfaces
 import zeit.imp.source
+import zeit.wysiwyg.interfaces
+import zope.interface.exceptions
 import zope.schema
 
 
@@ -67,7 +70,6 @@ class IGallery(IReadGallery, IWriteGallery):
     """An image gallery"""
 
 
-
 class IGalleryEntry(zope.interface.Interface):
     """One image in the gallery."""
 
@@ -86,6 +88,8 @@ class IGalleryEntry(zope.interface.Interface):
         title=_('Title'),
         required=False)
 
+    # XXX deprecated, only kept around so that existing text can still be
+    # accessed (see #8858)
     text = zeit.cms.content.field.XMLTree(
         title=_("Text"),
         required=False)
@@ -121,3 +125,26 @@ class IGalleryReference(zope.interface.Interface):
 class ScaleSource(zeit.imp.source.ScaleSource):
 
     product_configuration = 'zeit.content.gallery'
+
+
+GALLERY_TEXT_MAX_LENGTH = 42
+
+
+class TextTooLongError(zope.schema.ValidationError):
+
+    __doc__ = _('Text is too long')
+
+    def __init__(self):
+        super(TextTooLongError, self).__init__(self.__doc__)
+
+
+class IMaxLengthHTMLContent(zeit.wysiwyg.interfaces.IHTMLContent):
+
+    @zope.interface.invariant
+    def max_length(obj):
+        if not obj.html:
+            return
+        html = lxml.html.soupparser.fromstring(obj.html)
+        text = html.xpath('string(.)')
+        if len(text) > GALLERY_TEXT_MAX_LENGTH:
+            raise TextTooLongError()

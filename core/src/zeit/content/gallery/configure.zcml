@@ -49,8 +49,14 @@
       />
   </class>
 
+  <adapter
+    factory=".gallery.HTMLContent"
+    provides=".interfaces.IMaxLengthHTMLContent"
+    />
+
+  <!-- XXX deprecated, only kept around so that existing text can still be
+       accessed (see #8858) -->
   <adapter factory=".gallery.EntryHTMLContent" />
-  <adapter factory=".gallery.EntryHTMLConverter" />
 
   <!-- References -->
   <class class=".reference.GalleryReference" >
