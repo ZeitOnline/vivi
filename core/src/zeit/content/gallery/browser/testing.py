@@ -26,7 +26,7 @@ def add_image(browser, name):
     browser.getControl(name='form.copyrights.0..combination_01').value = (
         'http://www.zeit.de/')
     browser.getControl(name='form.actions.add').click()
-    browser.getLink('Checkin').click() 
+    browser.getLink('Checkin').click()
     url = browser.url
     browser.getLink('gallery').click()
     return url
