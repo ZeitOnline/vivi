@@ -18,7 +18,7 @@ Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 
 
 Edited metadata is written to brightcove:
- 
+
 >>> import zeit.brightcove.testing
 >>> len(zeit.brightcove.testing.RequestHandler.posts_received)
 1
