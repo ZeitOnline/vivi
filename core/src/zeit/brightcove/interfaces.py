@@ -32,8 +32,8 @@ class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
 
 
 class IBCContent(zeit.cms.interfaces.ICMSContent):
-     """Plain BrightCove-Content w/ just an uniqueId
-     """
+    """Plain BrightCove-Content w/ just an uniqueId
+    """
 
 
 class IBrightcoveContent(IBCContent):
@@ -95,7 +95,7 @@ class IVideo(IBrightcoveContent,
 
     serie = zope.schema.Choice(
         title=_("Serie"),
-        source= SerieSource(),
+        source=SerieSource(),
         required=False,
         missing_value='')
 
@@ -223,5 +223,3 @@ class IVideoAsset(zope.interface.Interface):
         title=_('Video 2'),
         required=False,
         source=brightcoveSource)
-
-
