@@ -12,7 +12,7 @@ MochiKit.Signal.connect(
     var uniqueId = draggable.element.textContent;
     var dim = null;
     if (pane_clone_from.nodeName != 'TR') {
-        dim = MochiKit.Style.getElementDimensions(pane_clone_from); 
+        dim = MochiKit.Style.getElementDimensions(pane_clone_from);
     }
 
     var div = $('drag-pane');
@@ -24,7 +24,7 @@ MochiKit.Signal.connect(
     div.dragged_element = draggable.element;
     div.uniqueId = uniqueId;
     div.drop_query_args = draggable.element.drop_query_args || {};
-    
+
     draggable.element = div;
     draggable.offset = [-10, -10];
 
@@ -88,7 +88,7 @@ zeit.cms.TableSorter = gocept.Class.extend({
                     ghosting: true
                 });
             }
-            
+
             new Droppable(row, {
                 ondrop: function (element) {
                     var tbody = element.parentNode;
@@ -114,7 +114,7 @@ zeit.cms.TableSorter = gocept.Class.extend({
                 hoverclass: 'tablesort-hover'
             });
         });
-    
+
     },
 
     dropped: function(element) {
@@ -149,7 +149,7 @@ zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
 
 var ObjectReferenceWidget = gocept.Class.extend({
     // Widget for referencing one object via unique id.
-    // 
+    //
     // This is also thought to be used multiple times in one formlib field,
     // e.g. for Tuple fields.
 
@@ -200,10 +200,10 @@ var ObjectReferenceWidget = gocept.Class.extend({
         // self saves a click and shows the object browser initially
         if (show_popup && isUndefinedOrNull(parent_component)) {
             // Defer popup loading until page is completed to allow others to
-            // set a unique id. 
+            // set a unique id.
             self.events.push(MochiKit.Signal.connect(
                 window, 'onload', function() {
-                    if (!self.input.value) 
+                    if (!self.input.value)
                         self.browseObjects();
             }));
         }
@@ -245,7 +245,7 @@ var ObjectReferenceWidget = gocept.Class.extend({
             self.lightbox.close();
             self.lightbox = null;
             self.selectObject(unique_id);
-        } else { 
+        } else {
             MochiKit.Style.makePositioned(element);
             var pos = MochiKit.Style.getElementPosition(element);
             var cloned_element = element.cloneNode(true);
@@ -423,7 +423,7 @@ zeit.cms.load_object_details = function(uniqueId) {
         d.addCallback(function(result) {
             // Store the result for later use. This is just magnitudes
             // faster than an HTTP request.
-            zeit.cms._load_object_details_cache[uniqueId] = 
+            zeit.cms._load_object_details_cache[uniqueId] =
                 result.responseText;
             return result.responseText;
         });
@@ -443,7 +443,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         self.element = $(widget_id);
         self.ul_element = MochiKit.DOM.getFirstElementByTagAndClassName(
             'ul', null, self.element);
-    
+
         self.initialize_autocomplete();
         self.initialize();
         // XXX Need to unregister those events
@@ -535,7 +535,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         count_field.value = count + 1;
         return count_field.value;
     },
-    
+
     decreaseCount: function() {
         var count_field = this.getCountField();
         var count = Number(count_field.value);
@@ -558,7 +558,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     add: function(value) {
         var self = this;
         var next_id = self.increaseCount() - 1;
-      
+
         var id_field_name = self.getValueFieldName(next_id);
 
         MochiKit.DOM.appendChildNodes(
@@ -745,9 +745,9 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
                 MochiKit.DOM.removeElementClass(self.element, 'busy');
                 MochiKit.DOM.removeElementClass(self.element, 'landing-zone');
                 MochiKit.DOM.removeElementClass(self.element, 'visible');
-                }); 
+                });
         } else {
-            self.details.innerHTML = 
+            self.details.innerHTML =
                 'Ziehen Sie Inhalte hierher um sie zu verknüpfen.';
             MochiKit.DOM.addElementClass(self.element, 'landing-zone');
             MochiKit.DOM.addElementClass(self.element, 'visible');
