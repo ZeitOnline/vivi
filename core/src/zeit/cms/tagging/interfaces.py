@@ -36,7 +36,7 @@ class ITagger(IReadTagger, IWriteTagger):
 class ITag(zope.interface.Interface):
     """A generic tag on an object."""
 
-    code  = zope.schema.TextLine(
+    code = zope.schema.TextLine(
         title=u'Internal tag id')
 
     label = zope.schema.TextLine(
