@@ -21,4 +21,3 @@ class Tags(object):
             tag.weight = 0
         for weight, tag in enumerate(reversed(value), start=1):
             tag.weight = weight
-
