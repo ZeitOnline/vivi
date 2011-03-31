@@ -15,7 +15,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
     />
-  
+
   <browser:page
     for="zeit.brightcove.interfaces.IPlaylist"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -23,7 +23,7 @@
     class=".browser.PlaylistDisplayForm"
     permission="zope.View"
     />
-  
+
   <browser:defaultView
     for="zeit.brightcove.interfaces.IPlaylist"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -51,7 +51,7 @@
    class=".browser.Still"
    permission="zope.View"
    />
- 
+
  <browser:icon
     for="zeit.brightcove.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -60,7 +60,7 @@
     height="20"
     file="resources/vivi/video_icon.gif"
     />
-  
+
   <browser:icon
     for="zeit.brightcove.interfaces.IPlaylist"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
