@@ -5,7 +5,6 @@ from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zc.sourcefactory.source
-import zeit.cms.content.interfaces
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema.interfaces
