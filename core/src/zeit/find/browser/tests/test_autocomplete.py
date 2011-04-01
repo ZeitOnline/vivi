@@ -6,6 +6,7 @@ import unittest2
 import zeit.cms.testing
 import zeit.find.tests
 
+
 class TestSourceQueryView(unittest2.TestCase):
 
     def test_factory_should_produce_when_autocomplete_is_true(self):
@@ -116,4 +117,3 @@ class TestSimpleFind(unittest2.TestCase,
         self.search.return_value = [dict(uniqueId='A', title='Title')]
         self.browser.open('@@simple_find?term=search-term')
         self.assert_json([{'label': 'Title', 'value': 'A'}])
-
