@@ -11,6 +11,14 @@
     />
 
   <browser:page
+    for="zeit.cms.tagging.interfaces.IWhitelist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="search"
+    class=".autocomplete.Search"
+    permission="zope.View"
+    />
+
+  <browser:page
     for="zeit.cms.tagging.interfaces.ITag"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="object-details"
