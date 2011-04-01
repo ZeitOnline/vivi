@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.selenium.ztk
 import pkg_resources
 import simplejson
 import transaction
@@ -250,6 +251,9 @@ def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('layer', BrightcoveLayer)
     kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
+
+
+selenium_layer = gocept.selenium.ztk.Layer(BrightcoveLayer)
 
 
 
