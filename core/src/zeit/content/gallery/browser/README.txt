@@ -96,7 +96,8 @@ The 'text' field enforces a maximum length:
 >>> browser.getControl('Text').value = 'a' * 300
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
-<...<li class="error">Text is too long</li>...
+<...class="error">Text is to long. Allowed: 42, got: 300...
+
 
 
 Editing a gallery
