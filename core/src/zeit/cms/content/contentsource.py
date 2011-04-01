@@ -15,12 +15,13 @@ class INamedCMSContentSource(ICMSContentSource):
     """A source for CMS content which is registered as utility."""
 
     name = zope.interface.Attribute("Utility name of the source")
-    autocomplete = zope.schema.Bool(
-        title=u"Can the source be queried using autocomplete?",
-        default=False)
 
     def get_check_types():
         """Return a sequence of cms type identifiers which are included."""
+
+
+class IAutocompleteSource(INamedCMSContentSource):
+    """Marker that this source supports autocomplete."""
 
 
 class CMSContentSource(object):
@@ -30,7 +31,6 @@ class CMSContentSource(object):
 
     name = 'all-types'
     check_interfaces = zeit.cms.interfaces.ICMSContentType
-    autocomplete = False
 
     def __contains__(self, value):
         if not self.verify_interface(value):

@@ -17,8 +17,10 @@ import zope.schema
 # XXX There is too much, too unordered in here, clean this up.
 
 
+# prevent circular import
 from zeit.cms.content.contentsource import ICMSContentSource
 from zeit.cms.content.contentsource import INamedCMSContentSource
+from zeit.cms.content.contentsource import IAutocompleteSource
 
 
 class IAuthorType(zeit.cms.interfaces.ICMSContentType):
@@ -27,9 +29,11 @@ class IAuthorType(zeit.cms.interfaces.ICMSContentType):
 
 class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
 
+    zope.interface.implements(
+        zeit.cms.content.contentsource.IAutocompleteSource)
+
     check_interfaces = IAuthorType
     name = 'authors'
-    autocomplete = True
 
 
 authorSource = AuthorSource()

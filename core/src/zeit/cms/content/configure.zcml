@@ -98,6 +98,7 @@
     />
   <utility
     component=".interfaces.authorSource"
+    provides=".contentsource.INamedCMSContentSource"
     name="authors"
     />
   <adapter
