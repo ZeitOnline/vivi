@@ -133,9 +133,13 @@ GALLERY_TEXT_MAX_LENGTH = 42
 class TextTooLongError(zope.schema.ValidationError):
 
     def __init__(self, maximum, got):
-        super(TextTooLongError, self).__init__(
-            _('Text is to long. Allowed: ${maximum}, got: ${got}',
-              mapping=dict(maximum=maximum, got=got)))
+        self.maximum = maximum
+        self.got = got
+        super(TextTooLongError, self).__init__(self.doc())
+
+    def doc(self):
+        return _('Text is to long. Allowed: ${maximum}, got: ${got}',
+                 mapping=dict(maximum=self.maximum, got=self.got))
 
 
 class IMaxLengthHTMLContent(zeit.wysiwyg.interfaces.IHTMLContent):
