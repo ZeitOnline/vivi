@@ -6,6 +6,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
+import zeit.cms.tagging.whitelist
 import zope.container.interfaces
 import zope.interface
 import zope.schema
@@ -105,12 +106,12 @@ class IVideo(IBrightcoveContent,
         missing_value='',
         source=zeit.cms.content.sources.ProductSource())
 
-    keywords = zope.schema.FrozenSet(
+    keywords = zope.schema.Tuple(
         title=_("Keywords"),
         required=False,
         default=None,
         value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.interfaces.Whitelist()))
+            source=zeit.cms.tagging.whitelist.WhitelistSource()))
 
     dailyNewsletter = zope.schema.Bool(
         title=_("Daily newsletter"),

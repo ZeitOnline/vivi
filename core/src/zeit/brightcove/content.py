@@ -75,30 +75,24 @@ class mapped_bool(mapped):
         super(mapped_bool, self).__set__(instance, value)
 
 
-class Tag(object):
-
-    zope.interface.implements(zeit.cms.tagging.interfaces.ITag)
-
-    def __init__(self, label):
-        self.label = self.code = label
-
-
 class mapped_keywords(mapped):
     """Maps the labels stored in brightcove to a list of tags.
-
-    XXX this is a temporary, not really functional implementation, see #8623
-
     """
 
     def __get__(self, instance, class_):
+        whitelist = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
         value = super(mapped_keywords, self).__get__(instance, class_)
+        result = []
         if value:
-            value = value.split(';')
-            return frozenset(Tag(label) for label in value)
-        return frozenset()
+            for code in value.split(';'):
+                tag = whitelist.get(code)
+                if tag is not None:
+                    result.append(tag)
+        return tuple(result)
 
     def __set__(self, instance, value):
-        value = ';'.join(tag.label for tag in value)
+        value = ';'.join(tag.code for tag in value)
         super(mapped_keywords, self).__set__(instance, value)
 
 
@@ -120,8 +114,8 @@ class mapped_product(mapped):
 
     def _get_from_dict(self, value):
         if (value['customFields']['produkt-id'] is None and
-             value['referenceId'] is not None):
-             return 'Reuters'
+            value['referenceId'] is not None):
+            return 'Reuters'
         for key in self.path:
             value = value[key]
         return value
