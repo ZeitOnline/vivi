@@ -58,7 +58,6 @@ def installRelations():
 
 
 def install(root):
-    site_manager = zope.component.getSiteManager()
     installLocalUtility(
         root, zeit.cms.repository.repository.repositoryFactory,
         'repository', zeit.cms.repository.interfaces.IRepository)
@@ -68,6 +67,9 @@ def install(root):
     installLocalUtility(
         root, zeit.cms.content.template.TemplateManagerContainer,
         'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
+    installLocalUtility(
+        root, zeit.cms.tagging.whitelist.Whitelist,
+        'tag-whitelist', zeit.cms.tagging.interfaces.IWhitelist)
     installGeneralTaskService()
     installEventTaskService()
     installRelations()

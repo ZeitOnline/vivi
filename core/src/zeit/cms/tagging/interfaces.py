@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zc.sourcefactory.source
+import zeit.cms.content.interfaces
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema.interfaces
@@ -34,13 +35,17 @@ class ITagger(IReadTagger, IWriteTagger):
 
 
 class ITag(zope.interface.Interface):
-    """A generic tag on an object."""
+    """A tag."""
 
     code = zope.schema.TextLine(
         title=u'Internal tag id')
 
     label = zope.schema.TextLine(
         title=u'User visible text of tag')
+
+
+class IAppliedTag(zope.interface.Interface):
+    """A generic tag on an object."""
 
     type = zope.schema.TextLine(
         title=u"Tag type (person, topic, keyword, ...)")
@@ -79,7 +84,13 @@ class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
         return value.code
 
 
-class IWhitelist(zope.schema.interfaces.IIterableSource):
+class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):
+
+    def search(prefix):
+        """Returns a list of tags whose lables start with the given prefix."""
+
+
+class IWhitelist(IReadWhitelist, zope.interface.common.mapping.IWriteMapping):
     """Tag whitelist
 
     The whitelist contains all selectable tags.
@@ -87,11 +98,8 @@ class IWhitelist(zope.schema.interfaces.IIterableSource):
     """
 
 
-class Whitelist(zc.sourcefactory.basic.BasicSourceFactory):
+class IWhitelistSource(zope.schema.interfaces.IIterableSource):
+    """Tag whitelist"""
 
-    class source_class(zc.sourcefactory.source.FactoredSource):
-        zope.interface.implements(IWhitelist)
 
-    def getValues(self):
-        # XXX currently there are no tags, see #8624
-        return []
+ID_NAMESPACE = 'tag://'

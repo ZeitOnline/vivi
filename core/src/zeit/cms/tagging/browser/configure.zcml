@@ -10,4 +10,12 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.cms.tagging.interfaces.ITag"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details"
+    template="object-details.pt"
+    permission="zope.View"
+    />
+
 </configure>

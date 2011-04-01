@@ -12,4 +12,38 @@
       />
   </resourceLibrary>
 
+  <class class=".tag.Tag">
+    <require
+      interface="zeit.cms.tagging.interfaces.ITag"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.cms.interfaces.ICMSContent"
+      permission="zope.View"
+      />
+  </class>
+
+  <class class=".whitelist.Whitelist">
+    <require
+      interface="zeit.cms.tagging.interfaces.IReadWhitelist"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.interface.common.mapping.IWriteMapping"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <!-- XXX AbsoluteURL can be accessed in two ways, and one doesn't delegate to
+       the other -->
+  <adapter
+      factory=".tag.AbsoluteURL"
+      provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+      />
+  <adapter
+      factory=".tag.AbsoluteURL"
+      provides="zope.interface.Interface"
+      name="absolute_url"
+      />
+
 </configure>
