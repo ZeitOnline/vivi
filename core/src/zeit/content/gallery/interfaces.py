@@ -127,7 +127,7 @@ class ScaleSource(zeit.imp.source.ScaleSource):
     product_configuration = 'zeit.content.gallery'
 
 
-GALLERY_TEXT_MAX_LENGTH = 42
+GALLERY_TEXT_MAX_LENGTH = 560
 
 
 class TextTooLongError(zope.schema.ValidationError):
