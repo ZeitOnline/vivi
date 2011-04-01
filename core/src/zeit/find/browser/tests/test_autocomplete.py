@@ -9,22 +9,6 @@ import zeit.find.tests
 
 class TestSourceQueryView(unittest2.TestCase):
 
-    def test_factory_should_produce_when_autocomplete_is_true(self):
-        from zeit.find.browser.autocomplete import AutocompleteSourceQuery
-        source = mock.Mock()
-        source.autocomplete = True
-        view = AutocompleteSourceQuery(source, mock.sentinel.request)
-        self.assertIsInstance(view, AutocompleteSourceQuery)
-        self.assertEqual(source, view.source)
-        self.assertEqual(mock.sentinel.request, view.request)
-
-    def test_factory_should_not_produce_when_autocomplete_is_true(self):
-        from zeit.find.browser.autocomplete import AutocompleteSourceQuery
-        source = mock.Mock()
-        source.autocomplete = False
-        view = AutocompleteSourceQuery(source, mock.Mock())
-        self.assertIsNone(view)
-
     def test_view_should_render_input(self):
         from zeit.find.browser.autocomplete import AutocompleteSourceQuery
         source = mock.Mock()
@@ -53,9 +37,8 @@ class TestSourceQueryViewIntegration(zeit.cms.testing.FunctionalTestCase):
         import zope.formlib.interfaces
         import zope.interface
         source = mock.Mock()
-        source.autocomplete = True
         zope.interface.alsoProvides(
-            source, zeit.cms.content.interfaces.INamedCMSContentSource)
+            source, zeit.cms.content.interfaces.IAutocompleteSource)
         request = mock.Mock()
         zope.interface.alsoProvides(
             request, zeit.cms.browser.interfaces.IViviSkin)

@@ -17,16 +17,9 @@ class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
                               zeit.cms.browser.view.Base):
 
     grokcore.component.adapts(
-        zeit.cms.content.interfaces.INamedCMSContentSource,
+        zeit.cms.content.interfaces.IAutocompleteSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(zope.formlib.interfaces.ISourceQueryView)
-
-    def __new__(cls, source, request):
-        if not source.autocomplete:
-            return None
-        self = object.__new__(cls)
-        self.__init__(source, request)
-        return self
 
     def __init__(self, source, request):
         self.source = source
