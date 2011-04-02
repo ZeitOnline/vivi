@@ -344,7 +344,7 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
         # we can't express that 'body' is allowed for IGallery objects as a
         # security declaration, since that would have to apply to the objectify
         # element
-        body = zope.security.proxy.getObject(self.context).xml.body
+        body = zope.security.proxy.removeSecurityProxy(self.context).xml.body
         if 'text' not in body:
             body.append(lxml.objectify.E.text())
         return body['text']
