@@ -345,9 +345,12 @@ class HTMLContent(zeit.wysiwyg.html.HTMLContentBase):
         # security declaration, since that would have to apply to the objectify
         # element
         body = zope.security.proxy.removeSecurityProxy(self.context).xml.body
-        if 'text' not in body:
-            body.append(lxml.objectify.E.text())
-        return body['text']
+        try:
+            text = body['text']
+        except AttributeError:
+            text = lxml.objectify.E.text()
+            body.append(text)
+        return text
 
 
 class EntryHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
