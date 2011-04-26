@@ -3,6 +3,7 @@
 
 import pkg_resources
 import simplejson
+import time
 import transaction
 import urlparse
 import zeit.cms.testing
@@ -127,6 +128,7 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
 
     posts_received = []
     response = 200
+    sleep = 0
 
     def do_GET(self):
         if self.path == '/die':
@@ -159,6 +161,7 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
                       "page_number": 0,
                       "page_size": 0,
                       "total_count": -1}
+        time.sleep(self.sleep)
         self.send_response(self.response)
         self.end_headers()
         self.wfile.write(simplejson.dumps(result))
@@ -188,6 +191,7 @@ product_config = """\
     read-url http://localhost:%s/
     write-url http://localhost:%s/
     source-serie file://%s
+    timeout 300
 </product-config>
 """ % (httpd_port,
        httpd_port,

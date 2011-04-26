@@ -2,11 +2,11 @@
 # Copyright (c) 2009 StudioNow, Inc <patrick@studionow.com>
 # See also LICENSE.txt
 
+import logging
 import simplejson
 import urllib
 import urllib2
 import zope.app.appsetup.product
-import logging
 
 
 log = logging.getLogger(__name__)
@@ -17,11 +17,12 @@ JSON_CONTROL_CHARACTERS = ''.join(chr(x) for x in range(0, 0x1f))
 
 class APIConnection(object):
 
-    def __init__(self, read_token, write_token, read_url, write_url):
+    def __init__(self, read_token, write_token, read_url, write_url, timeout):
         self.read_token = read_token
         self.write_token = write_token
         self.read_url = read_url
         self.write_url = write_url
+        self.timeout = timeout
 
     def decode_broken_brightcove_json(self, json):
         return simplejson.loads(
@@ -35,7 +36,8 @@ class APIConnection(object):
         post_data = urllib.urlencode(dict(json=simplejson.dumps(data)))
         log.info("Posting %s", command)
         log.debug("Posting %s(%s)", command, data)
-        request = urllib2.urlopen(self.write_url, post_data)
+        request = urllib2.urlopen(
+            self.write_url, post_data, timeout=self.timeout)
         response = self.decode_broken_brightcove_json(request.read())
         __traceback_info__ = (response, )
         log.debug("response info %s", response)
@@ -51,7 +53,7 @@ class APIConnection(object):
             token=self.read_token,
             **kwargs)))
         log.info("Requesting %s", url)
-        request = urllib2.urlopen(url)
+        request = urllib2.urlopen(url, timeout=self.timeout)
         response = self.decode_broken_brightcove_json(request.read())
         __traceback_info__ = (url, response)
         error = response.get('error')
@@ -97,4 +99,5 @@ def connection_factory():
         config['read-token'],
         config['write-token'],
         config['read-url'],
-        config['write-url'])
+        config['write-url'],
+        float(config['timeout']))
