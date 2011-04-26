@@ -26,21 +26,9 @@ class IImageType(zeit.cms.interfaces.ICMSContentType):
     """The interface of image interfaces."""
 
 
-class AlignmentSource(zc.sourcefactory.basic.BasicSourceFactory):
+class AlignmentSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
-    values = ((u'left', _('left')),
-              (u'center', _('center')),
-              (u'right', _('right')))
-
-    def __init__(self):
-        self.titles = dict(self.values)
-        self.values = tuple(v[0] for v in self.values)
-
-    def getValues(self):
-        return self.values
-
-    def getTitle(self, value):
-        return self.titles.get(value, value)
+    values = (u'left', u'center', u'right')
 
 
 class IImageMetadata(zope.interface.Interface):
