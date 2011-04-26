@@ -4,7 +4,8 @@ zeit.cms changes
 1.48.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add SourceFactory helper for sources with a small set of fixed values
+  (for #8953).
 
 
 1.48.0 (2011-03-23)
