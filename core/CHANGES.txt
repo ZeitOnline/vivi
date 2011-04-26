@@ -2,7 +2,6 @@ zeit.cms changes
 ================
 
 editor-ng branch changes
-------------------------
 
 - Publish is not allowed in ILocalContent via the security machinery now (for
   #8413).
@@ -19,19 +18,28 @@ editor-ng branch changes
 - Testing: HTTPLayer calls tearDown on the request handler during testTearDown
   now.
 
-1.47.1 (unreleased)
+
+1.48.1 (unreleased)
+-------------------
+
+- Add SourceFactory helper for sources with a small set of fixed values
+  (for #8953).
+
+
+1.48.0 (2011-03-23)
 -------------------
 
 -  Generalised how checkout/checkin works so it also works for non-dav content
-  (#7826)
+  (for #7826)
 
 - Added IDAVContent for content from the original repository. This is to
-  separate it from content from other repositories (like brightcove) (#7826).
+  separate it from content from other repositories (like brightcove) (for
+  #7826).
 
-- Made locking support optional (#7826)
+- Made locking support optional (for #7826)
 
 - A view on workingcopy objects used to lookup objects directly in the
-  repository. Replaced this by an ICMSContent() adapter lookup (#7826)
+  repository. Replaced this by an ICMSContent() adapter lookup (for #7826)
 
 - Improve HTTP test layer: stores errors in a list instead of printing them
   (for #8085).
