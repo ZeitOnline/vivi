@@ -8,7 +8,6 @@ import zope.copypastemove
 import zope.lifecycleevent
 
 
-
 class CMSObjectMover(zope.copypastemove.ObjectMover):
     """Objectmover for ICMSContent."""
 
@@ -16,7 +15,6 @@ class CMSObjectMover(zope.copypastemove.ObjectMover):
 
     def moveTo(self, target, new_name=None):
         obj = self.context
-        container = obj.__parent__
 
         orig_name = obj.__name__
         if new_name is None:
@@ -35,7 +33,6 @@ class CMSObjectCopier(zope.copypastemove.ObjectCopier):
 
     def copyTo(self, target, new_name=None):
         obj = self.context
-        container = obj.__parent__
 
         orig_name = obj.__name__
         if new_name is None:
