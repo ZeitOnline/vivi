@@ -2,8 +2,14 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.content.sources
 import zope.interface
 import zope.schema
+
+
+class StatusSource(zeit.cms.content.sources.SimpleFixedValueSource):
+
+    values = (u'Print', u'Online', u'Reader')
 
 
 class IAuthor(zope.interface.Interface):
@@ -25,3 +31,7 @@ class IAuthor(zope.interface.Interface):
         title=_('Display name'),
         required=False,
         description=_(u"Default: 'Firstname Lastname'"))
+
+    status = zope.schema.Choice(
+        title=_('Status'),
+        source=StatusSource())

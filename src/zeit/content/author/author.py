@@ -33,6 +33,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     entered_display_name = zeit.cms.content.property.ObjectPathProperty(
         '.entered_display_name')
 
+    status = zeit.cms.content.property.ObjectPathProperty('.status')
+
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 

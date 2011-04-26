@@ -13,6 +13,7 @@ Authors
 >>> browser.getControl('Firstname').value = 'William'
 >>> browser.getControl('Lastname').value = 'Shakespeare'
 >>> browser.getControl('Email address').value = 'wil.i.am@shakespeare.name'
+>>> browser.getControl('Status').displayValue = ['Print']
 >>> browser.getControl('VG-Wort ID').value = '12345'
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.getLink('Checkin').click()
@@ -49,6 +50,7 @@ LookupError: label 'File name'
 >>> browser.getControl('Firstname').value = 'William'
 >>> browser.getControl('Lastname').value = 'Shakespeare'
 >>> browser.getControl('VG-Wort ID').value = '12345'
+>>> browser.getControl('Status').displayValue = ['Print']
 >>> browser.getControl(name='form.actions.add').click()
 >>> print browser.contents
 <...
@@ -72,6 +74,7 @@ Adding the same name again creates a different folder:
 >>> browser.getControl('Firstname').value = 'William'
 >>> browser.getControl('Lastname').value = 'Shakespeare'
 >>> browser.getControl('VG-Wort ID').value = '9876'
+>>> browser.getControl('Status').displayValue = ['Print']
 >>> browser.getControl(name='form.actions.add').click()
 >>> print browser.contents
 <...
