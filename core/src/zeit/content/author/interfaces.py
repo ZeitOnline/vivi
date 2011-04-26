@@ -11,6 +11,7 @@ class IAuthor(zope.interface.Interface):
     title = zope.schema.TextLine(title=_('Title'), required=False)
     firstname = zope.schema.TextLine(title=_('Firstname'))
     lastname = zope.schema.TextLine(title=_('Lastname'))
+    email = zope.schema.TextLine(title=_('Email address'), required=False)
     vgwortid = zope.schema.Int(
         title=_('VG-Wort ID'),
         required=False,
