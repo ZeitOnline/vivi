@@ -200,6 +200,8 @@ class MultiObjectSequenceWidget(
 
     def _toFormValue(self, value):
         result = []
+        if value is None:
+            return result
         for obj in value:
             if zeit.cms.interfaces.ICMSContent.providedBy(obj):
                 result.append({'uniqueId': obj.uniqueId})

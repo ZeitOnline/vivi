@@ -72,14 +72,20 @@ class TestObjectSequenceWidget(unittest2.TestCase):
 
     def test_to_field_value_ignores_non_cms_content(self):
         from zeit.cms.browser.widget import MultiObjectSequenceWidget
-        import zeit.cms.interfaces
-        import zope.interface
         context = mock.Mock()
         context.__name__ = 'name'
         widget = MultiObjectSequenceWidget(
             context, mock.Mock(), mock.Mock())
         self.assertEqual(
             (), widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar]))
+
+    def test_to_form_value_copes_with_none(self):
+        from zeit.cms.browser.widget import MultiObjectSequenceWidget
+        context = mock.Mock()
+        context.__name__ = 'name'
+        widget = MultiObjectSequenceWidget(
+            context, mock.Mock(), mock.Mock())
+        self.assertEqual([], widget._toFormValue(None))
 
 
 class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
