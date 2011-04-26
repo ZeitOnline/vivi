@@ -12,6 +12,7 @@ Authors
 >>> browser.getControl('File name').value = 'william_shakespeare'
 >>> browser.getControl('Firstname').value = 'William'
 >>> browser.getControl('Lastname').value = 'Shakespeare'
+>>> browser.getControl('Email address').value = 'wil.i.am@shakespeare.name'
 >>> browser.getControl('VG-Wort ID').value = '12345'
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.getLink('Checkin').click()
