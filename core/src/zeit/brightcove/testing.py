@@ -76,7 +76,7 @@ PLAYLIST_2345 = {
     'name': 'Videos zum Thema Film',
     'shortDescription': 'Videos in kurz',
     'thumbnailURL': None,
-    'videoIds': [1234,6789]
+    'videoIds': [1234, 6789],
 }
 
 
@@ -201,7 +201,6 @@ BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
         zeit.cms.testing.cms_product_config +
         zeit.solr.testing.product_config +
         product_config))
-
 
 
 def update_repository(root):
