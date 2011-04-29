@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-0.9.1 (unreleased)
+0.9.1 (2011-04-29)
 ------------------
 
 - Add timeout for all Brightcove requests (#8021).
