@@ -144,9 +144,9 @@ class Content(persistent.Persistent,
                 self.data['customFields'] = (
                     persistent.mapping.PersistentMapping(
                         self.data['customFields']))
-            self.uniqueId = 'http://video.zeit.de/%s/%s' % (self.type, self.data['id'])
+            self.uniqueId = 'http://video.zeit.de/%s/%s' % (
+                self.type, self.data['id'])
             self.__name__ = '%s:%s' % (self.type, self.data['id'])
-
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
@@ -279,7 +279,7 @@ class Video(Content):
             custom['ref_link%i' % i] = ''
             custom['ref_title%i' % i] = ''
         for i, obj in enumerate(value, 1):
-            metadata  = zeit.cms.content.interfaces.ICommonMetadata(obj, None)
+            metadata = zeit.cms.content.interfaces.ICommonMetadata(obj, None)
             if metadata is None:
                 continue
             custom['ref_link%s' % i] = obj.uniqueId
