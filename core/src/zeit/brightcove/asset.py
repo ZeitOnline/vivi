@@ -11,6 +11,7 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zope.schema
 
+
 def get_expires(*videos):
     """returns the earliest expire date of the two objects."""
 
