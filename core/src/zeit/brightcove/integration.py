@@ -18,6 +18,7 @@ import zope.component
 import zope.dublincore.interfaces
 import zope.security.proxy
 
+
 class BrightcoveContentPublicationStatus(grokcore.component.Adapter):
 
     grokcore.component.context(zeit.brightcove.interfaces.IBrightcoveContent)
@@ -31,9 +32,7 @@ class BrightcoveContentPublicationStatus(grokcore.component.Adapter):
         return "not-published"
 
 
-
-@grokcore.component.adapter(basestring,
-                            name='http://video.zeit.de/')
+@grokcore.component.adapter(basestring, name='http://video.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_cms_content(uniqueId):
     assert uniqueId.startswith('http://video.zeit.de/')
