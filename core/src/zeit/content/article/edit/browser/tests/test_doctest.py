@@ -13,9 +13,6 @@ def test_suite():
         'edit.txt',
         'edit.related.txt',
         'metadata.head.txt',
-        'metadata.misc.txt',
-        'metadata.navigation.txt',
-        'metadata.texts.txt',
         package='zeit.content.article.edit.browser',
         layer=zeit.content.article.testing.ArticleLayer))
     return suite
