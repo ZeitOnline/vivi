@@ -1,0 +1,72 @@
+There are form stubs at the top of the editor:
+
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost:8080/++skin++vivi/repository/online'
+...              '/2007/01/Somalia/@@checkout')
+>>> browser.open('@@contents')
+>>> print browser.contents
+<...
+  <form class="inline-form"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata">
+</form>
+...
+  <form class="inline-form"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.assets">
+</form>
+...
+  <form class="inline-form"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.recension-list">
+</form>
+...
+  <form class="inline-form"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-status">
+...
+  <form class="inline-form"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-settings">
+</form>
+...
+
+Those forms are loaded via javascript:
+
+>>> browser.open(browser.getForm(index=0).action)
+>>> print browser.contents
+<fieldset>
+   <legend>Metadata</legend>
+   ...
+
+>>> browser.goBack()
+>>> browser.open(browser.getForm(index=1).action)
+>>> print browser.contents
+<fieldset>
+   <legend>Assets</legend>
+   ...
+
+>>> browser.goBack()
+>>> browser.open(browser.getForm(index=2).action)
+>>> print browser.contents
+<div id="recensions">
+   ...
+
+>>> browser.goBack()
+>>> browser.open(browser.getForm(index=3).action)
+>>> print browser.contents
+<fieldset>
+   <legend>Status</legend>
+   ...
+
+>>> browser.goBack()
+>>> browser.open(browser.getForm(index=4).action)
+>>> print browser.contents
+<fieldset>
+   <legend>Settings</legend>
+   ...
+
+>>> browser.goBack()
+>>> browser.open(browser.getForm(index=5).action)
+>>> print browser.contents
+<fieldset>
+   <legend>Log</legend>
+   ...
+

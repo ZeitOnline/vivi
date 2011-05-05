@@ -67,6 +67,33 @@ class Assets(InlineForm):
                 'badges')
 
 
+class MetadataForms(object):
+    """Metadata forms view."""
+
+    title = _('Metadata')
+
+
+class Metadata(InlineForm):
+
+    legend = _('Metadata')
+    prefix = 'metadata'
+    undo_description = _('edit metadata')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'ressort', 'sub_ressort', 'keywords', 'product_id',
+            'dailyNewsletter')
+
+    def render(self):
+        result = super(Metadata, self).render()
+        if result:
+            result += (
+                '<script type="text/javascript">'
+                '    zeit.cms.configure_ressort_dropdown("%s.");'
+                '</script>') % (self.prefix,)
+        return result
+
+
 class WorkflowForms(object):
     """Article workflow forms."""
 
