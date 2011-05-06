@@ -73,19 +73,61 @@ class MetadataForms(object):
     title = _('Metadata')
 
 
-class Metadata(InlineForm):
+# This will be renamed properly as soon as the fields are finally decided.
+class MetadataA(InlineForm):
 
-    legend = _('Metadata')
-    prefix = 'metadata'
+    legend = _('MetadataA')
+    prefix = 'metadata-a'
     undo_description = _('edit metadata')
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'ressort', 'sub_ressort', 'keywords', 'product_id',
-            'dailyNewsletter')
+            'ressort', 'sub_ressort', 'keywords')
 
     def render(self):
-        result = super(Metadata, self).render()
+        result = super(MetadataA, self).render()
+        if result:
+            result += (
+                '<script type="text/javascript">'
+                '    zeit.cms.configure_ressort_dropdown("%s.");'
+                '</script>') % (self.prefix,)
+        return result
+
+
+# This will be renamed properly as soon as the fields are finally decided.
+class MetadataB(InlineForm):
+
+    legend = _('MetadataB')
+    prefix = 'metadata-b'
+    undo_description = _('edit metadata')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'product_id', 'copyrights', 'dailyNewsletter')
+
+    def render(self):
+        result = super(MetadataB, self).render()
+        if result:
+            result += (
+                '<script type="text/javascript">'
+                '    zeit.cms.configure_ressort_dropdown("%s.");'
+                '</script>') % (self.prefix,)
+        return result
+
+
+# This will be renamed properly as soon as the fields are finally decided.
+class MetadataC(InlineForm):
+
+    legend = _('MetadataC')
+    prefix = 'metadata-c'
+    undo_description = _('edit metadata')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'authors')
+
+    def render(self):
+        result = super(MetadataC, self).render()
         if result:
             result += (
                 '<script type="text/javascript">'

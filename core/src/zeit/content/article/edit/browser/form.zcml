@@ -32,17 +32,55 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.MetadataForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.metadata"
+    name="edit.form.metadata-a"
     template="edit.metadata.form-loader.pt"
     permission="zope.View"
-    weight="1"
+    weight="10"
     />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.metadata"
-    class=".form.Metadata"
+    name="edit.form.metadata-a"
+    class=".form.MetadataA"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MetadataForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.metadata-b"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.metadata-b"
+    class=".form.MetadataB"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MetadataForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.metadata-c"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="30"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.metadata-c"
+    class=".form.MetadataC"
     permission="zope.View"
     />
 
