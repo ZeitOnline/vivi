@@ -165,7 +165,7 @@ class WorkflowStatus(InlineForm):
 class WorkflowSettings(InlineForm):
 
     legend = _('Settings')
-    prefix = 'worfklow-settings'
+    prefix = 'workflow-settings'
     undo_description = _('edit workflow settings')
 
     form_fields = (
@@ -179,7 +179,7 @@ class WorkflowSettings(InlineForm):
 class WorkflowLog(InlineForm):
 
     legend = _('Log')
-    prefix = 'worfklow-log'
+    prefix = 'workflow-log'
     undo_description = None
 
     form_fields = zope.formlib.form.FormFields(

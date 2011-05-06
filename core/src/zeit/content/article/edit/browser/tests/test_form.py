@@ -44,16 +44,16 @@ class WorkflowSettingsTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia/')
         self.open('/repository/online/2007/01/Somalia/@@edit.html')
         self.selenium.waitForElementPresent(
-            'id=worfklow-settings.release_period.combination_00')
+            'id=workflow-settings.release_period.combination_00')
 
     def test_calendar_should_insert_date(self):
         s = self.selenium
-        s.click('id=worfklow-settings.release_period.combination_00_trigger')
+        s.click('id=workflow-settings.release_period.combination_00_trigger')
         s.waitForElementPresent('css=.calendar')
         s.mouseDown('css=.calendar .button:contains(Today)')
         s.mouseUp('css=.calendar .button:contains(Today)')
         s.waitForElementPresent('css=.dirty')
-        s.fireEvent('id=worfklow-settings.release_period.combination_00',
+        s.fireEvent('id=workflow-settings.release_period.combination_00',
                     'blur')
         s.waitForElementNotPresent('css=.dirty')
 
@@ -61,9 +61,9 @@ class WorkflowSettingsTest(zeit.content.article.testing.SeleniumTestCase):
         s = self.selenium
         s.click(
             'xpath='
-            '//*[@id="worfklow-settings.release_period.combination_00_trigger"]'
+            '//*[@id="workflow-settings.release_period.combination_00_trigger"]'
             '/following-sibling::input')
         s.waitForElementPresent('css=.dirty')
-        s.fireEvent('id=worfklow-settings.release_period.combination_00',
+        s.fireEvent('id=workflow-settings.release_period.combination_00',
                     'blur')
         s.waitForElementNotPresent('css=.dirty')

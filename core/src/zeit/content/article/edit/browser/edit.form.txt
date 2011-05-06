@@ -151,7 +151,7 @@ Those forms are loaded via javascript:
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="Leave empty for no constraint."
-        for="worfklow-settings.release_period">Publication period</label>
+        for="workflow-settings.release_period">Publication period</label>
   </div>
   <div class="widget">...
 </div>
@@ -163,7 +163,7 @@ Those forms are loaded via javascript:
 <legend>Log</legend>
 <div class="widget-outer">
   <div class="label">
-    <label cms:tooltip="" for="worfklow-log.logs">Log</label>
+    <label cms:tooltip="" for="workflow-log.logs">Log</label>
   </div>
   <div class="widget">...
 ...
