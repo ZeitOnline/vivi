@@ -3,7 +3,7 @@
 zeit.cms.declare_namespace('zeit.content.article');
 
 var wire_forms = function() {
-    forEach($$('#article-editor-forms .inline-form'), function(container) {
+    forEach($$('#article-editor-forms .category'), function(container) {
         if (MochiKit.DOM.hasElementClass(container, 'wired')) {
             return;
         }
@@ -11,7 +11,6 @@ var wire_forms = function() {
         var url = container.getAttribute('action');
         var form = new zeit.cms.SubPageForm(
             url, container, {save_on_change: true});
-        MochiKit.DOM.addElementClass(container, 'wired');
     });
 };
 

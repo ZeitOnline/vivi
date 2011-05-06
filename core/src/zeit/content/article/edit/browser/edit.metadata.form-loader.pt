@@ -1,5 +1,5 @@
-<form
-  class="inline-form"
+<fieldset
+  class="category"
   tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}">
-</form>
+</fieldset>
 

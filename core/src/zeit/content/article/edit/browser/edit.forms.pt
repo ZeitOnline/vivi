@@ -16,7 +16,9 @@
       <span i18n:translate="" tal:content="view/title">Metadata</span>
     </div>
     <div class="block-inner">
-      <tal:block replace="structure provider:zeit.edit.contents" />
+      <form class="inline-form wired">
+        <tal:block replace="structure provider:zeit.edit.contents" />
+      </form>
     </div>
   </div>
 </tal:block>

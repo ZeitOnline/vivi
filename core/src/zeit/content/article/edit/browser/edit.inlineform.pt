@@ -5,7 +5,6 @@
     inside a form. In a real browser this snipped is injected in form-tag so
     there must not be an extra form element.
   </tal:comment>
-  <fieldset>
 
     <legend tal:content="view/legend"
             i18n:translate="">
@@ -40,5 +39,4 @@
         tal:replace="structure action/render" />
     </div>
 
-  </fieldset>
 </form>
