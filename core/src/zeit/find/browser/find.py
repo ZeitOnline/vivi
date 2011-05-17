@@ -616,6 +616,7 @@ def search_parameters(request):
         'from',
         'fulltext',
         'keywords',
+        'raw-tags',
         'product',
         'published',
         'result_filters_expanded',
@@ -646,6 +647,7 @@ def search_form(request):
     topic = g('topic', None)
     authors = g('author', None)
     keywords = g('keywords', None)
+    raw_tags = g('raw-tags', None)
     product_id = g('product_id', None)
     show_news = g('show_news', False)
     serie = g('serie', None)
@@ -660,6 +662,7 @@ def search_form(request):
         from_=from_,
         fulltext=fulltext,
         keywords=keywords,
+        raw_tags=raw_tags,
         product_id=product_id,
         published=published,
         serie=serie,

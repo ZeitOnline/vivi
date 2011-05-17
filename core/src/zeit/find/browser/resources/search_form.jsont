@@ -92,6 +92,10 @@
         <input type="text" name="keywords" value="" />
       </fieldset>
       <fieldset>
+        <label>Inhalt Raw-Tag:</label>
+        <input type="text" name="raw-tags" value="" />
+      </fieldset>
+      <fieldset>
         <label>Veröffentlicht:</label>
         <select name="published">
           <option value=""></option>
