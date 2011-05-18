@@ -76,7 +76,7 @@ class MetadataForms(object):
 # This will be renamed properly as soon as the fields are finally decided.
 class MetadataA(InlineForm):
 
-    legend = _('MetadataA')
+    legend = _('')
     prefix = 'metadata-a'
     undo_description = _('edit metadata')
     form_fields = zope.formlib.form.FormFields(
@@ -97,7 +97,7 @@ class MetadataA(InlineForm):
 # This will be renamed properly as soon as the fields are finally decided.
 class MetadataB(InlineForm):
 
-    legend = _('MetadataB')
+    legend = _('')
     prefix = 'metadata-b'
     undo_description = _('edit metadata')
     form_fields = zope.formlib.form.FormFields(
@@ -118,7 +118,7 @@ class MetadataB(InlineForm):
 # This will be renamed properly as soon as the fields are finally decided.
 class MetadataC(InlineForm):
 
-    legend = _('MetadataC')
+    legend = _('')
     prefix = 'metadata-c'
     undo_description = _('edit metadata')
     form_fields = zope.formlib.form.FormFields(

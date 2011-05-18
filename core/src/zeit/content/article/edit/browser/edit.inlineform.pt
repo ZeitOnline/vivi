@@ -6,8 +6,9 @@
     there must not be an extra form element.
   </tal:comment>
 
-    <legend tal:content="view/legend"
-            i18n:translate="">
+     <legend tal:condition="view/legend"
+             tal:content="view/legend"
+             i18n:translate="">
       Legend
     </legend>
 

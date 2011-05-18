@@ -50,7 +50,6 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-a')
 >>> print browser.contents
-<legend>MetadataA</legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.ressort">Ressort</label>
@@ -75,7 +74,6 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-b')
 >>> print browser.contents
-<legend>MetadataB</legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-b.product_id">Product id</label>
@@ -102,7 +100,6 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-c')
 >>> print browser.contents
-<legend>MetadataC</legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="overwritten if any non-freetext authors are set"
