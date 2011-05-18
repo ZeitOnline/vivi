@@ -3,7 +3,7 @@ zeit.content.gallery changes
 
 2.3.1 (unreleased)
 ------------------
-
+- TEXT-LENGTH changed to 560
 - Gallerie-Einträge haben kein Feld "Text" mehr, dafür aber die Gallerie selbst
   ein längenbeschränktes (#8858).
 
