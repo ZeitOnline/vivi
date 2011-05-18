@@ -17,8 +17,6 @@ import zope.app.appsetup.product
 import zope.interface
 
 
-
-
 class ReportableContentSource(grokcore.component.GlobalUtility):
 
     zope.interface.implements(zeit.vgwort.interfaces.IReportableContentSource)
