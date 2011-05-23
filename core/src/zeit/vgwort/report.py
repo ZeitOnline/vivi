@@ -35,7 +35,7 @@ class ReportableContentSource(grokcore.component.GlobalUtility):
         result = connector.search(
             [sv.PUBLIC_TOKEN, sv.PRIVATE_TOKEN, sv.REPORTED_ON,
              sv.REPORTED_ERROR],
-            (sv.PUBLISHED == 'yes') & (sv.FIRST_RELEASED < age)
+            (sv.FIRST_RELEASED < age)
             & (sv.PRIVATE_TOKEN > '') & (sv.AUTHOR > '')
             & (sv.REPORTED_ON == '') & (sv.REPORTED_ERROR == ''))
         return result
