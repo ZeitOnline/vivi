@@ -195,6 +195,13 @@ class Product(object):
         return self.id == other.id
 
 
+def int_or_none(value):
+    try:
+        return int(value)
+    except TypeError:
+        return None
+
+
 class ProductSource(
     SimpleXMLSourceBase,
     zc.sourcefactory.contextual.BasicContextualSourceFactory):
@@ -205,7 +212,7 @@ class ProductSource(
         tree = self._get_tree()
         return [Product(unicode(node.get('id')),
                         unicode(node.text.strip()),
-                        unicode(node.get('vgwortid')))
+                        int_or_none(node.get('vgwortid')))
                 for node in tree.iterchildren()]
 
     def getTitle(self, context, value):

@@ -345,6 +345,8 @@ Products
 ...     zope.browser.interfaces.ITerms)
 >>> terms.getTerm(list(products)[-1]).title
 u'Zeit Online'
+>>> list(products)[-2].vgwortid
+1234
 
 
 Cache collector
