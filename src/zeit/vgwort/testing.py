@@ -12,7 +12,7 @@ import zope.testing.doctest
 
 product_config = """
 <product-config zeit.vgwort>
-    vgwort-url https://tomtest.vgwort.de/
+    vgwort-url https://tom-test.vgwort.de/
     username zeitonl
     password zeitabo2010
     minimum-token-amount 10
