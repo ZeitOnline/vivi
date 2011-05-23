@@ -103,6 +103,12 @@ class MessageService(VGWortWebService):
             involved.cardNumber = author.vgwortid
             parties.authors.author.append(involved)
 
+        if content.product.vgwortid:
+            involved = self.create('Involved')
+            involved.surName = content.product.title
+            involved.cardNumber = content.product.vgwortid
+            parties.authors.author.append(involved)
+
         text = self.create('MessageText')
         text.text = self.create('Text')
         text._lyric = False
