@@ -179,10 +179,10 @@ class ICommonMetadata(zope.interface.Interface):
 
     product = zope.schema.Choice(
         title=_('Product id'),
-        # XXX the default product is not read from the configured XML file,
-        # since right here at import time the Zope product configuration is not
-        # available yet (which could tell us the URL of the XML file).
-        default=zeit.cms.content.sources.Product(u'ZEDE', 'ZEIT ONLINE'),
+        # XXX kludgy, we expect a product with this ID to be present in the XML
+        # file. We only need to set an ID here, since to read the product we'll
+        # ask the source anyway.
+        default=zeit.cms.content.sources.Product(u'ZEDE'),
         source=zeit.cms.content.sources.ProductSource())
 
     product_text = zope.interface.Attribute(
