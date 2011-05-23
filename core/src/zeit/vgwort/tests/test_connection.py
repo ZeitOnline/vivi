@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
 import pkg_resources
 import time
 import unittest
@@ -133,3 +134,30 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
     def test_content_must_have_commonmetadata(self):
         self.assertRaises(
             TypeError, self.service.new_document, None)
+
+    def test_product_is_passed_as_additional_author(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Tina'
+        author.lastname = 'Groll'
+        author.vgwortid = 2601970
+        self.repository['author'] = author
+        author = self.repository['author']
+
+        products = list(zeit.cms.content.sources.ProductSource()(None))
+        product = [x for x in products if x.id == 'KINZ'][0]
+
+        content = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.author_references = [author]
+            co.product = product
+            co.title = 'Title'
+            co.teaserText = 'x' * 2000
+        content = self.repository['testcontent']
+
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
+            self.service.new_document(content)
+            parties = call.call_args[0][1]
+            authors = parties.authors.author
+        self.assertEqual(2, len(authors))
+        self.assertEqual(1234, authors[-1].cardNumber)
+        self.assertEqual('Kinderzeit Magazin', authors[-1].surName)
