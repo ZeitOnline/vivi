@@ -5,6 +5,8 @@ zeit.vgwort changes
 ------------------
 
 - Consume less memory during the actual report to VGWort.
+- Report all (otherwise applicable) documents, not only currently published
+  ones (#9022).
 
 
 0.2.0 (2010-07-07)
