@@ -177,9 +177,12 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('Banner id'),
         required=False)
 
-    product_id = zope.schema.Choice(
+    product = zope.schema.Choice(
         title=_('Product id'),
-        default='ZEDE',
+        # XXX the default product is not read from the configured XML file,
+        # since right here at import time the Zope product configuration is not
+        # available yet (which could tell us the URL of the XML file).
+        default=zeit.cms.content.sources.Product(u'ZEDE', 'ZEIT ONLINE'),
         source=zeit.cms.content.sources.ProductSource())
 
     product_text = zope.interface.Attribute(
@@ -212,6 +215,14 @@ class ICommonMetadata(zope.interface.Interface):
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
         required=False)
+
+
+class IProduct(zope.interface.Interface):
+    """A publication product"""
+
+    id = zope.interface.Attribute('id')
+    title = zope.interface.Attribute('title')
+    vgwortid = zope.interface.Attribute('VGWort id, optional')
 
 
 class IDAVPropertyConverter(zope.interface.Interface):

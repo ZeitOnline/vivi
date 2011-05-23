@@ -85,28 +85,30 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
 
     _product_id = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['product_id'],
+        zope.schema.TextLine(),
         'http://namespaces.zeit.de/CMS/workflow', 'product-id')
     _product_text = zeit.cms.content.dav.DAVProperty(
         zope.schema.TextLine(),
         'http://namespaces.zeit.de/CMS/workflow', 'product-name')
 
     @property
-    def product_id(self):
-        return self._product_id
-
-    @product_id.setter
-    def product_id(self, value):
-        if self._product_id == value:
-            return
-        self._product_id = value
+    def product(self):
         source = zeit.cms.content.interfaces.ICommonMetadata[
-            'product_id'].source(self)
-        # Set title
-        request = zope.publisher.browser.TestRequest()
-        terms = zope.component.getMultiAdapter(
-            (source, request), zope.browser.interfaces.ITerms)
-        self._product_text = terms.getTerm(value).title
+            'product'].source(self)
+        for value in source:
+            if value.id == self._product_id:
+                return value
+
+    @product.setter
+    def product(self, value):
+        if value is not None:
+            if self._product_id == value.id:
+                return
+            self._product_id = value.id
+            self._product_text = value.title
+        else:
+            self._product_id = None
+            self._product_text = None
 
     @property
     def product_text(self):
