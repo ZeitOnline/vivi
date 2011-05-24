@@ -329,7 +329,7 @@ Products
 ++++++++
 
 >>> products = zeit.cms.content.sources.ProductSource()(object())
->>> pprint(list(products))
+>>> pprint([x.id for x in products])
 [u'ZEI',
  u'ZMLB',
  u'TEST',
@@ -343,8 +343,10 @@ Products
 >>> terms = zope.component.getMultiAdapter(
 ...     (products, request),
 ...     zope.browser.interfaces.ITerms)
->>> terms.getTerm('ZEDE').title
+>>> terms.getTerm(list(products)[-1]).title
 u'Zeit Online'
+>>> list(products)[-2].vgwortid
+1234
 
 
 Cache collector

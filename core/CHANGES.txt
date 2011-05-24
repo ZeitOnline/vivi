@@ -24,12 +24,14 @@ editor-ng branch changes
 
 - Add SourceFactory helper for sources with a small set of fixed values
   (for #8953).
+- Change ICommonMetadata.product_id to be a product object with id, title and
+  VGWort-ID (for #9033).
 
 
 1.48.0 (2011-03-23)
 -------------------
 
--  Generalised how checkout/checkin works so it also works for non-dav content
+- Generalised how checkout/checkin works so it also works for non-dav content
   (for #7826)
 
 - Added IDAVContent for content from the original repository. This is to

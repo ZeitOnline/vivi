@@ -36,17 +36,18 @@ Verify the data:
 Products
 ++++++++
 
->>> content.product_id is None
+>>> content.product is None
 True
 
 Setting the same value doesn't change anything. We'd get an error otherwise
 that there is no title for "None":
 
->>> content.product_id = None
+>>> content.product = None
 
 Setting normal values:
 
->>> content.product_id = u'ZEDE'
+>>> product = zeit.cms.content.sources.Product(u'ZEDE', u'Zeit Online')
+>>> content.product = product
 >>> content.product_text
 u'Zeit Online'
 >>> properties[('product-id', 'http://namespaces.zeit.de/CMS/workflow')]

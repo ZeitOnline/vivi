@@ -182,10 +182,44 @@ class SubNavigationSource(SimpleContextualXMLSource):
         return metadata.ressort
 
 
-class ProductSource(XMLSource):
+class Product(object):
+
+    def __init__(self, id=None, title=None, vgwortid=None):
+        self.id = id
+        self.title = title
+        self.vgwortid = vgwortid
+
+    def __eq__(self, other):
+        if not isinstance(other, self.__class__):
+            return False
+        return self.id == other.id
+
+
+def int_or_none(value):
+    try:
+        return int(value)
+    except TypeError:
+        return None
+
+
+class ProductSource(
+    SimpleXMLSourceBase,
+    zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     config_url = 'source-products'
-    attribute = 'id'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        return [Product(unicode(node.get('id')),
+                        unicode(node.text.strip()),
+                        int_or_none(node.get('vgwortid')))
+                for node in tree.iterchildren()]
+
+    def getTitle(self, context, value):
+        return value.title
+
+    def getToken(self, context, value):
+        return super(ProductSource, self).getToken(context, value.id)
 
 
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
