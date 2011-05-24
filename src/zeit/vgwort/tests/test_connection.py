@@ -88,6 +88,27 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
         self.service.new_document(content)
 
+    def test_author_with_meaningless_firstname_works(self):
+        # to report the product, we use its title as lastname and do not have a
+        # firstname. firstname is required, though, so we pass a dummy value,
+        # which VGWort accepts, luckily.
+        author = zeit.content.author.author.Author()
+        author.firstname = 'n/a'
+        author.lastname = 'Groll'
+        author.vgwortid = 2601970
+        self.repository['author'] = author
+        author = self.repository['author']
+
+        content = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.author_references = [author]
+            co.title = 'Title'
+            co.teaserText = 'x' * 2000
+        content = self.repository['testcontent']
+        self.add_token(content)
+
+        self.service.new_document(content)
+
 
 class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
 
@@ -160,4 +181,5 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
         self.assertEqual(1234, authors[-1].cardNumber)
+        self.assertEqual('n/a', authors[-1].firstName)
         self.assertEqual('Kinderzeit Magazin', authors[-1].surName)
