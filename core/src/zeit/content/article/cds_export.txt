@@ -62,7 +62,7 @@ Only if the content object has the product_id 'ZEDE', the default is True:
 >>> print cdswf.export_cds
 None
 >>> with zeit.cms.checkout.helper.checked_out(article) as co:
-...     co.product_id = u'ZEDE'
+...     co.product = zeit.cms.content.sources.Product(u'ZEDE')
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(article)
 >>> cdswf.export_cds
 True
