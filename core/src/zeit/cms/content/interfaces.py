@@ -107,7 +107,7 @@ class ICommonMetadata(zope.interface.Interface):
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
     authors = zope.schema.Tuple(
-        title=_("Authors"),
+        title=_("Authors (freetext)"),
         value_type=zope.schema.TextLine(),
         required=False,
         default=(u'',),
