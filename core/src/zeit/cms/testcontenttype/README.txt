@@ -115,7 +115,7 @@ invalid though:
         <li class="error">Year: Required input is missing.</li>
         <li class="error">Ressort: Required input is missing.</li>
         <li class="error">Title: Required input is missing.</li>
-        <li class="error">Authors: Wrong contained type</li>
+        <li class="error">Authors (freetext): Wrong contained type</li>
       </ul>
       ...
 
