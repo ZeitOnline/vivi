@@ -15,7 +15,3 @@ class IRawXML(zeit.cms.interfaces.IAsset,
 
     title = zope.schema.TextLine(
         title=_('Title'))
-
-    omitRootOnSyndicate = zope.schema.Bool(
-        title=_('Omit root node when syndicting'),
-        description=_('omitRootOnSyndicate-description'))

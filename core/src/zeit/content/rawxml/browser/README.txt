@@ -54,10 +54,6 @@ The xml is pretty printed:
   <feed/>
 </block>
 
-Set the omit root flag: 
-
->>> browser.getControl('Omit root').selected = True
-
 There is an edit tab:
 
 >>> browser.getLink('Edit', index=1)

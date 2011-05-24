@@ -5,7 +5,8 @@ zeit.content.rawxml changes
 ------------------
 
 - RawXML implements the IDAVContent interface now which is required to put
-  instances into the DAV.
+  instances into the DAV (#8998).
+- Remove unneeded omitRootOnSyndicate property (#9050).
 
 
 0.3.5 (2010-05-03)

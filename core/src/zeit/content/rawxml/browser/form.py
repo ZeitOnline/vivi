@@ -16,7 +16,7 @@ class Base(object):
     field_groups = (
         gocept.form.grouped.Fields(
             _('Raw XML'),
-            ('__name__', 'title', 'omitRootOnSyndicate', 'xml'), ''),)
+            ('__name__', 'title', 'xml'), ''),)
 
 
 class Add(Base,

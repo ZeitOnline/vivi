@@ -100,24 +100,6 @@ Let's add some more  xml:
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
 </channel>
 
-It is possible to omit the root note when syndicating:
-
->>> content.omitRootOnSyndicate = True
->>> channel.updateMetadata(content)
->>> print lxml.etree.tostring(channel.xml, pretty_print=True)
-<channel>
-  <title>Politik</title>
-  <container>
-    <block ...href="http://xml.zeit.de/raw"...>
-      <foo xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" bar="baz" ns0:isSyndicatedRawXML="true"/>
-      <blubs xmlns:ns1="http://namespaces.zeit.de/CMS/RawXML" py:pytype="str" ns1:isSyndicatedRawXML="true">oink</blubs>
-    </block>
-  </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
-</channel>
-<BLANKLINE>
-
-
 
 Clean up:
 

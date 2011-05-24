@@ -22,7 +22,7 @@ class RawXML(zeit.cms.content.xmlsupport.XMLContentBase):
     zeit.cms.content.dav.mapProperties(
         zeit.content.rawxml.interfaces.IRawXML,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('title', 'omitRootOnSyndicate'))
+        ('title',))
 
 
 resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
@@ -54,14 +54,8 @@ class RawXMLMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         for node in remove_nodes:
             node.getparent().remove(node)
 
-
         # Append new nodes
         node = copy.deepcopy(
             zope.proxy.removeAllProxies(self.context.xml))
-        if self.context.omitRootOnSyndicate:
-            insert_nodes = node.getchildren()
-        else:
-            insert_nodes = [node]
-        for node in insert_nodes:
-            node.set(attribute_name, 'true')
-            xml_node.append(node)
+        node.set(attribute_name, 'true')
+        xml_node.append(node)
