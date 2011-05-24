@@ -4,7 +4,7 @@ zeit.content.article changes
 2.9.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Enable UI for author references (#7441, #7333).
 
 
 2.9.1 (2010-08-09)

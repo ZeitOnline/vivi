@@ -27,8 +27,7 @@ class ArticleFormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata,
-        zeit.cms.interfaces.ICMSContent).omit('textLength',
-                                              'author_references')
+        zeit.cms.interfaces.ICMSContent).omit('textLength')
 
     field_groups = (
         base.navigation_fields,
@@ -37,6 +36,7 @@ class ArticleFormBase(object):
         gocept.form.grouped.RemainingFields(
             _('misc.'),
             css_class='column-right'),
+        base.author_fields,
         gocept.form.grouped.Fields(
             _("Options"),
             base.option_fields.fields + (
