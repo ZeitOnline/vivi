@@ -370,7 +370,6 @@ class Connector(object):
                del self[old_id]
         else:
            response = method(old_loc, new_loc)
-           response.read()
 
         self._invalidate_cache(old_id)
         self._invalidate_cache(new_id)

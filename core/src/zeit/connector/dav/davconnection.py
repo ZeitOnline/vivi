@@ -86,6 +86,16 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
             url, hdrs)
         return res
 
+    def move(self, src, dst, extra_headers=None):
+        res = self.get_result(
+            'move', None, src, dst, extra_headers)
+        return res
+
+    def copy(self, src, dst, extra_headers=None):
+        res = self.get_result(
+            'copy', None, src, dst, extra_headers)
+        return res
+
     def set_if_header(self, hdrs, url, locktoken=None, etag=None):
         if_clause = []
         if locktoken:
