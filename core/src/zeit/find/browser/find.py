@@ -80,7 +80,7 @@ class SearchForm(JSONView):
                 title=title,
                 type=type_,
             ))
-        return sorted(result, key=lambda r:r['title'])
+        return sorted(result, key=lambda r: r['title'])
 
 
 def get_favorited_css_class(favorited):
