@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.4.0 (2011-05-24)
+2.4.0 (2011-05-26)
 ------------------
 
 - Gallerie-Einträge haben kein Feld "Text" mehr, dafür aber die Gallerie selbst
