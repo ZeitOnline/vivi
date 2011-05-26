@@ -63,7 +63,7 @@ send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nCont
 send: '<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...
-header: Server: Apache/2.2.8 (Ubuntu) DAV/2 ZeitCMS/0.2d-bugfix (Version: exported)
+header: Server: Apache/2.2.8 (Ubuntu) DAV/2 ZeitCMS/0.2d-bugfix (Version: exported) ...
 header: MS-Author-Via: DAV
 header: Content-Length: 914
 header: Keep-Alive: timeout=15, max=100
