@@ -39,8 +39,7 @@ class SearchForm(JSONView):
     def json(self):
         metadata_if = zeit.cms.content.interfaces.ICommonMetadata
         return dict(
-            products=self.get_source(metadata_if['product_id'].source(None),
-                                     'product_id', 'product_name'),
+            products=self.products,
             ressorts=self.get_source(metadata_if['ressort'].source,
                                      'ressort', 'ressort_name'),
             series=self.get_source(metadata_if['serie'].source,
@@ -57,6 +56,15 @@ class SearchForm(JSONView):
             result.append({
                 value_name: value,
                 title_name: title})
+        return result
+
+    @property
+    def products(self):
+        metadata_if = zeit.cms.content.interfaces.ICommonMetadata
+        result = self.get_source(metadata_if['product'].source(None),
+                                 'product_id', 'product_name')
+        for entry in result:
+            entry['product_id'] = entry['product_id'].id
         return result
 
     @property
