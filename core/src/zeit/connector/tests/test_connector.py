@@ -274,3 +274,34 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
             [self.rid],
             list(self.connector.child_name_cache.get(
                 'http://xml.zeit.de/testing/')))
+
+
+class TestMove(zeit.connector.testing.ConnectorTest):
+
+    def test_move_own_locked_resource_should_work(self):
+        res = self.get_resource('foo', 'body')
+        self.connector.add(res)
+        self.connector.lock(res.id, 'userid', None)
+        self.connector.move(res.id, 'http://xml.zeit.de/testing/bar')
+        self.connector['http://xml.zeit.de/testing/bar']
+
+    def test_move_locked_resource_should_raise(self):
+        from zeit.connector.dav.interfaces import DAVLockedError
+        res = self.get_resource('foo', 'body')
+        self.connector.add(res)
+        url = self.connector._id2loc(res.id)
+        token = self.connector.get_connection().lock(
+            url, owner='gimli', depth=0, timeout=20)
+        try:
+            self.assertRaises(
+                DAVLockedError, lambda: self.connector.move(
+                    res.id, 'http://xml.zeit.de/testing/bar'))
+        finally:
+            self.connector.unlock(res.id, token)
+
+    def test_copy_locked_resource_should_work(self):
+        res = self.get_resource('foo', 'body')
+        self.connector.add(res)
+        self.connector.lock(res.id, 'userid', None)
+        self.connector.copy(res.id, 'http://xml.zeit.de/testing/bar')
+        self.connector['http://xml.zeit.de/testing/bar']

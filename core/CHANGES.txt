@@ -5,6 +5,7 @@ CHANGES
 -------------------
 
 - Corrected Logging of query-server queries (#8308)
+- Pass lock-token for MOVE (#8980).
 
 
 1.22.2 (2010-08-30)

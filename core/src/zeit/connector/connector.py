@@ -369,7 +369,8 @@ class Connector(object):
            if method_name == 'move':
                del self[old_id]
         else:
-           response = method(old_loc, new_loc)
+           token = self._get_my_locktoken(old_id)
+           response = method(old_loc, new_loc, locktoken=token)
 
         self._invalidate_cache(old_id)
         self._invalidate_cache(new_id)
