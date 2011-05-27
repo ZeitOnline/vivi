@@ -39,8 +39,7 @@ class SearchForm(JSONView):
     def json(self):
         metadata_if = zeit.cms.content.interfaces.ICommonMetadata
         return dict(
-            products=self.get_source(metadata_if['product_id'].source(None),
-                                     'product_id', 'product_name'),
+            products=self.products,
             ressorts=self.get_source(metadata_if['ressort'].source,
                                      'ressort', 'ressort_name'),
             series=self.get_source(metadata_if['serie'].source,
@@ -60,6 +59,15 @@ class SearchForm(JSONView):
         return result
 
     @property
+    def products(self):
+        metadata_if = zeit.cms.content.interfaces.ICommonMetadata
+        result = self.get_source(metadata_if['product'].source(None),
+                                 'product_id', 'product_name')
+        for entry in result:
+            entry['product_id'] = entry['product_id'].id
+        return result
+
+    @property
     def types(self):
         result = []
         for name, interface in zope.component.getUtilitiesFor(
@@ -72,7 +80,7 @@ class SearchForm(JSONView):
                 title=title,
                 type=type_,
             ))
-        return sorted(result, key=lambda r:r['title'])
+        return sorted(result, key=lambda r: r['title'])
 
 
 def get_favorited_css_class(favorited):
