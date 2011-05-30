@@ -29,7 +29,7 @@ class Widget(grokcore.component.MultiAdapter,
         contents = []
 
         contents.append(self._div(
-            'update', '<a href="#update_tags">Update tags</a>',
+            'update', '<button href="#update_tags">Update tags</button>',
             id="{0}.update".format(self.name)))
         contents.append(self._div('value', self.renderValue(value)))
         contents.append(self._emptyMarker())
