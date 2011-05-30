@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import gocept.cache.method
 import gocept.lxml.objectify
 import logging
@@ -81,6 +82,20 @@ class SimpleContextualXMLSource(
 
     def getValues(self, context):
         return super(SimpleContextualXMLSource, self).getValues()
+
+
+class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    values = NotImplemented
+
+    def __init__(self):
+        self.titles = dict((x, _(x)) for x in self.values)
+
+    def getValues(self):
+        return self.values
+
+    def getTitle(self, value):
+        return self.titles.get(value, value)
 
 
 class PrintRessortSource(SimpleXMLSource):

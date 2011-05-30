@@ -53,6 +53,7 @@
     <require permission="zope.View"
       attributes="
       __getitem__
+      countchildren
       find
       findall
       getparent
@@ -74,7 +75,11 @@
   <class class="lxml.objectify.StringElement">
     <require like_class="lxml.objectify.ObjectifiedElement" />
   </class>
-  
+
+  <class class="lxml.objectify.NoneElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+
   <class class="lxml.etree.ElementChildIterator">
     <require permission="zope.View"
       attributes="__iter__ next" />

@@ -93,7 +93,7 @@ class Container(zope.container.contained.Contained):
             event = False
 
         if new_id == object.uniqueId:
-            # Object only needs opdating.
+            # Object only needs updating.
             self.repository.addContent(object)
         elif object.__parent__:
             # As the object has a parent we assume that it should be moved.
@@ -101,7 +101,7 @@ class Container(zope.container.contained.Contained):
             self.connector.move(object.uniqueId, new_id)
             event = True
         else:
-            # As the object has a no parent we assume that it should be copied.
+            # As the object has no parent we assume that it should be copied.
             log.info("Copying %s to %s" % (object.uniqueId, new_id))
             self.connector.copy(object.uniqueId, new_id)
             event = True
