@@ -53,7 +53,7 @@ Those forms are loaded via javascript:
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.ressort">Ressort</label>
-    <span>required</span>
+    <span class="required">required</span>
   </div>
   <div class="widget">...
 </div>
@@ -77,7 +77,7 @@ Those forms are loaded via javascript:
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-b.product_id">Product id</label>
-    <span>required</span>
+    <span class="required">required</span>
   </div>
   <div class="widget">...
 </div>

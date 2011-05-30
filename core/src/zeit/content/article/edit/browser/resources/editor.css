@@ -6,12 +6,16 @@
   opacity: 1;
 }
 
+#cp-content {
+  background: none repeat scroll 0 0 #F1F4F9;
+}
+
 
 /* forms */
 
 .inline-form .widget-outer {
-  clear: both;
-  margin-bottom: 0.5em;
+  float: left;
+  margin: 0 20px 10px 0;
   position: relative;
 }
 
@@ -20,8 +24,12 @@
   display: block;
   float: left;
   overflow: hidden;
-  padding-top: 0.5em;
-  width: 12em;
+}
+
+.inline-form  label {
+  font-weight: normal;
+  margin-right: 5px;
+  padding-left: 3px;
 }
 
 .inline-form .label div.error {
@@ -37,8 +45,8 @@
 }
 
 .inline-form .widget {
-  margin-left: 12em;
-  padding: 0;
+  clear: left;
+  padding: 2px 0 0;
 }
 
 .inline-form div.widget > input,
@@ -64,8 +72,26 @@
   outline: 1px solid yellow;
 }
 
+.widget-outer select {
+  width: 180px;
+}
+
+.widget-outer button {
+  width: 180px;
+}
+
 .inline-form .form-controls {
   display: none;
+}
+
+.widget-outer span.required {
+  background-color: #a00;
+  border-radius: 5px 5px 5px 5px;
+  color: #fff;
+  font-size: 8px;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-transform: uppercase;
 }
 
 
@@ -75,29 +101,19 @@
   /*margin-left: 3em;*/
 }
 
-#cp-content #article-editor-forms div {
-    padding:0;
-}
-
 #article-editor-forms {
     margin-left:6px;
     margin-right:6px;
 }
 
 #article-editor-forms div div.edit-bar {
-    height: 20px;
-    border-bottom: 1px solid #BBBBBB; 
+    margin: 0 0 4px 15px;
+    background: none 0;
 }
 
 #article-editor-forms div div.edit-bar a{
     margin:4px;
     margin-top:5px;
-}
-
-#article-form-workflow,
-#article-form-assets,
-#article-form-metadata {
- border:1px solid #BBBBBB;
 }
 
 #article-form-workflow.folded,
@@ -107,13 +123,9 @@
 
 }
 
-.article-editor-inner {
-    padding-left:1em;
-}
-
 .article-editor-inner
-    .block.zeit-content-article-edit-interfaces-IParagraph 
-    .edit-bar {
+  .block.zeit-content-article-edit-interfaces-IParagraph 
+  .edit-bar {
   visibility: hidden;
 }
 
@@ -185,17 +197,24 @@
 
 .editable-area > .landing-zone {
   height: 4px;
+}
 
+#cp-content .editable-area {
+    margin: 1em 0 0;
 }
 
 /* Editable blocks */
 
 .block-inner{
-  font-size:14px;
+  background: none repeat scroll 0 0 #FFFFFF;
+  border-radius: 5px 5px 5px 5px;
+  font-size:12px;
+  margin: 0 10px;
+  padding: 5px 10px;
 }
-.block-inner h3{
 
-font-size:24px;
+.block-inner h3{
+  font-size:24px;
 }
 
 .block-inner p,
@@ -288,6 +307,16 @@ font-size:24px;
 
 .editing .editable *:empty:before {
   content: "";
+}
+
+/* Fieldsets */
+
+fieldset {
+    background: none 0;
+    border: medium none;
+    overflow: hidden;
+    margin: 10px;
+    padding: 0;
 }
 
 /* Video block layouts */

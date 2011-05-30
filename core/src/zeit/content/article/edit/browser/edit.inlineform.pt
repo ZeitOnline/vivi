@@ -22,7 +22,8 @@
                i18n:translate="">
           Label
         </label>
-        <span tal:condition="widget/widget/required"
+        <span class="required"
+              tal:condition="widget/widget/required"
               i18n:translate=""
               >required</span>
         <div class="error"
