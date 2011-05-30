@@ -212,5 +212,5 @@ class CDSWorkflow(zeit.cms.content.dav.DAVPropertiesAdapter):
         if self.export_cds is None:
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 self.context)
-            if metadata.product_id == 'ZEDE':
+            if metadata.product and metadata.product.id == 'ZEDE':
                 self.export_cds = True

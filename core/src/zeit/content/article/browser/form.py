@@ -22,7 +22,6 @@ class ArticleFormBase(object):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata,
         zeit.cms.interfaces.ICMSContent).omit('textLength',
-                                              'author_references',
                                               'has_recensions')
 
     field_groups = (
@@ -32,6 +31,7 @@ class ArticleFormBase(object):
         gocept.form.grouped.RemainingFields(
             _('misc.'),
             css_class='column-right'),
+        base.author_fields,
         gocept.form.grouped.Fields(
             _("Options"),
             base.option_fields.fields + (
@@ -57,6 +57,8 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         article.volume = settings.default_volume
         article.ressort = self.get_ressort()
         article.sub_ressort = self.get_sub_ressort(article)
+        article.product = zeit.cms.content.interfaces.ICommonMetadata[
+            'product'].default
         return article
 
     def get_ressort(self):

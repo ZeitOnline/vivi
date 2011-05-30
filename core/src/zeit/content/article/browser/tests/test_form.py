@@ -57,6 +57,15 @@ class TestAdding(unittest2.TestCase,
         self.assertEqual(2008, article.year)
         self.assertEqual(26, article.volume)
 
+    def test_default_product_should_be_set(self):
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Article']
+        url = menu.value[0]
+        self.browser.handleErrors = False
+        self.browser.open(url)
+        article = self.get_article()
+        self.assertEqual('ZEDE', article.product.id)
+
     def test_article_should_be_renamable(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         menu = self.browser.getControl(name='add_menu')
