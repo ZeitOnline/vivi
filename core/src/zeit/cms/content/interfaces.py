@@ -81,7 +81,7 @@ class ICommonMetadata(zope.interface.Interface):
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
     authors = zope.schema.Tuple(
-        title=_("Authors"),
+        title=_("Authors (freetext)"),
         value_type=zope.schema.TextLine(),
         required=False,
         default=(u'',),
@@ -151,9 +151,12 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('Banner id'),
         required=False)
 
-    product_id = zope.schema.Choice(
+    product = zope.schema.Choice(
         title=_('Product id'),
-        default='ZEDE',
+        # XXX kludgy, we expect a product with this ID to be present in the XML
+        # file. We only need to set an ID here, since to read the product we'll
+        # ask the source anyway.
+        default=zeit.cms.content.sources.Product(u'ZEDE'),
         source=zeit.cms.content.sources.ProductSource())
 
     product_text = zope.interface.Attribute(
@@ -186,6 +189,14 @@ class ICommonMetadata(zope.interface.Interface):
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
         required=False)
+
+
+class IProduct(zope.interface.Interface):
+    """A publication product"""
+
+    id = zope.interface.Attribute('id')
+    title = zope.interface.Attribute('title')
+    vgwortid = zope.interface.Attribute('VGWort id, optional')
 
 
 class IDAVPropertyConverter(zope.interface.Interface):

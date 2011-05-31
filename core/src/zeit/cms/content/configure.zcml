@@ -106,6 +106,13 @@
     provides=".interfaces.IDAVPropertyConverter"
     />
 
+  <class class=".sources.Product">
+    <require
+      interface=".interfaces.IProduct"
+      permission="zope.View"
+      />
+  </class>
+
   <!-- XML support -->
   <adapter factory=".xmlsupport.XMLReferenceUpdaterRunner" />
 

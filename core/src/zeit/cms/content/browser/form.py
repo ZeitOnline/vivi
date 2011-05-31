@@ -36,7 +36,7 @@ class CommonMetadataFormBase(object):
 
     navigation_fields = gocept.form.grouped.Fields(
         _("Navigation"),
-        ('__name__', 'keywords', 'serie','product_id','copyrights'),
+        ('__name__', 'keywords', 'serie', 'product', 'copyrights'),
         css_class='column-right')
     head_fields = gocept.form.grouped.Fields(
         _("Head"),
@@ -53,6 +53,10 @@ class CommonMetadataFormBase(object):
          'minimal_header', 'countings', 'is_content',
          'banner', 'banner_id', 'breaking_news'),
         css_class='column-right checkboxes')
+    author_fields = gocept.form.grouped.Fields(
+        _("Authors"),
+        ('author_references', 'authors'),
+         css_class='wide-widgets column-left')
 
     field_groups = (
         navigation_fields,
@@ -61,10 +65,11 @@ class CommonMetadataFormBase(object):
         gocept.form.grouped.RemainingFields(
             _("misc."),
             css_class='column-right'),
+        author_fields,
         option_fields,
         )
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).omit('author_references')
+        zeit.cms.content.interfaces.ICommonMetadata)
 
     for_display = False
 
