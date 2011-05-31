@@ -103,7 +103,7 @@ class MetadataB(InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'product_id', 'copyrights', 'dailyNewsletter')
+            'product', 'copyrights', 'dailyNewsletter')
 
     def render(self):
         result = super(MetadataB, self).render()

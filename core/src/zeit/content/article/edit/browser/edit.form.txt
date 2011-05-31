@@ -76,7 +76,7 @@ Those forms are loaded via javascript:
 >>> print browser.contents
 <div class="widget-outer">
   <div class="label">
-    <label cms:tooltip="" for="metadata-b.product_id">Product id</label>
+    <label cms:tooltip="" for="metadata-b.product">Product id</label>
     <span class="required">required</span>
   </div>
   <div class="widget">...
@@ -103,7 +103,7 @@ Those forms are loaded via javascript:
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="overwritten if any non-freetext authors are set"
-        for="metadata-c.authors">Authors</label>
+        for="metadata-c.authors">Authors (freetext)</label>
   </div>
   <div class="widget">...
 </div>
