@@ -4,7 +4,7 @@ zeit.content.author changes
 0.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix brown-bag 0.2.0: ZCML files were missing
 
 
 0.2.0 (2011-06-02)
