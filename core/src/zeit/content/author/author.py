@@ -27,6 +27,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     lastname = zeit.cms.content.property.ObjectPathProperty('.lastname')
     email = zeit.cms.content.property.ObjectPathProperty('.email')
     vgwortid = zeit.cms.content.property.ObjectPathProperty('.vgwortid')
+    vgwortcode = zeit.cms.content.property.ObjectPathProperty('.vgwortcode')
 
     display_name = zeit.cms.content.property.ObjectPathProperty(
         '.display_name')
