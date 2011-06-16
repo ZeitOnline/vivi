@@ -24,6 +24,8 @@ class IAuthor(zope.interface.Interface):
         # see messageService.wsdl:cardNumberType
         min=10, max=9999999)
 
+    vgwortcode = zope.schema.TextLine(title=_('VG-Wort Code'), required=False)
+
     display_name = zope.interface.Attribute(
         'The computed display name. Default is "firstname lastname",'
         ' a user entered value takes precedence.')
