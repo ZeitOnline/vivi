@@ -191,4 +191,19 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
         self.assertEqual('n/a', authors[-1].firstName)
         self.assertEqual('Kinderzeit Magazin', authors[-1].surName)
 
+    def test_author_code_should_be_passed_instead_of_name(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Tina'
+        author.lastname = 'Groll'
+        author.vgwortid = 2601970
+        author.vgwortcode = 'codecodecode'
+        self.repository['author'] = author
+        author = self.repository['author']
+        content = self.get_content([author])
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
+            self.service.new_document(content)
+            parties = call.call_args[0][1]
+            authors = parties.authors.author
+        self.assertEqual(2, len(authors))
+        self.assertEqual('codecodecode', authors[0].code)
 
