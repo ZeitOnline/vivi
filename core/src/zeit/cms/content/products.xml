@@ -8,6 +8,6 @@
     <product id="ZTGS">Zeit Geschichte</product>
     <product id="tdb">Zeit Schweiz</product>
     <product id="tbd">Zeit Oesterreich</product>
-    <product id="KINZ" vgwortid="1234">Kinderzeit Magazin</product>
+    <product id="KINZ" vgwortcode="1234abc">Kinderzeit Magazin</product>
     <product id="ZEDE">Zeit Online</product>
 </products>

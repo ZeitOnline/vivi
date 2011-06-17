@@ -4,10 +4,11 @@ zeit.cms changes
 1.48.1 (unreleased)
 -------------------
 
-- Add SourceFactory helper for sources with a small set of fixed values
-  (for #8953).
+- Add SourceFactory helper for sources with a small set of fixed values (for
+  #8953).
+
 - Change ICommonMetadata.product_id to be a product object with id, title and
-  VGWort-ID (for #9033).
+  VGWort-Code (for #9033).
 
 1.48.0 (2011-03-23)
 -------------------
