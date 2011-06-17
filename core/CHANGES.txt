@@ -6,6 +6,9 @@ zeit.find changes
 
 - Filter for raw-tag content added (#9096).
 
+- Update our usage of product, since it's a whole object now, not just an id
+  (for #9033).
+  
 
 0.21.0 (2010-08-16)
 -------------------
