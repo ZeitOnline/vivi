@@ -98,9 +98,12 @@ class MessageService(VGWortWebService):
         parties.authors = self.create('Authors')
         for author in content.author_references:
             involved = self.create('Involved')
-            involved.firstName = author.firstname
-            involved.surName = author.lastname
-            involved.cardNumber = author.vgwortid
+            if author.vgwortcode:
+                involved.code = author.vgwortcode
+            else:
+                involved.firstName = author.firstname
+                involved.surName = author.lastname
+                involved.cardNumber = author.vgwortid
             parties.authors.author.append(involved)
 
         if content.product and content.product.vgwortid:
