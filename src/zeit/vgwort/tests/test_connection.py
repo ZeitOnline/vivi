@@ -174,7 +174,7 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
         self.assertRaises(
             TypeError, self.service.new_document, None)
 
-    def test_product_is_passed_as_additional_author(self):
+    def test_product_is_passed_as_additional_author_with_code(self):
         author = zeit.content.author.author.Author()
         author.firstname = 'Tina'
         author.lastname = 'Groll'
@@ -187,9 +187,7 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
-        self.assertEqual(1234, authors[-1].cardNumber)
-        self.assertEqual('n/a', authors[-1].firstName)
-        self.assertEqual('Kinderzeit Magazin', authors[-1].surName)
+        self.assertEqual('1234abc', authors[-1].code)
 
     def test_author_code_should_be_passed_instead_of_name(self):
         author = zeit.content.author.author.Author()
@@ -206,4 +204,3 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
         self.assertEqual('codecodecode', authors[0].code)
-

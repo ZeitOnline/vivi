@@ -106,11 +106,9 @@ class MessageService(VGWortWebService):
                 involved.cardNumber = author.vgwortid
             parties.authors.author.append(involved)
 
-        if content.product and content.product.vgwortid:
+        if content.product and content.product.vgwortcode:
             involved = self.create('Involved')
-            involved.firstName = 'n/a' # it's a required field
-            involved.surName = content.product.title
-            involved.cardNumber = content.product.vgwortid
+            involved.code = content.product.vgwortcode
             parties.authors.author.append(involved)
 
         text = self.create('MessageText')
