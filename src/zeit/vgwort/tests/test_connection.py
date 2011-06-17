@@ -6,7 +6,6 @@ import pkg_resources
 import time
 import unittest
 import zeit.cms.checkout.helper
-import zeit.cms.repository.interfaces
 import zeit.vgwort.connection
 import zeit.vgwort.interfaces
 import zeit.vgwort.testing
@@ -19,7 +18,11 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         super(WebServiceTest, self).setUp()
         self.service = zope.component.getUtility(
             zeit.vgwort.interfaces.IMessageService)
-        self.repository = zope.component.getUtility(
+
+    @property
+    def repository(self):
+        import zeit.cms.repository.interfaces
+        return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
     def assertContains(self, needle, haystack):
@@ -149,8 +152,23 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
     def setUp(self):
         super(MessageServiceTest, self).setUp()
         self.service = zeit.vgwort.connection.real_message_service()
-        self.repository = zope.component.getUtility(
+
+    @property
+    def repository(self):
+        import zeit.cms.repository.interfaces
+        return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+    def get_content(self, authors):
+        products = list(zeit.cms.content.sources.ProductSource()(None))
+        product = [x for x in products if x.id == 'KINZ'][0]
+        content = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.author_references = authors
+            co.product = product
+            co.title = 'Title'
+            co.teaserText = 'x' * 2000
+        return self.repository['testcontent']
 
     def test_content_must_have_commonmetadata(self):
         self.assertRaises(
@@ -163,18 +181,7 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
         author.vgwortid = 2601970
         self.repository['author'] = author
         author = self.repository['author']
-
-        products = list(zeit.cms.content.sources.ProductSource()(None))
-        product = [x for x in products if x.id == 'KINZ'][0]
-
-        content = self.repository['testcontent']
-        with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.author_references = [author]
-            co.product = product
-            co.title = 'Title'
-            co.teaserText = 'x' * 2000
-        content = self.repository['testcontent']
-
+        content = self.get_content([author])
         with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
             self.service.new_document(content)
             parties = call.call_args[0][1]
@@ -183,3 +190,5 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
         self.assertEqual(1234, authors[-1].cardNumber)
         self.assertEqual('n/a', authors[-1].firstName)
         self.assertEqual('Kinderzeit Magazin', authors[-1].surName)
+
+
