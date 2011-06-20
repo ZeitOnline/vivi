@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-2.9.2 (unreleased)
+2.9.2 (2011-06-20)
 ------------------
 
 - Fix the usage of the product id (for #9033)
