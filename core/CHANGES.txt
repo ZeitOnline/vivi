@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-0.22.0 (unreleased)
+0.22.0 (2011-06-20)
 -------------------
 
 - Filter for raw-tag content added (#9096).
