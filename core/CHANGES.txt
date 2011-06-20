@@ -6,7 +6,7 @@ zeit.vgwort changes
 
 - Consume less memory during the actual report to VGWort.
 - Report all (otherwise applicable) documents, not only currently published
-  ones (#9022).
+  ones (#9092).
 - Transmit the "product" as an additional author (#9033).
 
 
