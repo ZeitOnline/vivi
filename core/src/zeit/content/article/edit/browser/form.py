@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zope.app.form.browser.textwidgets import TextAreaWidget
 import zeit.cms.asset.browser
 import zeit.cms.browser.interfaces
 import zeit.content.article.interfaces
@@ -128,6 +129,71 @@ class MetadataC(InlineForm):
 
     def render(self):
         result = super(MetadataC, self).render()
+        if result:
+            result += (
+                '<script type="text/javascript">'
+                '    zeit.cms.configure_ressort_dropdown("%s.");'
+                '</script>') % (self.prefix,)
+        return result
+
+
+class TeaserForms(object):
+    """Teaser workflow forms."""
+
+    title = _('Teaser')
+
+
+class TeaserTitle(InlineForm):
+
+    legend = _('')
+    prefix = 'teaser-title'
+    undo_description = _('edit teaser title')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'teaserTitle')
+
+    def render(self):
+        result = super(TeaserTitle, self).render()
+        if result:
+            result += (
+                '<script type="text/javascript">'
+                '    zeit.cms.configure_ressort_dropdown("%s.");'
+                '</script>') % (self.prefix,)
+        return result
+
+
+class LimitedInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
+
+    def __call__(self):
+        max_length = self.context.max_length
+        self.extra = 'data-limit="%s"' % max_length
+        result = [
+            '<span class="charlimit" />%s</span>' % max_length,
+        super(LimitedInputWidget, self).__call__(),
+            ('<script type="text/javascript">'
+             '    jQuery(".charlimit").limitedInput()'
+             '</script>')]
+
+
+        return ''.join(result)
+
+
+class TeaserText(InlineForm):
+
+    legend = _('')
+    prefix = 'teaser-text'
+    undo_description = _('edit teaser text')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'teaserText')
+    form_fields['teaserText'].custom_widget = LimitedInputWidget
+
+    def render(self):
+        result = super(TeaserText, self).render()
         if result:
             result += (
                 '<script type="text/javascript">'

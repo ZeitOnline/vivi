@@ -84,6 +84,58 @@
     permission="zope.View"
     />
 
+  <!-- teaser -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="teaser-title"
+    class=".form.TeaserForms"
+    template="edit.forms.pt"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.TeaserForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.teaser-title"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.teaser-title"
+    class=".form.TeaserTitle"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.TeaserForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.teaser-text"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.teaser-text"
+    class=".form.TeaserText"
+    permission="zope.View"
+    />
+
   <!-- assets -->
 
   <browser:viewlet

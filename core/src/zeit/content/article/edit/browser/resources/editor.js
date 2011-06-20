@@ -489,3 +489,31 @@ MochiKit.Signal.connect(
     });
 
 })();
+
+
+(function($){
+
+    $.fn.limitedInput = function() {
+        return this.each(function() {
+            var container = $(this).parent();
+            var area = $('textarea', container), limit = area.attr("data-limit"), val = area.val().length || 0;
+            var that = $(this);
+            $(this).addClass('charlimit').html( (val > 0 ? limit - val : limit) + " Zeichen" );
+            area.bind( "keyup focus blur", function (e) {
+                var l = limit - $(e.target).val().length;
+                if ( l < 21 & l > 10 ) {
+                    that.css( "color", "#900" ).html(l + " Zeichen");
+                } else if( l < 11 ) {
+                    that.css( "color", "#ff0000" ).html(l + " Zeichen");
+                } else {
+                    that.css( "color", "#777" ).html(l + " Zeichen");
+                }
+            } );
+        });
+        
+    };
+
+}(jQuery));
+
+
+

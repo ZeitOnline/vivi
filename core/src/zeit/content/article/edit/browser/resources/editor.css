@@ -95,6 +95,17 @@
 }
 
 
+.widget-outer span.charlimit {
+  color: #777;
+  font-weight: 700;
+  padding: 2px
+  padding: 2px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+
 /* editor blocks */
 
 #editable-body {
@@ -197,6 +208,14 @@
 
 .editable-area > .landing-zone {
   height: 4px;
+}
+
+.editable-area .widget > textarea {
+  font-family: Georgia,serif;
+  font-size: 14px;
+  height: 4em;
+  line-height: 1.4;
+  padding: 5px;
 }
 
 #cp-content .editable-area {
