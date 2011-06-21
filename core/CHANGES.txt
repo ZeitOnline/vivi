@@ -13,6 +13,12 @@ zeit.content.author changes
 - Added ``vgwortcode`` (#9198)
 
 
+0.2.1 (2011-06-07)
+------------------
+
+- Fix brown-bag 0.2.0: ZCML files were missing
+
+
 0.2.0 (2011-06-02)
 ------------------
 
