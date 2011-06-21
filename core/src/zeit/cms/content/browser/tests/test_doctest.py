@@ -11,6 +11,7 @@ def test_suite():
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'form.txt',
         'keyword.txt',
+        'sources.txt',
         'template.txt',
         'typechange.txt',
         'widget-subnav.txt',

@@ -4,7 +4,7 @@ zeit.cms changes
 1.49.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix product source so it works in the face of SecurityProxies (#9231).
 
 
 1.49.0 (2011-06-20)

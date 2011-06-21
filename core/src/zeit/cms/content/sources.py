@@ -16,6 +16,7 @@ import zeit.cms.type
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
 import zope.component
+import zope.security.proxy
 import zope.testing.cleanup
 
 
@@ -190,7 +191,7 @@ class Product(object):
         self.vgwortcode = vgwortcode
 
     def __eq__(self, other):
-        if not isinstance(other, self.__class__):
+        if not zope.security.proxy.isinstance(other, self.__class__):
             return False
         return self.id == other.id
 
