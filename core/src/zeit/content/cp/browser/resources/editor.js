@@ -360,12 +360,12 @@ zeit.content.cp.BlockHover = gocept.Class.extend({
     },
 
     get_block: function(element) {
-        var class = 'block';
-        if (MochiKit.DOM.hasElementClass(element, class)) {
+        var css_class = 'block';
+        if (MochiKit.DOM.hasElementClass(element, css_class)) {
             return element
         }
         return MochiKit.DOM.getFirstParentByTagAndClassName(
-            element, null, class);
+            element, null, css_class);
     },
 });
 
