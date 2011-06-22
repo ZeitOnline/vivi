@@ -33,6 +33,7 @@ def search(q, sort_order=None):
         'graphical-preview-url',
         'icon',
         'keywords',
+        'raw-tags',
         'last-semantic-change',
         'published',
         'range',
@@ -101,6 +102,7 @@ def query(fulltext=None,
           topic=None,
           authors=None,
           keywords=None,
+          raw_tags=None,
           published=None,
           types=(),
           product_id=None,
@@ -120,6 +122,7 @@ def query(fulltext=None,
               If None, no author restriction.
     keywords - keywords to look for, whitespace separated.
               If None, no keyword restriction.
+    raw_tags - whole raw-tags content as escaped xml data.
     published - Publication status to look for. If None, no restriction.
     types - a list of document types to look for. If None types don't matter.
     show_news - Display ticker messages or not (boolean)
@@ -147,6 +150,8 @@ def query(fulltext=None,
         terms.append(lq.multi_field('authors_fulltext', authors))
     if keywords is not None:
         terms.append(lq.multi_field('keywords', keywords))
+    if raw_tags is not None:
+        terms.append(lq.multi_field('raw-tags', raw_tags))
     if published is not None:
         terms.append(lq.field('published', published))
     type_terms = []
