@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-0.3.1 (unreleased)
+0.3.1 (2011-06-22)
 ------------------
 
 - Fix reportable query so the query server actually returns results.
