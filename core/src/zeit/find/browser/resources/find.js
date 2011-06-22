@@ -215,8 +215,8 @@ zeit.find.Search = zeit.find.BaseView.extend({
             }
             var default_value = element.getAttribute('default');
             if (title && value != default_value) {
-                var class = 'info-' + element.name;
-                info_node.appendChild(SPAN({'class': class}, title));
+                var css_class = 'info-' + element.name;
+                info_node.appendChild(SPAN({'class': css_class}, title));
             }
         });
     },
