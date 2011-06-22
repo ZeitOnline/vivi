@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.43.2 (unreleased)
+0.43.2 (2011-06-22)
 -------------------
 
 - Compatibility fix for Firefox 5 (#9227).
