@@ -4,6 +4,8 @@ CHANGES
 1.22.3 (unreleased)
 -------------------
 
+- Fix decoding of URLs in DAVResponse when there is raw UTF8 in the xml
+  (instead of fully url encoded).
 - Corrected Logging of query-server queries (#8308)
 - Pass lock-token for MOVE (#8980).
 

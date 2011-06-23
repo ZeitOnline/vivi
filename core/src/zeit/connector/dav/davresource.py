@@ -184,7 +184,9 @@ class DAVResponse(object):
             raise zeit.connector.dav.interfaces.DAVNotFoundError(
                 'No href found in node %s!' % res_node.nodePath())
         url_node = href_nodes[0]
-        self.url = urllib.unquote(url_node.text.strip()).decode('utf8')
+        self.url = urllib.unquote(url_node.text.strip())
+        if isinstance(self.url, str):
+            self.url = self.url.decode('utf8')
         #self.url = url_node.text.strip()
         status_nodes = _find_child(res_node, 'status')
         if status_nodes: # FIXME: What when more than one?
