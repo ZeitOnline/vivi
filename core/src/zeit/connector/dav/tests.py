@@ -74,10 +74,3 @@ class TestURLEncode(unittest.TestCase):
     def test_query_and_fragment_quoted_to_path(self):
         self.assertQuote(u'http://foo.testing/bar?a=b&c=d#fragment',
                          'http://foo.testing/bar%3Fa%3Db%26c%3Dd%23fragment')
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(unittest.makeSuite(TestPropfind))
-    suite.addTest(unittest.makeSuite(TestURLEncode))
-    return suite
