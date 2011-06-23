@@ -44,7 +44,7 @@ class ReportStatus(object):
             'uniqueId', 'public_token', 'private_token',
             'published', 'reported_on', 'reported_error'))
         for row in self.query():
-            output.writerow(row)
+            output.writerow([e.encode('utf8') for e in row])
 
         self.request.response.setHeader(
             "Content-Type", "text/csv")
