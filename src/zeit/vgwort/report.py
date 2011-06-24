@@ -96,4 +96,4 @@ def report(context):
     except zeit.vgwort.interfaces.WebServiceError, e:
         log.warning(
             'semantic error reporting %s' % context.uniqueId, exc_info=True)
-        source.mark_error(context, str(e))
+        source.mark_error(context, unicode(e))
