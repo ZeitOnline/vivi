@@ -27,16 +27,24 @@ class Dialect(csv.Dialect):
 
 class ReportStatus(object):
 
+    def query(self):
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        sv = zeit.vgwort.interfaces.SearchVars
+        result = connector.search(
+            [sv.PUBLIC_TOKEN, sv.PRIVATE_TOKEN,
+             sv.PUBLISHED, sv.REPORTED_ON, sv.REPORTED_ERROR],
+            (sv.PRIVATE_TOKEN > ''))
+        return result
+
     def __call__(self):
         result = StringIO.StringIO()
-        source = zope.component.getUtility(
-            zeit.vgwort.interfaces.IReportableContentSource)
         output = csv.writer(result, dialect=Dialect())
         output.writerow((
             'uniqueId', 'public_token', 'private_token',
-            'reported_on', 'reported_error'))
-        for row in source.query():
-            output.writerow(row)
+            'published', 'reported_on', 'reported_error'))
+        for row in self.query():
+            output.writerow([e.encode('utf8') for e in row])
 
         self.request.response.setHeader(
             "Content-Type", "text/csv")
