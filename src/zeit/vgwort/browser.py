@@ -33,7 +33,8 @@ class ReportStatus(object):
         sv = zeit.vgwort.interfaces.SearchVars
         result = connector.search(
             [sv.PUBLIC_TOKEN, sv.PRIVATE_TOKEN,
-             sv.PUBLISHED, sv.REPORTED_ON, sv.REPORTED_ERROR],
+             sv.PUBLISHED, sv.FIRST_RELEASED,
+             sv.REPORTED_ON, sv.REPORTED_ERROR],
             (sv.PRIVATE_TOKEN > ''))
         return result
 
@@ -42,7 +43,8 @@ class ReportStatus(object):
         output = csv.writer(result, dialect=Dialect())
         output.writerow((
             'uniqueId', 'public_token', 'private_token',
-            'published', 'reported_on', 'reported_error'))
+            'published', 'date_first_released',
+            'reported_on', 'reported_error'))
         for row in self.query():
             output.writerow([e.encode('utf8') for e in row])
 
