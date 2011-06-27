@@ -5,6 +5,7 @@
 
 from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
+import mock
 import transaction
 import zeit.connector.testing
 
@@ -44,7 +45,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         rid = u'http://xml.zeit.de/testing/ünicöde'
         new_rid = rid + u'-copied'
         self.connector[rid] = zeit.connector.resource.Resource(
-            rid, None, 'text',
+
             StringIO.StringIO('Pop.'),
             contentType='text/plain')
         self.connector.copy(rid, new_rid)
@@ -305,3 +306,17 @@ class TestMove(zeit.connector.testing.ConnectorTest):
         self.connector.lock(res.id, 'userid', None)
         self.connector.copy(res.id, 'http://xml.zeit.de/testing/bar')
         self.connector['http://xml.zeit.de/testing/bar']
+
+
+class TestSearch(zeit.connector.testing.ConnectorTest):
+
+    def test_should_raise_on_500(self):
+        from zeit.connector.dav.interfaces import DAVError
+        from zeit.connector.search import SearchVar
+        var = SearchVar('name', 'namespace')
+        result = self.connector.search([var], var == 'foo')
+        with mock.patch(
+            'zeit.connector.dav.davresource.DAVResult') as dav:
+            dav.has_errors.return_value = True
+            self.assertRaises(
+                DAVError, lambda: result.next())

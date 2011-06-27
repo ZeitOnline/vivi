@@ -19,6 +19,7 @@ setup(
         'gocept.cache>=0.2.2',
         'gocept.lxml',
         'gocept.runner>=0.2',
+        'mock',
         'setuptools',
         'zc.queue',
         'zc.set',

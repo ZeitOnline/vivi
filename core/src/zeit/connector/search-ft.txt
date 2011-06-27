@@ -1,5 +1,5 @@
-Search
-======
+Search (functional test)
+========================
 
 >>> import zeit.connector.interfaces
 >>> import zope.component
@@ -33,4 +33,3 @@ We expect nothing has changed in the future
 ...           seconds=360)).isoformat()
 >>> list(connector.search([modified], (modified > future) & (modified < '20 ')))
 []
-

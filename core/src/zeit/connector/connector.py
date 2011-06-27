@@ -507,9 +507,13 @@ class Connector(object):
         logger.debug('Searching for %s' % (expr._render(),))
         conn = self.get_connection('search')
 
-        davres = zeit.connector.dav.davresource.DAVResult(
-               conn.search(self._roots.get('search', self._roots['default']),
-                            body=expr._render()))
+        response = conn.search(
+            self._roots.get('search', self._roots['default']),
+            body=expr._render())
+        davres = zeit.connector.dav.davresource.DAVResult(response)
+        if davres.has_errors():
+            raise zeit.connector.dav.interfaces.DAVError(
+                davres.status, davres.reason, '/', davres.body, response)
         for url, resp in davres.responses.items():
             try:
                 id = self._loc2id(urlparse.urljoin(self._roots['default'], url))

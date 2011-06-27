@@ -10,6 +10,7 @@ CHANGES
 - Pass lock-token for MOVE (#8980).
 - Fix query server integration: The API implemented ``range()`` while it must
   read ``between()``.
+- Raise exception in connector when query server returns an error.
 
 
 1.22.2 (2010-08-30)
