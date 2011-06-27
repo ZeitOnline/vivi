@@ -6,6 +6,7 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import pkg_resources
 import zeit.cms.content.xmlsupport
+import zeit.cms.type
 import zeit.edit.container
 import zeit.newsletter.interfaces
 import zope.interface
@@ -28,6 +29,14 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase):
                 name=key)
             return zope.container.contained.contained(area, self, key)
         raise KeyError(key)
+
+
+class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
+
+    factory = Newsletter
+    interface = zeit.newsletter.interfaces.INewsletter
+    type = 'newsletter'
+    title = _('Newsletter')
 
 
 class Body(zeit.edit.container.TypeOnAttributeContainer,
@@ -58,15 +67,11 @@ zeit.edit.block.register_element_factory(
     zeit.newsletter.interfaces.IBody, 'group', _('Group'))
 
 
-class Teaser(zeit.edit.block.SimpleElement,
-             grok.MultiAdapter):
+class Teaser(zeit.edit.block.SimpleElement):
 
+    area = zeit.newsletter.interfaces.IGroup
     grok.implements(zeit.newsletter.interfaces.ITeaser)
-    grok.provides(zeit.newsletter.interfaces.ITeaser)
-    grok.adapts(
-        zeit.newsletter.interfaces.IGroup,
-        gocept.lxml.interfaces.IObjectified)
-    grok.name('teaser')
+    type = 'teaser'
 
 
 zeit.edit.block.register_element_factory(
