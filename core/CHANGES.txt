@@ -1,0 +1,7 @@
+zeit.newsletter changes
+=======================
+
+0.1 (unreleased)
+----------------
+
+- first release.
