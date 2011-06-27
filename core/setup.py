@@ -15,6 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit'],
     install_requires=[
+        'setuptools',
         'zeit.cms',
         'zeit.edit',
     ],
