@@ -14,48 +14,6 @@ import zope.component
 import zope.interface
 
 
-class ElementFactory(zeit.edit.block.ElementFactory):
-    """Base class for CP element factories."""
-
-    def get_xml(self):
-        container = lxml.objectify.E.container()
-        container.set(
-            '{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
-        container.set('module', self.module)
-        return container
-
-
-
-def register_element_factory(
-    adapts, element_type, title=None, module=None, frame=None):
-    if isinstance(adapts, zope.interface.interface.InterfaceClass):
-        adapts = [adapts]
-    if module is None:
-        module = element_type
-    if frame is None:
-        frame = sys._getframe(1)
-
-    for interface in adapts:
-        name = '%s%sFactory' % (interface.__name__, element_type.capitalize())
-        frame.f_locals[name] = create_factory_class(
-            element_type, interface, name, frame.f_locals['__name__'],
-            title, module)
-
-
-def create_factory_class(element_type, adapts, name, module, title, cp_module):
-    class factory(grok.Adapter, ElementFactory):
-        grok.context(adapts)
-        grok.name(element_type)
-    factory.title = title
-    factory.element_type = element_type
-    factory.module = cp_module
-    factory.__name__ = name
-    # so that the grokkers will pick it up
-    factory.__grok_module__ = module
-
-    return factory
-
-
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
 @zope.component.adapter(zeit.edit.interfaces.IElement)
 def cms_content_to_centerpage(context):

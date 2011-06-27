@@ -27,7 +27,7 @@ class CPExtraBlock(zeit.content.cp.blocks.block.Block):
         self.xml['cp_extra'] = lxml.objectify.E.cp_extra(id=value)
 
 
-zeit.content.cp.blocks.block.register_element_factory(
+zeit.edit.block.register_element_factory(
     zeit.content.cp.interfaces.IRegion, 'cpextra', _('CP extra'), module='')
 
 

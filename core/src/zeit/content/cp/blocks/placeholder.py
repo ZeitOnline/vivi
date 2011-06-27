@@ -11,6 +11,6 @@ class PlaceHolder(zeit.content.cp.blocks.block.Block):
     zope.interface.implements(zeit.content.cp.interfaces.IPlaceHolder)
 
 
-zeit.content.cp.blocks.block.register_element_factory(
+zeit.edit.block.register_element_factory(
     [zeit.content.cp.interfaces.IInformatives,
      zeit.content.cp.interfaces.ITeaserBar], 'placeholder')

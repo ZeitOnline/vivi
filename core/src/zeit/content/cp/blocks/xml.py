@@ -5,6 +5,7 @@ from zeit.content.cp.i18n import MessageFactory as _
 import lxml.objectify
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
+import zeit.edit.block
 import zope.container.interfaces
 import zope.interface
 
@@ -16,7 +17,7 @@ class XMLBlock(zeit.content.cp.blocks.block.Block):
         zope.container.interfaces.IContained)
 
 
-class XMLBlockFactory(zeit.content.cp.blocks.block.ElementFactory):
+class XMLBlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):
 
     zope.component.adapts(zeit.content.cp.interfaces.IRegion)
     element_type = module = 'xml'

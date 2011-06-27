@@ -257,7 +257,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
                         break
 
 
-zeit.content.cp.blocks.block.register_element_factory(
+zeit.edit.block.register_element_factory(
     zeit.edit.interfaces.IContainer, 'teaser', _('List of teasers'))
 
 

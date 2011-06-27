@@ -4,27 +4,11 @@
 import UserDict
 import gocept.lxml.interfaces
 import itertools
-import lxml.etree
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zope.component
 import zeit.edit.container
 import zope.interface
-
-
-class Container(zeit.edit.container.Base):
-
-    _find_item = lxml.etree.XPath(
-        './*[@cms:__name__ = $name]',
-        namespaces=dict(
-            cms='http://namespaces.zeit.de/CMS/cp'))
-    _get_keys = lxml.etree.XPath(
-        './*/attribute::cms:__name__',
-        namespaces=dict(
-            cms='http://namespaces.zeit.de/CMS/cp'))
-
-    def _get_element_type(self, xml_node):
-          return xml_node.get('{http://namespaces.zeit.de/CMS/cp}type')
 
 
 @zope.component.adapter(zeit.edit.interfaces.IArea)
@@ -36,7 +20,7 @@ def cms_content_iter(context):
         if block is not None])
 
 
-class Region(Container):
+class Region(zeit.edit.container.TypeOnAttributeContainer):
 
     zope.interface.implements(zeit.content.cp.interfaces.IRegion)
     zope.component.adapts(
@@ -60,7 +44,7 @@ class Informatives(Region):
     __name__ = 'informatives'
 
 
-class Mosaic(Container):
+class Mosaic(zeit.edit.container.TypeOnAttributeContainer):
 
     zope.interface.implements(zeit.content.cp.interfaces.IMosaic,
                               zeit.edit.interfaces.IArea)

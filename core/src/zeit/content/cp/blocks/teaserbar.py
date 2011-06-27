@@ -2,15 +2,15 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.content.cp.area
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.layout
+import zeit.edit.container
 import zope.component
 import zope.interface
 
 
-class TeaserBar(zeit.content.cp.area.Container):
+class TeaserBar(zeit.edit.container.TypeOnAttributeContainer):
 
     zope.interface.implements(zeit.content.cp.interfaces.ITeaserBar)
 
@@ -46,7 +46,7 @@ class TeaserBar(zeit.content.cp.area.Container):
         return object.__repr__(self)
 
 
-class TeaserBarFactory(zeit.content.cp.blocks.block.ElementFactory):
+class TeaserBarFactory(zeit.edit.block.TypeOnAttributeElementFactory):
 
     zope.component.adapts(zeit.content.cp.interfaces.IMosaic)
 

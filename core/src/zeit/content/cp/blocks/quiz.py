@@ -22,7 +22,7 @@ class QuizBlock(zeit.content.cp.blocks.block.Block):
         '.block', xml_reference_name='related', attributes=('href',))
 
 
-zeit.content.cp.blocks.block.register_element_factory(
+zeit.edit.block.register_element_factory(
     [zeit.content.cp.interfaces.IInformatives,
      zeit.content.cp.interfaces.ITeaserBar],
     'quiz', _('Quizblock'))
