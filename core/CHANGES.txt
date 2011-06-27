@@ -8,6 +8,8 @@ CHANGES
   (instead of fully url encoded).
 - Corrected Logging of query-server queries (#8308)
 - Pass lock-token for MOVE (#8980).
+- Fix query server integration: The API implemented ``range()`` while it must
+  read ``between()``.
 
 
 1.22.2 (2010-08-30)

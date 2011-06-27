@@ -102,8 +102,8 @@ class SearchVar(object):
     def __ne__(self, other):
         return SearchTerm('ne', self, other)
 
-    def range(self, lower, upper):
-        return SearchTerm('range', self, lower, upper)
+    def between(self, lower, upper):
+        return SearchTerm('between', self, lower, upper)
 
     def bind(self, symbol):
         return SearchTerm('bind', self, symbol)

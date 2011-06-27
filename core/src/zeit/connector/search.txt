@@ -60,11 +60,11 @@ Greater than
 '(:gt "namespace" "author" "pm")'
 
 
-range
------
+between
+-------
 
->>> author.range('a', 'z')._render()
-'(:range "namespace" "author" "a" "z")'
+>>> author.between('a', 'z')._render()
+'(:between "namespace" "author" "a" "z")'
 
 
 bind
