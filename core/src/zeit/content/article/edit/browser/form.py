@@ -39,6 +39,31 @@ class InlineForm(zope.formlib.form.SubPageEditForm,
         return result
 
 
+class ArticleContentForms(object):
+    """Article content forms."""
+
+    title = _('Article')
+
+
+class ArticleContentHead(InlineForm):
+
+    legend = _('')
+    prefix = 'article-content-head'
+    undo_description = _('edit article content head')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'supertitle', 'title', 'subtitle')
+
+
+class ArticleContentBody(InlineForm):
+
+    legend = _('')
+    prefix = 'article-content-body'
+    undo_description = _('edit article content body')
+
+
 class AssetForms(object):
     """Article asset forms."""
 

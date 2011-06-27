@@ -136,6 +136,58 @@
     permission="zope.View"
     />
 
+  <!-- article content -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="article-content"
+    class=".form.ArticleContentForms"
+    template="edit.forms.pt"
+    permission="zope.View"
+    weight="30"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleContentForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.article-content-head"
+    template="edit.metadata.form-loader.pt"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.article-content-head"
+    class=".form.ArticleContentHead"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleContentForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.article-content-body"
+    template="edit.body.landing.pt"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.article-content-body"
+    class=".form.ArticleContentBody"
+    permission="zope.View"
+    />
+
   <!-- assets -->
 
   <browser:viewlet
@@ -147,7 +199,7 @@
     class=".form.AssetForms"
     template="edit.forms.pt"
     permission="zope.View"
-    weight="20"
+    weight="40"
     />
 
   <browser:viewlet

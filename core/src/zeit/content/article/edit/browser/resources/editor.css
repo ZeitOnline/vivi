@@ -206,6 +206,10 @@
   margin-bottom: 0;
 }
 
+.article-text {
+  margin: 10px;
+}
+
 .editable-area > .landing-zone {
   height: 4px;
 }
