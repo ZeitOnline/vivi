@@ -3,7 +3,6 @@
 # See also LICENSE.txt
 """Connector test setup."""
 
-from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
 import mock
 import transaction
@@ -45,7 +44,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
         rid = u'http://xml.zeit.de/testing/ünicöde'
         new_rid = rid + u'-copied'
         self.connector[rid] = zeit.connector.resource.Resource(
-
+            rid, None, 'text',
             StringIO.StringIO('Pop.'),
             contentType='text/plain')
         self.connector.copy(rid, new_rid)
@@ -81,6 +80,7 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
 class TestConflictDetectionBase(object):
 
     def setUp(self):
+        from zeit.connector.interfaces import UUID_PROPERTY
         super(TestConflictDetectionBase, self).setUp()
         rid = u'http://xml.zeit.de/testing/conflicting'
         self.connector[rid] = self.get_resource('conflicting', 'Pop.')
