@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Längenbeschränktes Textfeld nun Teil von text_fields (Layout).
 
 
 2.4.0 (2011-05-26)

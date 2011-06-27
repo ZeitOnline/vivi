@@ -12,6 +12,7 @@ import zeit.wysiwyg.interfaces
 import zope.app.appsetup.interfaces
 import zope.formlib.form
 
+base = zeit.cms.content.browser.form.CommonMetadataFormBase
 
 class GalleryFormBase(object):
 
@@ -21,15 +22,23 @@ class GalleryFormBase(object):
             zeit.content.gallery.interfaces.IGalleryMetadata)
         + zope.formlib.form.FormFields(
             zeit.content.gallery.interfaces.IMaxLengthHTMLContent))
+    
+    text_fields = gocept.form.grouped.Fields(
+        _("Texts"),
+        ('supertitle', 'byline', 'title', 'subtitle',
+         'teaserTitle', 'teaserText', 'html',),
+        css_class='wide-widgets column-left')
 
     field_groups = (
-        zeit.cms.content.browser.form.CommonMetadataAddForm.field_groups
-        + (gocept.form.grouped.Fields(
-            _("Text"),
-            ('html',),
-            css_class='full-width wide-widgets'),)
+        base.navigation_fields,
+        base.head_fields,
+        text_fields,
+        gocept.form.grouped.RemainingFields(
+            _("misc."),
+            css_class='column-right'),
+        base.option_fields,
         )
-
+    
 
 class AddGallery(GalleryFormBase,
                  zeit.cms.content.browser.form.CommonMetadataAddForm):
