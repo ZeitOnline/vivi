@@ -1,8 +1,9 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import logging
 import UserDict
+import logging
+import lxml.etree
 import uuid
 import zeit.edit.block
 import zeit.edit.interfaces
@@ -107,3 +108,18 @@ class Base(UserDict.DictMixin,
 
     def __repr__(self):
         return object.__repr__(self)
+
+
+class TypeOnAttributeContainer(Base):
+
+    _find_item = lxml.etree.XPath(
+        './*[@cms:__name__ = $name]',
+        namespaces=dict(
+            cms='http://namespaces.zeit.de/CMS/cp'))
+    _get_keys = lxml.etree.XPath(
+        './*/attribute::cms:__name__',
+        namespaces=dict(
+            cms='http://namespaces.zeit.de/CMS/cp'))
+
+    def _get_element_type(self, xml_node):
+        return xml_node.get('{http://namespaces.zeit.de/CMS/cp}type')

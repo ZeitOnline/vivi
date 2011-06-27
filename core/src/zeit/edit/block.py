@@ -2,8 +2,9 @@
 # See also LICENSE.txt
 
 import gocept.lxml.interfaces
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
+import sys
 import zeit.cms.content.property
 import zeit.edit.interfaces
 import zope.component
@@ -42,11 +43,11 @@ class Element(zope.container.contained.Contained,
 
 class SimpleElement(Element):
 
-    grokcore.component.baseclass()
+    grok.baseclass()
 
 
-@grokcore.component.adapter(zeit.edit.interfaces.IElement)
-@grokcore.component.implementer(zeit.edit.interfaces.IArea)
+@grok.adapter(zeit.edit.interfaces.IElement)
+@grok.implementer(zeit.edit.interfaces.IArea)
 def area_for_element(context):
     return zeit.edit.interfaces.IArea(context.__parent__, None)
 
@@ -70,3 +71,45 @@ class ElementFactory(object):
             name=self.element_type)
         self.context.add(content)
         return content
+
+
+class TypeOnAttributeElementFactory(ElementFactory):
+
+    def get_xml(self):
+        container = lxml.objectify.E.container()
+        container.set(
+            '{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
+        container.set('module', self.module)
+        return container
+
+
+def register_element_factory(
+    adapts, element_type, title=None, module=None, frame=None,
+    class_=TypeOnAttributeElementFactory):
+    if isinstance(adapts, zope.interface.interface.InterfaceClass):
+        adapts = [adapts]
+    if module is None:
+        module = element_type
+    if frame is None:
+        frame = sys._getframe(1)
+
+    for interface in adapts:
+        name = '%s%sFactory' % (interface.__name__, element_type.capitalize())
+        frame.f_locals[name] = create_factory_class(
+            element_type, interface, name, frame.f_locals['__name__'],
+            title, module, class_)
+
+
+def create_factory_class(element_type, adapts, name, module, title, cp_module,
+                         class_):
+    class factory(grok.Adapter, class_):
+        grok.context(adapts)
+        grok.name(element_type)
+    factory.title = title
+    factory.element_type = element_type
+    factory.module = cp_module
+    factory.__name__ = name
+    # so that the grokkers will pick it up
+    factory.__grok_module__ = module
+
+    return factory
