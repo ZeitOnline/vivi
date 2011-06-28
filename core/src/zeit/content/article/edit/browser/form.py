@@ -44,6 +44,11 @@ class ArticleContentForms(object):
 
     title = _('Article')
 
+    @property
+    def body(self):
+        return zeit.content.article.edit.interfaces.IEditableBody(
+            self.context)
+
 
 class ArticleContentHead(InlineForm):
 
@@ -62,6 +67,8 @@ class ArticleContentBody(InlineForm):
     legend = _('')
     prefix = 'article-content-body'
     undo_description = _('edit article content body')
+
+
 
 
 class AssetForms(object):

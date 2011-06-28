@@ -1,0 +1,3 @@
+<div id="article-editor-text" tal:content="structure view/body/@@contents">
+</div>
+

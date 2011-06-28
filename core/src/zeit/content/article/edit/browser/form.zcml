@@ -175,7 +175,8 @@
     view=".form.ArticleContentForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.article-content-body"
-    template="edit.body.landing.pt"
+    class=".form.ArticleContentForms"
+    template="edit.article-text.pt"
     permission="zope.View"
     weight="10"
     />
@@ -210,7 +211,7 @@
     name="edit.form.assets"
     template="edit.metadata.form-loader.pt"
     permission="zope.View"
-    weight="10"
+    weight="20"
     />
 
   <browser:page
