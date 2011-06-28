@@ -1,0 +1,18 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <class class="zeit.newsletter.newsletter.Newsletter">
+    <implements interface="zeit.edit.interfaces.IEditable" />
+  </class>
+
+  <browser:page
+    for="zeit.newsletter.interfaces.INewsletter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="editor-contents.pt"
+    permission="zeit.EditContent"
+    />
+  
+</configure>
+

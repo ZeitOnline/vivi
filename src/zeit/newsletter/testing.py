@@ -4,9 +4,30 @@
 import zeit.cms.testing
 
 
-zcml_layer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+
+
+class TestBrowserLayer(ZCMLLayer):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        ZCMLLayer.setup.setUp()
+
+    @classmethod
+    def testTearDown(cls):
+        ZCMLLayer.setup.tearDown()
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zcml_layer
+    layer = ZCMLLayer
+
+

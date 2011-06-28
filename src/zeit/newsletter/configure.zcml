@@ -7,10 +7,15 @@
   <include package="zeit.edit" />
 
   <grok:grok package="." />
+  <include package=".browser" />
 
   <class class=".newsletter.Newsletter">
     <implements
       interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.INewsletter"
+      permission="zope.View"
+      />
   </class>
 
 </configure>
