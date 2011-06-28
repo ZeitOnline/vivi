@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import grokcore.component as grok
+import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.interface
