@@ -228,6 +228,16 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
         zope.site.hooks.setSite(None)
         super(FunctionalTestCase, self).tearDown()
 
+    @property
+    def repository(self):
+        import zeit.cms.repository.interfaces
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
+    @repository.setter
+    def repository(self, value):
+        self.__dict__['repository'] = value
+
 
 class SeleniumTestCase(gocept.selenium.ztk.TestCase,
                        unittest2.TestCase):
