@@ -16,6 +16,43 @@
       interface=".interfaces.INewsletter"
       permission="zope.View"
       />
+    <require
+      set_schema=".interfaces.INewsletter"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".newsletter.Body">
+    <require
+      interface=".interfaces.IBody"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IBody"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".newsletter.Group">
+    <require
+      interface=".interfaces.IGroup"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IGroup"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".newsletter.Teaser">
+    <require
+      interface=".interfaces.ITeaser"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ITeaser"
+      permission="zeit.EditContent"
+      />
   </class>
 
 </configure>
