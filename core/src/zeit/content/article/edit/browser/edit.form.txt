@@ -22,13 +22,28 @@ There are form stubs at the top of the editor:
 ...
   <form class="inline-form wired">
     <fieldset class="category"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.assets">
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.teaser-title">
+    </fieldset>
+    <fieldset class="category"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.teaser-text">
     </fieldset>
 </form>
 ...
   <form class="inline-form wired">
     <fieldset class="category"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.recension-list">
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.article-content-head">
+    </fieldset>
+    <div id="article-editor-text">...
+    </div>
+    ...
+</form>
+...
+  <form class="inline-form wired">
+    <fieldset class="category"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.asset-badges">
+    </fieldset>
+    <fieldset class="category"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.assets">
     </fieldset>
 </form>
 ...
@@ -41,6 +56,12 @@ There are form stubs at the top of the editor:
 ...
     <fieldset class="category"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-log">
+    </fieldset>
+</form>
+...
+  <form class="inline-form wired">
+    <fieldset class="category"
+      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.recension-list">
     </fieldset>
 </form>
 ...
