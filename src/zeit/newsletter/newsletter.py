@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import UserDict
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import pkg_resources
@@ -15,11 +16,15 @@ import zope.interface
 BODY_NAME = 'body'
 
 
-class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase):
+class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
+                 UserDict.DictMixin):
 
     zope.interface.implements(zeit.newsletter.interfaces.INewsletter)
 
     default_template = pkg_resources.resource_string(__name__, 'template.xml')
+
+    def keys(self):
+        return [BODY_NAME]
 
     def __getitem__(self, key):
         if key == BODY_NAME:
