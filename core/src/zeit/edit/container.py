@@ -66,6 +66,7 @@ class Base(UserDict.DictMixin,
 
     def add(self, item):
         name = self._add(item)
+        self._p_changed = True
         zope.event.notify(zope.container.contained.ObjectAddedEvent(
             item, self, name))
 
@@ -92,11 +93,13 @@ class Base(UserDict.DictMixin,
             self._delete(key)
         for key in order:
             self._add(objs[key])
+        self._p_changed = True
         zope.event.notify(
             zope.container.contained.ContainerModifiedEvent(self))
 
     def __delitem__(self, key):
         item = self._delete(key)
+        self._p_changed = True
         zope.event.notify(
             zope.container.contained.ObjectRemovedEvent(item, self, key))
 
