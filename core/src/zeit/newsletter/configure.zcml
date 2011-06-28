@@ -8,4 +8,9 @@
 
   <grok:grok package="." />
 
+  <class class=".newsletter.Newsletter">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+  </class>
+
 </configure>
