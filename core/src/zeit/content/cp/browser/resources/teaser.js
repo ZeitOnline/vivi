@@ -78,13 +78,13 @@ zeit.content.cp.teaser.TeaserEditBox = zeit.edit.LightBoxForm.extend({
     
     on_close: function() {
         var self = this;
-        var super = arguments.callee.$.on_close
+        var super_ = arguments.callee.$.on_close
         if (self.clean) {
-            super.call(self);
+            super_.call(self);
         } else {
             var d = self.remove_checked_out();
             d.addBoth(function(result_or_error) {
-                super.call(self);
+                super_.call(self);
                 return result_or_error
             });
         }
