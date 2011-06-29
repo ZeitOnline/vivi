@@ -6,6 +6,7 @@ import zeit.newsletter.testing
 import zope.testbrowser.testing
 import unittest2 as unittest
 
+
 class EditorTest(unittest.TestCase,
                  zeit.cms.testing.BrowserAssertions):
 
