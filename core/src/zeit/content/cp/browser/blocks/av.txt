@@ -49,10 +49,10 @@ The video block also supports dropping of videos:
 >>> import pprint
 >>> import simplejson
 >>> pprint.pprint(simplejson.loads(browser.contents))
-{'signals': [{'args': ['<GUID>',
-                       'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/666b0a7d-3020-475c-b17d-b82a895e74de/@@contents'],
-              'name': 'reload',
-              'when': None}]}
+{u'signals': [{u'args': [u'<GUID>',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/666b0a7d-3020-475c-b17d-b82a895e74de/@@contents'],
+              u'name': u'reload',
+              u'when': None}]}
 >>> browser.open(edit_form_url)
 >>> browser.getControl('Media Id').value
 '1234'
@@ -69,10 +69,10 @@ are updated automatically:
 
 >>> browser.open('@@drop?uniqueId=http://video.zeit.de/playlist/2345')
 >>> pprint.pprint(simplejson.loads(browser.contents))
-{'signals': [{'args': ['<GUID>',
-                       'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/03ffb451-4719-419a-863a-2481451bf6be/@@contents'],
-              'name': 'reload',
-              'when': None}]}
+{u'signals': [{u'args': [u'<GUID>',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/03ffb451-4719-419a-863a-2481451bf6be/@@contents'],
+              u'name': u'reload',
+              u'when': None}]}
 >>> browser.open(edit_form_url)
 >>> browser.getControl('Media Id').value
 '2345'
