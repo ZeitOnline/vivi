@@ -28,6 +28,7 @@ import zope.publisher.browser
 import zope.security.management
 import zope.security.testing
 import zope.site.hooks
+import zope.testbrowser.testing
 import zope.testing.renormalizing
 
 
@@ -359,10 +360,22 @@ class BrowserAssertions(object):
         self.fail('Differences (%s):\n' % kind + ''.join(diff))
 
     def assert_json(self, want, got=None):
-        import doctest
         import simplejson
         if got is None:
             got = self.browser.contents
         data = simplejson.loads(got)
         self.assertEqual(want, data)
         return data
+
+
+class BrowserTestCase(unittest2.TestCase, BrowserAssertions):
+
+    layer = cms_layer
+
+    def setUp(self):
+        self.browser = zope.testbrowser.testing.Browser()
+        self.browser.addHeader('Authorization', 'Basic user:userpw')
+
+        zope.component.hooks.setSite(self.layer.setup.getRootFolder())
+        self.repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
