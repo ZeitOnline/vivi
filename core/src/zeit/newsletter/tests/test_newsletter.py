@@ -11,7 +11,7 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase):
     def test_block_factories_are_wired_up_correctly(self):
         from zeit.newsletter.newsletter import Newsletter, Group, Teaser
         newsletter = Newsletter()
-        body = newsletter['body']
+        body = newsletter['newsletter_body']
         self.assertEqual([], body.keys())
 
         factory = zope.component.getAdapter(
@@ -45,4 +45,4 @@ class NewsletterInterfaceTest(unittest.TestCase):
         zope.interface.verify.verifyObject(INewsletter, self.get_newsletter())
 
     def test_keys_should_return_body(self):
-        self.assertEqual(['body'], self.get_newsletter().keys())
+        self.assertEqual(['newsletter_body'], self.get_newsletter().keys())

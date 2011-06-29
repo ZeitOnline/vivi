@@ -13,7 +13,7 @@ import zeit.newsletter.interfaces
 import zope.interface
 
 
-BODY_NAME = 'body'
+BODY_NAME = 'newsletter_body'
 
 
 class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
@@ -54,7 +54,7 @@ class Body(zeit.edit.container.TypeOnAttributeContainer,
     grok.adapts(
         zeit.newsletter.interfaces.INewsletter,
         gocept.lxml.interfaces.IObjectified)
-    grok.name('body')
+    grok.name(BODY_NAME)
 
 
 class Group(zeit.edit.container.TypeOnAttributeContainer,
