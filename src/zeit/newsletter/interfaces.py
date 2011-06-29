@@ -23,3 +23,7 @@ class IGroup(zeit.edit.interfaces.IArea,
 
 class ITeaser(zeit.edit.interfaces.IBlock):
     pass
+
+
+class INewsletterCategory(zope.interface.Interface):
+    pass
