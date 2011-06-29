@@ -16,6 +16,7 @@ setup(
     namespace_packages=['zeit'],
     install_requires=[
         'gocept.lxml',
+        'gocept.selenium',
         'grokcore.component',
         'mock',
         'setuptools',

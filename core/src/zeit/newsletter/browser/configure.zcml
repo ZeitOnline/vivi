@@ -30,5 +30,16 @@
     permission="zeit.AddContent"
     />
 
+  <browser:viewlet
+    for="..interfaces.IBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit"
+    template="edit.group_add.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
 </configure>
 

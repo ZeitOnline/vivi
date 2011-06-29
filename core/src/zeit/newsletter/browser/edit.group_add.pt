@@ -1,0 +1,7 @@
+<div class="edit">
+  <a tal:attributes="href string:${context/@@absolute_url}/add?type=group"
+     i18n:translate=""
+     cms:cp-module="zeit.edit.LoadAndReload">
+    + Add group
+  </a>
+</div>

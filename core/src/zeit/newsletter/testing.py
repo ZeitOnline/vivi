@@ -1,12 +1,9 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest2 as unittest
+import gocept.selenium.ztk
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
-import zope.component
-import zope.component.hooks
-import zope.testbrowser.testing
 
 
 ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
@@ -31,6 +28,9 @@ class TestBrowserLayer(ZCMLLayer):
         ZCMLLayer.setup.tearDown()
 
 
+selenium_layer = gocept.selenium.ztk.Layer(ZCMLLayer)
+
+
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCMLLayer
@@ -39,3 +39,9 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
     layer = TestBrowserLayer
+
+
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+
+    layer = selenium_layer
+    skin = 'vivi'
