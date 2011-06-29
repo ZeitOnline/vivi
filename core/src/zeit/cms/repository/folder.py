@@ -25,9 +25,10 @@ class FolderType(zeit.cms.type.TypeDeclaration):
     type = 'collection'
     title = _('Folder')
     addform = 'zeit.cms.repository.folder.Add'
+    factory = Folder
 
     def content(self, resource):
-        folder = Folder()
+        folder = self.factory()
         folder.uniqueId = resource.id
         return folder
 
