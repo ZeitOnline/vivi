@@ -42,6 +42,7 @@ class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.newsletter.interfaces.INewsletter
     type = 'newsletter'
     title = _('Newsletter')
+    addform = zeit.cms.type.SKIP_ADD
 
 
 class Body(zeit.edit.container.TypeOnAttributeContainer,

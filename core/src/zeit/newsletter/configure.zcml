@@ -55,4 +55,17 @@
       />
   </class>
 
+  <class class=".category.NewsletterCategory">
+    <!-- <implements -->
+    <!--   interface="zope.annotation.interfaces.IAttributeAnnotatable" /> -->
+    <require
+      interface=".interfaces.INewsletterCategory"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.INewsletterCategory"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>
