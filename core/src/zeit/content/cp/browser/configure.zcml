@@ -71,15 +71,6 @@
     permission="zeit.EditContent"
     />
 
-  <browser:viewletManager
-    provides=".interfaces.IEditorContentViewletManager"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    class="zope.viewlet.manager.WeightOrderedViewletManager"
-    name="zeit.edit.contents"
-    permission="zope.View"
-    />
-
   <include file="area.zcml" />
   <include package=".blocks" />
   <include file="landing.zcml" />
