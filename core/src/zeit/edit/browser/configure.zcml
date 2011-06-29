@@ -61,6 +61,15 @@
 
   <browser:viewletManager
     provides="..interfaces.IContentViewletManager"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    name="zeit.edit.contents"
+    permission="zope.View"
+    />
+
+  <browser:viewletManager
+    provides="..interfaces.IContentViewletManager"
     for="..interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
