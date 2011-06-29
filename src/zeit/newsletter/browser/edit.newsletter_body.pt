@@ -1,0 +1,3 @@
+<div tal:attributes="id context/__name__">
+  <tal:block replace="structure provider:zeit.edit.contents" />
+</div>

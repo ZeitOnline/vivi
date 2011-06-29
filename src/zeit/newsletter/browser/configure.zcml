@@ -13,6 +13,14 @@
     template="editor-contents.pt"
     permission="zeit.EditContent"
     />
-  
+
+  <browser:page
+    for="zeit.newsletter.interfaces.IBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="edit.newsletter_body.pt"
+    permission="zeit.EditContent"
+    />
+
 </configure>
 
