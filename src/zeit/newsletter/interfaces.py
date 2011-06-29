@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import zeit.cms.content.interfaces
+import zeit.cms.repository.interfaces
 import zeit.edit.interfaces
 import zope.container.interfaces
 import zope.interface
@@ -25,5 +26,7 @@ class ITeaser(zeit.edit.interfaces.IBlock):
     pass
 
 
-class INewsletterCategory(zope.interface.Interface):
-    pass
+class INewsletterCategory(zeit.cms.repository.interfaces.IFolder):
+
+    def create():
+        """Creates a new newsletter object for this category."""

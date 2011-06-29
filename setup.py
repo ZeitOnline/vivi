@@ -17,6 +17,7 @@ setup(
     install_requires=[
         'gocept.lxml',
         'grokcore.component',
+        'mock',
         'setuptools',
         'zeit.cms',
         'zeit.edit',
