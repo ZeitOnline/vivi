@@ -7,12 +7,20 @@
   </class>
 
   <browser:page
-    for="zeit.newsletter.interfaces.INewsletter"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    for="..interfaces.INewsletter"
     name="contents"
     template="editor-contents.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zeit.EditContent"
     />
-  
+
+  <browser:page
+    for="..interfaces.INewsletterCategory"
+    class=".category.AddAndCheckout"
+    name="add"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.AddContent"
+    />
+
 </configure>
 
