@@ -34,17 +34,17 @@ class ContentAdder(object):
     def __call__(self):
         folder = self.find_or_create_folder()
         params = {}
-        params['form.ressort'] = self._get_token(
-            zeit.addcentral.interfaces.IContentAdder['ressort'])
+        params['form.ressort'] = self._get_token('ressort')
         if self.sub_ressort is not None:
-            params['form.sub_ressort'] = self._get_token(
-                zeit.addcentral.interfaces.IContentAdder['sub_ressort'])
+            params['form.sub_ressort'] = self._get_token('sub_ressort')
         return '%s/@@%s?%s' % (
             zope.traversing.browser.absoluteURL(folder, self.request),
             self.type_.getTaggedValue('zeit.cms.addform'),
             urllib.urlencode(params))
 
-    def _get_token(self, field):
+    def _get_token(self, field,
+                   interface=zeit.addcentral.interfaces.IContentAdder):
+        field = interface[field]
         source = callable(field.source) and field.source(self) or field.source
         terms = zope.component.getMultiAdapter(
             (source, self.request), zope.browser.interfaces.ITerms)
