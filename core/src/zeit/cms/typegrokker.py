@@ -13,7 +13,6 @@ def annotate_interface(interface, key, value):
     interface.setTaggedValue(key, value)
 
 
-
 class TypeGrokker(martian.ClassGrokker):
 
     martian.component(zeit.cms.type.TypeDeclaration)
@@ -68,6 +67,4 @@ class TypeGrokker(martian.ClassGrokker):
             provides=zeit.cms.interfaces.ITypeDeclaration,
             for_=(context.interface,))
 
-
         return True
-
