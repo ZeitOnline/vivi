@@ -4,7 +4,7 @@ zeit.addcentral changes
 0.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Made Ressort optional (for #9133).
 
 
 0.2.1 (2010-08-09)
