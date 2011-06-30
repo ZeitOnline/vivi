@@ -41,5 +41,54 @@
     weight="90"
     />
 
+  <browser:viewlet
+    for="..interfaces.IGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="landing-zone"
+    template="edit.group.landing.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:page
+    for="..interfaces.IGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop"
+    class=".edit.GroupLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="..interfaces.IGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="contents"
+    template="edit.group.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:page
+    for="..interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop"
+    class=".edit.TeaserLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="..interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="content"
+    template="edit.teaser.content.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
 </configure>
 

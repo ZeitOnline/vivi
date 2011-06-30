@@ -23,7 +23,9 @@ class IGroup(zeit.edit.interfaces.IArea,
 
 
 class ITeaser(zeit.edit.interfaces.IBlock):
-    pass
+
+    reference = zope.schema.Choice(
+        source=zeit.cms.content.contentsource.cmsContentSource)
 
 
 class INewsletterCategory(zeit.cms.repository.interfaces.IFolder):
