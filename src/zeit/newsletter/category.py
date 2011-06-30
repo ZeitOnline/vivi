@@ -3,10 +3,12 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import datetime
+import zeit.cms.content.dav
 import zeit.cms.repository.folder
 import zeit.cms.type
 import zeit.newsletter.interfaces
 import zeit.newsletter.newsletter
+import zope.component
 import zope.interface
 
 
@@ -14,8 +16,16 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
 
     zope.interface.implements(zeit.newsletter.interfaces.INewsletterCategory)
 
+    zeit.cms.content.dav.mapProperties(
+        zeit.newsletter.interfaces.INewsletterCategory,
+        zeit.newsletter.interfaces.DAV_NAMESPACE,
+        ['last_created'], live=True)
+
     def create(self):
-        newsletter = self._create_newsletter(datetime.datetime.now())
+        now = datetime.datetime.now()
+        newsletter = self._create_newsletter(now)
+        self.populate(newsletter)
+        self.last_created = now
         return newsletter
 
     def _create_newsletter(self, timestamp):
@@ -37,6 +47,12 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
             if name not in folder:
                 return name
             count += 1
+
+    def populate(self, newsletter):
+        relevant_content = self._get_content_newer_than(self.last_created)
+
+    def _get_content_newer_than(self, timestamp):
+        return []
 
 
 class NewsletterCategoryType(zeit.cms.repository.folder.FolderType):

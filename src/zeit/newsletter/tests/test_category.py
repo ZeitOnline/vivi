@@ -3,6 +3,8 @@
 
 from zeit.newsletter.category import NewsletterCategory
 import datetime
+import mock
+import pytz
 import zeit.cms.repository.folder
 import zeit.newsletter.testing
 
@@ -38,3 +40,23 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
         folder['29-1'] = zeit.cms.repository.folder.Folder()
         name = self.category._choose_name(folder, datetime.date(2011, 6, 29))
         self.assertEqual('29-2', name)
+
+    def test_last_creation_time_is_remembered(self):
+        from datetime import datetime
+        dt = mock.Mock()
+        dt.side_effect = lambda *args, **kw: datetime(*args, **kw)
+        timestamp1 = datetime(2011, 6, 29, 10, 0, tzinfo=pytz.UTC)
+        timestamp2 = datetime(2011, 6, 29, 15, 0, tzinfo=pytz.UTC)
+
+        with mock.patch('datetime.datetime', dt):
+            self.category._create_newsletter = mock.Mock()
+            self.category._get_content_newer_than = mock.Mock()
+
+            dt.now.return_value = timestamp1
+            self.category.create()
+            self.category._get_content_newer_than.assert_called_with(None)
+
+            dt.now.return_value = timestamp2
+            self.category.create()
+            self.category._get_content_newer_than.assert_called_with(
+                timestamp1)

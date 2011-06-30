@@ -8,6 +8,9 @@ import zope.container.interfaces
 import zope.interface
 
 
+DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/newsletter'
+
+
 class INewsletter(zeit.cms.content.interfaces.IXMLContent,
                   zope.container.interfaces.IReadContainer):
     pass
@@ -29,6 +32,10 @@ class ITeaser(zeit.edit.interfaces.IBlock):
 
 
 class INewsletterCategory(zeit.cms.repository.interfaces.IFolder):
+
+    last_created = zope.schema.Datetime(
+        title=u'Timestamp when the last newsletter object'
+        ' in this category was created')
 
     def create():
         """Creates a new newsletter object for this category."""
