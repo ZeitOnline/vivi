@@ -6,10 +6,16 @@ import datetime
 import zeit.cms.content.dav
 import zeit.cms.repository.folder
 import zeit.cms.type
+import zeit.connector.interfaces
+import zeit.connector.search
 import zeit.newsletter.interfaces
 import zeit.newsletter.newsletter
 import zope.component
 import zope.interface
+
+
+FIRST_RELEASED = zeit.connector.search.SearchVar(
+    'date_first_released', 'http://namespaces.zeit.de/CMS/document')
 
 
 class NewsletterCategory(zeit.cms.repository.folder.Folder):
@@ -52,7 +58,11 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
         relevant_content = self._get_content_newer_than(self.last_created)
 
     def _get_content_newer_than(self, timestamp):
-        return []
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        result = connector.search(
+            [FIRST_RELEASED], (FIRST_RELEASED > timestamp.isoformat()))
+        return result
 
 
 class NewsletterCategoryType(zeit.cms.repository.folder.FolderType):

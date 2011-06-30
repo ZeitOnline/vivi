@@ -60,3 +60,10 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
             self.category.create()
             self.category._get_content_newer_than.assert_called_with(
                 timestamp1)
+
+    def test_smoke_query_for_newer_content(self):
+        # this is just a smoke test (against syntax errors and such),
+        # since the mock connector doesn't implement search
+        ANY = datetime.datetime(2001, 6, 29, 10, 0)
+        self.assertEqual(
+            3, len(list(self.category._get_content_newer_than(ANY))))
