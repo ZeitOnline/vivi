@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.newsletter.category import NewsletterCategory
+from zeit.newsletter.newsletter import Newsletter
+from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import datetime
 import mock
 import pytz
@@ -67,3 +69,38 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
         ANY = datetime.datetime(2001, 6, 29, 10, 0)
         self.assertEqual(
             3, len(list(self.category._get_content_newer_than(ANY))))
+
+    def test_query_with_none_returns_empty_list(self):
+        # XXX is this what we want for the first-ever newsletter created?
+        self.assertEqual([], self.category._get_content_newer_than(None))
+
+
+class DailyNewsletterBuilderTest(zeit.newsletter.testing.TestCase):
+
+    def setUp(self):
+        super(DailyNewsletterBuilderTest, self).setUp()
+        self.newsletter = Newsletter()
+        self.builder = zeit.newsletter.category.DailyNewsletterBuilder(
+            self.newsletter)
+
+    def create_content(self, name, ressort):
+        content = TestContentType()
+        content.ressort = ressort
+        self.repository[name] = content
+        return self.repository[name]
+
+    def test_groups_content_according_to_ressort(self):
+        c1 = self.create_content('c1', u'Deutschland')
+        c2 = self.create_content('c2', u'International')
+        c3 = self.create_content('c3', u'Deutschland')
+        self.builder([c1, c2, c3])
+
+        body = self.newsletter['newsletter_body']
+        self.assertEqual(2, len(body))
+        group1 = body[body.keys()[0]]
+        group2 = body[body.keys()[1]]
+        self.assertEqual(u'International', group1.title)
+        self.assertEqual(u'Deutschland', group2.title)
+
+        self.assertEqual([c2], [x.reference for x in group1.values()])
+        self.assertEqual([c1, c3], [x.reference for x in group2.values()])
