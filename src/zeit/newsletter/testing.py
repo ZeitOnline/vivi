@@ -8,7 +8,7 @@ import zeit.cms.testing
 import zope.component
 
 
-ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=True)
 
 
 class TestBrowserLayer(ZCMLLayer):

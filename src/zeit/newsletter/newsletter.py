@@ -68,6 +68,9 @@ class Group(zeit.edit.container.TypeOnAttributeContainer,
         gocept.lxml.interfaces.IObjectified)
     grok.name('group')
 
+    title = zeit.cms.content.property.ObjectPathProperty(
+        '.head.title', zeit.newsletter.interfaces.IGroup['title'])
+
 
 zeit.edit.block.register_element_factory(
     zeit.newsletter.interfaces.IBody, 'group', _('Group'),

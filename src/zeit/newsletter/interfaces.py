@@ -22,7 +22,8 @@ class IBody(zeit.edit.interfaces.IArea):
 
 class IGroup(zeit.edit.interfaces.IArea,
              zeit.edit.interfaces.IBlock):
-    pass
+
+    title = zope.schema.TextLine(title=u'The title of this group')
 
 
 class ITeaser(zeit.edit.interfaces.IBlock):
@@ -39,3 +40,11 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IFolder):
 
     def create():
         """Creates a new newsletter object for this category."""
+
+
+class IBuild(zope.interface.Interface):
+    """Builds a newsletter in a way specific to the category."""
+
+    def __call__(content_list):
+        """Selects appropriate content objects and populates the newsletter
+        with groups and teasers."""
