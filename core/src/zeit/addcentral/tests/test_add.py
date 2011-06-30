@@ -65,21 +65,23 @@ class JavascriptTest(zeit.cms.testing.SeleniumTestCase):
 
         # provoke validation error
         s.waitForElementPresent('sidebar.form.type_')
-        s.select('sidebar.form.type_', 'Image Group')
         s.click('sidebar.form.actions.add')
         s.waitForElementPresent('xpath=//ul[@class="errors"]')
 
         # successful submit
+        s.select('sidebar.form.type_', 'Image Group')
         s.select('sidebar.form.ressort', 'International')
         s.waitForElementPresent('xpath=//option[text() = "Meinung"]')
         s.select('sidebar.form.sub_ressort', 'Meinung')
         s.clickAndWait('sidebar.form.actions.add')
-        s.verifyLocation('*/international/meinung/*-*/@@zeit.content.image.imagegroup.Add*')
+        s.assertLocation(
+            '*/international/meinung/*-*/@@zeit.content.image.imagegroup.Add*')
 
         # values should be remembered in the session
-        s.verifySelectedLabel('sidebar.form.ressort', 'International')
+        s.assertSelectedLabel('sidebar.form.ressort', 'International')
 
         # but selecting something else should take preference
         s.select('sidebar.form.type_', 'Folder')
         s.clickAndWait('sidebar.form.actions.add')
-        s.verifyLocation('*/international/meinung/*-*/@@zeit.cms.repository.folder.Add*')
+        s.assertLocation(
+            '*/international/meinung/*-*/@@zeit.cms.repository.folder.Add*')

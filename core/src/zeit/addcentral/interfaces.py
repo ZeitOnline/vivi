@@ -15,7 +15,8 @@ class IContentAdder(zope.interface.Interface):
 
     ressort = zope.schema.Choice(
         title=_("Ressort"),
-        source=zeit.cms.content.sources.NavigationSource())
+        source=zeit.cms.content.sources.NavigationSource(),
+        required=False)
 
     sub_ressort = zope.schema.Choice(
         title=_('Sub ressort'),
