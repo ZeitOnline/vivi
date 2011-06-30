@@ -12,17 +12,18 @@ zeit.addcentral changes
 
 - Using versions from the ZTK.
 
-- Adapt for test changes in zeit.cms
+- Adapt for test changes in zeit.cms.
 
-- Für Selenium-Tests wird nun ``gocept.selenium`` verwendet (#7549).
+- Use ``gocept.selenium`` for Selenium tests (#7549).
 
 
 0.2 (2009-08-21)
 ----------------
 
-- Subressort wird wieder gefiltert (#6016).
+- Filter Subressort again (#6016).
+
 
 0.1 (2009-08-17)
 ----------------
 
-- Erstes release.
+- first release.
