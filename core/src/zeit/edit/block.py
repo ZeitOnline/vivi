@@ -75,8 +75,10 @@ class ElementFactory(object):
 
 class TypeOnAttributeElementFactory(ElementFactory):
 
+    tag_name = 'container'
+
     def get_xml(self):
-        container = lxml.objectify.E.container()
+        container = getattr(lxml.objectify.E, self.tag_name)()
         container.set(
             '{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
         container.set('module', self.module)
@@ -85,7 +87,8 @@ class TypeOnAttributeElementFactory(ElementFactory):
 
 def register_element_factory(
     adapts, element_type, title=None, module=None, frame=None,
-    class_=TypeOnAttributeElementFactory):
+    class_=TypeOnAttributeElementFactory,
+    tag_name=TypeOnAttributeElementFactory.tag_name):
     if isinstance(adapts, zope.interface.interface.InterfaceClass):
         adapts = [adapts]
     if module is None:
@@ -97,17 +100,18 @@ def register_element_factory(
         name = '%s%sFactory' % (interface.__name__, element_type.capitalize())
         frame.f_locals[name] = create_factory_class(
             element_type, interface, name, frame.f_locals['__name__'],
-            title, module, class_)
+            title, module, class_, tag_name)
 
 
 def create_factory_class(element_type, adapts, name, module, title, cp_module,
-                         class_):
+                         class_, tag_name):
     class factory(grok.Adapter, class_):
         grok.context(adapts)
         grok.name(element_type)
     factory.title = title
     factory.element_type = element_type
     factory.module = cp_module
+    factory.tag_name = tag_name
     factory.__name__ = name
     # so that the grokkers will pick it up
     factory.__grok_module__ = module
