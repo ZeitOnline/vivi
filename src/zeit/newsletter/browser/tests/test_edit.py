@@ -3,7 +3,6 @@
 
 import transaction
 import zeit.newsletter.testing
-import zope.component
 
 
 class EditorTest(zeit.newsletter.testing.BrowserTestCase):
@@ -11,7 +10,8 @@ class EditorTest(zeit.newsletter.testing.BrowserTestCase):
     def setUp(self):
         from zeit.newsletter.newsletter import Newsletter
         super(EditorTest, self).setUp()
-        self.repository['newsletter'] = Newsletter()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['newsletter'] = Newsletter()
 
     def test_newsletter_can_be_checked_out(self):
         self.browser.handleErrors = False
@@ -25,8 +25,6 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         from zeit.newsletter.newsletter import Newsletter
         super(BlockEditingTest, self).setUp()
         with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository = zope.component.getUtility(
-                zeit.cms.repository.interfaces.IRepository)
             self.repository['newsletter'] = Newsletter()
         self.open('/repository/newsletter/@@checkout')
         transaction.commit()
