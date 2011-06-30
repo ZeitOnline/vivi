@@ -11,7 +11,8 @@ class AddTest(zeit.newsletter.testing.BrowserTestCase):
 
     def setUp(self):
         super(AddTest, self).setUp()
-        self.repository['mynl'] = NewsletterCategory()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['mynl'] = NewsletterCategory()
 
     def test_adding_a_newsletter_should_check_out(self):
         b = self.browser
