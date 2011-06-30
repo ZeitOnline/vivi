@@ -283,6 +283,8 @@ class DatetimeProperty(object):
     def toProperty(self, value):
         if value is None:
             return u''
+        if value.tzinfo is None:
+            raise ValueError('%r has no timezone information' % value)
         return value.isoformat()
 
 
