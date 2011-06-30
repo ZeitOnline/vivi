@@ -70,7 +70,8 @@ class Group(zeit.edit.container.TypeOnAttributeContainer,
 
 
 zeit.edit.block.register_element_factory(
-    zeit.newsletter.interfaces.IBody, 'group', _('Group'))
+    zeit.newsletter.interfaces.IBody, 'group', _('Group'),
+    tag_name='region')
 
 
 class Teaser(zeit.edit.block.SimpleElement):
@@ -78,6 +79,9 @@ class Teaser(zeit.edit.block.SimpleElement):
     area = zeit.newsletter.interfaces.IGroup
     grok.implements(zeit.newsletter.interfaces.ITeaser)
     type = 'teaser'
+
+    reference = zeit.cms.content.property.SingleResource(
+        '.block', xml_reference_name='related', attributes=('href',))
 
 
 zeit.edit.block.register_element_factory(
