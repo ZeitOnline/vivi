@@ -210,8 +210,23 @@ def FunctionalDocFileSuite(*paths, **kw):
     return test
 
 
+class RepositoryHelper(object):
+
+    @property
+    def repository(self):
+        import zeit.cms.repository.interfaces
+        with site(self.getRootFolder()):
+            return zope.component.getUtility(
+                zeit.cms.repository.interfaces.IRepository)
+
+    @repository.setter
+    def repository(self, value):
+        self.__dict__['repository'] = value
+
+
 class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
-                         unittest2.TestCase):
+                         unittest2.TestCase,
+                         RepositoryHelper):
 
     layer = cms_layer
     product_config = {}
@@ -229,19 +244,10 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
         zope.site.hooks.setSite(None)
         super(FunctionalTestCase, self).tearDown()
 
-    @property
-    def repository(self):
-        import zeit.cms.repository.interfaces
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-
-    @repository.setter
-    def repository(self, value):
-        self.__dict__['repository'] = value
-
 
 class SeleniumTestCase(gocept.selenium.ztk.TestCase,
-                       unittest2.TestCase):
+                       unittest2.TestCase,
+                       RepositoryHelper):
 
     layer = selenium_layer
     skin = 'cms'
@@ -368,7 +374,9 @@ class BrowserAssertions(object):
         return data
 
 
-class BrowserTestCase(unittest2.TestCase, BrowserAssertions):
+class BrowserTestCase(unittest2.TestCase,
+                      BrowserAssertions,
+                      RepositoryHelper):
 
     layer = cms_layer
 
@@ -376,6 +384,5 @@ class BrowserTestCase(unittest2.TestCase, BrowserAssertions):
         self.browser = zope.testbrowser.testing.Browser()
         self.browser.addHeader('Authorization', 'Basic user:userpw')
 
-        zope.component.hooks.setSite(self.layer.setup.getRootFolder())
-        self.repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+    def getRootFolder(self):
+        return self.layer.setup.getRootFolder()
