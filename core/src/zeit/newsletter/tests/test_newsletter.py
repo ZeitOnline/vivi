@@ -1,12 +1,15 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import lxml.etree
 import unittest2 as unittest
+import zeit.cms.testing
 import zeit.newsletter.testing
 import zope.component
 
 
-class NewsletterObjectsTest(zeit.newsletter.testing.TestCase):
+class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
+                            zeit.cms.testing.BrowserAssertions):
 
     def test_block_factories_are_wired_up_correctly(self):
         from zeit.newsletter.newsletter import Newsletter, Group, Teaser
@@ -25,6 +28,18 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase):
             group, zeit.edit.interfaces.IElementFactory, name='teaser')
         teaser = factory()
         self.assertIsInstance(teaser, Teaser)
+
+        xml = lxml.etree.tostring(newsletter.xml, pretty_print=True)
+        self.assert_ellipsis("""\
+<newsletter...>
+  <head/>
+  <body>
+    <region cp:type="group"...>
+      <container cp:type="teaser"...>
+    </region>
+  </body>
+</newsletter>
+""", xml)
 
     def test_newsletter_should_be_addable_to_repository(self):
         from zeit.newsletter.newsletter import Newsletter
