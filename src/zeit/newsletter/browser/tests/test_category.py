@@ -4,6 +4,7 @@
 from zeit.newsletter.category import NewsletterCategory
 import datetime
 import mock
+import pytz
 import zeit.newsletter.testing
 
 
@@ -17,7 +18,8 @@ class AddTest(zeit.newsletter.testing.BrowserTestCase):
     def test_adding_a_newsletter_should_check_out(self):
         b = self.browser
         dt = mock.Mock()
-        dt.now.return_value = datetime.datetime(2011, 6, 29, 13, 30)
+        dt.now.return_value = datetime.datetime(
+            2011, 6, 29, 13, 30, tzinfo=pytz.UTC)
 
         with mock.patch('datetime.datetime', dt):
             b.open('http://localhost/++skin++vivi/repository/mynl/@@add')
