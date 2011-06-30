@@ -376,6 +376,14 @@ Traceback (most recent call last):
     ...
 ValueError: Thu, 13 Mar 2008 13:48:37 CET
 
+
+Setting a datetime without timezone information raises an error:
+
+>>> converter.toProperty(datetime.datetime(2008, 5, 13, 13, 48))
+Traceback (most recent call last):
+  ...
+ValueError: datetime.datetime(2008, 5, 13, 13, 48) has no timezone information
+
 Date
 ++++
 
