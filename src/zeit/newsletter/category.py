@@ -4,8 +4,10 @@
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import grokcore.component as grok
+import zeit.addcentral.interfaces
 import zeit.cms.content.dav
 import zeit.cms.repository.folder
+import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.connector.interfaces
 import zeit.connector.search
@@ -17,6 +19,9 @@ import zope.interface
 
 FIRST_RELEASED = zeit.connector.search.SearchVar(
     'date_first_released', 'http://namespaces.zeit.de/CMS/document')
+
+
+DAILY_NAME = 'taeglich'
 
 
 class NewsletterCategory(zeit.cms.repository.folder.Folder):
@@ -110,7 +115,7 @@ class Builder(grok.Adapter):
 
 class DailyNewsletterBuilder(Builder):
 
-    grok.name('taeglich')
+    grok.name(DAILY_NAME)
 
     # XXX make configurable
     ressorts = [u'International', u'Deutschland']
@@ -130,3 +135,16 @@ class DailyNewsletterBuilder(Builder):
                 continue
             groups.setdefault(metadata.ressort, []).append(content)
         return groups
+
+
+@grok.adapter(
+    zeit.newsletter.interfaces.INewsletter,
+    zeit.addcentral.interfaces.IContentAdder)
+@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+def daily_newsletter(type_, adder):
+    # This is not ready for multiple newsletter categories, since there always
+    # will be just one INewsletter interface. But since there only is one
+    # category at the moment (the daily newsletter), it's okay for now.
+    repository = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+    return repository['newsletter'][DAILY_NAME]
