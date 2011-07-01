@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import datetime
+import grokcore.component as grok
 import urllib
 import zeit.addcentral.interfaces
 import zeit.cms.repository.interfaces
@@ -32,14 +33,23 @@ class ContentAdder(object):
         self.month = month
 
     def __call__(self):
-        folder = self.find_or_create_folder()
+        # we want to register the IAddLocation adapter for the content-type,
+        # which is an *interface*. We need a representative object providing
+        # that interface to be able to ask for those adapters, since
+        # zope.component looks for provides when an interface is required, and
+        # interfaces don't provide themselves.
+        dummy = type('Dummy', (object,), {})()
+        zope.interface.alsoProvides(dummy, self.type_)
+        context = zope.component.getMultiAdapter(
+            (dummy, self), zeit.addcentral.interfaces.IAddLocation)
+
         params = {}
         for key in ['ressort', 'sub_ressort']:
             token = self._get_token(key)
             if token is not None:
                 params['form.' + key] = token
         return '%s/@@%s?%s' % (
-            zope.traversing.browser.absoluteURL(folder, self.request),
+            zope.traversing.browser.absoluteURL(context, self.request),
             self.type_.getTaggedValue('zeit.cms.addform'),
             urllib.urlencode(params))
 
@@ -54,20 +64,28 @@ class ContentAdder(object):
             return None
         return terms.getTerm(value).token
 
-    def find_or_create_folder(self):
-        ressort = self.ressort and self.ressort.lower()
-        sub_ressort = self.sub_ressort and self.sub_ressort.lower()
-        path = [ressort, sub_ressort,
-                '%s-%02d' % (self.year, int(self.month))]
-        repos = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
 
-        folder = repos
-        for elem in path:
-            if elem is None:
-                continue
-            if elem not in folder:
-                folder[elem] = zeit.cms.repository.folder.Folder()
-            folder = folder[elem]
+@grok.adapter(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.addcentral.interfaces.IContentAdder)
+@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+def ressort_year_folder(type_, adder):
+    ressort = adder.ressort and adder.ressort.lower()
+    sub_ressort = adder.sub_ressort and adder.sub_ressort.lower()
+    return find_or_create_folder(
+        ressort, sub_ressort, '%s-%02d' % (adder.year, int(adder.month)))
 
-        return folder
+
+def find_or_create_folder(*path_elements):
+    repos = zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
+
+    folder = repos
+    for elem in path_elements:
+        if elem is None:
+            continue
+        if elem not in folder:
+            folder[elem] = zeit.cms.repository.folder.Folder()
+        folder = folder[elem]
+
+    return folder
