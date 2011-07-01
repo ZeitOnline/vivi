@@ -6,6 +6,12 @@
     <implements interface="zeit.edit.interfaces.IEditable" />
   </class>
 
+  <browser:resourceDirectory
+    name="zeit.newsletter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    directory="resources"
+    />
+
   <browser:page
     for="..interfaces.INewsletter"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
