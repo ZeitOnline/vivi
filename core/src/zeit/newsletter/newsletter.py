@@ -41,8 +41,7 @@ class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
     factory = Newsletter
     interface = zeit.newsletter.interfaces.INewsletter
     type = 'newsletter'
-    title = _('Newsletter')
-    addform = zeit.cms.type.SKIP_ADD
+    title = _('Daily Newsletter') # multiple categories are not supported yet
 
 
 class Body(zeit.edit.container.TypeOnAttributeContainer,

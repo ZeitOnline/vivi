@@ -21,6 +21,7 @@ setup(
         'mock',
         'pytz',
         'setuptools',
+        'zeit.addcentral',
         'zeit.edit',
         'zeit.cms',
         'zeit.connector',

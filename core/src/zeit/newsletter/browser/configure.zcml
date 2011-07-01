@@ -26,7 +26,7 @@
     for="..interfaces.INewsletterCategory"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".category.AddAndCheckout"
-    name="add"
+    name="zeit.newsletter.Add"
     permission="zeit.AddContent"
     />
 
