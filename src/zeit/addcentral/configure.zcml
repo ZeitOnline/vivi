@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:grok="http://namespaces.zope.org/grok"
   >
 
   <resourceLibrary
@@ -9,7 +10,7 @@
     require="zeit.cms.content.dropdown">
     <directory source="resources" include="addcentral.css" />
   </resourceLibrary>
-  
+
   <browser:viewlet
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
@@ -26,5 +27,7 @@
     class=".sidebar.Form"
     permission="zope.View"
     />
+
+  <grok:grok package="." />
 
 </configure>

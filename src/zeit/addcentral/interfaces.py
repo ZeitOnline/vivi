@@ -32,3 +32,12 @@ class IContentAdder(zope.interface.Interface):
         title=_("Month"),
         min=1,
         max=12)
+
+
+class IAddLocation(zope.interface.Interface):
+    """Marker interface that adapts a content type to a context object on which
+    the add form should be displayed.
+
+    Register this adapter for (content_type, IContentAdder), where content_type
+    is an interface like ICMSContent or IImageGroup.
+    """
