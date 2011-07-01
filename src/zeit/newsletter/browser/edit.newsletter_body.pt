@@ -1,3 +1,5 @@
-<div tal:attributes="id context/__name__">
+<div tal:attributes="
+    id context/__name__;
+    cms:url string:${context/@@absolute_url}">
   <tal:block replace="structure provider:zeit.edit.contents" />
 </div>
