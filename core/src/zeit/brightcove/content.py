@@ -290,6 +290,7 @@ class VideoType(zeit.cms.type.TypeDeclaration):
 
     title = _('Video')
     interface = zeit.brightcove.interfaces.IVideo
+    addform = zeit.cms.type.SKIP_ADD
 
 
 class Playlist(Content):
@@ -330,3 +331,4 @@ class PlaylistType(zeit.cms.type.TypeDeclaration):
 
     title = _('Playlist')
     interface = zeit.brightcove.interfaces.IPlaylist
+    addform = zeit.cms.type.SKIP_ADD

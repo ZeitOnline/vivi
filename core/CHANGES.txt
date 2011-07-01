@@ -12,6 +12,8 @@ zeit.brightcove changes
 
 - Change indexes as the interface requires an solr attribute now (#8559)
 
+- Remove Brightcove content from addcentral.
+
 
 0.8.0 (2010-08-16)
 ------------------
