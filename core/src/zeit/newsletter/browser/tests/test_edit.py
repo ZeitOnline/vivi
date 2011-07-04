@@ -71,8 +71,7 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.waitForElementPresent(second_teaser)
         s.assertText(second_teaser, '*http://xml.zeit.de/c1*')
 
-    def test_groups_should_be_sortable_with_drag_and_drop(self):
-        self.create_content_and_fill_clipboard()
+    def create_two_groups(self):
         s = self.selenium
 
         group1 = 'css=div.type-group'
@@ -92,6 +91,14 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
             '//li[@uniqueid="Clip/c2"]', group2)
         s.waitForElementPresent(group2 + ' .block.type-teaser')
 
+    def test_groups_should_be_sortable_with_drag_and_drop(self):
+        self.create_content_and_fill_clipboard()
+        self.create_two_groups()
+        s = self.selenium
+
+        group1 = 'css=div.type-group'
+        group2 = 'css=div.type-group + div.type-group'
+
         # before:
         # group
         #   Teaser (c1)
@@ -105,5 +112,32 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         # group
         #   Teaser (c1)
 
-        s.assertText(group1 + ' .block.type-teaser', '*c2*')
+        s.waitForText(group1 + ' .block.type-teaser', '*c2*')
         s.assertText(group2 + ' .block.type-teaser', '*c1*')
+
+    def test_drag_teaser_between_groups_should_move_it(self):
+        self.create_content_and_fill_clipboard()
+        self.create_two_groups()
+        s = self.selenium
+
+        group1 = 'css=div.type-group'
+        group2 = 'css=div.type-group + div.type-group'
+
+        # before:
+        # group
+        #   Teaser (c1)
+        # group
+        #   Teaser (c2)
+        s.dragAndDropToObject(
+            group2 + ' .type-teaser .dragger', group1 + ' .dragger')
+        # after:
+        # group
+        #   Teaser (c2)
+        #   Teaser (c1)
+        # group
+
+        second_teaser = ' .type-teaser + * + .type-teaser'
+        s.waitForElementPresent(group1 + second_teaser)
+        s.assertText(group1 + ' .block.type-teaser', '*c2*')
+        s.assertText(group1 + second_teaser, '*c1*')
+        s.assertElementNotPresent(group2 + ' .block.type-teaser')
