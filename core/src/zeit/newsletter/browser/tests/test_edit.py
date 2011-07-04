@@ -56,8 +56,17 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c3"]', 'css=div.type-group')
         s.waitForElementPresent('css=.block.type-teaser + .landing-zone')
+
+        # before:
+        # group
+        #   Teaser (c3)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c1"]', 'css=div.type-teaser + .landing-zone')
+        # after:
+        # group
+        #   Teaser (c3)
+        #   Teaser (c1)
+
         second_teaser = 'css=.type-teaser + * + .type-teaser'
         s.waitForElementPresent(second_teaser)
         s.assertText(second_teaser, '*http://xml.zeit.de/c1*')
@@ -83,8 +92,18 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
             '//li[@uniqueid="Clip/c2"]', group2)
         s.waitForElementPresent(group2 + ' .block.type-teaser')
 
+        # before:
+        # group
+        #   Teaser (c1)
+        # group
+        #   Teaser (c2)
         s.dragAndDropToObject(
             group2 + ' .dragger', group1 + ' .dragger')
+        # after:
+        # group
+        #   Teaser (c2)
+        # group
+        #   Teaser (c1)
 
         s.assertText(group1 + ' .block.type-teaser', '*c2*')
         s.assertText(group2 + ' .block.type-teaser', '*c1*')
