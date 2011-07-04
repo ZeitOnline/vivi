@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
@@ -26,3 +27,11 @@ class TeaserLandingZone(LandingZoneBase):
     """Handler to drop objects after other objects."""
 
     order = 'after-context'
+
+
+class Teaser(object):
+
+    @property
+    def metadata(self):
+        return zeit.cms.content.interfaces.ICommonMetadata(
+            self.context.reference, None)
