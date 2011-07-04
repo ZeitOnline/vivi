@@ -199,4 +199,15 @@
     permission="zeit.EditContent"
     />
 
+  <!-- forms -->
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-forms"
+    class=".form.Forms"
+    template="layout.forms-provider.pt"
+    permission="zope.View"
+    />
+
 </configure>
