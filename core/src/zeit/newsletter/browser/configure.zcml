@@ -91,6 +91,7 @@
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="content"
+    class=".edit.Teaser"
     template="edit.teaser.content.pt"
     permission="zeit.EditContent"
     weight="0"

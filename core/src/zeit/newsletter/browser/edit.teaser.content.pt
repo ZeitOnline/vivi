@@ -1,1 +1,8 @@
-<div tal:content="context/reference/uniqueId"/>
+<div>
+  <div class="supertitle" tal:content="view/metadata/supertitle | nothing"/>
+  <div class="teaserTitle" tal:content="view/metadata/teaserTitle | nothing"/>
+  <div class="teaserText" tal:content="view/metadata/teaserText | nothing"/>
+
+  <span class="uniqueId" tal:content="context/reference/uniqueId | nothing" />
+
+</div>
