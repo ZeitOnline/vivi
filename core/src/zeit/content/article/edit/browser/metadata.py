@@ -5,7 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
-import zeit.content.article.edit.browser.form
+import zeit.edit.browser.form
 import zope.formlib.form
 import zope.formlib.interfaces
 
@@ -16,7 +16,7 @@ class Metadata(object):
     title = _('Metadata')
 
 
-class Head(zeit.content.article.edit.browser.form.InlineForm):
+class Head(zeit.edit.browser.form.InlineForm):
 
     legend = _('Head')
     prefix = 'head'
@@ -36,7 +36,7 @@ class Head(zeit.content.article.edit.browser.form.InlineForm):
         return result
 
 
-class Navigation(zeit.content.article.edit.browser.form.InlineForm):
+class Navigation(zeit.edit.browser.form.InlineForm):
 
     legend = _('Navigation')
     prefix = 'navigation'
@@ -61,7 +61,7 @@ class Navigation(zeit.content.article.edit.browser.form.InlineForm):
         return form_fields
 
 
-class Texts(zeit.content.article.edit.browser.form.InlineForm):
+class Texts(zeit.edit.browser.form.InlineForm):
 
     legend = _('Texts')
     prefix = 'texts'
@@ -72,7 +72,7 @@ class Texts(zeit.content.article.edit.browser.form.InlineForm):
             'supertitle', 'title', 'subtitle', 'teaserTitle', 'teaserText')
 
 
-class Misc(zeit.content.article.edit.browser.form.InlineForm):
+class Misc(zeit.edit.browser.form.InlineForm):
 
     legend = _('Misc.')
     prefix = 'misc'

@@ -5,37 +5,10 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.asset.browser
 import zeit.cms.browser.interfaces
 import zeit.content.article.interfaces
-import zope.app.pagetemplate
+import zeit.edit.browser.form
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface
-
-
-class ArticleForms(object):
-    """View which includes all article forms."""
-
-
-class InlineForm(zope.formlib.form.SubPageEditForm,
-                 zeit.edit.browser.view.UndoableMixin):
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile('edit.inlineform.pt')
-
-    def __call__(self):
-        self.mark_transaction_undoable()
-        return super(InlineForm, self).__call__()
-
-    @property
-    def widget_data(self):
-        result = []
-        for widget in self.widgets:
-            css_class = ['widget-outer']
-            if widget.error():
-                css_class.append('error')
-            result.append(dict(
-                css_class=' '.join(css_class),
-                widget=widget,
-            ))
-        return result
 
 
 class AssetForms(object):
@@ -44,7 +17,7 @@ class AssetForms(object):
     title = _('Assets')
 
 
-class Assets(InlineForm):
+class Assets(zeit.edit.browser.form.InlineForm):
 
     legend = _('Assets')
     prefix = 'assets'
@@ -73,7 +46,7 @@ class WorkflowForms(object):
     title = _('Workflow')
 
 
-class WorkflowStatus(InlineForm):
+class WorkflowStatus(zeit.edit.browser.form.InlineForm):
 
     legend = _('Status')
     prefix = 'workflow-status'
@@ -93,7 +66,7 @@ class WorkflowStatus(InlineForm):
                 'edited', 'corrected', 'refined', 'images_added')
 
 
-class WorkflowSettings(InlineForm):
+class WorkflowSettings(zeit.edit.browser.form.InlineForm):
 
     legend = _('Settings')
     prefix = 'worfklow-settings'
@@ -107,7 +80,7 @@ class WorkflowSettings(InlineForm):
                 'release_period', 'urgent', 'export_cds'))
 
 
-class WorkflowLog(InlineForm):
+class WorkflowLog(zeit.edit.browser.form.InlineForm):
 
     legend = _('Log')
     prefix = 'worfklow-log'

@@ -7,7 +7,7 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="metadata"
     class=".metadata.Metadata"

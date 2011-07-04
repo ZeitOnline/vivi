@@ -6,21 +6,12 @@
 
   <include file="metadata.zcml" />
 
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="article-forms"
-    class=".form.ArticleForms"
-    template="edit.forms-provider.pt"
-    permission="zope.View"
-    />
-
   <!-- assets -->
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="assets"
     class=".form.AssetForms"
@@ -53,7 +44,7 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="workflow"
     class=".form.WorkflowForms"
@@ -124,7 +115,7 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="recensions"
     class=".recension.RecensionForms"
