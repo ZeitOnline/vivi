@@ -147,6 +147,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.edit.interfaces.IContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="move"
+    class=".container.Move"
+    permission="zeit.EditContent"
+    />
+
   <!-- library -->
 
   <browser:view

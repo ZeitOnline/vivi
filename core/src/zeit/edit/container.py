@@ -9,6 +9,7 @@ import zeit.edit.block
 import zeit.edit.interfaces
 import zope.container.contained
 import zope.interface
+import zope.proxy
 
 
 log = logging.getLogger(__name__)
@@ -78,7 +79,7 @@ class Base(UserDict.DictMixin,
         else:
             name = str(uuid.uuid4())
         item.__name__ = name
-        self.xml.append(item.xml)
+        self.xml.append(zope.proxy.removeAllProxies(item.xml))
         return name
 
     def updateOrder(self, order):

@@ -22,13 +22,13 @@ class IElementFactory(zope.interface.Interface):
         """Create block."""
 
 
-class IElement(zope.interface.Interface):
+class IElement(zeit.cms.content.interfaces.IXMLRepresentation):
     """An element which can be instantiated and added to a page."""
 
     type = zope.interface.Attribute("Type identifier.")
 
 
-class IBlock(IElement):
+class IBlock(IElement, zope.container.interfaces.IContained):
     """A block is an element contained in an area.
 
     In contrast to areas it usually can be edited, sorted, etc.
