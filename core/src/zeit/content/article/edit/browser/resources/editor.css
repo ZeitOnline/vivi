@@ -1,97 +1,10 @@
 .block .block-inner > * {
 }
 
-/* override so we don't see a flicker */
-.inline-form.busy {
-  opacity: 1;
-}
-
-
-/* forms */
-
-.inline-form .widget-outer {
-  clear: both;
-  margin-bottom: 0.5em;
-  position: relative;
-}
-
-.inline-form .label {
-  clear: both;
-  display: block;
-  float: left;
-  overflow: hidden;
-  padding-top: 0.5em;
-  width: 12em;
-}
-
-.inline-form .label div.error {
-  display: inline;
-}
-
-.inline-form .label div.error:before {
-  content: "(";
-}
-
-.inline-form .label div.error:after {
-  content: ")";
-}
-
-.inline-form .widget {
-  margin-left: 12em;
-  padding: 0;
-}
-
-.inline-form div.widget > input,
-.inline-form div.widget > textarea,
-.inline-form div.widget > div > div > select {
-  margin-top: 0;
-}
-
-.inline-form .error div.widget > input,
-.inline-form .error div.widget > textarea,
-.inline-form .error div.widget > div > div > select {
-  background-color: red;
-}
-
-.inline-form .dirty div.widget > input,
-.inline-form .dirty div.widget > textarea,
-.inline-form .dirty div.widget > div > div > select,
-.inline-form .dirty div.widget > .objectsequencewidget {
-  background-color: yellow;
-}
-
-.inline-form .dirty div.widget > input[type=checkbox] {
-  outline: 1px solid yellow;
-}
-
-.inline-form .form-controls {
-  display: none;
-}
-
-
 /* editor blocks */
 
 #editable-body {
   /*margin-left: 3em;*/
-}
-
-#cp-content #article-editor-forms div {
-    padding:0;
-}
-
-#article-editor-forms {
-    margin-left:6px;
-    margin-right:6px;
-}
-
-#article-editor-forms div div.edit-bar {
-    height: 20px;
-    border-bottom: 1px solid #BBBBBB; 
-}
-
-#article-editor-forms div div.edit-bar a{
-    margin:4px;
-    margin-top:5px;
 }
 
 #article-form-workflow,
@@ -150,14 +63,6 @@
   background-image: url('delete.png');
 }
 
-.article-editor-inner .edit-bar > .fold-link {
-  background-image: url('arrow_down.png');
-}
-
-.article-editor-inner .folded .edit-bar > .fold-link {
-  background-image: url('arrow_right.png');
-}
-
 .article-editor-inner .dragger .center {
   height: 9px;
 }
@@ -171,17 +76,6 @@
   margin-left: 0em;
 }
 
-
-.article-editor-inner .folded > .block-inner > * {
-  display: none;
-
-}
-
-.article-editor-inner .folded > .block-inner > .edit-bar {
-  border-bottom: none;
-  display: block;
-  margin-bottom: 0;
-}
 
 .editable-area > .landing-zone {
   height: 4px;
