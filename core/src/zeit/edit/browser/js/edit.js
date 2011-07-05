@@ -272,7 +272,7 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
 
 
 var wire_forms = function() {
-    forEach($$('#editor-forms .inline-form'), function(container) {
+    forEach($$('.inline-form'), function(container) {
         if (MochiKit.DOM.hasElementClass(container, 'wired')) {
             return;
         }
