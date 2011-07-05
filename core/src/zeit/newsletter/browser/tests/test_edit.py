@@ -22,11 +22,10 @@ class EditorTest(zeit.newsletter.testing.BrowserTestCase):
 class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
 
     def setUp(self):
-        from zeit.newsletter.newsletter import Newsletter
         super(BlockEditingTest, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            self.repository['newsletter'] = Newsletter()
         self.open('/repository/newsletter/@@checkout')
+        # XXX without this, create_content_and_fill_clipboard raises a
+        # ConflictError
         transaction.commit()
 
     def test_groups_should_be_addable(self):

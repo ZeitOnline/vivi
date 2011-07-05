@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.newsletter.newsletter import Newsletter
 import gocept.selenium.ztk
 import transaction
 import zeit.cms.repository.interfaces
@@ -47,6 +48,12 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
     layer = selenium_layer
     skin = 'vivi'
+
+    def setUp(self):
+        super(SeleniumTestCase, self).setUp()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['newsletter'] = Newsletter()
+        transaction.commit()
 
     def create_content_and_fill_clipboard(self):
         # XXX copy&paste from zeit.content.cp.testing

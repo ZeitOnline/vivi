@@ -1,11 +1,14 @@
 <div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
       id="cp-content-inner"
-      class="cp-content-inner article-editor-inner">
+      class="cp-content-inner">
   <script
     type="text/javascript"
     tal:attributes="
     src string:${request/++resource++zeit.newsletter}/editor.js"></script>
 
+  <div id="editor-forms"
+       tal:content="structure context/@@edit-forms">
+  </div>
   <div tal:replace="structure context/newsletter_body/@@contents">
   </div>
 </div>
