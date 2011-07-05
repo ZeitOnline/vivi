@@ -362,4 +362,20 @@
     />
 
 
+  <class class="..reference.Reference">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..video.Video">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..rawxml.RawXML">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..block.Relateds">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
 </configure>
