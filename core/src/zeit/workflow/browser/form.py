@@ -119,7 +119,6 @@ class ContentWorkflow(WorkflowForm):
                 'created'))
 
 
-
 class AssetWorkflow(WorkflowForm):
 
     zope.component.adapts(
