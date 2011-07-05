@@ -19,5 +19,6 @@
 
   <include package="zeit.newsletter" />
   <include package="zeit.addcentral" />
+  <include package="zeit.workflow" file="ftesting.zcml" />
 
 </configure>
