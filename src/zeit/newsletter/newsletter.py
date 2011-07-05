@@ -23,6 +23,9 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
 
     default_template = pkg_resources.resource_string(__name__, 'template.xml')
 
+    subject = zeit.cms.content.property.ObjectPathProperty(
+        '.head.subject', zeit.newsletter.interfaces.INewsletter['subject'])
+
     def keys(self):
         return [BODY_NAME]
 

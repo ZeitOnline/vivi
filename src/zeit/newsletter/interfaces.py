@@ -13,7 +13,8 @@ DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/newsletter'
 
 class INewsletter(zeit.cms.content.interfaces.IXMLContent,
                   zope.container.interfaces.IReadContainer):
-    pass
+
+    subject = zope.schema.TextLine(title=u'Subject')
 
 
 class IBody(zeit.edit.interfaces.IArea):

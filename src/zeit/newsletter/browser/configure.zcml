@@ -97,5 +97,37 @@
     weight="0"
     />
 
+  <!-- forms -->
+
+  <browser:viewlet
+    for="..interfaces.INewsletter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="metadata"
+    class=".form.MetadataForms"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:viewlet
+    for="..interfaces.INewsletter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MetadataForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.metadata"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="..interfaces.INewsletter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.metadata"
+    class=".form.Metadata"
+    permission="zope.View"
+    />
+
 </configure>
 
