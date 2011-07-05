@@ -36,6 +36,8 @@
     permission="zeit.AddContent"
     />
 
+  <!-- group -->
+
   <browser:viewlet
     for="..interfaces.IBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -46,6 +48,27 @@
     permission="zeit.EditContent"
     weight="90"
     />
+
+  <browser:viewlet
+    for="..interfaces.IGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.title"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="-15"
+    />
+
+  <browser:page
+    for="..interfaces.IGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.title"
+    class=".edit.GroupTitle"
+    permission="zope.View"
+    />
+
+  <!-- landing zones -->
 
   <browser:viewlet
     for="..interfaces.IGroup"
@@ -84,6 +107,8 @@
     class=".edit.TeaserLandingZone"
     permission="zeit.EditContent"
     />
+
+  <!-- teaser -->
 
   <browser:viewlet
     for="..interfaces.ITeaser"
