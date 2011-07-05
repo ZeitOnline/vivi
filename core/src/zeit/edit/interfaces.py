@@ -114,3 +114,7 @@ class IUndo(zope.interface.Interface):
     def revert(tid):
         """Revert the object to the state it had before the given transaction
         id (i.e. undo any changes made up to and including this transaction)"""
+
+
+class IFoldable(zope.interface.Interface):
+    """Marker for blocks that can be folded in the UI."""

@@ -214,7 +214,7 @@
   <!-- folding -->
 
   <browser:viewlet
-    for="zeit.edit.interfaces.IElement"
+    for="zeit.edit.interfaces.IFoldable"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
