@@ -28,7 +28,10 @@ class EditorContents(object):
 class Fold(object):
 
     def render(self):
-        return u''
+        if zeit.content.article.edit.interfaces.IParagraph.providedBy(
+            self.context):
+            return u''
+        return super(Fold, self).render()
 
 
 class SaveText(zeit.edit.browser.view.Action):

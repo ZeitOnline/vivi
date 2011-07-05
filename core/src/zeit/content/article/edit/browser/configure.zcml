@@ -84,12 +84,13 @@
   <!-- folding -->
 
   <browser:viewlet
-    for="..interfaces.IParagraph"
+    for="zeit.edit.interfaces.IElement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="fold"
     class=".edit.Fold"
+    template="edit.fold.pt"
     permission="zeit.EditContent"
     weight="-10"
     />
