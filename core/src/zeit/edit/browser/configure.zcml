@@ -23,6 +23,7 @@
       include="
       context.js
       edit.js
+      fold.js
       sortable.js
       drop.js
       library.js

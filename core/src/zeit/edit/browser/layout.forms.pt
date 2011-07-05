@@ -1,11 +1,11 @@
 <tal:block i18n:domain="zeit.cms">
   <div class="editable-area"
-       tal:define="block_id string:article-form-${view/__name__}"
+       tal:define="block_id string:edit-form-${view/__name__}"
        tal:attributes="id block_id">
     <div class="edit-bar">
       <a class="fold-link"
          title="Fold"
-         cms:cp-module="zeit.content.article.FoldBlock"
+         cms:cp-module="zeit.edit.FoldBlock"
          tal:attributes="href block_id"
          i18n:attributes="title">
         <span class="action-title"
