@@ -8,32 +8,27 @@
 
   <!-- assets -->
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.edit.browser.form.Forms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="assets"
-      class="zeit.content.article.edit.browser.form.AssetForms"
-      template="layout.forms.pt"
-      permission="zope.View"
-      weight="20"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="assets"
+    class=".form.AssetForms"
+    permission="zope.View"
+    weight="20"
+    />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.form.AssetForms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.form.assets"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="10"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.AssetForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.assets"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
@@ -45,32 +40,27 @@
 
   <!-- workflow -->
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.edit.browser.form.Forms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="workflow"
-      class="zeit.content.article.edit.browser.form.WorkflowForms"
-      template="layout.forms.pt"
-      permission="zope.View"
-      weight="50"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="workflow"
+    class=".form.WorkflowForms"
+    permission="zope.View"
+    weight="50"
+    />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.form.WorkflowForms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.form.workflow-status"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="10"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-status"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
@@ -80,18 +70,16 @@
     permission="zope.View"
     />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.form.WorkflowForms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.form.workflow-settings"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="20"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-settings"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
@@ -101,18 +89,16 @@
     permission="zope.View"
     />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.form.WorkflowForms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.form.workflow-log"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="50"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-log"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="50"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
@@ -124,32 +110,27 @@
 
   <!-- recensions -->
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.edit.browser.form.Forms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="recensions"
-      class="zeit.content.article.edit.browser.recension.RecensionForms"
-      template="layout.forms.pt"
-      permission="zope.View"
-      weight="50"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="recensions"
+    class=".recension.RecensionForms"
+    permission="zope.View"
+    weight="50"
+    />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.recension.RecensionForms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.form.recension-list"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="10"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".recension.RecensionForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.recension-list"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
@@ -177,4 +158,3 @@
     />
 
 </configure>
-

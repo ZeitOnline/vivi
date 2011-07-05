@@ -11,7 +11,7 @@ import zope.formlib.interfaces
 import zope.interface
 
 
-class AssetForms(object):
+class AssetForms(zeit.edit.browser.form.FormGroup):
     """Article asset forms."""
 
     title = _('Assets')
@@ -40,7 +40,7 @@ class Assets(zeit.edit.browser.form.InlineForm):
                 'badges')
 
 
-class WorkflowForms(object):
+class WorkflowForms(zeit.edit.browser.form.FormGroup):
     """Article workflow forms."""
 
     title = _('Workflow')

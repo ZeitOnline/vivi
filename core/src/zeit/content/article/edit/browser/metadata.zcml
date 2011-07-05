@@ -4,32 +4,27 @@
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.edit.browser.form.Forms"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="metadata"
-      class="zeit.content.article.edit.browser.metadata.Metadata"
-      template="layout.forms.pt"
-      permission="zope.View"
-      weight="10"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="metadata"
+    class=".metadata.Metadata"
+    permission="zope.View"
+    weight="10"
+    />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.metadata.Metadata"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.metadata.head"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="10"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".metadata.Metadata"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.metadata.head"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
@@ -39,18 +34,16 @@
     permission="zope.View"
     />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.metadata.Metadata"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.metadata.navigation"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="20"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".metadata.Metadata"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.metadata.navigation"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
@@ -60,18 +53,16 @@
     permission="zope.View"
     />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.metadata.Metadata"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.metadata.texts"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="30"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".metadata.Metadata"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.metadata.texts"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="30"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
@@ -81,18 +72,16 @@
     permission="zope.View"
     />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.article.interfaces.IArticle"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zeit.content.article.edit.browser.metadata.Metadata"
-      manager="zeit.edit.interfaces.IContentViewletManager"
-      name="edit.metadata.misc"
-      template="layout.form-loader.pt"
-      permission="zope.View"
-      weight="40"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".metadata.Metadata"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.metadata.misc"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="40"
+    />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"

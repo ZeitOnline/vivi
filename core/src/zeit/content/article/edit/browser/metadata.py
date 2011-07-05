@@ -10,7 +10,7 @@ import zope.formlib.form
 import zope.formlib.interfaces
 
 
-class Metadata(object):
+class Metadata(zeit.edit.browser.form.FormGroup):
     """metadata forms view."""
 
     title = _('Metadata')

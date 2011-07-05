@@ -9,7 +9,7 @@ import zope.cachedescriptors.property
 import zope.component
 
 
-class RecensionForms(object):
+class RecensionForms(zeit.edit.browser.form.FormGroup):
     """Article recension forms."""
 
     title = _('Recensions')
