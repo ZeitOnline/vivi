@@ -452,3 +452,5 @@ zeit.content.article.Editable = gocept.Class.extend({
     }
 
 });
+
+})();
