@@ -26,6 +26,7 @@ setup(
         'zeit.cms',
         'zeit.connector',
         'zope.interface',
+        'zope.cachedescriptors',
         'zope.component',
         'zope.container',
     ],
