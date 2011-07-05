@@ -1,8 +1,10 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.edit.interfaces
 import zope.container.interfaces
 import zope.interface
@@ -14,7 +16,7 @@ DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/newsletter'
 class INewsletter(zeit.cms.content.interfaces.IXMLContent,
                   zope.container.interfaces.IReadContainer):
 
-    subject = zope.schema.TextLine(title=u'Subject')
+    subject = zope.schema.TextLine(title=_('Subject'))
 
 
 class IBody(zeit.edit.interfaces.IArea):
@@ -24,7 +26,7 @@ class IBody(zeit.edit.interfaces.IArea):
 class IGroup(zeit.edit.interfaces.IArea,
              zeit.edit.interfaces.IBlock):
 
-    title = zope.schema.TextLine(title=u'Title')
+    title = zope.schema.TextLine(title=_('Title'))
 
 
 class ITeaser(zeit.edit.interfaces.IBlock):
@@ -49,3 +51,8 @@ class IBuild(zope.interface.Interface):
     def __call__(content_list):
         """Selects appropriate content objects and populates the newsletter
         with groups and teasers."""
+
+
+class INewsletterWorkflow(zeit.cms.workflow.interfaces.IPublishInfo):
+
+    sent = zope.schema.Bool(title=_('Sent'), readonly=True)
