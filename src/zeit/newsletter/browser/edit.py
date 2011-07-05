@@ -1,10 +1,14 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.edit.browser.form
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
+import zeit.newsletter.interfaces
+import zope.formlib.form
 
 
 class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
@@ -35,3 +39,13 @@ class Teaser(object):
     def metadata(self):
         return zeit.cms.content.interfaces.ICommonMetadata(
             self.context.reference, None)
+
+
+class GroupTitle(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    prefix = 'group'
+    undo_description = _('edit group title')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.newsletter.interfaces.IGroup).select('title')

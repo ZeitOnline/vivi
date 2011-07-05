@@ -24,7 +24,7 @@ class IBody(zeit.edit.interfaces.IArea):
 class IGroup(zeit.edit.interfaces.IArea,
              zeit.edit.interfaces.IBlock):
 
-    title = zope.schema.TextLine(title=u'The title of this group')
+    title = zope.schema.TextLine(title=u'Title')
 
 
 class ITeaser(zeit.edit.interfaces.IBlock):
