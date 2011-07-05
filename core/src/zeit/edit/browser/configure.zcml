@@ -97,7 +97,7 @@
     name="edit"
     template="layout.block.edit.pt"
     permission="zeit.EditContent"
-    weight="-10"
+    weight="-20"
     />
 
   <browser:viewlet
