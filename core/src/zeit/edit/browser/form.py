@@ -10,6 +10,12 @@ class Forms(object):
     """View that collects all inline forms."""
 
 
+"""Base class for groups of inline forms."""
+FormGroup = zope.viewlet.viewlet.SimpleViewletClass('layout.forms.pt')
+
+FormLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.form-loader.pt')
+
+
 class InlineForm(zope.formlib.form.SubPageEditForm,
                  zeit.edit.browser.view.UndoableMixin):
 
