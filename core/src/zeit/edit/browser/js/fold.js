@@ -1,3 +1,5 @@
+(function(){
+
 zeit.cms.declare_namespace('zeit.edit');
 
 
@@ -35,3 +37,5 @@ MochiKit.Signal.connect(
     function() {
         zeit.edit.FoldBlock.prototype.restore_folding();
     });
+
+})();
