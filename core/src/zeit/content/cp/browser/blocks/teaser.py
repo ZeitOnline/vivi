@@ -85,9 +85,6 @@ class AutoPilotEditProperties(EditProperties):
             'referenced_cp', 'autopilot', 'hide_dupes')
 
 
-
-
-
 class Display(zeit.cms.browser.view.Base):
 
     @property
