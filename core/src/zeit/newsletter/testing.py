@@ -6,17 +6,24 @@ import gocept.selenium.ztk
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+import zeit.workflow.testing
+import zope.app.appsetup.product
 import zope.component
 
 
-ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=True)
+ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
+        zeit.cms.testing.cms_product_config
+        + zeit.workflow.testing.product_config))
 
 
 class TestBrowserLayer(ZCMLLayer):
 
     @classmethod
     def setUp(cls):
-        pass
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        product_config['publish-script'] = '/bin/true'
+        product_config['retract-script'] = '/bin/true'
 
     @classmethod
     def tearDown(cls):
@@ -25,6 +32,7 @@ class TestBrowserLayer(ZCMLLayer):
     @classmethod
     def testSetUp(cls):
         ZCMLLayer.setup.setUp()
+        cls.setUp()
 
     @classmethod
     def testTearDown(cls):

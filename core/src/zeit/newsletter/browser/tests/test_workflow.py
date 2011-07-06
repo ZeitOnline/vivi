@@ -28,7 +28,7 @@ class WorkflowTest(zeit.newsletter.testing.BrowserTestCase):
             tasks.process()
             zope.security.management.endInteraction()
 
-    def test_send_button_should_perform_normal_publish(self):
+    def test_send_button_should_perform_both_normal_publish_and_send(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/newsletter/@@workflow.html')
@@ -37,13 +37,4 @@ class WorkflowTest(zeit.newsletter.testing.BrowserTestCase):
         self.run_tasks()
         b.reload()
         self.assertTrue(b.getControl('Published').selected)
-
-    def test_send_button_should_send_email_via_optivo(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository'
-               '/newsletter/@@workflow.html')
-        self.assertFalse(b.getControl('Published').selected)
-        b.getControl('Send emails and publish now').click()
-        self.run_tasks()
-        b.reload()
-        self.assertTrue(b.getControl('Sent').selected, 'nyi')
+        self.assertTrue(b.getControl('Sent').selected)

@@ -18,6 +18,9 @@ class INewsletter(zeit.cms.content.interfaces.IXMLContent,
 
     subject = zope.schema.TextLine(title=_('Subject'))
 
+    def send():
+        """Sends emails for this newsletter."""
+
 
 class IBody(zeit.edit.interfaces.IArea):
     pass

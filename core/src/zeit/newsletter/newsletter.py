@@ -38,6 +38,9 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
             return zope.container.contained.contained(area, self, key)
         raise KeyError(key)
 
+    def send(self):
+        pass # nyi
+
 
 class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
 
