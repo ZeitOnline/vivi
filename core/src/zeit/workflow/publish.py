@@ -360,7 +360,6 @@ class PublishTask(PublishRetractTask):
                 obj, _("Could not publish because conditions not satisifed."))
             return
 
-
         obj = self.recurse(self.lock, True, obj, obj)
         obj = self.recurse(self.before_publish, True, obj, obj)
         self.call_publish_script(obj)
