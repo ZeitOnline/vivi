@@ -238,7 +238,7 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
             zope.app.appsetup.product.saveConfiguration())
         setup_product_config(self.product_config)
         zope.site.hooks.setSite(self.getRootFolder())
-        zeit.cms.testing.create_interaction(u'zope.user')
+        self.principal = zeit.cms.testing.create_interaction(u'zope.user')
 
     def tearDown(self):
         zeit.cms.testing.tearDown(self)
