@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import grokcore.component as grok
+import zeit.cms.workflow.interfaces
 import zeit.newsletter.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publishinfo
@@ -22,3 +23,14 @@ class Workflow(zeit.workflow.publishinfo.NotPublishablePublishInfo,
 
     def can_publish(self):
         return True
+
+
+@grok.subscribe(
+    zeit.newsletter.interfaces.INewsletter,
+    zeit.cms.workflow.interfaces.IPublishedEvent)
+def send_email(context, event):
+    info = zeit.cms.workflow.interfaces.IPublishInfo(context)
+    if info.sent:
+        return
+    context.send()
+    info.sent = True
