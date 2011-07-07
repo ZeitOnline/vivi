@@ -75,24 +75,20 @@ class SendTest(zeit.newsletter.testing.TestCase):
         self.newsletter = self.repository['mynl']['newsletter']
         self.newsletter.subject = 'thesubject'
 
+        self.renderer = self.patchUtility(zeit.newsletter.interfaces.IRenderer)
+        self.renderer().html = mock.sentinel.html
+        self.renderer().text = mock.sentinel.text
+
+        self.optivo = self.patchUtility(zeit.newsletter.interfaces.IOptivo)
+
     def test_send_uses_renderer_and_calls_optivo(self):
-        with mock.patch('zeit.newsletter.interfaces.IRenderer') as renderer:
-            with mock.patch('zope.component.getUtility') as getUtility:
-                renderer().html = mock.sentinel.html
-                renderer().text = mock.sentinel.text
-                self.newsletter.send()
-                optivo = getUtility()
-                optivo.send.assert_called_with(
-                    'mynl', 'thesubject',
-                    mock.sentinel.html, mock.sentinel.text)
+            self.newsletter.send()
+            self.optivo.send.assert_called_with(
+                'mynl', 'thesubject',
+                mock.sentinel.html, mock.sentinel.text)
 
     def test_send_test_passes_recipient_to_optivo(self):
-        with mock.patch('zeit.newsletter.interfaces.IRenderer') as renderer:
-            with mock.patch('zope.component.getUtility') as getUtility:
-                renderer().html = mock.sentinel.html
-                renderer().text = mock.sentinel.text
-                self.newsletter.send_test('test@example.com')
-                optivo = getUtility()
-                optivo.test.assert_called_with(
-                    'mynl', 'test@example.com', 'thesubject',
-                    mock.sentinel.html, mock.sentinel.text)
+            self.newsletter.send_test('test@example.com')
+            self.optivo.test.assert_called_with(
+                'mynl', 'test@example.com', 'thesubject',
+                mock.sentinel.html, mock.sentinel.text)

@@ -47,15 +47,17 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
 
     def _send(self, to=None):
         mandant = self.__parent__.__name__
-        renderer = zeit.newsletter.interfaces.IRenderer(self)
-        # XXX must become zeit.optivo.interfaces, see #9138
+        renderer = zope.component.getUtility(
+            zeit.newsletter.interfaces.IRenderer)
+        rendered = renderer(self)
+        # XXX must become zeit.optivo.interfaces, see #9299
         optivo = zope.component.getUtility(zeit.newsletter.interfaces.IOptivo)
         if to is None:
             optivo.send(
-                mandant, self.subject, renderer.html, renderer.text)
+                mandant, self.subject, rendered.html, rendered.text)
         else:
             optivo.test(
-                mandant, to, self.subject, renderer.html, renderer.text)
+                mandant, to, self.subject, rendered.html, rendered.text)
 
 
 class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
