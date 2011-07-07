@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import lxml.etree
+import mock
 import unittest2 as unittest
 import zeit.cms.testing
 import zeit.newsletter.testing
@@ -61,3 +62,37 @@ class NewsletterInterfaceTest(unittest.TestCase):
 
     def test_keys_should_return_body(self):
         self.assertEqual(['newsletter_body'], self.get_newsletter().keys())
+
+
+class SendTest(zeit.newsletter.testing.TestCase):
+
+    def setUp(self):
+        from zeit.newsletter.newsletter import Newsletter
+        import zeit.cms.repository.folder
+        super(SendTest, self).setUp()
+        self.repository['mynl'] = zeit.cms.repository.folder.Folder()
+        self.repository['mynl']['newsletter'] = Newsletter()
+        self.newsletter = self.repository['mynl']['newsletter']
+        self.newsletter.subject = 'thesubject'
+
+    def test_send_uses_renderer_and_calls_optivo(self):
+        with mock.patch('zeit.newsletter.interfaces.IRenderer') as renderer:
+            with mock.patch('zope.component.getUtility') as getUtility:
+                renderer().html = mock.sentinel.html
+                renderer().text = mock.sentinel.text
+                self.newsletter.send()
+                optivo = getUtility()
+                optivo.send.assert_called_with(
+                    'mynl', 'thesubject',
+                    mock.sentinel.html, mock.sentinel.text)
+
+    def test_send_test_passes_recipient_to_optivo(self):
+        with mock.patch('zeit.newsletter.interfaces.IRenderer') as renderer:
+            with mock.patch('zope.component.getUtility') as getUtility:
+                renderer().html = mock.sentinel.html
+                renderer().text = mock.sentinel.text
+                self.newsletter.send_test('test@example.com')
+                optivo = getUtility()
+                optivo.test.assert_called_with(
+                    'mynl', 'test@example.com', 'thesubject',
+                    mock.sentinel.html, mock.sentinel.text)

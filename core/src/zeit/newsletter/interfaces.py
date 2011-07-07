@@ -68,3 +68,13 @@ class ITestRecipient(zope.interface.Interface):
 
     # XXX validate email?
     email = zope.schema.TextLine(title=_('Email for test'))
+
+
+class IRenderer(zope.interface.Interface):
+
+    html = zope.schema.Text(title=_('HTML part'))
+    text = zope.schema.Text(title=_('Text part'))
+
+
+class IOptivo(zope.interface.Interface):
+    """XXX Placeholder until zeit.optivo is implemented."""
