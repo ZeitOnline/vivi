@@ -9,6 +9,7 @@ import copy
 import gocept.selenium.ztk
 import inspect
 import logging
+import mock
 import pkg_resources
 import random
 import re
@@ -178,7 +179,6 @@ def tearDown(test):
 def setup_product_config(product_config={}):
     zope.app.appsetup.product._configs.update(product_config)
 
-
 optionflags = (doctest.REPORT_NDIFF +
                doctest.INTERPRET_FOOTNOTES +
                doctest.NORMALIZE_WHITESPACE +
@@ -224,9 +224,40 @@ class RepositoryHelper(object):
         self.__dict__['repository'] = value
 
 
+class ZCAHelper(object):
+
+    def patchUtility(self, interface, new=None, name=None, sm=None):
+        self._ensure_storage()
+        if sm is None:
+            sm = zope.component.getSiteManager()
+        if new is None:
+            new = mock.Mock()
+        orig = sm.queryUtility(interface)
+        if orig is not None:
+            self.utilities.append((sm, orig, interface, name))
+        if name is None:
+            sm.registerUtility(new, interface)
+        else:
+            sm.registerUtility(new, interface, name)
+        return new
+
+    def restoreUtilities(self):
+        self._ensure_storage()
+        for sm, orig, interface, name in self.utilities:
+            if name is None:
+                sm.registerUtility(orig, interface)
+            else:
+                sm.registerUtility(orig, interface, name)
+
+    def _ensure_storage(self):
+        if not hasattr(self, 'utilities'):
+            self.utilities = []
+
+
 class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
                          unittest2.TestCase,
-                         RepositoryHelper):
+                         RepositoryHelper,
+                         ZCAHelper):
 
     layer = cms_layer
     product_config = {}
@@ -240,6 +271,7 @@ class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
         self.principal = zeit.cms.testing.create_interaction(u'zope.user')
 
     def tearDown(self):
+        self.restoreUtilities()
         zeit.cms.testing.tearDown(self)
         zope.site.hooks.setSite(None)
         super(FunctionalTestCase, self).tearDown()
