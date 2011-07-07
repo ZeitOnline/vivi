@@ -72,8 +72,9 @@ class ITestRecipient(zope.interface.Interface):
 
 class IRenderer(zope.interface.Interface):
 
-    html = zope.schema.Text(title=_('HTML part'))
-    text = zope.schema.Text(title=_('Text part'))
+    def __call__(content):
+        """Returns a dict with the keys html and text containing the rendered
+        newsletter"""
 
 
 class IOptivo(zope.interface.Interface):
