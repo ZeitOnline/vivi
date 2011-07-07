@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import grokcore.component as grok
 import urllib
 import urllib2
 import urlparse
@@ -33,3 +34,12 @@ class Renderer(object):
             params = '?' + urllib.urlencode(params)
         path = urlparse.urlparse(content.uniqueId).path
         return self.host + path + params
+
+
+def renderer_from_product_config():
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.newsletter')
+    return Renderer(config['renderer-host'])
+
+grok.global_utility(
+    renderer_from_product_config, zeit.newsletter.interfaces.IRenderer)
