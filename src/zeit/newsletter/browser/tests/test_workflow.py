@@ -38,3 +38,10 @@ class WorkflowTest(zeit.newsletter.testing.BrowserTestCase):
         b.reload()
         self.assertTrue(b.getControl('Published').selected)
         self.assertTrue(b.getControl('Sent').selected)
+
+    def test_email_address_is_populated_from_principal(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/newsletter/@@workflow.html')
+        # nyi
+        self.assertEqual('foo', b.getControl('Email for test').value)

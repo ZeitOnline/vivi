@@ -37,10 +37,35 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
             zeit.newsletter.interfaces.INewsletterWorkflow,
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
-            zeit.cms.content.interfaces.ISemanticChange) +
-        zope.formlib.form.FormFields(
+            zeit.cms.content.interfaces.ISemanticChange)
+        + zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
-                'created'))
+                'created')
+        + zope.formlib.form.FormFields(
+            zeit.newsletter.interfaces.ITestRecipient)
+    )
+
+    @property
+    def adapters(self):
+        # XXX Dear formlib, it would be really nice if you'd let subclasses
+        # override self.adapters, and not set it to {} first thing in every
+        # setUpWidgets call.
+        return self._adapters
+
+    @adapters.setter
+    def adapters(self, value):
+        pass # ignored, see above
+
+    def setUpWidgets(self, ignore_request=False):
+        # determining the test recipient doesn't actually have to do anything
+        # with our context (the newsletter), so we cheat and inject a
+        # pseudo-adapter that is callable with a context, but implements
+        # ITestRecipient all by itself
+        recipient = zeit.newsletter.workflow.TestRecipient(self.request)
+        self._adapters = {
+            zeit.newsletter.interfaces.ITestRecipient: recipient,
+        }
+        super(Form, self).setUpWidgets(ignore_request)
 
     @zope.formlib.form.action(_('Save state only'),
                               name='save',
@@ -53,3 +78,8 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
     def handle_publish(self, action, data):
         return super(Form, self).handle_publish.success_handler(
             self, action, data)
+
+    @zope.formlib.form.action(_('Test email'),
+                              name='test')
+    def handle_test(self, action, data):
+        pass
