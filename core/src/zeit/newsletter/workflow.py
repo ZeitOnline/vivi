@@ -7,6 +7,7 @@ import zeit.newsletter.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publishinfo
 import zope.interface
+import zope.session.interfaces
 
 
 class Workflow(zeit.workflow.publishinfo.NotPublishablePublishInfo,
@@ -40,7 +41,7 @@ def send_email(context, event):
 class TestRecipient(object):
     """The recipient to test sending a newsletter is pre-populated with the
     current user's email address (from LDAP), but can be overriden in the
-    session (thus we need the request).
+    session.
 
     Since the workflow form has the newsletter as context which is completely
     irrelevant for us, we cheat and pretend to be an adapter (i.e. are callable
@@ -56,5 +57,17 @@ class TestRecipient(object):
         return self
 
     @property
+    def session(self):
+        return zope.session.interfaces.ISession(self.request)
+
+    @property
     def email(self):
-        return 'foo' # nyi
+        return self.session[self.__module__].get(
+            'test-recipient', self.get_email_for_principal())
+
+    def get_email_for_principal(self):
+        return 'default from LDAP not yet implemented' # XXX see #9234
+
+    @email.setter
+    def email(self, value):
+        self.session[self.__module__]['test-recipient'] = value

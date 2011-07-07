@@ -67,19 +67,22 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
         }
         super(Form, self).setUpWidgets(ignore_request)
 
-    @zope.formlib.form.action(_('Save state only'),
-                              name='save',
-                              condition=lambda *args: False)
-    def handle_save_state(self, action, data):
-        pass # we dont't have any state to save
-
+    # override from baseclass to change the title
     @zope.formlib.form.action(_('Send emails and publish now'),
                               name='publish')
     def handle_publish(self, action, data):
         return super(Form, self).handle_publish.success_handler(
             self, action, data)
 
+    # once you override one action, you don't get any action from your base
+    # class anymore
+    @zope.formlib.form.action(_('Save state only'),
+                              name='save')
+    def handle_save_state(self, action, data):
+        return super(Form, self).handle_save_state.success_handler(
+            self, action, data)
+
     @zope.formlib.form.action(_('Test email'),
                               name='test')
     def handle_test(self, action, data):
-        pass
+        self.applyChanges(data)
