@@ -3,6 +3,7 @@
 
 from zeit.newsletter.newsletter import Newsletter
 import lovely.remotetask
+import mock
 import transaction
 import zeit.cms.testing
 import zeit.newsletter.testing
@@ -56,3 +57,14 @@ class WorkflowTest(zeit.newsletter.testing.BrowserTestCase):
         b.reload()
         self.assertEqual(
             'other@example.com', b.getControl('Email for test').value)
+
+    def test_email_address_is_passed_to_send_test(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/newsletter/@@workflow.html')
+        b.getControl('Email for test').value = 'other@example.com'
+        with mock.patch(
+                'zeit.newsletter.newsletter.Newsletter.send_test') as send:
+            send.__Security_checker__ = mock.Mock()
+            b.getControl('Test email').click()
+            send.assert_called_with('other@example.com')

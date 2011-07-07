@@ -61,7 +61,7 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
         # with our context (the newsletter), so we cheat and inject a
         # pseudo-adapter that is callable with a context, but implements
         # ITestRecipient all by itself
-        recipient = zeit.newsletter.workflow.TestRecipient(self.request)
+        recipient = zeit.newsletter.interfaces.ITestRecipient(self.request)
         self._adapters = {
             zeit.newsletter.interfaces.ITestRecipient: recipient,
         }
@@ -86,3 +86,5 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
                               name='test')
     def handle_test(self, action, data):
         self.applyChanges(data)
+        recipient = zeit.newsletter.interfaces.ITestRecipient(self.request)
+        self.context.send_test(recipient.email)
