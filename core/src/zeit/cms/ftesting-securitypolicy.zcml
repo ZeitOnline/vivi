@@ -51,6 +51,7 @@
   <principal
     id="zope.user"
     title="User"
+    description="test@example.com"
     login="user"
     password="userpw" />
 
