@@ -46,9 +46,7 @@ class WorkflowTest(zeit.newsletter.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/newsletter/@@workflow.html')
-        # XXX
-        self.assertIn(
-            'not yet implemented', b.getControl('Email for test').value)
+        self.assertIn('test@example.com', b.getControl('Email for test').value)
 
     def test_email_address_can_be_overridden_in_session(self):
         b = self.browser
