@@ -10,6 +10,7 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.type
 import zeit.edit.container
 import zeit.newsletter.interfaces
+import zope.component
 import zope.interface
 
 
@@ -39,10 +40,22 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         raise KeyError(key)
 
     def send(self):
-        pass # nyi, see #9138
+        self._send()
 
     def send_test(self, to):
-        pass # nyi, see #9138
+        self._send(to)
+
+    def _send(self, to=None):
+        mandant = self.__parent__.__name__
+        renderer = zeit.newsletter.interfaces.IRenderer(self)
+        # XXX must become zeit.optivo.interfaces, see #9138
+        optivo = zope.component.getUtility(zeit.newsletter.interfaces.IOptivo)
+        if to is None:
+            optivo.send(
+                mandant, self.subject, renderer.html, renderer.text)
+        else:
+            optivo.test(
+                mandant, to, self.subject, renderer.html, renderer.text)
 
 
 class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):

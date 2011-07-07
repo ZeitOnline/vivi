@@ -35,7 +35,9 @@ class WorkflowTest(zeit.newsletter.testing.BrowserTestCase):
                '/newsletter/@@workflow.html')
         self.assertFalse(b.getControl('Published').selected)
         b.getControl('Send emails and publish now').click()
-        self.run_tasks()
+        with mock.patch('zeit.newsletter.newsletter.Newsletter.send') as send:
+            self.run_tasks()
+            self.assertTrue(send.called)
         b.reload()
         self.assertTrue(b.getControl('Published').selected)
         self.assertTrue(b.getControl('Sent').selected)
