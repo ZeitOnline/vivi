@@ -54,10 +54,10 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         optivo = zope.component.getUtility(zeit.newsletter.interfaces.IOptivo)
         if to is None:
             optivo.send(
-                mandant, self.subject, rendered.html, rendered.text)
+                mandant, self.subject, rendered['html'], rendered['text'])
         else:
             optivo.test(
-                mandant, to, self.subject, rendered.html, rendered.text)
+                mandant, to, self.subject, rendered['html'], rendered['text'])
 
 
 class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):

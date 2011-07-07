@@ -76,8 +76,8 @@ class SendTest(zeit.newsletter.testing.TestCase):
         self.newsletter.subject = 'thesubject'
 
         self.renderer = self.patchUtility(zeit.newsletter.interfaces.IRenderer)
-        self.renderer().html = mock.sentinel.html
-        self.renderer().text = mock.sentinel.text
+        self.renderer.return_value = dict(
+            html=mock.sentinel.html, text=mock.sentinel.text)
 
         self.optivo = self.patchUtility(zeit.newsletter.interfaces.IOptivo)
 
