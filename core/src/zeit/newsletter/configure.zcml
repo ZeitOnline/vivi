@@ -56,8 +56,6 @@
   </class>
 
   <class class=".category.NewsletterCategory">
-    <!-- <implements -->
-    <!--   interface="zope.annotation.interfaces.IAttributeAnnotatable" /> -->
     <require
       interface=".interfaces.INewsletterCategory"
       permission="zope.View"
