@@ -59,3 +59,9 @@ class IBuild(zope.interface.Interface):
 class INewsletterWorkflow(zeit.cms.workflow.interfaces.IPublishInfo):
 
     sent = zope.schema.Bool(title=_('Sent'), readonly=True)
+
+
+class ITestRecipient(zope.interface.Interface):
+
+    # XXX validate email?
+    email = zope.schema.TextLine(title=_('Email for test'))
