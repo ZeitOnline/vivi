@@ -11,9 +11,16 @@ import zope.app.appsetup.product
 import zope.component
 
 
+product_config = """\
+<product-config zeit.newsletter>
+    renderer-host file:///dev/null
+</product-config>
+"""
+
 ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
         zeit.cms.testing.cms_product_config
-        + zeit.workflow.testing.product_config))
+        + zeit.workflow.testing.product_config
+        + product_config))
 
 
 class TestBrowserLayer(ZCMLLayer):
