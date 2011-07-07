@@ -38,17 +38,19 @@ def send_email(context, event):
     info.sent = True
 
 
-class TestRecipient(object):
+class TestRecipient(grok.Adapter):
     """The recipient to test sending a newsletter is pre-populated with the
     current user's email address (from LDAP), but can be overriden in the
     session.
 
-    Since the workflow form has the newsletter as context which is completely
-    irrelevant for us, we cheat and pretend to be an adapter (i.e. are callable
+    We need the request for all these things, so we adapt it. But since the
+    workflow form has the newsletter as context which is completely irrelevant
+    for us, we cheat and pretend to be an adapter ourselves (i.e. are callable
     with a context), but in fact we ignore it.
     """
 
-    zope.interface.implements(zeit.newsletter.interfaces.ITestRecipient)
+    grok.context(zeit.cms.browser.interfaces.ICMSLayer)
+    grok.implements(zeit.newsletter.interfaces.ITestRecipient)
 
     def __init__(self, request):
         self.request = request

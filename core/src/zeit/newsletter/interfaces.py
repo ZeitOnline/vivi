@@ -21,6 +21,9 @@ class INewsletter(zeit.cms.content.interfaces.IXMLContent,
     def send():
         """Sends emails for this newsletter."""
 
+    def send_test(to):
+        """Sends test email to the given address."""
+
 
 class IBody(zeit.edit.interfaces.IArea):
     pass

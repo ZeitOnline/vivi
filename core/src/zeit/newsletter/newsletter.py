@@ -39,7 +39,10 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         raise KeyError(key)
 
     def send(self):
-        pass # nyi
+        pass # nyi, see #9138
+
+    def send_test(self, to):
+        pass # nyi, see #9138
 
 
 class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
