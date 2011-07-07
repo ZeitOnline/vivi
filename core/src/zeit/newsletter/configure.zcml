@@ -66,4 +66,28 @@
       />
   </class>
 
+  <class class=".render.Renderer">
+    <require
+      interface=".interfaces.IRenderer"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IRenderer"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <!-- XXX Placeholder until zeit.optivo is implemented -->
+
+  <class class=".workflow.DummyOptivo">
+    <require
+      interface=".interfaces.IOptivo"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IOptivo"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>

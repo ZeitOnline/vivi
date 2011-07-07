@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import grokcore.component as grok
+import logging
 import zeit.cms.workflow.interfaces
 import zeit.newsletter.interfaces
 import zeit.workflow.interfaces
@@ -73,3 +74,20 @@ class TestRecipient(grok.Adapter):
     @email.setter
     def email(self, value):
         self.session[self.__module__]['test-recipient'] = value
+
+
+class DummyOptivo(grok.GlobalUtility):
+    """XXX Placeholder until zeit.optivo is implemented."""
+
+    grok.implements(zeit.newsletter.interfaces.IOptivo)
+
+    def send(self, mandant, subject, html, text):
+        log.info('Optivo.send(%s)' % (dict(
+                    mandant=mandant, subject=subject, html=html, text=text)))
+
+    def test(self, mandant, to, subject, html, text):
+        log.info('Optivo.test(%s)' % (dict(
+                    mandant=mandant, to=to,
+                    subject=subject, html=html, text=text)))
+
+log = logging.getLogger(__name__)
