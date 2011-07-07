@@ -69,7 +69,7 @@ class TestRecipient(grok.Adapter):
             'test-recipient', self.get_email_for_principal())
 
     def get_email_for_principal(self):
-        return 'default from LDAP not yet implemented' # XXX see #9234
+        return self.request.principal.description
 
     @email.setter
     def email(self, value):
