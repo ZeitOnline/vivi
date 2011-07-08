@@ -788,4 +788,8 @@ li.busy {
   float: right;
 }
 
-
+#pupil-left, #pupil-right {
+    width: 3px;
+    height: 3px;
+    background-image: url("layout/pupil.png");
+}
