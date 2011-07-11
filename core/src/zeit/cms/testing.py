@@ -355,7 +355,7 @@ def set_site(site=None):
 
 def create_interaction(name=u'zope.user'):
     principal = zope.security.testing.Principal(
-        name, groups=['zope.Authenticated'], description='test@example.com')
+        name, groups=['zope.Authenticated'], description=u'test@example.com')
     request = zope.publisher.browser.TestRequest()
     request.setPrincipal(principal)
     zope.security.management.newInteraction(request)
