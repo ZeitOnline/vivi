@@ -414,11 +414,15 @@ div div.landing-zone:first-child {
   opacity: 1;
 }
 
+#cp-content {
+  background: none repeat scroll 0 0 #F1F4F9;
+}
+
 /* forms */
 
 .inline-form .widget-outer {
-  clear: both;
-  margin-bottom: 0.5em;
+  float: left;
+  margin: 0 20px 10px 0;
   position: relative;
 }
 
@@ -427,8 +431,12 @@ div div.landing-zone:first-child {
   display: block;
   float: left;
   overflow: hidden;
-  padding-top: 0.5em;
-  width: 12em;
+}
+
+.inline-form  label {
+  font-weight: normal;
+  margin-right: 5px;
+  padding-left: 3px;
 }
 
 .inline-form .label div.error {
@@ -444,8 +452,8 @@ div div.landing-zone:first-child {
 }
 
 .inline-form .widget {
-  margin-left: 12em;
-  padding: 0;
+  clear: left;
+  padding: 2px 0 0;
 }
 
 .inline-form div.widget > input,
@@ -471,6 +479,69 @@ div div.landing-zone:first-child {
   outline: 1px solid yellow;
 }
 
+.widget-outer select {
+  width: 180px;
+}
+
+.widget-outer button {
+  width: 180px;
+}
+
 .inline-form .form-controls {
   display: none;
 }
+
+.widget-outer span.required {
+  background-color: #a00;
+  border-radius: 5px 5px 5px 5px;
+  color: #fff;
+  font-size: 8px;
+  padding-left: 1em;
+  padding-right: 1em;
+  text-transform: uppercase;
+}
+
+
+.widget-outer span.charlimit {
+  color: #777;
+  font-weight: 700;
+  padding: 2px
+  padding: 2px;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.article-editor-inner .folded > .block-inner > * {
+  display: none;
+
+}
+
+.article-editor-inner .folded > .block-inner > .edit-bar {
+  border-bottom: none;
+  display: block;
+  margin-bottom: 0;
+}
+
+.editable-area .widget > textarea {
+  font-family: Georgia,serif;
+  font-size: 14px;
+  height: 4em;
+  line-height: 1.4;
+  padding: 5px;
+}
+
+#cp-content .editable-area {
+    margin: 1em 0 0;
+}
+
+/* Fieldsets */
+
+fieldset {
+    background: none 0;
+    border: medium none;
+    overflow: hidden;
+    margin: 10px;
+    padding: 0;
+}
+
