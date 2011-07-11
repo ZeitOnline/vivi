@@ -18,22 +18,5 @@
     permission="zope.Public"
     />
 
-  <browser:viewlet
-    name="report_status"
-    for="*"
-    manager="zeit.cms.browser.interfaces.ISecondaryGlobalViews"
-    class=".browser.MenuItem"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.View"
-    sort="100"
-    />
-
-  <browser:page
-    for="zope.location.interfaces.ISite"
-    name="zeit.vgwort.report_status"
-    class=".browser.ReportStatus"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    permission="zope.View"
-    />
 </configure>
 
