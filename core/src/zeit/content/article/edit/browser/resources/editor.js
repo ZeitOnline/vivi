@@ -2,24 +2,6 @@
 
 zeit.cms.declare_namespace('zeit.content.article');
 
-var wire_forms = function() {
-    forEach($$('#article-editor-forms .category'), function(container) {
-        if (MochiKit.DOM.hasElementClass(container, 'wired')) {
-            return;
-        }
-        //XXX need to make it context aware
-        var url = container.getAttribute('action');
-        var form = new zeit.cms.SubPageForm(
-            url, container, {save_on_change: true});
-    });
-};
-
-
-MochiKit.Signal.connect(window, 'script-loading-finished', function() {
-    wire_forms();
-});
-
-
 // Initialize module library
 MochiKit.Signal.connect(
     window, 'cp-editor-loaded', function() {
@@ -451,42 +433,6 @@ zeit.content.article.Editable = gocept.Class.extend({
     }
 
 });
-
-
-zeit.content.article.FoldBlock = gocept.Class.extend({
-
-    construct: function(context) {
-        var self = this;
-        var id = context.getAttribute('href');
-        MochiKit.DOM.toggleElementClass('folded', id);
-        sessionStorage['folding.' + id] =
-            MochiKit.DOM.hasElementClass(id, 'folded')?'yes':'';
-    },
-
-    // @staticmethod
-    restore_folding: function() {
-        forEach(
-            $$('a[cms\:cp-module="zeit.content.article.FoldBlock"]'),
-            function(action) {
-                var id = action.getAttribute('href');
-                if (sessionStorage['folding.' + id]) {
-                    log("Restore folding=on for", id);
-                    MochiKit.DOM.addElementClass(id, 'folded');
-                } else {
-                    log("Restore folding=off for", id);
-                    MochiKit.DOM.removeElementClass(id, 'folded');
-                }
-        });
-    }
-
-});
-
-
-MochiKit.Signal.connect(
-    zeit.edit.editor, 'after-reload',
-    function() {
-        zeit.content.article.FoldBlock.prototype.restore_folding();
-    });
 
 })();
 

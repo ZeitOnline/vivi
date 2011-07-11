@@ -81,7 +81,8 @@ class TestAdding(unittest2.TestCase,
         self.browser.open('Somalia/@@checkout')
         article = self.get_article()
         IAutomaticallyRenameable(article).renamable = True
-        self.browser.open('@@edit.metadata.navigation?show_form=yes')
+        self.browser.handleErrors = False
+        self.browser.open('@@edit.form.metadata-c?show_form=yes')
         ctrl = self.browser.getControl('New file name')
         self.assertEqual('', ctrl.value)
 
@@ -89,7 +90,7 @@ class TestAdding(unittest2.TestCase,
             self):
         self.browser.open('Somalia/@@checkout')
         article = self.get_article()
-        self.browser.open('@@edit.metadata.navigation?show_form=yes')
+        self.browser.open('@@edit.form.metadata-c?show_form=yes')
         with self.assertRaises(LookupError):
             self.browser.getControl('New file name')
         self.assert_ellipsis('...<div class="widget">Somalia</div>...')

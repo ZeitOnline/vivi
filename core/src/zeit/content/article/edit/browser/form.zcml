@@ -4,25 +4,15 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="article-forms"
-    class=".form.ArticleForms"
-    template="edit.forms-provider.pt"
-    permission="zope.View"
-    />
-
   <!-- metadata -->
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="metadata"
     class=".form.MetadataForms"
-    template="edit.forms.pt"
     permission="zope.View"
     weight="1"
     />
@@ -33,7 +23,7 @@
     view=".form.MetadataForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.metadata-a"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
     />
@@ -52,7 +42,7 @@
     view=".form.MetadataForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.metadata-b"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="20"
     />
@@ -71,7 +61,7 @@
     view=".form.MetadataForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.metadata-c"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="30"
     />
@@ -89,11 +79,10 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="teaser-title"
     class=".form.TeaserForms"
-    template="edit.forms.pt"
     permission="zope.View"
     weight="20"
     />
@@ -104,7 +93,7 @@
     view=".form.TeaserForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.teaser-title"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
     />
@@ -123,7 +112,7 @@
     view=".form.TeaserForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.teaser-text"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
     />
@@ -141,11 +130,10 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="article-content"
     class=".form.ArticleContentForms"
-    template="edit.forms.pt"
     permission="zope.View"
     weight="30"
     />
@@ -156,7 +144,7 @@
     view=".form.ArticleContentForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.article-content-head"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
     />
@@ -194,11 +182,10 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="assets"
     class=".form.AssetForms"
-    template="edit.forms.pt"
     permission="zope.View"
     weight="40"
     />
@@ -209,7 +196,7 @@
     view=".form.AssetForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.assets"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="20"
     />
@@ -227,11 +214,10 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="workflow"
     class=".form.WorkflowForms"
-    template="edit.forms.pt"
     permission="zope.View"
     weight="50"
     />
@@ -242,7 +228,7 @@
     view=".form.WorkflowForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.workflow-status"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
     />
@@ -261,7 +247,7 @@
     view=".form.WorkflowForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.workflow-settings"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="20"
     />
@@ -280,7 +266,7 @@
     view=".form.WorkflowForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.workflow-log"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="50"
     />
@@ -298,11 +284,10 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ArticleForms"
+    view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="recensions"
     class=".recension.RecensionForms"
-    template="edit.forms.pt"
     permission="zope.View"
     weight="50"
     />
@@ -313,7 +298,7 @@
     view=".recension.RecensionForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.recension-list"
-    template="edit.metadata.form-loader.pt"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
     />
@@ -344,4 +329,3 @@
     />
 
 </configure>
-

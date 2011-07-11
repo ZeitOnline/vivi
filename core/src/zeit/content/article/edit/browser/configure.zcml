@@ -84,13 +84,12 @@
   <!-- folding -->
 
   <browser:viewlet
-    for="zeit.edit.interfaces.IElement"
+    for="..interfaces.IParagraph"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="fold"
     class=".edit.Fold"
-    template="edit.fold.pt"
     permission="zeit.EditContent"
     weight="-10"
     />
@@ -362,5 +361,33 @@
     weight="0"
     />
 
+
+  <class class="..reference.Reference">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..image.Image">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..audio.Audio">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..video.Video">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..rawxml.RawXML">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..citation.Citation">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..block.Relateds">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
 
 </configure>

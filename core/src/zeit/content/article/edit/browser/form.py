@@ -12,34 +12,7 @@ import zope.formlib.interfaces
 import zope.interface
 
 
-class ArticleForms(object):
-    """View which includes all article forms."""
-
-
-class InlineForm(zope.formlib.form.SubPageEditForm,
-                 zeit.edit.browser.view.UndoableMixin):
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile('edit.inlineform.pt')
-
-    def __call__(self):
-        self.mark_transaction_undoable()
-        return super(InlineForm, self).__call__()
-
-    @property
-    def widget_data(self):
-        result = []
-        for widget in self.widgets:
-            css_class = ['widget-outer']
-            if widget.error():
-                css_class.append('error')
-            result.append(dict(
-                css_class=' '.join(css_class),
-                widget=widget,
-            ))
-        return result
-
-
-class ArticleContentForms(object):
+class ArticleContentForms(zeit.edit.browser.form.FormGroup):
     """Article content forms."""
 
     title = _('Article')
@@ -50,7 +23,7 @@ class ArticleContentForms(object):
             self.context)
 
 
-class ArticleContentHead(InlineForm):
+class ArticleContentHead(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'article-content-head'
@@ -62,22 +35,20 @@ class ArticleContentHead(InlineForm):
             'supertitle', 'title', 'subtitle')
 
 
-class ArticleContentBody(InlineForm):
+class ArticleContentBody(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'article-content-body'
     undo_description = _('edit article content body')
 
 
-
-
-class AssetForms(object):
+class AssetForms(zeit.edit.browser.form.FormGroup):
     """Article asset forms."""
 
     title = _('Assets')
 
 
-class Assets(InlineForm):
+class Assets(zeit.edit.browser.form.InlineForm):
 
     legend = _('Assets')
     prefix = 'assets'
@@ -100,14 +71,14 @@ class Assets(InlineForm):
                 'badges')
 
 
-class MetadataForms(object):
+class MetadataForms(zeit.edit.browser.form.FormGroup):
     """Metadata forms view."""
 
     title = _('Metadata')
 
 
 # This will be renamed properly as soon as the fields are finally decided.
-class MetadataA(InlineForm):
+class MetadataA(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-a'
@@ -128,7 +99,7 @@ class MetadataA(InlineForm):
 
 
 # This will be renamed properly as soon as the fields are finally decided.
-class MetadataB(InlineForm):
+class MetadataB(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-b'
@@ -149,15 +120,27 @@ class MetadataB(InlineForm):
 
 
 # This will be renamed properly as soon as the fields are finally decided.
-class MetadataC(InlineForm):
+class MetadataC(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'metadata-c'
     undo_description = _('edit metadata')
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'authors')
+
+    @property
+    def form_fields(self):
+        form_fields = zope.formlib.form.FormFields(
+            zeit.cms.interfaces.ICMSContent,
+            zeit.cms.content.interfaces.ICommonMetadata,
+            zeit.cms.repository.interfaces.IAutomaticallyRenameable,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+                'author_references', 'rename_to', '__name__', 'year', 'volume')
+        if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            self.context).renamable:
+            form_fields = form_fields.omit('__name__')
+        else:
+            form_fields = form_fields.omit('rename_to')
+        return form_fields
+
 
     def render(self):
         result = super(MetadataC, self).render()
@@ -169,13 +152,13 @@ class MetadataC(InlineForm):
         return result
 
 
-class TeaserForms(object):
+class TeaserForms(zeit.edit.browser.form.FormGroup):
     """Teaser workflow forms."""
 
     title = _('Teaser')
 
 
-class TeaserTitle(InlineForm):
+class TeaserTitle(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'teaser-title'
@@ -212,7 +195,7 @@ class LimitedInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
         return ''.join(result)
 
 
-class TeaserText(InlineForm):
+class TeaserText(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'teaser-text'
@@ -234,13 +217,13 @@ class TeaserText(InlineForm):
         return result
 
 
-class WorkflowForms(object):
+class WorkflowForms(zeit.edit.browser.form.FormGroup):
     """Article workflow forms."""
 
     title = _('Workflow')
 
 
-class WorkflowStatus(InlineForm):
+class WorkflowStatus(zeit.edit.browser.form.InlineForm):
 
     legend = _('Status')
     prefix = 'workflow-status'
@@ -260,7 +243,7 @@ class WorkflowStatus(InlineForm):
                 'edited', 'corrected', 'refined', 'images_added')
 
 
-class WorkflowSettings(InlineForm):
+class WorkflowSettings(zeit.edit.browser.form.InlineForm):
 
     legend = _('Settings')
     prefix = 'workflow-settings'
@@ -274,7 +257,7 @@ class WorkflowSettings(InlineForm):
                 'release_period', 'urgent', 'export_cds'))
 
 
-class WorkflowLog(InlineForm):
+class WorkflowLog(zeit.edit.browser.form.InlineForm):
 
     legend = _('Log')
     prefix = 'workflow-log'

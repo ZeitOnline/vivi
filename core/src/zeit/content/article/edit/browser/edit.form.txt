@@ -8,61 +8,40 @@ There are form stubs at the top of the editor:
 >>> browser.open('@@contents')
 >>> print browser.contents
 <...
-  <form class="inline-form wired">
-    <fieldset class="category"
+  <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-a">
 ...
-    <fieldset class="category"
+    <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-b">
 ...
-    <fieldset class="category"
+    <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-c">
-    </fieldset>
 </form>
 ...
-  <form class="inline-form wired">
-    <fieldset class="category"
+  <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.teaser-title">
-    </fieldset>
-    <fieldset class="category"
+...
+    <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.teaser-text">
-    </fieldset>
 </form>
 ...
-  <form class="inline-form wired">
-    <fieldset class="category"
+  <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.article-content-head">
-    </fieldset>
-    <div id="article-editor-text">...
-    </div>
     ...
 </form>
 ...
-  <form class="inline-form wired">
-    <fieldset class="category"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.asset-badges">
-    </fieldset>
-    <fieldset class="category"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.assets">
-    </fieldset>
-</form>
-...
-  <form class="inline-form wired">
-    <fieldset class="category"
+  <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-status">
 ...
-    <fieldset class="category"
+  <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-settings">
 ...
-    <fieldset class="category"
+  <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-log">
-    </fieldset>
 </form>
 ...
-  <form class="inline-form wired">
-    <fieldset class="category"
+  <form class="inline-form"
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.recension-list">
-    </fieldset>
 </form>
 ...
 
@@ -71,10 +50,11 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-a')
 >>> print browser.contents
+<fieldset>
+<legend></legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.ressort">Ressort</label>
-    <span class="required">required</span>
   </div>
   <div class="widget">...
 </div>
@@ -95,10 +75,11 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-b')
 >>> print browser.contents
+<fieldset>
+<legend></legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-b.product">Product id</label>
-    <span class="required">required</span>
   </div>
   <div class="widget">...
 </div>
@@ -121,6 +102,8 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-c')
 >>> print browser.contents
+<fieldset>
+<legend></legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="overwritten if any non-freetext authors are set"
@@ -133,6 +116,7 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.assets')
 >>> print browser.contents
+<fieldset>
 <legend>Assets</legend>
 <div class="widget-outer">
   <div class="label">
@@ -152,6 +136,7 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.workflow-status')
 >>> print browser.contents
+<fieldset>
 <legend>Status</legend>
 <div class="widget-outer">
   <div class="label">
@@ -165,6 +150,7 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.workflow-settings')
 >>> print browser.contents
+<fieldset>
 <legend>Settings</legend>
 <div class="widget-outer">
   <div class="label">
@@ -178,6 +164,7 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.workflow-log')
 >>> print browser.contents
+<fieldset>
 <legend>Log</legend>
 <div class="widget-outer">
   <div class="label">

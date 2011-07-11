@@ -1,111 +1,6 @@
 .block .block-inner > * {
 }
 
-/* override so we don't see a flicker */
-.inline-form.busy {
-  opacity: 1;
-}
-
-#cp-content {
-  background: none repeat scroll 0 0 #F1F4F9;
-}
-
-
-/* forms */
-
-.inline-form .widget-outer {
-  float: left;
-  margin: 0 20px 10px 0;
-  position: relative;
-}
-
-.inline-form .label {
-  clear: both;
-  display: block;
-  float: left;
-  overflow: hidden;
-}
-
-.inline-form  label {
-  font-weight: normal;
-  margin-right: 5px;
-  padding-left: 3px;
-}
-
-.inline-form .label div.error {
-  display: inline;
-}
-
-.inline-form .label div.error:before {
-  content: "(";
-}
-
-.inline-form .label div.error:after {
-  content: ")";
-}
-
-.inline-form .widget {
-  clear: left;
-  padding: 2px 0 0;
-}
-
-.inline-form div.widget > input,
-.inline-form div.widget > textarea,
-.inline-form div.widget > div > div > select {
-  margin-top: 0;
-}
-
-.inline-form .error div.widget > input,
-.inline-form .error div.widget > textarea,
-.inline-form .error div.widget > div > div > select {
-  background-color: red;
-}
-
-.inline-form .dirty div.widget > input,
-.inline-form .dirty div.widget > textarea,
-.inline-form .dirty div.widget > div > div > select,
-.inline-form .dirty div.widget > .objectsequencewidget {
-  background-color: yellow;
-}
-
-.inline-form .dirty div.widget > input[type=checkbox] {
-  outline: 1px solid yellow;
-}
-
-.widget-outer select {
-  width: 180px;
-}
-
-.widget-outer button {
-  width: 180px;
-}
-
-.inline-form .form-controls {
-  display: none;
-}
-
-.widget-outer span.required {
-  background-color: #a00;
-  border-radius: 5px 5px 5px 5px;
-  color: #fff;
-  font-size: 8px;
-  padding-left: 1em;
-  padding-right: 1em;
-  text-transform: uppercase;
-}
-
-
-.widget-outer span.charlimit {
-  color: #777;
-  font-weight: 700;
-  padding: 2px
-  padding: 2px;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
-
-
 /* editor blocks */
 
 #editable-body {
@@ -173,14 +68,6 @@
   background-image: url('delete.png');
 }
 
-.article-editor-inner .edit-bar > .fold-link {
-  background-image: url('arrow_down.png');
-}
-
-.article-editor-inner .folded .edit-bar > .fold-link {
-  background-image: url('arrow_right.png');
-}
-
 .article-editor-inner .dragger .center {
   height: 9px;
 }
@@ -195,35 +82,12 @@
 }
 
 
-.article-editor-inner .folded > .block-inner > * {
-  display: none;
-
-}
-
-.article-editor-inner .folded > .block-inner > .edit-bar {
-  border-bottom: none;
-  display: block;
-  margin-bottom: 0;
-}
-
 .article-text {
   margin: 10px;
 }
 
 .editable-area > .landing-zone {
   height: 4px;
-}
-
-.editable-area .widget > textarea {
-  font-family: Georgia,serif;
-  font-size: 14px;
-  height: 4em;
-  line-height: 1.4;
-  padding: 5px;
-}
-
-#cp-content .editable-area {
-    margin: 1em 0 0;
 }
 
 /* Editable blocks */
@@ -330,16 +194,6 @@
 
 .editing .editable *:empty:before {
   content: "";
-}
-
-/* Fieldsets */
-
-fieldset {
-    background: none 0;
-    border: medium none;
-    overflow: hidden;
-    margin: 10px;
-    padding: 0;
 }
 
 /* Video block layouts */

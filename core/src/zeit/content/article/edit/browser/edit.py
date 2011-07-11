@@ -28,10 +28,7 @@ class EditorContents(object):
 class Fold(object):
 
     def render(self):
-        if zeit.content.article.edit.interfaces.IParagraph.providedBy(
-            self.context):
-            return u''
-        return super(Fold, self).render()
+        return u''
 
 
 class SaveText(zeit.edit.browser.view.Action):
@@ -221,7 +218,8 @@ class ViewRelateds(object):
 class EditDivision(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IDivision)
+        zeit.content.article.edit.interfaces.IDivision).select(
+            'teaser')
     undo_description = _('edit page break')
 
 

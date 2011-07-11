@@ -13,52 +13,52 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
     def setUp(self):
         super(HeadTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        self.selenium.waitForElementPresent('id=head.year')
+        self.selenium.waitForElementPresent('id=metadata-c.year')
 
     def test_form_should_highlight_changed_data(self):
         s = self.selenium
-        s.assertValue('id=head.year', '2007')
+        s.assertValue('id=metadata-c.year', '2007')
         s.assertElementNotPresent('css=.widget-outer.dirty')
-        s.type('id=head.year', '2010')
-        s.click('id=head.volume')
+        s.type('id=metadata-c.year', '2010')
+        s.click('id=metadata-c.volume')
         s.waitForElementPresent('css=.widget-outer.dirty')
 
     def test_form_should_save_entered_data_on_blur(self):
         s = self.selenium
-        s.assertValue('id=head.year', '2007')
-        s.type('id=head.year', '2010')
-        s.fireEvent('id=head.year', 'blur')
+        s.assertValue('id=metadata-c.year', '2007')
+        s.type('id=metadata-c.year', '2010')
+        s.fireEvent('id=metadata-c.year', 'blur')
         s.waitForElementNotPresent('css=.widget-outer.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
-        s.waitForElementPresent('id=head.year')
-        s.assertValue('id=head.year', '2010')
+        s.waitForElementPresent('id=metadata-c.year')
+        s.assertValue('id=metadata-c.year', '2010')
 
     def test_change_in_ressort_should_update_subressort_list(self):
         s = self.selenium
-        s.assertSelectedLabel('id=head.ressort', 'International')
+        s.assertSelectedLabel('id=metadata-a.ressort', 'International')
         s.pause(100)
         self.assertEqual(
             [u'(no value)', u'Meinung', u'Nahost', u'US-Wahl'],
-            s.getSelectOptions('id=head.sub_ressort'))
-        s.select('id=head.ressort', 'Deutschland')
+            s.getSelectOptions('id=metadata-a.sub_ressort'))
+        s.select('id=metadata-a.ressort', 'Deutschland')
         s.pause(100)
         self.assertEqual(
             [u'(no value)', u'Datenschutz', u'Integration',
              u'Joschka Fisher', u'Meinung'],
-            s.getSelectOptions('id=head.sub_ressort'))
-        s.click('head.actions.apply')
+            s.getSelectOptions('id=metadata-a.sub_ressort'))
+        s.click('metadata-a.actions.apply')
         s.pause(250)
         self.assertEqual(
             [u'(no value)', u'Datenschutz', u'Integration',
              u'Joschka Fisher', u'Meinung'],
-            s.getSelectOptions('id=head.sub_ressort'))
+            s.getSelectOptions('id=metadata-a.sub_ressort'))
 
     def test_invalid_input_should_display_error_message(self):
         s = self.selenium
-        s.assertValue('id=head.year', '2007')
-        s.type('id=head.year', 'ASDF')
-        s.click('head.actions.apply')
+        s.assertValue('id=metadata-c.year', '2007')
+        s.type('id=metadata-c.year', 'ASDF')
+        s.click('metadata-c.actions.apply')
         s.waitForElementPresent('css=.inline-form div.error')
 
     def test_relateds_should_be_addable(self):
@@ -106,30 +106,30 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_metadata_should_be_foldable_and_unfoldable(self):
         s = self.selenium
-        s.assertElementNotPresent('css=#article-form-metadata.folded')
-        s.click('css=#article-form-metadata .edit-bar .fold-link')
-        s.waitForElementPresent('css=#article-form-metadata.folded')
-        s.click('css=#article-form-metadata .edit-bar .fold-link')
-        s.waitForElementNotPresent('css=#article-form-metadata.folded')
+        s.assertElementNotPresent('css=#edit-form-metadata.folded')
+        s.click('css=#edit-form-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#edit-form-metadata.folded')
+        s.click('css=#edit-form-metadata .edit-bar .fold-link')
+        s.waitForElementNotPresent('css=#edit-form-metadata.folded')
 
     def test_fold_should_survive_page_load(self):
         s = self.selenium
-        s.assertElementNotPresent('css=#article-form-metadata.folded')
-        s.click('css=#article-form-metadata .edit-bar .fold-link')
-        s.waitForElementPresent('css=#article-form-metadata.folded')
+        s.assertElementNotPresent('css=#edit-form-metadata.folded')
+        s.click('css=#edit-form-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#edit-form-metadata.folded')
         s.open(s.getLocation())
-        s.waitForElementPresent('css=#article-form-metadata.folded')
+        s.waitForElementPresent('css=#edit-form-metadata.folded')
 
     def test_unfold_should_be_stored(self):
         s = self.selenium
-        s.assertElementNotPresent('css=#article-form-metadata.folded')
-        s.click('css=#article-form-metadata .edit-bar .fold-link')
-        s.waitForElementPresent('css=#article-form-metadata.folded')
-        s.click('css=#article-form-metadata .edit-bar .fold-link')
-        s.waitForElementNotPresent('css=#article-form-metadata.folded')
+        s.assertElementNotPresent('css=#edit-form-metadata.folded')
+        s.click('css=#edit-form-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#edit-form-metadata.folded')
+        s.click('css=#edit-form-metadata .edit-bar .fold-link')
+        s.waitForElementNotPresent('css=#edit-form-metadata.folded')
         s.open(s.getLocation())
-        s.waitForElementPresent('css=#article-form-metadata')
-        s.assertElementNotPresent('css=#article-form-metadata.folded')
+        s.waitForElementPresent('css=#edit-form-metadata')
+        s.assertElementNotPresent('css=#edit-form-metadata.folded')
 
 
 class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
@@ -140,23 +140,23 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia/@@edit.html')
 
     def test_head_should_be_readonly_visible(self):
-        self.assert_widget_text("head.year", '2007')
-        self.assert_widget_text("head.ressort", 'International')
+        self.assert_widget_text("metadata-c.year", '2007')
+        self.assert_widget_text("metadata-a.ressort", 'International')
 
     def test_navigation_should_readonly_visible(self):
-        self.assert_widget_text("navigation.__name__", 'Somalia')
-        self.assert_widget_text("navigation.copyrights", 'ZEIT online')
+        self.assert_widget_text("metadata-c.__name__", 'Somalia')
+        self.assert_widget_text("metadata-b.copyrights", 'ZEIT online')
 
     def test_texts_should_be_readonly_visible(self):
-        self.assert_widget_text('texts.title', u'Rückkehr der Warlords')
-        self.assert_widget_text('texts.subtitle', 'Im Zuge des*')
+        self.assert_widget_text('article-content-head.title', u'Rückkehr der Warlords')
+        self.assert_widget_text('article-content-head.subtitle', 'Im Zuge des*')
 
     def test_misc_should_be_readonly_visible(self):
         s = self.selenium
-        s.waitForElementPresent('xpath=//input[@id="misc.commentsAllowed"]')
+        s.waitForElementPresent('xpath=//input[@id="metadata-b.dailyNewsletter"]')
         s.assertAttribute(
-            'xpath=//input[@id="misc.commentsAllowed"]@disabled', 'disabled')
-        s.assertNotChecked('xpath=//input[@id="misc.commentsAllowed"]')
+            'xpath=//input[@id="metadata-b.dailyNewsletter"]@disabled', 'disabled')
+        s.assertNotChecked('xpath=//input[@id="metadata-b.dailyNewsletter"]')
         s.assertAttribute(
             'xpath=//input[@id="misc.banner"]@disabled', 'disabled')
         s.assertChecked('xpath=//input[@id="misc.banner"]')
@@ -201,7 +201,7 @@ class KeywordTest(zeit.content.article.testing.SeleniumTestCase):
         s = self.selenium
         tags = self.setup_tags('t1', 't2', 't3')
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        s.waitForElementPresent('id=navigation.keywords')
+        s.waitForElementPresent('id=metadata-a.keywords')
         s.dragAndDropToObject("xpath=//li[contains(., 't1')]",
                               "xpath=//li[contains(., 't3')]")
         s.assertTextPresent('t2*t3*t1')
@@ -216,11 +216,11 @@ class AuthorTest(zeit.content.article.testing.SeleniumTestCase):
     def setUp(self):
         super(AuthorTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        self.selenium.waitForElementPresent('id=misc.author_references')
+        self.selenium.waitForElementPresent('id=metadata-c.author_references')
 
     def test_authors_should_be_inline_addable(self):
         s = self.selenium
-        s.click('//*[@id="misc.author_references"]//a[@rel = "show_add_view"]')
+        s.click('//*[@id="metadata-c.author_references"]//a[@rel = "show_add_view"]')
         s.waitForElementPresent('id=form.firstname')
         s.type('id=form.firstname', 'Ben')
         s.type('id=form.lastname', 'Utzer')
