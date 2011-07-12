@@ -13,26 +13,26 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
     def setUp(self):
         super(HeadTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        self.selenium.waitForElementPresent('id=metadata-c.year')
+        self.selenium.waitForElementPresent('id=misc-printdata.year')
 
     def test_form_should_highlight_changed_data(self):
         s = self.selenium
-        s.assertValue('id=metadata-c.year', '2007')
+        s.assertValue('id=misc-printdata.year', '2007')
         s.assertElementNotPresent('css=.widget-outer.dirty')
-        s.type('id=metadata-c.year', '2010')
-        s.click('id=metadata-c.volume')
+        s.type('id=misc-printdata.year', '2010')
+        s.click('id=misc-printdata.volume')
         s.waitForElementPresent('css=.widget-outer.dirty')
 
     def test_form_should_save_entered_data_on_blur(self):
         s = self.selenium
-        s.assertValue('id=metadata-c.year', '2007')
-        s.type('id=metadata-c.year', '2010')
-        s.fireEvent('id=metadata-c.year', 'blur')
+        s.assertValue('id=misc-printdata.year', '2007')
+        s.type('id=misc-printdata.year', '2010')
+        s.fireEvent('id=misc-printdata.year', 'blur')
         s.waitForElementNotPresent('css=.widget-outer.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
-        s.waitForElementPresent('id=metadata-c.year')
-        s.assertValue('id=metadata-c.year', '2010')
+        s.waitForElementPresent('id=misc-printdata.year')
+        s.assertValue('id=misc-printdata.year', '2010')
 
     def test_change_in_ressort_should_update_subressort_list(self):
         s = self.selenium
@@ -56,9 +56,9 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_invalid_input_should_display_error_message(self):
         s = self.selenium
-        s.assertValue('id=metadata-c.year', '2007')
-        s.type('id=metadata-c.year', 'ASDF')
-        s.click('metadata-c.actions.apply')
+        s.assertValue('id=misc-printdata.year', '2007')
+        s.type('id=misc-printdata.year', 'ASDF')
+        s.click('misc-printdata.actions.apply')
         s.waitForElementPresent('css=.inline-form div.error')
 
     def test_relateds_should_be_addable(self):
@@ -140,26 +140,22 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia/@@edit.html')
 
     def test_head_should_be_readonly_visible(self):
-        self.assert_widget_text("metadata-c.year", '2007')
+        self.assert_widget_text("misc-printdata.year", '2007')
         self.assert_widget_text("metadata-a.ressort", 'International')
 
     def test_navigation_should_readonly_visible(self):
         self.assert_widget_text("metadata-c.__name__", 'Somalia')
         self.assert_widget_text("metadata-b.copyrights", 'ZEIT online')
+        s = self.selenium
+        s.waitForElementPresent('xpath=//input[@id="metadata-b.dailyNewsletter"]')
+        s.assertAttribute(
+            'xpath=//input[@id="metadata-b.dailyNewsletter"]@disabled',
+            'regexp:disabled|true')
+        s.assertNotChecked('xpath=//input[@id="metadata-b.dailyNewsletter"]')
 
     def test_texts_should_be_readonly_visible(self):
         self.assert_widget_text('article-content-head.title', u'Rückkehr der Warlords')
         self.assert_widget_text('article-content-head.subtitle', 'Im Zuge des*')
-
-    def test_misc_should_be_readonly_visible(self):
-        s = self.selenium
-        s.waitForElementPresent('xpath=//input[@id="metadata-b.dailyNewsletter"]')
-        s.assertAttribute(
-            'xpath=//input[@id="metadata-b.dailyNewsletter"]@disabled', 'disabled')
-        s.assertNotChecked('xpath=//input[@id="metadata-b.dailyNewsletter"]')
-        s.assertAttribute(
-            'xpath=//input[@id="misc.banner"]@disabled', 'disabled')
-        s.assertChecked('xpath=//input[@id="misc.banner"]')
 
     def test_assets_should_be_readonly_visible(self):
         from zeit.cms.checkout.helper import checked_out
@@ -175,7 +171,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
                             'http://xml.zeit.de/testcontent'),)
         s = self.selenium
         s.open(s.getLocation())
-        self.assert_widget_text('assets.related', 'testcontent*')
+        self.assert_widget_text('assets.related', '*testcontent*')
 
 
 class KeywordTest(zeit.content.article.testing.SeleniumTestCase):
@@ -224,5 +220,6 @@ class AuthorTest(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementPresent('id=form.firstname')
         s.type('id=form.firstname', 'Ben')
         s.type('id=form.lastname', 'Utzer')
+        s.select('id=form.status', 'index=1')
         s.click('id=form.actions.add')
         s.waitForTextPresent('Ben Utzer')
