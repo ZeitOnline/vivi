@@ -80,8 +80,8 @@ Those forms are loaded via javascript:
 <legend></legend>
 <div class="widget-outer">
   <div class="label">
-    <label cms:tooltip="overwritten if any non-freetext authors are set"
-        for="metadata-c.authors">Authors</label>
+    <label cms:tooltip=""
+        for="metadata-c.author_references">Authors</label>
   </div>
   <div class="widget">...
 </div>
