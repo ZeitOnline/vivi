@@ -209,6 +209,38 @@
     permission="zope.View"
     />
 
+  <!-- miscellaneous -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="misc"
+    class=".form.MiscForms"
+    permission="zope.View"
+    weight="50"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MiscForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.misc-printdata"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.misc-printdata"
+    class=".form.MiscPrintdata"
+    permission="zope.View"
+    />
+
   <!-- workflow -->
 
   <browser:viewlet
@@ -219,7 +251,7 @@
     name="workflow"
     class=".form.WorkflowForms"
     permission="zope.View"
-    weight="50"
+    weight="60"
     />
 
   <browser:viewlet

@@ -109,15 +109,6 @@ class MetadataB(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'product', 'copyrights', 'dailyNewsletter')
 
-    def render(self):
-        result = super(MetadataB, self).render()
-        if result:
-            result += (
-                '<script type="text/javascript">'
-                '    zeit.cms.configure_ressort_dropdown("%s.");'
-                '</script>') % (self.prefix,)
-        return result
-
 
 # This will be renamed properly as soon as the fields are finally decided.
 class MetadataC(zeit.edit.browser.form.InlineForm):
@@ -133,23 +124,13 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
             zeit.cms.content.interfaces.ICommonMetadata,
             zeit.cms.repository.interfaces.IAutomaticallyRenameable,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-                'author_references', 'rename_to', '__name__', 'year', 'volume')
+                'author_references', 'rename_to', '__name__')
         if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
             self.context).renamable:
             form_fields = form_fields.omit('__name__')
         else:
             form_fields = form_fields.omit('rename_to')
         return form_fields
-
-
-    def render(self):
-        result = super(MetadataC, self).render()
-        if result:
-            result += (
-                '<script type="text/javascript">'
-                '    zeit.cms.configure_ressort_dropdown("%s.");'
-                '</script>') % (self.prefix,)
-        return result
 
 
 class TeaserForms(zeit.edit.browser.form.FormGroup):
@@ -168,15 +149,6 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'teaserTitle')
-
-    def render(self):
-        result = super(TeaserTitle, self).render()
-        if result:
-            result += (
-                '<script type="text/javascript">'
-                '    zeit.cms.configure_ressort_dropdown("%s.");'
-                '</script>') % (self.prefix,)
-        return result
 
 
 class LimitedInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
@@ -207,14 +179,23 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
             'teaserText')
     form_fields['teaserText'].custom_widget = LimitedInputWidget
 
-    def render(self):
-        result = super(TeaserText, self).render()
-        if result:
-            result += (
-                '<script type="text/javascript">'
-                '    zeit.cms.configure_ressort_dropdown("%s.");'
-                '</script>') % (self.prefix,)
-        return result
+
+class MiscForms(zeit.edit.browser.form.FormGroup):
+    """Miscellaneous"""
+
+    title = _('Miscellaneous')
+
+
+class MiscPrintdata(zeit.edit.browser.form.InlineForm):
+
+    legend = _('Printdata')
+    prefix = 'misc-printdata'
+    undo_description = _('edit misc printdata')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'year', 'volume', 'page')
 
 
 class WorkflowForms(zeit.edit.browser.form.FormGroup):
