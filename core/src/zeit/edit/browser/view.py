@@ -7,6 +7,7 @@ import cgi
 import logging
 import simplejson
 import transaction
+import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zope.app.pagetemplate
 import zope.formlib.form

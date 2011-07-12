@@ -3,9 +3,9 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
+import zeit.edit.browser.view
 import zeit.edit.interfaces
 import zope.security.proxy
-
 
 class History(zeit.cms.browser.view.JSON):
 
