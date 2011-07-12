@@ -6,6 +6,9 @@ zeit.find changes
 
 - Moved reusable styles to zeit.cms.
 
+- Lowercase autocomplete query and use right truncation to improve search
+  results.
+
 
 0.22.0 (2011-06-20)
 -------------------
