@@ -151,6 +151,7 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
 
     def setUp(self):
         super(MessageServiceTest, self).setUp()
+        # Need a real webservice to load the WSDL.
         self.service = zeit.vgwort.connection.real_message_service()
 
     @property
@@ -204,3 +205,12 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
         self.assertEqual('codecodecode', authors[0].code)
+
+    def test_url_should_point_to_www_zeit_de(self):
+        content = self.get_content([])
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
+            self.service.new_document(content)
+            self.assertEqual('http://www.zeit.de/testcontent/komplettansicht',
+                             call.call_args[0][3].webrange[0].url)
+
+

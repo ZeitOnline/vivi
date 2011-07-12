@@ -152,7 +152,7 @@ class MessageService(VGWortWebService):
         ranges = self.create('Webranges')
         url = self.create('Webrange')
         url.url = content.uniqueId.replace(
-            'http://xml.zeit.de', 'http://www.zeit.de')
+            'http://xml.zeit.de', 'http://www.zeit.de') + '/komplettansicht'
         ranges.webrange.append(url)
 
         token = zeit.vgwort.interfaces.IToken(content)
