@@ -142,9 +142,11 @@ class TestTextEditing(
     def test_typed_text_should_be_saved(self):
         s = self.selenium
         self.create()
-        s.typeKeys('css=.block.type-p .editable p', 'Mary had a little lamb.')
+        # Due to a bug in selenium, the letter 'y' will send the key code for
+        # ALT. Thus we have to avoid passing typeKeys sentences containing 'y'.
+        s.typeKeys('css=.block.type-p .editable p', 'Saskia had a little pig.')
         self.save()
-        s.waitForElementPresent('css=.editable p:contains(Mary had)')
+        s.waitForElementPresent('css=.editable p:contains(Saskia had)')
 
     def test_class_attributes_should_be_removed_on_keyup(self):
         s = self.selenium
