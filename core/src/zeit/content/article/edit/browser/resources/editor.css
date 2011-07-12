@@ -7,17 +7,17 @@
   /*margin-left: 3em;*/
 }
 
-#article-editor-forms {
+#editor-forms {
     margin-left:6px;
     margin-right:6px;
 }
 
-#article-editor-forms div div.edit-bar {
+#editor-forms div div.edit-bar {
     margin: 0 0 4px 15px;
     background: none 0;
 }
 
-#article-editor-forms div div.edit-bar a{
+#editor-forms div div.edit-bar a{
     margin:4px;
     margin-top:5px;
 }
