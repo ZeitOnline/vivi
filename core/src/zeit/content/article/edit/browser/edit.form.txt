@@ -18,32 +18,6 @@ There are form stubs at the top of the editor:
       action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-c">
 </form>
 ...
-  <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.teaser-title">
-...
-    <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.teaser-text">
-</form>
-...
-  <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.article-content-head">
-    ...
-</form>
-...
-  <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-status">
-...
-  <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-settings">
-...
-  <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.workflow-log">
-</form>
-...
-  <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.recension-list">
-</form>
-...
 
 
 Those forms are loaded via javascript:
@@ -107,7 +81,7 @@ Those forms are loaded via javascript:
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="overwritten if any non-freetext authors are set"
-        for="metadata-c.authors">Authors (freetext)</label>
+        for="metadata-c.authors">Authors</label>
   </div>
   <div class="widget">...
 </div>
