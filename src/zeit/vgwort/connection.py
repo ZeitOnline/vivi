@@ -126,10 +126,11 @@ class MessageService(VGWortWebService):
             if author.vgwortcode:
                 involved.code = author.vgwortcode
                 parties.authors.author.append(involved)
-            elif author.vgwortid:
+            elif author.firstname and author.lastname:
                 involved.firstName = author.firstname
                 involved.surName = author.lastname
-                involved.cardNumber = author.vgwortid
+                if author.vgwortid:
+                    involved.cardNumber = author.vgwortid
                 parties.authors.author.append(involved)
 
         if content.product and content.product.vgwortcode:
