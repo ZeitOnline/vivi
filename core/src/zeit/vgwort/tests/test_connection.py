@@ -91,14 +91,10 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
         self.service.new_document(content)
 
-    def test_author_with_meaningless_firstname_works(self):
-        # to report the product, we use its title as lastname and do not have a
-        # firstname. firstname is required, though, so we pass a dummy value,
-        # which VGWort accepts, luckily.
+    def test_author_without_vgwotid_works(self):
         author = zeit.content.author.author.Author()
-        author.firstname = 'n/a'
+        author.firstname = 'Tina'
         author.lastname = 'Groll'
-        author.vgwortid = 2601970
         self.repository['author'] = author
         author = self.repository['author']
 
@@ -130,6 +126,7 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
         # suds expects SOAP or nothing (and may the Lord have mercy if the
         # server should return 500 with an HTML error message instead...)
         self.wfile.write('')
+
 
 HTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
 
@@ -205,6 +202,21 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
             authors = parties.authors.author
         self.assertEqual(2, len(authors))
         self.assertEqual('codecodecode', authors[0].code)
+
+    def test_author_name_should_be_passed(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Tina'
+        author.lastname = 'Groll'
+        self.repository['author'] = author
+        author = self.repository['author']
+        content = self.get_content([author])
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
+            self.service.new_document(content)
+            parties = call.call_args[0][1]
+            authors = parties.authors.author
+        self.assertEqual(2, len(authors))
+        self.assertEqual('Tina', authors[0].firstName)
+        self.assertEqual('Groll', authors[0].surName)
 
     def test_url_should_point_to_www_zeit_de(self):
         content = self.get_content([])
