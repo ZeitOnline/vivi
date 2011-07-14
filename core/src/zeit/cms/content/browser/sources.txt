@@ -1,0 +1,28 @@
+Regression test (#9231) that the ProductSource does the Right Thing with
+SecurityProxies
+
+>>> import zeit.cms.testing
+>>> import zeit.cms.repository.interfaces
+>>> import zope.component
+>>> zeit.cms.testing.set_site()
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+>>> repository['test'] = content
+
+>>> import zope.testbrowser.testing
+>>> b = zope.testbrowser.testing.Browser()
+>>> b.addHeader('Authorization', 'Basic producer:producerpw')
+>>> b.open('http://localhost/++skin++vivi/repository/test')
+>>> b.getLink('Checkout').click()
+>>> b.getControl('Year').value = '2008'
+>>> b.getControl('Ressort').displayValue = ['International']
+>>> b.getControl('Title').value = 'foo'
+>>> b.getControl(name='form.authors.0.').value = 'asdf'
+
+>>> b.getControl('Product id').displayValue = ['Zeit Campus']
+>>> b.getControl('Apply').click()
+>>> print b.contents
+<...Updated on...
+>>> b.getControl('Product id').displayValue
+['Zeit Campus']
