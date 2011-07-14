@@ -23,7 +23,7 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('id=misc-printdata.volume')
         s.waitForElementPresent('css=.widget-outer.dirty')
 
-    def test_form_should_save_entered_data_on_blur(self):
+    def test_form_should_save_entered_text_on_blur(self):
         s = self.selenium
         s.assertValue('id=misc-printdata.year', '2007')
         s.type('id=misc-printdata.year', '2010')
@@ -33,6 +33,13 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('id=misc-printdata.year')
         s.assertValue('id=misc-printdata.year', '2010')
+
+    def test_form_should_save_selection_on_blur(self):
+        s = self.selenium
+        s.select('id=metadata-b.product', 'Zeit Magazin')
+        s.fireEvent('id=metadata-b.product', 'blur')
+        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        s.assertSelectedLabel('id=metadata-b.product', 'Zeit Magazin')
 
     def test_change_in_ressort_should_update_subressort_list(self):
         s = self.selenium
