@@ -7,6 +7,7 @@ import grokcore.component as grok
 import pytz
 import zeit.addcentral.interfaces
 import zeit.cms.content.dav
+import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.type
@@ -71,12 +72,15 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
 
     def _get_content_newer_than(self, timestamp):
         if timestamp is None:
-            return []
+            return
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         result = connector.search(
             [FIRST_RELEASED], (FIRST_RELEASED > timestamp.isoformat()))
-        return result
+        for unique_id, released in result:
+            obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
+            if obj is not None:
+                yield obj
 
 
 class NewsletterCategoryType(zeit.cms.repository.folder.FolderType):
