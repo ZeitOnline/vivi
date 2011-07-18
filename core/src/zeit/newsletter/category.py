@@ -124,14 +124,18 @@ class DailyNewsletterBuilder(Builder):
     grok.name(DAILY_NAME)
 
     # XXX make configurable
-    ressorts = [u'International', u'Deutschland']
+    ressorts = (u'Politik', u'Wirtschaft', u'Meinung', u'Gesellschaft',
+                u'Kultur', u'Wissen', u'Digital', u'Studium', u'Karriere',
+                u'Lebensart', u'Reisen', u'Auto', u'Sport')
 
     def __call__(self, content_list):
         groups = self._group_by_ressort(content_list)
-        for ressort, entries in groups.items():
-            group = self.create_group(ressort)
-            for content in entries:
-                self.create_teaser(group, content)
+        for ressort in self.ressorts:
+            entries = groups.get(ressort)
+            if entries:
+                group = self.create_group(ressort)
+                for content in entries:
+                    self.create_teaser(group, content)
 
     def _group_by_ressort(self, content_list):
         groups = {}
