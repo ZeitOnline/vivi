@@ -72,7 +72,8 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
 
     def test_query_with_none_returns_empty_list(self):
         # XXX is this what we want for the first-ever newsletter created?
-        self.assertEqual([], self.category._get_content_newer_than(None))
+        self.assertEqual(
+            [], list(self.category._get_content_newer_than(None)))
 
     def test_get_content_newer_than_should_return_objects(self):
         from zeit.cms.interfaces import ICMSContent
