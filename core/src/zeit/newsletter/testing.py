@@ -29,8 +29,8 @@ class TestBrowserLayer(ZCMLLayer):
     def setUp(cls):
         product_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        product_config['publish-script'] = '/bin/true'
-        product_config['retract-script'] = '/bin/true'
+        product_config['publish-script'] = 'true'
+        product_config['retract-script'] = 'true'
 
     @classmethod
     def tearDown(cls):
