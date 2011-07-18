@@ -104,3 +104,12 @@ class DailyNewsletterBuilderTest(zeit.newsletter.testing.TestCase):
 
         self.assertEqual([c2], [x.reference for x in group1.values()])
         self.assertEqual([c1, c3], [x.reference for x in group2.values()])
+
+    def test_group_should_work_if_content_not_adaptable_to_metadata(self):
+        c1 = self.create_content('c1', u'Deutschland')
+        # One essential part of this test is that the following line does not
+        # raise a "could not adapt" exception
+        self.builder([mock.Mock(), c1])
+        body = self.newsletter['newsletter_body']
+        group1 = body[body.keys()[0]]
+        self.assertEqual(u'Deutschland', group1.title)

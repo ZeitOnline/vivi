@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import grokcore.component as grok
+import pytz
 import zeit.addcentral.interfaces
 import zeit.cms.content.dav
 import zeit.cms.repository.folder
@@ -34,7 +35,7 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
         ['last_created'], live=True)
 
     def create(self):
-        now = datetime.datetime.now()
+        now = datetime.datetime.now(pytz.UTC)
         newsletter = self._create_newsletter(now)
         self.populate(newsletter)
         self.last_created = now
@@ -130,8 +131,9 @@ class DailyNewsletterBuilder(Builder):
     def _group_by_ressort(self, content_list):
         groups = {}
         for content in content_list:
-            metadata = zeit.cms.content.interfaces.ICommonMetadata(content)
-            if metadata.ressort not in self.ressorts:
+            metadata = zeit.cms.content.interfaces.ICommonMetadata(
+                content, None)
+            if metadata is None or metadata.ressort not in self.ressorts:
                 continue
             groups.setdefault(metadata.ressort, []).append(content)
         return groups
