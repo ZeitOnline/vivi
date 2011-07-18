@@ -37,15 +37,16 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
 
     def create(self):
         now = datetime.datetime.now(pytz.UTC)
-        newsletter = self._create_newsletter(now)
+        newsletter = zeit.newsletter.newsletter.Newsletter()
         self.populate(newsletter)
+        newsletter = self._add_newsletter(newsletter, now)
         self.last_created = now
         return newsletter
 
-    def _create_newsletter(self, timestamp):
+    def _add_newsletter(self, newsletter, timestamp):
         folder = self._find_or_create_folder(timestamp)
         name = self._choose_name(folder, timestamp)
-        folder[name] = zeit.newsletter.newsletter.Newsletter()
+        folder[name] = newsletter
         return folder[name]
 
     def _find_or_create_folder(self, timestamp):
