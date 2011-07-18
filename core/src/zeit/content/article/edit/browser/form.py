@@ -48,6 +48,22 @@ class AssetForms(zeit.edit.browser.form.FormGroup):
     title = _('Assets')
 
 
+class AssetBadges(zeit.edit.browser.form.InlineForm):
+
+    legend = _('Badges')
+    prefix = 'asset-badges'
+    undo_description = _('edit asset badges')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.asset.interfaces.IBadges,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'badges')
+
+    def setUpWidgets(self):
+        super(AssetBadges, self).setUpWidgets()
+        self.widgets['badges'].orientation = 'horizontal'
+
+
 class Assets(zeit.edit.browser.form.InlineForm):
 
     legend = _('Assets')
@@ -196,6 +212,61 @@ class MiscPrintdata(zeit.edit.browser.form.InlineForm):
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'year', 'volume', 'page')
+
+
+class MiscFeatures(zeit.edit.browser.form.InlineForm):
+
+    legend = _('Features')
+    prefix = 'misc-features'
+    undo_description = _('edit misc features')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.content.article.interfaces.ICDSWorkflow,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'commentsAllowed', 'export_cds', 'serie')
+
+
+class MiscProductManagementA(zeit.edit.browser.form.InlineForm):
+
+    legend = _('Product Management')
+    prefix = 'misc-product-management-a'
+    undo_description = _('edit misc product management')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'banner_id', 'cap_title', 'color_scheme')
+
+
+class MiscProductManagementB(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'misc-product-management-b'
+    undo_description = _('edit misc product management')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'banner', 'countings')
+
+
+class MiscLayout(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'misc-layout'
+    undo_description = _('edit misc layout')
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(MiscLayout, self).__call__()
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.interfaces.IArticleMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'layout')
+    
 
 
 class WorkflowForms(zeit.edit.browser.form.FormGroup):

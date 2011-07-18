@@ -195,6 +195,25 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.AssetForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.asset-badges"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.asset-badges"
+    class=".form.AssetBadges"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.AssetForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.assets"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
@@ -238,6 +257,118 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.misc-printdata"
     class=".form.MiscPrintdata"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MiscForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.misc-features"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.misc-features"
+    class=".form.MiscFeatures"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MiscForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.recension-list"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="30"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.recension-list"
+    class=".recension.Overview"
+    template="recension-list.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IBookRecension"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".recension.Edit"
+    name="edit.html"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IBookRecensionContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".recension.Add"
+    name="add"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MiscForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.misc-product-management-a"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="40"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.misc-product-management-a"
+    class=".form.MiscProductManagementA"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MiscForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.misc-product-management-b"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="50"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.misc-product-management-b"
+    class=".form.MiscProductManagementB"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MiscForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.misc-layout"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="60"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.misc-layout"
+    class=".form.MiscLayout"
     permission="zope.View"
     />
 
@@ -309,55 +440,6 @@
     name="edit.form.workflow-log"
     class=".form.WorkflowLog"
     permission="zope.View"
-    />
-
-  <!-- recensions -->
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zeit.edit.browser.form.Forms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="recensions"
-    class=".recension.RecensionForms"
-    permission="zope.View"
-    weight="50"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".recension.RecensionForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.recension-list"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="10"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.recension-list"
-    class=".recension.Overview"
-    template="recension-list.pt"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IBookRecension"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".recension.Edit"
-    name="edit.html"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IBookRecensionContainer"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".recension.Add"
-    name="add"
-    permission="zeit.EditContent"
     />
 
 </configure>
