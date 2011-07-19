@@ -12,7 +12,7 @@ import zope.formlib.interfaces
 import zope.interface
 
 
-class ArticleContentForms(zeit.edit.browser.form.FormGroup):
+class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article content forms."""
 
     title = _('Article')
@@ -42,7 +42,7 @@ class ArticleContentBody(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit article content body')
 
 
-class AssetForms(zeit.edit.browser.form.FormGroup):
+class AssetForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article asset forms."""
 
     title = _('Assets')
@@ -87,7 +87,7 @@ class Assets(zeit.edit.browser.form.InlineForm):
                 'badges')
 
 
-class MetadataForms(zeit.edit.browser.form.FormGroup):
+class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
     """Metadata forms view."""
 
     title = _('Metadata')
@@ -149,7 +149,7 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         return form_fields
 
 
-class TeaserForms(zeit.edit.browser.form.FormGroup):
+class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     """Teaser workflow forms."""
 
     title = _('Teaser')
@@ -196,7 +196,7 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
     form_fields['teaserText'].custom_widget = LimitedInputWidget
 
 
-class MiscForms(zeit.edit.browser.form.FormGroup):
+class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
     """Miscellaneous"""
 
     title = _('Miscellaneous')
@@ -268,8 +268,7 @@ class MiscLayout(zeit.edit.browser.form.InlineForm):
             'layout')
     
 
-
-class WorkflowForms(zeit.edit.browser.form.FormGroup):
+class WorkflowForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article workflow forms."""
 
     title = _('Workflow')
