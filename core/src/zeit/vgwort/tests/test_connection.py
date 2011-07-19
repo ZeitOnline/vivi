@@ -40,6 +40,11 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.assert_(len(result.qualityControlValues) > 0)
 
     def test_validation_error_should_raise_error_message(self):
+        products = list(zeit.cms.content.sources.ProductSource()(None))
+        product = [x for x in products if x.id == 'KINZ'][0]
+        content = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.product = product
         try:
             self.service.new_document(self.repository['testcontent'])
         except TypeError, e:
@@ -69,7 +74,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         try:
             self.service.new_document(content)
         except zeit.vgwort.interfaces.WebServiceError, e:
-            self.assertContains('Shakespeare', str(e))
+            self.assertContains('Shakespeare', unicode(e))
         else:
             self.fail('WebServiceError should have been raised.')
 
@@ -157,12 +162,13 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
-    def get_content(self, authors):
+    def get_content(self, authors, freetext=None):
         products = list(zeit.cms.content.sources.ProductSource()(None))
         product = [x for x in products if x.id == 'KINZ'][0]
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.author_references = authors
+            co.authors = freetext
             co.product = product
             co.title = 'Title'
             co.teaserText = 'x' * 2000
@@ -225,4 +231,40 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
             self.assertEqual('http://www.zeit.de/testcontent/komplettansicht',
                              call.call_args[0][3].webrange[0].url)
 
+    def test_freetext_authors_should_be_passed(self):
+        content = self.get_content(
+            [], freetext=(('Paul Auster', 'Hans Christian Andersen')))
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
+            self.service.new_document(content)
+            parties = call.call_args[0][1]
+            authors = parties.authors.author
+        self.assertEqual(3, len(authors))  # two author, one product
+        self.assertEqual('Paul', authors[0].firstName)
+        self.assertEqual('Auster', authors[0].surName)
+        self.assertEqual('Hans Christian', authors[1].firstName)
+        self.assertEqual('Andersen', authors[1].surName)
 
+    def test_freetext_authors_should_be_passed_unless_structured_given(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Tina'
+        author.lastname = 'Groll'
+        self.repository['author'] = author
+        author = self.repository['author']
+        content = self.get_content(
+            [author], freetext=(('Paul Auster', 'Hans Christian Andersen')))
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
+            self.service.new_document(content)
+            parties = call.call_args[0][1]
+            authors = parties.authors.author
+        self.assertEqual(2, len(authors))
+        self.assertEqual('Tina', authors[0].firstName)
+        self.assertEqual('Groll', authors[0].surName)
+
+    def test_freetext_authors_should_not_break_with_no_space(self):
+        content = self.get_content(
+            [], freetext=(('Merlin',)))
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
+            self.service.new_document(content)
+            parties = call.call_args[0][1]
+            authors = parties.authors.author
+        self.assertEqual(1, len(authors))  # one product

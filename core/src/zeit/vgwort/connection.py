@@ -121,16 +121,27 @@ class MessageService(VGWortWebService):
         content = zeit.cms.content.interfaces.ICommonMetadata(content)
         parties = self.create('Parties')
         parties.authors = self.create('Authors')
-        for author in content.author_references:
-            involved = self.create('Involved')
-            if author.vgwortcode:
-                involved.code = author.vgwortcode
-                parties.authors.author.append(involved)
-            elif author.firstname and author.lastname:
-                involved.firstName = author.firstname
-                involved.surName = author.lastname
-                if author.vgwortid:
-                    involved.cardNumber = author.vgwortid
+        if content.author_references:
+            for author in content.author_references:
+                involved = self.create('Involved')
+                if author.vgwortcode:
+                    involved.code = author.vgwortcode
+                    parties.authors.author.append(involved)
+                elif author.firstname and author.lastname:
+                    involved.firstName = author.firstname
+                    involved.surName = author.lastname
+                    if author.vgwortid:
+                        involved.cardNumber = author.vgwortid
+                    parties.authors.author.append(involved)
+        else:
+            # Report the freetext authors if no structured authors are
+            # available. VGWort will do some matching then.
+            for author in content.authors:
+                if ' ' not in author:
+                    # Need at least one space to split firstname and lastname
+                    continue
+                involved = self.create('Involved')
+                involved.firstName, involved.surName = author.rsplit(' ', 1)
                 parties.authors.author.append(involved)
 
         if content.product and content.product.vgwortcode:
