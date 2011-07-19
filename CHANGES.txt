@@ -4,8 +4,8 @@ zeit.vgwort changes
 0.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
-
+- Report the freetext authors if no structured authors are available. VGWort
+  will do some matching then.
 
 0.3.1 (2011-06-22)
 ------------------
