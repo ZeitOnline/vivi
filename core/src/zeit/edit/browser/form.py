@@ -13,6 +13,8 @@ class Forms(object):
 """Base class for groups of inline forms."""
 FormGroup = zope.viewlet.viewlet.SimpleViewletClass('layout.forms.pt')
 
+FoldableFormGroup = zope.viewlet.viewlet.SimpleViewletClass('layout.foldable-forms.pt')
+
 FormLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.form-loader.pt')
 
 
