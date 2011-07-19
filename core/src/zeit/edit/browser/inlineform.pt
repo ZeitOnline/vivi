@@ -8,6 +8,7 @@
   <fieldset>
 
     <legend tal:content="view/legend"
+            tal:condition="view/legend"
             i18n:translate="">
       Legend
     </legend>

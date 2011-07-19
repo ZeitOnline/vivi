@@ -536,3 +536,14 @@ fieldset {
     padding: 0;
 }
 
+/* Legend */
+
+legend {
+  border-bottom: 1px dotted #999999;
+  color: #999999;
+  display: block;
+  font-weight: normal;
+  margin-bottom: 5px;
+  width: 100%;
+  text-transform: none;
+}
