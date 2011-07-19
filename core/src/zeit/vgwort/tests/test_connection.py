@@ -268,3 +268,17 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
             parties = call.call_args[0][1]
             authors = parties.authors.author
         self.assertEqual(1, len(authors))  # one product
+
+    def test_freetext_authors_should_be_whitespace_normalized(self):
+        content = self.get_content(
+            [], freetext=(
+                ('  Paul   Auster  ', '  Hans   Christian   Andersen  ')))
+        with mock.patch('zeit.vgwort.connection.MessageService.call') as call:
+            self.service.new_document(content)
+            parties = call.call_args[0][1]
+            authors = parties.authors.author
+        self.assertEqual(3, len(authors))  # two author, one product
+        self.assertEqual('Paul', authors[0].firstName)
+        self.assertEqual('Auster', authors[0].surName)
+        self.assertEqual('Hans Christian', authors[1].firstName)
+        self.assertEqual('Andersen', authors[1].surName)

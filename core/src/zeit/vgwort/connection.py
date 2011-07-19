@@ -137,11 +137,13 @@ class MessageService(VGWortWebService):
             # Report the freetext authors if no structured authors are
             # available. VGWort will do some matching then.
             for author in content.authors:
-                if ' ' not in author:
+                author = author.strip().split()
+                if len(author) < 2:
                     # Need at least one space to split firstname and lastname
                     continue
                 involved = self.create('Involved')
-                involved.firstName, involved.surName = author.rsplit(' ', 1)
+                involved.firstName = ' '.join(author[:-1])
+                involved.surName = author[-1]
                 parties.authors.author.append(involved)
 
         if content.product and content.product.vgwortcode:
