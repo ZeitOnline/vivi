@@ -1,6 +1,13 @@
 .block .block-inner > * {
 }
 
+/* Textareas not inline */
+
+#edit-form-article-content .widget-outer {
+  display:block;
+  float:none;
+}
+
 /* editor blocks */
 
 #editable-body {
@@ -13,7 +20,7 @@
 }
 
 #editor-forms div div.edit-bar {
-    margin: 0 0 4px 15px;
+    margin: 0 0 4px 0px;
     background: none 0;
 }
 
@@ -82,13 +89,29 @@
 }
 
 #article-editor-text .landing-zone a {
+color: #333;
+    vertical-align: baseline;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font: Arial, Helvetica, sans-serif;
+    line-height:1.5em;
+    -moz-appearance:button;
+}
+
+#article-editor-text .landing-zone a:before {
+  content:"|";
+  color: rgba(255, 255, 255, 0);
+}
+
+#article-editor-text .landing-zone a:after {
+  content:"|";
+  color: rgba(255, 255, 255, 0);
+}
+
+#article-editor-text .block-inner .edit-bar {
   background: -moz-linear-gradient(center top , #FFFFFF, #EDEDED) repeat scroll 0 0 transparent;
-  border: 1px solid #B7B7B7;
-  color: #606060;
-  border-radius: 2em 2em 2em 2em;
-  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
-  display:inline-block;
-  padding:5px;
 }
 
 .article-text {
