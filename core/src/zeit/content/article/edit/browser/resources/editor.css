@@ -81,6 +81,15 @@
   margin-left: 0em;
 }
 
+#article-editor-text .landing-zone a {
+  background: -moz-linear-gradient(center top , #FFFFFF, #EDEDED) repeat scroll 0 0 transparent;
+  border: 1px solid #B7B7B7;
+  color: #606060;
+  border-radius: 2em 2em 2em 2em;
+  text-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+  display:inline-block;
+  padding:5px;
+}
 
 .article-text {
   margin: 10px;
