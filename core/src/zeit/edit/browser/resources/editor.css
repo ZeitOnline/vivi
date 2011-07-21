@@ -427,6 +427,7 @@ div div.landing-zone:first-child {
   font-weight: normal;
   margin-right: 5px;
   padding-left: 3px;
+  padding-top:5px;
 }
 
 .inline-form .label div.error {
@@ -443,8 +444,9 @@ div div.landing-zone:first-child {
 
 .inline-form .widget {
   clear: left;
-  padding: 2px 0 0;
+  padding: 0px 0 0;
   margin-bottom:10px;
+  float:left;
 }
 
 .inline-form div.widget > input,
@@ -546,4 +548,10 @@ legend {
   margin-bottom: 5px;
   width: 100%;
   text-transform: none;
+}
+
+/* Misc */
+
+#recensions a {
+  padding-left:10px;
 }
