@@ -164,7 +164,11 @@ div div.landing-zone:first-child {
 .block > .block-inner {
   border: 1px solid #bbb;
   overflow: hidden; 
-  padding: 5px 10px;
+  padding: 5px 1em;
+}
+
+.block-inner .editable p  {
+  padding-left:0px
 }
 
 .block {
