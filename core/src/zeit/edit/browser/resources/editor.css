@@ -22,7 +22,6 @@
 
 #cp-content .editable-area {
   margin: 0.5em;
-  padding: 0.5em;
 }
 
 div div.landing-zone:first-child {
@@ -445,6 +444,7 @@ div div.landing-zone:first-child {
 .inline-form .widget {
   clear: left;
   padding: 2px 0 0;
+  margin-bottom:10px;
 }
 
 .inline-form div.widget > input,
