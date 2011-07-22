@@ -274,11 +274,11 @@ class WorkflowForms(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Workflow')
 
 
-class WorkflowStatus(zeit.edit.browser.form.InlineForm):
+class WorkflowDates(zeit.edit.browser.form.InlineForm):
 
-    legend = _('Status')
-    prefix = 'workflow-status'
-    undo_description = _('edit workflow status')
+    legend = _('')
+    prefix = 'workflow-dates'
+    undo_description = _('edit workflow dates')
 
     form_fields = (
         zope.formlib.form.FormFields(
@@ -289,23 +289,61 @@ class WorkflowStatus(zeit.edit.browser.form.InlineForm):
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True)).select(
                 'last_modified_by', 'date_last_modified',
-                'last_semantic_change', 'created',
-                'published', 'date_last_published', 'date_first_released',
-                'edited', 'corrected', 'refined', 'images_added')
+                'last_semantic_change', 'created')
 
 
-class WorkflowSettings(zeit.edit.browser.form.InlineForm):
+class WorkflowStatus(zeit.edit.browser.form.InlineForm):
 
-    legend = _('Settings')
-    prefix = 'workflow-settings'
-    undo_description = _('edit workflow settings')
+    legend = _('Status')
+    prefix = 'workflow-status'
+    undo_description = _('edit workflow status')
 
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.workflow.interfaces.IContentWorkflow,
-            zeit.content.article.interfaces.ICDSWorkflow,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-                'release_period', 'urgent', 'export_cds'))
+                'published'))
+
+
+class WorkflowPublicationDates(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'workflow-publication-dates'
+    undo_description = _('edit workflow publication dates')
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.cms.workflow.interfaces.IPublishInfo,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE) +
+        zope.formlib.form.FormFields(
+            zope.dublincore.interfaces.IDCTimes, for_display=True)).select(
+                'date_last_published', 'date_first_released')
+
+
+class WorkflowQualityAssurance(zeit.edit.browser.form.InlineForm):
+
+    legend = _('Quality assurance')
+    prefix = 'workflow-quality-assurance'
+    undo_description = _('edit workflow quality assurance')
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.IContentWorkflow,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+                'edited', 'corrected', 'refined', 'images_added'))
+
+
+class WorkflowPublicationPeriod(zeit.edit.browser.form.InlineForm):
+
+    legend = _('Publication period')
+    prefix = 'workflow-publication-period'
+    undo_description = _('edit workflow publication period')
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.IContentWorkflow,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+                'release_period'))
 
 
 class WorkflowLog(zeit.edit.browser.form.InlineForm):
@@ -317,3 +355,4 @@ class WorkflowLog(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
             zeit.objectlog.interfaces.ILog,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
+
