@@ -1,85 +1,90 @@
-<div id="recensions" i18n:domain="zeit.cms"
-  tal:define="can_edit python:request.interaction.checkPermission(
-    'zeit.EditContent', context)">
-  <link
-    rel="stylesheet" type="text/css"
-    tal:attributes="
-    href string:${request/++resource++zeit.cms.recension}/recension.css"/>
-  <div class="recension"
-    tal:condition="view/recensions"
-    tal:repeat="recension view/recensions">
+<fieldset id="recensions">
+  <legend i18n:translate="">
+    Recensions
+  </legend>
+  <div class="recensions" i18n:domain="zeit.cms"
+    tal:define="can_edit python:request.interaction.checkPermission(
+      'zeit.EditContent', context)">
+    <link
+      rel="stylesheet" type="text/css"
+      tal:attributes="
+      href string:${request/++resource++zeit.cms.recension}/recension.css"/>
+    <div class="recension"
+      tal:condition="view/recensions"
+      tal:repeat="recension view/recensions">
+  
+      <a href="#" title="Edit" class="RecensionTitle"
+        tal:condition="can_edit"
+        tal:attributes="
+        href string:${recension/url}/@@edit.html;
+        cms:lightbox-reload-url string:${context/@@absolute_url}/@@edit.form.recension-list;"
+        cms:lightbox-reload-id="recensions"
+        cms:cp-module="zeit.edit.LightBoxForm"
+        i18n:attributes="title"
+        i18n:translate="">
+        <span i18n:name="authors" tal:replace="recension/authors" />:
+        <span i18n:name="title" tal:replace="recension/title" />
+        [edit]
+      </a>
 
-    <a href="#" title="Edit" class="RecensionTitle"
+      <div class="RecensionTitle"
+        tal:condition="not:can_edit">
+        <span tal:replace="recension/authors" />:
+        <span tal:replace="recension/title" />
+      </div>
+
+      <dl>
+        <tal:con condition="recension/publisher">
+          <dt i18n:translate="">Publisher</dt>
+          <dd class="publisher"
+            tal:content="recension/publisher">
+            Suhrkamp
+          </dd>
+        </tal:con>
+
+        <tal:con condition="recension/location">
+          <dt i18n:translate="">Location</dt>
+          <dd class="location"
+            tal:content="recension/location">
+            Zuerich
+          </dd>
+        </tal:con>
+
+        <tal:con condition="recension/year">
+          <dt i18n:translate="">Year</dt>
+          <dd class="year"
+            tal:content="recension/year">
+            2007
+          </dd>
+        </tal:con>
+
+        <tal:con condition="recension/price">
+          <dt i18n:translate="">Price</dt>
+          <dd class="price"
+            tal:condition="recension/price"
+            tal:content="recension/price">
+            29,90
+          </dd>
+        </tal:con>
+      </dl>
+    </div>
+
+    <p tal:condition="not:view/has_recensions"
+      i18n:translate="recension-no-items">
+      There are no book information items, yet.
+    </p>
+
+    <a href="#" title="Add"
       tal:condition="can_edit"
       tal:attributes="
-      href string:${recension/url}/@@edit.html;
+      href string:${view/container/@@absolute_url}/@@add;
       cms:lightbox-reload-url string:${context/@@absolute_url}/@@edit.form.recension-list;"
       cms:lightbox-reload-id="recensions"
       cms:cp-module="zeit.edit.LightBoxForm"
+      cms:lightbox-in="cp-content"
       i18n:attributes="title"
       i18n:translate="">
-      <span i18n:name="authors" tal:replace="recension/authors" />:
-      <span i18n:name="title" tal:replace="recension/title" />
-      [edit]
+      [Add new...]
     </a>
-
-    <div class="RecensionTitle"
-      tal:condition="not:can_edit">
-      <span tal:replace="recension/authors" />:
-      <span tal:replace="recension/title" />
-    </div>
-
-    <dl>
-      <tal:con condition="recension/publisher">
-        <dt i18n:translate="">Publisher</dt>
-        <dd class="publisher" 
-          tal:content="recension/publisher">
-          Suhrkamp
-        </dd>
-      </tal:con>
-
-      <tal:con condition="recension/location">
-        <dt i18n:translate="">Location</dt>
-        <dd class="location"
-          tal:content="recension/location">
-          Zuerich
-        </dd>
-      </tal:con>
-
-      <tal:con condition="recension/year">
-        <dt i18n:translate="">Year</dt>
-        <dd class="year"
-          tal:content="recension/year">
-          2007
-        </dd>
-      </tal:con>
-
-      <tal:con condition="recension/price">
-        <dt i18n:translate="">Price</dt>
-        <dd class="price"
-          tal:condition="recension/price"
-          tal:content="recension/price">
-          29,90
-        </dd>
-      </tal:con>
-    </dl>
   </div>
-
-  <p tal:condition="not:view/has_recensions"
-    i18n:translate="recension-no-items">
-    There are no book information items, yet.
-  </p>
-
-  <a href="#" title="Add"
-    tal:condition="can_edit"
-    tal:attributes="
-    href string:${view/container/@@absolute_url}/@@add;
-    cms:lightbox-reload-url string:${context/@@absolute_url}/@@edit.form.recension-list;"
-    cms:lightbox-reload-id="recensions"
-    cms:cp-module="zeit.edit.LightBoxForm"
-    cms:lightbox-in="cp-content"
-    i18n:attributes="title"
-    i18n:translate="">
-    [Add new...]
-  </a>
-</div>
+</fieldset>

@@ -98,8 +98,13 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.recension-list')
 >>> print browser.contents
-<div id="recensions">
+<fieldset id="recensions">
+    <legend>
+      Recensions
+    </legend>
+    <div class="recensions">
 ...
+</fieldset>
 
 
 >>> browser.open('@@edit.form.workflow-status')
