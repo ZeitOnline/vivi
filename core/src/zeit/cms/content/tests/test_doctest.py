@@ -12,6 +12,7 @@ def test_suite():
         'property.txt',
         package='zeit.cms.content'))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+        'contentmemo.txt',
         'contentuuid.txt',
         'dav.txt',
         'dublincore.txt',

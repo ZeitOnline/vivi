@@ -1,0 +1,65 @@
+================================
+Adding a memo to content objects
+================================
+
+We are able to provide each content object with additional remarks, stored into
+a memo.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+
+We need an interaction as checkout manager needs to get the principal:
+
+>>> import zeit.cms.testing
+>>> principal = zeit.cms.testing.create_interaction()
+
+We checkout a test content object:
+
+>>> import zeit.cms.interfaces
+>>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+
+We only have an empty memo at first:
+
+>>> import zeit.cms.content.interfaces
+>>> memo = zeit.cms.content.interfaces.IMemo(content).memo
+>>> memo is None
+True
+
+We check out the test content object:
+
+>>> from zeit.cms.checkout.interfaces import (
+...     ICheckoutManager, ICheckinManager)
+>>> checked_out = ICheckoutManager(content).checkout()
+
+We still don't have a memo:
+
+>>> memo = zeit.cms.content.interfaces.IMemo(checked_out)
+>>> memo.memo is None
+True
+
+Let's set a note to the memo and check in:
+
+>>> memo.memo = u'Not yet finished.'
+>>> memo.memo
+u'Not yet finished.'
+
+>>> checkin_manager = ICheckinManager(checked_out)
+>>> checked_in = checkin_manager.checkin()
+>>> ci_memo = zeit.cms.content.interfaces.IMemo(checked_in).memo
+>>> ci_memo
+u'Not yet finished.'
+
+Now we may change the memo:
+
+>>> checkout_manager = ICheckoutManager(content)
+>>> checked_out = checkout_manager.checkout()
+>>> memo = zeit.cms.content.interfaces.IMemo(checked_out)
+>>> memo.memo
+u'Not yet finished.'
+
+>>> memo.memo = u'Everything is fine now'
+>>> checkin_manager = ICheckinManager(checked_out)
+>>> checked_in = checkin_manager.checkin()
+>>> memo = zeit.cms.content.interfaces.IMemo(checked_in).memo
+>>> memo
+u'Everything is fine now'
