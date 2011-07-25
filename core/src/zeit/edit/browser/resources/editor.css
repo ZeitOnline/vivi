@@ -469,7 +469,7 @@ div div.landing-zone:first-child {
 .inline-form .dirty div.widget > textarea,
 .inline-form .dirty div.widget > div > div > select,
 .inline-form .dirty div.widget > .objectsequencewidget {
-  background-color: yellow;
+  background-color: #ddd;
 }
 
 .inline-form .dirty div.widget > input[type=checkbox] {
