@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 import cjson
-import zeit.workflow.interfaces
+import zeit.cms.workflow.interfaces
 
 
 class Publish(object):
