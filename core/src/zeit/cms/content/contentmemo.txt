@@ -45,8 +45,8 @@ u'Not yet finished.'
 
 >>> checkin_manager = ICheckinManager(checked_out)
 >>> checked_in = checkin_manager.checkin()
->>> ci_memo = zeit.cms.content.interfaces.IMemo(checked_in).memo
->>> ci_memo
+>>> memo = zeit.cms.content.interfaces.IMemo(checked_in).memo
+>>> memo
 u'Not yet finished.'
 
 Now we may change the memo:
@@ -63,3 +63,18 @@ u'Not yet finished.'
 >>> memo = zeit.cms.content.interfaces.IMemo(checked_in).memo
 >>> memo
 u'Everything is fine now'
+
+Make sure the memo has no XML representation.
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(checked_in.xml, pretty_print=True)
+<testtype>
+  <head>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date-last-modified">...</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="last_modified_by">zope.user</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta" name="type">testcontenttype</attribute>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="uuid">...</attribute>
+  </head>
+  <body/>
+</testtype>
+
