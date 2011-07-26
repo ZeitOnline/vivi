@@ -266,7 +266,7 @@ class MiscLayout(zeit.edit.browser.form.InlineForm):
         zeit.content.article.interfaces.IArticleMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'layout')
-    
+
 
 class WorkflowForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article workflow forms."""
