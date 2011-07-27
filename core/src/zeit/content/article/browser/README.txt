@@ -120,56 +120,6 @@ Traceback (most recent call last):
     ...
 LookupError: label 'File name'
 
-Relating images and other content is done on the "asset" page. There is no
-read-only view to the assets:
-
->>> browser.getLink('Assets').click()
-Traceback (most recent call last):
-    ...
-LinkNotFoundError
-
->>> browser.getLink('Edit assets').click()
-
-Let's add an image:
-
->>> browser.getControl('Add Images').click()
->>> browser.getControl(name="form.images.0.").value = (
-...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
->>> browser.getControl('Apply').click()
->>> 'There were errors' in browser.contents
-False
-
-Let's relate a content object:
-
->>> browser.getControl('Add Related content').click()
->>> browser.getControl(name="form.related.0.").value = (
-...     'http://xml.zeit.de/online/2007/01/thailand-anschlaege')
->>> browser.getControl('Apply').click()
->>> 'There were errors' in browser.contents
-False
-
-
-We also want to add an image group[2]_.
-
->>> browser.getControl('Add Images').click()
->>> browser.getControl(name="form.images.1.").value = group.uniqueId
-
-Aggregate the comments of another object:
-
->>> browser.getControl('Aggregate comments').value = (
-...     'http://xml.zeit.de/online/2007/01/Somalia')
-
-Apply changes:
-
->>> browser.getControl('Apply').click()
->>> print browser.contents
-<?xml ...
-    ...Updated on...
-
-Verify:
-
->>> browser.getControl(name="form.images.0.").value
-'http://xml.zeit.de/2006/DSC00109_2.JPG'
 
 
 WYSIWYG-Editor
@@ -251,15 +201,6 @@ We check in the document. We look at the document in the repository then:
 >>> article_url
 'http://localhost/++skin++cms/repository/.../...tmp/@@view.html'
 
-
-Let's make sure the image is linked:
-
->>> browser.getLink('Assets').click()
->>> print browser.contents
-<?xml ...
-<li>...<a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"...
-<li>...<a href="http://localhost/++skin++cms/repository/image-group"...
-
 After checking in we also do not have an edit metadata link:
 
 >>> browser.getLink('Edit metadata')
@@ -282,107 +223,6 @@ But a view tab is there:
 >>> browser.url
 'http://localhost/++skin++cms/repository/.../...tmp/@@view.html'
 
-
-Syndicating
-===========
-
-When we syndicate the article the feed will be linked in the article. Let's use
-`politik.feed` as a syndication target:
-
->>> browser.getLink('Syndicate').click()
->>> print browser.contents
-<?xml ...
-<!DOCTYPE ...
-    <p>
-    You need to select a feed as a syndication target first, before you
-    can syndicate this article.
-    </p>
-    ...
->>> url = browser.url
->>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
->>> browser.getLink('Remember as syndication target').click()
->>> browser.open(url)
-
->>> browser.getLink('Syndicate').click()
->>> checkbox = browser.getControl(
-...    name='selection_column.aHR0cDovL3htbC56ZWl0LmRlL3BvbGl0aWsuZmVlZA==.')
->>> checkbox.value = True
->>> browser.getControl('Syndicate').click()
-
-The article is now syndicated in the feed. Verify this by looking at the feed
-xml source:
-
->>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
->>> browser.getLink('Checkout').click()
->>> browser.getLink('Source').click()
->>> print browser.getControl(name='form.xml').value.replace('\r\n', '\n')
-<channel>
-  <title>Politik</title>
-  <container>
-    <block ...href="http://xml.zeit.de/online/2007/01/...tmp" year="2007" issue="2"...>
-      <supertitle py:pytype="str">Halle</supertitle>
-      <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline py:pytype="str">by Dr. Who</byline>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-        <bu xsi:nil="true"/>
-        <copyright...
-      </image>
-    </block>
-  </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
-</channel>
->>> browser.getLink('Checkin').click()
-
-
-Checking in a Syndicated Article
-================================
-
-We change the article's teaser and check it in. We expect to see the change in
-the feeds automatically:
-
->>> browser.open(article_url)
->>> browser.getLink('Checkout').click()
->>> browser.getLink('Edit metadata').click()
->>> browser.getControl(name='form.teaserTitle').value = 'Trinker zur Kasse'
->>> browser.getControl('Apply').click()
->>> browser.getLink('Checkin').click()
->>> import gocept.async.tests
->>> import zope.app.component.hooks
->>> old_site = zope.app.component.hooks.getSite()
->>> zope.app.component.hooks.setSite(getRootFolder())
->>> gocept.async.tests.process('events')
->>> zope.app.component.hooks.setSite(old_site)
-
-Now the feed has been changed. Verify this by checking out the feed and looking
-at its xml source:
-
->>> browser.open('http://localhost/++skin++cms/repository/politik.feed')
->>> browser.getLink('Checkout').click()
->>> browser.getLink('Source').click()
->>> print browser.getControl(name='form.xml').value.replace('\r', '')
-<channel>
-  <title>Politik</title>
-  <container>
-    <block ...href="http://xml.zeit.de/online/2007/01/...tmp" year="2007" issue="2"...>
-      <supertitle py:pytype="str">Halle</supertitle>
-      <title py:pytype="str">Trinker zur Kasse</title>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline py:pytype="str">by Dr. Who</byline>
-      <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
-        <bu xsi:nil="true"/>
-        <copyright...
-      </image>
-    </block>
-  </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
-</channel>
-
-Check the feed back in to have nothing laying around:
-
->>> browser.getLink('Checkin').click()
 
 
 .. [2] Create an image group. To create it we need to setup the site:

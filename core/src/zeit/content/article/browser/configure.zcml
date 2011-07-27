@@ -59,11 +59,6 @@
     menu="zeit-context-views" title="Edit WYSIWYG"
     />
 
-  <!-- make the article want asset views. -->
-  <class class="..article.Article">
-    <implements interface="zeit.cms.content.browser.interfaces.IAssetViews" />
-  </class>
-
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSOldStyles"
@@ -122,5 +117,6 @@
     factory=".workflow.ArticleWorkflowForm"
     provides="zeit.workflow.browser.interfaces.IWorkflowForm"
     />
+   
 
 </configure>
