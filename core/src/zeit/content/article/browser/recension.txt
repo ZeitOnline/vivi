@@ -40,13 +40,17 @@ Let's add one:
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.open(listing)
 >>> print browser.contents
-<div id="recensions">...
-  <div class="recension">
-    <a...>
-      Frank Schwanitz:
-      Der Schwarm [edit]
-    </a>
-    ...
+<fieldset id="recensions">
+  <legend>
+    Recensions
+  </legend>
+  <div class="recensions">...
+    <div class="recension">
+      <a...>
+        Frank Schwanitz:
+        Der Schwarm [edit]
+      </a>
+      ...
 
 After adding the first recensions, has_recensions is set (it's needed for
 XSLT). XXX Note that it currently is never removed again.
@@ -66,22 +70,26 @@ Let's edit and add some more information:
 >>> browser.getControl('Apply').click()
 >>> browser.open(listing)
 >>> print browser.contents
-<div id="recensions">...
-  <div class="recension">
-    <a...>
-      Frank Schwanitz:
-      Der Schwarm [edit]
-    </a>
-    <dl>
-      <dt>Publisher</dt>
-      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+<fieldset id="recensions">
+  <legend>
+    Recensions
+  </legend>
+  <div class="recensions">...
+    <div class="recension">
+      <a...>
+        Frank Schwanitz:
+        Der Schwarm [edit]
+      </a>
+      <dl>
+        <dt>Publisher</dt>
+        <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+        ...
+      <dd class="location">Koeln</dd>
       ...
-    <dd class="location">Koeln</dd>
-    ...
-    <dd class="year">2004</dd>
-    ...
-    <dd class="price">24.90</dd>
-    ...
+      <dd class="year">2004</dd>
+      ...
+      <dd class="price">24.90</dd>
+      ...
 
 Note that the price is not rendered correctly, yet. We would like a decimal or
 just a TextLine but we need lxml 2.0 for this.
@@ -124,32 +132,36 @@ Let's add another recension:
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.open(listing)
 >>> print browser.contents
-<div id="recensions">...
-  <div class="recension">
-    <a...>
-      Frank Schwanitz:
-      Der Schwarm [edit]
-    </a>
-    ...
-      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+<fieldset id="recensions">
+  <legend>
+    Recensions
+  </legend>
+  <div class="recensions">...
+    <div class="recension">
+      <a...>
+        Frank Schwanitz:
+        Der Schwarm [edit]
+      </a>
       ...
-      <dd class="location">Koeln</dd>
+        <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+        ...
+        <dd class="location">Koeln</dd>
+        ...
+        <dd class="year">2004</dd>
+        ...
+        <dd class="price">24.90</dd>
+        ...
+    <div class="recension">
+      <a...>
+        Theodor W. Adorno:
+        Minima Moralia [edit]
+      </a>
       ...
-      <dd class="year">2004</dd>
+      <dd class="publisher">Suhrkamp</dd>
       ...
-      <dd class="price">24.90</dd>
+      <dd class="location">Zuerich</dd>
       ...
-  <div class="recension">
-    <a...>
-      Theodor W. Adorno:
-      Minima Moralia [edit]
-    </a>
+      <dd class="year">2001</dd>
+      ...
+      <dd class="price">13.80</dd>
     ...
-    <dd class="publisher">Suhrkamp</dd>
-    ...
-    <dd class="location">Zuerich</dd>
-    ...
-    <dd class="year">2001</dd>
-    ...
-    <dd class="price">13.80</dd>
-  ...

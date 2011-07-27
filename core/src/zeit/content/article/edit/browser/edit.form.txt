@@ -25,33 +25,27 @@ Those forms are loaded via javascript:
 >>> browser.open('@@edit.form.metadata-a')
 >>> print browser.contents
 <fieldset>
-<legend></legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.ressort">Ressort</label>
     <span class="required">required</span>
   </div>
-  <div class="widget">...
-</div>
+...
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.sub_ressort">Sub ressort</label>
   </div>
-  <div class="widget">...
-</div>
+...
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.keywords">Keywords</label>
   </div>
-  <div class="widget">...
-</div>
 ...
 
 
 >>> browser.open('@@edit.form.metadata-b')
 >>> print browser.contents
 <fieldset>
-<legend></legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="" for="metadata-b.product">Product id</label>
@@ -67,19 +61,17 @@ Those forms are loaded via javascript:
   <div class="widget">...
 </div>
 <div class="widget-outer">
+  <div class="widget">...
   <div class="label">
     <label cms:tooltip="Should this article be listed in the daily newsletter?"
         for="metadata-b.dailyNewsletter">Daily newsletter</label>
   </div>
-  <div class="widget">...
-</div>
 ...
 
 
 >>> browser.open('@@edit.form.metadata-c')
 >>> print browser.contents
 <fieldset>
-<legend></legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip=""
@@ -106,8 +98,13 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.recension-list')
 >>> print browser.contents
-<div id="recensions">
+<fieldset id="recensions">
+    <legend>
+      Recensions
+    </legend>
+    <div class="recensions">
 ...
+</fieldset>
 
 
 >>> browser.open('@@edit.form.workflow-status')
@@ -115,26 +112,24 @@ Those forms are loaded via javascript:
 <fieldset>
 <legend>Status</legend>
 <div class="widget-outer">
+  <div class="widget">...
   <div class="label">
     <label cms:tooltip=""
-        for="workflow-status.last_modified_by">Last modified by</label>
+        for="workflow-status.published">Published</label>
   </div>
-  <div class="widget">...
-</div>
 ...
 
 
->>> browser.open('@@edit.form.workflow-settings')
+>>> browser.open('@@edit.form.workflow-publication-period')
 >>> print browser.contents
 <fieldset>
-<legend>Settings</legend>
+<legend>Publication period</legend>
 <div class="widget-outer">
   <div class="label">
     <label cms:tooltip="Leave empty for no constraint."
-        for="workflow-settings.release_period">Publication period</label>
+        for="workflow-publication-period.release_period">Publication period</label>
   </div>
   <div class="widget">...
-</div>
 ...
 
 

@@ -390,10 +390,29 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.WorkflowForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.workflow-status"
+    name="edit.form.workflow-dates"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.workflow-dates"
+    class=".form.WorkflowDates"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-status"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
     />
 
   <browser:page
@@ -409,17 +428,55 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.WorkflowForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.workflow-settings"
+    name="edit.form.workflow-publication-dates"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="20"
+    weight="30"
     />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.workflow-settings"
-    class=".form.WorkflowSettings"
+    name="edit.form.workflow-publication-dates"
+    class=".form.WorkflowPublicationDates"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-quality-assurance"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="40"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.workflow-quality-assurance"
+    class=".form.WorkflowQualityAssurance"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.WorkflowForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-publication-period"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="50"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.workflow-publication-period"
+    class=".form.WorkflowPublicationPeriod"
     permission="zope.View"
     />
 
@@ -431,7 +488,7 @@
     name="edit.form.workflow-log"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="50"
+    weight="60"
     />
 
   <browser:page
