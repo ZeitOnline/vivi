@@ -15,10 +15,10 @@
 
     <div tal:repeat="widget view/widget_data"
          tal:attributes="class widget/css_class">
+    <div class="widget"
+         tal:condition="widget/widget/reversed|nothing"
+         tal:content="structure widget/widget"/>
       <div class="label">
-        <div class="widget"
-             tal:condition="widget/widget/reversed|nothing"
-             tal:content="structure widget/widget"/>
         <label tal:attributes="
                cms:tooltip widget/widget/hint;
                for widget/widget/name"
