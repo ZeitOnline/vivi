@@ -221,9 +221,9 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     def test_remove_should_removee_hidden_field_with_unique_id(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
-        s.waitForElementPresent('css=input[name=testwidget.0]')
+        s.waitForElementPresent("//input[@name='testwidget.0']")
         s.click('css=a[rel=remove]')
-        s.waitForElementNotPresent('css=input[name=testwidget.0]')
+        s.waitForElementNotPresent("css=input[@name='testwidget.0']")
 
     def test_remove_should_decrease_count(self):
         s = self.selenium
@@ -246,15 +246,15 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
-        s.assertValue('css=input[name=testwidget.0]',
+        s.assertValue("//input[@name='testwidget.0']",
                       'http://xml.zeit.de/testcontent')
-        s.assertValue('css=input[name=testwidget.1]',
+        s.assertValue("//input[@name='testwidget.1']",
                       'http://xml.zeit.de/2007')
         s.dragAndDropToObject('css=li.element[index=0]',
                               'css=li.element[index=1]')
-        s.assertValue('css=input[name=testwidget.0]',
+        s.assertValue("//input[@name='testwidget.0']",
                       'http://xml.zeit.de/2007')
-        s.assertValue('css=input[name=testwidget.1]',
+        s.assertValue("//input[@name='testwidget.1']",
                       'http://xml.zeit.de/testcontent')
 
 
