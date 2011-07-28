@@ -191,17 +191,17 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     def test_drop_should_create_hidden_field_with_unique_id(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
-        s.waitForElementPresent('css=input[name=testwidget.0]')
-        s.assertValue('css=input[name=testwidget.0]',
+        s.waitForElementPresent("//input[@name='testwidget.0']")
+        s.assertValue("//input[@name='testwidget.0']",
                       'http://xml.zeit.de/testcontent')
 
     def test_drop_should_increase_count(self):
         s = self.selenium
-        s.assertValue('css=input[name=testwidget.count]', '0')
+        s.assertValue("//input[@name='testwidget.count']", '0')
         s.dragAndDropToObject('id=drag', 'id=testwidget')
-        s.waitForValue('css=input[name=testwidget.count]', '1')
+        s.waitForValue("//input[@name='testwidget.count']", '1')
         s.dragAndDropToObject('id=drag', 'id=testwidget')
-        s.waitForValue('css=input[name=testwidget.count]', '2')
+        s.waitForValue("//input[@name='testwidget.count']", '2')
 
     def test_widget_should_load_details_from_server(self):
         s = self.selenium
@@ -228,10 +228,10 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     def test_remove_should_decrease_count(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
-        s.waitForValue('css=input[name=testwidget.count]', '1')
+        s.waitForValue("//input[@name='testwidget.count']", '1')
         s.waitForElementPresent('css=a[rel=remove]')
         s.click('css=a[rel=remove]')
-        s.waitForValue('css=input[name=testwidget.count]', '0')
+        s.waitForValue("//input[@name='testwidget.count']", '0')
 
     def test_elements_should_be_sortable(self):
         s = self.selenium

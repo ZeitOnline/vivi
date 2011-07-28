@@ -135,37 +135,12 @@
 
     <div class="contextViewsAndActions">
       <div class="context-views"
-        tal:define="context_url context/@@absolute_url;
-        menu_items context/@@view_get_menu/zeit-context-views">
+          tal:define="context_url context/@@absolute_url">
         <ul>
-          <tal:have_items tal:condition="menu_items">
-            <tal:repeat 
-              repeat="menu_item menu_items">
-              <li
-                tal:define="klass python:menu_item['icon'] or menu_item['title'].replace(' ', '_').lower()"
-                tal:attributes="class string:${klass} ${menu_item/selected}">
-                <a
-                  tal:attributes="href string:$context_url/${menu_item/action}"
-                  tal:content="menu_item/title" i18n:translate="">
-                  Checkout
-                </a>
-              </li>
-            </tal:repeat>
-          </tal:have_items>
-          <tal:not_have_items
-            tal:condition="not:menu_items">
-            <li class="selected">
-              <a tal:attributes="href view/@@absolute_url"
-                tal:content="view_title"
-                i18n:translate="">
-                Anzeigen
-              </a>
-            </li>
-          </tal:not_have_items>
+          <tal:replace replace="structure provider:zeit.cms.context-views" />
         </ul>
 
       </div>
-
       <div class="context-actions"
         tal:define="context_url context/@@absolute_url">
         <ul>
