@@ -46,6 +46,26 @@
     permission="zope.View"
     menu="zeit-context-actions-external"
     />
+  
+
+  <browser:viewletManager
+    name="zeit.cms.context-views"
+    provides=".interfaces.IContextViews"
+    layer=".interfaces.ICMSLayer"
+    permission="zope.View"
+    />
+  
+  <browser:viewlet
+    name="internal"
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager=".interfaces.IContextViews"
+    class=".menu.MenuViewlet"
+    template="menu-context-views.pt"
+    permission="zope.View"
+    menu="zeit-context-views"
+    />
+
 
 
   <browser:menu

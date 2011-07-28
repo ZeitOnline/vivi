@@ -72,6 +72,10 @@ class IContextActions(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for actions menu."""
 
 
+class IContextViews(zope.viewlet.interfaces.IViewletManager):
+    """Viewlets for views menu."""
+
+
 class ISecondaryContextActions(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for less important actions (two clicks away.)"""
 
