@@ -20,15 +20,6 @@ input:-moz-placeholder[type="text"] {
   color: inherit;
 }
 
-input[type="text"] {
-    font-family:"Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
-    visibility:visible;
-    border:1px solid #e4e4e4;
-    color:Black;
-    vertical-align:middle;
-    padding: 0.3em;
-}
-
 select {
     border:1px solid #e4e4e4;
     color:Black;
@@ -37,8 +28,10 @@ select {
     padding: 0.2em;
 }
 
-input[type="text"] {
-    padding: 0.3em;
+#edit-form-assets input[type="text"] {
+    padding: 1em;
+    width:278px;
+    font-size:12px;
 }
 
 
@@ -92,7 +85,6 @@ legend {
   font-weight: bold;
   background-color: transparent;
   text-transform: uppercase;
-  letter-spacing: 0.2em;
   position: relative;
   display: block;
   top: -2px;
