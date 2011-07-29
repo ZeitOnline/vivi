@@ -143,6 +143,10 @@ class DropDownMenuBase(object):
 
         self.items = provider.render()
 
+class ContextViewsMenu(MenuItemBase, z3c.menu.simple.menu.ContextMenuItem):
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'context-views-menu-item.pt')
 
 
 class SecondaryActions(DropDownMenuBase, MenuItemBase):
