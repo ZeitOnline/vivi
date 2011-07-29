@@ -356,3 +356,45 @@ class WorkflowLog(zeit.edit.browser.form.InlineForm):
             zeit.objectlog.interfaces.ILog,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
 
+
+class ContextActionForms(zeit.edit.browser.form.FormGroup):
+    """Article workflow forms."""
+
+    title = _('Cotext action')
+
+
+class Urgent(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'urgent'
+    undo_description = _('edit urgent')
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.IContentWorkflow,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+                'urgent'))
+
+
+class ContextAction(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'context action'
+    undo_description = _('context action')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('context-action.pt')
+
+    form_fields = ()
+
+    def __call__(self):
+        ci_manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
+        self.can_checkin = ci_manager.canCheckin
+        co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
+        self.can_checkout = co_manager.canCheckout
+        return super(ContextAction, self).__call__()
+
+
+class Preview(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'preview'
+    undo_description = _('edit preview')

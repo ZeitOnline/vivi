@@ -1,0 +1,12 @@
+<fieldset class="palette">
+  <div class="hlink">
+    <a target="_blank"
+       tal:attributes="href string:${context/@@absolute_url}/@@show_preview"
+       i18n:translate="">Preview</a>
+  </div>
+  <div class="hlink">
+    <a target="_blank"
+       tal:attributes="href string:${context/@@absolute_url}/@@show_live"
+       i18n:translate="">Live</a>
+  </div>
+</fieldset>

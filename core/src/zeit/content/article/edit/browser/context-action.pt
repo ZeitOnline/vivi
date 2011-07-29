@@ -1,0 +1,10 @@
+<fieldset>
+  <a id="checkin" cms:cp-module='follow-link'
+          tal:attributes="href string:${context/@@absolute_url}/@@checkin"
+          tal:condition="view/can_checkin"
+          i18n:translate="">Checkin</a>
+  <a id="checkin_correction" cms:cp-module='follow-link'
+          tal:attributes="href string:${context/@@absolute_url}/@@checkin?semantic_change="
+          tal:condition="view/can_checkin"
+          i18n:translate="">Checkin (correction)</a>
+</fieldset>
