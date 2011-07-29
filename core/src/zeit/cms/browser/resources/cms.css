@@ -11,7 +11,6 @@ body {
   left: 0;
   margin: 0;
   padding: 0;
-  color: #4c4c4c;
   font-size: 12px;
   overflow: hidden;
   font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
@@ -671,12 +670,11 @@ li.busy {
 
 
 .landing-zone.visible {
-  border: 1px dashed #00ee5e;
-  color: #00ee5e;
+  border: 1px dotted green;
   cursor: default;
   display: block;
   height: auto;
-  margin: 1em 0;
+  margin: 0 0;
   padding: 1em;
   visibility: visible;
 }
