@@ -64,6 +64,10 @@ zeit.edit.Editor = gocept.Class.extend({
             target = target.parentNode;
         }
         if (module_name) {
+            if (module_name == 'follow-link') {
+                // Follow links if called explicitly.
+                return;
+            }
             log("Loading module " + module_name);
             event.stop();
             var module = zeit.cms.resolveDottedName(module_name);
