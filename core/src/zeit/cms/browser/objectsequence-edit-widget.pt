@@ -27,6 +27,6 @@
   </div>
 </div>
 <script tal:content="string:
-  new zeit.cms.ObjectSequenceWidget('${view/name}');
+  new zeit.cms.ObjectSequenceWidget('${view/name}', ${view/accept_classes});
 ">
 </script>

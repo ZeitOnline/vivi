@@ -255,6 +255,10 @@ class MultiObjectSequenceWidget(
         return self.context.value_type.queryTaggedValue(
             'zeit.cms.addform.contextfree')
 
+    @property
+    def accept_classes(self):
+        return repr(['uniqueId', 'content-drag-pane'])
+
 
 class ObjectSequenceWidgetDetails(zeit.cms.browser.view.Base):
     """Render details about an content object."""

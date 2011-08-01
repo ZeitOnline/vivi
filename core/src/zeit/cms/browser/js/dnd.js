@@ -437,7 +437,7 @@ zeit.cms.load_object_details = function(uniqueId) {
 
 zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
-    construct: function(widget_id) {
+    construct: function(widget_id, accept) {
         var self = this;
         self.widget_id = widget_id;
         self.element = $(widget_id);
@@ -450,7 +450,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         MochiKit.Signal.connect(
             self.element, 'onclick', self, self.handleClick);
         new MochiKit.DragAndDrop.Droppable(self.element, {
-            accept: ['uniqueId', 'content-drag-pane'],
+            accept: accept,
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
