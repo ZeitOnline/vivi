@@ -241,8 +241,9 @@ class MultiObjectSequenceWidget(
     @property
     def marker(self):
         count = len(self._getFormValue())
-        return ('<input type="hidden" id="%s.count" name="%s.count" value="%d" />'
-                % (self.name, self.name, count))
+        return (
+            '<input type="hidden" id="%s.count" name="%s.count" value="%d" />'
+            % (self.name, self.name, count))
 
     @zope.cachedescriptors.property.Lazy
     def query_view(self):
@@ -300,7 +301,6 @@ class ObjectSequenceWidgetDetails(zeit.cms.browser.view.Base):
         return self.url('@@thumbnail')
 
 
-
 class MultiObjectSequenceDisplayWidget(
     zope.app.form.browser.widget.DisplayWidget):
 
@@ -308,7 +308,8 @@ class MultiObjectSequenceDisplayWidget(
         'objectsequence-display-widget.pt')
 
     def __init__(self, context, source, request):
-        super(MultiObjectSequenceDisplayWidget, self).__init__(context, request)
+        super(MultiObjectSequenceDisplayWidget, self).__init__(
+            context, request)
         self.source = source
 
     def __call__(self):
@@ -359,7 +360,6 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
         return value.uniqueId
 
 
-
 DATETIME_WIDGET_ADDITIONAL = """\
 <input type="button" value="%(label)s"
     onclick="javascript:var date = new Date();
@@ -378,6 +378,8 @@ DATETIME_WIDGET_INFTY = u"""\
             '%(field)s', 'onchange', {target: $('%(field)s')});
     " />
 """
+
+
 class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
     """A datetime widget with additional buttons."""
 
