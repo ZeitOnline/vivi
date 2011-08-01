@@ -46,6 +46,11 @@
    font-size:16px;
 }
 
+#edit-form-filename .widget-outer,
+#edit-form-filename .widget {
+    margin: 0;
+}
+
 .article-editor-inner
   .block.zeit-content-article-edit-interfaces-IParagraph 
   .edit-bar {

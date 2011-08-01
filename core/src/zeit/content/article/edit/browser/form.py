@@ -42,6 +42,33 @@ class ArticleContentBody(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit article content body')
 
 
+class FilenameFormGroup(zeit.edit.browser.form.FormGroup):
+    """ Filename view. """
+
+    title = _('Filename')
+
+
+class NewFilename(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'new-filename'
+    undo_description = _('edit new filename')
+
+    @property
+    def form_fields(self):
+        form_fields = zope.formlib.form.FormFields(
+            zeit.cms.interfaces.ICMSContent,
+            zeit.cms.repository.interfaces.IAutomaticallyRenameable,
+            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+                '__name__', 'rename_to')
+        if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            self.context).renamable:
+            form_fields = form_fields.omit('__name__')
+        else:
+            form_fields = form_fields.omit('rename_to')
+        return form_fields
+
+
 class AssetForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article asset forms."""
 
@@ -133,20 +160,10 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
     prefix = 'metadata-c'
     undo_description = _('edit metadata')
 
-    @property
-    def form_fields(self):
-        form_fields = zope.formlib.form.FormFields(
-            zeit.cms.interfaces.ICMSContent,
-            zeit.cms.content.interfaces.ICommonMetadata,
-            zeit.cms.repository.interfaces.IAutomaticallyRenameable,
-            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-                'author_references', 'rename_to', '__name__')
-        if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            self.context).renamable:
-            form_fields = form_fields.omit('__name__')
-        else:
-            form_fields = form_fields.omit('rename_to')
-        return form_fields
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'author_references')
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
