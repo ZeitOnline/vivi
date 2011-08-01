@@ -474,6 +474,25 @@ div div.landing-zone:first-child {
   outline: 1px solid yellow;
 }
 
+.inline-form div.exit {
+  margin-top: 10px;
+}
+
+.inline-form div.exit > a {
+  color: #F00;
+  background: none repeat scroll 0 0 transparent;
+}
+
+.inline-form div.exit > a.warning {
+  border-radius: 3px 3px 3px 3px;
+  padding: 2px;
+}
+
+.inline-form div.exit > a:hover {
+  color: #FFF;
+  background: #F00;
+}
+
 .widget-outer select {
   width: 180px;
 }
@@ -542,7 +561,6 @@ fieldset {
 
 fieldset.palette {
   float: right;
-  margin-top: -7em;
 }
 
 fieldset .hlink {
