@@ -542,6 +542,28 @@ fieldset {
     padding: 0;
 }
 
+fieldset.palette {
+  float: right;
+  margin-top: -7em;
+}
+
+fieldset .hlink {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+fieldset .hlink a {
+  color: #009BE0;
+}
+
+fieldset .hlink a:hover {
+  color: #990000;
+}
+
+fieldset .hlink a:active {
+  color: #FF6600;
+}
+
 /* Legend */
 
 legend {
@@ -558,4 +580,12 @@ legend {
 
 #recensions a {
   padding-left:10px;
+}
+
+/* Render links as buttons */
+
+#checkin,
+#checkin_correction {
+  -moz-appearance: button;
+  padding: 0.2em;
 }
