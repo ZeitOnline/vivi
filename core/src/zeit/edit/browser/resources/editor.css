@@ -164,11 +164,11 @@ div div.landing-zone:first-child {
 .block > .block-inner {
   border: 1px solid #bbb;
   overflow: hidden; 
-  padding: 5px 1em;
+  padding: 5px 0em;
 }
 
-.block-inner .editable p  {
-  padding-left:0px
+.block-inner .editable p {
+  padding:0px 5px;
 }
 
 .block {
@@ -395,7 +395,6 @@ div div.landing-zone:first-child {
 }
 
 #editor-forms div div.edit-bar {
-    height: 20px;
 }
 
 #editor-forms div div.edit-bar a{
