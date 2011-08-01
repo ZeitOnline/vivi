@@ -531,7 +531,7 @@
     permission="zope.View"
     />
 
-  <!-- workflow -->
+  <!-- context actions -->
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
@@ -549,10 +549,30 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.ContextActionForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.preview"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    template="preview.pt"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.preview"
+    class=".form.Preview"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ContextActionForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.urgent"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="10"
+    weight="20"
     />
 
   <browser:page
@@ -571,7 +591,7 @@
     name="edit.form.context-action"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="20"
+    weight="30"
     />
 
   <browser:page
@@ -579,26 +599,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.context-action"
     class=".form.ContextAction"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ContextActionForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.preview"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    template="preview.pt"
-    weight="30"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.preview"
-    class=".form.Preview"
     permission="zope.View"
     />
 
