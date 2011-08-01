@@ -167,6 +167,14 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         self.assert_ellipsis(
             '...<a rel="show_add_view"...href="zeit.test.add_me"...', result)
 
+    def test_accepted_types_is_escaped_for_javascript(self):
+        field = self.get_field()
+        widget = self.get_widget(field)
+        with mock.patch.object(
+                field.value_type.source, 'get_check_types') as types:
+            types.return_value = [u'foo', 'bar']
+            self.assertEqual("['type-foo', 'type-bar']", widget.accept_classes)
+
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
 
@@ -384,6 +392,15 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
             (choice, request),
             zope.app.form.browser.interfaces.IInputWidget)
         self.assertNotIsInstance(widget, DropObjectWidget)
+
+    def test_accepted_types_is_escaped_for_javascript(self):
+        from zeit.cms.browser.widget import DropObjectWidget
+        choice = self.get_choice()
+        ANY = None
+        widget = DropObjectWidget(choice, choice.source, ANY)
+        with mock.patch.object(choice.source, 'get_check_types') as types:
+            types.return_value = [u'foo', 'bar']
+            self.assertEqual("['type-foo', 'type-bar']", widget.accept_classes)
 
 
 class TestObjectSequenceDisplayWidget(unittest2.TestCase):

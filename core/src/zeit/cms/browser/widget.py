@@ -258,7 +258,7 @@ class MultiObjectSequenceWidget(
 
     @property
     def accept_classes(self):
-        return repr(['uniqueId', 'content-drag-pane'])
+        return js_escape_check_types(self.source)
 
 
 class ObjectSequenceWidgetDetails(zeit.cms.browser.view.Base):
@@ -327,6 +327,11 @@ class MultiObjectSequenceDisplayWidget(
         return result
 
 
+def js_escape_check_types(source):
+    # convert unicode, JS needs 'foo', not u'foo'
+    return repr(['type-' + str(x) for x in source.get_check_types()])
+
+
 DROP_TEMPLATE = u"""\
 <div class="drop-object-widget" id="%(name)s">
     <input type="hidden" name="%(name)s" value="%(value)s" />
@@ -346,7 +351,7 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
         return DROP_TEMPLATE % {
             'name': self.name,
             'value': self._getFormValue(),
-            'accept': ['uniqueId', 'content-drag-pane'],
+            'accept': self.accept_classes,
         }
 
     def _toFieldValue(self, input):
@@ -358,6 +363,10 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
         if value == self.context.missing_value:
             return self._missing
         return value.uniqueId
+
+    @property
+    def accept_classes(self):
+        return js_escape_check_types(self.source)
 
 
 DATETIME_WIDGET_ADDITIONAL = """\
