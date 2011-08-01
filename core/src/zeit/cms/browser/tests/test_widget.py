@@ -215,6 +215,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.assertElementNotPresent('css=li.element')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
         s.waitForElementPresent('css=li.element')
+        s.waitForElementPresent('css=a[rel=remove]')
         s.click('css=a[rel=remove]')
         s.waitForElementNotPresent('css=li.element')
 
