@@ -32,7 +32,7 @@
 
 #editor-forms div div.edit-bar a{
     margin:4px;
-    margin-top:5px;
+    margin-top:3px;
 }
 
 #article-form-workflow.folded,
@@ -86,7 +86,7 @@
 }
 
 .article-editor-inner .dragger .center {
-  height: 22px;
+  height: 12px;
 }
 
 .article-editor-inner .editing .edit-bar > a {
@@ -120,6 +120,14 @@ color: #333;
   color: rgba(255, 255, 255, 0);
 }
 
+#article-editor-text #editable-body .block-inner{
+  padding-top:0px !important;
+}
+
+#article-editor-text #editable-body .block-inner .edit-bar {
+  padding-top:0px !important;
+}
+
 #article-editor-text .block-inner .edit-bar {
   background: -moz-linear-gradient(center top , #FFFFFF, #EDEDED) repeat scroll 0 0 transparent;
 }
@@ -139,7 +147,15 @@ color: #333;
   border-radius: 5px 5px 5px 5px;
   font-size:12px;
   margin: 0 10px;
-  padding: 5px 10px;
+  padding: 0px 10px;
+}
+
+.block-inner > *:first-child {
+  padding-top:5px;
+}
+
+.block-inner > *:last-child {
+  padding-bottom:5px;
 }
 
 .block-inner h3{
