@@ -74,7 +74,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
         self.open_content()
         s = self.selenium
         tags['t1'] = self.get_tag('t1')
-        s.click('link=Update tags')
+        s.clickAndWait('css=button[href="#update_tags"]')
         s.waitForTextPresent('t1')
 
     def test_update_should_honour_disabled_tags(self):
@@ -83,7 +83,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         tags['t1'] = self.get_tag('t1')
         tags['t1'].disabled = True
-        s.click('link=Update tags')
+        s.clickAndWait('css=button[href="#update_tags"]')
         s.waitForElementPresent('id=form.keywords.0')
         s.assertNotChecked('id=form.keywords.0')
 
@@ -91,7 +91,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
         tags = self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click('link=Update tags')
+        s.clickAndWait('css=button[href="#update_tags"]')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
         s.assertChecked('id=form.keywords.0')
