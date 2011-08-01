@@ -218,7 +218,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.click('css=a[rel=remove]')
         s.waitForElementNotPresent('css=li.element')
 
-    def test_remove_should_removee_hidden_field_with_unique_id(self):
+    def test_remove_should_remove_hidden_field_with_unique_id(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForElementPresent("//input[@name='testwidget.0']")
