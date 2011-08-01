@@ -420,7 +420,6 @@ div div.landing-zone:first-child {
 }
 
 .inline-form .label {
-  clear: both;
   display: block;
   float: left;
   overflow: hidden;
