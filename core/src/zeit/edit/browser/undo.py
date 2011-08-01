@@ -8,6 +8,7 @@ import zeit.edit.browser.view
 import zeit.edit.interfaces
 import zope.security.proxy
 
+
 class History(zeit.cms.browser.view.JSON):
 
     resource_library = 'zeit.edit.styles'
