@@ -2,19 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import transaction
-import urllib
 import zeit.cms.browser.menu
-import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
-import zeit.cms.content.interfaces
-import zeit.cms.repository.interfaces
-import zeit.cms.workflow.interfaces
-import zope.browser.interfaces
-import zope.cachedescriptors.property
-import zope.component
-import zope.formlib.form
-import zope.i18n
 
 
 class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
