@@ -38,8 +38,16 @@
     class=".editor.Editor"
     template="editor.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="Edit contents"
     />
+
+  <browser:viewlet
+      name="Edit contents"
+      for="zeit.cms.interfaces.ICMSContent"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      class=".menu.EditContentsMenuItem"
+      manager="zeit.cms.browser.interfaces.IContextViews"
+      permission="zope.View"
+   />
 
   <browser:page
     for="..interfaces.IElement"
