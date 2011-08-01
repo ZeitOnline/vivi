@@ -685,7 +685,7 @@ MochiKit.Signal.connect(window, 'onload', function(event) {
 
 zeit.cms.DropObjectWidget = gocept.Class.extend({
 
-    construct: function(element) {
+    construct: function(element, accept) {
         var self = this;
         self.element = element;
         self.input = MochiKit.DOM.getFirstElementByTagAndClassName(
@@ -693,7 +693,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         self.details = MochiKit.DOM.getFirstElementByTagAndClassName(
             'div', 'object-reference', self.element);
         new MochiKit.DragAndDrop.Droppable(self.element, {
-            accept: ['uniqueId', 'content-drag-pane'],
+            accept: accept,
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {

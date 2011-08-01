@@ -327,7 +327,7 @@ DROP_TEMPLATE = u"""\
     <input type="hidden" name="%(name)s" value="%(value)s" />
     <div class="object-reference"></div>
 </div>
-<script>new zeit.cms.DropObjectWidget("%(name)s");</script>
+<script>new zeit.cms.DropObjectWidget("%(name)s", %(accept)s);</script>
 """
 
 
@@ -341,6 +341,7 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
         return DROP_TEMPLATE % {
             'name': self.name,
             'value': self._getFormValue(),
+            'accept': ['uniqueId', 'content-drag-pane'],
         }
 
     def _toFieldValue(self, input):
