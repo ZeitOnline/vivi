@@ -5,7 +5,7 @@
 
 #edit-form-article-content .widget-outer {
   display:block;
-  float:none;
+  clear:both;
 }
 
 /* editor blocks */
