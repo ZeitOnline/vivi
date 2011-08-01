@@ -8,10 +8,10 @@ import zeit.cms.testing
 import zeit.content.article.testing
 
 
-class CheckinTest(zeit.content.article.testing.SeleniumTestCase):
+class WorkingcopyTest(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(CheckinTest, self).setUp()
+        super(WorkingcopyTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/')
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=checkin')
@@ -20,3 +20,10 @@ class CheckinTest(zeit.content.article.testing.SeleniumTestCase):
         s = self.selenium
         s.clickAndWait('id=checkin')
         s.assertElementNotPresent('id=checkin')
+
+    def test_workingcopy_should_be_removable(self):
+        s = self.selenium
+        s.click('id=delete_workingcopy')
+        s.waitForElementPresent('xpath=//input[@value="Delete"]')
+        s.assertTextPresent('Do you really want to delete your workingcopy?')
+        s.clickAndWait('form.actions.delete')
