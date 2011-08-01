@@ -4,6 +4,38 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <!-- filename -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="filename"
+    class=".form.FilenameFormGroup"
+    permission="zope.View"
+    weight="1"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.FilenameFormGroup"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.new-filename"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.new-filename"
+    class=".form.NewFilename"
+    permission="zope.View"
+    />
+
   <!-- metadata -->
 
   <browser:viewlet
@@ -14,7 +46,7 @@
     name="metadata"
     class=".form.MetadataForms"
     permission="zope.View"
-    weight="1"
+    weight="5"
     />
 
   <browser:viewlet
