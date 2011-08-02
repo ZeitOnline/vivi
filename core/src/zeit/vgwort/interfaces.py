@@ -7,6 +7,7 @@ import zeit.connector.search
 import zope.interface
 import zope.schema
 
+
 class SearchVars(object):
 
     def SearchVar(name, ns):
@@ -20,7 +21,6 @@ class SearchVars(object):
     PUBLIC_TOKEN = SearchVar('public_token', 'vgwort')
     REPORTED_ON = SearchVar('reported_on', 'vgwort')
     REPORTED_ERROR = SearchVar('reported_error', 'vgwort')
-
 
 
 class ITokens(zope.interface.Interface):
