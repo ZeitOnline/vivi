@@ -128,3 +128,29 @@ We can track which articles an author is referenced by:
 ...     zeit.cms.relation.interfaces.IRelations)
 >>> [x.uniqueId for x in rel.get_relations(repository['shakespeare'])]
 [u'http://xml.zeit.de/testcontent']
+
+
+Equality
+========
+
+Author objects in the CMS live at
+/autoren/<letter>/<Firstname_Lastname>/index.xml,
+so the default comparison using __name__ does not do the right thing.
+Thus, authors use their uniqueId to check for equality.
+
+>>> repository['andersen'] = zeit.cms.repository.folder.Folder()
+>>> repository['byron'] = zeit.cms.repository.folder.Folder()
+
+>>> andersen = zeit.content.author.author.Author()
+>>> andersen.firstname = 'Hans Christian'
+>>> andersen.lastname = 'Andersen'
+>>> repository['andersen']['index.xml'] = andersen
+
+>>> byron = zeit.content.author.author.Author()
+>>> byron.firstname = 'George Gordon'
+>>> byron.lastname = 'Byron'
+>>> repository['byron']['index.xml'] = byron
+
+
+>>> repository['andersen']['index.xml'] == repository['byron']['index.xml']
+False
