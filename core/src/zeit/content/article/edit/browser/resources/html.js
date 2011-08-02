@@ -13,7 +13,7 @@ zeit.content.article.html.to_xml = function(tree) {
     ];
 
     // XXX dropping unknown tags but keeping their text is still implemented on
-    // the server side (see zeit.content.article.paragraph), because there'we
+    // the server side (see zeit.content.article.paragraph), because there we
     // can utilize lxml.html.clean there which additionally cleans up any cruft
     // (handy for, say, pastes from MS Word). But from an architecture point of
     // view this too should be done as a step here.
