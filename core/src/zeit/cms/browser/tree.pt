@@ -12,7 +12,8 @@
                     tal:attributes="href item/url">
           2005
         </a>
-        <span class="uniqueId"
+        <span
+              tal:attributes="class string:uniqueId type-${item/type}"
               tal:content="string:${item/displayedObjectUniqueId}">
           http://xml.zeit.de/somalia
         </span>

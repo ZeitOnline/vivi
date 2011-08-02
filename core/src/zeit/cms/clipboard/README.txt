@@ -59,16 +59,16 @@ Clips
 Clips are folders in the clipboard. A clip is always appended at the root but
 can be moved later.
 
->>> clipboard.addClip(u'Politik')
->>> clipboard.addClip(u'Wirtschaft')
+>>> ignore = clipboard.addClip(u'Politik')
+>>> ignore = clipboard.addClip(u'Wirtschaft')
 >>> list(clipboard.keys())
 [u'myfeed', u'Politik', u'Wirtschaft']
 
 Also clips with strange titles can be added:
 
->>> clipboard.addClip('/bin/bash')
->>> clipboard.addClip('@property@')
->>> clipboard.addClip('++etc++site')
+>>> ignore = clipboard.addClip('/bin/bash')
+>>> ignore = clipboard.addClip('@property@')
+>>> ignore = clipboard.addClip('++etc++site')
 >>> list(clipboard.keys())
 [u'myfeed', u'Politik', u'Wirtschaft', u'binbash', u'property@', u'etc++site']
 

@@ -70,17 +70,27 @@ class Tree(zeit.cms.browser.tree.Tree):
             transaction.doom()
         return self()
 
-    def getObjectData(self, obj):
-        data = super(Tree, self).getObjectData(obj)
+    def getTitle(self, obj):
         if zeit.cms.clipboard.interfaces.IClip.providedBy(obj):
-            data['title'] = obj.title
+            return obj.title
         else:
             list_repr = zope.component.queryMultiAdapter(
                 (obj, self.request),
                 zeit.cms.browser.interfaces.IListRepresentation)
             if list_repr is not None and list_repr.title:
-                data['title'] = list_repr.title
-        return data
+                return list_repr.title
+        return super(Tree, self).getTitle(obj)
+
+    def getType(self, obj):
+        if not zeit.cms.clipboard.interfaces.IObjectReference.providedBy(obj):
+            return ''
+
+        for interface in zope.interface.providedBy(obj.references):
+            try:
+                return interface.getTaggedValue('zeit.cms.type')
+            except KeyError:
+                continue
+        return ''
 
     def getAddContext(self, add_to):
         if add_to:

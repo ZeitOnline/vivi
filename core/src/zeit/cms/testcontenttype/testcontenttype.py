@@ -24,10 +24,9 @@ class TestContentType(zeit.cms.content.metadata.CommonMetadata):
         '<head/><body/></testtype>')
 
 
-test_content_type_factory = zeit.cms.content.adapter.xmlContentFactory(
-    TestContentType)
+class TestContentTypeType(zeit.cms.type.XMLContentTypeDeclaration):
 
-resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
-    'testcontenttype')
-resourceFactory = zope.component.adapter(
-    zeit.cms.testcontenttype.interfaces.ITestContentType)(resourceFactory)
+    factory = TestContentType
+    interface = zeit.cms.testcontenttype.interfaces.ITestContentType
+    title = 'Test-Contenttype'
+    type = 'testcontenttype'

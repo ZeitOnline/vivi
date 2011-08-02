@@ -86,6 +86,7 @@ class Tree(zope.publisher.browser.BrowserView):
                 'isroot': root,
                 'url': url,
                 'delete_url': self.getDeleteUrl(obj),
+                'type': self.getType(obj),
                 'selected': selected}
 
     def getTitle(self, obj):
@@ -104,6 +105,10 @@ class Tree(zope.publisher.browser.BrowserView):
 
     def getDeleteUrl(self, obj):
         """Returns the url to delete this content item."""
+        return ''
+
+    def getType(self, obj):
+        """Returns the content type of obj, if applicable."""
         return ''
 
     def expandable(self, obj):
