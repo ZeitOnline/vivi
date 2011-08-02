@@ -18,6 +18,10 @@ editor-ng branch changes
 - Testing: HTTPLayer calls tearDown on the request handler during testTearDown
   now.
 
+- ObjectSequenceWidget and DropObjectWidget don't accept any draggable anymore,
+  they offer a parameter to configure the accept setting instead. Clipboard and
+  zeit.find annotate their draggables with the content types (#9390).
+
 
 1.48.1 (unreleased)
 -------------------
