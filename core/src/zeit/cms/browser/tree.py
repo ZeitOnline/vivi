@@ -1,20 +1,13 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import os
 
 import BTrees.OOBTree
-
-import zope.annotation.factory
-import zope.security.interfaces
-import zope.publisher.browser
-
-import zope.app.pagetemplate
-
 import zc.set
-
 import zeit.cms.browser.interfaces
+import zope.annotation.factory
+import zope.app.pagetemplate
+import zope.publisher.browser
+import zope.security.interfaces
 
 
 class TreeState(BTrees.OOBTree.OOBTree):
