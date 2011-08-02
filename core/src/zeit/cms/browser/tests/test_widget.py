@@ -354,23 +354,26 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s.waitForValue('name=testwidget', '')
 
 
-class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
+class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TestDropObjectWidget, self).setUp()
         self.open(
             '/@@/zeit.cms.javascript.base/tests/dropobjectwidget-accept.html')
 
+    def start_drag(self, locator):
+        s = self.selenium
+        s.mouseDown(locator)
+        s.mouseMoveAt(locator, '10,10')
+
     def test_accepted_class_should_make_dropzone_active(self):
         s = self.selenium
-        s.mouseDown('id=drag')
-        s.mouseMoveAt('id=drag', '10,10')
+        self.start_drag('id=drag')
         s.assertElementPresent('css=.droppable-active')
 
     def test_not_accepted_class_should_not_make_dropzone_active(self):
         s = self.selenium
-        s.mouseDown('id=drag2')
-        s.mouseMoveAt('id=drag2', '10,10')
+        self.start_drag('id=drag2')
         s.assertElementNotPresent('css=.droppable-active')
 
 
