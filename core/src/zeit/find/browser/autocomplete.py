@@ -46,7 +46,7 @@ class SimpleFind(zeit.cms.browser.view.JSON):
         types = self.request.form.get('types', ())
         if term:
             results = zeit.find.search.search(
-                zeit.find.search.query(fulltext=term,
+                zeit.find.search.query(fulltext=term.lower() + '*',
                                        types=types))
         else:
             results = []
