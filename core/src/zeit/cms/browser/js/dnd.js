@@ -25,6 +25,13 @@ MochiKit.Signal.connect(
     div.uniqueId = uniqueId;
     div.drop_query_args = draggable.element.drop_query_args || {};
 
+    forEach(
+        draggable.element.getAttribute('class').split(' '), function(class_) {
+            if (class_.indexOf('type-') == 0) {
+                MochiKit.DOM.addElementClass(div, class_);
+            }
+    });
+
     draggable.element = div;
     draggable.offset = [-10, -10];
 
