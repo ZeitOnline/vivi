@@ -45,6 +45,7 @@ def search(q, sort_order=None):
         'teaser_text',
         'teaser_title',
         'title',
+        'type',
         'uniqueId',
         'volume',
         'year',

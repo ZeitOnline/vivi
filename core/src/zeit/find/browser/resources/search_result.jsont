@@ -1,6 +1,6 @@
 {.repeated section results}
 <div class="search_entry content-details">
-  <span class="uniqueId">{uniqueId}</span>
+  <span class="uniqueId type-{type}">{uniqueId}</span>
   {.section graphical_preview_url}
     <div class="graphical_preview">
       <img src="{@}" />

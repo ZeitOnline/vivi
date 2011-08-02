@@ -3,6 +3,7 @@
 
 import mock
 import unittest
+import zeit.find.tests
 
 
 class TestSearchResult(unittest.TestCase):
@@ -57,7 +58,10 @@ class TestSearchResult(unittest.TestCase):
                 (mock.sentinel.uniqueId, 'preview'),
                 zeit.cms.browser.interfaces.IPreviewURL)
 
+
 class TestFavorites(unittest.TestCase):
+
+    layer = zeit.find.tests.SearchZCMLLayer
 
     def setUp(self):
         from zeit.find.browser.find import Favorites
@@ -87,3 +91,10 @@ class TestFavorites(unittest.TestCase):
             ac().total_hits = None
             hits = self.favorites.get_range_total(self.result)
             self.assertEqual('0', hits)
+
+    def test_no_type_returns_empty_string(self):
+        self.assertEqual('', self.favorites.get_type(self.result))
+
+    def test_type_returns_single_type_from_interface(self):
+        from zeit.content.image.image import Image
+        self.assertEqual('image', self.favorites.get_type(Image()))

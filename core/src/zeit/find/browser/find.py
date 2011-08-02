@@ -116,6 +116,7 @@ class SearchResultBase(JSONView):
         'teaser_text',
         'teaser_title',
         'topic',
+        'type',
         'uniqueId',
         'volume_year',
     )
@@ -198,6 +199,9 @@ class SearchResultBase(JSONView):
         else:
             volume_year = ''
         return volume_year
+
+    def get_type(self, result):
+        return result.get('type', '')
 
 
 class SearchResult(SearchResultBase):
@@ -578,6 +582,14 @@ class Favorites(SearchResultBase):
         if metadata is None:
             return ''
         return metadata.ressort
+
+    def get_type(self, result):
+        for interface in zope.interface.providedBy(result):
+            try:
+                return interface.getTaggedValue('zeit.cms.type')
+            except KeyError:
+                continue
+        return ''
 
     def get_uniqueId(self, result):
         return result.uniqueId
