@@ -4,8 +4,10 @@
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import grokcore.component as grok
+import pytz
 import zeit.addcentral.interfaces
 import zeit.cms.content.dav
+import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.type
@@ -34,16 +36,17 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
         ['last_created'], live=True)
 
     def create(self):
-        now = datetime.datetime.now()
-        newsletter = self._create_newsletter(now)
+        now = datetime.datetime.now(pytz.UTC)
+        newsletter = zeit.newsletter.newsletter.Newsletter()
         self.populate(newsletter)
+        newsletter = self._add_newsletter(newsletter, now)
         self.last_created = now
         return newsletter
 
-    def _create_newsletter(self, timestamp):
+    def _add_newsletter(self, newsletter, timestamp):
         folder = self._find_or_create_folder(timestamp)
         name = self._choose_name(folder, timestamp)
-        folder[name] = zeit.newsletter.newsletter.Newsletter()
+        folder[name] = newsletter
         return folder[name]
 
     def _find_or_create_folder(self, timestamp):
@@ -70,12 +73,15 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
 
     def _get_content_newer_than(self, timestamp):
         if timestamp is None:
-            return []
+            return
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         result = connector.search(
             [FIRST_RELEASED], (FIRST_RELEASED > timestamp.isoformat()))
-        return result
+        for unique_id, released in result:
+            obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
+            if obj is not None:
+                yield obj
 
 
 class NewsletterCategoryType(zeit.cms.repository.folder.FolderType):
@@ -118,20 +124,25 @@ class DailyNewsletterBuilder(Builder):
     grok.name(DAILY_NAME)
 
     # XXX make configurable
-    ressorts = [u'International', u'Deutschland']
+    ressorts = (u'Politik', u'Wirtschaft', u'Meinung', u'Gesellschaft',
+                u'Kultur', u'Wissen', u'Digital', u'Studium', u'Karriere',
+                u'Lebensart', u'Reisen', u'Auto', u'Sport')
 
     def __call__(self, content_list):
         groups = self._group_by_ressort(content_list)
-        for ressort, entries in groups.items():
-            group = self.create_group(ressort)
-            for content in entries:
-                self.create_teaser(group, content)
+        for ressort in self.ressorts:
+            entries = groups.get(ressort)
+            if entries:
+                group = self.create_group(ressort)
+                for content in entries:
+                    self.create_teaser(group, content)
 
     def _group_by_ressort(self, content_list):
         groups = {}
         for content in content_list:
-            metadata = zeit.cms.content.interfaces.ICommonMetadata(content)
-            if metadata.ressort not in self.ressorts:
+            metadata = zeit.cms.content.interfaces.ICommonMetadata(
+                content, None)
+            if metadata is None or metadata.ressort not in self.ressorts:
                 continue
             groups.setdefault(metadata.ressort, []).append(content)
         return groups

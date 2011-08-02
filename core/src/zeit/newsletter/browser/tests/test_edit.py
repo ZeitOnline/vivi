@@ -35,7 +35,7 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.click('link=*Add group')
         s.waitForElementPresent('css=.block.type-group')
 
-    def test_drag_content_to_group_should_create_teaser_block(self):
+    def test_drag_content_to_group_zone_should_create_teaser_block(self):
         self.create_content_and_fill_clipboard()
         s = self.selenium
 
@@ -44,16 +44,16 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.waitForElementPresent('css=.block.type-group')
 
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]', 'css=div.type-group')
+            '//li[@uniqueid="Clip/c3"]', 'css=div.type-group .landing-zone')
         s.waitForElementPresent('css=.block.type-teaser')
         s.assertText('css=.block.type-teaser', '*http://xml.zeit.de/c3*')
 
-    def test_drag_content_to_teaser_should_append_teaser_block(self):
+    def test_drag_content_to_teaser_zone_should_append_teaser_block(self):
         self.create_content_and_fill_clipboard()
         self.test_groups_should_be_addable()
         s = self.selenium
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]', 'css=div.type-group')
+            '//li[@uniqueid="Clip/c3"]', 'css=div.type-group .landing-zone')
         s.waitForElementPresent('css=.block.type-teaser + .landing-zone')
 
         # before:
@@ -83,11 +83,11 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.waitForElementPresent(group2)
 
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]', group1)
+            '//li[@uniqueid="Clip/c1"]', group1 + ' .landing-zone')
         s.waitForElementPresent(group1 + ' .block.type-teaser')
 
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]', group2)
+            '//li[@uniqueid="Clip/c2"]', group2+ ' .landing-zone')
         s.waitForElementPresent(group2 + ' .block.type-teaser')
 
     def test_groups_should_be_sortable_with_drag_and_drop(self):
