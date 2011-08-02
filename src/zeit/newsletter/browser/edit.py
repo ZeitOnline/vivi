@@ -6,6 +6,7 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.image.interfaces
 import zeit.edit.browser.form
 import zeit.edit.browser.landing
 import zeit.edit.browser.view

@@ -29,8 +29,8 @@ class TestBrowserLayer(ZCMLLayer):
     def setUp(cls):
         product_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        product_config['publish-script'] = '/bin/true'
-        product_config['retract-script'] = '/bin/true'
+        product_config['publish-script'] = 'true'
+        product_config['retract-script'] = 'true'
 
     @classmethod
     def tearDown(cls):
@@ -92,5 +92,6 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
         s = self.selenium
         s.refresh()
+        s.waitForElementPresent('//li[@uniqueid="Clip"]')
         s.click('//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')

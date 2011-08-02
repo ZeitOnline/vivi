@@ -72,7 +72,15 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
 
     def test_query_with_none_returns_empty_list(self):
         # XXX is this what we want for the first-ever newsletter created?
-        self.assertEqual([], self.category._get_content_newer_than(None))
+        self.assertEqual(
+            [], list(self.category._get_content_newer_than(None)))
+
+    def test_get_content_newer_than_should_return_objects(self):
+        from zeit.cms.interfaces import ICMSContent
+        ANY = datetime.datetime(2001, 6, 29, 10, 0)
+        result = list(self.category._get_content_newer_than(ANY))
+        for obj in result:
+            self.assertTrue(ICMSContent.providedBy(obj), obj)
 
 
 class DailyNewsletterBuilderTest(zeit.newsletter.testing.TestCase):
@@ -90,17 +98,26 @@ class DailyNewsletterBuilderTest(zeit.newsletter.testing.TestCase):
         return self.repository[name]
 
     def test_groups_content_according_to_ressort(self):
-        c1 = self.create_content('c1', u'Deutschland')
-        c2 = self.create_content('c2', u'International')
-        c3 = self.create_content('c3', u'Deutschland')
+        c1 = self.create_content('c1', u'Politik')
+        c2 = self.create_content('c2', u'Wirtschaft')
+        c3 = self.create_content('c3', u'Politik')
         self.builder([c1, c2, c3])
 
         body = self.newsletter['newsletter_body']
         self.assertEqual(2, len(body))
         group1 = body[body.keys()[0]]
         group2 = body[body.keys()[1]]
-        self.assertEqual(u'International', group1.title)
-        self.assertEqual(u'Deutschland', group2.title)
+        self.assertEqual(u'Politik', group1.title)
+        self.assertEqual(u'Wirtschaft', group2.title)
 
-        self.assertEqual([c2], [x.reference for x in group1.values()])
-        self.assertEqual([c1, c3], [x.reference for x in group2.values()])
+        self.assertEqual([c1, c3], [x.reference for x in group1.values()])
+        self.assertEqual([c2], [x.reference for x in group2.values()])
+
+    def test_group_should_work_if_content_not_adaptable_to_metadata(self):
+        c1 = self.create_content('c1', u'Politik')
+        # One essential part of this test is that the following line does not
+        # raise a "could not adapt" exception
+        self.builder([mock.Mock(), c1])
+        body = self.newsletter['newsletter_body']
+        group1 = body[body.keys()[0]]
+        self.assertEqual(u'Politik', group1.title)
