@@ -28,7 +28,7 @@ The metadata preview shows the most important data in list views:
 Make sure we have a "view" link:
 
 >>> browser.getLink('View')
-<Link text='View metadata' ...>
+<Link text='View' ...>
 
 
 We have to publish another url to see if articles are listed:
