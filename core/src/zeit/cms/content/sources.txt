@@ -345,8 +345,10 @@ Products
 ...     zope.browser.interfaces.ITerms)
 >>> terms.getTerm(list(products)[-1]).title
 u'Zeit Online'
->>> list(products)[-2].vgwortid
-1234
+>>> list(products)[-2].vgwortcode
+u'1234abc'
+>>> list(products)[-1].vgwortcode is None
+True
 
 
 Cache collector

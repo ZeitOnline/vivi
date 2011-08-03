@@ -81,7 +81,7 @@ class ICommonMetadata(zope.interface.Interface):
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
     authors = zope.schema.Tuple(
-        title=_("Authors (freetext)"),
+        title=_("Authors"),
         value_type=zope.schema.TextLine(),
         required=False,
         default=(u'',),
@@ -196,7 +196,7 @@ class IProduct(zope.interface.Interface):
 
     id = zope.interface.Attribute('id')
     title = zope.interface.Attribute('title')
-    vgwortid = zope.interface.Attribute('VGWort id, optional')
+    vgwortcode = zope.interface.Attribute('VGWort code, optional')
 
 
 class IDAVPropertyConverter(zope.interface.Interface):

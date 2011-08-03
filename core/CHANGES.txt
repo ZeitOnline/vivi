@@ -23,15 +23,26 @@ editor-ng branch changes
   zeit.find annotate their draggables with the content types (#9390).
 
 
-1.48.1 (unreleased)
+1.49.2 (unreleased)
 -------------------
 
-- Add SourceFactory helper for sources with a small set of fixed values
-  (for #8953).
-- Change ICommonMetadata.product_id to be a product object with id, title and
-  VGWort-ID (for #9033).
-- Enable UI for author references (#7441, #7333).
+- Nothing changed yet.
 
+
+1.49.1 (2011-06-21)
+-------------------
+
+- Fix product source so it works in the face of SecurityProxies (#9231).
+
+
+1.49.0 (2011-06-20)
+-------------------
+
+- Add SourceFactory helper for sources with a small set of fixed values (for
+  #8953).
+
+- Change ICommonMetadata.product_id to be a product object with id, title and
+  VGWort-Code (for #9033).
 
 1.48.0 (2011-03-23)
 -------------------
