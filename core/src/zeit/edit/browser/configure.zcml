@@ -36,7 +36,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.html"
     class=".editor.Editor"
-    template="editor.pt"
     permission="zope.View"
     />
 
