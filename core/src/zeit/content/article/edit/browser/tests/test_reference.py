@@ -95,8 +95,8 @@ class GalleryTest(unittest2.TestCase,
                 'http://xml.zeit.de/testcontent')
         # NOTE: the error message should be improved
         self.assert_ellipsis(
-            "ConstraintNotSatisfied(<zeit.cms.repository.unknown."
-            "PersistentUnknownResource object at 0x...>)")
+            "ConstraintNotSatisfied(<zeit.cms.testcontenttype..."
+            "object at 0x...>)")
 
     def test_droping_type_on_landing_zone_creates_block(self):
         article = self.get_article()
