@@ -103,7 +103,7 @@ zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
 });
 
 
-var ObjectReferenceWidget = gocept.Class.extend({
+zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
     // Widget for referencing one object via unique id.
     //
     // This is also thought to be used multiple times in one formlib field,
