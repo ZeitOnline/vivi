@@ -142,7 +142,7 @@ zeit.content.cp.teaser.Drag = zeit.edit.context.ContentActionBase.extend({
 (function() {
     var remove_from_cp = function(draggable_element, droppable, data_element) {
         // Check if object was dragged from the CP
-        var dragged = draggable_element.dragged_element;
+        var dragged = draggable_element.source_element;
         if (!MochiKit.DOM.isChildNode(dragged, 'cp-content')) {
             return
         }
