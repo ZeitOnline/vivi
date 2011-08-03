@@ -124,6 +124,8 @@
       tooltip.js
       lightbox.js
       dnd.js
+      object_reference.js
+      object_sequence.js
       table.js
       xeyes.js
       menu.js
