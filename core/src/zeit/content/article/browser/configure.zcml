@@ -22,6 +22,15 @@
       manager="zeit.cms.browser.interfaces.IContextViews"
       permission="zeit.workflow.Publish"
    />
+ 
+ <browser:viewlet
+      name="Edit contents"
+      for="zeit.content.article.interfaces.IArticle"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      class=".menu.EditContentsMenuItem"
+      manager="zeit.cms.browser.interfaces.IContextViews"
+      permission="zope.View"
+   />
   
   <browser:defaultView
     for="zeit.content.article.interfaces.IArticle"
