@@ -82,6 +82,8 @@ def add_token(context, event):
     token.public_token, token.private_token = tokens.claim()
 
     class Dummy(object):
+        tzinfo = 'none'
+
         def isoformat(self):
             return ''
     never = Dummy()
