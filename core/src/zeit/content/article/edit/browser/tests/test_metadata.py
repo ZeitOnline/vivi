@@ -87,7 +87,7 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Saarland')
         s.dragAndDropToObject(
             'css=#breadcrumbs li:last-child a',
-            'css=#ClipboardPanel li[uniqueId="Favoriten"] a')
+            'css=#ClipboardPanel li[uniqueid="Favoriten"] a')
         s.waitForElementPresent('css=#ClipboardPanel ul > li > ul > li + li')
 
         # Open editor again

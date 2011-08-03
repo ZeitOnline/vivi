@@ -1,10 +1,23 @@
 .block .block-inner > * {
 }
 
+/* Textareas not inline */
+
+#edit-form-article-content .widget-outer {
+  display:block;
+  float:none;
+}
+
 /* editor blocks */
 
 #editable-body {
   /*margin-left: 3em;*/
+}
+
+#editable-body .editable {
+    font-family: Georgia,Palatino,Palatino Linotype,FreeSerif,serif;
+    font-size: 16px;
+    line-height:1.5em;
 }
 
 #editor-forms {
@@ -13,7 +26,7 @@
 }
 
 #editor-forms div div.edit-bar {
-    margin: 0 0 4px 15px;
+    margin: 0 0 4px 0px;
     background: none 0;
 }
 
@@ -27,6 +40,10 @@
 #article-form-metadata.folded {
  border-bottom:0;
 
+}
+
+#edit-form-article-content #article-content-head.title, #edit-form-article-content #article-content-head.subtitle {
+   font-size:16px;
 }
 
 .article-editor-inner
@@ -69,7 +86,7 @@
 }
 
 .article-editor-inner .dragger .center {
-  height: 9px;
+  height: 22px;
 }
 
 .article-editor-inner .editing .edit-bar > a {
@@ -81,6 +98,31 @@
   margin-left: 0em;
 }
 
+#article-editor-text .landing-zone a {
+color: #333;
+    vertical-align: baseline;
+    outline: none;
+    cursor: pointer;
+    text-align: center;
+    text-decoration: none;
+    font: Arial, Helvetica, sans-serif;
+    line-height:1.5em;
+    -moz-appearance:button;
+}
+
+#article-editor-text .landing-zone a:before {
+  content:"|";
+  color: rgba(255, 255, 255, 0);
+}
+
+#article-editor-text .landing-zone a:after {
+  content:"|";
+  color: rgba(255, 255, 255, 0);
+}
+
+#article-editor-text .block-inner .edit-bar {
+  background: -moz-linear-gradient(center top , #FFFFFF, #EDEDED) repeat scroll 0 0 transparent;
+}
 
 .article-text {
   margin: 10px;
@@ -126,7 +168,7 @@
 .rte-toolbar {
   background-color: #f0f0ee;
   border :1px solid #cccccc;
-  left: -21px;
+  left: -11px;
   position: absolute;
 }
 

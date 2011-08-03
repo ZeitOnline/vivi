@@ -499,4 +499,75 @@
     permission="zope.View"
     />
 
+  <!-- workflow -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="context-action"
+    class=".form.ContextActionForms"
+    permission="zope.View"
+    weight="70"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ContextActionForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.urgent"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.urgent"
+    class=".form.Urgent"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ContextActionForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.context-action"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.context-action"
+    class=".form.ContextAction"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ContextActionForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.preview"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    template="preview.pt"
+    weight="30"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.preview"
+    class=".form.Preview"
+    permission="zope.View"
+    />
+
 </configure>
