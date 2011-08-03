@@ -16,15 +16,10 @@ class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
 
     @property
     def title(self):
-        """Changes wheter item is checked out or checked in"""
-        checkout = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
-        if checkout.canCheckout:
-            return _("View")
         return _("Edit contents")
 
     @property
     def selected(self):
         """We are selected when no other item is selected."""
         selected = self.request.getURL().endswith('@@edit.html')
-        selected = selected or self.request.getURL().endswith('@@view.html')
         return selected
