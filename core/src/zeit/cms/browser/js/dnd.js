@@ -1,6 +1,30 @@
 // Copyright (c) 2007-2011 gocept gmbh & co. kg
 // See also LICENSE.txt
 
+zeit.cms.createDraggableContentObject = function(element, options) {
+    element = $(element);
+    var default_options = {
+        drop_query_args: {},
+        endeffect: null,
+        handle: element,
+        starteffect: null,
+        zindex: null
+    };
+    MochiKit.Base.update(default_options, options);
+    var drop_query_args = default_options['drop_query_args'];
+    delete default_options['drop_query_args'];
+    var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
+             'span', 'uniqueId', element);
+    unique_id_element.pane_element = element;
+    unique_id_element.is_content_object = true;
+    unique_id_element.drop_query_args = drop_query_args;
+    return new MochiKit.DragAndDrop.Draggable(
+        unique_id_element, default_options);
+};
+
+
+(function() {
+
 MochiKit.Signal.connect(
     MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
     // Generic handler for displaying the drag pane for draggables
@@ -42,65 +66,35 @@ MochiKit.Signal.connect(
 });
 
 
-(function() {
-
-    MochiKit.Signal.connect(
-        MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
-        // Generic handler for hiding the drag pane after dragging ended.
-        var element = draggable.element;
-        var dragged_element = element.dragged_element;
-        if (isUndefinedOrNull(dragged_element)) {
-            return;
-        }
-        draggable.element = dragged_element;
-        MochiKit.Visual.fade(element);
-    });
-})();
-
-
-zeit.cms.createDraggableContentObject = function(element, options) {
-    element = $(element);
-    var default_options = {
-        drop_query_args: {},
-        endeffect: null,
-        handle: element,
-        starteffect: null,
-        zindex: null
-    };
-    MochiKit.Base.update(default_options, options);
-    var drop_query_args = default_options['drop_query_args'];
-    delete default_options['drop_query_args'];
-    var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
-             'span', 'uniqueId', element);
-    unique_id_element.pane_element = element;
-    unique_id_element.is_content_object = true;
-    unique_id_element.drop_query_args = drop_query_args;
-    return new MochiKit.DragAndDrop.Draggable(
-        unique_id_element, default_options);
-};
-
-
-zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
-    process_post_result: function(result) {
-        var self = this;
-
-        if (self.has_errors()) {
-            return result;
-        }
-
-        // enable the visual effect to work
-        MochiKit.DOM.removeElementClass(self.container, 'busy');
-
-        var node = getFirstElementByTagAndClassName(
-            'span', 'result', self.container);
-        var unique_id = node.textContent;
-        MochiKit.Signal.signal(
-            self, 'zeit.cms.ObjectReferenceWidget.selected',
-            unique_id, node);
-        return null;
+MochiKit.Signal.connect(
+    MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
+    // Generic handler for hiding the drag pane after dragging ended.
+    var element = draggable.element;
+    var dragged_element = element.dragged_element;
+    if (isUndefinedOrNull(dragged_element)) {
+        return;
     }
+    draggable.element = dragged_element;
+    MochiKit.Visual.fade(element);
+});
+
+// set up draggables for breadcrumbs
+MochiKit.Signal.connect(window, 'onload', function(event) {
+    var breadcrumbs = $('breadcrumbs');
+    if (breadcrumbs === null) {
+        return;
+    }
+    var lis = breadcrumbs.getElementsByTagName('li');
+    forEach(lis, function(li) {
+        if (!isUndefinedOrNull(MochiKit.DOM.getFirstElementByTagAndClassName(
+            'span', 'uniqueId', li))) {
+            zeit.cms.createDraggableContentObject(li);
+        }
+    });
 
 });
+
+})();
 
 
 zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
@@ -622,23 +616,6 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 });
 
 
-// Connect breadcrumbs
-MochiKit.Signal.connect(window, 'onload', function(event) {
-    var breadcrumbs = $('breadcrumbs');
-    if (breadcrumbs === null) {
-        return;
-    }
-    var lis = breadcrumbs.getElementsByTagName('li');
-    forEach(lis, function(li) {
-        if (!isUndefinedOrNull(MochiKit.DOM.getFirstElementByTagAndClassName(
-            'span', 'uniqueId', li))) {
-            zeit.cms.createDraggableContentObject(li);
-        }
-    });
-
-});
-
-
 zeit.cms.DropObjectWidget = gocept.Class.extend({
 
     construct: function(element, accept) {
@@ -722,6 +699,29 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             self[action](argument);
             event.stop();
         }
+    }
+
+});
+
+
+zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
+    process_post_result: function(result) {
+        var self = this;
+
+        if (self.has_errors()) {
+            return result;
+        }
+
+        // enable the visual effect to work
+        MochiKit.DOM.removeElementClass(self.container, 'busy');
+
+        var node = getFirstElementByTagAndClassName(
+            'span', 'result', self.container);
+        var unique_id = node.textContent;
+        MochiKit.Signal.signal(
+            self, 'zeit.cms.ObjectReferenceWidget.selected',
+            unique_id, node);
+        return null;
     }
 
 });
