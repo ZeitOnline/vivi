@@ -407,6 +407,8 @@ class ContextAction(zeit.edit.browser.form.InlineForm):
         self.can_checkin = ci_manager.canCheckin
         co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
         self.can_checkout = co_manager.canCheckout
+        publish_info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        self.published = publish_info.published
         return super(ContextAction, self).__call__()
 
 

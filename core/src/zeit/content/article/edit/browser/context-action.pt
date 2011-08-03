@@ -1,12 +1,16 @@
 <fieldset>
-  <a id="checkin" cms:cp-module='follow-link'
-          tal:attributes="href string:${context/@@absolute_url}/@@checkin"
-          tal:condition="view/can_checkin"
-          i18n:translate="">Checkin</a>
-  <a id="checkin_correction" cms:cp-module='follow-link'
-          tal:attributes="href string:${context/@@absolute_url}/@@checkin?semantic_change="
-          tal:condition="view/can_checkin"
-          i18n:translate="">Checkin (correction)</a>
+  <a class="button"
+     id="checkin"
+     cms:cp-module='follow-link'
+     tal:attributes="href string:${context/@@absolute_url}/@@checkin"
+     tal:condition="view/can_checkin"
+     i18n:translate="">Checkin</a>
+  <a class="button"
+     id="checkin_correction"
+     cms:cp-module='follow-link'
+     tal:attributes="href string:${context/@@absolute_url}/@@checkin?semantic_change="
+     tal:condition="view/can_checkin"
+     i18n:translate="">Checkin (correction)</a>
   <div class="exit"
        tal:condition="view/can_checkin">
     <label i18n:translate="">...or cancel and</label>
@@ -16,4 +20,16 @@
        tal:attributes="href string:${context/@@absolute_url}/@@delete.html"
        i18n:translate="">Delete from Workingcopy</a>
   </div>
+  <a class="button"
+     id="publish"
+     cms:cp-module='zeit.edit.LightBoxForm'
+     tal:attributes="href string:${context/@@absolute_url}/@@publish.html"
+     tal:condition="view/can_checkout"
+     i18n:translate="">Publish</a>
+  <a class="button"
+     id="retract"
+     cms:cp-module='zeit.edit.LightBoxForm'
+     tal:attributes="href string:${context/@@absolute_url}/@@retract.html"
+     tal:condition="view/published"
+     i18n:translate="">Retract</a>
 </fieldset>
