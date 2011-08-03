@@ -600,8 +600,7 @@ legend {
 
 /* Render links as buttons */
 
-#checkin,
-#checkin_correction {
+a.button {
   -moz-appearance: button;
   padding: 0.2em;
 }
