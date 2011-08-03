@@ -357,7 +357,7 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
 class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(TestDropObjectWidget, self).setUp()
+        super(TestDropObjectWidgetAccept, self).setUp()
         self.open(
             '/@@/zeit.cms.javascript.base/tests/dropobjectwidget-accept.html')
 
