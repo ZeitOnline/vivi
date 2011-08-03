@@ -25,11 +25,11 @@
     />
   
 
-  <browser:page
+  <gocept:pagelet
     name="view.html"
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.DisplayForm"
+    class="zeit.edit.browser.editor.Editor"
     permission="zope.View"
     />
   
