@@ -1,7 +1,6 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest2
 import zeit.cms.testing
 import zeit.workflow.testing
 
