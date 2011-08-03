@@ -6,59 +6,22 @@
 
   <adapter factory=".comment.comment_browse_location" />
 
-  <browser:page
-    name="edit-metadata.html"
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.EditForm"
-    permission="zeit.EditContent"
-    />
-
-  <browser:menuItem
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="Edit metadata"
-    action="@@edit-metadata.html"
-    permission="zeit.EditContent"
-    icon="metadata-edit"
-    />
-  
-
-  <browser:page
-    name="view.html"
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.DisplayForm"
-    permission="zope.View"
-    />
-  
-  <browser:menuItem
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="View metadata"
-    action="@@view.html"
-    permission="zope.View"
-    icon="metadata-view"
-    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+  <!-- Workflow viewlet (menu) is not needed here. Its render method is empty -->
+  <browser:viewlet
+      name="Workflow"
+      for="zeit.content.article.interfaces.IArticle"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      class=".menu.WorkflowMenuItem"
+      manager="zeit.cms.browser.interfaces.IContextViews"
+      permission="zeit.workflow.Publish"
     />
 
   <browser:defaultView
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
+    name="edit.html"
     />
-
-  <browser:page
-    name="wysiwyg_edit.html"
-    for="..interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".form.WYSIWYGEdit"
-    permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit WYSIWYG"
-    />
-
+ 
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSOldStyles"
@@ -77,7 +40,6 @@
     file="resources/vivi/articleResource.png"
     />
 
-
   <browser:icon
     for="zeit.content.article.interfaces.ITagesspiegelArticle"
     layer="zeit.cms.browser.interfaces.ICMSOldStyles"
@@ -86,7 +48,6 @@
     height="20"
     file="resources/article-tagesspiegel.png"
     />
-
 
   <browser:icon
     for="zeit.content.article.interfaces.ITagesspiegelArticle"
@@ -116,7 +77,7 @@
   <adapter
     factory=".workflow.ArticleWorkflowForm"
     provides="zeit.workflow.browser.interfaces.IWorkflowForm"
-    />
-   
+  />
 
+  <adapter factory=".form.articleDisplayViewName" name="edit.html" />
 </configure>

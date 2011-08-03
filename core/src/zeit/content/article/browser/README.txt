@@ -28,7 +28,7 @@ The metadata preview shows the most important data in list views:
 Make sure we have a "view" link:
 
 >>> browser.getLink('View')
-<Link text='View metadata' ...>
+<Link text='View' ...>
 
 
 We have to publish another url to see if articles are listed:
@@ -80,116 +80,18 @@ e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp – Edit
 http://localhost/++skin++cms/workingcopy/zope.user/e0135811-d21a-4e29-918e-1b0dde4e0c38.tmp/@@edit.html
 
 
-Note that the metadata view screen is not available on checked out articles:
+Since we have a new article editor a lot of basic tests were removed such as
+edit-metadata, wysiwyg, etc. pp
 
->>> browser.getLink('View metadata')
-Traceback (most recent call last):
-    ...
-LinkNotFoundError
-
-
-Editing Articles
-================
-
-Let's change some data and save the article:
-
->>> browser.open('@@edit-metadata.html')
->>> browser.getControl(name='form.year').value = '2007'
->>> browser.getControl(name='form.volume').value = '2'
->>> browser.getControl('Ressort').displayValue = ['Deutschland']
->>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
->>> browser.getControl('Sub ressort').displayOptions
-['(no value)', 'Joschka Fisher', 'Integration', 'Meinung', 'Datenschutz', 'US-Wahl', 'Nahost']
->>> browser.getControl('Sub ressort').displayValue = ['Integration']
->>> browser.getControl('VG Wort Id').value = 'ada94da'
->>> browser.getControl(name='form.title').value = (
-...   'EU unterstuetzt Trinker-Steuer')
->>> browser.getControl('Apply').click()
->>> 'There were errors' in browser.contents
-False
-
-We get the form back after saving, the data is changed:
-
->>> browser.getControl(name='form.title').value
-'EU unterstuetzt Trinker-Steuer'
-
-It is not possible to change the file name in the edit view:
-
->>> browser.getControl('File name')
-Traceback (most recent call last):
-    ...
-LookupError: label 'File name'
-
-
-
-WYSIWYG-Editor
-++++++++++++++
-
-Open the WYSIWYG-Editor:
-
->>> browser.getLink('Edit WYSIWYG').click()
-
-Some important fields can be edited here as well:
-
->>> browser.getControl('Kicker').value = 'Halle'
->>> browser.getControl('Title').value
-'EU unterstuetzt Trinker-Steuer'
->>> browser.getControl('By line').value = 'by Dr. Who'
->>> browser.getControl('Subtitle').value = 'Bla blub blarf'
-
-Initially the document is empty:
-
->>> browser.getControl('Text').value
-''
-
-Change the content and save:
-
->>> browser.getControl('Text').value = '<p>Foo</p><h3>blub</h3>'
->>> browser.getControl('Apply').click()
-
-Let's have a look at the source:
+Let's have a look at the source (which is quite boring now because nothing
+happened here):
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl('Source').value.replace('\r\n', '\n')
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     ...
-  <body>
-    <title>EU unterstuetzt Trinker-Steuer</title>
-    <supertitle py:pytype="str">Halle</supertitle>
-    <byline py:pytype="str">by Dr. Who</byline>
-    <subtitle>Bla blub blarf</subtitle>
-    <division type="page">
-      <p>Foo</p>
-      <intertitle>blub</intertitle>
-    </division>
-  </body>
+  <body/>
 </article>
-
-
-Try to add some xml characters to the WYSIWYG editor as entities but make sure
-other entities will be replaced (this is to make sure bug #3900 is fixed):
-
->>> browser.getLink('Edit WYSIWYG').click()
->>> browser.getControl('Text').value = (
-...     '<p>Foo</p><h3>blub &mdash;</h3><p>&gt;&amp;&lt;</p>')
->>> browser.getControl('Apply').click()
->>> print browser.getControl('Text').value,
-<p>Foo</p>
-<h3>blub —</h3>
-<p>&gt;&amp;&lt;</p>
-
-
-Empty tags will be removed on saving:
-
->>> browser.getControl('Text').value = (
-...     '<p>Foo</p><h3/><foo/><p/><p><b>bar</b></p>')
->>> browser.getControl('Apply').click()
->>> print browser.getControl('Text').value
-<p>Foo</p>
-<p>
-  <b>bar</b>
-</p>
-
 
 Checking in
 ===========
@@ -199,14 +101,36 @@ We check in the document. We look at the document in the repository then:
 >>> browser.getLink('Checkin').click()
 >>> article_url = browser.url
 >>> article_url
-'http://localhost/++skin++cms/repository/.../...tmp/@@view.html'
+'http://localhost/++skin++cms/repository/.../...tmp/@@xml_source_view.html'
 
-After checking in we also do not have an edit metadata link:
+A checked in article has a link that offers a basic view:
 
->>> browser.getLink('Edit metadata')
-Traceback (most recent call last):
-    ...
-LinkNotFoundError
+>>> browser.getLink('View')
+<Link...'http://localhost/++skin++cms/repository/.../...tmp/@@edit.html'>
+
+It will have a menu for the source
+>>> browser.getLink('View source')
+<Link...http://localhost/++skin++cms/repository/.../...tmp/@@xml_source_view.html'>
+
+
+It will have a menu for references
+>>> browser.getLink('References')
+<Link...http://localhost/++skin++cms/repository/.../...tmp/@@references.html'>
+
+When we checkout the article we will get the following
+>>> browser.getLink('View').click()
+>>> browser.getLink('Checkout').click()
+>>> article_url = browser.url
+>>> article_url
+'http://localhost/++skin++cms/workingcopy/.../...tmp/@@edit.html'
+
+The edit source link...
+>>> browser.getLink('Source')
+<Link...@@xml_source_edit.html'>
+
+...and the references
+>>> browser.getLink('References')
+<Link...@@references.html'>
 
 There was a bug once where after editing an article there were edit fields on
 the read only form:
@@ -215,13 +139,6 @@ the read only form:
 Traceback (most recent call last):
     ...
 LookupError: label 'Teaser text'
-
-
-But a view tab is there:
-
->>> browser.getLink('View metadata').click()
->>> browser.url
-'http://localhost/++skin++cms/repository/.../...tmp/@@view.html'
 
 
 

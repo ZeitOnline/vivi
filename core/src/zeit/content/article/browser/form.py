@@ -106,4 +106,9 @@ class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
         gocept.form.grouped.RemainingFields(
             _('Content'),
             css_class='full-width wide-widgets'),)
+    
 
+@zope.component.adapter(zeit.content.article.interfaces.IArticle)
+@zope.interface.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
+def articleDisplayViewName(context):
+ return 'edit.html'
