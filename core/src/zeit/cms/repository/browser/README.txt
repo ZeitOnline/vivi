@@ -110,7 +110,7 @@ reachable at `get_object_browser` for every folder:
   <h1>http://xml.zeit.de/online/2007/01</h1>
   <div id="popup-navtree" class="Tree">
   <ul>
-      <li active="True" class="Root">
+      <li active="True" class="Root...">
       ...
 </div>
   <div class="objectbrowser-content">
@@ -131,7 +131,7 @@ name. Without filter everything is displayed:
   <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
   <ul>
-      <li active="True" class="Root">
+      <li active="True" class="Root...">
       ...
 </div>
   <div class="objectbrowser-content">
@@ -174,7 +174,7 @@ Let's filter for folders:
   <h1>http://xml.zeit.de/</h1>
 <div id="popup-navtree" class="Tree">
   <ul>
-      <li active="True" class="Root">
+      <li active="True" class="Root...">
       ...
 </div>
   <div class="objectbrowser-content">
@@ -224,7 +224,7 @@ Within the object browser the tree is automatically expanded:
 >>> print browser.contents
   <h1>http://xml.zeit.de/online/2007/01</h1>
   ...
-      <li action="collapse" active="True" class="NotRoot"
+      <li action="collapse" active="True" class="NotRoot..."
           uniqueid="http://xml.zeit.de/online/2007/01">
           ...
 

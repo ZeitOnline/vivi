@@ -4,7 +4,7 @@
     <tal:repeat repeat="item tree">
       <li tal:define="root python: item['isroot'] and 'Root' or 'NotRoot'"
           tal:attributes="uniqueId item/uniqueId;
-                          class root;
+                          class string:${root} type-${item/type};
                           action item/action;
                           active item/selected">
         <p>
@@ -12,8 +12,7 @@
                     tal:attributes="href item/url">
           2005
         </a>
-        <span
-              tal:attributes="class string:uniqueId type-${item/type}"
+        <span class="uniqueId"
               tal:content="string:${item/displayedObjectUniqueId}">
           http://xml.zeit.de/somalia
         </span>

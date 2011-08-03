@@ -13,13 +13,9 @@ zeit.cms.createDraggableContentObject = function(element, options) {
     MochiKit.Base.update(default_options, options);
     var drop_query_args = default_options['drop_query_args'];
     delete default_options['drop_query_args'];
-    var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
-             'span', 'uniqueId', element);
-    unique_id_element.pane_element = element;
-    unique_id_element.is_content_object = true;
-    unique_id_element.drop_query_args = drop_query_args;
-    return new MochiKit.DragAndDrop.Draggable(
-        unique_id_element, default_options);
+    element.is_content_object = true;
+    element.drop_query_args = drop_query_args;
+    return new MochiKit.DragAndDrop.Draggable(element, default_options);
 };
 
 
@@ -32,11 +28,13 @@ MochiKit.Signal.connect(
     if (!draggable.element.is_content_object) {
         return;
     }
-    var pane_clone_from = draggable.element.pane_element;
-    var uniqueId = draggable.element.textContent;
+
+    var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
+             'span', 'uniqueId', draggable.element);
+    var uniqueId = unique_id_element.textContent;
     var dim = null;
-    if (pane_clone_from.nodeName != 'TR') {
-        dim = MochiKit.Style.getElementDimensions(pane_clone_from);
+    if (draggable.element.nodeName != 'TR') {
+        dim = MochiKit.Style.getElementDimensions(draggable.element);
     }
 
     var div = $('drag-pane');
@@ -44,7 +42,7 @@ MochiKit.Signal.connect(
         div.parentNode.removeChild(div);
     }
     div = DIV({'id': 'drag-pane', 'class': 'content-drag-pane'});
-    div.appendChild(pane_clone_from.cloneNode(true));
+    div.appendChild(draggable.element.cloneNode(true));
     div.dragged_element = draggable.element;
     div.uniqueId = uniqueId;
     div.drop_query_args = draggable.element.drop_query_args || {};

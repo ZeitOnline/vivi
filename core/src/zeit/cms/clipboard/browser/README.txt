@@ -21,10 +21,10 @@ The clipboard is displayed as a tree. Initially it's empty:
   <div class="PanelContent" id="ClipboardPanelContent">
     <div id="clipboardcontents" class="Tree">
     <ul>
-      <li class="Root" uniqueid="">
+      <li class="Root..." uniqueid="">
         <p>
           <a href="...">Clipboard</a>
-          <span class="uniqueId type-">...</span>
+          <span class="uniqueId">...</span>
           <a title="Remove" class="deleteLink context-action"...>
              <img alt="Delete".../>
              <span class="action-title">Remove</span>
@@ -53,20 +53,20 @@ We assume, that we drag the pane over the Clipboard:
 ...           'add_to=&unique_id=http://xml.zeit.de/wirtschaft.feed')
 >>> print ajax.contents
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
     <p>
       <a href="...">Clipboard</a>
-      <span class="uniqueId type-">...</span>
+      <span class="uniqueId">...</span>
       <a title="Remove" class="deleteLink context-action"...>
          <img alt="Delete" ... />
          <span class="action-title">Remove</span>
       </a>
       </p>
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot type-channel" uniqueid="wirtschaft.feed">
           <p>
             <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Wirtschaft</a>
-            <span class="uniqueId type-channel">...wirtschaft.feed</span>
+            <span class="uniqueId">...wirtschaft.feed</span>
             <a title="Remove" class="deleteLink context-action"...>
                <img alt="Delete" ... />
                <span class="action-title">Remove</span>
@@ -87,24 +87,24 @@ added *after* the feed:
 ...           'unique_id=http://xml.zeit.de/online/2007/01/Querdax')
 >>> print ajax.contents
     <ul>
-      <li class="Root" uniqueid="">
+      <li class="Root..." uniqueid="">
         <p>
           <a href="...">Clipboard</a>
-          <span class="uniqueId type-">...</span>
+          <span class="uniqueId">...</span>
           <a title="Remove" ...
         </p>
         <ul>
-          <li class="NotRoot" uniqueid="wirtschaft.feed">
+          <li class="NotRoot type-channel" uniqueid="wirtschaft.feed">
             <p>
               <a href="...wirtschaft.feed">Wirtschaft</a>
-              <span class="uniqueId type-channel">...wirtschaft.feed</span>
+              <span class="uniqueId">...wirtschaft.feed</span>
               <a title="Remove" ...
             </p>
           </li>
-          <li class="NotRoot" uniqueid="Querdax">
+          <li class="NotRoot type-unknown" uniqueid="Querdax">
             <p>
               <a href="...Querdax">Querdax</a>
-              <span class="uniqueId type-unknown">...Querdax</span>
+              <span class="uniqueId">...Querdax</span>
               <a title="Remove" ...
             </p>
           </li>
@@ -174,25 +174,25 @@ element of the root node:
 ...           'title=New+Clip')
 >>> print ajax.contents
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
       <p>
       <a href="...">Clipboard</a>
-      <span class="uniqueId type-">...</span>
+      <span class="uniqueId">...</span>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
         <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
-          <span class="uniqueId type-channel">...wirtschaft.feed</span>
+          <span class="uniqueId">...wirtschaft.feed</span>
           ...
         </li>
-        <li class="NotRoot" uniqueid="Querdax">
+        <li class="NotRoot..." uniqueid="Querdax">
         <p>
           <a href="...Querdax">Querdax</a>
-          <span class="uniqueId type-unknown">...Querdax</span>
+          <span class="uniqueId">...Querdax</span>
           ...
         </li>
-        <li action="expand" class="NotRoot" uniqueid="New Clip">
+        <li action="expand" class="NotRoot..." uniqueid="New Clip">
         <p>
           <a href="...">New Clip</a>
           ...
@@ -209,30 +209,30 @@ Let's add another clip:
 ...           'title=Second+Clip')
 >>> print ajax.contents
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
     <p>
       <a href="...">Clipboard</a>
-      <span class="uniqueId type-">...</span>
+      <span class="uniqueId">...</span>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
-          <span class="uniqueId type-channel">...wirtschaft.feed</span>
+          <span class="uniqueId">...wirtschaft.feed</span>
           ...
         </li>
-        <li class="NotRoot" uniqueid="Querdax">
+        <li class="NotRoot..." uniqueid="Querdax">
           <p>
           <a href="...Querdax">Querdax</a>
-          <span class="uniqueId type-unknown">...Querdax</span>
+          <span class="uniqueId">...Querdax</span>
           ...
         </li>
-        <li action="expand" class="NotRoot" uniqueid="New Clip">
+        <li action="expand" class="NotRoot..." uniqueid="New Clip">
         <p>
           <a href="...">New Clip</a>
           ...
         </li>
-        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+        <li action="expand" class="NotRoot..." uniqueid="Second Clip">
         <p>
           <a href="...">Second Clip</a>
           ...
@@ -255,28 +255,28 @@ expanded:
 ...           'object_path=Querdax&add_to=New%20Clip')
 >>> print ajax.contents
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
       <p>
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
         <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
           ...
         </li>
-        <li action="expand" class="NotRoot" uniqueid="New Clip">
+        <li action="expand" class="NotRoot..." uniqueid="New Clip">
           <p>
           <a href="...">New Clip</a>
           ...
         </li>
-        <li class="NotRoot" uniqueid="Querdax">
+        <li class="NotRoot..." uniqueid="Querdax">
           <p>
           <a href="...Querdax">Querdax</a>
-          <span class="uniqueId type-unknown">...Querdax</span>
+          <span class="uniqueId">...Querdax</span>
           ...
         </li>
-        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+        <li action="expand" class="NotRoot..." uniqueid="Second Clip">
           <p>
           <a href="...">Second Clip</a>
           ...
@@ -293,27 +293,27 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
 ...           '@@expandTree?uniqueId=New%20Clip')
 >>> print ajax.contents
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
       <p>
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
           ...
         </li>
-        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+        <li action="collapse" class="NotRoot..." uniqueid="New Clip">
           <p>
           <a href="...">New Clip</a>
           ...
         </li>
-        <li class="NotRoot" uniqueid="Querdax">
+        <li class="NotRoot..." uniqueid="Querdax">
           <p>
           <a href="...Querdax">Querdax</a>
           ...
         </li>
-        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+        <li action="expand" class="NotRoot..." uniqueid="Second Clip">
           <p>
           <a href="...">Second Clip</a>
           ...
@@ -327,30 +327,30 @@ To move `Querdax` *into* `New Clip` it needs to be expanded:
 ...           'object_path=Querdax&add_to=New%20Clip')
 >>> print ajax.contents
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
       <p>
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
           ...
         </li>
-        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+        <li action="collapse" class="NotRoot..." uniqueid="New Clip">
           <p>
           <a href="...">New Clip</a>
-          <span class="uniqueId type-">...</span>
+          <span class="uniqueId">...</span>
           ...
           <ul>
-            <li class="NotRoot" uniqueid="New Clip/Querdax">
+            <li class="NotRoot..." uniqueid="New Clip/Querdax">
               <p>
               <a href="...Querdax">Querdax</a>
               ...
             </li>
           </ul>  
         </li>
-        <li action="expand" class="NotRoot" uniqueid="Second Clip">
+        <li action="expand" class="NotRoot..." uniqueid="Second Clip">
           <p>
           <a href="...">Second Clip</a>
           ...
@@ -369,27 +369,27 @@ We can of course also move clips into clips:
 ...           'object_path=Second%20Clip&add_to=New%20Clip/Querdax')
 >>> print ajax.contents
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
       <p>
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
           ...
         </li>
-        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+        <li action="collapse" class="NotRoot..." uniqueid="New Clip">
           <p>
           <a href="...">New Clip</a>
           ...
           <ul>
-            <li class="NotRoot" uniqueid="New Clip/Querdax">
+            <li class="NotRoot..." uniqueid="New Clip/Querdax">
               <p>
               <a href="...Querdax">Querdax</a>
               ...
             </li>
-            <li action="expand" class="NotRoot"
+            <li action="expand" class="NotRoot..."
               uniqueid="New Clip/Second Clip">
               <p>
               <a href="...">Second Clip</a>
@@ -416,22 +416,22 @@ the Querdax entry we've moved into New Clip above:
 >>> link.click()
 >>> print ajax.contents
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
       <p>
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
           <a href="...wirtschaft.feed">Wirtschaft</a>
           ...
         </li>
-        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+        <li action="collapse" class="NotRoot..." uniqueid="New Clip">
           <p>
           <a href="...">New Clip</a>
           ...
           <ul>
-            <li action="expand" class="NotRoot"
+            <li action="expand" class="NotRoot..."
               uniqueid="New Clip/Second Clip">
               <p>
               <a href="...">Second Clip</a>
@@ -483,10 +483,10 @@ Let's have a look at the sidebar:
 <?xml ...
     <div id="clipboardcontents" class="Tree">
   <ul>
-      <li class="Root" uniqueid="">
+      <li class="Root..." uniqueid="">
         ...
   <ul>
-      <li class="NotRoot" uniqueid="wirtschaft.feed">
+      <li class="NotRoot..." uniqueid="wirtschaft.feed">
         <p>
         <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/wirtschaft.feed">Broken
             reference to http://xml.zeit.de/wirtschaft.feed</a>
@@ -535,22 +535,22 @@ Reload the whole page and verify the title change:
   <li class="message">"New Clip" was renamed to "Wirtschaft clip".</li>
   ...
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
       <p>
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
           <a href="...wirtschaft.feed">Broken reference ...</a>
           ...
         </li>
-        <li action="collapse" class="NotRoot" uniqueid="New Clip">
+        <li action="collapse" class="NotRoot..." uniqueid="New Clip">
           <p>
           <a href="...">Wirtschaft clip</a>
           ...
           <ul>
-            <li action="expand" class="NotRoot"
+            <li action="expand" class="NotRoot..."
               uniqueid="New Clip/Second Clip">
               <p>
               <a href="...">Second Clip</a>
@@ -596,12 +596,12 @@ Open "New clip", we have a delete link there:
   <li class="message">"Wirtschaft clip" was removed from the clipboard.</li>
   ...
   <ul>
-    <li class="Root" uniqueid="">
+    <li class="Root..." uniqueid="">
       <p>
       <a href="...">Clipboard</a>
       ...
       <ul>
-        <li class="NotRoot" uniqueid="wirtschaft.feed">
+        <li class="NotRoot..." uniqueid="wirtschaft.feed">
           <p>
           <a href="...wirtschaft.feed">Broken reference ...</a>
           ...
@@ -635,7 +635,7 @@ Let's open the lightbox. It shows the clipboard tree:
   </h1>
   <div id="LightboxClipboard" class="Tree">
   <ul>
-      <li class="Root" uniqueid="">
+      <li class="Root..." uniqueid="">
         <p>
         <a href="http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard">Clipboard</a>
    ...

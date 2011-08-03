@@ -69,8 +69,7 @@ zeit.cms.Clipboard = Class.extend({
             dragged_element, 'div', 'panel');
         if (!isNull(panel) && panel.id == 'ClipboardPanel') {
             url = '/@@moveContent';
-            options['object_path'] = dragged_element.pane_element.getAttribute(
-                'uniqueid');
+            options['object_path'] = dragged_element.getAttribute('uniqueid');
         } else {
             url = '/@@addContent';
             options['unique_id'] = element.uniqueId;
