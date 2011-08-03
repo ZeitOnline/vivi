@@ -75,60 +75,9 @@ zeit.cms.createDraggableContentObject = function(element, options) {
     unique_id_element.pane_element = element;
     unique_id_element.is_content_object = true;
     unique_id_element.drop_query_args = drop_query_args;
-    //element.uniqueId = unique_id_element.textContent;
     return new MochiKit.DragAndDrop.Draggable(
         unique_id_element, default_options);
 };
-
-
-zeit.cms.TableSorter = gocept.Class.extend({
-    // Infrastructure to sort tables
-    // Reorders the table on the browser.
-
-    construct: function(class_name) {
-        var othis = this;
-        var table = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'table', class_name);
-        forEach(table.rows, function(row) {
-            if (row.cells[0].nodeName == 'TD') {
-                new MochiKit.DragAndDrop.Draggable(row, {
-                    ghosting: true
-                });
-            }
-
-            new Droppable(row, {
-                ondrop: function (element) {
-                    var tbody = element.parentNode;
-                    if (tbody.nodeName != 'TBODY') {
-                        // TODO: i18n
-                        alert('The table can only be sorted. ' +
-                              'Adding is not possible.');
-                        return;
-                    }
-                    var before = null;
-                    if (row.cells[0].nodeName == 'TH') {
-                        before = tbody.firstChild;
-                    } else {
-                        before = row.nextSibling;
-                    }
-                    if (before) {
-                        tbody.insertBefore(element, before);
-                    } else {
-                        tbody.appendChild(element);
-                    }
-                    othis.dropped(element);
-                },
-                hoverclass: 'tablesort-hover'
-            });
-        });
-
-    },
-
-    dropped: function(element) {
-        // pass
-    }
-
-});
 
 
 zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
@@ -776,42 +725,3 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
     }
 
 });
-
-
-(function($) {
-
-var leftX = 89;
-var leftY = 38;
-
-var rightX = 96;
-var rightY = 37;
-
-$(window).bind('load', function() {
-    $('#main-navigation').append('<div id="pupil-left">');
-    $('#main-navigation').append('<div id="pupil-right">');
-
-    $('#pupil-left').offset({left: leftX, top: leftY});
-    $('#pupil-right').offset({left: rightX, top: rightY});
-});
-
-$(window).bind('mousemove', function(event) {
-    zeit.cms.move_eye(event, '#pupil-left', leftX, leftY);
-    zeit.cms.move_eye(event, '#pupil-right', rightX, rightY);
-
-});
-
-zeit.cms.move_eye = function(event, element, x, y) {
-    var mouseX = event.pageX;
-    var mouseY = event.pageY;
-
-    var difX = mouseX - leftX;
-    var difY = mouseY - leftY;
-
-    var angle = Math.atan2(difX, difY);
-    var newX = Math.round(Math.sin(angle));
-    var newY = Math.round(Math.cos(angle));
-
-    $(element).offset({left: x + newX, top: y + newY});
-};
-
-})(jQuery);

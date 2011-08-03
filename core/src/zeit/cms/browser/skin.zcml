@@ -124,6 +124,8 @@
       tooltip.js
       lightbox.js
       dnd.js
+      table.js
+      xeyes.js
       menu.js
       json-template.js
       view.js
