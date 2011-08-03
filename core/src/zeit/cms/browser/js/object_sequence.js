@@ -183,12 +183,12 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         }
     },
 
-    handleDrop: function(dragged_element) {
+    handleDrop: function(element) {
         var self = this;
-        if (MochiKit.DOM.isChildNode(dragged_element, self.ul_element)) {
+        if (MochiKit.DOM.isChildNode(element, self.ul_element)) {
             return;
         }
-        var unique_id = dragged_element.uniqueId;
+        var unique_id = element.uniqueId;
         if (unique_id) {
             self.add.call(self, unique_id);
         }

@@ -59,17 +59,17 @@ zeit.cms.Clipboard = Class.extend({
         var dnd = this;
         var options = {}
 
-        var dragged_element = element.dragged_element;
-        if (isUndefinedOrNull(dragged_element)) {
+        var source_element = element.source_element;
+        if (isUndefinedOrNull(source_element)) {
             return;
         }
 
         var panel = null;
         panel = MochiKit.DOM.getFirstParentByTagAndClassName(
-            dragged_element, 'div', 'panel');
+            source_element, 'div', 'panel');
         if (!isNull(panel) && panel.id == 'ClipboardPanel') {
             url = '/@@moveContent';
-            options['object_path'] = dragged_element.getAttribute('uniqueid');
+            options['object_path'] = source_element.getAttribute('uniqueid');
         } else {
             url = '/@@addContent';
             options['unique_id'] = element.uniqueId;

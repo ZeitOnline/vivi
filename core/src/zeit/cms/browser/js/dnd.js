@@ -14,28 +14,26 @@ zeit.cms.createDraggableContentObject = function(element, options) {
     MochiKit.Base.update(default_options, options);
     var drop_query_args = default_options['drop_query_args'];
     delete default_options['drop_query_args'];
-    element.is_content_object = true;
     element.drop_query_args = drop_query_args;
+    // mark so draggable event handlers (below) can recognize it
+    element.is_content_object = true;
     return new MochiKit.DragAndDrop.Draggable(element, default_options);
 };
 
 
 (function() {
 
+/**
+ Draggables move their .element around, but here we want to leave the original
+ element (the "source element") in its place and drag a copy around. So we
+ replace the draggable.element with a custom-created div.drag-pane, and clone
+ the original draggable.element into it.
+ */
 MochiKit.Signal.connect(
     MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
-    // Generic handler for displaying the drag pane for draggables
     log("Dragging", draggable);
     if (!draggable.element.is_content_object) {
         return;
-    }
-
-    var unique_id_element = MochiKit.DOM.getFirstElementByTagAndClassName(
-             'span', 'uniqueId', draggable.element);
-    var uniqueId = unique_id_element.textContent;
-    var dim = null;
-    if (draggable.element.nodeName != 'TR') {
-        dim = MochiKit.Style.getElementDimensions(draggable.element);
     }
 
     var div = $('drag-pane');
@@ -43,13 +41,23 @@ MochiKit.Signal.connect(
         div.parentNode.removeChild(div);
     }
     div = DIV({'id': 'drag-pane', 'class': 'content-drag-pane'});
-    div.appendChild(draggable.element.cloneNode(true));
-    div.dragged_element = draggable.element;
-    div.uniqueId = uniqueId;
-    div.drop_query_args = draggable.element.drop_query_args || {};
 
+    var source_element = draggable.element;
+    div.source_element = source_element;
+    div.appendChild(source_element.cloneNode(true));
+
+    // copy over information onto the drag-pane so it's easily accessible for
+    // drop handlers
+    var uniqueId = MochiKit.DOM.getFirstElementByTagAndClassName(
+             'span', 'uniqueId', source_element).textContent;
+    div.uniqueId = uniqueId;
+    div.drop_query_args = source_element.drop_query_args || {};
+
+    // the type-* class is used as an accept filter by ObjectSequenceWidget and
+    // DropObjectWidget, so the drag-pane needs to have those too to be
+    // droppable there
     forEach(
-        draggable.element.getAttribute('class').split(' '), function(class_) {
+        source_element.getAttribute('class').split(' '), function(class_) {
             if (class_.indexOf('type-') == 0) {
                 MochiKit.DOM.addElementClass(div, class_);
             }
@@ -57,24 +65,27 @@ MochiKit.Signal.connect(
 
     draggable.element = div;
     draggable.offset = [-10, -10];
-
     $('body').appendChild(div);
+
+    var dim = null;
+    if (source_element.nodeName != 'TR') {
+        dim = MochiKit.Style.getElementDimensions(source_element);
+    }
     if (!isNull(dim)) {
         MochiKit.Style.setElementDimensions(div, dim);
     }
 });
 
 
+// remove drag-pane and restore draggable.element
 MochiKit.Signal.connect(
     MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
-    // Generic handler for hiding the drag pane after dragging ended.
-    var element = draggable.element;
-    var dragged_element = element.dragged_element;
-    if (isUndefinedOrNull(dragged_element)) {
+    var drag_pane = draggable.element;
+    if (isUndefinedOrNull(drag_pane.source_element)) {
         return;
     }
-    draggable.element = dragged_element;
-    MochiKit.Visual.fade(element);
+    draggable.element = drag_pane.source_element;
+    MochiKit.Visual.fade(drag_pane);
 });
 
 
