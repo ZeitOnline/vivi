@@ -84,7 +84,7 @@
       cms:lightbox-in="cp-content"
       i18n:attributes="title"
       i18n:translate="">
-      [Add new...]
+      Add new...
     </a>
   </div>
 </fieldset>
