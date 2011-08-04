@@ -94,3 +94,13 @@ class TestAdding(unittest2.TestCase,
         with self.assertRaises(LookupError):
             self.browser.getControl('New file name')
         self.assert_ellipsis('...<div class="widget">Somalia</div>...')
+
+    def test_default_values_from_interface_should_be_set(self):
+        from zeit.content.article.interfaces import ICDSWorkflow
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Article']
+        url = menu.value[0]
+        self.browser.open(url)
+        article = self.get_article()
+        self.assertEqual(True, article.dailyNewsletter)
+        self.assertEqual(True, ICDSWorkflow(article).export_cds)
