@@ -2,10 +2,8 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-
 import zeit.connector.interfaces
 import zeit.content.image.tests
-import zope.component
 import zeit.cms.testing
 import gocept.selenium.ztk
 import zeit.imp.tests
@@ -30,7 +28,6 @@ class Selenium(zeit.cms.testing.SeleniumTestCase):
         s.waitForEval('window.outerWidth', str(self.window_width))
         s.waitForEval('window.outerHeight', str(self.window_height))
         self.open_imp()
-
 
     def create_group(self):
         with zeit.cms.testing.site(self.getRootFolder()):
@@ -73,31 +70,31 @@ class SeleniumBasicTests(Selenium):
     def test_image_dragging(self):
         s = self.selenium
         s.verifyEval('window.document.imp.get_image_position()',
-                     '{x: 1, y: 1}');
+                     '{x: 1, y: 1}')
         s.dragAndDrop('id=imp-mask', '+30,+100')
         s.verifyEval('window.document.imp.get_image_position()',
-                     '{x: 31, y: 101}');
+                     '{x: 31, y: 101}')
 
     def test_mask_string_parse(self):
         s = self.selenium
 
         #s.comment('Simple dimensions')
         s.runScript(
-            'window.document.imp.set_mask("500x200/500/200")');
+            'window.document.imp.set_mask("500x200/500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.name', '500x200')
 
         #s.comment('The dimensions can be variable, indicated by a ?')
         s.runScript(
-            'window.document.imp.set_mask("art-200/?500/200")');
+            'window.document.imp.set_mask("art-200/?500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
         s.verifyEval('window.document.imp.mask_variable.h', 'false')
         s.verifyEval('window.document.imp.name', 'art-200')
 
-        s.runScript('window.document.imp.set_mask("foo/?500/?200")');
+        s.runScript('window.document.imp.set_mask("foo/?500/?200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
@@ -129,12 +126,12 @@ class SeleniumBasicTests(Selenium):
     def zoom_with_wheel(self, delta_y):
         self.selenium.runScript(
         """\
-            var evt = window.document.createEvent('MouseEvents');
-            evt.initEvent('DOMMouseScroll', false, false);
+            var evt = window.document.createEvent('MouseEvents')
+            evt.initEvent('DOMMouseScroll', false, false)
             evt.wheelDeltaX = 0;
             evt.wheelDeltaY = %s;
-            window.document.getElementById('imp-mask').dispatchEvent(evt);
-        """ % delta_y);
+            window.document.getElementById('imp-mask').dispatchEvent(evt)
+        """ % delta_y)
 
 
 class SeleniumCropTests(Selenium):
@@ -193,21 +190,21 @@ class SeleniumMaskTests(Selenium):
         s = self.selenium
         self.click_label(u"450×200")
         form = "window.document.getElementById('imp-configuration-form')"
-        s.verifyEval("%s['mask-w'].disabled" % form, 'true');
-        s.verifyEval("%s['mask-h'].disabled" % form, 'true');
+        s.verifyEval("%s['mask-w'].disabled" % form, 'true')
+        s.verifyEval("%s['mask-h'].disabled" % form, 'true')
 
     def test_input_fields_initally_disabled(self):
         s = self.selenium
         form = "window.document.getElementById('imp-configuration-form')"
-        s.verifyEval("%s['mask-w'].disabled" % form, 'true');
-        s.verifyEval("%s['mask-h'].disabled" % form, 'true');
+        s.verifyEval("%s['mask-w'].disabled" % form, 'true')
+        s.verifyEval("%s['mask-h'].disabled" % form, 'true')
 
     def test_input_field_enabled_for_variable_mask(self):
         s = self.selenium
         self.click_label("Artikelbild breit")
         form = "window.document.getElementById('imp-configuration-form')"
-        s.verifyEval("%s['mask-w'].disabled" % form, 'true');
-        s.verifyEval("%s['mask-h'].disabled" % form, 'false');
+        s.verifyEval("%s['mask-w'].disabled" % form, 'true')
+        s.verifyEval("%s['mask-h'].disabled" % form, 'false')
 
     def test_input_field_changes_are_reflected_in_the_mask(self):
         s = self.selenium
@@ -291,8 +288,6 @@ class SeleniumMaskTests(Selenium):
         s.verifyEval('window.document.imp.get_crop_arguments().y2', '180')
 
 
-
-
 class ResizeTests(Selenium):
 
     window_width = 1000
@@ -342,7 +337,7 @@ class ResizeTests(Selenium):
         s.pause(500)
         s.waitForEval(get_crop_args, crop_args)
 
-        # Try another one, to be sure this works multiple times 
+        # Try another one, to be sure this works multiple times
         s.getEval('window.resizeTo(1000, 800)')
         s.pause(500)
         s.waitForEval("%s == '%s'" % (get_crop_args, crop_args), 'true')
@@ -422,8 +417,8 @@ class FilterTests(Selenium):
         image_url = s.getEval('window.document.imp.image.src')
         s.clickAt(selector, '0')
         s.verifyValue('filter.%s.input' % name, '-100')
-        s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name,
-                     '0.75');
+        s.verifyEval(
+            "window.document.imp.crop_arguments['filter.%s']" % name, '0.75')
         s.waitForEval(
             "window.document.imp.image.src == '%s'" % image_url, 'false')
 
@@ -435,12 +430,12 @@ class FilterTests(Selenium):
             'true')
         s.verifyEval(
             "window.document.imp.crop_arguments['filter.%s'] != 0" % name,
-            'true');
+            'true')
 
         # clicking reset sets the slider back to 0 (filter becomes 1 then)
         s.click('reset')
-        s.verifyEval("window.document.imp.crop_arguments['filter.%s']" % name,
-                     '1');
+        s.verifyEval(
+            "window.document.imp.crop_arguments['filter.%s']" % name, '1')
 
 
 class ContentZoomTest(Selenium):
