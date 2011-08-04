@@ -62,6 +62,9 @@ def ZCMLLayer(
 
 
 class HTTPServer(BaseHTTPServer.HTTPServer):
+    # shutdown mechanism borrowed from gocept.selenium.static.HTTPServer
+
+    _continue = True
 
     def __init__(self, *args):
         BaseHTTPServer.HTTPServer.__init__(self, *args)
@@ -70,31 +73,43 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
     def handle_error(self, request, client_address):
         self.errors.append((request, client_address))
 
+    def serve_until_shutdown(self):
+        while self._continue:
+            self.handle_request()
+
+    def shutdown(self):
+        self._continue = False
+        # We fire a last request at the server in order to take it out of the
+        # while loop in `self.serve_until_shutdown`.
+        try:
+            urllib2.urlopen(
+                'http://%s:%s/die' % (self.server_name, self.server_port),
+                timeout=1)
+        except urllib2.URLError:
+            # If the server is already shut down, we receive a socket error,
+            # which we ignore.
+            pass
+        self.server_close()
+
 
 def HTTPServerLayer(request_handler):
     """Factory for a layer which opens a HTTP port."""
-    module = stack = inspect.stack()[1][0].f_globals['__name__']
+    module = inspect.stack()[1][0].f_globals['__name__']
     port = random.randint(30000, 40000)
 
     def setUp(cls):
-        cls.httpd_running = True
-        def run():
-            server_address = ('localhost', port)
-            cls.httpd = HTTPServer(server_address, request_handler)
-            while cls.httpd_running:
-                cls.httpd.handle_request()
-        t = threading.Thread(target=run)
-        t.daemon = True
-        t.start()
+        server_address = ('localhost', port)
+        cls.httpd = HTTPServer(server_address, request_handler)
+        cls.thread = threading.Thread(target=cls.httpd.serve_until_shutdown)
+        cls.thread.daemon = True
+        cls.thread.start()
+        # Wait as it sometimes takes a while to get the server started.
         # XXX this is a little kludgy
         time.sleep(0.001)
 
     def tearDown(cls):
-        cls.httpd_running = False
-        try:
-            urllib2.urlopen('http://localhost:%s/die' % port, timeout=1)
-        except urllib2.URLError:
-            pass
+        cls.httpd.shutdown()
+        cls.thread.join()
 
     def testTearDown(cls):
         cls.httpd.errors[:] = []
