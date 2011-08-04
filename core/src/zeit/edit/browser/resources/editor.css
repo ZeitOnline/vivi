@@ -593,9 +593,16 @@ legend {
 }
 
 /* Misc */
+#recensions p {
+  padding-left:4px;
+}
 
 #recensions a {
+  -moz-appearance: button;
   padding-left:10px;
+  display:block;
+  margin:4px 0px 0px 4px;
+  width:66px;
 }
 
 /* Render links as buttons */
