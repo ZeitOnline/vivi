@@ -183,17 +183,18 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
 
 class KeywordTest(zeit.content.article.testing.SeleniumTestCase):
 
-    def get_tag(self, code):
-        tag = mock.Mock()
-        tag.code = tag.label = code
+    def get_tag(self, code, weight):
+        from zeit.cms.tagging.tag import Tag
+        tag = Tag(code)
         tag.disabled = False
+        tag.weight = weight
         return tag
 
     def setup_tags(self, *codes):
-        import stabledict
-        tags = stabledict.StableDict()
-        for code in codes:
-            tags[code] = self.get_tag(code)
+        import zeit.cms.tagging.testing
+        tags = zeit.cms.tagging.testing.InMemoryTagger()
+        for weight, code in enumerate(reversed(codes), start=1):
+            tags[code] = self.get_tag(code, weight)
         patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
         self.addCleanup(patcher.stop)
         tagger = patcher.start()
@@ -205,10 +206,10 @@ class KeywordTest(zeit.content.article.testing.SeleniumTestCase):
         tags = self.setup_tags('t1', 't2', 't3')
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s.waitForElementPresent('id=metadata-a.keywords')
+        s.waitForTextPresent('t1*t2*t3')
         s.dragAndDropToObject("xpath=//li[contains(., 't1')]",
                               "xpath=//li[contains(., 't3')]")
-        s.assertTextPresent('t2*t3*t1')
-        s.pause(500)
+        s.waitForTextPresent('t2*t3*t1')
         self.assertEqual(3, tags['t2'].weight)
         self.assertEqual(2, tags['t3'].weight)
         self.assertEqual(1, tags['t1'].weight)
