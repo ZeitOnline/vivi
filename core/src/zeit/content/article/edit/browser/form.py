@@ -53,6 +53,7 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'new-filename'
     undo_description = _('edit new filename')
+    css_class = 'table'
 
     @property
     def form_fields(self):
@@ -296,6 +297,7 @@ class WorkflowDates(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'workflow-dates'
     undo_description = _('edit workflow dates')
+    css_class = 'table'
 
     form_fields = (
         zope.formlib.form.FormFields(
@@ -327,6 +329,7 @@ class WorkflowPublicationDates(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'workflow-publication-dates'
     undo_description = _('edit workflow publication dates')
+    css_class = 'table'
 
     form_fields = (
         zope.formlib.form.FormFields(
@@ -342,6 +345,7 @@ class WorkflowQualityAssurance(zeit.edit.browser.form.InlineForm):
     legend = _('Quality assurance')
     prefix = 'workflow-quality-assurance'
     undo_description = _('edit workflow quality assurance')
+    css_class = 'table'
 
     form_fields = (
         zope.formlib.form.FormFields(
@@ -355,6 +359,7 @@ class WorkflowPublicationPeriod(zeit.edit.browser.form.InlineForm):
     legend = _('Publication period')
     prefix = 'workflow-publication-period'
     undo_description = _('edit workflow publication period')
+    css_class = 'table'
 
     form_fields = (
         zope.formlib.form.FormFields(

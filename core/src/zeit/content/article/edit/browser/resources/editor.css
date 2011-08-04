@@ -326,3 +326,25 @@ color: #333;
 .block.type-citation .double .citation.citation_2 {
   opacity: 1;
 }
+
+/* imitate table design */
+fieldset.table .widget-outer {
+  clear: both;
+}
+
+fieldset.table .label {
+  width: 20em;
+}
+
+#edit-form-filename fieldset.table .label {
+  width: 10em;
+}
+
+fieldset.table label {
+  font-weight: bold;
+}
+
+fieldset.table .widget {
+  clear: none;
+  margin: 0;
+}
