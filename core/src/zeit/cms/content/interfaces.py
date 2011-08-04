@@ -196,7 +196,7 @@ class IProduct(zope.interface.Interface):
 
     id = zope.interface.Attribute('id')
     title = zope.interface.Attribute('title')
-    vgwortid = zope.interface.Attribute('VGWort id, optional')
+    vgwortcode = zope.interface.Attribute('VGWort code, optional')
 
 
 class IDAVPropertyConverter(zope.interface.Interface):

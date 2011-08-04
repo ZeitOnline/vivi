@@ -30,7 +30,44 @@ def workflow_form_factory(context, request):
         zeit.workflow.browser.interfaces.IWorkflowForm)
 
 
-class WorkflowForm(zeit.cms.browser.form.EditForm):
+class WorkflowActions(object):
+
+    def do_publish(self):
+        mapping = dict(
+            name=self.context.__name__,
+            id=self.context.uniqueId)
+        if self.info.can_publish():
+            self.publish.publish()
+            self.send_message(
+                _('scheduled-for-immediate-publishing',
+                  default=u"${id} has been scheduled for publishing.",
+                  mapping=mapping))
+        else:
+            self.send_message(self.get_error_message(mapping), type='error')
+
+    def do_retract(self):
+        mapping = dict(
+            name=self.context.__name__,
+            id=self.context.uniqueId)
+        self.publish.retract()
+        self.send_message(
+            _('scheduled-for-immediate-retracting',
+              default=u"${id} has been scheduled for retracting.",
+              mapping=mapping))
+
+    def get_error_message(self, mapping):
+        return _('publish-preconditions-not-met', mapping=mapping)
+
+    @property
+    def publish(self):
+        return zeit.cms.workflow.interfaces.IPublish(self.context)
+
+    @property
+    def info(self):
+        return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+
+
+class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
 
     zope.interface.implements(zeit.workflow.browser.interfaces.IWorkflowForm)
 
@@ -45,20 +82,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
                               name='publish')
     def handle_publish(self, action, data):
         self.applyChanges(data)
-        mapping = dict(
-            name=self.context.__name__,
-            id=self.context.uniqueId)
-        if self.info.can_publish():
-            self.publish.publish()
-            self.send_message(
-                _('scheduled-for-immediate-publishing',
-                  default=u"${id} has been scheduled for publishing.",
-                  mapping=mapping))
-        else:
-            self.send_message(self.get_error_message(mapping), type='error')
-
-    def get_error_message(self, mapping):
-        return _('publish-preconditions-not-met', mapping=mapping)
+        self.do_publish()
 
     @gocept.form.action.confirm(
         _('Save state and retract now'),
@@ -69,22 +93,7 @@ class WorkflowForm(zeit.cms.browser.form.EditForm):
         condition=is_published)
     def handle_retract(self, action, data):
         self.applyChanges(data)
-        mapping = dict(
-            name=self.context.__name__,
-            id=self.context.uniqueId)
-        self.publish.retract()
-        self.send_message(
-            _('scheduled-for-immediate-retracting',
-              default=u"${id} has been scheduled for retracting.",
-              mapping=mapping))
-
-    @property
-    def publish(self):
-        return zeit.cms.workflow.interfaces.IPublish(self.context)
-
-    @property
-    def info(self):
-        return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+        self.do_retract()
 
 
 class ContentWorkflow(WorkflowForm):

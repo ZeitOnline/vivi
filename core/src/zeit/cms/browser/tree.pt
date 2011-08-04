@@ -4,7 +4,7 @@
     <tal:repeat repeat="item tree">
       <li tal:define="root python: item['isroot'] and 'Root' or 'NotRoot'"
           tal:attributes="uniqueId item/uniqueId;
-                          class root;
+                          class string:${root} type-${item/type};
                           action item/action;
                           active item/selected">
         <p>

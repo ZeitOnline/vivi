@@ -11,15 +11,16 @@
     </div>
     <script type="text/javascript">
       var application_url = '../../../';
-      var widget = new zeit.cms.ObjectSequenceWidget('testwidget');
+      var widget = new zeit.cms.ObjectSequenceWidget(
+            'testwidget', ['type-foo']);
     </script>
 
-    <div id="drag">
+    <div id="drag" class="type-foo">
       <span class="uniqueId"
         style="display: none">http://xml.zeit.de/testcontent</span>
       Drag
     </div>
-    <div id="drag2">
+    <div id="drag2" class="type-foo">
       <span class="uniqueId"
         style="display: none">http://xml.zeit.de/2007</span>
       Drag-2

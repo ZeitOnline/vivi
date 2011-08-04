@@ -42,3 +42,6 @@ class WhitelistSource(object):
 
     def __iter__(self):
         return iter(self.whitelist.values())
+
+    def get_check_types(self):
+        return ['tag']

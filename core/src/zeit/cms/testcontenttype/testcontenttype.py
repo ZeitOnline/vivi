@@ -24,6 +24,9 @@ class TestContentType(zeit.cms.content.metadata.CommonMetadata):
         '<head/><body/></testtype>')
 
 
+# TestContentType does not use a TypeDeclaration, since all of those are
+# always grokked, and we don't want it to show up in the production system
+
 test_content_type_factory = zeit.cms.content.adapter.xmlContentFactory(
     TestContentType)
 

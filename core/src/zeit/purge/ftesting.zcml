@@ -16,6 +16,8 @@
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
+  <include package="zeit.cms.testcontenttype" />
+
   <include package="zeit.purge" />
 
 </configure>

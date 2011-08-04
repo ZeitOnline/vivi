@@ -167,6 +167,14 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         self.assert_ellipsis(
             '...<a rel="show_add_view"...href="zeit.test.add_me"...', result)
 
+    def test_accepted_types_is_escaped_for_javascript(self):
+        field = self.get_field()
+        widget = self.get_widget(field)
+        with mock.patch.object(
+                field.value_type.source, 'get_check_types') as types:
+            types.return_value = [u'foo', 'bar']
+            self.assertEqual("['type-foo', 'type-bar']", widget.accept_classes)
+
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
 
@@ -215,13 +223,15 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.assertElementNotPresent('css=li.element')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
         s.waitForElementPresent('css=li.element')
+        s.waitForElementPresent('css=a[rel=remove]')
         s.click('css=a[rel=remove]')
         s.waitForElementNotPresent('css=li.element')
 
-    def test_remove_should_removee_hidden_field_with_unique_id(self):
+    def test_remove_should_remove_hidden_field_with_unique_id(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForElementPresent("//input[@name='testwidget.0']")
+        s.waitForElementPresent('css=a[rel=remove]')
         s.click('css=a[rel=remove]')
         s.waitForElementNotPresent("css=input[@name='testwidget.0']")
 
@@ -344,6 +354,29 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s.waitForValue('name=testwidget', '')
 
 
+class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestDropObjectWidgetAccept, self).setUp()
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/dropobjectwidget-accept.html')
+
+    def start_drag(self, locator):
+        s = self.selenium
+        s.mouseDown(locator)
+        s.mouseMoveAt(locator, '10,10')
+
+    def test_accepted_class_should_make_dropzone_active(self):
+        s = self.selenium
+        self.start_drag('id=drag')
+        s.assertElementPresent('css=.droppable-active')
+
+    def test_not_accepted_class_should_not_make_dropzone_active(self):
+        s = self.selenium
+        self.start_drag('id=drag2')
+        s.assertElementNotPresent('css=.droppable-active')
+
+
 class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
@@ -382,6 +415,15 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
             (choice, request),
             zope.app.form.browser.interfaces.IInputWidget)
         self.assertNotIsInstance(widget, DropObjectWidget)
+
+    def test_accepted_types_is_escaped_for_javascript(self):
+        from zeit.cms.browser.widget import DropObjectWidget
+        choice = self.get_choice()
+        ANY = None
+        widget = DropObjectWidget(choice, choice.source, ANY)
+        with mock.patch.object(choice.source, 'get_check_types') as types:
+            types.return_value = [u'foo', 'bar']
+            self.assertEqual("['type-foo', 'type-bar']", widget.accept_classes)
 
 
 class TestObjectSequenceDisplayWidget(unittest2.TestCase):

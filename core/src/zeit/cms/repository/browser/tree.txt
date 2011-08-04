@@ -53,25 +53,25 @@ The noop in the URL is actually a hash of the user's tree state. Load the tree:
 >>> print browser.headers
 Status: 200 Ok
 Cache-Control: private; max-age=360
-Content-Length: 831
+Content-Length: ...
 Content-Type: text/html;charset=utf-8
 X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 >>> print browser.contents,
   <ul>
-      <li active="True" class="Root">
+      <li active="True" class="Root...">
         <p>
         <a href="http://localhost/++skin++cms/repository">Repository</a>
         <span class="uniqueId">None</span>
       </p>
   <ul>
-      <li action="expand" class="NotRoot"
+      <li action="expand" class="NotRoot..."
           uniqueid="http://xml.zeit.de/online">
         <p>
         <a href="http://localhost/++skin++cms/repository/online">online</a>
         <span class="uniqueId">http://xml.zeit.de/online</span>
       </p>
       </li>
-      <li action="expand" class="NotRoot"
+      <li action="expand" class="NotRoot..."
           uniqueid="http://xml.zeit.de/2007">
         <p>
         <a href="http://localhost/++skin++cms/repository/2007">2007</a>
@@ -98,7 +98,7 @@ When we visit `online` it is *not* automatically expanded while visiting it:
 >>> open_tree('http://localhost/++skin++cms/repository/online')
 >>> print browser.contents
  <ul>
-    <li active="True" class="Root">
+    <li active="True" class="Root...">
       <p>
       <a href="...">Repository</a>
       ...
@@ -120,7 +120,7 @@ Now we expand online/2007. This is done via an ajax request. Thus the returned
 ...              '&view_url=%s' % urllib.quote(view_url))
 >>> print lxml.etree.tostring(browser.etree, pretty_print=True)
 <ul>
-    <li active="True" class="Root">
+    <li active="True" class="Root...">
       <p>
       <a href="...">Repository</a>
       ...
@@ -142,7 +142,7 @@ on the + icon) the tree stays expanded even when we're not inside online:
 >>> open_tree('http://localhost/++skin++cms/repository')
 >>> print browser.contents,
   <ul>
-      <li active="True" class="Root">
+      <li active="True" class="Root...">
         <p>
         <a href="...">Repository</a>
         ...
@@ -167,7 +167,7 @@ between online/2007 and 2007:
 
 >>> print browser.contents.strip(),
 <ul>...
-      <li action="expand" class="NotRoot"
+      <li action="expand" class="NotRoot..."
           uniqueid="http://xml.zeit.de/online/2007">
           <p>
         <a href="http://localhost/++skin++cms/repository/online/2007">2007</a>
@@ -176,7 +176,7 @@ between online/2007 and 2007:
       </li>
   </ul>
       </li>
-      <li action="expand" class="NotRoot"
+      <li action="expand" class="NotRoot..."
           uniqueid="http://xml.zeit.de/2007">
           <p>
         <a href="http://localhost/++skin++cms/repository/2007">2007</a>
@@ -193,7 +193,7 @@ When we are *inside* a hidden container, it is shown nevertheles:
 >>> open_tree('http://localhost/++skin++cms/repository/2006')
 >>> print browser.contents,
   <ul>
-      <li active="True" class="Root">
+      <li active="True" class="Root...">
         <p>
         <a href="...">Repository</a>
         ...
@@ -224,7 +224,7 @@ The navigation tree contains the 2006 even when looking at the root:
 >>> open_tree('http://localhost/++skin++cms/repository/')
 >>> print browser.contents,
   <ul>
-      <li active="True" class="Root">
+      <li active="True" class="Root...">
         <p>
         <a href="...">Repository</a>
         ...
@@ -259,7 +259,7 @@ A shown container can be hidden again though:
 >>> open_tree('http://localhost/++skin++cms/repository/2006')
 >>> print browser.contents,
   <ul>
-      <li active="True" class="Root">
+      <li active="True" class="Root...">
         <p>
         <a href="...">Repository</a>
         ...

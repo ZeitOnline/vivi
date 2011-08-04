@@ -352,7 +352,7 @@ XMLEditor.prototype = {
         node.drag_pane_url = this.base_url + 'node-drag-pane.html?path=' + path;
         this.draggable = Draggable(node, {
             starteffect: function(drag_pane) {
-                addElementClass(drag_pane.dragged_element, 'dragged');
+                addElementClass(drag_pane.source_element, 'dragged');
             },
             endeffect: function(dragged_element) {
                 removeElementClass(dragged_element, 'dragged');

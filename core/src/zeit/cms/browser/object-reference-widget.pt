@@ -20,7 +20,7 @@
   <tal:workflow replace="structure view/workflow" />
 </div>
 <script tal:content="string:
-  new ObjectReferenceWidget(
+  new zeit.cms.ObjectReferenceWidget(
   '${view/name}.outerdiv',
   '${view/default_browsing_location/@@absolute_url}',
   '${view/type_filter_token}',

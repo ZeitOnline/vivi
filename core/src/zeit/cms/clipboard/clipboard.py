@@ -61,6 +61,7 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
         chooser = zope.app.container.interfaces.INameChooser(self)
         name = chooser.chooseName(title, clip)
         self[name] = clip
+        return self[name]
 
     def moveObject(self, obj, new_container, insert=False):
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(obj):

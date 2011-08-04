@@ -1,20 +1,13 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import os
 
 import BTrees.OOBTree
-
-import zope.annotation.factory
-import zope.security.interfaces
-import zope.publisher.browser
-
-import zope.app.pagetemplate
-
 import zc.set
-
 import zeit.cms.browser.interfaces
+import zope.annotation.factory
+import zope.app.pagetemplate
+import zope.publisher.browser
+import zope.security.interfaces
 
 
 class TreeState(BTrees.OOBTree.OOBTree):
@@ -93,6 +86,7 @@ class Tree(zope.publisher.browser.BrowserView):
                 'isroot': root,
                 'url': url,
                 'delete_url': self.getDeleteUrl(obj),
+                'type': self.getType(obj),
                 'selected': selected}
 
     def getTitle(self, obj):
@@ -111,6 +105,10 @@ class Tree(zope.publisher.browser.BrowserView):
 
     def getDeleteUrl(self, obj):
         """Returns the url to delete this content item."""
+        return ''
+
+    def getType(self, obj):
+        """Returns the content type of obj, if applicable."""
         return ''
 
     def expandable(self, obj):
