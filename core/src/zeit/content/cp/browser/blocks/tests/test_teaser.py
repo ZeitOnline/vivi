@@ -4,6 +4,7 @@
 import mock
 import unittest
 
+
 class TestTeaserDisplay(unittest.TestCase):
 
     def setUp(self):
