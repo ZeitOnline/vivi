@@ -359,7 +359,6 @@ class WorkflowPublicationPeriod(zeit.edit.browser.form.InlineForm):
     legend = _('Publication period')
     prefix = 'workflow-publication-period'
     undo_description = _('edit workflow publication period')
-    css_class = 'table'
 
     form_fields = (
         zope.formlib.form.FormFields(
