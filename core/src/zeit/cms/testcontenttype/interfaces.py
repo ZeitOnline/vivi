@@ -9,3 +9,6 @@ import zope.interface
 
 class ITestContentType(zope.interface.Interface):
     """A type for testing."""
+
+
+ITestContentType.setTaggedValue('zeit.cms.type', 'testcontenttype')

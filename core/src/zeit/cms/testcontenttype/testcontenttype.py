@@ -24,9 +24,13 @@ class TestContentType(zeit.cms.content.metadata.CommonMetadata):
         '<head/><body/></testtype>')
 
 
-class TestContentTypeType(zeit.cms.type.XMLContentTypeDeclaration):
+# TestContentType does not use a TypeDeclaration, since all of those are
+# always grokked, and we don't want it to show up in the production system
 
-    factory = TestContentType
-    interface = zeit.cms.testcontenttype.interfaces.ITestContentType
-    title = 'Test-Contenttype'
-    type = 'testcontenttype'
+test_content_type_factory = zeit.cms.content.adapter.xmlContentFactory(
+    TestContentType)
+
+resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
+    'testcontenttype')
+resourceFactory = zope.component.adapter(
+    zeit.cms.testcontenttype.interfaces.ITestContentType)(resourceFactory)

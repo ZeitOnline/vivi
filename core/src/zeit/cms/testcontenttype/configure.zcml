@@ -3,6 +3,11 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <adapter
+    factory=".testcontenttype.test_content_type_factory"
+    name="testcontenttype" />
+  <adapter factory=".testcontenttype.resourceFactory" />
+
   <class class=".testcontenttype.TestContentType">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
