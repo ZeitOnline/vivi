@@ -102,6 +102,10 @@ div div.landing-zone:first-child {
   padding: 0.7em 0.5em;
 } 
 
+#cp-undo {
+  overflow: auto;
+}
+
 #extended_search fieldset {
   border: 0px solid #ffffff;
 }
