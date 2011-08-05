@@ -584,12 +584,7 @@ class Favorites(SearchResultBase):
         return metadata.ressort
 
     def get_type(self, result):
-        for interface in zope.interface.providedBy(result):
-            try:
-                return interface.getTaggedValue('zeit.cms.type')
-            except KeyError:
-                continue
-        return ''
+        return zeit.cms.type.get_type(result) or ''
 
     def get_uniqueId(self, result):
         return result.uniqueId
