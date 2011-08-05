@@ -1,6 +1,7 @@
 // Copyright (c) 2007-2011 gocept gmbh & co. kg
 // See also LICENSE.txt
 
+(function() {
 
 zeit.cms.createDraggableContentObject = function(element, options) {
     element = $(element);
@@ -20,8 +21,6 @@ zeit.cms.createDraggableContentObject = function(element, options) {
     return new MochiKit.DragAndDrop.Draggable(element, default_options);
 };
 
-
-(function() {
 
 /**
  Draggables move their .element around, but here we want to leave the original
@@ -56,8 +55,9 @@ MochiKit.Signal.connect(
     // the type-* class is used as an accept filter by ObjectSequenceWidget and
     // DropObjectWidget, so the drag-pane needs to have those too to be
     // droppable there
+    var class_ = source_element.getAttribute('class') || '';
     forEach(
-        source_element.getAttribute('class').split(' '), function(class_) {
+        class_.split(' '), function(class_) {
             if (class_.indexOf('type-') == 0) {
                 MochiKit.DOM.addElementClass(div, class_);
             }
