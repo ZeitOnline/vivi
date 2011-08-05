@@ -439,6 +439,20 @@ div div.landing-zone:first-child {
   margin:auto;
 }
 
+#edit-form-assets .inline-form .widget-outer div.droppable-active {
+  width:626px;
+  background: -moz-linear-gradient(center top , #FFF, #EFE) repeat scroll 0 0 transparent;
+  border: 1px solid #0A0;
+  -moz-border-radius:5px;
+  margin:auto;
+}
+
+#edit-form-assets input[type="text"] {
+    padding: 1em;
+    width:278px;
+    font-size:12px;
+}
+
 .inline-form .label {
   display: block;
   float: left;
@@ -496,9 +510,7 @@ div div.landing-zone:first-child {
 }
 
 #edit-form-assets .inline-form .widget div.landing-zone {
-  border:1px solid #33aa33;
   width:626px;
-  -moz-border-radius:5px;
 }
 
 .inline-form div.widget > input,
