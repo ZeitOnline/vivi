@@ -1,6 +1,7 @@
 // Copyright (c) 2007-2011 gocept gmbh & co. kg
 // See also LICENSE.txt
 
+(function() {
 
 zeit.cms.createDraggableContentObject = function(element, options) {
     element = $(element);
@@ -20,8 +21,6 @@ zeit.cms.createDraggableContentObject = function(element, options) {
     return new MochiKit.DragAndDrop.Draggable(element, default_options);
 };
 
-
-(function() {
 
 /**
  Draggables move their .element around, but here we want to leave the original
