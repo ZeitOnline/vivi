@@ -55,8 +55,9 @@ MochiKit.Signal.connect(
     // the type-* class is used as an accept filter by ObjectSequenceWidget and
     // DropObjectWidget, so the drag-pane needs to have those too to be
     // droppable there
+    var class_ = source_element.getAttribute('class') || '';
     forEach(
-        source_element.getAttribute('class').split(' '), function(class_) {
+        class_.split(' '), function(class_) {
             if (class_.indexOf('type-') == 0) {
                 MochiKit.DOM.addElementClass(div, class_);
             }
