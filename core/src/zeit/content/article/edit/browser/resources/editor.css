@@ -180,7 +180,12 @@ color: #333;
 
 .editing .block-inner p,
 .editing .block-inner h3{
- margin-top:41px;
+  margin-top:41px;
+}
+
+.editing .block-inner ul {
+  margin-top:41px;
+  margin-bottom:57px;
 }
 
 
