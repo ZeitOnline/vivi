@@ -23,6 +23,8 @@ class InlineForm(zope.formlib.form.SubPageEditForm,
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('inlineform.pt')
 
+    css_class = None
+
     def __call__(self):
         self.mark_transaction_undoable()
         return super(InlineForm, self).__call__()
