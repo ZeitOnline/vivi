@@ -167,8 +167,13 @@ div div.landing-zone:first-child {
   padding: 5px 0em;
 }
 
-.block-inner .editable p {
+.block-inner .editable p,
+{
   padding:5px 12px;
+}
+
+.block-inner .editable ul {
+  margin-top:0px;
 }
 
 .block {
@@ -419,9 +424,24 @@ div div.landing-zone:first-child {
   position: relative;
 }
 
+#edit-form-assets .inline-form .widget-outer {
+  margin: 0 0px 20px 0;
+  position: relative;
+  background:#F2F2F2;
+  -moz-border-radius:5px;
+}
+
+#edit-form-assets .inline-form .widget-outer div.landing-zone {
+  width:626px;
+  background:white;
+  border:1px dotted green;
+  -moz-border-radius:5px;
+  margin:auto;
+}
+
 .inline-form .label {
   display: block;
-  float: left;
+  /*float: left;*/
   overflow: hidden;
 }
 
@@ -449,6 +469,36 @@ div div.landing-zone:first-child {
   padding: 0px 0 0;
   margin-bottom:10px;
   float:left;
+}
+
+#edit-form-assets .inline-form .widget {
+  /*clear: left;*/
+  padding: 0px 0 0;
+  margin-bottom:10px;
+  width:667px;
+  /*float:left;*/
+}
+
+#edit-form-assets .inline-form .widget-outer div.label{
+  margin:3px 0px 3px 3px;
+}
+
+#edit-form-assets .inline-form .widget .objectsequencewidget li,
+#edit-form-assets .inline-form .widget .drop-object-widget  {
+  width:650px;
+  margin:auto;
+}
+
+#edit-form-assets .inline-form .widget .textType {
+  width:615px;
+  display:block;
+  margin:auto;
+}
+
+#edit-form-assets .inline-form .widget div.landing-zone {
+  border:1px solid #33aa33;
+  width:626px;
+  -moz-border-radius:5px;
 }
 
 .inline-form div.widget > input,
