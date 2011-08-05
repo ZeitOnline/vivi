@@ -28,13 +28,6 @@ select {
     padding: 0.2em;
 }
 
-#edit-form-assets input[type="text"] {
-    padding: 1em;
-    width:278px;
-    font-size:12px;
-}
-
-
 .dateTimeWidget {
     line-height: 2em;
 }
