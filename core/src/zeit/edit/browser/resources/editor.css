@@ -280,6 +280,7 @@ div div.landing-zone:first-child {
 
 .edit-bar > .edit-link {
   background-image: url('edit.png');
+  background-size: 80%;
   padding-right: 0.5em;
 }
 
@@ -290,6 +291,7 @@ div div.landing-zone:first-child {
 
 .edit-bar > .delete-link {
   background-image: url('delete.png');
+  background-position: 0 2px;
   float: right;
   padding-right: .3em;
 }
