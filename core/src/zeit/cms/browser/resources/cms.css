@@ -681,8 +681,8 @@ li.busy {
 
 
 .landing-zone.droppable-active {
-  border-style: solid;
-  background-color: #d7ffda;
+  background: -moz-linear-gradient(center top , #FFF, #EFE) repeat scroll 0 0 transparent;
+  border: 1px solid #0A0;
   display: block;
   visibility: visible;
 }
