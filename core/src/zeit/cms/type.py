@@ -7,6 +7,7 @@ import lxml.etree
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.connector.resource
+import zope.interface
 
 
 log = logging.getLogger(__name__)
@@ -78,3 +79,12 @@ class XMLContentTypeDeclaration(TypeDeclaration):
 
     def resource_content_type(self, content):
         return 'text/xml'
+
+
+def get_type(self, content):
+    for interface in zope.interface.providedBy(content):
+        try:
+            return interface.getTaggedValue('zeit.cms.type')
+        except KeyError:
+            continue
+    return None
