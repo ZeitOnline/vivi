@@ -421,15 +421,14 @@ class BrowserAssertions(object):
         return data
 
 
-class BrowserTestCase(unittest2.TestCase,
-                      BrowserAssertions,
-                      RepositoryHelper):
-
-    layer = cms_layer
+class BrowserTestCase(FunctionalTestCase,
+                      BrowserAssertions):
 
     def setUp(self):
+        super(BrowserTestCase, self).setUp()
+        # undo some setup that would break browser tests
+        zope.security.management.endInteraction()
+        zope.component.hooks.setSite(None)
+
         self.browser = zope.testbrowser.testing.Browser()
         self.browser.addHeader('Authorization', 'Basic user:userpw')
-
-    def getRootFolder(self):
-        return self.layer.setup.getRootFolder()
