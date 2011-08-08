@@ -81,7 +81,7 @@ class XMLContentTypeDeclaration(TypeDeclaration):
         return 'text/xml'
 
 
-def get_type(self, content):
+def get_type(content):
     for interface in zope.interface.providedBy(content):
         try:
             return interface.getTaggedValue('zeit.cms.type')
