@@ -36,11 +36,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     status = zeit.cms.content.property.ObjectPathProperty('.status')
 
-    def __cmp__(self, other):
-        if not zeit.cms.interfaces.ICMSContent.providedBy(other):
-            return -1
-        return cmp(self.uniqueId, other.uniqueId)
-
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
 
