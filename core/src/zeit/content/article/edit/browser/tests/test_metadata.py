@@ -202,13 +202,16 @@ class KeywordTest(zeit.content.article.testing.SeleniumTestCase):
         return tags
 
     def test_sorting_should_trigger_write(self):
+        # XXX this test fails because the drag&drop command marked below
+        # doesn't seem to have any effect whatsoever.
         s = self.selenium
         tags = self.setup_tags('t1', 't2', 't3')
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s.waitForElementPresent('id=metadata-a.keywords')
         s.waitForTextPresent('t1*t2*t3')
-        s.dragAndDropToObject("xpath=//li[contains(., 't1')]",
-                              "xpath=//li[contains(., 't3')]")
+        height = s.getElementHeight("xpath=//li[contains(., 't1')]")
+        # XXX this seems to do nothing
+        s.dragAndDrop("xpath=//li[contains(., 't1')]", '+0,+%s' % (2 * height))
         s.waitForTextPresent('t2*t3*t1')
         self.assertEqual(3, tags['t2'].weight)
         self.assertEqual(2, tags['t3'].weight)
