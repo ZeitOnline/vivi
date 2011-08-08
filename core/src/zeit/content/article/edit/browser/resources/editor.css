@@ -32,7 +32,7 @@
 
 #editor-forms div div.edit-bar a{
     margin:4px;
-    margin-top:3px;
+    margin-top:1px;
 }
 
 #article-form-workflow.folded,
@@ -74,8 +74,7 @@
 }
 
 .article-editor-inner .edit-bar > a {
-  height: 7px;
-  width: 7px;
+  height: 10px;
   margin:0;
   padding:0;
   margin-top:1px;
@@ -180,7 +179,12 @@ color: #333;
 
 .editing .block-inner p,
 .editing .block-inner h3{
- margin-top:41px;
+  margin-top:41px;
+}
+
+.editing .block-inner ul {
+  margin-top:41px;
+  margin-bottom:57px;
 }
 
 
@@ -325,4 +329,26 @@ color: #333;
 
 .block.type-citation .double .citation.citation_2 {
   opacity: 1;
+}
+
+/* imitate table design */
+fieldset.table .widget-outer {
+  clear: both;
+}
+
+fieldset.table .label {
+  width: 20em;
+}
+
+#edit-form-filename fieldset.table .label {
+  width: 10em;
+}
+
+fieldset.table label {
+  font-weight: bold;
+}
+
+fieldset.table .widget {
+  clear: none;
+  margin: 0;
 }
