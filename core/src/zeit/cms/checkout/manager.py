@@ -119,7 +119,6 @@ class CheckoutManager(object):
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
                     self.context, workingcopy, self.principal))
-        unique_id = self.context.uniqueId
         if ignore_conflicts:
             adapter_name = u'non-conflicting'
         else:
