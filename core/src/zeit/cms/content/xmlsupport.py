@@ -48,7 +48,9 @@ class XMLContentBase(XMLRepresentationBase,
     def __cmp__(self, other):
         if not zeit.cms.interfaces.ICMSContent.providedBy(other):
             return -1
-        return cmp(self.__name__, other.__name__)
+        self_key = (self.uniqueId, self.__name__)
+        other_key = (other.uniqueId, other.__name__)
+        return cmp(self_key, other_key)
 
 _default_marker = object()
 
