@@ -49,6 +49,7 @@ class APIConnection(object):
     def get(self, command, **kwargs):
         url = '%s?%s' % (self.read_url, urllib.urlencode(dict(
             output='JSON',
+            media_delivery='http',
             command=command,
             token=self.read_token,
             **kwargs)))

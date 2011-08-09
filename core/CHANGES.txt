@@ -4,7 +4,7 @@ zeit.brightcove changes
 0.9.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- added mediadeliverymethod in connection.
 
 
 0.9.1 (2011-04-29)
