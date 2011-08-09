@@ -145,8 +145,10 @@ But now we check in:
 
 >>> manager = ICheckinManager(checked_out)
 >>> manager.canCheckin
+Event: <zeit.cms.checkout.interfaces.ValidateCheckinEvent...
 True
 >>> checked_in = manager.checkin()
+Event: <zeit.cms.checkout.interfaces.ValidateCheckinEvent...
 Event: <zeit.cms.checkout.interfaces.BeforeCheckinEvent object at 0x...>
      Principal: zope.user
      Content: <zeit.cms...>
@@ -255,8 +257,10 @@ We can also check in the temporary checkout:
 
 >>> manager = ICheckinManager(checked_out)
 >>> manager.canCheckin
+Event: <zeit.cms.checkout.interfaces.ValidateCheckinEvent...
 True
 >>> manager.checkin()
+Event: <zeit.cms.checkout.interfaces.ValidateCheckinEvent...
 Event: <zeit.cms.checkout.interfaces.BeforeCheckinEvent object at 0x...>
     Principal: zope.user
     Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>

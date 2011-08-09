@@ -27,6 +27,7 @@ class CheckoutManager(object):
     def __init__(self, context):
         self.context = context
         self.__parent__ = context
+        self.last_validation_error = None
 
     @property
     def canCheckout(self):
@@ -97,18 +98,30 @@ class CheckoutManager(object):
     def canCheckin(self):
         if not zeit.cms.workingcopy.interfaces.ILocalContent.providedBy(
             self.context):
+            self.last_validation_error = _('Object is not local content')
             return False
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
         if (lockable is not None
             and not lockable.ownLock() and lockable.locked()):
+            self.last_validation_error = _('Cannot acquire lock')
+            return False
+        workingcopy = self.context.__parent__
+        event = zeit.cms.checkout.interfaces.ValidateCheckinEvent(
+            self.context, workingcopy, self.principal)
+        zope.event.notify(event)
+        self.last_validation_error = event.vetoed
+        if self.last_validation_error is not None:
             return False
         return True
 
     def checkin(self, event=True, semantic_change=False,
                 ignore_conflicts=False):
         if not self.canCheckin:
+            reason = self.last_validation_error
+            if reason is None:
+                reason = _('Unknown error')
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
-                self.context.uniqueId, "Cannot checkin.")
+                self.context.uniqueId, 'Cannot checkin: %s' % reason)
         workingcopy = self.context.__parent__
         if semantic_change:
             dc = zope.dublincore.interfaces.IDCTimes(self.context)

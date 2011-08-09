@@ -22,6 +22,8 @@ editor-ng branch changes
   they offer a parameter to configure the accept setting instead. Clipboard and
   zeit.find annotate their draggables with the content types (#9390).
 
+- Introduce ValidateCheckinEvent (#9406).
+
 
 1.49.2 (unreleased)
 -------------------
