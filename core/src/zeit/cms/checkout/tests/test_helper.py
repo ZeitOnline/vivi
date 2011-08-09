@@ -1,17 +1,13 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
-import zope.app.locking.interfaces
 import zope.app.testing.functional
 import zope.component
-import zope.security.management
-import zope.security.testing
 
 
 class TestHelper(zope.app.testing.functional.BrowserTestCase):
@@ -97,13 +93,3 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
             # raised due to ignore_conflicts=True
             zeit.connector.interfaces.IWebDAVProperties(co)[
                 ('getetag', 'DAV:')] = 'foo'
-
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt',
-        'manager.txt'))
-    suite.addTest(unittest.makeSuite(TestHelper))
-    return suite

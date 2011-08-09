@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zope.component.interfaces
 import zope.container.interfaces
 import zope.interface
@@ -33,6 +34,12 @@ class ICheckinManager(zope.interface.Interface):
 
     canCheckin = zope.interface.Attribute(
         "True if the object can be checked in, False otherwise.")
+
+    last_validation_error = zope.interface.Attribute(
+        """If canCheckin returned False, this may contain an error message,
+        it's None otherwise.
+        Note that you need to "call" canCheckin before this is filled in.
+        """)
 
     def checkin(event=True, semantic_change=False, ignore_conflicts=False):
         """Checkin the managed object and return the checked in object.
@@ -113,6 +120,14 @@ class IAfterCheckoutEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked out."""
 
 
+class IValidateCheckinEvent(ICheckinCheckoutEvent):
+    """Allows subscribers to influence whether a content object can be checked
+    in."""
+
+    def veto(message=None):
+        """Signals that a checkin is not allowed."""
+
+
 class IBeforeCheckinEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked in."""
 
@@ -139,6 +154,20 @@ class AfterCheckoutEvent(EventBase):
     """Generated after a content object was checked out."""
 
     zope.interface.implements(IAfterCheckoutEvent)
+
+
+class ValidateCheckinEvent(EventBase):
+
+    zope.interface.implements(IValidateCheckinEvent)
+
+    def __init__(self, *args, **kw):
+        super(ValidateCheckinEvent, self).__init__(*args, **kw)
+        self.vetoed = None
+
+    def veto(self, message=None):
+        if message == None:
+            message = _('not allowed')
+        self.vetoed = message
 
 
 class BeforeCheckinEvent(EventBase):

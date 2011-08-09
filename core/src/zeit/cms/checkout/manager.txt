@@ -2,7 +2,7 @@ Checkout and checkin manager
 ============================
 
 Content which can be checked out needs to be adaptable to ILocalContent.
-Adapting to ILocalContent needs to be a (rahter) cheap operation because it's
+Adapting to ILocalContent needs to be a (rather) cheap operation because it's
 done often and also to *check* if it is possible.
 
 
