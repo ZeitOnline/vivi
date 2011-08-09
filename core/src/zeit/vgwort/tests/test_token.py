@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.vgwort.token import _order_tokens
+import transaction
 import zeit.vgwort.interfaces
 import zeit.vgwort.testing
 import zope.component
@@ -33,3 +34,22 @@ class OrderTokensTest(zeit.vgwort.testing.TestCase):
         self.assertEqual(0, len(ts))
         _order_tokens()
         self.assertEqual(1, len(ts))
+
+
+class TokenTransactionTest(zeit.vgwort.testing.TestCase):
+
+    def setUp(self):
+        super(TokenTransactionTest, self).setUp()
+        zope.security.management.endInteraction() # needed for xmlrpc
+
+    def test_error_during_publish_still_marks_token_as_claimed(self):
+        tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
+        tokens.order(1)
+        self.assertEqual(1, len(tokens))
+        transaction.commit()
+
+        tokens.claim_immediately()
+
+        # if an error occurs during publishing, the transaction will be aborted
+        transaction.abort()
+        self.assertEqual(0, len(tokens))

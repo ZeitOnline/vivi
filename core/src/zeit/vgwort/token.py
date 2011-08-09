@@ -7,6 +7,7 @@ import gocept.runner
 import grokcore.component
 import persistent
 import random
+import xmlrpclib
 import zc.queue
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -44,6 +45,10 @@ class TokenStorage(persistent.Persistent,
         self._len.change(-1)
         return value
 
+    def claim_immediately(self):
+        service = zope.component.getUtility(ITokenService)
+        return service.claim_token()
+
     def order(self, amount):
         service = zope.component.getUtility(
             zeit.vgwort.interfaces.IPixelService)
@@ -52,6 +57,33 @@ class TokenStorage(persistent.Persistent,
 
     def __len__(self):
         return self._len()
+
+
+class ITokenService(zope.interface.Interface):
+    pass
+
+
+class TokenService(grokcore.component.GlobalUtility):
+    """DAV does not support transactions, so we need to work around the case
+    that an error occurs (and the transaction is rolled back) after a token has
+    been claimed -- because the token has be written to DAV nonetheless, thus
+    leading to duplicates.
+
+    The solution is to make the act of claiming a token effective immediately,
+    too, regardless of the transaction, just like DAV. We do this by moving the
+    token claming to an XML-RPC call (which happens in its own, independent
+    transaction).
+    """
+
+    grokcore.component.implements(ITokenService)
+
+    def __init__(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.vgwort')
+        self.tokens = xmlrpclib.ServerProxy(config['claim-token-url'])
+
+    def claim_token(self):
+        return self.tokens.claim()
 
 
 class Token(zeit.cms.content.dav.DAVPropertiesAdapter):
@@ -79,7 +111,7 @@ def add_token(context, event):
         return
 
     tokens = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
-    token.public_token, token.private_token = tokens.claim()
+    token.public_token, token.private_token = tokens.claim_immediately()
 
     class Dummy(object):
         tzinfo = 'none'
