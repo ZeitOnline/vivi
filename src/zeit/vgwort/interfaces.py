@@ -33,6 +33,9 @@ class ITokens(zope.interface.Interface):
 
         """
 
+    def claim_immediately():
+        """Claim a token outside of the current transaction."""
+
     def load(csv_file):
         """Load tokens from csv file (file like object)."""
 

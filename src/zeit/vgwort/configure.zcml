@@ -1,7 +1,8 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:grok="http://namespaces.zope.org/grok"
-  xmlns:browser="http://namespaces.zope.org/browser">
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:xmlrpc="http://namespaces.zope.org/xmlrpc">
 
   <grok:grok package="." />
 
@@ -18,5 +19,11 @@
     permission="zope.Public"
     />
 
+  <xmlrpc:view
+    for="zope.location.interfaces.ISite"
+    class=".browser.TokenStorage"
+    methods="claim"
+    permission="zope.Public"
+    />
 </configure>
 

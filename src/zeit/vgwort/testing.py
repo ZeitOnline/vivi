@@ -1,9 +1,12 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
+import xmlrpclib
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.vgwort.interfaces
+import zope.app.testing.xmlrpc
 import zope.component
 import zope.index.text.interfaces
 import zope.interface
@@ -18,11 +21,12 @@ product_config = """
     minimum-token-amount 10
     order-token-amount 1
     days-before-report 7
+    claim-token-url http://user:userpw@localhost/
 </product-config>
 """
 
 
-ZCMLLayer = zeit.cms.testing.ZCMLLayer(
+ZCMLLayerBase = zeit.cms.testing.ZCMLLayer(
     'ftesting-mock.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
 
@@ -30,6 +34,28 @@ ZCMLLayer = zeit.cms.testing.ZCMLLayer(
 SOAPLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting-soap.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
+
+
+class ZCMLLayer(ZCMLLayerBase):
+
+    @classmethod
+    def setUp(cls):
+        # inject a testing xmlrpc ServerProxy into the TokenService
+        # XXX ugly!
+        def patch_once(*args, **kw):
+            if cls.patch_called:
+                cls.patcher.stop()
+                return xmlrpclib.ServerProxy(*args, **kw)
+            else:
+                cls.patch_called = True
+                return zope.app.testing.xmlrpc.ServerProxy(*args, **kw)
+
+        cls.patcher = mock.patch('xmlrpclib.ServerProxy', patch_once)
+        cls.patcher.start()
+        cls.patch_called = False
+
+        zope.component.getSiteManager().registerUtility(
+            zeit.vgwort.token.TokenService())
 
 
 def FunctionalDocFileSuite(*args, **kw):

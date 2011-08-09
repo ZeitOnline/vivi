@@ -14,6 +14,8 @@ zeit.vgwort changes
 - Removed the mostly useles CSV export. We need to find useful ways for
   reporting.
 
+- Make claiming a token transaction-independent (#9430).
+
 
 0.3.1 (2011-06-22)
 ------------------
