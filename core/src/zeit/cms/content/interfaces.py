@@ -411,6 +411,6 @@ class IUUID(zope.interface.Interface):
 class IMemo(zope.interface.Interface):
     """Provide a memo for additional remarks on a content object."""
 
-    memo = zope.schema.TextLine(
+    memo = zope.schema.Text(
         title=_('Memo'),
         required=False)
