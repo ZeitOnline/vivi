@@ -16,7 +16,7 @@ zeit.cms.TableSorter = gocept.Class.extend({
                 });
             }
 
-            new Droppable(row, {
+            new MochiKit.DragAndDrop.Droppable(row, {
                 ondrop: function (element) {
                     var tbody = element.parentNode;
                     if (tbody.nodeName != 'TBODY') {

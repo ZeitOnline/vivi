@@ -41,7 +41,7 @@ zeit.cms.View = gocept.Class.extend({
 
     do_render: function(html, target_element, data) {
         var self = this;
-        var target_element = target_element || $(self.target_id);
+        target_element = target_element || $(self.target_id);
         MochiKit.Signal.signal(self, 'before-load');
         target_element.innerHTML = html;
         log('template expanded successfully', self.target_id);
@@ -61,7 +61,7 @@ zeit.cms.JSONView = zeit.cms.View.extend({
 
     load: function(target_element, url) {
         var self = this;
-        var target_element = target_element || $(self.target_id);
+        target_element = target_element || $(self.target_id);
         if(!isNull(target_element)) {
             MochiKit.DOM.addElementClass(target_element, 'busy');
         }
@@ -131,4 +131,4 @@ zeit.cms.JSONView = zeit.cms.View.extend({
     MochiKit.Signal.connect(window, 'onclick', click_handler);
 
 
-})();
+}());

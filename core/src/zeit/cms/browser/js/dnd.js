@@ -105,4 +105,4 @@ MochiKit.Signal.connect(window, 'onload', function(event) {
 
 });
 
-})();
+}());

@@ -50,7 +50,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             MochiKit.DOM.getElementsByTagAndClassName(
                 'input', 'uniqueId', self.element),
             function(input) {
-                appendChildNodes(
+                MochiKit.DOM.appendChildNodes(
                     self.ul_element,
                     self.renderElement(i, input.value));
                 i += 1;
@@ -111,15 +111,16 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     },
 
     getCountField: function() {
-        return getElement(this.widget_id + '.count');
+        return MochiKit.DOM.getElement(this.widget_id + '.count');
     },
 
     getValueField: function(index) {
-        return getElement(this.getValueFieldName(index));
+        return MochiKit.DOM.getElement(this.getValueFieldName(index));
     },
 
     getValueFieldName: function(index) {
-        return this.widget_id + '.' + index;
+        var self = this;
+        return self.widget_id + '.' + index;
     },
 
     add: function(value) {
@@ -142,11 +143,11 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     remove: function(index) {
         var self = this;
 
-        removeElement(self.getValueField(index));
+        MochiKit.DOM.removeElement(self.getValueField(index));
 
         var new_index = 0;
         self.iterFields(function(value_field) {
-            value_field_name = self.getValueFieldName(new_index);
+            var value_field_name = self.getValueFieldName(new_index);
             value_field.setAttribute('name', value_field_name);
             value_field.setAttribute('id', value_field_name);
             new_index += 1;
@@ -159,8 +160,8 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     iterFields: function(callable) {
         var othis = this;
         var count_field = this.getCountField();
-        var amount = new Number(count_field.value);
-        forEach(range(amount), function(iteration_index) {
+        var amount = Number(count_field.value);
+        forEach(MochiKit.Iter.range(amount), function(iteration_index) {
             var value_field = othis.getValueField(iteration_index);
             if (value_field === null) {
                 return;
@@ -172,10 +173,12 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     handleClick: function(event) {
         var self = this;
         var target = event.target();
+        var action;
+        var argument;
         if (target.nodeName == 'A' &&
             target.rel) {
-            var action = target.rel;
-            var argument = target.getAttribute('href');
+            action = target.rel;
+            argument = target.getAttribute('href');
         }
         if (action && argument) {
             self[action](argument);
@@ -212,7 +215,8 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
                     ordered_ids.push(self.getValueField(index).value);
                 }
         });
-        for (var i=0; i<ordered_ids.length; i++) {
+        var i;
+        for (i = 0; i < ordered_ids.length; i++) {
             self.getValueField(i).value = ordered_ids[i];
         }
         self.changed();
@@ -262,7 +266,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
     },
 
     remove: function() {
-        self = this;
+        var self = this;
         self.input.value = '';
         self.changed();
         self.update_details();
@@ -307,10 +311,12 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
     handleClick: function(event) {
         var self = this;
         var target = event.target();
+        var action;
+        var argument;
         if (target.nodeName == 'A' &&
             target.rel) {
-            var action = target.rel;
-            var argument = target.getAttribute('href');
+            action = target.rel;
+            argument = target.getAttribute('href');
         }
         if (action) {
             self[action](argument);

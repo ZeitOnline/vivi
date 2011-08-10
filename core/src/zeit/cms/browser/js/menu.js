@@ -5,5 +5,5 @@ zeit.cms.menu = {};
 
 
 zeit.cms.menu.toggle = function(element) {
-    toggleElementClass('hidden', $(element));
+    MochiKit.DOM.toggleElementClass('hidden', $(element));
 };

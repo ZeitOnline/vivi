@@ -127,4 +127,4 @@ zeit.cms.ViewTab = zeit.cms.Tab.extend({
     };
 
     zeit.cms.url_handlers.register('tab', tab_check, tab_activate);
-})();
+}());

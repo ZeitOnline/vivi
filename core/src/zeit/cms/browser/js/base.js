@@ -23,9 +23,12 @@
         var proto = new this(gocept.Class);
         var superClass = this.prototype;
 
-        for (var n in def) {
+        var n;
+        for (n in def) {
             var item = def[n];
-            if (item instanceof Function) item.$ = superClass;
+            if (item instanceof Function) {
+                item.$ = superClass;
+            }
             proto[n] = item;
         }
 
@@ -36,10 +39,10 @@
         return classDef;
     };
 
-})();
+}());
 
 
-Class = gocept.Class;
+window.Class = gocept.Class;
 
 zeit.cms.resolveDottedName = function(name) {
     // Resolve *absolute* dotted name
@@ -60,10 +63,11 @@ zeit.cms.ScrollStateRestorer = gocept.Class.extend({
     connectWindowHandlers: function() {
         var othis = this;
         this.restoreScrollState();
-        connect(window, 'onunload', function(event) {
+        MochiKit.Signal.connect(window, 'onunload', function(event) {
             othis.rememberScrollState();
         });
-        connect(this.content_element, 'initialload', function(event) {
+        MochiKit.Signal.connect(
+            this.content_element, 'initialload', function(event) {
             if (event.src() == othis.content_element) {
                 othis.restoreScrollState();
             }
@@ -107,7 +111,9 @@ zeit.cms.getCookie = function(name) {
   var begin = dc.indexOf("; " + prefix);
   if (begin == -1) {
     begin = dc.indexOf(prefix);
-    if (begin != 0) return null;
+    if (begin != 0) {
+        return null;
+    }
   } else {
     begin += 2;
   }
@@ -163,11 +169,12 @@ zeit.cms._imported = {};
 zeit.cms.import = function(src) {
     var d = new MochiKit.Async.Deferred();
     var ident = null;
+    var node;
     logDebug('Importing', src);
     if (MochiKit.Base.isUndefined(zeit.cms._imported[src])) {
         var head = document.getElementsByTagName('head')[0];
         if (!isNull(src.match(/\.js$/))) {
-            var node = MochiKit.DOM.createDOM('SCRIPT', {
+            node = MochiKit.DOM.createDOM('SCRIPT', {
                 type: 'text/javascript',
                 src: src
             });
@@ -176,7 +183,7 @@ zeit.cms.import = function(src) {
                 d.callback();
             });
         } else if (!isNull(src.match(/\.css$/))) {
-            var node = MochiKit.DOM.createDOM('LINK', {
+            node = MochiKit.DOM.createDOM('LINK', {
                 href: src,
                 rel: 'stylesheet',
                 type: 'text/css'

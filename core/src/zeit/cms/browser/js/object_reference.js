@@ -17,7 +17,7 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
         self.default_browsing_url = default_browsing_url;
         self.type_filter = type_filter;
         self.add_view = add_view;
-        self.input = getFirstElementByTagAndClassName(
+        self.input = MochiKit.DOM.getFirstElementByTagAndClassName(
             'input', 'object-reference', self.element);
         self.input.object_reference_widget = self;
         self.changed = false;
@@ -44,7 +44,7 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
             return self.getToolTipURL();
         });
 
-        var addbutton = getFirstElementByTagAndClassName(
+        var addbutton = MochiKit.DOM.getFirstElementByTagAndClassName(
             'input', 'add-object', self.element);
         if (isUndefinedOrNull(self.add_view)) {
             MochiKit.DOM.hideElement(addbutton);
@@ -58,8 +58,9 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
             // set a unique id.
             self.events.push(MochiKit.Signal.connect(
                 window, 'onload', function() {
-                    if (!self.input.value)
+                    if (!self.input.value) {
                         self.browseObjects();
+                    }
             }));
         }
 
@@ -85,11 +86,10 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
     handleClick: function(event) {
         var target = event.target();
         var action = null;
-        var argument;
         if (target.nodeName == 'INPUT' && target.type == 'button') {
             event.stop();
             action = target.getAttribute('name');
-            var func = bind(action, this);
+            var func = MochiKit.Base.bind(action, this);
             func(event);
         }
     },
@@ -232,6 +232,7 @@ zeit.cms.ObjectReferenceSequenceWidget = gocept.Class.extend({
     },
 
     destruct: function() {
+        var self = this;
         self.droppable.destroy();
     },
 
@@ -247,7 +248,7 @@ zeit.cms.ObjectReferenceSequenceWidget = gocept.Class.extend({
         if (!unique_id) {
             return;
         }
-        var count = new Number(this.form[this.widget_id + '.count'].value);
+        var count = Number(this.form[this.widget_id + '.count'].value);
         if (count <= 0) {
             return;
         }
@@ -276,7 +277,7 @@ zeit.cms.ObjectAddForm = zeit.cms.LightboxForm.extend({
         // enable the visual effect to work
         MochiKit.DOM.removeElementClass(self.container, 'busy');
 
-        var node = getFirstElementByTagAndClassName(
+        var node = MochiKit.DOM.getFirstElementByTagAndClassName(
             'span', 'result', self.container);
         var unique_id = node.textContent;
         MochiKit.Signal.signal(

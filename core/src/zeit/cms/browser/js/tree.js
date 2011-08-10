@@ -4,7 +4,7 @@
 
 function Tree(base_url, element_id) {
     this.base_url = base_url;
-    this.contentElement = getElement(element_id);
+    this.contentElement = MochiKit.DOM.getElement(element_id);
     this.event = MochiKit.Signal.connect(
         this.contentElement, 'onclick', this, 'clickHandler');
     this.query_arguments = {};
@@ -20,24 +20,27 @@ Tree.prototype = {
     clickHandler: function(event) {
         var target = event.target();
         var action = target.getAttribute('action');
-        if (action == null)
+        if (action == null) {
             return;
+        }
 
         var d = this.changeState(target, action);
-        if (d != null)
+        if (d != null) {
             event.stop();  // event is handled
+        }
     },
 
     changeState: function(node, action) {
         var self = this;
         var uniqueId = node.getAttribute('uniqueId');
-        if (uniqueId == null)
+        if (uniqueId == null) {
             return null;
+        }
         var url = this.base_url + '/@@' + action + 'Tree' ;
         var query = {'uniqueId': uniqueId,
                      'view_url': window.location.href};
-        update(query, this.query_arguments);
-        var d = doSimpleXMLHttpRequest(url, query);
+        MochiKit.Base.update(query, this.query_arguments);
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url, query);
         MochiKit.DOM.addElementClass(self.contentElement, 'busy');
         d.addCallback(
             function(result) {
@@ -59,7 +62,7 @@ Tree.prototype = {
     loadTree: function() {
         var self = this;
         MochiKit.DOM.addElementClass(self.contentElement, 'busy');
-        var d = doSimpleXMLHttpRequest(self.base_url);
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(self.base_url);
         d.addCallback(
             function(result) {
                 self.replaceTree(result.responseText);
@@ -76,10 +79,11 @@ Tree.prototype = {
     },
 
     replaceTree: function(content) {
-        signal(this, 'zeit.cms.BeforeTreeChangeEvent');
-        this.contentElement.innerHTML = content;
-        signal(this, 'zeit.cms.TreeChangedEvent');
-        signal(this, 'treeChangeEvent'); // BBB
+        var self = this;
+        MochiKit.Signal.signal(self, 'zeit.cms.BeforeTreeChangeEvent');
+        self.contentElement.innerHTML = content;
+        MochiKit.Signal.signal(self, 'zeit.cms.TreeChangedEvent');
+        MochiKit.Signal.signal(self, 'treeChangeEvent'); // BBB
     },
 
 

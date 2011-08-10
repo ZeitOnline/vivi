@@ -45,9 +45,9 @@ zeit.cms.PanelHandler = gocept.Class.extend({
             var flex = panel.getAttribute('panel:flex');
             var fixed;
             if (flex) {
-                var content_element = getFirstElementByTagAndClassName(
+                var content_element = MochiKit.DOM.getFirstElementByTagAndClassName(
                     'div', 'PanelContent', panel);
-                panel._flex = new Number(flex);
+                panel._flex = Number(flex);
                 flex_sum += panel._flex;
                 fixed = panel.clientHeight - content_element.clientHeight;
             } else {
@@ -60,6 +60,7 @@ zeit.cms.PanelHandler = gocept.Class.extend({
 
         // Fix up flex / fixed_space for not making panels larger than they'd
         // need to be
+        var space_per_flex;
         var continue_ = true;
         while (continue_) {
             continue_ = false;
@@ -67,12 +68,12 @@ zeit.cms.PanelHandler = gocept.Class.extend({
             log("Fixed space", fixed_space);
             var available_space = max_height - fixed_space;
             log("Available space", available_space);
-            var space_per_flex = available_space / flex_sum;
+            space_per_flex = available_space / flex_sum;
             log("space per flex", space_per_flex, available_space, flex_sum);
 
             forEach(panels, function(panel) {
                 if (panel._flex) {
-                    var content_element = getFirstElementByTagAndClassName(
+                    var content_element = MochiKit.DOM.getFirstElementByTagAndClassName(
                         'div', 'PanelContent', panel);
                     var new_height = panel._flex * space_per_flex;
                     if (new_height >= content_element.clientHeight) {
@@ -91,7 +92,7 @@ zeit.cms.PanelHandler = gocept.Class.extend({
         // Finally set the sizes
         forEach(panels, function(panel) {
             if (panel._flex) {
-                var content_element = getFirstElementByTagAndClassName(
+                var content_element = MochiKit.DOM.getFirstElementByTagAndClassName(
                     'div', 'PanelContent', panel);
                 // compute padding and remove px from padding;
                 // NOTE: this is quite expensive, maybe we can work around
@@ -101,7 +102,7 @@ zeit.cms.PanelHandler = gocept.Class.extend({
                 var padding_bottom = MochiKit.Style.getStyle(
                     content_element, 'padding-bottom').slice(0, -2);
                 var padding = (
-                    new Number(padding_top) + new Number(padding_bottom));
+                    Number(padding_top) + Number(padding_bottom));
 
                 var height = panel._flex * space_per_flex - padding;
                 log("Sizing", panel.id, "at", height, "flex =", panel._flex);
@@ -123,26 +124,25 @@ zeit.cms.PanelHandler = gocept.Class.extend({
                 if (event.target() != foldmarker) {
                     return;
                 }
-                var new_state;
-                if (hasElementClass(panel, 'folded')) {
-                    removeElementClass(panel, 'folded');
-                    addElementClass(panel, 'unfolded');
+                if (MochiKit.DOM.hasElementClass(panel, 'folded')) {
+                    MochiKit.DOM.removeElementClass(panel, 'folded');
+                    MochiKit.DOM.addElementClass(panel, 'unfolded');
                 } else {
-                    removeElementClass(panel, 'unfolded');
-                    addElementClass(panel, 'folded');
+                    MochiKit.DOM.removeElementClass(panel, 'unfolded');
+                    MochiKit.DOM.addElementClass(panel, 'folded');
                 }
                 self.resizeAllPanels();
                 self.storeState(panel.id);
             });
-            var content_element = getFirstElementByTagAndClassName(
+            var content_element = MochiKit.DOM.getFirstElementByTagAndClassName(
                 'div', 'PanelContent', panel);
             var scroll_state = new zeit.cms.ScrollStateRestorer(
                 content_element);
             scroll_state.connectWindowHandlers();
-            connect(
+            MochiKit.Signal.connect(
                 'sidebar', 'zeit.cms.RememberScrollStateEvent',
                 scroll_state, 'rememberScrollState');
-            connect(
+            MochiKit.Signal.connect(
                 'sidebar', 'zeit.cms.RestoreScrollStateEvent',
                 scroll_state, 'restoreScrollState');
 
@@ -152,7 +152,9 @@ zeit.cms.PanelHandler = gocept.Class.extend({
     },
 
     storeState: function(panel_id) {
-        doSimpleXMLHttpRequest(this.url, {toggle_folding: panel_id});
+        var self = this;
+        MochiKit.Async.doSimpleXMLHttpRequest(
+            self.url, {toggle_folding: panel_id});
     }
 
 });
@@ -164,8 +166,8 @@ zeit.cms.PanelHandler = gocept.Class.extend({
 
 function SidebarDragger(base_url) {
     this.url = base_url + '/@@sidebar_folded';
-    this.observe_ids = new Array('sidebar', 'sidebar-dragger',
-        'visualContentSeparator', 'visualContentWrapper', 'header');
+    this.observe_ids = ['sidebar', 'sidebar-dragger',
+        'visualContentSeparator', 'visualContentWrapper', 'header'];
 }
 
 SidebarDragger.prototype = {
@@ -174,8 +176,10 @@ SidebarDragger.prototype = {
 
     toggle: function(event) {
         var self = this;
-        var folded = ! hasElementClass('sidebar', 'sidebar-folded');
-        var d = doSimpleXMLHttpRequest(this.url, {folded: folded});
+        var folded = ! MochiKit.DOM.hasElementClass(
+            'sidebar', 'sidebar-folded');
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(
+            self.url, {folded: folded});
         d.addCallback(function(result) {
             var css_class = result.responseText;
             self.setClass(css_class);
@@ -192,11 +196,11 @@ SidebarDragger.prototype = {
         forEach(this.observe_ids,
             function(element_id) {
               forEach(self.classes, function(cls) {
-                  var element = getElement(element_id);
-                  removeElementClass(element, cls);
+                  var element = MochiKit.DOM.getElement(element_id);
+                  MochiKit.DOM.removeElementClass(element, cls);
                   });
-        var element = getElement(element_id);
-        addElementClass(element, css_class);
+        var element = MochiKit.DOM.getElement(element_id);
+        MochiKit.DOM.addElementClass(element, css_class);
         });
     }
 };

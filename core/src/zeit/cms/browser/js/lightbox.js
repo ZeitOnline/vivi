@@ -64,7 +64,7 @@ gocept.Lightbox = gocept.Class.extend({
         if (this.innerHTML == "") {
             this.replace_content("Loading ...");
         }
-        var d = doSimpleXMLHttpRequest(url, query);
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url, query);
         d.addCallbacks(
             function(result) {
                 return result.responseText;
@@ -111,7 +111,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         var self = this;
         MochiKit.Signal.signal(self, 'before-reload');
         // XXX duplicated from gocept.Lightbox.load_url
-        var d = doSimpleXMLHttpRequest(self.url);
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(self.url);
         d.addCallbacks(
             function(result) {
                 return result.responseText;
@@ -136,19 +136,22 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         MochiKit.Signal.signal(self, 'close');
         while(self.events.length) {
             MochiKit.Signal.disconnect(self.events.pop());
-        };
+        }
     },
 
     handle_click: function(event) {
         var self = this;
 
         var target = event.target();
-        if (target.nodeName != 'INPUT')
+        if (target.nodeName != 'INPUT') {
             return;
-        if (target.type != 'button')
+        }
+        if (target.type != 'button') {
             return;
-        if (! hasElementClass(target, 'submit'))
+        }
+        if (! MochiKit.DOM.hasElementClass(target, 'submit')) {
             return;
+        }
         self.handle_submit(target.name);
         event.stop();
     },
@@ -181,7 +184,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         // clear box with loading message
         self.loading();
 
-        var d = doXHR(submit_to, {
+        var d = MochiKit.Async.doXHR(submit_to, {
             'method': 'POST',
             'headers': {
                 'Content-Type': 'application/x-www-form-urlencoded'},
@@ -216,7 +219,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         var self = this;
         while (self.form_events.length) {
             MochiKit.Signal.disconnect(self.form_events.pop());
-        };
+        }
         self.container.innerHTML = result.responseText;
         return result;
     },
@@ -236,14 +239,14 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     has_errors: function(result) {
         var self = this;
-        var errors = getFirstElementByTagAndClassName(
+        var errors = MochiKit.DOM.getFirstElementByTagAndClassName(
             'ul', 'errors', self.container);
         return (errors != null);
     },
 
     get_next_url: function() {
         var self = this;
-        var next_url_node = getFirstElementByTagAndClassName(
+        var next_url_node = MochiKit.DOM.getFirstElementByTagAndClassName(
             'span', 'nextURL', self.container);
         if (isNull(next_url_node)) {
             return null;
@@ -283,7 +286,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             function(button) {
                 if (button.type == 'submit') {
                     button.type = 'button';
-                    addElementClass(button, 'submit');
+                    MochiKit.DOM.addElementClass(button, 'submit');
                 }
             });
         if (!isNull(self.form) && self.form !== self.container) {
@@ -369,7 +372,8 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
         self.lightbox = self.create_lightbox(container);
         arguments.callee.$.construct.call(self, url, self.lightbox.content_box);
         self.events.push(
-            connect(window, 'zeit.cms.LightboxReload', function(event) {
+            MochiKit.Signal.connect(
+                window, 'zeit.cms.LightboxReload', function(event) {
                 self.loading();
             }));
         self.events.push(
@@ -378,7 +382,7 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
     },
 
     create_lightbox: function(container) {
-        var self = this;
+        //var self = this;
         return new gocept.Lightbox(container, {
             use_ids: false
         });

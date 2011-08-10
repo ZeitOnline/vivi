@@ -13,7 +13,7 @@ zeit.cms.MessageView = zeit.cms.View.extend({
         MochiKit.Signal.connect(self, 'before-load', function(event) {
             while(self.events.length) {
                 MochiKit.Signal.disconnect(self.events.pop());
-            };
+            }
         });
     },
 
@@ -37,7 +37,7 @@ zeit.cms.MessageView = zeit.cms.View.extend({
             timeout = 5;
         }
 
-        self.fade = callLater(timeout, function() {
+        self.fade = MochiKit.Async.callLater(timeout, function() {
             MochiKit.Visual.fade(messages, {
                 afterFinish: function() {
                     MochiKit.DOM.addElementClass(messages, 'hiddenMessages');

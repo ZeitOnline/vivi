@@ -5,18 +5,22 @@
 zeit.cms.FilteringTable = gocept.Class.extend({
 
     construct: function() {
-        this.contentElement = getFirstElementByTagAndClassName(
+        this.contentElement = MochiKit.DOM.getFirstElementByTagAndClassName(
             'table', 'contentListing');
         if (typeof this.contentElement == 'undefined') {
             return;
         }
-        var tablefilter = getElement('tableFilter');
+        var tablefilter = MochiKit.DOM.getElement('tableFilter');
         this.metadata_deferred = null;
 
-        connect(this.contentElement, "onclick", this, 'onDataSelect');
-        connect(this.contentElement, "onclick", this, 'enableDrag');
-        connect(this.contentElement, "ondblclick", this, 'onView');
-        connect(tablefilter, 'onkeyup', this, 'updateFilter');
+        MochiKit.Signalconnect(
+            this.contentElement, "onclick", this, 'onDataSelect');
+        MochiKit.Signalconnect(
+            this.contentElement, "onclick", this, 'enableDrag');
+        MochiKit.Signalconnect(
+            this.contentElement, "ondblclick", this, 'onView');
+        MochiKit.Signalconnect(
+            tablefilter, 'onkeyup', this, 'updateFilter');
     },
 
     updateFilter: function(event) {
@@ -28,8 +32,9 @@ zeit.cms.FilteringTable = gocept.Class.extend({
 
         forEach(table.rows, function(row) {
             var lastcell = row.cells[row.cells.length - 1];
-            if (lastcell.nodeName == 'TH')
+            if (lastcell.nodeName == 'TH') {
                 return;
+            }
             in_what = lastcell.getElementsByTagName('span')[0].textContent;
             if (filter_table.stringFilter(search_list, in_what)) {
                 row.style.display = "table-row";
@@ -47,7 +52,8 @@ zeit.cms.FilteringTable = gocept.Class.extend({
     stringFilter: function(search_for, in_what) {
         in_what = in_what.toLowerCase();
         var word;
-        for (var idx in search_for) {
+        var idx;
+        for (idx in search_for) {
             word = search_for[idx];
             if (!word) {
                 continue;
@@ -63,8 +69,9 @@ zeit.cms.FilteringTable = gocept.Class.extend({
         // handler fired, when the user selected a table cell
         this.cancelMetadataLoad();
         var base_url = this.get_base_url(event);
-        if (!base_url)
+        if (!base_url) {
             return;
+        }
 
         var metadata_url = base_url + '/@@metadata_preview';
 
@@ -74,44 +81,45 @@ zeit.cms.FilteringTable = gocept.Class.extend({
 
         var old_selected = this.contentElement.old_selected;
         if (old_selected) {
-            removeElementClass(old_selected, 'selected');
+            MochiKit.DOM.removeElementClass(old_selected, 'selected');
        }
         var tr = MochiKit.DOM.getFirstParentByTagAndClassName(
             event.target(), 'TR');
         this.contentElement.old_selected = tr;
-        addElementClass(tr, 'selected');
+        MochiKit.DOM.addElementClass(tr, 'selected');
     },
 
     onView: function(event) {
         this.cancelMetadataLoad();
         var base_url = this.get_base_url(event);
-        if (!base_url)
+        if (!base_url) {
             return;
-        view_url = base_url + '/@@view.html';
+        }
+        var view_url = base_url + '/@@view.html';
         document.location = view_url;
     },
 
     get_base_url: function(event) {
         var tr = MochiKit.DOM.getFirstParentByTagAndClassName(
             event.target(), 'TR');
-        var url_node = getFirstElementByTagAndClassName('span', 'URL', tr);
+        var url_node = MochiKit.DOM.getFirstElementByTagAndClassName(
+            'span', 'URL', tr);
         if (url_node) {
             return url_node.textContent;
         }
     },
 
-
     loadMetadataHTML: function(url) {
-        var d = doSimpleXMLHttpRequest(url);
+        var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
         d.addCallbacks(
             function(result) {
-                var bottomcontent = getElement('bottomcontent');
-                var topcontent = getElement('topcontent');
+                var bottomcontent = MochiKit.DOM.getElement('bottomcontent');
+                var topcontent = MochiKit.DOM.getElement('topcontent');
 
                 bottomcontent.innerHTML = result.responseText;
 
-                addElementClass(topcontent, 'topcontent-small');
-                showElement('bottomcontent');
+                MochiKit.DOM.addElementClass(topcontent, 'topcontent-small');
+                MochiKit.DOM.showElement('bottomcontent');
             });
         return d;
     },
@@ -131,12 +139,12 @@ zeit.cms.FilteringTable = gocept.Class.extend({
         if (isUndefinedOrNull(row.draggble)) {
             row.draggable = zeit.cms.createDraggableContentObject(row);
         }
-    },
+    }
 
 });
 
 var table;
-connect(window, 'onload', function() {
+MochiKit.Signal.connect(window, 'onload', function() {
   table = new zeit.cms.FilteringTable();
 });
 

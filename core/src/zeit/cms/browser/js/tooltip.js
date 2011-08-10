@@ -127,7 +127,6 @@ zeit.cms.LinkToolTip = zeit.cms.ToolTip.extend({
 zeit.cms.TextToolTip = zeit.cms.ToolTip.extend({
 
     construct: function(context) {
-        var self = this;
     }
 
 });
@@ -138,7 +137,7 @@ zeit.cms.ToolTipManager = zeit.cms.ToolTip.extend({
     construct: function(context) {
         var self = this;
         self.context = context;
-        url_getter = function(event) {
+        var url_getter = function(event) {
             return self.getURL(event);
         };
         arguments.callee.$.construct.call(self, context, url_getter);
