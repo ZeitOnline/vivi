@@ -24,15 +24,15 @@
         var superClass = this.prototype;
 
         for (var n in def) {
-            var item = def[n];                      
+            var item = def[n];
             if (item instanceof Function) item.$ = superClass;
             proto[n] = item;
         }
 
         classDef.prototype = proto;
 
-        //Give this new class the same static extend method    
-        classDef.extend = this.extend;      
+        //Give this new class the same static extend method
+        classDef.extend = this.extend;
         return classDef;
     };
 
@@ -91,7 +91,7 @@ zeit.cms.ScrollStateRestorer = gocept.Class.extend({
 });
 
 
-zeit.cms.setCookie = function(name, value, expires, path, domain, secure) {   
+zeit.cms.setCookie = function(name, value, expires, path, domain, secure) {
   var val = escape(value);
   cookie = name + "=" + val +
     ((expires) ? "; expires=" + expires.toGMTString() : "") +
@@ -119,13 +119,13 @@ zeit.cms.getCookie = function(name) {
 }
 
 
-    
+
 zeit.cms.ClickOnceAction = gocept.Class.extend({
 
     construct: function(element) {
         var self = this;
         self.element = $(element);
-        
+
         self.event_id = MochiKit.Signal.connect(
             self.element, 'onclick', self, 'disable');
     },
