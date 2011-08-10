@@ -138,6 +138,7 @@ _find_name_attributes = lxml.etree.XPath(
     './/*[@cms:__name__]',
     namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
 
+
 def clean_names_on_checkin(context):
     for element in _find_name_attributes(context.xml):
         del element.attrib['{http://namespaces.zeit.de/CMS/cp}__name__']
@@ -152,3 +153,13 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator,
     def children(self):
         body = zeit.content.article.edit.interfaces.IEditableBody(self.context)
         return body.values()
+
+
+@grokcore.component.subscribe(
+    zeit.cms.checkout.interfaces.IValidateCheckinEvent)
+def validate_article(event):
+    context = event.object
+    errors = zope.schema.getValidationErrors(
+        zeit.content.article.interfaces.IArticle, context)
+    if errors:
+        event.veto(errors)

@@ -4,6 +4,7 @@
 import mock
 import unittest2
 import zeit.content.article.testing
+import zope.schema
 
 
 class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
@@ -145,3 +146,25 @@ class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(
             [x.__name__ for x in body.values()],
             [x.__name__ for x in validator.children])
+
+
+class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_validation_errors_should_veto_checkin(self):
+        from zeit.cms.checkout.interfaces import ICheckinManager
+        from zeit.cms.checkout.interfaces import ICheckoutManager
+        import zeit.content.article.article
+
+        self.repository['article'] = zeit.content.article.article.Article()
+
+        workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(
+            self.principal)
+
+        manager = ICheckoutManager(self.repository['article'])
+        co = manager.checkout()
+        self.assertEqual(1, len(workingcopy))
+        manager = ICheckinManager(co)
+        self.assertFalse(manager.canCheckin)
+        self.assertIsInstance(
+            dict(manager.last_validation_error)['title'],
+            zope.schema.ValidationError)
