@@ -425,3 +425,25 @@ class TestDivision(
         s.type('id=form.teaser', "Division teaser")
         s.click('id=form.actions.apply')
         s.waitForTextPresent('Division teaser')
+
+
+class TestLimitedInput(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(TestLimitedInput, self).setUp()
+        self.add_article()
+
+    def test_limitation_should_decrease_on_input(self):
+        s = self.selenium
+        s.waitForElementPresent('xpath=//span[@class="charlimit"]')
+        s.assertText('xpath=//span[@class="charlimit"]', '170 Zeichen')
+        s.typeKeys('id=teaser-text.teaserText', 'Saskia had a little pig')
+        # Due to a bug in selenium, we have to release the key manually.
+        # That is selenium currently has registered everything but the trailing
+        # "g" character. Nevertheless we should check whether our input has
+        # decreased the charlimit at all.
+        s.assertText('xpath=//span[@class="charlimit"]', '148 Zeichen')
+        s.keyUp('id=teaser-text.teaserText', 'g')
+        # Now selenium has recieved the whole input.
+        s.assertText('xpath=//span[@class="charlimit"]', '147 Zeichen')
