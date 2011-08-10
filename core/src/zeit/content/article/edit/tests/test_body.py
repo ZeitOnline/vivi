@@ -157,14 +157,25 @@ class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
 
         self.repository['article'] = zeit.content.article.article.Article()
 
-        workingcopy = zeit.cms.workingcopy.interfaces.IWorkingcopy(
-            self.principal)
+        manager = ICheckoutManager(self.repository['article'])
+        co = manager.checkout()
+        manager = ICheckinManager(co)
+        self.assertFalse(manager.canCheckin)
+        errors = dict(manager.last_validation_error)
+        self.assertIsInstance(errors['title'], zope.schema.ValidationError)
+
+    def test_security_proxied_fields_should_be_validated_correctly(self):
+        from zeit.cms.checkout.interfaces import ICheckinManager
+        from zeit.cms.checkout.interfaces import ICheckoutManager
+        import zeit.content.article.article
+
+        self.repository['article'] = zeit.content.article.article.Article()
 
         manager = ICheckoutManager(self.repository['article'])
         co = manager.checkout()
-        self.assertEqual(1, len(workingcopy))
+        co = zope.security.proxy.ProxyFactory(co)
         manager = ICheckinManager(co)
         self.assertFalse(manager.canCheckin)
-        self.assertIsInstance(
-            dict(manager.last_validation_error)['title'],
-            zope.schema.ValidationError)
+        errors = dict(manager.last_validation_error)
+        # the default for keywords is an empty tuple
+        self.assertNotIn('keywords', errors)

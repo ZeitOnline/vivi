@@ -11,6 +11,7 @@ import zeit.content.article.interfaces
 import zeit.edit.container
 import zeit.edit.rule
 import zope.publisher.interfaces
+import zope.security.proxy
 
 
 editable_body_name = 'editable-body'
@@ -159,6 +160,9 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator,
     zeit.cms.checkout.interfaces.IValidateCheckinEvent)
 def validate_article(event):
     context = event.object
+    # field validation (e.g. zope.schema.Tuple) does type comparisons, which
+    # doesn't work with security proxies
+    context = zope.security.proxy.removeSecurityProxy(context)
     errors = zope.schema.getValidationErrors(
         zeit.content.article.interfaces.IArticle, context)
     if errors:
