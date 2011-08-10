@@ -139,23 +139,3 @@ the read only form:
 Traceback (most recent call last):
     ...
 LookupError: label 'Teaser text'
-
-
-
-.. [2] Create an image group. To create it we need to setup the site:
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-
-    Create the group:
-
-    >>> import zeit.content.image.tests
-    >>> group = zeit.content.image.tests.create_image_group()
-
-    Commit the transaction so our browser sees the change. Also unset the site
-    again:
-
-    >>> import transaction
-    >>> transaction.commit()
-    >>> zope.app.component.hooks.setSite(old_site)
