@@ -79,7 +79,7 @@ zeit.cms.JSONView = zeit.cms.View.extend({
     callback_json: function(json, target_element) {
         var self = this;
         var template_url = json['template_url'];
-        if (template_url == self.last_template_url && 
+        if (template_url == self.last_template_url &&
             !isUndefinedOrNull(self.template)) {
             self.expand_template(json, target_element);
             return json

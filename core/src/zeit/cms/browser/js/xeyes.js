@@ -34,4 +34,4 @@ zeit.cms.move_eye = function(event, element, x, y) {
     $(element).offset({left: x + newX, top: y + newY});
 };
 
-})(jQuery);
+}(jQuery));

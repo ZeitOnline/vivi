@@ -112,7 +112,7 @@ zeit.cms.ViewTab = zeit.cms.Tab.extend({
 
 
 (function() {
-    
+
     var tab_check = function(element) {
         return element.nodeName == 'A' && element.href.indexOf('tab://') == 0
     };

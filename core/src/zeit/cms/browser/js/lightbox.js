@@ -16,7 +16,7 @@ gocept.Lightbox = gocept.Class.extend({
         this.parent_element = parent_element;
         this.shade = DIV({'class': 'lightbox-shade'})
         this.header = DIV({'class': 'lightbox-header'});
-        this.closebutton = A({'href': '#', 
+        this.closebutton = A({'href': '#',
                               'title': 'Close',
                               'class': 'CloseButton'});
         this.content_box = DIV({'class': 'lightbox'});
@@ -54,7 +54,7 @@ gocept.Lightbox = gocept.Class.extend({
                     }
         });
     },
-    
+
     load_url: function(url, query) {
         if (query == undefined) {
             query = {}
@@ -70,7 +70,7 @@ gocept.Lightbox = gocept.Class.extend({
                 return result.responseText;
             },
             function(error) {
-                return "There was an error loading the content: " + error 
+                return "There was an error loading the content: " + error
             });
         d.addCallback(function(result) {
             othis.replace_content(result);

@@ -25,7 +25,7 @@ zeit.cms.FilteringTable = gocept.Class.extend({
         var filter_table = this;
         var search_list = this.processSearchInput(input.value);
         var in_what;
-        
+
         forEach(table.rows, function(row) {
             var lastcell = row.cells[row.cells.length - 1];
             if (lastcell.nodeName == 'TH')
@@ -71,7 +71,7 @@ zeit.cms.FilteringTable = gocept.Class.extend({
         var d = MochiKit.Async.wait(0.25);
         d.addCallback(this.loadMetadataHTML, metadata_url);
         this.metadata_deferred = d;
-         
+
         var old_selected = this.contentElement.old_selected;
         if (old_selected) {
             removeElementClass(old_selected, 'selected');
@@ -109,7 +109,7 @@ zeit.cms.FilteringTable = gocept.Class.extend({
                 var topcontent = getElement('topcontent');
 
                 bottomcontent.innerHTML = result.responseText;
-                
+
                 addElementClass(topcontent, 'topcontent-small');
                 showElement('bottomcontent');
             });
@@ -139,9 +139,9 @@ var table;
 connect(window, 'onload', function() {
   table = new zeit.cms.FilteringTable();
 });
-      
-      
-// Add-Menu support      
+
+
+// Add-Menu support
 function add_content(menu) {
   var url = menu.options[menu.selectedIndex].value
   if (url.indexOf('http') == -1) {

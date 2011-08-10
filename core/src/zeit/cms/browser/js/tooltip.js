@@ -5,7 +5,7 @@ zeit.cms.showToolTip = function(context, text, where) {
     var body = $('body');
     var div = $('tooltip');
     if (!isNull(div)) {
-        zeit.cms.hideToolTip(div.signals);    
+        zeit.cms.hideToolTip(div.signals);
     }
     div = DIV({'id': 'tooltip'});
     div.innerHTML = text;
