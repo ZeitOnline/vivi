@@ -1,10 +1,15 @@
+// Copyright (c) 2011 gocept gmbh & co. kg
+// See also LICENSE.txt
+
+
 function Tree(base_url, element_id) {
     this.base_url = base_url;
     this.contentElement = getElement(element_id);
     this.event = MochiKit.Signal.connect(
         this.contentElement, 'onclick', this, 'clickHandler');
-    this.query_arguments = {}
+    this.query_arguments = {};
 }
+
 
 Tree.prototype = {
 
@@ -18,7 +23,7 @@ Tree.prototype = {
         if (action == null)
             return;
 
-        var d = this.changeState(target, action)
+        var d = this.changeState(target, action);
         if (d != null)
             event.stop();  // event is handled
     },
@@ -39,7 +44,7 @@ Tree.prototype = {
                 self.replaceTree(result.responseText);
                 MochiKit.Signal.signal(self, 'state-changed');
                 return result;
-            })
+            });
         d.addErrback(function(error) {
             zeit.cms.log_error(error);
             return error;
@@ -48,7 +53,7 @@ Tree.prototype = {
             MochiKit.DOM.removeElementClass(self.contentElement, 'busy');
             return result;
         });
-        return d
+        return d;
     },
 
     loadTree: function() {
@@ -62,10 +67,10 @@ Tree.prototype = {
                 MochiKit.Signal.signal(self.contentElement, 'initialload');
                 MochiKit.DOM.removeElementClass(self.contentElement, 'busy');
                 return result;
-            })
+            });
         d.addErrback(function(error) {
             zeit.cms.log_error(error);
-            return error
+            return error;
         });
         return d;
     },
@@ -83,7 +88,7 @@ Tree.prototype = {
         var head = application_url + '/repository/';
         var selectable_path = context_url.slice(head.length);
         var id_base = 'http://xml.zeit.de/';
-        var unique_id = id_base + selectable_path + '/'
+        var unique_id = id_base + selectable_path + '/';
         var element = null;
         while(isNull(element) && unique_id != id_base) {
             var elements = MochiKit.Selector.findChildElements(
@@ -99,5 +104,5 @@ Tree.prototype = {
             element = MochiKit.DOM.getFirstParentByTagAndClassName(
                 element, 'li', null);
         }
-    },
-}
+    }
+};

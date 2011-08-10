@@ -42,7 +42,7 @@ zeit.cms.ToolTip = gocept.Class.extend({
         var self = this;
         self.context = $(context);
         self.url_getter = url_getter;
-        self.events = []
+        self.events = [];
 
         self.mouse_over_deferred = null;
 
@@ -99,7 +99,7 @@ zeit.cms.ToolTip = gocept.Class.extend({
         }
         this.mouse_over_deferred.cancel();
         this.mouse_over_deferred = null;
-    },
+    }
 });
 
 
@@ -108,8 +108,8 @@ zeit.cms.LinkToolTip = zeit.cms.ToolTip.extend({
     construct: function(context) {
         var othis = this;
         var url_getter = function() {
-            return othis.getURLFromLink()
-        }
+            return othis.getURLFromLink();
+        };
         arguments.callee.$.construct.call(othis, context, url_getter);
     },
 
@@ -120,7 +120,7 @@ zeit.cms.LinkToolTip = zeit.cms.ToolTip.extend({
             return null;
         }
         return url + '/@@drag-pane.html';
-    },
+    }
 });
 
 
@@ -128,7 +128,7 @@ zeit.cms.TextToolTip = zeit.cms.ToolTip.extend({
 
     construct: function(context) {
         var self = this;
-    },
+    }
 
 });
 
@@ -140,7 +140,7 @@ zeit.cms.ToolTipManager = zeit.cms.ToolTip.extend({
         self.context = context;
         url_getter = function(event) {
             return self.getURL(event);
-        }
+        };
         arguments.callee.$.construct.call(self, context, url_getter);
     },
 
@@ -155,5 +155,5 @@ zeit.cms.ToolTipManager = zeit.cms.ToolTip.extend({
             return null;
         }
         return 'tooltip:' + tooltip;
-    },
+    }
 });

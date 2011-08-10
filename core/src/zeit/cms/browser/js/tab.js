@@ -1,4 +1,8 @@
-zeit.cms.all_tabs = {}
+// Copyright (c) 2011 gocept gmbh & co. kg
+// See also LICENSE.txt
+
+zeit.cms.all_tabs = {};
+
 
 zeit.cms.Tabs = gocept.Class.extend({
     // Knows about all tabs
@@ -8,7 +12,7 @@ zeit.cms.Tabs = gocept.Class.extend({
         var self = this;
         self.container = $(container);
         var div = self.container.appendChild(
-            DIV({'class': 'context-views'}))
+            DIV({'class': 'context-views'}));
         self.tabs = [];
         self.tabs_element = div.appendChild(UL());
         MochiKit.Signal.connect(
@@ -47,7 +51,7 @@ zeit.cms.Tabs = gocept.Class.extend({
         if (!isUndefinedOrNull(parent_tab)) {
             parent_tab.tabs.activate(self.container.id);
         }
-    },
+    }
 
 });
 
@@ -64,7 +68,7 @@ zeit.cms.Tab = gocept.Class.extend({
         self.tabs = parent;
         self.tab_element = self.tabs.tabs_element.appendChild(
             LI({},
-                A({href: self.id}, self.title)))
+                A({href: self.id}, self.title)));
         self.container = self.tabs.container.appendChild(
             DIV({id: self.id, 'class': 'tab-content'}));
         self.deactivate();
@@ -80,14 +84,14 @@ zeit.cms.Tab = gocept.Class.extend({
         var self = this;
         MochiKit.DOM.hideElement(self.container);
         MochiKit.DOM.removeElementClass(self.tab_element, 'selected');
-    },
+    }
 });
 
 
 zeit.cms.ViewTab = zeit.cms.Tab.extend({
 
     _options: {
-        render_on_activate: false,
+        render_on_activate: false
     },
 
     construct: function(id, title, view, options) {
@@ -106,7 +110,7 @@ zeit.cms.ViewTab = zeit.cms.Tab.extend({
             self.rendered = true;
         }
         arguments.callee.$.activate.call(self);
-    },
+    }
 
 });
 
@@ -114,13 +118,13 @@ zeit.cms.ViewTab = zeit.cms.Tab.extend({
 (function() {
 
     var tab_check = function(element) {
-        return element.nodeName == 'A' && element.href.indexOf('tab://') == 0
+        return element.nodeName == 'A' && element.href.indexOf('tab://') == 0;
     };
 
     var tab_activate = function(element) {
         var tab_id = element.href.substring(6);
         zeit.cms.all_tabs[tab_id].tabs.activate(tab_id);
-    }
+    };
 
-    zeit.cms.url_handlers.register('tab', tab_check, tab_activate)
+    zeit.cms.url_handlers.register('tab', tab_check, tab_activate);
 })();

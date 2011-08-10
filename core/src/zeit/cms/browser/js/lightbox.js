@@ -4,7 +4,7 @@
 gocept.Lightbox = gocept.Class.extend({
 
     default_options: {
-        use_ids: true,
+        use_ids: true
     },
 
     construct: function(parent_element, option_args) {
@@ -14,7 +14,7 @@ gocept.Lightbox = gocept.Class.extend({
         }
 
         this.parent_element = parent_element;
-        this.shade = DIV({'class': 'lightbox-shade'})
+        this.shade = DIV({'class': 'lightbox-shade'});
         this.header = DIV({'class': 'lightbox-header'});
         this.closebutton = A({'href': '#',
                               'title': 'Close',
@@ -31,7 +31,7 @@ gocept.Lightbox = gocept.Class.extend({
         MochiKit.DOM.appendChildNodes(this.header, this.closebutton);
         MochiKit.DOM.appendChildNodes(
             this.parent_element, this.shade, this.header, this.content_box);
-        this.events = []
+        this.events = [];
         this.events.push(
             MochiKit.Signal.connect(
                 this.closebutton, 'onclick', this, this.close));
@@ -57,7 +57,7 @@ gocept.Lightbox = gocept.Class.extend({
 
     load_url: function(url, query) {
         if (query == undefined) {
-            query = {}
+            query = {};
         }
 
         var othis = this;
@@ -70,7 +70,7 @@ gocept.Lightbox = gocept.Class.extend({
                 return result.responseText;
             },
             function(error) {
-                return "There was an error loading the content: " + error
+                return "There was an error loading the content: " + error;
             });
         d.addCallback(function(result) {
             othis.replace_content(result);
@@ -81,7 +81,7 @@ gocept.Lightbox = gocept.Class.extend({
 
     replace_content: function(new_html) {
         this.content_box.innerHTML = new_html;
-    },
+    }
 
 });
 
@@ -127,8 +127,8 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 MochiKit.DOM.removeElementClass(self.container, 'busy');
                 return result;
             });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
-        return d
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
+        return d;
     },
 
     close: function() {
@@ -142,13 +142,13 @@ zeit.cms.SubPageForm = gocept.Class.extend({
     handle_click: function(event) {
         var self = this;
 
-        var target = event.target()
+        var target = event.target();
         if (target.nodeName != 'INPUT')
-            return
+            return;
         if (target.type != 'button')
-            return
+            return;
         if (! hasElementClass(target, 'submit'))
-            return
+            return;
         self.handle_submit(target.name);
         event.stop();
     },
@@ -159,22 +159,22 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         // collect data
         var elements = filter(
             function(element) {
-                return (element.type != 'button')
+                return (element.type != 'button');
             }, self.form.elements);
 
         var data = map(function(element) {
                 if ((element.type == 'radio' || element.type == 'checkbox')
                     && !element.checked) {
-                    return
+                    return;
                 }
-                return element.name + "=" + encodeURIComponent(element.value)
+                return element.name + "=" + encodeURIComponent(element.value);
             }, elements);
         if (isUndefinedOrNull(action)) {
             var button = MochiKit.Selector.findChildElements(
                 self.container, ['.form-controls input'])[0];
             action = button.name;
         }
-        data.push(action + '=clicked')
+        data.push(action + '=clicked');
         data = data.join('&');
         var submit_to = self.form.getAttribute('action');
 
@@ -190,7 +190,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             MochiKit.Base.bind(self.replace_content, self),
             function(error) {
                 logError(error.req.status, error.req.statusText);
-                var parser = new DOMParser()
+                var parser = new DOMParser();
                 var doc = parser.parseFromString(
                     error.req.responseText, "text/xml");
                 document.firstChild.nextSibling.innerHTML = doc.firstChild.nextSibling.innerHTML;
@@ -208,7 +208,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 MochiKit.DOM.removeElementClass, self.container, 'busy');
             return result;
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
         return d;
     },
 
@@ -290,7 +290,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.form_events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
                 // prevent accidental submit
-                event.stop()
+                event.stop();
             }));
         }
     },
@@ -298,14 +298,14 @@ zeit.cms.SubPageForm = gocept.Class.extend({
     wire_save_on_change: function() {
         var self = this;
         if (!self.save_on_change) {
-            return
+            return;
         }
         forEach(MochiKit.Selector.findChildElements(
             self.form, ['textarea', 'input', 'select']), function(node) {
             if (node.nodeName == 'INPUT' && (
                     node.type == 'button' ||
                     MochiKit.DOM.hasElementClass(node, 'autocomplete'))) {
-                return
+                return;
             }
             if (node.nodeName == 'INPUT' && node.type == 'checkbox') {
                 self.form_events.push(MochiKit.Signal.connect(
@@ -329,7 +329,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                         MochiKit.Async.callLater(0.25, function() {
                             // Save iff nothing is focused after the timeout.
                             if (self.focus_node === null) {
-                                self.handle_submit()
+                                self.handle_submit();
                             }
                         });
                 }));
@@ -355,7 +355,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             function(script) {
                 eval(script.text);
             });
-    },
+    }
 });
 
 
@@ -391,18 +391,18 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
             self.post_process_html();
             return result;
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
-        return d
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
+        return d;
     },
 
     close: function() {
         var self = this;
         arguments.callee.$.close.call(self);
         self.lightbox.close();
-    },
+    }
 });
 
 
 zeit.cms.lightbox_form = function(url) {
     new zeit.cms.LightboxForm(url);
-}
+};

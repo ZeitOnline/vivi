@@ -3,11 +3,11 @@
         var obj = window;
         forEach(namespace.split('.'), function(name) {
             if (isUndefined(obj[name])) {
-                obj[name] = {}
+                obj[name] = {};
             }
             obj = obj[name];
         });
-    }
+    };
     declare_namespace('zeit.cms');
     declare_namespace('gocept');
     zeit.cms.declare_namespace = declare_namespace;
@@ -45,10 +45,10 @@ zeit.cms.resolveDottedName = function(name) {
     // Resolve *absolute* dotted name
     var obj = window;
     forEach(name.split('.'), function(step) {
-        obj = obj[step]
+        obj = obj[step];
     });
     return obj;
-}
+};
 
 
 zeit.cms.ScrollStateRestorer = gocept.Class.extend({
@@ -86,7 +86,7 @@ zeit.cms.ScrollStateRestorer = gocept.Class.extend({
         }
         var position = zeit.cms.getCookie(id);
         this.content_element.scrollTop = position;
-    },
+    }
 
 });
 
@@ -99,7 +99,7 @@ zeit.cms.setCookie = function(name, value, expires, path, domain, secure) {
     ((domain) ? "; domain=" + domain : "") +
     ((secure) ? "; secure" : "");
   document.cookie = cookie;
-}
+};
 
 zeit.cms.getCookie = function(name) {
   var dc = document.cookie;
@@ -116,7 +116,7 @@ zeit.cms.getCookie = function(name) {
     end = dc.length;
   }
   return unescape(dc.substring(begin + prefix.length, end));
-}
+};
 
 
 
@@ -138,7 +138,7 @@ zeit.cms.ClickOnceAction = gocept.Class.extend({
 
     stop: function(event) {
         event.stop();
-    },
+    }
 });
 
 
@@ -159,19 +159,19 @@ zeit.cms.log_error = function(err) {
 };
 
 
-zeit.cms._imported = {}
+zeit.cms._imported = {};
 zeit.cms.import = function(src) {
     var d = new MochiKit.Async.Deferred();
     var ident = null;
     logDebug('Importing', src);
     if (MochiKit.Base.isUndefined(zeit.cms._imported[src])) {
-        var head = document.getElementsByTagName('head')[0]
+        var head = document.getElementsByTagName('head')[0];
         if (!isNull(src.match(/\.js$/))) {
             var node = MochiKit.DOM.createDOM('SCRIPT', {
                 type: 'text/javascript',
                 src: src
             });
-            var ident = MochiKit.Signal.connect(node, 'onload', function() {
+            ident = MochiKit.Signal.connect(node, 'onload', function() {
                 MochiKit.Signal.disconnect(ident);
                 d.callback();
             });
@@ -179,7 +179,7 @@ zeit.cms.import = function(src) {
             var node = MochiKit.DOM.createDOM('LINK', {
                 href: src,
                 rel: 'stylesheet',
-                type: 'text/css',
+                type: 'text/css'
             });
         } else {
             throw Error("Don't know how to load: " + src);
@@ -210,6 +210,6 @@ zeit.cms.get_datetime_close = function(id) {
         cal.hide();
         $(id).focus();
         MochiKit.Signal.signal(id, 'onchange', {target: $(id)});
-    }
+    };
     return closer;
 };

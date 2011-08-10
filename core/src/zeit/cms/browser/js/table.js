@@ -1,3 +1,6 @@
+// Copyright (c) 2011 gocept gmbh & co. kg
+// See also LICENSE.txt
+
 zeit.cms.TableSorter = gocept.Class.extend({
     // Infrastructure to sort tables
     // Reorders the table on the browser.

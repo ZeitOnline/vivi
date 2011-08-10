@@ -1,6 +1,5 @@
 // Copyright (c) 2007-2011 gocept gmbh & co. kg
 // See also LICENSE.txt
-// $Id$
 
 zeit.cms.PanelHandler = gocept.Class.extend({
 
@@ -116,7 +115,7 @@ zeit.cms.PanelHandler = gocept.Class.extend({
         var self = this;
         forEach(panels, function(panel) {
             var foldmarker = MochiKit.DOM.getFirstElementByTagAndClassName(
-                'h1', null, panel)
+                'h1', null, panel);
             if (isNull(foldmarker)) {
                 return; // continue
             }
@@ -154,7 +153,7 @@ zeit.cms.PanelHandler = gocept.Class.extend({
 
     storeState: function(panel_id) {
         doSimpleXMLHttpRequest(this.url, {toggle_folding: panel_id});
-    },
+    }
 
 });
 
@@ -199,5 +198,5 @@ SidebarDragger.prototype = {
         var element = getElement(element_id);
         addElementClass(element, css_class);
         });
-    },
-}
+    }
+};

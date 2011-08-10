@@ -43,7 +43,7 @@ zeit.cms.MessageView = zeit.cms.View.extend({
                     MochiKit.DOM.addElementClass(messages, 'hiddenMessages');
                     // remove opacity and display from fade
                     messages.setAttribute('style', '');
-                    },
+                    }
                 });
         });
     },
@@ -62,7 +62,7 @@ zeit.cms.MessageView = zeit.cms.View.extend({
             self.fade.cancel();
             MochiKit.DOM.toggleElementClass('hiddenMessages', messages);
         }));
-    },
+    }
 });
 
 

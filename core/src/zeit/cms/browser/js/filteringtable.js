@@ -77,7 +77,7 @@ zeit.cms.FilteringTable = gocept.Class.extend({
             removeElementClass(old_selected, 'selected');
        }
         var tr = MochiKit.DOM.getFirstParentByTagAndClassName(
-            event.target(), 'TR')
+            event.target(), 'TR');
         this.contentElement.old_selected = tr;
         addElementClass(tr, 'selected');
     },
@@ -93,7 +93,7 @@ zeit.cms.FilteringTable = gocept.Class.extend({
 
     get_base_url: function(event) {
         var tr = MochiKit.DOM.getFirstParentByTagAndClassName(
-            event.target(), 'TR')
+            event.target(), 'TR');
         var url_node = getFirstElementByTagAndClassName('span', 'URL', tr);
         if (url_node) {
             return url_node.textContent;
@@ -127,7 +127,7 @@ zeit.cms.FilteringTable = gocept.Class.extend({
 
     enableDrag: function(event) {
         var row = MochiKit.DOM.getFirstParentByTagAndClassName(
-            event.target(), 'TR')
+            event.target(), 'TR');
         if (isUndefinedOrNull(row.draggble)) {
             row.draggable = zeit.cms.createDraggableContentObject(row);
         }
@@ -143,10 +143,10 @@ connect(window, 'onload', function() {
 
 // Add-Menu support
 function add_content(menu) {
-  var url = menu.options[menu.selectedIndex].value
+  var url = menu.options[menu.selectedIndex].value;
   if (url.indexOf('http') == -1) {
     return false;
   }
-  document.location.href = url
+  document.location.href = url;
   return true;
 }
