@@ -52,7 +52,8 @@ FormLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.form-loader.pt')
 
 
 class InlineForm(zope.formlib.form.SubPageEditForm,
-                 zeit.edit.browser.view.UndoableMixin):
+                 zeit.edit.browser.view.UndoableMixin,
+                 zeit.cms.browser.view.Base):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile('inlineform.pt')
 
