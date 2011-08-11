@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.testing
 import zeit.content.article.testing
 
 
@@ -74,3 +75,18 @@ class WorkflowPublicationPeriodTest(
             'id=workflow-publication-period.release_period.combination_00',
             'blur')
         s.waitForElementNotPresent('css=.dirty')
+
+
+class CheckinValidationTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.ArticleLayer
+
+    def test_validation_errors_should_be_displayed_at_checkin_button(self):
+        from zeit.content.article.article import Article
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['article'] = Article()
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
+        b.open('@@edit.form.context-action')
+        self.assert_ellipsis('...Title:...Required input is missing...')

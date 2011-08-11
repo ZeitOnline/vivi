@@ -1,18 +1,28 @@
 <fieldset>
-  <a class="button"
-     id="checkin"
+  <tal:block condition="not: view/can_checkout">
+  <div tal:condition="view/checkin_errors" i18n:translate="">The following errors need to be corrected before checkin:</div>
+  <dl class="errors">
+    <tal:x repeat="error view/checkin_errors">
+      <dt tal:condition="error/name" tal:content="string:${error/name}: " />
+      <dd tal:content="structure error/snippet" />
+    </tal:x>
+  </dl>
+
+  <a id="checkin"
      cms:cp-module='follow-link'
-     tal:attributes="href string:${context/@@absolute_url}/@@checkin"
-     tal:condition="view/can_checkin"
+     tal:attributes="
+        href python:view.can_checkin and view.checkin_url or '#';
+        class python:'button' + (not view.can_checkin and ' disabled' or '');
+     "
      i18n:translate="">Checkin</a>
-  <a class="button"
-     id="checkin_correction"
+  <a id="checkin_correction"
      cms:cp-module='follow-link'
-     tal:attributes="href string:${context/@@absolute_url}/@@checkin?semantic_change="
-     tal:condition="view/can_checkin"
+     tal:attributes="
+        href python:view.can_checkin and view.checkin_url + '?semantic_change=' or '#';
+        class python:'button' + (not view.can_checkin and ' disabled' or '');
+     "
      i18n:translate="">Checkin (correction)</a>
-  <div class="exit"
-       tal:condition="view/can_checkin">
+  <div class="exit">
     <label i18n:translate="">...or cancel and</label>
     <a class="warning"
        id="delete_workingcopy"
@@ -20,6 +30,8 @@
        tal:attributes="href string:${context/@@absolute_url}/@@delete.html"
        i18n:translate="">Delete from Workingcopy</a>
   </div>
+  </tal:block>
+
   <a class="button"
      id="publish"
      cms:cp-module='zeit.edit.LightBoxForm'

@@ -2,13 +2,14 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-from zope.app.form.browser.textwidgets import TextAreaWidget
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.asset.browser
 import zeit.cms.browser.interfaces
 import zeit.content.article.interfaces
 import zope.app.pagetemplate
 import zope.formlib.form
 import zope.formlib.interfaces
+import zope.i18n
 import zope.interface
 
 
@@ -406,14 +407,45 @@ class ContextAction(zeit.edit.browser.form.InlineForm):
 
     form_fields = ()
 
-    def __call__(self):
-        ci_manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
-        self.can_checkin = ci_manager.canCheckin
-        co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
-        self.can_checkout = co_manager.canCheckout
+    @cachedproperty
+    def checkin_manager(self):
+        return zeit.cms.checkout.interfaces.ICheckinManager(self.context)
+
+    @cachedproperty
+    def can_checkin(self):
+        return self.checkin_manager.canCheckin
+
+    @cachedproperty
+    def checkin_errors(self):
+        self.can_checkin # cause last_validation_error to be populated
+        if not self.checkin_manager.last_validation_error:
+            return []
+
+        result = []
+        for name, error in self.checkin_manager.last_validation_error:
+            # adapted from zope.formlib.form.FormBase.error_views
+            view = zope.component.getMultiAdapter(
+                (error, self.request),
+                zope.formlib.interfaces.IWidgetInputErrorView)
+            title = zeit.content.article.interfaces.IArticle[name].title
+            if isinstance(title, zope.i18n.Message):
+                title = zope.i18n.translate(title, context=self.request)
+            result.append(dict(name=title, snippet=view.snippet()))
+        return result
+
+    @property
+    def checkin_url(self):
+        return self.url(name='@@checkin')
+
+    @cachedproperty
+    def can_checkout(self):
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
+        return manager.canCheckout
+
+    @cachedproperty
+    def published(self):
         publish_info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        self.published = publish_info.published
-        return super(ContextAction, self).__call__()
+        return publish_info.published
 
 
 class Preview(zeit.edit.browser.form.InlineForm):
