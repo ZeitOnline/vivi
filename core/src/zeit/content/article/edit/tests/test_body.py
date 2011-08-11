@@ -4,6 +4,7 @@
 import mock
 import unittest2
 import zeit.content.article.testing
+import zope.schema
 
 
 class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
@@ -145,3 +146,36 @@ class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(
             [x.__name__ for x in body.values()],
             [x.__name__ for x in validator.children])
+
+
+class CheckinTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_validation_errors_should_veto_checkin(self):
+        from zeit.cms.checkout.interfaces import ICheckinManager
+        from zeit.cms.checkout.interfaces import ICheckoutManager
+        import zeit.content.article.article
+
+        self.repository['article'] = zeit.content.article.article.Article()
+
+        manager = ICheckoutManager(self.repository['article'])
+        co = manager.checkout()
+        manager = ICheckinManager(co)
+        self.assertFalse(manager.canCheckin)
+        errors = dict(manager.last_validation_error)
+        self.assertIsInstance(errors['title'], zope.schema.ValidationError)
+
+    def test_security_proxied_fields_should_be_validated_correctly(self):
+        from zeit.cms.checkout.interfaces import ICheckinManager
+        from zeit.cms.checkout.interfaces import ICheckoutManager
+        import zeit.content.article.article
+
+        self.repository['article'] = zeit.content.article.article.Article()
+
+        manager = ICheckoutManager(self.repository['article'])
+        co = manager.checkout()
+        co = zope.security.proxy.ProxyFactory(co)
+        manager = ICheckinManager(co)
+        self.assertFalse(manager.canCheckin)
+        errors = dict(manager.last_validation_error)
+        # the default for keywords is an empty tuple
+        self.assertNotIn('keywords', errors)

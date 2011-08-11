@@ -1,10 +1,12 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.testing
 import zeit.content.article.testing
 
 
-class WorkflowQualityAssuranceTest(zeit.content.article.testing.SeleniumTestCase):
+class WorkflowQualityAssuranceTest(
+    zeit.content.article.testing.SeleniumTestCase):
 
     layer = zeit.content.article.testing.selenium_workflow_layer
 
@@ -12,12 +14,14 @@ class WorkflowQualityAssuranceTest(zeit.content.article.testing.SeleniumTestCase
         super(WorkflowQualityAssuranceTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/')
         self.open('/repository/online/2007/01/Somalia/@@edit.html')
-        self.selenium.waitForElementPresent('id=workflow-quality-assurance.edited')
+        self.selenium.waitForElementPresent(
+            'id=workflow-quality-assurance.edited')
 
     def test_status_should_be_select_box(self):
         s = self.selenium
-        self.assertEqual([u'no', u'yes', u'not necessary'],
-                         s.getSelectOptions('id=workflow-quality-assurance.edited'))
+        self.assertEqual(
+            [u'no', u'yes', u'not necessary'],
+            s.getSelectOptions('id=workflow-quality-assurance.edited'))
 
     def test_status_should_be_settable(self):
         s = self.selenium
@@ -35,7 +39,8 @@ class WorkflowQualityAssuranceTest(zeit.content.article.testing.SeleniumTestCase
         self.assert_widget_text('workflow-quality-assurance.edited', 'Nothing')
 
 
-class WorkflowPublicationPeriodTest(zeit.content.article.testing.SeleniumTestCase):
+class WorkflowPublicationPeriodTest(
+    zeit.content.article.testing.SeleniumTestCase):
 
     layer = zeit.content.article.testing.selenium_workflow_layer
 
@@ -48,13 +53,15 @@ class WorkflowPublicationPeriodTest(zeit.content.article.testing.SeleniumTestCas
 
     def test_calendar_should_insert_date(self):
         s = self.selenium
-        s.click('id=workflow-publication-period.release_period.combination_00_trigger')
+        s.click(
+            'id=workflow-publication-period.release_period.combination_00_trigger')
         s.waitForElementPresent('css=.calendar')
         s.mouseDown('css=.calendar .button:contains(Today)')
         s.mouseUp('css=.calendar .button:contains(Today)')
         s.waitForElementPresent('css=.dirty')
-        s.fireEvent('id=workflow-publication-period.release_period.combination_00',
-                    'blur')
+        s.fireEvent(
+            'id=workflow-publication-period.release_period.combination_00',
+            'blur')
         s.waitForElementNotPresent('css=.dirty')
 
     def test_week_button_should_insert_date(self):
@@ -64,6 +71,22 @@ class WorkflowPublicationPeriodTest(zeit.content.article.testing.SeleniumTestCas
             '//*[@id="workflow-publication-period.release_period.combination_00_trigger"]'
             '/following-sibling::input')
         s.waitForElementPresent('css=.dirty')
-        s.fireEvent('id=workflow-publication-period.release_period.combination_00',
-                    'blur')
+        s.fireEvent(
+            'id=workflow-publication-period.release_period.combination_00',
+            'blur')
         s.waitForElementNotPresent('css=.dirty')
+
+
+class CheckinValidationTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.ArticleLayer
+
+    def test_validation_errors_should_be_displayed_at_checkin_button(self):
+        from zeit.content.article.article import Article
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['article'] = Article()
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
+        b.open('@@edit.form.context-action')
+        self.assert_ellipsis('...Title:...Required input is missing...')

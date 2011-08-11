@@ -352,3 +352,9 @@ fieldset.table .widget {
   clear: none;
   margin: 0;
 }
+
+dl.errors dt {
+  float: left;
+  clear: left;
+  margin-right: 0.5em;
+}
