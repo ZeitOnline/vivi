@@ -681,3 +681,7 @@ a.button {
   -moz-appearance: button;
   padding: 0.2em;
 }
+
+a.button.disabled {
+  color: #999999;
+}
