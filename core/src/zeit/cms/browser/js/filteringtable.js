@@ -13,13 +13,13 @@ zeit.cms.FilteringTable = gocept.Class.extend({
         var tablefilter = MochiKit.DOM.getElement('tableFilter');
         this.metadata_deferred = null;
 
-        MochiKit.Signalconnect(
+        MochiKit.Signal.connect(
             this.contentElement, "onclick", this, 'onDataSelect');
-        MochiKit.Signalconnect(
+        MochiKit.Signal.connect(
             this.contentElement, "onclick", this, 'enableDrag');
-        MochiKit.Signalconnect(
+        MochiKit.Signal.connect(
             this.contentElement, "ondblclick", this, 'onView');
-        MochiKit.Signalconnect(
+        MochiKit.Signal.connect(
             tablefilter, 'onkeyup', this, 'updateFilter');
     },
 
