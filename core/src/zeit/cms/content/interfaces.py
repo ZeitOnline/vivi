@@ -167,7 +167,8 @@ class ICommonMetadata(zope.interface.Interface):
         default=True)
 
     minimal_header = zope.schema.Bool(
-        title=_('Minimal header'))
+        title=_('Minimal header'),
+        required=False)
 
     color_scheme = zope.schema.Choice(
         title=_('Color scheme'),
@@ -184,7 +185,8 @@ class ICommonMetadata(zope.interface.Interface):
 
     breaking_news = zope.schema.Bool(
         title=_('Breaking news'),
-        default=False)
+        default=False,
+        required=False)
 
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
