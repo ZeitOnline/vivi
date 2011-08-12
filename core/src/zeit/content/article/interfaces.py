@@ -30,11 +30,13 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
-        default=False)
+        default=False,
+        required=False)
 
     artbox_thema = zope.schema.Bool(
         title=_('First related as box'),
-        default=False)
+        default=False,
+        required=False)
 
     layout = zope.schema.Choice(
         title=_("Layout"),
