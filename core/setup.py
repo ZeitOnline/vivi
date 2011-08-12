@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.find',
-    version='0.22.1dev',
+    version='0.23.0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.find',

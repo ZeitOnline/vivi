@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-0.22.1 (unreleased)
+0.23.0 (2011-08-12)
 -------------------
 
 - Newsticker no longer hold the ressort "News", therefore another filter was
