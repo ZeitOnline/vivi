@@ -4,7 +4,8 @@ zeit.find changes
 0.22.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Newsticker no longer hold the ressort "News", therefore another filter was
+  added to check for product_text as well.
 
 
 0.22.0 (2011-06-20)
