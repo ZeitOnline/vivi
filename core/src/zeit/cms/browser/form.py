@@ -1,19 +1,19 @@
 # Copyright (c) 2006-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
+from zope.i18nmessageid import ZopeMessageFactory as _zope
 import datetime
 import gocept.form.grouped
 import pytz
+import zeit.cms.browser.view
+import zeit.cms.checkout.interfaces
 import zope.app.container.interfaces
 import zope.app.pagetemplate
 import zope.event
 import zope.formlib.form
 import zope.interface.common.idatetime
-from zope.i18nmessageid import ZopeMessageFactory as _zope
-
-import zeit.cms.browser.view
-import zeit.cms.checkout.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zope.schema
 
 
 REMAINING_FIELDS = object()
@@ -51,6 +51,17 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
                 pass
 
     return changed
+
+
+def apply_default_values(context, interface):
+    """Apply default values from ``interface`` to ``context``."""
+    for name, value in zope.schema.getFields(interface).items():
+        if value.readonly:
+            continue
+        default = getattr(value, 'default')
+        current = getattr(context, name)
+        if default != current:
+            setattr(context, name, default)
 
 
 class FormBase(zeit.cms.browser.view.Base):
