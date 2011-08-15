@@ -75,6 +75,7 @@ class ICommonMetadata(zope.interface.Interface):
     author_references = zope.schema.Tuple(
         title=_("Authors"),
         value_type=zope.schema.Choice(source=authorSource),
+        default=(),
         required=False)
 
     author_references.value_type.setTaggedValue(
