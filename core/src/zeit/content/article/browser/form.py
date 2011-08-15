@@ -57,18 +57,9 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         article.volume = settings.default_volume
         article.ressort = self.get_ressort()
         article.sub_ressort = self.get_sub_ressort(article)
-        self.apply_default_values(
+        zeit.cms.browser.form.apply_default_values(
             article, zeit.content.article.interfaces.IArticle)
         return article
-
-    def apply_default_values(self, article, interface):
-        for name, value in zope.schema.getFields(interface).items():
-            if value.readonly:
-                continue
-            default = getattr(value, 'default')
-            current = getattr(article, name)
-            if default and default != current:
-                setattr(article, name, default)
 
     def get_ressort(self):
         token = self.request.form.get('form.ressort')
