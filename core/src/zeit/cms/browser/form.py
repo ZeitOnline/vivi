@@ -58,9 +58,10 @@ def apply_default_values(context, interface):
     for name, value in zope.schema.getFields(interface).items():
         if value.readonly:
             continue
+        __traceback_info__ = (name,)
         default = getattr(value, 'default')
         current = getattr(context, name)
-        if default != current:
+        if default is not None and default != current:
             setattr(context, name, default)
 
 
