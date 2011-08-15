@@ -28,13 +28,20 @@ article is published.
 >>> repository['2007']['01']['cp'] = cp
 >>> cp = repository['2007']['01']['cp']
 
+>>> from zeit.content.article.interfaces import IArticle
+>>> import zeit.cms.browser.form
 >>> with zeit.cms.checkout.helper.checked_out(article) as co:
+...     zeit.cms.browser.form.apply_default_values(co, IArticle)
+...     co.year = 2011
+...     co.title = u'Mary had a little lamb'
+...     co.ressort = u'Deutschland'
 ...     co.layout = cp
 
 After publishing the article, the centerpage is published, too:
 
 >>> from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
->>> IPublishInfo(article).urgent = True
+>>> from zeit.workflow.interfaces import IContentWorkflow
+>>> IContentWorkflow(article).urgent = True
 >>> job_id = IPublish(article).publish()
 >>> tasks.process()
 

@@ -157,9 +157,9 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator,
 
 
 @grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IValidateCheckinEvent)
-def validate_article(event):
-    context = event.object
+def validate_article(context, event):
     # field validation (e.g. zope.schema.Tuple) does type comparisons, which
     # doesn't work with security proxies
     context = zope.security.proxy.removeSecurityProxy(context)

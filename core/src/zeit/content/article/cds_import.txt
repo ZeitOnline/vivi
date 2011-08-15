@@ -79,9 +79,14 @@ The article is marked as being a tagesspiegel article:
 >>> zeit.content.article.interfaces.ITagesspiegelArticle.providedBy(article)
 True
 
-The information is kept, when the article is checked out and back in:
+The information is kept, when the article is checked out and back in. To be
+able to check in, the constraints need to be satisfied. Thus the defaults are
+applied:
 
->>> with zeit.cms.checkout.helper.checked_out(article): pass
+>>> from zeit.content.article.interfaces import IArticle
+>>> import zeit.cms.browser.form
+>>> with zeit.cms.checkout.helper.checked_out(article) as co:
+...     zeit.cms.browser.form.apply_default_values(co, IArticle)
 >>> article = container['art1']
 >>> zeit.content.article.interfaces.ITagesspiegelArticle.providedBy(article)
 True
@@ -172,6 +177,7 @@ When we change the imported article, it is not overwritten:
 
 >>> import zeit.cms.checkout.helper
 >>> with zeit.cms.checkout.helper.checked_out(container['art-uuid']) as co:
+...     zeit.cms.browser.form.apply_default_values(co, IArticle)
 ...     co.title = u'Tag der Ueberraschungen'
 >>> with fs.create('art-uuid-3') as f:
 ...     f.write(data.replace('Jahr', 'Stunde'))

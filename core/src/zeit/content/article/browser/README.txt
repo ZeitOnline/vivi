@@ -28,7 +28,7 @@ The metadata preview shows the most important data in list views:
 Make sure we have a "view" link:
 
 >>> browser.getLink('View')
-<Link text='View metadata' ...>
+<Link text='View...' ...>
 
 
 We have to publish another url to see if articles are listed:
@@ -96,8 +96,20 @@ happened here):
 Checking in
 ===========
 
+Checking in requires the article to be valid:
+
+>>> import zeit.cms.testing
+>>> import zeit.cms.workingcopy.interfaces
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     with zeit.cms.testing.interaction():
+...         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
+...         article = list(wc.values())[0]
+...         article.title = u'Title'
+...         article.ressort = u'Deutschland'
+
 We check in the document. We look at the document in the repository then:
 
+>>> browser.reload()  # reload to show the checkin link
 >>> browser.getLink('Checkin').click()
 >>> article_url = browser.url
 >>> article_url

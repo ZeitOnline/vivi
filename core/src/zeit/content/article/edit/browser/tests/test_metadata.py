@@ -167,12 +167,15 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
     def test_assets_should_be_readonly_visible(self):
         from zeit.cms.checkout.helper import checked_out
         from zeit.cms.related.interfaces import IRelatedContent
+        from zeit.content.article.interfaces import IArticle
+        import zeit.cms.browser.form
         import zeit.cms.interfaces
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 content = zeit.cms.interfaces.ICMSContent(
                     'http://xml.zeit.de/online/2007/01/Somalia')
                 with checked_out(content) as co:
+                    zeit.cms.browser.form.apply_default_values(co, IArticle)
                     IRelatedContent(co).related = (
                         zeit.cms.interfaces.ICMSContent(
                             'http://xml.zeit.de/testcontent'),)

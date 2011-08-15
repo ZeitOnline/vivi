@@ -55,17 +55,6 @@ Unset `export_cds`. The inital value is None:
 None
 >>> cdswf.export_cds = False
 
-Only if the content object has the product_id 'ZEDE', the default is True:
-
->>> article = repository['online']['2007']['01']['Guantanamo']
->>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(article)
->>> print cdswf.export_cds
-None
->>> with zeit.cms.checkout.helper.checked_out(article) as co:
-...     co.product = zeit.cms.content.sources.Product(u'ZEDE')
->>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(article)
->>> cdswf.export_cds
-True
 
 We want to publish the article. The first step is to set it to
 ``urgent`` (this is the easiest way to publish within the workflow
@@ -88,12 +77,8 @@ asynchronous task which takes care of that:
 >>> tasks = zope.component.getUtility(
 ...     lovely.remotetask.interfaces.ITaskService, 'general')
 >>> tasks.process()
-
-This article by the act of publication will have obtained a uuid:
-
->>> import zeit.cms.content.interfaces
->>> zeit.cms.content.interfaces.IUUID(content).id
-'{urn:uuid:347b85e0-0740-4e52-8f62-3192430b0417}'
+>>> zeit.cms.workflow.interfaces.IPublishInfo(content).published
+True
 
 Since the ``export_cds`` flag wasn't set, the article does not show up
 in the cds filestore:
@@ -101,11 +86,35 @@ in the cds filestore:
 >>> fs.list('new')
 []
 
+
+export_cds flag not set with ZEDE product
+-----------------------------------------
+
+Only if the content object has the product_id 'ZEDE', the default is to export
+to the CDS:
+
+>>> content = repository['online']['2007']['01']['saddam-exekution']
+>>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
+>>> print cdswf.export_cds
+None
+>>> from zeit.content.article.interfaces import IArticle
+>>> import zeit.cms.browser.form
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     zeit.cms.browser.form.apply_default_values(co, IArticle)
+...     co.product = zeit.cms.content.sources.Product(u'ZEDE')
+...     co.ressort = u'International'
+>>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
+>>> cdswf.export_cds
+True
+
 export_cds flag set to true
 ---------------------------
 
 We will now set the ``export_cds`` flag to ``True``:
 
+>>> content = repository['online']['2007']['01']['elterngeld-schlieben']
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     zeit.cms.browser.form.apply_default_values(co, IArticle)
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> cdswf.export_cds = True
 

@@ -31,7 +31,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
     def test_image_nodes_inside_p_are_migrated_on_checkout(self):
         from zeit.connector.resource import Resource
         import StringIO
-        import zeit.cms.checkout.helper
+        import zeit.cms.checkout.interfaces
         import zeit.cms.interfaces
         import zeit.connector.interfaces
         import zope.component
@@ -52,10 +52,10 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             StringIO.StringIO(article_xml)))
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/article')
-        with zeit.cms.checkout.helper.checked_out(article) as co:
-            self.assertEqual(
-                ['p', 'image'],
-                [el.tag for el in co.xml.body.division.iterchildren()])
+        co = zeit.cms.checkout.interfaces.ICheckoutManager(article).checkout()
+        self.assertEqual(
+            ['p', 'image'],
+            [el.tag for el in co.xml.body.division.iterchildren()])
 
     def _skip_test_image_nodes_should_keep_reference_with_strange_chars(self):
         # Broken due to error in zeit.wysiwyg. I'm not going to fix this (now)
