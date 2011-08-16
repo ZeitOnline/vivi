@@ -11,7 +11,7 @@ import zope.viewlet.manager
 class EditCommon(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IBlock).omit('type', 'xml')
+        zeit.content.cp.interfaces.IBlock).omit('type', 'xml', '__name__')
 
 
 class SwitchType(object):
