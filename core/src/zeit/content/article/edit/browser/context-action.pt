@@ -46,15 +46,5 @@
      i18n:translate="">Retract</a>
 
 <script type="text/javascript">
-(function($) {
-    var form_element = $('form[action$="@@edit.form.context-action"]')[0];
-    MochiKit.Signal.connect(window, 'changed', function(form) {
-        if (form_element.form === form) {
-            return;
-        }
-        MochiKit.Async.callLater(0.25, function() {
-            form_element.form.reload(); });
-    });
-}(jQuery));
 </script>
 </fieldset>

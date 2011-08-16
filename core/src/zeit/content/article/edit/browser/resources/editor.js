@@ -7,6 +7,15 @@ MochiKit.Signal.connect(
     window, 'cp-editor-loaded', function() {
     zeit.edit.library.create(
         'article-modules', context_url + '/editable-body', 'Artikel');
+
+    var form_element = jQuery('form[action$="@@edit.form.context-action"]')[0];
+    MochiKit.Signal.connect(window, 'changed', function(form) {
+        if (form_element.form === form) {
+            return;
+        }
+        MochiKit.Async.callLater(0.25, function() {
+            form_element.form.reload(); });
+    });
 });
 
 zeit.edit.drop.registerHandler({
