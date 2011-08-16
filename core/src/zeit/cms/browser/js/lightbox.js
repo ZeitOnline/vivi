@@ -289,10 +289,10 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                     MochiKit.DOM.addElementClass(button, 'submit');
                 }
             });
-        if (!isNull(self.form) && self.form !== self.container) {
+        if (!isNull(self.form)) {
             self.form_events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
-                // prevent accidental submit
+                self.handle_submit();
                 event.stop();
             }));
         }
