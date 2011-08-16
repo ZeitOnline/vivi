@@ -125,6 +125,10 @@ div div.landing-zone:first-child {
 }
 
 
+#cp-content > .lightbox {
+  overflow-y: visible;
+}
+
 #cp-content > .lightbox,
 #cp-content > .lightbox-header {
   left: 5%;
