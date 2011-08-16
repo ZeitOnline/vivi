@@ -11,11 +11,16 @@ import zope.component
 class TokenStorageTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def test_order_tokens(self):
-        ts = zope.component.getUtility(
-            zeit.vgwort.interfaces.ITokens)
+        ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
         self.assertEqual(0, len(ts))
         ts.order(2)
         self.assertEqual(2, len(ts))
+
+    def test_order_should_add_str(self):
+        ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
+        ts.order(1)
+        self.assertTrue(isinstance(ts._data[0][0], str))
+        self.assertTrue(isinstance(ts._data[0][0], str))
 
 
 class OrderTokensTest(zeit.vgwort.testing.TestCase):

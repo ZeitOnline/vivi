@@ -106,8 +106,8 @@ class PixelService(VGWortWebService):
     def order_pixels(self, amount):
         result = self.call('orderPixel', amount)
         for pixel in result.pixels.pixel:
-            yield (pixel._publicIdentificationId,
-                   pixel._privateIdentificationId)
+            yield (str(pixel._publicIdentificationId),
+                   str(pixel._privateIdentificationId))
 
 
 class MessageService(VGWortWebService):
