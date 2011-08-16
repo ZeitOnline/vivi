@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-0.3.2 (unreleased)
+0.4.0 (2011-08-16)
 ------------------
 
 - Report the freetext authors if no structured authors are available. VGWort
