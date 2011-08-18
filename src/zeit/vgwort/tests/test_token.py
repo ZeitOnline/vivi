@@ -58,3 +58,32 @@ class TokenTransactionTest(zeit.vgwort.testing.TestCase):
         # if an error occurs during publishing, the transaction will be aborted
         transaction.abort()
         self.assertEqual(0, len(tokens))
+
+
+class ObjectCopyTest(zeit.vgwort.testing.TestCase):
+
+    def test_copying_should_removes_vgwort_properties_from_copy(self):
+        import datetime
+        import pytz
+        import zeit.cms.interfaces
+        import zeit.vgwort.interfaces
+        content = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent')
+        token = zeit.vgwort.interfaces.IToken(content)
+        token.public_token = u'public'
+        token.private_token = u'private'
+        info = zeit.vgwort.interfaces.IReportInfo(content)
+        info.reported_on = datetime.datetime.now(pytz.UTC)
+        info.reported_error = u'error'
+        online = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/')
+        zope.copypastemove.interfaces.IObjectCopier(content).copyTo(
+            online, 'foo')
+        copy = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/foo')
+        token = zeit.vgwort.interfaces.IToken(copy)
+        self.assertEqual(None, token.public_token)
+        self.assertEqual(None, token.private_token)
+        info = zeit.vgwort.interfaces.IReportInfo(copy)
+        self.assertEqual(None, info.reported_on)
+        self.assertEqual(None, info.reported_error)

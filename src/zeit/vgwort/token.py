@@ -17,6 +17,7 @@ import zope.app.appsetup.product
 import zope.component
 import zope.container.contained
 import zope.interface
+import zope.lifecycleevent
 
 
 class TokenStorage(persistent.Persistent,
@@ -130,6 +131,19 @@ def ignore_private_token(event):
     if (event.namespace == 'http://namespaces.zeit.de/CMS/vgwort' and
         event.name != 'public_token'):
         event.veto()
+
+
+@grokcore.component.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zope.lifecycleevent.IObjectCopiedEvent)
+def remove_vgwort_properties_after_copy(context, event):
+    token = zeit.vgwort.interfaces.IToken(context)
+    token.public_token = None
+    token.private_token = None
+    info = zeit.vgwort.interfaces.IReportInfo(context)
+    info.reported_on = None
+    info.reported_error = None
+
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(
