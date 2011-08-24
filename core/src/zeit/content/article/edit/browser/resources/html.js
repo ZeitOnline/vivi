@@ -9,7 +9,7 @@ zeit.content.article.html.to_xml = function(tree) {
         translate_tags,
         kill_empty_p,
         replace_double_br_with_p,
-        escape_missing_href,
+        escape_missing_href
     ];
 
     // XXX dropping unknown tags but keeping their text is still implemented on
@@ -41,7 +41,7 @@ function translate_tags(tree) {
         'b': 'strong',
         'i': 'em',
         'div': 'p',
-        'h3': 'intertitle',
+        'h3': 'intertitle'
     };
 
     forEach(tree.childNodes, function(el) {
@@ -72,7 +72,7 @@ function replace_double_br_with_p(tree) {
             return;
         }
 
-        var p = MochiKit.DOM.createDOM('p')
+        var p = MochiKit.DOM.createDOM('p');
         if (tag(sibling.nextSibling) == el.TEXT_NODE) {
             p.appendChild(sibling.nextSibling);
         }
@@ -100,7 +100,7 @@ function wrap_toplevel_children_in_p(tree) {
     var collect = [];
 
     var wrap_in_p = function(items) {
-        var p = MochiKit.DOM.createDOM('p')
+        var p = MochiKit.DOM.createDOM('p');
         while (items.length) {
             p.appendChild(items.shift());
         }
@@ -152,7 +152,7 @@ function display(element) {
     if (element.nodeType != element.ELEMENT_NODE) {
         return null;
     }
-    return MochiKit.Style.getStyle(element, 'display')
+    return MochiKit.Style.getStyle(element, 'display');
 }
 
-})();
+}());
