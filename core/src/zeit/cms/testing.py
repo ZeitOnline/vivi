@@ -448,9 +448,9 @@ class JSLintTestCase(gocept.jslint.TestCase):
                 'console,'
                 'alert,confirm,escape,unescape,'
                 'jsontemplate,'
-                'MochiKit,$,forEach,filter,map,'
+                'MochiKit,$,$$,forEach,filter,map,extend,'
                 'log,repr,logger,logDebug,logError,' # XXX
-                'DIV,A,UL,LI,INPUT,'
+                'DIV,A,UL,LI,INPUT,IMG,'
                 'isNull,isUndefined,isUndefinedOrNull',
                 ))
 
@@ -460,4 +460,5 @@ class JSLintTestCase(gocept.jslint.TestCase):
         "Don't make functions within a loop",
         "Expected an identifier and instead saw 'import'",
         "Use a named parameter",
+        "unused variable: self",
         )
