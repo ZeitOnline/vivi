@@ -21,6 +21,7 @@ setup(
     install_requires=[
         'feedparser',
         'gocept.cache',
+        'gocept.jslint>=0.2',
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',
         'gocept.runner>-0.4',
