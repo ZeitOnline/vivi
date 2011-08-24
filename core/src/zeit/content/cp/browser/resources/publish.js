@@ -1,6 +1,6 @@
 zeit.cms.declare_namespace('zeit.content.cp.publish');
 
-zeit.content.cp.publish.Publisher = Class.extend({
+zeit.content.cp.publish.Publisher = gocept.Class.extend({
     construct: function() {
         var self = this;
         self.checkin(context_url);
@@ -80,16 +80,16 @@ zeit.content.cp.publish.Publisher = Class.extend({
     },
 
     busy: function(step) {
-        addElementClass($('publish.' + step), 'busy');
+        MochiKit.DOM.addElementClass($('publish.' + step), 'busy');
     },
 
     done: function(step) {
-        removeElementClass($('publish.' + step), 'busy');
-        addElementClass($('publish.' + step), 'done');
+        MochiKit.DOM.removeElementClass($('publish.' + step), 'busy');
+        MochiKit.DOM.addElementClass($('publish.' + step), 'done');
     },
 
     error: function(step) {
-        removeElementClass($('publish.' + step), 'busy');
-        addElementClass($('publish.' + step), 'error');
+        MochiKit.DOM.removeElementClass($('publish.' + step), 'busy');
+        MochiKit.DOM.addElementClass($('publish.' + step), 'error');
     }
 });

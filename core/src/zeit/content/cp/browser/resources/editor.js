@@ -130,7 +130,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
             MochiKit.Signal.connect(
                 zeit.edit.editor, 'deleted', deleted);
     });
-})();
+}());
 
 
 zeit.content.cp.makeBoxesEquallyHigh = function(container) {
