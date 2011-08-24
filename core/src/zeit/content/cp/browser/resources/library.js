@@ -16,7 +16,7 @@ zeit.edit.drop.registerHandler({
     url_attribute: 'cms:create-block-url',
     query_arguments: function(draggable) {
         return {'block_type': draggable.getAttribute('cms:block_type')};
-    },
+    }
 });
 
 zeit.edit.drop.registerHandler({
@@ -25,7 +25,7 @@ zeit.edit.drop.registerHandler({
     url_attribute: 'cms:create-block-url',
     query_arguments: function(draggable) {
         return {'block_type': draggable.getAttribute('cms:block_type')};
-    },
+    }
 });
 
 zeit.edit.drop.registerHandler({
@@ -34,8 +34,8 @@ zeit.edit.drop.registerHandler({
     url_attribute: 'cms:create-block-url',
     query_arguments: function(draggable) {
         return {'block_type': draggable.getAttribute('cms:block_type')};
-    },
+    }
 });
 
 
-})();
+}());

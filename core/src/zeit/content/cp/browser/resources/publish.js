@@ -28,7 +28,7 @@ zeit.content.cp.publish.Publisher = Class.extend({
                     1, bind(self.poll_until_publish_complete, self), job);
             }
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
     poll_until_publish_complete: function(job) {
@@ -44,7 +44,7 @@ zeit.content.cp.publish.Publisher = Class.extend({
                     1, bind(self.poll_until_publish_complete, self), job);
             }
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
     check_publish_error: function(job) {
@@ -55,7 +55,7 @@ zeit.content.cp.publish.Publisher = Class.extend({
             self.done('publish');
             self.checkout(self.checked_in);
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
     checkout: function(context) {
@@ -76,7 +76,7 @@ zeit.content.cp.publish.Publisher = Class.extend({
             self.done(step);
             next(result.responseText);
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
     busy: function(step) {
@@ -91,5 +91,5 @@ zeit.content.cp.publish.Publisher = Class.extend({
     error: function(step) {
         removeElementClass($('publish.' + step), 'busy');
         addElementClass($('publish.' + step), 'error');
-    },
+    }
 });

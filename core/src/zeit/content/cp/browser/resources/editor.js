@@ -43,7 +43,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 
 
 zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
-    
+
     __name__: 'zeit.content.cp.TeaserBarSorter',
 
     construct: function() {
@@ -81,7 +81,7 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
             sorter.__context__.destroy();
         }
     }
-    
+
 });
 
 
@@ -92,7 +92,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
         'informatives');
     zeit.content.cp.teaser_bar_sorter = new zeit.edit.sortable.BlockSorter(
         'teaser-mosaic');
-    zeit.content.cp.teaser_bar_contents_sorter = 
+    zeit.content.cp.teaser_bar_contents_sorter =
         new zeit.content.cp.TeaserBarContentsSorter();
 });
 
@@ -135,7 +135,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 
 zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     // check for unloaded images:
-    
+
     log("fixing box heights.", container.id);
     var images = MochiKit.DOM.getElementsByTagAndClassName(
         'img', null, container);
@@ -172,7 +172,7 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
         var dim = MochiKit.Style.getElementDimensions(block_inner, true);
         MochiKit.Style.setStyle(block_inner, {'height': height});
         max_height = Math.max(max_height, dim.h);
-    }); 
+    });
 
     forEach(blocks, function(block) {
         var new_dim = new MochiKit.Style.Dimensions(null, max_height);
@@ -182,7 +182,7 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
 
 
 (function() {
-    
+
     var fix_box_heights = function() {
         log('fixing box heights');
         forEach($$('#teaser-mosaic > .block.type-teaser-bar > .block-inner'),
@@ -203,5 +203,4 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
             MochiKit.Signal.connect(
                 zeit.edit.editor, 'after-reload', fix_box_heights);
         });
-})();
-
+}());
