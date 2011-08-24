@@ -125,7 +125,10 @@ zeit.cms.JSONView = zeit.cms.View.extend({
         try {
             zeit.cms.url_handlers.match(event.target());
             event.preventDefault();
-        } catch (e if e == MochiKit.Base.NotFound) {
+        } catch (e) {
+            if (e != MochiKit.Base.NotFound) {
+                throw e;
+            }
         }
     };
     MochiKit.Signal.connect(window, 'onclick', click_handler);
