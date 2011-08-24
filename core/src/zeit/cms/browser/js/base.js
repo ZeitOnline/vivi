@@ -97,7 +97,7 @@ zeit.cms.ScrollStateRestorer = gocept.Class.extend({
 
 zeit.cms.setCookie = function(name, value, expires, path, domain, secure) {
   var val = escape(value);
-  cookie = name + "=" + val +
+  var cookie = name + "=" + val +
     ((expires) ? "; expires=" + expires.toGMTString() : "") +
     ((path) ? "; path=" + path : "") +
     ((domain) ? "; domain=" + domain : "") +
