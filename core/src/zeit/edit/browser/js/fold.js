@@ -41,4 +41,4 @@ MochiKit.Signal.connect(
         });
 });
 
-})();
+}());

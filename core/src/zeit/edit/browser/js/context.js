@@ -11,7 +11,7 @@ zeit.edit.context.Base = gocept.Class.extend({
 
     construct: function(context_aware) {
         var self = this;
-        log("Creating " + self.__name__ + " for " + context_aware.__name__)
+        log("Creating " + self.__name__ + " for " + context_aware.__name__);
         self.context_aware = context_aware;
         if (!isUndefinedOrNull(context_aware.__context__)) {
             throw new Error("Trying to add new context.");
@@ -48,7 +48,7 @@ zeit.edit.context.Base = gocept.Class.extend({
         var self = this;
         log('Deactivating ' + self.context_aware.__name__);
         self.context_aware.disconnect.call(self.context_aware);
-    },
+    }
 });
 
 
@@ -65,7 +65,7 @@ zeit.edit.context.Editor = zeit.edit.context.Base.extend({
         self.events.push(MochiKit.Signal.connect(
             zeit.edit.editor, 'before-reload',
             self, self.deactivate));
-    },
+    }
 
 });
 
@@ -92,7 +92,7 @@ zeit.edit.context.Lightbox = zeit.edit.context.Base.extend({
         var self = this;
         arguments.callee.$.deactivate.call(self);
         self.destroy();
-    },
+    }
 });
 
 
@@ -121,6 +121,6 @@ zeit.edit.context.ContentActionBase = gocept.Class.extend({
         while(self.events.length) {
           MochiKit.Signal.disconnect(self.events.pop());
         }
-    },
+    }
 
 });

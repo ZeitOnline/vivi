@@ -8,7 +8,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
         constraint: 'vertical',
         onChange: MochiKit.Base.noop,
         overlap: 'vertical',
-        scroll: 'cp-content-inner',
+        scroll: 'cp-content-inner'
     },
 
     construct: function(container, passed_options) {
@@ -35,13 +35,13 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
                     revert: true,
                     scroll: self.options()['scroll'],
                     //selectclass: 'hover',
-                    zindex: 10000,
+                    zindex: 10000
             }));
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Droppable(node, {
                     containment: [container],
                     onhover: MochiKit.Sortable.onHover,
-                    overlap: self.options()['overlap'],
+                    overlap: self.options()['overlap']
            }));
         });
 
@@ -72,11 +72,11 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
     on_update: function(element) {
         var self = this;
         var data = MochiKit.Base.serializeJSON({
-            keys: self.serialize(),
+            keys: self.serialize()
         });
         var url = self.options()['update_url'];
         if (isUndefinedOrNull(url)) {
-            var url = $(self.container).getAttribute(
+            url = $(self.container).getAttribute(
                 'cms:url') + '/@@updateOrder';
         }
         var d = MochiKit.Async.doXHR(url, {
@@ -107,8 +107,8 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
 
     options: function() {
         var self = this;
-        return MochiKit.Sortable.options(self.container)
-    },
+        return MochiKit.Sortable.options(self.container);
+    }
 
 });
 
@@ -141,19 +141,19 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
         d.addCallback(function(result) {
             var url = self.options()['reload_url'];
             if (isUndefinedOrNull(url)) {
-                var url = $(self.container).getAttribute(
+                url = $(self.container).getAttribute(
                     'cms:url') + '/@@contents';
             }
-            var reload_id = self.options()['reload_id']
+            var reload_id = self.options()['reload_id'];
             if (isUndefinedOrNull(reload_id)) {
                 reload_id = self.container;
             }
             MochiKit.Signal.signal(
                 self.editor, 'reload', reload_id, url);
-            return result
+            return result;
         });
         return d;
-    },
+    }
 });
 
 
@@ -167,4 +167,4 @@ var ident = MochiKit.Signal.connect(
                 new zeit.edit.sortable.BlockSorter(element.id);
         });
 });
-})();
+}());
