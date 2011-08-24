@@ -17,6 +17,7 @@ setup(
     install_requires=[
         'gocept.filestore',
         'gocept.form[formlib]>=0.7.2',
+        'gocept.jslint>=0.2',
         'gocept.lxml>=0.2.1',
         'gocept.mochikit>=1.3.2',
         'gocept.pagelet',
