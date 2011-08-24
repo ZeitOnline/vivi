@@ -6,6 +6,7 @@ import BaseHTTPServer
 import __future__
 import contextlib
 import copy
+import gocept.jslint
 import gocept.selenium.ztk
 import inspect
 import logging
@@ -432,3 +433,31 @@ class BrowserTestCase(FunctionalTestCase,
 
         self.browser = zope.testbrowser.testing.Browser()
         self.browser.addHeader('Authorization', 'Basic user:userpw')
+
+
+class JSLintTestCase(gocept.jslint.TestCase):
+
+    options = (gocept.jslint.TestCase.options +
+               ('--eqeq',
+                '--evil',
+                '--forin',
+                '--plusplus',
+                '--predef='
+                'zeit,gocept,application_url,context_url,'
+                'jQuery,DOMParser,'
+                'console,'
+                'alert,confirm,escape,unescape,'
+                'jsontemplate,'
+                'MochiKit,$,forEach,filter,map,'
+                'log,repr,logger,logDebug,logError,' # XXX
+                'DIV,A,UL,LI,INPUT,'
+                'isNull,isUndefined,isUndefinedOrNull',
+                ))
+
+    ignore = (
+        "Avoid 'arguments.callee'",
+        "Do not use 'new' for side effects",
+        "Don't make functions within a loop",
+        "Expected an identifier and instead saw 'import'",
+        "Use a named parameter",
+        )
