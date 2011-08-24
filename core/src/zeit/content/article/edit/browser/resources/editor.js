@@ -68,7 +68,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 var clicked_on_block =
                     MochiKit.DOM.getFirstParentByTagAndClassName(
                        e.explicitOriginalTarget, 'div', 'block');
-                is_in_block = (clicked_on_block == self.block);
+                var is_in_block = (clicked_on_block == self.block);
                 log("Blur while editing:", is_in_block, self.block_id);
                 if (is_in_block) {
                     e.stopPropagation();
@@ -127,7 +127,6 @@ zeit.content.article.Editable = gocept.Class.extend({
         while (text_node[direction] !== null) {
             text_node = text_node[direction];
         }
-        var select_node = text_node.parentNode;
         var offset = 0;
         if (place_cursor_at_end)  {
             offset = text_node.data.length;
@@ -297,8 +296,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             cursor_at_end = true;
         }
         if (direction !== null) {
-            var blocks = MochiKit.Selector.findChildElements(
-                self.block.parentNode, ['.block']);
             var block = self.block;
             var next_block = null;
             while (block[direction] !== null) {
@@ -435,15 +432,17 @@ zeit.content.article.Editable = gocept.Class.extend({
         try {
             document.execCommand(command, false, option);
         } catch(e) {
-            window.console && console.log(e);
-		}
+            if (window.console) {
+                console.log(e);
+            }
+	}
         self.editable.focus();
 		self.update_toolbar();
     }
 
 });
 
-})();
+}());
 
 
 (function($){
@@ -456,7 +455,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             $(this).addClass('charlimit').html( (val > 0 ? limit - val : limit) + " Zeichen" );
             area.bind( "keyup focus blur", function (e) {
                 var l = limit - $(e.target).val().length;
-                if ( l < 21 & l > 10 ) {
+                if ( l < 21 && l > 10 ) {
                     self.css( "color", "#900" ).html(l + " Zeichen");
                 } else if( l < 11 ) {
                     self.css( "color", "#ff0000" ).html(l + " Zeichen");

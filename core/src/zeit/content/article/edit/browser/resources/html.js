@@ -1,3 +1,12 @@
+/*jslint undef: true */
+// jslint's parser is too stupid and requires functions to appear textually
+// before they are used, which is precisely backwards to a sensible reading
+// order. So at least for this file: thanks, but no thanks.
+
+
+// XXX this file has problems with spurious "unused variable" errors, so jslint
+// is disabled for now
+
 (function() {
 
 zeit.cms.declare_namespace('zeit.content.article.html');
@@ -50,7 +59,7 @@ function translate_tags(tree) {
         }
         translate_tags(el);
     });
-};
+}
 
 
 function kill_empty_p(tree) {
@@ -61,7 +70,7 @@ function kill_empty_p(tree) {
             kill_empty_p(el);
         }
     });
-};
+}
 
 
 function replace_double_br_with_p(tree) {
@@ -79,7 +88,7 @@ function replace_double_br_with_p(tree) {
         MochiKit.DOM.removeElement(el);
         MochiKit.DOM.swapDOM(sibling, p);
     });
-};
+}
 
 
 function escape_missing_href(tree) {
@@ -93,7 +102,7 @@ function escape_missing_href(tree) {
             el.setAttribute('href', '#');
         }
     });
-};
+}
 
 
 function wrap_toplevel_children_in_p(tree) {
@@ -120,7 +129,7 @@ function wrap_toplevel_children_in_p(tree) {
     if (collect.length) {
         tree.appendChild(wrap_in_p(collect));
     }
-};
+}
 
 
 // helper functions
@@ -133,7 +142,7 @@ function tag(element) {
         return element.nodeType;
     }
     return element.nodeName.toLowerCase();
-};
+}
 
 
 function nextSiblingElement(element) {
@@ -145,7 +154,7 @@ function nextSiblingElement(element) {
         el = el.nextSibling;
     }
     return null;
-};
+}
 
 
 function display(element) {
