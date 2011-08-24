@@ -46,7 +46,7 @@ zeit.edit._locked_makeJSONRequest = function(
         }
         var immediate_actions = [];
         if (!isNull(result_obj)) {
-            signals = result_obj['signals'] || [];
+            var signals = result_obj['signals'] || [];
             forEach(signals, function(signal) {
                 if (isNull(signal.when)) {
                     immediate_actions.push(signal);
@@ -63,7 +63,7 @@ zeit.edit._locked_makeJSONRequest = function(
                                     [target_component, signal.name],
                                     signal.args));
                         });
-                    })();
+                    }());
                 }
             });
         }
@@ -96,10 +96,11 @@ zeit.edit.handle_json_errors = function(error) {
         div.innerHTML = error.req.responseText;
         var message_node = MochiKit.DOM.getFirstElementByTagAndClassName(
             'pre', null, div);
+        var message;
         if (isNull(message_node)) {
-            var message = error.req.responseText;
+            message = error.req.responseText;
         } else {
-            var message = message_node.textContent;
+            message = message_node.textContent;
         }
         alert(message);
     }

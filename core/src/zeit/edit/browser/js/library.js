@@ -2,29 +2,6 @@
 
 zeit.cms.declare_namespace('zeit.edit.library');
 
-// public API
-zeit.edit.library.create_for_element = function(element_id, title) {
-    var url = $(element_id).getAttribute('cms:url');
-    var library_id = 'library-' + element_id;
-    zeit.edit.library.create(library_id, url, title);
-};
-
-zeit.edit.library.create = function(library_id, url, title) {
-    url = url + '/@@block-factories.json';
-    var view = new zeit.cms.JSONView(url, library_id);
-    tabs.add(new zeit.cms.ViewTab(library_id, title, view, {
-        render_on_activate: true}));
-    var draggables = [];
-
-    MochiKit.Signal.connect(view, 'before-load', function() {
-        disconnect_draggables(draggables);
-    });
-    MochiKit.Signal.connect(view, 'load', function() {
-        connect_draggables(view, draggables);
-    });
-};
-
-
 // Internal functions
 
 var connect_draggables = function(view, draggables) {
@@ -44,7 +21,33 @@ var disconnect_draggables = function(draggables) {
     }
 };
 
+// public API
+zeit.edit.library.create_for_element = function(element_id, title) {
+    var url = $(element_id).getAttribute('cms:url');
+    var library_id = 'library-' + element_id;
+    zeit.edit.library.create(library_id, url, title);
+};
+
 var tabs;
+
+zeit.edit.library.create = function(library_id, url, title) {
+    url = url + '/@@block-factories.json';
+    var view = new zeit.cms.JSONView(url, library_id);
+    tabs.add(new zeit.cms.ViewTab(library_id, title, view, {
+        render_on_activate: true}));
+    var draggables = [];
+
+    MochiKit.Signal.connect(view, 'before-load', function() {
+        disconnect_draggables(draggables);
+    });
+    MochiKit.Signal.connect(view, 'load', function() {
+        connect_draggables(view, draggables);
+    });
+};
+
+
+// Internal functions
+
 MochiKit.Signal.connect(window, 'onload', function() {
     tabs = new zeit.cms.Tabs('cp-library');
 });

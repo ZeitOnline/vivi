@@ -74,7 +74,7 @@ zeit.edit.Editor = gocept.Class.extend({
             var module = zeit.cms.resolveDottedName(module_name);
             new module(target);
         } else if (event.target().nodeName == 'A' && event.target().target) {
-            // pass
+            self = 'pass';
         } else if (event.target().nodeName == 'A') {
             event.preventDefault();
         }
@@ -216,7 +216,7 @@ zeit.edit.Editor = gocept.Class.extend({
             return result;
         });
     });
-})();
+}());
 
 
 zeit.edit.BusyIndicator = gocept.Class.extend({
@@ -229,10 +229,10 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
             zeit.edit.editor, 'idle', self, self.idle);
         self.delayer = null;
         self.indicator = DIV({
-            class: 'hidden',
-            id: 'busy-indicator'},
-            DIV({class: 'shade'}),
-            IMG({src: application_url + '/@@/zeit.imp/loading.gif'})
+            'class': 'hidden',
+            'id': 'busy-indicator'},
+            DIV({'class': 'shade'}),
+            IMG({'src': application_url + '/@@/zeit.imp/loading.gif'})
             );
         $('content').appendChild(self.indicator);
     },
@@ -273,7 +273,7 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
             MochiKit.Signal.disconnect(ident);
             zeit.edit.busy_indicator = new zeit.edit.BusyIndicator();
         });
-})();
+}());
 
 
 var wire_forms = function() {
@@ -295,7 +295,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 });
 
 
-})();
+}());
 
 
 zeit.edit.LoadAndReload = gocept.Class.extend({
