@@ -446,9 +446,9 @@ class JSLintTestCase(gocept.jslint.TestCase):
                 'zeit,gocept,application_url,context_url,'
                 'jQuery,DOMParser,'
                 'console,'
-                'alert,confirm,escape,unescape,'
+                'alert,confirm,prompt,escape,unescape,getSelection,'
                 'jsontemplate,'
-                'MochiKit,$,$$,forEach,filter,map,extend,'
+                'MochiKit,$,$$,forEach,filter,map,extend,bind,'
                 'log,repr,logger,logDebug,logError,' # XXX
                 'DIV,A,UL,LI,INPUT,IMG,'
                 'isNull,isUndefined,isUndefinedOrNull',
@@ -456,9 +456,11 @@ class JSLintTestCase(gocept.jslint.TestCase):
 
     ignore = (
         "Avoid 'arguments.callee'",
+        "Compare with undefined, or use the hasOwnProperty method instead",
         "Do not use 'new' for side effects",
         "Don't make functions within a loop",
         "Expected an identifier and instead saw 'import'",
+        "This is an ES5 feature",
         "Use a named parameter",
         "unused variable: self",
         )
