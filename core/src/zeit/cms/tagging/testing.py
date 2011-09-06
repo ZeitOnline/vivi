@@ -6,7 +6,9 @@ import UserDict
 
 class InMemoryTagger(UserDict.DictMixin):
 
-    def __init__(self):
+    # XXX This is used as an adapter in at least one place, and instantiated
+    # without context elsewhere. Should be done more cleanly at some point.
+    def __init__(self, context=None):
         self.data = {}
 
     def __getitem__(self, key):
