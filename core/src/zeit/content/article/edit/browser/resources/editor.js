@@ -109,6 +109,10 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_toolbar();
             self.relocate_toolbar(true);
+            self.events.push(MochiKit.Signal.connect(
+                window, 'before-content-drag', function() {
+                    self.save();
+                }));
         });
     },
 

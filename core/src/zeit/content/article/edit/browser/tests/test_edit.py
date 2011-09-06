@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import mock
+import time
 import unittest2
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
@@ -258,6 +259,25 @@ class TestTextEditing(
         self.save()
         s.click(p1)
         s.waitForElementPresent('xpath=//*[@contenteditable]')
+
+    def _skip_test_editing_should_end_on_content_drag(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=.block.type-p')
+        s.waitForElementPresent('link=Create paragraph')
+        s.click('link=Create paragraph')
+        s.waitForElementPresent('css=.block.type-p')
+        s.click('link=Create paragraph')
+        s.waitForXpathCount(css_path('.block.type-p'), 2)
+        # Start editing
+        time.sleep(0.25)
+        s.click('css=.block.type-p .editable')
+        s.waitForElementPresent('css=.block.type-p.editing')
+        time.sleep(0.25)
+        # start dragging
+        # XXX dragAndDropToObject has no effect, dragAndDrop freezes browser
+        # Saved, no longer ediable
+        s.waitForElementNotPresent('css=.block.type-p.editing')
+
 
 
 class TestFolding(
