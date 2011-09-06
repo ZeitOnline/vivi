@@ -35,6 +35,8 @@ MochiKit.Signal.connect(
         return;
     }
 
+    MochiKit.Signal.signal(window, 'before-content-drag');
+
     var div = $('drag-pane');
     if (div) {
         div.parentNode.removeChild(div);
