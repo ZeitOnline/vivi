@@ -146,7 +146,7 @@ class Content(persistent.Persistent,
                         self.data['customFields']))
             self.uniqueId = 'http://video.zeit.de/%s/%s' % (
                 self.type, self.data['id'])
-            self.__name__ = '%s:%s' % (self.type, self.data['id'])
+            self.__name__ = '%s-%s' % (self.type, self.data['id'])
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):

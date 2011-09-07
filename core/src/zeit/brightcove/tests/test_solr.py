@@ -66,7 +66,7 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
 
     def test_deleted_playlists_removed_from_solr(self):
-        pls = self.repository['playlist:2345']
+        pls = self.repository['playlist-2345']
         pls.item_state = 'DELETED'
         zope.lifecycleevent.modified(pls)
         self.assertTrue(self.solr.delete.called)

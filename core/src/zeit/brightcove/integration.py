@@ -38,6 +38,7 @@ def unique_id_to_cms_content(uniqueId):
     assert uniqueId.startswith('http://video.zeit.de/')
     name = uniqueId.replace('http://video.zeit.de/', '', 1)
     name = name.replace('/', ':', 1)
+    name = name.replace(':', '-', 1)
     repository = zope.component.getUtility(
         zeit.brightcove.interfaces.IRepository)
     try:

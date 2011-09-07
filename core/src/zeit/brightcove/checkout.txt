@@ -11,7 +11,7 @@ zeit.content.cp.
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.handleErrors = False
 >>> browser.open(
-...     'http://localhost/++skin++vivi/repository-brightcove/video:1234/')
+...     'http://localhost/++skin++vivi/repository-brightcove/video-1234/')
 
 There is no checkout link though. The user doesn't need to know that videos can
 be checked out:
@@ -25,7 +25,7 @@ Triggering the checkout via URL works:
 
 >>> browser.open('@@checkout')
 >>> print browser.title.strip()
-video:1234 – Edit video
+video-1234 – Edit video
 >>> browser.getControl('Title').value = 'New title'
 >>> browser.getControl('Apply', index=0).click()
 
@@ -33,7 +33,7 @@ Saving has not changed the data in the repository:
 
 
 >>> browser.open(
-...     'http://localhost/++skin++vivi/repository-brightcove/video:1234/')
+...     'http://localhost/++skin++vivi/repository-brightcove/video-1234/')
 >>> print browser.getControl('Title').value
 Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 >>> browser.goBack()
@@ -42,4 +42,4 @@ Checking in works as usual:
 
 >>> browser.getLink('Checkin').click()
 >>> print browser.url
-http://localhost/++skin++vivi/repository-brightcove/video%3A1234/@@view.html
+http://localhost/++skin++vivi/repository-brightcove/video-1234/@@view.html

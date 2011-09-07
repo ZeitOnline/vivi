@@ -7,7 +7,7 @@ Video metadata can be edited:
 >>> browser = ExtendedTestBrowser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository-brightcove/video:1234')
+...     'http://localhost/++skin++cms/repository-brightcove/video-1234')
 >>> print browser.getControl('Title').value
 Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 >>> browser.getControl('Title').value = 'New title'
@@ -60,7 +60,7 @@ be:
 ...    finally:
 ...        browser.mech_browser.set_handle_redirect(True)
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository-brightcove/video:1234/')
+...     'http://localhost/++skin++cms/repository-brightcove/video-1234/')
 >>> open_wo_redirect(browser, '@@thumbnail')
 HTTP Error 303: See Other
 http://thumbnailurl
@@ -72,7 +72,7 @@ The absolute url of the thumbnail view is actually the thumbnail url:
 >>> import zeit.cms.interfaces
 >>> import zope.publisher.browser
 >>> import zope.traversing.browser.interfaces
->>> video = zeit.cms.interfaces.ICMSContent('http://video.zeit.de/video:1234')
+>>> video = zeit.cms.interfaces.ICMSContent('http://video.zeit.de/video-1234')
 >>> request = zope.publisher.browser.TestRequest(
 ...     skin=zeit.cms.browser.interfaces.ICMSLayer)
 >>> thumbnail_view = zope.component.getMultiAdapter(
@@ -95,23 +95,23 @@ http://videostillurl
 Playlists information is visible:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository-brightcove/playlist:2345')
+...     'http://localhost/++skin++cms/repository-brightcove/playlist-2345')
 >>> print browser.contents
 <...
    <label for="form.__name__">
            <span>File name</span>
          </label>...
-        <div class="widget">playlist:2345</div>...
+        <div class="widget">playlist-2345</div>...
 
 The live and preview link redirect to the video page:
 
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository-brightcove/video:1234')
+...     'http://localhost/++skin++cms/repository-brightcove/video-1234')
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
 HTTP Error 303: See Other
 http://video.zeit.de/video/1234
 >>> browser.open(
-...     'http://localhost/++skin++cms/repository-brightcove/video:1234')
+...     'http://localhost/++skin++cms/repository-brightcove/video-1234')
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Live')
 HTTP Error 303: See Other
 http://video.zeit.de/video/1234
