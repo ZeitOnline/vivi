@@ -17,7 +17,6 @@ setup(
         'lxml',
         'pytz',
         'setuptools',
-        'simplejson',
         'zeit.cms>1.44.0',
         'zeit.solr>0.21.0',
         'zope.container',

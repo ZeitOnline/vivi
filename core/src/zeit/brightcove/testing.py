@@ -1,9 +1,9 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import gocept.selenium.ztk
 import pkg_resources
-import simplejson
+import json
 import transaction
 import urlparse
 import zeit.cms.testing
@@ -162,7 +162,7 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
                       "total_count": -1}
         self.send_response(self.response)
         self.end_headers()
-        self.wfile.write(simplejson.dumps(result))
+        self.wfile.write(json.dumps(result))
 
     def do_POST(self):
         length = int(self.headers['content-length'])
