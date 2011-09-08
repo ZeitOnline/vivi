@@ -2,59 +2,12 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import gocept.form.grouped
 import grokcore.component
 import zeit.brightcove.interfaces
 import zeit.cms.browser.form
 import zope.formlib.form
 import zope.site.hooks
 import zope.traversing.browser.absoluteurl
-
-
-class VideoEditForm(zeit.cms.browser.form.EditForm):
-
-    title = _('Edit video')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.brightcove.interfaces.IVideo).omit('__name__', 'thumbnail')
-
-    field_groups = (
-        gocept.form.grouped.Fields(
-            _("Texts"),
-            ('supertitle', 'title', 'subtitle', 'teaserText'),
-            css_class='wide-widgets column-left'),
-        gocept.form.grouped.Fields(
-            _("Navigation"),
-            ('product_id', 'ressort', 'keywords', 'serie'),
-            css_class='column-right'),
-        gocept.form.grouped.Fields(
-            _("Options"),
-            ('dailyNewsletter', 'banner', 'banner_id',
-             'breaking_news', 'has_recensions', 'allow_comments'),
-            css_class='column-right checkboxes'),
-        gocept.form.grouped.Fields(
-            _('Teaser elements'),
-            ('related',),
-            'wide-widgets full-width'),
-    )
-
-    _redir = False
-
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyChanges(data)
-
-    @zope.formlib.form.action(
-        _('Apply and go to search'),
-        condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_and_serach_action(self, action, data):
-        self.applyChanges(data)
-        self._redir = True
-
-    def nextURL(self):
-        if self._redir:
-            return self.url(zope.site.hooks.getSite())
 
 
 class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):

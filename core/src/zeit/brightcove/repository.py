@@ -1,13 +1,13 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import BTrees
 import datetime
 import gocept.runner
 import persistent
 import pytz
 import zeit.brightcove.interfaces
 import zeit.brightcove.solr
+import zeit.cms.repository.interfaces
 import zope.component
 import zope.container.contained
 import zope.interface
@@ -19,8 +19,16 @@ class Repository(persistent.Persistent,
 
     zope.interface.implements(zeit.brightcove.interfaces.IRepository)
 
-    def __init__(self):
-        self._data = BTrees.family32.OO.BTree()
+    folder = 'brightcove-folder'
+
+    @property
+    def dav(self):
+        return zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+
+    @property
+    def _data(self):
+        return self.dav[self.folder]
 
     def __getitem__(self, key):
         return self._data[key]
@@ -60,6 +68,7 @@ class Repository(persistent.Persistent,
             self._update_content(x)
 
     def _update_playlists(self):
+        return
         playlists = zeit.brightcove.content.Playlist.find_all()
         exists = set()
         for playlist in playlists:
@@ -91,7 +100,7 @@ class Repository(persistent.Persistent,
             newdata.pop('lastModifiedDate', None)
             if curdata == newdata:
                 return
-        self[newcontent.__name__] = newcontent
+        self[newcontent.__name__] = newcontent.to_cms_video()
         newcontent.__parent__ = self
         # XXX we should use events here
         zeit.brightcove.solr.index_content(newcontent)

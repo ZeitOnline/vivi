@@ -193,15 +193,6 @@ class SemanticChange(object):
         self.context.date_last_modified = value
 
 
-class CommonMetadataVideo(CommonMetadata):
-
-    grokcore.component.context(zeit.brightcove.interfaces.IVideo)
-
-    @property
-    def commentsAllowed(self):
-        return self.context.allow_comments
-
-
 @grokcore.component.adapter(
     zeit.brightcove.interfaces.IPlaylist, name='videos')
 @grokcore.component.implementer(

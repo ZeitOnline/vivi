@@ -76,92 +76,12 @@ class IVideo(IBrightcoveContent,
              zeit.cms.related.interfaces.IRelatedContent):
     """A video."""
 
-    supertitle = zope.schema.TextLine(
-        title=_("Kicker"),
-        description=_("Please take care of capitalisation."),
-        max_length=1024,
-        required=False,
-        missing_value='')
-
-    subtitle = zope.schema.Text(
-        title=_("Video subtitle"),
-        required=False,
-        max_length=5000)
-
-    ressort = zope.schema.Choice(
-        title=_("Ressort"),
-        required=False,
-        missing_value='',
-        source=zeit.cms.content.sources.NavigationSource())
-
-    serie = zope.schema.Choice(
-        title=_("Serie"),
-        source=SerieSource(),
-        required=False,
-        missing_value='')
-
-    product_id = zope.schema.Choice(
-        title=_('Product id'),
-        required=False,
-        missing_value='',
-        source=zeit.cms.content.sources.ProductSource())
-
-    keywords = zope.schema.Tuple(
-        title=_("Keywords"),
-        required=False,
-        default=None,
-        value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.whitelist.WhitelistSource()))
-
-    dailyNewsletter = zope.schema.Bool(
-        title=_("Daily newsletter"),
-        description=_(
-            "Should this article be listed in the daily newsletter?"),
-        default=False)
-
-    allow_comments = zope.schema.Bool(
-        title=_("comments allowed"),
-        description=_(
-            "Are comments allowed for this video?"),
-        default=True)
-
-    banner = zope.schema.Bool(
-        title=_("Banner"),
-        default=True)
-
-    banner_id = zope.schema.TextLine(
-        title=_('Banner id'),
-        required=False,
-        missing_value='')
-
-    breaking_news = zope.schema.Bool(
-        title=_('video-breaking-news', default='Breaking news'),
-        default=False)
-
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
         default=False)
 
     expires = zope.schema.Datetime(
         title=_('Video expires on'),
-        required=False,
-        readonly=True,
-        default=None)
-
-    date_first_released = zope.schema.Datetime(
-        title=_('First released'),
-        required=False,
-        readonly=True,
-        default=None)
-
-    date_created = zope.schema.Datetime(
-        title=_('Created on'),
-        required=False,
-        readonly=True,
-        default=None)
-
-    date_last_modified = zope.schema.Datetime(
-        title=_('last modified'),
         required=False,
         readonly=True,
         default=None)

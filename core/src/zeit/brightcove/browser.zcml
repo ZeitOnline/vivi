@@ -2,14 +2,6 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser">
 
-  <browser:page
-    for="zeit.brightcove.interfaces.IVideo"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="view.html"
-    class=".browser.VideoEditForm"
-    permission="zeit.brightcove.video.Edit"
-    />
-
   <browser:defaultView
     for="zeit.brightcove.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

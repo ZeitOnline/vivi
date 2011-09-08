@@ -18,6 +18,8 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.brightcove" />
+  <include package="zeit.content.video" />
+  <include package="zeit.content.video.browser" />
   <include package="zeit.solr" />
 
   <grant

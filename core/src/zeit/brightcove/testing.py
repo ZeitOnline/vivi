@@ -6,6 +6,9 @@ import pkg_resources
 import json
 import transaction
 import urlparse
+import zeit.cms.interfaces
+import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.solr.testing
 import zope.component
@@ -217,7 +220,11 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
 
     @classmethod
     def setUp(cls):
-        pass
+        zope.component.provideAdapter(
+            zeit.cms.tagging.testing.InMemoryTagger,
+            (zeit.cms.interfaces.ICMSContent,),
+            zeit.cms.tagging.interfaces.ITagger
+            )
 
     @classmethod
     def tearDown(cls):
@@ -225,7 +232,13 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
 
     @classmethod
     def testSetUp(cls):
-        update_repository(BrightcoveZCMLLayer.setup.getRootFolder())
+        root_folder = BrightcoveZCMLLayer.setup.getRootFolder()
+        with zeit.cms.testing.site(root_folder):
+            repository = zope.component.getUtility(
+                zeit.cms.repository.interfaces.IRepository)
+            repository['brightcove-folder'] = \
+                zeit.cms.repository.folder.Folder()
+        update_repository(root_folder)
 
     @classmethod
     def testTearDown(cls):

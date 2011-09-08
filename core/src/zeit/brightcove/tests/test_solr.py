@@ -29,7 +29,8 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
             zeit.solr.interfaces.IUpdater, updater)
 
     def test_updating_repository_should_index_contents(self):
-        self.repository._data.clear()
+        for key in self.repository._data:
+            del self.repository._data[key]
         self.repository.update_from_brightcove()
         self.assertTrue(self.solr.update_raw.called)
         self.assertEquals(5, len(self.solr.update_raw.call_args_list))

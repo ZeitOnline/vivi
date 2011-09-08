@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -12,6 +12,8 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.type
+import zeit.content.video.interfaces
+import zeit.content.video.video
 import zope.component
 import zope.container.contained
 import zope.interface
@@ -144,9 +146,9 @@ class Content(persistent.Persistent,
                 self.data['customFields'] = (
                     persistent.mapping.PersistentMapping(
                         self.data['customFields']))
-            self.uniqueId = 'http://video.zeit.de/%s/%s' % (
-                self.type, self.data['id'])
             self.__name__ = '%s-%s' % (self.type, self.data['id'])
+            self.uniqueId = 'http://xml.zeit.de/brightcove-folder/%s' % (
+                self.__name__)
 
     def __eq__(self, other):
         if not isinstance(other, type(self)):
@@ -192,7 +194,7 @@ class Video(Content):
 
     type = 'video'
     id_prefix = 'vid' # for old-style asset IDs
-    allow_comments = mapped_bool('customFields', 'allow_comments')
+    commentsAllowed = mapped_bool('customFields', 'allow_comments')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
     breaking_news = mapped_bool('customFields', 'breaking-news')
@@ -284,6 +286,15 @@ class Video(Content):
                 continue
             custom['ref_link%s' % i] = obj.uniqueId
             custom['ref_title%s' % i] = metadata.teaserTitle
+
+    def to_cms_video(self):
+        video = zeit.content.video.video.Video()
+        for key in zeit.content.video.interfaces.IVideo:
+            try:
+                setattr(video, key, getattr(self, key))
+            except AttributeError:
+                pass
+        return video
 
 
 class VideoType(zeit.cms.type.TypeDeclaration):

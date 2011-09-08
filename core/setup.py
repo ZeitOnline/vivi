@@ -18,6 +18,7 @@ setup(
         'pytz',
         'setuptools',
         'zeit.cms>1.44.0',
+        'zeit.content.video',
         'zeit.solr>0.21.0',
         'zope.container',
         'zope.interface',
