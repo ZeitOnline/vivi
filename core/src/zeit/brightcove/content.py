@@ -296,6 +296,8 @@ class Video(Content):
             return None
         return datetime.datetime.fromtimestamp(modified/1000).year
 
+    # XXX year.setter is missing
+
     def to_cms_content(self):
         video = zeit.content.video.video.Video()
         for key in zeit.content.video.interfaces.IVideo:
