@@ -297,13 +297,6 @@ class Video(Content):
         return video
 
 
-class VideoType(zeit.cms.type.TypeDeclaration):
-
-    title = _('Video')
-    interface = zeit.brightcove.interfaces.IVideo
-    addform = zeit.cms.type.SKIP_ADD
-
-
 class Playlist(Content):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
