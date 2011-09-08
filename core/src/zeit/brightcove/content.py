@@ -13,6 +13,7 @@ import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.type
 import zeit.content.video.interfaces
+import zeit.content.video.playlist
 import zeit.content.video.video
 import zope.component
 import zope.container.contained
@@ -286,6 +287,14 @@ class Video(Content):
                 continue
             custom['ref_link%s' % i] = obj.uniqueId
             custom['ref_title%s' % i] = metadata.teaserTitle
+
+    @property
+    def year(self):
+        try:
+            modified = int(self.data.get('lastModifiedDate'))
+        except (TypeError, ValueError):
+            return None
+        return datetime.datetime.fromtimestamp(modified/1000).year
 
     def to_cms_content(self):
         video = zeit.content.video.video.Video()
