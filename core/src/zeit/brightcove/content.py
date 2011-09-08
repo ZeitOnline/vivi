@@ -241,6 +241,10 @@ class Video(Content):
     ))
 
     @classmethod
+    def find_by_id(cls, id):
+        return iter(cls.find_by_ids([id])).next()
+
+    @classmethod
     def find_by_ids(class_, ids):
         ids = ','.join(str(i) for i in ids)
         return class_.get_connection().get_list(
