@@ -4,9 +4,11 @@
 from zeit.cms.i18n import MessageFactory as _
 import zope.schema
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 
 
-class IVideo(zeit.cms.content.interfaces.ICommonMetadata):
+class IVideo(zeit.cms.content.interfaces.ICommonMetadata,
+             zeit.cms.interfaces.ICMSContent):
 
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
@@ -32,3 +34,18 @@ class IVideo(zeit.cms.content.interfaces.ICommonMetadata):
         title=_('URI of the thumbnail'),
         required=False,
         readonly=True)
+
+
+class IPlaylist(zeit.cms.content.interfaces.ICommonMetadata,
+                zeit.cms.interfaces.ICMSContent):
+
+    video_ids = zope.schema.Tuple(
+        title=_("Video IDs"),
+        required=False,
+        default=(),
+        unique=False,
+        value_type=zope.schema.URI(
+            title=_('URI of the Playlist-Video'),
+            required=False,
+            readonly=True)
+    )

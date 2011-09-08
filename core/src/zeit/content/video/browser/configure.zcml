@@ -13,10 +13,18 @@
      permission="zeit.EditContent"
      />
 
+  <browser:page
+     for="zeit.content.video.interfaces.IVideo"
+     layer="zeit.cms.browser.interfaces.ICMSLayer"
+     name="view.html"
+     class=".form.Display"
+     permission="zope.View"
+     />
+
   <browser:defaultView
     for="zeit.content.video.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.html"
+    name="view.html"
     />
 
 </configure>
