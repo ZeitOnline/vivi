@@ -32,11 +32,12 @@ class BrightcoveContentPublicationStatus(grokcore.component.Adapter):
         return "not-published"
 
 
-@grokcore.component.adapter(basestring, name='http://video.zeit.de/')
+@grokcore.component.adapter(
+    basestring, name='http://xml.zeit.de/brightcove-folder/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_cms_content(uniqueId):
-    assert uniqueId.startswith('http://video.zeit.de/')
-    name = uniqueId.replace('http://video.zeit.de/', '', 1)
+    assert uniqueId.startswith('http://xml.zeit.de/brightcove-folder/')
+    name = uniqueId.replace('http://xml.zeit.de/brightcove-folder/', '', 1)
     name = name.replace('/', ':', 1)
     name = name.replace(':', '-', 1)
     repository = zope.component.getUtility(

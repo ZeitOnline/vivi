@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import zeit.brightcove.testing
@@ -9,7 +9,7 @@ class TestCheckoutManager(zeit.brightcove.testing.BrightcoveTestCase):
     def get_video(self):
         import zeit.cms.interfaces
         return zeit.cms.interfaces.ICMSContent(
-            'http://video.zeit.de/video/1234')
+            'http://xml.zeit.de/brightcove-folder/video-1234')
 
     def test_can_checkout_should_be_false_on_checked_out_content(self):
         from zeit.cms.checkout.interfaces import ICheckoutManager

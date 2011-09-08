@@ -17,9 +17,9 @@ Videos can be referenced as assets. An audio id comes along with the videos.
 <zeit.brightcove.asset.VideoAsset object at 0x...>
 >>> import zeit.cms.checkout.helper
 >>> video = zeit.cms.interfaces.ICMSContent(
-...     'http://video.zeit.de/video/1234')
+...     'http://xml.zeit.de/brightcove-folder/video-1234')
 >>> playlist = zeit.cms.interfaces.ICMSContent(
-...     'http://video.zeit.de/playlist/2345')
+...     'http://xml.zeit.de/brightcove-folder/playlist-2345')
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
 ...     av = zeit.brightcove.interfaces.IVideoAsset(co)
 ...     av.video = video
@@ -30,9 +30,9 @@ Videos can be referenced as assets. An audio id comes along with the videos.
 >>> p[('audio_id', u'http://namespaces.zeit.de/CMS/document')]
 u'aud34'
 >>> p[('video_id', u'http://namespaces.zeit.de/CMS/document')]
-u'http://video.zeit.de/video/1234'
+u'http://xml.zeit.de/brightcove-folder/video-1234'
 >>> p[('video_id_2', u'http://namespaces.zeit.de/CMS/document')]
-u'http://video.zeit.de/playlist/2345'
+u'http://xml.zeit.de/brightcove-folder/playlist-2345'
 
 Audio and video are noted in the xml reference:
 
@@ -45,8 +45,8 @@ Audio and video are noted in the xml reference:
 <reference ...href="http://xml.zeit.de/testcontent"...>...
     <audio audio_id="aud34"/>
     <video
-      href="http://video.zeit.de/video/1234"
-      href2="http://video.zeit.de/playlist/2345"
+      href="http://xml.zeit.de/brightcove-folder/video-1234"
+      href2="http://xml.zeit.de/brightcove-folder/playlist-2345"
       expires="2010-03-26T05:00:00+00:00"
       video_id="vid1234" video_id_2="pls2345"/>
 ...
@@ -90,7 +90,7 @@ A freshly created node also does not contain those elements:
 Missing expire dates don't cause trouble:
 
 >>> video = zeit.cms.interfaces.ICMSContent(
-...     'http://video.zeit.de/video/6789')
+...     'http://xml.zeit.de/brightcove-folder/video-6789')
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
 ...     av = zeit.brightcove.interfaces.IVideoAsset(co)
 ...     av.video = video
@@ -100,7 +100,7 @@ Missing expire dates don't cause trouble:
 >>> print lxml.etree.tostring(node, pretty_print=True),
 <reference ...href="http://xml.zeit.de/testcontent"...>...
   <video
-    href="http://video.zeit.de/video/6789"
+    href="http://xml.zeit.de/brightcove-folder/video-6789"
     href2="" expires=""
     video_id="vid6789" video_id_2=""/>
 ...

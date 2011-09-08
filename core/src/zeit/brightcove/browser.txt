@@ -72,7 +72,8 @@ The absolute url of the thumbnail view is actually the thumbnail url:
 >>> import zeit.cms.interfaces
 >>> import zope.publisher.browser
 >>> import zope.traversing.browser.interfaces
->>> video = zeit.cms.interfaces.ICMSContent('http://video.zeit.de/video-1234')
+>>> video = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/brightcove-folder/video-1234')
 >>> request = zope.publisher.browser.TestRequest(
 ...     skin=zeit.cms.browser.interfaces.ICMSLayer)
 >>> thumbnail_view = zope.component.getMultiAdapter(
@@ -109,9 +110,9 @@ The live and preview link redirect to the video page:
 ...     'http://localhost/++skin++cms/repository-brightcove/video-1234')
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
 HTTP Error 303: See Other
-http://video.zeit.de/video/1234
+http://xml.zeit.de/brightcove-folder/video-1234
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository-brightcove/video-1234')
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Live')
 HTTP Error 303: See Other
-http://video.zeit.de/video/1234
+http://xml.zeit.de/brightcove-folder/video-1234
