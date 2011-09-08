@@ -19,11 +19,6 @@ import zope.publisher.browser
 
 class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
 
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.brightcove.interfaces.IRepository)
-
     def test_cmscontent(self):
         video = self.repository['video-1234']
         self.assertEquals('http://xml.zeit.de/brightcove-folder/video-1234', video.uniqueId)
@@ -184,11 +179,6 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.brightcove.interfaces.IRepository)
-
     def test_getitem(self):
         playlist = self.repository['playlist-2345']
         self.assertEquals(2345, playlist.id)
@@ -225,11 +215,6 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
 
 class TestPublishInfo(zeit.brightcove.testing.BrightcoveTestCase):
-
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.brightcove.interfaces.IRepository)
 
     def test_publishinfo(self):
         video = self.repository['video-1234']
