@@ -8,6 +8,5 @@ def test_suite():
     return zeit.brightcove.testing.FunctionalDocFileSuite(
         'asset.txt',
         'browser.txt',
-        'checkout.txt',
         'reference.txt',
         package='zeit.brightcove')
