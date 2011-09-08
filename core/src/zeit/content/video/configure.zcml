@@ -1,0 +1,26 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
+
+  <class class=".video.Video">
+    <implements
+       interface="zope.annotation.interfaces.IAttributeAnnotatable"
+       />
+    <require
+      interface=".interfaces.IVideo"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IVideo"
+      permission="zeit.EditContent" />
+  </class>
+
+  <adapter
+    factory="zeit.workflow.workflow.ContentWorkflow"
+    provides="zeit.workflow.interfaces.IContentWorkflow"
+    for=".interfaces.IVideo"
+    trusted="yes"
+    />
+
+</configure>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:zcml="http://namespaces.zope.org/zcml"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   i18n_domain="zeit.cms">
+
+  <browser:page
+     for="zeit.content.video.interfaces.IVideo"
+     layer="zeit.cms.browser.interfaces.ICMSLayer"
+     name="edit.html"
+     class=".form.Edit"
+     permission="zeit.EditContent"
+     />
+
+  <browser:defaultView
+    for="zeit.content.video.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    />
+
+</configure>

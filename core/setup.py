@@ -15,6 +15,14 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
+        'gocept.form',
+        'grokcore.component',
         'setuptools',
+        'zeit.cms',
+        'zope.annotation',
+        'zope.component',
+        'zope.formlib',
+        'zope.interface',
+        'zope.schema',
     ],
 )
