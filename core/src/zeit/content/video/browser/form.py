@@ -2,9 +2,6 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import copy
-import gocept.form.grouped
-import urllib2
 import zeit.cms.content.browser.form
 import zeit.content.video.interfaces
 import zope.component.hooks
@@ -15,8 +12,9 @@ class Edit(zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _('Edit video')
 
+    # videos don't have authors
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.video.interfaces.IVideo)
+        zeit.content.video.interfaces.IVideo).omit('authors')
 
     _redir = False
 
