@@ -1,4 +1,5 @@
 syntax: glob
+.hgsubstate
 .installed.cfg
 bin
 develop-eggs
