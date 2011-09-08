@@ -1,0 +1,263 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.content.cp.Add"
+    class=".form.AddForm"
+    permission="zeit.AddContent"
+    menu="zeit-add-menu" title="CenterPage"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.DisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:menuItem
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="View metadata"
+    action="@@view.html"
+    permission="zope.View"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
+    />
+
+  <browser:defaultView
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:page
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-metadata.html"
+    class=".form.EditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <resourceLibrary
+    name="zeit.content.cp"
+    require="zeit.cms
+             zeit.find
+             zc.datetimewidget
+    ">
+    <directory
+      source="resources"
+      include="editor.css editor.js drop.js teaser.js library.js publish.js"/>
+  </resourceLibrary>
+
+
+  <!-- Editor -->
+
+  <gocept:pagelet
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".editor.Editor"
+    template="editor.pt"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit contents"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".editor.Editor"
+    template="editor-contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewletManager
+    provides=".interfaces.IEditorContentViewletManager"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    name="zeit.content.cp.editor-contents"
+    permission="zope.View"
+    />
+
+  <include file="area.zcml" />
+  <include package=".blocks" />
+  <include file="landing.zcml" />
+
+  <adapter
+    factory=".workflow.CenterPageWorkflowForm"
+    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
+    />
+
+  <!-- teaser items -->
+
+  <browser:page
+    for="..teaser.XMLTeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-teaser.html"
+    class=".teaser.EditTeaser"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="..interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".teaser.DisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="..interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <browser:page
+    for="..interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".teaser.EditForm"
+    permission="zope.View"
+    />
+
+  <adapter factory=".teaser.ItemTraverser" name="item" />
+  <adapter factory=".teaser.ListRepresentation" />
+
+  <adapter factory=".feed.ListRepresentation" />
+  <browser:page
+    for="zeit.content.cp.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class="zeit.cms.browser.sourceedit.XMLDisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IFeed"
+    name="Checkout"
+    class=".feed.CheckoutMenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.Checkout"
+    />
+
+  <!-- Module library -->
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.BlockFactories"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IMosaic"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.ClusterBlockFactories"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".library.BlockLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".library.RegionLandingZone"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="block-factories.json"
+    class=".library.CPBlockFactories"
+    permission="zeit.EditContent"
+    />
+
+  <!-- 1-click publishing -->
+
+  <browser:viewlet
+    name="Publish"
+    for="zeit.content.cp.interfaces.ICenterPage"
+    view=".editor.Editor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".publish.MenuItem"
+    manager="zeit.cms.browser.interfaces.IContextActions"
+    permission="zeit.workflow.Publish"
+    icon="/@@/zeit.cms/icons/page_white_lightning.png"
+    />
+
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="publish.html"
+    class=".publish.Publish"
+    template="publish.pt"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="flash-publish-errors"
+    class=".publish.FlashPublishErrors"
+    template="publish.pt"
+    permission="zeit.workflow.Publish"
+    />
+    
+  <browser:icon
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/centerpage.png"
+    />
+
+  <browser:icon
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="resources/vivi/centerpage.png"
+    />
+
+  <browser:icon
+    for="zeit.content.cp.interfaces.ITeaser"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="16"
+    height="16"
+    file="resources/teaser-icon.png"
+    />
+
+  <browser:icon
+    for="zeit.content.cp.interfaces.IFeed"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    width="16"
+    height="16"
+    file="resources/feed-icon.png"
+    />
+
+</configure>

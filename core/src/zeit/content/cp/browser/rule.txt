@@ -1,0 +1,77 @@
+Validating a centerpage
+=======================
+
+If a centerpage has validation errors, the corresponding elements are
+highlighted.
+
+>>> import z3c.etestbrowser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.xml_strict = True
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.content.cp.browser.testing
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> cp_url = browser.url
+>>> browser.open('contents')
+>>> contents_url = browser.url
+
+There are some example rules, see rule_testdata.py. The lead region must contain
+more than two blocks, and the second teaserbar in the mosaic must have layout
+DMR.
+
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(contents_url)
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(contents_url)
+
+Both rules are violated now:
+
+>>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
+2
+
+Get rid of the second violation by setting the correct layout:
+
+>>> browser.getLink('Edit', index=3).click()
+>>> browser.open('edit-properties')
+>>> browser.getLink(index=2).click()
+>>> browser.open(contents_url)
+>>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
+1
+
+While a centerpage has validation errors, it can not be published:
+
+>>> browser.open(cp_url)
+>>> browser.open('@@checkin')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Save state and publish now').click()
+>>> print browser.contents
+<...Could not publish http://xml.zeit.de/online/2007/01/island
+since it has validation errors...
+
+Technical detail: The centerpage's workflow form inherits from the default
+workflow form, but hides a few fields:
+
+>>> browser.getControl('Urgent')
+Traceback (most recent call last):
+LookupError: label 'Urgent'
+
+Get rid of the remaining error by adding enough teaser blocks:
+
+>>> unique_id = 'http://xml.zeit.de/testcontent'
+>>> browser.open('@@checkout')
+>>> url = browser.url
+>>> for i in range(3):
+...     browser.open('lead/@@landing-zone-drop?uniqueId=' + unique_id)
+...     browser.open(url)
+>>> browser.open(contents_url)
+>>> len(browser.etree.xpath("//div[contains(@class, 'validation-error')]"))
+0
+
+Now we can publish:
+
+>>> browser.open(cp_url)
+>>> browser.open('@@checkin')
+>>> browser.getLink('Workflow').click()
+>>> browser.getControl('Save state and publish now').click()
+>>> print browser.contents
+<...http://xml.zeit.de/online/2007/01/island has been scheduled
+for publishing...

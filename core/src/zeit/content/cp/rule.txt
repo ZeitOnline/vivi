@@ -1,0 +1,169 @@
+Rules for blocks and areas
+==========================
+
+XXX this is supposed to be user documentation. writeme
+
+[#functional]_
+
+[#helper_functions]_
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+
+Specifying rules
+++++++++++++++++
+
+Rules can be specified in a file which contains:
+
+>>> create_rules("""\
+... applicable(is_block and area == 'teaser-mosaic' and position == 2)
+... error_unless(layout == 'dmr', u'Die zweite Teaserleiste muss ein DMR sein')
+... 
+... applicable(is_area and area == 'lead')
+... warning_unless(count > 6, u'In der Aufmacherfläche sollen mehr als 6 Teaserblöcke stehen')
+... error_unless(count > 2, u'In der Aufmacherfläche müssen mehr als 2 Teaserblöcke stehen')
+... 
+... applicable(is_area and area == 'lead')
+... # always valid
+... """)
+
+
+Rules are applied to all areas and blocks of a centerpage, e.g. for the lead
+area:
+
+>>> validator = zeit.content.cp.interfaces.IValidator(cp['lead'])
+>>> validator.status
+'error'
+>>> validator.messages
+[u'In der Aufmacherfl\xe4che m\xfcssen mehr als 2 Teaserbl\xf6cke stehen']
+
+
+Validating the number of blocks in an area
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+>>> import zope.component
+>>> import zeit.content.cp.interfaces
+>>> teaser_factory = zope.component.getAdapter(
+...     cp['lead'], zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser')
+>>> dummy = teaser_factory()
+>>> dummy = teaser_factory()
+>>> dummy = teaser_factory()
+
+>>> validator = zeit.content.cp.interfaces.IValidator(cp['lead'])
+>>> validator.status
+'warning'
+>>> validator.messages
+[u'In der Aufmacherfl\xe4che sollen mehr als 6 Teaserbl\xf6cke stehen']
+
+
+Validating the layout of a teaser bar
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+>>> bar_factory = zope.component.getAdapter(
+...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser-bar')
+
+
+>>> teaserbar_1 = bar_factory()
+>>> teaserbar_2 = bar_factory()
+
+>>> create_rules("""\
+... applicable(is_region and area == 'teaser-mosaic' and position == 2)
+... error_unless(layout == 'dmr', u'Die zweite Teserleiste muss ein DMR sein')
+... """)
+
+>>> validator = zeit.content.cp.interfaces.IValidator(teaserbar_1)
+>>> validator.status
+>>> validator = zeit.content.cp.interfaces.IValidator(teaserbar_2)
+>>> validator.status
+'error'
+>>> validator.messages
+[u'Die zweite Teserleiste muss ein DMR sein']
+
+Edge cases
+++++++++++
+
+Rules are seperated by blank lines and/or comments. That means writing your
+file without those, the whole file is interpreted as one rule. However, every
+rule has to start with `applicable`:
+
+>>> create_rules("""\
+... applicable(False)
+... applicable(True)
+... """)
+>>> rm = zope.component.getUtility(zeit.content.cp.interfaces.IRulesManager) 
+>>> len(rm.rules)
+1
+
+Comments are allowed to seperate rules:
+
+>>> create_rules("""\
+... # The first rule
+... applicable(True)
+... # Here starts a second rule
+... applicable(True)
+... 
+... # And a fourth rule
+... applicable(True)
+... """)
+>>> rm = zope.component.getUtility(zeit.content.cp.interfaces.IRulesManager) 
+>>> len(rm.rules)
+3
+
+An empty rules file can be parsed, too:
+
+>>> create_rules("")
+>>> rm = zope.component.getUtility(zeit.content.cp.interfaces.IRulesManager) 
+>>> len(rm.rules)
+0
+
+Encoding:
+
+>>> create_rules(u"""\
+... applicable(True)
+... error_unless(False, u'öüäß')
+... """.encode('latin-1'))
+>>> validator = zeit.content.cp.interfaces.IValidator(teaserbar_1)
+>>> validator.messages
+[u'\xf6\xfc\xe4\xdf']
+
+Syntax error handling:
+
+>>> create_rules("""\
+... applicable(True)
+... error_unless(False
+... """)
+>>> validator = zeit.content.cp.interfaces.IValidator(teaserbar_1)
+>>> validator.messages
+[u'\xf6\xfc\xe4\xdf']
+
+
+Clean up
+========
+
+>>> import os
+>>> os.remove(rules_filename)
+>>> config['rules-url'] = old_rules_url
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+
+.. [#helper_functions]
+
+    >>> import tempfile
+    >>> import gocept.cache.method
+    >>> rules_file, rules_filename = tempfile.mkstemp()
+    >>> import zope.app.appsetup.product
+    >>> config = zope.app.appsetup.product.getProductConfiguration(
+    ...     'zeit.content.cp')
+    >>> old_rules_url = config['rules-url']
+    >>> config['rules-url'] = 'file://%s' % rules_filename
+
+    >>> def create_rules(rules_str):
+    ...     rules_file = open(rules_filename, 'w')
+    ...     rules_file.write(rules_str)
+    ...     rules_file.close()
+    ...     gocept.cache.method.clear()

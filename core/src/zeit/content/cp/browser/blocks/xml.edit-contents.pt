@@ -1,0 +1,44 @@
+<div>
+  <form id="lightbox.form" action="#" tal:attributes="action request/URL">
+
+    <div class="form-status" tal:define="status view/status" tal:condition="status">
+      <div class="summary" i18n:translate="" tal:content="view/status">
+        Form status summary
+      </div>
+
+      <ul class="errors" tal:condition="view/errors">
+        <li tal:repeat="error view/error_views">
+          <span tal:replace="structure error">Error Type</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="field-group">
+      <tal:block repeat="widget view/widgets">
+        <div class="field"
+             tal:define="hint widget/hint"
+             tal:attributes="class python:'field ' + ((widget.required and 'required ') or ' ') + ((widget.error() and 'error') or ' ')">
+          <label tal:attributes="for widget/name">
+            <span i18n:translate="" tal:content="widget/label">label</span>
+            <span class="annotation" tal:condition="widget/required">(Pflichtfeld)</span>
+          </label>  
+          <div class="hint" tal:content="widget/hint"/>
+          <div tal:condition="widget/error" class="error">
+            <span tal:replace="structure widget/error">error</span>
+          </div>
+          <div class="widget" tal:content="structure widget">
+            <input type="text" />
+          </div>
+        </div>
+      </tal:block>
+    </div>
+
+    <div id="actionsView">
+      <span class="actionButtons" tal:condition="view/availableActions">
+        <input tal:repeat="action view/actions"
+               tal:replace="structure action/render" />
+      </span>
+    </div>
+  </form>
+  <div class="visual-clear"></div>
+</div>

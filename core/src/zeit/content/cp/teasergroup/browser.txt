@@ -1,0 +1,107 @@
+Teasergroup UI
+==============
+
+Creating teaser groups
+++++++++++++++++++++++
+
+Creating a teasergroup is an operation on an existing teaserblock.
+
+Create a centerpage:
+
+>>> import z3c.etestbrowser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.xml_strict = True
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
+>>> import zeit.content.cp.browser.testing
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('@@contents')
+>>> contents_url = browser.url
+
+Create a teaserblock with a few teasers:
+
+>>> import zeit.content.cp.browser.blocks.testing
+>>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
+>>> browser.open(
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c3')
+>>> import cjson
+>>> import pprint
+>>> result = cjson.decode(browser.contents)
+>>> pprint.pprint(result)
+{'signals': [{'args': ['cbbf6f19-58b9-4cbb-926b-e3fb521e4900'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['lead',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> uuid = result['signals'][0]['args'][0]
+>>> browser.open(contents_url)
+>>> browser.open('lead/%s/@@drop?uniqueId=http://xml.zeit.de/c2' % uuid)
+>>> browser.open(contents_url)
+>>> browser.open('lead/%s/@@drop?uniqueId=http://xml.zeit.de/c1' % uuid)
+
+Create a teasergroup for the teasers c1, c2, c3:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit teaser list').click()
+>>> browser.getLink('Save teasers as group').click()
+>>> print browser.contents
+<...
+  <h1>Save teasers as group</h1>...
+>>> browser.getControl('Name of teaser group').value = 'c1, c2 and c3'
+>>> browser.getControl('Automatically remove').selected
+True
+>>> browser.getControl('Create teaser group').click()
+
+After creating the box closes:
+
+>>> print browser.contents
+<...
+    self.close();
+    ...
+
+
+The teasergroup was created in its repository and references the content
+objects:
+
+>>> browser.open('/++skin++vivi/repository-teasergroups')
+>>> print browser.contents
+<...
+          <a href="c1%2C%20c2%20and%20c3">c1, c2 and c3</a>
+          ...
+>>> browser.getLink('c1, c2 and c3').click()
+>>> print browser.contents
+<...
+<li><a href="http://localhost/++skin++vivi/repository/c1"...
+<li><a href="http://localhost/++skin++vivi/repository/c2"...
+<li><a href="http://localhost/++skin++vivi/repository/c3"...
+
+
+The teaser group can be used to create a ready-filled teaser block on a
+centerpage by dropping the group on a landing zone:
+
+>>> browser.open(contents_url)
+>>> browser.open(
+...  'lead/@@landing-zone-drop?uniqueId=teasergroup://c1%2C%20c2%20and%20c3')
+>>> print browser.contents
+{"signals"...
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+      <div class="teaserTitle">c1 teaser</div>...
+      <div class="teaserTitle">c2 teaser</div>...
+      <div class="teaserTitle">c3 teaser</div>...
+      ...
+      <div class="teaserTitle">c1 teaser</div>...
+      <div class="teaserTitle">c2 teaser</div>...
+      <div class="teaserTitle">c3 teaser</div>...
+
+
+It is also possible to drop a teaser group onto a teaser block:
+
+>>> browser.open(
+...     'lead/%s/@@drop?uniqueId=teasergroup://c1%%2C%%20c2%%20and%%20c3' % 
+...     uuid)
+>>> print browser.contents
+{"signals": [{"args": ["<GUID>", "http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>/@@contents"], "when": null, "name": "reload"}]}

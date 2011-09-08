@@ -1,0 +1,43 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ILead"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="landing-zone"
+    template="layout.lead.landing.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.ILead"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop"
+    class=".landing.LeaderLandingZoneDrop"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop"
+    class=".landing.TeaserLandingZoneInsertAfter"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IInformatives"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="landing-zone"
+    template="layout.informatives.landing.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+</configure>

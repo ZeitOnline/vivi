@@ -1,0 +1,66 @@
+<div class="lightbox-full teaser-list-edit-box"
+     tal:define="context_url context/@@absolute_url"
+     i18n:domain="zeit.cms">
+  <ol id="teaser-list-edit-box-sorter"
+      tal:attributes="cms:url context_url">
+    <tal:repeat tal:repeat="teaser view/teasers">
+      <li class="action-content-droppable landing-zone"
+          tal:attributes="cms:drop-url string:$context_url/@@drop?index=${repeat/teaser/index}">
+      </li>
+      <li class="edit-bar"
+          tal:attributes="
+          class teaser/css_class;
+          cms:uniqueId teaser/uniqueId">
+        <a class="edit-link"
+           tal:condition="teaser/editable"
+           tal:attributes="href string:$context_url/++item++${repeat/teaser/index}/@@edit-teaser.html"
+           title="Edit in place"
+           cms:cp-module="zeit.content.cp.teaser.TeaserEditBox"
+           cms:lightbox-in="cp-forms"
+           i18n:attributes="title">
+          <span class="action-title">Edit inline</span>
+        </a>
+        <a class="edit-object-link"
+           tal:condition="teaser/viewable"
+           tal:attributes="href string:${teaser/url}/@@view.html"
+           title="Open in new window"
+           target="_blank"
+           i18n:attributes="title">
+          <span class="action-title">Open in new window</span>
+        </a>
+        <a class="delete-link" title="Delete"
+           tal:condition="teaser/deletable"
+           tal:attributes="href string:$context_url/delete?uniqueId=${teaser/uniqueId}"
+           i18n:attributes="title"
+           cms:cp-module="zeit.content.cp.teaser.TeaserListDeleteEntry">
+          <span class="action-title">Delete</span>
+        </a>
+
+        <div 
+          tal:attributes="title teaser/uniqueId"
+          tal:content="teaser/teaserTitle" 
+          />
+
+      </li>
+    </tal:repeat>
+    <li class="action-content-droppable landing-zone visible"
+        tal:define="teasers python:len(view.teasers)"
+          tal:attributes="cms:drop-url string:$context_url/@@drop?index=${teasers}"
+        i18n:translate="">
+      To add content drop it here.
+    </li>
+  </ol>
+
+  <div>
+    <a tal:attributes="href string:$context_url/@@create-teaser-group"
+       cms:cp-module="zeit.content.cp.LightBoxForm"
+       cms:lightbox-in="cp-forms"
+       i18n:translate="">
+      Save teasers as group
+    </a>
+  </div>
+
+</div>
+<script language="JavaScript">
+  new zeit.content.cp.teaser.Sortable();
+</script>

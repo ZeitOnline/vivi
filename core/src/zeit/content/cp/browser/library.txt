@@ -1,0 +1,157 @@
+Module library
+==============
+
+The module library allows to create blocks. There are libraries to create
+blocks in the informatives area and inside the teaser mosaic. Available modules
+are transmitted in JSON[#setup]_:
+
+>>> import cjson
+>>> import pprint
+>>> browser.handleErrors = False
+>>> browser.open('informatives/@@block-factories.json')
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'factories': [{'css': 'module informatives-module',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
+                'title': 'Audioblock',
+                'type': 'audio'},
+                ...
+ 'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
+
+
+In the teaser mosiac different blocks can be created. When there is no teaser
+bar, no blocks are offered to be created:
+
+>>> browser.open(cp_url)
+>>> browser.open('teaser-mosaic/@@block-factories.json')
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'factories': [],
+ 'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
+
+
+After creating a teaser bar, blocks are offered:
+
+>>> browser.open(cp_url)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(cp_url)
+>>> browser.open('teaser-mosaic/@@block-factories.json')
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'factories': [{'css': 'module teaser-mosaic-module',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
+                'title': 'Audioblock',
+                'type': 'audio'},
+                ...
+ 'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
+
+
+One can also ask for blocks which can be added on the CP in general:
+
+>>> browser.open(cp_url)
+>>> browser.open('@@block-factories.json')
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'factories': [{'css': 'module informatives-module teaser-mosaic-module',
+                'image': 'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
+                'title': 'Audioblock',
+                'type': 'audio'},
+                ...
+  'template_url': 'http://localhost/++skin++cms/@@/zeit.content.cp/block_factories.jsont'}
+
+
+Adding blocks works by drag and drop. We simulate this here.
+
+In the informatives area is a landing zone to create a block:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+ <div class="landing-zone action-informatives-module-droppable"
+      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
+      ...
+
+Create a cpextra block as first block in the informatives. The view returns
+information about the created block:
+
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/'
+...              'island/informatives/@@landing-zone-drop-module'
+...              '?block_type=cpextra')
+>>> result = cjson.decode(browser.contents)
+>>> pprint.pprint(result)
+{'signals': [{'args': ['7ccff7a0-3758-416c-ad30-d0183a2543fd'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['informatives',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> print browser.headers
+Status: 200 Ok
+Content-Length: ...
+Content-Type: text/json
+...
+
+>>> created_block_id = result['signals'][0]['args'][0]
+
+The block is contained in the contents. A landing zone to create blocks *after*
+it, is rendered too:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+<div class="landing-zone action-informatives-module-droppable"
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
+</div>
+  <div ...class="block type-cpextra"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+    ...
+  <div class="landing-zone action-informatives-module-droppable"
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
+  </div>
+  ...
+
+Add an audio block after the just created cpextra block now:
+
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
+...     'informatives/%s/@@landing-zone-drop-module?block_type=audio' % 
+...     created_block_id)
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+<div class="landing-zone action-informatives-module-droppable"
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
+</div>
+  <div ...class="block type-cpextra"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+    ...
+  <div class="landing-zone action-informatives-module-droppable"
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
+  </div>
+  ...<div...class="block type-audio"...
+
+
+Creating blocks is also possible in the teaser bar:
+
+>>> import lxml.cssselect
+>>> browser.xml_strict = True
+>>> browser.open(contents_url)
+>>> select = lxml.cssselect.CSSSelector(
+...     '.action-teaser-mosaic-module-droppable[cms|create-block-url]')
+>>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+>>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}create-block-url')
+>>> browser.open(drop_url + '?block_type=quiz')
+>>> browser.open(contents_url)
+>>> 'quiz' in browser.contents
+True
+
+
+
+
+.. [#setup]
+
+    >>> import z3c.etestbrowser.testing
+    >>> import zeit.content.cp.browser.testing
+    >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+    >>> browser.addHeader('Authorization', 'Basic user:userpw')
+    >>> zeit.content.cp.browser.testing.create_cp(browser)
+    >>> cp_url = browser.url

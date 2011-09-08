@@ -1,0 +1,45 @@
+Iterating over CMSContent
+=========================
+
+By adapting to `ICMSContentIterable` you can flatten the hierachical structure
+of a centerpage and its components[#functional]_.
+
+Some setup to fill a centerpage:
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> tm = cp['teaser-mosaic']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> teasers = factory()
+
+>>> bar_factory = zope.component.getAdapter(
+...     tm, zeit.content.cp.interfaces.IElementFactory, name='teaser-bar')
+>>> teaser_bars = bar_factory()
+>>> teaser_bar_factory = zope.component.getAdapter(
+...     teaser_bars, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> mosaic = teaser_bar_factory()
+
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+>>> teasers.insert(0, repository['testcontent'])
+>>> teasers.insert(1, repository['2007']['test'])
+>>> mosaic.insert(0, repository['testcontent'])
+
+Now we can iterate over the centerpage and we get all contents in a flat list.
+
+>>> list(zeit.content.cp.interfaces.ICMSContentIterable(cp))
+[<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x38a86b0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3bcd630>,
+ <zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x38a86b0>]
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()

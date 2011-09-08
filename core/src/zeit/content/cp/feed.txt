@@ -1,0 +1,203 @@
+Feed objects
+============
+
+A Feed object encapsulates an RSS (or Atom, ...) feed[#functional]_.
+It parses the remote feed (at the given URL), converts it to RSS 2.0 and
+stores it.
+
+>>> import lxml.etree
+>>> import pkg_resources
+>>> import unittest
+>>> import zeit.content.cp.interfaces
+>>> import zeit.content.cp.testing
+>>> import zope.component
+
+
+Creating feeds
+--------------
+
+The feed manager creates the necessary objects and fetches the feed:
+
+>>> fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
+>>> url = 'http://localhost:%s/heise.xml' % port
+>>> feed = fm.get_feed(url)
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<feed ...
+  <rss version="2.0">
+    <channel>
+      <pubDate>2009-05-13T11:36:47+02:00</pubDate>
+      <description>Nachrichten nicht nur aus der Welt der Computer</description>
+      <title>heise online News</title>
+      <link>http://www.heise.de/newsticker/</link>
+      <item>
+        <pubDate>2009-05-13T11:36:47+02:00</pubDate>
+        <title>QSC kann Umsatz und Ergebnis deutlich verbessern</title>
+        <description>QSC kann Umsatz und Ergebnis deutlich verbessern</description>
+        <link>http://www.heise.de/newsticker/QSC-kann-Umsatz-und-Ergebnis-deutlich-verbessern--/meldung/137729/from/atom10</link>
+        <guid>http://www.heise.de/newsticker/meldung/137729</guid>
+      </item>
+      ...
+    </channel>
+  </rss>
+</feed>
+
+
+Refreshing feeds
+----------------
+
+>>> last_update = feed.last_update
+>>> fm.refresh_feed(url)
+>>> feed = fm.get_feed(url)
+>>> manual_update = feed.last_update
+>>> manual_update > last_update
+True
+
+Feeds can be refreshed automatically (via a cron job), too. Refreshing only
+happens if the feed has not been updated since a certain time (configurable).
+
+>>> zeit.content.cp.feed._refresh_all()
+>>> feed = fm.get_feed(url)
+>>> feed.last_update > manual_update
+False
+
+Force an update by setting the ``last_update`` time. To actually see a change
+we enable serving of the favicon.
+
+>>> import datetime
+>>> with zeit.cms.checkout.helper.checked_out(
+...         feed, semantic_change=True) as co_feed:
+...     co_feed.last_update -= datetime.timedelta(minutes=31)
+>>> zeit.content.cp.testing.RequestHandler.serve_favicon = True
+>>> zeit.content.cp.feed._refresh_all()
+>>> feed = fm.get_feed(url)
+>>> feed.last_update > manual_update
+True
+
+Refreshing a None "url" doesn't raise an error:
+
+>>> fm.refresh_feed(None)
+
+Refreshing does not raise an error if checking out the feed fails:
+
+>>> manager = zeit.cms.checkout.interfaces.ICheckoutManager(feed)
+>>> checked_out = manager.checkout()
+>>> fm.refresh_feed(url)
+>>> del manager.workingcopy[checked_out.__name__]
+
+
+Favicon download
+----------------
+
+The favicon was also downloaded during the last update:
+
+>>> print feed.favicon
+http://xml.zeit.de/rss/<MD5>.ico
+>>> import zeit.cms.interfaces
+>>> image = zeit.cms.interfaces.ICMSContent(feed.favicon)
+>>> image
+<zeit.content.image.image.RepositoryImage object at 0x48f7530>
+>>> len(image.open().read())
+2295
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<feed ... favicon="http://xml.zeit.de/rss/<MD5>.ico">
+...
+
+
+Errors in feeds
+---------------
+
+If an error occurs during retrieval or parsing, it is stored in the `error`
+attribute:
+
+>>> feed = fm.get_feed('foobar')
+>>> print feed.error
+No or invaid URL.
+>>> feed = fm.get_feed('http://foo.testing')
+>>> print feed.error
+ URLError: ...
+
+>>> nf_url = 'http://localhost:%s/nofeed.xml' % port
+>>> feed = fm.get_feed(nf_url)
+>>> print feed.error
+LookupError: unknown encoding:
+
+
+Publishing feeds
+----------------
+
+Feeds are published after a refresh, if no errors occurred:
+
+>>> import zeit.cms.workflow.interfaces
+>>> feed = fm.get_feed(url)
+>>> fm.refresh_feed(url)
+>>> tasks.process()
+>>> feed = fm.get_feed(url)
+>>> zeit.cms.workflow.interfaces.IPublishInfo(feed).published
+True
+
+The favicon is published together with the feed:
+
+>>> zeit.cms.workflow.interfaces.IPublishInfo(image).published
+True
+
+When creating a new feed with an invalid url, it won't be published because of
+existing errors:
+
+>>> feed = fm.get_feed('http://bar.testing')
+>>> tasks.process()
+>>> feed = fm.get_feed('http://bar.testing')
+>>> print feed.error
+URLError: ...
+>>> zeit.cms.workflow.interfaces.IPublishInfo(feed).published
+False
+
+Feed features
+-------------
+
+There exists only one Feed object for each feed URL:
+
+>>> fm.get_feed('foobar') == fm.get_feed('foobar')
+True
+>>> fm.get_feed('foo') != fm.get_feed('foobar')
+True
+
+
+Edge cases
+----------
+
+This is a test that the RSS2.0 <image> element is mapped correctly, and that
+HTML-content is preserved properly:
+
+>>> url = 'http://localhost:%s/tagesschau.xml' % port
+>>> feed = fm.get_feed(url)
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<...
+<image>
+  <title>Foo</title>
+  <width>200</width>
+  <url>http://www.tagesschau.de/image.png</url>
+</image>...
+<description>Sri Lankas Regierung und tamilische Rebellen...</description>...
+
+Categories should be mapped, both on the feed and individual items (#5967):
+
+>>> print lxml.etree.tostring(feed.xml, pretty_print=True)
+<...
+<category domain="http://www.tagesschau.de/taxonomy/term/1">Allgemein</category>
+...
+<category domain="http://www.tagesschau.de/taxonomy/term/2">Ausland</category>
+...
+
+
+Cleanup
+
+>>> zeit.content.cp.testing.RequestHandler.serve_favicon = False
+
+.. [#functional]
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()
+    >>> import lovely.remotetask.interfaces
+    >>> import zope.component
+    >>> tasks = zope.component.getUtility(
+    ...     lovely.remotetask.interfaces.ITaskService, 'general')

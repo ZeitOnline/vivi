@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>heise online News</title>
+  <subtitle>Nachrichten nicht nur aus der Welt der Computer</subtitle>
+  <link href="http://www.heise.de/newsticker/" />
+  <link rel="self" href="http://www.heise.de/newsticker/heise-atom.xml" />
+  <updated>2009-05-13T11:36:47+02:00</updated>
+  <author>
+    <name>heise online</name>
+  </author>
+  <id>http://www.heise.de/newsticker/</id>
+
+  <entry>
+    <title>QSC kann Umsatz und Ergebnis deutlich verbessern</title>
+    <link href="http://www.heise.de/newsticker/QSC-kann-Umsatz-und-Ergebnis-deutlich-verbessern--/meldung/137729/from/atom10" />
+    <id>http://www.heise.de/newsticker/meldung/137729</id>
+    <updated>2009-05-13T11:36:47+02:00</updated>
+    <summary>QSC kann Umsatz und Ergebnis deutlich verbessern</summary>
+  </entry>
+
+  <entry>
+    <title>Applied Materials bleibt in der Verlustzone</title>
+    <link href="http://www.heise.de/newsticker/Applied-Materials-bleibt-in-der-Verlustzone--/meldung/137732/from/atom10" />
+    <id>http://www.heise.de/newsticker/meldung/137732</id>
+    <updated>2009-05-13T11:33:49+02:00</updated>
+    <summary>Applied Materials bleibt in der Verlustzone</summary>
+  </entry>
+
+  <entry>
+    <title>United Internet leidet unter Werbemarkt-Flaute</title>
+    <link href="http://www.heise.de/newsticker/United-Internet-leidet-unter-Werbemarkt-Flaute--/meldung/137733/from/atom10" />
+    <id>http://www.heise.de/newsticker/meldung/137733</id>
+    <updated>2009-05-13T11:11:58+02:00</updated>
+    <summary>United Internet leidet unter Werbemarkt-Flaute</summary>
+  </entry>
+
+</feed>

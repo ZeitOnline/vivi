@@ -1,0 +1,90 @@
+Teasergroup support
+===================
+
+A teaser block knows about teaser groups and behaves differently when a
+teasergroup is be added to it. Instead of adding a reference to the group, the
+group is expanded.
+
+Create a teaser block and a teaser group:
+
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> p = zeit.cms.testing.create_interaction()
+>>> import zeit.content.cp.centerpage
+>>> import zeit.content.cp.interfaces
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> tb = factory()
+
+>>> import zeit.content.cp.teasergroup.teasergroup
+>>> tg = zeit.content.cp.teasergroup.teasergroup.TeaserGroup()
+>>> tg.teasers = (
+...     zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent'),
+...     zeit.cms.interfaces.ICMSContent(
+...         'http://xml.zeit.de/online/2007/01/Somalia'),
+...     zeit.cms.interfaces.ICMSContent(
+...         'http://xml.zeit.de/online/2007/01/eta-zapatero'),
+... )
+
+
+Initially the block is empty:
+
+>>> list(tb.keys())
+[]
+
+After adding the teaser group, it contains the three elements of the group:
+
+>>> tb.insert(0, tg)
+>>> import pprint
+>>> pprint.pprint(list(tb.keys()))
+['http://xml.zeit.de/testcontent',
+ 'http://xml.zeit.de/online/2007/01/Somalia',
+ 'http://xml.zeit.de/online/2007/01/eta-zapatero']
+
+
+Elements are also added at the respective index when there are already teasers
+in the block:
+
+>>> tg2 = zeit.content.cp.teasergroup.teasergroup.TeaserGroup()
+>>> tg2.teasers = (
+...     zeit.cms.interfaces.ICMSContent(
+...         'http://xml.zeit.de/online/2007/01/Flugsicherheit'),
+...     zeit.cms.interfaces.ICMSContent(
+...         'http://xml.zeit.de/online/2007/01/Saarland'),
+... )
+>>> tb.insert(2, tg2)
+>>> pprint.pprint(list(tb.keys()))
+['http://xml.zeit.de/testcontent',
+ 'http://xml.zeit.de/online/2007/01/Somalia',
+ 'http://xml.zeit.de/online/2007/01/Flugsicherheit',
+ 'http://xml.zeit.de/online/2007/01/Saarland',
+ 'http://xml.zeit.de/online/2007/01/eta-zapatero']
+
+
+Teaser objects referenced in a teaser group
++++++++++++++++++++++++++++++++++++++++++++
+
+When a teaser is referenced in a teaser group the teaser object is duplicated
+uppon adding to a teaser block.
+
+>>> content = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/testcontent')
+>>> from zeit.content.cp.teaser import Teaser
+>>> teaser = Teaser()
+>>> teaser.original_content = content
+>>> content.__parent__['teaser'] = teaser
+>>> tg3 = zeit.content.cp.teasergroup.teasergroup.TeaserGroup()
+>>> tg3.teasers = (teaser,)
+>>> tb.insert(3, tg3)
+>>> pprint.pprint(list(tb.keys()))
+['http://xml.zeit.de/testcontent',
+ 'http://xml.zeit.de/online/2007/01/Somalia',
+ 'http://xml.zeit.de/online/2007/01/Flugsicherheit',
+ 'http://xml.zeit.de/teaser-2',
+ 'http://xml.zeit.de/online/2007/01/Saarland',
+ 'http://xml.zeit.de/online/2007/01/eta-zapatero']

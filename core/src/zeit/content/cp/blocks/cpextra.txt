@@ -1,0 +1,186 @@
+CP-Extra bases blocks
+======================
+
+``cp_extra`` based blocks are *very* simple blocks. They reference a cpextra id
+and nothing more.
+
+Create a cp extra block:
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='cpextra')
+>>> cpextra = factory()
+>>> cpextra
+<zeit.content.cp.blocks.cpextra.CPExtraBlock object at 0x...>
+
+Initialy the block is empty and has no module assinged:
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(cpextra.xml, pretty_print=True)
+<container ... cp:type="cpextra" module="" cp:__name__="ce7dc496-327f-432d-b6ec-380866c1ce29"/>
+
+
+MostRead
+++++++++
+
+The most read block shows the most read articles. It is only valid in the
+Informatives area.
+
+When a centerpage is created the toplist is automatically added[#functional]_:
+
+>>> import zeit.cms.interfaces
+>>> container = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
+>>> container['cp'] = zeit.content.cp.centerpage.CenterPage()
+>>> mr = container['cp']['informatives'].values()[0]
+>>> mr.type
+'cpextra'
+>>> mr.cpextra
+'mostread'
+>>> print lxml.etree.tostring(mr.xml, pretty_print=True)
+<container...>
+  <cp_extra id="mostread"/>
+</container>
+
+The generic title can be set:
+
+>>> mr.title is None
+True
+>>> mr.title = u'a title'
+>>> print mr.title
+a title
+
+
+MostCommented
++++++++++++++
+
+The most read block shows the most read articles.  When a centerpage is created
+the mostcommented is automatically added. We look at the cp created above:
+
+>>> import zeit.cms.interfaces
+>>> mc = container['cp']['informatives'].values()[1]
+>>> mc.type
+'cpextra'
+>>> mc.cpextra
+'mostcommented'
+>>> import lxml.etree
+>>> print lxml.etree.tostring(mc.xml, pretty_print=True)
+<container...>
+  <cp_extra id="mostcommented"/>
+</container>
+
+
+CPExtra source
+++++++++++++++
+
+The source is contextual.
+
+>>> import pprint
+>>> import zeit.content.cp.source
+>>> source = zeit.content.cp.source.CPExtraSource()
+>>> lead_items = source(cpextra)
+>>> pprint.pprint(list(lead_items))
+[u'weather',
+ u'stocks',
+ u'homepage_news',
+ u'dpa-news',
+ u'authors-register',
+ u'homepage_news_pics',
+ u'solr-month',
+ u'dwds-ticker',
+ u'sportextra']
+
+There are more possible extras in the informatives:
+
+>>> pprint.pprint(list(source(mc)))
+[u'mostread',
+ u'mostcommented',
+ u'weather',
+ ...
+
+
+The cpextras have titles:
+
+>>> import zope.browser.interfaces
+>>> import zope.publisher.browser
+>>> request = zope.publisher.browser.TestRequest()
+>>> terms = zope.component.getMultiAdapter(
+...     (lead_items, request), zope.browser.interfaces.ITerms)
+>>> term = terms.getTerm('weather')
+>>> print term.title
+Wetter
+
+
+Automatic mirgation from old data
++++++++++++++++++++++++++++++++++
+
+Old cpextra blocks are migrated upon checkout.
+
+Add a centerpage with old xml to the repository:
+
+>>> import lxml.objectify
+>>> import zeit.cms.repository.interfaces
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> cp.xml = lxml.objectify.fromstring("""\
+... <centerpage 
+...   xmlns:cp="http://namespaces.zeit.de/CMS/cp"
+...   xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+...   xmlns:xi="http://www.w3.org/2001/XInclude"
+...   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+...   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <cluster area="feature">
+...       <region area="lead"/>
+...       <region area="informatives">
+...         <container cp:type="mostread" module="mostread" cp:__name__="eb09c413-9cbb-49f7-a0ee-f7243cf5d28d">
+...           <cp_extra id="mostread"/>
+...         </container>
+...         <container cp:type="mostcommented" module="mostcommented" cp:__name__="8b887d09-15c7-49d4-8aae-ae21ce42776b">
+...           <cp_extra id="mostcommented"/>
+...         </container>
+...       </region>
+...     </cluster>
+...     <cluster area="teaser-mosaic"/>
+...   </body>
+...   <feed/>
+... </centerpage>
+... """)
+
+We cannot simply add the CP because it is invalid now. Choose a more direct
+way:
+
+>>> import zeit.connector.interfaces
+>>> resource = zeit.connector.interfaces.IResource(cp)
+>>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
+>>> connector['http://xml.zeit.de/cp'] = resource
+
+When the CP is checked out it will be migrated automatically:
+
+
+>>> import zeit.cms.checkout.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> cp = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     repository['cp']).checkout()
+>>> mostread = cp['informatives']['eb09c413-9cbb-49f7-a0ee-f7243cf5d28d']
+>>> mostcommented = cp['informatives']['8b887d09-15c7-49d4-8aae-ae21ce42776b']
+>>> mostread.type
+'cpextra'
+>>> mostread.cpextra
+'mostread'
+>>> mostcommented.type
+'cpextra'
+>>> mostcommented.cpextra
+'mostcommented'
+
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

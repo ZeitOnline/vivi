@@ -1,0 +1,103 @@
+Fullgraphical block
+===================
+
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=fullgraphical')
+>>> import cjson
+>>> import pprint
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'signals': [{'args': ['d05c75bb-39b9-44b6-8fc0-e319c47c51e7'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['informatives',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="fullgraphical-no-image">
+    Fullgraphical Block
+  </div>
+  ...
+
+
+
+Add an object (e.g. a quiz) to the repository:[#functional]_
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.content.quiz.quiz
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> quiz = zeit.content.quiz.quiz.Quiz()
+>>> repository['my_quiz'] = quiz
+
+Edit the quiz block and reference the newly added quiz:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Link to').value = 'http://xml.zeit.de/my_quiz'
+>>> browser.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close();...
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="fullgraphical-image">
+    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"
+        title="http://xml.zeit.de/my_quiz" />
+  </div>
+  ...
+     
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Link to').value
+'http://xml.zeit.de/my_quiz'
+>>> browser.getControl('Image').value
+'http://xml.zeit.de/2006/DSC00109_2.JPG' 
+
+The source of a fullgraphical block:
+
+>>> browser.open(contents_url)
+>>> browser.open('xml_source_edit.html')
+>>> print browser.getControl('XML Source').value
+<...
+<container cp:type="fullgraphical" module="fullgraphical"
+           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca">
+  <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
+    <supertitle xsi:nil="true"/>
+    <title xsi:nil="true"/>
+    <text xsi:nil="true"/>
+    <description xsi:nil="true"/>
+    <byline xsi:nil="true"/>
+  </block>
+  <image type="intern" href="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
+</container>...
+
+
+The layout doesn't break if the referenced content is removed:
+
+>>> del repository['my_quiz']
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="fullgraphical-image">
+    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG" />
+  </div>
+  ...
+
+.. [#functional]_
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()

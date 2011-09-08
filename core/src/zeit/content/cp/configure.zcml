@@ -1,0 +1,199 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok"
+  xmlns:zeit="http://namespaces.zeit.de/zcml">
+
+  <grok:grok package="." />
+  <include package="zeit.content.cp" file="meta.zcml" />
+  <include package="zeit.find" /> <!-- XXX why?! -->
+
+  <utility
+    name="zeit.content.cp"
+    provides="zope.app.generations.interfaces.ISchemaManager"
+    component=".generation.manager"
+    />
+
+  <class class=".centerpage.CenterPage">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML" />
+    <implements interface="zeit.cms.asset.browser.interfaces.IAssetViews" />
+    <require
+      interface=".interfaces.ICenterPage"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ICenterPage"
+      permission="zeit.EditContent" />
+  </class>
+
+  <class class=".rule.ValidatingWorkflow">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IValidatingWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IValidatingWorkflow"
+      />
+  </class>
+
+  <utility
+    component=".interfaces.centerPageSource"
+    name="zeit.content.cp"
+    />
+
+  <adapter factory=".centerpage.cms_content_iter" />
+  <adapter
+    factory=".centerpage.cp_references"
+    name="zeit.content.cp.centerpage"
+    />
+  <adapter factory=".rule.ValidatingWorkflow"
+    provides=".interfaces.IValidatingWorkflow"
+    for=".interfaces.ICenterPage"
+    trusted="yes"
+    />
+  <subscriber handler=".centerpage.modified_propagator" />
+  <subscriber handler=".centerpage.update_centerpage_on_checkin" />
+  <subscriber
+    for="zope.interface.Interface
+         zope.container.interfaces.IObjectMovedEvent"
+    handler=".centerpage.modified_propagator" />
+
+  <adapter
+    factory=".centerpage.Feed"
+    provides="zeit.content.cp.interfaces.ICPFeed"
+    />
+  <subscriber handler=".centerpage.update_feed_items" />
+
+  <include package=".browser" />
+  <include package=".teasergroup" />
+
+  <!-- Areas -->
+  <adapter factory=".area.container_to_centerpage" />
+  <adapter factory=".area.cms_content_iter" />
+
+  <class class=".area.Lead">
+    <require
+      interface=".interfaces.IReadContainer"
+      permission="zope.View" />
+    <require
+      interface=".interfaces.IWriteContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <class class=".area.Informatives">
+    <require
+      interface=".interfaces.IReadContainer"
+      permission="zope.View" />
+    <require
+      interface=".interfaces.IWriteContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <class class=".area.Mosaic">
+    <require
+      interface=".interfaces.IReadContainer"
+      permission="zope.View" />
+    <require
+      interface=".interfaces.IWriteContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    provides=".interfaces.IArea"
+    name="lead"
+    factory=".area.Lead"
+    />
+  <adapter
+    provides=".interfaces.IArea"
+    name="informatives"
+    factory=".area.Informatives"
+    />
+  <adapter
+    provides=".interfaces.IArea"
+    name="teaser-mosaic"
+    factory=".area.Mosaic"
+    />
+
+  <class class=".teaser.Teaser">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ITeaser"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ITeaser"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".teaser.XMLTeaser">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IXMLTeaser"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IXMLTeaser"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+
+  <adapter factory=".teaser.resourceFactory" />
+  <adapter factory=".teaser.teaserFactory" name="teaser" />
+  <adapter factory=".teaser.TeaserLinkUpdater" name="teaserlink" />
+  <adapter factory=".teaser.images_for_teaser" />
+  <adapter factory=".teaser.teaser_references" name="zeit.content.cp.teaser" />
+  <subscriber handler=".teaser.warn_about_free_teasers" />
+
+  <!-- Blocks -->
+  <include package=".blocks" />
+
+  <zeit:globs module=".rule" />
+  <adapter factory=".rule.globs" />
+
+  <utility factory=".rule.RulesManager" />
+  <adapter factory=".rule.Validator" />
+  <adapter factory=".rule.CenterPageValidator" />
+
+  <utility
+    component=".interfaces.autopilotSource"
+    name="autopilot"
+    />
+
+  <!-- Layout -->
+  <class class=".layout.BlockLayout">
+    <require
+      interface=".interfaces.ITeaserBlockLayout"
+      permission="zope.View" />
+  </class>
+  <class class=".layout.BarLayout">
+    <require
+      interface=".interfaces.ITeaserBarLayout"
+      permission="zope.View" />
+  </class>
+
+  <!-- RSS Feed -->
+  <class class=".feed.Feed">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IFeed"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IFeed"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter factory=".rule.ValidatingWorkflow"
+    provides=".interfaces.IValidatingWorkflow"
+    for=".interfaces.IFeed"
+    trusted="yes"
+    />
+
+  <adapter
+    for="zeit.content.cp.interfaces.IFeed"
+    factory=".feed.FeedValidator" />
+
+  <utility factory=".feed.FeedManager" />
+
+</configure>

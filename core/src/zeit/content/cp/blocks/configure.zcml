@@ -1,0 +1,213 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".block.cms_content_to_centerpage" />
+  <adapter factory=".block.cms_content_iter" />
+  <adapter factory=".block.area_for_element" />
+
+  <!-- Place holder -->
+
+  <class class=".placeholder.PlaceHolder">
+    <require
+      interface="..interfaces.IPlaceHolder"
+      permission="zope.View" />
+  </class>
+
+  <adapter
+    provides="..interfaces.IElement"
+    name="placeholder"
+    factory=".placeholder.PlaceHolder"
+    />
+
+
+  <!-- Teaser list -->
+
+  <class class=".teaser.TeaserBlock">
+    <require
+      interface="..interfaces.IReadTeaserBlock"
+      permission="zope.View"/>
+    <require
+      set_schema="..interfaces.IReadTeaserBlock"
+      permission="zeit.EditContent"/>
+    <require
+      interface="..interfaces.IWriteTeaserBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <class class=".teaser.AutoPilotTeaserBlock">
+    <require
+      interface="..interfaces.IAutoPilotReadTeaserBlock"
+      permission="zope.View"/>
+    <require
+      set_schema="..interfaces.IAutoPilotReadTeaserBlock"
+      permission="zeit.EditContent"/>
+    <require
+      interface="..interfaces.IWriteTeaserBlock"
+      permission="zeit.EditContent"/>
+  </class>
+
+  <adapter factory=".teaser.CenterpageFeed" />
+  <adapter factory=".teaser.cp_xi_include" name="xi:include" />
+  <adapter factory=".teaser.feed_xi_include" name="xi:include" />
+  <adapter
+    provides="..interfaces.IElement"
+    name="teaser"
+    factory=".teaser.TeaserBlock"
+    />
+  <adapter
+    provides="..interfaces.IElement"
+    name="teaser"
+    factory=".teaser.AutoPilotTeaserBlock"
+    />
+
+  <adapter factory=".teaser.ExcerptDependency" name="zeit.content.cp-excerpt" />
+
+  <subscriber 
+    handler=".teaser.apply_layout_for_added" />
+
+  <subscriber 
+    handler=".teaser.apply_layout" />
+
+  <adapter factory=".teaser.ColumnSpec" trusted="yes" />
+  <class class=".teaser.ColumnSpec">
+    <require
+      interface="..interfaces.IReadTeaserBlockColumns"
+      permission="zope.View" />
+    <require
+      interface="..interfaces.IWriteTeaserBlockColumns"
+      permission="zeit.EditContent" />
+  </class>
+
+  <!-- Teaser bar -->
+
+  <class class=".teaserbar.TeaserBar">
+    <require
+      interface="..interfaces.IReadTeaserBar"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IReadTeaserBar"
+      permission="zope.View" />
+    <require
+      interface="..interfaces.IWriteTeaserBar"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    factory=".teaserbar.TeaserBarFactory" 
+    name="teaser-bar" />
+  <adapter
+    factory="..area.cms_content_iter"
+    for="..interfaces.ITeaserBar" />
+  <adapter
+    provides="..interfaces.IElement"
+    name="teaser-bar"
+    factory=".teaserbar.TeaserBar"
+    />
+
+  <!-- RSS block -->
+  <class class=".rss.RSSBlock">
+    <require
+      interface="..interfaces.IRSSBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IRSSBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="..interfaces.IElement"
+    name="rss"
+    factory=".rss.RSSBlock"
+    />
+
+  <!-- XML block -->
+  <class class=".xml.XMLBlock">
+    <require
+      interface="..interfaces.IXMLBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IXMLBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter factory=".xml.XMLBlockFactory" name="xml" />
+  <adapter
+    provides="..interfaces.IElement"
+    name="xml"
+    factory=".xml.XMLBlock"
+    />
+
+  <!-- Video block -->
+  <class class=".av.VideoBlock">
+    <require
+      interface="..interfaces.IVideoBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IVideoBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="..interfaces.IElement"
+    name="video"
+    factory=".av.VideoBlock"
+    />
+
+  <!-- Audio block -->
+  <class class=".av.AudioBlock">
+    <require
+      interface="..interfaces.IAVBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IAVBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="..interfaces.IElement"
+    name="audio"
+    factory=".av.AudioBlock"
+    />
+
+  <!-- Quiz block -->
+  <class class=".quiz.QuizBlock">
+    <require
+      interface="..interfaces.IQuizBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IQuizBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="..interfaces.IElement"
+    name="quiz"
+    factory=".quiz.QuizBlock"
+    />
+
+  <!-- Fullgraphical block -->
+  <class class=".fullgraphical.FullGraphicalBlock">
+    <require
+      interface="..interfaces.IFullGraphicalBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IFullGraphicalBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="..interfaces.IElement"
+    name="fullgraphical"
+    factory=".fullgraphical.FullGraphicalBlock"
+    />
+
+  <!-- CPExtra block -->
+  <class class=".cpextra.CPExtraBlock">
+    <require
+      interface="..interfaces.ICPExtraBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.ICPExtraBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="..interfaces.IElement"
+    name="cpextra"
+    factory=".cpextra.CPExtraBlock"
+    />
+
+</configure>

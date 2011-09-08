@@ -1,0 +1,24 @@
+<div
+  tal:attributes="
+  cms:drop-url string:${context/@@absolute_url}/drop;
+  class view/css_class">
+
+  <img tal:condition="view/image"
+       tal:attributes="src view/image" />
+
+  <div class="teaser-list"
+       tal:repeat="teasers view/columns">
+
+    <div class="teaser"
+         tal:repeat="teaser teasers">
+
+      <div tal:repeat="item teaser/texts"
+           tal:attributes="class item/css_class"
+           tal:content="item/content">
+      </div>
+      <span class="uniqueId" tal:content="teaser/uniqueId" />
+
+    </div>
+  </div>
+
+</div>

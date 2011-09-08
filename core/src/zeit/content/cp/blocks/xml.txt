@@ -1,0 +1,54 @@
+XML block
+=========
+
+The xml block contains raw xml[#functional]_.
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='xml')
+>>> xmlblock = factory()
+
+An empty XML block contains an empty <container> element:
+
+>>> import lxml.etree
+>>> container = xmlblock.xml
+>>> container
+<Element container at ...>
+>>> print lxml.etree.tostring(container, pretty_print=True)
+<container...>
+  <raw>
+<BLANKLINE>
+  </raw>
+</container>
+
+It is of the type 'xml':
+
+>>> container.get('{http://namespaces.zeit.de/CMS/cp}type')
+'xml'
+
+Also, it has a name:
+
+>>> container.get('{http://namespaces.zeit.de/CMS/cp}__name__') != None
+True
+
+You can add elements to the container:
+
+>>> container.append(lxml.etree.Element('foo'))
+>>> print lxml.etree.tostring(container, pretty_print=True)
+<container ...>
+  <raw>
+<BLANKLINE>
+  </raw>
+  <foo/>
+</container>
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

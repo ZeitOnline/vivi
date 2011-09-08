@@ -1,0 +1,63 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <class class=".teasergroup.TeaserGroup">
+    <implements
+      interface="zope.annotation.interfaces.IAttributeAnnotatable" /> 
+    <require
+      interface=".interfaces.ITeaserGroup"
+      permission="zope.View" />
+  </class>
+
+  <browser:icon
+    for=".interfaces.ITeaserGroup"
+    name="zmi_icon"
+    width="16"
+    height="16"
+    file="teasergroup.png"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="create-teaser-group"
+    class=".browser.CreateTeaserGroup"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for=".interfaces.ITeaserGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".browser.DisplayTeaserGroup"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for=".interfaces.ITeaserGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
+  <!-- repository -->
+
+  <class class=".teasergroup.Repository">
+    <require
+      interface="zope.container.interfaces.IReadContainer"
+      permission="zope.View"
+      />
+    <require
+      interface="zope.container.interfaces.IWriteContainer"
+      permission="zope.ManageContent"
+      />
+  </class>
+
+  <browser:containerViews
+    for=".interfaces.IRepository"
+    contents="zope.ManageContent"
+    index="zope.View"
+    />
+
+</configure>

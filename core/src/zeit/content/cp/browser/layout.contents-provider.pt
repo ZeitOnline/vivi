@@ -1,0 +1,3 @@
+<tal:block
+  repeat="item context/values"
+  replace="structure item/@@contents"/>

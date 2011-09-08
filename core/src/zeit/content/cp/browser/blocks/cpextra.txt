@@ -1,0 +1,43 @@
+CPExtra
+=======
+
+Toplits are automatically created when the CP is created.
+
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> print browser.contents
+<div...
+<div class="cpextra-title">Meistgelesen</div>
+<div class="cpextra-id">mostread</div>
+  ...
+<div class="cpextra-title">Meistkommentiert</div>
+<div class="cpextra-id">mostcommented</div>
+...
+
+
+CP extras can be edited:
+
+>>> browser.getLink('Edit').click()
+>>> browser.getControl('CP Extra Id').displayOptions
+['Meistgelesen', 'Meistkommentiert', ...
+>>> browser.getControl('CP Extra Id').displayValue
+['Meistgelesen']
+>>> browser.getControl('CP Extra Id').displayValue = ['Wetter']
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close();...
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+<div class="cpextra-title">Wetter</div>
+<div class="cpextra-id">weather</div>
+  ...
+<div class="cpextra-title">Meistkommentiert</div>
+<div class="cpextra-id">mostcommented</div>
+...

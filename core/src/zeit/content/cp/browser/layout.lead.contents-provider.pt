@@ -1,0 +1,10 @@
+<tal:block repeat="item context/values">
+  <tal:block replace="structure item/@@contents"/>
+
+  <div class="landing-zone action-content-droppable action-lead-module-droppable"
+       tal:attributes="cms:drop-url string:${item/@@absolute_url}/landing-zone-drop;
+                       cms:create-block-url string:${item/@@absolute_url}/landing-zone-drop-module"
+       i18n:translate="">
+  </div>
+
+</tal:block>

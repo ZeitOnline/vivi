@@ -1,0 +1,7 @@
+<div
+  tal:condition="python:context.layout.id != 'normal'"
+  tal:attributes="class string:block type-blocked ${context/layout/id}">
+  <div class="block-inner">
+    <div>Werbung</div>
+  </div>
+</div>

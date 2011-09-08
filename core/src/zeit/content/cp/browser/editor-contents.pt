@@ -1,0 +1,16 @@
+<div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
+      id="cp-content-inner"
+      class="cp-content-inner">
+
+  <div class="cp-editor-top">
+    <div id="lead-outer"
+         tal:content="structure context/lead/@@contents"/>
+
+    <div id="informatives-outer"
+         tal:content="structure context/informatives/@@contents" />
+
+  </div>
+
+  <div tal:replace="structure context/teaser-mosaic/@@contents"/>
+
+</div>

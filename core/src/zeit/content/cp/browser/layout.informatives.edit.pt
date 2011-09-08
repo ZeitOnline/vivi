@@ -1,0 +1,7 @@
+<div class="edit"
+     i18n:domain="zeit.cms">
+  <a i18n:translate=""
+     href="tab://library-informatives">
+    + Add block
+  </a>
+</div>

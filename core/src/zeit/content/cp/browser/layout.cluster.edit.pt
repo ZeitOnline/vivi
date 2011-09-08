@@ -1,0 +1,7 @@
+<div class="edit">
+  <a tal:attributes="href string:${context/@@absolute_url}/add?type=teaser-bar"
+     i18n:translate=""
+     cms:cp-module="zeit.content.cp.LoadAndReload">
+    + Add teaser bar
+  </a>
+</div>

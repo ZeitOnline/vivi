@@ -1,0 +1,116 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <!-- Area -->
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="layout.contents.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".blocks.block.Delete"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ILead"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".editor.Editor"
+    template="layout.lead.contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ILead"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    template="layout.lead.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IInformatives"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".editor.Editor"
+    template="layout.informatives.contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IInformatives"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    template="layout.informatives.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zope.container.interfaces.IReadContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    template="layout.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IInformatives"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="edit"
+    template="layout.informatives.edit.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IMosaic"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    class=".editor.Editor"
+    template="layout.mosaic.contents.pt"
+    permission="zeit.EditContent"
+    />
+
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IMosaic"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="edit"
+    template="layout.cluster.edit.pt"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IContainer"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".area.UpdateOrder"
+    permission="zeit.EditContent"
+    />
+
+</configure>

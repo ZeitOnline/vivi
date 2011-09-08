@@ -1,0 +1,12 @@
+<div class="action-content-droppable"
+     tal:attributes="cms:drop-url string:${context/@@absolute_url}/@@drop">
+  <div class="block-title" tal:content="context/media_type">Video </div>
+  <div class="block-item">
+    Id: <span tal:content="context/id" /></div>
+  <div class="block-item">
+    Expires: <span tal:content="context/expires" /></div>
+  <div class="block-item">
+    Format: <span tal:content="context/format" /></div>
+  <div class="block-item">
+    Player: <span tal:content="context/player" /></div>
+</div>

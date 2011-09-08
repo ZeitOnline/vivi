@@ -1,0 +1,136 @@
+Teaser bars in the teaser mosaic
+================================
+
+>>> import z3c.etestbrowser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.xml_strict = True
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.content.cp.browser.testing
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+
+Teaser mosaic
++++++++++++++
+
+In the teaser mosaic contains teaser bars, add one. It is prefilled with four
+placeholders:
+
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div ...
+  <div id="lead-outer">...
+  <div id="informatives-outer">...
+  <div id="teaser-mosaic"...class="editable-area"...
+      ...
+      <div...class="block type-placeholder" ... id="<GUID>">
+      ...
+      <div...class="block type-placeholder" ... id="<GUID>">
+      ...
+      <div...class="block type-placeholder" ... id="<GUID>">
+      ...
+      <div...class="block type-placeholder" ... id="<GUID>">
+      ...
+        <div class="edit">
+          <a cms:cp-module="...LoadAndReload"
+             href="http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/add?type=teaser-bar">
+            + Add teaser bar
+          </a>
+        </div>
+        ...
+
+Add a real block in the second place:
+
+>>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser', 1)
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div ...
+  <div id="teaser-mosaic"...class="editable-area"...
+      ...
+      <div...class="block type-placeholder" ... id="<GUID>">
+      ...
+      <div...class="block type-teaser... id="<GUID>">
+      ...
+      <div...class="block type-placeholder" ... id="<GUID>">
+      ...
+      <div...class="block type-placeholder" ... id="<GUID>">
+      ...
+        <div class="edit">
+          <a cms:cp-module="...LoadAndReload"
+             href="http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/add?type=teaser-bar">
+            + Add teaser bar
+          </a>
+        </div>
+        ...
+
+
+Changing the layout of a TeaserBar
+++++++++++++++++++++++++++++++++++
+
+
+>>> browser.open(contents_url)
+>>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser', 0)
+>>> browser.open(contents_url)
+>>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser', 0)
+>>> browser.open(contents_url)
+>>> bar_divs = browser.etree.xpath(
+...     '//div[@id="teaser-mosaic"]/div[@class="block type-teaser-bar"]')
+>>> bar_id = bar_divs[0].get('id')
+>>> bar_url = ('http://localhost/++skin++cms/workingcopy/zope.user/island/'
+...     'teaser-mosaic/%s/edit-properties' % bar_id)
+>>> browser.open(bar_url)
+>>> print browser.contents
+<...<a ... class="dmr"...
+>>> browser.getLink(index=2).click()
+>>> browser.open(bar_url)
+>>> print browser.contents
+<...<a ... class="dmr selected"...
+
+(For #4795, there should be validation errors now, since we have more blocks
+than the current layout allows.)
+
+Delete
+++++++
+
+Blocks in a teaser bar are only removed if they are in excess of what the
+current layout allows, otherwise they are converted to Placeholders.
+
+First we need a helper function, which counts the number of elements with a
+given CSS class:
+
+>>> def block_count(type_):
+...     browser.open(contents_url)
+...     blocks = browser.etree.xpath(
+...     '//div[contains(@class, "%s")]' % type_)
+...     # filter false positives (such as type-teaserbar when looking for type-teaser)
+...     blocks = [block for block in blocks
+...         if type_ in block.get('class').split(' ')]
+...     return len(blocks)
+
+Our teaser bar contains 3 teaser blocks, although it has the "DMR" Layout which
+allows only two teaser blocks.
+
+>>> browser.open(contents_url)
+>>> block_count('type-teaser')
+3
+
+We delete one teaser block, because it is the odd one out:
+
+>>> browser.getLink('Delete', index=3).click()
+
+Now, we have one less teaser block, and no new placeholder is created:
+
+>>> block_count('type-teaser')
+2
+>>> block_count('type-placeholder')
+0
+
+When deleting another teaser block, a placeholder is created instead:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Delete', index=3).click()
+>>> block_count('type-teaser')
+1
+>>> block_count('type-placeholder')
+0

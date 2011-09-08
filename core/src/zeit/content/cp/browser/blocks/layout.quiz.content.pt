@@ -1,0 +1,11 @@
+<div class="block-title">
+  Quiz
+</div>
+<div class="block-item">
+  Titel: <span tal:content="context/title">mein Quiz</span>
+</div>
+<div class="block-item"
+     tal:condition="python: str(context.referenced_quiz) != 'None'">
+  UniqueId: <span tal:content="context/referenced_quiz/uniqueId">Id</span>
+</div>
+

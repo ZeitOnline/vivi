@@ -1,0 +1,14 @@
+<tal:resource replace="resource_library:zeit.content.cp" />
+<div id="cp-content" >
+</div>
+<div id="cp-forms">
+</div>
+<script language="javascript">
+  (function() {
+    var tabs = new zeit.cms.Tabs('cp-forms');
+    tabs.add(new zeit.cms.Tab('cp-search', 'Inhalte'));
+    MochiKit.DOM.addElementClass('cp-search', 'zeit-find-search');
+    tabs.add(new zeit.cms.Tab('cp-library', 'Module'));
+    zeit.find.init_full_search();
+  })();
+</script>

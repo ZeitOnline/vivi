@@ -1,0 +1,33 @@
+<tal:block define="feed context/feed"
+           i18n:domain="zeit.cms">
+  <div class="block-title">RSS Feed</div>
+  <tal:feed condition="feed">
+    <tal:error condition="feed/error">
+      <div class="block-item"
+           tal:condition="feed/error"
+           i18n:translate="">
+        An error occurred.
+      </div>
+      <div tal:content="feed/error">
+        snafoo
+      </div>
+    </tal:error>
+    <tal:display condition="not:feed/error">
+      <div class="block-item">
+        <div tal:content="feed/title">
+          Titel
+        </div>
+        <img class="feed-teaser"
+             tal:condition="context/teaser_image"
+             tal:attributes="src string:${context/teaser_image/@@absolute_url}/@@thumbnail" />
+      </div>
+      <ul class="feed-items">
+        <tal:block repeat="entry feed/entries">
+          <li
+            tal:condition="python:repeat['entry'].number() <= context.max_items"
+            tal:content="entry"/>
+        </tal:block>
+      </ul>
+    </tal:display>
+  </tal:feed>
+</tal:block>

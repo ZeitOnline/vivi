@@ -1,0 +1,12 @@
+<a class="edit-link lightbox-tab-data" title="Edit"
+   tal:define="url context/@@absolute_url"
+   tal:attributes="
+   href string:${context/@@absolute_url}/edit-properties;
+   cms:lightbox-reload-id string:${context/__name__};
+   cms:lightbox-reload-url string:$url/@@contents"
+   i18n:domain="zeit.cms"
+   i18n:attributes="title"
+   cms:cp-module="zeit.content.cp.TabbedLightBoxForm"
+   cms:lightbox-in="cp-content">
+  <span class="action-title">Edit</span>
+</a>

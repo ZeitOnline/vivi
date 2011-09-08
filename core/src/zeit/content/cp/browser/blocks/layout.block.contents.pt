@@ -1,0 +1,10 @@
+<div tal:attributes="
+     class view/css_class;
+     id context/__name__;
+     cms:url context/@@absolute_url;
+     cms:tooltip view/validation_messages;">
+  <div class="block-inner">
+    <tal:block tal:repeat="block options/viewlets"
+               tal:content="structure block/render" />
+  </div>
+</div>

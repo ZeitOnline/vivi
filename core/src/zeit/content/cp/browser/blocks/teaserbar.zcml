@@ -1,0 +1,42 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".teaserbar.Delete"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".teaserbar.EditProperties"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="change-layout"
+    class=".teaserbar.ChangeLayout"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditorContentViewletManager"
+    name="advertisement"
+    template="layout.teaserbar.advertisement.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />  <!-- simulate z-index by document order -->
+
+
+</configure>
+

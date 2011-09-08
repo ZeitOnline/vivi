@@ -1,0 +1,339 @@
+Teaser block
+============
+
+The teaser block contains a list of teasers[#functional]_.
+
+>>> import zeit.content.cp.centerpage
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> lead = cp['lead']
+>>> import zeit.content.cp.interfaces
+>>> import zope.component
+>>> factory = zope.component.getAdapter(
+...     lead, zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> teasers = factory()
+
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+
+>>> teasers.insert(0, repository['testcontent'])
+>>> teasers.insert(1, repository['2007']['test'])
+
+>>> import lxml.etree
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...
+    cp:type="teaser" module="leader"
+    cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
+  <block href="http://xml.zeit.de/testcontent"...>
+    <supertitle xsi:nil="true"/>
+    <title xsi:nil="true"/>
+    <text xsi:nil="true"/>
+    <description xsi:nil="true"/>
+    <byline xsi:nil="true"/>
+  </block>
+  <block href="http://xml.zeit.de/2007/test".../>
+</container>
+
+
+Autopilot
++++++++++
+
+A teaser block in autopilot mode fetches its contents from another CenterPage.
+We are actually referencing ourselves here.
+
+>>> teaserbar = zope.component.getAdapter(
+...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
+...     name="teaser-bar")()
+>>> teasers = zope.component.getAdapter(
+...     teaserbar, zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser')()
+>>> repository['cp'] = cp
+
+
+It is not possible to activate the autopilot when there is no cp referenced:
+
+>>> teasers.autopilot = True
+Traceback (most recent call last):
+    ...
+ValueError: Cannot activate autopilot without referenced centerpage.
+
+Once the cp has been assigned we can activate the autopilot.  The amount of
+displayed teasers is limited to 4.
+
+>>> cp2 = zeit.content.cp.centerpage.CenterPage()
+>>> o200701 = repository['online']['2007']['01']
+>>> for i in xrange(10):
+...     teaserblock = zope.component.getAdapter(
+...         cp2['lead'], zeit.content.cp.interfaces.IElementFactory,
+...         name='teaser')()
+...     teaserblock.insert(0, list(o200701.values())[i])
+>>> repository['cp2'] = cp2
+>>> teasers.referenced_cp = repository['cp2']
+>>> teasers.autopilot = True
+
+>>> len(repository['cp2']['lead'])
+10
+>>> len(teasers)
+6
+>>> print list(teasers)[0].uniqueId
+http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang
+
+
+But its XML representation only contains an xi:include to the referenced page:
+
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...>
+  <referenced_cp ...>http://xml.zeit.de/cp2</referenced_cp>
+  <autopilot ...>true</autopilot>
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude"
+    parse="xml"
+    xpointer="xpointer(/centerpage/body/cluster[@area='feature']/region[@area='lead']/container/block[1])"
+    href="/var/cms/work/cp2">
+    <xi:fallback>Ziel http://xml.zeit.de/cp2 nicht erreichbar.</xi:fallback>
+  </xi:include>
+</container>
+
+While on autopilot, manipulation of the teaser block's contents is forbidden:
+
+>>> teasers.insert(0, repository['testcontent'])
+Traceback (most recent call last):
+    ...
+RuntimeError: <...TeaserBlock object at 0x...>:
+    'insert' is forbidden while on autopilot
+
+When the teaser block is switched back to manual mode, the currently referenced
+teasers are copied into it:
+
+>>> teasers.autopilot = False
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...>
+  <block href="http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang"...
+  <block...
+  <referenced_cp ...>http://xml.zeit.de/cp2</referenced_cp>
+  <autopilot ...>false</autopilot>
+</container>
+>>> len(teasers)
+6
+
+In manual mode, the contents can be changed again:
+
+>>> teasers.clear()
+>>> len(teasers)
+0
+
+When the referenced CP is checked in an excerpt in channel format is created
+unter "name.lead":
+
+>>> import zeit.cms.checkout.helper
+>>> with zeit.cms.checkout.helper.checked_out(repository['cp2']):
+...     pass
+>>> repository['cp2.lead']
+<zeit.cms.syndication.feed.Feed object at 0x...>
+>>> import pprint
+>>> pprint.pprint(list(x.uniqueId for x in repository['cp2.lead']))
+[u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang',
+ u'http://xml.zeit.de/online/2007/01/Arbeitsmarktzahlen',
+ u'http://xml.zeit.de/online/2007/01/EU-Beitritt-rumaenien-bulgarien',
+ u'http://xml.zeit.de/online/2007/01/Flugsicherheit',
+ u'http://xml.zeit.de/online/2007/01/Ford-Beerdigung',
+ u'http://xml.zeit.de/online/2007/01/Gesundheitsreform-Die',
+ u'http://xml.zeit.de/online/2007/01/Guantanamo',
+ u'http://xml.zeit.de/online/2007/01/Lateinamerika-Jahresrueckblick',
+ u'http://xml.zeit.de/online/2007/01/Mehrwertsteuer-Jobs',
+ u'http://xml.zeit.de/online/2007/01/Merkel-Ansprache']
+
+
+The excerpt is part of the workflow dependencies of the CP:
+
+>>> import zeit.workflow.interfaces
+>>> [x.uniqueId for x in 
+...  zeit.workflow.interfaces.IPublicationDependencies(
+...     repository['cp2']).get_dependencies()]
+[u'http://xml.zeit.de/cp2.lead']
+
+
+This excerpt is used for the xi:include when possible:
+
+>>> teasers.autopilot = True
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container ...>
+  <referenced_cp...>http://xml.zeit.de/cp2</referenced_cp>
+  <autopilot...>true</autopilot>
+  <xi:include ...xpointer="xpointer(/channel/container/block)"
+        href="/var/cms/work/cp2.lead">
+    <xi:fallback>Ziel http://xml.zeit.de/cp2.lead nicht erreichbar.</xi:fallback>
+  </xi:include>
+</container>
+
+The referenced centerpage is also contained in the content list. The excerpt is
+not though:
+
+>>> pprint.pprint(
+...     list(zeit.content.cp.interfaces.ICMSContentIterable(teasers)))
+[<zeit.content.cp.centerpage.CenterPage object at 0x3e664f0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3c2e3b0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3c2eb70>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3c2d3b0>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3c2db70>]
+
+
+Channels can also be used for the autopilot:
+
+>>> teasers.referenced_cp = repository['wirtschaft.feed']
+>>> teasers.autopilot = True
+>>> pprint.pprint(teasers.keys())
+[u'http://xml.zeit.de/online/2007/01/Querdax',
+ u'http://xml.zeit.de/online/2007/01/Rosia-Montana',
+ u'http://xml.zeit.de/online/2007/01/Flugsicherheit']
+
+The xi:include is set accordingly:
+
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
+<container ...>
+  <referenced_cp py:pytype="str">http://xml.zeit.de/wirtschaft.feed</referenced_cp>
+  <autopilot py:pytype="bool">true</autopilot>
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/work/wirtschaft.feed">
+    <xi:fallback>Ziel http://xml.zeit.de/wirtschaft.feed nicht erreichbar.</xi:fallback>
+  </xi:include>
+</container>
+
+
+The xi:include is also updated when the channel is updated:
+
+>>> teasers.referenced_cp = repository['politik.feed']
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
+<container ...>
+  <referenced_cp py:pytype="str">http://xml.zeit.de/politik.feed</referenced_cp>
+  <autopilot py:pytype="bool">true</autopilot>
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/work/politik.feed">
+    <xi:fallback>Ziel http://xml.zeit.de/politik.feed nicht erreichbar.</xi:fallback>
+  </xi:include>
+</container>
+
+
+When the autopilot target references an invalid object the block yields no
+content:
+
+>>> teasers.referenced_cp = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/Somalia')
+>>> list(teasers)
+[]
+
+There is a property to hide duplicates, it defaults to true:
+
+>>> teasers.hide_dupes
+True
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
+<container ...hide-dupes="True"...
+>>> teasers.hide_dupes = False
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
+<container ...hide-dupes="False"...
+>>> teasers.hide_dupes
+False
+
+
+
+Layouts
++++++++
+
+A TeaserBlock can have different Layouts. Those correspond to different values
+for <container module="">.
+
+>>> dummy = factory()
+>>> import zeit.content.cp.layout
+>>> teasers.layout = zeit.content.cp.layout.get_layout('leader')
+>>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
+<container...module="leader"...
+
+>>> lead.updateOrder(lead.keys())
+>>> [foo.layout.id for foo in lead.values()]
+['leader', 'buttons']
+
+>>> dummy = factory()
+>>> [teaser_list.layout.id for teaser_list in lead.values()]
+['leader', 'buttons', 'buttons']
+
+
+The available layouts are dependent on the area and potentially on the
+position.
+
+A block in the first position of the lead has different layout than in the
+other positions:
+
+>>> cp = zeit.content.cp.centerpage.CenterPage()
+>>> factory = zope.component.getAdapter(
+...     cp['lead'], zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> teaser_1 = factory()
+>>> teaser_2 = factory()
+>>> sorted(l.id for l in 
+...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_1))
+['archive-print-volume', 'archive-print-year', 'buttons', 'leader', 'leader-two-columns', 'leader-upright']
+>>> sorted(l.id for l in 
+...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_2))
+['archive-print-volume', 'archive-print-year', 'buttons']
+
+There are different layouts in the informatives:
+
+>>> factory = zope.component.getAdapter(
+...     cp['informatives'], zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser')
+>>> teaser_i = factory()
+>>> sorted(l.id for l in 
+...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_i))
+['date', 'large', 'short', 'two-side-by-side']
+
+
+And yet other ones in the mosic:
+
+>>> factory = zope.component.getAdapter(
+...     cp['teaser-mosaic'], zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser-bar')
+>>> bar = factory()
+>>> factory = zope.component.getAdapter(
+...     bar, zeit.content.cp.interfaces.IElementFactory,
+...     name='teaser')
+>>> teaser_m = factory()
+>>> sorted(l.id for l in 
+...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_m))
+['date', 'ressort', 'short']
+
+
+Archive centerpages should always keep the same module attribute:
+
+>>> archive_cp = zeit.content.cp.centerpage.CenterPage()
+>>> archive_cp.type = u'archive-print-volume'
+>>> print archive_cp.type
+archive-print-volume
+>>> factory = zope.component.getAdapter(
+...     archive_cp['lead'], zeit.content.cp.interfaces.IElementFactory, name='teaser')
+>>> archive_teaser_1 = factory()
+>>> layout = zeit.content.cp.layout.get_layout('archive-print-volume')
+>>> archive_teaser_1.layout = layout
+>>> archive_teaser_2 = factory()
+>>> archive_teaser_2.layout = layout
+>>> archive_teaser_3 = factory()
+>>> archive_teaser_3.layout = layout
+>>> print lxml.etree.tostring(archive_cp.xml, pretty_print=True)
+<centerpage ...>
+  <head...
+  <body>
+    <cluster area="feature">
+      <region area="lead">
+        <container cp:type="teaser" module="archive-print-volume" .../>
+        <container cp:type="teaser" module="archive-print-volume" .../>
+        <container cp:type="teaser" module="archive-print-volume" .../>
+      </region>
+      <region area="informatives"/>
+    </cluster>
+    <cluster area="teaser-mosaic"/>
+  </body>
+  <feed/>
+</centerpage>
+<BLANKLINE>
+
+
+.. [#functional]
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()
+    >>> principal = zeit.cms.testing.create_interaction()

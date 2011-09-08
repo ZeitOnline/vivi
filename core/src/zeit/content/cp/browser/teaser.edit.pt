@@ -1,0 +1,23 @@
+<div class="floating"
+     i18n:domain="zeit.cms">
+
+  <h1 i18n:translate="">Edit Teaser</h1>
+
+  <form
+    tal:condition="not: view/close"
+    tal:attributes="action request/URL"
+    tal:content="structure view/form"/>
+
+  <script language="javascript"
+    tal:condition="not: view/close"
+    tal:content="string:
+      log(self.__name__);
+    "></script>
+
+  <script language="javascript"
+          tal:condition="view/close">
+    self.clean = true;
+    self.close();
+  </script>
+
+</div>

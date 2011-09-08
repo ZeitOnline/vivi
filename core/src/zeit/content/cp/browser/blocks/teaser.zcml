@@ -1,0 +1,152 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <!-- teaser block -->
+
+  <browser:viewletManager
+    provides="..interfaces.IEditorContentViewletManager"
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    class=".teaser.TeaserBlockViewletManager"
+    template="layout.block.contents.pt"
+    name="zeit.content.cp.editor-contents"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditorContentViewletManager"
+    name="contents"
+    class=".teaser.Display"
+    template="layout.teaser.content.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditorContentViewletManager"
+    name="autopilot"
+    class=".teaser.AutoPilotDisplay"
+    template="layout.autopilotteaser.content.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".teaser.EditProperties"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".teaser.AutoPilotEditProperties"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="drop"
+    class=".teaser.Drop"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="drop"
+    class=".teaser.AutoPilotDrop"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="edit-contents"
+    template="layout.teaser.edit-contents.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="teaser.edit-contents"
+    class=".teaser.EditContents"
+    template="teaser.edit-contents.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".teaser.UpdateOrder"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="updateOrder"
+    class=".teaser.AutoPilotUpdateOrder"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="change-layout"
+    class=".teaser.ChangeLayout"
+    permission="zeit.EditContent"
+    />
+
+  <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-autopilot"
+    class=".teaser.ToggleAutopilot"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    class=".teaser.Delete"
+    permission="zeit.EditContent"
+    />
+
+  <!-- countings -->
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="countings"
+    class=".teaser.Countings"
+    template="layout.teaser.countings.pt"
+    permission="zeit.EditContent"
+    weight="150"
+    />
+
+</configure>

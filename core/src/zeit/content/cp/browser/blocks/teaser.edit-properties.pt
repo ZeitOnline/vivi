@@ -1,0 +1,23 @@
+<div class="floating">
+
+  <form id="lightbox.form" class="teaser-block-properties-form" 
+        tal:attributes="action request/URL"
+        tal:content="structure view/form"/>
+
+  <div tal:attributes="class string:layout-chooser ${view/layout_prefix}">
+    <div class="layout-inner"
+         tal:repeat="layout view/layouts">
+      <a 
+        tal:attributes="href string:${context/@@absolute_url}/change-layout?id=${layout/token};
+        class layout/css_class"
+        i18n:translate=""
+        cms:cp-module="zeit.content.cp.LoadAndReload">
+        <img tal:attributes="src
+             string:${context/++resource++zeit.content.cp}/${view/layout_prefix}-${layout/token}.png" />
+        <span tal:content="layout/title" />
+      </a>
+    </div>
+    <div class="visual-clear"></div>
+  </div>
+
+</div>

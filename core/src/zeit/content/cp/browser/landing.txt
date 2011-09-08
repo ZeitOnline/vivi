@@ -1,0 +1,115 @@
+Landing zones
+=============
+
+
+See http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-ziehen-eines-content-objekts
+
+
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+
+
+There currently is one landing zone, which is indicated by a cms:drop-url:
+
+>>> import lxml.cssselect
+>>> browser.open(contents_url)
+>>> select = lxml.cssselect.CSSSelector(
+...     'div.landing-zone[cms|drop-url]')
+>>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+>>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
+
+Drop testcontent on the landing zone:
+
+>>> import zeit.content.cp.centerpage
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> browser.open(url)
+>>> import cjson
+>>> import pprint
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'signals': [{'args': ['f8384296-555c-49a2-819b-ffb4e633d59d'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['lead',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+  <div ...class="block type-teaser...
+
+
+There is another landing zone after the created block now:
+
+>>> select = lxml.cssselect.CSSSelector(
+...     'div.block + div.landing-zone[cms|drop-url]')
+>>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+>>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
+>>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> browser.open(url)
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'signals': [{'args': ['63734348-b8d8-4eb9-9098-d8a47efd1eb6'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['lead',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+  <div ...class="block type-teaser...
+  <div ...class="block type-teaser...
+
+
+Actually there is a landing zone after each created block in the lead area (we
+test this here, because there was a bug once which prevented using the lead
+area on 2+ blocks):
+
+>>> select = lxml.cssselect.CSSSelector(
+...     'div.block + div.landing-zone + '
+...     'div.block + div.landing-zone[cms|drop-url]')
+>>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+>>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
+>>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> browser.open(url)
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'signals': [{'args': ['f84a5439-3fe4-42ac-8a44-b54822d50a8f'],
+              'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['lead',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> browser.open(contents_url)
+>>> print browser.contents
+<div...
+  <div ...class="block type-teaser...
+  <div ...class="block type-teaser...
+  <div ...class="block type-teaser...
+
+When the content indicated by the uniqueId does not exist a meaningful error is
+reported:
+
+>>> url = '%s?uniqueId=http://xml.zeit.de/holla' % (drop_url,)
+>>> browser.open(url)
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+>>> print browser.contents
+The object "http://xml.zeit.de/holla" does not exist.

@@ -1,0 +1,40 @@
+Legacy: Teaser content object
+=============================
+
+Teaser objects contain the metadata of and a reference to an ICMSContent. It is
+not possible to create those objects normally any more, so construct one
+manually.
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+>>> principal = zeit.cms.testing.create_interaction()
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> content = repository['testcontent']
+>>> from zeit.content.cp.teaser import Teaser
+>>> teaser = Teaser()
+>>> teaser.original_content = content
+
+When retrieving the images for a teaser, we want to get the images of the
+referenced article.
+
+Create an article with images:
+
+>>> import zeit.content.image.interfaces
+>>> import zeit.content.image.tests
+>>> import zeit.cms.checkout.interfaces
+>>> group = zeit.content.image.tests.create_image_group()
+>>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
+...     content).checkout()
+>>> images = zeit.content.image.interfaces.IImages(checked_out)
+>>> images.images = (group, )
+>>> content = zeit.cms.checkout.interfaces.ICheckinManager(
+...     checked_out).checkin()
+
+Create a teaser object from the article and look at its images:
+
+>>> images = zeit.content.image.interfaces.IImages(teaser)
+>>> images.images
+(<zeit.content.image.imagegroup.ImageGroup object at 0x...>,)

@@ -1,0 +1,154 @@
+Autopilot
++++++++++
+
+>>> import z3c.etestbrowser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> import zeit.content.cp.browser.testing
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.getLink('Add teaser bar').click()
+>>> browser.open(contents_url)
+>>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser')
+
+A teaser block can be set on 'autopilot'. In this mode, it will retrieve
+teasers from another CenterPage for display. To demonstrate this, we first
+create another CenterPage:
+
+>>> zeit.content.cp.browser.testing.create_cp(browser, filename='foreign')
+>>> foreign_url = browser.url
+>>> browser.open('contents')
+>>> foreign_contents_url = browser.url
+>>> browser.open(
+...     'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
+
+Then we need to create a test 'article' to be included in this CenterPage:
+
+>>> browser.open('/++skin++cms/repository/testcontent')
+>>> browser.getLink('Checkout').click()
+>>> browser.getControl('Teaser title').value = u'Foreign teaser'
+>>> browser.getControl('Title').value = 'Auf den Spuren der Elfen'
+>>> browser.getControl('Year').value = '2007'
+>>> browser.getControl('Copyright (c)').value = 'ZEIT ONLINE'
+>>> browser.getControl('Ressort').displayValue = ['Reisen']
+>>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl('Apply').click()
+>>> browser.getLink('Checkin').click()
+
+We need to check in the CenterPage we want to reference to actually see the
+teasers (of course):
+
+>>> browser.open(foreign_url)
+>>> browser.getLink('Checkin').click()
+
+Currently the autopilot is not possible, because we have not referenced the
+other cp:
+
+>>> browser.open(contents_url)
+>>> 'autopilot-not-possible' in browser.contents
+True
+
+It is not possible to switch on the autopilot when there is no centerpage
+referenced:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit', index=3).click()
+>>> browser.getControl('Autopilot active').selected = True
+>>> browser.getControl('Hide duplicate teasers').selected = True
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Cannot activate autopilot without referenced centerpage...
+
+Now we can switch our teaser block to autopilot when referencing the
+centerpage:
+
+>>> browser.getControl('Get teasers from').value = (
+...     'http://xml.zeit.de/online/2007/01/foreign')
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Updated on...
+
+The teaser block displays a marker to show that it is on autopilot. It then
+pulls in the first teaser of each teaser block from the referenced CenterPage's
+lead region:
+
+>>> browser.open(contents_url)
+>>> 'autopilot-on' in browser.contents
+True
+>>> 'Foreign teaser' in browser.contents
+True
+
+We can now switch it of again:
+
+>>> browser.getLink('Switch autopilot').click()
+>>> import cjson
+>>> import pprint
+>>> pprint.pprint(cjson.decode(browser.contents))
+{'signals': [{'args': ['c8d4c0eb-368c-427c-9a47-d63d9559b78b',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/14978ec2-a9a5-4c03-8d53-7f8c98480ed4/c8d4c0eb-368c-427c-9a47-d63d9559b78b/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> browser.open(contents_url)
+>>> 'autopilot-off' in browser.contents
+True
+
+
+When the autopilot is on and content is dropped on the block, the autopilot is
+automatically switched off[#calculate_drop_url]_:
+
+>>> import zeit.content.cp.centerpage
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> browser.getLink('Switch autopilot').click()
+>>> browser.open(contents_url)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> 'autopilot-on' in browser.contents
+True
+>>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed = False
+>>> browser.open(url)
+>>> zeit.content.cp.centerpage._test_helper_cp_changed
+True
+>>> browser.open(contents_url)
+>>> 'autopilot-on' in browser.contents
+False
+>>> 'autopilot-off' in browser.contents
+True
+
+
+Updating the order also works when in autopilot mode. The autopilot is
+automatically disabled then:
+
+>>> browser.getLink('Switch autopilot').click()
+>>> browser.open(contents_url)
+>>> update_order_url = browser.getLink('Edit teaser list').url.replace(
+...     'teaser.edit-contents', 'updateOrder')
+>>> order = ['http://xml.zeit.de/testcontent']
+>>> import cjson
+>>> browser.open(update_order_url + '?keys=' + cjson.encode(order))
+>>> browser.open(contents_url)
+>>> 'autopilot-on' in browser.contents
+False
+>>> 'autopilot-off' in browser.contents
+True
+
+Delete the newly created teaser block:
+
+>>> browser.getLink('Delete', index=2).click()
+>>> browser.open(contents_url)
+>>> 'foreign' in browser.contents
+False
+
+.. [#calculate_drop_url]
+
+
+    >>> import lxml.cssselect
+    >>> browser.xml_strict = True
+    >>> browser.open(contents_url)
+    >>> select = lxml.cssselect.CSSSelector(
+    ...     'div.type-teaser div[cms|drop-url]')
+    >>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+    >>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+    ...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
+    >>> browser.xml_strict = False

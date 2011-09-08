@@ -1,0 +1,242 @@
+<!-- from #4771: https://intra.gocept.com/projects/attachments/218/centerpage.xml -->
+<?xml version='1.0' encoding='UTF-8'?>
+<centerpage xmlns:xi="http://www.w3.org/2001/XInclude">
+  <head>
+    <attribute ns="http:/namespaces.zeit.de/CMS/document" name="author">Peter Buhr</attribute>
+  </head>
+  <body>
+    <supertitle>R09 Centerpage</supertitle>
+    <title>Wirtschaft</title>
+    <subtitle>Die Seite zur Wirtschaft</subtitle>
+
+    <region area="lead">
+      <container module="leader">
+        <!-- xi:include hp_aufmacher[1] -->
+        <block>
+          <title>Teasertitte</title>
+          <text>Teasertext</text>
+        </block>
+      </container>
+      <container module="buttons">
+        <!-- xi:include hp_aufmacher[2-n] -->
+        <block>
+          <title>Teasertitle2</title>
+          <text>Teasertext2</text>
+        </block>
+        <block>
+          <title>Teasertitle4</title>
+          <text>Teasertext4</text>
+        </block>
+      </container>
+    </region>
+
+    <region area="informatives">
+      <!-- xi:include rechte-spalte-hp attribute base to be set-->
+      <container module="ranking">
+        <cp_extra id="most-read">
+          <!-- xi:include (/var/cms/import/feeds/most_read.rss) -->
+        </cp_extra>
+        <cp_extra id="most-comments">
+          <!-- xi:include (/var/cms/import/feeds/most_comments.rss) -->
+        </cp_extra>
+      </container>
+      <container module="video">
+        <!-- xi:include hp-video-channel [1] -->
+        <block href="http://xml.zeit.de/video/2009/07/110209finanz1" publication-date="" expires="2009-03-11T12:47:53+00:00" year="2009" issue="7" hp_hide="false" xml:base="../cms/work/hp_channels/channel_video">
+          <image base-id="http://xml.zeit.de/bilder/2009/07/video/110209finanz1/" type="png" publication-date="" expires="">
+            <bu/>
+            <copyright>Reuters, ZEIT ONLINE</copyright>
+          </image>
+          <supertitle>Wirtschaft</supertitle>
+          <title>DAX fällt</title>
+          <text>
+            Börsen reagieren mit fallenden Kursen auf Banken-Rettungspläne der US-Regierung
+          </text>
+          <description>
+            Börsen reagieren mit fallenden Kursen auf Banken-Rettungspläne der US-Regierung
+          </description>
+          <byline/>
+          <short>
+            <title>Fallende Kurse</title>
+            <text>US-Bankenrettungspläne lassen DAX sinken</text>
+          </short>
+          <homepage>
+            <title/>
+            <text/>
+          </homepage>
+          <references>
+          </references>
+        </block>
+      </container>
+      <container module="rotation-box-single">
+        <!-- xi:include rotation-box-channel [1] attribute base to be set-->
+        <block>
+          <title>Teasertitle</title>
+          <text>Teasertext</text>
+        </block>
+      </container>
+      <container module="rotation-box-double">
+        <!-- xi:include rotation-box-channel [2:3] attribute base to be set-->
+        <block>
+          <title>Teasertitle</title>
+          <text>Teasertext</text>
+        </block>
+        <block>
+          <title>Teasertitle</title>
+          <text>Teasertext</text>
+        </block>
+      </container>
+
+    </region>
+
+    <region area="ugc-bar">
+      <!-- per xi:include -->
+      <container module="ugc-line">
+        <block>
+          <title>Teasertitle</title>
+          <text>Teasertext</text>
+        </block>
+      </container>
+
+    </region>
+
+    <cluster area="teaser-mosaic">
+      <region area="teaser-row-full">
+        <container module="channel">
+          <!-- xi:include channel [3] -->
+          <block>
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+          <block>
+            <title>a1Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+          <block>
+            <title>a2Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+        <container module="stack">
+          <!-- manual selected items -->
+          <block>
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+        <container >
+          <block>
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+        <container>
+          <block>
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+      </region>
+      <region area="teaser-row-mr">
+        <container>
+          <block>
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+        <container>
+          <block>
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+      </region>
+      <region area="teaser-row-full">
+        <container>
+          <block>
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+
+        <container module="weather" label="Wetter">
+          <cp_extra id="wetter.net">
+            <!-- xi:include Wetterdaten -->
+          </cp_extra>
+        </container>
+        <container module="stocks" label="Börse">
+          <cp_extra id="stocks.net">
+            <!-- xi:include stocks -->
+          </cp_extra>
+        </container>
+        <container module="graphical-teaser" label="Börse">
+          <image src="" link="" />
+        </container>
+      </region>
+      <region area="teaser-row-dmr"> <!-- DOUBLE MEDIUM RECTANGLE -->
+        <container module="quiz-multi" label="Quiz">
+          <block>
+          </block>
+        </container>
+      </region>
+      <region area="teaser-row-full">
+        <container module="shop">
+          <!-- Linkobjekt -->
+          <block href="http://shop.zeit.de">
+            <image />
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+          <!-- Linkobjekt -->
+          <block href="http://shop.zeit.de">
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+        <container module="abo" label="Premium/Abo">
+          <!-- xi:include -->
+          <block flash-id="http://xml.zeit.de"> <!--[Funktion wie bei Video / neues CMS-Objekt]-->
+          </block>
+        </container>
+        <container module="weather" label="Wetter">
+          <cp_extra id="wetter.net">
+            <!-- xi:include Wetterdaten -->
+          </cp_extra>
+        </container>
+        <container module="quiz-edu" label="Bildungshappen">
+          <cp_extra id="bildungshappen">
+            <!-- xi:include Wetterdaten -->
+          </cp_extra>
+        </container>
+      </region>
+      <region area="teaser-row-full">
+        <container module="iframe">
+          <block>
+            <title>Teasertitle</title>
+            <text>Teasertext</text>
+          </block>
+        </container>
+        <container module="abo" label="Premium/Abo">
+          <!-- xi:include -->
+          <block flash-id="http://xml.zeit.de"> <!--[Funktion wie bei Video / neues CMS-Objekt]-->
+          </block>
+        </container>
+        <container module="weather" label="Wetter">
+          <cp_extra id="wetter.net">
+            <!-- xi:include Wetterdaten -->
+          </cp_extra>
+        </container>
+        <container module="quiz-edu" label="Bildungshappen">
+          <cp_extra id="bildungshappen">
+            <!-- xi:include Wetterdaten -->
+          </cp_extra>
+        </container>
+      </region>
+    </cluster>
+
+    <region area="service">
+      <!-- xi:include sitemap.xml-->
+    </region>
+  </body>
+</centerpage>
+<?ZEIT-StyleGroup r09_centerpage?>

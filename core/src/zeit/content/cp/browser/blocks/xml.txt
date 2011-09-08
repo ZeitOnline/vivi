@@ -1,0 +1,122 @@
+XML block
+=========
+
+The XML block contains raw XML.  Let's first create an empty XML block in the
+lead area:[#helper_functions]_
+
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=xml')
+
+A new block with an XML <container> element is created:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+<span class="h_tag">&lt;container</span>...
+
+Editing the XML
+---------------
+
+You can edit the XML content by clicking the Edit button:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> xml = browser.getControl(name="form.xml").value
+>>> print xml
+<container...  cp:type="xml" module="xml" cp:__name__="...">
+ <raw>
+<BLANKLINE>
+ </raw>
+</container>
+>>> print update_xml('\r\n\r\n', '<foo/>')
+<...
+<div class="summary">Updated on...
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+<span class="h_tag">&lt;container</span>...
+...<span class="h_tag">&lt;foo</span><span class="h_tagend">/&gt;</span>...
+...<span class="h_tag">&lt;/container&gt;</span>...
+
+The XML is checked for validity:
+
+>>> print update_xml('>', '')
+<...
+<span class="error">malformed start tag, at line 2, column 3</span>...
+
+Furthermore, there are three contraints defined, which must match.
+
+First, the root element must be a <container>:
+
+>>> print update_xml('container', 'bar')
+<...
+<span class="error">The root element must be &lt;container&gt;.</span>...
+
+Second, the <container> element must have a cp:type:
+
+>>> print update_xml('cp:type', 'cp:bar')
+<...
+<span class="error">cp:type must be 'xml'.</span>...
+
+And, last but not least, the <container> must have a name:
+
+>>> print update_xml('cp:__name__', 'cp:bar')
+<...
+<span class="error">No or empty cp:__name__ attribute.</span>...
+
+Broken markup is sanitized:
+
+>>> print update_xml(
+...     '<foo/>',
+...     '<foo/><a href="http://www.youtube.com/v/oIr8-f2OWhs&hl=en_US&fs=1&">')
+<...
+<div class="summary">Updated on...
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+...<span class="h_tag">&lt;foo</span><span class="h_tagend">/&gt;</span>...
+...<span class="h_tag">&lt;a</span>...
+...http://www.youtube.com/v/oIr8-f2OWhs&amp;hl=en_US&amp;fs=1&amp;...
+
+
+Regression: XML blocks in the lead area
+---------------------------------------
+
+The lead area applies layouts to the teasers in it (according to some rules
+that differentiate the first and all other blocks), but it should not try to do
+that to XML blocks, because they don't have a layout.
+These calls should just run through without raising HTTP 500.
+
+>>> browser.open(contents_url)
+>>> browser.open('lead/@@landing-zone-drop-module'
+...              '?block_type=xml')
+>>> browser.open(contents_url)
+>>> browser.open('lead/@@landing-zone-drop-module'
+...              '?block_type=teaser')
+>>> browser.open(contents_url)
+>>> browser.open('lead/@@landing-zone-drop-module'
+...              '?block_type=xml')
+
+
+
+.. [#helper_functions]
+
+    >>> def update_xml(m, r):
+    ...     browser.open(contents_url)
+    ...     browser.getLink('Edit').click()
+    ...     browser.open('edit-properties')
+    ...     xml = browser.getControl(name="form.xml").value
+    ...     browser.getControl(name="form.xml").value = xml.replace(m, r)
+    ...     browser.getControl('Apply').click()
+    ...     return browser.contents

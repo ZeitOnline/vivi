@@ -1,0 +1,71 @@
+Quiz block
+==========
+
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=quiz')
+
+Add a quiz to the repository:[#functional]_
+
+>>> import zope.component
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.content.quiz.quiz
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
+>>> quiz = zeit.content.quiz.quiz.Quiz()
+>>> repository['my_quiz'] = quiz
+
+Edit the quiz block and reference the newly added quiz:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Quiz').value = 'http://xml.zeit.de/my_quiz'
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close();...
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Quiz').value
+'http://xml.zeit.de/my_quiz'
+
+The source of a quiz block:
+
+>>> browser.open(contents_url)
+>>> browser.open('xml_source_edit.html')
+>>> print browser.getControl('XML Source').value
+<...
+<container cp:type="quiz" module="quiz" cp:__name__="03299ac7-949a-42ee-ae9c-9defe891fff1">
+  <block type="intern" href="http://xml.zeit.de/my_quiz"...>
+    <supertitle xsi:nil="true"/>
+    <title xsi:nil="true"/>
+    <text xsi:nil="true"/>
+    <description xsi:nil="true"/>
+    <byline xsi:nil="true"/>...
+  </block>
+</container>...
+
+
+The quiz is also in the CP's content:
+
+>>> browser.getLink('Checkin').click()
+>>> cp = zeit.cms.interfaces.ICMSContent(
+...     'http://xml.zeit.de/online/2007/01/island')
+>>> list(zeit.content.cp.interfaces.ICMSContentIterable(cp))
+[<zeit.content.quiz.quiz.Quiz object at 0x...>]
+
+
+
+.. [#functional]_
+
+    >>> import zeit.cms.testing
+    >>> zeit.cms.testing.set_site()

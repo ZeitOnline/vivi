@@ -1,0 +1,670 @@
+zeit.content.cp changes
+=======================
+
+0.43.4 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+0.43.3 (2011-06-23)
+-------------------
+
+- Compatibility fix for Firefox 5 (#9236).
+
+
+0.43.2 (2011-06-22)
+-------------------
+
+- Compatibility fix for Firefox 5 (#9227).
+
+
+0.43.1 (2011-03-24)
+-------------------
+
+- Bugfix: Raw-Modul im Aufmacher bekommt kein Layout mehr zugewiesen, das kann
+  nämlich nicht funktionieren (#8844).
+
+- is_published für Validation-Rules ignoriert NotPublishablePublishInfos
+  (#8843).
+
+
+0.43.0 (2011-03-23)
+-------------------
+
+- TeaserBockProxy adapts to ICommonMetadata now.
+
+- Freie Teaser werden jetzt nur noch in der CP gespeichert. Es gibt keine extra
+  Objekte im DAV mehr dafür (#7826)
+
+- Das Raw-Modul kann jetzt auch im Aufmacher verwendet werden (#8781)
+
+- Layout-Berechnung im Aufmacher korrigiert (#8844).
+
+
+0.42.0 (2010-08-16)
+-------------------
+
+- Reichweite im CPE anzeigen (#7560).
+
+- Für Teaserbilder wird als Fallback jetzt @@preview  verwendet (#7798).
+
+
+0.41.0 (2010-08-09)
+-------------------
+
+- ``cms_content_iter`` funktioniert jetzt auch, wenn eine CP ein Modul enthält,
+  welches das CMS nicht kennt (#7727).
+- Für Selenium-Tests wird nun ``gocept.selenium`` verwendet (#7549).
+- Auch gesperrte, oder anderweitig nicht auscheckbare Objekte, haben beim
+  Bearbeiten einer Teaser-Liste jetzt das Icon "in neuem Fenster öffnen"
+  (#7825).
+
+
+
+0.40.0 (2010-07-07)
+-------------------
+
+- Warnung bei Änderungen, wenn ein freier Teaser zu einem Artikel existiert
+  (#6415).
+
+
+0.39.0 (2010-07-07)
+-------------------
+
+- Fehler bei Regeln ("cp_type is undefined") verhindern (#7444).
+- Stabilieres Quick-Publish (#7433).
+- Aktualisieren des RSS-Feeds in der CP führt nicht mehr zu ConflictError
+  (#7587)
+
+
+0.38.0 (2010-06-09)
+-------------------
+
+- Prevent error during refresh when feed cannot be checked out (#7313).
+- Participate in the zeit.relation index (for #6160).
+- New properties for RSS-Block: show_supertitle (#7390), time_format (#6936).
+- Update Header-Image/Snapshot XML reference if image metadata change (#7402).
+
+
+0.37.0 (2010-06-02)
+-------------------
+
+- Header-Image und Snapshot werden im XML anstatt im DAV gespeichert (#7325).
+- Fehler bei Regeln ("cp_type is undefined") verhindern (#7192).
+
+
+0.36.0 (2010-05-18)
+-------------------
+
+- RSS-Block: Felder für Feed-Icon und Teaserbild (#7259).
+
+
+0.35.1 (2010-05-17)
+-------------------
+
+- Fixed test for zeit.brightcove >= 0.3.0 (#7241)
+
+
+0.35.0 (2010-05-03)
+-------------------
+
+- Errors in editors actions are logged as warning now.
+
+- Fullgraphical block doesn't break CPE if the referenced object is removed
+  (#7093).
+
+- Added Snapshot image (#7181)
+
+
+0.34.0 (2010-04-09)
+-------------------
+
+- Brightcove-Videos integriert (#6881).
+
+- Favicon zu RSS-Feed speichern (#6937).
+
+- Using versions from the ZTK.
+
+
+0.33.0 (2010-03-10)
+-------------------
+
+- »Doubletten vermeiden« kann wieder deaktiviert werden (#6731)
+
+- Asset-Tab für CPs aktiviert (#6876).
+
+- Die Felder CAP-Kontext und CAP-Titel von der Centerpage direkt entfernt und
+  auf allen Objekten mit Standardmetadaten verfügbar gemacht (#6923).
+
+- Ist ein Objekt im RSS-Feed kommt ein freier Teaser dieses Objekts nicht mehr
+  in den RSS-Feed und umgekehrt (#6724).
+
+  
+0.32.1 (2010-02-23)
+-------------------
+
+- Anzahl der Feeditems mind. so groß wie der Aufmacher (#6865)
+
+0.32.0 (2010-02-08)
+-------------------
+
+- ``cp_extra`` Block hinzugefügt: solr-month (#6749)
+
+- ``cp_extra`` Block hinzugefügt: dwds-ticker (#6749)
+
+- ``cp_extra`` Block hinzugefügt: recensionsearch
+
+- ``cp_extra`` Block hinzugefügt: sportextra
+
+0.31 (2009-12-18)
+-----------------
+
+- Bestätigung beim Löschen von Elementen entfernt (#6412).
+- Neue Felder: CAP title, CAP context (#6598).
+
+
+0.30.0 (2009-12-11)
+-------------------
+
+- ``cp_extra`` Block hinzugefügt: linkatory
+
+- ``cp_extra`` Block hinzugefügt: homepage_news_pics
+
+- Teaser-Block im Autopilot: Doubletten-Vermeidung ist standardmäßig aktiviert
+  (#6243).
+
+0.29.0 (2009-11-25)
+-------------------
+
+- Fehlerhaftes Markup im Raw-XML-Block wird repariert (#6431).
+
+
+0.28.1 (2009-11-04)
+-------------------
+
+- Asynchronse Requests serialisiert damit das Löschen beim Verschieben von
+  Teaseren zuverlässig funktioniert.
+
+- Bild des ersten Teasers ist jetzt draggable.
+
+- Wird ein Teaser im CPE verschoben und auf eine Landezone gezogen, werden die
+  Relateds nicht mehr automatisch gezogen.
+
+- Default für XML-Block geändert: der <container> beinhaltet ein offenes
+  <raw>-Tag (#6051).
+
+
+0.28.0 (2009-11-02)
+-------------------
+
+- Teasergruppen zum Zusammenfassen von Teasern (#6385).
+
+- Der erste Teaser eines Teaserblocks lässt sich ziehen. Wird er innerhalb der
+  CP fallen gelassen, wird der gezogene Teaser aus der „Quelle“ entfernt.
+  (#6384).
+
+
+0.27.1 (2009-10-26)
+-------------------
+
+- Darstellung der Layout-Auswahl der Teaserleisten korrigiert.
+
+
+0.27.0 (2009-10-19)
+-------------------
+
+- Es werden jetzt 6 statt nur 4 Teaser in Autopilot-Blöcken angezeigt (#6354).
+
+- Themenseiten werden in der Site-Steuerung angezeigt (#6350).
+
+0.26.0 (2009-10-12)
+-------------------
+
+- Blöcke im Aufmacher sind jetzt nummeriert (#6273).
+
+- Performance der Container-Implementation verbessert.
+
+- Hinzufügen von Blöcken über die Landeflächen im Aufmacher schneller.
+
+- Fehlerbehandlung asynchroner Requests repariert.
+
+- Es werden nur noch 4 Teaser in Autopilot-Blöcken angezeigt um 1. die
+  Geschwindigkeit zu erhöhen und 2. das Aussehen der Seite besser
+  wiederzuspiegeln
+
+- (De-)aktivieren von Autopiloten schneller.
+
+- Icon für freie Teaser (#6063).
+
+- Icon für RSS-Feeds.
+
+0.25.1 (2009-10-07)
+-------------------
+
+- feed-Eelement der CP wird jetzt korrekt gekürzt.
+
+
+0.25 (2009-10-06)
+-----------------
+
+- CPE in einigen Teilen schneller: Löschen von Blöcken, Hinzufügen von Inhalten
+
+
+0.24 (2009-09-26)
+-----------------
+
+- Die Metadaten in der Centerpage werden jetzt beim einchecken direkt
+  aktualisiert und nicht mehr asynchron.
+
+- CPE ist i.A. schneller, weil nur noch Teilbereiche der Seite ersetzt werden.
+
+
+0.23 (2009-09-21)
+-----------------
+
+- Die Sidebar wird nicht mehr automatisch ausgeblendet.
+
+- Beim Teaser-Bearbeiten-Link zum Objekt wird nicht mehr automatisch
+  ausgecheckt.
+
+- Feld »Doubletten vermeiden« am Autopilot-Teaser-Block.
+
+
+0.22 (2009-09-11)
+-----------------
+
+- Date-Last-Modified, Last-Semantic-Change, Date-First-Released und
+  Date-Last-Published wird in die ``<block>`` Knoten auf eienr CP eingefügt.
+
+
+0.21 (2009-09-10)
+-----------------
+
+- Eine CP erzeugt beim Einchecken einen »Lead-Channel«. Dieser wird für
+  Autopiloten verwendet.
+
+
+0.20.6 (2009-09-06)
+-------------------
+
+- Regel-Glob ``cp_type``
+
+
+0.20.5 (2009-09-05)
+-------------------
+
+- Beinhaltete, nicht semantisch geänderte, Objekte werden auch nicht mehr mit
+  veröffentlicht, weil es nicht performant genug ist.
+
+
+0.20.4 (2009-09-05)
+-------------------
+
+- Freie Teaser werden nicht mehr veröffentlicht, weil das garnicht nötig. ist.
+
+
+0.20.3 (2009-09-05)
+-------------------
+
+- Tests für Änderungen an zeit.cms angepasst.
+
+
+0.20.2 (2009-09-05)
+-------------------
+
+- Ändern des Autopilots aktualisierte den xi:include nicht.
+
+
+0.20.1 (2009-09-05)
+-------------------
+
+- Refresh auf einem RSS-Block ohne URL führt nicht mehr zu einem Fehler.
+
+
+0.20 (2009-09-05)
+-----------------
+
+- Asynchrones aktualisieren der Metadaten der CP beim Checkin.
+
+- Aktualisieren der Metadaten funktioniert auch, wenn ein Autopilot
+  ein ungültiges Objekt referenziert.
+
+- Beim Aufmachen des Editors wird zunächst ein Busy-Indicator gezeigt.
+
+
+0.19 (2009-09-04)
+-----------------
+
+- Rule-Globs ``content`` und ``is_published`` (#6059).
+
+- Korrekte Anzeige der Teaser und Spitzmarke im Editor (Teil von #5877).
+
+- Teaser-Bearbeiten-Box ist wieder als Box erkennbar, die man auch zumachen
+  kann.
+
+0.18.2 (2009-09-04)
+-------------------
+
+- Feed-Updates repariert, wenn der Feed kein Feed sondern z.B. eine HTML-Seite
+  ist.
+
+
+0.18.1 (2009-09-04)
+-------------------
+
+- Feed-Updates repariert, wenn Feed noch nie aktualisiert wurde.
+
+
+0.18 (2009-09-04)
+-----------------
+
+- Player (vid/pls) für Video (#6150).
+
+- Principal mit dem die Feeds veröffentlicht werden ist jetzt konfigurierbar.
+
+- Beim Umsortieren von Teasern kann man jetzt direkt das Objekt in einem neuen
+  Fenster bearbeiten (#5820).
+
+- Ein Mouseover beim Teaser-Sortieren zeigt die Id des Objekts.
+
+- Quiz wird ohne xi:include eingebunden (#6022).
+
+- Quiz-Metadaten werden in der CP aktualisiert (#6167).
+
+0.17 (2009-09-01)
+-----------------
+
+- Bessere Texte beim Bearbeiten von Teasern in der CP (#6144)
+
+- ``cp_extra`` Block hinzugefügt: authors-register
+
+
+0.16 (2009-08-31)
+-----------------
+
+- Sortieren der Blöcke innerhalb eines MR funktioniert wieder (#6112).
+
+- Teaser sortieren funktioniert, wenn zerbrochene Objekt-Referenzen im
+  XML stehen (#6133).
+
+- Autopilot funktioniert jetzt auch, wenn ein Channel eingebunden wurde, der
+  Referenzen auf nicht (mehr) vorhandene Objekte enthält.
+
+- ``cp_extra`` Block hinzugefügt: homepage_news
+
+
+0.15.1 (2009-08-27)
+-------------------
+
+- I18N-Message-Id repariert.
+
+
+0.15 (2009-08-26)
+-----------------
+
+- In der CP beinhaltete Objekte werden automatisch veröffentlicht (wenn lsc <=
+  dlp <= dlm, #6057)
+  
+- Robusteres erstellen von freien Teasern.
+
+- Centerpage kann eingecheckt werden, auch wenn (ganz) alte Feeds beinhaltet
+  sind (#6064).
+
+- Freie Teaser werden immer mit der CP veröffentlicht (#6060).
+
+- ``cp_extra`` Blöcke entfernt: Relateds, Debug
+
+- RSS-Feeds: Domain-Attribut bei <category> optional (#6074).
+
+- Feed-Elemente in der Centerpage werden jetzt korrekt geschrieben.
+
+- Bessere Fehlerbehandlung, wenn aysynchrone Requests fehlschlagen (#6061).
+
+- CPE erzeugt einen sinnvollen Fehler, wenn ein Objekt in den Editor gezogen
+  wird, das es garnicht gibg (#6062).
+
+0.14 (2009-08-21)
+-----------------
+
+- ``cp_extra`` Block: dpa-News
+
+- Layout für Printarchivseiten in Volume und Year unterteilt.
+
+- Vorausgewähltes Layout abhängig von der Fläche (#5870).
+
+- Block-Layouts kommen aus einer XML-Datei und stehen nicht mehr direkt im
+  Quellcode. Damit stimmen jetzt auch die verwendeten Bilder (#5876).
+
+- Veröffentlichen einer CP mit einem Click (#5661).
+
+
+0.13 (2009-08-14)
+-----------------
+
+- Drop von Inhaltsobjekten in einen Teasermosaik-Platzhalter funktioniert
+  wieder (#5972).
+
+- Maximale Anzahl anzuzeigender Einträge im RSS-Block einstellbar (#5964).
+
+- <category> wird in Feeds übernommen (#5967).
+
+- Titel bei cpextras kann überschrieben werden (#5997).
+
+- Quiz-Block enthält jetzt ein xi:include (#5974).
+
+0.12 (2009-08-11)
+-----------------
+
+- JSON-Post statt GET mit langer URL (#5868).
+
+- Layout für Printarchivseiten hinzugefügt.
+
+- »Common«-Tab bei Blöcken erreichbar, die sonst keine Bearbeitungsmöglichkeit
+  haben (#5955).
+
+- ``cp_extra`` Blöcke: Neu im Ressort, Live-Search, Print Archiv, Relateds,
+  Blindblock, Debug
+
+- xi:includes werden jetzt mit dem richtigen Pfad ausgegeben (#5954).
+
+0.11 (2009-08-03)
+-----------------
+
+- Weitere Layouts für den Teaserblock: Doppelspalter, Datumsteaser, Kleine
+  Teaser (#5829).
+
+0.10.1 (2009-07-28)
+-------------------
+
+- CP-Source zum Filtern per Suche angepasst (#4499).
+
+0.10 (2009-07-20)
+-----------------
+
+- RSS-Block zeigt Fehler sinnvoller an (#5678).
+
+- Speichern funktioniert zuverlässiger (#5707, #5669).
+
+- Bessere Anzeige von Fehlern im RSS-Block (#5678).
+
+- Modulnamen in der Modulbibliothek werden jetzt übersetzt (u.A. #5677).
+
+- Vollgraphischer Block ist direkt nach dem Anlegen nicht mehr leer.
+
+- LightboxForms aktivieren jetzt den Lightbox-Context.
+
+0.9.1 (2009-06-24)
+------------------
+
+- »leader-upright«-Layout repariert (#5570).
+
+- Die CenterPage enthält einen neuen Abschnitt ``<feed>``, in dem
+  ``<reference>``s zu den n letzten Teasern aus dem Aufmacherbereich stehen;
+  jeweils der erste Teaser eines Teaserblocks wird dort eingefügt (#4884).
+
+  Die Einträge sind umgekehrt chronologisch geordnet, d. h. um den eigentlichen
+  RSS-Feed zu erzeugen, kann das XSLT die ersten x Einträge nehmen.
+  n ist konfigurierbar über product config ``cp-feed-max-items``
+  (im Moment n=200).
+
+
+0.9 (2009-06-18)
+----------------
+
+Neue Funktionen
+~~~~~~~~~~~~~~~
+
+- Modul-Bibliothek: Tab für »alle«.
+
+- Die Sidebar wird beim Öffnen des Editors automatisch ausgeblendet (#5038).
+
+Technische Änderungen
+~~~~~~~~~~~~~~~~~~~~~
+
+- Content-Source für CenterPages hinzugefügt.
+
+0.8 (2009-06-09)
+----------------
+
+- ``type``-Attribut auf ``<centerpage>`` (#5030, #5480).
+
+- Contextabhängige Layouts (#5034).
+
+- Registrierung via Martian.
+
+- Bessere Texte
+
+0.7 (2009-05-26)
+----------------
+
+Neue Funktionen
+~~~~~~~~~~~~~~~
+
+- Neue Content Blöcke "Quiz" (#5279) und "Vollgraphisch" (#5278) wurden
+  hinzugefügt.
+
+- Beim Bearbeiten eines Teaserblocks können jetzt Teaser direkt in die Liste
+  gezogen werden.
+
+- Blockblibliothek
+
+- Tabs im Block-Bearbeiten (#5323)
+
+- Freie Teaser können im CMS direkt bearbeitet werden (#5059).
+
+- Autopilot in der Aufmacherfläche nicht mehr möglich (verhindert Kreise,
+  #5031).
+
+Technische Änderungen
+~~~~~~~~~~~~~~~~~~~~~
+
+- Interface-Umstrukturierung um genauer zwischen Fläche, Region und Block
+  unterscheiden zu können.
+
+
+0.6 (2009-05-17)
+----------------
+
+Neue Funktionen
+~~~~~~~~~~~~~~~
+
+- Neue Content Blöcke "Audio" (#5276) und "Video" (#5051) wurden hinzugefügt.
+
+- Automatische Teaserblöcke (Autopilot) können auch Channel referenzieren
+  (#5290).
+
+- Automatische Teaserblöcke erstellen korrektes <xi:include>.
+
+- Blöcke in einer Teaserleiste sind alle gleich hoch.
+
+- ``cp_extra`` Blöcke: Wetter, Börse, Meistgelesen, Meistkommentiert
+
+- RSS-Block (für externe Feeds) hinzugefügt (#5273).
+
+- Keine eigene Translationdomain mehr, Übersetzungen via zeit.locales.
+
+- Umsortieren von Blöcken in Teaserleisten.
+
+0.5 (2009-05-08)
+----------------
+
+Neue Funktionen
+~~~~~~~~~~~~~~~
+
+- Ein neuer Content Block "XML" wurde hinzugefügt (#5277)
+
+- Validierungsregeln: Die unter
+  http://zip6.zeit.de:9000/cms/forms/centerpage-validation-rules.py abgelegten
+  Regeln werden auf die CenterPage angewandt. Fehler werden rot, Warnungen
+  gelb. Gibt es einen fehlerhaften Bereich, kann die CP nicht veröffentlicht
+  werden.
+
+- Für die Teaserleiste kann nun das Layout MR (einspaltiger Werbeblock),
+  DMR (zweispaltiger Werbeblock) und normal (keine Werbung) ausgewählt werden
+  (#5001).
+
+
+0.4 (2009-04-30)
+----------------
+
+Neue Funktionen
+~~~~~~~~~~~~~~~
+
+- Wird ein Objekt auf einem Autopilot-Block fallgen gelassen wird der Autopilot
+  automatisch ausgeschaltet.
+
+- Landefläche für Teaser in der Aufmacherfläche (#4883): Fallen lassen eines
+  Content-Objekts bewirkt das Anlegen eines Teaser-Blocks mit dem Objekt und
+  seinen Relateds.
+
+- Beim Bearbeiten von Teasern können nun »freie Teaser« erzeugt werden. (#4788)
+
+- Regeln für Layouts von Teaserlisten (#5033): Der erste Block bekommt das
+  Layout mit dem großen Bild, alle anderen das Layout mit dem kleinen Bild.
+
+- Beim Einchecken der Centerpage werden die Metadaten der referenzierten
+  Artikel aktualisiert. (#4976)
+
+- Umsortieren von Blöcken in der Aufmacher- und Informatives-Fläche (#5046).
+
+Beseitigte Fehler
+~~~~~~~~~~~~~~~~~
+
+- Editor scrollt nicht mehr nach oben, wenn man etwas getan hat (fixes #5018).
+
+- Nach geöffneter Lightbox ging Drag'n'Drop nicht mehr (fixes #5019).
+
+
+0.3 (2009-04-23)
+----------------
+
+- Bearbeiten von Teasern in der CP (#4806).
+
+- zeit.find integriert
+
+- Löschen von Teaserleisten nach dem Verschieben funktioniert wieder (fixes
+  #4999)
+
+- Autopilot
+
+- Layouts für Teaserblöcke
+
+
+0.2 (2009-04-17)
+----------------
+
+- Teaser-Liste kann mit Teasern befüllt werden.
+
+- Highlight der Boxen bei Mouse-Over.
+
+- Sortieren von Teaserleisten (#4776).
+
+- Löschen von Teasern aus der Teaserliste (#4805).
+
+- Sortieren von Teasern im Bearbeiten-Dialog der Teaserliste (#4805).
+
+0.1 (2009-04-03)
+----------------
+
+- Erstes release.

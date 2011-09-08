@@ -1,0 +1,87 @@
+Two column layout
+=================
+
+The two column layout is both indicated in the overview (editor) and is
+editable when sorting a teaser block.
+
+Create content, a teaser block and fill it with the created content:
+
+>>> import zeit.content.cp.browser.blocks.testing
+>>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.open(
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c3')
+>>> import lxml.cssselect
+>>> browser.open(contents_url)
+>>> select = lxml.cssselect.CSSSelector(
+...     'div.type-teaser div[cms|drop-url]')
+>>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+>>> drop_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
+>>> url = '%s?uniqueId=http://xml.zeit.de/c2' % (drop_url,)
+>>> browser.open(url)
+>>> url = '%s?uniqueId=http://xml.zeit.de/c1' % (drop_url,)
+>>> browser.open(url)
+
+
+Switch to the two column layout:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getLink('zwei Spalten').click()
+
+Open the sorter. There is a column-separator at the end. All teaseras are on
+the left side currently:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit teaser list').click()
+>>> lightbox_url = browser.url
+>>> print browser.contents,
+<div...
+      <li ...cms:uniqueid="http://xml.zeit.de/c1">...
+      <li ...cms:uniqueid="http://xml.zeit.de/c2">...
+      <li ...cms:uniqueid="http://xml.zeit.de/c3">...
+      <li class="edit-bar column-separator"
+          cms:uniqueid="column://">
+        <div...>^ Left | Right v</div>
+      </li>
+...
+
+
+Changing the order works like with every other type:
+
+>>> import cjson
+>>> order = [
+...     'http://xml.zeit.de/c1',
+...     'column://',
+...     'http://xml.zeit.de/c2',
+...     'http://xml.zeit.de/c3']
+>>> url = lightbox_url.replace('teaser.edit-contents', 'updateOrder')
+>>> browser.open(url + '?keys=' + cjson.encode(order))
+>>> browser.open(lightbox_url)
+>>> print browser.contents,
+<div...
+      <li ...cms:uniqueid="http://xml.zeit.de/c1">...
+      <li ...cms:uniqueid="column://">...
+      <li ...cms:uniqueid="http://xml.zeit.de/c2">...
+      <li ...cms:uniqueid="http://xml.zeit.de/c3">...
+
+
+There are two columns in the editor now:
+
+>>> browser.open(contents_url)
+>>> print browser.contents,
+<...
+  <div class="teaser-list">...
+    <div class="teaser">...c1 teaser...
+  <div class="teaser-list">...
+    <div class="teaser">...c2 teaser...
+    <div class="teaser">...c3 teaser...

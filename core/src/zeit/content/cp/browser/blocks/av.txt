@@ -1,0 +1,138 @@
+Video blocks
+============
+
+>>> import z3c.etestbrowser.testing
+>>> import zeit.content.cp.browser.testing
+>>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.xml_strict = True
+>>> zeit.content.cp.browser.testing.create_cp(browser)
+>>> browser.open('contents')
+>>> contents_url = browser.url
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=video')
+
+Editing the block
+-----------------
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Media Id').value = '12345'
+>>> browser.getControl('Format').displayValue = ['small']
+>>> browser.getControl('Expiration date').value = '2009-05-05'
+>>> browser.getControl('Player').displayOptions
+['Einzelvideo', 'Playlist']
+>>> browser.getControl('Player').displayValue
+['Einzelvideo']
+>>> browser.getControl('Player').displayValue = ['Playlist']
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close();...
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Media Id').value
+'12345'
+>>> browser.getControl('Format').displayValue
+['small']
+>>> browser.getControl('Expiration date').value
+'2009-05-05 00:00:00'
+>>> browser.getControl('Player').displayValue
+['Playlist']
+
+The video block also supports dropping of videos:
+
+>>> edit_form_url = browser.url
+>>> browser.open('@@drop?uniqueId=http://video.zeit.de/video/1234')
+>>> import pprint
+>>> import simplejson
+>>> pprint.pprint(simplejson.loads(browser.contents))
+{'signals': [{'args': ['<GUID>',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/666b0a7d-3020-475c-b17d-b82a895e74de/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> browser.open(edit_form_url)
+>>> browser.getControl('Media Id').value
+'1234'
+>>> browser.getControl('Format').displayValue
+['small']
+>>> browser.getControl('Expiration date').value
+'2009-05-05 00:00:00'
+>>> browser.getControl('Player').displayValue
+['Einzelvideo']
+
+
+The video block also supports dropping of playlists; expiration date and player
+are updated automatically:
+
+>>> browser.open('@@drop?uniqueId=http://video.zeit.de/playlist/2345')
+>>> pprint.pprint(simplejson.loads(browser.contents))
+{'signals': [{'args': ['<GUID>',
+                       'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/03ffb451-4719-419a-863a-2481451bf6be/@@contents'],
+              'name': 'reload',
+              'when': None}]}
+>>> browser.open(edit_form_url)
+>>> browser.getControl('Media Id').value
+'2345'
+>>> browser.getControl('Format').displayValue
+['small']
+>>> browser.getControl('Expiration date').value
+''
+>>> browser.getControl('Player').displayValue
+['Playlist']
+
+
+It is not possible to drop other types:
+
+>>> browser.open('@@drop?uniqueId=http://xml.zeit.de/testcontent')
+Traceback (most recent call last):
+    ...
+HTTPError: HTTP Error 500: Internal Server Error
+>>> print browser.contents
+Only videos and playlists can be dropped on a video block.
+
+
+Audio blocks
+============
+
+>>> browser.open(contents_url)
+>>> browser.open('informatives/@@landing-zone-drop-module'
+...              '?block_type=audio')
+
+Editing the block
+-----------------
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Media Id').value = '98765'
+>>> browser.getControl('Format').displayValue = [
+...     'large']
+>>> browser.getControl('Player')
+Traceback (most recent call last):
+    ...
+LookupError: label 'Player'
+
+An empty value for the expireation date means no expiration:
+
+>>> browser.getControl('Expiration date').value = ''
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close();...
+
+
+XML of an audio/video block
+===========================
+
+>>> browser.open(contents_url)
+>>> browser.open('xml_source_edit.html')
+>>> print browser.getControl('XML Source').value
+<...
+<container cp:type="audio" module="audio" cp:__name__="<GUID>">
+  <audio audioID="98765" format="large"/>
+</container>
+<container cp:type="video" module="video" cp:__name__="<GUID>">
+  <video videoID="2345" player="pls" expires="" format="small"/>
+</container>...

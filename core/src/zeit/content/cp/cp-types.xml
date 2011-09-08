@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<centerpage-types>
+    <type name="archive-print-volume">Archiv-Print-Volume</type>
+    <type name="archive-print-year">Archiv-Print-Year</type>
+    <type name="centerpage">Centerpage</type>
+    <type name="homepage">Homepage</type>
+    <type name="ressort">Themenseite</type>
+</centerpage-types>
