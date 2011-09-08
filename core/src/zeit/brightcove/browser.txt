@@ -8,6 +8,7 @@ Video metadata can be edited:
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository-brightcove/video-1234')
+>>> browser.getLink('Checkout').click()
 >>> print browser.getControl('Title').value
 Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung
 >>> browser.getControl('Title').value = 'New title'
