@@ -287,7 +287,7 @@ class Video(Content):
             custom['ref_link%s' % i] = obj.uniqueId
             custom['ref_title%s' % i] = metadata.teaserTitle
 
-    def to_cms_video(self):
+    def to_cms_content(self):
         video = zeit.content.video.video.Video()
         for key in zeit.content.video.interfaces.IVideo:
             try:
@@ -313,8 +313,8 @@ class Playlist(Content):
 
     @property
     def video_ids(self):
-        return tuple('http://video.zeit.de/video/%s' % id for id in
-                     self.data['videoIds'])
+        return tuple('http://xml.zeit.de/brightcove-folder/video-%s' % id
+                     for id in self.data['videoIds'])
 
     @classmethod
     def find_by_ids(class_, ids):
@@ -330,9 +330,11 @@ class Playlist(Content):
             'find_all_playlists', class_,
             playlist_fields=class_.fields)
 
-
-class PlaylistType(zeit.cms.type.TypeDeclaration):
-
-    title = _('Playlist')
-    interface = zeit.brightcove.interfaces.IPlaylist
-    addform = zeit.cms.type.SKIP_ADD
+    def to_cms_content(self):
+        playlist = zeit.content.video.playlist.Playlist()
+        for key in zeit.content.video.interfaces.IPlaylist:
+            try:
+                setattr(playlist, key, getattr(self, key))
+            except AttributeError:
+                pass
+        return playlist

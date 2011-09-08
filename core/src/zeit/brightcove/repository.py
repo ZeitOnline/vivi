@@ -68,7 +68,6 @@ class Repository(persistent.Persistent,
             self._update_content(x)
 
     def _update_playlists(self):
-        return
         playlists = zeit.brightcove.content.Playlist.find_all()
         exists = set()
         for playlist in playlists:
@@ -100,7 +99,7 @@ class Repository(persistent.Persistent,
             newdata.pop('lastModifiedDate', None)
             if curdata == newdata:
                 return
-        self[newcontent.__name__] = newcontent.to_cms_video()
+        self[newcontent.__name__] = newcontent.to_cms_content()
         newcontent.__parent__ = self
         # XXX we should use events here
         zeit.brightcove.solr.index_content(newcontent)
