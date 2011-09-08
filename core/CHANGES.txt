@@ -1,0 +1,8 @@
+zeit.content.video changes
+==========================
+
+2.0 (unreleased)
+----------------
+
+- Total rewrite. For earlier versions, see the subversion repository at
+  <https://code.gocept.com/svn/gocept-int/zeit.cms/zeit.content.video/>.
