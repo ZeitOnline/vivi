@@ -16,7 +16,7 @@ setup(
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
         'BeautifulSoup',
-        'PILwoTk',
+        'Pillow',
         'SilverCity',
         'ZODB3>=3.8.1',
         'decorator',
