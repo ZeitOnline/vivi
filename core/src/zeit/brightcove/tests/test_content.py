@@ -215,7 +215,7 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals("published", publication_status.published)
 
     def test_video_ids(self):
-        pls = self.repository['playlist-2345']
+        pls = zeit.brightcove.content.Playlist.find_by_id('2345')
         vids = ('http://xml.zeit.de/brightcove-folder/video-1234',
                 'http://xml.zeit.de/brightcove-folder/video-6789')
         self.assertEquals(vids, pls.video_ids)

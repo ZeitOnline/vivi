@@ -160,6 +160,10 @@ class Content(persistent.Persistent,
     def thumbnail(self):
         return self.data['thumbnailURL']
 
+    @classmethod
+    def find_by_id(cls, id):
+        return iter(cls.find_by_ids([id])).next()
+
     @staticmethod
     def get_connection():
         return zope.component.getUtility(
@@ -239,10 +243,6 @@ class Video(Content):
         'videoStillURL',
         'FLVURL',
     ))
-
-    @classmethod
-    def find_by_id(cls, id):
-        return iter(cls.find_by_ids([id])).next()
 
     @classmethod
     def find_by_ids(class_, ids):
