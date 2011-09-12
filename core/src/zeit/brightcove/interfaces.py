@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -14,17 +14,6 @@ import zope.schema
 
 class IAPIConnection(zope.interface.Interface):
     """Brightcove API connection."""
-
-
-class IRepository(zope.container.interfaces.IItemContainer):
-    """A repostory for accessing brightcove videos.
-
-
-    Content from brightcove has unique ids in the form::
-
-        brighcove:<type>:<id>.
-
-    """
 
 
 class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
@@ -144,3 +133,9 @@ class IVideoAsset(zope.interface.Interface):
         title=_('Video 2'),
         required=False,
         source=brightcoveSource)
+
+
+class IUpdate(zope.interface.Interface):
+
+    def __call__():
+        """XXX Update."""

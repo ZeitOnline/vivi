@@ -3,6 +3,7 @@
 
 import datetime
 import gocept.runner
+import grokcore.component
 import persistent
 import pytz
 import zeit.brightcove.interfaces
@@ -10,14 +11,12 @@ import zeit.brightcove.solr
 import zeit.cms.repository.interfaces
 import zope.component
 import zope.container.contained
-import zope.interface
 import zope.lifecycleevent
 
 
-class Repository(persistent.Persistent,
-                 zope.container.contained.Contained):
+class Update(grokcore.component.GlobalUtility):
 
-    zope.interface.implements(zeit.brightcove.interfaces.IRepository)
+    grokcore.component.implements(zeit.brightcove.interfaces.IUpdate)
 
     folder = 'brightcove-folder'
 
@@ -39,19 +38,7 @@ class Repository(persistent.Persistent,
     def get(self, key):
         return self._data.get(key)
 
-    def __iter__(self):
-        return iter(self._data)
-
-    def keys(self):
-        return self._data.keys()
-
-    def values(self):
-        return self._data.values()
-
-    def items(self):
-        return self._data.items()
-
-    def update_from_brightcove(self):
+    def __call__(self):
         # getting the playlists seems to be much more likely to fail, and since
         # we want to take what we can get, we do it *after* we have processed
         # the videos (instead of combining both steps)

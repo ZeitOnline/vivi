@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
@@ -23,28 +23,6 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         PLAYLIST_2345.update(self.old_playlist)
         PLAYLIST_LIST_RESPONSE['items'] = self.old_playlist_items
         super(RepositoryTest, self).tearDown()
-
-    def test_invalid_id(self):
-        self.assertRaises(KeyError,
-                          self.repository.__getitem__, 'video-invalid')
-        self.assertRaises(KeyError,
-                          self.repository.__getitem__, 'iuj2480hasf')
-        self.assertRaises(KeyError,
-                          self.repository.__getitem__, 'playlist-2345723')
-        self.assertRaises(KeyError,
-                          self.repository.__getitem__, 'video-2345723')
-
-    def test_getitem(self):
-        self.repository._data.clear()
-        self.assertRaises(KeyError, self.repository.__getitem__, 'video-1234')
-        self.assertRaises(
-            KeyError, self.repository.__getitem__, 'playlist-2345')
-        self.repository.update_from_brightcove()
-        video = self.repository['video-1234']
-        self.assertTrue(zeit.brightcove.interfaces.IVideo.providedBy(video))
-        playlist = self.repository['playlist-2345']
-        self.assertTrue(
-            zeit.brightcove.interfaces.IPlaylist.providedBy(playlist))
 
     def test_cronjob_should_not_overwrite_user_edits(self):
         video = self.repository['video-1234']

@@ -19,13 +19,6 @@
     component=".generation.manager"
     />
 
-  <class class=".repository.Repository">
-    <require
-      interface=".interfaces.IRepository"
-      permission="zope.View"
-      />
-  </class>
-
   <class class=".content.Video">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
