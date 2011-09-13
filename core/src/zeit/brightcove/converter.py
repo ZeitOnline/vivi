@@ -1,9 +1,13 @@
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import datetime
+import grokcore.component as grok
 import pytz
 import transaction
+import zeit.addcentral.add
+import zeit.addcentral.interfaces
 import zeit.brightcove.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -14,6 +18,10 @@ import zeit.content.video.playlist
 import zeit.content.video.video
 import zope.component
 import zope.interface
+
+
+VIDEO_FOLDER = 'video'
+PLAYLIST_FOLDER = ('video', 'playlist')
 
 
 class mapped(object):
@@ -141,9 +149,11 @@ class Converter(object):
             self.data = data
             if 'customFields' in self.data:
                 self.data['customFields'] = self.data['customFields']
-            self.__name__ = '%s-%s' % (self.type, self.data['id'])
-            self.uniqueId = 'http://xml.zeit.de/brightcove-folder/%s' % (
-                self.__name__)
+
+    @cachedproperty
+    def uniqueId(self):
+        return '%s/%s' % (
+            zeit.addcentral.interfaces.IAddLocation(self).uniqueId, self.id)
 
     @property
     def thumbnail(self):
@@ -317,6 +327,13 @@ class Video(Converter):
         return instance
 
 
+@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+@grok.adapter(Video)
+def video_location(bc_object):
+    return zeit.addcentral.add.find_or_create_folder(
+        VIDEO_FOLDER, bc_object.date_created.strftime('%Y-%m'))
+
+
 class Playlist(Converter):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
@@ -369,3 +386,9 @@ class Playlist(Converter):
             except AttributeError:
                 pass
         return instance
+
+
+@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+@grok.adapter(Playlist)
+def playlist_location(bc_object):
+    return zeit.addcentral.add.find_or_create_folder(*PLAYLIST_FOLDER)

@@ -39,7 +39,7 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals(5, len(self.public_solr.update_raw.call_args_list))
         element_add = self.solr.update_raw.call_args_list[0][0][0]
         self.assertEquals(
-            ['http://xml.zeit.de/brightcove-folder/video-1234'],
+            ['http://xml.zeit.de/video/2010-03/1234'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         self.assertEquals(
             ['http://flvurl'],
@@ -53,19 +53,19 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
 
         element_add = self.solr.update_raw.call_args_list[1][0][0]
         self.assertEquals(
-            ['http://xml.zeit.de/brightcove-folder/video-9876'],
+            ['http://xml.zeit.de/video/2010-03/9876'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         element_add = self.solr.update_raw.call_args_list[2][0][0]
         self.assertEquals(
-            ['http://xml.zeit.de/brightcove-folder/video-6789'],
+            ['http://xml.zeit.de/video/2010-03/6789'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         element_add = self.solr.update_raw.call_args_list[3][0][0]
         self.assertEquals(
-            ['http://xml.zeit.de/brightcove-folder/playlist-2345'],
+            ['http://xml.zeit.de/video/playlist/2345'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
         element_add = self.solr.update_raw.call_args_list[4][0][0]
         self.assertEquals(
-            ['http://xml.zeit.de/brightcove-folder/playlist-3456'],
+            ['http://xml.zeit.de/video/playlist/3456'],
             element_add.xpath("/add/doc/field[@name='uniqueId']"))
 
     def test_deleted_playlists_removed_from_solr(self):
@@ -77,7 +77,7 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_active_videos_should_be_index(self):
         video = zeit.cms.interfaces.ICMSContent(
-            "http://xml.zeit.de/brightcove-folder/video-1234")
+            "http://xml.zeit.de/video/2010-03/1234")
         video.item_state = 'ACTIVE'
         zope.lifecycleevent.modified(video)
         self.assertTrue(self.solr.update_raw.called)
@@ -85,7 +85,7 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_inactive_videos_should_be_deleted_from_solr(self):
         video = zeit.cms.interfaces.ICMSContent(
-            "http://xml.zeit.de/brightcove-folder/video-1234")
+            "http://xml.zeit.de/video/2010-03/1234")
         video.item_state = 'INACTIVE'
         zope.lifecycleevent.modified(video)
         self.assertTrue(self.solr.delete.called)
@@ -93,7 +93,7 @@ class TestSolrIndexing(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_deleted_videos_should_be_deleted_from_solr(self):
         video = zeit.cms.interfaces.ICMSContent(
-            "http://xml.zeit.de/brightcove-folder/video-1234")
+            "http://xml.zeit.de/video/2010-03/1234")
         video.item_state = 'DELETED'
         zope.lifecycleevent.modified(video)
         self.assertTrue(self.solr.delete.called)

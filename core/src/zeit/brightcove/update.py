@@ -4,6 +4,7 @@
 import datetime
 import gocept.runner
 import pytz
+import zeit.addcentral.interfaces
 import zeit.brightcove.converter
 import zeit.cms.repository.interfaces
 import zope.component
@@ -51,8 +52,8 @@ class BaseUpdater(object):
 
     def add(self):
         if self.cmsobj is None:
-            self.repository()['brightcove-folder'][
-                self._bc_name(self.bcobj)] = self.bcobj.to_cms()
+            folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
+            folder[str(self.bcobj.id)] = self.bcobj.to_cms()
             return True
 
     def delete(self):
@@ -60,10 +61,6 @@ class BaseUpdater(object):
 
     def update(self):
         pass
-
-    @classmethod
-    def _bc_name(cls, bc_object):
-        return bc_object.uniqueId.rsplit('/', 1)[1]
 
 
 class VideoUpdater(BaseUpdater):
@@ -78,8 +75,8 @@ class VideoUpdater(BaseUpdater):
 
     def delete(self):
         if self.bcobj.item_state == 'DELETED':
-            del self.repository()['brightcove-folder'][
-                self._bc_name(self.bcobj)]
+            folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
+            del folder[str(self.bcobj.id)]
             return True
 
     def update(self):
@@ -139,8 +136,12 @@ class PlaylistUpdater(BaseUpdater):
         return True
 
     @classmethod
-    def delete_remaining_except(cls, existing):
-        existing_names = [cls._bc_name(x) for x in existing]
-        for name in list(cls.repository()['brightcove-folder'].keys()):
-            if name.startswith('playlist') and name not in existing_names:
-                del cls.repository()['brightcove-folder'][name]
+    def delete_remaining_except(cls, bc_objects):
+        if not bc_objects:
+            return
+        folder = zeit.addcentral.interfaces.IAddLocation(
+            iter(bc_objects).next())
+        cms_names = set(folder.keys())
+        bc_names = set(str(x.id) for x in bc_objects)
+        for name in cms_names - bc_names:
+            del folder[name]

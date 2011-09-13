@@ -6,7 +6,7 @@ XML reference for videos
 >>> p = zeit.cms.testing.create_interaction()
 
 >>> video = zeit.cms.interfaces.ICMSContent(
-...     'http://xml.zeit.de/brightcove-folder/video-1234')
+...     'http://xml.zeit.de/video/2010-03/1234')
 
 
 The video has  a still image:

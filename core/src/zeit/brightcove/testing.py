@@ -230,12 +230,7 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
 
     @classmethod
     def testSetUp(cls):
-        root_folder = BrightcoveZCMLLayer.setup.getRootFolder()
-        with zeit.cms.testing.site(root_folder):
-            repository = zope.component.getUtility(
-                zeit.cms.repository.interfaces.IRepository)
-            repository['brightcove-folder'] = \
-                zeit.cms.repository.folder.Folder()
+        pass
 
     @classmethod
     def testTearDown(cls):

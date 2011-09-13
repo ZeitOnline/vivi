@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 """Adapters to integrate brightcove content with the rest of the CMS."""
 
@@ -30,22 +30,6 @@ class BrightcoveContentPublicationStatus(grokcore.component.Adapter):
         if self.context.item_state == "ACTIVE":
             return "published"
         return "not-published"
-
-
-@grokcore.component.adapter(
-    basestring, name='http://xml.zeit.de/brightcove-folder/')
-@grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
-def unique_id_to_cms_content(uniqueId):
-    assert uniqueId.startswith('http://xml.zeit.de/brightcove-folder/')
-    name = uniqueId.replace('http://xml.zeit.de/brightcove-folder/', '', 1)
-    name = name.replace('/', ':', 1)
-    name = name.replace(':', '-', 1)
-    repository = zope.component.getUtility(
-        zeit.brightcove.interfaces.IRepository)
-    try:
-        return repository[name]
-    except KeyError:
-        return None
 
 
 class UUID(grokcore.component.Adapter):

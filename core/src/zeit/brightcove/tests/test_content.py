@@ -123,12 +123,12 @@ class VideoIntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_cmscontent(self):
         video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals(
-            'http://xml.zeit.de/brightcove-folder/video-1234', video.uniqueId)
-        self.assertEquals('video-1234', video.__name__)
+            'http://xml.zeit.de/video/2010-03/1234', video.uniqueId)
+        self.assertEquals('1234', video.__name__)
         self.assertEquals(
             video,
             zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/brightcove-folder/video-1234'))
+                'http://xml.zeit.de/video/2010-03/1234'))
 
     def test_comment_should_honour_default(self):
         video = zeit.brightcove.converter.Video.find_by_id('1234')
@@ -156,7 +156,7 @@ class VideoIntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
         uuid = zeit.cms.content.interfaces.IUUID(
             zeit.brightcove.converter.Video.find_by_id('1234'))
         self.assertEquals(
-            'http://xml.zeit.de/brightcove-folder/video-1234', uuid.id)
+            'http://xml.zeit.de/video/2010-03/1234', uuid.id)
 
     def test_common_metadata(self):
         metadata = zeit.cms.content.interfaces.ICommonMetadata(
@@ -207,12 +207,14 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
     @unittest.skip('not yet')
     def test_cmscontent(self):
         pls = self.repository['playlist-2345']
-        self.assertEquals('http://xml.zeit.de/brightcove-folder/playlist-2345', pls.uniqueId)
+        self.assertEquals(
+            'http://xml.zeit.de/video/playlist/2345',
+            pls.uniqueId)
         self.assertEquals('playlist-2345', pls.__name__)
         self.assertEquals(
             pls,
             zeit.cms.interfaces.ICMSContent(
-                'http://xml.zeit.de/brightcove-folder/playlist-2345'))
+                'http://xml.zeit.de/video/playlist/2345'))
 
     @unittest.skip('not yet')
     def test_publication_status(self):
@@ -223,15 +225,16 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_video_ids(self):
         pls = zeit.brightcove.converter.Playlist.find_by_id('2345')
-        vids = ('http://xml.zeit.de/brightcove-folder/video-1234',
-                'http://xml.zeit.de/brightcove-folder/video-6789')
+        vids = ('http://xml.zeit.de/video/2010-03/1234',
+                'http://xml.zeit.de/video/2010-03/6789')
         self.assertEquals(vids, pls.video_ids)
 
     @unittest.skip('not yet')
     def test_reference_adapter(self):
         pls = self.repository['playlist-2345']
         vids = zeit.cms.relation.interfaces.IReferences(pls)
-        self.assertEquals('http://xml.zeit.de/brightcove-folder/video-1234', vids[0].uniqueId)
+        self.assertEquals(
+            'http://xml.zeit.de/video/2010-03/1234', vids[0].uniqueId)
 
 
 @unittest.skip('not yet')
