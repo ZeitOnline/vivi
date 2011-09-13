@@ -145,11 +145,6 @@ class Converter(object):
             self.uniqueId = 'http://xml.zeit.de/brightcove-folder/%s' % (
                 self.__name__)
 
-    def __eq__(self, other):
-        if not isinstance(other, type(self)):
-            return False
-        return self.__name__ == other.__name__
-
     @property
     def thumbnail(self):
         return self.data['thumbnailURL']
