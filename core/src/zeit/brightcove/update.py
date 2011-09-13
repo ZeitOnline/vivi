@@ -3,146 +3,143 @@
 
 import datetime
 import gocept.runner
-import grokcore.component
 import pytz
-import zeit.brightcove.interfaces
-import zeit.brightcove.solr
+import zeit.brightcove.content
 import zeit.cms.repository.interfaces
 import zope.component
 import zope.container.contained
 import zope.lifecycleevent
 
 
-class Update(grokcore.component.GlobalUtility):
+def update_from_brightcove():
+    # getting the playlists seems to be much more likely to fail, and since
+    # we want to take what we can get, we do it *after* we have processed
+    # the videos (instead of combining both steps)
+    VideoUpdater.update_all()
+    PlaylistUpdater.update_all()
 
-    grokcore.component.implements(zeit.brightcove.interfaces.IUpdate)
 
-    folder = 'brightcove-folder'
+@gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
+    'zeit.brightcove', 'index-principal'))
+def update_repository():
+    update_from_brightcove()
 
-    @property
-    def dav(self):
+
+class BaseUpdater(object):
+
+    def __init__(self, context):
+        self.bcobj = context
+        self.cmsobj = zeit.cms.interfaces.ICMSContent(
+            self.bcobj.uniqueId, None)
+
+    def __call__(self):
+        self.add() or self.delete() or self.update()
+
+    @classmethod
+    def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
-    @property
-    def _data(self):
-        return self.dav[self.folder]
+    @classmethod
+    def update_all(cls):
+        for x in cls.get_objects():
+            cls(x)()
 
-    def __getitem__(self, key):
-        return self._data[key]
+    @classmethod
+    def get_objects(cls):
+        raise NotImplementedError()
 
-    def __setitem__(self, key, obj):
-        self._data[key] = obj
+    def add(self):
+        if self.cmsobj is None:
+            self.repository()['brightcove-folder'][
+                self._bc_name(self.bcobj)] = self.bcobj.to_cms()
+            return True
 
-    def get(self, key):
-        return self._data.get(key)
+    def delete(self):
+        pass
 
-    def __call__(self):
-        # getting the playlists seems to be much more likely to fail, and since
-        # we want to take what we can get, we do it *after* we have processed
-        # the videos (instead of combining both steps)
-        self._update_videos()
-        self._update_playlists()
+    def update(self):
+        pass
 
-    def _update_videos(self):
+    @classmethod
+    def _bc_name(cls, bc_object):
+        return bc_object.uniqueId.rsplit('/', 1)[1]
+
+
+class VideoUpdater(BaseUpdater):
+
+    @classmethod
+    def get_objects(cls):
         now = datetime.datetime.now(pytz.UTC)
         from_date = (datetime.datetime(now.year, now.month, now.day, now.hour)
                      - datetime.timedelta(hours=10))
-        videos = zeit.brightcove.content.Video.find_modified(
-            from_date=from_date)
-        for x in videos:
-            self._update_video(x)
+        return zeit.brightcove.content.Video.find_modified(from_date=from_date)
 
-    def _update_playlists(self):
-        playlists = zeit.brightcove.content.Playlist.find_all()
-        exists = set()
-        for playlist in playlists:
-            exists.add(self._bc_name(playlist))
-            self._update_playlist(playlist)
+    def delete(self):
+        if self.bcobj.item_state == 'DELETED':
+            del self.repository()['brightcove-folder'][
+                self._bc_name(self.bcobj)]
+            return True
 
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        for bc_name in list(repository['brightcove-folder'].keys()):
-            if bc_name.startswith('playlist') and bc_name not in exists:
-                del repository['brightcove-folder'][bc_name]
-
-    def _update_video(self, bc_video):
-        cms_video = zeit.cms.interfaces.ICMSContent(bc_video.uniqueId, None)
-        if cms_video is None:
-            self._add_object_to_cms(bc_video)
-            return
-
-        if bc_video.item_state == 'DELETED':
-            self._delete_object_from_cms(bc_video)
-
+    def update(self):
         # Update video in CMS iff the BC version is newer. For easier
         # comparison between objects in CMS and BC, operate on BC
         # representations.
-        current = bc_video.from_cms(cms_video)
+        current = self.bcobj.from_cms(self.cmsobj)
 
         # A bug in Brightcove may cause the last-modified date to remain
         # unchanged even when the video-still URL is actually changed.
-        if (current.date_last_modified and bc_video.date_last_modified and
-            current.date_last_modified >= bc_video.date_last_modified and
-            current.video_still == bc_video.video_still):
+        if (current.date_last_modified and self.bcobj.date_last_modified and
+            current.date_last_modified >= self.bcobj.date_last_modified and
+            current.video_still == self.bcobj.video_still):
             return
 
         # Only modify the object in DAV if it really changed in BC.
 #        curdata = current.data.copy()
 #        curdata.pop('lastModifiedDate', None)
         curdata = dict(name=current.data['name'])
-
-#        newdata = bc_video.data.copy()
+#        newdata = self.bcobj.data.copy()
 #        newdata.pop('lastModifiedDate', None)
-        newdata = dict(name=bc_video.data['name'])
+        newdata = dict(name=self.bcobj.data['name'])
 
         if curdata == newdata:
             return
 
-        with zeit.cms.checkout.helper.checked_out(cms_video) as co:
-            bc_video.to_cms(co)
+        with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
+            self.bcobj.to_cms(co)
+        return True
 
-    def _update_playlist(self, bc_playlist):
-        cms_playlist = zeit.cms.interfaces.ICMSContent(
-            bc_playlist.uniqueId, None)
-        if cms_playlist is None:
-            self._add_object_to_cms(bc_playlist)
-            return
 
-        # Update video in CMS iff the BC version is newer. For easier
-        # comparison between objects in CMS and BC, operate on BC
-        # representations.
-        current = bc_playlist.from_cms(cms_playlist)
+class PlaylistUpdater(BaseUpdater):
 
-        # Only modify the object in DAV if it really changed in BC.
+    @classmethod
+    def get_objects(cls):
+        return zeit.brightcove.content.Playlist.find_all()
+
+    @classmethod
+    def update_all(cls):
+        objects = cls.get_objects()
+        for x in objects:
+            cls(x)()
+        cls.delete_remaining_except(objects)
+
+    def update(self):
+        current = self.bcobj.from_cms(self.cmsobj)
+
 #        curdata = current.data.copy()
         curdata = dict(name=current.data['name'])
-#        newdata = bc_playlist.data.copy()
-        newdata = dict(name=bc_playlist.data['name'])
+#        newdata = self.bcobj.data.copy()
+        newdata = dict(name=self.bcobj.data['name'])
         if curdata == newdata:
             return
 
-        with zeit.cms.checkout.helper.checked_out(cms_playlist) as co:
-            bc_playlist.to_cms(co)
+        with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
+            self.bcobj.to_cms(co)
+        return True
 
-    def _add_object_to_cms(self, bc_object):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        repository['brightcove-folder'][self._bc_name(bc_object)] = \
-            bc_object.to_cms()
-
-    def _delete_object_from_cms(self, bc_object):
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        del repository['brightcove-folder'][self._bc_name(bc_object)]
-
-    def _bc_name(self, bc_object):
-        return bc_object.uniqueId.rsplit('/', 1)[1]
-
-
-@gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
-    'zeit.brightcove', 'index-principal'))
-def update_repository():
-    repository = zope.component.getUtility(
-        zeit.brightcove.interfaces.IRepository)
-    repository.update_from_brightcove()
+    @classmethod
+    def delete_remaining_except(cls, existing):
+        existing_names = [cls._bc_name(x) for x in existing]
+        for name in list(cls.repository()['brightcove-folder'].keys()):
+            if name.startswith('playlist') and name not in existing_names:
+                del cls.repository()['brightcove-folder'][name]

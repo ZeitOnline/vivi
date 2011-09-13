@@ -208,10 +208,8 @@ BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
 
 def update_repository(root):
     with zeit.cms.testing.site(root):
-        update = zope.component.getUtility(
-            zeit.brightcove.interfaces.IUpdate)
-        update()
-        transaction.commit()
+        with transaction:
+            zeit.brightcove.update.update_from_brightcove()
 
 
 class BrightcoveLayer(BrightcoveHTTPLayer,

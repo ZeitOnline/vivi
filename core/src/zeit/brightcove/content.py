@@ -1,7 +1,6 @@
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.i18n import MessageFactory as _
 import datetime
 import persistent
 import persistent.mapping

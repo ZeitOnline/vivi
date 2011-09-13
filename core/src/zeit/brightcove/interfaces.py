@@ -133,9 +133,3 @@ class IVideoAsset(zope.interface.Interface):
         title=_('Video 2'),
         required=False,
         source=brightcoveSource)
-
-
-class IUpdate(zope.interface.Interface):
-
-    def __call__():
-        """XXX Update."""
