@@ -302,14 +302,31 @@ class Video(Content):
 
     # XXX year.setter is missing
 
-    def to_cms_content(self):
-        video = zeit.content.video.video.Video()
+    def to_cms(self, video=None):
+        if video is None:
+            video = zeit.content.video.video.Video()
         for key in zeit.content.video.interfaces.IVideo:
             try:
                 setattr(video, key, getattr(self, key))
             except AttributeError:
                 pass
         return video
+
+    @classmethod
+    def from_cms(cls, video):
+        instance = cls(data=dict(id='foo'))
+        for key in zeit.content.video.interfaces.IVideo:
+            try:
+                setattr(instance, key, getattr(video, key))
+            except AttributeError:
+                pass
+        # XXX
+        date_last_modified = \
+            zeit.cms.content.interfaces.ISemanticChange(
+            video).last_semantic_change
+        if date_last_modified is not None:
+            instance.date_last_modified = date_last_modified
+        return instance
 
 
 class Playlist(Content):
@@ -345,8 +362,9 @@ class Playlist(Content):
             'find_all_playlists', class_,
             playlist_fields=class_.fields)
 
-    def to_cms_content(self):
-        playlist = zeit.content.video.playlist.Playlist()
+    def to_cms(self, playlist=None):
+        if playlist is None:
+            playlist = zeit.content.video.playlist.Playlist()
         for key in zeit.content.video.interfaces.IPlaylist:
             try:
                 setattr(playlist, key, getattr(self, key))

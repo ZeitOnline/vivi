@@ -238,7 +238,6 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
                 zeit.cms.repository.interfaces.IRepository)
             repository['brightcove-folder'] = \
                 zeit.cms.repository.folder.Folder()
-        update_repository(root_folder)
 
     @classmethod
     def testTearDown(cls):
@@ -252,6 +251,7 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
     def setUp(self):
         super(BrightcoveTestCase, self).setUp()
         self.posts = RequestHandler.posts_received
+        update_repository(self.getRootFolder())
 
 
 def FunctionalDocFileSuite(*args, **kw):

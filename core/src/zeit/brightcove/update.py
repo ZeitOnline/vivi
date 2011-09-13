@@ -52,9 +52,10 @@ class Update(grokcore.component.GlobalUtility):
         videos = zeit.brightcove.content.Video.find_modified(
             from_date=from_date)
         for x in videos:
-            self._update_content(x)
+            self._update_video(x)
 
     def _update_playlists(self):
+        return
         playlists = zeit.brightcove.content.Playlist.find_all()
         exists = set()
         for playlist in playlists:
@@ -68,28 +69,55 @@ class Update(grokcore.component.GlobalUtility):
                 self[content.__name__].item_state = 'DELETED'
                 zope.lifecycleevent.modified(self[content.__name__])
 
-    def _update_content(self, newcontent):
-        current = self.get(newcontent.__name__)
-        if current:
-            curtime = zope.dublincore.interfaces.IDCTimes(current)
-            bctime = zope.dublincore.interfaces.IDCTimes(newcontent)
+    def _update_video(self, bc_video):
+        cms_video = zeit.cms.interfaces.ICMSContent(bc_video.uniqueId, None)
+        if cms_video is None:
+            self._add_object_to_cms(bc_video)
+            return
 
-            # update time for video_still can fail, so we need to test for
-            # equality in addition
-            if (curtime.modified and bctime.modified and
-                curtime.modified >= bctime.modified and
-                current.video_still == newcontent.video_still):
-                return
-            curdata = current.data.copy()
-            curdata.pop('lastModifiedDate', None)
-            newdata = newcontent.data.copy()
-            newdata.pop('lastModifiedDate', None)
-            if curdata == newdata:
-                return
-        self[newcontent.__name__] = newcontent.to_cms_content()
-        newcontent.__parent__ = self
-        # XXX we should use events here
-        zeit.brightcove.solr.index_content(newcontent)
+        if bc_video.item_state == 'DELETED':
+            self._delete_object_from_cms(bc_video)
+
+        # Update video in CMS iff the BC version is newer. For easier
+        # comparison between objects in CMS and BC, operate on BC
+        # representations.
+        current = bc_video.from_cms(cms_video)
+
+        # A bug in Brightcove may cause the last-modified date to remain
+        # unchanged even when the video-still URL is actually changed.
+        if (current.date_last_modified and bc_video.date_last_modified and
+            current.date_last_modified >= bc_video.date_last_modified and
+            current.video_still == bc_video.video_still):
+            return
+
+        # Only modify the object in DAV if it really changed in BC.
+#        curdata = current.data.copy()
+#        curdata.pop('lastModifiedDate', None)
+        curdata = dict(name=current.data['name'])
+
+#        newdata = bc_video.data.copy()
+#        newdata.pop('lastModifiedDate', None)
+        newdata = dict(name=bc_video.data['name'])
+
+        if curdata == newdata:
+            return
+
+        with zeit.cms.checkout.helper.checked_out(cms_video) as co:
+            bc_video.to_cms(co)
+
+    def _add_object_to_cms(self, bc_object):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        repository['brightcove-folder'][self._bc_name(bc_object)] = \
+            bc_object.to_cms()
+
+    def _delete_object_from_cms(self, bc_object):
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        del repository['brightcove-folder'][self._bc_name(bc_object)]
+
+    def _bc_name(self, bc_object):
+        return bc_object.uniqueId.rsplit('/', 1)[1]
 
 
 @gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(

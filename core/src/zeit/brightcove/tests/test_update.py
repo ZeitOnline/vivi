@@ -3,19 +3,20 @@
 
 from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
+import mock
 import time
 import transaction
 import unittest2 as unittest  # XXX
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
+import zeit.cms.checkout.helper
 import zope.lifecycleevent
 
 
-@unittest.skip('not yet')
-class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
+class UpdateTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def setUp(self):
-        super(RepositoryTest, self).setUp()
+        super(UpdateTest, self).setUp()
         self.old_video = VIDEO_1234.copy()
         self.old_playlist = PLAYLIST_2345.copy()
         self.old_playlist_items = PLAYLIST_LIST_RESPONSE['items'][:]
@@ -24,42 +25,98 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         VIDEO_1234.update(self.old_video)
         PLAYLIST_2345.update(self.old_playlist)
         PLAYLIST_LIST_RESPONSE['items'] = self.old_playlist_items
-        super(RepositoryTest, self).tearDown()
+        super(UpdateTest, self).tearDown()
 
-    def test_cronjob_should_not_overwrite_user_edits(self):
-        video = self.repository['video-1234']
-        video.title = u'changed'
-        video = self.repository['video-1234']
-        self.assertEqual(u'changed', video.title)
-        zope.lifecycleevent.modified(video)
-        transaction.commit()
-        video = self.repository['video-1234']
-        self.assertEqual(u'changed', video.title)
-        self.repository.update_from_brightcove()
-        video = self.repository['video-1234']
-        self.assertEqual(u'changed', video.title)
+    def update(self):
+        update = zope.component.getUtility(
+            zeit.brightcove.interfaces.IUpdate)
+        update()
 
-    def test_cronjob_should_fetch_changes_from_brightcove(self):
-        video = self.repository['video-1234']
-        video.title = u'local change'
-        # update local modification timestamp
-        zope.lifecycleevent.modified(video)
-        transaction.commit()
+    def test_new_video_in_bc_should_be_added_to_repository(self):
+        # hack around test setup
+        del self.repository['brightcove-folder']['video-1234']
 
-        # as long as the modified date is not newer than the local one,
-        # upstream changes are ignored
+        self.update()
+
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234')
+        self.assertEqual(
+            u'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
+            video.title)
+
+    def test_update_should_not_overwrite_local_edits_with_old_bc_data(self):
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234')
+        with zeit.cms.checkout.helper.checked_out(
+                video, semantic_change=True) as co:
+            co.title = u'local change'
+
         VIDEO_1234['name'] = u'upstream change'
-        self.repository.update_from_brightcove()
-        video = self.repository['video-1234']
+        self.update()
+
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234')
         self.assertEqual(u'local change', video.title)
-        
+
+    def test_update_should_overwrite_local_data_with_newer_bc_edits(self):
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234')
+        with zeit.cms.checkout.helper.checked_out(video) as co:
+            co.title = u'local change'
+
+        VIDEO_1234['name'] = u'upstream change'
         soon = str(int((time.time() + 10) * 1000))
         VIDEO_1234['lastModifiedDate'] = soon
-        self.repository.update_from_brightcove()
-        video = self.repository['video-1234']
-        self.assertEqual(u'upstream change', video.title)
-        
 
+        self.update()
+
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234')
+        self.assertEqual(u'upstream change', video.title)
+
+    def test_difference_of_video_still_counts_as_newer_upstream_edit(self):
+        # A bug in Brightcove may cause the last-modified date to remain
+        # unchanged even when the video-still URL is actually changed.
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234')
+        with zeit.cms.checkout.helper.checked_out(video) as co:
+            co.title = u'local change'
+
+        VIDEO_1234['name'] = u'upstream change'
+        VIDEO_1234['videoStillURL'] = 'http://videostillurl2'
+
+        self.update()
+
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234')
+        self.assertEqual(u'upstream change', video.title)
+
+    def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234')
+        VIDEO_1234['lastModifiedDate'] = str(int((time.time() + 10) * 1000))
+        with mock.patch('zeit.brightcove.content.Video.to_cms') as to_cms:
+            self.update()
+            self.assertFalse(to_cms.called)
+
+    def test_videos_in_deleted_state_should_be_deleted_from_cms(self):
+        self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234', None))
+
+        VIDEO_1234['itemState'] = 'DELETED'
+        soon = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = soon
+
+        self.update()
+
+        self.assertIsNone(zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/video-1234', None))
+
+
+@unittest.skip('not yet')
+class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
+
+    def test_cronjob_should_fetch_changes_from_brightcove(self):
         # Playlists don't have a modified date,
         # so changes propagate immediately
         playlist = self.repository['playlist-2345']
@@ -68,33 +125,6 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.repository.update_from_brightcove()
         playlist = self.repository['playlist-2345']
         self.assertEqual(u'another change', playlist.title)
-
-    def test_fetch_changes_from_bc_if_video_still_differs(self):
-        video = self.repository['video-1234']
-        video.title = u'local change'
-        # update local modification timestamp
-        zope.lifecycleevent.modified(video)
-        transaction.commit()
-
-        #video_still property update might not correspond to the update time 
-        VIDEO_1234['name'] = u'upstream change'
-        VIDEO_1234['videoStillURL'] = 'http://videostillurl2'
-        self.repository.update_from_brightcove()
-        video = self.repository['video-1234']
-        self.assertEqual(u'upstream change', video.title)
-
-    def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
-        video = self.repository['video-1234']
-        video.marker = True
-        playlist = self.repository['playlist-2345']
-        playlist.marker = True
-
-        VIDEO_1234['lastModifiedDate'] = str(int((time.time() + 10) * 1000))
-        self.repository.update_from_brightcove()
-        video = self.repository['video-1234']
-        self.assertTrue(video.marker)
-        playlist = self.repository['playlist-2345']
-        self.assertTrue(playlist.marker)
 
     def test_deleting_playlist_from_brightcove(self):
         playlist = self.repository['playlist-3456']
