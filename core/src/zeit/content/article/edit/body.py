@@ -83,7 +83,10 @@ class EditableBody(zeit.edit.container.Base,
             # may migrate so it is guaranteed that there is a division tag:
             self.keys()
         item.__name__ = name
-        self.xml.division[:][-1].append(item.xml)
+        if zeit.content.article.edit.interfaces.IDivision.providedBy(item):
+            self.xml.append(item.xml)
+        else:
+            self.xml.division[:][-1].append(item.xml)
         self._p_changed = True
         return name
 

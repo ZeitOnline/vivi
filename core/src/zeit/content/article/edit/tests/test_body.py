@@ -100,6 +100,19 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
             '<division><p>I have <p>another para</p> in me</p></division>')
         self.assertEqual([u'2'], body.keys())
 
+    def test_adding_division_should_add_on_toplevel(self):
+        from zeit.content.article.edit.interfaces import IDivision
+        import lxml.objectify
+        body = self.get_body('<division/>')
+        block = mock.Mock()
+        zope.interface.alsoProvides(block, IDivision)
+        block.xml = lxml.objectify.E.division()
+        block.__name__ = 'myblock'
+        block.__parent__ = None
+        block.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', 'myblock')
+        body.add(block)
+        self.assertEqual(2, len(body.xml.getchildren()))
+
 
 class TestCleaner(unittest2.TestCase):
 
