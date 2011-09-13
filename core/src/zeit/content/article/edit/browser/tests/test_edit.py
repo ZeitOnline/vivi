@@ -440,11 +440,12 @@ class TestDivision(
     def test_division_should_have_editable_teaser(self):
         self.create_division()
         s = self.selenium
-        s.click('link=Edit')
-        s.waitForElementPresent('id=form.teaser')
-        s.type('id=form.teaser', "Division teaser")
-        s.click('id=form.actions.apply')
-        s.waitForTextPresent('Division teaser')
+        s.waitForElementPresent('css=.type-division input')
+        s.fireEvent('css=.type-division input', 'blur')
+        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        # Re-open the page and verify that the data is still there
+        s.clickAndWait('link=Edit contents')
+        s.assertValue('css=.type-division input', 'Division teaser')
 
 
 class TestLimitedInput(

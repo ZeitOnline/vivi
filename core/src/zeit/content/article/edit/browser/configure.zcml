@@ -334,31 +334,19 @@
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IDivision"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    template="edit.division.pt"
+    name="edit-division"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
+    weight="10"
     />
-
 
   <browser:page
     for="zeit.content.article.edit.interfaces.IDivision"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-division"
     class=".edit.EditDivision"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IDivision"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="edit-box"
-    class=".edit.EditDivisionAction"
-    permission="zeit.EditContent"
-    weight="0"
+    permission="zope.View"
     />
 
 

@@ -9,6 +9,7 @@ import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.edit.browser.form
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
 import zope.cachedescriptors.property
@@ -215,15 +216,14 @@ class ViewRelateds(object):
         return content.related
 
 
-class EditDivision(zeit.edit.browser.view.EditBox):
+class EditDivision(zeit.edit.browser.form.InlineForm):
 
+    legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IDivision).select(
             'teaser')
     undo_description = _('edit page break')
 
-
-class EditDivisionAction(zeit.edit.browser.view.EditBoxAction):
-
-    title = _('Edit')
-    action = 'edit-division'
+    @property
+    def prefix(self):
+        return 'form.divison.{0}'.format(self.context.__name__)
