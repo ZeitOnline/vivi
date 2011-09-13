@@ -54,19 +54,17 @@ class Update(grokcore.component.GlobalUtility):
             self._update_video(x)
 
     def _update_playlists(self):
-        return
         playlists = zeit.brightcove.content.Playlist.find_all()
         exists = set()
         for playlist in playlists:
-            exists.add(playlist.__name__)
-            self._update_content(playlist)
+            exists.add(self._bc_name(playlist))
+            self._update_playlist(playlist)
 
-        for content in list(self.values()):
-            if not zeit.brightcove.interfaces.IPlaylist.providedBy(content):
-                continue
-            if content.__name__ not in exists:
-                self[content.__name__].item_state = 'DELETED'
-                zope.lifecycleevent.modified(self[content.__name__])
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        for bc_name in list(repository['brightcove-folder'].keys()):
+            if bc_name.startswith('playlist') and bc_name not in exists:
+                del repository['brightcove-folder'][bc_name]
 
     def _update_video(self, bc_video):
         cms_video = zeit.cms.interfaces.ICMSContent(bc_video.uniqueId, None)
@@ -103,6 +101,29 @@ class Update(grokcore.component.GlobalUtility):
 
         with zeit.cms.checkout.helper.checked_out(cms_video) as co:
             bc_video.to_cms(co)
+
+    def _update_playlist(self, bc_playlist):
+        cms_playlist = zeit.cms.interfaces.ICMSContent(
+            bc_playlist.uniqueId, None)
+        if cms_playlist is None:
+            self._add_object_to_cms(bc_playlist)
+            return
+
+        # Update video in CMS iff the BC version is newer. For easier
+        # comparison between objects in CMS and BC, operate on BC
+        # representations.
+        current = bc_playlist.from_cms(cms_playlist)
+
+        # Only modify the object in DAV if it really changed in BC.
+#        curdata = current.data.copy()
+        curdata = dict(name=current.data['name'])
+#        newdata = bc_playlist.data.copy()
+        newdata = dict(name=bc_playlist.data['name'])
+        if curdata == newdata:
+            return
+
+        with zeit.cms.checkout.helper.checked_out(cms_playlist) as co:
+            bc_playlist.to_cms(co)
 
     def _add_object_to_cms(self, bc_object):
         repository = zope.component.getUtility(

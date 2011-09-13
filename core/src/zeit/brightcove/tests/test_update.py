@@ -5,26 +5,21 @@ from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
 import mock
 import time
-import unittest2 as unittest  # XXX
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.checkout.helper
-import zope.lifecycleevent
+import zope.component
 
 
-class UpdateTest(zeit.brightcove.testing.BrightcoveTestCase):
+class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def setUp(self):
-        super(UpdateTest, self).setUp()
+        super(UpdateVideoTest, self).setUp()
         self.old_video = VIDEO_1234.copy()
-        self.old_playlist = PLAYLIST_2345.copy()
-        self.old_playlist_items = PLAYLIST_LIST_RESPONSE['items'][:]
 
     def tearDown(self):
         VIDEO_1234.update(self.old_video)
-        PLAYLIST_2345.update(self.old_playlist)
-        PLAYLIST_LIST_RESPONSE['items'] = self.old_playlist_items
-        super(UpdateTest, self).tearDown()
+        super(UpdateVideoTest, self).tearDown()
 
     def update(self):
         update = zope.component.getUtility(
@@ -60,7 +55,8 @@ class UpdateTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_update_should_overwrite_local_data_with_newer_bc_edits(self):
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/video-1234')
-        with zeit.cms.checkout.helper.checked_out(video) as co:
+        with zeit.cms.checkout.helper.checked_out(
+            video, semantic_change=True) as co:
             co.title = u'local change'
 
         VIDEO_1234['name'] = u'upstream change'
@@ -91,8 +87,6 @@ class UpdateTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEqual(u'upstream change', video.title)
 
     def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
-        video = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/brightcove-folder/video-1234')
         VIDEO_1234['lastModifiedDate'] = str(int((time.time() + 10) * 1000))
         with mock.patch('zeit.brightcove.content.Video.to_cms') as to_cms:
             self.update()
@@ -112,26 +106,60 @@ class UpdateTest(zeit.brightcove.testing.BrightcoveTestCase):
             'http://xml.zeit.de/brightcove-folder/video-1234', None))
 
 
-@unittest.skip('not yet')
-class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
+class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
-    def test_cronjob_should_fetch_changes_from_brightcove(self):
-        # Playlists don't have a modified date,
-        # so changes propagate immediately
-        playlist = self.repository['playlist-2345']
-        self.assertEqual(u'Videos zum Thema Film', playlist.title)
-        PLAYLIST_2345['name'] = u'another change'
-        self.repository.update_from_brightcove()
-        playlist = self.repository['playlist-2345']
-        self.assertEqual(u'another change', playlist.title)
+    def setUp(self):
+        super(UpdatePlaylistTest, self).setUp()
+        self.old_playlist = PLAYLIST_2345.copy()
+        self.old_playlist_items = PLAYLIST_LIST_RESPONSE['items'][:]
 
-    def test_deleting_playlist_from_brightcove(self):
-        playlist = self.repository['playlist-3456']
-        self.assertTrue(
-            zeit.brightcove.interfaces.IPlaylist.providedBy(playlist))
+    def tearDown(self):
+        PLAYLIST_2345.update(self.old_playlist)
+        PLAYLIST_LIST_RESPONSE['items'] = self.old_playlist_items
+        super(UpdatePlaylistTest, self).tearDown()
+
+    def update(self):
+        update = zope.component.getUtility(
+            zeit.brightcove.interfaces.IUpdate)
+        update()
+
+    def test_new_playlist_in_bc_should_be_added_to_repository(self):
+        # hack around test setup
+        del self.repository['brightcove-folder']['playlist-2345']
+
+        self.update()
+
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/playlist-2345')
+        self.assertEqual('Videos zum Thema Film', playlist.title)
+
+    def test_update_always_overwrites_local_data_with_bc_data(self):
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/playlist-2345')
+        with zeit.cms.checkout.helper.checked_out(
+            playlist, semantic_change=True) as co:
+            co.title = u'local change'
+
+        PLAYLIST_2345['name'] = u'upstream change'
+
+        self.update()
+
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/playlist-2345')
+        self.assertEqual(u'upstream change', playlist.title)
+
+    def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
+        with mock.patch('zeit.brightcove.content.Playlist.to_cms') as to_cms:
+            self.update()
+            self.assertFalse(to_cms.called)
+
+    def test_playlist_no_longer_in_brightcove_is_deleted_from_cms(self):
+        self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/playlist-3456', None))
 
         del PLAYLIST_LIST_RESPONSE['items'][-1]
 
-        self.repository.update_from_brightcove()
-        pls = self.repository['playlist-3456']
-        self.assertEquals('DELETED', pls.item_state)
+        self.update()
+
+        self.assertIsNone(zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/brightcove-folder/playlist-3456', None))

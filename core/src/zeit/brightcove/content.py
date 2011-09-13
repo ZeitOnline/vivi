@@ -371,3 +371,13 @@ class Playlist(Content):
             except AttributeError:
                 pass
         return playlist
+
+    @classmethod
+    def from_cms(cls, playlist):
+        instance = cls(data=dict(id='foo'))
+        for key in zeit.content.video.interfaces.IPlaylist:
+            try:
+                setattr(instance, key, getattr(playlist, key))
+            except AttributeError:
+                pass
+        return instance
