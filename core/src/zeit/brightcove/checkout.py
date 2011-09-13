@@ -1,9 +1,9 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import grokcore.component
 import grokcore.view
-import zeit.brightcove.content
+import zeit.brightcove.converter
 import zeit.brightcove.interfaces
 import zeit.cms.checkout.interfaces
 import zope.component
@@ -13,7 +13,7 @@ import zope.security.proxy
 @grokcore.component.adapter(zeit.brightcove.interfaces.IVideo)
 @grokcore.component.implementer(zeit.cms.checkout.interfaces.ILocalContent)
 def local_video(context):
-    video = zeit.brightcove.content.Video(
+    video = zeit.brightcove.converter.Video(
         zope.security.proxy.removeSecurityProxy(context).data)
     zope.interface.alsoProvides(
         video, zeit.cms.workingcopy.interfaces.ILocalContent)
@@ -24,7 +24,7 @@ def local_video(context):
 @grokcore.component.implementer(
     zeit.cms.checkout.interfaces.IRepositoryContent)
 def repository_video(context):
-    video = zeit.brightcove.content.Video(
+    video = zeit.brightcove.converter.Video(
         zope.security.proxy.removeSecurityProxy(context).data)
     repository = zope.component.getUtility(
         zeit.brightcove.interfaces.IRepository)

@@ -4,7 +4,7 @@
 import datetime
 import gocept.runner
 import pytz
-import zeit.brightcove.content
+import zeit.brightcove.converter
 import zeit.cms.repository.interfaces
 import zope.component
 import zope.container.contained
@@ -73,7 +73,8 @@ class VideoUpdater(BaseUpdater):
         now = datetime.datetime.now(pytz.UTC)
         from_date = (datetime.datetime(now.year, now.month, now.day, now.hour)
                      - datetime.timedelta(hours=10))
-        return zeit.brightcove.content.Video.find_modified(from_date=from_date)
+        return zeit.brightcove.converter.Video.find_modified(
+            from_date=from_date)
 
     def delete(self):
         if self.bcobj.item_state == 'DELETED':
@@ -114,7 +115,7 @@ class PlaylistUpdater(BaseUpdater):
 
     @classmethod
     def get_objects(cls):
-        return zeit.brightcove.content.Playlist.find_all()
+        return zeit.brightcove.converter.Playlist.find_all()
 
     @classmethod
     def update_all(cls):

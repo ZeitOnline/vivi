@@ -21,7 +21,7 @@ import zope.publisher.browser
 class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_basic_properties_are_converted_to_cms_names(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals(1234, video.id)
         self.assertEquals(
             u'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
@@ -42,14 +42,14 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         whitelist = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
         whitelist['Politik'] = Tag('Politik')
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals(['Politik'], [kw.code for kw in video.keywords])
         video.keywords = (Tag('staatsanwaltschaft'), Tag('parlament'))
         self.assertEquals('staatsanwaltschaft;parlament',
                           video.data['customFields']['cmskeywords'])
 
     def test_bool(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals(True, video.dailyNewsletter)
         video.dailyNewsletter = False
         self.assertEquals('0',
@@ -59,35 +59,35 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
                           video.data['customFields']['newsletter'])
 
     def test_expires(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         date = datetime.datetime(2010, 3, 26, 5, 0)
         date = pytz.utc.localize(date)
         self.assertEquals(date, video.expires)
 
     def test_created(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         date = datetime.datetime(2010, 3, 8, 3, 15, 38)
         date = pytz.utc.localize(date)
         self.assertEquals(date, video.date_created)
 
     def test_released(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         date = datetime.datetime(2010, 3, 8, 12, 59, 57)
         date = pytz.utc.localize(date)
         self.assertEquals(date, video.date_first_released)
 
     def test_modified(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         date = datetime.datetime(2010, 3, 8, 12, 59, 57)
         date = pytz.utc.localize(date)
         self.assertEquals(date, video.date_first_released)
 
     def test_videostill(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals("http://videostillurl", video.video_still)
 
     def test_thumbnail(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals("http://thumbnailurl", video.thumbnail)
 
 
@@ -97,12 +97,12 @@ class SaveTest(zeit.brightcove.testing.BrightcoveTestCase):
     # XXX todo
 
     def test_modify(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         video.subtitle = u'A new subtitle'
         self.assertEquals(u'A new subtitle', video.subtitle)
         # On abort nothing is written to brightcove
         transaction.abort()
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals(
             u'Mehr Glanz, Glamour und erwartungsvolle Spannung',
             video.subtitle)
@@ -110,7 +110,7 @@ class SaveTest(zeit.brightcove.testing.BrightcoveTestCase):
         video.subtitle = u'A new subtitle'
         video.title = u'A new title'
         transaction.commit()
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals(1, len(self.posts))
         self.assertEquals(u'A new subtitle', video.subtitle)
 
@@ -121,7 +121,7 @@ class VideoIntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
     # XXX todo
 
     def test_cmscontent(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals(
             'http://xml.zeit.de/brightcove-folder/video-1234', video.uniqueId)
         self.assertEquals('video-1234', video.__name__)
@@ -131,11 +131,11 @@ class VideoIntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
                 'http://xml.zeit.de/brightcove-folder/video-1234'))
 
     def test_comment_should_honour_default(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertTrue(video.commentsAllowed)
 
     def test_related(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals((), video.related)
         content = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent')
@@ -153,13 +153,14 @@ class VideoIntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_uuid(self):
         # The uuid of videos is the unique id. This works because the unique id
         # contains a database id from brightcove which never changes
-        uuid = zeit.cms.content.interfaces.IUUID(zeit.brightcove.content.Video.find_by_id('1234'))
+        uuid = zeit.cms.content.interfaces.IUUID(
+            zeit.brightcove.converter.Video.find_by_id('1234'))
         self.assertEquals(
             'http://xml.zeit.de/brightcove-folder/video-1234', uuid.id)
 
     def test_common_metadata(self):
         metadata = zeit.cms.content.interfaces.ICommonMetadata(
-            zeit.brightcove.content.Video.find_by_id('1234'))
+            zeit.brightcove.converter.Video.find_by_id('1234'))
         self.assertEquals(2010, metadata.year)
         self.assertEquals(
             u'Glanz, Glamour und erwartungsvolle Spannung',
@@ -167,7 +168,7 @@ class VideoIntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_videos_shouild_be_adaptable_to_isemantic_change(self):
         metadata = zeit.cms.content.interfaces.ISemanticChange(
-            zeit.brightcove.content.Video.find_by_id('1234'))
+            zeit.brightcove.converter.Video.find_by_id('1234'))
         date = datetime.datetime(2010, 3, 8, 12, 59, 57)
         date = pytz.utc.localize(date)
         self.assertEquals(date, metadata.last_semantic_change)
@@ -176,7 +177,7 @@ class VideoIntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
         request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
         list_repr = zope.component.getMultiAdapter(
-            (zeit.brightcove.content.Video.find_by_id('1234'), request),
+            (zeit.brightcove.converter.Video.find_by_id('1234'), request),
             zeit.cms.browser.interfaces.IListRepresentation)
         self.assertEquals(2010, list_repr.year)
         self.assertEquals(
@@ -184,7 +185,7 @@ class VideoIntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
             list_repr.title)
 
     def test_publication_status(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         publication_status = zeit.cms.workflow.interfaces.IPublicationStatus(
             video)
         self.assertEquals("published", publication_status.published)
@@ -221,7 +222,7 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals("published", publication_status.published)
 
     def test_video_ids(self):
-        pls = zeit.brightcove.content.Playlist.find_by_id('2345')
+        pls = zeit.brightcove.converter.Playlist.find_by_id('2345')
         vids = ('http://xml.zeit.de/brightcove-folder/video-1234',
                 'http://xml.zeit.de/brightcove-folder/video-6789')
         self.assertEquals(vids, pls.video_ids)
@@ -237,13 +238,13 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 class TestPublishInfo(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_publishinfo(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         pi = zeit.cms.workflow.interfaces.IPublishInfo(video)
         zope.interface.verify.verifyObject(
             zeit.cms.workflow.interfaces.IPublishInfo, pi)
 
     def test_timebased(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         time = zeit.workflow.interfaces.ITimeBasedPublishing(video)
         zope.interface.verify.verifyObject(
             zeit.workflow.interfaces.ITimeBasedPublishing, time)
@@ -253,7 +254,7 @@ class TestPublishInfo(zeit.brightcove.testing.BrightcoveTestCase):
 class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_data_are_written_to_brightcove_on_checkin(self):
-        video = zeit.brightcove.content.Video.find_by_id('1234')
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
         with zeit.cms.checkout.helper.checked_out(video) as co:
             co.title = 'changed'
         self.assertEqual(

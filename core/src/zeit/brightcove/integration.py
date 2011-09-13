@@ -7,7 +7,7 @@ import grokcore.component
 import grokcore.component
 import lxml.objectify
 import pytz
-import zeit.brightcove.content
+import zeit.brightcove.converter
 import zeit.brightcove.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -203,7 +203,7 @@ def list_video_ids(context):
         return None
     l = []
     for name in context.video_ids:
-        content = zeit.brightcove.content.BCContent()
+        content = zeit.brightcove.converter.BCContent()
         content.uniqueId = name
         l.append(content)
     return l

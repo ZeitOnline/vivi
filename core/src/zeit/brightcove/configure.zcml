@@ -19,26 +19,6 @@
     component=".generation.manager"
     />
 
-  <class class=".content.Video">
-    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require
-      interface=".interfaces.IVideo"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IVideo"
-      permission="zeit.brightcove.video.Edit"
-      />
-  </class>
-
-  <class class=".content.Playlist">
-    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require
-      interface=".interfaces.IPlaylist"
-      permission="zope.View"
-      />
-  </class>
-
   <utility
     provides="zeit.brightcove.interfaces.IAPIConnection"
     factory=".connection.connection_factory"

@@ -126,7 +126,7 @@ class BCContent(object):
     pass
 
 
-class Content(object):
+class Converter(object):
 
     zope.interface.implements(zeit.brightcove.interfaces.IBrightcoveContent)
 
@@ -187,7 +187,7 @@ class Content(object):
         self.get_connection().post('update_video', video=data)
 
 
-class Video(Content):
+class Video(Converter):
 
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
 
@@ -322,7 +322,7 @@ class Video(Content):
         return instance
 
 
-class Playlist(Content):
+class Playlist(Converter):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
     type = 'playlist'
