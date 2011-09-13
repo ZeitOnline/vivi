@@ -2,8 +2,6 @@
 # See also LICENSE.txt
 
 import datetime
-import persistent
-import persistent.mapping
 import pytz
 import transaction
 import zeit.brightcove.interfaces
@@ -15,7 +13,6 @@ import zeit.content.video.interfaces
 import zeit.content.video.playlist
 import zeit.content.video.video
 import zope.component
-import zope.container.contained
 import zope.interface
 
 
@@ -61,7 +58,7 @@ class mapped(object):
     def __set__(self, instance, value):
         data = instance.data
         for key in self.path[:-1]:
-            data = data.setdefault(key, persistent.mapping.PersistentMapping())
+            data = data.setdefault(key, {})
         data[self.path[-1]] = value
         instance.save_to_brightcove()
 
@@ -129,8 +126,7 @@ class BCContent(object):
     pass
 
 
-class Content(persistent.Persistent,
-            zope.container.contained.Contained):
+class Content(object):
 
     zope.interface.implements(zeit.brightcove.interfaces.IBrightcoveContent)
 
@@ -142,11 +138,9 @@ class Content(persistent.Persistent,
 
     def __init__(self, data, connection=None):
         if data is not None:
-            self.data = persistent.mapping.PersistentMapping(data)
+            self.data = data
             if 'customFields' in self.data:
-                self.data['customFields'] = (
-                    persistent.mapping.PersistentMapping(
-                        self.data['customFields']))
+                self.data['customFields'] = self.data['customFields']
             self.__name__ = '%s-%s' % (self.type, self.data['id'])
             self.uniqueId = 'http://xml.zeit.de/brightcove-folder/%s' % (
                 self.__name__)
@@ -279,8 +273,7 @@ class Video(Content):
     def related(self, value):
         if not value:
             value = ()
-        custom = self.data.setdefault('customFields',
-                                      persistent.mapping.PersistentMapping())
+        custom = self.data.setdefault('customFields', {})
 
         for i in range(1, 6):
             custom['ref_link%i' % i] = ''
