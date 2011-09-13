@@ -4,7 +4,6 @@
 import datetime
 import gocept.runner
 import grokcore.component
-import persistent
 import pytz
 import zeit.brightcove.interfaces
 import zeit.brightcove.solr

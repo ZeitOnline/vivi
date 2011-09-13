@@ -5,7 +5,6 @@ from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
 import mock
 import time
-import transaction
 import unittest2 as unittest  # XXX
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
