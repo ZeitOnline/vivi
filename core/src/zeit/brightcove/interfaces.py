@@ -21,12 +21,9 @@ class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
     product_configuration = 'zeit.brightcove'
 
 
-class IBCContent(zeit.cms.interfaces.ICMSContent):
-    """Plain BrightCove-Content w/ just an uniqueId
-    """
+class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
-
-class IBrightcoveContent(IBCContent):
+    # XXX obsolete, remove when it's easy
 
     id = zope.schema.Int(
         title=_('Id'),

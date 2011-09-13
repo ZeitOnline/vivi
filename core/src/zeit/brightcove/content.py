@@ -124,8 +124,9 @@ class mapped_product(mapped):
 
 
 class BCContent(object):
+    # XXX remove at some point
 
-    zope.interface.implements(zeit.brightcove.interfaces.IBCContent)
+    pass
 
 
 class Content(persistent.Persistent,
