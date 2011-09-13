@@ -11,6 +11,10 @@ import zeit.cms.checkout.helper
 import zope.component
 
 
+def run_update():
+    zope.component.getUtility(zeit.brightcove.interfaces.IUpdate)()
+
+
 class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def setUp(self):
@@ -21,16 +25,11 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         VIDEO_1234.update(self.old_video)
         super(UpdateVideoTest, self).tearDown()
 
-    def update(self):
-        update = zope.component.getUtility(
-            zeit.brightcove.interfaces.IUpdate)
-        update()
-
     def test_new_video_in_bc_should_be_added_to_repository(self):
         # hack around test setup
         del self.repository['brightcove-folder']['video-1234']
 
-        self.update()
+        run_update()
 
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/video-1234')
@@ -46,7 +45,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             co.title = u'local change'
 
         VIDEO_1234['name'] = u'upstream change'
-        self.update()
+        run_update()
 
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/video-1234')
@@ -63,7 +62,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         soon = str(int((time.time() + 10) * 1000))
         VIDEO_1234['lastModifiedDate'] = soon
 
-        self.update()
+        run_update()
 
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/video-1234')
@@ -80,7 +79,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         VIDEO_1234['name'] = u'upstream change'
         VIDEO_1234['videoStillURL'] = 'http://videostillurl2'
 
-        self.update()
+        run_update()
 
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/video-1234')
@@ -89,7 +88,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
         VIDEO_1234['lastModifiedDate'] = str(int((time.time() + 10) * 1000))
         with mock.patch('zeit.brightcove.content.Video.to_cms') as to_cms:
-            self.update()
+            run_update()
             self.assertFalse(to_cms.called)
 
     def test_videos_in_deleted_state_should_be_deleted_from_cms(self):
@@ -100,7 +99,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         soon = str(int((time.time() + 10) * 1000))
         VIDEO_1234['lastModifiedDate'] = soon
 
-        self.update()
+        run_update()
 
         self.assertIsNone(zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/video-1234', None))
@@ -118,16 +117,11 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         PLAYLIST_LIST_RESPONSE['items'] = self.old_playlist_items
         super(UpdatePlaylistTest, self).tearDown()
 
-    def update(self):
-        update = zope.component.getUtility(
-            zeit.brightcove.interfaces.IUpdate)
-        update()
-
     def test_new_playlist_in_bc_should_be_added_to_repository(self):
         # hack around test setup
         del self.repository['brightcove-folder']['playlist-2345']
 
-        self.update()
+        run_update()
 
         playlist = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/playlist-2345')
@@ -142,7 +136,7 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
         PLAYLIST_2345['name'] = u'upstream change'
 
-        self.update()
+        run_update()
 
         playlist = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/playlist-2345')
@@ -150,7 +144,7 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
         with mock.patch('zeit.brightcove.content.Playlist.to_cms') as to_cms:
-            self.update()
+            run_update()
             self.assertFalse(to_cms.called)
 
     def test_playlist_no_longer_in_brightcove_is_deleted_from_cms(self):
@@ -159,7 +153,7 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
         del PLAYLIST_LIST_RESPONSE['items'][-1]
 
-        self.update()
+        run_update()
 
         self.assertIsNone(zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/brightcove-folder/playlist-3456', None))
