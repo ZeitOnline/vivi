@@ -22,7 +22,7 @@ setup(
         'zeit.content.video',
         'zeit.solr>0.21.0',
         'zope.cachedescriptors',
-        'zope.container',
+        'zope.component',
         'zope.interface',
         'zope.schema',
     ],

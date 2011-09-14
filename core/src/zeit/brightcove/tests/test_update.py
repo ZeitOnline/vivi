@@ -6,7 +6,6 @@ from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.update import update_from_brightcove
 import mock
 import time
-import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.checkout.helper
 

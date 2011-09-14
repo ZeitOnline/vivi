@@ -10,7 +10,6 @@ import pytz
 import zeit.brightcove.converter
 import zeit.brightcove.interfaces
 import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.workflow.interfaces

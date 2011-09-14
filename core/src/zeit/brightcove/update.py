@@ -8,8 +8,6 @@ import zeit.addcentral.interfaces
 import zeit.brightcove.converter
 import zeit.cms.repository.interfaces
 import zope.component
-import zope.container.contained
-import zope.lifecycleevent
 
 
 def update_from_brightcove():

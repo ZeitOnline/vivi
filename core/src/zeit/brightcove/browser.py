@@ -6,7 +6,6 @@ import grokcore.component
 import zeit.brightcove.interfaces
 import zeit.cms.browser.form
 import zope.formlib.form
-import zope.site.hooks
 import zope.traversing.browser.absoluteurl
 
 

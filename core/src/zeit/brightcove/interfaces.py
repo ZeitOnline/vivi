@@ -2,12 +2,9 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
-import zeit.cms.tagging.whitelist
-import zope.container.interfaces
 import zope.interface
 import zope.schema
 
