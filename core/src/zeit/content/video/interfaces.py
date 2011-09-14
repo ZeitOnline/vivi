@@ -8,7 +8,7 @@ import zeit.cms.interfaces
 
 
 class IVideo(zeit.cms.content.interfaces.ICommonMetadata,
-             zeit.cms.interfaces.ICMSContent):
+             zeit.cms.content.interfaces.IXMLContent):
 
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
