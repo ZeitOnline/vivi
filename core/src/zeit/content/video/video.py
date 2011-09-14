@@ -11,7 +11,8 @@ import zope.interface
 
 class Video(zeit.cms.content.metadata.CommonMetadata):
 
-    zope.interface.implements(zeit.content.video.interfaces.IVideo)
+    zope.interface.implements(zeit.content.video.interfaces.IVideo,
+                              zeit.cms.interfaces.IAsset)
 
     default_template = '<video></video>'
 
