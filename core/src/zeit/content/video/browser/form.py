@@ -2,42 +2,60 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import gocept.form.grouped
+import grokcore.component as grok
 import zeit.cms.content.browser.form
+import zeit.cms.related.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
 import zope.component.hooks
+import zope.dublincore.interfaces
 import zope.formlib.form
 
+class Edit(zeit.cms.browser.form.EditForm):
 
-class Edit(zeit.cms.content.browser.form.CommonMetadataEditForm):
-
-    title = _('Edit video')
-
-    # videos don't have authors
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.video.interfaces.IVideo).omit('authors')
-
-    _redir = False
-
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyChanges(data)
-
-    @zope.formlib.form.action(
-        _('Apply and go to search'),
-        condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_and_serach_action(self, action, data):
-        self.applyChanges(data)
-        self._redir = True
-
-    def nextURL(self):
-        if self._redir:
-            return self.url(zope.component.hooks.getSite())
-
-
-class Display(zeit.cms.content.browser.form.CommonMetadataDisplayForm):
-
-    title = _("View video metadata")
+    title = _('Video')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.video.interfaces.IVideo)
+        zeit.content.video.interfaces.IVideo,
+        zeit.cms.related.interfaces.IRelatedContent,
+        zeit.cms.workflow.interfaces.IPublishInfo,
+        zope.dublincore.interfaces.IDCTimes,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE
+    ).select(
+            'supertitle', 'title', 'subtitle', 'teaserText',
+            'product', 'ressort', 'keywords', 'serie',
+            'dailyNewsletter', 'banner', 'banner_id',
+            'breaking_news', 'has_recensions', 'commentsAllowed',
+            'related',
+            # remaining:
+            '__name__',
+            'created', 'date_first_released', 'modified', 'expires',
+        'thumbnail', 'video_still', 'flv_url')
+
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _("Texts"),
+            ('supertitle', 'title', 'subtitle', 'teaserText'),
+            css_class='wide-widgets column-left'),
+        gocept.form.grouped.Fields(
+            _("Navigation"),
+            ('product', 'ressort', 'keywords', 'serie'),
+            css_class='column-right'),
+        gocept.form.grouped.Fields(
+            _("Options"),
+            ('dailyNewsletter', 'banner', 'banner_id',
+             'breaking_news', 'has_recensions', 'commentsAllowed'),
+            css_class='column-right checkboxes'),
+        gocept.form.grouped.Fields(
+            _('Teaser elements'),
+            ('related',),
+            'wide-widgets full-width'),
+    )
+
+
+
+@grok.adapter(zeit.content.video.interfaces.IVideo, name='edit.html')
+@grok.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
+def display_view_name(context):
+    return 'edit.html'

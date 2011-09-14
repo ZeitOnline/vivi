@@ -1,0 +1,52 @@
+Basic form roundtrip test
+=========================
+
+Create video:
+
+>>> from zeit.content.video.video import Video
+>>> import zeit.cms.interfaces
+>>> import zeit.cms.testing
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     folder = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/online/')
+...     folder['video'] = Video()
+
+
+Videos hava a view:
+
+>>> from z3c.etestbrowser.testing import ExtendedTestBrowser
+>>> browser = ExtendedTestBrowser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+>>> browser.handleErrors = False
+>>> browser.open(
+...     'http://localhost/++skin++vivi/repository/online/video')
+>>> print browser.contents
+<...
+          <span>Title</span>
+          ...
+          <span>Subtitle</span>
+          ...
+
+
+Videos can be checked out:
+
+
+>>> browser.getLink('Checkout').click()
+>>> print browser.contents
+<..."video" has been checked out...
+
+Videos can be edited:
+
+>>> browser.getControl('Title').value = 'Video title'
+>>> browser.getControl('Product').displayValue = ['Die Zeit']
+>>> browser.getControl('Ressort').displayValue = ['Deutschland']
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...Updated on...
+
+
+Videos can be checked in:
+
+>>> browser.getLink('Checkin').click()
+>>> print browser.contents
+<..."video" has been checked in...
+
