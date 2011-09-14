@@ -85,6 +85,9 @@ class VideoUpdater(BaseUpdater):
 
         # A bug in Brightcove may cause the last-modified date to remain
         # unchanged even when the video-still URL is actually changed.
+        # (Also note that Brightcove has the misfeature of sometimes returning
+        # old data for several minutes even directly after we POSTed to update
+        # something.)
         if (current.date_last_modified and self.bcobj.date_last_modified and
             current.date_last_modified >= self.bcobj.date_last_modified and
             current.video_still == self.bcobj.video_still):
