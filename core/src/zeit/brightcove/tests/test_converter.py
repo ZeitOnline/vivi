@@ -2,15 +2,18 @@
 # See also LICENSE.txt
 
 import datetime
+import mock
 import pytz
 import transaction
 import unittest2 as unittest  # XXX
+import zeit.brightcove.converter
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
+import zeit.cms.testing
 import zeit.cms.workflow.interfaces
 import zeit.workflow.interfaces
 import zope.component
@@ -113,6 +116,13 @@ class SaveTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEquals(1, len(self.posts))
         self.assertEquals(u'A new subtitle', video.subtitle)
+
+
+class VideoConvertToCMSTest(zeit.brightcove.testing.BrightcoveTestCase):
+
+    def test_brightcove_id_should_be_stored_on_video_in_dav(self):
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
+        self.assertEqual('1234', video.to_cms().brightcove_id)
 
 
 @unittest.skip('not yet')
@@ -262,3 +272,30 @@ class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
             co.title = 'changed'
         self.assertEqual(
             1, len(zeit.brightcove.testing.RequestHandler.posts_received))
+
+
+class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
+
+    def test_video_id_should_be_resolved_to_unique_id(self):
+        with mock.patch('zeit.connector.mock.Connector.search') as search:
+            search.return_value = iter(
+                (('http://xml.zeit.de/video/2010-03/1234',),))
+            self.assertEqual(
+                u'http://xml.zeit.de/video/2010-03/1234',
+                zeit.brightcove.converter.resolve_video_id('1234'))
+
+    def test_should_raise_if_no_object_is_found(self):
+        with mock.patch('zeit.connector.mock.Connector.search') as search:
+            search.return_value = iter(())
+            self.assertRaises(
+                LookupError,
+                zeit.brightcove.converter.resolve_video_id, '1234')
+
+    def test_should_raise_if_multiple_objects_are_found(self):
+        with mock.patch('zeit.connector.mock.Connector.search') as search:
+            search.return_value = iter(
+                (('http://xml.zeit.de/video/2010-03/1234',),
+                 ('http://xml.zeit.de/video/2010-03/1234',),))
+            self.assertRaises(
+                LookupError,
+                zeit.brightcove.converter.resolve_video_id, '1234')

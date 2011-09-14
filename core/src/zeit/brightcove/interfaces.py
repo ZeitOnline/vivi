@@ -9,6 +9,9 @@ import zope.interface
 import zope.schema
 
 
+DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/brightcove'
+
+
 class IAPIConnection(zope.interface.Interface):
     """Brightcove API connection."""
 

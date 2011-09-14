@@ -12,7 +12,8 @@ import zeit.brightcove.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.type
+import zeit.connector.interfaces
+import zeit.connector.search
 import zeit.content.video.interfaces
 import zeit.content.video.playlist
 import zeit.content.video.video
@@ -308,6 +309,7 @@ class Video(Converter):
                 setattr(video, key, getattr(self, key))
             except AttributeError:
                 pass
+        video.brightcove_id = str(self.id)
         return video
 
     @classmethod
@@ -350,8 +352,8 @@ class Playlist(Converter):
 
     @property
     def video_ids(self):
-        return tuple('http://xml.zeit.de/brightcove-folder/video-%s' % id
-                     for id in self.data['videoIds'])
+        return tuple(
+            resolve_video_id(str(id)) for id in self.data['videoIds'])
 
     @classmethod
     def find_by_ids(class_, ids):
@@ -392,3 +394,22 @@ class Playlist(Converter):
 @grok.adapter(Playlist)
 def playlist_location(bc_object):
     return zeit.addcentral.add.find_or_create_folder(*PLAYLIST_FOLDER)
+
+
+BRIGHTCOVE_ID = zeit.connector.search.SearchVar(
+    'id', 'http://namespaces.zeit.de/CMS/brightcove')
+
+
+def resolve_video_id(video_id):
+    connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+    result = list(
+        connector.search([BRIGHTCOVE_ID], BRIGHTCOVE_ID == video_id))
+    if not result:
+        raise LookupError(video_id)
+    if len(result) > 1:
+        raise LookupError(
+            'Found multiple CMS objects with video id %r.' % video_id)
+    result = result[0]
+    unique_id = result[0]
+    return unique_id

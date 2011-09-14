@@ -2,10 +2,12 @@
 # See also LICENSE.txt
 
 import gocept.selenium.ztk
-import pkg_resources
 import json
+import mock
+import pkg_resources
 import transaction
 import urlparse
+import zeit.brightcove.converter
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
@@ -224,9 +226,18 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
             zeit.cms.tagging.interfaces.ITagger
             )
 
+        cls.resolve_patch = mock.patch(
+            'zeit.brightcove.converter.resolve_video_id',
+            new=cls.resolve_video_id)
+        cls.resolve_patch.start()
+
+    @staticmethod
+    def resolve_video_id(video_id):
+        return zeit.brightcove.converter.Video.find_by_id(video_id).uniqueId
+
     @classmethod
     def tearDown(cls):
-        pass
+        cls.resolve_patch.stop()
 
     @classmethod
     def testSetUp(cls):
