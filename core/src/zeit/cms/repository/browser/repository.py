@@ -162,7 +162,7 @@ class HiddenCollections(zeit.cms.browser.view.Base):
 
 class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
 
-    def __call__(self, unique_id, view='@@view.html'):
+    def __call__(self, unique_id, view=''):
         obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
         if obj is None:
             msg = _("The object '${id}' could not be found.",

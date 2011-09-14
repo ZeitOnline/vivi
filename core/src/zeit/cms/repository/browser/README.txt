@@ -285,7 +285,7 @@ the unique id:
 >>> browser.open('http://localhost/++skin++cms/@@redirect_to?unique_id='
 ...              'http://xml.zeit.de/online/2007/01/Somalia')
 >>> browser.url
-'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'
+'http://localhost/++skin++cms/repository/online/2007/01/Somalia/'
 
 When another view is desired it can be passed as the ``view`` query argument:
 
