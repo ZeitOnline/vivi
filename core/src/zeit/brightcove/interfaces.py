@@ -130,3 +130,7 @@ class IVideoAsset(zope.interface.Interface):
         title=_('Video 2'),
         required=False,
         source=brightcoveSource)
+
+
+class IRepository(zope.interface.Interface):
+    """legacy interface."""
