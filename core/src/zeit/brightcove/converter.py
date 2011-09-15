@@ -195,6 +195,9 @@ class Converter(object):
             data.pop(field, None)
         self.get_connection().post('update_video', video=data)
 
+    def __str__(self):
+        return '<%s id=%s>' % (self.__class__.__name__, self.id)
+
 
 class Video(Converter):
 

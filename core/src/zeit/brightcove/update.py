@@ -3,12 +3,16 @@
 
 import datetime
 import gocept.runner
+import logging
 import pytz
 import zeit.addcentral.interfaces
 import zeit.brightcove.converter
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zope.component
+
+
+log = logging.getLogger(__name__)
 
 
 def update_from_brightcove():
@@ -51,6 +55,7 @@ class BaseUpdater(object):
 
     def add(self):
         if self.cmsobj is None:
+            log.info('Adding %s', self.bcobj)
             folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
             folder[str(self.bcobj.id)] = self.bcobj.to_cms()
             cmsobj = folder[str(self.bcobj.id)]
@@ -76,6 +81,7 @@ class VideoUpdater(BaseUpdater):
 
     def delete(self):
         if self.bcobj.item_state == 'DELETED':
+            log.info('Deleting %s', self.bcobj)
             if zeit.cms.workflow.interfaces.IPublishInfo(
                     self.cmsobj).published:
                 zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract()
@@ -110,6 +116,7 @@ class VideoUpdater(BaseUpdater):
         if curdata == newdata:
             return
 
+        log.info('Updating %s', self.bcobj)
         with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
             self.bcobj.to_cms(co)
         zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
@@ -139,6 +146,7 @@ class PlaylistUpdater(BaseUpdater):
         if curdata == newdata:
             return
 
+        log.info('Updating %s', self.bcobj)
         with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
             self.bcobj.to_cms(co)
         zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
@@ -153,6 +161,7 @@ class PlaylistUpdater(BaseUpdater):
         cms_names = set(folder.keys())
         bc_names = set(str(x.id) for x in bc_objects)
         for name in cms_names - bc_names:
+            log.info('Deleting <Playlist id=%s>', name)
             cmsobj = folder[name]
             if zeit.cms.workflow.interfaces.IPublishInfo(cmsobj).published:
                 zeit.cms.workflow.interfaces.IPublish(cmsobj).retract()
