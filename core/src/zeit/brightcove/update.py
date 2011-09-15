@@ -7,8 +7,10 @@ import logging
 import pytz
 import zeit.addcentral.interfaces
 import zeit.brightcove.converter
+import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.content.video.interfaces
 import zope.component
 
 
@@ -90,30 +92,29 @@ class VideoUpdater(BaseUpdater):
             return True
 
     def update(self):
-        # Update video in CMS iff the BC version is newer. For easier
-        # comparison between objects in CMS and BC, operate on BC
-        # representations.
-        current = self.bcobj.from_cms(self.cmsobj)
+        # Update video in CMS iff the BC version is newer.
+        new = self.bcobj.to_cms()
 
         # A bug in Brightcove may cause the last-modified date to remain
         # unchanged even when the video-still URL is actually changed.
         # (Also note that Brightcove has the misfeature of sometimes returning
         # old data for several minutes even directly after we POSTed to update
         # something.)
-        if (current.date_last_modified and self.bcobj.date_last_modified and
-            current.date_last_modified >= self.bcobj.date_last_modified and
-            current.video_still == self.bcobj.video_still):
+        current_mtime = zeit.cms.content.interfaces.ISemanticChange(
+            self.cmsobj).last_semantic_change
+        new_mtime = zeit.cms.content.interfaces.ISemanticChange(
+            new).last_semantic_change
+
+        if (current_mtime and new_mtime and current_mtime >= new_mtime and
+            self.cmsobj.video_still == new.video_still):
             return
 
         # Only modify the object in DAV if it really changed in BC.
-#        curdata = current.data.copy()
-#        curdata.pop('lastModifiedDate', None)
-        curdata = dict(name=current.data['name'])
-#        newdata = self.bcobj.data.copy()
-#        newdata.pop('lastModifiedDate', None)
-        newdata = dict(name=self.bcobj.data['name'])
-
-        if curdata == newdata:
+        for name in zeit.content.video.interfaces.IVideo:
+            if getattr(self.cmsobj, name, None) != getattr(new, name, None):
+                import pdb; pdb.set_trace() 
+                break
+        else:
             return
 
         log.info('Updating %s', self.bcobj)

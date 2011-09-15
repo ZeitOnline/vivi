@@ -89,9 +89,10 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
         VIDEO_1234['lastModifiedDate'] = str(int((time.time() + 10) * 1000))
-        with mock.patch('zeit.brightcove.converter.Video.to_cms') as to_cms:
+        with mock.patch('zeit.cms.checkout.manager.CheckoutManager.checkin'
+                        ) as checkin:
             update_from_brightcove()
-            self.assertFalse(to_cms.called)
+            self.assertFalse(checkin.called)
 
     def test_should_publish_after_update(self):
         video = zeit.cms.interfaces.ICMSContent(
