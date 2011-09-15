@@ -25,7 +25,7 @@ def update_from_brightcove():
 
 @gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
     'zeit.brightcove', 'index-principal'))
-def update_repository():
+def _update_from_brightcove():
     update_from_brightcove()
 
 

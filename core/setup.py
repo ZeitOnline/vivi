@@ -28,6 +28,6 @@ setup(
     ],
     entry_points = """
     [console_scripts]
-    update-brightcove-repository = zeit.brightcove.repository:update_repository
+    update-brightcove-repository = zeit.brightcove.update:_update_from_brightcove
     """
 )
