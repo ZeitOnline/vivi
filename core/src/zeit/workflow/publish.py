@@ -224,7 +224,7 @@ class PublishRetractTask(object):
             return obj
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         try:
-            obj = manager.checkin()
+            obj = manager.checkin(publishing=True)
         except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
             # XXX this codepath is not tested!
             logger.warning("Could not checkin %s" % obj.uniqueId)

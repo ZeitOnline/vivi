@@ -105,7 +105,7 @@ class CheckoutManager(object):
         return True
 
     def checkin(self, event=True, semantic_change=False,
-                ignore_conflicts=False):
+                ignore_conflicts=False, publishing=False):
         if not self.canCheckin:
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId, "Cannot checkin.")
@@ -118,7 +118,7 @@ class CheckoutManager(object):
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(
-                    self.context, workingcopy, self.principal))
+                    self.context, workingcopy, self.principal, publishing))
         unique_id = self.context.uniqueId
         if ignore_conflicts:
             adapter_name = u'non-conflicting'
@@ -132,7 +132,7 @@ class CheckoutManager(object):
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckinEvent(
-                    added, workingcopy, self.principal))
+                    added, workingcopy, self.principal, publishing))
         lockable = zope.app.locking.interfaces.ILockable(added, None)
         if lockable is not None:
             try:

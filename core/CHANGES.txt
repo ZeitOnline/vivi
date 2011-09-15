@@ -12,6 +12,8 @@ zeit.cms changes
 
 - Fix product source so it works in the face of SecurityProxies (#9231).
 
+- Introduce ICheckinCheckoutEvent.publishing (for #8996).
+
 
 1.49.0 (2011-06-20)
 -------------------
