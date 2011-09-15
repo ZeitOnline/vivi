@@ -195,6 +195,8 @@ product_config = """\
     read-url http://localhost:%s/
     write-url http://localhost:%s/
     source-serie file://%s
+    video-folder video
+    playlist-folder video/playlist
 </product-config>
 """ % (httpd_port,
        httpd_port,

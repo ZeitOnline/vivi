@@ -24,10 +24,6 @@ import zope.component
 import zope.interface
 
 
-VIDEO_FOLDER = 'video'
-PLAYLIST_FOLDER = ('video', 'playlist')
-
-
 def to_epoch(value):
     return calendar.timegm(value.utctimetuple())
 
@@ -348,8 +344,11 @@ class Video(Converter):
 @grok.implementer(zeit.addcentral.interfaces.IAddLocation)
 @grok.adapter(Video)
 def video_location(bc_object):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.brightcove')
+    path = config['video-folder']
     return zeit.addcentral.add.find_or_create_folder(
-        VIDEO_FOLDER, bc_object.date_created.strftime('%Y-%m'))
+        *(path.split('/') + [bc_object.date_created.strftime('%Y-%m')]))
 
 
 class Playlist(Converter):
@@ -409,7 +408,10 @@ class Playlist(Converter):
 @grok.implementer(zeit.addcentral.interfaces.IAddLocation)
 @grok.adapter(Playlist)
 def playlist_location(bc_object):
-    return zeit.addcentral.add.find_or_create_folder(*PLAYLIST_FOLDER)
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.brightcove')
+    path = config['playlist-folder']
+    return zeit.addcentral.add.find_or_create_folder(*path.split('/'))
 
 
 BRIGHTCOVE_ID = zeit.connector.search.SearchVar(
