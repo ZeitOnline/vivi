@@ -223,22 +223,6 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
             'http://xml.zeit.de/video/2010-03/1234', vids[0].uniqueId)
 
 
-@unittest.skip('not yet')
-class TestPublishInfo(zeit.brightcove.testing.BrightcoveTestCase):
-
-    def test_publishinfo(self):
-        video = zeit.brightcove.converter.Video.find_by_id('1234')
-        pi = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        zope.interface.verify.verifyObject(
-            zeit.cms.workflow.interfaces.IPublishInfo, pi)
-
-    def test_timebased(self):
-        video = zeit.brightcove.converter.Video.find_by_id('1234')
-        time = zeit.workflow.interfaces.ITimeBasedPublishing(video)
-        zope.interface.verify.verifyObject(
-            zeit.workflow.interfaces.ITimeBasedPublishing, time)
-
-
 class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_video_changes_are_written_to_brightcove_on_checkin(self):
