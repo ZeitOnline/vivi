@@ -441,7 +441,8 @@ def resolve_video_id(video_id):
 
 
 def update_brightcove(context, event):
-    zeit.brightcove.interfaces.IBrightcoveObject(context).save()
+    if not event.publishing:
+        zeit.brightcove.interfaces.IBrightcoveObject(context).save()
 
 
 @grok.adapter(zeit.content.video.interfaces.IVideo)

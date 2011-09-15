@@ -289,6 +289,14 @@ class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
         transaction.abort()
         self.assertEquals(0, len(self.posts))
 
+    def test_brightcove_is_not_updated_by_publication(self):
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        zeit.cms.workflow.interfaces.IPublish(video).publish()
+        zeit.workflow.testing.run_publish()
+        self.assertEqual(
+            0, len(zeit.brightcove.testing.RequestHandler.posts_received))
+
 
 class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
 
