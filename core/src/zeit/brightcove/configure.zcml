@@ -62,4 +62,14 @@
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"
     handler=".converter.update_brightcove" />
 
+  <subscriber
+    for="zeit.content.video.interfaces.IVideo
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".converter.publish_on_checkin" />
+
+  <subscriber
+    for="zeit.content.video.interfaces.IPlaylist
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".converter.publish_on_checkin" />
+
 </configure>

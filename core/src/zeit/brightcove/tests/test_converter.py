@@ -191,6 +191,13 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
                 'http://xml.zeit.de/video/2010-03/6789')
         self.assertEquals(vids, pls.video_ids)
 
+    @unittest.skip('not yet')
+    def test_reference_adapter(self):
+        pls = self.repository['playlist-2345']
+        vids = zeit.cms.relation.interfaces.IReferences(pls)
+        self.assertEquals(
+            'http://xml.zeit.de/video/2010-03/1234', vids[0].uniqueId)
+
 
 class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
 
@@ -204,7 +211,43 @@ class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEqual(
             1, len(zeit.brightcove.testing.RequestHandler.posts_received))
 
+    def test_video_is_published_on_checkin(self):
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        last_published = zeit.cms.workflow.interfaces.IPublishInfo(
+            video).date_last_published
+        zeit.cms.workflow.interfaces.IPublish(video).retract()
+
+        with zeit.cms.checkout.helper.checked_out(
+                video, semantic_change=True) as co:
+            co.title = u'local change'
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        self.assertTrue(info.published)
+        self.assertGreater(info.date_last_published, last_published)
+
     def test_playlist_changes_are_written_to_brightcove_on_checkin(self):
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/2345')
+        last_published = zeit.cms.workflow.interfaces.IPublishInfo(
+            playlist).date_last_published
+        zeit.cms.workflow.interfaces.IPublish(playlist).retract()
+
+        with zeit.cms.checkout.helper.checked_out(
+                playlist, semantic_change=True) as co:
+            co.title = u'local change'
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        self.assertTrue(info.published)
+        self.assertGreater(info.date_last_published, last_published)
+
+    def test_playlist_is_updated_on_checkin(self):
         playlist = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/playlist/2345')
         with zeit.cms.checkout.helper.checked_out(
