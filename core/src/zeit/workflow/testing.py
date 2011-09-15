@@ -1,8 +1,12 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import logging
+import lovely.remotetask.interfaces
 import os
+import sys
 import zeit.cms.testing
+import zope.component
 
 product_config = """
 <product-config zeit.workflow>
@@ -74,3 +78,15 @@ class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
     @classmethod
     def testTearDown(cls):
         pass
+
+
+def run_publish():
+    handler = logging.StreamHandler(sys.stdout)
+    logging.root.addHandler(handler)
+    oldlevel = logging.root.level
+    logging.root.setLevel(logging.ERROR)
+    tasks = zope.component.getUtility(
+        lovely.remotetask.interfaces.ITaskService, 'general')
+    tasks.process()
+    logging.root.removeHandler(handler)
+    logging.root.setLevel(oldlevel)
