@@ -24,6 +24,8 @@ editor-ng branch changes
 
 - Introduce ValidateCheckinEvent (#9406).
 
+- Introduce ICheckinCheckoutEvent.publishing (for #8996).
+
 
 1.49.2 (unreleased)
 -------------------

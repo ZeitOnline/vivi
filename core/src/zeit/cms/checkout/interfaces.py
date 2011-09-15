@@ -111,6 +111,13 @@ class ICheckinCheckoutEvent(zope.component.interfaces.IObjectEvent):
     principal = zope.interface.Attribute(
         "The principal checking out the content object")
 
+    publishing = zope.interface.Attribute(
+        """"True if this checkin happens during publishing.
+
+        Event handlers can use this to prefent infinite loops (since another
+        checkout/checkin cycle happens during publishing to update XML
+        references etc.).""")
+
 
 class IBeforeCheckoutEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked out."""
@@ -127,6 +134,10 @@ class IValidateCheckinEvent(ICheckinCheckoutEvent):
     def veto(message=None):
         """Signals that a checkin is not allowed."""
 
+    publishing = zope.interface.Attribute(
+        """NOTE: this common checkin/checkout attribute does not apply for
+        this event""")
+
 
 class IBeforeCheckinEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked in."""
@@ -138,10 +149,11 @@ class IAfterCheckinEvent(ICheckinCheckoutEvent):
 
 class EventBase(zope.component.interfaces.ObjectEvent):
 
-    def __init__(self, object, workingcopy, principal):
+    def __init__(self, object, workingcopy, principal, publishing=False):
         super(EventBase, self).__init__(object)
         self.workingcopy = workingcopy
         self.principal = principal
+        self.publishing = publishing
 
 
 class BeforeCheckoutEvent(EventBase):
