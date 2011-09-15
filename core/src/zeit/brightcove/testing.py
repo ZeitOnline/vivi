@@ -13,6 +13,7 @@ import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.solr.testing
+import zeit.workflow.testing
 import zope.component
 
 
@@ -205,6 +206,7 @@ BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
     product_config=(
         zeit.cms.testing.cms_product_config +
         zeit.solr.testing.product_config +
+        zeit.workflow.testing.product_config +
         product_config))
 
 
@@ -225,6 +227,11 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
             (zeit.cms.interfaces.ICMSContent,),
             zeit.cms.tagging.interfaces.ITagger
             )
+
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        product_config['publish-script'] = 'true'
+        product_config['retract-script'] = 'true'
 
         cls.resolve_patch = mock.patch(
             'zeit.brightcove.converter.resolve_video_id',
@@ -256,6 +263,10 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
         super(BrightcoveTestCase, self).setUp()
         self.posts = RequestHandler.posts_received
         update_repository(self.getRootFolder())
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+        # clear changes made by the checkout/checkin-cycle during publishing
+        RequestHandler.posts_received[:] = []
 
 
 def FunctionalDocFileSuite(*args, **kw):
