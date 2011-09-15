@@ -64,6 +64,10 @@ class mapped(object):
 
     def _get_from_dict(self, value):
         for key in self.path:
+            # XXX We've seen a value of None for the customFields dict sent by
+            # Brightcove.
+            if value is None:
+                return
             value = value[key]
         return value
 
