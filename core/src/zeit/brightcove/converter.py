@@ -9,9 +9,11 @@ import transaction
 import zeit.addcentral.add
 import zeit.addcentral.interfaces
 import zeit.brightcove.interfaces
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.connector.search
 import zeit.content.video.interfaces
@@ -426,3 +428,10 @@ def video_from_cms(context):
 @grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
 def playlist_from_cms(context):
     return Playlist.from_cms(context)
+
+
+def publish_on_checkin(context, event):
+    # prevent infinite loop, since there is a checkout/checkin cycle during
+    # publishing (to update XML references etc.)
+    if not event.publishing:
+        zeit.cms.workflow.interfaces.IPublish(context).publish()
