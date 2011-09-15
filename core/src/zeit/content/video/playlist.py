@@ -11,7 +11,8 @@ import zope.interface
 
 class Playlist(zeit.cms.content.metadata.CommonMetadata):
 
-    zope.interface.implements(zeit.content.video.interfaces.IPlaylist)
+    zope.interface.implements(zeit.content.video.interfaces.IPlaylist,
+                              zeit.cms.interfaces.IAsset)
 
     default_template = '<playlist></playlist>'
 

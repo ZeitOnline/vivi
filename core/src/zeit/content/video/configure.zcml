@@ -17,13 +17,6 @@
       permission="zeit.EditContent" />
   </class>
 
-  <adapter
-    factory="zeit.workflow.workflow.ContentWorkflow"
-    provides="zeit.workflow.interfaces.IContentWorkflow"
-    for=".interfaces.IVideo"
-    trusted="yes"
-    />
-
   <class class=".playlist.Playlist">
     <implements
        interface="zope.annotation.interfaces.IAttributeAnnotatable"
@@ -35,12 +28,5 @@
       set_schema=".interfaces.IPlaylist"
       permission="zeit.EditContent" />
   </class>
-
-  <adapter
-    factory="zeit.workflow.workflow.ContentWorkflow"
-    provides="zeit.workflow.interfaces.IContentWorkflow"
-    for=".interfaces.IPlaylist"
-    trusted="yes"
-    />
 
 </configure>
