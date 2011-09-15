@@ -14,6 +14,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
 import zeit.content.video.video
 import zope.component
 import zope.publisher.browser
@@ -122,6 +123,22 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         date = datetime.datetime(2010, 3, 8, 12, 59, 57, tzinfo=pytz.UTC)
         sc.last_semantic_change = date
         self.assertEqual(date, Video.from_cms(cmsobj).date_last_modified)
+
+    def test_publish_date_is_transferred_to_cms(self):
+        info = zeit.cms.workflow.interfaces.IPublishInfo(
+            Video.find_by_id('1234').to_cms())
+        date = datetime.datetime(2010, 3, 8, 12, 59, 57, tzinfo=pytz.UTC)
+        self.assertEqual(date, info.date_last_published)
+
+    def test_publish_date_is_not_transferred_from_cms(self):
+        bcobj = Video.find_by_id('1234')
+        first_released = bcobj.date_first_released
+        cmsobj = bcobj.to_cms()
+        info = zeit.cms.workflow.interfaces.IPublishInfo(cmsobj)
+        date = datetime.datetime(2011, 3, 9, 14, 59, 57, tzinfo=pytz.UTC)
+        info.date_last_published = date
+        self.assertEqual(
+            first_released, Video.from_cms(cmsobj).date_first_released)
 
 
 @unittest.skip('not yet')

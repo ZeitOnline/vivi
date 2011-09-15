@@ -168,7 +168,10 @@ class Converter(object):
 
     @classmethod
     def find_by_id(cls, id):
-        return iter(cls.find_by_ids([id])).next()
+        try:
+            return iter(cls.find_by_ids([id])).next()
+        except StopIteration:
+            raise KeyError(id)
 
     @staticmethod
     def get_connection():
@@ -316,11 +319,14 @@ class Video(Converter):
         video.brightcove_id = str(self.id)
         sc = zeit.cms.content.interfaces.ISemanticChange(video)
         sc.last_semantic_change = self.date_last_modified
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        info.date_last_published = self.date_first_released
         return video
 
     @classmethod
     def from_cms(cls, video):
         instance = cls(data=dict(id='foo'))
+        instance.id = video.brightcove_id
         for key in zeit.content.video.interfaces.IVideo:
             try:
                 setattr(instance, key, getattr(video, key))
@@ -331,6 +337,11 @@ class Video(Converter):
             video).last_semantic_change
         if date_last_modified is not None:
             instance.date_last_modified = date_last_modified
+        try:
+            bc_state = cls.find_by_id(instance.id)
+            instance.date_first_released = bc_state.date_first_released
+        except KeyError:
+            pass # avoid failures in test setup
         return instance
 
 
