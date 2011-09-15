@@ -7,18 +7,14 @@ import pytz
 import transaction
 import unittest2 as unittest  # XXX
 import zeit.brightcove.converter
-import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.cms.testing
-import zeit.cms.workflow.interfaces
 import zeit.content.video.video
-import zeit.workflow.interfaces
 import zope.component
-import zope.interface.verify
 import zope.publisher.browser
 
 
