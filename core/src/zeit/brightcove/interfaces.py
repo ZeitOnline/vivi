@@ -16,6 +16,10 @@ class IAPIConnection(zope.interface.Interface):
     """Brightcove API connection."""
 
 
+class IBrightcoveObject(zope.interface.Interface):
+    """A representation of an object as stored in Brightcove."""
+
+
 class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
     config_url = 'source-serie'
     product_configuration = 'zeit.brightcove'

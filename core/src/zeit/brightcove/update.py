@@ -7,6 +7,7 @@ import pytz
 import zeit.addcentral.interfaces
 import zeit.brightcove.converter
 import zeit.cms.repository.interfaces
+import zeit.cms.workflow.interfaces
 import zope.component
 
 
@@ -52,6 +53,8 @@ class BaseUpdater(object):
         if self.cmsobj is None:
             folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
             folder[str(self.bcobj.id)] = self.bcobj.to_cms()
+            cmsobj = folder[str(self.bcobj.id)]
+            zeit.cms.workflow.interfaces.IPublish(cmsobj).publish()
             return True
 
     def delete(self):
@@ -73,6 +76,9 @@ class VideoUpdater(BaseUpdater):
 
     def delete(self):
         if self.bcobj.item_state == 'DELETED':
+            if zeit.cms.workflow.interfaces.IPublishInfo(
+                    self.cmsobj).published:
+                zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract()
             folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
             del folder[str(self.bcobj.id)]
             return True
@@ -85,6 +91,9 @@ class VideoUpdater(BaseUpdater):
 
         # A bug in Brightcove may cause the last-modified date to remain
         # unchanged even when the video-still URL is actually changed.
+        # (Also note that Brightcove has the misfeature of sometimes returning
+        # old data for several minutes even directly after we POSTed to update
+        # something.)
         if (current.date_last_modified and self.bcobj.date_last_modified and
             current.date_last_modified >= self.bcobj.date_last_modified and
             current.video_still == self.bcobj.video_still):
@@ -103,6 +112,7 @@ class VideoUpdater(BaseUpdater):
 
         with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
             self.bcobj.to_cms(co)
+        zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
         return True
 
 
@@ -131,6 +141,7 @@ class PlaylistUpdater(BaseUpdater):
 
         with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
             self.bcobj.to_cms(co)
+        zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
         return True
 
     @classmethod
@@ -142,4 +153,7 @@ class PlaylistUpdater(BaseUpdater):
         cms_names = set(folder.keys())
         bc_names = set(str(x.id) for x in bc_objects)
         for name in cms_names - bc_names:
+            cmsobj = folder[name]
+            if zeit.cms.workflow.interfaces.IPublishInfo(cmsobj).published:
+                zeit.cms.workflow.interfaces.IPublish(cmsobj).retract()
             del folder[name]

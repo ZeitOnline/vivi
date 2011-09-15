@@ -69,7 +69,6 @@ class mapped(object):
         for key in self.path[:-1]:
             data = data.setdefault(key, {})
         data[self.path[-1]] = value
-        instance.save_to_brightcove()
 
 
 class mapped_bool(mapped):
@@ -169,9 +168,7 @@ class Converter(object):
         return zope.component.getUtility(
             zeit.brightcove.interfaces.IAPIConnection)
 
-    def save_to_brightcove(self):
-        if zeit.cms.checkout.interfaces.ILocalContent.providedBy(self):
-            return
+    def save(self):
         registered = getattr(self, '_v_save_hook_registered', False)
         if not registered:
             transaction.get().addBeforeCommitHook(self._save)
@@ -413,3 +410,19 @@ def resolve_video_id(video_id):
     result = result[0]
     unique_id = result[0]
     return unique_id
+
+
+def update_brightcove(context, event):
+    zeit.brightcove.interfaces.IBrightcoveObject(context).save()
+
+
+@grok.adapter(zeit.content.video.interfaces.IVideo)
+@grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
+def video_from_cms(context):
+    return Video.from_cms(context)
+
+
+@grok.adapter(zeit.content.video.interfaces.IPlaylist)
+@grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
+def playlist_from_cms(context):
+    return Playlist.from_cms(context)

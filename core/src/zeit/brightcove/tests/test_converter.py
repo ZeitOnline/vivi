@@ -94,30 +94,6 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEquals("http://thumbnailurl", video.thumbnail)
 
 
-@unittest.skip('not yet')
-class SaveTest(zeit.brightcove.testing.BrightcoveTestCase):
-
-    # XXX todo
-
-    def test_modify(self):
-        video = zeit.brightcove.converter.Video.find_by_id('1234')
-        video.subtitle = u'A new subtitle'
-        self.assertEquals(u'A new subtitle', video.subtitle)
-        # On abort nothing is written to brightcove
-        transaction.abort()
-        video = zeit.brightcove.converter.Video.find_by_id('1234')
-        self.assertEquals(
-            u'Mehr Glanz, Glamour und erwartungsvolle Spannung',
-            video.subtitle)
-        # On commit data is written to brightcove
-        video.subtitle = u'A new subtitle'
-        video.title = u'A new title'
-        transaction.commit()
-        video = zeit.brightcove.converter.Video.find_by_id('1234')
-        self.assertEquals(1, len(self.posts))
-        self.assertEquals(u'A new subtitle', video.subtitle)
-
-
 class VideoConvertToCMSTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_brightcove_id_should_be_stored_on_video_in_dav(self):
@@ -263,15 +239,41 @@ class TestPublishInfo(zeit.brightcove.testing.BrightcoveTestCase):
             zeit.workflow.interfaces.ITimeBasedPublishing, time)
 
 
-@unittest.skip('not yet')
 class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
 
-    def test_data_are_written_to_brightcove_on_checkin(self):
-        video = zeit.brightcove.converter.Video.find_by_id('1234')
-        with zeit.cms.checkout.helper.checked_out(video) as co:
-            co.title = 'changed'
+    def test_video_changes_are_written_to_brightcove_on_checkin(self):
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        with zeit.cms.checkout.helper.checked_out(
+                video, semantic_change=True) as co:
+            co.title = u'local change'
+        transaction.commit()
         self.assertEqual(
             1, len(zeit.brightcove.testing.RequestHandler.posts_received))
+
+    def test_playlist_changes_are_written_to_brightcove_on_checkin(self):
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/2345')
+        with zeit.cms.checkout.helper.checked_out(
+                playlist, semantic_change=True) as co:
+            co.title = u'local change'
+        transaction.commit()
+        self.assertEqual(
+            1, len(zeit.brightcove.testing.RequestHandler.posts_received))
+
+    def test_changes_are_written_on_commit(self):
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
+        video.subtitle = u'A new subtitle'
+        video.save()
+        transaction.commit()
+        self.assertEquals(1, len(self.posts))
+
+    def test_changes_are_not_written_on_abort(self):
+        video = zeit.brightcove.converter.Video.find_by_id('1234')
+        video.subtitle = u'A new subtitle'
+        video.save()
+        transaction.abort()
+        self.assertEquals(0, len(self.posts))
 
 
 class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
