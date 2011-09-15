@@ -160,23 +160,6 @@ class CommonMetadata(grokcore.component.Adapter):
             object.__setattr__(self, key, value)
 
 
-class SemanticChange(object):
-
-    zope.component.adapts(zeit.brightcove.interfaces.IBrightcoveContent)
-    zope.interface.implements(zeit.cms.content.interfaces.ISemanticChange)
-
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def last_semantic_change(self):
-        return self.context.date_last_modified
-
-    @last_semantic_change.setter
-    def last_semantic_change(self, value):
-        self.context.date_last_modified = value
-
-
 @grokcore.component.adapter(
     zeit.brightcove.interfaces.IPlaylist, name='videos')
 @grokcore.component.implementer(

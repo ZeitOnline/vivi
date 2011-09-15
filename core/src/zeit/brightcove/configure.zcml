@@ -52,13 +52,6 @@
 
   <adapter factory=".asset.XMLReferenceUpdater" name="audio_video"/>
 
-
-  <adapter factory=".integration.SemanticChange" trusted="yes" />
-  <class class=".integration.SemanticChange">
-    <require interface="zeit.cms.content.interfaces.ISemanticChange"
-             permission="zope.View" />
-  </class>
-
   <subscriber
     for="zeit.content.video.interfaces.IVideo
          zeit.cms.checkout.interfaces.IAfterCheckinEvent"

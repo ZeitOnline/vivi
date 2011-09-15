@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import calendar
 import datetime
 import grokcore.component as grok
 import pytz
@@ -23,6 +24,10 @@ import zope.interface
 
 VIDEO_FOLDER = 'video'
 PLAYLIST_FOLDER = ('video', 'playlist')
+
+
+def to_epoch(value):
+    return calendar.timegm(value.utctimetuple())
 
 
 class mapped(object):
@@ -113,7 +118,7 @@ class mapped_datetime(mapped):
         return pytz.utc.localize(date)
 
     def __set__(self, instance, value):
-        value = str(int(value.strftime('%s')) * 1000)
+        value = str(to_epoch(value) * 1000)
         super(mapped_datetime, self).__set__(instance, value)
 
 
@@ -250,7 +255,7 @@ class Video(Converter):
 
     @classmethod
     def find_modified(class_, from_date):
-        from_date = int(from_date.strftime("%s")) / 60
+        from_date = to_epoch(from_date) / 60
         return class_.get_connection().get_list(
             'find_modified_videos', class_,
             from_date=from_date,
@@ -307,6 +312,8 @@ class Video(Converter):
             except AttributeError:
                 pass
         video.brightcove_id = str(self.id)
+        sc = zeit.cms.content.interfaces.ISemanticChange(video)
+        sc.last_semantic_change = self.date_last_modified
         return video
 
     @classmethod
@@ -317,7 +324,6 @@ class Video(Converter):
                 setattr(instance, key, getattr(video, key))
             except AttributeError:
                 pass
-        # XXX
         date_last_modified = \
             zeit.cms.content.interfaces.ISemanticChange(
             video).last_semantic_change

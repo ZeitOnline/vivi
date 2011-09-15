@@ -15,6 +15,7 @@ import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.cms.testing
 import zeit.cms.workflow.interfaces
+import zeit.content.video.video
 import zeit.workflow.interfaces
 import zope.component
 import zope.interface.verify
@@ -99,7 +100,7 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertTrue(video.commentsAllowed)
 
 
-class VideoConvertToCMSTest(zeit.brightcove.testing.BrightcoveTestCase):
+class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_can_be_converted_to_cmscontent(self):
         video = zeit.brightcove.converter.Video.find_by_id('1234')
@@ -112,13 +113,18 @@ class VideoConvertToCMSTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = zeit.brightcove.converter.Video.find_by_id('1234')
         self.assertEqual('1234', video.to_cms().brightcove_id)
 
-    @unittest.skip('not yet')
     def test_videos_should_be_adaptable_to_ISemanticChange(self):
         metadata = zeit.cms.content.interfaces.ISemanticChange(
-            zeit.brightcove.converter.Video.find_by_id('1234'))
-        date = datetime.datetime(2010, 3, 8, 12, 59, 57)
-        date = pytz.utc.localize(date)
-        self.assertEquals(date, metadata.last_semantic_change)
+            zeit.brightcove.converter.Video.find_by_id('1234').to_cms())
+        date = datetime.datetime(2010, 3, 8, 12, 59, 57, tzinfo=pytz.UTC)
+        self.assertEqual(date, metadata.last_semantic_change)
+
+    def test_ISemanticChange_should_be_converted_to_brightcove(self):
+        cmsobj = zeit.content.video.video.Video()
+        sc = zeit.cms.content.interfaces.ISemanticChange(cmsobj)
+        date = datetime.datetime(2010, 3, 8, 12, 59, 57, tzinfo=pytz.UTC)
+        sc.last_semantic_change = date
+        self.assertEqual(date, zeit.brightcove.converter.Video.from_cms(cmsobj).date_last_modified)
 
 
 @unittest.skip('not yet')
