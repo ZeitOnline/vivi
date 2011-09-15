@@ -155,8 +155,12 @@ class Converter(object):
 
     @cachedproperty
     def uniqueId(self):
-        return '%s/%s' % (
-            zeit.addcentral.interfaces.IAddLocation(self).uniqueId, self.id)
+        path = zeit.addcentral.interfaces.IAddLocation(self).uniqueId
+        # XXX folders in the mock connector don't have a trailing slash, while
+        # in the real connector they do
+        if not path.endswith('/'):
+            path += '/'
+        return path + str(self.id)
 
     @property
     def thumbnail(self):
