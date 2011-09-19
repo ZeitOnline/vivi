@@ -11,7 +11,7 @@ import zope.lifecycleevent
 class EditImage(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IImage).omit('references')
+        zeit.content.article.edit.interfaces.IImage).select('layout')
     undo_description = _('edit image')
 
 
