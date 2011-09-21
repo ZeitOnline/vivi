@@ -88,7 +88,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEqual(u'upstream change', video.title)
 
     def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
-        VIDEO_1234['lastModifiedDate'] = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = '1268053197834'
         with mock.patch('zeit.cms.checkout.manager.CheckoutManager.checkin'
                         ) as checkin:
             update_from_brightcove()

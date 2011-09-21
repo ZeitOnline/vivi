@@ -112,7 +112,6 @@ class VideoUpdater(BaseUpdater):
         # Only modify the object in DAV if it really changed in BC.
         for name in zeit.content.video.interfaces.IVideo:
             if getattr(self.cmsobj, name, None) != getattr(new, name, None):
-                import pdb; pdb.set_trace() 
                 break
         else:
             return
