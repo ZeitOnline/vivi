@@ -2,10 +2,34 @@
 # See also LICENSE.txt
 
 import zeit.cms.testing
+import zeit.solr.testing
 import zope.testing.doctest
 
 
-Layer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=True)
+ZCMLLayer = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml',
+    product_config=(
+        zeit.cms.testing.cms_product_config +
+        zeit.solr.testing.product_config))
+
+class Layer(ZCMLLayer,
+            zeit.solr.testing.SolrMockLayerBase):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        pass
+
+    @classmethod
+    def testTearDown(cls):
+        pass
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
