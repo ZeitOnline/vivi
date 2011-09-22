@@ -19,4 +19,19 @@
     name="edit.html"
     />
 
+  <!-- playlist -->
+  <browser:page
+    for="..interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".form.PlaylistDisplayForm"
+    permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="..interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
 </configure>

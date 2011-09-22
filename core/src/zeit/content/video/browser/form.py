@@ -59,3 +59,12 @@ class Edit(zeit.cms.browser.form.EditForm):
 @grok.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
 def display_view_name(context):
     return 'edit.html'
+
+
+
+class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):
+
+    title = _('View playlist')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.video.interfaces.IPlaylist)
