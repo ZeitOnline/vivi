@@ -23,6 +23,8 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('has_recensions', 'expires', 'video_still', 'flv_url', 'thumbnail'))
 
+    id_prefix = 'vid'
+
     # Note: zeit.brightcove will inject a brightcove_id property here in order
     # to avoid a package dependency of zeit.content.video on the interface to
     # a particular external video service.
