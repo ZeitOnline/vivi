@@ -209,6 +209,13 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
                 'http://xml.zeit.de/video/2010-03/6789')
         self.assertEquals(vids, pls.video_ids)
 
+    def test_videos_should_ignore_lookup_errors(self):
+        pls = Playlist.find_by_id('2345')
+        pls.data['videoIds'].append(345)
+        vids = ('http://xml.zeit.de/video/2010-03/1234',
+                'http://xml.zeit.de/video/2010-03/6789')
+        self.assertEquals(vids, pls.video_ids)
+
     @unittest.skip('not yet')
     def test_reference_adapter(self):
         pls = self.repository['playlist-2345']

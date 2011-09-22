@@ -379,7 +379,9 @@ class Playlist(Converter):
     @property
     def video_ids(self):
         return tuple(
-            resolve_video_id(str(id)) for id in self.data['videoIds'])
+            video for video in (
+                query_video_id(str(id)) for id in self.data['videoIds'])
+            if video is not None)
 
     @classmethod
     def find_by_ids(class_, ids):
