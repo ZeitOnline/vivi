@@ -3,7 +3,7 @@
   xmlns:grok="http://namespaces.zope.org/grok">
 
   <grok:grok package="." />
-  <include package=".browser"/>
+  <include file="browser.zcml"/>
 
   <class class=".video.Video">
     <implements

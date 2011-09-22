@@ -6,30 +6,30 @@
    i18n_domain="zeit.cms">
 
   <browser:page
-     for="zeit.content.video.interfaces.IVideo"
+     for=".interfaces.IVideo"
      layer="zeit.cms.browser.interfaces.ICMSLayer"
      name="edit.html"
-     class=".form.Edit"
+     class=".browser.Edit"
      permission="zope.View"
      />
 
   <browser:defaultView
-    for="zeit.content.video.interfaces.IVideo"
+    for=".interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.html"
     />
 
   <!-- playlist -->
   <browser:page
-    for="..interfaces.IPlaylist"
+    for=".interfaces.IPlaylist"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
-    class=".form.PlaylistDisplayForm"
+    class=".browser.PlaylistDisplayForm"
     permission="zope.View"
     />
 
   <browser:defaultView
-    for="..interfaces.IPlaylist"
+    for=".interfaces.IPlaylist"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
     />
