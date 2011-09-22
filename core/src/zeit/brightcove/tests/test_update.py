@@ -135,6 +135,20 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             update_from_brightcove()
             self.assertTrue(retract.called)
 
+    def test_deleted_videos_not_in_cms_should_be_left_alone(self):
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        del video.__parent__[video.__name__]
+
+        VIDEO_1234['itemState'] = 'DELETED'
+        soon = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = soon
+
+        update_from_brightcove()
+
+        self.assertIsNone(zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234', None))
+
 
 class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 

@@ -39,7 +39,7 @@ class BaseUpdater(object):
             self.bcobj.uniqueId, None)
 
     def __call__(self):
-        self.add() or self.delete() or self.update()
+        self.delete() or self.add() or self.update()
 
     @classmethod
     def repository(self):
@@ -83,6 +83,9 @@ class VideoUpdater(BaseUpdater):
 
     def delete(self):
         if self.bcobj.item_state == 'DELETED':
+            if self.cmsobj is None:
+                # Deleted in BC and no CMS object. We're done.
+                return True
             log.info('Deleting %s', self.bcobj)
             if zeit.cms.workflow.interfaces.IPublishInfo(
                     self.cmsobj).published:
