@@ -117,7 +117,10 @@ class VideoUpdater(BaseUpdater):
             return
 
         log.info('Updating %s', self.bcobj)
-        with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
+        with zeit.cms.checkout.helper.checked_out(
+            self.cmsobj, semantic_change=True, events=False) as co:
+            # We don't need to send events here as a full checkout/checkin
+            # cycle is done duing publication anyway.
             self.bcobj.to_cms(co)
         zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
         return True
