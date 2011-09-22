@@ -49,3 +49,32 @@ class IPlaylist(zeit.cms.content.interfaces.ICommonMetadata,
             required=False,
             readonly=True)
     )
+
+
+class VideoOrPlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'video-or-playlist'
+    check_interfaces = (IVideo, IPlaylist)
+
+
+videoOrPlaylistSource = VideoOrPlaylistSource()
+
+
+
+class IVideoAsset(zope.interface.Interface):
+
+    audio_id = zope.schema.TextLine(
+        title=_('Audio id'),
+        required=False)
+
+    video = zope.schema.Choice(
+        title=_('Video'),
+        required=False,
+        source=videoOrPlaylistSource)
+
+    video_2 = zope.schema.Choice(
+        title=_('Video 2'),
+        required=False,
+        source=videoOrPlaylistSource)
+
+

@@ -21,6 +21,7 @@ class Playlist(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('video_ids',))
 
+    id_prefix = 'pls'
 
 class PlaylistType(zeit.cms.type.XMLContentTypeDeclaration):
 
