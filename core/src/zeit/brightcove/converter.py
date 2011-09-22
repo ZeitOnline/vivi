@@ -319,8 +319,16 @@ class Video(Converter):
         if video is None:
             video = zeit.content.video.video.Video()
         for key in zeit.content.video.interfaces.IVideo:
+            field = zeit.content.video.interfaces.IVideo[key]
+            value = getattr(self, key, self)
+            if value is self:
+                continue
+            if (
+                isinstance(value, unicode) and
+                zope.schema.interfaces.IFromUnicode.providedBy(field)):
+                value = field.fromUnicode(value)
             try:
-                setattr(video, key, getattr(self, key))
+                setattr(video, key, value)
             except AttributeError:
                 pass
         video.brightcove_id = str(self.id)

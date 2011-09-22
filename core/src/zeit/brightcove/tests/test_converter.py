@@ -140,6 +140,13 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEqual(
             first_released, Video.from_cms(cmsobj).date_first_released)
 
+    def test_subtitle_can_contain_unqouted_amp(self):
+        video = Video.find_by_id('1234')
+        video.subtitle = u'Foo & Bar'
+        cms = video.to_cms()
+        self.assertEqual(u'Foo &amp; Bar', cms.subtitle)
+
+
 
 @unittest.skip('not yet')
 class IntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
