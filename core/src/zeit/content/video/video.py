@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import pkg_resources
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.interfaces
@@ -14,7 +15,8 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     zope.interface.implements(zeit.content.video.interfaces.IVideo,
                               zeit.cms.interfaces.IAsset)
 
-    default_template = '<video></video>'
+    default_template = pkg_resources.resource_string(__name__,
+                                                     'video-template.xml')
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IVideo,
