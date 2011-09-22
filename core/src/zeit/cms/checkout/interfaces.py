@@ -114,7 +114,7 @@ class ICheckinCheckoutEvent(zope.component.interfaces.IObjectEvent):
     publishing = zope.interface.Attribute(
         """"True if this checkin happens during publishing.
 
-        Event handlers can use this to prefent infinite loops (since another
+        Event handlers can use this to prevent infinite loops (since another
         checkout/checkin cycle happens during publishing to update XML
         references etc.).""")
 
