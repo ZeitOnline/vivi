@@ -326,7 +326,13 @@ class Video(Converter):
             if (
                 isinstance(value, unicode) and
                 zope.schema.interfaces.IFromUnicode.providedBy(field)):
-                value = field.fromUnicode(value)
+                try:
+                    value = field.fromUnicode(value)
+                except zope.interface.Invalid:
+                    # Oh well, let's see what happens next. If the text was too
+                    # long the user won't be able to save later but has the
+                    # full text at hand.
+                    pass
             try:
                 setattr(video, key, value)
             except AttributeError:

@@ -146,6 +146,13 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         cms = video.to_cms()
         self.assertEqual(u'Foo &amp; Bar', cms.subtitle)
 
+    def test_too_long_teasertext_should_be_saved(self):
+        video = Video.find_by_id('1234')
+        too_long = 200 * u'x'
+        video.teaserText = too_long
+        cms = video.to_cms()
+        self.assertEqual(too_long, cms.teaserText)
+
 
 
 @unittest.skip('not yet')
