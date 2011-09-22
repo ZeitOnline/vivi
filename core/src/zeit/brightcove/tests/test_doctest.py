@@ -8,7 +8,6 @@ import zeit.brightcove.testing
 def test_suite():
     return unittest.skip('not yet')(
         zeit.brightcove.testing.FunctionalDocFileSuite(
-        'asset.txt',
         'browser.txt',
         'reference.txt',
         package='zeit.brightcove')
