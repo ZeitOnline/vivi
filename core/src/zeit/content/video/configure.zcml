@@ -9,6 +9,9 @@
     <implements
        interface="zope.annotation.interfaces.IAttributeAnnotatable"
        />
+    <implements
+       interface="zeit.cms.content.interfaces.IDAVPropertiesInXML"
+       />
     <require
       interface=".interfaces.IVideo"
       permission="zope.View" />
@@ -20,6 +23,9 @@
   <class class=".playlist.Playlist">
     <implements
        interface="zope.annotation.interfaces.IAttributeAnnotatable"
+       />
+    <implements
+       interface="zeit.cms.content.interfaces.IDAVPropertiesInXML"
        />
     <require
       interface=".interfaces.IPlaylist"
