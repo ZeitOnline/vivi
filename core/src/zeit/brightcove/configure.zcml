@@ -11,7 +11,6 @@
     />
 
   <include file="browser.zcml" />
-  <include file="checkout.zcml" />
 
   <utility
     name="zeit.cms/brightcove"
