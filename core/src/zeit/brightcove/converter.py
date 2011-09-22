@@ -444,6 +444,14 @@ def resolve_video_id(video_id):
     return unique_id
 
 
+def query_video_id(video_id, default=None):
+    """Resolve video or return a default value."""
+    try:
+        return resolve_video_id(video_id)
+    except LookupError:
+        return default
+
+
 def update_brightcove(context, event):
     if not event.publishing:
         zeit.brightcove.interfaces.IBrightcoveObject(context).save()

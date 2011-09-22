@@ -323,3 +323,40 @@ class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
             self.assertRaises(
                 LookupError,
                 zeit.brightcove.converter.resolve_video_id, '1234')
+
+
+class TestQueryVideoId(unittest.TestCase):
+
+    def test_should_pass_video_to_resolver(self):
+        from zeit.brightcove.converter import query_video_id
+        with mock.patch('zeit.brightcove.converter.resolve_video_id') as rvi:
+            query_video_id(mock.sentinel.avalue)
+        rvi.assert_called_with(mock.sentinel.avalue)
+
+
+    def test_should_return_value(self):
+        from zeit.brightcove.converter import query_video_id
+        with mock.patch('zeit.brightcove.converter.resolve_video_id') as rvi:
+            rvi.return_value = mock.sentinel.result
+            self.assertEqual(
+                mock.sentinel.result,
+                query_video_id(mock.sentinel.avalue))
+
+    def test_should_return_None_on_lookup_error(self):
+        from zeit.brightcove.converter import query_video_id
+        with mock.patch('zeit.brightcove.converter.resolve_video_id') as rvi:
+            rvi.side_effect = LookupError
+            self.assertIsNone(
+                query_video_id(mock.sentinel.avalue))
+
+    def test_should_return_default_on_lookup_error(self):
+        from zeit.brightcove.converter import query_video_id
+        with mock.patch('zeit.brightcove.converter.resolve_video_id') as rvi:
+            rvi.side_effect = LookupError
+            self.assertEqual(
+                mock.sentinel.default,
+                query_video_id(mock.sentinel.avalue,
+                               mock.sentinel.default))
+
+
+
