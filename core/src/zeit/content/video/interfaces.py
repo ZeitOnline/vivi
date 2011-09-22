@@ -2,9 +2,10 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import zope.schema
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.tagging.whitelist
+import zope.schema
 
 
 class IVideo(zeit.cms.content.interfaces.ICommonMetadata,
@@ -34,6 +35,13 @@ class IVideo(zeit.cms.content.interfaces.ICommonMetadata,
         title=_('URI of the thumbnail'),
         required=False,
         readonly=True)
+
+    keywords = zope.schema.Tuple(
+        title=_("Keywords"),
+        required=False,
+        default=None,
+        value_type=zope.schema.Choice(
+            source=zeit.cms.tagging.whitelist.WhitelistSource()))
 
 
 class IPlaylist(zeit.cms.content.interfaces.ICommonMetadata,
