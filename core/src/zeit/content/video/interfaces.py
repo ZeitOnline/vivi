@@ -8,8 +8,21 @@ import zeit.cms.tagging.whitelist
 import zope.schema
 
 
-class IVideo(zeit.cms.content.interfaces.ICommonMetadata,
-             zeit.cms.content.interfaces.IXMLContent):
+class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
+                    zeit.cms.content.interfaces.IXMLContent):
+    """Video like content.
+
+    This could be a video or a playlist.
+
+    """
+
+    thumbnail = zope.schema.URI(
+        title=_('URI of the thumbnail'),
+        required=False,
+        readonly=True)
+
+
+class IVideo(IVideoContent):
 
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
@@ -31,11 +44,6 @@ class IVideo(zeit.cms.content.interfaces.ICommonMetadata,
         required=False,
         readonly=True)
 
-    thumbnail = zope.schema.URI(
-        title=_('URI of the thumbnail'),
-        required=False,
-        readonly=True)
-
     keywords = zope.schema.Tuple(
         title=_("Keywords"),
         required=False,
@@ -44,8 +52,7 @@ class IVideo(zeit.cms.content.interfaces.ICommonMetadata,
             source=zeit.cms.tagging.whitelist.WhitelistSource()))
 
 
-class IPlaylist(zeit.cms.content.interfaces.ICommonMetadata,
-                zeit.cms.interfaces.ICMSContent):
+class IPlaylist(IVideoContent):
 
     video_ids = zope.schema.Tuple(
         title=_("Video IDs"),
