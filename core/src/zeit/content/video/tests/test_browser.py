@@ -5,6 +5,16 @@ import zeit.cms.testing
 import zeit.content.video.testing
 
 
+def playlist_factory(self):
+    from zeit.content.video.playlist import Playlist
+    with zeit.cms.testing.site(self.getRootFolder()):
+        with zeit.cms.testing.interaction():
+            playlist = Playlist ()
+            yield playlist
+            self.repository['pls'] = playlist
+    yield self.repository['pls']
+
+
 def video_factory(self):
     from zeit.content.video.video import Video
     with zeit.cms.testing.site(self.getRootFolder()):
@@ -85,6 +95,39 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         with zeit.cms.testing.site(self.getRootFolder()):
             thumbnail_view = zope.component.getMultiAdapter(
                 (video, request), name='thumbnail')
+            url = zope.component.getMultiAdapter(
+                (thumbnail_view, request),
+                zope.traversing.browser.interfaces.IAbsoluteURL)()
+        self.assertEqual(url, 'http://thumbnailurl')
+
+    def test_view_on_playlist_should_redirect_to_playlist_thumbnail_url(self):
+        import urllib2
+        factory = playlist_factory(self)
+        playlist = factory.next()
+        playlist.thumbnail = 'http://thumbnailurl'
+        factory.next()
+        self.browser.open('http://localhost/++skin++vivi/repository/pls/')
+        self.browser.mech_browser.set_handle_redirect(False)
+        with self.assertRaises(urllib2.HTTPError) as e:
+            self.browser.open('@@thumbnail')
+        self.assertEqual('HTTP Error 303: See Other', str(e.exception))
+        self.assertEqual('http://thumbnailurl',
+                         e.exception.hdrs.get('location'))
+
+    def test_url_of_view_on_playlist_should_return_thumbnail_url(self):
+        import zope.publisher.browser
+        import zope.component
+        import zeit.cms.browser.interfaces
+        factory = playlist_factory(self)
+        playlist = factory.next()
+        playlist.thumbnail = 'http://thumbnailurl'
+        playlist = factory.next()
+
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSLayer)
+        with zeit.cms.testing.site(self.getRootFolder()):
+            thumbnail_view = zope.component.getMultiAdapter(
+                (playlist, request), name='thumbnail')
             url = zope.component.getMultiAdapter(
                 (thumbnail_view, request),
                 zope.traversing.browser.interfaces.IAbsoluteURL)()

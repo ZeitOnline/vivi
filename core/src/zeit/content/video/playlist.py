@@ -19,7 +19,7 @@ class Playlist(zeit.cms.content.metadata.CommonMetadata):
     zeit.cms.content.dav.mapProperties(
         zeit.content.video.interfaces.IPlaylist,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('video_ids',))
+        ('video_ids', 'thumbnail'))
 
     id_prefix = 'pls'
 
