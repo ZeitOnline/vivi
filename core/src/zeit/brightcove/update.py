@@ -91,7 +91,7 @@ class VideoUpdater(BaseUpdater):
             from_date=from_date)
 
     def delete(self):
-        if self.bcobj.item_state == 'DELETED':
+        if self.bcobj.item_state != 'ACTIVE':
             if self.cmsobj is None:
                 # Deleted in BC and no CMS object. We're done.
                 return True

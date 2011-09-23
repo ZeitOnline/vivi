@@ -135,6 +135,14 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             update_from_brightcove()
             self.assertTrue(retract.called)
 
+    def test_inactive_video_should_be_retracted(self):
+        VIDEO_1234['itemState'] = 'INACTIVE'
+        soon = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = soon
+        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
+            update_from_brightcove()
+            self.assertTrue(retract.called)
+
     def test_deleted_videos_not_in_cms_should_be_left_alone(self):
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234')
