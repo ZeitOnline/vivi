@@ -5,26 +5,6 @@ import zeit.cms.testing
 import zeit.content.video.testing
 
 
-def playlist_factory(self):
-    from zeit.content.video.playlist import Playlist
-    with zeit.cms.testing.site(self.getRootFolder()):
-        with zeit.cms.testing.interaction():
-            playlist = Playlist ()
-            yield playlist
-            self.repository['pls'] = playlist
-    yield self.repository['pls']
-
-
-def video_factory(self):
-    from zeit.content.video.video import Video
-    with zeit.cms.testing.site(self.getRootFolder()):
-        with zeit.cms.testing.interaction():
-            video = Video()
-            yield video
-            self.repository['video'] = video
-    yield self.repository['video']
-
-
 class KeywordTest(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.brightcove.testing.selenium_layer
@@ -41,7 +21,7 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
                 zeit.cms.tagging.interfaces.IWhitelist)
             whitelist['test1'] = Tag('test1')
             whitelist['test2'] = Tag('test2')
-        video_factory(self).next()
+        zeit.content.video.testing.video_factory(self).next()
         transaction.commit()
 
     def test_autocomplete_and_save(self):
@@ -69,7 +49,7 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
 
     def test_view_on_video_should_redirect_to_video_thumbnail_url(self):
         import urllib2
-        factory = video_factory(self)
+        factory = zeit.content.video.testing.video_factory(self)
         video = factory.next()
         video.thumbnail = 'http://thumbnailurl'
         factory.next()
@@ -85,7 +65,7 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         import zope.publisher.browser
         import zope.component
         import zeit.cms.browser.interfaces
-        factory = video_factory(self)
+        factory = zeit.content.video.testing.video_factory(self)
         video = factory.next()
         video.thumbnail = 'http://thumbnailurl'
         video = factory.next()
@@ -102,7 +82,7 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
 
     def test_view_on_playlist_should_redirect_to_playlist_thumbnail_url(self):
         import urllib2
-        factory = playlist_factory(self)
+        factory = zeit.content.video.testing.playlist_factory(self)
         playlist = factory.next()
         playlist.thumbnail = 'http://thumbnailurl'
         factory.next()
@@ -118,7 +98,7 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         import zope.publisher.browser
         import zope.component
         import zeit.cms.browser.interfaces
-        factory = playlist_factory(self)
+        factory = zeit.content.video.testing.playlist_factory(self)
         playlist = factory.next()
         playlist.thumbnail = 'http://thumbnailurl'
         playlist = factory.next()
@@ -140,7 +120,7 @@ class TestStill(zeit.cms.testing.BrowserTestCase):
 
     def test_preview_view_on_video_should_redirect_to_still_url(self):
         import urllib2
-        factory = video_factory(self)
+        factory = zeit.content.video.testing.video_factory(self)
         video = factory.next()
         video.video_still = 'http://stillurl'
         factory.next()
@@ -156,7 +136,7 @@ class TestStill(zeit.cms.testing.BrowserTestCase):
         import zope.publisher.browser
         import zope.component
         import zeit.cms.browser.interfaces
-        factory = video_factory(self)
+        factory = zeit.content.video.testing.video_factory(self)
         video = factory.next()
         video.video_still = 'http://stillurl'
         video = factory.next()

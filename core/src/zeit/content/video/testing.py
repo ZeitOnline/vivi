@@ -41,3 +41,25 @@ def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('layer', Layer)
     kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
+
+
+def playlist_factory(self):
+    from zeit.content.video.playlist import Playlist
+    with zeit.cms.testing.site(self.getRootFolder()):
+        with zeit.cms.testing.interaction():
+            playlist = Playlist ()
+            yield playlist
+            self.repository['pls'] = playlist
+    yield self.repository['pls']
+
+
+def video_factory(self):
+    from zeit.content.video.video import Video
+    with zeit.cms.testing.site(self.getRootFolder()):
+        with zeit.cms.testing.interaction():
+            video = Video()
+            yield video
+            self.repository['video'] = video
+    yield self.repository['video']
+
+
