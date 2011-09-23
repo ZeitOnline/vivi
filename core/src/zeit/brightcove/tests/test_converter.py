@@ -104,8 +104,16 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = Video.find_by_id('1234')
         cmsobj = video.to_cms()
         self.assertEquals(
-            'http://xml.zeit.de/video/2010-03/1234', cmsobj.uniqueId)
+            u'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
+            cmsobj.title)
         self.assertTrue(zeit.cms.interfaces.ICMSContent.providedBy(cmsobj))
+
+    def test_unique_id_is_not_copied(self):
+        # The unique id will be assigned by the repository. Assigning it
+        # ourselves will create confusion and delay.
+        video = Video.find_by_id('1234')
+        cmsobj = video.to_cms()
+        self.assertIsNone(cmsobj.uniqueId)
 
     def test_brightcove_id_should_be_stored_on_video_in_dav(self):
         video = Video.find_by_id('1234')
