@@ -50,5 +50,19 @@
    provides="zope.traversing.browser.interfaces.IAbsoluteURL"
    factory=".browser.ThumbnailURL" />
 
+ <browser:page
+   for=".interfaces.IVideo"
+   layer="zeit.cms.browser.interfaces.ICMSLayer"
+   name="preview"
+   class=".browser.Still"
+   permission="zope.View"
+   />
+
+ <adapter
+   for=".browser.Still
+   zeit.cms.browser.interfaces.ICMSLayer"
+   provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+   factory=".browser.StillURL" />
+
 
 </configure>

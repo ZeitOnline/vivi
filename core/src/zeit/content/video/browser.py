@@ -71,13 +71,30 @@ class Thumbnail(zeit.cms.browser.view.Base):
         return self.redirect(self.thumbnail_url, trusted=True)
 
 
-
 class ThumbnailURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
 
     def __str__(self):
         if self.context.thumbnail_url:
             return self.context.thumbnail_url
         raise TypeError("No Thumbnail")
+
+
+class Still(zeit.cms.browser.view.Base):
+
+    @property
+    def video_still_url(self):
+        return self.context.video_still
+
+    def __call__(self):
+        return self.redirect(self.video_still_url, trusted=True)
+
+
+class StillURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
+
+    def __str__(self):
+        if self.context.video_still_url:
+            return self.context.video_still_url
+        raise TypeError("No still url")
 
 
 class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):

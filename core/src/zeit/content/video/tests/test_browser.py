@@ -134,6 +134,44 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(url, 'http://thumbnailurl')
 
 
+class TestStill(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.video.testing.Layer
+
+    def test_preview_view_on_video_should_redirect_to_still_url(self):
+        import urllib2
+        factory = video_factory(self)
+        video = factory.next()
+        video.video_still = 'http://stillurl'
+        factory.next()
+        self.browser.open('http://localhost/++skin++vivi/repository/video/')
+        self.browser.mech_browser.set_handle_redirect(False)
+        with self.assertRaises(urllib2.HTTPError) as e:
+            self.browser.open('@@preview')
+        self.assertEqual('HTTP Error 303: See Other', str(e.exception))
+        self.assertEqual('http://stillurl',
+                         e.exception.hdrs.get('location'))
+
+    def test_url_of_preview_view_on_video_should_return_still_url(self):
+        import zope.publisher.browser
+        import zope.component
+        import zeit.cms.browser.interfaces
+        factory = video_factory(self)
+        video = factory.next()
+        video.video_still = 'http://stillurl'
+        video = factory.next()
+
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSLayer)
+        with zeit.cms.testing.site(self.getRootFolder()):
+            view = zope.component.getMultiAdapter(
+                (video, request), name='preview')
+            url = zope.component.getMultiAdapter(
+                (view, request),
+                zope.traversing.browser.interfaces.IAbsoluteURL)()
+        self.assertEqual(url, 'http://stillurl')
+
+
 class TestPlaylist(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.video.testing.Layer
