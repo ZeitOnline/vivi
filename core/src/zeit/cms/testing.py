@@ -380,9 +380,13 @@ def create_interaction(name=u'zope.user'):
 
 @contextlib.contextmanager
 def interaction(principal_id=u'zope.user'):
-    principal = create_interaction(principal_id)
-    yield principal
-    zope.security.management.endInteraction()
+    if zope.security.management.queryInteraction():
+        # There already is an interaction. Great. Leave it alone.
+        yield
+    else:
+        principal = create_interaction(principal_id)
+        yield principal
+        zope.security.management.endInteraction()
 
 
 @contextlib.contextmanager
