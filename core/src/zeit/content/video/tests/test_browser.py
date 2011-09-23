@@ -8,7 +8,7 @@ import zeit.content.video.testing
 
 class KeywordTest(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.brightcove.testing.selenium_layer
+    layer = zeit.content.video.testing.selenium_layer
     skin = 'vivi'
 
     def setUp(self):

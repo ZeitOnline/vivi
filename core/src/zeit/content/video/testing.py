@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.selenium.ztk
 import zeit.cms.testing
 import zeit.solr.testing
 import zope.testing.doctest
@@ -30,6 +31,9 @@ class Layer(ZCMLLayer,
     @classmethod
     def testTearDown(cls):
         pass
+
+
+selenium_layer = gocept.selenium.ztk.Layer(Layer)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
