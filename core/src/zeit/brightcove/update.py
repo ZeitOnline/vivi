@@ -28,18 +28,24 @@ def update_from_brightcove():
 @gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
     'zeit.brightcove', 'index-principal'))
 def _update_from_brightcove():
+    log.info('Update run started')
     update_from_brightcove()
+    log.info('Update run finished')
 
 
 class BaseUpdater(object):
 
     def __init__(self, context):
+        log.debug('%r(%s)', self, context.uniqueId)
         self.bcobj = context
         self.cmsobj = zeit.cms.interfaces.ICMSContent(
             self.bcobj.uniqueId, None)
+        log.debug('CMS object resolved: %r', self.cmsobj)
 
     def __call__(self):
-        self.delete() or self.add() or self.update()
+        success = self.delete() or self.add() or self.update()
+        if not success:
+            log.warning('Object %s not processes.', self.bcobj.uniqueId)
 
     @classmethod
     def repository(self):
@@ -58,9 +64,12 @@ class BaseUpdater(object):
     def add(self):
         if self.cmsobj is None:
             log.info('Adding %s', self.bcobj)
+            log.debug('Getting add location')
             folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
+            log.debug('Adding ...')
             folder[str(self.bcobj.id)] = self.bcobj.to_cms()
             cmsobj = folder[str(self.bcobj.id)]
+            log.debug('Create publish job')
             zeit.cms.workflow.interfaces.IPublish(cmsobj).publish()
             return True
 
@@ -124,6 +133,9 @@ class VideoUpdater(BaseUpdater):
             self.cmsobj, semantic_change=True, events=False) as co:
             # We don't need to send events here as a full checkout/checkin
             # cycle is done duing publication anyway.
+            if co is None:
+                log.warning('Could not update video')
+                return
             self.bcobj.to_cms(co)
         zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
         return True

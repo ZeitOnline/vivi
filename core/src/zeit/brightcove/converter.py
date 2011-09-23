@@ -5,6 +5,7 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import calendar
 import datetime
 import grokcore.component as grok
+import logging
 import pytz
 import transaction
 import zeit.addcentral.add
@@ -22,6 +23,10 @@ import zeit.content.video.playlist
 import zeit.content.video.video
 import zope.component
 import zope.interface
+
+
+
+log = logging.getLogger(__name__)
 
 
 def to_epoch(value):
@@ -316,9 +321,12 @@ class Video(Converter):
     # XXX year.setter is missing
 
     def to_cms(self, video=None):
+        log.debug('Converting video to cms object %s', self.uniqueId)
         if video is None:
             video = zeit.content.video.video.Video()
         for key in zeit.content.video.interfaces.IVideo:
+            if key in ('xml', '__name__', 'uniqueId'):
+                continue
             field = zeit.content.video.interfaces.IVideo[key]
             value = getattr(self, key, self)
             if value is self:
