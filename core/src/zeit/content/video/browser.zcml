@@ -5,6 +5,7 @@
    xmlns:browser="http://namespaces.zope.org/browser"
    i18n_domain="zeit.cms">
 
+  <!-- video -->
   <browser:page
      for=".interfaces.IVideo"
      layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -19,7 +20,30 @@
     name="edit.html"
     />
 
+ <browser:icon
+    for=".interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    file="resources/video_icon.gif"
+    />
+
+ <browser:page
+   for=".interfaces.IVideo"
+   layer="zeit.cms.browser.interfaces.ICMSLayer"
+   name="preview"
+   class=".browser.Still"
+   permission="zope.View"
+   />
+
+ <adapter
+   for=".browser.Still
+   zeit.cms.browser.interfaces.ICMSLayer"
+   provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+   factory=".browser.StillURL"
+   />
+
   <!-- playlist -->
+
   <browser:page
     for=".interfaces.IPlaylist"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -33,6 +57,14 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
     />
+
+  <browser:icon
+    for=".interfaces.IPlaylist"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zmi_icon"
+    file="resources/playlist_icon.gif"
+    />
+
 
   <!-- common views -->
 
@@ -48,21 +80,8 @@
    for=".browser.Thumbnail
    zeit.cms.browser.interfaces.ICMSLayer"
    provides="zope.traversing.browser.interfaces.IAbsoluteURL"
-   factory=".browser.ThumbnailURL" />
-
- <browser:page
-   for=".interfaces.IVideo"
-   layer="zeit.cms.browser.interfaces.ICMSLayer"
-   name="preview"
-   class=".browser.Still"
-   permission="zope.View"
+   factory=".browser.ThumbnailURL"
    />
-
- <adapter
-   for=".browser.Still
-   zeit.cms.browser.interfaces.ICMSLayer"
-   provides="zope.traversing.browser.interfaces.IAbsoluteURL"
-   factory=".browser.StillURL" />
 
 
 </configure>
