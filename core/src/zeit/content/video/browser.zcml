@@ -19,14 +19,6 @@
     name="edit.html"
     />
 
- <browser:page
-   for=".interfaces.IVideoContent"
-   layer="zeit.cms.browser.interfaces.ICMSLayer"
-   name="thumbnail"
-   class=".browser.Thumbnail"
-   permission="zope.View"
-   />
-
   <!-- playlist -->
   <browser:page
     for=".interfaces.IPlaylist"
@@ -41,5 +33,22 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
     />
+
+  <!-- common views -->
+
+ <browser:page
+   for=".interfaces.IVideoContent"
+   layer="zeit.cms.browser.interfaces.ICMSLayer"
+   name="thumbnail"
+   class=".browser.Thumbnail"
+   permission="zope.View"
+   />
+
+ <adapter
+   for=".browser.Thumbnail
+   zeit.cms.browser.interfaces.ICMSLayer"
+   provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+   factory=".browser.ThumbnailURL" />
+
 
 </configure>

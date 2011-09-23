@@ -57,7 +57,7 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.video.testing.Layer
 
-    def test_view_should_redirect_to_video_thumbnail_url(self):
+    def test_view_on_video_should_redirect_to_video_thumbnail_url(self):
         import urllib2
         factory = video_factory(self)
         video = factory.next()
@@ -70,6 +70,25 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
         self.assertEqual('HTTP Error 303: See Other', str(e.exception))
         self.assertEqual('http://thumbnailurl',
                          e.exception.hdrs.get('location'))
+
+    def test_url_of_view_on_video_should_return_thumbnail_url(self):
+        import zope.publisher.browser
+        import zope.component
+        import zeit.cms.browser.interfaces
+        factory = video_factory(self)
+        video = factory.next()
+        video.thumbnail = 'http://thumbnailurl'
+        video = factory.next()
+
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSLayer)
+        with zeit.cms.testing.site(self.getRootFolder()):
+            thumbnail_view = zope.component.getMultiAdapter(
+                (video, request), name='thumbnail')
+            url = zope.component.getMultiAdapter(
+                (thumbnail_view, request),
+                zope.traversing.browser.interfaces.IAbsoluteURL)()
+        self.assertEqual(url, 'http://thumbnailurl')
 
 
 class TestPlaylist(zeit.cms.testing.BrowserTestCase):

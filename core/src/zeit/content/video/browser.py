@@ -72,6 +72,14 @@ class Thumbnail(zeit.cms.browser.view.Base):
 
 
 
+class ThumbnailURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
+
+    def __str__(self):
+        if self.context.thumbnail_url:
+            return self.context.thumbnail_url
+        raise TypeError("No Thumbnail")
+
+
 class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):
 
     title = _('View playlist')
