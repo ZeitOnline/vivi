@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
 import zeit.cms.testing
 import zeit.content.video.testing
 
@@ -21,10 +22,12 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
                 zeit.cms.tagging.interfaces.IWhitelist)
             whitelist['test1'] = Tag('test1')
             whitelist['test2'] = Tag('test2')
-        zeit.content.video.testing.video_factory(self).next()
         transaction.commit()
 
     def test_autocomplete_and_save(self):
+        factory = zeit.content.video.testing.video_factory(self)
+        factory.next()
+        factory.next()
         self.open('/repository/video/@@checkout')
         s = self.selenium
         s.waitForElementPresent('css=input.autocomplete')
@@ -36,9 +39,6 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
         s.keyDown('css=input.autocomplete', r'\40')
         # return
         s.keyDown('css=input.autocomplete', r'\13')
-        s.waitForElementPresent('css=.objectsequencewidget li h3')
-        s.assertText('css=.objectsequencewidget li h3', 'test1')
-        s.click('id=form.actions.apply')
         s.waitForElementPresent('css=.objectsequencewidget li h3')
         s.assertText('css=.objectsequencewidget li h3', 'test1')
 
