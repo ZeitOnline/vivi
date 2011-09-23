@@ -10,8 +10,6 @@
     title="Edit brightcove videos"
     />
 
-  <include file="browser.zcml" />
-
   <utility
     name="zeit.cms/brightcove"
     provides="zope.app.generations.interfaces.ISchemaManager"

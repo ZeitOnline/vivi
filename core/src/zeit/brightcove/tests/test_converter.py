@@ -154,54 +154,6 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEqual(too_long, cms.teaserText)
 
 
-
-@unittest.skip('not yet')
-class IntegrationTest(zeit.brightcove.testing.BrightcoveTestCase):
-
-    # XXX todo
-
-    def test_related(self):
-        video = Video.find_by_id('1234')
-        self.assertEquals((), video.related)
-        content = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/testcontent')
-        with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.teaserTitle = u'a title'
-        video.related = (zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/testcontent'),)
-        self.assertEquals(
-            'http://xml.zeit.de/testcontent',
-            video.data['customFields']['ref_link1'])
-        self.assertEquals(
-            'a title',
-            video.data['customFields']['ref_title1'])
-
-    def test_uuid(self):
-        # The uuid of videos is the unique id. This works because the unique id
-        # contains a database id from brightcove which never changes
-        uuid = zeit.cms.content.interfaces.IUUID(
-            Video.find_by_id('1234'))
-        self.assertEquals(
-            'http://xml.zeit.de/video/2010-03/1234', uuid.id)
-
-    def test_list_repr(self):
-        request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.ICMSSkin)
-        list_repr = zope.component.getMultiAdapter(
-            (Video.find_by_id('1234'), request),
-            zeit.cms.browser.interfaces.IListRepresentation)
-        self.assertEquals(2010, list_repr.year)
-        self.assertEquals(
-            'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
-            list_repr.title)
-
-    def test_reference_adapter(self):
-        pls = self.repository['playlist-2345']
-        vids = zeit.cms.relation.interfaces.IReferences(pls)
-        self.assertEquals(
-            'http://xml.zeit.de/video/2010-03/1234', vids[0].uniqueId)
-
-
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_basic_properties_are_converted_to_cms_names(self):
@@ -378,6 +330,3 @@ class TestQueryVideoId(unittest.TestCase):
                 mock.sentinel.default,
                 query_video_id(mock.sentinel.avalue,
                                mock.sentinel.default))
-
-
-
