@@ -86,7 +86,7 @@ class VideoUpdater(BaseUpdater):
     def get_objects(cls):
         now = datetime.datetime.now(pytz.UTC)
         from_date = (datetime.datetime(now.year, now.month, now.day, now.hour)
-                     - datetime.timedelta(hours=10))
+                     - datetime.timedelta(days=3))
         return zeit.brightcove.converter.Video.find_modified(
             from_date=from_date)
 
@@ -106,6 +106,7 @@ class VideoUpdater(BaseUpdater):
     def update(self):
         # Update video in CMS iff the BC version is newer.
         new = self.bcobj.to_cms()
+        update = True
 
         # A bug in Brightcove may cause the last-modified date to remain
         # unchanged even when the video-still URL is actually changed.
@@ -116,28 +117,32 @@ class VideoUpdater(BaseUpdater):
             self.cmsobj).last_semantic_change
         new_mtime = zeit.cms.content.interfaces.ISemanticChange(
             new).last_semantic_change
-
         if (current_mtime and new_mtime and current_mtime >= new_mtime and
             self.cmsobj.video_still == new.video_still):
-            return
-
-        # Only modify the object in DAV if it really changed in BC.
-        for name in zeit.content.video.interfaces.IVideo:
-            if getattr(self.cmsobj, name, None) != getattr(new, name, None):
-                break
+            update = False
         else:
-            return
+            # Only modify the object in DAV if it really changed in BC.
+            for name in zeit.content.video.interfaces.IVideo:
+                if getattr(self.cmsobj, name, None) != getattr(new, name, None):
+                    break
+            else:
+                update = False
 
-        log.info('Updating %s', self.bcobj)
-        with zeit.cms.checkout.helper.checked_out(
-            self.cmsobj, semantic_change=True, events=False) as co:
-            # We don't need to send events here as a full checkout/checkin
-            # cycle is done duing publication anyway.
-            if co is None:
-                log.warning('Could not update video')
-                return
-            self.bcobj.to_cms(co)
-        zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
+        if update:
+            log.info('Updating %s', self.bcobj)
+            with zeit.cms.checkout.helper.checked_out(
+                self.cmsobj, semantic_change=True, events=False) as co:
+                # We don't need to send events here as a full checkout/checkin
+                # cycle is done duing publication anyway.
+                if co is None:
+                    log.warning('Could not update video')
+                else:
+                    self.bcobj.to_cms(co)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.cmsobj)
+        if update or not info.published:
+            # If updated, publish in anycase; otherwise re-publish if not
+            # published
+            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
         return True
 
 
@@ -156,18 +161,23 @@ class PlaylistUpdater(BaseUpdater):
 
     def update(self):
         current = self.bcobj.from_cms(self.cmsobj)
+        update = True
 
-#        curdata = current.data.copy()
         curdata = dict(name=current.data['name'])
-#        newdata = self.bcobj.data.copy()
         newdata = dict(name=self.bcobj.data['name'])
         if curdata == newdata:
-            return
+            update = False
 
-        log.info('Updating %s', self.bcobj)
-        with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
-            self.bcobj.to_cms(co)
-        zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
+        if update:
+            log.info('Updating %s', self.bcobj)
+            with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
+                if co is None:
+                    log.warning('Could not update playlist')
+                else:
+                    self.bcobj.to_cms(co)
+        info = zeit.cms.workflow.interfaces.IPublishInfo(self.cmsobj)
+        if update or not info.published:
+            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
         return True
 
     @classmethod

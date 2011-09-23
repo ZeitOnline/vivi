@@ -114,6 +114,17 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertTrue(info.published)
         self.assertGreater(info.date_last_published, last_published)
 
+    def test_unpublished_videos_should_be_published(self):
+        zeit.workflow.testing.run_publish()  # run pending jobs
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        info.published = False
+        update_from_brightcove()
+        zeit.workflow.testing.run_publish()
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        self.assertTrue(info.published)
+
     def test_videos_in_deleted_state_should_be_deleted_from_cms(self):
         self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234', None))
@@ -221,6 +232,18 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         self.assertTrue(info.published)
         self.assertGreater(info.date_last_published, last_published)
+
+    def test_unpublished_playlists_should_be_published(self):
+        zeit.workflow.testing.run_publish()  # run pending jobs
+        pls = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/2345')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(pls)
+        info.published = False
+        update_from_brightcove()
+        zeit.workflow.testing.run_publish()
+        info = zeit.cms.workflow.interfaces.IPublishInfo(pls)
+        self.assertTrue(info.published)
+
 
     def test_playlist_no_longer_in_brightcove_is_deleted_from_cms(self):
         self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
