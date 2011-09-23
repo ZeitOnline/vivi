@@ -5,6 +5,16 @@ import zeit.cms.testing
 import zeit.content.video.testing
 
 
+def video_factory(self):
+    from zeit.content.video.video import Video
+    with zeit.cms.testing.site(self.getRootFolder()):
+        with zeit.cms.testing.interaction():
+            video = Video()
+            yield video
+            self.repository['video'] = video
+    yield self.repository['video']
+
+
 class KeywordTest(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.brightcove.testing.selenium_layer
@@ -12,7 +22,6 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         from zeit.cms.tagging.tag import Tag
-        from zeit.content.video.video import Video
         import transaction
         import zeit.cms.tagging.interfaces
         import zope.component
@@ -22,9 +31,7 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
                 zeit.cms.tagging.interfaces.IWhitelist)
             whitelist['test1'] = Tag('test1')
             whitelist['test2'] = Tag('test2')
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['video'] = Video()
+        video_factory(self).next()
         transaction.commit()
 
     def test_autocomplete_and_save(self):
@@ -44,6 +51,25 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
         s.click('id=form.actions.apply')
         s.waitForElementPresent('css=.objectsequencewidget li h3')
         s.assertText('css=.objectsequencewidget li h3', 'test1')
+
+
+class TestThumbnail(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.video.testing.Layer
+
+    def test_view_should_redirect_to_video_thumbnail_url(self):
+        import urllib2
+        factory = video_factory(self)
+        video = factory.next()
+        video.thumbnail = 'http://thumbnailurl'
+        factory.next()
+        self.browser.open('http://localhost/++skin++vivi/repository/video/')
+        self.browser.mech_browser.set_handle_redirect(False)
+        with self.assertRaises(urllib2.HTTPError) as e:
+            self.browser.open('@@thumbnail')
+        self.assertEqual('HTTP Error 303: See Other', str(e.exception))
+        self.assertEqual('http://thumbnailurl',
+                         e.exception.hdrs.get('location'))
 
 
 class TestPlaylist(zeit.cms.testing.BrowserTestCase):

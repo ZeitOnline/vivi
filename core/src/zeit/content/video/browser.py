@@ -61,6 +61,16 @@ def display_view_name(context):
     return 'edit.html'
 
 
+class Thumbnail(zeit.cms.browser.view.Base):
+
+    @property
+    def thumbnail_url(self):
+        return self.context.thumbnail
+
+    def __call__(self):
+        return self.redirect(self.thumbnail_url, trusted=True)
+
+
 
 class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):
 

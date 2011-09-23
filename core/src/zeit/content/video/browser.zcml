@@ -19,6 +19,14 @@
     name="edit.html"
     />
 
+ <browser:page
+   for=".interfaces.IVideoContent"
+   layer="zeit.cms.browser.interfaces.ICMSLayer"
+   name="thumbnail"
+   class=".browser.Thumbnail"
+   permission="zope.View"
+   />
+
   <!-- playlist -->
   <browser:page
     for=".interfaces.IPlaylist"
