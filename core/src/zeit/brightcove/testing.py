@@ -229,7 +229,6 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
 
     @classmethod
     def testSetUp(cls):
-        import pdb; pdb.set_trace() 
         update_repository(BrightcoveZCMLLayer.setup.getRootFolder())
 
     @classmethod
