@@ -168,6 +168,20 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertIsNone(zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234', None))
 
+    def test_timeout_should_not_block_but_raise(self):
+        import urllib2
+        import zope.component
+        zeit.brightcove.testing.RequestHandler.sleep = 1
+        connection = zope.component.getUtility(
+            zeit.brightcove.interfaces.IAPIConnection)
+        timeout = connection.timeout
+        connection.timeout = 0.5
+        def reset():
+            connection.timeout = timeout
+        self.addCleanup(reset)
+        self.assertRaises(
+            urllib2.URLError, lambda: update_from_brightcove())
+
 
 class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
