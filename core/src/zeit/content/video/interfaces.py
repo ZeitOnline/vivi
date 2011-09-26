@@ -52,24 +52,29 @@ class IVideo(IVideoContent):
             source=zeit.cms.tagging.whitelist.WhitelistSource()))
 
 
+class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'video'
+    check_interfaces = IVideo
+
+
 class IPlaylist(IVideoContent):
 
-    video_ids = zope.schema.Tuple(
+    videos = zope.schema.Tuple(
         title=_("Video IDs"),
         required=False,
+        readonly=True,
         default=(),
         unique=False,
-        value_type=zope.schema.URI(
-            title=_('URI of the Playlist-Video'),
-            required=False,
-            readonly=True)
-    )
+        value_type=zope.schema.Choice(
+            title=_('Videos in the playlist'),
+            source=VideoSource()))
 
 
 class VideoOrPlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'video-or-playlist'
-    check_interfaces = (IVideo, IPlaylist)
+    check_interfaces = IVideo, IPlaylist
 
 
 videoOrPlaylistSource = VideoOrPlaylistSource()
