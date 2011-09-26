@@ -61,28 +61,6 @@ class TestBrowserLayer(ArticleLayer):
         ArticleLayer.setup.tearDown()
 
 
-class XArticleBrightcoveLayer(TestBrowserLayer,
-                             zeit.brightcove.testing.BrightcoveHTTPLayer,
-                             zeit.solr.testing.SolrMockLayerBase):
-
-    @classmethod
-    def setUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        zeit.brightcove.testing.update_repository(
-            ArticleLayer.setup.getRootFolder())
-
-    @classmethod
-    def testTearDown(cls):
-        pass
-
-
 CDSZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'cds_ftesting.zcml',
     product_config=(
