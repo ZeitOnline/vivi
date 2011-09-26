@@ -3,7 +3,6 @@
 
 import zeit.cms.generation
 import zeit.cms.generation.install
-import zeit.brightcove.repository
 
 
 def install(root):
