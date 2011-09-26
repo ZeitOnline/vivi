@@ -173,22 +173,21 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
     def test_can_be_converted_to_cmscontent(self):
         playlist = Playlist.find_by_id('2345')
         cmsobj = playlist.to_cms()
-        self.assertEquals(
-            'http://xml.zeit.de/video/playlist/2345', cmsobj.uniqueId)
+        self.assertEquals(u'Videos zum Thema Film', cmsobj.title)
         self.assertTrue(zeit.cms.interfaces.ICMSContent.providedBy(cmsobj))
 
-    def test_video_ids(self):
+    def test_videos(self):
         pls = Playlist.find_by_id('2345')
         vids = ('http://xml.zeit.de/video/2010-03/1234',
                 'http://xml.zeit.de/video/2010-03/6789')
-        self.assertEquals(vids, pls.video_ids)
+        self.assertEquals(vids, tuple(v.uniqueId for v in pls.videos))
 
     def test_videos_should_ignore_lookup_errors(self):
         pls = Playlist.find_by_id('2345')
         pls.data['videoIds'].append(345)
         vids = ('http://xml.zeit.de/video/2010-03/1234',
                 'http://xml.zeit.de/video/2010-03/6789')
-        self.assertEquals(vids, pls.video_ids)
+        self.assertEquals(vids, tuple(v.uniqueId for v in pls.videos))
 
     @unittest.skip('not yet')
     def test_reference_adapter(self):
@@ -196,6 +195,13 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         vids = zeit.cms.relation.interfaces.IReferences(pls)
         self.assertEquals(
             'http://xml.zeit.de/video/2010-03/1234', vids[0].uniqueId)
+
+    def test_title_can_contain_unqouted_amp(self):
+        video = Playlist.find_by_id('2345')
+        video.title = u'Foo & Bar'
+        cms = video.to_cms()
+        self.assertEqual(u'Foo &amp; Bar', cms.title)
+
 
 
 class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):

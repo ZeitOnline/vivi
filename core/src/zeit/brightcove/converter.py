@@ -6,6 +6,7 @@ import calendar
 import datetime
 import grokcore.component as grok
 import logging
+import lxml.etree
 import pytz
 import transaction
 import zeit.addcentral.add
@@ -144,6 +145,31 @@ class BCContent(object):
     # XXX remove at some point
 
     pass
+
+
+def copy_field(from_, to, interface, key):
+    __traceback_info__ = (from_, to, interface, key)
+    field = interface[key]
+    value = getattr(from_, key, from_)
+    if value is from_:
+        return
+    if (
+        isinstance(value, unicode) and
+        zope.schema.interfaces.IFromUnicode.providedBy(field)):
+        try:
+            value = field.fromUnicode(value)
+        except zope.interface.Invalid:
+            # Oh well, let's see what happens next. If the text was too
+            # long the user won't be able to save later but has the
+            # full text at hand.
+            pass
+    __traceback_info__ = (from_, to, interface, key, value)
+    try:
+        setattr(to, key, value)
+    except (lxml.etree.XMLSyntaxError, ValueError):
+        log.warning('Could not set %s on %s', key, to, exc_info=True)
+    except AttributeError:
+        pass
 
 
 class Converter(object):
@@ -327,24 +353,8 @@ class Video(Converter):
         for key in zeit.content.video.interfaces.IVideo:
             if key in ('xml', '__name__', 'uniqueId'):
                 continue
-            field = zeit.content.video.interfaces.IVideo[key]
-            value = getattr(self, key, self)
-            if value is self:
-                continue
-            if (
-                isinstance(value, unicode) and
-                zope.schema.interfaces.IFromUnicode.providedBy(field)):
-                try:
-                    value = field.fromUnicode(value)
-                except zope.interface.Invalid:
-                    # Oh well, let's see what happens next. If the text was too
-                    # long the user won't be able to save later but has the
-                    # full text at hand.
-                    pass
-            try:
-                setattr(video, key, value)
-            except AttributeError:
-                pass
+            copy_field(
+                self, video, zeit.content.video.interfaces.IVideo, key)
         video.brightcove_id = str(self.id)
         sc = zeit.cms.content.interfaces.ISemanticChange(video)
         sc.last_semantic_change = self.date_last_modified
@@ -399,10 +409,11 @@ class Playlist(Converter):
     ))
 
     @property
-    def video_ids(self):
+    def videos(self):
         return tuple(
             video for video in (
-                query_video_id(str(id)) for id in self.data['videoIds'])
+                zeit.cms.interfaces.ICMSContent(query_video_id(str(id)), None)
+                for id in self.data['videoIds'])
             if video is not None)
 
     @classmethod
@@ -423,10 +434,10 @@ class Playlist(Converter):
         if playlist is None:
             playlist = zeit.content.video.playlist.Playlist()
         for key in zeit.content.video.interfaces.IPlaylist:
-            try:
-                setattr(playlist, key, getattr(self, key))
-            except AttributeError:
-                pass
+            if key in ('xml', '__name__', 'uniqueId'):
+                continue
+            copy_field(
+                self, playlist, zeit.content.video.interfaces.IPlaylist, key)
         return playlist
 
     @classmethod
