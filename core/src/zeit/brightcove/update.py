@@ -86,7 +86,7 @@ class VideoUpdater(BaseUpdater):
     def get_objects(cls):
         now = datetime.datetime.now(pytz.UTC)
         from_date = (datetime.datetime(now.year, now.month, now.day, now.hour)
-                     - datetime.timedelta(days=3))
+                     - datetime.timedelta(hours=10))
         return zeit.brightcove.converter.Video.find_modified(
             from_date=from_date)
 
