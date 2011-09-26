@@ -32,7 +32,7 @@ setup(
         'simplejson',
         'stabledict',
         'zc.sourcefactory',
-        'zeit.brightcove>=0.3.0',
+        'zeit.content.video',
         'zeit.cms>1.44.0',
         'zeit.content.quiz>=0.4.2',
         'zeit.find >= 0.4',

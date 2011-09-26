@@ -29,4 +29,6 @@
   <include package="zeit.content.quiz" />
   <include package="zeit.content.quiz.browser" />
 
+  <include package="zeit.content.video" />
+
 </configure>
