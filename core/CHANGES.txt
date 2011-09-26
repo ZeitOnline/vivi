@@ -4,6 +4,9 @@ zeit.content.article changes
 2.9.2 (unreleased)
 ------------------
 
+- Accomodated article to cope for the changed videos: videos are now full CMS
+  objects and moved to zeit.content.video (for #8996)
+
 - Articles are created without an addform now. A temporary file is created in
   DAV and automatically checked out. Upon checkin the temporary file is updated
   and renamed to the name given during editing the checked out article (#8080).

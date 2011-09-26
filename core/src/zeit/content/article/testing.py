@@ -61,7 +61,7 @@ class TestBrowserLayer(ArticleLayer):
         ArticleLayer.setup.tearDown()
 
 
-class ArticleBrightcoveLayer(TestBrowserLayer,
+class XArticleBrightcoveLayer(TestBrowserLayer,
                              zeit.brightcove.testing.BrightcoveHTTPLayer,
                              zeit.solr.testing.SolrMockLayerBase):
 
