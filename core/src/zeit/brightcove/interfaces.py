@@ -27,8 +27,6 @@ class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
 
 class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
-    # XXX obsolete, remove when it's easy
-
     id = zope.schema.Int(
         title=_('Id'),
         readonly=True)
