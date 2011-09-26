@@ -1,16 +1,36 @@
 zeit.brightcove changes
 =======================
 
-0.9.0 (unreleased)
+0.10.1 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
+0.10.0 (2011-08-12)
+-------------------
+
+- added mediadeliverymethod in connection.
+
+
+0.9.1 (2011-04-29)
 ------------------
 
+- Add timeout for all Brightcove requests (#8021).
+
+
+0.9.0 (2011-03-23)
+------------------
+
+- Changed mapping for ``last-semantic-change`` to ``date_first_released``
+
 - Videos can be checked out now by the system. This allows to create free
-  teasers of videos (#7826).
+  teasers of videos (for #7826).
 
 - Extracted ``get_expires`` to get the me earliest expires date from a list of
   playlists and videos.
 
-- Change indexes as the interface requires an solr attribute now (#8559)
+- Change indexes as the interface requires an solr attribute now (for #8559)
 
 - Remove Brightcove content from addcentral.
 

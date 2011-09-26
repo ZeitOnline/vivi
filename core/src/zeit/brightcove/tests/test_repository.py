@@ -1,10 +1,11 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
+from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 import time
 import transaction
+import urllib2
 import zeit.brightcove.interfaces
 import zeit.brightcove.testing
 import zope.lifecycleevent
@@ -22,6 +23,7 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         VIDEO_1234.update(self.old_video)
         PLAYLIST_2345.update(self.old_playlist)
         PLAYLIST_LIST_RESPONSE['items'] = self.old_playlist_items
+        zeit.brightcove.testing.RequestHandler.sleep = 0
         super(RepositoryTest, self).tearDown()
 
     def test_invalid_id(self):
@@ -126,3 +128,11 @@ class RepositoryTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.repository.update_from_brightcove()
         pls = self.repository['playlist-3456']
         self.assertEquals('DELETED', pls.item_state)
+
+    def test_timeout_should_not_block_but_raise(self):
+        zeit.brightcove.testing.RequestHandler.sleep = 1
+        connection = zope.component.getUtility(
+            zeit.brightcove.interfaces.IAPIConnection)
+        connection.timeout = 0.5
+        self.assertRaises(
+            urllib2.URLError, lambda: self.repository.update_from_brightcove())
