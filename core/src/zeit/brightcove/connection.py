@@ -1,9 +1,9 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # Copyright (c) 2009 StudioNow, Inc <patrick@studionow.com>
 # See also LICENSE.txt
 
 import logging
-import simplejson
+import json
 import urllib
 import urllib2
 import zope.app.appsetup.product
@@ -24,16 +24,16 @@ class APIConnection(object):
         self.write_url = write_url
         self.timeout = timeout
 
-    def decode_broken_brightcove_json(self, json):
-        return simplejson.loads(
-            json.translate(None, JSON_CONTROL_CHARACTERS))
+    def decode_broken_brightcove_json(self, text):
+        return json.loads(
+            text.translate(None, JSON_CONTROL_CHARACTERS))
 
     def post(self, command, **kwargs):
         params = dict(
             (key, value) for key, value in kwargs.items() if key and value)
         params['token'] = self.write_token
         data = dict(method=command, params=params)
-        post_data = urllib.urlencode(dict(json=simplejson.dumps(data)))
+        post_data = urllib.urlencode(dict(json=json.dumps(data)))
         log.info("Posting %s", command)
         log.debug("Posting %s(%s)", command, data)
         request = urllib2.urlopen(
