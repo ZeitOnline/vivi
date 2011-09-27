@@ -6,43 +6,6 @@ import zeit.cms.testing
 import zeit.content.video.testing
 
 
-class KeywordTest(zeit.cms.testing.SeleniumTestCase):
-
-    layer = zeit.content.video.testing.selenium_layer
-    skin = 'vivi'
-
-    def setUp(self):
-        from zeit.cms.tagging.tag import Tag
-        import transaction
-        import zeit.cms.tagging.interfaces
-        import zope.component
-        super(KeywordTest, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            whitelist = zope.component.getUtility(
-                zeit.cms.tagging.interfaces.IWhitelist)
-            whitelist['test1'] = Tag('test1')
-            whitelist['test2'] = Tag('test2')
-        transaction.commit()
-
-    def test_autocomplete_and_save(self):
-        factory = zeit.content.video.testing.video_factory(self)
-        factory.next()
-        factory.next()
-        self.open('/repository/video/@@checkout')
-        s = self.selenium
-        s.waitForElementPresent('css=input.autocomplete')
-        s.typeKeys('css=input.autocomplete', 't')
-        s.waitForVisible('css=.ui-autocomplete')
-        s.assertText('css=.ui-autocomplete a', 'test1')
-        #s.click('css=.ui-autocomplete a:contains(test1)')
-        # down arrow
-        s.keyDown('css=input.autocomplete', r'\40')
-        # return
-        s.keyDown('css=input.autocomplete', r'\13')
-        s.waitForElementPresent('css=.objectsequencewidget li h3')
-        s.assertText('css=.objectsequencewidget li h3', 'test1')
-
-
 class TestThumbnail(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.video.testing.Layer

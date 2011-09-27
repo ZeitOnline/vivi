@@ -4,7 +4,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.cms.tagging.whitelist
 import zope.schema
 
 
@@ -43,13 +42,6 @@ class IVideo(IVideoContent):
         title=_('URI of the video file'),
         required=False,
         readonly=True)
-
-    keywords = zope.schema.Tuple(
-        title=_("Keywords"),
-        required=False,
-        default=None,
-        value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.whitelist.WhitelistSource()))
 
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
