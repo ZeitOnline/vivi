@@ -15,7 +15,6 @@ import zeit.brightcove.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.connector.search
@@ -96,23 +95,18 @@ class mapped_bool(mapped):
 
 
 class mapped_keywords(mapped):
-    """Maps the labels stored in brightcove to a list of tags.
-    """
 
     def __get__(self, instance, class_):
-        whitelist = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
         value = super(mapped_keywords, self).__get__(instance, class_)
-        result = []
         if value:
-            for code in value.split(';'):
-                tag = whitelist.get(code)
-                if tag is not None:
-                    result.append(tag)
-        return tuple(result)
+            keywords = zope.component.getUtility(
+                zeit.cms.content.interfaces.IKeywords)
+            value = value.split(';')
+            return tuple(keywords[code] for code in value if code in keywords)
+        return ()
 
     def __set__(self, instance, value):
-        value = ';'.join(tag.code for tag in value)
+        value = ';'.join(keyword.code for keyword in value)
         super(mapped_keywords, self).__set__(instance, value)
 
 

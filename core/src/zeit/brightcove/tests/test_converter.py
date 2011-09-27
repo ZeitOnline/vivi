@@ -40,13 +40,13 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertTrue(video.product_id is None)
 
     def test_keywords(self):
-        from zeit.cms.tagging.tag import Tag
-        whitelist = zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
-        whitelist['Politik'] = Tag('Politik')
         video = Video.find_by_id('1234')
-        self.assertEquals(['Politik'], [kw.code for kw in video.keywords])
-        video.keywords = (Tag('staatsanwaltschaft'), Tag('parlament'))
+        self.assertEquals(['Politik', 'koalition'],
+                          [kw.code for kw in video.keywords])
+        keywords = zope.component.getUtility(
+            zeit.cms.content.interfaces.IKeywords)
+        video.keywords = (keywords['staatsanwaltschaft'],
+                          keywords['parlament'])
         self.assertEquals('staatsanwaltschaft;parlament',
                           video.data['customFields']['cmskeywords'])
 

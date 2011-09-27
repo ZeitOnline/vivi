@@ -9,8 +9,6 @@ import transaction
 import urlparse
 import zeit.brightcove.converter
 import zeit.cms.interfaces
-import zeit.cms.tagging.interfaces
-import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.solr.testing
 import zeit.workflow.testing
@@ -227,12 +225,6 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
 
     @classmethod
     def setUp(cls):
-        zope.component.provideAdapter(
-            zeit.cms.tagging.testing.InMemoryTagger,
-            (zeit.cms.interfaces.ICMSContent,),
-            zeit.cms.tagging.interfaces.ITagger
-            )
-
         product_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         product_config['publish-script'] = 'true'
