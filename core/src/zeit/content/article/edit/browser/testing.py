@@ -30,3 +30,12 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
             "window.MochiKit.Signal.signal("
             "   this.browserbot.findElement('{0}'), 'save')".format(locator))
         self.selenium.waitForElementNotPresent('xpath=//*[@contenteditable]')
+
+    def create_block(self, block):
+        s = self.selenium
+        s.click('link=Module')
+        s.waitForElementPresent('css=#article-modules .module')
+        s.dragAndDropToObject(
+            'css=#article-modules .module[cms\\:block_type={0}]'.format(block),
+            'css=#article-editor-text .landing-zone.visible')
+        s.waitForElementPresent('css=.block.type-{0}'.format(block))

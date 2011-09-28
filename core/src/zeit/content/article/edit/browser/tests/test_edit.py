@@ -289,12 +289,7 @@ class TestFolding(
 
     def assert_foldable(self, block):
         s = self.selenium
-        s.click('link=Module')
-        s.waitForElementPresent('css=#article-modules .module')
-        s.dragAndDropToObject(
-            'css=#article-modules .module[cms\\:block_type={0}]'.format(block),
-            'css=#article-editor-text .landing-zone.visible')
-        s.waitForElementPresent('css=.block.type-{0}'.format(block))
+        self.create_block(block)
         s.assertElementNotPresent('css=.block.type-{0}.folded'.format(block))
         s.click('css=.block.type-{0} .edit-bar .fold-link'.format(block))
         s.waitForElementPresent('css=.block.type-{0}.folded'.format(block))
@@ -303,12 +298,7 @@ class TestFolding(
 
     def assert_fold_survives_page_load(self, block):
         s = self.selenium
-        s.click('link=Module')
-        s.waitForElementPresent('css=#article-modules .module')
-        s.dragAndDropToObject(
-            'css=#article-modules .module[cms\\:block_type={0}]'.format(block),
-            'css=#article-editor-text .landing-zone.visible')
-        s.waitForElementPresent('css=.block.type-{0}'.format(block))
+        self.create_block(block)
         s.assertElementNotPresent('css=.block.type-{0}.folded'.format(block))
         s.click('css=.block.type-{0} .edit-bar .fold-link'.format(block))
         s.waitForElementPresent('css=.block.type-{0}.folded'.format(block))
