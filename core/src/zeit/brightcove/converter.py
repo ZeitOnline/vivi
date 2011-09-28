@@ -1,19 +1,36 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.i18n import MessageFactory as _
+from zope.cachedescriptors.property import Lazy as cachedproperty
+import calendar
 import datetime
-import persistent
-import persistent.mapping
+import grokcore.component as grok
+import logging
+import lxml.etree
 import pytz
 import transaction
+import zeit.addcentral.add
+import zeit.addcentral.interfaces
 import zeit.brightcove.interfaces
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.cms.type
+import zeit.cms.workflow.interfaces
+import zeit.connector.interfaces
+import zeit.connector.search
+import zeit.content.video.interfaces
+import zeit.content.video.playlist
+import zeit.content.video.video
 import zope.component
-import zope.container.contained
 import zope.interface
+
+
+
+log = logging.getLogger(__name__)
+
+
+def to_epoch(value):
+    return calendar.timegm(value.utctimetuple())
 
 
 class mapped(object):
@@ -52,15 +69,18 @@ class mapped(object):
 
     def _get_from_dict(self, value):
         for key in self.path:
+            # XXX We've seen a value of None for the customFields dict sent by
+            # Brightcove.
+            if value is None:
+                return
             value = value[key]
         return value
 
     def __set__(self, instance, value):
         data = instance.data
         for key in self.path[:-1]:
-            data = data.setdefault(key, persistent.mapping.PersistentMapping())
+            data = data.setdefault(key, {})
         data[self.path[-1]] = value
-        instance.save_to_brightcove()
 
 
 class mapped_bool(mapped):
@@ -100,7 +120,7 @@ class mapped_datetime(mapped):
         return pytz.utc.localize(date)
 
     def __set__(self, instance, value):
-        value = str(int(value.strftime('%s')) * 1000)
+        value = str(to_epoch(value) * 1000)
         super(mapped_datetime, self).__set__(instance, value)
 
 
@@ -108,20 +128,45 @@ class mapped_product(mapped):
 
     def _get_from_dict(self, value):
         if (value['customFields']['produkt-id'] is None and
-             value['referenceId'] is not None):
-             return 'Reuters'
+            value['referenceId'] is not None):
+            return 'Reuters'
         for key in self.path:
             value = value[key]
         return value
 
 
 class BCContent(object):
+    # XXX remove at some point
 
-    zope.interface.implements(zeit.brightcove.interfaces.IBCContent)
+    pass
 
 
-class Content(persistent.Persistent,
-            zope.container.contained.Contained):
+def copy_field(from_, to, interface, key):
+    __traceback_info__ = (from_, to, interface, key)
+    field = interface[key]
+    value = getattr(from_, key, from_)
+    if value is from_:
+        return
+    if (
+        isinstance(value, unicode) and
+        zope.schema.interfaces.IFromUnicode.providedBy(field)):
+        try:
+            value = field.fromUnicode(value)
+        except zope.interface.Invalid:
+            # Oh well, let's see what happens next. If the text was too
+            # long the user won't be able to save later but has the
+            # full text at hand.
+            pass
+    __traceback_info__ = (from_, to, interface, key, value)
+    try:
+        setattr(to, key, value)
+    except (lxml.etree.XMLSyntaxError, ValueError):
+        log.warning('Could not set %s on %s', key, to, exc_info=True)
+    except AttributeError:
+        pass
+
+
+class Converter(object):
 
     zope.interface.implements(zeit.brightcove.interfaces.IBrightcoveContent)
 
@@ -133,32 +178,36 @@ class Content(persistent.Persistent,
 
     def __init__(self, data, connection=None):
         if data is not None:
-            self.data = persistent.mapping.PersistentMapping(data)
+            self.data = data
             if 'customFields' in self.data:
-                self.data['customFields'] = (
-                    persistent.mapping.PersistentMapping(
-                        self.data['customFields']))
-            self.uniqueId = 'http://video.zeit.de/%s/%s' % (self.type, self.data['id'])
-            self.__name__ = '%s:%s' % (self.type, self.data['id'])
+                self.data['customFields'] = self.data['customFields']
 
-
-    def __eq__(self, other):
-        if not isinstance(other, type(self)):
-            return False
-        return self.__name__ == other.__name__
+    @cachedproperty
+    def uniqueId(self):
+        path = zeit.addcentral.interfaces.IAddLocation(self).uniqueId
+        # XXX folders in the mock connector don't have a trailing slash, while
+        # in the real connector they do
+        if not path.endswith('/'):
+            path += '/'
+        return path + str(self.id)
 
     @property
     def thumbnail(self):
         return self.data['thumbnailURL']
+
+    @classmethod
+    def find_by_id(cls, id):
+        try:
+            return iter(cls.find_by_ids([id])).next()
+        except StopIteration:
+            raise KeyError(id)
 
     @staticmethod
     def get_connection():
         return zope.component.getUtility(
             zeit.brightcove.interfaces.IAPIConnection)
 
-    def save_to_brightcove(self):
-        if zeit.cms.checkout.interfaces.ILocalContent.providedBy(self):
-            return
+    def save(self):
         registered = getattr(self, '_v_save_hook_registered', False)
         if not registered:
             transaction.get().addBeforeCommitHook(self._save)
@@ -179,14 +228,17 @@ class Content(persistent.Persistent,
             data.pop(field, None)
         self.get_connection().post('update_video', video=data)
 
+    def __str__(self):
+        return '<%s id=%s>' % (self.__class__.__name__, self.id)
 
-class Video(Content):
+
+class Video(Converter):
 
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
 
     type = 'video'
     id_prefix = 'vid' # for old-style asset IDs
-    allow_comments = mapped_bool('customFields', 'allow_comments')
+    commentsAllowed = mapped_bool('customFields', 'allow_comments')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
     breaking_news = mapped_bool('customFields', 'breaking-news')
@@ -240,7 +292,7 @@ class Video(Content):
 
     @classmethod
     def find_modified(class_, from_date):
-        from_date = int(from_date.strftime("%s")) / 60
+        from_date = to_epoch(from_date) / 60
         return class_.get_connection().get_list(
             'find_modified_videos', class_,
             from_date=from_date,
@@ -266,27 +318,77 @@ class Video(Content):
     def related(self, value):
         if not value:
             value = ()
-        custom = self.data.setdefault('customFields',
-                                      persistent.mapping.PersistentMapping())
+        custom = self.data.setdefault('customFields', {})
 
         for i in range(1, 6):
             custom['ref_link%i' % i] = ''
             custom['ref_title%i' % i] = ''
         for i, obj in enumerate(value, 1):
-            metadata  = zeit.cms.content.interfaces.ICommonMetadata(obj, None)
+            metadata = zeit.cms.content.interfaces.ICommonMetadata(obj, None)
             if metadata is None:
                 continue
             custom['ref_link%s' % i] = obj.uniqueId
             custom['ref_title%s' % i] = metadata.teaserTitle
 
+    @property
+    def year(self):
+        try:
+            modified = int(self.data.get('lastModifiedDate'))
+        except (TypeError, ValueError):
+            return None
+        return datetime.datetime.fromtimestamp(modified/1000).year
 
-class VideoType(zeit.cms.type.TypeDeclaration):
+    # XXX year.setter is missing
 
-    title = _('Video')
-    interface = zeit.brightcove.interfaces.IVideo
+    def to_cms(self, video=None):
+        log.debug('Converting video to cms object %s', self.uniqueId)
+        if video is None:
+            video = zeit.content.video.video.Video()
+        for key in zeit.content.video.interfaces.IVideo:
+            if key in ('xml', '__name__', 'uniqueId'):
+                continue
+            copy_field(
+                self, video, zeit.content.video.interfaces.IVideo, key)
+        video.brightcove_id = str(self.id)
+        sc = zeit.cms.content.interfaces.ISemanticChange(video)
+        sc.last_semantic_change = self.date_last_modified
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        info.date_last_published = self.date_first_released
+        return video
+
+    @classmethod
+    def from_cms(cls, video):
+        instance = cls(data=dict(id='foo'))
+        instance.id = video.brightcove_id
+        for key in zeit.content.video.interfaces.IVideo:
+            try:
+                setattr(instance, key, getattr(video, key))
+            except AttributeError:
+                pass
+        date_last_modified = \
+            zeit.cms.content.interfaces.ISemanticChange(
+            video).last_semantic_change
+        if date_last_modified is not None:
+            instance.date_last_modified = date_last_modified
+        try:
+            bc_state = cls.find_by_id(instance.id)
+            instance.date_first_released = bc_state.date_first_released
+        except KeyError:
+            pass # avoid failures in test setup
+        return instance
 
 
-class Playlist(Content):
+@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+@grok.adapter(Video)
+def video_location(bc_object):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.brightcove')
+    path = config['video-folder']
+    return zeit.addcentral.add.find_or_create_folder(
+        *(path.split('/') + [bc_object.date_created.strftime('%Y-%m')]))
+
+
+class Playlist(Converter):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
     type = 'playlist'
@@ -301,9 +403,12 @@ class Playlist(Content):
     ))
 
     @property
-    def video_ids(self):
-        return tuple('http://video.zeit.de/video/%s' % id for id in
-                     self.data['videoIds'])
+    def videos(self):
+        return tuple(
+            video for video in (
+                zeit.cms.interfaces.ICMSContent(query_video_id(str(id)), None)
+                for id in self.data['videoIds'])
+            if video is not None)
 
     @classmethod
     def find_by_ids(class_, ids):
@@ -319,8 +424,82 @@ class Playlist(Content):
             'find_all_playlists', class_,
             playlist_fields=class_.fields)
 
+    def to_cms(self, playlist=None):
+        if playlist is None:
+            playlist = zeit.content.video.playlist.Playlist()
+        for key in zeit.content.video.interfaces.IPlaylist:
+            if key in ('xml', '__name__', 'uniqueId'):
+                continue
+            copy_field(
+                self, playlist, zeit.content.video.interfaces.IPlaylist, key)
+        return playlist
 
-class PlaylistType(zeit.cms.type.TypeDeclaration):
+    @classmethod
+    def from_cms(cls, playlist):
+        instance = cls(data=dict(id='foo'))
+        for key in zeit.content.video.interfaces.IPlaylist:
+            try:
+                setattr(instance, key, getattr(playlist, key))
+            except AttributeError:
+                pass
+        return instance
 
-    title = _('Playlist')
-    interface = zeit.brightcove.interfaces.IPlaylist
+
+@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+@grok.adapter(Playlist)
+def playlist_location(bc_object):
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.brightcove')
+    path = config['playlist-folder']
+    return zeit.addcentral.add.find_or_create_folder(*path.split('/'))
+
+
+BRIGHTCOVE_ID = zeit.connector.search.SearchVar(
+    'id', 'http://namespaces.zeit.de/CMS/brightcove')
+
+
+def resolve_video_id(video_id):
+    connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+    result = list(
+        connector.search([BRIGHTCOVE_ID], BRIGHTCOVE_ID == video_id))
+    if not result:
+        raise LookupError(video_id)
+    if len(result) > 1:
+        raise LookupError(
+            'Found multiple CMS objects with video id %r.' % video_id)
+    result = result[0]
+    unique_id = result[0]
+    return unique_id
+
+
+def query_video_id(video_id, default=None):
+    """Resolve video or return a default value."""
+    try:
+        return resolve_video_id(video_id)
+    except LookupError:
+        return default
+
+
+def update_brightcove(context, event):
+    if not event.publishing:
+        zeit.brightcove.interfaces.IBrightcoveObject(context).save()
+
+
+@grok.adapter(zeit.content.video.interfaces.IVideo)
+@grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
+def video_from_cms(context):
+    return Video.from_cms(context)
+
+
+@grok.adapter(zeit.content.video.interfaces.IPlaylist)
+@grok.implementer(zeit.brightcove.interfaces.IBrightcoveObject)
+def playlist_from_cms(context):
+    return Playlist.from_cms(context)
+
+
+def publish_on_checkin(context, event):
+    # prevent infinite loop, since there is a checkout/checkin cycle during
+    # publishing (to update XML references etc.)
+    if not event.publishing:
+        zeit.cms.workflow.interfaces.IPublish(context).publish()

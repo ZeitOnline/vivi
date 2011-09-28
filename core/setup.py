@@ -17,15 +17,17 @@ setup(
         'lxml',
         'pytz',
         'setuptools',
-        'simplejson',
+        'zeit.addcentral',
         'zeit.cms>1.44.0',
+        'zeit.content.video',
         'zeit.solr>0.21.0',
-        'zope.container',
+        'zope.cachedescriptors',
+        'zope.component',
         'zope.interface',
         'zope.schema',
     ],
     entry_points = """
     [console_scripts]
-    update-brightcove-repository = zeit.brightcove.repository:update_repository
+    update-brightcove-repository = zeit.brightcove.update:_update_from_brightcove
     """
 )

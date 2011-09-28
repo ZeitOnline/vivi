@@ -1,13 +1,17 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import json
+import mock
 import pkg_resources
-import simplejson
 import time
 import transaction
 import urlparse
+import zeit.brightcove.converter
+import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.solr.testing
+import zeit.workflow.testing
 import zope.component
 
 
@@ -76,7 +80,7 @@ PLAYLIST_2345 = {
     'name': 'Videos zum Thema Film',
     'shortDescription': 'Videos in kurz',
     'thumbnailURL': None,
-    'videoIds': [1234,6789]
+    'videoIds': [1234, 6789],
 }
 
 
@@ -164,7 +168,7 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
         time.sleep(self.sleep)
         self.send_response(self.response)
         self.end_headers()
-        self.wfile.write(simplejson.dumps(result))
+        self.wfile.write(json.dumps(result))
 
     def do_POST(self):
         length = int(self.headers['content-length'])
@@ -192,6 +196,8 @@ product_config = """\
     write-url http://localhost:%s/
     source-serie file://%s
     timeout 300
+    video-folder video
+    playlist-folder video/playlist
 </product-config>
 """ % (httpd_port,
        httpd_port,
@@ -203,16 +209,14 @@ BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
     product_config=(
         zeit.cms.testing.cms_product_config +
         zeit.solr.testing.product_config +
+        zeit.workflow.testing.product_config +
         product_config))
-
 
 
 def update_repository(root):
     with zeit.cms.testing.site(root):
-        repository = zope.component.getUtility(
-            zeit.brightcove.interfaces.IRepository)
-        repository.update_from_brightcove()
-        transaction.commit()
+        with transaction:
+            zeit.brightcove.update.update_from_brightcove()
 
 
 class BrightcoveLayer(BrightcoveHTTPLayer,
@@ -221,15 +225,27 @@ class BrightcoveLayer(BrightcoveHTTPLayer,
 
     @classmethod
     def setUp(cls):
-        pass
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        product_config['publish-script'] = 'true'
+        product_config['retract-script'] = 'true'
+
+        cls.resolve_patch = mock.patch(
+            'zeit.brightcove.converter.resolve_video_id',
+            new=cls.resolve_video_id)
+        cls.resolve_patch.start()
+
+    @staticmethod
+    def resolve_video_id(video_id):
+        return zeit.brightcove.converter.Video.find_by_id(video_id).uniqueId
 
     @classmethod
     def tearDown(cls):
-        pass
+        cls.resolve_patch.stop()
 
     @classmethod
     def testSetUp(cls):
-        update_repository(BrightcoveZCMLLayer.setup.getRootFolder())
+        pass
 
     @classmethod
     def testTearDown(cls):
@@ -240,14 +256,14 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = BrightcoveLayer
 
-    @property
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.brightcove.interfaces.IRepository)
-
     def setUp(self):
         super(BrightcoveTestCase, self).setUp()
         self.posts = RequestHandler.posts_received
+        update_repository(self.getRootFolder())
+        transaction.commit()
+        zeit.workflow.testing.run_publish()
+        # clear changes made by the checkout/checkin-cycle during publishing
+        RequestHandler.posts_received[:] = []
 
 
 def FunctionalDocFileSuite(*args, **kw):

@@ -4,7 +4,7 @@ zeit.brightcove changes
 0.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Impport videos and playlists into the DAV servers (#8996).
 
 
 0.10.0 (2011-08-12)
@@ -31,6 +31,8 @@ zeit.brightcove changes
   playlists and videos.
 
 - Change indexes as the interface requires an solr attribute now (for #8559)
+
+- Remove Brightcove content from addcentral.
 
 
 0.8.0 (2010-08-16)

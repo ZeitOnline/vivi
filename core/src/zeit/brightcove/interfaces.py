@@ -1,29 +1,23 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
-import zope.container.interfaces
 import zope.interface
 import zope.schema
+
+
+DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/brightcove'
 
 
 class IAPIConnection(zope.interface.Interface):
     """Brightcove API connection."""
 
 
-class IRepository(zope.container.interfaces.IItemContainer):
-    """A repostory for accessing brightcove videos.
-
-
-    Content from brightcove has unique ids in the form::
-
-        brighcove:<type>:<id>.
-
-    """
+class IBrightcoveObject(zope.interface.Interface):
+    """A representation of an object as stored in Brightcove."""
 
 
 class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
@@ -31,12 +25,7 @@ class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
     product_configuration = 'zeit.brightcove'
 
 
-class IBCContent(zeit.cms.interfaces.ICMSContent):
-     """Plain BrightCove-Content w/ just an uniqueId
-     """
-
-
-class IBrightcoveContent(IBCContent):
+class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
     id = zope.schema.Int(
         title=_('Id'),
@@ -75,93 +64,12 @@ class IVideo(IBrightcoveContent,
              zeit.cms.related.interfaces.IRelatedContent):
     """A video."""
 
-    supertitle = zope.schema.TextLine(
-        title=_("Kicker"),
-        description=_("Please take care of capitalisation."),
-        max_length=1024,
-        required=False,
-        missing_value='')
-
-    subtitle = zope.schema.Text(
-        title=_("Video subtitle"),
-        required=False,
-        max_length=5000)
-
-    ressort = zope.schema.Choice(
-        title=_("Ressort"),
-        required=False,
-        missing_value='',
-        source=zeit.cms.content.sources.NavigationSource())
-
-    serie = zope.schema.Choice(
-        title=_("Serie"),
-        source= SerieSource(),
-        required=False,
-        missing_value='')
-
-    product_id = zope.schema.Choice(
-        title=_('Product id'),
-        required=False,
-        missing_value='',
-        source=zeit.cms.content.sources.ProductSource())
-
-    keywords = zope.schema.Tuple(
-        title=_("Keywords"),
-        required=False,
-        default=(),
-        unique=True,
-        value_type=zope.schema.Object(
-            zeit.cms.content.interfaces.IKeyword))
-
-    dailyNewsletter = zope.schema.Bool(
-        title=_("Daily newsletter"),
-        description=_(
-            "Should this article be listed in the daily newsletter?"),
-        default=False)
-
-    allow_comments = zope.schema.Bool(
-        title=_("comments allowed"),
-        description=_(
-            "Are comments allowed for this video?"),
-        default=True)
-
-    banner = zope.schema.Bool(
-        title=_("Banner"),
-        default=True)
-
-    banner_id = zope.schema.TextLine(
-        title=_('Banner id'),
-        required=False,
-        missing_value='')
-
-    breaking_news = zope.schema.Bool(
-        title=_('video-breaking-news', default='Breaking news'),
-        default=False)
-
     has_recensions = zope.schema.Bool(
         title=_('Has recension content'),
         default=False)
 
     expires = zope.schema.Datetime(
         title=_('Video expires on'),
-        required=False,
-        readonly=True,
-        default=None)
-
-    date_first_released = zope.schema.Datetime(
-        title=_('First released'),
-        required=False,
-        readonly=True,
-        default=None)
-
-    date_created = zope.schema.Datetime(
-        title=_('Created on'),
-        required=False,
-        readonly=True,
-        default=None)
-
-    date_last_modified = zope.schema.Datetime(
-        title=_('last modified'),
         required=False,
         readonly=True,
         default=None)
@@ -191,38 +99,5 @@ class IPlaylist(IBrightcoveContent):
     )
 
 
-class BrightcoveSource(zeit.cms.content.contentsource.CMSContentSource):
-
-    name = 'brightcove-content'
-    check_interfaces = (IVideo, IPlaylist)
-
-
-brightcoveSource = BrightcoveSource()
-
-
-class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
-
-    name = 'brightcove-videos'
-    check_interfaces = (IVideo,)
-
-
-videoSource = VideoSource()
-
-
-class IVideoAsset(zope.interface.Interface):
-
-    audio_id = zope.schema.TextLine(
-        title=_('Audio id'),
-        required=False)
-
-    video = zope.schema.Choice(
-        title=_('Video'),
-        required=False,
-        source=brightcoveSource)
-
-    video_2 = zope.schema.Choice(
-        title=_('Video 2'),
-        required=False,
-        source=brightcoveSource)
-
-
+class IRepository(zope.interface.Interface):
+    """legacy interface."""
