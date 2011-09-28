@@ -123,21 +123,22 @@
   <browser:page
     for="zeit.content.article.edit.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-layout"
+    name="edit-image"
     class=".image.EditImage"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="edit-box"
-    class=".image.EditImageAction"
-    permission="zeit.EditContent"
-    weight="0"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-image"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
     />
+
+
 
   <!-- video -->
 

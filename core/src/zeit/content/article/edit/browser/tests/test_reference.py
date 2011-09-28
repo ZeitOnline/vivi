@@ -270,25 +270,30 @@ class ImageTest(GalleryTest):
         # NOTE: the error message should be improved
         self.assert_ellipsis("ComponentLookupError...")
 
-    def test_layout_should_be_editable(self):
-        article = self.get_article(with_empty_block=True)
-        self.browser.open(self.contents_url)
-        self.browser.getLink('Edit').click()
-        self.assertEqual(
-            ['(no value)', 'small', 'large', 'Infobox', 'Hochkant'],
-            self.browser.getControl('Layout').displayOptions)
-        self.browser.getControl('Layout').displayValue = ['large']
-        self.browser.getControl('Apply').click()
-        self.assert_ellipsis("<...self.close()...")
-        # The layout is used as a css-class:
-        self.browser.open(self.contents_url)
-        self.assert_ellipsis(
-            """...<div ...class="large ...""")
-
     def test_empty_block_should_not_provide_drop_in_readonly_mode(self):
         # Disable inherited test because empty images are removed during
         # checkin. This will change hopefully once #8194 is implemented.
         pass
+
+
+class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def test_layout_should_be_editable(self):
+        s = self.selenium
+        self.add_article()
+        self.create_block('image')
+        select = 'css=.block.type-image form.wired select'
+        s.waitForElementPresent(select)
+        self.assertEqual(
+            ['(no value)', 'small', 'large', 'Infobox', 'Hochkant'],
+            s.getSelectOptions(select))
+        s.select(select, 'label=small')
+        s.fireEvent(select, 'blur')
+        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        # Re-open the page and verify that the data is still there
+        s.clickAndWait('link=Edit contents')
+        s.waitForElementPresent(select)
+        s.assertSelectedLabel(select, 'small')
 
 
 class VideoTest(GalleryTest):

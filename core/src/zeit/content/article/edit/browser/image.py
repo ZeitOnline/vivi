@@ -8,14 +8,13 @@ import zeit.edit.browser.view
 import zope.lifecycleevent
 
 
-class EditImage(zeit.edit.browser.view.EditBox):
+class EditImage(zeit.edit.browser.form.InlineForm):
 
+    legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IImage).select('layout')
     undo_description = _('edit image')
 
-
-class EditImageAction(zeit.edit.browser.view.EditBoxAction):
-
-    title = _('Edit')
-    action = 'edit-layout'
+    @property
+    def prefix(self):
+        return 'form.divison.{0}'.format(self.context.__name__)
