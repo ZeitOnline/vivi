@@ -134,3 +134,62 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
     def test_portraitbox_factory(self):
         from zeit.content.article.edit.interfaces import IPortraitbox
         self.assert_factory('portraitbox', 'Portraitbox', IPortraitbox)
+
+
+class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
+
+    def assert_updated(self, referenced, factory_name):
+        self.repository['refed'] = referenced
+        #
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        import zeit.cms.browser.form
+        import zope.component
+        article = Article()
+        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        article.year = 2011
+        article.title = u'title'
+        article.ressort = u'Deutschland'
+
+        body = zeit.content.article.edit.body.EditableBody(
+            article, article.xml.body)
+        factory = zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory, factory_name)
+        reference = factory()
+        reference.references = self.repository['refed']
+
+        self.repository['article'] = article
+
+        #
+        import zeit.workflow.interfaces
+        import datetime
+        import pytz
+        workflow = zeit.workflow.interfaces.ITimeBasedPublishing(
+            self.repository['refed'])
+        workflow.release_period = (
+            None, datetime.datetime(2005, 1, 2, tzinfo=pytz.UTC))
+
+        #
+        from zeit.cms.checkout.helper import checked_out
+        with checked_out(self.repository['article']):
+            pass
+        self.assertEqual(
+            u'2005-01-02T00:00:00+00:00',
+            self.repository['article'].xml.body.division.getchildren()[0].get(
+                'expires'))
+
+
+    def test_gallery_metadata_should_be_updated(self):
+        from zeit.content.gallery.gallery import Gallery
+        self.assert_updated(Gallery(), 'gallery')
+
+    def test_portraitbox_metadata_should_be_updated(self):
+        from zeit.content.portraitbox.portraitbox import Portraitbox
+        self.assert_updated(Portraitbox(), 'portraitbox')
+
+    def test_infobox_metadata_should_be_updated(self):
+        from zeit.content.infobox.infobox import Infobox
+        self.assert_updated(Infobox(), 'infobox')
+
+    def test_image_metadata_should_be_updated(self):
+        self.assert_updated(self.repository['2006']['DSC00109_2.JPG'], 'image')
