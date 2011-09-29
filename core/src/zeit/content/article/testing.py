@@ -130,6 +130,26 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ArticleLayer
 
+    def get_article(self):
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        import zeit.cms.browser.form
+        article = Article()
+        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        article.year = 2011
+        article.title = u'title'
+        article.ressort = u'Deutschland'
+        return article
+
+    def get_factory(self, article, factory_name):
+        import zeit.content.article.edit.body
+        import zeit.edit.interfaces
+        import zope.component
+        body = zeit.content.article.edit.body.EditableBody(
+            article, article.xml.body)
+        return zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory, factory_name)
+
 
 selenium_layer = gocept.selenium.ztk.Layer(ArticleLayer)
 selenium_workflow_layer = gocept.selenium.ztk.Layer(CDSLayer)

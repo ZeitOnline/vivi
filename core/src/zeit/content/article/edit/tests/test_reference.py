@@ -141,23 +141,9 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
     def assert_updated(self, referenced, factory_name):
         self.repository['refed'] = referenced
         #
-        from zeit.content.article.article import Article
-        from zeit.content.article.interfaces import IArticle
-        import zeit.cms.browser.form
-        import zope.component
-        article = Article()
-        zeit.cms.browser.form.apply_default_values(article, IArticle)
-        article.year = 2011
-        article.title = u'title'
-        article.ressort = u'Deutschland'
-
-        body = zeit.content.article.edit.body.EditableBody(
-            article, article.xml.body)
-        factory = zope.component.getAdapter(
-            body, zeit.edit.interfaces.IElementFactory, factory_name)
-        reference = factory()
+        article = self.get_article()
+        reference = self.get_factory(article, factory_name)()
         reference.references = self.repository['refed']
-
         self.repository['article'] = article
 
         #
