@@ -20,11 +20,6 @@
     line-height:1.5em;
 }
 
-#editor-forms {
-    margin-left:6px;
-    margin-right:6px;
-}
-
 #editor-forms div div.edit-bar {
     margin: 0 0 4px 0px;
     background: none 0;
@@ -152,6 +147,60 @@ color: #333;
   font-size:12px;
   margin: 0 10px;
   padding: 0px 10px;
+}
+
+/* Diver */
+
+#edit-form-diver fieldset {
+  margin: 0;
+  padding: 10px;
+}
+
+#edit-form-diver textarea {
+  background: none;
+  border: none;
+  font-size: 14px;
+  height: 4em;
+  margin-top: -1em;
+  width: 181%;
+}
+
+#memo-diver {
+  background: #FFF799;
+  border-bottom: 1px solid #CCC;
+  display: none;
+}
+
+#options-diver {
+  background: #FFF;
+  border-bottom: 1px solid #CCC;
+  display: none;
+}
+
+#memo-diver label {
+  visibility: hidden;
+}
+
+#edit-form-diver h2 {
+  border-bottom: 1px dotted #999999;
+  color: #999999;
+  display: block;
+  font-weight: normal;
+  margin-bottom: 5px;
+  width: 100%;
+  text-transform: none;
+}
+
+#memo-diver-button {
+  background: none repeat scroll 0 0 #FFF799;
+  color: #333333;
+  right: 150px;
+}
+
+#options-diver-button {
+  background: none repeat scroll 0 0 #FFFFFF;
+  color: #666666;
+  right: 20px;
 }
 
 /* for the RTE-Toolbar */
