@@ -110,6 +110,27 @@ div div.landing-zone:first-child {
   border: 0px solid #ffffff;
 }
 
+.diver-bar {
+  padding-bottom: 35px;
+  position: relative;
+}
+
+.diver-bar span {
+  border-bottom: 1px solid #CCCCCC;
+  border-left: 1px solid #CCCCCC;
+  border-radius: 0 0 5px 5px;
+  border-right: 1px solid #CCCCCC;
+  cursor: pointer;
+  display: block;
+  height: 25px;
+  line-height: 25px;
+  position: absolute;
+  text-align: center;
+  top: -1px;
+  width: 120px;
+  z-index: 1000;
+}
+
 .tab-content > .context-views > ul > li.selected > a {
   background: #EEF3F7;
   border-bottom: 1px solid #EEF3F7;
@@ -402,11 +423,6 @@ div div.landing-zone:first-child {
   border-bottom: none;
   display: block;
   margin-bottom: 0;
-}
-
-#editor-forms {
-    margin-left:6px;
-    margin-right:6px;
 }
 
 #editor-forms div div.edit-bar {

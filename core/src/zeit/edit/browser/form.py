@@ -11,8 +11,14 @@ class Forms(object):
     """View that collects all inline forms."""
 
 
-class FormGroup(zope.viewlet.viewlet.SimpleViewletClass('layout.forms.pt')):
-    """Base class for groups of inline forms."""
+FormGroup = zope.viewlet.viewlet.SimpleViewletClass('layout.forms.pt')
+
+FoldableFormGroup = zope.viewlet.viewlet.SimpleViewletClass('layout.foldable-forms.pt')
+
+FormLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.form-loader.pt')
+
+class DiverFormGroup(zope.viewlet.viewlet.SimpleViewletClass('layout.diver-forms.pt')):
+    """ Contains all diver forms."""
 
     def forms(self):
         """Returns all actual views that belong to this form group."""
@@ -46,11 +52,6 @@ class FormGroup(zope.viewlet.viewlet.SimpleViewletClass('layout.forms.pt')):
         return result
 
 
-FoldableFormGroup = zope.viewlet.viewlet.SimpleViewletClass('layout.foldable-forms.pt')
-
-FormLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.form-loader.pt')
-
-
 class InlineForm(zope.formlib.form.SubPageEditForm,
                  zeit.edit.browser.view.UndoableMixin,
                  zeit.cms.browser.view.Base):
@@ -75,3 +76,10 @@ class InlineForm(zope.formlib.form.SubPageEditForm,
                 widget=widget,
             ))
         return result
+
+
+class DiverForm(InlineForm):
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile('diver.pt')
+
+    css_class = 'diver-form'
