@@ -13,6 +13,39 @@ import zope.i18n
 import zope.interface
 
 
+
+class DiverFormGroup(zeit.edit.browser.form.DiverFormGroup):
+    """ Contains  """
+
+    title = _('Diver')
+
+
+class MemoDiver(zeit.edit.browser.form.DiverForm):
+
+    legend = _('Memo')
+    prefix = 'memo-diver'
+    undo_description = _('edit memo')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.IMemo,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'memo')
+
+
+class OptionsDiver(zeit.edit.browser.form.DiverForm):
+
+    # TODO Dummy diver.
+
+    legend = _('Options')
+    prefix = 'options-diver'
+    undo_description = _('edit options')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.interfaces.ICMSContent,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            '__name__')
+
+
 class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article content forms."""
 
