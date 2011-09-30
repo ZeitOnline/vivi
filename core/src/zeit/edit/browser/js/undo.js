@@ -10,4 +10,4 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 
 });
 
-})();
+}());

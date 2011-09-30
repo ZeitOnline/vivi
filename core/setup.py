@@ -10,6 +10,7 @@ version = '0.1dev'
 
 install_requires = [
     'setuptools',
+    'gocept.jslint>=0.2',
     'gocept.lxml',
     'grokcore.component',
     'lxml',

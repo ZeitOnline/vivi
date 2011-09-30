@@ -6,18 +6,18 @@ zeit.cms.declare_namespace('zeit.edit');
 zeit.edit.json_request_lock = new MochiKit.Async.DeferredLock();
 
 zeit.edit.with_lock = function(callable) {
-    var d = zeit.edit.json_request_lock.acquire()
+    var d = zeit.edit.json_request_lock.acquire();
     var pfunc = MochiKit.Base.partial.apply(
         MochiKit.Base, MochiKit.Base.extend(null, arguments));
     d.addCallback(function(result) {
         return pfunc();
     });
     d.addBoth(function(result_or_error) {
-        zeit.edit.json_request_lock.release()
+        zeit.edit.json_request_lock.release();
         return result_or_error;
     });
     return d;
-}
+};
 
 zeit.edit.getParentComponent = function(context_element) {
     var parent = null;
@@ -27,7 +27,7 @@ zeit.edit.getParentComponent = function(context_element) {
         parent_element = parent_element.parentNode;
     }
     return parent;
-}
+};
 
 
 
@@ -53,11 +53,12 @@ zeit.edit.Editor = gocept.Class.extend({
     handleContentClick: function(event) {
         var self = this;
         var target = event.target();
+        var module_name = null;
         log("Target " + target.nodeName);
         while (!isNull(target) && target.id != 'content') {
             // Target can be null when it was removed from the DOM by a
             // previous event handler (like the lightbox shade)
-            var module_name = target.getAttribute('cms:cp-module')
+            module_name = target.getAttribute('cms:cp-module');
             if (!isNull(module_name)) {
                 break;
             }
@@ -73,7 +74,7 @@ zeit.edit.Editor = gocept.Class.extend({
             var module = zeit.cms.resolveDottedName(module_name);
             new module(target);
         } else if (event.target().nodeName == 'A' && event.target().target) {
-            // pass
+            self = 'pass';
         } else if (event.target().nodeName == 'A') {
             event.preventDefault();
         }
@@ -134,7 +135,7 @@ zeit.edit.Editor = gocept.Class.extend({
         });
         d.addErrback(function(error) {
             zeit.cms.log_error(error);
-            return error
+            return error;
         });
         return d;
     },
@@ -157,7 +158,7 @@ zeit.edit.Editor = gocept.Class.extend({
         if (isUndefinedOrNull(self.inner_content)) {
             throw Error("Invalid editor content.");
         }
-        return self.inner_content
+        return self.inner_content;
     },
 
     replace_element: function(element, result) {
@@ -165,7 +166,7 @@ zeit.edit.Editor = gocept.Class.extend({
         var dom = DIV();
         dom.innerHTML = result.responseText;
         MochiKit.DOM.swapDOM(element, dom.firstChild);
-        return element // XXX
+        return element; // XXX
     },
 
     busy_until_reload_of: function(component, delay) {
@@ -191,7 +192,7 @@ zeit.edit.Editor = gocept.Class.extend({
             self.busy = false;
             MochiKit.Signal.signal(self, 'idle');
         }
-    },
+    }
 });
 
 
@@ -201,7 +202,7 @@ zeit.edit.Editor = gocept.Class.extend({
     var ident = MochiKit.Signal.connect(window, 'onload', function() {
         MochiKit.Signal.disconnect(ident);
         if (isNull($('cp-content'))) {
-            return
+            return;
         }
         // There is only one instance per page. Put it under a well known
         // location
@@ -215,7 +216,7 @@ zeit.edit.Editor = gocept.Class.extend({
             return result;
         });
     });
-})();
+}());
 
 
 zeit.edit.BusyIndicator = gocept.Class.extend({
@@ -223,15 +224,15 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
     construct: function() {
         var self = this;
         MochiKit.Signal.connect(
-            zeit.edit.editor, 'busy', self, self.busy_after_a_while)
+            zeit.edit.editor, 'busy', self, self.busy_after_a_while);
         MochiKit.Signal.connect(
-            zeit.edit.editor, 'idle', self, self.idle)
-        self.delayer = null; 
+            zeit.edit.editor, 'idle', self, self.idle);
+        self.delayer = null;
         self.indicator = DIV({
-            class: 'hidden',
-            id: 'busy-indicator'},
-            DIV({class: 'shade'}),
-            IMG({src: application_url + '/@@/zeit.imp/loading.gif'})
+            'class': 'hidden',
+            'id': 'busy-indicator'},
+            DIV({'class': 'shade'}),
+            IMG({'src': application_url + '/@@/zeit.imp/loading.gif'})
             );
         $('content').appendChild(self.indicator);
     },
@@ -260,7 +261,7 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
             self.delayer = null;
         }
         MochiKit.DOM.addElementClass(self.indicator, 'hidden');
-    },
+    }
 
 });
 
@@ -272,7 +273,7 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
             MochiKit.Signal.disconnect(ident);
             zeit.edit.busy_indicator = new zeit.edit.BusyIndicator();
         });
-})();
+}());
 
 
 var wire_forms = function() {
@@ -294,7 +295,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 });
 
 
-})();
+}());
 
 
 zeit.edit.LoadAndReload = gocept.Class.extend({
@@ -304,7 +305,7 @@ zeit.edit.LoadAndReload = gocept.Class.extend({
         var url = context_element.getAttribute('href');
         var d = zeit.edit.makeJSONRequest(url);
         return d;
-    },
+    }
 
 });
 
@@ -371,7 +372,7 @@ zeit.edit.LightBoxForm = zeit.cms.LightboxForm.extend({
                 self.parent, 'reload',
                 self.reload_id, self.reload_url);
         }
-    },
+    }
 });
 
 
@@ -384,7 +385,7 @@ zeit.edit.TabbedLightBoxForm = zeit.edit.LightBoxForm.extend({
         MochiKit.Signal.signal(self, 'before-reload');
         if (!isUndefinedOrNull(self.tabs)) {
             self.tabs.active_tab.view.render();
-            return
+            return;
         }
         var tab_definitions = MochiKit.DOM.getElementsByTagAndClassName(
                 null, 'lightbox-tab-data', self.context_element.parentNode);
@@ -408,13 +409,13 @@ zeit.edit.TabbedLightBoxForm = zeit.edit.LightBoxForm.extend({
                     }
                     $(tab_view.target_id).__handler__ = self;
                     self.eval_javascript_tags();
-                    MochiKit.Signal.signal(self, 'after-reload')
+                    MochiKit.Signal.signal(self, 'after-reload');
             }));
             if (self.context_element == tab_definition) {
                 self.tabs.activate(tab_id);
             }
             i = i + 1;
         });
-    },
+    }
 
 });

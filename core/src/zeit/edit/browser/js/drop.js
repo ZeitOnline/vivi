@@ -8,14 +8,14 @@ zeit.edit.drop.DropHandler = gocept.Class.extend({
     construct: function(options) {
         var self = this;
         MochiKit.Base.update(self, options);
-    },
+    }
 
 });
 
 
 zeit.edit.drop.handlers = [];
-zeit.edit.drop.handler_by_accept = {}
-zeit.edit.drop.handler_by_activation = {}
+zeit.edit.drop.handler_by_accept = {};
+zeit.edit.drop.handler_by_activation = {};
 
 
 zeit.edit.drop.registerHandler = function(options) {
@@ -52,7 +52,7 @@ zeit.edit.drop.Droppable = gocept.Class.extend({
             hoverclass: 'hover-content',
             ondrop: function(draggable, droppable, event) {
                 return self.drop(draggable, droppable, data_element);
-            },
+            }
         });
         self.parent = parent;
     },
@@ -69,7 +69,7 @@ zeit.edit.drop.Droppable = gocept.Class.extend({
         var url = data_element.getAttribute(handler.url_attribute);
         var query_args = handler.query_arguments(draggable_element);
 
-        var d = zeit.edit.makeJSONRequest(url, query_args, self.parent)
+        var d = zeit.edit.makeJSONRequest(url, query_args, self.parent);
         d.addCallback(function(result) {
             MochiKit.Signal.signal(
                 handler, 'drop-finished',
@@ -90,12 +90,12 @@ zeit.edit.drop.Droppable = gocept.Class.extend({
                 }
             });
         return zeit.edit.drop.handler_by_accept[handler];
-    },
+    }
 
 });
 
 
-zeit.edit.drop.EditorDroppers = 
+zeit.edit.drop.EditorDroppers =
     zeit.edit.context.ContentActionBase.extend({
 
     __name__: 'zeit.edit.drop.EditorDroppers',
@@ -125,7 +125,7 @@ zeit.edit.drop.EditorDroppers =
         var block = MochiKit.DOM.getFirstParentByTagAndClassName(
             element, null, 'block');
         return block;
-    },
+    }
 
 });
 
@@ -135,16 +135,16 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 });
 
 
-zeit.edit.drop.content_drop_handler = 
+zeit.edit.drop.content_drop_handler =
     zeit.edit.drop.registerHandler({
         accept: ['uniqueId', 'content-drag-pane'],
         activated_by: 'action-content-droppable',
         url_attribute: 'cms:drop-url',
         query_arguments: function(draggable) {
-            var query = {'uniqueId': draggable.uniqueId}
+            var query = {'uniqueId': draggable.uniqueId};
             MochiKit.Base.update(query, draggable.drop_query_args);
             return query;
         }
 });
 
-})();
+}());

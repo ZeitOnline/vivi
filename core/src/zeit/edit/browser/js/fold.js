@@ -16,7 +16,7 @@ zeit.edit.FoldBlock = gocept.Class.extend({
     // @staticmethod
     restore_folding: function() {
         forEach(
-            $$('a[cms\:cp-module="zeit.edit.FoldBlock"]'),
+            $$('a[cms:cp-module="zeit.edit.FoldBlock"]'),
             function(action) {
                 var id = action.getAttribute('href');
                 if (sessionStorage['folding.' + id]) {
@@ -41,4 +41,4 @@ MochiKit.Signal.connect(
         });
 });
 
-})();
+}());
