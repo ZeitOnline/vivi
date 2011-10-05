@@ -4,7 +4,8 @@ zeit.cms changes
 1.49.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Backported test helpers and fixes from the editor-ng branch to the main
+  development line.
 
 
 1.49.1 (2011-06-21)
