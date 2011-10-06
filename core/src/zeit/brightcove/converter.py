@@ -481,6 +481,19 @@ def query_video_id(video_id, default=None):
         return default
 
 
+@grok.adapter(basestring, name='http://video.zeit.de/')
+@grok.implementer(zeit.cms.interfaces.ICMSContent)
+def adapt_old_video_id_to_new_object(old_id):
+    video_prefix = 'http://video.zeit.de/video/'
+    playlist_prefix = 'http://video.zeit.de/playlist/'
+    if old_id.startswith(video_prefix):
+        video_id = old_id.replace(video_prefix, '', 1)
+        return zeit.cms.interfaces.ICMSContent(query_video_id(video_id), None)
+    elif old_id.startswith(playlist_prefix):
+        pls_id = old_id.replace(playlist_prefix, '', 1)
+        return playlist_location(None).get(pls_id)
+
+
 def update_brightcove(context, event):
     if not event.publishing:
         zeit.brightcove.interfaces.IBrightcoveObject(context).save()

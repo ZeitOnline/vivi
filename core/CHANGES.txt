@@ -6,6 +6,9 @@ zeit.brightcove changes
 
 - Impport videos and playlists into the DAV servers (#8996).
 
+- Add backward compatibility adapters for old video and playlist unique Ids
+  (#9746).
+
 
 0.10.0 (2011-08-12)
 -------------------

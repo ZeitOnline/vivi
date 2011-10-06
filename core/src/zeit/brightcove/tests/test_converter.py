@@ -344,3 +344,24 @@ class TestQueryVideoId(unittest.TestCase):
                 mock.sentinel.default,
                 query_video_id(mock.sentinel.avalue,
                                mock.sentinel.default))
+
+
+class TestBackwardCompatibleUniqueIds(
+    zeit.brightcove.testing.BrightcoveTestCase):
+
+    def test_videos_should_be_resolvable(self):
+        from zeit.cms.interfaces import ICMSContent
+        expected_unique_id = 'http://xml.zeit.de/testcontent'
+        with mock.patch('zeit.brightcove.converter.resolve_video_id') as rvi:
+            rvi.return_value = expected_unique_id
+            result = ICMSContent('http://video.zeit.de/video/1234')
+        self.assertEqual(expected_unique_id, result.uniqueId)
+        rvi.assert_called_with('1234')
+
+    def test_playlists_should_be_resolvable(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.interfaces import ICMSContent
+        self.repository['video']['playlist']['1234'] = TestContentType()
+        expected_unique_id = 'http://xml.zeit.de/video/playlist/1234'
+        result = ICMSContent('http://video.zeit.de/playlist/1234')
+        self.assertEqual(expected_unique_id, result.uniqueId)
