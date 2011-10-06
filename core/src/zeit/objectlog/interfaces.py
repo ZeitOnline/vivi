@@ -1,10 +1,10 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.objectlog.i18n import MessageFactory as _
 import zeit.objectlog.source
 import zope.app.security.vocabulary
 import zope.interface
-from zeit.objectlog.i18n import MessageFactory as _
 
 
 class IObjectLog(zope.interface.Interface):
