@@ -1,6 +1,12 @@
 zeit.objectlog changes
 ======================
 
+0.11 (unreleased)
+-----------------
+
+- Nothing changed yet.
+
+
 0.10 (2011-10-06)
 -----------------
 
