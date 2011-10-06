@@ -4,6 +4,7 @@
 from zeit.objectlog.i18n import MessageFactory as _
 import zeit.objectlog.source
 import zope.app.security.vocabulary
+import zope.configuration.fields
 import zope.interface
 
 
