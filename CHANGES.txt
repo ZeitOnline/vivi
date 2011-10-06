@@ -1,7 +1,7 @@
 zeit.objectlog changes
 ======================
 
-0.10 (unreleased)
+0.10 (2011-10-06)
 -----------------
 
 - Using versions from the ZTK.
