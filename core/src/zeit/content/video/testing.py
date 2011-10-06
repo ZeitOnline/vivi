@@ -65,5 +65,3 @@ def video_factory(self):
             yield video
             self.repository['video'] = video
     yield self.repository['video']
-
-
