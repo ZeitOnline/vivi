@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.edit.browser.view
 import zope.app.pagetemplate
@@ -83,3 +84,22 @@ class DiverForm(InlineForm):
     template = zope.app.pagetemplate.ViewPageTemplateFile('diver.pt')
 
     css_class = 'diver-form'
+
+
+class OptionsDiver(DiverForm):
+
+    legend = _('Options')
+    prefix = 'options-diver'
+    undo_description = _('edit options')
+    template = zope.app.pagetemplate.ViewPageTemplateFile('options-diver.pt')
+
+    form_fields = ()
+
+    def render(self):
+        result = super(OptionsDiver, self).render()
+        if result:
+            result += (
+                '<script type="text/javascript">'
+                '    jQuery("#options-diver").createFoldBoxes()'
+                '</script>')
+        return result

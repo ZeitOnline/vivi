@@ -9,8 +9,6 @@ zeit.edit.FoldBlock = gocept.Class.extend({
         var self = this;
         var id = context.getAttribute('href');
         MochiKit.DOM.toggleElementClass('folded', id);
-        sessionStorage['folding.' + id] =
-            MochiKit.DOM.hasElementClass(id, 'folded')?'yes':'';
     },
 
     // @staticmethod
