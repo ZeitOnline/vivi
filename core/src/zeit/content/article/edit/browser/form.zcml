@@ -51,7 +51,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.options-diver"
-    class=".form.OptionsDiver"
+    class="zeit.edit.browser.form.OptionsDiver"
     permission="zope.View"
     />
 
