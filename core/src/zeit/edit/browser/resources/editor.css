@@ -110,6 +110,22 @@ div div.landing-zone:first-child {
   border: 0px solid #ffffff;
 }
 
+#options-diver {
+  background: #FFF;
+  border-bottom: 1px solid #CCC;
+  display: none;
+}
+
+#options-diver .widget {
+  clear: none;
+}
+
+#options-diver-button {
+  background: none repeat scroll 0 0 #FFFFFF;
+  color: #666666;
+  right: 20px;
+}
+
 .diver-bar {
   padding-bottom: 35px;
   position: relative;
@@ -508,7 +524,7 @@ div div.landing-zone:first-child {
   clear: left;
   padding: 0px 0 0;
   margin-bottom:10px;
-  float:left;
+  float: left;
 }
 
 #edit-form-assets .inline-form .widget {
