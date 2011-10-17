@@ -171,12 +171,6 @@ color: #333;
   display: none;
 }
 
-#options-diver {
-  background: #FFF;
-  border-bottom: 1px solid #CCC;
-  display: none;
-}
-
 #memo-diver label {
   visibility: hidden;
 }
@@ -195,12 +189,6 @@ color: #333;
   background: none repeat scroll 0 0 #FFF799;
   color: #333333;
   right: 150px;
-}
-
-#options-diver-button {
-  background: none repeat scroll 0 0 #FFFFFF;
-  color: #666666;
-  right: 20px;
 }
 
 /* for the RTE-Toolbar */
