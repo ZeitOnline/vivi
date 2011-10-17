@@ -4,7 +4,6 @@
 
 import mock
 import unittest2
-import zeit.cms.testing
 import zeit.content.article.testing
 
 
@@ -42,7 +41,6 @@ class MemoDiverTest(zeit.content.article.testing.SeleniumTestCase):
         s.assertValue('id=memo-diver.memo', 'Do not publish this article, yet.')
 
 
-# FIXME: Move this to zeit.edit as soon as a selenium layer is set up properly!!
 class OptionsDiverTest(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
