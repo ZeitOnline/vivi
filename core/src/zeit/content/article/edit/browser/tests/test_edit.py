@@ -296,15 +296,6 @@ class TestFolding(
         s.click('css=.block.type-{0} .edit-bar .fold-link'.format(block))
         s.waitForElementNotPresent('css=.block.type-{0}.folded'.format(block))
 
-    def assert_fold_survives_page_load(self, block):
-        s = self.selenium
-        self.create_block(block)
-        s.assertElementNotPresent('css=.block.type-{0}.folded'.format(block))
-        s.click('css=.block.type-{0} .edit-bar .fold-link'.format(block))
-        s.waitForElementPresent('css=.block.type-{0}.folded'.format(block))
-        s.open(s.getLocation())
-        s.waitForElementPresent('css=.block.type-{0}.folded'.format(block))
-
     def test_audio_should_be_foldable(self):
         self.assert_foldable('audio')
 
@@ -331,33 +322,6 @@ class TestFolding(
 
     def test_video_should_be_foldable(self):
         self.assert_foldable('video')
-
-    def test_audio_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('audio')
-
-    def test_image_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('image')
-
-    def test_gallery_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('gallery')
-
-    def test_citation_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('citation')
-
-    def test_infobox_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('infobox')
-
-    def test_portraitbox_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('portraitbox')
-
-    def test_relateds_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('relateds')
-
-    def test_raw_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('raw')
-
-    def test_video_should_survive_page_load(self):
-        self.assert_fold_survives_page_load('video')
 
 
 class TestReadonlyVisible(unittest2.TestCase,

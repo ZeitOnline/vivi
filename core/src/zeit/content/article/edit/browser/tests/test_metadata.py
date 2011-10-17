@@ -119,14 +119,6 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('css=#edit-form-metadata .edit-bar .fold-link')
         s.waitForElementNotPresent('css=#edit-form-metadata.folded')
 
-    def test_fold_should_survive_page_load(self):
-        s = self.selenium
-        s.assertElementNotPresent('css=#edit-form-metadata.folded')
-        s.click('css=#edit-form-metadata .edit-bar .fold-link')
-        s.waitForElementPresent('css=#edit-form-metadata.folded')
-        s.open(s.getLocation())
-        s.waitForElementPresent('css=#edit-form-metadata.folded')
-
     def test_unfold_should_be_stored(self):
         s = self.selenium
         s.assertElementNotPresent('css=#edit-form-metadata.folded')
