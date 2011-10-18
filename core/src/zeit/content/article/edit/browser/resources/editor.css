@@ -395,3 +395,10 @@ dl.errors dt {
   clear: left;
   margin-right: 0.5em;
 }
+
+/* Log Expander */
+
+button.log-expander {
+    clear: both;
+    float: left;
+}

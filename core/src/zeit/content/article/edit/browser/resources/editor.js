@@ -471,4 +471,23 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     };
 
+    $.fn.createLogExpander = function() {
+        var self = $(this);
+        if (self.find('br').length < 5) { return }
+        var log  = self.children('.widget-outer:first')
+                       .css({'max-height': '7.5em', 'overflow': 'hidden'});
+        var expander = $('<button />').html('Log ausklappen').appendTo(self);
+        expander.addClass('log-expander');
+        expander.toggle(
+            function() {
+                log.css({'max-height': ''});
+                expander.html('Log einklappen');
+            },
+            function() {
+                log.css({'max-height': '7.5em'});
+                expander.html('Log ausklappen');
+            }
+        );
+    };
+
 }(jQuery));

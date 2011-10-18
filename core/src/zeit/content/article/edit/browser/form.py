@@ -392,10 +392,20 @@ class WorkflowLog(zeit.edit.browser.form.InlineForm):
     legend = _('Log')
     prefix = 'workflow-log'
     undo_description = None
+    css_class = 'workflow-log'
 
     form_fields = zope.formlib.form.FormFields(
             zeit.objectlog.interfaces.ILog,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
+
+    def render(self):
+        result = super(WorkflowLog, self).render()
+        if result:
+            result += (
+                '<script type="text/javascript">'
+                '    jQuery(".workflow-log").createLogExpander()'
+                '</script>')
+        return result
 
 
 class ContextActionForms(zeit.edit.browser.form.FormGroup):
