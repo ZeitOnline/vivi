@@ -64,6 +64,42 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         '.head.snapshot',
         xml_reference_name='image', attributes=('base-id', 'src'))
 
+    topiclink_title = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink_title',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_title'])
+
+    topiclink_label_1 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_1',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_1'])
+
+    topiclink_url_1 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_1',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_1'])
+
+    topiclink_label_2 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_2',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_2'])
+
+    topiclink_url_2 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_2',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_2'])
+
+    topiclink_label_3 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_3',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_3'])
+
+    topiclink_url_3 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_3',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_3'])
+
+    topiclink_label_4 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_4',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_4'])
+
+    topiclink_url_4 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_4',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_4'])
+
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]
         area = zope.component.getMultiAdapter(

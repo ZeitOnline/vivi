@@ -75,6 +75,26 @@ Header image
 </centerpage>
 
 
+Topic Links
++++++++++++
+
+>>> cp.topiclink_title = 'Sachsen Linkse' 
+>>> cp.topiclink_label_1 = 'Sachsen spezial' 
+>>> cp.topiclink_url_1 = 'http://www.zeit.de/themen/sachsen/index' 
+>>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+<centerpage...>
+  <head>
+...
+    <topiclinks>
+      <topiclink_title...>Sachsen Linkse</topiclink_title>
+      <topiclink>
+        <topiclink_label_1...>Sachsen spezial</topiclink_label_1>
+        <topiclink_url_1...>http://www.zeit.de/themen/sachsen/index</topiclink_url_1>
+      </topiclink>
+    </topiclinks>
+  ...
+</centerpage>
+
 Blocks
 ++++++
 

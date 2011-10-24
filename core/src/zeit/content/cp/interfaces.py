@@ -48,6 +48,42 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         required=False,
         source=zeit.content.image.interfaces.imageSource)
 
+    topiclink_title = zope.schema.TextLine(
+        title=_('Name for topiclinks'),
+        required=False)
+
+    topiclink_label_1 = zope.schema.TextLine(
+        title=_('Label for topiclink #1'),
+        required=False)
+
+    topiclink_label_2 = zope.schema.TextLine(
+        title=_('Label for topiclink #2'),
+        required=False)
+
+    topiclink_label_3 = zope.schema.TextLine(
+        title=_('Label for topiclink #3'),
+        required=False)
+
+    topiclink_label_4 = zope.schema.TextLine(
+        title=_('Label for topiclink #4'),
+        required=False)
+
+    topiclink_url_1 = zope.schema.TextLine(
+        title=_('URL for topiclink #1'),
+        required=False)
+
+    topiclink_url_2 = zope.schema.TextLine(
+        title=_('URL for topiclink #2'),
+        required=False)
+
+    topiclink_url_3 = zope.schema.TextLine(
+        title=_('URL for topiclink #3'),
+        required=False)
+
+    topiclink_url_4 = zope.schema.TextLine(
+        title=_('URL for topiclink #4'),
+        required=False)
+
     def __getitem__(area_key):
         """Return IArea for given key.
 
