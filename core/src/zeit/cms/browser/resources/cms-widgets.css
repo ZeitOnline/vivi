@@ -548,7 +548,7 @@ table.properties textarea {
 /* Notifications and messages*/
 #messages {
   position: absolute;
-  top: 2.1em;
+  top: 5.5em;
   right: 0;
   width: 30em;
   opacity: 0.95;
