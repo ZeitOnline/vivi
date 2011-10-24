@@ -146,7 +146,32 @@ color: #333;
   border-radius: 5px 5px 5px 5px;
   font-size:12px;
   margin: 0 10px;
-  padding: 0px 10px;
+  padding: 5px 10px;
+  position: relative;
+}
+
+.block-inner .totop {
+  background: none repeat scroll 0 0 #CCCCCC;
+  border-radius: 0 0 5px 0;
+  bottom: 0;
+  color: #FFFFFF;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  height: 15px;
+  line-height: 20px;
+  position: absolute;
+  right: 0;
+  text-align: center;
+  width: 20px;
+}
+
+.block-inner .totop:hover {
+  background: none repeat scroll 0 0 #666666;
+}
+
+#edit-form-filename .block-inner .totop {
+  display: none;
 }
 
 /* Diver */

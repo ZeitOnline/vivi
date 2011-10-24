@@ -16,6 +16,17 @@ MochiKit.Signal.connect(
         MochiKit.Async.callLater(0.25, function() {
             form_element.form.reload(); });
     });
+
+    (function($) {
+
+        $('.editable-area .block-inner').append('<div class="totop">↑</div>');
+
+        $('.totop').live("click", function() {
+            $('#cp-content-inner').animate({scrollTop: 0}, 300);
+        });
+
+    })(jQuery);
+
 });
 
 zeit.edit.drop.registerHandler({
