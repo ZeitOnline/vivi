@@ -632,7 +632,7 @@ div div.landing-zone:first-child {
   top: 0;
 }
 
-.article-editor-inner .folded > .block-inner > * {
+.article-editor-inner .folded > .block-inner {
   display: none;
 
 }
