@@ -261,7 +261,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var move = {
             duration: 0.5,
             mode: 'absolute',
-            x: MochiKit.Style.getElementPosition(self.toolbar, self.block).x,
+            x: MochiKit.Style.getElementPosition(self.toolbar, self.block).x - 11,
             y: MochiKit.Style.getElementPosition(container, self.block).y
         };
         if (fast) {
