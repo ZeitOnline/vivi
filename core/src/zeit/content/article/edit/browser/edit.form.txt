@@ -135,7 +135,7 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.workflow-log')
 >>> print browser.contents
-<fieldset>
+<fieldset class="workflow-log">
 <legend>Log</legend>
 <div class="widget-outer">
   <div class="label">
