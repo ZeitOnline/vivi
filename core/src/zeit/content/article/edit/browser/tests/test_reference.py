@@ -296,6 +296,22 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertSelectedLabel(select, 'small')
 
 
+    def test_custom_caption_should_be_editable(self):
+        s = self.selenium
+        self.add_article()
+        self.create_block('image')
+        text = 'css=.block.type-image form.wired textarea'
+        s.waitForElementPresent(text)
+        s.assertValue(text, '')
+        s.type(text, 'A custom caption')
+        s.fireEvent(text, 'blur')
+        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        # Re-open the page and verify that the data is still there
+        s.clickAndWait('link=Edit contents')
+        s.waitForElementPresent(text)
+        s.assertValue(text, 'A custom caption')
+
+
 class VideoTest(GalleryTest):
 
     layer = zeit.content.article.testing.ArticleBrightcoveLayer

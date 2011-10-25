@@ -27,6 +27,10 @@ class Image(zeit.edit.block.SimpleElement):
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'layout', zeit.content.article.edit.interfaces.IImage['layout'])
 
+    _custom_caption = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'custom-caption',
+        zeit.content.article.edit.interfaces.IImage['custom_caption'])
+
     @property
     def references(self):
         unique_id = self.xml.get('src')
@@ -40,12 +44,23 @@ class Image(zeit.edit.block.SimpleElement):
         # We have to save a few attributes before we replace the whole node
         name = self.__name__
         layout = self.layout
+        custom_caption = self.custom_caption
         self.xml.getparent().replace(self.xml, node)
         self.xml = node
         # Restore saved attributes
         self.__name__ = name
         self.layout =  layout
+        self.custom_caption = custom_caption
         self._p_changed = True
+
+    @property
+    def custom_caption(self):
+        return self._custom_caption
+
+    @custom_caption.setter
+    def custom_caption(self, value):
+        self._custom_caption = value
+        self.xml['bu'] = value
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):

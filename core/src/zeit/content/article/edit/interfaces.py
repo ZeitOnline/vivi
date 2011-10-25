@@ -122,6 +122,11 @@ class IImage(IReference, ILayoutable):
         source=ImageLayoutSource(),
         required=False)
 
+    custom_caption = zeit.cms.content.field.XMLSnippet(
+        title=_("Custom image sub text"),
+        default=u'',
+        required=False)
+
 
 class IGallery(IReference):
     """block for <gallery/> tags."""

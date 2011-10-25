@@ -12,7 +12,8 @@ class EditImage(zeit.edit.browser.form.InlineForm):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IImage).select('layout')
+        zeit.content.article.edit.interfaces.IImage).select(
+            'layout', 'custom_caption')
     undo_description = _('edit image')
 
     @property

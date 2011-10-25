@@ -2,6 +2,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import contextlib
 import unittest2 as unittest
 import zeit.content.article.testing
 
@@ -133,11 +134,65 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
             article.xml.body.division.image.get('src'))
 
+    @contextlib.contextmanager
+    def image(self):
+        from zeit.cms.interfaces import ICMSContent
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        import zeit.cms.browser.form
+        import zeit.cms.checkout.helper
+        import zeit.content.article.edit.body
+        import zeit.edit.interfaces
+        import zope.component
+        article = Article()
+        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        article.year = 2011
+        article.title = u'title'
+        article.ressort = u'Deutschland'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['article']) as article:
+            body = zeit.content.article.edit.body.EditableBody(
+                article, article.xml.body)
+            factory = zope.component.getAdapter(
+                body, zeit.edit.interfaces.IElementFactory, 'image')
+            image = factory()
+            image.references = ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')
+            yield image
+
+    def test_custom_caption_should_be_set_to_bu_tag(self):
+        with self.image() as image:
+            image.custom_caption = u'a custom caption'
+        self.assertEqual(
+            u'a custom caption',
+            self.repository['article'].xml.body.division.image.bu)
+
+    def test_custom_caption_should_be_kept_on_checkin(self):
+        with self.image() as image:
+            image.custom_caption = u'a custom caption'
+        self.assertEqual(
+            u'a custom caption',
+            self.repository['article'].xml.body.division.image.get(
+                'custom-caption'))
+
+    def test_setting_reference_should_not_remove_custom_caption(self):
+        from zeit.cms.interfaces import ICMSContent
+        with self.image() as image:
+            image.custom_caption = u'a custom caption'
+            image.references = ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.assertEqual(
+            u'a custom caption',
+            self.repository['article'].xml.body.division.image.get(
+                'custom-caption'))
+
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
 
     def test_factory_should_create_image_node(self):
         import zeit.content.article.article
+        import zeit.content.article.edit.body
         import zeit.content.article.edit.interfaces
         import zeit.edit.interfaces
         import zope.component
