@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import mock
+import unittest2 as unittest
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.testing
@@ -56,3 +57,48 @@ class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
         self.validator().status = zeit.edit.rule.ERROR
         self.assertFalse(self.info.can_publish())
         self.validator.assert_called_with(self.article)
+
+
+class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
+
+    # See bug #9495
+
+    def get_article_with_paras(self):
+        article = self.get_article()
+        factory = self.get_factory(article, 'p')
+        for _ in range(10):
+            factory()
+        return article
+
+    def test_article_should_not_mangle_divisions_on_create(self):
+        article = self.get_article_with_paras()
+        self.assertEqual(1, len(article.xml.body.findall('division')))
+
+    def test_article_should_not_mangle_divisions_on_add_to_repository(self):
+        article = self.get_article_with_paras()
+        self.repository['article'] = article
+        self.assertEqual(
+            1, len(self.repository['article'].xml.body.findall('division')))
+
+    @unittest.expectedFailure
+    def test_article_should_not_mangle_divisions_on_checkin(self):
+        from zeit.cms.checkout.helper import checked_out
+        article = self.get_article_with_paras()
+        self.repository['article'] = article
+        with checked_out(self.repository['article']):
+            pass
+        self.assertEqual(
+            1, len(self.repository['article'].xml.body.findall('division')))
+
+    def test_article_without_division_should_get_them_on_checkin(self):
+        from zeit.cms.checkout.helper import checked_out
+        article = self.get_article_with_paras()
+        # mangle the xml
+        for p in article.xml.body.division.getchildren():
+            article.xml.body.append(p)
+        article.xml.body.remove(article.xml.body.division)
+        self.repository['article'] = article
+        with checked_out(self.repository['article']):
+            pass
+        self.assertEqual(
+            2, len(self.repository['article'].xml.body.findall('division')))

@@ -56,6 +56,7 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
         is in the XML and there is no head section.
         """
 
+
 class IBookRecensionReadContainer(zope.interface.Interface):
     """Read interface for book recensions."""
 

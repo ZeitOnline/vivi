@@ -17,6 +17,14 @@ import zope.schema
 class IEditableBody(zeit.edit.interfaces.IArea):
     """Editable representation of an article's body."""
 
+    def ensure_division():
+        """Make sure the body contains a division.
+
+        If there is no <division> in the body, update XML by creating a
+        division for every 7 body elements and moving them into the created
+        divisions.
+
+        """
 
 class ILayoutable(zope.interface.Interface):
     """A block with layout information."""

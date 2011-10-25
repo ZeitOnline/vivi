@@ -6,6 +6,7 @@ import StringIO
 import grokcore.component
 import lxml.etree
 import lxml.objectify
+import zeit.cms.checkout.interfaces
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.dav
@@ -17,6 +18,7 @@ import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
+import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.rule
 import zeit.workflow.dependency
@@ -236,3 +238,11 @@ class ValidatingContentWorkflow(zeit.edit.rule.ValidatingWorkflow):
         if not cwf.can_publish():
             return False
         return super(ValidatingContentWorkflow, self).can_publish()
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def ensure_division_handler(context, event):
+    body = zeit.content.article.edit.interfaces.IEditableBody(context)
+    body.ensure_division()
