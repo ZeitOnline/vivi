@@ -51,7 +51,10 @@ class WorkflowLogTest(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementPresent('id=urgent.urgent')
         s.assertAttribute(
             'xpath=//fieldset[@class="workflow-log"]//div[@class="widget-outer"]@style',
-            'overflow: hidden; max-height: 7.5em;')
+            '*max-height: 7.5em;*')
+        s.assertAttribute(
+            'xpath=//fieldset[@class="workflow-log"]//div[@class="widget-outer"]@style',
+            '*overflow: hidden;*')
         s.click('xpath=//button[@class="log-expander"]')
         s.assertAttribute(
             'xpath=//fieldset[@class="workflow-log"]//div[@class="widget-outer"]@style',
@@ -59,4 +62,7 @@ class WorkflowLogTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('xpath=//button[@class="log-expander"]')
         s.assertAttribute(
             'xpath=//fieldset[@class="workflow-log"]//div[@class="widget-outer"]@style',
-            'overflow: hidden; max-height: 7.5em;')
+            '*max-height: 7.5em;*')
+        s.assertAttribute(
+            'xpath=//fieldset[@class="workflow-log"]//div[@class="widget-outer"]@style',
+            '*overflow: hidden;*')
