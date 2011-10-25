@@ -139,20 +139,18 @@ class BodyTraverser(object):
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
 
-# Remove all the __name__ thingies on checkin.
-# NOTE: this code is *not* really used right now. A browser test makes sure the
-# attributes are removed and it passes because the article's body is mangled
-# through zeit.wysiwyg.html on checkin which also removes everything it doesn't
-# know about. Once #8194 is implemented the name attributes will no longer be
-# removed automatically. This code should be activated then.
-
+# Remove all the __name__ thingies on before adding an article to the
+# repository
 _find_name_attributes = lxml.etree.XPath(
-    './/*[@cms:__name__]',
+    '//*[@cms:__name__]',
     namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
 
-
-def clean_names_on_checkin(context):
-    for element in _find_name_attributes(context.xml):
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
+def remove_name_attributes(context, event):
+    unwrapped = zope.security.proxy.removeSecurityProxy(context)
+    for element in _find_name_attributes(unwrapped.xml):
         del element.attrib['{http://namespaces.zeit.de/CMS/cp}__name__']
 
 

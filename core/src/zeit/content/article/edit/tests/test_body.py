@@ -131,8 +131,8 @@ class TestCleaner(unittest2.TestCase):
         node.set('{http://namespaces.zeit.de/CMS/cp}__name__', key)
 
     def clean(self, obj):
-        from zeit.content.article.edit.body import clean_names_on_checkin
-        clean_names_on_checkin(obj)
+        from zeit.content.article.edit.body import remove_name_attributes
+        remove_name_attributes(obj, mock.sentinel.event)
 
     def test_should_remove_name_attributes(self):
         art = self.get_article()

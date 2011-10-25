@@ -270,7 +270,10 @@ After checkin they're gone:
 >>> zeit.cms.testing.set_site()
 >>> article = zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
->>> print lxml.etree.tostring(article.xml, pretty_print=True),
+>>> xml = lxml.etree.tostring(article.xml, pretty_print=True)
+>>> print xml,
 <article>...
-    <division type="page">...
+    <division ...type="page">...
+>>> '__name__' in xml
+False
 
