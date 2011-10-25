@@ -2,7 +2,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest
+import unittest2 as unittest
 import zeit.content.article.testing
 
 
@@ -57,11 +57,13 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             ['p', 'image'],
             [el.tag for el in co.xml.body.division.iterchildren()])
 
-    def _skip_test_image_nodes_should_keep_reference_with_strange_chars(self):
+    @unittest.expectedFailure
+    def test_image_nodes_should_keep_reference_with_strange_chars(self):
         # Broken due to error in zeit.wysiwyg. I'm not going to fix this (now)
         # becuase zeit.wysiwyg shouldn't be used for article (#8194) and
         # filenames with non us-asscii charachters are almost never used.
         from zeit.connector.resource import Resource
+        from zeit.content.article.interfaces import IArticle
         import StringIO
         import zeit.cms.checkout.helper
         import zeit.cms.interfaces
@@ -87,6 +89,10 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/article')
         with zeit.cms.checkout.helper.checked_out(article) as co:
+            zeit.cms.browser.form.apply_default_values(co, IArticle)
+            co.year = 2011
+            co.title = u'title'
+            co.ressort = u'Deutschland'
             self.assertEqual(
                 u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
                 co.xml.body.division.image.get('src'))
