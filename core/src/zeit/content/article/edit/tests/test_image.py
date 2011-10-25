@@ -28,7 +28,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(u'myname', image.__name__)
         self.assertEqual(u'small', image.layout)
 
-    def test_image_nodes_inside_p_are_migrated_on_checkout(self):
+    def get_image_article(self, content):
         from zeit.connector.resource import Resource
         import StringIO
         import zeit.cms.checkout.interfaces
@@ -40,11 +40,10 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             <head/>
             <body>
               <division type="page">
-                <p>A leading para</p>
-                <p><image src="myniceimage" /></p>
+                {0}
               </division>
             </body>
-        </article>"""
+        </article>""".format(content)
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         connector.add(Resource(
@@ -52,20 +51,68 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             StringIO.StringIO(article_xml)))
         article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/article')
-        co = zeit.cms.checkout.interfaces.ICheckoutManager(article).checkout()
+        return zeit.cms.checkout.interfaces.ICheckoutManager(
+            article).checkout()
+
+    def test_image_nodes_inside_p_are_migrated_on_checkout(self):
+        article = self.get_image_article("""
+                <p>A leading para</p>
+                <p>Blarf<image src="myniceimage" /></p>
+                                         """)
+        self.assertEqual(
+            ['p', 'image', 'p'],
+            [el.tag for el in article.xml.body.division.iterchildren()])
+
+    def test_empty_p_nodes_should_be_removed_on_image_migrate(self):
+        article = self.get_image_article("""
+                <p>A leading para</p>
+                <p><image src="myniceimage" /></p>
+                               """)
         self.assertEqual(
             ['p', 'image'],
-            [el.tag for el in co.xml.body.division.iterchildren()])
+            [el.tag for el in article.xml.body.division.iterchildren()])
 
-    @unittest.expectedFailure
-    def test_image_nodes_should_keep_reference_with_strange_chars(self):
-        # Broken due to error in zeit.wysiwyg. I'm not going to fix this (now)
-        # becuase zeit.wysiwyg shouldn't be used for article (#8194) and
-        # filenames with non us-asscii charachters are almost never used.
-        from zeit.connector.resource import Resource
+    def test_image_tail_should_be_preserved_on_migrate(self):
+        article = self.get_image_article("""
+                <p>A leading para</p>
+                <p><image src="myniceimage" /> a tail</p>
+                               """)
+        self.assertEqual(
+            ['p', 'image', 'p'],
+            [el.tag for el in article.xml.body.division.iterchildren()])
+        self.assertEqual(
+            ' a tail', article.xml.body.division.p[1].text)
+
+    def test_image_should_be_moved_up_to_division_even_when_deeper_nested(
+        self):
+        article = self.get_image_article("""
+                <p>A leading para</p>
+                <p><strong> blah <image src="myniceimage" /></strong></p>
+                               """)
+        self.assertEqual(
+            ['p', 'image', 'p'],
+            [el.tag for el in article.xml.body.division.iterchildren()])
+
+    def test_image_nodes_should_keep_reference_with_strange_chars_on_checkout(
+        self):
+        import zeit.connector.interfaces
+        import zope.component
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        connector.move(u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+                       u'http://xml.zeit.de/2006/ÄÖÜ.JPG')
+        article = self.get_image_article("""
+                <p>A leading para</p>
+                <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />""")
+        self.assertEqual(
+            u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
+            article.xml.body.division.image.get('src'))
+
+    def test_image_nodes_should_keep_reference_with_strange_chars_on_checkin(
+        self):
         from zeit.content.article.interfaces import IArticle
-        import StringIO
-        import zeit.cms.checkout.helper
+        import zeit.cms.browser.form
+        import zeit.cms.checkout.interfaces
         import zeit.cms.interfaces
         import zeit.connector.interfaces
         import zope.component
@@ -73,31 +120,15 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             zeit.connector.interfaces.IConnector)
         connector.move(u'http://xml.zeit.de/2006/DSC00109_2.JPG',
                        u'http://xml.zeit.de/2006/ÄÖÜ.JPG')
-        article_xml = u"""
-        <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-            <head/>
-            <body>
-              <division type="page">
+        article = self.get_image_article("""
                 <p>A leading para</p>
-                <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />
-              </division>
-            </body>
-        </article>"""
-        connector.add(Resource(
-            'http://xml.zeit.de/article', 'article', 'article',
-            StringIO.StringIO(article_xml)))
-        article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/article')
-        with zeit.cms.checkout.helper.checked_out(article) as co:
-            zeit.cms.browser.form.apply_default_values(co, IArticle)
-            co.year = 2011
-            co.title = u'title'
-            co.ressort = u'Deutschland'
-            self.assertEqual(
-                u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
-                co.xml.body.division.image.get('src'))
-        article = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/article')
+                <image src="http://xml.zeit.de/2006/ÄÖÜ.JPG" />""")
+        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        article.year = 2011
+        article.title = u'title'
+        article.ressort = u'Deutschland'
+        article = zeit.cms.checkout.interfaces.ICheckinManager(
+            article).checkin()
         self.assertEqual(
             u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
             article.xml.body.division.image.get('src'))

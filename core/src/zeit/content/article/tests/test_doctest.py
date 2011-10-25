@@ -11,7 +11,6 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'pagebreak.txt',
         'recension.txt',
         package='zeit.content.article',
         layer=zeit.content.article.testing.ArticleLayer))

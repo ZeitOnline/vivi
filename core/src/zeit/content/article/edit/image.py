@@ -4,6 +4,8 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.lxml.interfaces
 import grokcore.component
+import lxml.objectify
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
@@ -64,9 +66,24 @@ def factor_image_block_from_image(body, image):
 @grokcore.component.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
-def update_metadata_on_checkout(context, event):
-    __traceback_info__ = (context.uniqueId,)
-    html_content = zeit.wysiwyg.interfaces.IHTMLContent(context, None)
-    if html_content is None:
-        return
-    html_content.html = html_content.html
+def migrate_image_nodes_inside_p(article, event):
+    while True:
+        images = article.xml.xpath('//body//p//image')
+        if not images:
+            break
+        for image in images:
+            p = image.getparent()
+            p.addprevious(image)
+            if image.tail:
+                # boah.
+                stripped = lxml.objectify.XML(
+                    lxml.etree.tostring(image, encoding=unicode).rsplit(
+                        image.tail, 1)[0])
+                p.addnext(getattr(lxml.objectify.E, p.tag)(image.tail))
+                lxml.objectify.deannotate(p.getnext())
+                image.getparent().replace(image, stripped)
+            if not (p.countchildren() or
+                    p.text and p.text.strip() or
+                    p.attrib):
+                p.getparent().remove(p)
+

@@ -3,10 +3,12 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
+import zeit.content.article.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
@@ -116,3 +118,16 @@ def factor_block_from_portraitbox(body, context):
     block = PortraitboxFactory(body)()
     block.references = context
     return block
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_reference_metadata(article, event):
+    body = zeit.content.article.edit.interfaces.IEditableBody(article)
+    for block in body.values():
+        reference = zeit.content.article.edit.interfaces.IReference(
+            block, None)
+        if reference is not None and reference.references is not None:
+            # Re-assigning the old value updates xml metadata
+            reference.references = reference.references

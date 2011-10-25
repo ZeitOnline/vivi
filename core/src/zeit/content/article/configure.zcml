@@ -5,7 +5,6 @@
 
   <!-- include zeit.edit early to make sure the grokkers are grokked. -->
   <include package="zeit.edit" />
-  <include package="zeit.wysiwyg" />
   <grok:grok package=".edit.meta" />
 
   <grok:grok package="." />
@@ -27,26 +26,7 @@
     <require
       set_schema=".interfaces.IArticle"
       permission="zeit.EditContent" />
-    <require
-      interface="zeit.wysiwyg.interfaces.IHTMLContent"
-      permission="zope.View" />
-    <require
-      set_schema="zeit.wysiwyg.interfaces.IHTMLContent"
-      permission="zeit.EditContent" />
   </class>
-
-  <adapter factory=".article.ArticleHTMLContent"/>
-  <class class=".article.ArticleHTMLContent">
-    <require
-      interface="zeit.wysiwyg.interfaces.IHTMLContent"
-      permission="zope.View" />
-    <require
-      set_schema="zeit.wysiwyg.interfaces.IHTMLContent"
-      permission="zeit.EditContent" />
-  </class>
-
-  <adapter factory=".article.PageBreakStep" name="PageBreakStep"/>
-  <adapter factory=".article.DivisionStep" name="DivisionStep"/>
 
   <adapter factory=".article.LayoutDependency" name="layout"/>
 

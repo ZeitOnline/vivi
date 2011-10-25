@@ -80,7 +80,6 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(
             1, len(self.repository['article'].xml.body.findall('division')))
 
-    @unittest.expectedFailure
     def test_article_should_not_mangle_divisions_on_checkin(self):
         from zeit.cms.checkout.helper import checked_out
         article = self.get_article_with_paras()
