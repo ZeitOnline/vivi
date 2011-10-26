@@ -7,6 +7,9 @@ zeit.content.cp changes
 - Accomodated article to cope for the changed videos: videos are now full CMS
   objects and moved to zeit.content.video (for #8996)
 
+- In den Metadaten für den Centerpage-Editor sind nun Felder für 4 sog. Topic-
+  links (jeweils Linktext un URL) sowie ein Title-Feld (ohne Ticket)
+
 
 0.43.3 (2011-06-23)
 -------------------
