@@ -634,7 +634,21 @@ div div.landing-zone:first-child {
 
 .article-editor-inner .folded > .block-inner {
   display: none;
+}
 
+/* .article-editor-inner .type-portraitbox.folded > .block-inner { */
+.article-editor-inner .zeit-edit-interfaces-IElement.folded > .block-inner {
+  display: block;
+  border-color:white;
+}
+
+/* .article-editor-inner .type-portraitbox.folded .edit-bar { */
+.article-editor-inner .zeit-edit-interfaces-IElement.folded .edit-bar {
+    border:1px solid #dddddd !important;
+}
+
+.article-editor-inner .type-portraitbox.folded .block-inner > * {
+  display: none;
 }
 
 .article-editor-inner .folded > .block-inner > .edit-bar {
