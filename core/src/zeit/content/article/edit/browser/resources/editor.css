@@ -217,8 +217,12 @@ color: #333;
 }
 
 /* for the RTE-Toolbar */
-#article-editor-text .editing p:last-child {
+#article-editor-text .editing p:last-child,
+#article-editor-text .editing ol:last-child,
+#article-editor-text .editing ul:last-child,
+#article-editor-text .editing h3:last-child {
   min-height:141px;
+  margin-bottom:0px;
 }
 
 #editable-body .block-inner {
