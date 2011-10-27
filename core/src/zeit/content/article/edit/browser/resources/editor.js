@@ -1,3 +1,47 @@
+(function($){
+
+    $.fn.limitedInput = function() {
+        return this.each(function() {
+            var self = $(this);
+            var container = self.parent();
+            var area = $('textarea', container), limit = area.attr("data-limit"), val = area.val().length || 0;
+            $(this).addClass('charlimit').html( (val > 0 ? limit - val : limit) + " Zeichen" );
+            area.bind( "keyup focus blur", function (e) {
+                var l = limit - $(e.target).val().length;
+                if ( l < 21 && l > 10 ) {
+                    self.css( "color", "#900" ).html(l + " Zeichen");
+                } else if( l < 11 ) {
+                    self.css( "color", "#ff0000" ).html(l + " Zeichen");
+                } else {
+                    self.css( "color", "#777" ).html(l + " Zeichen");
+                }
+            } );
+        });
+
+    };
+
+    $.fn.createLogExpander = function() {
+        var self = $(this);
+        if (self.find('br').length < 5) { return }
+        var log  = self.children('.widget-outer:first')
+                       .css({'max-height': '7.5em', 'overflow': 'hidden'});
+        var expander = $('<button />').html('Log ausklappen').appendTo(self);
+        expander.addClass('log-expander');
+        expander.toggle(
+            function() {
+                log.css({'max-height': ''});
+                expander.html('Log einklappen');
+            },
+            function() {
+                log.css({'max-height': '7.5em'});
+                expander.html('Log ausklappen');
+            }
+        );
+    };
+
+}(jQuery));
+
+
 (function() {
 
 zeit.cms.declare_namespace('zeit.content.article');
@@ -458,47 +502,3 @@ zeit.content.article.Editable = gocept.Class.extend({
 });
 
 }());
-
-
-(function($){
-
-    $.fn.limitedInput = function() {
-        return this.each(function() {
-            var self = $(this);
-            var container = self.parent();
-            var area = $('textarea', container), limit = area.attr("data-limit"), val = area.val().length || 0;
-            $(this).addClass('charlimit').html( (val > 0 ? limit - val : limit) + " Zeichen" );
-            area.bind( "keyup focus blur", function (e) {
-                var l = limit - $(e.target).val().length;
-                if ( l < 21 && l > 10 ) {
-                    self.css( "color", "#900" ).html(l + " Zeichen");
-                } else if( l < 11 ) {
-                    self.css( "color", "#ff0000" ).html(l + " Zeichen");
-                } else {
-                    self.css( "color", "#777" ).html(l + " Zeichen");
-                }
-            } );
-        });
-
-    };
-
-    $.fn.createLogExpander = function() {
-        var self = $(this);
-        if (self.find('br').length < 5) { return }
-        var log  = self.children('.widget-outer:first')
-                       .css({'max-height': '7.5em', 'overflow': 'hidden'});
-        var expander = $('<button />').html('Log ausklappen').appendTo(self);
-        expander.addClass('log-expander');
-        expander.toggle(
-            function() {
-                log.css({'max-height': ''});
-                expander.html('Log einklappen');
-            },
-            function() {
-                log.css({'max-height': '7.5em'});
-                expander.html('Log ausklappen');
-            }
-        );
-    };
-
-}(jQuery));
