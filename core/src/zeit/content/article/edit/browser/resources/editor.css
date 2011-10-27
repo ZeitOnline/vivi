@@ -1,4 +1,4 @@
-.block .block-inner > * {
+
 }
 
 /* Textareas not inline */
@@ -430,4 +430,21 @@ dl.errors dt {
 button.log-expander {
     clear: both;
     float: left;
+}
+
+/* Pageteaser division in article */
+.zeit-content-article-edit-interfaces-IDivision .block-inner form.inline-form  * {
+    width:100%;
+}
+
+.zeit-content-article-edit-interfaces-IDivision .block-inner fieldset,
+.zeit-content-article-edit-interfaces-IDivision .block-inner .widget-outer {
+    margin-right:0px;
+    margin-left:0px;
+}
+
+.zeit-content-article-edit-interfaces-IDivision .block-inner input,
+.zeit-content-article-edit-interfaces-IDivision .block-inner label {
+    width:95% !important;    
+    margin-left:12px;
 }
