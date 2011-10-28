@@ -1,3 +1,5 @@
+<span class="charcount"></span>
 <div id="article-editor-text" tal:content="structure view/body/@@contents">
 </div>
+<span class="charcount charcount-bottom"></span>
 

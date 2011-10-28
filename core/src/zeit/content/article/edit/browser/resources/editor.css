@@ -41,6 +41,10 @@
    font-size:16px;
 }
 
+#edit-form-article-content .block-inner {
+  padding-bottom: 20px;
+}
+
 #edit-form-filename .widget-outer,
 #edit-form-filename .widget {
     margin: 0;
@@ -98,15 +102,15 @@
 }
 
 #article-editor-text .landing-zone a {
-color: #333;
-    vertical-align: baseline;
-    outline: none;
-    cursor: pointer;
-    text-align: center;
-    text-decoration: none;
-    font: Arial, Helvetica, sans-serif;
-    line-height:1.5em;
-    -moz-appearance:button;
+  color: #333;
+  vertical-align: baseline;
+  outline: none;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  font: Arial, Helvetica, sans-serif;
+  line-height:1.5em;
+  -moz-appearance:button;
 }
 
 #article-editor-text .landing-zone a:before {
@@ -137,6 +141,18 @@ color: #333;
 
 .editable-area > .landing-zone {
   height: 4px;
+}
+
+span.charcount {
+  color: #777;
+  font-size: 14px;
+  font-weight: 700;
+  position: absolute;
+  right: 30px;
+}
+
+span.charcount-bottom {
+  bottom: 0;
 }
 
 /* Editable blocks */

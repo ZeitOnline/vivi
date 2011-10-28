@@ -39,6 +39,18 @@
         );
     };
 
+    $.fn.countedInput = function() {
+        var self = $(this);
+        var counter = function() {
+            l = self.find('.editable').children().text().length || 0;
+            self.siblings('.charcount').html(l + " Zeichen");
+        }
+        self.bind('keyup', counter);
+        counter();
+    };
+
+
+
 }(jQuery));
 
 
@@ -59,11 +71,17 @@ MochiKit.Signal.connect(
         }
         MochiKit.Async.callLater(0.25, function() {
             form_element.form.reload(); });
+
+        (function($) {
+
+            $('#article-editor-text').countedInput();
+
+        })(jQuery);
     });
 
     (function($) {
 
-        $('.editable-area .block-inner').append('<div class="totop">↑</div>');
+        $('.editable-area > .block-inner').append('<div class="totop">↑</div>');
 
         $('.totop').live("click", function() {
             $('#cp-content-inner').animate({scrollTop: 0}, 300);
