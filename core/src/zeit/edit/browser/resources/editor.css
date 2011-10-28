@@ -690,6 +690,9 @@ fieldset .hlink {
 
 fieldset .hlink a {
   color: #009BE0;
+  font-size:14px;
+  padding:5px;
+  font-weight:bold;
 }
 
 fieldset .hlink a:hover {
@@ -734,4 +737,11 @@ a.button {
 
 a.button.disabled {
   color: #999999;
+}
+
+/* In article-editor  */
+
+#editor-forms #checkin,
+#editor-forms #checkin_correction {
+    font-size:14px;
 }
