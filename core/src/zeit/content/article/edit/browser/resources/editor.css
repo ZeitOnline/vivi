@@ -6,6 +6,20 @@
   clear:both;
 }
 
+#edit-form-teaser-title .inline-form.wired .widget-outer,
+#edit-form-teaser-title .inline-form.wired .widget,
+#edit-form-article-content .inline-form.wired .widget-outer,
+#edit-form-article-content .inline-form.wired .widget {
+    width:100%
+}
+
+#edit-form-teaser-title .inline-form.wired textarea,
+#edit-form-teaser-title .inline-form.wired input.textType,
+#edit-form-article-content .inline-form.wired textarea,
+#edit-form-article-content .inline-form.wired input.textType {
+    width:98%
+}
+
 /* editor blocks */
 
 #editable-body {
