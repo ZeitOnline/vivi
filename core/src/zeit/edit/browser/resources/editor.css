@@ -527,12 +527,11 @@ div div.landing-zone:first-child {
   float: left;
 }
 
+#edit-form-assets .inline-form .widget-outer,
 #edit-form-assets .inline-form .widget {
-  /*clear: left;*/
   padding: 0px 0 0;
   margin-bottom:10px;
-  width:667px;
-  /*float:left;*/
+  width:100%;
 }
 
 #edit-form-assets .inline-form .widget-outer div.label{
@@ -545,13 +544,13 @@ div div.landing-zone:first-child {
 }
 
 #edit-form-assets .inline-form .widget .textType {
-  width:615px;
+  width:95%;
   display:block;
   margin:auto;
 }
 
 #edit-form-assets .inline-form .widget div.landing-zone {
-  width:626px;
+  width:95%;
 }
 
 .inline-form div.widget > input,
