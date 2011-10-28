@@ -424,3 +424,32 @@ class TestLimitedInput(
         s.keyUp('id=teaser-text.teaserText', 'g')
         # Now selenium has recieved the whole input.
         s.assertText('xpath=//span[@class="charlimit"]', '147 Zeichen')
+
+
+class TestCountedInput(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(TestCountedInput, self).setUp()
+        self.add_article()
+
+    def test_input_should_be_counted_on_input(self):
+        s = self.selenium
+        s.waitForElementPresent('xpath=//span[@class="charlimit"]')
+        s.assertText('xpath=//span[@class="charcount"]', '0 Zeichen')
+        self.create()
+        s.typeKeys('css=.block.type-p .editable p', 'Saskia had a little pig')
+        self.save()
+        s.assertText('xpath=//span[@class="charcount"]', '23 Zeichen')
+
+    def test_deleting_paragraphs_should_update_counter(self):
+        s = self.selenium
+        s.waitForElementPresent('xpath=//span[@class="charlimit"]')
+        self.create()
+        s.typeKeys('css=.block.type-p .editable p', 'Saskia had a little pig')
+        self.save()
+        s.assertText('xpath=//span[@class="charcount"]', '23 Zeichen')
+        s.mouseOver('css=.block')
+        s.click('css=.block a.delete-link')
+        s.waitForElementNotPresent('css=.block.type-p .editable p')
+        s.assertText('xpath=//span[@class="charcount"]', '0 Zeichen')
