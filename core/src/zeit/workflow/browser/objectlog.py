@@ -12,8 +12,10 @@ class ProcessForDisplay(object):
     zope.component.adapts(zope.interface.Interface)
     zope.interface.implements(zeit.objectlog.interfaces.ILogProcessor)
 
+    max_entries = -500
+
     def __init__(self, context):
         pass
 
     def __call__(self, entries):
-        return tuple(entries)[-20:]
+        return tuple(entries)[self.max_entries:]
