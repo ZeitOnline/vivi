@@ -153,6 +153,7 @@ span.charcount {
 
 span.charcount-bottom {
   bottom: 0;
+  margin-bottom: 5px;
 }
 
 /* Editable blocks */
