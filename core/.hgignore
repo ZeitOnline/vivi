@@ -1,5 +1,6 @@
-cat > .hgignore
 syntax: glob
+*.pyc
+*.egg-info
 .installed.cfg
 bin
 develop-eggs
