@@ -201,27 +201,6 @@
     permission="zope.View"
     />
 
-  <!-- references / portraitbox -->
-
-  <browser:page
-    for="zeit.content.article.edit.interfaces.IPortraitbox"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-layout"
-    class=".reference.EditPortraitbox"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IPortraitbox"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="edit-box"
-    class=".reference.EditPortraitboxAction"
-    permission="zeit.EditContent"
-    weight="0"
-    />
-
   <!-- rawxml -->
 
   <browser:viewlet
