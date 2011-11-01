@@ -59,7 +59,8 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
         if result:
             result += (
                 '<script type="text/javascript">'
-                '    jQuery("#article-editor-text").countedInput()'
+                '    jQuery("#article-editor-text").countedInput();'
+                '    jQuery("#article-editor-text").resizeFont();'
                 '</script>')
         return result
 

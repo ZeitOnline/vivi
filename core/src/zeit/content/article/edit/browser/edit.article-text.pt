@@ -1,5 +1,14 @@
-<span class="charcount"></span>
 <div id="article-editor-text" tal:content="structure view/body/@@contents">
 </div>
-<span class="charcount charcount-bottom"></span>
-
+<fieldset id="text-control-bottom" class="fontcontrol">
+  <button class="fontbutton fontplus">
+    <span> + </span>
+  </button>
+  <button class="fontbutton fontminus">
+    <span> - </span>
+  </button>
+  <button class="fontbutton fontnormal">
+    <span> % </span>
+  </button>
+  <span class="charcount"></span>
+</fieldset>
