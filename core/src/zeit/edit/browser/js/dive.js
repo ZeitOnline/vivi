@@ -9,7 +9,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
                 $("#memo-diver-button").click();
             }
             $("#options-diver").slideToggle(600, "swing");
-            window.options_visible = !window.options_visible
+            window.options_visible = !window.options_visible;
         });
 
         $('#memo-diver-button').click(function() {
@@ -17,7 +17,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
                 $("#options-diver-button").click();
             }
             $("#memo-diver").slideToggle(600, "swing");
-            window.memo_visible = !window.memo_visible
+            window.memo_visible = !window.memo_visible;
         });
 
     }(jQuery));
@@ -56,13 +56,13 @@ MochiKit.Signal.connect(window, 'changed', function() {
             var fset    = self.children('fieldset');
             var storage = sessionStorage['folding.' + id];
             var widget  = jQuery('<div/>', {
-                class: 'widget',
+                'class': 'widget'
             }).appendTo(fset);
             jQuery('<input/>', {
                 checked: storage ? '' : 'checked',
-                class: 'fold-checker',
+                'class': 'fold-checker',
                 name: id,
-                type: 'checkbox',
+                type: 'checkbox'
             }).appendTo(widget);
             jQuery('<label/>').text(span).appendTo(widget);
         });
@@ -74,6 +74,6 @@ MochiKit.Signal.connect(window, 'changed', function() {
         });
     };
 
-})(jQuery);
+}(jQuery));
 
-})();
+}());
