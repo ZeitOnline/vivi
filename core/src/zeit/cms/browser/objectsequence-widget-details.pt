@@ -12,12 +12,14 @@
        tal:content="view/teaser_title">
   </div>
   <div class="goto-object object-link">
-    <a tal:attributes="href context/@@absolute_url" i18n:translate="">
+    <a tal:attributes="href context/@@absolute_url" i18n:translate=""
+       target="_blank">
       CMS
     </a>
   </div>
   <div class="preview object-link">
-    <a tal:attributes="href view/preview_url" i18n:translate="">
+    <a tal:attributes="href view/preview_url" i18n:translate=""
+       target="_blank">
       Preview
     </a>
   </div>
