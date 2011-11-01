@@ -17,5 +17,17 @@
         Create paragraph
       </a>
     </span>
+    <fieldset class="fontcontrol">
+      <button class="fontbutton fontplus">
+        <span> + </span>
+      </button>
+      <button class="fontbutton fontminus">
+        <span> - </span>
+      </button>
+      <button class="fontbutton fontnormal">
+        <span> % </span>
+      </button>
+      <span class="charcount"></span>
+    </fieldset>
   </div>
 </div>

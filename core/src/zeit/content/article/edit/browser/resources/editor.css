@@ -53,8 +53,8 @@
    font-size:16px;
 }
 
-#edit-form-article-content .block-inner {
-  padding-bottom: 20px;
+#edit-form-article-content > .block-inner {
+  padding-bottom: 40px;
 }
 
 #edit-form-filename .widget-outer,
@@ -155,17 +155,30 @@
   height: 4px;
 }
 
+#text-control-bottom {
+  border: 1px dotted #777;
+  margin-right: 25px;
+  padding: 0.5em;
+}
+
+.fontcontrol {
+  bottom: 0;
+  position: absolute;
+  right: 0;
+}
+
+.fontbutton {
+  height: 20px;
+  text-align: center;
+  width: 20px;
+}
+
 span.charcount {
   color: #777;
   font-size: 14px;
   font-weight: 700;
-  position: absolute;
-  right: 30px;
-}
-
-span.charcount-bottom {
-  bottom: 0;
-  margin-bottom: 5px;
+  margin-left: 2em;
+  margin-right: 1em;
 }
 
 /* Editable blocks */
@@ -266,8 +279,8 @@ span.charcount-bottom {
   padding-bottom:5px;
 }
 
-.block-inner h3{
-  font-size:24px;
+.block-inner h3 {
+  font-size: 1.5em;
 }
 
 .block-inner p,
