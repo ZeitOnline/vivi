@@ -366,7 +366,7 @@ The workflow logs various changes in an objectlog. Verify this:
 If the object log is very long, only the latest 20 entries will be
 shown:
 
->>> zeit.workflow.browser.objectlog.ProcessForDisplay.max_entries = -20
+>>> zeit.workflow.browser.objectlog.ProcessForDisplay.max_entries = 20
 >>> browser.getControl('Edited').displayValue = ['yes']
 >>> browser.getControl('Save state only').click()
 
