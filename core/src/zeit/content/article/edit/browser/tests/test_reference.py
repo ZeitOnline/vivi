@@ -347,5 +347,5 @@ class VideoTest(GalleryTest):
         self.assert_ellipsis("<...self.close()...")
         self.browser.open(self.contents_url)
         self.assert_ellipsis(
-            """...<a href="http://video.zeit.de/video/1234">
-               ...<a href="http://video.zeit.de/video/6789">...""")
+            """...href="http://video.zeit.de/video/1234"...
+               ...href="http://video.zeit.de/video/6789"...""")
