@@ -499,6 +499,6 @@ class TestResizeFont(
         self.save()
         s.click('css=.fontplus')
         s.open(s.getLocation())
-        s.waitForElementPresent('xpath=//fieldset[@class="fontcontrol"]')
+        s.waitForElementPresent('xpath=//span[@class="charcount"]')
         s.assertAttribute(
             'css=.block.type-p .editable@style', u'font-size: 17px;')
