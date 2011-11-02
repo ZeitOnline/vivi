@@ -25,7 +25,7 @@
 }
 
 div div.landing-zone:first-child {
-    padding-top:15px;
+  padding-top: 15px;
 }
 
 #cp-content .hover > * {
@@ -50,7 +50,6 @@ div div.landing-zone:first-child {
 #cp-content .block.hover-content > * {
   outline: 4px solid #00ee5e;
 }
-
 
 #cp-forms {
   bottom: 1em;
@@ -161,7 +160,6 @@ div div.landing-zone:first-child {
   z-index: auto;
 }
 
-
 #cp-content > .lightbox {
   overflow-y: visible;
 }
@@ -214,11 +212,11 @@ div div.landing-zone:first-child {
 
 .block-inner .editable p,
 {
-  padding:5px 12px;
+  padding: 5px 12px;
 }
 
 .block-inner .editable ul {
-  margin-top:0px;
+  margin-top: 0px;
 }
 
 .block {
@@ -268,12 +266,10 @@ div div.landing-zone:first-child {
   padding: 1em;
 }
 
-
 .edit {
   border-bottom: 1px solid #bbb;
   margin-bottom: 0px;
   padding-top: 0px;
-
 }
 
 .editable-area > .edit {
@@ -316,7 +312,7 @@ div div.landing-zone:first-child {
 }
 
 .edit-bar > .locked-indicator {
-  padding-right:0.5em;
+  padding-right: 0.5em;
 }
 
 .edit-bar > .edit-link {
@@ -345,12 +341,10 @@ div div.landing-zone:first-child {
   z-index: -1;
 }
 
-
 .dragger > .center {
   height: 20px;
   cursor: move;
 }
-
 
 
 /* Busy indicator */
@@ -429,10 +423,8 @@ div div.landing-zone:first-child {
   background-image: url('arrow_right.png');
 }
 
-
 .cp-content-inner .folded > .block-inner > * {
   display: none;
-
 }
 
 .cp-content-inner .folded > .block-inner > .edit-bar {
@@ -445,8 +437,8 @@ div div.landing-zone:first-child {
 }
 
 #editor-forms div div.edit-bar a{
-    margin:4px;
-    margin-top:5px;
+  margin: 4px;
+  margin-top: 5px;
 }
 
 /* override so we don't see a flicker */
@@ -469,30 +461,30 @@ div div.landing-zone:first-child {
 #edit-form-assets .inline-form .widget-outer {
   margin: 0 0px 20px 0;
   position: relative;
-  background:#F2F2F2;
-  -moz-border-radius:5px;
+  background: #F2F2F2;
+  -moz-border-radius: 5px;
 }
 
 #edit-form-assets .inline-form .widget-outer div.landing-zone {
-  width:626px;
-  background:white;
-  border:1px dotted green;
-  -moz-border-radius:5px;
-  margin:auto;
+  width: 626px;
+  background: white;
+  border: 1px dotted green;
+  -moz-border-radius: 5px;
+  margin: auto;
 }
 
 #edit-form-assets .inline-form .widget-outer div.droppable-active {
-  width:626px;
+  width: 626px;
   background: -moz-linear-gradient(center top , #FFF, #EFE) repeat scroll 0 0 transparent;
   border: 1px solid #0A0;
-  -moz-border-radius:5px;
-  margin:auto;
+  -moz-border-radius: 5px;
+  margin: auto;
 }
 
 #edit-form-assets input[type="text"] {
-    padding: 1em;
-    width:278px;
-    font-size:12px;
+  padding: 1em;
+  width: 278px;
+  font-size: 12px;
 }
 
 .inline-form .label {
@@ -505,7 +497,7 @@ div div.landing-zone:first-child {
   font-weight: normal;
   margin-right: 5px;
   padding-left: 3px;
-  padding-top:5px;
+  padding-top: 5px;
 }
 
 .inline-form .label div.error {
@@ -523,34 +515,34 @@ div div.landing-zone:first-child {
 .inline-form .widget {
   clear: left;
   padding: 0px 0 0;
-  margin-bottom:10px;
+  margin-bottom: 10px;
   float: left;
 }
 
 #edit-form-assets .inline-form .widget-outer,
 #edit-form-assets .inline-form .widget {
   padding: 0px 0 0;
-  margin-bottom:10px;
-  width:100%;
+  margin-bottom: 10px;
+  width: 100%;
 }
 
 #edit-form-assets .inline-form .widget-outer div.label{
-  margin:3px 0px 3px 3px;
+  margin: 3px 0px 3px 3px;
 }
 
 #edit-form-assets .inline-form .widget .objectsequencewidget li,
 #edit-form-assets .inline-form .widget .drop-object-widget  {
-  margin:auto;
+  margin: auto;
 }
 
 #edit-form-assets .inline-form .widget .textType {
-  width:95%;
-  display:block;
-  margin:auto;
+  width: 95%;
+  display: block;
+  margin: auto;
 }
 
 #edit-form-assets .inline-form .widget div.landing-zone {
-  width:95%;
+  width: 95%;
 }
 
 .inline-form div.widget > input,
@@ -564,7 +556,6 @@ div div.landing-zone:first-child {
 .inline-form .error div.widget > div > div > select {
   background: -moz-linear-gradient(center top , #FFF, #FEE) repeat scroll 0 0 transparent;
   border: 1px solid #A00;
-
 }
 
 .inline-form .dirty div.widget > input,
@@ -620,7 +611,6 @@ div div.landing-zone:first-child {
   text-transform: uppercase;
 }
 
-
 .widget-outer span.charlimit {
   color: #777;
   font-weight: 700;
@@ -638,12 +628,12 @@ div div.landing-zone:first-child {
 /* .article-editor-inner .type-portraitbox.folded > .block-inner { */
 .article-editor-inner .zeit-edit-interfaces-IElement.folded > .block-inner {
   display: block;
-  border-color:white;
+  border-color: white;
 }
 
 /* .article-editor-inner .type-portraitbox.folded .edit-bar { */
 .article-editor-inner .zeit-edit-interfaces-IElement.folded .edit-bar {
-    border:1px solid #dddddd !important;
+  border: 1px solid #dddddd !important;
 }
 
 .article-editor-inner .type-portraitbox.folded .block-inner > * {
@@ -665,17 +655,18 @@ div div.landing-zone:first-child {
 }
 
 #cp-content .editable-area {
-    margin: 1em 0 0;
+  margin: 1em 0 0;
 }
+
 
 /* Fieldsets */
 
 fieldset {
-    background: none 0;
-    border: medium none;
-    overflow: hidden;
-    margin: 10px;
-    padding: 0;
+  background: none 0;
+  border: medium none;
+  overflow: hidden;
+  margin: 10px;
+  padding: 0;
 }
 
 fieldset.palette {
@@ -689,9 +680,9 @@ fieldset .hlink {
 
 fieldset .hlink a {
   color: #009BE0;
-  font-size:14px;
-  padding:5px;
-  font-weight:bold;
+  font-size: 14px;
+  padding: 5px;
+  font-weight: bold;
 }
 
 fieldset .hlink a:hover {
@@ -701,6 +692,7 @@ fieldset .hlink a:hover {
 fieldset .hlink a:active {
   color: #FF6600;
 }
+
 
 /* Legend */
 
@@ -714,18 +706,21 @@ legend {
   text-transform: none;
 }
 
+
 /* Misc */
+
 #recensions p {
-  padding-left:4px;
+  padding-left: 4px;
 }
 
 #recensions a {
   -moz-appearance: button;
-  padding-left:10px;
-  display:block;
-  margin:4px 0px 0px 4px;
-  width:66px;
+  padding-left: 10px;
+  display: block;
+  margin: 4px 0px 0px 4px;
+  width: 66px;
 }
+
 
 /* Render links as buttons */
 
@@ -738,9 +733,10 @@ a.button.disabled {
   color: #999999;
 }
 
+
 /* In article-editor  */
 
 #editor-forms #checkin,
 #editor-forms #checkin_correction {
-    font-size:14px;
+  font-size: 14px;
 }
