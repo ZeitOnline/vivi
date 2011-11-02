@@ -2,22 +2,22 @@
 /* Textareas not inline */
 
 #edit-form-article-content .widget-outer {
-  display:block;
-  clear:both;
+  display: block;
+  clear: both;
 }
 
 #edit-form-teaser-title .inline-form.wired .widget-outer,
 #edit-form-teaser-title .inline-form.wired .widget,
 #edit-form-article-content .inline-form.wired .widget-outer,
 #edit-form-article-content .inline-form.wired .widget {
-    width:100%
+  width: 100%
 }
 
 #edit-form-teaser-title .inline-form.wired textarea,
 #edit-form-teaser-title .inline-form.wired input.textType,
 #edit-form-article-content .inline-form.wired textarea,
 #edit-form-article-content .inline-form.wired input.textType {
-    width:98%
+  width: 98%
 }
 
 /* editor blocks */
@@ -27,30 +27,31 @@
 }
 
 #editable-body .editable {
-    font-family: Georgia,Palatino,Palatino Linotype,FreeSerif,serif;
-    font-size: 16px;
-    line-height:1.5em;
+  font-family: Georgia,Palatino,Palatino Linotype,FreeSerif,serif;
+  font-size: 16px;
+  line-height: 1.5em;
 }
 
 #editor-forms div div.edit-bar {
-    margin: 0 0 4px 0px;
-    background: none 0;
+  margin: 0 0 4px 0px;
+  background: none 0;
 }
 
 #editor-forms div div.edit-bar a{
-    margin:4px;
-    margin-top:1px;
+  margin: 4px;
+  margin-top: 1px;
 }
 
 #article-form-workflow.folded,
 #article-form-assets.folded,
 #article-form-metadata.folded {
- border-bottom:0;
+  border-bottom: 0;
 
 }
 
-#edit-form-article-content #article-content-head.title, #edit-form-article-content #article-content-head.subtitle {
-   font-size:16px;
+#edit-form-article-content #article-content-head.title,
+#edit-form-article-content #article-content-head.subtitle {
+  font-size: 16px;
 }
 
 #edit-form-article-content > .block-inner {
@@ -59,41 +60,37 @@
 
 #edit-form-filename .widget-outer,
 #edit-form-filename .widget {
-    margin: 0;
+  margin: 0;
 }
 
-.article-editor-inner
-  .block.zeit-content-article-edit-interfaces-IParagraph 
-  .edit-bar {
+.article-editor-inner .block.zeit-content-article-edit-interfaces-IParagraph .edit-bar {
   visibility: hidden;
 }
 
-.article-editor-inner
-  .block.zeit-content-article-edit-interfaces-IParagraph 
-  .block-inner {
+.article-editor-inner .block.zeit-content-article-edit-interfaces-IParagraph .block-inner {
   border-color: transparent;
 }
 
-.article-editor-inner .block:hover .edit-bar,
+.article-editor-inner .block: hover .edit-bar,
 .article-editor-inner .block.editing .edit-bar {
   visibility: visible;
 }
 
-.article-editor-inner .block:hover .block-inner,
+.article-editor-inner .block: hover .block-inner,
 .article-editor-inner .block.editing .block-inner {
   border-color: #bbbbbb;
 }
 
 .article-editor-inner .edit-bar > a {
   height: 10px;
-  margin:0;
-  padding:0;
-  margin-top:1px;
-  margin-right:2px;
+  margin: 0;
+  padding: 0;
+  margin-top: 1px;
+  margin-right: 2px;
 }
 
 .edit-bar {
-    margin:0;
+  margin: 0;
 }
 
 .article-editor-inner .edit-bar > .delete-link {
@@ -121,26 +118,26 @@
   text-align: center;
   text-decoration: none;
   font: Arial, Helvetica, sans-serif;
-  line-height:1.5em;
-  -moz-appearance:button;
+  line-height: 1.5em;
+  -moz-appearance: button;
 }
 
-#article-editor-text .landing-zone a:before {
-  content:"|";
+#article-editor-text .landing-zone a: before {
+  content: "|";
   color: rgba(255, 255, 255, 0);
 }
 
-#article-editor-text .landing-zone a:after {
-  content:"|";
+#article-editor-text .landing-zone a: after {
+  content: "|";
   color: rgba(255, 255, 255, 0);
 }
 
 #article-editor-text #editable-body .block-inner{
-  padding-top:0px !important;
+  padding-top: 0px !important;
 }
 
 #article-editor-text #editable-body .block-inner .edit-bar {
-  padding-top:0px !important;
+  padding-top: 0px !important;
 }
 
 #article-editor-text .block-inner .edit-bar {
@@ -186,7 +183,7 @@ span.charcount {
 .block-inner{
   background: none repeat scroll 0 0 #FFFFFF;
   border-radius: 5px 5px 5px 5px;
-  font-size:12px;
+  font-size: 12px;
   margin: 0 10px;
   padding: 5px 10px;
   position: relative;
@@ -208,7 +205,7 @@ span.charcount {
   width: 20px;
 }
 
-.block-inner .totop:hover {
+.block-inner .totop: hover {
   background: none repeat scroll 0 0 #666666;
 }
 
@@ -259,24 +256,24 @@ span.charcount {
 }
 
 /* for the RTE-Toolbar */
-#article-editor-text .editing p:last-child,
-#article-editor-text .editing ol:last-child,
-#article-editor-text .editing ul:last-child,
-#article-editor-text .editing h3:last-child {
-  min-height:141px;
-  margin-bottom:0px;
+#article-editor-text .editing p: last-child,
+#article-editor-text .editing ol: last-child,
+#article-editor-text .editing ul: last-child,
+#article-editor-text .editing h3: last-child {
+  min-height: 141px;
+  margin-bottom: 0px;
 }
 
 #editable-body .block-inner {
   overflow: visible;
 }
 
-.block-inner > form:first-of-type {
-  padding-top:5px;
+.block-inner > form: first-of-type {
+  padding-top: 5px;
 }
 
-.block-inner > *:last-child {
-  padding-bottom:5px;
+.block-inner > *: last-child {
+  padding-bottom: 5px;
 }
 
 .block-inner h3 {
@@ -285,31 +282,31 @@ span.charcount {
 
 .block-inner p,
 .block-inner h3 {
- padding-left:10px;
- margin:0;
+ padding-left: 10px;
+ margin: 0;
 }
 
 .editing .block-inner p,
 .editing .block-inner h3{
-  margin-top:41px;
+  margin-top: 41px;
 }
 
 .editing .block-inner ul {
-  margin-top:41px;
-  margin-bottom:57px;
+  margin-top: 41px;
+  margin-bottom: 57px;
 }
 
 
 .editing .editable > * {
 }
 
-.editing .editable > *:first-child {
+.editing .editable > *: first-child {
   margin-top: 0em;
 }
 
 .rte-toolbar {
   background-color: #f0f0ee;
-  border :1px solid #cccccc;
+  border : 1px solid #cccccc;
   left: -22px;
   position: absolute;
 }
@@ -352,31 +349,31 @@ span.charcount {
   color: transparent;
 }
 
-.rte-toolbar a:hover, 
+.rte-toolbar a: hover,
 .rte-toolbar a.active {
   outline: 1px solid #0A246A;
-  background-color:#C2CBE0;
+  background-color: #C2CBE0;
 }
 
-.editable *:empty:before {
+.editable *: empty:before {
   color: #ccc;
 }
 
-.editable p:empty:before,
-.editable h3:empty:before {
+.editable p: empty:before,
+.editable h3: empty:before {
   content: "Geben Sie hier Text ein.";
 }
 
-.editable ul:empty:before,
-.editable ol:empty:before {
+.editable ul: empty:before,
+.editable ol: empty:before {
   content: "Geben Sie hier eine Liste ein.";
 }
 
-.editable p:empty:before {
+.editable p: empty:before {
   content: "Geben Sie hier Text ein.";
 }
 
-.editing .editable *:empty:before {
+.editing .editable *: empty:before {
   content: "";
 }
 
@@ -474,23 +471,23 @@ dl.errors dt {
 /* Log Expander */
 
 button.log-expander {
-    clear: both;
-    float: left;
+  clear: both;
+  float: left;
 }
 
 /* Pageteaser division in article */
 .zeit-content-article-edit-interfaces-IDivision .block-inner form.inline-form  * {
-    width:100%;
+  width: 100%;
 }
 
 .zeit-content-article-edit-interfaces-IDivision .block-inner fieldset,
 .zeit-content-article-edit-interfaces-IDivision .block-inner .widget-outer {
-    margin-right:0px;
-    margin-left:0px;
+  margin-right: 0px;
+  margin-left: 0px;
 }
 
 .zeit-content-article-edit-interfaces-IDivision .block-inner input,
 .zeit-content-article-edit-interfaces-IDivision .block-inner label {
-    width:95% !important;    
-    margin-left:12px;
+  width: 95% !important;
+  margin-left: 12px;
 }
