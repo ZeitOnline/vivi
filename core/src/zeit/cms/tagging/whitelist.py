@@ -23,14 +23,17 @@ class Whitelist(zope.container.btree.BTreeContainer):
         return result
 
 
-class WhitelistSource(object):
+class WhitelistTagSource(object):
 
     # this should be in .interfaces, but that leads to a circular import
     # between zeit.cms.content.interfaces and .interfaces
 
     zope.interface.implements(
-        zeit.cms.tagging.interfaces.IWhitelistSource,
+        zeit.cms.tagging.interfaces.IWhitelistTagSource,
         zeit.cms.content.interfaces.IAutocompleteSource)
+
+    def __init__(self, context):
+        pass # we're context-independent
 
     @property
     def whitelist(self):

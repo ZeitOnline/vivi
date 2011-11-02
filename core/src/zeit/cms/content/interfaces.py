@@ -93,7 +93,7 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=(),
         value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.interfaces.TagsForContent()))
+            source=zeit.cms.tagging.interfaces.TagSource))
 
     serie = zope.schema.Choice(
         title=_("Serie"),

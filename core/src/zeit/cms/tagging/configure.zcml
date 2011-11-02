@@ -46,4 +46,11 @@
       name="absolute_url"
       />
 
+  <!-- XXX temporary stop-gap to make tests pass. Remove when ``keywords`` has
+       been moved from ICommonMetadata to ITaggable. -->
+  <adapter
+    for="*"
+    provides="zeit.cms.tagging.interfaces.TagSource"
+    factory="zeit.cms.tagging.interfaces.AutomaticTagSource"
+    />
 </configure>

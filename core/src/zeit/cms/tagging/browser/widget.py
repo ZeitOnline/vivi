@@ -17,7 +17,7 @@ class Widget(grokcore.component.MultiAdapter,
 
     grokcore.component.adapts(
         zope.schema.interfaces.ITuple,
-        zeit.cms.tagging.interfaces.ITagsForContent,
+        zeit.cms.tagging.interfaces.IAutomaticTagSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(
         zope.formlib.interfaces.IInputWidget)

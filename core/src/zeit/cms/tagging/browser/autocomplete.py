@@ -19,7 +19,7 @@ class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
     # refactored?
 
     grokcore.component.adapts(
-        zeit.cms.tagging.interfaces.IWhitelistSource,
+        zeit.cms.tagging.interfaces.IWhitelistTagSource,
         zeit.cms.browser.interfaces.ICMSLayer)
     grokcore.component.provides(zope.formlib.interfaces.ISourceQueryView)
 

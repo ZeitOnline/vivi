@@ -3,8 +3,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
-import zc.sourcefactory.contextual
-import zc.sourcefactory.source
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema.interfaces
@@ -61,26 +59,62 @@ class IAppliedTag(zope.interface.Interface):
         default=0)
 
 
-class ITagsForContent(zope.schema.interfaces.IIterableSource):
-    pass
+class TagSource(zope.schema.interfaces.IIterableSource):
+    """Source of possible tags for a content object.
+
+    This is a ContextSourceBinder that chooses a concrete TagSource according
+    to the content type.
+    """
+
+zope.interface.alsoProvides(
+    TagSource, zope.schema.interfaces.IContextSourceBinder)
 
 
-class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
+class IAutomaticTagSource(TagSource):
+    """TagSource that classifies (i.e. assigns tags to) a content object,
+    and yields those as possible tags for that object.
 
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        zope.interface.implements(ITagsForContent)
+    This means that the user can only deselect tags, but not any of his own.
+    """
 
-    def getValues(self, context):
-        tagger = ITagger(context, None)
+    def update():
+        """Update the list of tags from the backend."""
+
+
+class IWhitelistTagSource(TagSource):
+    """TagSource that is populated by IWhitelist, independent of a content
+    object.
+
+    This means that the user can choose which tags of these to apply to the
+    content object.
+    """
+
+
+class AutomaticTagSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    def __new__(cls, *args, **kw):
+        source = super(AutomaticTagSource, cls).__new__(cls, *args, **kw)
+        zope.interface.alsoProvides(source, IAutomaticTagSource)
+        return source
+
+    def __init__(self, context):
+        super(AutomaticTagSource, self).__init__()
+        self.context = context
+
+    def getValues(self):
+        tagger = ITagger(self.context, None)
         if tagger is None:
             return []
         return (tagger[code] for code in tagger)
 
-    def getTitle(self, context, value):
+    def getTitle(self, value):
         return value.label
 
-    def getToken(self, context, value):
+    def getToken(self, value):
         return value.code
+
+    def update(self):
+        pass # XXX call intrafind. How?
 
 
 class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):
@@ -95,10 +129,6 @@ class IWhitelist(IReadWhitelist, zope.interface.common.mapping.IWriteMapping):
     The whitelist contains all selectable tags.
 
     """
-
-
-class IWhitelistSource(zope.schema.interfaces.IIterableSource):
-    """Tag whitelist"""
 
 
 ID_NAMESPACE = 'tag://'
