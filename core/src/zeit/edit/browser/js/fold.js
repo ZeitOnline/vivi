@@ -30,13 +30,8 @@ zeit.edit.FoldBlock = gocept.Class.extend({
 });
 
 MochiKit.Signal.connect(
-    window, 'cp-editor-initialized', function() {
-
-    MochiKit.Signal.connect(
-        zeit.edit.editor, 'after-reload',
-        function() {
-            zeit.edit.FoldBlock.prototype.restore_folding();
-        });
+    window, 'cp-editor-loaded', function() {
+        zeit.edit.FoldBlock.prototype.restore_folding();
 });
 
 }());
