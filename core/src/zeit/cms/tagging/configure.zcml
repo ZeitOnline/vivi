@@ -51,6 +51,6 @@
   <adapter
     for="*"
     provides="zeit.cms.tagging.interfaces.TagSource"
-    factory="zeit.cms.tagging.interfaces.AutomaticTagSource"
+    factory="zeit.cms.tagging.automatic.AutomaticTagSource"
     />
 </configure>

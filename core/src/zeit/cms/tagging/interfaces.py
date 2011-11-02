@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import zc.sourcefactory.basic
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema.interfaces
@@ -88,33 +87,6 @@ class IWhitelistTagSource(TagSource):
     This means that the user can choose which tags of these to apply to the
     content object.
     """
-
-
-class AutomaticTagSource(zc.sourcefactory.basic.BasicSourceFactory):
-
-    def __new__(cls, *args, **kw):
-        source = super(AutomaticTagSource, cls).__new__(cls, *args, **kw)
-        zope.interface.alsoProvides(source, IAutomaticTagSource)
-        return source
-
-    def __init__(self, context):
-        super(AutomaticTagSource, self).__init__()
-        self.context = context
-
-    def getValues(self):
-        tagger = ITagger(self.context, None)
-        if tagger is None:
-            return []
-        return (tagger[code] for code in tagger)
-
-    def getTitle(self, value):
-        return value.label
-
-    def getToken(self, value):
-        return value.code
-
-    def update(self):
-        pass # XXX call intrafind. How?
 
 
 class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):

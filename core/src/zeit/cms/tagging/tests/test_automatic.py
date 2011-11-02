@@ -8,7 +8,7 @@ import unittest
 class AutomaticTagSourceTest(unittest.TestCase):
 
     def get_source(self, context=mock.sentinel.context):
-        from zeit.cms.tagging.interfaces import AutomaticTagSource
+        from zeit.cms.tagging.automatic import AutomaticTagSource
         return AutomaticTagSource(context).factory
 
     def test_get_values_should_be_empty_without_tagger(self):
