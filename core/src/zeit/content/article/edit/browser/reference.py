@@ -24,19 +24,6 @@ class SetReference(zeit.edit.browser.view.Action):
             None, 'reload', self.context.__name__, self.url('@@contents'))
 
 
-class EditPortraitbox(zeit.edit.browser.view.EditBox):
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IPortraitbox).omit('references')
-
-
-class EditPortraitboxAction(zeit.edit.browser.view.EditBoxAction):
-
-    title = _('Edit')
-    action = 'edit-layout'
-    undo_description = _('edit portraitbox')
-
-
 class View(object):
     """View for reference blocks."""
 

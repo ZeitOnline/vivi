@@ -100,6 +100,10 @@ class TestPortraitbox(ReferenceTest):
         from zeit.content.article.edit.reference import Portraitbox
         return Portraitbox
 
+    def test_default_layout_should_be_set(self):
+        ref = self.get_ref()
+        self.assertEquals('short', ref.xml.get('layout'))
+
     def test_layout_should_set_attribute(self):
         ref = self.get_ref()
         ref.layout = u'wide'

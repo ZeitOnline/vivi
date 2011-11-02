@@ -22,7 +22,7 @@
 
     $.fn.createLogExpander = function() {
         var self = $(this);
-        if (self.find('br').length < 5) { return }
+        if (self.find('br').length < 5) { return; }
         var log  = self.children('.widget-outer:first')
                        .css({'max-height': '7.5em', 'overflow': 'hidden'});
         var expander = $('<button />').html('Log ausklappen').appendTo(self);
@@ -45,7 +45,7 @@
             var l = self.find('.editable').children().text().length || 0;
             var container = self.parent();
             container.find('.charcount').html(l + " Zeichen");
-        }
+        };
         self.bind('keyup', count);
         count();
     };
@@ -101,7 +101,7 @@ MochiKit.Signal.connect(
 
             $('#article-editor-text').countedInput();
 
-        })(jQuery);
+        }(jQuery));
     });
 
     (function($) {
@@ -112,7 +112,7 @@ MochiKit.Signal.connect(
             $('#cp-content-inner').animate({scrollTop: 0}, 300);
         });
 
-    })(jQuery);
+    }(jQuery));
 
 });
 

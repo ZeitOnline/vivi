@@ -162,7 +162,8 @@ class IPortraitbox(IReference, ILayoutable):
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=PortraitboxLayoutSource(),
-        required=False)
+        required=False,
+        default=u'short')
 
 
 class ValidationError(zope.schema.ValidationError):
