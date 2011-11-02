@@ -76,7 +76,7 @@
 
   <browser:defaultView
     for="zeit.content.image.interfaces.IImage"
-    name="index.html"
+    name="view.html"
     />
 
   <browser:page
