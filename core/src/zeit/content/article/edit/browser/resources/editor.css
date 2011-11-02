@@ -71,12 +71,12 @@
   border-color: transparent;
 }
 
-.article-editor-inner .block: hover .edit-bar,
+.article-editor-inner .block:hover .edit-bar,
 .article-editor-inner .block.editing .edit-bar {
   visibility: visible;
 }
 
-.article-editor-inner .block: hover .block-inner,
+.article-editor-inner .block:hover .block-inner,
 .article-editor-inner .block.editing .block-inner {
   border-color: #bbbbbb;
 }
@@ -122,12 +122,12 @@
   -moz-appearance: button;
 }
 
-#article-editor-text .landing-zone a: before {
+#article-editor-text .landing-zone a:before {
   content: "|";
   color: rgba(255, 255, 255, 0);
 }
 
-#article-editor-text .landing-zone a: after {
+#article-editor-text .landing-zone a:after {
   content: "|";
   color: rgba(255, 255, 255, 0);
 }
@@ -205,7 +205,7 @@ span.charcount {
   width: 20px;
 }
 
-.block-inner .totop: hover {
+.block-inner .totop:hover {
   background: none repeat scroll 0 0 #666666;
 }
 
@@ -256,10 +256,10 @@ span.charcount {
 }
 
 /* for the RTE-Toolbar */
-#article-editor-text .editing p: last-child,
-#article-editor-text .editing ol: last-child,
-#article-editor-text .editing ul: last-child,
-#article-editor-text .editing h3: last-child {
+#article-editor-text .editing p:last-child,
+#article-editor-text .editing ol:last-child,
+#article-editor-text .editing ul:last-child,
+#article-editor-text .editing h3:last-child {
   min-height: 141px;
   margin-bottom: 0px;
 }
@@ -268,11 +268,11 @@ span.charcount {
   overflow: visible;
 }
 
-.block-inner > form: first-of-type {
+.block-inner > form:first-of-type {
   padding-top: 5px;
 }
 
-.block-inner > *: last-child {
+.block-inner > *:last-child {
   padding-bottom: 5px;
 }
 
@@ -300,7 +300,7 @@ span.charcount {
 .editing .editable > * {
 }
 
-.editing .editable > *: first-child {
+.editing .editable > *:first-child {
   margin-top: 0em;
 }
 
@@ -349,31 +349,31 @@ span.charcount {
   color: transparent;
 }
 
-.rte-toolbar a: hover,
+.rte-toolbar a:hover,
 .rte-toolbar a.active {
   outline: 1px solid #0A246A;
   background-color: #C2CBE0;
 }
 
-.editable *: empty:before {
+.editable *:empty:before {
   color: #ccc;
 }
 
-.editable p: empty:before,
-.editable h3: empty:before {
+.editable p:empty:before,
+.editable h3:empty:before {
   content: "Geben Sie hier Text ein.";
 }
 
-.editable ul: empty:before,
-.editable ol: empty:before {
+.editable ul:empty:before,
+.editable ol:empty:before {
   content: "Geben Sie hier eine Liste ein.";
 }
 
-.editable p: empty:before {
+.editable p:empty:before {
   content: "Geben Sie hier Text ein.";
 }
 
-.editing .editable *: empty:before {
+.editing .editable *:empty:before {
   content: "";
 }
 
