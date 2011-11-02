@@ -27,6 +27,7 @@ setup(
         'gocept.lxml>=0.2.1',
         'gocept.pagelet',
         'gocept.runner',
+        'gocept.testing',
         'grokcore.component',
         'grokcore.view',
         'guppy',
