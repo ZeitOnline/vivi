@@ -1,6 +1,6 @@
 (function(){
 
-MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 
     (function($) {
 
