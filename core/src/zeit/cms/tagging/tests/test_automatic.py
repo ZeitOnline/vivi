@@ -1,48 +1,28 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.tagging.interfaces import ITaggable
+from zeit.cms.tagging.tag import Tag
+from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import mock
-import unittest
+import zeit.cms.testing
 
 
-class AutomaticTagSourceTest(unittest.TestCase):
+class AutomaticTagSourceTest(zeit.cms.testing.FunctionalTestCase):
 
-    def get_source(self, context=mock.sentinel.context):
-        from zeit.cms.tagging.automatic import AutomaticTagSource
-        return AutomaticTagSource(context).factory
+    def test_values_combine_objects_keywords_and_disabled_keywords(self):
+        content = TestContentType()
+        content.keywords = (Tag('foo'),)
+        content.disabled_keywords = (Tag('bar'),)
+        source = ITaggable['keywords'].bind(content).value_type.source
+        self.assertEqual((Tag('foo'), Tag('bar')), tuple(source))
 
-    def test_get_values_should_be_empty_without_tagger(self):
-        NOT_CONTENT = None
-        self.assertEqual([], self.get_source(NOT_CONTENT).getValues())
-
-    def test_get_values_should_call_getitem_for_each_element(self):
-        source = self.get_source()
+    def test_update_sets_all_keywords_obtained_from_tagger(self):
+        content = TestContentType()
+        content.keywords = (Tag('foo'),)
+        content.disabled_keywords = (Tag('bar'),)
+        source = ITaggable['keywords'].bind(content).value_type.source
         with mock.patch('zeit.cms.tagging.interfaces.ITagger') as tagger:
-            tagger.return_value = dict(
-                foo=mock.sentinel.foo,
-                bar=mock.sentinel.bar)
-            result = set(source.getValues())
-        self.assertEqual(
-            set([mock.sentinel.foo, mock.sentinel.bar]),
-            result)
-
-    def test_get_values_should_adapt_context_to_ITagger(self):
-        source = self.get_source()
-        with mock.patch('zeit.cms.tagging.interfaces.ITagger') as tagger:
-            tagger.return_value = None
-            source.getValues()
-        tagger.asser_called_with(mock.sentinel.context)
-
-    def test_get_title_returns_label(self):
-        tag = mock.Mock()
-        tag.label = mock.sentinel.label
-        self.assertEqual(
-            mock.sentinel.label,
-            self.get_source().getTitle(tag))
-
-    def test_get_token_should_return_code(self):
-        tag = mock.Mock()
-        tag.code = mock.sentinel.code
-        self.assertEqual(
-            mock.sentinel.code,
-            self.get_source().getToken(tag))
+            tagger().return_value = (Tag('bar'), Tag('baz'))
+            source.factory.update()  # XXX
+        self.assertEqual((Tag('bar'), Tag('baz')), content.keywords)

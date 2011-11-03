@@ -19,10 +19,7 @@ class AutomaticTagSource(zc.sourcefactory.basic.BasicSourceFactory):
         self.context = context
 
     def getValues(self):
-        tagger = zeit.cms.tagging.interfaces.ITagger(self.context, None)
-        if tagger is None:
-            return []
-        return (tagger[code] for code in tagger)
+        return self.context.keywords + self.context.disabled_keywords
 
     def getTitle(self, value):
         return value.label
@@ -31,4 +28,5 @@ class AutomaticTagSource(zc.sourcefactory.basic.BasicSourceFactory):
         return value.code
 
     def update(self):
-        pass # XXX call intrafind. How?
+        tagger = zeit.cms.tagging.interfaces.ITagger(self.context)
+        self.context.keywords = tagger()

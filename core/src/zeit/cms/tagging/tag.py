@@ -3,31 +3,14 @@
 
 import grokcore.component as grok
 import zeit.cms.browser.interfaces
+import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.component
 import zope.interface
+import zope.schema
 import zope.traversing.browser
 import zope.traversing.browser.absoluteurl
-
-
-class Tags(object):
-    """Property which stores tag data in DAV."""
-
-    def __get__(self, instance, class_):
-        tagger = zeit.cms.tagging.interfaces.ITagger(instance, None)
-        if tagger is None:
-            return ()
-        return tuple(tag for tag in tagger.values() if not tag.disabled)
-
-    def __set__(self, instance, value):
-        tagger = zeit.cms.tagging.interfaces.ITagger(instance)
-        for tag in list(tagger.values()):  # list to avoid dictionary changed
-                                           # during iteration
-            tag.disabled = (tag not in value)
-            tag.weight = 0
-        for weight, tag in enumerate(reversed(value), start=1):
-            tag.weight = weight
 
 
 class Tag(object):
@@ -72,8 +55,48 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
         return base + '/' + self.context.code
 
 
+class TagsProperty(object):
+
+    def __init__(self, target_name):
+        self.target_name = target_name
+
+    def __get__(self, instance, cls):
+        return tuple(Tag(uid) for uid in getattr(instance, self.target_name))
+
+    def __set__(self, instance, tags):
+        setattr(instance, self.target_name, tuple(tag.code for tag in tags))
+
+
+class KeywordTagsProperty(TagsProperty):
+
+    def __init__(self, target_name, other_name):
+        self.target_name = target_name
+        self.other_name = other_name
+
+    def __set__(self, instance, tags):
+        field = zeit.cms.tagging.interfaces.ITaggable['keywords']
+        values = set(field.bind(instance).value_type.source)
+        codes = tuple(tag.code for tag in tags)
+        setattr(instance, self.target_name, codes)
+        setattr(instance, self.other_name,
+                tuple(set(tag.code for tag in values) - set(codes)))
+
+
+TAGGING_NS = u"http://namespaces.zeit.de/CMS/tagging"
+
+
 class Taggable(object):
 
     zope.interface.Interface(zeit.cms.tagging.interfaces.ITaggable)
 
-    keywords = Tags()
+    _keywords = zeit.cms.content.dav.DAVProperty(
+        zope.schema.Tuple(value_type=zope.schema.TextLine(), default=()),
+        TAGGING_NS, 'keywords', use_default=True)
+
+    keywords = KeywordTagsProperty('_keywords', '_disabled_keywords')
+
+    _disabled_keywords = zeit.cms.content.dav.DAVProperty(
+        zope.schema.Tuple(value_type=zope.schema.TextLine(), default=()),
+        TAGGING_NS, 'disabled_keywords', use_default=True)
+
+    disabled_keywords = TagsProperty('_disabled_keywords')

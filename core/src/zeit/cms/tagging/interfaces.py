@@ -8,27 +8,16 @@ import zope.schema.interfaces
 import zope.schema
 
 
-class IReadTagger(zope.interface.common.mapping.IEnumerableMapping):
-    """Tagger."""
+class ITagger(zope.interface.Interface):
+    """Interface to whatever prduces tags for a content object."""
 
-
-class IWriteTagger(zope.interface.Interface):
-
-    def update():
+    def __call__():
         """Update tags of context.
 
-        Ususally this means to send the text to a tagging service which returns
+        Usually this means to send the text to a tagging service which returns
         the relevant tagging data.
 
         """
-
-
-class ITagger(IReadTagger, IWriteTagger):
-    """Tagger.
-
-    The tagger allows to iterate over tags and to remove and add tags.
-
-    """
 
 
 class ITag(zope.interface.Interface):
@@ -39,24 +28,6 @@ class ITag(zope.interface.Interface):
 
     label = zope.schema.TextLine(
         title=u'User visible text of tag')
-
-
-class IAppliedTag(zope.interface.Interface):
-    """A generic tag on an object."""
-
-    type = zope.schema.TextLine(
-        title=u"Tag type (person, topic, keyword, ...)")
-
-    disabled = zope.schema.Bool(
-        title=u'Disabled')
-
-    weight = zope.schema.Int(
-        title=_('Weight'),
-        description=_(
-            'The higher the weight the more important is a tag. Ideally no '
-            'two tags have the same weight, but that is not enforced.'),
-        required=False,
-        default=0)
 
 
 class TagSource(zope.schema.interfaces.IIterableSource):
@@ -110,6 +81,13 @@ class ITaggable(zope.interface.Interface):
         title=_("Keywords"),
         required=False,
         default=(),
+        value_type=zope.schema.Choice(source=TagSource))
+
+    disabled_keywords = zope.schema.Tuple(
+        title=_("Disabled keywords"),
+        required=False,
+        default=(),
+        readonly=True,
         value_type=zope.schema.Choice(source=TagSource))
 
 
