@@ -111,7 +111,7 @@ class IVideo(IBrightcoveContent,
         required=False,
         default=None,
         value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.whitelist.WhitelistSource()))
+            source=zeit.cms.tagging.whitelist.WhitelistTagSource(None)))
 
     dailyNewsletter = zope.schema.Bool(
         title=_("Daily newsletter"),
