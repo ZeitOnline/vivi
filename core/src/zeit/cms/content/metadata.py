@@ -13,7 +13,8 @@ import zope.interface
 import zope.publisher.browser
 
 
-class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
+class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase,
+                     zeit.cms.tagging.tag.Taggable):  # XXX
 
     zope.interface.implements(
         zeit.cms.content.interfaces.ICommonMetadata)
@@ -53,8 +54,6 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     commentsAllowed = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
-
-    keywords = zeit.cms.tagging.tag.Tags()
 
     title = zeit.cms.content.property.Structure(
         '.body.title',

@@ -70,3 +70,10 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
             zeit.cms.tagging.interfaces.IWhitelist)
         base = zope.traversing.browser.absoluteURL(whitelist, self.request)
         return base + '/' + self.context.code
+
+
+class Taggable(object):
+
+    zope.interface.Interface(zeit.cms.tagging.interfaces.ITaggable)
+
+    keywords = Tags()

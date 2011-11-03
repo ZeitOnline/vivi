@@ -39,7 +39,7 @@ class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
 authorSource = AuthorSource()
 
 
-class ICommonMetadata(zope.interface.Interface):
+class ICommonMetadata(zeit.cms.tagging.interfaces.ITaggable):  # XXX
 
     year = zope.schema.Int(
         title=_("Year"),
@@ -87,13 +87,6 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=(u'',),
         description=_(u'overwritten if any non-freetext authors are set'))
-
-    keywords = zope.schema.Tuple(
-        title=_("Keywords"),
-        required=False,
-        default=(),
-        value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.interfaces.TagSource))
 
     serie = zope.schema.Choice(
         title=_("Serie"),

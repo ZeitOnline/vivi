@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema.interfaces
+import zope.schema
 
 
 class IReadTagger(zope.interface.common.mapping.IEnumerableMapping):
@@ -101,6 +102,15 @@ class IWhitelist(IReadWhitelist, zope.interface.common.mapping.IWriteMapping):
     The whitelist contains all selectable tags.
 
     """
+
+
+class ITaggable(zope.interface.Interface):
+
+    keywords = zope.schema.Tuple(
+        title=_("Keywords"),
+        required=False,
+        default=(),
+        value_type=zope.schema.Choice(source=TagSource))
 
 
 ID_NAMESPACE = 'tag://'
