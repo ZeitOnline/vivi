@@ -18,16 +18,14 @@ class Tags(object):
         tagger = zeit.cms.tagging.interfaces.ITagger(instance, None)
         if tagger is None:
             return ()
-        return tuple(tag for tag in tagger.values() if not tag.disabled)
+        return tuple(tagger.values())
 
     def __set__(self, instance, value):
         tagger = zeit.cms.tagging.interfaces.ITagger(instance)
-        for tag in list(tagger.values()):  # list to avoid dictionary changed
-                                           # during iteration
-            tag.disabled = (tag not in value)
-            tag.weight = 0
-        for weight, tag in enumerate(reversed(value), start=1):
-            tag.weight = weight
+        for tag in list(tagger.values()):
+            if tag not in value:
+                del tagger[tag.code]
+        tagger.updateOrder((x.code for x in value))
 
 
 class Tag(object):
@@ -35,13 +33,14 @@ class Tag(object):
     zope.interface.implements(zeit.cms.tagging.interfaces.ITag,
                               zeit.cms.interfaces.ICMSContent)
 
-    def __init__(self, label):
-        self.label = self.code = label
+    def __init__(self, code, label):
+        self.code = code
+        self.label = label
 
     def __eq__(self, other):
         if other is None:
             return False
-        return self.label == other.label
+        return self.code == other.code
 
     @property
     def uniqueId(self):
