@@ -41,7 +41,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
         s.assertTextPresent('t2*t3*t1*t4')
 
     def test_sorted_tags_should_be_saved(self):
-        tags = self.setup_tags('t1', 't2', 't3', 't4')
+        self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
         s.dragAndDropToObject(
@@ -55,7 +55,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
             [tag.code for tag in self.repository['testcontent'].keywords])
 
     def test_unchecked_tags_should_be_disabled(self):
-        tags = self.setup_tags('t1', 't2', 't3', 't4')
+        self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
         s.click("xpath=//li/label[contains(., 't1')]")
@@ -95,7 +95,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
 
     @unittest.skip('foo')
     def test_save_should_work_after_update(self):
-        tags = self.setup_tags('t1', 't2', 't3', 't4')
+        self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
         s.clickAndWait('css=button[href="#update_tags"]')
