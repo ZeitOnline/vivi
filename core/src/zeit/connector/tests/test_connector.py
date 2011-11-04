@@ -320,3 +320,13 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
             dav.has_errors.return_value = True
             self.assertRaises(
                 DAVError, lambda: result.next())
+
+
+class TestXMLSupport(zeit.connector.testing.ConnectorTest):
+
+    def test_xml_strings_should_be_storable(self):
+        res = self.get_resource('xmltest', '')
+        res.properties[('foo', 'bar')] = '<a><b/></a>'
+        self.connector.add(res)
+        res = self.connector[res.id]
+        self.assertEqual('<a><b/></a>', res.properties[('foo', 'bar')])

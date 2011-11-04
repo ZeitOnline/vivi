@@ -476,29 +476,6 @@ We must be sure that this function also survives tag names w/o namespace:
 >>> zeit.connector.dav.davresource._make_qname_tuple('name')
 ('name', None)
 
-
-Make sure we can store strings which are valid xml:
-
->>> id = 'http://xml.zeit.de/testing/xmltest'
->>> res = Resource(id,
-...                'xmltest',
-...                'text',
-...                StringIO.StringIO('Pop goes the weasel!'),
-...                contentType = 'text/plain')
->>> res.properties[('foo', 'bar')] = '<a><b/></a>'
->>> connector.add(res)
->>> res = connector[id]
-
-We get the "xml" back:
-
->>> res.properties[('foo', 'bar')]
-'<a><b/></a>'
-
-Clean up:
-
->>> del connector[id]
-
-
 Let's make sure we don't die when the connection gets into an
 inconsistent/wrong state:
 
