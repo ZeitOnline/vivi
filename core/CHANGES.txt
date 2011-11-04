@@ -11,6 +11,7 @@ CHANGES
 - Fix query server integration: The API implemented ``range()`` while it must
   read ``between()``.
 - Raise exception in connector when query server returns an error.
+- Allow to store strucured (XML) values in properties (#9899)
 
 
 1.22.2 (2010-08-30)

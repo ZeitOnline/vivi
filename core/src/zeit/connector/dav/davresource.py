@@ -475,18 +475,26 @@ class DAVResource(object):
                 delete_properties.append(
                     make_element(namespace, name))
             else:            # set/change
-                # the values should be unicode. If they are not the we at least
-                # try to make one. This is ok for ascii stirngs and breaks on
-                # every encoded string. Just like it should.
-                value = unicode(value)
-                # Temporary fix to avoid webdav server confusion. When the
-                # value starts with a '<' the server does some magic. Avoid
-                # this by adding a magic marker before the actual value.
-                if (value.startswith('<')
-                    or value.startswith(XML_PREFIX_MARKER)):
-                    value = XML_PREFIX_MARKER + value
-                node = make_element(namespace, name)
-                node.text = value
+                try:
+                    node = lxml.etree.XML(value)
+                except lxml.etree.XMLSyntaxError:
+                    node = None
+                else:
+                    if node.tag != '{%s}%s' % (namespace, name):
+                        node = None
+                if node is None:
+                    # the values should be unicode. If they are not the we at
+                    # least try to make one. This is ok for ascii stirngs and
+                    # breaks on every encoded string. Just like it should.
+                    value = unicode(value)
+                    # Temporary fix to avoid webdav server confusion. When the
+                    # value starts with a '<' the server does some magic. Avoid
+                    # this by adding a magic marker before the actual value.
+                    if (value.startswith('<')
+                        or value.startswith(XML_PREFIX_MARKER)):
+                        value = XML_PREFIX_MARKER + value
+                    node = make_element(namespace, name)
+                    node.text = value
                 set_properties.append(node)
 
         # NOTE: set_properties and delete_properties can't be both empty
