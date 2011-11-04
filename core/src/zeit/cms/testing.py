@@ -8,6 +8,7 @@ import contextlib
 import copy
 import gocept.jslint
 import gocept.selenium.ztk
+import gocept.testing.assertion
 import inspect
 import logging
 import mock
@@ -397,25 +398,14 @@ def site(root):
     zope.site.hooks.setSite(old_site)
 
 
-class BrowserAssertions(object):
+class BrowserAssertions(gocept.testing.assertion.Ellipsis):
 
+    # XXX backwards-compat method signature for existing tests, should probably
+    # be removed at some point
     def assert_ellipsis(self, want, got=None):
-        import difflib
-        import doctest
         if got is None:
             got = self.browser.contents
-        # normalize whitespace
-        norm_want = ' '.join(want.split())
-        norm_got = ' '.join(got.split())
-        if doctest._ellipsis_match(norm_want, norm_got):
-            return True
-        # Report ndiff
-        engine = difflib.Differ(charjunk=difflib.IS_CHARACTER_JUNK)
-        diff = list(engine.compare(want.splitlines(True),
-                                   got.splitlines(True)))
-        kind = 'ndiff with -expected +actual'
-        diff = [line.rstrip() + '\n' for line in diff]
-        self.fail('Differences (%s):\n' % kind + ''.join(diff))
+        self.assertEllipsis(want, got)
 
     def assert_json(self, want, got=None):
         import simplejson
