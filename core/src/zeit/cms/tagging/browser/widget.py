@@ -29,7 +29,7 @@ class Widget(grokcore.component.MultiAdapter,
         contents = []
 
         contents.append(self._div(
-            'update', '<button href="#update_tags">Update tags</button>',
+            'update', '<a href="#update_tags">Update tags</a>',
             id="{0}.update".format(self.name)))
         contents.append(self._div('value', self.renderValue(value)))
         contents.append(self._emptyMarker())
@@ -59,6 +59,5 @@ class UpdateTags(zeit.cms.browser.view.JSON):
         tagger.update()
         return dict(tags=[
             dict(code=tag.code,
-                 label=tag.label,
-                 disabled=tag.disabled)
+                 label=tag.label)
             for tag in tagger.values()])

@@ -15,13 +15,17 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
 
     def setup_tags(self, *codes):
         import stabledict
-        tags = stabledict.StableDict()
+        class Tags(stabledict.StableDict):
+            pass
+        tags = Tags()
         for code in codes:
             tags[code] = self.get_tag(code)
         patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
         self.addCleanup(patcher.stop)
-        tagger = patcher.start()
-        tagger.return_value = tags
+        self.tagger = patcher.start()
+        self.tagger.return_value = tags
+        tags.updateOrder = mock.Mock()
+        tags.update = mock.Mock()
         return tags
 
     def open_content(self):
@@ -43,7 +47,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
         s.assertTextPresent('t2*t3*t1*t4')
 
     def test_sorted_tags_should_be_saved(self):
-        tags = self.setup_tags('t1', 't2', 't3', 't4')
+        self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
         s.dragAndDropToObject(
@@ -51,19 +55,18 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
             "xpath=//li[contains(., 't3')]")
         s.assertTextPresent('t2*t3*t1*t4')
         s.clickAndWait('name=form.actions.apply')
-        self.assertEqual(4, tags['t2'].weight)
-        self.assertEqual(3, tags['t3'].weight)
-        self.assertEqual(2, tags['t1'].weight)
-        self.assertEqual(1, tags['t4'].weight)
+        self.assertEqual(
+            ['t2', 't3', 't1', 't4'],
+            list(self.tagger().updateOrder.call_args[0][0]))
 
     def test_unchecked_tags_should_be_disabled(self):
-        tags = self.setup_tags('t1', 't2', 't3', 't4')
+        self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
         s.click("xpath=//li/label[contains(., 't1')]")
         s.clickAndWait('name=form.actions.apply')
-        self.assertTrue(tags['t1'].disabled)
-        self.assertFalse(tags['t2'].disabled)
+        self.assertNotIn('t1', self.tagger())
+        self.assertIn('t2', self.tagger())
 
     def test_view_should_not_break_without_tagger(self):
         self.open_content()
@@ -74,24 +77,15 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase):
         self.open_content()
         s = self.selenium
         tags['t1'] = self.get_tag('t1')
-        s.clickAndWait('css=button[href="#update_tags"]')
+        s.click('css=a[href="#update_tags"]')
         s.waitForTextPresent('t1')
-
-    def test_update_should_honour_disabled_tags(self):
-        tags = self.setup_tags()
-        self.open_content()
-        s = self.selenium
-        tags['t1'] = self.get_tag('t1')
-        tags['t1'].disabled = True
-        s.clickAndWait('css=button[href="#update_tags"]')
-        s.waitForElementPresent('id=form.keywords.0')
-        s.assertNotChecked('id=form.keywords.0')
+        self.assertTrue(self.tagger().update.called)
 
     def test_save_should_work_after_update(self):
-        tags = self.setup_tags('t1', 't2', 't3', 't4')
+        self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.clickAndWait('css=button[href="#update_tags"]')
+        s.click('css=a[href="#update_tags"]')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
         s.assertChecked('id=form.keywords.0')
