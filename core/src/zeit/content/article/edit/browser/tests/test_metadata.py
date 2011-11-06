@@ -4,6 +4,7 @@
 
 import mock
 import unittest2
+import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing
 
@@ -176,41 +177,22 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.assert_widget_text('assets.related', '*testcontent*')
 
 
-class KeywordTest(zeit.content.article.testing.SeleniumTestCase):
-
-    def get_tag(self, code, weight):
-        from zeit.cms.tagging.tag import Tag
-        tag = Tag(code)
-        tag.disabled = False
-        tag.weight = weight
-        return tag
-
-    def setup_tags(self, *codes):
-        import zeit.cms.tagging.testing
-        tags = zeit.cms.tagging.testing.InMemoryTagger()
-        for weight, code in enumerate(reversed(codes), start=1):
-            tags[code] = self.get_tag(code, weight)
-        patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
-        self.addCleanup(patcher.stop)
-        tagger = patcher.start()
-        tagger.return_value = tags
-        return tags
+class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
+                  zeit.cms.tagging.testing.TaggingHelper):
 
     def test_sorting_should_trigger_write(self):
-        # XXX this test fails because the drag&drop command marked below
-        # doesn't seem to have any effect whatsoever.
         s = self.selenium
-        tags = self.setup_tags('t1', 't2', 't3')
+        self.setup_tags('t1', 't2', 't3')
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s.waitForElementPresent('id=metadata-a.keywords')
         s.waitForTextPresent('t1*t2*t3')
-        height = s.getElementHeight("xpath=//li[contains(., 't1')]")
-        # XXX this seems to do nothing
-        s.dragAndDrop("xpath=//li[contains(., 't1')]", '+0,+%s' % (2 * height))
-        s.waitForTextPresent('t2*t3*t1')
-        self.assertEqual(3, tags['t2'].weight)
-        self.assertEqual(2, tags['t3'].weight)
-        self.assertEqual(1, tags['t1'].weight)
+        s.dragAndDropToObject(
+            "xpath=//li[contains(., 't1')]",
+            "xpath=//li[contains(., 't3')]")
+        s.pause(100)
+        self.assertEqual(
+            ['t2', 't1', 't3'],
+            list(self.tagger().updateOrder.call_args[0][0]))
 
 
 class AuthorTest(zeit.content.article.testing.SeleniumTestCase):
