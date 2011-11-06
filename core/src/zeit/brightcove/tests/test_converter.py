@@ -92,11 +92,6 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = Video.find_by_id('1234')
         self.assertEquals("http://thumbnailurl", video.thumbnail)
 
-    @unittest.skip('not yet')
-    def test_comment_should_honour_default(self):
-        video = Video.find_by_id('1234')
-        self.assertTrue(video.commentsAllowed)
-
 
 class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
 
@@ -188,13 +183,6 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         vids = ('http://xml.zeit.de/video/2010-03/1234',
                 'http://xml.zeit.de/video/2010-03/6789')
         self.assertEquals(vids, tuple(v.uniqueId for v in pls.videos))
-
-    @unittest.skip('not yet')
-    def test_reference_adapter(self):
-        pls = self.repository['playlist-2345']
-        vids = zeit.cms.relation.interfaces.IReferences(pls)
-        self.assertEquals(
-            'http://xml.zeit.de/video/2010-03/1234', vids[0].uniqueId)
 
     def test_title_can_contain_unqouted_amp(self):
         video = Playlist.find_by_id('2345')
