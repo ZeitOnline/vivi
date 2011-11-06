@@ -3,16 +3,12 @@
 
 import zeit.cms.generation
 import zeit.cms.generation.install
-import zeit.brightcove.repository
 
 
 def install(root):
-    zeit.cms.generation.install.installLocalUtility(
-        root,
-        zeit.brightcove.repository.Repository,
-        u'repository-brightcove',
-        zeit.brightcove.interfaces.IRepository)
-
+    # empty install just to have one because it makes live easier later on.
+    pass
 
 def evolve(context):
     zeit.cms.generation.do_evolve(context, install)
+

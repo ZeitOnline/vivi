@@ -10,80 +10,35 @@
     title="Edit brightcove videos"
     />
 
-  <include file="browser.zcml" />
-  <include file="checkout.zcml" />
-
   <utility
     name="zeit.cms/brightcove"
     provides="zope.app.generations.interfaces.ISchemaManager"
     component=".generation.manager"
     />
 
-  <class class=".repository.Repository">
-    <require
-      interface=".interfaces.IRepository"
-      permission="zope.View"
-      />
-  </class>
-
-  <class class=".content.Video">
-    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require
-      interface=".interfaces.IVideo"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IVideo"
-      permission="zeit.brightcove.video.Edit"
-      />
-  </class>
-
-  <class class=".content.Playlist">
-    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
-    <require
-      interface=".interfaces.IPlaylist"
-      permission="zope.View"
-      />
-  </class>
-
   <utility
     provides="zeit.brightcove.interfaces.IAPIConnection"
     factory=".connection.connection_factory"
     />
 
+  <subscriber
+    for="zeit.content.video.interfaces.IVideo
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".converter.update_brightcove" />
 
-  <utility
-    component=".interfaces.brightcoveSource"
-    name="brightcove-content"
-    />
+  <subscriber
+    for="zeit.content.video.interfaces.IPlaylist
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".converter.update_brightcove" />
 
-  <utility
-    component=".interfaces.videoSource"
-    name="brightcove-videos"
-    />
+  <subscriber
+    for="zeit.content.video.interfaces.IVideo
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".converter.publish_on_checkin" />
 
-  <interface
-    interface=".interfaces.IVideoAsset"
-    type="zeit.cms.asset.interfaces.IAssetInterface"
-    />
-  <class class=".asset.VideoAsset">
-    <require
-      interface=".interfaces.IVideoAsset"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IVideoAsset"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <adapter factory=".asset.XMLReferenceUpdater" name="audio_video"/>
-
-
-  <adapter factory=".integration.SemanticChange" trusted="yes" />
-  <class class=".integration.SemanticChange">
-    <require interface="zeit.cms.content.interfaces.ISemanticChange"
-             permission="zope.View" />
-  </class>
+  <subscriber
+    for="zeit.content.video.interfaces.IPlaylist
+         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
+    handler=".converter.publish_on_checkin" />
 
 </configure>
