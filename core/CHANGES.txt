@@ -4,7 +4,8 @@ zeit.content.cp changes
 0.43.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Accomodated article to cope for the changed videos: videos are now full CMS
+  objects and moved to zeit.content.video (for #8996)
 
 
 0.43.3 (2011-06-23)

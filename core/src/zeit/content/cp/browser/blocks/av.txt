@@ -12,6 +12,23 @@ Video blocks
 >>> browser.open('informatives/@@landing-zone-drop-module'
 ...              '?block_type=video')
 
+
+Create a video:
+
+>>> from zeit.content.video.video import Video
+>>> import datetime
+>>> import pytz
+>>> import zeit.cms.repository.interfaces
+>>> import zeit.cms.testing
+>>> import zope.component
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     with zeit.cms.testing.interaction():
+...         repository = zope.component.getUtility(
+...             zeit.cms.repository.interfaces.IRepository)
+...         video = Video()
+...         video.expires = datetime.datetime(2009, 5, 5, tzinfo=pytz.UTC)
+...         repository['video'] = video
+
 Editing the block
 -----------------
 
@@ -45,17 +62,17 @@ Editing the block
 The video block also supports dropping of videos:
 
 >>> edit_form_url = browser.url
->>> browser.open('@@drop?uniqueId=http://video.zeit.de/video/1234')
+>>> browser.open('@@drop?uniqueId=http://xml.zeit.de/video')
 >>> import pprint
->>> import simplejson
->>> pprint.pprint(simplejson.loads(browser.contents))
+>>> import json
+>>> pprint.pprint(json.loads(browser.contents))
 {u'signals': [{u'args': [u'<GUID>',
                        u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/666b0a7d-3020-475c-b17d-b82a895e74de/@@contents'],
               u'name': u'reload',
               u'when': None}]}
 >>> browser.open(edit_form_url)
 >>> browser.getControl('Media Id').value
-'1234'
+'video'
 >>> browser.getControl('Format').displayValue
 ['small']
 >>> browser.getControl('Expiration date').value
@@ -64,18 +81,25 @@ The video block also supports dropping of videos:
 ['Einzelvideo']
 
 
-The video block also supports dropping of playlists; expiration date and player
-are updated automatically:
+The video block also supports dropping of playlists.
 
->>> browser.open('@@drop?uniqueId=http://video.zeit.de/playlist/2345')
->>> pprint.pprint(simplejson.loads(browser.contents))
+>>> from zeit.content.video.playlist import Playlist
+>>> with zeit.cms.testing.site(getRootFolder()):
+...     with zeit.cms.testing.interaction():
+...         repository['pls'] = Playlist()
+
+
+Expiration date and player are updated automatically:
+
+>>> browser.open('@@drop?uniqueId=http://xml.zeit.de/pls')
+>>> pprint.pprint(json.loads(browser.contents))
 {u'signals': [{u'args': [u'<GUID>',
                        u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/03ffb451-4719-419a-863a-2481451bf6be/@@contents'],
               u'name': u'reload',
               u'when': None}]}
 >>> browser.open(edit_form_url)
 >>> browser.getControl('Media Id').value
-'2345'
+'pls'
 >>> browser.getControl('Format').displayValue
 ['small']
 >>> browser.getControl('Expiration date').value
@@ -101,8 +125,7 @@ Audio blocks
 >>> browser.open('informatives/@@landing-zone-drop-module'
 ...              '?block_type=audio')
 
-Editing the block
------------------
+
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
@@ -134,5 +157,5 @@ XML of an audio/video block
   <audio audioID="98765" format="large"/>
 </container>
 <container cp:type="video" module="video" cp:__name__="<GUID>">
-  <video videoID="2345" player="pls" expires="" format="small"/>
+  <video videoID="pls" player="pls" expires="" format="small"/>
 </container>...

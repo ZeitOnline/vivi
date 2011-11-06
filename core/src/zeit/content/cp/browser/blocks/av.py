@@ -2,13 +2,13 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.brightcove.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
-import zope.lifecycleevent
+import zeit.content.video.interfaces
 import zeit.edit.browser.view
 import zope.formlib.form
+import zope.lifecycleevent
 
 
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
@@ -32,12 +32,15 @@ class DropVideo(zeit.edit.browser.view.Action):
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        if not zeit.brightcove.interfaces.IBrightcoveContent.providedBy(
+        if not zeit.content.video.interfaces.IVideoContent.providedBy(
             content):
             raise ValueError(
                 "Only videos and playlists can be dropped on a video block.")
-        self.context.id = unicode(content.id)
-        if zeit.brightcove.interfaces.IVideo.providedBy(content):
+        # There is the assumption that the __name__ is unique for all videos
+        # and playlists. This is true for the current brightcove implementation
+        # but might change at some point (unlikely though).
+        self.context.id = content.__name__
+        if zeit.content.video.interfaces.IVideo.providedBy(content):
             self.context.player = u'vid'
             self.context.expires = content.expires
         else:

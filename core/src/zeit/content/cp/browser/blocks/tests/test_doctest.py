@@ -3,8 +3,6 @@
 
 import transaction
 import unittest
-import zeit.brightcove.interfaces
-import zeit.brightcove.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -26,44 +24,11 @@ def create_content(root):
             repository[name] = c
 
 
-CPBrightcoveZCMLLLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting-av.zcml',
-    product_config=(zeit.cms.testing.cms_product_config +
-                    zeit.brightcove.testing.product_config +
-                    zeit.content.cp.testing.product_config +
-                    zeit.solr.testing.product_config))
-
-
-class CPBrightcoveLayer(zeit.brightcove.testing.BrightcoveHTTPLayer,
-                        CPBrightcoveZCMLLLayer,
-                        zeit.solr.testing.SolrMockLayerBase):
-
-    @classmethod
-    def setUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        root = CPBrightcoveZCMLLLayer.setup.getRootFolder()
-        with zeit.cms.testing.site(root):
-            repository = zope.component.getUtility(
-                zeit.brightcove.interfaces.IRepository)
-            repository.update_from_brightcove()
-        transaction.commit()
-
-    @classmethod
-    def testTearDown(cls):
-        pass
-
-
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.content.cp.testing.FunctionalDocFileSuite(
         'autopilot.txt',
+        'av.txt',
         'cpextra.txt',
         'fullgraphical.txt',
         'quiz.txt',
@@ -74,11 +39,6 @@ def test_suite():
         'xml.txt',
         package='zeit.content.cp.browser.blocks',
         ))
-    av_test = zeit.content.cp.testing.FunctionalDocFileSuite(
-        'av.txt',
-        package='zeit.content.cp.browser.blocks',
-        layer=CPBrightcoveLayer)
-    suite.addTest(av_test)
     rss_test = zeit.content.cp.testing.FunctionalDocFileSuite(
         'rss.txt',
         package='zeit.content.cp.browser.blocks',
