@@ -26,4 +26,3 @@ class TaggingHelper(object):
         tags.updateOrder = mock.Mock()
         tags.update = mock.Mock()
         return tags
-
