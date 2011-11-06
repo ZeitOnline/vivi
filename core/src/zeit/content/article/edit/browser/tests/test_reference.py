@@ -295,14 +295,22 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
 class VideoTest(GalleryTest):
 
-    layer = zeit.content.article.testing.ArticleBrightcoveLayer
     expected_type = 'video'
 
     def setup_content(self):
-        self.content_id = 'http://video.zeit.de/video/1234'
+        import zope.component
+        import zeit.cms.repository.interfaces
+        from zeit.content.video.video import Video
+        with zeit.cms.testing.site(self.layer.setup.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                repository = zope.component.getUtility(
+                    zeit.cms.repository.interfaces.IRepository)
+                repository['video'] = Video()
+                repository['video_2'] = Video()
+        self.content_id = repository['video'].uniqueId
 
     def test_layout_should_be_editable(self):
-        article = self.get_article(with_empty_block=True)
+        self.get_article(with_empty_block=True)
         self.browser.open(self.contents_url)
         self.browser.getLink('Edit').click()
         self.assertEqual(
@@ -317,16 +325,18 @@ class VideoTest(GalleryTest):
             """...<div ...class="large ...""")
 
     def test_two_videos_should_be_editable(self):
-        article = self.get_article(with_empty_block=True)
+        self.setup_content()
+        self.get_article(with_empty_block=True)
         self.browser.open(self.contents_url)
         self.browser.getLink('Edit').click()
         self.browser.getControl('Video', index=0).value = (
-            'http://video.zeit.de/video/1234')
+            'http://xml.zeit.de/video')
         self.browser.getControl('Video 2').value = (
-            'http://video.zeit.de/video/6789')
+            'http://xml.zeit.de/video_2')
         self.browser.getControl('Apply').click()
         self.assert_ellipsis("<...self.close()...")
         self.browser.open(self.contents_url)
-        self.assert_ellipsis(
-            """...href="http://video.zeit.de/video/1234"...
-               ...href="http://video.zeit.de/video/6789"...""")
+        self.assert_ellipsis("""...
+          href="http://localhost:8080/++skin++vivi/repository/video"...
+          href="http://localhost:8080/++skin++vivi/repository/video_2"...
+                             """)

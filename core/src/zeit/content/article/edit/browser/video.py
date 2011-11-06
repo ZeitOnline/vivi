@@ -27,7 +27,8 @@ class SetVideo(zeit.edit.browser.view.Action):
 class EditVideo(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IVideo)
+        zeit.content.article.edit.interfaces.IVideo).select(
+            'video', 'video_2', 'layout')
     undo_description = _('edit video block')
 
 

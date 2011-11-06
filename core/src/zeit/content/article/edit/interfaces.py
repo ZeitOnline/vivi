@@ -4,7 +4,7 @@
 from zeit.content.article.i18n import MessageFactory as _
 import stabledict
 import zc.sourcefactory.basic
-import zeit.brightcove.interfaces
+import zeit.content.video.interfaces
 import zeit.cms.content.field
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
@@ -82,12 +82,12 @@ class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
     video = zope.schema.Choice(
         title=_('Video'),
         required=False,
-        source=zeit.brightcove.interfaces.brightcoveSource)
+        source=zeit.content.video.interfaces.videoOrPlaylistSource)
 
     video_2 = zope.schema.Choice(
         title=_('Video 2'),
         required=False,
-        source=zeit.brightcove.interfaces.brightcoveSource)
+        source=zeit.content.video.interfaces.videoOrPlaylistSource)
 
     layout = zope.schema.Choice(
         title=_('Layout'),

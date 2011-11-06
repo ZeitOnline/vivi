@@ -5,7 +5,8 @@ from zeit.cms.i18n import MessageFactory as _
 import gocept.lxml.interfaces
 import grokcore.component
 import lxml.objectify
-import zeit.brightcove.asset
+import zeit.content.video.asset
+import zeit.content.video.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
@@ -51,8 +52,8 @@ class Video(zeit.edit.block.SimpleElement):
         else:
             self.xml.set(attribute, video.uniqueId)
         self.xml.set(
-            'expires', zeit.brightcove.asset.get_expires(self.video,
-                                                         self.video_2))
+            'expires', zeit.content.video.asset.get_expires(self.video,
+                                                            self.video_2))
 
     def _validate(self, field_name, value):
         zeit.content.article.edit.interfaces.IVideo[field_name].bind(
@@ -66,7 +67,7 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.brightcove.interfaces.IBrightcoveContent)
+                            zeit.content.video.interfaces.IVideoContent)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
 def factor_image_block_from_image(body, context):
     block = Factory(body)()

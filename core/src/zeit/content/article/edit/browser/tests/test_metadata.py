@@ -189,7 +189,7 @@ class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
         s.dragAndDropToObject(
             "xpath=//li[contains(., 't1')]",
             "xpath=//li[contains(., 't3')]")
-        s.pause(100)
+        s.pause(200)
         self.assertEqual(
             ['t2', 't1', 't3'],
             list(self.tagger().updateOrder.call_args[0][0]))
