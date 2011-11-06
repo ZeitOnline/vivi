@@ -1,24 +1,29 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import UserDict
+import mock
 
+class TaggingHelper(object):
+    """Mixin for tests which need some tagging infrastrucutre."""
 
-class InMemoryTagger(UserDict.DictMixin):
+    def get_tag(self, code):
+        tag = mock.Mock()
+        tag.code = tag.label = code
+        tag.disabled = False
+        return tag
 
-    # XXX This is used as an adapter in at least one place, and instantiated
-    # without context elsewhere. Should be done more cleanly at some point.
-    def __init__(self, context=None):
-        self.data = {}
+    def setup_tags(self, *codes):
+        import stabledict
+        class Tags(stabledict.StableDict):
+            pass
+        tags = Tags()
+        for code in codes:
+            tags[code] = self.get_tag(code)
+        patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
+        self.addCleanup(patcher.stop)
+        self.tagger = patcher.start()
+        self.tagger.return_value = tags
+        tags.updateOrder = mock.Mock()
+        tags.update = mock.Mock()
+        return tags
 
-    def __getitem__(self, key):
-        return self.data[key]
-
-    def __setitem__(self, key, value):
-        self.data[key] = value
-
-    def keys(self):
-        return [tag.code for tag in self.values()]
-
-    def values(self):
-        return sorted(self.data.values(), key=lambda x: x.weight, reverse=True)

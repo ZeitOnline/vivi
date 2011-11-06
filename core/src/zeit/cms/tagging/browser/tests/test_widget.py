@@ -3,30 +3,11 @@
 
 import mock
 import zeit.cms.testing
+import zeit.cms.tagging.testing
 
 
-class TestWidget(zeit.cms.testing.SeleniumTestCase):
-
-    def get_tag(self, code):
-        tag = mock.Mock()
-        tag.code = tag.label = code
-        tag.disabled = False
-        return tag
-
-    def setup_tags(self, *codes):
-        import stabledict
-        class Tags(stabledict.StableDict):
-            pass
-        tags = Tags()
-        for code in codes:
-            tags[code] = self.get_tag(code)
-        patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')
-        self.addCleanup(patcher.stop)
-        self.tagger = patcher.start()
-        self.tagger.return_value = tags
-        tags.updateOrder = mock.Mock()
-        tags.update = mock.Mock()
-        return tags
+class TestWidget(zeit.cms.testing.SeleniumTestCase,
+                 zeit.cms.tagging.testing.TaggingHelper):
 
     def open_content(self):
         self.open('/repository/testcontent/@@checkout')
