@@ -6,10 +6,22 @@ import grokcore.component
 import lxml.objectify
 import pkg_resources
 import zeit.cms.content.dav
+import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
+import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.content.video.interfaces
 import zope.interface
+
+
+class EmptyStringStructure(zeit.cms.content.property.Structure):
+
+    # XXX Should this behaviour be built into the super-class? (re #9833)
+
+    def __set__(self, instance, value):
+        if value is None:
+            value = ''
+        super(EmptyStringStructure, self).__set__(instance, value)
 
 
 class Video(zeit.cms.content.metadata.CommonMetadata):
@@ -34,6 +46,10 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     @property
     def teaserTitle(self):
         return self.title
+
+    subtitle = EmptyStringStructure(
+        '.body.subtitle',
+        zeit.cms.content.interfaces.ICommonMetadata['subtitle'])
 
 
 class VideoType(zeit.cms.type.XMLContentTypeDeclaration):

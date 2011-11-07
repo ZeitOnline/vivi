@@ -4,6 +4,17 @@
 import zeit.content.video.testing
 
 
+class TestVideo(zeit.content.video.testing.TestCase):
+
+    def test_videos_should_contain_subtitle_node_in_xml_even_if_none(self):
+        factory = zeit.content.video.testing.video_factory(self)
+        video = factory.next()
+        video.subtitle = None  # set explicitly
+        video = factory.next()  # in repository
+        self.assertEqual(
+            u'', video.xml['body']['subtitle'])
+
+
 class TestReference(zeit.content.video.testing.TestCase):
 
     def test_still_should_be_contained_in_xml_reference(self):
