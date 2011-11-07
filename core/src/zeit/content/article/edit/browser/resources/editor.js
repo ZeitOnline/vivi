@@ -396,6 +396,23 @@ zeit.content.article.Editable = gocept.Class.extend({
             range.startOffset === 0) {
             direction = 'previousSibling';
             cursor_at_end = true;
+        } else if (
+            container.nodeType == container.TEXT_NODE &&
+            container.parentNode.tagName == 'DIV') {
+            /*
+             * Currently contenteditable seems to be buggy in firefox 4.
+             * While a new paragraph is created every time the return key has
+             * been pressed inside a paragraph, there will be just a textnode as
+             * direct child of the contenteditable, when hitting the return key
+             * within any other tag (e.g. h3, li...). The following workaround
+             * will wrap a p around every textnode, which is the direct child of
+             * the contenteditable.
+             */
+            self.command('formatBlock', 'p');
+            var sibling = container.parentNode.nextSibling;
+            if (sibling.nodeName == 'BR') {
+                jQuery(sibling).remove(); // Get rid of superfluous <br/>.
+            }
         }
         if (direction !== null) {
             var block = self.block;
