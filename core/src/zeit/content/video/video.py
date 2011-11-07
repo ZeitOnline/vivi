@@ -31,6 +31,10 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     # to avoid a package dependency of zeit.content.video on the interface to
     # a particular external video service.
 
+    @property
+    def teaserTitle(self):
+        return self.title
+
 
 class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
 
