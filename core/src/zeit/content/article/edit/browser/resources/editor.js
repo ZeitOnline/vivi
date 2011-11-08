@@ -537,7 +537,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
         var href = '';
         if (link) {
-            href = container.href;
+            href = link.getAttribute('href') || '';
         }
         href = prompt("Link", href);
         if (href) {
