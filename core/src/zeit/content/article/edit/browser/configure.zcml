@@ -6,6 +6,14 @@
 
   <include file="form.zcml" />
 
+  <adapter
+      for="zope.schema.ValidationError
+           zeit.cms.browser.interfaces.ICMSLayer"
+      provides="zope.formlib.interfaces.IWidgetInputErrorView"
+      factory="zope.formlib.exception.WidgetInputErrorView"
+      permission="zope.Public"
+      />
+
   <class class="zeit.content.article.article.Article">
     <implements interface="zeit.edit.interfaces.IEditable" />
   </class>

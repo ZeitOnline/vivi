@@ -22,9 +22,6 @@
 
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
-  <includeOverrides
-      package="zeit.content.article.edit.browser"
-      file="overrides.zcml" />
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
