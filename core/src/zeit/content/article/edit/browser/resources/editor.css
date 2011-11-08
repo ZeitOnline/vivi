@@ -140,6 +140,56 @@
   background: -moz-linear-gradient(center top , #FFFFFF, #EDEDED) repeat scroll 0 0 transparent;
 }
 
+.zeit-edit-interfaces-IFoldable .edit-bar a.fold-link:after {
+  color: grey;
+  font-size: 9px;
+  padding-left: 10px;
+  padding-top: 0;
+  position: absolute;
+  top: 0;
+  vertical-align: top;
+}
+
+.type-portraitbox .edit-bar a.fold-link:after {
+  content: "Portraitbox";
+}
+
+.type-teaserlist .edit-bar a.fold-link:after {
+  content: "Teaserlist";
+}
+
+.type-raw .edit-bar a.fold-link:after {
+  content: "Rawxml";
+}
+
+.type-relateds .edit-bar a.fold-link:after {
+  content: "Related list";
+}
+
+.type-infobox .edit-bar a.fold-link:after {
+  content: "Infobox";
+}
+
+.type-image .edit-bar a.fold-link:after {
+  content: "Image";
+}
+
+.type-gallery .edit-bar a.fold-link:after {
+  content: "Gallary";
+}
+
+.type-audio .edit-bar a.fold-link:after {
+  content: "Audio";
+}
+
+.type-citation .edit-bar a.fold-link:after {
+  content: "Citation";
+}
+
+.type-video .edit-bar a.fold-link:after {
+  content: "Video";
+}
+
 .article-text {
   margin: 10px;
 }
