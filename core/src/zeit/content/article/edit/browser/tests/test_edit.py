@@ -231,6 +231,17 @@ class TestTextEditing(
         s.dragAndDrop('css=.block.type-p .dragger',
                       '0,{0}'.format(height*2))
 
+    def test_newline_should_create_paragraph(self):
+        s = self.selenium
+        s.waitForElementPresent('link=Create paragraph')
+        self.create()
+        s.typeKeys('css=.block.type-p .editable p', 'First paragraph.')
+        s.click('xpath=//a[@href="formatBlock/h3"]')
+        s.keyPress('css=.block.type-p .editable h3', '13')
+        s.typeKeys('css=.block.type-p .editable h3', 'Second paragraph.')
+        s.waitForElementPresent('css=.editable p:contains(Second paragraph)')
+
+
     def _skip_test_action_links_should_be_hidden_while_editing(self):
         s = self.selenium
         s.waitForElementPresent('link=Create paragraph')
