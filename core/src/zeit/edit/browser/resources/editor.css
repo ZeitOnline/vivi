@@ -319,6 +319,8 @@ div div.landing-zone:first-child {
   background-image: url('edit.png');
   background-size: 80%;
   padding-right: 0.5em;
+  position:absolute;
+  right:20px;
 }
 
 .edit-bar > .edit-object-link {
