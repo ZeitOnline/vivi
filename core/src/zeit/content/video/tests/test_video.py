@@ -31,7 +31,7 @@ class TestReference(zeit.content.video.testing.TestCase):
             '<block xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"'
             ' xmlns:py="http://codespeak.net/lxml/objectify/pytype"/>')
         updater.update(node)
-        self.assertEqual('http://stillurl', node['image'].get('src'))
+        self.assertEqual('http://stillurl', node['video-still'].get('src'))
 
     def test_thumbnail_should_be_contained_in_xml_reference(self):
         import lxml.etree
