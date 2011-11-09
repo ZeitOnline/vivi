@@ -468,8 +468,8 @@ div div.landing-zone:first-child {
 }
 
 #edit-form-assets .inline-form .widget-outer div.landing-zone,
-#misc-layout\.layout {
-  width: 626px;
+#misc-layout\.layout,
+.zeit-edit-interfaces-IElement .landing-zone {
   background: white;
   border: 1px dotted green;
   -moz-border-radius: 5px;
@@ -477,7 +477,6 @@ div div.landing-zone:first-child {
 }
 
 #edit-form-assets .inline-form .widget-outer div.droppable-active {
-  width: 626px;
   background: -moz-linear-gradient(center top , #FFF, #EFE) repeat scroll 0 0 transparent;
   border: 1px solid #0A0;
   -moz-border-radius: 5px;
@@ -534,6 +533,11 @@ div div.landing-zone:first-child {
 #misc-layout\.layout {
     width:98%;
     padding:1em;
+}
+
+.zeit-edit-interfaces-IElement .landing-zone,
+.zeit-edit-interfaces-IElement .edit-bar ~div {
+  margin:0px 10px !important;
 }
 
 #edit-form-assets .inline-form .widget-outer div.label{
