@@ -528,8 +528,9 @@ iframe {
 .wide-widgets.column-left div:nth-child(10),
 .wide-widgets.column-left div:nth-child(12),
 .wide-widgets.column-left div:nth-child(14) {
-    width:150px;
+    width:30%;
     float:left;
+    clear:both;
 }
 
 .wide-widgets.column-left div:nth-child(9),
@@ -538,5 +539,5 @@ iframe {
 .wide-widgets.column-left div:nth-child(15) {
     margin-right:13px;
     float:right;
-    width:450px;
+    width:60%;
 }
