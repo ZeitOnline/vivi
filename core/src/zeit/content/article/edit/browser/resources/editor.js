@@ -411,11 +411,25 @@ zeit.content.article.Editable = gocept.Class.extend({
              * within any other tag (e.g. h3, li...). The following workaround
              * will wrap a p around every textnode, which is the direct child of
              * the contenteditable.
+             *
+             * Sometimes another paragraph is added accidentally, when pressing
+             * the up and down keys within an empty p tag, so we have to get rid
+             * of the previous and next empty paragraph respectively.
              */
             self.command('formatBlock', 'p');
-            var sibling = container.parentNode.nextSibling;
-            if (sibling.nodeName == 'BR') {
-                jQuery(sibling).remove(); // Get rid of superfluous <br/>.
+            var next_sibling = container.parentNode.nextSibling;
+            var prev_sibling = container.parentNode.previousSibling;
+            if (next_sibling != null &&
+                next_sibling.nodeName == 'BR') {
+                jQuery(next_sibling).remove(); // Get rid of superfluous <br/>.
+            } else if (
+                next_sibling != null &&
+                next_sibling.nodeName == 'P') {
+                jQuery(next_sibling).remove(); // Get rid of empty <p/>.
+            } else if (
+                prev_sibling != null &&
+                prev_sibling.nodeName == 'P') {
+                jQuery(prev_sibling).remove(); // Get rid of empty <p/>.
             }
         }
         if (direction !== null) {
