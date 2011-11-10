@@ -101,11 +101,7 @@ MochiKit.Signal.connect(
         MochiKit.Async.callLater(0.25, function() {
             form_element.form.reload(); });
 
-        (function($) {
-
-            $('#article-editor-text').countedInput();
-
-        }(jQuery));
+        jQuery('#article-editor-text').countedInput();
     });
 
     (function($) {
