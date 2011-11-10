@@ -215,33 +215,27 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
             'teaserTitle')
 
 
-class LimitedInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
-
-    def __call__(self):
-        max_length = self.context.max_length
-        self.extra = 'data-limit="%s"' % max_length
-        result = [
-            '<span class="charlimit" />%s</span>' % max_length,
-        super(LimitedInputWidget, self).__call__(),
-            ('<script type="text/javascript">'
-             '    jQuery(".charlimit").limitedInput()'
-             '</script>')]
-
-
-        return ''.join(result)
-
-
 class TeaserText(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'teaser-text'
     undo_description = _('edit teaser text')
+    css_class = 'limited-input'
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'teaserText')
-    form_fields['teaserText'].custom_widget = LimitedInputWidget
+
+    def render(self):
+        result = super(TeaserText, self).render()
+        if result:
+            max_length = self.widgets['teaserText'].context.max_length
+            result += (
+                '<script type="text/javascript">'
+                '    jQuery(".limited-input").limitedInput(%s)'
+                '</script>' % max_length)
+        return result
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):

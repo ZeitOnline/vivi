@@ -1,21 +1,25 @@
 (function($){
 
-    $.fn.limitedInput = function() {
+    $.fn.limitedInput = function(l) {
         return this.each(function() {
             var self = $(this);
-            var container = self.parent();
-            var area = $('textarea', container), limit = area.attr("data-limit"), val = area.val().length || 0;
-            $(this).addClass('charlimit').html( (val > 0 ? limit - val : limit) + " Zeichen" );
-            area.bind( "keyup focus blur", function (e) {
-                var l = limit - $(e.target).val().length;
-                if ( l < 21 && l > 10 ) {
-                    self.css( "color", "#900" ).html(l + " Zeichen");
-                } else if( l < 11 ) {
-                    self.css( "color", "#ff0000" ).html(l + " Zeichen");
+            var container = self.find('.widget:first');
+            var area = $('textarea', container),
+                limit = l,
+                val = area.val().length || 0;
+            var span = $('<span />').addClass('charlimit').html(
+                (val > 0 ? limit - val : limit) + " Zeichen");
+            container.prepend(span);
+            area.bind("keyup focus blur", function (e) {
+                var count = l - $(e.target).val().length;
+                if (count < 21 && count > 10) {
+                    span.css("color", "#900").html(count + " Zeichen");
+                } else if (count < 11) {
+                    span.css("color", "#ff0000").html(count + " Zeichen");
                 } else {
-                    self.css( "color", "#777" ).html(l + " Zeichen");
+                    span.css("color", "#777").html(count + " Zeichen");
                 }
-            } );
+            });
         });
 
     };
