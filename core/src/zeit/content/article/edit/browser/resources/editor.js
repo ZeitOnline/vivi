@@ -1,17 +1,16 @@
 (function($){
 
-    $.fn.limitedInput = function(l) {
+    $.fn.limitedInput = function(limit) {
         return this.each(function() {
             var self = $(this);
             var container = self.find('.widget:first');
-            var area = $('textarea', container),
-                limit = l,
-                val = area.val().length || 0;
+            var area = $('textarea', container);
+            var val = area.val().length || 0;
             var span = $('<span />').addClass('charlimit').html(
                 (val > 0 ? limit - val : limit) + " Zeichen");
             container.prepend(span);
             area.bind("keyup focus blur", function (e) {
-                var count = l - $(e.target).val().length;
+                var count = limit - $(e.target).val().length;
                 if (count < 21 && count > 10) {
                     span.css("color", "#900").html(count + " Zeichen");
                 } else if (count < 11) {
