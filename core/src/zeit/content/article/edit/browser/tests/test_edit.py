@@ -271,7 +271,8 @@ class TestTextEditing(
         s.click(p1)
         s.waitForElementPresent('xpath=//*[@contenteditable]')
 
-    def _skip_test_editing_should_end_on_content_drag(self):
+    def test_editing_should_end_on_content_drag(self):
+        self.selenium.windowMaximize()
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
         s.waitForElementPresent('link=Create paragraph')
@@ -285,7 +286,8 @@ class TestTextEditing(
         s.waitForElementPresent('css=.block.type-p.editing')
         time.sleep(0.25)
         # start dragging
-        # XXX dragAndDropToObject has no effect, dragAndDrop freezes browser
+        s.dragAndDrop('css=#breadcrumbs li:last a', '+100,+0')
+        time.sleep(0.25)
         # Saved, no longer ediable
         s.waitForElementNotPresent('css=.block.type-p.editing')
 
