@@ -241,18 +241,12 @@ class TestTextEditing(
         s.typeKeys('css=.block.type-p .editable h3', 'Second paragraph.')
         s.waitForElementPresent('css=.editable p:contains(Second paragraph)')
 
-
-    def _skip_test_action_links_should_be_hidden_while_editing(self):
+    def test_action_links_should_be_hidden_while_editing(self):
         s = self.selenium
         s.waitForElementPresent('link=Create paragraph')
         s.click('link=Create paragraph')
         s.waitForElementPresent('css=.block.type-p')
-        # XXX The delete link is only visible while hovering above the block;
-        # I haven't been able to simulate that with Selenium, though.
-        s.mouseOver('css=.block')
-        s.assertVisible('css=.block a.delete-link')
         s.click('css=.block.type-p .editable')
-        s.mouseOver('css=.block')
         s.waitForNotVisible('css=.block a.delete-link')
 
     def _skip_test_lock_should_always_be_released(self):
