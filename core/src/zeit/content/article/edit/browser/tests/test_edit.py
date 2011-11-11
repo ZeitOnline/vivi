@@ -249,22 +249,6 @@ class TestTextEditing(
         s.click('css=.block.type-p .editable')
         s.waitForNotVisible('css=.block a.delete-link')
 
-    def _skip_test_lock_should_always_be_released(self):
-        # XXX we can't even get a setup with two paragraphs. Sigh.
-        s = self.selenium
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        p1 = 'css=.block.type-p .editable'
-        p2 = 'css=.block.type-p + .landing-zone + .block.type-p .editable'
-        self.create('<p>first</p><p>second</p>')
-        self.save()
-        s.waitForElementPresent(p2)
-        s.click(p1)
-        s.click(p2)
-        self.save()
-        s.click(p1)
-        s.waitForElementPresent('xpath=//*[@contenteditable]')
-
     def test_editing_should_end_on_content_drag(self):
         self.selenium.windowMaximize()
         s = self.selenium
