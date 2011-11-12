@@ -302,15 +302,21 @@ span.charcount {
   right: 150px;
 }
 
-
-/* for the RTE-Toolbar */
-
 #article-editor-text .editing p:last-child,
 #article-editor-text .editing ol:last-child,
 #article-editor-text .editing ul:last-child,
 #article-editor-text .editing h3:last-child {
   min-height: 141px;
   margin-bottom: 0px;
+}
+
+#article-editor-text .editable a {
+  text-decoration: underline;
+  color: blue;
+}
+
+#article-editor-text .editable a.link-edit {
+  background-color: yellow;
 }
 
 #editable-body .block-inner {
@@ -401,6 +407,15 @@ span.charcount {
 .rte-toolbar a.active {
   outline: 1px solid #0A246A;
   background-color: #C2CBE0;
+}
+
+.link_input {
+  background-color: #fff;
+  border-radius: 5px;
+  border: 1px solid #bbb;
+  box-shadow: 5px 5px 10px #666;
+  padding: 1em;
+  position: absolute;
 }
 
 .editable *:empty:before {

@@ -292,6 +292,14 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     init_toolbar: function() {
         var self = this;
+        self.link_input = self.editable.parentNode.insertBefore(
+            DIV({'class': 'link_input hidden'},
+                INPUT({type: 'text', name: 'href', value: ''}),
+                BUTTON({name: 'insert_link_ok',
+                        value: 'method'}, 'Setzen'),
+                BUTTON({name: 'insert_link_cancel',
+                        value: 'method'}, 'Abbrechen')),
+            self.editable);
         self.toolbar = self.editable.parentNode.insertBefore(
             DIV({'class': 'rte-toolbar',
                  'style': 'display: block; opacity: 0'}),
@@ -359,18 +367,25 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     handle_click: function(event) {
         var self = this;
+        var mode, argument;
         self.update_toolbar();
         self.relocate_toolbar();
-        if (event.target().nodeName != 'A') {
+        if (event.target().nodeName == 'A') {
+            mode = event.target().rel;
+            argument = event.target().getAttribute('href');
+        } else if (event.target().nodeName == 'BUTTON') {
+            mode = event.target().value;
+            argument = event.target().name;
+        } else {
             return;
         }
         event.stop();
-        if (event.target().rel == 'command') {
+        if (mode == 'command') {
             event.stop();
-            var action = event.target().getAttribute('href').split('/');
+            var action = argument.split('/');
             self.command(action[0], action[1]);
-        } else if (event.target().rel == 'method') {
-            var method = event.target().getAttribute('href');
+        } else if (mode == 'method') {
+            var method = argument;
             self[method]();
         }
     },
@@ -528,8 +543,8 @@ zeit.content.article.Editable = gocept.Class.extend({
         var range = getSelection().getRangeAt(0);
         if ((range.startContainer.nodeType ==
              range.startContainer.ELEMENT_NODE) &&
-             (range.startContainer == range.endContainer) &&
-             (range.startOffset + 1 == range.endOffset)) {
+            (range.startContainer == range.endContainer) &&
+            (range.startOffset + 1 == range.endOffset)) {
              // There is one single element inside the range, use that.
              container = range.startContainer.childNodes[range.startOffset];
         } else {
@@ -541,21 +556,65 @@ zeit.content.article.Editable = gocept.Class.extend({
     insert_link: function() {
         var self = this;
         var container = self.get_selected_container();
-        var link;
         if (container.nodeName == 'A') {
-            link = container;
+            self.insert_link_node = container;
         } else {
-            link = MochiKit.DOM.getFirstParentByTagAndClassName(
-                container, 'a', null);
+            self.insert_link_node = 
+                MochiKit.DOM.getFirstParentByTagAndClassName(
+                    container, 'a', null);
         }
         var href = '';
-        if (link) {
-            href = link.getAttribute('href') || '';
+        if (self.insert_link_node) {
+            href = self.insert_link_node.getAttribute('href') || '';
+        } else {
+            self.command('createLink', '#');
+            self.insert_link_node = getSelection().focusNode.parentNode;
+            if (self.insert_link_node.nodeName != 'A') {
+                throw new Error(
+                'assertion failed not A: '+ self.insert_link_node.nodName);
+            }
+            self.insert_link_node._just_created = true;
         }
-        href = prompt("Link", href);
-        if (href) {
-            self.command('createLink', href);
+        // TODO: Freeze editor somehow; in callback release it.
+        jQuery(self.insert_link_node).addClass('link-edit')
+        jQuery('input[name=href]', self.link_input).val(href);
+        var line_height = parseInt(
+            jQuery(container).css('line-height').replace('px', ''));
+        var position = jQuery(container).position();
+        jQuery(self.link_input).css('top',
+            (parseInt(position.top) + line_height) + 'px');
+        jQuery(self.link_input).removeClass('hidden');
+        jQuery('input[name=href]', self.link_input).focus();
+    },
+
+    insert_link_ok: function() {
+        var self = this;
+        var href = jQuery('input[name=href]', self.link_input).val();
+        self.insert_link_node.href = href;
+        self._insert_link_finish();
+    },
+
+    insert_link_cancel: function() {
+        var self = this;
+        if (self.insert_link_node._just_created) {
+            while(!isNull(self.insert_link_node.firstChild)) {
+                self.insert_link_node.parentNode.insertBefore(
+                    self.insert_link_node.firstChild,
+                    self.insert_link_node);
+            }
+            jQuery(self.insert_link_node).remove();
+            self.editable.normalize();
         }
+        self._insert_link_finish();
+
+    },
+
+    _insert_link_finish: function() {
+        var self = this;
+        jQuery(self.link_input).addClass('hidden');
+        jQuery(self.insert_link_node).removeClass('link-edit');
+        self.insert_link_node._just_created = false;
+        self.insert_link_node = null;
     },
 
     command: function(command, option) {
@@ -567,7 +626,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             if (window.console) {
                 console.log(e);
             }
-	}
+	    }
         self.editable.focus();
 		self.update_toolbar();
     }
