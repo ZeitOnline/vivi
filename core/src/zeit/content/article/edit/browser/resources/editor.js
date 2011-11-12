@@ -134,6 +134,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         self.block_id = MochiKit.DOM.getFirstParentByTagAndClassName(
             context_element, null, 'block').id;
+        self.locked = false;
         var d = self.editor_active_lock.acquire();
         log('Waiting for lock', self.block_id);
         d.addCallback(function() {
@@ -167,7 +168,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                        e.explicitOriginalTarget, 'div', 'block');
                 var is_in_block = (clicked_on_block == self.block);
                 log("Blur while editing:", is_in_block, self.block_id);
-                if (is_in_block) {
+                if (is_in_block || self.locked) {
                     e.stopPropagation();
                 } else {
                     self.save();
@@ -204,11 +205,14 @@ zeit.content.article.Editable = gocept.Class.extend({
                 }));
             self.fix_html();
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
+            self.init_linkbar();
             self.init_toolbar();
             self.relocate_toolbar(true);
             self.events.push(MochiKit.Signal.connect(
                 window, 'before-content-drag', function() {
-                    self.save();
+                    if (!self.locked) {
+                        self.save();
+                    }
                 }));
         });
     },
@@ -290,16 +294,36 @@ zeit.content.article.Editable = gocept.Class.extend({
         return editable;
     },
 
-    init_toolbar: function() {
+    init_linkbar: function() {
         var self = this;
         self.link_input = self.editable.parentNode.insertBefore(
             DIV({'class': 'link_input hidden'},
                 INPUT({type: 'text', name: 'href', value: ''}),
+                SELECT({name: 'target'},
+                    OPTION({value: ''}, ''),
+                    OPTION({value: '_blank'}, 'Neues Fenster')),
                 BUTTON({name: 'insert_link_ok',
                         value: 'method'}, 'Setzen'),
                 BUTTON({name: 'insert_link_cancel',
                         value: 'method'}, 'Abbrechen')),
             self.editable);
+        self.link_input.dropable = new MochiKit.DragAndDrop.Droppable(
+            self.link_input, {
+                accept: ['content-drag-pane', 'uniqueId'],
+                activeclass: 'droppable-active',
+                hoverclass: 'hover-content',
+                ondrop: function(element, last_active_element, event) {
+                        // One could consider the replace a hack.
+                        jQuery('input[name=href]', self.link_input).val(
+                            element.uniqueId.replace(
+                                'http://xml.zeit.de/',
+                                'http://www.zeit.de/'));
+                }
+            });
+    },
+
+    init_toolbar: function() {
+        var self = this;
         self.toolbar = self.editable.parentNode.insertBefore(
             DIV({'class': 'rte-toolbar',
                  'style': 'display: block; opacity: 0'}),
@@ -480,6 +504,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     fix_html: function() {
         var self = this;
+        self.editable.normalize();
         forEach(
             MochiKit.DOM.getElementsByTagAndClassName(
                 null, null, self.editable),
@@ -553,8 +578,24 @@ zeit.content.article.Editable = gocept.Class.extend({
         return container;
     },
 
+    select_container: function(element) {
+        var self = this;
+        try {
+            var range = getSelection().getRangeAt(0);
+            range.setStartBefore(element);
+            range.setEndAfter(element);
+        } catch(e) {
+            if (window.console) {
+                console.log(e);
+            }
+        }
+    },
+
     insert_link: function() {
         var self = this;
+        if (self.locked) {
+            return;
+        }
         var container = self.get_selected_container();
         if (container.nodeName == 'A') {
             self.insert_link_node = container;
@@ -564,38 +605,46 @@ zeit.content.article.Editable = gocept.Class.extend({
                     container, 'a', null);
         }
         var href = '';
+        var target = '';
         if (self.insert_link_node) {
             href = self.insert_link_node.getAttribute('href') || '';
+            target = self.insert_link_node.getAttribute('target') || '';
         } else {
-            self.command('createLink', '#');
-            self.insert_link_node = getSelection().focusNode.parentNode;
-            if (self.insert_link_node.nodeName != 'A') {
-                throw new Error(
-                'assertion failed not A: '+ self.insert_link_node.nodName);
-            }
+            self.command('createLink', '#article-editor-create-link');
+            self.insert_link_node = jQuery(
+                'a[href="#article-editor-create-link"]', self.editable)[0];
             self.insert_link_node._just_created = true;
         }
-        // TODO: Freeze editor somehow; in callback release it.
         jQuery(self.insert_link_node).addClass('link-edit')
-        jQuery('input[name=href]', self.link_input).val(href);
+        jQuery('*[name=href]', self.link_input).val(href);
+        jQuery('*[name=target]', self.link_input).val(target);
         var line_height = parseInt(
-            jQuery(container).css('line-height').replace('px', ''));
-        var position = jQuery(container).position();
+            jQuery(self.insert_link_node).css('line-height').replace('px', ''));
+        var position = jQuery(self.insert_link_node).position();
         jQuery(self.link_input).css('top',
             (parseInt(position.top) + line_height) + 'px');
         jQuery(self.link_input).removeClass('hidden');
-        jQuery('input[name=href]', self.link_input).focus();
+        jQuery('*[name=href]', self.link_input).focus();
+        self.locked = true;
     },
 
     insert_link_ok: function() {
         var self = this;
-        var href = jQuery('input[name=href]', self.link_input).val();
+        var href = jQuery('*[name=href]', self.link_input).val();
+        var target = jQuery('*[name=target]', self.link_input).val();
         self.insert_link_node.href = href;
+        if (target) {
+            self.insert_link_node.target = target;
+        } else {
+            self.insert_link_node.removeAttribute('target');
+        }
+        self.select_container(self.insert_link_node);
         self._insert_link_finish();
     },
 
     insert_link_cancel: function() {
         var self = this;
+        self.select_container(self.insert_link_node);
         if (self.insert_link_node._just_created) {
             while(!isNull(self.insert_link_node.firstChild)) {
                 self.insert_link_node.parentNode.insertBefore(
@@ -603,10 +652,8 @@ zeit.content.article.Editable = gocept.Class.extend({
                     self.insert_link_node);
             }
             jQuery(self.insert_link_node).remove();
-            self.editable.normalize();
         }
         self._insert_link_finish();
-
     },
 
     _insert_link_finish: function() {
@@ -615,10 +662,15 @@ zeit.content.article.Editable = gocept.Class.extend({
         jQuery(self.insert_link_node).removeClass('link-edit');
         self.insert_link_node._just_created = false;
         self.insert_link_node = null;
+        self.locked = false;
+        self.editable.focus();
     },
 
     command: function(command, option) {
         var self = this;
+        if (self.locked) {
+            return;
+        }
         log("Executing", command, option);
         try {
             document.execCommand(command, false, option);

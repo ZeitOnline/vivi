@@ -414,8 +414,15 @@ span.charcount {
   border-radius: 5px;
   border: 1px solid #bbb;
   box-shadow: 5px 5px 10px #666;
+  left: 8%;
   padding: 1em;
   position: absolute;
+  width: 80%;
+}
+
+.link_input input[name=href] {
+  margin-bottom: 0.5em;
+  width: 100%;
 }
 
 .editable *:empty:before {
