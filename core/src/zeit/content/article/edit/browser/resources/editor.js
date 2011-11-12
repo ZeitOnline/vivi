@@ -542,6 +542,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         while (self.events.length) {
             MochiKit.Signal.disconnect(self.events.pop());
         }
+        self.link_input.dropable.destroy();
         log('disconnected event handlers');
         var ident = MochiKit.Signal.connect(
             zeit.edit.editor, 'after-reload', function() {

@@ -164,34 +164,6 @@ class TestTextEditing(
         s.fireEvent('css=.block.type-p .editable', 'keyup')
         s.assertElementNotPresent('css=.block.type-p h4[style]')
 
-    def test_links_should_be_addable(self):
-        s = self.selenium
-        self.create('<p>I want to link something</p>')
-        s.getEval("""(function(s) {
-            var p = s.browserbot.findElement('css=.block.type-p .editable p');
-            var range = window.getSelection().getRangeAt(0);
-            range.setStart(p.firstChild, 10);
-            range.setEnd(p.firstChild, 14);
-        })(this);""")
-        s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
-        s.answerOnNextPrompt('http://example.com/')
-        s.click('xpath=//a[@href="insert_link"]')
-        s.waitForElementPresent('xpath=//a[@href="http://example.com/"]')
-
-    def test_links_should_be_removable(self):
-        s = self.selenium
-        self.create('<p>I want to <a href="http://example.com/">link</a> '
-                    'something</p>')
-        s.getEval("""(function(s) {
-            var p = s.browserbot.findElement('css=.block.type-p .editable p');
-            var range = window.getSelection().getRangeAt(0);
-            range.setStart(p, 1);
-            range.setEnd(p, 2);
-        })(this);""")
-        s.assertElementPresent('xpath=//a[@href="http://example.com/"]')
-        s.click('xpath=//a[@href="unlink"]')
-        s.waitForElementNotPresent('xpath=//a[@href="http://example.com/"]')
-
     def test_consequent_paragraphs_should_be_editable_together(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
@@ -269,6 +241,153 @@ class TestTextEditing(
         # Saved, no longer ediable
         s.waitForElementNotPresent('css=.block.type-p.editing')
 
+
+class TestLinkEditing(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(TestLinkEditing, self).setUp()
+        self.selenium.windowMaximize()
+        self.add_article()
+
+    def select_text(self):
+        s = self.selenium
+        self.create('<p>I want to link something</p>')
+        s.getEval("""(function(s) {
+            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+            var range = window.getSelection().getRangeAt(0);
+            range.setStart(p.firstChild, 10);
+            range.setEnd(p.firstChild, 14);
+        })(this);""")
+        s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
+
+    def select_link(self, additional=''):
+        s = self.selenium
+        self.create(
+            ('<p>I want to <a href="http://example.com/" {0}>link</a> '
+             'something</p>').format(additional))
+        s.getEval("""(function(s) {
+            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+            var range = window.getSelection().getRangeAt(0);
+            range.setStart(p, 1);
+            range.setEnd(p, 2);
+        })(this);""")
+        s.assertElementPresent('xpath=//a[@href="http://example.com/"]')
+
+    def test_links_should_be_addable(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.type('css=.link_input input[name=href]', 'http://example.com/')
+        s.click('css=.link_input button[name=insert_link_ok]')
+        s.waitForElementPresent('xpath=//a[@href="http://example.com/"]')
+
+    def test_target_should_be_editable(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.select('css=.link_input select[name=target]', 'label=Neues Fenster')
+        s.type('css=.link_input input[name=href]', 'http://example.com/')
+        s.click('css=.link_input button[name=insert_link_ok]')
+        s.waitForElementPresent(
+            'xpath=//a[@href="http://example.com/" and @target="_blank"]')
+
+    def test_edit_on_link_should_set_href_in_input(self):
+        s = self.selenium
+        self.select_link()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.assertValue(
+            'css=.link_input input[name=href]', 'http://example.com/')
+
+    def test_edit_on_link_should_set_target_to_select(self):
+        s = self.selenium
+        self.select_link(additional='target="_blank"')
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.assertSelectedLabel(
+            'css=.link_input select[name=target]', 'Neues Fenster')
+
+    def test_edit_should_highlight_link_being_edited(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.assertElementPresent('css=.editable a.link-edit')
+
+    def test_links_should_be_removable(self):
+        s = self.selenium
+        self.select_link()
+        s.click('xpath=//a[@href="unlink"]')
+        s.waitForElementNotPresent('xpath=//a[@href="http://example.com/"]')
+
+    def test_cancel_should_keep_selection(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForElementPresent('css=.editable a')
+        s.click('css=.link_input button[name=insert_link_cancel]')
+        result = s.getEval("""(function(s) {
+            var range = window.getSelection().getRangeAt(0);
+            return range.startContainer.childNodes[range.startOffset].data
+        })(this);""")
+        self.assertEqual(u'link', result)
+
+    def test_insert_link_should_select_link(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.type('css=.link_input input[name=href]', 'http://example.com/')
+        s.click('css=.link_input button[name=insert_link_ok]')
+        s.waitForElementPresent('xpath=//a[@href="http://example.com/"]')
+        result = s.getEval("""(function(s) {
+            var range = window.getSelection().getRangeAt(0);
+            return range.startContainer.childNodes[range.startOffset].nodeName;
+        })(this);""")
+        self.assertEqual('A', result)
+
+    def test_edit_link_with_cancel_should_keep_link_selected(self):
+        s = self.selenium
+        self.select_link()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.click('css=.link_input button[name=insert_link_cancel]')
+        result = s.getEval("""(function(s) {
+            var range = window.getSelection().getRangeAt(0);
+            return range.startContainer.childNodes[range.startOffset].nodeName;
+        })(this);""")
+        self.assertEqual('A', result)
+
+    def test_cancel_should_not_insert_link(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForElementPresent('css=.editable a')
+        s.click('css=.link_input button[name=insert_link_cancel]')
+        s.waitForElementNotPresent('css=.editable a')
+
+    def test_dialog_should_accept_content_drop(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        # We need to scroll the inner "frame" to top, otherwise dragging will
+        # get confused:
+        s.getEval(
+            "this.browserbot.findElement('css=.diver-bar')."
+            "   scrollIntoView(true)")
+        s.dragAndDropToObject(
+            'css=#breadcrumbs li:last a', 'css=.link_input')
+        s.assertValue(
+            'css=.link_input input[name=href]', 'http://www.zeit.de/*.tmp')
+
+    def test_drag_while_dialog_open_should_not_end_edit(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.dragAndDrop('css=#breadcrumbs li:last a', '+100,+0')
+        time.sleep(0.25)
+        # Element still there
+        s.assertElementPresent('css=.block.type-p.editing')
 
 
 class TestFolding(
