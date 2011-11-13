@@ -1,8 +1,8 @@
 zeit.brightcove changes
 =======================
 
-0.10.1 (unreleased)
--------------------
+2.0.0 (2011-11-13)
+------------------
 
 - Impport videos and playlists into the DAV servers (#8996).
 

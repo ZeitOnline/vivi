@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'zeit.brightcove',
-    version='0.10.1dev',
+    version='2.0.0',
     author = 'Christian Zagrodnick',
     author_email = 'cz@gocept.com',
     description = '',
