@@ -4,7 +4,7 @@ zeit.cms changes
 1.50.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix brown bag release 1.50.0
 
 
 1.50.0 (2011-11-13)
