@@ -8,6 +8,8 @@ zeit.content.portraitbox changes
 
 - Simplified tests and removed footnote (#7844).
 
+- Fix security related test (#9457).
+
 
 1.22.5 (2010-05-03)
 -------------------
