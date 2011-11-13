@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-0.4.2 (unreleased)
+0.4.2 (2011-11-13)
 ------------------
 
 - Remove VGWort properties after an object has been copied (#9451)
