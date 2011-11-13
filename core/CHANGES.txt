@@ -1,7 +1,7 @@
 zeit.content.cp changes
 =======================
 
-0.43.4 (unreleased)
+0.50.0 (2011-11-13)
 -------------------
 
 - Accomodated article to cope for the changed videos: videos are now full CMS
