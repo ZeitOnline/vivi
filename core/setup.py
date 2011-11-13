@@ -19,6 +19,7 @@ setup(
         'grokcore.component',
         'setuptools',
         'zeit.cms',
+        'zeit.solr',
         'zope.annotation',
         'zope.component',
         'zope.formlib',
