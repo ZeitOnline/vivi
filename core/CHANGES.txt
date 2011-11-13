@@ -6,6 +6,8 @@ zeit.addcentral changes
 
 - Made Ressort optional (for #9133).
 
+- Make add location configurable via an adapter (#9133)
+
 
 0.2.1 (2010-08-09)
 ------------------
