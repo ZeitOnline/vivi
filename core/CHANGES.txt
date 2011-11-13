@@ -1,7 +1,7 @@
 zeit.content.portraitbox changes
 ================================
 
-1.22.7 (unreleased)
+1.22.7 (2011-11-13)
 -------------------
 
 - Fix brown bag release
