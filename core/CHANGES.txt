@@ -1,7 +1,7 @@
 zeit.content.portraitbox changes
 ================================
 
-1.22.6 (unreleased)
+1.22.6 (2011-11-13)
 -------------------
 
 - Define security for PortraitboxReference (for #8412).
