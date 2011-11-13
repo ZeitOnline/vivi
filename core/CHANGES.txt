@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.0 (unreleased)
+2.0 (2011-11-13)
 ----------------
 
 - Total rewrite. For earlier versions, see the subversion repository at
