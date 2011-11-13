@@ -1,7 +1,7 @@
 zeit.content.infobox changes
 ============================
 
-1.23.4 (unreleased)
+1.23.4 (2011-11-13)
 -------------------
 
 - Fix brown bag release
