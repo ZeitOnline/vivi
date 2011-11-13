@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.39.2 (unreleased)
+1.40.0 (2011-11-13)
 -------------------
 
 - Fixed bug: Empty citations caused xsi:nil when converted to HTML and an error when
