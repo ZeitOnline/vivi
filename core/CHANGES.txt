@@ -4,7 +4,8 @@ zeit.vgwort changes
 0.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow the token service to initialize even without product config. This is
+  necessary for i18nextract to work correctly.
 
 
 0.4.2 (2011-11-13)

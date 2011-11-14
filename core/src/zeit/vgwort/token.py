@@ -5,6 +5,7 @@ import BTrees.Length
 import csv
 import gocept.runner
 import grokcore.component
+import logging
 import persistent
 import random
 import xmlrpclib
@@ -18,6 +19,9 @@ import zope.component
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
+
+
+log = logging.getLogger(__name__)
 
 
 class TokenStorage(persistent.Persistent,
@@ -81,7 +85,11 @@ class TokenService(grokcore.component.GlobalUtility):
     def __init__(self):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.vgwort')
-        self.tokens = xmlrpclib.ServerProxy(config['claim-token-url'])
+        if config:
+            self.tokens = xmlrpclib.ServerProxy(config['claim-token-url'])
+        else:
+            log.warning(
+                'No configuration found. Could not set up token service.')
 
     def claim_token(self):
         return self.tokens.claim()

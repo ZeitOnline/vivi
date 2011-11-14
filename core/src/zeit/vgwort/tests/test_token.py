@@ -3,6 +3,7 @@
 
 from zeit.vgwort.token import _order_tokens
 import transaction
+import unittest
 import zeit.vgwort.interfaces
 import zeit.vgwort.testing
 import zope.component
@@ -87,3 +88,10 @@ class ObjectCopyTest(zeit.vgwort.testing.TestCase):
         info = zeit.vgwort.interfaces.IReportInfo(copy)
         self.assertEqual(None, info.reported_on)
         self.assertEqual(None, info.reported_error)
+
+
+class TokenServiceTest(unittest.TestCase):
+
+    def test_should_be_initializable_without_config(self):
+        from zeit.vgwort.token import TokenService
+        TokenService()
