@@ -1,6 +1,12 @@
 zeit.vgwort changes
 ===================
 
+0.4.4 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 0.4.3 (2011-11-14)
 ------------------
 
