@@ -224,7 +224,7 @@
 }
 
 .editable-area > .landing-zone {
-  margin: 0.25em 0;
+  margin: 0.25em 1em;
   height: 1em;
 }
 
@@ -476,7 +476,6 @@
   background: -moz-linear-gradient(center top , #FFF, #DFD) repeat scroll 0 0 transparent;
   border: 1px solid #0A0;
   -moz-border-radius: 5px;
-  margin: auto;
 }
 
 #edit-form-assets input[type="text"] {
