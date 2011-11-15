@@ -92,14 +92,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         '.head.topiclinks.topiclink.topiclink_url_3',
         zeit.content.cp.interfaces.ICenterPage['topiclink_url_3'])
 
-    topiclink_label_4 = zeit.cms.content.property.ObjectPathProperty(
-        '.head.topiclinks.topiclink.topiclink_label_4',
-        zeit.content.cp.interfaces.ICenterPage['topiclink_label_4'])
-
-    topiclink_url_4 = zeit.cms.content.property.ObjectPathProperty(
-        '.head.topiclinks.topiclink.topiclink_url_4',
-        zeit.content.cp.interfaces.ICenterPage['topiclink_url_4'])
-
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]
         area = zope.component.getMultiAdapter(

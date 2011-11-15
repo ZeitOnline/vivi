@@ -64,10 +64,6 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         title=_('Label for topiclink #3'),
         required=False)
 
-    topiclink_label_4 = zope.schema.TextLine(
-        title=_('Label for topiclink #4'),
-        required=False)
-
     topiclink_url_1 = zope.schema.TextLine(
         title=_('URL for topiclink #1'),
         required=False)
@@ -78,10 +74,6 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
     topiclink_url_3 = zope.schema.TextLine(
         title=_('URL for topiclink #3'),
-        required=False)
-
-    topiclink_url_4 = zope.schema.TextLine(
-        title=_('URL for topiclink #4'),
         required=False)
 
     def __getitem__(area_key):
