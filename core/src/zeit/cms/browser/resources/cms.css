@@ -670,11 +670,9 @@ li.busy {
 
 
 .landing-zone.visible {
-  border: 1px dotted green;
   cursor: default;
   display: block;
   height: auto;
-  margin: 0 0;
   padding: 1em;
   visibility: visible;
 }
