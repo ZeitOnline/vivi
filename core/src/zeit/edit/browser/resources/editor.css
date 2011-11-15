@@ -11,7 +11,6 @@
 }
 
 #cp-content > .cp-content-inner {
-  border: 1px solid #E4E4E4;
   bottom: 0em;
   left: 0;
   overflow: auto;
@@ -22,10 +21,7 @@
 
 #cp-content .editable-area {
   margin: 0.5em;
-}
-
-div div.landing-zone:first-child {
-  padding-top: 15px;
+  padding: 0.5em;
 }
 
 #cp-content .hover > * {
@@ -207,7 +203,7 @@ div div.landing-zone:first-child {
 .block > .block-inner {
   border: 1px solid #bbb;
   overflow: hidden; 
-  padding: 5px 0em;
+  padding: 0 0;
 }
 
 .block-inner .editable p,
@@ -228,8 +224,8 @@ div div.landing-zone:first-child {
 }
 
 .editable-area > .landing-zone {
-  height: 1em;
   margin: 0.25em 0;
+  height: 1em;
 }
 
 #cp-content .lightbox > div.tab-content {
@@ -252,6 +248,18 @@ div div.landing-zone:first-child {
   margin: 1em 0 0 0;
 }
 
+#cp-content #teaser-mosaic .landing-zone.visible {
+  margin: 1.5em;
+}
+
+#cp-content .landing-zone.visible {
+  border: 1px dashed #00dd5e;
+  color: #00dd5e;
+  height: auto;
+  margin: 1em 0;
+  padding: 1em;
+}
+
 #cp-content .lightbox .landing-zone {
   border: 1px solid #00ee5e;
   height: 0.5em;
@@ -268,8 +276,8 @@ div div.landing-zone:first-child {
 
 .edit {
   border-bottom: 1px solid #bbb;
-  margin-bottom: 0px;
-  padding-top: 0px;
+  margin-bottom: 0.3em;
+  padding-top: 0.3em;
 }
 
 .editable-area > .edit {
@@ -317,10 +325,7 @@ div div.landing-zone:first-child {
 
 .edit-bar > .edit-link {
   background-image: url('edit.png');
-  background-size: 80%;
   padding-right: 0.5em;
-  position:absolute;
-  right:20px;
 }
 
 .edit-bar > .edit-object-link {
@@ -330,7 +335,6 @@ div div.landing-zone:first-child {
 
 .edit-bar > .delete-link {
   background-image: url('delete.png');
-  background-position: 0 2px;
   float: right;
   padding-right: .3em;
 }
@@ -448,10 +452,6 @@ div div.landing-zone:first-child {
   opacity: 1;
 }
 
-#cp-content {
-  background: none repeat scroll 0 0 #F1F4F9;
-}
-
 /* forms */
 
 .inline-form .widget-outer {
@@ -467,17 +467,13 @@ div div.landing-zone:first-child {
   -moz-border-radius: 5px;
 }
 
-#edit-form-assets .inline-form .widget-outer div.landing-zone,
-#misc-layout\.layout,
-.zeit-edit-interfaces-IElement .landing-zone {
+#edit-form-assets .landing-zone.visible {
   background: white;
-  border: 1px dotted green;
-  -moz-border-radius: 5px;
-  margin: auto;
+  margin: auto 1em;
 }
 
 #edit-form-assets .inline-form .widget-outer div.droppable-active {
-  background: -moz-linear-gradient(center top , #FFF, #EFE) repeat scroll 0 0 transparent;
+  background: -moz-linear-gradient(center top , #FFF, #DFD) repeat scroll 0 0 transparent;
   border: 1px solid #0A0;
   -moz-border-radius: 5px;
   margin: auto;
@@ -535,28 +531,14 @@ div div.landing-zone:first-child {
     padding:1em;
 }
 
-.zeit-edit-interfaces-IElement .landing-zone,
-.zeit-edit-interfaces-IElement .edit-bar ~div {
-  margin:0px 10px !important;
-}
-
 #edit-form-assets .inline-form .widget-outer div.label{
   margin: 3px 0px 3px 3px;
-}
-
-#edit-form-assets .inline-form .widget .objectsequencewidget li,
-#edit-form-assets .inline-form .widget .drop-object-widget  {
-  margin: auto;
 }
 
 #edit-form-assets .inline-form .widget .textType {
   width: 95%;
   display: block;
   margin: auto;
-}
-
-#edit-form-assets .inline-form .widget div.landing-zone {
-  width: 95%;
 }
 
 #assets\.related .content-details {
@@ -684,10 +666,6 @@ div div.landing-zone:first-child {
   height: 4em;
   line-height: 1.4;
   padding: 5px;
-}
-
-#cp-content .editable-area {
-  margin: 1em 0 0;
 }
 
 
