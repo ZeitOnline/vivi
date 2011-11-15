@@ -517,17 +517,10 @@
 }
 
 #edit-form-assets .inline-form .widget-outer,
-#edit-form-assets .inline-form .widget,
-#edit-form-misc .inline-form .widget-outer,
-#edit-form-misc .inline-form .widget {
+#edit-form-assets .inline-form .widget {
   padding: 0px 0 0;
   margin-bottom: 10px;
   width: 100%;
-}
-
-#misc-layout\.layout {
-    width:98%;
-    padding:1em;
 }
 
 #edit-form-assets .inline-form .widget-outer div.label{
