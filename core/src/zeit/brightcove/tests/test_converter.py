@@ -156,6 +156,28 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         cms = video.to_cms()
         self.assertEqual(too_long, cms.teaserText)
 
+    def test_relateds_should_be_converted_to_brightcove(self):
+        from zeit.cms.related.interfaces import IRelatedContent
+        cmsobj = zeit.content.video.video.Video()
+        related = IRelatedContent(cmsobj)
+        related.related = (
+            zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/online/2007/01/eta-zapatero'),)
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/eta-zapatero',
+            Video.from_cms(cmsobj).data['customFields']['ref_link1'])
+
+    def test_relateds_should_be_converted_to_cms(self):
+        from zeit.cms.related.interfaces import IRelatedContent
+        video = Video.find_by_id('1234')
+        video.data['customFields']['ref_link1'] = (
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        cmsobj = video.to_cms()
+        related = IRelatedContent(cmsobj)
+        self.assertEqual(
+            ['http://xml.zeit.de/online/2007/01/Somalia'],
+            [x.uniqueId for x in related.related])
+
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 

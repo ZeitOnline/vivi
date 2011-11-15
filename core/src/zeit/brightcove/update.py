@@ -120,14 +120,6 @@ class VideoUpdater(BaseUpdater):
         if (current_mtime and new_mtime and current_mtime >= new_mtime and
             self.cmsobj.video_still == new.video_still):
             update = False
-        else:
-            # Only modify the object in DAV if it really changed in BC.
-            for name in zeit.content.video.interfaces.IVideo:
-                if getattr(self.cmsobj, name, None) != getattr(new, name, None):
-                    break
-            else:
-                update = False
-
         if update:
             log.info('Updating %s', self.bcobj)
             with zeit.cms.checkout.helper.checked_out(

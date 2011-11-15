@@ -15,6 +15,7 @@ import zeit.brightcove.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.connector.search
@@ -325,10 +326,12 @@ class Video(Converter):
             custom['ref_title%i' % i] = ''
         for i, obj in enumerate(value, 1):
             metadata = zeit.cms.content.interfaces.ICommonMetadata(obj, None)
-            if metadata is None:
-                continue
+            if metadata and metadata.teaserTitle:
+                title = metadata.teaserTitle
+            else:
+                title = u'unknown'
             custom['ref_link%s' % i] = obj.uniqueId
-            custom['ref_title%s' % i] = metadata.teaserTitle
+            custom['ref_title%s' % i] = title
 
     @property
     def year(self):
@@ -354,6 +357,8 @@ class Video(Converter):
         sc.last_semantic_change = self.date_last_modified
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         info.date_last_published = self.date_first_released
+        zeit.cms.related.interfaces.IRelatedContent(video).related = (
+            self.related)
         return video
 
     @classmethod
@@ -365,6 +370,8 @@ class Video(Converter):
                 setattr(instance, key, getattr(video, key))
             except AttributeError:
                 pass
+        instance.related = zeit.cms.related.interfaces.IRelatedContent(
+            video).related
         date_last_modified = \
             zeit.cms.content.interfaces.ISemanticChange(
             video).last_semantic_change

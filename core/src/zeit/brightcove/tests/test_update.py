@@ -70,6 +70,25 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             'http://xml.zeit.de/video/2010-03/1234')
         self.assertEqual(u'upstream change', video.title)
 
+    def test_updated_relateds_should_overwrite_local_data_with_newer_bc_edits(
+        self):
+        from zeit.cms.related.interfaces import IRelatedContent
+        soon = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = soon
+        update_from_brightcove()
+        VIDEO_1234['customFields']['ref_link1'] = (
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        soon = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = soon
+        update_from_brightcove()
+
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        related = IRelatedContent(video)
+        self.assertEqual(
+            ['http://xml.zeit.de/online/2007/01/Somalia'],
+            [x.uniqueId for x in related.related])
+
     def test_difference_of_video_still_counts_as_newer_upstream_edit(self):
         # A bug in Brightcove may cause the last-modified date to remain
         # unchanged even when the video-still URL is actually changed.
