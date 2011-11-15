@@ -1,16 +1,12 @@
 zeit.content.cp changes
 =======================
 
-0.50.2 (unreleased)
--------------------
-
-- Removed 4th topiclink
 
 
 0.50.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Removed 4th topiclink
 
 
 0.50.0 (2011-11-13)
