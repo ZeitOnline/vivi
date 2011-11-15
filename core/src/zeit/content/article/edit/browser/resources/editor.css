@@ -127,8 +127,7 @@
   display: none;
 }
 
-#article-editor-text .block,
-#article-editor-text .landing-zone {
+#article-editor-text .block {
   margin-left: 0em;
 }
 
