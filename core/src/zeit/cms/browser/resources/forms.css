@@ -526,8 +526,7 @@ iframe {
 
 .wide-widgets.column-left div:nth-child(8),
 .wide-widgets.column-left div:nth-child(10),
-.wide-widgets.column-left div:nth-child(12),
-.wide-widgets.column-left div:nth-child(14) {
+.wide-widgets.column-left div:nth-child(12) {
     width:30%;
     float:left;
     clear:both;
@@ -535,8 +534,7 @@ iframe {
 
 .wide-widgets.column-left div:nth-child(9),
 .wide-widgets.column-left div:nth-child(11),
-.wide-widgets.column-left div:nth-child(13),
-.wide-widgets.column-left div:nth-child(15) {
+.wide-widgets.column-left div:nth-child(13) {
     margin-right:13px;
     float:right;
     width:60%;
