@@ -1,3 +1,18 @@
+/* cp-content only concerning article editor */
+
+#cp-content {
+  background: none repeat scroll 0 0 #F1F4F9;
+}
+
+#cp-content > .cp-content-inner {
+  border: 1px solid #E4E4E4;
+}
+
+#cp-content .editable-area {
+  margin: 1em 0 0;
+  padding: 0;
+}
+
 
 /* Textareas not inline */
 
@@ -34,7 +49,13 @@
   background: none 0;
 }
 
-#editor-forms div div.edit-bar a{
+#editor-forms div div.edit-bar > .edit-link {
+  background-size: 80%;
+  position:absolute;
+  right:20px;
+}
+
+#editor-forms div div.edit-bar a {
   margin: 4px;
   margin-top: 1px;
 }
@@ -48,6 +69,10 @@
 #edit-form-article-content #article-content-head.title,
 #edit-form-article-content #article-content-head.subtitle {
   font-size: 16px;
+}
+
+.block > .block-inner {
+  padding: 5px 0;
 }
 
 #edit-form-article-content > .block-inner {
@@ -91,6 +116,7 @@
 
 .article-editor-inner .edit-bar > .delete-link {
   background-image: url('delete.png');
+  background-position: 0 2px;
 }
 
 .article-editor-inner .dragger .center {
@@ -487,6 +513,7 @@ span.charcount {
   font-family: monospace;
   font-size: 80%;
   white-space: pre-wrap;
+  margin: 0 1em;
 }
 
 
