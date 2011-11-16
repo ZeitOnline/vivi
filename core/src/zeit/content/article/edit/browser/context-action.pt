@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset i18n:domain="zeit.cms">
   <tal:block condition="not: view/can_checkout">
   <div tal:condition="view/checkin_errors" i18n:translate="">The following errors need to be corrected before checkin:</div>
   <dl class="errors">
