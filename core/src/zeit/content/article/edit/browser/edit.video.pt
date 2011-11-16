@@ -1,4 +1,4 @@
-<div 
+<div i18n:domain="zeit.cms" 
   tal:attributes="
   cms:drop-url string:${context/@@absolute_url}/@@set_reference;
   class view/css_class">
