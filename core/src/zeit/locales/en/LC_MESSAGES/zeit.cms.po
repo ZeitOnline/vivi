@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue Nov 15 14:54:07 2011\n"
+"POT-Creation-Date: Wed Nov 16 15:05:30 2011\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
@@ -554,6 +554,7 @@ msgid "Checkin ^I"
 msgstr ""
 
 #: zeit/cms/checkout/browser/manager.py:217
+#: zeit/content/article/edit/browser/context-action.pt:18
 msgid "Checkin (correction)"
 msgstr ""
 
@@ -1314,6 +1315,7 @@ msgid "syndicate-wo-relateds"
 msgstr ""
 
 #: zeit/cms/syndication/browser/manager.pt:22
+#: zeit/content/article/edit/browser/context-action.pt:35
 #: zeit/content/cp/browser/publish.pt:2 zeit/workflow/browser/publish.pt:2
 msgid "Publish"
 msgstr ""
@@ -1476,6 +1478,29 @@ msgstr ""
 msgid "Related list"
 msgstr "Related content"
 
+#: zeit/content/article/edit/browser/context-action.pt:11
+#, fuzzy
+msgid "Checkin"
+msgstr "Checkout"
+
+#: zeit/content/article/edit/browser/context-action.pt:26
+msgid "...or cancel and"
+msgstr ""
+
+#: zeit/content/article/edit/browser/context-action.pt:27
+msgid "Delete from Workingcopy"
+msgstr ""
+
+#: zeit/content/article/edit/browser/context-action.pt:3
+msgid "The following errors need to be corrected before checkin:"
+msgstr ""
+
+#: zeit/content/article/edit/browser/context-action.pt:41
+#: zeit/workflow/browser/retract.pt:2 zeit/workflow/browser/retract.pt:5
+#, fuzzy
+msgid "Retract"
+msgstr "Related content"
+
 #: zeit/content/article/edit/browser/edit.body.landing.pt:13
 msgid ""
 "Landing zone ${create-paragraph} <fieldset class=\"fontcontrol\"> <button "
@@ -1526,6 +1551,16 @@ msgstr "Page"
 #, fuzzy
 msgid "edit body text"
 msgstr "Related content"
+
+#: zeit/content/article/edit/browser/edit.reference.pt:12
+#: zeit/content/article/edit/browser/edit.video.pt:17
+msgid "Drag content to embed."
+msgstr ""
+
+#: zeit/content/article/edit/browser/edit.reference.pt:15
+#: zeit/content/article/edit/browser/edit.video.pt:20
+msgid "No content referenced."
+msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:113
 msgid "edit asset badges"
@@ -3141,11 +3176,6 @@ msgstr ""
 #: zeit/workflow/browser/indicator.py:44
 msgid "${title}: ${state}"
 msgstr ""
-
-#: zeit/workflow/browser/retract.pt:2 zeit/workflow/browser/retract.pt:5
-#, fuzzy
-msgid "Retract"
-msgstr "Related content"
 
 #: zeit/workflow/interfaces.py:36
 msgid "From"

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Nov 15 14:54:07 2011\n"
+"POT-Creation-Date: Wed Nov 16 15:05:30 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -593,6 +593,7 @@ msgid "Checkin ^I"
 msgstr ""
 
 #: zeit/cms/checkout/browser/manager.py:217
+#: zeit/content/article/edit/browser/context-action.pt:18
 msgid "Checkin (correction)"
 msgstr ""
 
@@ -1361,6 +1362,7 @@ msgid "syndicate-wo-relateds"
 msgstr ""
 
 #: zeit/cms/syndication/browser/manager.pt:22
+#: zeit/content/article/edit/browser/context-action.pt:35
 #: zeit/content/cp/browser/publish.pt:2
 #: zeit/workflow/browser/publish.pt:2
 msgid "Publish"
@@ -1517,6 +1519,28 @@ msgstr ""
 msgid "Related list"
 msgstr ""
 
+#: zeit/content/article/edit/browser/context-action.pt:11
+msgid "Checkin"
+msgstr ""
+
+#: zeit/content/article/edit/browser/context-action.pt:26
+msgid "...or cancel and"
+msgstr ""
+
+#: zeit/content/article/edit/browser/context-action.pt:27
+msgid "Delete from Workingcopy"
+msgstr ""
+
+#: zeit/content/article/edit/browser/context-action.pt:3
+msgid "The following errors need to be corrected before checkin:"
+msgstr ""
+
+#: zeit/content/article/edit/browser/context-action.pt:41
+#: zeit/workflow/browser/retract.pt:2
+#: zeit/workflow/browser/retract.pt:5
+msgid "Retract"
+msgstr ""
+
 #: zeit/content/article/edit/browser/edit.body.landing.pt:13
 msgid "Landing zone ${create-paragraph} <fieldset class=\"fontcontrol\"> <button class=\"fontbutton fontplus\"> <span> + </span> </button> <button class=\"fontbutton fontminus\"> <span> - </span> </button> <button class=\"fontbutton fontnormal\"> <span> % </span> </button> <span class=\"charcount\"></span> </fieldset>"
 msgstr ""
@@ -1558,6 +1582,16 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/edit.py:37
 msgid "edit body text"
+msgstr ""
+
+#: zeit/content/article/edit/browser/edit.reference.pt:12
+#: zeit/content/article/edit/browser/edit.video.pt:17
+msgid "Drag content to embed."
+msgstr ""
+
+#: zeit/content/article/edit/browser/edit.reference.pt:15
+#: zeit/content/article/edit/browser/edit.video.pt:20
+msgid "No content referenced."
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:113
@@ -3182,11 +3216,6 @@ msgstr ""
 #: zeit/workflow/browser/indicator.py:44
 #. Default: ""
 msgid "${title}: ${state}"
-msgstr ""
-
-#: zeit/workflow/browser/retract.pt:2
-#: zeit/workflow/browser/retract.pt:5
-msgid "Retract"
 msgstr ""
 
 #: zeit/workflow/interfaces.py:36

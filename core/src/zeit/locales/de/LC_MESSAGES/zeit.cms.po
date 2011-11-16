@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Nov 15 14:54:07 2011\n"
-"PO-Revision-Date: 2011-11-16 11:50+0100\n"
+"POT-Creation-Date: Wed Nov 16 15:05:30 2011\n"
+"PO-Revision-Date: 2011-11-16 15:11+0100\n"
 "Last-Translator: Thomas <thomas.baumann@zeit.de>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -590,6 +590,7 @@ msgid "Checkin ^I"
 msgstr "Einchecken ^I"
 
 #: zeit/cms/checkout/browser/manager.py:217
+#: zeit/content/article/edit/browser/context-action.pt:18
 msgid "Checkin (correction)"
 msgstr "Einchecken (Korrektur)"
 
@@ -915,7 +916,6 @@ msgstr "Letzte inhaltliche Änderung"
 
 #: zeit/cms/content/interfaces.py:418
 #: zeit/content/article/edit/browser/form.py:25
-#, fuzzy
 msgid "Memo"
 msgstr "Memo"
 
@@ -1352,6 +1352,7 @@ msgid "syndicate-wo-relateds"
 msgstr "Syndizieren (ohne Relateds)"
 
 #: zeit/cms/syndication/browser/manager.pt:22
+#: zeit/content/article/edit/browser/context-action.pt:35
 #: zeit/content/cp/browser/publish.pt:2
 #: zeit/workflow/browser/publish.pt:2
 msgid "Publish"
@@ -1508,6 +1509,29 @@ msgstr "Audio"
 msgid "Related list"
 msgstr "Relateds-Liste"
 
+#: zeit/content/article/edit/browser/context-action.pt:11
+msgid "Checkin"
+msgstr "Einchecken"
+
+#: zeit/content/article/edit/browser/context-action.pt:26
+msgid "...or cancel and"
+msgstr "... oder abbrechen und"
+
+#: zeit/content/article/edit/browser/context-action.pt:27
+msgid "Delete from Workingcopy"
+msgstr "Arbeitskopie löschen"
+
+#: zeit/content/article/edit/browser/context-action.pt:3
+msgid "The following errors need to be corrected before checkin:"
+msgstr "Folgende Fehler müssen vor dem Einchecken korrigiert werden:"
+
+#: zeit/content/article/edit/browser/context-action.pt:41
+#: zeit/workflow/browser/retract.pt:2
+#: zeit/workflow/browser/retract.pt:5
+#, fuzzy
+msgid "Retract"
+msgstr "Zurückgezogen"
+
 #: zeit/content/article/edit/browser/edit.body.landing.pt:13
 #, fuzzy
 msgid "Landing zone ${create-paragraph} <fieldset class=\"fontcontrol\"> <button class=\"fontbutton fontplus\"> <span> + </span> </button> <button class=\"fontbutton fontminus\"> <span> - </span> </button> <button class=\"fontbutton fontnormal\"> <span> % </span> </button> <span class=\"charcount\"></span> </fieldset>"
@@ -1551,6 +1575,17 @@ msgstr "Seitenumbruch bearbeiten"
 #: zeit/content/article/edit/browser/edit.py:37
 msgid "edit body text"
 msgstr "Artikeltext bearbeiten"
+
+#: zeit/content/article/edit/browser/edit.reference.pt:12
+#: zeit/content/article/edit/browser/edit.video.pt:17
+msgid "Drag content to embed."
+msgstr "Ziehen Sie Inhalte hierher um einen Teaser hinzuzufügen."
+
+#: zeit/content/article/edit/browser/edit.reference.pt:15
+#: zeit/content/article/edit/browser/edit.video.pt:20
+#, fuzzy
+msgid "No content referenced."
+msgstr "Kein Inhalt referenziert."
 
 #: zeit/content/article/edit/browser/form.py:113
 #, fuzzy
@@ -1689,7 +1724,7 @@ msgstr "Dringend bearbeiten"
 #: zeit/content/article/edit/browser/form.py:438
 #, fuzzy
 msgid "context action"
-msgstr "context sensitive actions"
+msgstr "Kontext Aktion"
 
 #: zeit/content/article/edit/browser/form.py:488
 #, fuzzy
@@ -3116,12 +3151,6 @@ msgstr "Wirklich zurückziehen? Dies wird das Objekt aus allen Channeln entferne
 #: zeit/workflow/browser/indicator.py:44
 msgid "${title}: ${state}"
 msgstr "${title}: ${state}"
-
-#: zeit/workflow/browser/retract.pt:2
-#: zeit/workflow/browser/retract.pt:5
-#, fuzzy
-msgid "Retract"
-msgstr "Zurückgezogen"
 
 #: zeit/workflow/interfaces.py:36
 msgid "From"
