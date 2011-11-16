@@ -85,8 +85,21 @@ class IVideo(IBrightcoveContent,
         readonly=True)
 
     commentsAllowed = zope.schema.Bool(
-        title=_('Comments allowed'),
+        title=_("Comments allowed"),
         default=True)
+
+    dailyNewsletter = zope.schema.Bool(
+        title=_("Daily newsletter"),
+        default=True)
+
+    banner = zope.schema.Bool(
+        title=_("Banner"),
+        default=True)
+
+    breaking_news = zope.schema.Bool(
+        title=_('Breaking news'),
+        default=False)
+
 
 
 class IPlaylist(IBrightcoveContent):

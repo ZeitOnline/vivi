@@ -180,7 +180,23 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_comments_should_default_to_true(self):
         video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
         self.assertTrue(video.commentsAllowed)
+
+    def test_dailynl_should_default_to_true(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertTrue(video.dailyNewsletter)
+
+    def test_banner_should_default_to_true(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertTrue(video.banner)
+
+    def test_breaking_new_should_default_to_false(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertFalse(video.breaking_news)
 
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
