@@ -72,13 +72,13 @@ class TestSimpleFind(unittest2.TestCase,
         self.search.return_value = []
         self.browser.open('@@simple_find?term=Search-Term')
         self.search.assert_called_with(
-            u'(text:(search-term*) AND NOT ressort:(News))')
+            u'(text:(search-term*) AND NOT ressort:(News) AND NOT product_text:(News))')
 
     def test_given_term_should_be_lowercased(self):
         self.search.return_value = []
         self.browser.open('@@simple_find?term=UppER')
         self.search.assert_called_with(
-            u'(text:(upper*) AND NOT ressort:(News))')
+            u'(text:(upper*) AND NOT ressort:(News) AND NOT product_text:(News))')
 
     def test_given_types_should_be_passed_to_solr(self):
         self.search.return_value = []
@@ -86,7 +86,7 @@ class TestSimpleFind(unittest2.TestCase,
             '@@simple_find?term=search-term&types:list=t1&types:list=t2')
         self.search.assert_called_with(
             u'(text:(search-term*) AND (type:(t1) OR type:(t2)) '
-            'AND NOT ressort:(News))')
+            'AND NOT ressort:(News) AND NOT product_text:(News))')
 
     def test_query_result_should_be_returned(self):
         self.search.return_value = [
