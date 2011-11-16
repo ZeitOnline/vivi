@@ -66,9 +66,13 @@ Using authors
 The field author_references on ICommonMetadata is used to store authors.
 It takes precedence over the freetext authors:
 
+>>> import zope.lifecycleevent
+>>> from zeit.cms.content.interfaces import ICommonMetadata
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
 ...     co.author_references = [shakespeare]
 ...     co.authors = ['Charles Dickens']
+...     zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(
+...         ICommonMetadata, 'author_references', 'authors'))
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>

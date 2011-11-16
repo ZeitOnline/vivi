@@ -4,7 +4,8 @@ zeit.content.author changes
 0.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove the last author from freetext when the last author is removed from
+  referenced authors (#9918).
 
 
 0.4.0 (2011-11-13)
