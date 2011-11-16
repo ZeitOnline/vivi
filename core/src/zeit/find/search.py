@@ -166,6 +166,7 @@ def query(fulltext=None,
         terms.append(lq.field('serie', serie))
     if not show_news:
         terms.append(lq.not_(lq.field('ressort', 'News')))
+        terms.append(lq.not_(lq.field('product_text', 'News')))
 
     terms.extend(filter_terms)
     if terms:

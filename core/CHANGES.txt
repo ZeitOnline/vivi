@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-0.22.1 (unreleased)
+0.23.1 (unreleased)
 -------------------
 
 - Moved reusable styles to zeit.cms.
@@ -9,6 +9,13 @@ zeit.find changes
 
 - Lowercase autocomplete query and use right truncation to improve search
   results.
+
+
+0.23.0 (2011-08-12)
+-------------------
+
+- Newsticker no longer hold the ressort "News", therefore another filter was
+  added to check for product_text as well.
 
 
 0.22.0 (2011-06-20)
