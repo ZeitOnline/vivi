@@ -188,7 +188,7 @@
 }
 
 .type-relateds .edit-bar a.fold-link:after {
-  content: "Related list";
+  content: "Relateds-Liste";
 }
 
 .type-infobox .edit-bar a.fold-link:after {
@@ -196,11 +196,11 @@
 }
 
 .type-image .edit-bar a.fold-link:after {
-  content: "Image";
+  content: "Bild";
 }
 
 .type-gallery .edit-bar a.fold-link:after {
-  content: "Gallary";
+  content: "Bildergalerie";
 }
 
 .type-audio .edit-bar a.fold-link:after {
@@ -208,7 +208,7 @@
 }
 
 .type-citation .edit-bar a.fold-link:after {
-  content: "Citation";
+  content: "Zitat";
 }
 
 .type-video .edit-bar a.fold-link:after {
