@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Nov 15 14:54:07 2011\n"
-"PO-Revision-Date: 2011-11-15 16:37+0100\n"
+"PO-Revision-Date: 2011-11-16 11:50+0100\n"
 "Last-Translator: Thomas <thomas.baumann@zeit.de>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -63,9 +63,8 @@ msgid "Add"
 msgstr "Inhalte hinzufügen..."
 
 #: zeit/brightcove/__init__.py:13
-#, fuzzy
 msgid "Brightcove Id"
-msgstr "Edit brightcove videos"
+msgstr "Brightcove ID"
 
 #: zeit/brightcove/configure.zcml:8
 msgid "Edit brightcove videos"
@@ -615,23 +614,20 @@ msgid "\"${name}\" has been checked in."
 msgstr "»${name}« wurde eingecheckt."
 
 #: zeit/cms/checkout/interfaces.py:181
-#, fuzzy
 msgid "not allowed"
-msgstr "Kommentare erlaubt"
+msgstr "nicht zugelassen"
 
 #: zeit/cms/checkout/manager.py:101
 msgid "Object is not local content"
 msgstr "Objekt ist kein lokaler Inhalt"
 
 #: zeit/cms/checkout/manager.py:106
-#, fuzzy
 msgid "Cannot acquire lock"
-msgstr "Sperre verwalten"
+msgstr "Sperren nicht möglich"
 
 #: zeit/cms/checkout/manager.py:122
-#, fuzzy
 msgid "Unknown error"
-msgstr "Unbekannte Ressource"
+msgstr "Unbekannter Fehler"
 
 #. Default: ""
 #: zeit/cms/checkout/manager.py:46
@@ -1430,9 +1426,8 @@ msgstr "limit-amount-description"
 
 #: zeit/cms/tagging/browser/autocomplete.py:37
 #: zeit/find/browser/autocomplete.py:38
-#, fuzzy
 msgid "Type to find entries ..."
-msgstr "Titel der ersten 15 Enträge"
+msgstr "Hier Eingabe, um Einträge zu finden ..."
 
 #: zeit/cms/workflow/browser/indicator.py:16
 #: zeit/cms/workflow/interfaces.py:35
@@ -1505,15 +1500,13 @@ msgid "View article metadata"
 msgstr "Metadaten"
 
 #: zeit/content/article/edit/audio.py:30
-#, fuzzy
 msgid "Audio"
-msgstr "Audio-Id"
+msgstr "Audio"
 
 #: zeit/content/article/edit/block.py:40
 #: zeit/content/article/edit/browser/edit.relateds.pt:2
-#, fuzzy
 msgid "Related list"
-msgstr "Relateds"
+msgstr "Relateds-Liste"
 
 #: zeit/content/article/edit/browser/edit.body.landing.pt:13
 #, fuzzy
@@ -1521,14 +1514,12 @@ msgid "Landing zone ${create-paragraph} <fieldset class=\"fontcontrol\"> <button
 msgstr "Landing zone ${create-paragraph} <fieldset class=\"fontcontrol\"> <button class=\"fontbutton fontplus\"> <span> + </span> </button> <button class=\"fontbutton fontminus\"> <span> - </span> </button> <button class=\"fontbutton fontnormal\"> <span> % </span> </button> <span class=\"charcount\"></span> </fieldset>"
 
 #: zeit/content/article/edit/browser/edit.body.landing.pt:14
-#, fuzzy
 msgid "Create paragraph"
-msgstr "Teasergruppe anlegen"
+msgstr "Absatz hinzufügen"
 
 #: zeit/content/article/edit/browser/edit.body.landing.pt:2
-#, fuzzy
 msgid "Article text"
-msgstr "Artikel"
+msgstr "Artikeltext"
 
 #. Default: ""
 #: zeit/content/article/edit/browser/edit.py:108
@@ -1542,28 +1533,24 @@ msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr "Kann für \"${name}\" keinen Block anlegen, weil ich nicht weiß welchen"
 
 #: zeit/content/article/edit/browser/edit.py:164
-#, fuzzy
 msgid "edit XML block"
-msgstr "Rohes XML"
+msgstr "XML bearbeiten"
 
 #: zeit/content/article/edit/browser/edit.py:188
-#, fuzzy
 msgid "edit audio block"
-msgstr "Audioblock"
+msgstr "Audioblock bearbeiten"
 
 #: zeit/content/article/edit/browser/edit.py:207
 msgid "edit citation block"
 msgstr "Zitat Block bearbeiten"
 
 #: zeit/content/article/edit/browser/edit.py:225
-#, fuzzy
 msgid "edit page break"
-msgstr "Seitenumbruch"
+msgstr "Seitenumbruch bearbeiten"
 
 #: zeit/content/article/edit/browser/edit.py:37
-#, fuzzy
 msgid "edit body text"
-msgstr "Text/HTML bearbeiten"
+msgstr "Artikeltext bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:113
 #, fuzzy
@@ -1578,9 +1565,8 @@ msgstr "Assets bearbeiten"
 #: zeit/content/article/edit/browser/form.py:159
 #: zeit/content/article/edit/browser/form.py:180
 #: zeit/content/article/edit/browser/form.py:192
-#, fuzzy
 msgid "edit metadata"
-msgstr "Metadaten"
+msgstr "Metadaten bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:20
 msgid "Diver"
@@ -1592,14 +1578,12 @@ msgid "Teaser"
 msgstr "Teaser"
 
 #: zeit/content/article/edit/browser/form.py:210
-#, fuzzy
 msgid "edit teaser title"
-msgstr "Kurzteaser-Titel"
+msgstr "Teaser-Titel bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:222
-#, fuzzy
 msgid "edit teaser text"
-msgstr "Kurzteaser-Text"
+msgstr "Teaser-Text bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:244
 msgid "Miscellaneous"
@@ -1610,9 +1594,8 @@ msgid "Printdata"
 msgstr "Daten für Druckausgabe"
 
 #: zeit/content/article/edit/browser/form.py:251
-#, fuzzy
 msgid "edit misc printdata"
-msgstr "Metadaten"
+msgstr "Diverse Druckausgaben-Daten bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:261
 #, fuzzy
@@ -1625,9 +1608,8 @@ msgid "edit misc features"
 msgstr "Diverse Features bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:27
-#, fuzzy
 msgid "edit memo"
-msgstr "Video bearbeiten"
+msgstr "Memo bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:274
 msgid "Product Management"
@@ -1639,9 +1621,8 @@ msgid "edit misc product management"
 msgstr "Diverse Produktmanagement Angaben bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:300
-#, fuzzy
 msgid "edit misc layout"
-msgstr "Großes Layout"
+msgstr "Diverse Layouts bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:316
 #: zeit/workflow/browser/form.py:74
@@ -1650,9 +1631,8 @@ msgid "Workflow"
 msgstr "Workflow"
 
 #: zeit/content/article/edit/browser/form.py:323
-#, fuzzy
 msgid "edit workflow dates"
-msgstr "Status"
+msgstr "Workflow-Daten bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:340
 #: zeit/content/author/interfaces.py:38
@@ -1664,9 +1644,8 @@ msgid "Status"
 msgstr "Status"
 
 #: zeit/content/article/edit/browser/form.py:342
-#, fuzzy
 msgid "edit workflow status"
-msgstr "Status"
+msgstr "Workflow-Status bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:355
 #, fuzzy
@@ -1700,14 +1679,12 @@ msgid "Log"
 msgstr "Log"
 
 #: zeit/content/article/edit/browser/form.py:418
-#, fuzzy
 msgid "Cotext action"
 msgstr "context sensitive actions"
 
 #: zeit/content/article/edit/browser/form.py:425
-#, fuzzy
 msgid "edit urgent"
-msgstr "Termin bearbeiten"
+msgstr "Dringend bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:438
 #, fuzzy
@@ -1717,17 +1694,17 @@ msgstr "context sensitive actions"
 #: zeit/content/article/edit/browser/form.py:488
 #, fuzzy
 msgid "edit preview"
-msgstr "Video bearbeiten"
+msgstr "Preview bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:50
 #, fuzzy
 msgid "edit article content head"
-msgstr "Syndizieren"
+msgstr "Kopf des Artikelinhalts bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:72
 #, fuzzy
 msgid "edit article content body"
-msgstr "Syndizieren"
+msgstr "Textkörper des Artikels bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:78
 #, fuzzy
@@ -1735,12 +1712,10 @@ msgid "Filename"
 msgstr "Dateiname"
 
 #: zeit/content/article/edit/browser/form.py:85
-#, fuzzy
 msgid "edit new filename"
 msgstr "Neuer Dateiname"
 
 #: zeit/content/article/edit/browser/image.py:17
-#, fuzzy
 msgid "edit image"
 msgstr "Bild bearbeiten"
 
@@ -1762,7 +1737,6 @@ msgid "recension-no-items"
 msgstr "Es gibt noch keine Einträge mit Buchinformationen"
 
 #: zeit/content/article/edit/browser/recension-list.pt:77
-#, fuzzy
 msgid "Add new..."
 msgstr "Hinzufügen …"
 
@@ -1796,39 +1770,34 @@ msgid "Raw data"
 msgstr "Roh-Daten"
 
 #: zeit/content/article/edit/browser/recension.py:80
-#, fuzzy
 msgid "edit recension"
-msgstr "Rezensionsinformationen bearbeiten"
+msgstr "Rezension bearbeiten"
 
 #: zeit/content/article/edit/browser/recension.py:85
 msgid "Add book information"
 msgstr "Rezensionsinformationen hinzufügen"
 
 #: zeit/content/article/edit/browser/recension.py:88
-#, fuzzy
 msgid "add recension"
-msgstr "Rezensionsinformationen bearbeiten"
+msgstr "Rezension hinzufügen"
 
 #: zeit/content/article/edit/browser/video.py:17
-#, fuzzy
 msgid "set video"
-msgstr "Video bearbeiten"
+msgstr "Video anlegen"
 
 #: zeit/content/article/edit/browser/video.py:32
-#, fuzzy
 msgid "edit video block"
-msgstr "Video bearbeiten"
+msgstr "Videoblock bearbeiten"
 
 #: zeit/content/article/edit/citation.py:38
 #: zeit/content/article/edit/interfaces.py:210
-#, fuzzy
 msgid "Citation"
-msgstr "Registration"
+msgstr "Zitat"
 
 #: zeit/content/article/edit/division.py:28
 #, fuzzy
 msgid "Division"
-msgstr "Ausmaße"
+msgstr "Abschnitt"
 
 #: zeit/content/article/edit/image.py:69
 #: zeit/content/article/edit/interfaces.py:117
@@ -1842,9 +1811,8 @@ msgid "Image"
 msgstr "Bild"
 
 #: zeit/content/article/edit/interfaces.py:101
-#, fuzzy
 msgid "Referenced object."
-msgstr "Broken object"
+msgstr "Referenziertes Objekt"
 
 #: zeit/content/article/edit/interfaces.py:109
 #: zeit/content/article/edit/interfaces.py:143
@@ -1861,9 +1829,8 @@ msgid "Hochkant"
 msgstr "Hochkant"
 
 #: zeit/content/article/edit/interfaces.py:126
-#, fuzzy
 msgid "Custom image sub text"
-msgstr "Bildunterschrift"
+msgstr "Eigene Bildunterschrift"
 
 #: zeit/content/article/edit/interfaces.py:135
 #: zeit/content/article/edit/reference.py:64
@@ -1899,7 +1866,6 @@ msgid "The root element must be <raw>."
 msgstr "Der Wurzelkonten muss ein <container> sein."
 
 #: zeit/content/article/edit/interfaces.py:184
-#, fuzzy
 msgid "XML source"
 msgstr "XML-Quelltext"
 
@@ -1915,7 +1881,6 @@ msgid "Expires"
 msgstr "Löschdatum"
 
 #: zeit/content/article/edit/interfaces.py:213
-#, fuzzy
 msgid "Attribution"
 msgstr "Zuordnung"
 
@@ -1928,12 +1893,10 @@ msgid "URL"
 msgstr "URL"
 
 #: zeit/content/article/edit/interfaces.py:220
-#, fuzzy
 msgid "Citation 2"
 msgstr "Zitat 2"
 
 #: zeit/content/article/edit/interfaces.py:224
-#, fuzzy
 msgid "Attribution 2"
 msgstr "Zuordnung 2"
 
@@ -1943,14 +1906,12 @@ msgid "URL 2"
 msgstr "URL 2"
 
 #: zeit/content/article/edit/interfaces.py:40
-#, fuzzy
 msgid "Paragraph-Text"
-msgstr "Absatzanzahl"
+msgstr "Absatztext"
 
 #: zeit/content/article/edit/interfaces.py:58
-#, fuzzy
 msgid "Page teaser"
-msgstr "Teaser anzeigen"
+msgstr "Seiten-Teaser"
 
 #: zeit/content/article/edit/interfaces.py:73
 #: zeit/content/article/edit/interfaces.py:107
@@ -2013,7 +1974,7 @@ msgstr "<ol>"
 #: zeit/content/article/edit/paragraph.py:115
 #, fuzzy
 msgid "<intertitle>"
-msgstr "Spitzmarke"
+msgstr "Zwischenüberschrift"
 
 #: zeit/content/article/edit/paragraph.py:75
 msgid "<p>"
@@ -2117,16 +2078,14 @@ msgid "Lastname"
 msgstr "Nachname"
 
 #: zeit/content/author/interfaces.py:20
-#, fuzzy
 msgid "Email address"
-msgstr "Link-Adresse (URL)"
+msgstr "E-Mail-Adresse"
 
 #: zeit/content/author/interfaces.py:22
 msgid "VG-Wort ID"
 msgstr "VG-Wort-ID"
 
 #: zeit/content/author/interfaces.py:27
-#, fuzzy
 msgid "VG-Wort Code"
 msgstr "VG-Wort-ID"
 
@@ -2277,7 +2236,6 @@ msgstr "Auschecken"
 #: zeit/content/cp/browser/publish.pt:9
 #: zeit/workflow/browser/publish.pt:7
 #: zeit/workflow/browser/retract.pt:6
-#, fuzzy
 msgid "Reloading"
 msgstr "lade neu"
 
@@ -2478,7 +2436,6 @@ msgstr "Zeit"
 
 #. Default: ""
 #: zeit/content/cp/teaser.py:158
-#, fuzzy
 msgid "\"${name}\" is referenced by a free teaser in \"${teaser}\""
 msgstr "Achtung: »${name}« wird von dem Teaser »${teaser}« referenziert. Inhaltliche Änderungen sollten auch im Teaser nachgepflegt werden."
 
@@ -2981,9 +2938,8 @@ msgid "View playlist"
 msgstr "Playlist anzeigen"
 
 #: zeit/content/video/interfaces.py:70
-#, fuzzy
 msgid "Videos in the playlist"
-msgstr "Playlist anzeigen"
+msgstr "Video-Playlist anzeigen"
 
 #: zeit/content/video/playlist.py:36
 msgid "Playlist"
