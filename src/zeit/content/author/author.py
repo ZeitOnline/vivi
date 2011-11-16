@@ -58,11 +58,15 @@ def update_display_name(obj, event):
 
 @grokcore.component.subscribe(
     zeit.cms.content.interfaces.ICommonMetadata,
-    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
-def update_freetext_authors(obj, event):
-    ref_names = [x.display_name for x in obj.author_references]
-    if ref_names:
-        obj.authors = ref_names
+    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+def modified(obj, event):
+    if event.descriptions:
+        for description in event.descriptions:
+            if (description.interface ==
+                zeit.cms.content.interfaces.ICommonMetadata and
+                'author_references' in description.attributes):
+                ref_names = [x.display_name for x in obj.author_references]
+                obj.authors = ref_names
 
 
 class Dependencies(grokcore.component.Adapter):
