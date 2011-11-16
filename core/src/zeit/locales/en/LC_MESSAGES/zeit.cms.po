@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Wed Nov 16 15:05:30 2011\n"
+"POT-Creation-Date: Wed Nov 16 15:52:57 2011\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
@@ -1754,6 +1754,7 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/recension.py:15
 #: zeit/content/article/edit/browser/recension.py:21
+#: zeit/content/article/edit/browser/recension-list.pt:2
 msgid "Recensions"
 msgstr ""
 

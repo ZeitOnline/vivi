@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Nov 16 15:05:30 2011\n"
+"POT-Creation-Date: Wed Nov 16 15:52:57 2011\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -1774,6 +1774,7 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/recension.py:15
 #: zeit/content/article/edit/browser/recension.py:21
+#: zeit/content/article/edit/browser/recension-list.pt:2
 msgid "Recensions"
 msgstr ""
 
