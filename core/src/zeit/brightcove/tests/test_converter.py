@@ -178,6 +178,10 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
             ['http://xml.zeit.de/online/2007/01/Somalia'],
             [x.uniqueId for x in related.related])
 
+    def test_comments_should_default_to_true(self):
+        video = Video.find_by_id('1234')
+        self.assertTrue(video.commentsAllowed)
+
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 

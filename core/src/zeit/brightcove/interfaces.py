@@ -84,6 +84,10 @@ class IVideo(IBrightcoveContent,
         required=False,
         readonly=True)
 
+    commentsAllowed = zope.schema.Bool(
+        title=_('Comments allowed'),
+        default=True)
+
 
 class IPlaylist(IBrightcoveContent):
     """A playlist."""
