@@ -6,6 +6,8 @@ zeit.brightcove changes
 
 - Import and export references (#9831).
 
+- Fix change detection of playlists (#9976)
+
 
 2.0.0 (2011-11-13)
 ------------------

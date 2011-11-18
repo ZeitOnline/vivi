@@ -417,6 +417,10 @@ class Playlist(Converter):
                 for id in self.data['videoIds'])
             if video is not None)
 
+    @videos.setter
+    def videos(self, value):
+        self.data['videoIds'] = [int(video.brightcove_id) for video in value]
+
     @classmethod
     def find_by_ids(class_, ids):
         ids = ','.join(str(i) for i in ids)

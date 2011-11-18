@@ -243,6 +243,15 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
             'http://xml.zeit.de/video/playlist/2345')
         self.assertEqual(u'upstream change', playlist.title)
 
+    def test_changed_videoids_should_be_written(self):
+        PLAYLIST_2345['videoIds'] = [1234]
+        update_from_brightcove()
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/2345')
+        self.assertEqual(
+            ['http://xml.zeit.de/video/2010-03/1234'],
+            [v.uniqueId for v in playlist.videos])
+
     def test_if_local_data_equals_brightcove_it_should_not_be_written(self):
         with mock.patch('zeit.brightcove.converter.Playlist.to_cms') as to_cms:
             update_from_brightcove()

@@ -153,12 +153,16 @@ class PlaylistUpdater(BaseUpdater):
 
     def update(self):
         current = self.bcobj.from_cms(self.cmsobj)
-        update = True
+        update = False
 
-        curdata = dict(name=current.data['name'])
-        newdata = dict(name=self.bcobj.data['name'])
-        if curdata == newdata:
-            update = False
+        curdata = current.data
+        newdata = self.bcobj.data
+        for key in self.bcobj.fields.split(','):
+            if key == 'id':
+                continue
+            if curdata.get(key) != newdata.get(key):
+                update = True
+                break
 
         if update:
             log.info('Updating %s', self.bcobj)
