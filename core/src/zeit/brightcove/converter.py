@@ -363,7 +363,7 @@ class Video(Converter):
 
     @classmethod
     def from_cms(cls, video):
-        instance = cls(data=dict(id='foo'))
+        instance = cls(data=dict(id=video.brightcove_id))
         instance.id = video.brightcove_id
         for key in zeit.content.video.interfaces.IVideo:
             try:
@@ -447,7 +447,7 @@ class Playlist(Converter):
 
     @classmethod
     def from_cms(cls, playlist):
-        instance = cls(data=dict(id='foo'))
+        instance = cls(data=dict(id=int(playlist.__name__)))
         for key in zeit.content.video.interfaces.IPlaylist:
             try:
                 setattr(instance, key, getattr(playlist, key))
