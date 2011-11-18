@@ -208,27 +208,6 @@ class Converter(object):
         return zope.component.getUtility(
             zeit.brightcove.interfaces.IAPIConnection)
 
-    def save(self):
-        registered = getattr(self, '_v_save_hook_registered', False)
-        if not registered:
-            transaction.get().addBeforeCommitHook(self._save)
-            self._v_save_hook_registered = True
-
-    def _save(self):
-        try:
-            del self._v_save_hook_registered
-        except AttributeError:
-            pass
-        __traceback_info__ = (self.data,)
-
-        data = dict(self.data)
-        if 'customFields' in data:
-            data['customFields'] = dict(data['customFields'])
-        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate']
-        for field in READ_ONLY:
-            data.pop(field, None)
-        self.get_connection().post('update_video', video=data)
-
     def __str__(self):
         return '<%s id=%s>' % (self.__class__.__name__, self.id)
 
@@ -342,6 +321,27 @@ class Video(Converter):
         return datetime.datetime.fromtimestamp(modified/1000).year
 
     # XXX year.setter is missing
+
+    def save(self):
+        registered = getattr(self, '_v_save_hook_registered', False)
+        if not registered:
+            transaction.get().addBeforeCommitHook(self._save)
+            self._v_save_hook_registered = True
+
+    def _save(self):
+        try:
+            del self._v_save_hook_registered
+        except AttributeError:
+            pass
+        __traceback_info__ = (self.data,)
+
+        data = dict(self.data)
+        if 'customFields' in data:
+            data['customFields'] = dict(data['customFields'])
+        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate']
+        for field in READ_ONLY:
+            data.pop(field, None)
+        self.get_connection().post('update_video', video=data)
 
     def to_cms(self, video=None):
         log.debug('Converting video to cms object %s', self.uniqueId)
@@ -505,6 +505,9 @@ def adapt_old_video_id_to_new_object(old_id):
         return playlist_location(None).get(pls_id)
 
 
+@grok.subscribe(
+    zeit.content.video.interfaces.IVideo,
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_brightcove(context, event):
     if not event.publishing:
         zeit.brightcove.interfaces.IBrightcoveObject(context).save()

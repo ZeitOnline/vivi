@@ -282,16 +282,6 @@ class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertTrue(info.published)
         self.assertGreater(info.date_last_published, last_published)
 
-    def test_playlist_is_updated_on_checkin(self):
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
-        with zeit.cms.checkout.helper.checked_out(
-                playlist, semantic_change=True) as co:
-            co.title = u'local change'
-        transaction.commit()
-        self.assertEqual(
-            1, len(zeit.brightcove.testing.RequestHandler.posts_received))
-
     def test_changes_are_written_on_commit(self):
         video = Video.find_by_id('1234')
         video.subtitle = u'A new subtitle'

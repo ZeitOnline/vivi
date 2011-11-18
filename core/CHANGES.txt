@@ -8,6 +8,9 @@ zeit.brightcove changes
 
 - Fix change detection of playlists (#9976)
 
+- Remove bits and pieces which try to save playlists back to brightcove:
+  playlists are not changed in the CMS so there is no need to actually update
+  brightcove.
 
 2.0.0 (2011-11-13)
 ------------------
