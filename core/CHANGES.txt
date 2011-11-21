@@ -12,6 +12,8 @@ zeit.brightcove changes
   playlists are not changed in the CMS so there is no need to actually update
   brightcove.
 
+- Map brightcove release date correcly to date first released.
+
 2.0.0 (2011-11-13)
 ------------------
 

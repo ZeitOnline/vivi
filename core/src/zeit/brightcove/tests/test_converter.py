@@ -131,7 +131,7 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(
             Video.find_by_id('1234').to_cms())
         date = datetime.datetime(2010, 3, 8, 12, 59, 57, tzinfo=pytz.UTC)
-        self.assertEqual(date, info.date_last_published)
+        self.assertEqual(date, info.date_first_released)
 
     def test_publish_date_is_not_transferred_from_cms(self):
         bcobj = Video.find_by_id('1234')
