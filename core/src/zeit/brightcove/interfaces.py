@@ -20,11 +20,6 @@ class IBrightcoveObject(zope.interface.Interface):
     """A representation of an object as stored in Brightcove."""
 
 
-class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
-    config_url = 'source-serie'
-    product_configuration = 'zeit.brightcove'
-
-
 class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
     id = zope.schema.Int(

@@ -16,6 +16,9 @@ zeit.brightcove changes
 
 - Default Daily Newsletter to false for videos.
 
+- Move serie source to zeit.content.video.
+
+
 2.0.0 (2011-11-13)
 ------------------
 
