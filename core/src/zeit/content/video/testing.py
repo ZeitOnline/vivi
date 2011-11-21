@@ -2,16 +2,26 @@
 # See also LICENSE.txt
 
 import gocept.selenium.ztk
+import pkg_resources
 import zeit.cms.testing
 import zeit.solr.testing
 import zope.testing.doctest
+
+
+product_config = """\
+<product-config zeit.content.video>
+    source-serie file://{0}
+</product-config>
+""".format(
+    pkg_resources.resource_filename(__name__, 'tests/serie.xml'))
 
 
 ZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         zeit.cms.testing.cms_product_config +
-        zeit.solr.testing.product_config))
+        zeit.solr.testing.product_config +
+        product_config))
 
 class Layer(ZCMLLayer,
             zeit.solr.testing.SolrMockLayerBase):

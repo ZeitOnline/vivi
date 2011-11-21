@@ -21,6 +21,12 @@ class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
         readonly=True)
 
 
+class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
+    config_url = 'source-serie'
+    product_configuration = 'zeit.content.video'
+
+
+
 class IVideo(IVideoContent):
 
     has_recensions = zope.schema.Bool(
@@ -42,6 +48,11 @@ class IVideo(IVideoContent):
         title=_('URI of the video file'),
         required=False,
         readonly=True)
+
+    serie = zope.schema.Choice(
+        title=_("Serie"),
+        source=SerieSource(),
+        required=False)
 
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
