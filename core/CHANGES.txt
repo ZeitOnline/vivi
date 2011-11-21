@@ -14,6 +14,8 @@ zeit.brightcove changes
 
 - Map brightcove release date correcly to date first released.
 
+- Default Daily Newsletter to false for videos.
+
 2.0.0 (2011-11-13)
 ------------------
 

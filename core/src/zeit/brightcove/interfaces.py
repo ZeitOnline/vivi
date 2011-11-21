@@ -90,7 +90,7 @@ class IVideo(IBrightcoveContent,
 
     dailyNewsletter = zope.schema.Bool(
         title=_("Daily newsletter"),
-        default=True)
+        default=False)
 
     banner = zope.schema.Bool(
         title=_("Banner"),
