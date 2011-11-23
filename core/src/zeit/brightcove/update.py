@@ -68,9 +68,9 @@ class BaseUpdater(object):
             folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
             log.debug('Adding ...')
             folder[str(self.bcobj.id)] = self.bcobj.to_cms()
-            cmsobj = folder[str(self.bcobj.id)]
+            self.cmsobj = folder[str(self.bcobj.id)]
             log.debug('Create publish job')
-            zeit.cms.workflow.interfaces.IPublish(cmsobj).publish()
+            self._publish_if_allowed()
             return True
 
     def delete(self):
@@ -78,6 +78,9 @@ class BaseUpdater(object):
 
     def update(self):
         pass
+
+    def _publish_if_allowed(self):
+        zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
 
 
 class VideoUpdater(BaseUpdater):
@@ -91,17 +94,23 @@ class VideoUpdater(BaseUpdater):
             from_date=from_date)
 
     def delete(self):
-        if self.bcobj.item_state != 'ACTIVE':
-            if self.cmsobj is None:
-                # Deleted in BC and no CMS object. We're done.
-                return True
-            log.info('Deleting %s', self.bcobj)
-            if zeit.cms.workflow.interfaces.IPublishInfo(
-                    self.cmsobj).published:
-                zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract()
-            folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
-            del folder[str(self.bcobj.id)]
+        if self.bcobj.item_state == 'ACTIVE':
+            # Handled elsewhere
+            return False
+        if self.bcobj.item_state == 'DELETED' and self.cmsobj is None:
+            # Deleted in BC and no CMS object. We're done.
             return True
+        if self.bcobj.item_state == 'INACTIVE' and self.cmsobj is None:
+            # The item needs to be imported (but must not be published)
+            return False
+        if zeit.cms.workflow.interfaces.IPublishInfo(
+                self.cmsobj).published:
+            log.info('Retracting %s', self.bcobj)
+            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract()
+        elif self.bcobj.item_state == 'DELETED':
+            log.info('Deleting %s', self.bcobj)
+            del self.cmsobj.__parent__[self.cmsobj.__name__]
+        return True
 
     def update(self):
         # Update video in CMS iff the BC version is newer.
@@ -134,8 +143,12 @@ class VideoUpdater(BaseUpdater):
         if update or not info.published:
             # If updated, publish in anycase; otherwise re-publish if not
             # published
-            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
+            self._publish_if_allowed()
         return True
+
+    def _publish_if_allowed(self):
+        if self.bcobj.item_state == 'ACTIVE':
+            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
 
 
 class PlaylistUpdater(BaseUpdater):

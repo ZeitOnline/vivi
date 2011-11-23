@@ -18,6 +18,11 @@ zeit.brightcove changes
 
 - Move serie source to zeit.content.video.
 
+- BC-Deleted videos are now retracted in one pass and deleted in a second
+  pass. This means that they are actually being retracted.
+
+- BC-Inactive videos are now kept in the CMS as unpublished objects.
+
 
 2.0.0 (2011-11-13)
 ------------------
