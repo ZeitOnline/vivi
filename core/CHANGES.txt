@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.0.1 (unreleased)
+2.0.1 (2011-11-23)
 ------------------
 
 - Import and export references (#9831).
