@@ -23,7 +23,7 @@ Videos hava a view:
 <...
           <span>Title</span>
           ...
-          <span>Subtitle</span>
+          <span>Teaser text</span>
           ...
 
 
@@ -47,6 +47,14 @@ Videos use a special serie:
 
 >>> browser.getControl('Serie').displayOptions
 ['(no value)', 'VIDEO', 'erde/energie', 'erde/klima', 'erde/nachhaltigkeit', 'erde/technologie', 'erde/umwelt']
+
+There is no subtitle:
+
+>>> browser.getControl('Subtitle')
+Traceback (most recent call last):
+    ...
+LookupError: label 'Subtitle'
+
 
 
 

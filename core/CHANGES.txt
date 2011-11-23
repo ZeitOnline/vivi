@@ -6,6 +6,8 @@ zeit.content.video changes
 
 - Use special video series.
 
+- Hide the subtitle field.
+
 
 2.0 (2011-11-13)
 ----------------

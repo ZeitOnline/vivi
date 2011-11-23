@@ -23,7 +23,7 @@ class Edit(zeit.cms.browser.form.EditForm):
         zope.dublincore.interfaces.IDCTimes,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE
     ).select(
-            'supertitle', 'title', 'subtitle', 'teaserText',
+            'supertitle', 'title', 'teaserText',
             'product', 'ressort', 'keywords', 'serie',
             'dailyNewsletter', 'banner', 'banner_id',
             'breaking_news', 'has_recensions', 'commentsAllowed',
@@ -36,7 +36,7 @@ class Edit(zeit.cms.browser.form.EditForm):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Texts"),
-            ('supertitle', 'title', 'subtitle', 'teaserText'),
+            ('supertitle', 'title', 'teaserText'),
             css_class='wide-widgets column-left'),
         gocept.form.grouped.Fields(
             _("Navigation"),
