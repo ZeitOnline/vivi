@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.0.2 (unreleased)
+2.0.2 (2011-11-23)
 ------------------
 
 - Fix 2.0.1 which misses serie.xml file
