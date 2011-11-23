@@ -186,7 +186,7 @@ class PlaylistUpdater(BaseUpdater):
                     self.bcobj.to_cms(co)
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.cmsobj)
         if update or not info.published:
-            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
+            self._publish_if_allowed()
         return True
 
     @classmethod
