@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.0.1 (unreleased)
+2.0.1 (2011-11-23)
 ------------------
 
 - Use special video series.
