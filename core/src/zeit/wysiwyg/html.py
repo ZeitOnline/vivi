@@ -11,7 +11,6 @@ import lxml.etree
 import lxml.objectify
 import pytz
 import rwproperty
-import time
 import zc.iso8601.parse
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
