@@ -14,12 +14,6 @@
     <require
       set_schema=".interfaces.IInfobox"
       permission="zeit.EditContent" />
-    <require
-      interface="zeit.cms.content.interfaces.IXMLContent"
-      permission="zope.View" />
-    <require
-      set_schema="zeit.cms.content.interfaces.IXMLContent"
-      permission="zeit.EditContent" />
   </class>
 
   <!-- reference -->

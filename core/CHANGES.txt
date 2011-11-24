@@ -4,7 +4,8 @@ zeit.content.infobox changes
 1.23.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make infobox an IXMLContent. It is expected from content to implement
+  ICMSContent (which is implied in IXMLContent). (#10017)
 
 
 1.23.4 (2011-11-13)

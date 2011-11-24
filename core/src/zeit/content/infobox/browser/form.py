@@ -20,8 +20,7 @@ import zope.formlib.form
 class FormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.infobox.interfaces.IInfobox,
-        zeit.cms.interfaces.ICMSContent)
+        zeit.content.infobox.interfaces.IInfobox).omit('xml')
 
     field_groups = (
         gocept.form.grouped.Fields(
