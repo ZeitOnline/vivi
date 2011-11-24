@@ -3,11 +3,10 @@
 # See also LICENSE.txt
 """Interface definitions for the link content type."""
 
-import zope.schema
-import zc.sourcefactory.basic
-
-import zeit.cms.content.interfaces
 from zeit.cms.i18n import MessageFactory as _
+import zc.sourcefactory.basic
+import zeit.cms.content.interfaces
+import zope.schema
 
 
 class TargetSource(zc.sourcefactory.basic.BasicSourceFactory):
