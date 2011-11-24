@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.50.2 (unreleased)
+1.50.2 (2011-11-24)
 -------------------
 
 - Make link an IXMLContent. It is expected from content to implement
