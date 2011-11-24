@@ -4,7 +4,9 @@ zeit.content.article changes
 2.9.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix ordering issue with images: let the PageBreakStep before the
+  XMLImageStructureStep because XMLImageStructureStep does not expect an extra
+  level of tags (that is it gets confused by `<division><p><image>`).
 
 
 2.9.2 (2011-06-20)
