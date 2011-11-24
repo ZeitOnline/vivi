@@ -16,8 +16,7 @@ class FormBase(object):
 
     form_fields = zope.formlib.form.FormFields(
             zeit.content.portraitbox.interfaces.IPortraitbox,
-            zeit.cms.interfaces.ICMSContent,
-            zeit.wysiwyg.interfaces.IHTMLContent).omit('text')
+            zeit.wysiwyg.interfaces.IHTMLContent).omit('text', 'xml')
 
     field_groups = (
         gocept.form.grouped.RemainingFields(

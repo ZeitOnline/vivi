@@ -13,12 +13,6 @@
     <require
       set_schema=".interfaces.IPortraitbox"
       permission="zeit.EditContent" />
-    <require
-      interface="zeit.cms.content.interfaces.IXMLContent"
-      permission="zope.View" />
-    <require
-      set_schema="zeit.cms.content.interfaces.IXMLContent"
-      permission="zeit.EditContent" />
   </class>
 
   <adapter factory=".portraitbox.PortraitboxHTMLContent" />

@@ -3,12 +3,13 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
+import zeit.cms.content.interfaces
 import zeit.content.image.interfaces
 import zope.interface
 import zope.schema
 
 
-class IPortraitbox(zope.interface.Interface):
+class IPortraitbox(zeit.cms.content.interfaces.IXMLContent):
 
     name = zope.schema.TextLine(
         title=_('First and last name'))
