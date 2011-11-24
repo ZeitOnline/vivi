@@ -4,7 +4,8 @@ zeit.cms changes
 1.50.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make link an IXMLContent. It is expected from content to implement
+  ICMSContent (which is implied in IXMLContent). (#10017)
 
 
 1.50.1 (2011-11-13)
