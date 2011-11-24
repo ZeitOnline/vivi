@@ -1,12 +1,11 @@
 # Copyright (c) 2007-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zope.interface
-import zope.schema
-
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.content.image.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zope.interface
+import zope.schema
 
 
 class IPortraitbox(zope.interface.Interface):
