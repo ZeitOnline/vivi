@@ -1,6 +1,12 @@
 zeit.content.portraitbox changes
 ================================
 
+1.22.9 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 1.22.8 (2011-11-24)
 -------------------
 
