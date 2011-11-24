@@ -12,7 +12,7 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
     construct: function() {
         var self = this;
         self.container_class = $('kind').value;
-        self.browse_filter = 'brightcove-content'
+        self.browse_filter = 'video-or-playlist'
         arguments.callee.$.construct.call(self);
 
         if (self.container_class == 'video') {
