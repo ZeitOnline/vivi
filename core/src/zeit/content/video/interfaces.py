@@ -54,6 +54,11 @@ class IVideo(IVideoContent):
         source=SerieSource(),
         required=False)
 
+    id_prefix = zope.schema.TextLine(
+        title=_('Id prefix'),
+        required=True,
+        readonly=True)
+
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
 

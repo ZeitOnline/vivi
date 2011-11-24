@@ -14,6 +14,18 @@ class TestVideo(zeit.content.video.testing.TestCase):
         self.assertEqual(
             u'', video.xml['body']['subtitle'])
 
+    def test_security_should_allow_access_to_id_prefix(self):
+        import zeit.cms.testing
+        import zope.security.management
+        from zope.security.proxy import ProxyFactory
+        factory = zeit.content.video.testing.video_factory(self)
+        factory.next()
+        video = factory.next()  # in repository
+        zope.security.management.endInteraction()
+        with zeit.cms.testing.interaction('zope.mgr'):
+            proxied = ProxyFactory(video)
+            self.assertEqual('vid', proxied.id_prefix)
+
 
 class TestReference(zeit.content.video.testing.TestCase):
 
