@@ -4,7 +4,7 @@ zeit.content.video changes
 2.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix access to `id_prefix` for videos and playlists (#10015)
 
 
 2.0.2 (2011-11-23)
