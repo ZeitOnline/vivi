@@ -1,7 +1,7 @@
 zeit.content.portraitbox changes
 ================================
 
-1.22.8 (unreleased)
+1.22.8 (2011-11-24)
 -------------------
 
 - Make portraitbox an IXMLContent. It is expected from content to implement
