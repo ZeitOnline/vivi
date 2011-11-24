@@ -28,6 +28,18 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
         self.assertEqual(
             u'The big Foo', pls.xml['body']['videos']['video']['title'])
 
+    def test_security_should_allow_access_to_id_prefix(self):
+        import zeit.cms.testing
+        import zope.security.management
+        from zope.security.proxy import ProxyFactory
+        factory = zeit.content.video.testing.playlist_factory(self)
+        factory.next()
+        pls = factory.next()  # in repository
+        zope.security.management.endInteraction()
+        with zeit.cms.testing.interaction('zope.mgr'):
+            proxied = ProxyFactory(pls)
+            self.assertEqual('pls', proxied.id_prefix)
+
 
 class TestReferencesAdapter(zeit.content.video.testing.TestCase):
 

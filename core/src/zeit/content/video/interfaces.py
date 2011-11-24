@@ -20,6 +20,11 @@ class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
         required=False,
         readonly=True)
 
+    id_prefix = zope.schema.TextLine(
+        title=_('Id prefix'),
+        required=True,
+        readonly=True)
+
 
 class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
     config_url = 'source-serie'
@@ -53,11 +58,6 @@ class IVideo(IVideoContent):
         title=_("Serie"),
         source=SerieSource(),
         required=False)
-
-    id_prefix = zope.schema.TextLine(
-        title=_('Id prefix'),
-        required=True,
-        readonly=True)
 
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
