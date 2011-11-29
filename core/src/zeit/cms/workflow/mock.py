@@ -1,14 +1,12 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """A mock workflow component for testing."""
-
-import zope.component
-import zope.interface
-import zope.testing.cleanup
 
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
+import zope.component
+import zope.interface
+import zope.testing.cleanup
 
 
 _can_publish = {}
@@ -47,7 +45,6 @@ class MockPublish(object):
         zope.event.notify(
             zeit.cms.workflow.interfaces.RetractedEvent(self.context,
                                                         self.context))
-
 
 
 _published = {}
