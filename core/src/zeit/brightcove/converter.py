@@ -26,7 +26,6 @@ import zope.component
 import zope.interface
 
 
-
 log = logging.getLogger(__name__)
 
 
