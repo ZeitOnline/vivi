@@ -134,7 +134,6 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertGreater(info.date_last_published, last_published)
 
     def test_unpublished_videos_should_be_published(self):
-        zeit.workflow.testing.run_publish()  # run pending jobs
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234')
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
@@ -336,7 +335,6 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertGreater(info.date_last_published, last_published)
 
     def test_unpublished_playlists_should_be_published(self):
-        zeit.workflow.testing.run_publish()  # run pending jobs
         pls = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/playlist/2345')
         info = zeit.cms.workflow.interfaces.IPublishInfo(pls)
