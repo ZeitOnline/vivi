@@ -7,6 +7,7 @@ from zeit.wysiwyg.util import contains_element
 import copy
 import datetime
 import htmlentitydefs
+import lxml.builder
 import lxml.etree
 import lxml.objectify
 import pytz
@@ -133,7 +134,7 @@ class HTMLConverter(object):
     def _copy(self, tree):
         """return a copy of `tree` that contains only those nodes we know how
         to deal with."""
-        root = lxml.objectify.E.body()
+        root = lxml.builder.E.body()
         xpath = self.covered_xpath()
         if not xpath:
             return root
@@ -390,9 +391,8 @@ class XMLImageStructureStep(ConversionStep):
             stripped = lxml.objectify.XML(
                 lxml.etree.tostring(node, encoding=unicode).rsplit(
                     node.tail, 1)[0])
-            parent.addnext(lxml.objectify.E.p(node.tail))
+            parent.addnext(lxml.builder.E.p(node.tail))
             node.getparent().replace(node, stripped)
-            lxml.objectify.deannotate(parent.getnext())
 
 
 class ImageStep(ConversionStep):
@@ -415,14 +415,14 @@ class ImageStep(ConversionStep):
             else:
                 url = self.url(image)
 
-        img = lxml.objectify.E.img()
+        img = lxml.builder.E.img()
         if url:
             img.set('src', url)
         layout = node.get('layout')
         if layout:
             img.set('title', layout)
         # wrap in a <p> so html is happy
-        return lxml.objectify.E.p(img)
+        return lxml.builder.E.p(img)
 
     def to_xml(self, node):
         repository_url = self.url(self.repository)
@@ -506,11 +506,10 @@ class AudioStep(ConversionStep):
     def to_html(self, node):
         id_ = node.get('audioID')
         expires = self.datetime_to_html(node.get('expires'))
-        new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(id_, **{'class': 'audioId'}),
-            lxml.objectify.E.div(expires, **{'class': 'expires'}),
+        new_node = lxml.builder.E.div(
+            lxml.builder.E.div(id_, **{'class': 'audioId'}),
+            lxml.builder.E.div(expires, **{'class': 'expires'}),
             **{'class': 'inline-element audio'})
-        lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
@@ -540,13 +539,12 @@ class VideoStep(ConversionStep):
         expires = self.datetime_to_html(node.get('expires'))
         format = node.get('format') or ''
 
-        new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(id1, **{'class': 'videoId'}),
-            lxml.objectify.E.div(id2, **{'class': 'videoId2'}),
-            lxml.objectify.E.div(expires, **{'class': 'expires'}),
-            lxml.objectify.E.div(format, **{'class': 'format'}),
+        new_node = lxml.builder.E.div(
+            lxml.builder.E.div(id1, **{'class': 'videoId'}),
+            lxml.builder.E.div(id2, **{'class': 'videoId2'}),
+            lxml.builder.E.div(expires, **{'class': 'expires'}),
+            lxml.builder.E.div(format, **{'class': 'format'}),
             **{'class': 'inline-element video'})
-        lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
@@ -579,7 +577,7 @@ class VideoStep(ConversionStep):
         nodes = node.xpath('div[@class="format"]')
         if nodes:
             format = unicode(nodes[0])
-        new_node = lxml.objectify.E.video(
+        new_node = lxml.builder.E.video(
             href=id1, href2=id2,
             expires=expires, format=format)
         return new_node
@@ -624,9 +622,8 @@ class RawXMLStep(ConversionStep):
             result.append(lxml.etree.tostring(
                 child, pretty_print=True, encoding=unicode))
         text = '\n'.join(result)
-        new_node = lxml.objectify.E.div(
+        new_node = lxml.builder.E.div(
             text, **{'class': 'inline-element raw'})
-        lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
@@ -645,11 +642,10 @@ class ReferenceStep(ConversionStep):
         self.xpath_html = './/*[contains(@class, "%s")]' % self.content_type
 
     def to_html(self, node):
-        href = node.get('href')
-        new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(href, **{'class': 'href'}),
+        href = node.get('href') or ''
+        new_node = lxml.builder.E.div(
+            lxml.builder.E.div(href, **{'class': 'href'}),
             **{'class': 'inline-element %s' % self.content_type})
-        lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
@@ -674,9 +670,8 @@ class PortraitboxStep(ReferenceStep):
 
     def to_html(self, node):
         new_node = super(PortraitboxStep, self).to_html(node)
-        layout = lxml.objectify.E.div(
-            node.get('layout'), **{'class': 'layout'})
-        lxml.objectify.deannotate(layout)
+        layout = lxml.builder.E.div(
+            node.get('layout') or '', **{'class': 'layout'})
         new_node.append(layout)
         return new_node
 
@@ -710,11 +705,10 @@ class CitationStep(ConversionStep):
     def to_html(self, node):
         children = []
         for name in self.attributes:
-            children.append(lxml.objectify.E.div(
+            children.append(lxml.builder.E.div(
                 node.get(name) or ' ', **{'class': name}))
-        new_node = lxml.objectify.E.div(
+        new_node = lxml.builder.E.div(
             *children, **{'class': 'inline-element citation'})
-        lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
@@ -734,9 +728,8 @@ class RelatedsStep(ConversionStep):
     weight = +1.5
 
     def to_html(self, node):
-        new_node = lxml.objectify.E.div(
+        new_node = lxml.builder.E.div(
             ' ', **{'class': 'inline-element related'})
-        lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
@@ -758,8 +751,7 @@ class InlineElementAppendParagraph(ConversionStep):
     def to_html(self, node):
         index = node.getparent().index(node)
         # Note: between the ' ' there is a non-breaking space.
-        p = lxml.objectify.E.p(u' ')
-        lxml.objectify.deannotate(p)
+        p = lxml.builder.E.p(u' ')
         node.getparent().insert(index + 1, p)
         return node
 
