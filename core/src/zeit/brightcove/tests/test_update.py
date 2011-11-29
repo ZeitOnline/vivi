@@ -4,6 +4,7 @@
 from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
 from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.update import update_from_brightcove
+import datetime
 import mock
 import time
 import transaction
@@ -142,6 +143,25 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         zeit.workflow.testing.run_publish()
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertTrue(info.published)
+
+    def test_published_but_changed_videos_should_be_published_again(self):
+        # this behaviour is useful in problematic cases such as
+        # 1. update_from_brightcove: new video
+        # 2. publish of said video fails for some reason
+        # 3. update_from_brightcove: no changes, but we should try to publish
+        #    again so the changes from (1) become visible
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        info.published = True
+        # force last_published < last_modified
+        info.date_last_published -= datetime.timedelta(hours=1)
+        last_published = info.date_last_published
+
+        update_from_brightcove()
+        zeit.workflow.testing.run_publish()
+        info = zeit.cms.workflow.interfaces.IPublishInfo(video)
+        self.assertGreater(info.date_last_published, last_published)
 
     def test_deleted_and_not_published_should_be_deleted_from_cms(self):
         video = zeit.cms.interfaces.ICMSContent(
@@ -344,6 +364,19 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(pls)
         self.assertTrue(info.published)
 
+    def test_published_but_changed_playlists_should_be_published_again(self):
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/2345')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        info.published = True
+        # force last_published < last_modified
+        info.date_last_published -= datetime.timedelta(hours=1)
+        last_published = info.date_last_published
+
+        update_from_brightcove()
+        zeit.workflow.testing.run_publish()
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        self.assertGreater(info.date_last_published, last_published)
 
     def test_playlist_no_longer_in_brightcove_is_deleted_from_cms(self):
         self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(

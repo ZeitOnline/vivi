@@ -79,6 +79,23 @@ class BaseUpdater(object):
     def update(self):
         pass
 
+    def _update_cmsobj(self):
+        log.info('Updating %s', self.bcobj)
+        with zeit.cms.checkout.helper.checked_out(
+            self.cmsobj, semantic_change=True, events=False) as co:
+            # We don't need to send events here as a full checkout/checkin
+            # cycle is done during publication anyway, below.
+            if co is None:
+                log.warning('Could not update %s' % self.cmsobj)
+            else:
+                self.bcobj.to_cms(co)
+        self._publish_if_allowed()
+
+    def _publish_cmsobj(self):
+        info = zeit.cms.workflow.interfaces.IPublicationStatus(self.cmsobj)
+        if info.published in ('not-published', 'published-with-changes'):
+            self._publish_if_allowed()
+
     def _publish_if_allowed(self):
         zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
 
@@ -115,7 +132,7 @@ class VideoUpdater(BaseUpdater):
     def update(self):
         # Update video in CMS iff the BC version is newer.
         new = self.bcobj.to_cms()
-        update = True
+        changed = True
 
         # A bug in Brightcove may cause the last-modified date to remain
         # unchanged even when the video-still URL is actually changed.
@@ -128,22 +145,10 @@ class VideoUpdater(BaseUpdater):
             new).last_semantic_change
         if (current_mtime and new_mtime and current_mtime >= new_mtime and
             self.cmsobj.video_still == new.video_still):
-            update = False
-        if update:
-            log.info('Updating %s', self.bcobj)
-            with zeit.cms.checkout.helper.checked_out(
-                self.cmsobj, semantic_change=True, events=False) as co:
-                # We don't need to send events here as a full checkout/checkin
-                # cycle is done duing publication anyway.
-                if co is None:
-                    log.warning('Could not update video')
-                else:
-                    self.bcobj.to_cms(co)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.cmsobj)
-        if update or not info.published:
-            # If updated, publish in anycase; otherwise re-publish if not
-            # published
-            self._publish_if_allowed()
+            changed = False
+        if changed:
+            self._update_cmsobj()
+        self._publish_cmsobj()
         return True
 
     def _publish_if_allowed(self):
@@ -166,7 +171,7 @@ class PlaylistUpdater(BaseUpdater):
 
     def update(self):
         current = self.bcobj.from_cms(self.cmsobj)
-        update = False
+        changed = False
 
         curdata = current.data
         newdata = self.bcobj.data
@@ -174,19 +179,12 @@ class PlaylistUpdater(BaseUpdater):
             if key == 'id':
                 continue
             if curdata.get(key) != newdata.get(key):
-                update = True
+                changed = True
                 break
 
-        if update:
-            log.info('Updating %s', self.bcobj)
-            with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
-                if co is None:
-                    log.warning('Could not update playlist')
-                else:
-                    self.bcobj.to_cms(co)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.cmsobj)
-        if update or not info.published:
-            self._publish_if_allowed()
+        if changed:
+            self._update_cmsobj()
+        self._publish_cmsobj()
         return True
 
     @classmethod
