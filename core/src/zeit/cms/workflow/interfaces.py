@@ -64,19 +64,26 @@ class IPublicationStatus(zope.interface.Interface):
         values=('published', 'not-published', 'published-with-changes'))
 
 
+PRIORITY_DEFAULT = 'general'
+PRIORITY_LOW = 'lowprio'
+
+
 class IPublish(zope.interface.Interface):
     """Interface for publishing/unpublishing objects."""
 
-    def publish():
+    def publish(priority=PRIORITY_DEFAULT):
         """Publish object.
 
         Before the object is published a BeforePublishEvent is issued.
         After the object has been published a PublishedEvent is issued.
         raises PublishingError if the object cannot be published.
 
+        Publishing usually happens asynchronously. PRIORITY_LOW will perform
+        the publish task in a separate, single-threaded Queue.
+
         """
 
-    def retract():
+    def retract(priority=PRIORITY_DEFAULT):
         """Retract an object.
 
         Before the object is published a BeforeRetractEvent is issued.

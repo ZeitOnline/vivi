@@ -1,12 +1,14 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import logging
 import lovely.remotetask.interfaces
 import os
 import sys
 import zeit.cms.testing
 import zope.component
+
 
 product_config = """
 <product-config zeit.workflow>
@@ -16,7 +18,7 @@ product_config = """
 
 WorkflowBaseLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config )
+    product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
 class WorkflowScriptsLayer(object):
@@ -80,13 +82,16 @@ class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
         pass
 
 
-def run_publish():
+def run_publish(priorities=(PRIORITY_DEFAULT,)):
     handler = logging.StreamHandler(sys.stdout)
     logging.root.addHandler(handler)
     oldlevel = logging.root.level
     logging.root.setLevel(logging.ERROR)
-    tasks = zope.component.getUtility(
-        lovely.remotetask.interfaces.ITaskService, 'general')
-    tasks.process()
+    if isinstance(priorities, str):
+        priorities = [priorities]
+    for priority in priorities:
+        tasks = zope.component.getUtility(
+            lovely.remotetask.interfaces.ITaskService, priority)
+        tasks.process()
     logging.root.removeHandler(handler)
     logging.root.setLevel(oldlevel)

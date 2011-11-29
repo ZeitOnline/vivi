@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 """A mock workflow component for testing."""
 
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zope.component
@@ -22,7 +23,7 @@ class MockPublish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self):
+    def publish(self, priority=PRIORITY_DEFAULT):
         if not zeit.cms.workflow.interfaces.IPublishInfo(
             self.context).can_publish():
             raise zeit.cms.workflow.interfaces.PublishingError(
@@ -36,7 +37,7 @@ class MockPublish(object):
             zeit.cms.workflow.interfaces.PublishedEvent(self.context,
                                                         self.context))
 
-    def retract(self):
+    def retract(self, priority=PRIORITY_DEFAULT):
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context,
                                                             self.context))

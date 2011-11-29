@@ -4,6 +4,7 @@
 
 from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import ZODB.POSException
 import datetime
 import logging
@@ -94,7 +95,7 @@ class Publish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self):
+    def publish(self, priority=PRIORITY_DEFAULT):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if not info.can_publish():
@@ -102,19 +103,18 @@ class Publish(object):
                 "Publish pre-conditions not satisifed.")
 
         self.log(self.context, _('Publication scheduled'))
-        return self.tasks.add(u'zeit.workflow.publish',
+        return self.tasks(priority).add(u'zeit.workflow.publish',
                        TaskDescription(self.context))
 
-    def retract(self):
+    def retract(self, priority=PRIORITY_DEFAULT):
         """Retract object."""
         self.log(self.context, _('Retracting scheduled'))
-        return self.tasks.add(u'zeit.workflow.retract',
+        return self.tasks(priority).add(u'zeit.workflow.retract',
                        TaskDescription(self.context))
 
-    @property
-    def tasks(self):
+    def tasks(self, priority):
         return zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, 'general')
+            lovely.remotetask.interfaces.ITaskService, priority)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)

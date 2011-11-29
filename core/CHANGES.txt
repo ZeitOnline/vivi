@@ -4,7 +4,8 @@ zeit.cms changes
 1.50.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Provide another Remotetask-Service, "low-priority", that handles publish
+  tasks serially (#10024).
 
 
 1.50.2 (2011-11-24)
