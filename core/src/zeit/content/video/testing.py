@@ -23,6 +23,7 @@ ZCMLLayer = zeit.cms.testing.ZCMLLayer(
         zeit.solr.testing.product_config +
         product_config))
 
+
 class Layer(ZCMLLayer,
             zeit.solr.testing.SolrMockLayerBase):
 
@@ -61,7 +62,7 @@ def playlist_factory(self):
     from zeit.content.video.playlist import Playlist
     with zeit.cms.testing.site(self.getRootFolder()):
         with zeit.cms.testing.interaction():
-            playlist = Playlist ()
+            playlist = Playlist()
             yield playlist
             self.repository['pls'] = playlist
     yield self.repository['pls']

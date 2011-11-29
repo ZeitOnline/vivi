@@ -4,7 +4,8 @@ zeit.content.video changes
 2.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix XMLReferenceUpdater so it doesn't grow lots of superfluous video-still
+  nodes (#10028).
 
 
 2.0.3 (2011-11-24)
