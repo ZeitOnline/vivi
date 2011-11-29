@@ -1,9 +1,9 @@
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import json
 import mock
-import pkg_resources
 import time
 import transaction
 import urlparse
@@ -259,7 +259,7 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase):
         self.posts = RequestHandler.posts_received
         update_repository(self.getRootFolder())
         transaction.commit()
-        zeit.workflow.testing.run_publish()
+        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         # clear changes made by the checkout/checkin-cycle during publishing
         RequestHandler.posts_received[:] = []
 

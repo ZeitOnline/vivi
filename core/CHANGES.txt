@@ -4,6 +4,7 @@ zeit.brightcove changes
 2.0.2 (unreleased)
 ------------------
 
+- Use separate Remotetask service for publishing BC objects (#10024).
 - When importing from BC, also publish videos/playlists when they already are
   published but have been changed in DAV (#10023).
 

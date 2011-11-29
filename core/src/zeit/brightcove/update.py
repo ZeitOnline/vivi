@@ -97,7 +97,8 @@ class BaseUpdater(object):
             self._publish_if_allowed()
 
     def _publish_if_allowed(self):
-        zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
+        zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish(
+            zeit.cms.workflow.interfaces.PRIORITY_LOW)
 
 
 class VideoUpdater(BaseUpdater):
@@ -153,7 +154,7 @@ class VideoUpdater(BaseUpdater):
 
     def _publish_if_allowed(self):
         if self.bcobj.item_state == 'ACTIVE':
-            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
+            super(VideoUpdater, self)._publish_if_allowed()
 
 
 class PlaylistUpdater(BaseUpdater):
