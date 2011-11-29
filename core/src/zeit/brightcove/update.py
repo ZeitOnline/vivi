@@ -45,7 +45,7 @@ class BaseUpdater(object):
     def __call__(self):
         success = self.delete() or self.add() or self.update()
         if not success:
-            log.warning('Object %s not processes.', self.bcobj.uniqueId)
+            log.warning('Object %s not processed.', self.bcobj.uniqueId)
 
     @classmethod
     def repository(self):
