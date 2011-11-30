@@ -361,6 +361,9 @@ class HTMLImageStructureStep(ConversionStep):
 
     def to_xml(self, node):
         # XXX copy&paste from XMLImageStructureStep
+        if node.getparent().tag == 'a':
+            return
+
         if node.tail:
             if node.getprevious() is not None:
                 append_or_set(node.getprevious(), 'tail', node.tail)
@@ -382,6 +385,10 @@ class XMLImageStructureStep(ConversionStep):
     weight = -2
 
     def to_html(self, node):
+        # Hacky support for linked images (#10033)
+        if node.getparent().tag == 'a':
+            return
+
         if node.tail:
             if node.getprevious() is not None:
                 append_or_set(node.getprevious(), 'tail', node.tail)
@@ -407,8 +414,8 @@ def append_or_set(node, property, value):
 class ImageStep(ConversionStep):
     """Replace XML <image/> by HTML <img/> and vice versa."""
 
-    xpath_xml = './image'
-    xpath_html = './img'
+    xpath_xml = './/image'
+    xpath_html = './/img'
 
     def to_html(self, node):
         unique_id = node.get('src', '')
@@ -430,8 +437,11 @@ class ImageStep(ConversionStep):
         layout = node.get('layout')
         if layout:
             img.set('title', layout)
-        # wrap in a <p> so html is happy
-        return lxml.builder.E.p(img)
+        new_node = img
+        if node.getparent().tag != 'a':
+            # wrap in a <p> so html is happy
+            new_node = lxml.builder.E.p(img)
+        return new_node
 
     def to_xml(self, node):
         repository_url = self.url(self.repository)
