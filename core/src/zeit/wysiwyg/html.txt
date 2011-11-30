@@ -179,7 +179,19 @@ Nested paragraphs
 
 The converter tries to be smart in regard to fixing nested paragraphs:
 
+(The <title> is necessary to make pretty print work.)
 
+>>> source = '''\
+... <article>
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...   </body>
+... </article>'''
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
 >>> converter.from_html(article.xml['body'], """\
 ... <p>
 ...   <p>Anleitung zum Gemeinsein</p>
@@ -190,7 +202,6 @@ The converter tries to be smart in regard to fixing nested paragraphs:
   <head/>
   <body>
     <title>Title</title>
-    <teaser/>
     <p>Anleitung zum Gemeinsein</p>
     <p>Der Kuenstler Erwin Wurm hat ...</p>
   </body>
@@ -210,7 +221,6 @@ Lists are <ul> and <ol>. They're supported as root tag:
   <head/>
   <body>
     <title>Title</title>
-    <teaser/>
     <p>Foo</p>
     <ul>
       <li>bar</li>
@@ -237,7 +247,6 @@ Of course the other way round works as well:
   <head/>
   <body>
     <title>Title</title>
-    <teaser/>
     <p>Foo</p>
     <ol>
       <li>bar</li>
