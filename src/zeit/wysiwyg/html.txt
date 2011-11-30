@@ -479,6 +479,56 @@ Converting html to xml also splits up paragraphs as necessary:
   </body>
 </article>
 
+Images inside anchors are left alone. (This is a use case we thought wasn't
+possible at all, but it turns out it is, thus users use it, so we need to
+support it.)
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <title>Title</title>
+...     <p>Aus winzigen embryonalen ...</p>
+...     <p>Fuer menschliche <a href="#">
+...      <image type="jpg" expires="2100-01-01"
+...         src="http://xml.zeit.de/2006/DSC00109_2.JPG"
+...         layout="infobox"
+...         align="right">
+...         <bu>Der erste Schritt zum Klon</bu>
+...         <copyright>jemand</copyright> BILD </image></a> Zellen ist
+...         <a href="#">das</a> toll.</p>
+...         <p>Selbst wenn </p>
+...     </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<p>Aus winzigen embryonalen ...</p>
+<p>Fuer menschliche
+<a href="#"><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="infobox"/></a>
+Zellen ist <a href="#">das</a> toll.</p>
+<p>Selbst wenn </p>
+
+>>> converter.from_html(article.xml['body'], '''\
+... <p>Aus winzigen embryonalen ...</p>
+... <p>Fuer menschliche
+...     <a href="#"><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="large"/></a>
+...     Zellen ist <a href="#">das</a> toll.</p>
+... <p>Selbst wenn </p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article ...>
+  <head/>
+  <body>
+    <title>Title</title>
+    <p>Aus winzigen embryonalen ...</p>
+    <p>Fuer menschliche
+    <a href="#"><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large"><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image></a>
+    Zellen ist <a href="#">das</a> toll.</p>
+    <p>Selbst wenn </p>
+  </body>
+</article>
+
 
 We are greedy against old paths in the XML:
 
