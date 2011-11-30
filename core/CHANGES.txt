@@ -4,7 +4,9 @@ zeit.content.portraitbox changes
 1.22.9 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Update to use etree instead of objectify for HTML conversion/wysiwyg
+  (via #10027).
+
 
 
 1.22.8 (2011-11-24)

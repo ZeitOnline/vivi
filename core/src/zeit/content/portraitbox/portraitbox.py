@@ -3,6 +3,7 @@
 """Portraitbox."""
 
 from zeit.cms.i18n import MessageFactory as _
+import lxml.builder
 import lxml.objectify
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
@@ -60,5 +61,5 @@ class PortraitboxHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
                 for child in text.getchildren():
                     children.append(child)
                     text.remove(child)
-                text.append(lxml.objectify.E.p(*children))
+                text.append(lxml.builder.E.p(*children))
         return text
