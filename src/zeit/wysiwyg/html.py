@@ -75,8 +75,11 @@ class HTMLConverter(object):
 
         self._apply_steps(html, 'xpath_html', 'to_xml', reverse=True)
         for node in html.iterchildren():
-            tree.append(lxml.objectify.fromstring(
-                    lxml.etree.tostring(node, encoding=unicode)))
+            # support tails at the toplevel by faking a wrapper node
+            xml = '<foo>%s</foo>' % lxml.etree.tostring(node, encoding=unicode)
+            objectified = lxml.objectify.fromstring(xml)
+            for child in objectified.iterchildren():
+                tree.append(child)
 
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 

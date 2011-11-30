@@ -173,6 +173,19 @@ Make sure the adapter also works with very short texts:
 >>> print small_c.to_html(small.xml['body']),
 <p>foo</p>bar
 
+Support trailing text on the toplevel:
+
+>>> converter.from_html(article.xml['body'], """\
+... <p>
+...   <p>Test</p>er
+... </p>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True, encoding='utf8'),
+<article>
+  <head/>
+  <body><title>Title</title><teaser/><p>Test</p>er
+  </body>
+</article>
+
 
 Nested paragraphs
 -----------------
