@@ -3,11 +3,10 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
-import copy
 import grokcore.component
+import lxml.builder
 import lxml.etree
 import lxml.objectify
-import persistent
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.dav
@@ -177,18 +176,19 @@ class DivisionStep(zeit.wysiwyg.html.ConversionStep):
 
     def to_html(self, node):
         teaser = node.get('teaser', '')
-        new_node = lxml.objectify.E.div(
-            lxml.objectify.E.div(teaser, **{'class': 'teaser'}),
+        new_node = lxml.builder.E.div(
+            lxml.builder.E.div(teaser, **{'class': 'teaser'}),
             **{'class': 'inline-element page-break'})
-        lxml.objectify.deannotate(new_node)
         return new_node
 
     def to_xml(self, node):
         match = node.xpath('div[@class="teaser"]')
-        teaser = unicode(match[0]) if match else ''
+        teaser = match[0].text if match else None
+        teaser = teaser or ''
         new_node = lxml.etree.Element('division', **{'type': 'page',
                                                      'teaser': teaser})
         return new_node
+
 
 class LayoutDependency(object):
 
