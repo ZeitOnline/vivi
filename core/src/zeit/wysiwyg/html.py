@@ -360,17 +360,20 @@ class HTMLImageStructureStep(ConversionStep):
     weight = 2
 
     def to_xml(self, node):
-        parent = node.getparent()
-        insert_before = list(node.iterancestors())[-2]
-        insert_before.addprevious(node)
+        # XXX copy&paste from XMLImageStructureStep
         if node.tail:
-            # GRRR
-            stripped = lxml.objectify.XML(
-                lxml.etree.tostring(node, encoding=unicode).rsplit(
-                    node.tail, 1)[0])
-            parent.addnext(getattr(lxml.objectify.E, parent.tag)(node.tail))
-            lxml.objectify.deannotate(parent.getnext())
-            node.getparent().replace(node, stripped)
+            if node.getprevious() is not None:
+                append_or_set(node.getprevious(), 'tail', node.tail)
+            else:
+                append_or_set(node.getparent(), 'text', node.tail)
+            node.tail = None
+
+        body = node
+        insert_before = None
+        while body != node.getroottree().getroot():
+            insert_before = body
+            body = body.getparent()
+        insert_before.addprevious(node)
 
 
 class XMLImageStructureStep(ConversionStep):
@@ -379,20 +382,26 @@ class XMLImageStructureStep(ConversionStep):
     weight = -2
 
     def to_html(self, node):
+        if node.tail:
+            if node.getprevious() is not None:
+                append_or_set(node.getprevious(), 'tail', node.tail)
+            else:
+                append_or_set(node.getparent(), 'text', node.tail)
+            node.tail = None
+
         body = node
-        parent = node.getparent()
         insert_before = None
         while body.tag != 'body':
             insert_before = body
             body = body.getparent()
         insert_before.addprevious(node)
-        if node.tail:
-            # GRRR
-            stripped = lxml.objectify.XML(
-                lxml.etree.tostring(node, encoding=unicode).rsplit(
-                    node.tail, 1)[0])
-            parent.addnext(lxml.builder.E.p(node.tail))
-            node.getparent().replace(node, stripped)
+
+
+def append_or_set(node, property, value):
+    current_value = getattr(node, property)
+    if current_value is not None:
+        value = current_value + value
+    setattr(node, property, value)
 
 
 class ImageStep(ConversionStep):

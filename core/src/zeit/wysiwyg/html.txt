@@ -426,7 +426,7 @@ the image is put into the xml:
 </article>
 
 There may be old content which has an <image> inside <p> nodes. The <img> is
-extracted and put before the <p>. 
+extracted and put before the <p>.
 
 >>> source = u'''\
 ... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -440,7 +440,8 @@ extracted and put before the <p>.
 ...         layout="infobox"
 ...         align="right">
 ...         <bu>Der erste Schritt zum Klon</bu>
-...         <copyright>jemand</copyright> BILD </image> Zellen ist das toll.</p>
+...         <copyright>jemand</copyright> BILD </image> Zellen ist
+...         <a href="#">das</a> toll.</p>
 ...         <p>Selbst wenn </p>
 ...     </body>
 ... </article>'''
@@ -452,30 +453,28 @@ extracted and put before the <p>.
 <p>
   <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="infobox"/>
 </p>
-<p>Fuer menschliche </p>
-<p> Zellen ist das toll.</p>
+<p>Fuer menschliche Zellen ist <a href="#">das</a> toll.</p>
 <p>Selbst wenn </p>
 
 Converting html to xml also splits up paragraphs as necessary:
 
 >>> converter.from_html(article.xml['body'], '''\
+... <p>Aus winzigen embryonalen ...</p>
 ... <p>Fuer menschliche
 ...     <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="large"/>
-...     Zellen ist das toll.</p>
-... <p>Aus winzigen embryonalen ...</p>
+...     Zellen ist <a href="#">das</a> toll.</p>
 ... <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
 <article ...>
   <head/>
   <body>
     <title>Title</title>
+    <p>Aus winzigen embryonalen ...</p>
     <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
         <bu>Cap cap cap</bu>
         <copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright>
     </image>
-    <p>Fuer menschliche </p>
-    <p> Zellen ist das toll.</p>
-    <p>Aus winzigen embryonalen ...</p>
+    <p>Fuer menschliche Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
   </body>
 </article>
