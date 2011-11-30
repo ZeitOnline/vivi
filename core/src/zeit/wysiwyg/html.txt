@@ -610,7 +610,8 @@ too:
   </body>
 </article>
 
-Bug: ``<p><strong><img`` was not recognised correctly. 
+Regression: Check that ``<p><strong><img`` correctly finds the image, even
+though it's nested.
 
 >>> converter.from_html(article.xml['body'], '''\
 ...     <p><strong><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
@@ -624,7 +625,7 @@ Bug: ``<p><strong><img`` was not recognised correctly.
         <bu>Cap cap cap</bu>
         <copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright>
     </image>
-    <p><strong/><strong> Hurz</strong> foobar </p>
+    <p><strong> Hurz</strong> foobar </p>
     <p>Selbst wenn </p>
   </body>
 </article>
@@ -636,7 +637,7 @@ Recheck the conversion to HTML:
 <p>
   <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
 </p>
-<p><strong/><strong> Hurz</strong> foobar </p>
+<p><strong> Hurz</strong> foobar </p>
 <p>Selbst wenn </p>
 
 
@@ -1242,10 +1243,12 @@ Citation
 <article...>
   <head/>
   <body>
-    <citation text2="Four apples a day"
-              attribution2="Proverb" attribution="Julius Caesar"
-              url2="url2" url="http://caesar.it/"
+    <citation attribution="Julius Caesar"
+              url="http://caesar.it/"
               text="Gallia est omnis divisa in partes tres"
+              text2="Four apples a day"
+              attribution2="Proverb"
+              url2="url2"
               layout="short"/>
   </body>
 </article>

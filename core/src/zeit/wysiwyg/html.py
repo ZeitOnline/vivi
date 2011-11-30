@@ -2,13 +2,13 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.content.util import objectify_soup_fromstring
 from zeit.wysiwyg.util import contains_element
 import copy
 import datetime
 import htmlentitydefs
 import lxml.builder
 import lxml.etree
+import lxml.html.soupparser
 import lxml.objectify
 import pytz
 import rwproperty
@@ -71,12 +71,12 @@ class HTMLConverter(object):
 
         value = '<div>' + self._replace_entities(value) + '</div>'
         __traceback_info__ = (value,)
-        html = lxml.objectify.fromstring(value)
+        html = lxml.etree.fromstring(value)
 
         self._apply_steps(html, 'xpath_html', 'to_xml', reverse=True)
         for node in html.iterchildren():
-            # copy to kill namespaces
-            tree.append(copy.copy(node))
+            tree.append(lxml.objectify.fromstring(
+                    lxml.etree.tostring(node, encoding=unicode)))
 
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 
@@ -254,7 +254,7 @@ class DropEmptyStep(ConversionStep):
         if node.get('keep'):
             del node.attrib['keep']
             return
-        if node.countchildren():
+        if len(node):
             return
         if node.text and node.text.strip():
             return
@@ -447,7 +447,7 @@ class ImageStep(ConversionStep):
             # not be found. Instead of just removing the image we create an
             # image tag with the url we've got. This way it is also possible to
             # create images to other servers.
-            new_node = lxml.objectify.E.image()
+            new_node = lxml.builder.E.image()
             if url:
                 new_node.set('src', url)
         layout = node.get('title')
@@ -517,12 +517,12 @@ class AudioStep(ConversionStep):
 
         id_ = expires = ''
         if id_nodes:
-            id_ = unicode(id_nodes[0])
+            id_ = id_nodes[0].text
 
         nodes = node.xpath('div[@class="expires"]')
         if nodes:
-            expires = self.datetime_to_xml(unicode(nodes[0]))
-        new_node = lxml.objectify.E.audio(audioID=id_, expires=expires)
+            expires = self.datetime_to_xml(nodes[0].text)
+        new_node = lxml.builder.E.audio(audioID=id_, expires=expires)
         return new_node
 
 
@@ -551,13 +551,13 @@ class VideoStep(ConversionStep):
         id_nodes = node.xpath('div[contains(@class, "videoId")]')
         id1 = id2 = expires = format = ''
         if id_nodes:
-            id1 = unicode(id_nodes[0])
+            id1 = id_nodes[0].text
             if len(id_nodes) > 1:
-                id2 = unicode(id_nodes[1])
+                id2 = id_nodes[1].text
 
         nodes = node.xpath('div[@class="expires"]')
         if nodes:
-            user_expires = self.datetime_to_xml(unicode(nodes[0]))
+            user_expires = self.datetime_to_xml(nodes[0].text)
         else:
             user_expires = None
         expires = self._expires(id1, id2, user_expires)
@@ -576,7 +576,7 @@ class VideoStep(ConversionStep):
 
         nodes = node.xpath('div[@class="format"]')
         if nodes:
-            format = unicode(nodes[0])
+            format = nodes[0].text
         new_node = lxml.builder.E.video(
             href=id1, href2=id2,
             expires=expires, format=format)
@@ -627,7 +627,8 @@ class RawXMLStep(ConversionStep):
         return new_node
 
     def to_xml(self, node):
-        new_node = objectify_soup_fromstring('<raw>%s</raw>' % node.text)
+        new_node = lxml.html.soupparser.fromstring(node.text)
+        new_node.tag = 'raw'
         return new_node
 
 
@@ -651,6 +652,9 @@ class ReferenceStep(ConversionStep):
     def to_xml(self, node):
         unique_id = node.xpath('*[contains(@class, "href")]')[0].text or ''
 
+        # Some metadata may be None, which objectify accepts for creating child
+        # nodes, but etree doesn't. Fortunately, etree doesn't mind smuggling
+        # in an objectify node here.
         factory = getattr(lxml.objectify.E, self.content_type)
         new_node = factory(href=unique_id)
         content = zeit.cms.interfaces.ICMSContent(unique_id, None)
@@ -717,7 +721,7 @@ class CitationStep(ConversionStep):
             value = node.xpath('*[@class="%s"]' % name)[0].text
             if value and value.strip():
                 values[name] = value.strip()
-        new_node = lxml.objectify.E.citation(**values)
+        new_node = lxml.builder.E.citation(**values)
         return new_node
 
 
@@ -733,7 +737,7 @@ class RelatedsStep(ConversionStep):
         return new_node
 
     def to_xml(self, node):
-        return lxml.objectify.E.relateds(keep='yes')
+        return lxml.builder.E.relateds(keep='yes')
 
 
 class InlineElementAppendParagraph(ConversionStep):
