@@ -201,4 +201,5 @@ class PlaylistUpdater(BaseUpdater):
             cmsobj = folder[name]
             if zeit.cms.workflow.interfaces.IPublishInfo(cmsobj).published:
                 zeit.cms.workflow.interfaces.IPublish(cmsobj).retract()
-            del folder[name]
+            else:
+                del folder[name]

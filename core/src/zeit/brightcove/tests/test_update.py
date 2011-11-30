@@ -20,9 +20,12 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
     def setUp(self):
         super(UpdateVideoTest, self).setUp()
         self.old_video = VIDEO_1234.copy()
+        self.old_playlist = PLAYLIST_2345.copy()
 
     def tearDown(self):
         VIDEO_1234.update(self.old_video)
+        PLAYLIST_2345.clear()
+        PLAYLIST_2345.update(self.old_playlist)
         super(UpdateVideoTest, self).tearDown()
 
     def test_new_video_in_bc_should_be_added_to_repository(self):
@@ -379,19 +382,36 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         self.assertGreater(info.date_last_published, last_published)
 
-    def test_playlist_no_longer_in_brightcove_is_deleted_from_cms(self):
-        self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/3456', None))
+    def test_deleted_and_not_published_should_be_deleted_from_cms(self):
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/3456')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        info.published = False
 
         del PLAYLIST_LIST_RESPONSE['items'][-1]
-
         update_from_brightcove()
-
         self.assertIsNone(zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/playlist/3456', None))
 
-    def test_deleted_playlist_should_be_retracted(self):
+    def test_deleted_and_published_should_be_retracted(self):
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/3456')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        info.published = True
+
         del PLAYLIST_LIST_RESPONSE['items'][-1]
-        with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
-            update_from_brightcove()
-            self.assertTrue(retract.called)
+        update_from_brightcove()
+        zeit.workflow.testing.run_publish()
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        self.assertFalse(info.published)
+
+    def test_deleted_and_published_should_not_be_deleted(self):
+        playlist = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/3456')
+        info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
+        info.published = True
+
+        del PLAYLIST_LIST_RESPONSE['items'][-1]
+        update_from_brightcove()
+        self.assertIsNotNone(zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/playlist/3456', None))
