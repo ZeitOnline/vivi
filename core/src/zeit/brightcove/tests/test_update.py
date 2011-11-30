@@ -220,7 +220,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         VIDEO_1234['lastModifiedDate'] = soon
         with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
             update_from_brightcove()
-            self.assertTrue(retract.called)
+            retract.assert_called_with(PRIORITY_LOW)
 
     def test_inactive_and_not_published_video_should_not_be_retracted(self):
         video = zeit.cms.interfaces.ICMSContent(
@@ -401,7 +401,7 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
         del PLAYLIST_LIST_RESPONSE['items'][-1]
         update_from_brightcove()
-        zeit.workflow.testing.run_publish()
+        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         self.assertFalse(info.published)
 

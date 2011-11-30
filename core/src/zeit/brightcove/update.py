@@ -124,7 +124,8 @@ class VideoUpdater(BaseUpdater):
         if zeit.cms.workflow.interfaces.IPublishInfo(
                 self.cmsobj).published:
             log.info('Retracting %s', self.bcobj)
-            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract()
+            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract(
+                zeit.cms.workflow.interfaces.PRIORITY_LOW)
         elif self.bcobj.item_state == 'DELETED':
             log.info('Deleting %s', self.bcobj)
             del self.cmsobj.__parent__[self.cmsobj.__name__]
@@ -200,6 +201,7 @@ class PlaylistUpdater(BaseUpdater):
             log.info('Deleting <Playlist id=%s>', name)
             cmsobj = folder[name]
             if zeit.cms.workflow.interfaces.IPublishInfo(cmsobj).published:
-                zeit.cms.workflow.interfaces.IPublish(cmsobj).retract()
+                zeit.cms.workflow.interfaces.IPublish(cmsobj).retract(
+                    zeit.cms.workflow.interfaces.PRIORITY_LOW)
             else:
                 del folder[name]
