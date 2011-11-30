@@ -354,61 +354,59 @@ class NestedParagraphsStep(ConversionStep):
             node.getparent().remove(node)
 
 
-class HTMLImageStructureStep(ConversionStep):
+class ImageStructureStep(ConversionStep):
 
-    xpath_html = './*//img'
-    weight = 2
-
-    def to_xml(self, node):
-        # XXX copy&paste from XMLImageStructureStep
-        if node.getparent().tag == 'a':
-            return
-
-        if node.tail:
-            if node.getprevious() is not None:
-                append_or_set(node.getprevious(), 'tail', node.tail)
-            else:
-                append_or_set(node.getparent(), 'text', node.tail)
-            node.tail = None
-
-        body = node
-        insert_before = None
-        while body != node.getroottree().getroot():
-            insert_before = body
-            body = body.getparent()
-        insert_before.addprevious(node)
-
-
-class XMLImageStructureStep(ConversionStep):
-
-    xpath_xml = './*//image'
-    weight = -2
-
-    def to_html(self, node):
+    def _convert(self, node):
         # Hacky support for linked images (#10033)
         if node.getparent().tag == 'a':
             return
 
         if node.tail:
             if node.getprevious() is not None:
-                append_or_set(node.getprevious(), 'tail', node.tail)
+                self.append_or_set(node.getprevious(), 'tail', node.tail)
             else:
-                append_or_set(node.getparent(), 'text', node.tail)
+                self.append_or_set(node.getparent(), 'text', node.tail)
             node.tail = None
 
         body = node
         insert_before = None
-        while body.tag != 'body':
+        while not self._is_root(body, node):
             insert_before = body
             body = body.getparent()
         insert_before.addprevious(node)
 
+    def append_or_set(self, node, property, value):
+        current_value = getattr(node, property)
+        if current_value is not None:
+            value = current_value + value
+        setattr(node, property, value)
 
-def append_or_set(node, property, value):
-    current_value = getattr(node, property)
-    if current_value is not None:
-        value = current_value + value
-    setattr(node, property, value)
+    def _is_root(self, element, orig_node):
+        raise NotImplementedError('override in subclass')
+
+
+class HTMLImageStructureStep(ImageStructureStep):
+
+    xpath_html = './*//img'
+    weight = 2
+
+    def to_xml(self, node):
+        return self._convert(node)
+
+    def _is_root(self, element, orig_node):
+        return element == orig_node.getroottree().getroot()
+
+
+class XMLImageStructureStep(ImageStructureStep):
+
+    xpath_xml = './*//image'
+    weight = -2
+
+    def to_html(self, node):
+        return self._convert(node)
+
+    def _is_root(self, element, orig_node):
+        return element.tag == 'body'
 
 
 class ImageStep(ConversionStep):
