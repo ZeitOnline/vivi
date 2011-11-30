@@ -57,7 +57,7 @@ class HTMLConverter(object):
         result = []
         for child in tree.iterchildren():
             result.append(lxml.etree.tostring(
-                copy.copy(child), pretty_print=True, encoding=unicode))
+                child, pretty_print=True, encoding=unicode))
         return ''.join(result)
 
     def from_html(self, tree, value):
@@ -634,8 +634,6 @@ class RawXMLStep(ConversionStep):
     def to_html(self, node):
         result = []
         for child in node.iterchildren():
-            # kill namespaces
-            child = copy.copy(child)
             result.append(lxml.etree.tostring(
                 child, pretty_print=True, encoding=unicode))
         text = '\n'.join(result)
