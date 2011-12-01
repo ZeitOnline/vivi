@@ -2,8 +2,6 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import mock
-import unittest2
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -147,15 +145,18 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.assert_widget_text("new-filename.__name__", 'Somalia')
         self.assert_widget_text("metadata-b.copyrights", 'ZEIT online')
         s = self.selenium
-        s.waitForElementPresent('xpath=//input[@id="metadata-b.dailyNewsletter"]')
+        s.waitForElementPresent(
+            'xpath=//input[@id="metadata-b.dailyNewsletter"]')
         s.assertAttribute(
             'xpath=//input[@id="metadata-b.dailyNewsletter"]@disabled',
             'regexp:disabled|true')
         s.assertNotChecked('xpath=//input[@id="metadata-b.dailyNewsletter"]')
 
     def test_texts_should_be_readonly_visible(self):
-        self.assert_widget_text('article-content-head.title', u'Rückkehr der Warlords')
-        self.assert_widget_text('article-content-head.subtitle', 'Im Zuge des*')
+        self.assert_widget_text(
+            'article-content-head.title', u'Rückkehr der Warlords')
+        self.assert_widget_text(
+            'article-content-head.subtitle', 'Im Zuge des*')
 
     def test_assets_should_be_readonly_visible(self):
         from zeit.cms.checkout.helper import checked_out
@@ -204,7 +205,8 @@ class AuthorTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_authors_should_be_inline_addable(self):
         s = self.selenium
-        s.click('//*[@id="metadata-c.author_references"]//a[@rel = "show_add_view"]')
+        s.click(
+            '//*[@id="metadata-c.author_references"]//a[@rel="show_add_view"]')
         s.waitForElementPresent('id=form.firstname')
         s.type('id=form.firstname', 'Ben')
         s.type('id=form.lastname', 'Utzer')

@@ -2,13 +2,11 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import gocept.lxml.interfaces
 import grokcore.component
 import lxml.objectify
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
 import zeit.edit.block
-import zeit.edit.interfaces
 
 
 class Division(zeit.edit.block.SimpleElement):

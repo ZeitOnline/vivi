@@ -37,9 +37,9 @@ class GalleryTest(unittest2.TestCase,
         from zeit.content.gallery.browser.testing import add_folder, add_image
         browser = self.browser
         browser.open('http://localhost/++skin++cms/repository/online/2007/01')
-        _ = add_folder(browser, 'gallery')
-        _ = add_image(browser, '01.jpg')
-        _ = add_image(browser, '02.jpg')
+        add_folder(browser, 'gallery')
+        add_image(browser, '01.jpg')
+        add_image(browser, '02.jpg')
         browser.getLink('01').click()
         menu = browser.getControl(name='add_menu')
         menu.displayValue = ['Gallery']
@@ -70,14 +70,14 @@ class GalleryTest(unittest2.TestCase,
         return article
 
     def test_no_reference_should_render(self):
-        article = self.get_article(with_empty_block=True)
+        self.get_article(with_empty_block=True)
         self.browser.open('editable-body/@@contents')
         self.assert_ellipsis(
             """<...
             <div ...class="block type-%s...""" % self.expected_type)
 
     def test_empty_block_should_be_landing_zone(self):
-        article = self.get_article(with_empty_block=True)
+        self.get_article(with_empty_block=True)
         self.setup_content()
         self.browser.open(
             'editable-body/blockname/@@set_reference?uniqueId=%s' %
@@ -93,7 +93,7 @@ class GalleryTest(unittest2.TestCase,
             """<div ...class="block type-%s...""" % self.expected_type)
 
     def test_only_specific_type_should_be_droppable(self):
-        article = self.get_article(with_empty_block=True)
+        self.get_article(with_empty_block=True)
         self.setup_content()
         with self.assertRaises(Exception):
             self.browser.open(
@@ -105,7 +105,7 @@ class GalleryTest(unittest2.TestCase,
             "object at 0x...>)")
 
     def test_droping_type_on_landing_zone_creates_block(self):
-        article = self.get_article()
+        self.get_article()
         self.setup_content()
         self.assert_ellipsis(
             """...cms:drop-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@article-landing-zone-drop"...""")
@@ -115,7 +115,8 @@ class GalleryTest(unittest2.TestCase,
                 'editable-body/@@article-landing-zone-drop?uniqueId=%s' %
                 self.content_id)
         data = self.assert_json(
-            {'signals': [{'args': ['1'], 'name': 'added', 'when': 'after-reload'},
+            {'signals': [{'args': ['1'], 'name': 'added',
+                          'when': 'after-reload'},
                          {'args': ['editable-body',
                                    'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
                           'name': 'reload',
@@ -131,21 +132,22 @@ class GalleryTest(unittest2.TestCase,
                 'editable-body/%s/@@article-landing-zone-drop?uniqueId=%s' % (
                     id, self.content_id))
         self.assert_json(
-            {'signals': [{'args': ['2'], 'name': 'added', 'when': 'after-reload'},
+            {'signals': [{'args': ['2'], 'name': 'added',
+                          'when': 'after-reload'},
                          {'args': ['editable-body',
                                    'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
                           'name': 'reload',
                           'when': None}]})
 
     def test_checkin_should_work_with_empty_block(self):
-        article = self.get_article(with_empty_block=True)
+        self.get_article(with_empty_block=True)
         self.browser.open(self.article_url)
         # Assertion is that no error is raised
         self.browser.handleErrors = False
         self.browser.getLink('Checkin').click()
 
     def test_should_be_visible_in_read_only_mode(self):
-        article = self.get_article(with_empty_block=True)
+        self.get_article(with_empty_block=True)
         self.setup_content()
         self.browser.open(
             'editable-body/blockname/@@set_reference?uniqueId=%s' %
@@ -182,7 +184,7 @@ class GalleryTest(unittest2.TestCase,
             article.xml.body.division[self.expected_type].get(self.attribute))
 
     def test_empty_block_should_not_provide_drop_in_readonly_mode(self):
-        article = self.get_article(with_empty_block=True)
+        self.get_article(with_empty_block=True)
         self.browser.open(self.article_url)
         self.browser.getLink('Checkin').click()
         self.browser.open('@@contents')
@@ -242,7 +244,7 @@ class ImageTest(GalleryTest):
         self.content_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 
     def test_only_specific_type_should_be_droppable(self):
-        article = self.get_article(with_empty_block=True)
+        self.get_article(with_empty_block=True)
         self.setup_content()
         with self.assertRaises(Exception):
             self.browser.open(
@@ -275,7 +277,6 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent(select)
         s.assertSelectedLabel(select, 'small')
-
 
     def test_custom_caption_should_be_editable(self):
         s = self.selenium

@@ -4,16 +4,10 @@
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import grokcore.component
-import lxml.etree
-import lxml.objectify
 import zeit.cms.checkout.interfaces
-import zeit.cms.connector
-import zeit.cms.content.adapter
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
-import zeit.cms.content.property
-import zeit.cms.content.util
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
@@ -21,11 +15,7 @@ import zeit.connector.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.rule
-import zeit.workflow.dependency
 import zeit.workflow.interfaces
-import zeit.wysiwyg.html
-import zeit.wysiwyg.interfaces
-import zope.app.container.contained
 import zope.component
 import zope.dublincore.interfaces
 import zope.index.text.interfaces

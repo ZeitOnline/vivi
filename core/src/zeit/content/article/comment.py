@@ -2,13 +2,11 @@
 # See also LICENSE.txt
 """Aggregated comments."""
 
-import zope.component
-import zope.interface
-
-import zeit.cms.browser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.content.article.interfaces
+import zope.component
+import zope.interface
 
 
 class AggregatedComments(object):

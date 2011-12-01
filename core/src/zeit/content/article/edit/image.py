@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import gocept.lxml.interfaces
 import grokcore.component
 import lxml.objectify
 import zeit.cms.checkout.interfaces
@@ -49,7 +48,7 @@ class Image(zeit.edit.block.SimpleElement):
         self.xml = node
         # Restore saved attributes
         self.__name__ = name
-        self.layout =  layout
+        self.layout = layout
         self.custom_caption = custom_caption
         self._p_changed = True
 
@@ -101,4 +100,3 @@ def migrate_image_nodes_inside_p(article, event):
                     p.text and p.text.strip() or
                     p.attrib):
                 p.getparent().remove(p)
-

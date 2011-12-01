@@ -3,11 +3,8 @@
 """Comment browser integration."""
 
 import zeit.cms.browser.interfaces
-import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.content.article.comment
-import zeit.content.article.interfaces
-import zope.app.appsetup.interfaces
 import zope.component
 
 

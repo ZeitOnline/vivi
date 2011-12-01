@@ -3,7 +3,6 @@
 # See also LICENSE.txt
 
 import contextlib
-import unittest2 as unittest
 import zeit.content.article.testing
 
 

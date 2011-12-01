@@ -4,7 +4,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import copy
 import lxml.etree
-import lxml.objectify
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.article.edit.interfaces
@@ -14,7 +13,6 @@ import zeit.edit.browser.landing
 import zeit.edit.browser.view
 import zope.cachedescriptors.property
 import zope.component
-import zope.lifecycleevent
 import zope.security
 
 
@@ -104,7 +102,7 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
     def create_block(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
         if content is None:
-           raise ValueError(
+            raise ValueError(
                _('The object "${name}" does not exist.', mapping=dict(
                    name=self.uniqueId)))
         # XXX what happens if there is no factory?

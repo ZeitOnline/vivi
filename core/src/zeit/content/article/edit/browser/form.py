@@ -3,7 +3,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import zeit.cms.asset.browser
 import zeit.cms.browser.interfaces
 import zeit.content.article.interfaces
 import zope.app.pagetemplate
@@ -11,7 +10,6 @@ import zope.formlib.form
 import zope.formlib.interfaces
 import zope.i18n
 import zope.interface
-
 
 
 class DiverFormGroup(zeit.edit.browser.form.DiverFormGroup):

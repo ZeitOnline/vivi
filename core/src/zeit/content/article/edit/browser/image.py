@@ -2,10 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import zeit.cms.interfaces
 import zeit.content.article.edit.interfaces
-import zeit.edit.browser.view
-import zope.lifecycleevent
+import zope.formlib.form
 
 
 class EditImage(zeit.edit.browser.form.InlineForm):

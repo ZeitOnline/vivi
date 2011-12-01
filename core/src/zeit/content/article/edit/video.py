@@ -2,19 +2,14 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import gocept.lxml.interfaces
 import grokcore.component
-import lxml.objectify
 import zeit.content.video.asset
 import zeit.content.video.interfaces
-import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.article.edit.block
 import zeit.content.article.edit.interfaces
-import zeit.content.image.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
-import zope.component
 import zope.schema
 
 

@@ -145,6 +145,7 @@ _find_name_attributes = lxml.etree.XPath(
     '//*[@cms:__name__]',
     namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
 
+
 @grokcore.component.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent)

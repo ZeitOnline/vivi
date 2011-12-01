@@ -3,9 +3,6 @@
 
 from zeit.content.article.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
-import zeit.cms.content.sources
-import zeit.cms.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.content.article.source
 import zeit.content.cp.interfaces
 import zope.schema

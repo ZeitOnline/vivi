@@ -15,9 +15,9 @@ class Citation(zeit.edit.block.SimpleElement):
         zeit.content.article.edit.interfaces.ICitation)
     type = 'citation'
 
-    text  = zeit.cms.content.property.ObjectPathAttributeProperty(
+    text = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'text', zeit.content.article.edit.interfaces.ICitation['text'])
-    text_2  = zeit.cms.content.property.ObjectPathAttributeProperty(
+    text_2 = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'text2', zeit.content.article.edit.interfaces.ICitation['text_2'])
     attribution = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'attribution',

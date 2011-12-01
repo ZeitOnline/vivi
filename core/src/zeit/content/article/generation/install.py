@@ -10,7 +10,6 @@ import zope.app.zopeappgenerations
 
 
 def install(root):
-    site_manager = zope.component.getSiteManager()
     name = u'Article templates'
     templates = zope.component.getUtility(
         zeit.cms.content.interfaces.ITemplateManagerContainer)

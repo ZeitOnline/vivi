@@ -14,7 +14,6 @@ import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
 import zeit.edit.block
 import zeit.edit.interfaces
-import zope.component
 import zope.schema
 
 
@@ -25,7 +24,7 @@ class Reference(zeit.edit.block.SimpleElement):
 
     @property
     def references(self):
-       return zeit.cms.interfaces.ICMSContent(self.xml.get('href'), None)
+        return zeit.cms.interfaces.ICMSContent(self.xml.get('href'), None)
 
     @references.setter
     def references(self, value):

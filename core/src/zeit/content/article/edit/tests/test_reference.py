@@ -168,7 +168,6 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
             self.repository['article'].xml.body.division.getchildren()[0].get(
                 'expires'))
 
-
     def test_gallery_metadata_should_be_updated(self):
         from zeit.content.gallery.gallery import Gallery
         self.assert_updated(Gallery(), 'gallery')

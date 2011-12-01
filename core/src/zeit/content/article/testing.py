@@ -11,7 +11,6 @@ import zeit.cms.testing
 import zeit.content.author.testing
 import zeit.content.cp.testing
 import zeit.solr.testing
-import zope.app.testing.functional
 import zope.testing.renormalizing
 
 
@@ -91,7 +90,7 @@ class CDSLayer(CDSZCMLLayer):
         product_config = zope.app.appsetup.product._configs[
             'zeit.content.article']
         # I don't know why, but those directories get removed automatically
-        # somehow. 
+        # somehow.
         try:
             shutil.rmtree(product_config['cds-export'])
         except OSError:

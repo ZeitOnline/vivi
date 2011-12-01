@@ -2,8 +2,6 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import mock
-import unittest2
 import zeit.content.article.testing
 
 
@@ -35,10 +33,12 @@ class MemoDiverTest(zeit.content.article.testing.SeleniumTestCase):
         s.type('id=memo-diver.memo', 'Do not publish this article, yet.')
         s.fireEvent('id=memo-diver.memo', 'blur')
         s.waitForElementNotPresent('css=.dirty')
-        s.assertValue('id=memo-diver.memo', 'Do not publish this article, yet.')
+        s.assertValue(
+            'id=memo-diver.memo', 'Do not publish this article, yet.')
         s.open(s.getLocation())
         s.waitForElementPresent('id=memo-diver')
-        s.assertValue('id=memo-diver.memo', 'Do not publish this article, yet.')
+        s.assertValue(
+            'id=memo-diver.memo', 'Do not publish this article, yet.')
 
 
 class OptionsDiverTest(zeit.content.article.testing.SeleniumTestCase):
@@ -52,7 +52,7 @@ class OptionsDiverTest(zeit.content.article.testing.SeleniumTestCase):
         s = self.selenium
         s.waitForElementPresent('xpath=//div[@class="edit-bar"]')
         foldables = s.selenium.get_xpath_count('//div[@class="edit-bar"]')
-        s.assertXpathCount('//input[@class="fold-checker"]', foldables);
+        s.assertXpathCount('//input[@class="fold-checker"]', foldables)
         s.assertText(
             'xpath=//input[@name="edit-form-metadata"]/following-sibling::label',
             'Metadata')
@@ -62,7 +62,8 @@ class OptionsDiverTest(zeit.content.article.testing.SeleniumTestCase):
         s = self.selenium
         s.assertNotAttribute('css=#edit-form-metadata@class', 'folded')
         s.waitForElementPresent('id=edit-form-metadata')
-        s.click('//div[@id="options-diver"]//input[@name="edit-form-metadata"]')
+        s.click(
+            '//div[@id="options-diver"]//input[@name="edit-form-metadata"]')
         s.assertNotChecked('xpath=//input[@name="edit-form-metadata"]')
         s.open(s.getLocation())
         s.waitForElementPresent('css=#edit-form-metadata.folded')

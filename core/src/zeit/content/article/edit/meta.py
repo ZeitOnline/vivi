@@ -22,5 +22,3 @@ class BlockFactoryGrokker(martian.ClassGrokker):
             args=(factory, (context,), provides, name),
             )
         return True
-
-

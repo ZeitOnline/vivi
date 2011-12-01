@@ -26,6 +26,7 @@ class IEditableBody(zeit.edit.interfaces.IArea):
 
         """
 
+
 class ILayoutable(zope.interface.Interface):
     """A block with layout information."""
 
@@ -72,7 +73,7 @@ class VideoLayoutSource(LayoutSourceBase):
     values = stabledict.StableDict([
         (u'small', _('small')),
         (u'with-links', _('with info')),
-        (u'large',  _('large')),
+        (u'large', _('large')),
         (u'double', _('double')),
     ])
 

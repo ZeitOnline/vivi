@@ -88,7 +88,7 @@ class TestAdding(unittest.TestCase,
     def test_filename_should_not_be_editable_when_article_is_not_renamable(
             self):
         self.browser.open('Somalia/@@checkout')
-        article = self.get_article()
+        self.get_article()
         self.browser.open('@@edit.form.new-filename?show_form=yes')
         with self.assertRaises(LookupError):
             self.browser.getControl('New file name')

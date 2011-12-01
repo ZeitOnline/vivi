@@ -80,6 +80,7 @@ class VideoTest(unittest.TestCase):
         video_obj.uniqueId = 'vid1'
         video2_obj = mock.Mock()
         video2_obj.uniqueId = 'vid2'
+
         def cmscontent(id, default=None):
             if id == 'vid1':
                 return video_obj

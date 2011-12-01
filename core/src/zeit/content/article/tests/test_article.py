@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import mock
-import unittest2 as unittest
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.testing

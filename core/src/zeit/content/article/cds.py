@@ -26,7 +26,7 @@ import zope.container.interfaces
 log = logging.getLogger(__name__)
 
 
-PRINCIPAL =  'zope.cds'
+PRINCIPAL = 'zope.cds'
 DELETE_TIMEOUT = datetime.timedelta(days=2)
 
 
@@ -99,6 +99,7 @@ def get_replacements(article):
             article.sub_ressort.lower() if article.sub_ressort else u''),
     )
 
+
 def import_file(path):
     """Import single file from CDS."""
     log.info("Importing %s" % path)
@@ -170,7 +171,6 @@ def import_file(path):
         article.uniqueId, delay=delay)
 
 
-
 def import_one():
     fs = get_cds_filestore('cds-import')
     files = sorted(fs.list('new'))
@@ -180,8 +180,6 @@ def import_one():
     import_file(path)
     fs.move(os.path.basename(path), 'new', 'cur')
     return True
-
-
 
 
 def import_and_schedule():

@@ -1,7 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.content.article.testing
+import zeit.content.article.edit.browser.testing
 
 
 class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
