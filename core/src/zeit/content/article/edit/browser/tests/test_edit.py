@@ -525,6 +525,7 @@ class TestLimitedInput(
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
         s.assertText('xpath=//span[@class="charlimit"]', '170 Zeichen')
+        s.focus('id=teaser-text.teaserText')
         s.typeKeys('id=teaser-text.teaserText', 'Saskia had a little pig')
         # Due to a bug in selenium, we have to release the key manually.
         # That is selenium currently has registered everything but the trailing
