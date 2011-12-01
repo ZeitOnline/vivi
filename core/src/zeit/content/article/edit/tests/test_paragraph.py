@@ -140,7 +140,8 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
             article, article.xml.body)
         factory = zope.component.getAdapter(
             body, zeit.edit.interfaces.IElementFactory, name)
-        self.assertEqual('<%s>' % name, factory.title)
+        # so they don't show up in the module library
+        self.assertEqual(None, factory.title)
         block = factory()
         self.assertTrue(
             zeit.content.article.edit.interfaces.IParagraph.providedBy(block))

@@ -123,15 +123,12 @@ class TestTextEditing(
         super(TestTextEditing, self).setUp()
         self.add_article()
 
-    def test_landing_zone_should_take_modules(self):
+    def test_paragraph_etc_should_not_appear_as_modules(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
         s.click('link=Module')
-        s.waitForElementPresent('css=#article-modules .module:contains(<p>)')
-        s.dragAndDropToObject(
-            'css=#article-modules .module:contains(<p>)',
-            'css=#article-editor-text .landing-zone.visible')
-        s.waitForElementPresent('css=.block.type-p')
+        s.waitForElementPresent('css=#article-modules .module:contains(Video)')
+        s.assertElementNotPresent('css=#article-modules .module:contains(<p>)')
 
     def test_create_paragraph_link_should_create_paragraph(self):
         s = self.selenium

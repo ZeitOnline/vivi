@@ -21,6 +21,9 @@ class BlockFactory(zeit.edit.block.ElementFactory):
     grokcore.component.baseclass()
     grokcore.component.context(
         zeit.content.article.edit.interfaces.IEditableBody)
+    # No title so we are excluded from @@block-factories -- our blocks are
+    # created via the toolbar, and should not appear in the module library.
+    title = None
 
     def get_xml(self):
         return getattr(lxml.objectify.E, self.element_type)()

@@ -72,7 +72,6 @@ class Paragraph(zeit.edit.block.SimpleElement):
 class ParagraphFactory(zeit.content.article.edit.block.BlockFactory):
 
     produces = Paragraph
-    title = _('<p>')
 
 
 class UnorderedList(Paragraph):
@@ -86,7 +85,6 @@ class UnorderedList(Paragraph):
 class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
 
     produces = UnorderedList
-    title = _('<ul>')
 
 
 class OrderedList(UnorderedList):
@@ -99,7 +97,6 @@ class OrderedList(UnorderedList):
 class OrderedListFactory(zeit.content.article.edit.block.BlockFactory):
 
     produces = OrderedList
-    title = _('<ol>')
 
 
 class Intertitle(Paragraph):
@@ -112,4 +109,3 @@ class Intertitle(Paragraph):
 class IntertitleFactory(zeit.content.article.edit.block.BlockFactory):
 
     produces = Intertitle
-    title = _('<intertitle>')
