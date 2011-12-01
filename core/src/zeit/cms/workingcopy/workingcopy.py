@@ -37,7 +37,6 @@ class Workingcopy(zope.app.container.btree.BTreeContainer):
         super(Workingcopy, self).__setitem__(key, item)
         self._order += (key, )
 
-
     def __delitem__(self, key):
         super(Workingcopy, self).__delitem__(key)
         order = list(self._order)

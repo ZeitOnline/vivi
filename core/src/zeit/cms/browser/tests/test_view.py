@@ -9,6 +9,7 @@ class TestJSON(unittest2.TestCase):
 
     def test_dict_result_should_pop_template(self):
         from zeit.cms.browser.view import JSON
+
         class View(JSON):
             def json(self):
                 return result
@@ -22,6 +23,7 @@ class TestJSON(unittest2.TestCase):
 
     def test_non_dict_result_should_not_pop_template(self):
         from zeit.cms.browser.view import JSON
+
         class View(JSON):
             def json(self):
                 return result
@@ -30,4 +32,4 @@ class TestJSON(unittest2.TestCase):
         view.request = mock.Mock()
         self.assertEqual('[1, 2, 3]', view())
         # result is unaltered
-        self.assertEqual([1,2,3], result)
+        self.assertEqual([1, 2, 3], result)

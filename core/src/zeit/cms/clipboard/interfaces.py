@@ -1,14 +1,10 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.interface
-import zope.schema
-
-import zope.app.container.interfaces
 
 import zeit.cms.interfaces
-
+import zope.app.container.interfaces
+import zope.interface
+import zope.schema
 
 
 class IClipboardEntry(zope.interface.Interface):
@@ -26,7 +22,6 @@ class IObjectReference(IClipboardEntry):
     referenced_unique_id = zope.schema.TextLine(
         title=u"Unique Id o the referenced object.",
         readonly=True)
-
 
 
 class IClipSchema(zope.interface.Interface):

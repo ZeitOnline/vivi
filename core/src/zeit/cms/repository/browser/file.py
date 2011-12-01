@@ -35,7 +35,6 @@ class FileView(object):
     title = _('View file')
 
 
-
 class IFileEditSchema(zope.interface.Interface):
 
     __name__ = zope.schema.TextLine(
@@ -62,6 +61,7 @@ class BlobWidget(zope.app.form.browser.FileWidget):
                 return input
             else:
                 return self.context.missing_value
+
 
 class FormBase(object):
 

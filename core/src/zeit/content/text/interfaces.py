@@ -37,7 +37,6 @@ class IText(zeit.cms.repository.interfaces.IDAVContent):
         values=('UTF-8', 'ISO8859-15'),
         default='UTF-8')
 
-
     @zope.interface.invariant
     def text_encodable(data):
         if data.text:

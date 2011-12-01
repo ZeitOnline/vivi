@@ -24,6 +24,7 @@ import zeit.xmleditor.browser.interfaces
 def xslt_getNodePath(dummy, nodes):
     return getNodePath(nodes[0])
 
+
 def getNodePath(node):
     path = []
     for ancestor in node.iterancestors():
@@ -109,7 +110,7 @@ class XMLEditorActions(object):
         {"image": "insert.png",
          "title": "Kind einfuegen",
          'filter': 'python: view.getPossibleChildren(node)',
-         "action":'handleShowAppendChildEvent',
+         "action": 'handleShowAppendChildEvent',
          "drop-action": "dropAppendChild", },
         {"image": "insert_before.png",
          "title": u"Davor einfügen",

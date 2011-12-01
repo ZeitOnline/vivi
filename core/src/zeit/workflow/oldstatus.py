@@ -1,13 +1,11 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.component
-import zope.interface
 
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.workflow.interfaces
+import zope.component
+import zope.interface
 
 
 class OldStatus(object):
@@ -31,6 +29,7 @@ class OldStatus(object):
 def properties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
 
+
 @zope.component.adapter(
     zope.interface.Interface,
     zeit.cms.workflow.interfaces.IBeforePublishEvent)
@@ -38,6 +37,7 @@ def set_status(context, event):
     old_status = zeit.workflow.interfaces.IOldCMSStatus(context)
     if old_status.status != 'OK':
         old_status.status = 'OK'
+
 
 @zope.component.adapter(
     zope.interface.Interface,

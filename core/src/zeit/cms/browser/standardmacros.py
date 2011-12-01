@@ -38,5 +38,3 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
         if not title:
             title = str(self.context)
         return title
-
-

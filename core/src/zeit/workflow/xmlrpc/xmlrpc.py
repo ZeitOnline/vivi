@@ -1,13 +1,11 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zope.component
-import zope.cachedescriptors.property
-
-import zope.app.publisher.xmlrpc
-
 import zeit.cms.repository.interfaces
 import zeit.workflow.interfaces
+import zope.app.publisher.xmlrpc
+import zope.cachedescriptors.property
+import zope.component
 
 
 class Publish(zope.app.publisher.xmlrpc.XMLRPCView):
@@ -33,4 +31,3 @@ class Publish(zope.app.publisher.xmlrpc.XMLRPCView):
     def repository(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-

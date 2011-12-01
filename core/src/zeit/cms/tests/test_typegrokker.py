@@ -8,6 +8,7 @@ import zeit.cms.type
 import zope.configuration.config
 import zope.interface
 
+
 class ITestInterface(zope.interface.Interface):
     pass
 

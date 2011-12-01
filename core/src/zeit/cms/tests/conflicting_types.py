@@ -19,5 +19,3 @@ class Decl2(zeit.cms.type.TypeDeclaration):
 
     type = 'foo'
     interface = ITestInterface
-
-

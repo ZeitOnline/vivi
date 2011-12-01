@@ -93,7 +93,8 @@ class FormBase(zeit.cms.browser.view.Base):
                     message, context=self.request, default=message)
                 if title:
                     if isinstance(title, zope.i18n.Message):
-                        title = zope.i18n.translate(title, context=self.request)
+                        title = zope.i18n.translate(
+                            title, context=self.request)
                     message = '%s: %s' % (title, translated)
                 else:
                     message = translated

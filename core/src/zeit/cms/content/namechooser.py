@@ -1,17 +1,15 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import re
-
+import zope.app.container.contained
+import zope.app.container.interfaces
 import zope.exceptions.interfaces
 import zope.interface
 
-import zope.app.container.interfaces
-import zope.app.container.contained
-
 
 invalid_chars = re.compile(r'[^a-z0-9\-]')
+
 
 class NameChooser(zope.app.container.contained.NameChooser):
 

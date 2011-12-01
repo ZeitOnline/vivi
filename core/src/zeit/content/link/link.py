@@ -27,10 +27,9 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
     target = zeit.cms.content.property.ObjectPathProperty('.body.target')
 
 
-
 class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
 
-    factory =  Link
+    factory = Link
     interface = zeit.content.link.interfaces.ILink
     title = _('Link')
     type = 'link'
@@ -52,4 +51,3 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             entry.set(target_attribute, self.context.target)
         else:
             entry.attrib.pop(target_attribute, None)
-

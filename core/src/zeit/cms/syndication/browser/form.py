@@ -2,13 +2,11 @@
 # See also LICENSE.txt
 # $Id$
 
-import zope.formlib.form
-
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.form
 import zeit.cms.syndication.feed
 import zeit.cms.syndication.interfaces
-from zeit.cms.i18n import MessageFactory as _
-
+import zope.formlib.form
 
 
 class FeedFormBase(object):

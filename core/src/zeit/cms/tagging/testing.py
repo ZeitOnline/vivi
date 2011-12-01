@@ -3,6 +3,7 @@
 
 import mock
 
+
 class TaggingHelper(object):
     """Mixin for tests which need some tagging infrastrucutre."""
 
@@ -14,6 +15,7 @@ class TaggingHelper(object):
 
     def setup_tags(self, *codes):
         import stabledict
+
         class Tags(stabledict.StableDict):
             pass
         tags = Tags()

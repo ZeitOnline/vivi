@@ -78,7 +78,7 @@ class InvalidReferenceListRepresentation(object):
         self.context = None
         self.request = request
         self.uniqueId = unique_id
-        dummy, self.__name__  = unique_id.rsplit('/', 1)
+        dummy, self.__name__ = unique_id.rsplit('/', 1)
 
     @property
     def title(self):

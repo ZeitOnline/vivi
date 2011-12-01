@@ -49,7 +49,6 @@ class MockPublish(object):
                                                         self.context))
 
 
-
 _published = {}
 zope.testing.cleanup.addCleanUp(_published.clear)
 _publish_times = {}

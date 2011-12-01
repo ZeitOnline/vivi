@@ -62,7 +62,6 @@ class ContentStatus(zope.viewlet.viewlet.ViewletBase):
         return 'state-yes'
 
 
-
 class AssetStatus(zope.viewlet.viewlet.ViewletBase):
 
     def render(self):

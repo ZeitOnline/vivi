@@ -482,7 +482,7 @@ def store_provides_in_dav(obj, event):
         pass
     if removed_local_content:
         zope.interface.alsoProvides(
-            unwrapped,zeit.cms.workingcopy.interfaces.ILocalContent)
+            unwrapped, zeit.cms.workingcopy.interfaces.ILocalContent)
 
 
 @zope.component.adapter(

@@ -23,4 +23,3 @@ class TestRemoveOnCheckin(zeit.cms.testing.FunctionalTestCase):
         content = mock.Mock()
         zope.event.notify(BeforeCheckinEvent(
             content, mock.Mock(), mock.Mock()))
-

@@ -141,6 +141,7 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
     def test_adapter_grokking(self):
 
         import zeit.cms.content.dav
+
         class Adapter(zeit.cms.content.dav.DAVPropertiesAdapter):
             grokcore.component.implements(ITestInterface)
 
@@ -169,7 +170,7 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
 
     def test_adatper_adaptable_to_properties(self):
         adapter = zeit.cms.content.dav.DAVPropertiesAdapter(self.content)
-        properties = zeit.connector.interfaces.IWebDAVProperties(adapter)
+        zeit.connector.interfaces.IWebDAVProperties(adapter)
 
     def test_adatper_should_set_parent(self):
         adapter = zeit.cms.content.dav.DAVPropertiesAdapter(self.content)

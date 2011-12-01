@@ -32,6 +32,7 @@ def preview_url(content, preview_type):
     except ValueError:
         pass
 
+
 @zope.component.adapter(basestring, basestring)
 @zope.interface.implementer(zeit.cms.browser.interfaces.IPreviewURL)
 def preview_url_for_unique_id(uniqueId, preview_type):

@@ -1,11 +1,9 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.component
-
-import zeit.content.image.interfaces
 from zeit.cms.i18n import MessageFactory as _
+import zeit.content.image.interfaces
+
 
 class ImageBrowser(object):
 

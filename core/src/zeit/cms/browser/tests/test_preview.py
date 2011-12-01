@@ -33,4 +33,3 @@ class PreviewTest(zeit.cms.testing.FunctionalTestCase):
             zope.component.getMultiAdapter(
                 (self.getRootFolder()['repository']['testcontent'], 'preview'),
                 IPreviewURL))
-

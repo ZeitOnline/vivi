@@ -15,7 +15,7 @@ class AHandler(sprout.htmlsubset.SubsetHandler):
         node = self.parent()
         child = node.ownerDocument.createElement('a')
         child.setAttribute('href', attrs.get((None, 'href'), '#'))
-        if attrs.has_key((None, 'target')):
+        if (None, 'target') in attrs:
             child.setAttribute('target', attrs[(None, 'target')])
         node.appendChild(child)
         self.setResult(child)
@@ -55,7 +55,6 @@ def markupTextHandlerClass(parsed_name, tree_name=None):
         tree_name = parsed_name
     return type('%s_handler_class' % parsed_name, (MarkupTextHandler,),
                 {'tree_name': tree_name, 'parsed_name': parsed_name})
-
 
 
 def create_subset(*markup, **kw):

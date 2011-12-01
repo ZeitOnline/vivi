@@ -81,6 +81,7 @@ def MetadataXMLReference(context):
     """XML representation of image."""
 
     attributes = {}
+
     def set_if_not_empty(name, value):
         if value:
             attributes[name] = value

@@ -4,8 +4,8 @@
 import mock
 import unittest
 
-class TestDAVConverterWrapper(unittest.TestCase):
 
+class TestDAVConverterWrapper(unittest.TestCase):
 
     def test_get_should_convert_from_property(self):
         from zeit.cms.content.property import DAVConverterWrapper

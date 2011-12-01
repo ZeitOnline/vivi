@@ -32,5 +32,6 @@ def update(root):
         repository)
     rpm.unsetPermissionFromRole('zope.ManageContent', 'zeit.Editor')
 
+
 def evolve(context):
     zeit.cms.generation.do_evolve(context, update)

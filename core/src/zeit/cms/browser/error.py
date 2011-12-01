@@ -3,6 +3,7 @@
 
 import zope.i18n
 
+
 class ErrorView(object):
 
     def __call__(self):

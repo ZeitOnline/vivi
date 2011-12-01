@@ -244,6 +244,8 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
 
 _collect_lock = threading.Lock()
 _collect_counter = 0
+
+
 @zope.component.adapter(zope.app.publication.interfaces.IBeforeTraverseEvent)
 def collect_caches(event):
     """Collect method cache every 100 requests.

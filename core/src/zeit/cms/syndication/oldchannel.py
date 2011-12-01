@@ -5,8 +5,6 @@ import zeit.cms.content.adapter
 import zeit.cms.syndication.feed
 import zeit.cms.type
 import zeit.connector.interfaces
-import zope.component
-import zope.interface
 
 
 class BodyContainer(zeit.cms.syndication.feed.Feed):
@@ -15,7 +13,6 @@ class BodyContainer(zeit.cms.syndication.feed.Feed):
     @property
     def entries(self):
         return self.xml.body.container
-
 
 
 class BodyContainerType(zeit.cms.type.XMLContentTypeDeclaration):

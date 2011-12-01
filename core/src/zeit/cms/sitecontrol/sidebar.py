@@ -82,9 +82,8 @@ class SiteControl(zeit.cms.browser.view.Base):
         for name, sites in zope.component.getUtilitiesFor(
             zeit.cms.sitecontrol.interfaces.ISitesProvider):
             for content in sites:
-                metadata = zeit.cms.content.interfaces.ICommonMetadata(content,
-                                                                       None)
-                css_class = []
+                metadata = zeit.cms.content.interfaces.ICommonMetadata(
+                    content, None)
                 if metadata is None:
                     ressort = sub_ressort = None
                     title = content.__name__
@@ -98,7 +97,6 @@ class SiteControl(zeit.cms.browser.view.Base):
                     url=self.url(content)))
 
         return result
-
 
     def _get_url(self, ressort, sub_ressort=None):
         path = ressort.lower()

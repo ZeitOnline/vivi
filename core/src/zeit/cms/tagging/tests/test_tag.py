@@ -13,6 +13,7 @@ class TestTags(unittest.TestCase):
 
     def get_content(self):
         from zeit.cms.tagging.tag import Tags
+
         class Content(object):
             tags = Tags()
         return Content()

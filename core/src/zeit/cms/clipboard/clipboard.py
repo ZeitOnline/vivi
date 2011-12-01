@@ -27,7 +27,8 @@ class Clipboard(zope.app.container.ordered.OrderedContainer):
 
     title = 'Clipboard'
 
-    def addContent(self, reference_object, add_object, name=None, insert=False):
+    def addContent(self, reference_object, add_object,
+                   name=None, insert=False):
         """Add unique_id to obj."""
         if not zeit.cms.clipboard.interfaces.IClipboardEntry.providedBy(
             reference_object):

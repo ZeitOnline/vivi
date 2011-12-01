@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
 def webDAVPropertiesFactory():
     return zeit.connector.resource.WebDAVProperties()
 
+
 @zope.component.adapter(zeit.connector.interfaces.IWebDAVProperties)
 @zope.interface.implementer(zeit.cms.interfaces.ICMSContent)
 def webdavproperties_to_cms_content(context):

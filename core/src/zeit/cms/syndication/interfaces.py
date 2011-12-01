@@ -112,6 +112,7 @@ class IWriteFeed(zope.interface.Interface):
 
         """
 
+
 class IFeed(IReadFeed, IWriteFeed):
     """Documents can be published into a feed."""
 

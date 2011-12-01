@@ -26,7 +26,6 @@ class WorkflowMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
     activeCSS = 'workflow selected'
     inActiveCSS = 'workflow'
 
-
     @property
     def selected(self):
         """We are selected when no other item is selected."""

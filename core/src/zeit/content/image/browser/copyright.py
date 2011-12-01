@@ -1,13 +1,12 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zope.app.pagetemplate
-import zope.formlib.form
-
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.menu
 import zeit.cms.checkout.helper
 import zeit.content.image.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zope.app.pagetemplate
+import zope.formlib.form
 
 
 class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
@@ -43,7 +42,6 @@ class Form(zeit.cms.browser.lightbox.Form):
         self.send_message(
             _('Copyright changed for: ${changes}',
               mapping=dict(changes=', '.join(changed))))
-
 
     @staticmethod
     def set_copyrights(obj, copyrights):

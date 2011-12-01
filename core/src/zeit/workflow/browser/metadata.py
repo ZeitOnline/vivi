@@ -14,7 +14,6 @@ class WorkflowPreview(zope.viewlet.viewlet.ViewletBase):
     fields = zope.formlib.form.FormFields(
         zeit.workflow.interfaces.IContentWorkflow)
 
-
     widgets = None
 
     def update(self):

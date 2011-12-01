@@ -28,7 +28,6 @@ class InsertLightbox(object):
         return self.context.uniqueId
 
 
-
 class Insert(zeit.cms.browser.view.Base):
     """Insert object from clipboard into current container."""
 

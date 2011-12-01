@@ -26,7 +26,7 @@ class PersistentTest(unittest.TestCase):
         self.assertEquals(self.p.__parent__._p_changed, True)
 
     def test_proxied(self):
-        parent =  persistent.Persistent()
+        parent = persistent.Persistent()
         parent._p_jar = mock.Mock()
         self.p.__parent__ = zope.security.proxy.ProxyFactory(parent)
         self.p._p_changed = True

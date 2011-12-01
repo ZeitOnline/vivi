@@ -14,7 +14,6 @@ import zope.component
 import zope.testing.cleanup
 
 
-
 class AssetBase(object):
     """Asset form field definitions."""
 

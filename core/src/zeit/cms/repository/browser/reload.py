@@ -9,6 +9,7 @@ import zeit.cms.browser.menu
 import zeit.cms.browser.view
 from zeit.cms.i18n import MessageFactory as _
 
+
 class Reload(zeit.cms.browser.view.Base):
     """Reload folder (invalidate cache)."""
 

@@ -39,13 +39,14 @@ def ZCMLLayer(
     config_file, module=None, name=None, allow_teardown=True,
     product_config=None):
     if module is None:
-        module = stack = inspect.stack()[1][0].f_globals['__name__']
+        module = inspect.stack()[1][0].f_globals['__name__']
     if name is None:
         name = 'ZCMLLayer(%s)' % config_file
     if not config_file.startswith('/'):
         config_file = pkg_resources.resource_filename(module, config_file)
     if product_config is True:
         product_config = cms_product_config
+
     def setUp(cls):
         cls.setup = zope.app.testing.functional.FunctionalTestSetup(
             config_file, product_config=product_config)

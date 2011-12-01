@@ -9,6 +9,7 @@ import threading
 import zope.app.publication.interfaces
 import zope.testing.cleanup
 
+
 class Refs(threading.local):
 
     def __init__(self):

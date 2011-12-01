@@ -14,8 +14,10 @@ from zeit.cms.i18n import MessageFactory as _
 def _stealable(form, action):
     return form.lockable.isLockedOut()
 
+
 def _unlockable(form, action):
     return form.lockable.ownLock()
+
 
 def _lockable(form, action):
     return not form.lockable.locked()
@@ -102,7 +104,6 @@ class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
         if self.lockable is None:
             return ''
         return super(MenuItem, self).render()
-
 
 
 def get_locking_indicator(context, request):

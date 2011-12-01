@@ -25,6 +25,7 @@ class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
 class MenuItemBase(zope.viewlet.viewlet.ViewletBase):
 
     sort = 0
+
     def __cmp__(self, other):
         __traceback_info__ = (self, other)
         return cmp(float(self.sort), float(other.sort))
@@ -143,6 +144,7 @@ class DropDownMenuBase(object):
 
         self.items = provider.render()
 
+
 class ContextViewsMenu(MenuItemBase, z3c.menu.simple.menu.ContextMenuItem):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
@@ -153,6 +155,7 @@ class SecondaryActions(DropDownMenuBase, MenuItemBase):
     """Menu for secondary actions."""
 
     css = None
+
 
 class GlobalSecondaryActions(DropDownMenuBase, GlobalMenuItem):
     """Menu for global secondary actions."""

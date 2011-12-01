@@ -51,7 +51,6 @@ class LiveProperties(object, UserDict.DictMixin):
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
-
     # ILivePropertyManager
 
     @classmethod
@@ -77,9 +76,9 @@ def remove_live_properties(context, event):
 
     """
     try:
-      properties = zeit.connector.interfaces.IWebDAVProperties(context)
+        properties = zeit.connector.interfaces.IWebDAVProperties(context)
     except TypeError:
-      return
+        return
     manager = zope.component.getUtility(
         zeit.cms.content.interfaces.ILivePropertyManager)
     for live_property in manager.live_properties:

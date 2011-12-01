@@ -312,7 +312,6 @@ class RemoveFromMySyndicationTargetsMenuItem(
             return super(RemoveFromMySyndicationTargetsMenuItem, self).render()
 
 
-
 class FakeEntryRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing a feed."""
 

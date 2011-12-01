@@ -90,8 +90,6 @@ class IImageMetadata(zope.interface.Interface):
         title=u'True if metadata should be acquired from the parent.')
 
 
-
-
 class IImage(zeit.cms.interfaces.IAsset,
              zeit.cms.repository.interfaces.IDAVContent,
              zope.file.interfaces.IFile):
@@ -116,6 +114,7 @@ class ITransform(zope.interface.Interface):
         raises TypeError of both width and height are ommited.
 
         """
+
 
 class IPersistentThumbnail(IImage):
     """Persistent thumbnail version of an image."""

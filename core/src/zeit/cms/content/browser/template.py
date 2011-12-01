@@ -89,7 +89,6 @@ class Properties(object):
                 self.context)
             properties.update(new_properties)
 
-
     @property
     def content(self):
         properties = zeit.connector.interfaces.IWebDAVReadProperties(

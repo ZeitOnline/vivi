@@ -1,19 +1,13 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.cms.i18n import MessageFactory as _
 import re
-
+import zope.app.container.interfaces
 import zope.i18nmessageid
 import zope.interface
 import zope.schema
 import zope.security
-
-import zope.app.container.interfaces
-
-import zc.form.field
-
-from zeit.cms.i18n import MessageFactory as _
 
 
 DOCUMENT_SCHEMA_NS = u"http://namespaces.zeit.de/CMS/document"
@@ -33,6 +27,8 @@ class ICMSContentType(zope.interface.interfaces.IInterface):
 
 
 valid_name_regex = re.compile(r'^[A-Za-z0-9\.\,\-_*()~]+$').match
+
+
 def valid_name(value):
     if valid_name_regex(value):
         return True

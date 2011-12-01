@@ -222,6 +222,7 @@ class IDAVPropertyConverter(zope.interface.Interface):
         returns unicode
         """
 
+
 class IGenericDAVPropertyConverter(IDAVPropertyConverter):
     """A dav property converter which converts in a generic way.
 
@@ -229,6 +230,7 @@ class IGenericDAVPropertyConverter(IDAVPropertyConverter):
     converter or a specialised is doing the work.
 
     """
+
 
 class IDAVToken(zope.interface.Interface):
     """A string representing a token that uniquely identifies a value."""

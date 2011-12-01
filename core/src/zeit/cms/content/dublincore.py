@@ -46,7 +46,7 @@ class LocalDCTimes(RepositoryDCTimes):
 
     @modified.setter
     def modified(self, value):
-        # Store modified in annotations. Some code may set modified for temporary
-        # objects or to have a modified date before database commit.
+        # Store modified in annotations. Some code may set modified for
+        # temporary objects or to have a modified date before database commit.
         annotations = zope.annotation.interfaces.IAnnotations(self.context)
         annotations[__name__] = value

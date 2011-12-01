@@ -19,7 +19,7 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
         self.setSite(self.getRootFolder())
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        principal = zeit.cms.testing.create_interaction(u'zope.user')
+        zeit.cms.testing.create_interaction(u'zope.user')
 
     def tearDown(self):
         zeit.cms.testing.tearDown(self)
@@ -57,14 +57,15 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
         content = self.repository['testcontent']
         sc = zeit.cms.content.interfaces.ISemanticChange(content)
         self.assertTrue(sc.last_semantic_change is None)
-        with zeit.cms.checkout.helper.checked_out(content,
-                                                  semantic_change=True) as co:
+        with zeit.cms.checkout.helper.checked_out(
+                content, semantic_change=True):
             pass
         self.assertFalse(sc.last_semantic_change is None)
 
     def test_old_style_without_change(self):
         content = self.repository['testcontent']
         self.assertEqual(None, self.repository['testcontent'].title)
+
         def set_title_and_return_false(co):
             co.title = u'foo'
             return False
@@ -74,11 +75,10 @@ class TestHelper(zope.app.testing.functional.BrowserTestCase):
 
     def test_ignore_conflict(self):
         content = self.repository['testcontent']
-        connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
         # Assign an etag
         with zeit.cms.checkout.helper.checked_out(content):
             pass
+
         def cycle_without_ignore_raises():
             with zeit.cms.checkout.helper.checked_out(content) as co:
                 # Change the etag to provoke a conflict

@@ -168,4 +168,3 @@ class Thumbnail(object):
         view = zope.component.getMultiAdapter(
             (self.context[name], self.request), name='thumbnail')
         return view()
-

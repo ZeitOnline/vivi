@@ -18,7 +18,6 @@ class Folder(zeit.cms.repository.repository.Container):
     zope.interface.implements(zeit.cms.repository.interfaces.IFolder)
 
 
-
 class FolderType(zeit.cms.type.TypeDeclaration):
 
     interface = zeit.cms.repository.interfaces.IFolder

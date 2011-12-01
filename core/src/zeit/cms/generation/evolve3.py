@@ -15,5 +15,6 @@ def update(root):
         zeit.cms.relation.interfaces.IRelations)
     relations.add_index(zeit.cms.syndication.feed.syndicated_in, multiple=True)
 
+
 def evolve(context):
     zeit.cms.generation.do_evolve(context, update)
