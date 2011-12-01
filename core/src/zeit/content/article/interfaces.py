@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 from zeit.content.article.i18n import MessageFactory as _
-import zc.form.field
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -46,7 +45,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""
-
 
     def updateDAVFromXML():
         """Update the DAV properties based on the information in the XML.
