@@ -12,6 +12,7 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
+        'gocept.runner>0.5.3',
         'grokcore.component',
         'grokcore.view',
         'lxml',

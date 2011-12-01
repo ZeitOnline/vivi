@@ -3,6 +3,7 @@
 
 import datetime
 import gocept.runner
+import itertools
 import logging
 import pytz
 import zeit.addcentral.interfaces
@@ -17,12 +18,14 @@ import zope.component
 log = logging.getLogger(__name__)
 
 
+@gocept.runner.transaction_per_item
 def update_from_brightcove():
     # getting the playlists seems to be much more likely to fail, and since
     # we want to take what we can get, we do it *after* we have processed
     # the videos (instead of combining both steps)
-    VideoUpdater.update_all()
-    PlaylistUpdater.update_all()
+    return itertools.chain(
+        VideoUpdater.update_all(),
+        PlaylistUpdater.update_all())
 
 
 @gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
@@ -55,7 +58,7 @@ class BaseUpdater(object):
     @classmethod
     def update_all(cls):
         for x in cls.get_objects():
-            cls(x)()
+            yield cls(x)
 
     @classmethod
     def get_objects(cls):
@@ -168,8 +171,8 @@ class PlaylistUpdater(BaseUpdater):
     def update_all(cls):
         objects = cls.get_objects()
         for x in objects:
-            cls(x)()
-        cls.delete_remaining_except(objects)
+            yield cls(x)
+        yield lambda: cls.delete_remaining_except(objects)
 
     def update(self):
         current = self.bcobj.from_cms(self.cmsobj)
