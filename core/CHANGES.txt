@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.0.2 (unreleased)
+2.1.0 (2011-12-01)
 ------------------
 
 - Use separate Remotetask service for publishing BC objects (#10024).
