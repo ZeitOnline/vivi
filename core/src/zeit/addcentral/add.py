@@ -38,7 +38,7 @@ class ContentAdder(object):
         # that interface to be able to ask for those adapters, since
         # zope.component looks for provides when an interface is required, and
         # interfaces don't provide themselves.
-        dummy = type('Dummy', (object,), {})()
+        dummy = type(self.type_.__name__, (object,), {})()
         zope.interface.alsoProvides(dummy, self.type_)
         context = zope.component.getMultiAdapter(
             (dummy, self), zeit.addcentral.interfaces.IAddLocation)
