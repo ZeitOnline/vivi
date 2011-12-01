@@ -601,7 +601,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (container.nodeName == 'A') {
             self.insert_link_node = container;
         } else {
-            self.insert_link_node = 
+            self.insert_link_node =
                 MochiKit.DOM.getFirstParentByTagAndClassName(
                     container, 'a', null);
         }
@@ -616,7 +616,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 'a[href="#article-editor-create-link"]', self.editable)[0];
             self.insert_link_node._just_created = true;
         }
-        jQuery(self.insert_link_node).addClass('link-edit')
+        jQuery(self.insert_link_node).addClass('link-edit');
         jQuery('*[name=href]', self.link_input).val(href);
         jQuery('*[name=target]', self.link_input).val(target);
         var line_height = parseInt(
