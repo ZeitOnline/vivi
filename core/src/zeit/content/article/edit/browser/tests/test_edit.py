@@ -21,7 +21,7 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
         import zeit.content.article.article
         import zeit.content.article.edit.body
         if not body:
-            body  = ("<division><p>Para 1</p><p>Para 2</p></division>"
+            body = ("<division><p>Para 1</p><p>Para 2</p></division>"
                      "<division><p>Para 3</p><p>Para 4</p></division>")
         article = zeit.content.article.article.Article()
         article.xml.body = lxml.objectify.XML(
