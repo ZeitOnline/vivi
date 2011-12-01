@@ -444,7 +444,7 @@ class JSLintTestCase(gocept.jslint.TestCase):
                 'jsontemplate,'
                 'MochiKit,$,$$,forEach,filter,map,extend,bind,'
                 'log,repr,logger,logDebug,logError,' # XXX
-                'DIV,A,UL,LI,INPUT,IMG,'
+                'DIV,A,UL,LI,INPUT,IMG,SELECT,OPTION,BUTTON,'
                 'isNull,isUndefined,isUndefinedOrNull',
                 ))
 
@@ -457,4 +457,5 @@ class JSLintTestCase(gocept.jslint.TestCase):
         "This is an ES5 feature",
         "Use a named parameter",
         "unused variable: self",
+        "Missing radix parameter",
         )
