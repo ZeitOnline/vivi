@@ -4,7 +4,7 @@ zeit.addcentral changes
 1.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Provide name of interface in dummy add context to make debugging easier.
 
 
 1.0.1 (2011-11-13)
