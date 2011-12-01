@@ -1,6 +1,12 @@
 zeit.content.video changes
 ==========================
 
+2.0.5 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.0.4 (2011-12-01)
 ------------------
 
