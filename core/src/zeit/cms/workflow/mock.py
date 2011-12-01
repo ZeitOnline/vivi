@@ -1,6 +1,5 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """A mock workflow component for testing."""
 
 import zope.component

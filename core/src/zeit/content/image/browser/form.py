@@ -1,6 +1,5 @@
 
 # See also LICENSE.txt
-# $Id$
 
 import datetime
 

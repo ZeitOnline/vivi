@@ -1,6 +1,5 @@
 # Copyright (c) 2006-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 """Standard macros for Rohbau"""
 
 import zope.component

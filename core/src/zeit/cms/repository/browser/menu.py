@@ -1,6 +1,5 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zeit.cms.browser.menu
 from zeit.cms.i18n import MessageFactory as _

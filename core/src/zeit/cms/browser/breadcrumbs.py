@@ -1,6 +1,5 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zope.traversing.api
 import zope.component

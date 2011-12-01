@@ -1,7 +1,6 @@
 # vim: fileencoding=utf8 encoding=utf8
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import re
 import os.path

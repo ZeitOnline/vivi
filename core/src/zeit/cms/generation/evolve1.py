@@ -1,6 +1,5 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
 import zeit.cms.generation
 import zeit.cms.generation.install
