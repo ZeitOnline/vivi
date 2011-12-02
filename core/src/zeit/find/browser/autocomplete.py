@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -27,9 +27,9 @@ class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
 
     def __call__(self):
         return (
-            '<input type="text" class="autocomplete" '
-            'placeholder={placeholder} '
-            'cms:autocomplete-source="{url}?{query}" />').format(
+            u'<input type="text" class="autocomplete" '
+            u'placeholder={placeholder} '
+            u'cms:autocomplete-source="{url}?{query}" />').format(
                 url=self.url(zope.site.hooks.getSite(), '@@simple_find'),
                 query=urllib.urlencode(
                     [('types:list', self.source.get_check_types())],
