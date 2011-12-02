@@ -604,7 +604,7 @@ class VideoStep(ConversionStep):
         if nodes:
             format = nodes[0].text
         new_node = lxml.builder.E.video(
-            href=id1, href2=id2,
+            href=id1 or '', href2=id2 or '',
             expires=expires, format=format)
         return new_node
 

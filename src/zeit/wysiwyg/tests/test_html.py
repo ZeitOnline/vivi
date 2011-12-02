@@ -52,6 +52,40 @@ class VideoExpiresTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
             self.step._expires(VIDEO1, VIDEO2, None))
 
 
+class VideoStepTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
+
+    def test_empty_hrefs_should_not_break_conversion(self):
+        source = """\
+<?xml version='1.0' encoding='UTF-8'?>
+<article>
+  <body>
+    <video href2="" href="" expires="2011-01-03T06:00:00+01:00" format="large"/>
+  </body>
+</article>
+"""
+        article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+            xml_source=StringIO.StringIO(source))
+        converter = zeit.wysiwyg.html.HTMLConverter(article)
+        converter.from_html(
+            article.xml['body'],
+            u"""\
+<div class="inline-element video">
+  <div class="videoId"></div>
+  <div class="videoId2"></div>
+  <div class="expires">2011-01-03 06:00</div>
+  <div class="format">large</div>
+</div>
+""")
+        self.assertEqual("""\
+<article>
+  <body>
+    <video href2="" href="" expires="2011-01-03T06:00:00+01:00" format="large"/>
+  </body>
+</article>
+""",
+            lxml.etree.tostring(article.xml, pretty_print=True))
+
+
 class TopLevelTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
 
     def test_regression_conversion_to_p_copes_with_non_element_nodes(self):
