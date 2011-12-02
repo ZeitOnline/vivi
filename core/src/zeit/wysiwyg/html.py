@@ -326,6 +326,10 @@ class TableStep(ConversionStep):
             del node.attrib[name]
 
 
+# rebind outside any class to avoid name mangling
+ContentOnlyElement = lxml.etree.__ContentOnlyElement
+
+
 class NormalizeToplevelStep(ConversionStep):
     """Normalize any toplevel tag we don't have a ConversionStep for to <p>."""
 
@@ -338,6 +342,8 @@ class NormalizeToplevelStep(ConversionStep):
         xpath = converter.covered_xpath()
         covered = node.xpath(xpath)
         for child in node.iterchildren():
+            if isinstance(child, ContentOnlyElement):
+                continue
             if child not in covered:
                 child.tag = 'p'
 

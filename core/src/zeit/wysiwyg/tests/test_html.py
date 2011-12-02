@@ -2,6 +2,9 @@
 # See also LICENSE.txt
 
 from zeit.wysiwyg.testing import VIDEO1, VIDEO2, VIDEO3, PLAYLIST
+import StringIO
+import lxml.etree
+import zeit.cms.testcontenttype.testcontenttype
 import zeit.wysiwyg.html
 import zeit.wysiwyg.testing
 
@@ -47,3 +50,16 @@ class VideoExpiresTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
         self.assertEqual(
             self.video2.expires.isoformat(),
             self.step._expires(VIDEO1, VIDEO2, None))
+
+
+class TopLevelTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
+
+    def test_regression_conversion_to_p_copes_with_non_element_nodes(self):
+        source = '<article><body></body></article>'
+        article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+            xml_source=StringIO.StringIO(source))
+        converter = zeit.wysiwyg.html.HTMLConverter(article)
+        converter.from_html(article.xml['body'], '<!-- foo --><p>Foo</p>')
+        self.assertEqual(
+            '<article><body><!-- foo --><p>Foo</p></body></article>',
+            lxml.etree.tostring(article.xml))
