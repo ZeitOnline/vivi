@@ -13,6 +13,10 @@ import zope.component
 product_config = """
 <product-config zeit.workflow>
     path-prefix work
+    # WorkflowScriptsLayer overrides these anyway, but we provide some defaults
+    # so other packages simply add our product_config for their tests.
+    publish-script /bin/true
+    retract-script /bin/true
 </product-config>
 """
 
