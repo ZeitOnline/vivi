@@ -40,6 +40,23 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
             proxied = ProxyFactory(pls)
             self.assertEqual('pls', proxied.id_prefix)
 
+    def test_playlist_should_update_video_metadata_on_checkin(self):
+        factory = zeit.content.video.testing.video_factory(self)
+        video = factory.next()
+        video.title = u'foo'
+        video = factory.next()  # in repository
+        factory = zeit.content.video.testing.playlist_factory(self)
+        pls = factory.next()
+        pls.videos = (video,)
+        pls = factory.next()  # in repository
+        with zeit.cms.checkout.helper.checked_out(video) as co:
+            co.title = u'bar'
+        with zeit.cms.checkout.helper.checked_out(pls):
+            pass
+        pls = self.repository['pls']
+        self.assertEqual(
+            u'bar', pls.xml['body']['videos']['video']['title'])
+
 
 class TestReferencesAdapter(zeit.content.video.testing.TestCase):
 

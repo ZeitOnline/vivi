@@ -18,7 +18,7 @@ setup(
         'gocept.form',
         'grokcore.component',
         'setuptools',
-        'zeit.cms',
+        'zeit.cms>=1.51.1dev',
         'zeit.solr',
         'zope.annotation',
         'zope.component',
