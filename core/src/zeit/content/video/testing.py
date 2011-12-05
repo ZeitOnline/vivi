@@ -5,6 +5,7 @@ import gocept.selenium.ztk
 import pkg_resources
 import zeit.cms.testing
 import zeit.solr.testing
+import zeit.workflow.testing
 import zope.testing.doctest
 
 
@@ -21,6 +22,7 @@ ZCMLLayer = zeit.cms.testing.ZCMLLayer(
     product_config=(
         zeit.cms.testing.cms_product_config +
         zeit.solr.testing.product_config +
+        zeit.workflow.testing.product_config +
         product_config))
 
 

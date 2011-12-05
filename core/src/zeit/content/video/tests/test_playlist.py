@@ -1,7 +1,9 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
+import zeit.workflow.testing
 
 
 class TestPlaylist(zeit.content.video.testing.TestCase):
@@ -73,3 +75,17 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
         self.assertEqual(1, len(videos))
         self.assertEquals(
             'http://xml.zeit.de/video', videos[0].uniqueId)
+
+    def test_playlist_is_published_when_contained_video_is_published(self):
+        factory = zeit.content.video.testing.video_factory(self)
+        video = factory.next()
+        video = factory.next()  # in repository
+        factory = zeit.content.video.testing.playlist_factory(self)
+        pls = factory.next()
+        pls.videos = (video,)
+        pls = factory.next()  # in repository
+
+        zeit.cms.workflow.interfaces.IPublish(video).publish()
+        zeit.workflow.testing.run_publish()
+        self.assertTrue(
+            zeit.cms.workflow.interfaces.IPublishInfo(pls).published)

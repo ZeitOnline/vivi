@@ -84,3 +84,20 @@ class VideoXMLReferenceUpdater(grokcore.component.Adapter):
                 src=self.context.thumbnail))
 
         node.set('type', 'video')
+
+
+class Dependencies(grokcore.component.Adapter):
+
+    grokcore.component.context(
+        zeit.content.video.interfaces.IVideo)
+    grokcore.component.name('zeit.content.video')
+    grokcore.component.implements(
+        zeit.workflow.interfaces.IPublicationDependencies)
+
+    def __init__(self, context):
+        self.context = context
+
+    def get_dependencies(self):
+        relations = zope.component.getUtility(
+            zeit.cms.relation.interfaces.IRelations)
+        return relations.get_relations(self.context)

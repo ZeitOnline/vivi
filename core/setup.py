@@ -20,6 +20,7 @@ setup(
         'setuptools',
         'zeit.cms>=1.51.1dev',
         'zeit.solr',
+        'zeit.workflow',
         'zope.annotation',
         'zope.component',
         'zope.formlib',
