@@ -4,7 +4,8 @@ zeit.cms changes
 1.51.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add handler that updates XMLReferences for MultiResources on checkin
+  (for #10042).
 
 
 1.51.0 (2011-12-01)
