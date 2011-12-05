@@ -1,12 +1,12 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import doctest
 import gocept.selenium.ztk
 import pkg_resources
 import zeit.cms.testing
 import zeit.solr.testing
 import zeit.workflow.testing
-import zope.testing.doctest
 
 
 product_config = """\
@@ -56,7 +56,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
 def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('layer', Layer)
-    kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
+    kw['package'] = doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 

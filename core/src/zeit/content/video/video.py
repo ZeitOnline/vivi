@@ -11,6 +11,7 @@ import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.interfaces
 import zeit.content.video.interfaces
+import zeit.workflow.interfaces
 import zope.interface
 
 
