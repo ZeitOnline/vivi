@@ -97,6 +97,17 @@ It takes precedence over the freetext authors:
   <body/>
 </testtype>
 
+Changes to author objects are propagated to content on checkin:
+
+>>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
+...     co.author_references = [repository['shakespeare']]
+>>> with zeit.cms.checkout.helper.checked_out(repository['shakespeare']) as co:
+...     co.lastname = 'Otherwise'
+>>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
+...     pass
+>>> repository['testcontent'].xml['head']['author']['display_name']
+'William Otherwise'
+
 
 Publishing
 ==========
