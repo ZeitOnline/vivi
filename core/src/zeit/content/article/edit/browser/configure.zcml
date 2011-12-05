@@ -172,6 +172,14 @@
   <browser:page
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="set_reference_2"
+    class=".video.SetVideo2"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit"
     class=".video.EditVideo"
     permission="zeit.EditContent"

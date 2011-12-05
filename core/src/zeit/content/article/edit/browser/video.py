@@ -15,13 +15,19 @@ class SetVideo(zeit.edit.browser.view.Action):
 
     uniqueId = zeit.edit.browser.view.Form('uniqueId')
     undo_description = _('set video')
+    name = 'video'
 
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        self.context.video = content
+        setattr(self.context, self.name, content)
         zope.lifecycleevent.modified(self.context)
         self.signal(
             None, 'reload', self.context.__name__, self.url('@@contents'))
+
+
+class SetVideo2(SetVideo):
+
+    name = 'video_2'
 
 
 class EditVideo(zeit.edit.browser.view.EditBox):
@@ -42,9 +48,14 @@ class View(zeit.content.article.edit.browser.reference.View):
 
     @zope.cachedescriptors.property.Lazy
     def writable(self):
+        # works the same for video_2 since they come from the same schema
         return zope.security.canWrite(self.context, 'video')
 
-    @zope.cachedescriptors.property.Lazy
-    def has_content(self):
-        return (self.context.video is not None or
-                self.context.video_2 is not None)
+    @property
+    def css_class(self):
+        css_class = []
+        if self.context.layout:
+            css_class.append(self.context.layout)
+        if self.writable:
+            css_class.append('action-content-droppable')
+        return ' '.join(css_class)

@@ -1,7 +1,8 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import mock
+import transaction
 import unittest2
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -325,19 +326,54 @@ class VideoTest(GalleryTest):
         self.assert_ellipsis(
             """...<div ...class="large ...""")
 
-    def test_two_videos_should_be_editable(self):
-        self.setup_content()
-        self.get_article(with_empty_block=True)
-        self.browser.open(self.contents_url)
-        self.browser.getLink('Edit').click()
-        self.browser.getControl('Video', index=0).value = (
-            'http://xml.zeit.de/video')
-        self.browser.getControl('Video 2').value = (
-            'http://xml.zeit.de/video_2')
-        self.browser.getControl('Apply').click()
-        self.assert_ellipsis("<...self.close()...")
-        self.browser.open(self.contents_url)
-        self.assert_ellipsis("""...
-          href="http://localhost:8080/++skin++vivi/repository/video"...
-          href="http://localhost:8080/++skin++vivi/repository/video_2"...
-                             """)
+
+class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def create_content_and_fill_clipboard(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction() as principal:
+                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+                clipboard.addClip('Clip')
+                clip = clipboard['Clip']
+                for i in range(4):
+                    video = zeit.content.video.video.Video()
+                    video.supertitle = u'MyVideo_%s' % i
+                    name = 'my_video_%s' % i
+                    self.repository[name] = video
+                    clipboard.addContent(
+                        clip, self.repository[name], name, insert=True)
+        transaction.commit()
+
+        s = self.selenium
+        self.open('/')
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+    def setUp(self):
+        super(VideoEditTest, self).setUp()
+        self.create_content_and_fill_clipboard()
+
+    def test_videos_should_be_editable(self):
+        s = self.selenium
+        self.add_article()
+        self.create_block('video')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_video_0"]',
+            'css=div.video_1')
+        s.waitForElementPresent(
+            'css=div.video_1 div.supertitle:contains("MyVideo_0")')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_video_1"]',
+            'css=div.video_2')
+        s.waitForElementPresent(
+            'css=div.video_2 div.supertitle:contains("MyVideo_1")')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_video_2"]',
+            'css=div.video_1')
+        s.waitForElementPresent(
+            'css=div.video_1 div.supertitle:contains("MyVideo_2")')
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_video_3"]',
+            'css=div.video_2')
+        s.waitForElementPresent(
+            'css=div.video_2 div.supertitle:contains("MyVideo_3")')

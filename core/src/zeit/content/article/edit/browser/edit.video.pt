@@ -1,17 +1,11 @@
-<div i18n:domain="zeit.cms" 
-  tal:attributes="
+<div i18n:domain="zeit.cms">
+
+<div tal:attributes="
   cms:drop-url string:${context/@@absolute_url}/@@set_reference;
-  class view/css_class">
+  class string:${view/css_class} video-image video_1 landing-zone visible">
 
-  <tal:reference condition="view/has_content">
-    <div class="video-image video_1"
-         tal:condition="context/video"
-         tal:content="structure context/video/@@object-details"/>
-    <div class="video-image video_2"
-         tal:condition="context/video_2"
-         tal:content="structure context/video_2/@@object-details" />
-  </tal:reference>
-
+  <span tal:condition="context/video"
+       tal:content="structure context/video/@@object-details"/>
   <tal:noref condition="not:context/video">
     <tal:writable condition="view/writable">
       <span i18n:translate="">Drag content to embed.</span>
@@ -20,5 +14,26 @@
       <span i18n:translate="">No content referenced.</span>
     </tal:notwritable>
   </tal:noref>
+
+</div>
+
+<div tal:attributes="
+  cms:drop-url string:${context/@@absolute_url}/@@set_reference_2;
+  class string:${view/css_class} video-image video_2 landing-zone visible">
+
+  <span tal:condition="context/video_2"
+       tal:content="structure context/video_2/@@object-details" />
+  <tal:noref condition="not:context/video_2">
+    <tal:writable condition="view/writable">
+      <span i18n:translate="">Drag content to embed.</span>
+    </tal:writable>
+    <tal:notwritable condition="not:view/writable">
+      <span i18n:translate="">No content referenced.</span>
+    </tal:notwritable>
+  </tal:noref>
+
+</div>
+
+<div style="clear: both"></div>
 
 </div>
