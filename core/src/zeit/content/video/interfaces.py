@@ -3,7 +3,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zope.schema
 
 
@@ -27,9 +26,9 @@ class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
 
 
 class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
+
     config_url = 'source-serie'
     product_configuration = 'zeit.content.video'
-
 
 
 class IVideo(IVideoContent):
@@ -88,7 +87,6 @@ class VideoOrPlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
 videoOrPlaylistSource = VideoOrPlaylistSource()
 
 
-
 class IVideoAsset(zope.interface.Interface):
 
     audio_id = zope.schema.TextLine(
@@ -104,5 +102,3 @@ class IVideoAsset(zope.interface.Interface):
         title=_('Video 2'),
         required=False,
         source=videoOrPlaylistSource)
-
-

@@ -4,13 +4,12 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import grokcore.component as grok
-import zeit.cms.content.browser.form
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
-import zope.component.hooks
 import zope.dublincore.interfaces
 import zope.formlib.form
+
 
 class Edit(zeit.cms.browser.form.EditForm):
 
@@ -52,7 +51,6 @@ class Edit(zeit.cms.browser.form.EditForm):
             ('related',),
             'wide-widgets full-width'),
     )
-
 
 
 @grok.adapter(zeit.content.video.interfaces.IVideo, name='edit.html')
