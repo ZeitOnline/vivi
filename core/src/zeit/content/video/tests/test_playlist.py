@@ -43,7 +43,7 @@ class TestPlaylist(zeit.content.video.testing.TestCase):
 
 class TestReferencesAdapter(zeit.content.video.testing.TestCase):
 
-    def test_should_contains(self):
+    def test_playlist_references_should_contain_its_videos(self):
         factory = zeit.content.video.testing.video_factory(self)
         video = factory.next()
         video.teaserText = u'Bla bla'
