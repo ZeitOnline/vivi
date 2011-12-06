@@ -311,21 +311,6 @@ class VideoTest(GalleryTest):
                 repository['video_2'] = Video()
         self.content_id = repository['video'].uniqueId
 
-    def test_layout_should_be_editable(self):
-        self.get_article(with_empty_block=True)
-        self.browser.open(self.contents_url)
-        self.browser.getLink('Edit').click()
-        self.assertEqual(
-            ['(no value)', 'small', 'with info', 'large', 'double'],
-            self.browser.getControl('Layout').displayOptions)
-        self.browser.getControl('Layout').displayValue = ['large']
-        self.browser.getControl('Apply').click()
-        self.assert_ellipsis("<...self.close()...")
-        # The layout is used as a css-class:
-        self.browser.open(self.contents_url)
-        self.assert_ellipsis(
-            """...<div ...class="large ...""")
-
 
 class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
@@ -377,3 +362,20 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             'css=div.video_2')
         s.waitForElementPresent(
             'css=div.video_2 div.supertitle:contains("MyVideo_3")')
+
+    def test_layout_should_be_editable(self):
+        s = self.selenium
+        self.add_article()
+        self.create_block('video')
+        select = 'css=.block.type-video form.wired select'
+        s.waitForElementPresent(select)
+        self.assertEqual(
+            ['(no value)', 'small', 'with info', 'large', 'double'],
+            s.getSelectOptions(select))
+        s.select(select, 'label=large')
+        s.fireEvent(select, 'blur')
+        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        # Re-open the page and verify that the data is still there
+        s.clickAndWait('link=Edit contents')
+        s.waitForElementPresent(select)
+        s.assertSelectedLabel(select, 'large')

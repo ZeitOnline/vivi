@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -30,18 +30,16 @@ class SetVideo2(SetVideo):
     name = 'video_2'
 
 
-class EditVideo(zeit.edit.browser.view.EditBox):
+class EditVideo(zeit.edit.browser.form.InlineForm):
 
+    legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IVideo).select(
-            'video', 'video_2', 'layout')
+        zeit.content.article.edit.interfaces.IVideo).select('layout')
     undo_description = _('edit video block')
 
-
-class EditVideoAction(zeit.edit.browser.view.EditBoxAction):
-
-    title = _('Edit')
-    action = 'edit'
+    @property
+    def prefix(self):
+        return 'form.division.{0}'.format(self.context.__name__)
 
 
 class View(zeit.content.article.edit.browser.reference.View):

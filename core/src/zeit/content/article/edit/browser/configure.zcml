@@ -180,20 +180,19 @@
   <browser:page
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit"
+    name="edit-video"
     class=".video.EditVideo"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="edit-box"
-    class=".video.EditVideoAction"
-    permission="zeit.EditContent"
-    weight="0"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-video"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
     />
 
   <!-- references -->
