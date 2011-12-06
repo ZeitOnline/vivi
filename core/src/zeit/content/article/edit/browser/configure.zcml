@@ -250,34 +250,23 @@
 
   <!-- audio -->
 
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IAudio"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    class=".edit.ViewAudio"
-    template="edit.audio.pt"
-    permission="zope.View"
-    />
-
   <browser:page
     for="zeit.content.article.edit.interfaces.IAudio"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-audio"
     class=".edit.EditAudio"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IAudio"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="edit-box"
-    class=".edit.EditAudioAction"
-    permission="zeit.EditContent"
-    weight="0"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-audio"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
     />
 
   <!-- citation -->

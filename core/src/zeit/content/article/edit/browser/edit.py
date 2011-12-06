@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -168,28 +168,16 @@ class EditRawXMLAction(zeit.edit.browser.view.EditBoxAction):
     action = 'edit-rawxml'
 
 
-class ViewAudio(object):
+class EditAudio(zeit.edit.browser.form.InlineForm):
 
-    @property
-    def expires(self):
-        expires = self.context.expires
-        if expires:
-            formatter = self.request.locale.dates.getFormatter(
-                'dateTime', length='medium')
-            return formatter.format(expires)
-
-
-class EditAudio(zeit.edit.browser.view.EditBox):
-
+    legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IAudio)
+        zeit.content.article.edit.interfaces.IAudio).omit('__name__', 'xml')
     undo_description = _('edit audio block')
 
-
-class EditAudioAction(zeit.edit.browser.view.EditBoxAction):
-
-    title = _('Edit')
-    action = 'edit-audio'
+    @property
+    def prefix(self):
+        return 'form.division.{0}'.format(self.context.__name__)
 
 
 class EditCitation(zeit.edit.browser.view.EditBox):
