@@ -2,7 +2,31 @@
 # See also LICENSE.txt
 
 import mock
+import pysolr
 import unittest2 as unittest
+import zeit.content.author.author
+
+
+NONZERO = 3
+
+
+class AuthorTest(unittest.TestCase):
+
+    def test_author_exists(self):
+        author = zeit.content.author.author.Author()
+        author.firstname = u'William'
+        author.lastname = u'Shakespeare'
+        with mock.patch('zeit.find.search.query', lambda **kw: kw):
+            with mock.patch('zeit.find.search.search') as search:
+                search.return_value = pysolr.Results(None, hits=0)
+                self.assertFalse(author.exists)
+                search.assert_called_with(dict(
+                        fulltext=u'William Shakespeare', types=('author',)))
+
+                search.return_value = pysolr.Results(None, hits=NONZERO)
+                self.assertTrue(author.exists)
+                search.assert_called_with(dict(
+                        fulltext=u'William Shakespeare', types=('author',)))
 
 
 class ModifiedHandlerTest(unittest.TestCase):

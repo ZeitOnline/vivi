@@ -1,12 +1,32 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
+import zeit.cms.testing
 import zeit.content.author.testing
+
+
+class PropertyMock(mock.Mock):
+
+    def __get__(self, instance, owner):
+        return self()
 
 
 class FormTest(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.author.testing.ZCMLLayer
+
+    def setUp(self):
+        super(FormTest, self).setUp()
+        self.author_exists = PropertyMock()
+        self.patch = mock.patch(
+            'zeit.content.author.author.Author.exists', self.author_exists)
+        self.author_exists.return_value = False
+        self.patch.start()
+
+    def tearDown(self):
+        self.patch.stop()
+        super(FormTest, self).tearDown()
 
     def open(self, tail):
         self.browser.open('http://localhost/++skin++vivi' + tail)
@@ -65,12 +85,30 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
             <div class="widget">12345</div>...
             """, b.contents)
 
-    def test_adding_name_twice_creates_different_folder(self):
+    def test_adding_name_twice_warns_then_creates_different_author(self):
         b = self.browser
+        b.handleErrors = False
         self.open('/@@zeit.content.author.add_contextfree')
         self.add_william()
+        self.author_exists.return_value = True
+
         self.open('/@@zeit.content.author.add_contextfree')
+        self.assertNotIn(u'Add duplicate author', b.contents)
         self.add_william(vgwort_id='9876')
+        self.assertEllipsis(u"""\
+            ...There were errors...
+            ...An author with the given name already exists...
+            """, b.contents)
+        # No new author has been created in DAV so far.
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.assertEqual(
+                1, len(self.repository['foo']['bar']['authors']['S']))
+
+        b.getControl(u'Add duplicate author').selected = True
+        b.getControl(name='form.actions.add').click()
+        self.assertNotIn('There were errors', b.contents)
+        # Make sure the new author gets a new __name__ rather than overwriting
+        # the existing one.
         self.assertEllipsis("""...
             <span class="result">http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index</span>
             ...""", b.contents)

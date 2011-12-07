@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -9,6 +9,7 @@ import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.type
 import zeit.content.author.interfaces
+import zeit.find.search
 import zeit.workflow.interfaces
 import zope.interface
 
@@ -35,6 +36,13 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         '.entered_display_name')
 
     status = zeit.cms.content.property.ObjectPathProperty('.status')
+
+    @property
+    def exists(self):
+        query = zeit.find.search.query(
+            fulltext='%s %s' % (self.firstname, self.lastname),
+            types=('author',))
+        return bool(zeit.find.search.search(query).hits)
 
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
