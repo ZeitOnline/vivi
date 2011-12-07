@@ -28,7 +28,6 @@ setup(
         'zeit.cms>=1.51.1dev',
         'zeit.connector',
         'zeit.solr',
-        'zeit.workflow',
         'zope.annotation',
         'zope.app.zcmlfiles',
         'zope.component',
