@@ -5,6 +5,7 @@
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing
+import zeit.solr.testing
 
 
 class HeadTest(zeit.content.article.testing.SeleniumTestCase):
@@ -196,7 +197,32 @@ class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
             list(self.tagger().updateOrder.call_args[0][0]))
 
 
+class Layer(object):
+    # XXX use plone.testing
+
+    __bases__ = (zeit.content.article.testing.SeleniumTestCase.layer,
+                 zeit.solr.testing.HTTPLayer)
+    __name__ = 'Layer'
+
+    @property
+    def selenium(self):
+        return zeit.content.article.testing.SeleniumTestCase.layer.selenium
+
+    @property
+    def http(self):
+        return zeit.content.article.testing.SeleniumTestCase.layer.http
+
+    @property
+    def REQUEST_HANDLER(self):
+        return zeit.solr.testing.HTTPLayer.REQUEST_HANDLER
+
+
+Layer = Layer()
+
+
 class AuthorTest(zeit.content.article.testing.SeleniumTestCase):
+
+    layer = Layer
 
     def setUp(self):
         super(AuthorTest, self).setUp()
@@ -205,6 +231,9 @@ class AuthorTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_authors_should_be_inline_addable(self):
         s = self.selenium
+        self.layer.REQUEST_HANDLER.serve[:] = ["""
+            {"response": {"numFound":0, "docs":[]}}
+            """]*2
         s.click(
             '//*[@id="metadata-c.author_references"]//a[@rel="show_add_view"]')
         s.waitForElementPresent('id=form.firstname')
