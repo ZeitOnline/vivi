@@ -338,6 +338,7 @@ def set_site(site=None):
     zope.site.hooks.setSite(site)
 
 
+# XXX use zope.publisher.testing for the following two
 def create_interaction(name=u'zope.user'):
     principal = zope.security.testing.Principal(
         name, groups=['zope.Authenticated'])
@@ -358,6 +359,7 @@ def interaction(principal_id=u'zope.user'):
         zope.security.management.endInteraction()
 
 
+# XXX use zope.component.testing.site instead
 @contextlib.contextmanager
 def site(root):
     old_site = zope.site.hooks.getSite()
