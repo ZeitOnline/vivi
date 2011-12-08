@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update the metadata of playlists when a video changes (#10042).
 
 
 2.1.1 (2011-12-01)
