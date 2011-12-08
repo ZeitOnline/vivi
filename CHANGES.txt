@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 1.40.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix handling of comments and empty video ids (#10038).
 
 
 1.40.2 (2011-12-01)
