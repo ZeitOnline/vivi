@@ -10,6 +10,7 @@ class AudioEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         self.create_block('audio')
+        # XXX a label-selector would be nice (gocept.selenium #6492)
         input = 'css=.block.type-audio form.wired input'
         s.waitForElementPresent(input)
         s.type(input, 'asdf')
