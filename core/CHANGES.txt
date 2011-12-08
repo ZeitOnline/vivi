@@ -7,6 +7,8 @@ zeit.content.cp changes
 -------------------
 
 - Use low-priority queue for publishing RSS feeds (#10037).
+- Use BeforeCheckin(while_publishing) instead of BeforePublish+cycle for
+  update_feed_items to avoid the extra checkin/checkout-cycle (for #10068).
 
 
 0.50.1 (2011-11-15)
