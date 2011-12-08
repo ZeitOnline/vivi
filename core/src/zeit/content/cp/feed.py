@@ -2,6 +2,7 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import datetime
 import feedparser
 import gocept.runner
@@ -241,7 +242,7 @@ class FeedManager(object):
                 return
             co_feed.fetch_and_convert()
         try:
-            zeit.cms.workflow.interfaces.IPublish(feed).publish()
+            zeit.cms.workflow.interfaces.IPublish(feed).publish(priority=PRIORITY_LOW)
         except zeit.cms.workflow.interfaces.PublishingError:
             # This is raised when there are errors in the feed. It will not
             # be published then.
