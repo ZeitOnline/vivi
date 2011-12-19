@@ -3,7 +3,7 @@ zeit.content.cp changes
 
 
 
-0.50.2 (unreleased)
+0.50.2 (2011-12-19)
 -------------------
 
 - Use low-priority queue for publishing RSS feeds (#10037).
