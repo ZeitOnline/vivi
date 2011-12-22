@@ -219,13 +219,13 @@ class PublishRetractTask(object):
             # workingcopy istn't cluttered with ghosts and 2. we can publish in
             # parallel.
             checked_out = manager.checkout(temporary=True)
-        except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             logger.warning("Could not checkout %s" % obj.uniqueId)
             return obj
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         try:
             obj = manager.checkin(publishing=True)
-        except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             # XXX this codepath is not tested!
             logger.warning("Could not checkin %s" % obj.uniqueId)
             del checked_out.__parent__[checked_out.__name__]
@@ -359,7 +359,6 @@ class PublishTask(PublishRetractTask):
             self.log(
                 obj, _("Could not publish because conditions not satisifed."))
             return
-
 
         obj = self.recurse(self.lock, True, obj, obj)
         obj = self.recurse(self.before_publish, True, obj, obj)
