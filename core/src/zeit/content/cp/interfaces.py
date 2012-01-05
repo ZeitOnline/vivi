@@ -1,9 +1,7 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
-from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
-import re
 import urlparse
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
@@ -116,6 +114,7 @@ class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
 
     """
 
+
 class IWriteContainer(zope.container.interfaces.IOrdered):
     """Modify area."""
 
@@ -160,6 +159,7 @@ class IInformatives(IRegion):
 class IMosaic(IContainer):
     pass
 
+
 class IElement(zope.interface.Interface):
     """XXX A module which can be instantiated and added to the page."""
 
@@ -194,14 +194,14 @@ class IBlock(IElement):
         title=_("Title"),
         required=False)
 
-    publisher  = zope.schema.TextLine(
+    publisher = zope.schema.TextLine(
         title=_("Publisher"),
         required=False)
     publisher_url = zope.schema.TextLine(
         title=_("Publisher URL"),
         required=False)
 
-    supertitle  = zope.schema.TextLine(
+    supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
         required=False)
     supertitle_url = zope.schema.TextLine(
@@ -479,7 +479,6 @@ class IXMLTeaser(zeit.cms.interfaces.ICMSContent,
         title=u'The unique id of the content referenced by the teaser')
     original_content = zope.interface.Attribute(
         u'The content referenced by the teaser')
-
 
 
 class IReadTeaserBar(IReadRegion, IElement):
