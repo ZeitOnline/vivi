@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
+from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
 import urlparse
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
