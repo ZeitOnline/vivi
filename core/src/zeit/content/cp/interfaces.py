@@ -7,6 +7,7 @@ import re
 import urlparse
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.avsource
@@ -534,6 +535,16 @@ class IQuizBlock(IBlock):
         source=zeit.content.quiz.source.QuizSource())
 
 
+class FullgraphicalScaleSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'scales-fullgraphical-url'
+    attribute = 'name'
+
+
+fullgraphical_scale_source = FullgraphicalScaleSource()
+
+
 class IFullGraphicalBlock(IBlock):
     """The Fullgraphical block with a reference to an object and an image."""
 
@@ -543,4 +554,9 @@ class IFullGraphicalBlock(IBlock):
 
     image = zope.schema.Choice(
         title=_("Image"),
-        source=zeit.content.image.interfaces.ImageSource())
+        source=zeit.content.image.interfaces.ImageSource(),
+        required=False)
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=fullgraphical_scale_source)

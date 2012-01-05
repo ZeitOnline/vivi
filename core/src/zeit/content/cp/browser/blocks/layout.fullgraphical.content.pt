@@ -1,4 +1,4 @@
-<tal:block define="image context/image|nothing"
+<tal:block define="image view/image|nothing"
            i18n:domain="zeit.cms">
 
   <div class="fullgraphical-image"

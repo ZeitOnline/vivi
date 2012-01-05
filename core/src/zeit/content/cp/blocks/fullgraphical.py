@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
 import zeit.cms.content.property
-import zeit.cms.content.xmlsupport
 import zeit.cms.content.xmlsupport
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
@@ -21,6 +20,16 @@ class FullGraphicalBlock(zeit.content.cp.blocks.block.Block):
 
     image = zeit.cms.content.property.SingleResource(
         '.image', xml_reference_name='related', attributes=('href',))
+
+    @property
+    def layout(self):
+        return self.xml.get('layout')
+
+    @layout.setter
+    def layout(self, layout):
+        if layout != self.layout:
+            self._p_changed = True
+            self.xml.set('layout', layout)
 
 
 zeit.content.cp.blocks.block.register_element_factory(
