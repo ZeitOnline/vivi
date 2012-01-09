@@ -47,9 +47,13 @@ Edit the quiz block and reference the newly added quiz:
 >>> browser.open('edit-properties')
 >>> browser.getControl('Link to').value = 'http://xml.zeit.de/my_quiz'
 >>> browser.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+>>> browser.getControl('Layout').value = ['148x84']
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
+
+Since we referenced an image as opposed to an image group, the choice of
+layout does not reflect in the image URL used for displaying the block: XXX
 
 >>> browser.open(contents_url)
 >>> print browser.contents
@@ -67,14 +71,14 @@ Edit the quiz block and reference the newly added quiz:
 >>> browser.getControl('Image').value
 'http://xml.zeit.de/2006/DSC00109_2.JPG' 
 
-The source of a fullgraphical block:
+The source of a fullgraphical block does contain the layout decision:
 
 >>> browser.open(contents_url)
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
 <container cp:type="fullgraphical" module="fullgraphical"
-           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca">
+           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>

@@ -541,6 +541,9 @@ class FullgraphicalScaleSource(zeit.cms.content.sources.XMLSource):
     config_url = 'scales-fullgraphical-url'
     attribute = 'name'
 
+    def getToken(self, context, value):
+        return value
+
 
 fullgraphical_scale_source = FullgraphicalScaleSource()
 
