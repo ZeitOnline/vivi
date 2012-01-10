@@ -602,10 +602,21 @@ button.log-expander {
   margin-left: 12px;
 }
 
-/* Schlagworte Update-Tags-Button */
+/* Tags / Update-Tags-Button */
+#edit-form-metadata .widget-outer label {
+  padding-left:6px;
+}
+
 #metadata-a\.keywords #metadata-a\.keywords\.update a {
   -moz-appearance: button;
   display: block;
+}
+
+/* Daily NL */
+#edit-form-metadata #metadata-b\.dailyNewsletter {
+  position: absolute;
+  top: 19px;
+  width: 100%;
 }
 
 
