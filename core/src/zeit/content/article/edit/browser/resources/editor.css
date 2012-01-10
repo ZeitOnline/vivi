@@ -552,6 +552,12 @@ fieldset.table .label {
 
 #edit-form-filename fieldset.table .label {
   width: 10em;
+  height: 21px;
+}
+
+#edit-form-filename fieldset.table .label label {
+  height: 21px;
+  line-height:21px;
 }
 
 fieldset.table label {
@@ -595,3 +601,11 @@ button.log-expander {
   width: 95% !important;
   margin-left: 12px;
 }
+
+/* Schlagworte Update-Tags-Button */
+#metadata-a\.keywords #metadata-a\.keywords\.update a {
+  -moz-appearance: button;
+  display: block;
+}
+
+
