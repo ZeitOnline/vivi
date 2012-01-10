@@ -619,4 +619,15 @@ button.log-expander {
   width: 100%;
 }
 
+/* Add new author button */
+#metadata-c\.author_references .add_view {
+  left: 168px;
+  position: absolute;
+  width: 100px;
+  top:3px;
+}
+
+#metadata-c\.author_references .add_view a {
+  -moz-appearance: button;
+}
 
