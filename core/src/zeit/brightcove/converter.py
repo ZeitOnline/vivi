@@ -278,6 +278,23 @@ class Video(Converter):
             video_fields=class_.fields,
             filter='PLAYABLE,DELETED,INACTIVE,UNSCHEDULED',
             sort_by='MODIFIED_DATE', sort_order='DESC')
+    
+    @property
+    def renditions(self):
+        rs = []
+        data_renditions = self.data.get('renditions')
+        if data_renditions is None:
+            return ()
+        for rendition in data_renditions:
+            vr = zeit.content.video.video.VideoRendition()
+            vr.url = rendition["url"]
+            vr.frame_with = rendition["frameWidth"]
+            rs.append(vr)
+        return tuple(rs)
+    
+    @renditions.setter
+    def renditions(self, value):
+        pass
 
     @property
     def related(self):
@@ -352,6 +369,7 @@ class Video(Converter):
             copy_field(
                 self, video, zeit.content.video.interfaces.IVideo, key)
         video.brightcove_id = str(self.id)
+        video.renditions = self.renditions
         sc = zeit.cms.content.interfaces.ISemanticChange(video)
         sc.last_semantic_change = self.date_last_modified
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)

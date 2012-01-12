@@ -178,6 +178,15 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
             ['http://xml.zeit.de/online/2007/01/Somalia'],
             [x.uniqueId for x in related.related])
 
+    def test_renditions_should_be_converted_to_cms(self):
+        video = Video.find_by_id('1234')
+        video.data['renditions'] = [{"url": "http:example.org/my_rendition", 
+                      "frameWidth": 400}]
+        cmsobj = video.to_cms()
+        self.assertEqual(
+           "http:example.org/my_rendition",
+           cmsobj.renditions[0].url)
+
     def test_comments_should_default_to_true(self):
         video = Video.find_by_id('1234')
         video.data['customFields'].clear()
