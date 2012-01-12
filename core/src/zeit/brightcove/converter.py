@@ -255,6 +255,7 @@ class Video(Converter):
         'playsTrailingWeek',
         'publisheddate',
         'referenceId',
+        'renditions',
         'shortDescription',
         'tags',
         'thumbnailURL',
