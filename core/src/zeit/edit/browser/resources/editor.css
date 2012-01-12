@@ -469,7 +469,7 @@
 
 #edit-form-assets .landing-zone.visible {
   background: white;
-  margin: auto 1em;
+  margin: auto 0.4em;
 }
 
 #edit-form-assets .inline-form .widget-outer div.droppable-active {
@@ -493,7 +493,7 @@
 .inline-form  label {
   font-weight: normal;
   margin-right: 5px;
-  padding-left: 3px;
+  padding-left: 5px;
   padding-top: 5px;
 }
 
@@ -555,6 +555,10 @@
 .inline-form div.widget > textarea,
 .inline-form div.widget > div > div > select {
   margin-top: 0;
+}
+
+.inline-form div.widget > input {
+  padding-left:2px;
 }
 
 .inline-form .error div.widget > input,
@@ -720,7 +724,7 @@ legend {
   padding-left: 10px;
   display: block;
   margin: 4px 0px 0px 4px;
-  width: 66px;
+  width: 166px;
 }
 
 
@@ -742,3 +746,4 @@ a.button.disabled {
 #editor-forms #checkin_correction {
   font-size: 14px;
 }
+
