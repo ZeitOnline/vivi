@@ -602,9 +602,19 @@ button.log-expander {
   margin-left: 12px;
 }
 
-/* Tags / Update-Tags-Button */
-#edit-form-metadata .widget-outer label {
-  padding-left:6px;
+/* METADATA AREA (TB) */
+
+#edit-form-metadata #metadata-b\.copyrights,
+#edit-form-metadata #metadata-c\.author_references {
+  width:172px;
+}
+
+#edit-form-metadata .inline-form div.widget > div > div > select {
+  padding-left:0px;
+}
+
+#edit-form-metadata #metadata-b\.copyrights {
+  padding-left:1px;
 }
 
 #metadata-a\.keywords #metadata-a\.keywords\.update a {
@@ -616,12 +626,11 @@ button.log-expander {
 #edit-form-metadata #metadata-b\.dailyNewsletter {
   position: absolute;
   top: 19px;
-  width: 100%;
 }
 
 /* Add new author button */
 #metadata-c\.author_references .add_view {
-  left: 168px;
+  left: 189px;
   position: absolute;
   width: 100px;
   top:3px;
@@ -631,3 +640,21 @@ button.log-expander {
   -moz-appearance: button;
 }
 
+/* MISC STUFF TB*/
+
+#asset-badges\.badges\.0 {
+  margin-left:0px !important;
+}
+
+#assets.audio_id {
+  width:96% !important;
+  margin: auto 0.4em;
+}
+
+.content-details {
+  margin:auto 0.4em;
+}
+
+#edit-form-misc .inline-form div.widget > input {
+  margin-left:5px;
+}
