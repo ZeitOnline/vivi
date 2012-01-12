@@ -292,10 +292,6 @@ class Video(Converter):
             rs.append(vr)
         return tuple(rs)
     
-    @renditions.setter
-    def renditions(self, value):
-        pass
-
     @property
     def related(self):
         result = []
