@@ -25,6 +25,22 @@ class EmptyStringStructure(zeit.cms.content.property.Structure):
         super(EmptyStringStructure, self).__set__(instance, value)
 
 
+class RenditionsProperty(zeit.cms.content.property.MultiPropertyBase):
+
+    def _element_factory(self, node, tree):
+        result = VideoRendition()
+        result.url = node.get('url')
+        result.frame_width = int(node.get('frame_width'))
+        return result
+
+    def _node_factory(self, entry, tree):
+        node = lxml.objectify.E.rendition()
+        node.set('url', entry.url)
+        node.set('frame_width', str(entry.frame_width))
+        return node
+
+
+
 class Video(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.video.interfaces.IVideo,
@@ -51,6 +67,14 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
     subtitle = EmptyStringStructure(
         '.body.subtitle',
         zeit.cms.content.interfaces.ICommonMetadata['subtitle'])
+
+    renditions = RenditionsProperty('.head.renditions.rendition')
+
+
+class VideoRendition():
+    zope.interface.implements(zeit.content.video.interfaces.IVideoRendition)
+    frame_width = 0
+    url = None
 
 
 class VideoType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -83,6 +107,18 @@ class VideoXMLReferenceUpdater(grokcore.component.Adapter):
         if self.context.thumbnail:
             node.append(lxml.objectify.E.thumbnail(
                 src=self.context.thumbnail))
+        
+        renditions_node = node.find('renditions')
+        if renditions_node is not None:
+            node.remove(renditions_node)
+        if self.context.renditions:
+            renditions_node = lxml.objectify.E.renditions()
+            node.append(renditions_node)
+            for rendition in renditions:
+                rendition_node = lxml.objectify.E.rendition(
+                    url=rendition.url,
+                    frame_width=rendition.frame_width)
+                renditions.append(rendition_node)
 
         node.set('type', 'video')
 

@@ -6,6 +6,8 @@ zeit.content.video changes
 
 - Add IPublicationDependecies so that playlists are published when videos
   contained in them are published (#10042).
+- Add renditions object and MultiBaseProperty to have different renditions for
+  a video
 
 
 2.0.4 (2011-12-01)

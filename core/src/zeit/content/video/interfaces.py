@@ -31,6 +31,16 @@ class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
     product_configuration = 'zeit.content.video'
 
 
+class IVideoRendition(zope.interface.interfaces.IInterface):
+    url = zope.schema.URI(
+        title=_('URI of the rendition'),
+        required=False,
+        readonly=True)
+
+    frame_width = zope.schema.Int(
+        title=_('Width of the Frame'))
+
+
 class IVideo(IVideoContent):
 
     has_recensions = zope.schema.Bool(
@@ -52,6 +62,17 @@ class IVideo(IVideoContent):
         title=_('URI of the video file'),
         required=False,
         readonly=True)
+
+    renditions = zope.schema.Tuple(
+        title=_("Renditions of the Video"),
+        required=False,
+        readonly=True,
+        default=(),
+        unique=False,
+        value_type=zope.schema.Object(
+            schema=IVideoRendition
+        )
+    )
 
     serie = zope.schema.Choice(
         title=_("Serie"),
