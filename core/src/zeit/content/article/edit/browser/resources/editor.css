@@ -642,6 +642,10 @@ button.log-expander {
 
 /* MISC STUFF TB*/
 
+#edit-form-filename .widget-outer .label {
+  width:15px;
+}
+
 #asset-badges\.badges\.0 {
   margin-left:0px !important;
 }
