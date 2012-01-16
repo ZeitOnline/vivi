@@ -645,6 +645,21 @@ label[for^="asset-badges"] .checkboxType {
   margin-left:3px;
 }
 
+/* Decrease distance between two product-management-formas a and b  */
+form[action$="misc-product-management-a"],
+form[action$="misc-product-management-a"] .widget-outer {
+  margin-bottom:0px;
+}
+
+form[action$="misc-product-management-a"] fieldset {
+  margin-top:30px;
+}
+
+form[action$="misc-product-management-b"] {
+  margin-top:0px;
+  margin-bottom:30px;
+}
+
 /* Add new author button */
 #metadata-c\.author_references .add_view {
   left: 189px;
