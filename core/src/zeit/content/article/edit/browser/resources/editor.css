@@ -622,10 +622,27 @@ button.log-expander {
   display: block;
 }
 
-/* Daily NL */
-#edit-form-metadata #metadata-b\.dailyNewsletter {
+/* Until the legend-markup is not removed... */
+form[action$="asset-badges"] fieldset legend {
+  display:none;
+}
+
+/* Checkboxes should always appear below their lables. Some modifications for asset-badges  */
+.checkboxType {
   position: absolute;
   top: 19px;
+}
+
+form[action$="asset-badges"] div.value {
+  margin-top:5px;
+}
+
+form[action$="asset-badges"] label {
+  position:relative;
+}
+
+label[for^="asset-badges"] .checkboxType {
+  margin-left:3px;
 }
 
 /* Add new author button */
@@ -644,10 +661,6 @@ button.log-expander {
 
 #edit-form-filename .widget-outer .label {
   width:12em !important;
-}
-
-#asset-badges\.badges\.0 {
-  margin-left:0px !important;
 }
 
 #assets.audio_id {
