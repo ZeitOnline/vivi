@@ -187,6 +187,10 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
            "http:example.org/my_rendition",
            cmsobj.renditions[0].url)
 
+        self.assertEqual(
+           400,
+           cmsobj.renditions[0].frame_width)
+
     def test_comments_should_default_to_true(self):
         video = Video.find_by_id('1234')
         video.data['customFields'].clear()
