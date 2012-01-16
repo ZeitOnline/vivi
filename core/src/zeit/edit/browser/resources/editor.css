@@ -257,7 +257,10 @@
   color: #00dd5e;
   height: auto;
   margin: 1em 0;
-  padding: 1em;
+}
+
+form[action$="edit.form.assets"] .objectsequencewidget ul {
+  margin:1em;    
 }
 
 #cp-content .lightbox .landing-zone {
@@ -470,6 +473,7 @@
 #edit-form-assets .landing-zone.visible {
   background: white;
   margin: auto 0.4em;
+  width:95%:
 }
 
 #edit-form-assets .inline-form .widget-outer div.droppable-active {
@@ -529,8 +533,8 @@
   width: 95%;
   display: block;
   margin: auto;
-  padding-left:1em;
-  padding-right:1em;
+  margin-left:0.4em;
+  margin-right:0.4em;
 }
 
 #assets\.related .content-details {
