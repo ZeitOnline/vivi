@@ -479,8 +479,6 @@
 }
 
 #edit-form-assets input[type="text"] {
-  padding: 1em;
-  width: 278px;
   font-size: 12px;
 }
 
@@ -531,6 +529,8 @@
   width: 95%;
   display: block;
   margin: auto;
+  padding-left:1em;
+  padding-right:1em;
 }
 
 #assets\.related .content-details {
