@@ -28,8 +28,6 @@ Fullgraphical block
   </div>
   ...
 
-
-
 Add an object (e.g. a quiz) to the repository:[#functional]_
 
 >>> import zope.component
@@ -89,6 +87,90 @@ The source of a fullgraphical block does contain the layout decision:
   <image type="intern" href="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
 </container>...
 
+We may omit the image without either the source nor the display of the
+fullgraphical block breaking:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Image').value = ''
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...self.close();...
+
+>>> browser.open(contents_url)
+>>> browser.open('xml_source_edit.html')
+>>> print browser.getControl('XML Source').value
+<...
+<container cp:type="fullgraphical" module="fullgraphical"
+           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
+  <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
+    <supertitle xsi:nil="true"/>
+    <title xsi:nil="true"/>
+    <text xsi:nil="true"/>
+    <description xsi:nil="true"/>
+    <byline xsi:nil="true"/>
+  </block>
+  <image xsi:nil="true"/>
+</container>...
+
+Let's now add an image group to the referenced content item and have it
+contain an image that corresponds to our selected layout:
+
+>>> import zeit.cms.checkout.helper
+>>> import zeit.cms.testing
+>>> import zeit.content.image.interfaces
+>>> import zeit.content.image.tests
+>>> group = zeit.content.image.tests.create_image_group()
+>>> with zeit.cms.testing.interaction():
+...     with zeit.cms.checkout.helper.checked_out(quiz) as co:
+...         zeit.content.image.interfaces.IImages(co).images += (group,)
+>>> group['image-group-148x84.jpg'] = zeit.content.image.image.LocalImage()
+
+Since we don't have an image referenced by the fullgraphical block, it falls
+back to the teaser image of the referenced content object at our chosen layout
+size:
+
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="fullgraphical-image">
+    <img src="http://localhost/++skin++cms/repository/image-group/image-group-148x84.jpg".../>
+  </div>
+  ...
+
+>>> browser.open(contents_url)
+>>> browser.open('xml_source_edit.html')
+>>> print browser.getControl('XML Source').value
+<...
+<container cp:type="fullgraphical" module="fullgraphical"
+           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
+  <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
+    <supertitle xsi:nil="true"/>
+    <title xsi:nil="true"/>
+    <text xsi:nil="true"/>
+    <description xsi:nil="true"/>
+    <byline xsi:nil="true"/>
+  </block>
+  <image type="intern" href="http://localhost/++skin++cms/repository/image-group"...>
+</container>...
+
+If both a directly referenced image as well as a teaser image for the
+referenced content object exist, the directly referenced image takes
+precedence:
+
+>>> browser.open(contents_url)
+>>> browser.getLink('Edit').click()
+>>> browser.open('edit-properties')
+>>> browser.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+>>> browser.getControl('Apply').click()
+>>> browser.open(contents_url)
+>>> print browser.contents
+<...
+  <div class="fullgraphical-image">
+    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG".../>
+  </div>
+  ...
 
 The layout doesn't break if the referenced content is removed:
 
