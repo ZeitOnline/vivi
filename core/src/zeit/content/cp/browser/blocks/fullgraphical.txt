@@ -139,6 +139,12 @@ size:
   </div>
   ...
 
+The fall-back to the teaser image does not reflect in the XML representation
+of the block, however, since we don't have a way to distinguish between the
+image having ended up there by way of the fall-back and it having been
+referenced directly. (We expect some appropriate fall-back logic to be
+implemented in the XSLT as well.)
+
 >>> browser.open(contents_url)
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
@@ -152,7 +158,7 @@ size:
     <description xsi:nil="true"/>
     <byline xsi:nil="true"/>
   </block>
-  <image type="intern" href="http://localhost/++skin++cms/repository/image-group"...>
+  <image xsi:nil="true"/>
 </container>...
 
 If both a directly referenced image as well as a teaser image for the
