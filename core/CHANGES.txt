@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.0.5 (unreleased)
+2.1.0 (2012-01-17)
 ------------------
 
 - Add IPublicationDependecies so that playlists are published when videos
