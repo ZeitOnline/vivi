@@ -690,3 +690,7 @@ form[action$="misc-product-management-b"] {
 #edit-form-misc .inline-form div.widget > input {
   margin-left:5px;
 }
+
+.article-editor-inner .objectsequencewidget ul[id^="sortable"] {
+  margin:0em;
+}
