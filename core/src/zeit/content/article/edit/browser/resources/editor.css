@@ -672,6 +672,33 @@ form[action$="misc-product-management-b"] {
   -moz-appearance: button;
 }
 
+/* worflow area */
+
+/* until it's not removed from markup  */
+label[for="workflow-publication-period.release_period"] {
+  display:none;
+}
+
+form[action$="workflow-publication-period"] table.combinationFieldWidget {
+  border-collapse: collapse;
+}
+
+form[action$="workflow-publication-period"] table.combinationFieldWidget td {
+  height:12px;
+  padding:0px;
+  margin-bottom:12px !important;
+}
+
+form[action$="workflow-publication-period"] td.label {
+  padding:0px;
+  width:20em;
+}
+
+form[action$="workflow-publication-period"] label {
+  padding:0px;
+  font-weight:bold;
+}
+
 /* MISC STUFF TB*/
 
 #edit-form-filename .widget-outer .label {
