@@ -672,7 +672,7 @@ form[action$="misc-product-management-b"] {
   -moz-appearance: button;
 }
 
-/* worflow area */
+/* worflow publication period area */
 
 /* until it's not removed from markup  */
 label[for="workflow-publication-period.release_period"] {
@@ -689,14 +689,25 @@ form[action$="workflow-publication-period"] table.combinationFieldWidget td {
   margin-bottom:12px !important;
 }
 
-form[action$="workflow-publication-period"] td.label {
-  padding:0px;
+form[action$="workflow-publication-period"] table.combinationFieldWidget td.label {
+  padding-left:3px;
   width:20em;
 }
 
 form[action$="workflow-publication-period"] label {
   padding:0px;
   font-weight:bold;
+}
+
+/* workflow log area  */
+
+/* until it's not removed from markup  */
+form[action$="edit.form.workflow-log"] div.label {
+  display:none;
+}
+
+form[action$="edit.form.workflow-log"] div.widget {
+  padding-left:3px !important;
 }
 
 /* MISC STUFF TB*/
