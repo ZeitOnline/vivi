@@ -613,6 +613,10 @@ button.log-expander {
   padding-left:0px;
 }
 
+#edit-form-misc .inline-form div.widget > div > div > select {
+  margin-left:4px;
+}
+
 #edit-form-metadata #metadata-b\.copyrights {
   padding-left:1px;
 }
@@ -690,7 +694,6 @@ form[action$="workflow-publication-period"] table.combinationFieldWidget td {
 }
 
 form[action$="workflow-publication-period"] table.combinationFieldWidget td.label {
-  padding-left:3px;
   width:20em;
 }
 
@@ -708,6 +711,21 @@ form[action$="edit.form.workflow-log"] div.label {
 
 form[action$="edit.form.workflow-log"] div.widget {
   padding-left:3px !important;
+}
+
+/* no left-padding for some labels... */
+.article-editor-inner .inline-form label {
+  padding-left:0px;
+}
+
+/* ...and exceptions for the others respectively related elements */
+form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
+  margin-left:0px;
+}
+.article-editor-inner .inline-form label[for^="assets"],
+.article-editor-inner .inline-form label[for^="misc"],
+.article-editor-inner #edit-form-workflow .inline-form label {
+  padding-left:5px;
 }
 
 /* MISC STUFF TB*/
@@ -731,4 +749,8 @@ form[action$="edit.form.workflow-log"] div.widget {
 
 .article-editor-inner .objectsequencewidget ul[id^="sortable"] {
   margin:0em;
+}
+
+.article-editor-inner .objectsequencewidget ul[id^="sortable"] li {
+  margin-bottom:10px;
 }
