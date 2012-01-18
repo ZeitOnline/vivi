@@ -4,7 +4,8 @@ zeit.content.video changes
 2.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Removed untested, non-working code which went accidentally into the last
+  release.
 
 
 2.1.0 (2012-01-17)
