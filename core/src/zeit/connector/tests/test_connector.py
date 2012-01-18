@@ -321,6 +321,12 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
             self.assertRaises(
                 DAVError, lambda: result.next())
 
+    def test_should_convert_unicode(self):
+        from zeit.connector.search import SearchVar
+        var = SearchVar('name', 'namespace')
+        result = self.connector.search([var], var == u'föö')
+        result.next()
+
 
 class TestXMLSupport(zeit.connector.testing.ConnectorTest):
 

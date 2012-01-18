@@ -20,6 +20,8 @@ def render(x):
     if isinstance(x, SearchSymbol): # FIXME more generic!
         return x._render()
     else: # assume string
+        if isinstance(x, unicode):
+            x = x.encode('utf8')
         return quotestring(x)
 
 
