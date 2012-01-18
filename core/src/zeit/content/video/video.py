@@ -108,18 +108,6 @@ class VideoXMLReferenceUpdater(grokcore.component.Adapter):
             node.append(lxml.objectify.E.thumbnail(
                 src=self.context.thumbnail))
         
-        renditions_node = node.find('renditions')
-        if renditions_node is not None:
-            node.remove(renditions_node)
-        if self.context.renditions:
-            renditions_node = lxml.objectify.E.renditions()
-            node.append(renditions_node)
-            for rendition in renditions:
-                rendition_node = lxml.objectify.E.rendition(
-                    url=rendition.url,
-                    frame_width=rendition.frame_width)
-                renditions.append(rendition_node)
-
         node.set('type', 'video')
 
 
