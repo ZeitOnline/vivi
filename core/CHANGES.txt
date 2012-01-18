@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.23.1 (unreleased)
+1.23.1 (2012-01-18)
 -------------------
 
 - Fix unicode error in search by encoding unicode to utf8.
