@@ -557,7 +557,6 @@ fieldset.table .label {
 
 #edit-form-filename fieldset.table .label label {
   height: 21px;
-  line-height:21px;
 }
 
 fieldset.table label {
@@ -753,4 +752,24 @@ form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
 
 .article-editor-inner .objectsequencewidget ul[id^="sortable"] li {
   margin-bottom:10px;
+}
+
+form[action$="edit.form.workflow-status"] {
+  margin-bottom:30px;
+}
+
+#urgent\.urgent {
+  margin-left:0px;
+}
+
+form[action$="edit.form.misc-layout"] div {
+  width:100%;
+}
+
+form[action$="edit.form.misc-layout"] div#misc-layout\.layout {
+  padding:0em;
+}
+
+form[action$="edit.form.misc-layout"] div.object-reference {
+  padding:1em;
 }
