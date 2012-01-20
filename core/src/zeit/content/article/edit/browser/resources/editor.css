@@ -721,13 +721,20 @@ form[action$="edit.form.workflow-log"] div.widget {
 form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
   margin-left:0px;
 }
+
+/*
 .article-editor-inner .inline-form label[for^="assets"],
 .article-editor-inner .inline-form label[for^="misc"],
 .article-editor-inner #edit-form-workflow .inline-form label {
   padding-left:5px;
 }
+*/
 
 /* MISC STUFF TB*/
+
+.inline-form.wired legend {
+  padding-left:0px;
+}
 
 #edit-form-filename .widget-outer .label {
   width:12em !important;
@@ -742,15 +749,15 @@ form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
   margin:auto 0.4em;
 }
 
-#edit-form-misc .inline-form div.widget > input {
-  margin-left:5px;
+.inline-form div.widget > input {
+  margin-left:0px;
 }
 
 .article-editor-inner .objectsequencewidget ul[id^="sortable"] {
   margin:0em;
 }
 
-.article-editor-inner .objectsequencewidget ul[id^="sortable"] li {
+.article-editor-inner .objectsequencewidget ul li {
   margin-bottom:10px;
 }
 
@@ -772,4 +779,10 @@ form[action$="edit.form.misc-layout"] div#misc-layout\.layout {
 
 form[action$="edit.form.misc-layout"] div.object-reference {
   padding:1em;
+}
+
+label[for^="workflow-quality-assurance"] ~ span.required {
+  position:absolute;
+  left: 440px;
+  top: -10px;
 }
