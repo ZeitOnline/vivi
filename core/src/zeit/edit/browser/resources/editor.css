@@ -139,7 +139,7 @@
   text-align: center;
   top: -1px;
   width: 120px;
-  z-index: 1000;
+  z-index: 2;
 }
 
 .tab-content > .context-views > ul > li.selected > a {
