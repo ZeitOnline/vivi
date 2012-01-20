@@ -740,13 +740,12 @@ form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
   width:12em !important;
 }
 
-#assets.audio_id {
-  width:96% !important;
-  margin: auto 0.4em;
+div[id^="assets"] {
+  width:97% !important;
 }
 
 .content-details {
-  margin:auto 0.4em;
+  margin:auto 0px;
 }
 
 .inline-form div.widget > input {
@@ -791,4 +790,23 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   content: "Schriftgröße";
   color: #AAAAAA;
   margin-right:5px;
+}
+
+/* Assets-Stuff */
+
+#edit-form-assets .inline-form .widget-outer .widget {
+  padding-left:10px;
+}
+
+form[action$="edit.form.assets"] .objectsequencewidget ul {
+  margin: 10px 0px 10px 0;
+}
+
+.drop-object-widget.landing-zone.visible {
+  padding:0px !important;
+  margin:0px !important;
+}
+
+.drop-object-widget.landing-zone.visible .object-reference {
+  margin:1em !important;
 }
