@@ -786,3 +786,9 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   left: 440px;
   top: -10px;
 }
+
+#article-editor-text fieldset.fontcontrol:before {
+  content: "Schriftgröße";
+  color: #AAAAAA;
+  margin-right:5px;
+}
