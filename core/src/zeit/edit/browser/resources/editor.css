@@ -625,6 +625,13 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   text-transform: uppercase;
 }
 
+/* For editor-ng only, don't want to overwrite other required-spans:  */ 
+.article-editor-inner .widget-outer span.required {
+  display:block;
+  float:right;
+  margin-top:2px;
+}
+
 .widget-outer span.charlimit {
   color: #777;
   font-weight: 700;
@@ -720,7 +727,7 @@ legend {
 /* Misc */
 
 #recensions p {
-  padding-left: 4px;
+  padding-left: 0px;
 }
 
 #recensions a {
