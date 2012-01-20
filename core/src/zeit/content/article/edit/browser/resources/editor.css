@@ -772,18 +772,18 @@ form[action$="edit.form.misc-layout"] div {
   width:100%;
 }
 
+form[action$="edit.form.misc-layout"] div.label {
+  margin-bottom:3px;
+}
+
 form[action$="edit.form.misc-layout"] div#misc-layout\.layout {
   padding:0em;
 }
 
-form[action$="edit.form.misc-layout"] div.object-reference {
-  padding:1em;
-}
-
 label[for^="workflow-quality-assurance"] ~ span.required {
   position:absolute;
-  left: 440px;
-  top: -10px;
+  left: 430px;
+  top: 3px;
 }
 
 #article-editor-text fieldset.fontcontrol:before {
