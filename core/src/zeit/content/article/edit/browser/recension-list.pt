@@ -83,7 +83,7 @@
       cms:cp-module="zeit.edit.LightBoxForm"
       cms:lightbox-in="cp-content"
       i18n:attributes="title"
-      i18n:translate="">
+      i18n:translate="add-new-recension">
       Add new...
     </a>
   </div>
