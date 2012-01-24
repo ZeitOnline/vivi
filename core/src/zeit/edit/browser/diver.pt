@@ -1,6 +1,6 @@
 <form tal:omit-tag="not:request/show_form|nothing">
   <div tal:attributes="id view/prefix">
-    <fieldset tal:attributes="class view/prefix">
+    <fieldset tal:attributes="class view/prefix" i18n:domain="zeit.cms">
 
       <h2 tal:content="view/legend"
               tal:condition="view/legend"
