@@ -225,7 +225,7 @@
 
 #text-control-bottom {
   border: 1px dotted #777;
-  margin-right: 25px;
+  margin-right: 24px;
   padding: 0.5em;
 }
 
@@ -612,10 +612,6 @@ button.log-expander {
   padding-left:0px;
 }
 
-#edit-form-misc .inline-form div.widget > div > div > select {
-  margin-left:4px;
-}
-
 #edit-form-metadata #metadata-b\.copyrights {
   padding-left:1px;
 }
@@ -667,7 +663,7 @@ form[action$="misc-product-management-b"] {
 #metadata-c\.author_references .add_view {
   left: 189px;
   position: absolute;
-  width: 100px;
+  width: 200px;
   top:3px;
 }
 
@@ -752,12 +748,17 @@ div[id^="assets"] {
   margin-left:0px;
 }
 
+.inline-form div.widget > input#new-filename\.rename_to {
+  position:absolute;
+  top:-3px;
+}
+
 .article-editor-inner .objectsequencewidget ul[id^="sortable"] {
   margin:0em;
 }
 
 .article-editor-inner .objectsequencewidget ul li {
-  margin-bottom:10px;
+  margin:1em;
 }
 
 form[action$="edit.form.workflow-status"] {
@@ -802,6 +803,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin: 10px 0px 10px 0;
 }
 
+.objectsequencewidget.landing-zone.visible,
 .drop-object-widget.landing-zone.visible {
   padding:0px !important;
   margin:0px !important;
@@ -809,4 +811,20 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 .drop-object-widget.landing-zone.visible .object-reference {
   margin:1em !important;
+}
+
+/* moz-appearence:button can't handle with padding... */
+#metadata-a\.keywords\.update a:before,
+#metadata-a\.keywords\.update a:after,
+#editable-body .action-editable-body-module-droppable span a:before,
+#editable-body .action-editable-body-module-droppable span a:after,
+#metadata-c\.author_references a[href="zeit.content.author.add_contextfree"]:after,
+#metadata-c\.author_references a[href="zeit.content.author.add_contextfree"]:before,
+#recensions a:after,
+#recensions a:before,
+#checkin a:before,
+#checkin a:after,
+form[action$="edit.form.context-action"] a:after,
+form[action$="edit.form.context-action"] a:before {
+  content:'\00A0\00A0';
 }
