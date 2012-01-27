@@ -769,7 +769,11 @@ div[id^="assets"] {
 }
 
 .article-editor-inner .objectsequencewidget ul li {
-  margin:1em;
+  margin-bottom:1em;
+}
+
+.article-editor-inner .objectsequencewidget.landing-zone.visible ul[id^="sortable"] li {
+  margin: 1em 1em 1em 1em;
 }
 
 form[action$="edit.form.workflow-status"] {
