@@ -637,11 +637,18 @@ form[action$="asset-badges"] fieldset legend {
   display:none;
 }
 
-/* Checkboxes should always appear below their lables. Some modifications for asset-badges  */
+/* Checkboxes should always appear below their lables. Some modifications for asset-badges...  */
 .checkboxType {
   position: absolute;
   top: 19px;
 }
+
+/*...except of some special checkboxes....*/
+input#form\.confirmed_duplicate {
+  position:relative;
+  top: 0px;
+}
+
 
 form[action$="asset-badges"] div.value {
   margin-top:5px;
@@ -842,4 +849,10 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 form[action$="edit.form.context-action"] a:after,
 form[action$="edit.form.context-action"] a:before {
   content:'\00A0\00A0';
+}
+
+/* Add author lightbox */
+form[action$="zeit.content.author.add_contextfree"] .summary {
+  padding-left:19px;
+  font-weight:bold;
 }
