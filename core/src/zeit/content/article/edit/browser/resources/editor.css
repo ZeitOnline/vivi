@@ -484,10 +484,6 @@ span.charcount {
   display: none;
 }
 
-.block.type-video .video-image img {
-  width: 100%;
-}
-
 .block.type-video .video_2 img {
   opacity: 0.5;
 }
@@ -505,7 +501,22 @@ span.charcount {
   display: block;
 }
 
+.zeit-content-article-edit-interfaces-IVideo .content-details .supertitle img[alt="Video"] {
+  width:11px; height:8px;
+}
 
+.zeit-content-article-edit-interfaces-IVideo .content-details .object-link {
+  float:none;
+  padding:0px;
+  background-position: -4px center;
+  padding-left: 2em;
+  display:block;
+  float:none;
+}
+
+#article-editor-text .zeit-content-article-edit-interfaces-IVideo .content-details .object-link a {
+  -moz-appearance: none;
+}
 /* xml block */
 
 .block.type-raw .rawxml {
