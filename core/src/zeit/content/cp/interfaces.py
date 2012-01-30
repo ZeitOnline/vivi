@@ -1,12 +1,12 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
 from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
-import re
 import urlparse
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.avsource
@@ -115,6 +115,7 @@ class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
 
     """
 
+
 class IWriteContainer(zope.container.interfaces.IOrdered):
     """Modify area."""
 
@@ -159,6 +160,7 @@ class IInformatives(IRegion):
 class IMosaic(IContainer):
     pass
 
+
 class IElement(zope.interface.Interface):
     """XXX A module which can be instantiated and added to the page."""
 
@@ -193,14 +195,14 @@ class IBlock(IElement):
         title=_("Title"),
         required=False)
 
-    publisher  = zope.schema.TextLine(
+    publisher = zope.schema.TextLine(
         title=_("Publisher"),
         required=False)
     publisher_url = zope.schema.TextLine(
         title=_("Publisher URL"),
         required=False)
 
-    supertitle  = zope.schema.TextLine(
+    supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
         required=False)
     supertitle_url = zope.schema.TextLine(
@@ -480,7 +482,6 @@ class IXMLTeaser(zeit.cms.interfaces.ICMSContent,
         u'The content referenced by the teaser')
 
 
-
 class IReadTeaserBar(IReadRegion, IElement):
 
     layout = zope.schema.Choice(
@@ -534,6 +535,19 @@ class IQuizBlock(IBlock):
         source=zeit.content.quiz.source.QuizSource())
 
 
+class FullgraphicalScaleSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'scales-fullgraphical-url'
+    attribute = 'name'
+
+    def getToken(self, context, value):
+        return value
+
+
+fullgraphical_scale_source = FullgraphicalScaleSource()
+
+
 class IFullGraphicalBlock(IBlock):
     """The Fullgraphical block with a reference to an object and an image."""
 
@@ -543,4 +557,9 @@ class IFullGraphicalBlock(IBlock):
 
     image = zope.schema.Choice(
         title=_("Image"),
-        source=zeit.content.image.interfaces.ImageSource())
+        source=zeit.content.image.interfaces.ImageSource(),
+        required=False)
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=fullgraphical_scale_source)

@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import SimpleHTTPServer
@@ -22,6 +22,7 @@ product_config = """
     feed-update-minimum-age 30
     rss-folder rss
     rules-url file://%s
+    scales-fullgraphical-url file://%s
 </product-config>
 
 <product-config zeit.workflow>
@@ -32,7 +33,9 @@ product_config = """
     pkg_resources.resource_filename(__name__, 'cpextra.xml'),
     pkg_resources.resource_filename(__name__, 'cp-types.xml'),
     pkg_resources.resource_filename('zeit.content.cp.tests.fixtures',
-                                    'example_rules.py'))
+                                    'example_rules.py'),
+    pkg_resources.resource_filename(__name__, 'scales-fullgraphical.xml'),
+       )
 
 
 layer = zeit.cms.testing.ZCMLLayer(

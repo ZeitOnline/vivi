@@ -8,6 +8,7 @@
     view="zope.interface.Interface"
     manager="..interfaces.IEditorContentViewletManager"
     name="contents"
+    class=".fullgraphical.Display"
     template="layout.fullgraphical.content.pt"
     permission="zeit.EditContent"
     weight="0"
