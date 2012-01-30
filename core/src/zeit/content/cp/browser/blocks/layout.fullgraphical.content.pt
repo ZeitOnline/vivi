@@ -1,6 +1,7 @@
 <tal:block define="image view/image|nothing"
            i18n:domain="zeit.cms">
 
+  <div class="teaserTitle" tal:content="view/title|nothing" />
   <div class="fullgraphical-image"
        tal:condition="image">
     <img tal:attributes="

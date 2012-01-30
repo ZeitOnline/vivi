@@ -30,6 +30,11 @@ class Display(object):
         key = '%s-%s.jpg' % (image_group.__name__, size)
         return image_group[key]
 
+    @property
+    def title(self):
+        return (self.context.title or
+                self.context.referenced_object.teaserTitle)
+
 
 class EditProperties(zeit.content.cp.browser.blocks.block.EditCommon):
 

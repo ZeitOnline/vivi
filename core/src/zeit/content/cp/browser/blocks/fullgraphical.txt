@@ -38,7 +38,8 @@ Add an object (e.g. a quiz) to the repository:[#functional]_
 >>> quiz = zeit.content.quiz.quiz.Quiz()
 >>> repository['my_quiz'] = quiz
 
-Edit the quiz block and reference the newly added quiz:
+Edit the quiz block, reference the newly added quiz and add both an image and
+a title to the teaser block:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
@@ -47,6 +48,11 @@ Edit the quiz block and reference the newly added quiz:
 >>> browser.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 >>> browser.getControl('Layout').value = ['148x84']
 >>> browser.getControl('Apply').click()
+
+>>> browser.open('edit-common')
+>>> browser.getControl('Title').value = 'Block title'
+>>> browser.getControl('Apply').click()
+
 >>> print browser.contents
 <...self.close();...
 
@@ -56,6 +62,7 @@ layout does not reflect in the image URL used for displaying the block: XXX
 >>> browser.open(contents_url)
 >>> print browser.contents
 <...
+  <div class="teaserTitle">Block title</div>
   <div class="fullgraphical-image">
     <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"
         title="http://xml.zeit.de/my_quiz" />
@@ -76,7 +83,8 @@ The source of a fullgraphical block does contain the layout decision:
 >>> print browser.getControl('XML Source').value
 <...
 <container cp:type="fullgraphical" module="fullgraphical"
-           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
+           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca"
+           layout="148x84" title="Block title">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
@@ -87,14 +95,19 @@ The source of a fullgraphical block does contain the layout decision:
   <image type="intern" href="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
 </container>...
 
-We may omit the image without either the source nor the display of the
-fullgraphical block breaking:
+We may omit the image and title without either the source nor the display of
+the fullgraphical block breaking:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('Image').value = ''
 >>> browser.getControl('Apply').click()
+
+>>> browser.open('edit-common')
+>>> browser.getControl('Title').value = ''
+>>> browser.getControl('Apply').click()
+
 >>> print browser.contents
 <...self.close();...
 
@@ -114,8 +127,8 @@ fullgraphical block breaking:
   <image xsi:nil="true"/>
 </container>...
 
-Let's now add an image group to the referenced content item and have it
-contain an image that corresponds to our selected layout:
+Let's now add a title and an image group to the referenced content item and
+have the latter contain an image that corresponds to our selected layout:
 
 >>> import zeit.cms.checkout.helper
 >>> import zeit.cms.testing
@@ -125,15 +138,17 @@ contain an image that corresponds to our selected layout:
 >>> with zeit.cms.testing.interaction():
 ...     with zeit.cms.checkout.helper.checked_out(quiz) as co:
 ...         zeit.content.image.interfaces.IImages(co).images += (group,)
+...         co.teaserTitle = u'Teaser title'
 >>> group['image-group-148x84.jpg'] = zeit.content.image.image.LocalImage()
 
 Since we don't have an image referenced by the fullgraphical block, it falls
 back to the teaser image of the referenced content object at our chosen layout
-size:
+size; similarly for the title:
 
 >>> browser.open(contents_url)
 >>> print browser.contents
 <...
+  <div class="teaserTitle">Teaser title</div>
   <div class="fullgraphical-image">
     <img src="http://localhost/++skin++cms/repository/image-group/image-group-148x84.jpg".../>
   </div>
@@ -143,7 +158,15 @@ The fall-back to the teaser image does not reflect in the XML representation
 of the block, however, since we don't have a way to distinguish between the
 image having ended up there by way of the fall-back and it having been
 referenced directly. (We expect some appropriate fall-back logic to be
-implemented in the XSLT as well.)
+implemented in the XSLT as well.) The same holds for the title.
+
+We need to check in the center page after making changes to the referenced
+object in order to catch its metadata updates:
+
+>>> browser.open(contents_url)
+>>> browser.open('edit.html')
+>>> browser.getLink('Checkin').click()
+>>> browser.getLink('Checkout').click()
 
 >>> browser.open(contents_url)
 >>> browser.open('xml_source_edit.html')
@@ -153,7 +176,7 @@ implemented in the XSLT as well.)
            cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
     <supertitle xsi:nil="true"/>
-    <title xsi:nil="true"/>
+    <title py:pytype="str">Teaser title</title>
     <text xsi:nil="true"/>
     <description xsi:nil="true"/>
     <byline xsi:nil="true"/>
@@ -167,16 +190,20 @@ implemented in the XSLT as well.)
 
 If both a directly referenced image as well as a teaser image for the
 referenced content object exist, the directly referenced image takes
-precedence:
+precedence; similarly, again, for the title:
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 >>> browser.getControl('Apply').click()
+>>> browser.open('edit-common')
+>>> browser.getControl('Title').value = 'Block title'
+>>> browser.getControl('Apply').click()
 >>> browser.open(contents_url)
 >>> print browser.contents
 <...
+  <div class="teaserTitle">Block title</div>
   <div class="fullgraphical-image">
     <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG".../>
   </div>
@@ -188,6 +215,7 @@ The layout doesn't break if the referenced content is removed:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <...
+  <div class="teaserTitle">Block title</div>
   <div class="fullgraphical-image">
     <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG" />
   </div>
