@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.brightcove.converter import Video, Playlist
@@ -181,7 +181,7 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_renditions_should_be_converted_to_cms(self):
         video = Video.find_by_id('1234')
-        video.data['renditions'] = [{"url": "http:example.org/my_rendition", 
+        video.data['renditions'] = [{"url": "http:example.org/my_rendition",
                       "frameWidth": 400}]
         cmsobj = video.to_cms()
         self.assertEqual(
@@ -245,7 +245,6 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         video.title = u'Foo & Bar'
         cms = video.to_cms()
         self.assertEqual(u'Foo &amp; Bar', cms.title)
-
 
 
 class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
@@ -358,7 +357,6 @@ class TestQueryVideoId(unittest.TestCase):
         with mock.patch('zeit.brightcove.converter.resolve_video_id') as rvi:
             query_video_id(mock.sentinel.avalue)
         rvi.assert_called_with(mock.sentinel.avalue)
-
 
     def test_should_return_value(self):
         from zeit.brightcove.converter import query_video_id

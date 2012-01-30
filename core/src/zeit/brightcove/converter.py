@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
@@ -116,7 +116,7 @@ class mapped_datetime(mapped):
         value = super(mapped_datetime, self).__get__(instance, class_)
         if not value:
             return None
-        date = datetime.datetime.utcfromtimestamp(int(value)/1000)
+        date = datetime.datetime.utcfromtimestamp(int(value) / 1000)
         return pytz.utc.localize(date)
 
     def __set__(self, instance, value):
@@ -216,7 +216,7 @@ class Video(Converter):
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
 
     type = 'video'
-    id_prefix = 'vid' # for old-style asset IDs
+    id_prefix = 'vid'  # for old-style asset IDs
     commentsAllowed = mapped_bool('customFields', 'allow_comments')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
@@ -279,7 +279,7 @@ class Video(Converter):
             video_fields=class_.fields,
             filter='PLAYABLE,DELETED,INACTIVE,UNSCHEDULED',
             sort_by='MODIFIED_DATE', sort_order='DESC')
-    
+
     @property
     def renditions(self):
         rs = []
@@ -292,7 +292,7 @@ class Video(Converter):
             vr.frame_width = rendition["frameWidth"]
             rs.append(vr)
         return tuple(rs)
-    
+
     @property
     def related(self):
         result = []
@@ -331,7 +331,7 @@ class Video(Converter):
             modified = int(self.data.get('lastModifiedDate'))
         except (TypeError, ValueError):
             return None
-        return datetime.datetime.fromtimestamp(modified/1000).year
+        return datetime.datetime.fromtimestamp(modified / 1000).year
 
     # XXX year.setter is missing
 
@@ -395,7 +395,7 @@ class Video(Converter):
             bc_state = cls.find_by_id(instance.id)
             instance.date_first_released = bc_state.date_first_released
         except KeyError:
-            pass # avoid failures in test setup
+            pass  # avoid failures in test setup
         return instance
 
 
@@ -413,7 +413,7 @@ class Playlist(Converter):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
     type = 'playlist'
-    id_prefix = 'pls' # for old-style asset IDs
+    id_prefix = 'pls'  # for old-style asset IDs
     item_state = 'ACTIVE'
     fields = ",".join((
         'id',
