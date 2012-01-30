@@ -1,6 +1,13 @@
 Fullgraphical block
 ===================
 
+Functional set-up:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+
+Set up test data:
+
 >>> import z3c.etestbrowser.testing
 >>> import zeit.content.cp.browser.testing
 >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
@@ -28,7 +35,7 @@ Fullgraphical block
   </div>
   ...
 
-Add an object (e.g. a quiz) to the repository:[#functional]_
+Add an object (e.g. a quiz) to the repository:
 
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
@@ -220,8 +227,3 @@ The layout doesn't break if the referenced content is removed:
     <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG" />
   </div>
   ...
-
-.. [#functional]_
-
-    >>> import zeit.cms.testing
-    >>> zeit.cms.testing.set_site()
