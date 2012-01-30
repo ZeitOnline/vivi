@@ -157,6 +157,10 @@ implemented in the XSLT as well.)
     <text xsi:nil="true"/>
     <description xsi:nil="true"/>
     <byline xsi:nil="true"/>
+    <image base-id="http://xml.zeit.de/image-group" type="jpg" publication-date="" expires="">
+      <bu xsi:nil="true"/>
+      <copyright py:pytype="str">©</copyright>
+    </image>
   </block>
   <image xsi:nil="true"/>
 </container>...
