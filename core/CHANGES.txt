@@ -6,7 +6,10 @@ zeit.content.cp changes
 0.50.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Introduced fall-back behaviour to the full-graphical block so that the
+  teaser image and title, resp., of the referenced object are used when the
+  block doesn't have its own image or title. Added the selection of a layout
+  to choose an image from an image group (#10158).
 
 
 0.50.2 (2011-12-19)
