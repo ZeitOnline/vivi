@@ -491,8 +491,9 @@ def resolve_video_id(video_id):
     if not result:
         raise LookupError(video_id)
     if len(result) > 1:
-        raise LookupError(
-            'Found multiple CMS objects with video id %r.' % video_id)
+        msg = 'Found multiple CMS objects with video id %r.' % video_id
+        log.warning(msg)
+        raise LookupError(msg)
     result = result[0]
     unique_id = result[0]
     return unique_id

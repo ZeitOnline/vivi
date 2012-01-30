@@ -3,6 +3,7 @@
 
 from zeit.brightcove.converter import Video, Playlist
 import datetime
+import logging
 import mock
 import pytz
 import transaction
@@ -335,14 +336,19 @@ class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
                 LookupError,
                 zeit.brightcove.converter.resolve_video_id, '1234')
 
-    def test_should_raise_if_multiple_objects_are_found(self):
+    def test_should_raise_and_warn_if_multiple_objects_are_found(self):
+        log = logging.getLogger(zeit.brightcove.converter.__name__)
         with mock.patch('zeit.connector.mock.Connector.search') as search:
-            search.return_value = iter(
-                (('http://xml.zeit.de/video/2010-03/1234',),
-                 ('http://xml.zeit.de/video/2010-03/1234',),))
-            self.assertRaises(
-                LookupError,
-                zeit.brightcove.converter.resolve_video_id, '1234')
+            with mock.patch_object(log, 'warning') as log_warning:
+                search.return_value = iter(
+                    (('http://xml.zeit.de/video/2010-03/1234',),
+                     ('http://xml.zeit.de/video/2010-03/1234',),))
+                self.assertRaises(
+                    LookupError,
+                    zeit.brightcove.converter.resolve_video_id, '1234')
+                warning = log_warning.call_args
+                self.assertFalse(warning is None)
+                self.assertTrue('1234' in warning[0][0])
 
 
 class TestQueryVideoId(unittest.TestCase):
