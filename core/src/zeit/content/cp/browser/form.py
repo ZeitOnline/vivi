@@ -22,7 +22,8 @@ class FormBase(object):
             'type', 'header_image', 'snapshot', 'topiclink_title', 
             'topiclink_label_1', 'topiclink_url_1',
             'topiclink_label_2', 'topiclink_url_2',
-            'topiclink_label_3', 'topiclink_url_3',))
+            'topiclink_label_3', 'topiclink_url_3',
+            'og_title', 'og_description', 'og_image'))
 
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
@@ -34,6 +35,12 @@ class FormBase(object):
         ),
         css_class='wide-widgets column-left')
 
+    og_fields = gocept.form.grouped.Fields(
+        _("OG Metadata"),
+         ('og_title','og_description','og_image',
+        ),
+        css_class='wide-widgets column-right')
+
     field_groups = (
         base.navigation_fields,
         base.head_fields,
@@ -42,6 +49,7 @@ class FormBase(object):
             _("misc."),
             css_class='column-right'),
         base.option_fields,
+        og_fields,
         )
 
 

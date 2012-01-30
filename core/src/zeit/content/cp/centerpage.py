@@ -92,6 +92,18 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         '.head.topiclinks.topiclink.topiclink_url_3',
         zeit.content.cp.interfaces.ICenterPage['topiclink_url_3'])
 
+    og_title = zeit.cms.content.property.ObjectPathProperty(
+        '.head.og_meta.og_title',
+        zeit.content.cp.interfaces.ICenterPage['og_title'])
+
+    og_description = zeit.cms.content.property.ObjectPathProperty(
+        '.head.og_meta.og_description',
+        zeit.content.cp.interfaces.ICenterPage['og_description'])
+
+    og_image = zeit.cms.content.property.ObjectPathProperty(
+        '.head.og_meta.og_image',
+        zeit.content.cp.interfaces.ICenterPage['og_image'])
+
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]
         area = zope.component.getMultiAdapter(

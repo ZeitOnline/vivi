@@ -95,6 +95,26 @@ Topic Links
   ...
 </centerpage>
 
+
+OG-Metadata
++++++++++++
+
+>>> cp.og_title = 'Isch bin da Title' 
+>>> cp.og_description = 'Hier geht die Description' 
+>>> cp.og_image = 'yo-man.jpg' 
+>>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+<centerpage...>
+  <head>
+...
+    <og_meta>
+       <og_title...>Isch bin da Title</og_title>
+       <og_description...>Hier geht die Description</og_description>
+       <og_image...>yo-man.jpg</og_image>    
+    </og_meta>
+  ...
+</centerpage>
+
+
 Blocks
 ++++++
 

@@ -76,6 +76,19 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         title=_('URL for topiclink #3'),
         required=False)
 
+    og_title = zope.schema.TextLine(
+        title=_('Titel'),
+        required=False)
+
+    og_description = zope.schema.TextLine(
+       title=_('Description'),
+        required=False)
+
+    og_image = zope.schema.TextLine(
+       title=_('Image'),
+        required=False)
+
+
     def __getitem__(area_key):
         """Return IArea for given key.
 

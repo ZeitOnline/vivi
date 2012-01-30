@@ -2,6 +2,11 @@ zeit.content.cp changes
 =======================
 
 
+0.50.4 (unreleased)
++++++++++++++++++++
+
+- Adds fields for OG-metadata in CP-metadata-form
+
 
 0.50.3 (unreleased)
 -------------------
