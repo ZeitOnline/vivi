@@ -25,15 +25,23 @@ class CodeFixer(suds.plugin.MessagePlugin):
 
     """
     def marshalled(self, context):
-        authors = (context.envelope.
-                   getChild('Body').
-                   getChild('newMessageRequest').
-                   getChild('parties').
-                   getChild('authors'))
+        try:
+            authors = self.traverse(
+                context.envelope,
+                'Body', 'newMessageRequest', 'parties', 'authors')
+        except ValueError:
+            return
         for author in authors.getChildren('author'):
             codes = author.getChildren('code')
             if len(codes) > 1:
                 codes[-1].detach()
+
+    def traverse(self, element, *names):
+        for name in names:
+            element = element.getChild(name)
+            if element is None:
+                raise ValueError
+        return element
 
 
 class VGWortWebService(object):
