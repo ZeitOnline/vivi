@@ -4,6 +4,9 @@ zeit.cms changes
 1.52.1 (unreleased)
 -------------------
 
+- Limit the amount of PubliationDependencies that are actually published;
+  configurable as product config of zeit.workflow: ``dependency-publish-limit``
+  (#10242).
 - Use gocept.testing.
 
 

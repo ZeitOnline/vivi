@@ -235,6 +235,9 @@ class PublishRetractTask(object):
 
     def recurse(self, method, dependencies, obj, *args):
         """Apply method recursively on obj."""
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        DEPENDENCY_PUBLISH_LIMIT = config['dependency-publish-limit']
         stack = [obj]
         seen = set()
         result_obj = None
@@ -247,6 +250,10 @@ class PublishRetractTask(object):
             new_obj = method(current_obj, *args)
             timer.mark('Called %s on %s' % (method.__name__,
                                             current_obj.uniqueId))
+            if len(seen) > DEPENDENCY_PUBLISH_LIMIT:
+                # "strictly greater" comparison since the starting object
+                # should not count towards the limit
+                break
 
             # Dive into folders
             if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):

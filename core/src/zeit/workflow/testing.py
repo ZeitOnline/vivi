@@ -17,6 +17,7 @@ product_config = """
     # so other packages simply add our product_config for their tests.
     publish-script /bin/true
     retract-script /bin/true
+    dependency-publish-limit 100
 </product-config>
 """
 
