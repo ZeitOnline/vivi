@@ -19,6 +19,7 @@ import zope.component
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
+import zope.security.proxy
 
 
 log = logging.getLogger(__name__)
@@ -145,13 +146,14 @@ def ignore_private_token(event):
     zeit.cms.interfaces.ICMSContent,
     zope.lifecycleevent.IObjectCopiedEvent)
 def remove_vgwort_properties_after_copy(context, event):
+    # This is internals; users may not edit token and report properties anyway.
+    context = zope.security.proxy.removeSecurityProxy(context)
     token = zeit.vgwort.interfaces.IToken(context)
     token.public_token = None
     token.private_token = None
     info = zeit.vgwort.interfaces.IReportInfo(context)
     info.reported_on = None
     info.reported_error = None
-
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(

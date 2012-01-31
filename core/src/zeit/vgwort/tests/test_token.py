@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.vgwort.token import _order_tokens
@@ -88,6 +88,19 @@ class ObjectCopyTest(zeit.vgwort.testing.TestCase):
         info = zeit.vgwort.interfaces.IReportInfo(copy)
         self.assertEqual(None, info.reported_on)
         self.assertEqual(None, info.reported_error)
+
+
+class SecurityObjectCopyTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.vgwort.testing.ZCMLLayer
+
+    def test_copying_should_work_even_with_security_on(self):
+        # see #9960
+        self.browser.handleErrors = False
+        self.assertNothingRaised(
+            self.browser.open,
+            'http://localhost/++skin++vivi/repository/online/@@copy?unique_id='
+            'http%3A%2F%2Fxml.zeit.de%2Fonline%2F2007%2F01%2FSomalia')
 
 
 class TokenServiceTest(unittest.TestCase):
