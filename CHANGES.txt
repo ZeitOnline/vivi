@@ -6,6 +6,9 @@ zeit.vgwort changes
 
 - Objects can be copied from clipboards again. (#9960)
 
+- No longer log spurious errors when trying to fix up certain SOAP responses.
+  (#10094)
+
 
 0.4.3 (2011-11-14)
 ------------------

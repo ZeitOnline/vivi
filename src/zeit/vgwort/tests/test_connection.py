@@ -3,6 +3,7 @@
 
 import mock
 import pkg_resources
+import suds.sax.parser
 import time
 import unittest
 import zeit.cms.checkout.helper
@@ -282,3 +283,12 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
         self.assertEqual('Auster', authors[0].surName)
         self.assertEqual('Hans Christian', authors[1].firstName)
         self.assertEqual('Andersen', authors[1].surName)
+
+
+class CodeFixer(unittest.TestCase):
+
+    def test_dont_raise_when_not_applicable(self):
+        context = mock.Mock()
+        context.envelope = suds.sax.parser.Parser().parse(
+            string='<Body><foo></foo></Body>')
+        zeit.vgwort.connection.CodeFixer().marshalled(context)
