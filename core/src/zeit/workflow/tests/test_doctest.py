@@ -5,6 +5,7 @@ import unittest
 import zeit.cms.testing
 import zeit.workflow.testing
 
+
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
