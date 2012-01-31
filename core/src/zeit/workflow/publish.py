@@ -4,6 +4,7 @@
 
 from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import ZODB.POSException
 import datetime
 import logging
@@ -94,7 +95,7 @@ class Publish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self):
+    def publish(self, priority=PRIORITY_DEFAULT):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if not info.can_publish():
@@ -102,19 +103,18 @@ class Publish(object):
                 "Publish pre-conditions not satisifed.")
 
         self.log(self.context, _('Publication scheduled'))
-        return self.tasks.add(u'zeit.workflow.publish',
+        return self.tasks(priority).add(u'zeit.workflow.publish',
                        TaskDescription(self.context))
 
-    def retract(self):
+    def retract(self, priority=PRIORITY_DEFAULT):
         """Retract object."""
         self.log(self.context, _('Retracting scheduled'))
-        return self.tasks.add(u'zeit.workflow.retract',
+        return self.tasks(priority).add(u'zeit.workflow.retract',
                        TaskDescription(self.context))
 
-    @property
-    def tasks(self):
+    def tasks(self, priority):
         return zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, 'general')
+            lovely.remotetask.interfaces.ITaskService, priority)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
@@ -219,13 +219,13 @@ class PublishRetractTask(object):
             # workingcopy istn't cluttered with ghosts and 2. we can publish in
             # parallel.
             checked_out = manager.checkout(temporary=True)
-        except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             logger.warning("Could not checkout %s" % obj.uniqueId)
             return obj
         manager = zeit.cms.checkout.interfaces.ICheckinManager(checked_out)
         try:
             obj = manager.checkin(publishing=True)
-        except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
+        except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             # XXX this codepath is not tested!
             logger.warning("Could not checkin %s" % obj.uniqueId)
             del checked_out.__parent__[checked_out.__name__]
@@ -235,6 +235,9 @@ class PublishRetractTask(object):
 
     def recurse(self, method, dependencies, obj, *args):
         """Apply method recursively on obj."""
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        DEPENDENCY_PUBLISH_LIMIT = config['dependency-publish-limit']
         stack = [obj]
         seen = set()
         result_obj = None
@@ -247,6 +250,10 @@ class PublishRetractTask(object):
             new_obj = method(current_obj, *args)
             timer.mark('Called %s on %s' % (method.__name__,
                                             current_obj.uniqueId))
+            if len(seen) > DEPENDENCY_PUBLISH_LIMIT:
+                # "strictly greater" comparison since the starting object
+                # should not count towards the limit
+                break
 
             # Dive into folders
             if zeit.cms.repository.interfaces.ICollection.providedBy(new_obj):

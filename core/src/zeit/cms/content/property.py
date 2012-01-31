@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
 import sys
@@ -249,10 +250,29 @@ class MultiResource(object):
         return result
 
     def __get__(self, instance, class_):
+        if instance is None:
+            return self
         return self.related(instance)._get_related()
 
     def __set__(self, instance, value):
         return self.related(instance)._set_related(value)
+
+
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_multiresource_on_checkin(context, event):
+    for name in dir(type(context)):
+        try:
+            attr = getattr(type(context), name)
+        except AttributeError:
+            # Descriptors might not support reading them from the class;
+            # MultiResource does, however.
+            attr = None
+        if isinstance(attr, MultiResource):
+            value = getattr(context, name)
+            if value:
+                setattr(context, name, value)
 
 
 def mapAttributes(*names):

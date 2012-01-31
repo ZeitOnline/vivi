@@ -34,15 +34,23 @@ def installGeneralTaskService():
     tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
 
 
-def installEventTaskService():
+def _install_serial_task_service(name, utility_name):
     site_manager = zope.component.getSiteManager()
     tasks = installLocalUtility(
-        site_manager, lovely.remotetask.TaskService, 'tasks.event',
-        lovely.remotetask.interfaces.ITaskService, utility_name='events')
+        site_manager, lovely.remotetask.TaskService, name,
+        lovely.remotetask.interfaces.ITaskService, utility_name=utility_name)
     # Use MultiProcessor with 1 Thread because it handles pulling from the
     # queue differently than the SingleProcessor.
     tasks.processorFactory = lovely.remotetask.processor.MultiProcessor
     tasks.processorArguments = {'maxThreads': 1}
+
+
+def installEventTaskService():
+    _install_serial_task_service('tasks.event', 'events')
+
+
+def installLowPriorityTaskService():
+    _install_serial_task_service('tasks.lowprio', 'lowprio')
 
 
 def installRelations():
@@ -71,6 +79,7 @@ def install(root):
         'tag-whitelist', zeit.cms.tagging.interfaces.IWhitelist)
     installGeneralTaskService()
     installEventTaskService()
+    installLowPriorityTaskService()
     installRelations()
 
 

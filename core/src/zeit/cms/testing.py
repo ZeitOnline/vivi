@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zope.testing import doctest
@@ -420,6 +420,7 @@ class BrowserAssertions(gocept.testing.assertion.Ellipsis):
 
 
 class BrowserTestCase(FunctionalTestCase,
+                      gocept.testing.assertion.Exceptions,
                       BrowserAssertions):
 
     def setUp(self):

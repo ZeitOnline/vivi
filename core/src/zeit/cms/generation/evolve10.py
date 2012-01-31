@@ -3,14 +3,10 @@
 
 import zeit.cms.generation
 import zeit.cms.generation.install
-import zeit.cms.tagging.interfaces
-import zeit.cms.tagging.whitelist
 
 
 def update(root):
-    zeit.cms.generation.install.installLocalUtility(
-        root, zeit.cms.tagging.whitelist.Whitelist,
-        'tag-whitelist', zeit.cms.tagging.interfaces.IWhitelist)
+    zeit.cms.generation.install.installLowPriorityTaskService()
 
 
 def evolve(context):

@@ -27,16 +27,55 @@ editor-ng branch changes
 - Introduce ICheckinCheckoutEvent.publishing (for #8996).
 
 
-1.49.2 (unreleased)
+1.52.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Limit the amount of PubliationDependencies that are actually published;
+  configurable as product config of zeit.workflow: ``dependency-publish-limit``
+  (#10242).
+- Use gocept.testing.
+
+
+1.52.0 (2011-12-08)
+-------------------
+
+- Add handler that updates XMLReferences for MultiResources on checkin
+  (for #10042).
+
+
+1.51.0 (2011-12-01)
+-------------------
+
+- Provide another Remotetask-Service, "low-priority", that handles publish
+  tasks serially (#10024).
+
+
+1.50.2 (2011-11-24)
+-------------------
+
+- Make link an IXMLContent. It is expected from content to implement
+  ICMSContent (which is implied in IXMLContent). (#10017)
+
+
+1.50.1 (2011-11-13)
+-------------------
+
+- Fix brown bag release 1.50.0
+
+
+1.50.0 (2011-11-13)
+-------------------
+
+- Backported test helpers and fixes from the editor-ng branch to the main
+  development line.
 
 
 1.49.1 (2011-06-21)
 -------------------
 
 - Fix product source so it works in the face of SecurityProxies (#9231).
+
+- Introduce ICheckinCheckoutEvent.publishing (for #8996).
 
 
 1.49.0 (2011-06-20)

@@ -15,9 +15,7 @@ import zeit.cms.content.browser.form
 class Base(object):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.link.interfaces.ILink,
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.cms.interfaces.ICMSContent)
+        zeit.content.link.interfaces.ILink).omit('xml')
 
 
 class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):

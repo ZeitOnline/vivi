@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import gocept.selenium.ztk
 import logging
 import lovely.remotetask.interfaces
@@ -13,6 +14,11 @@ import zope.component
 product_config = """
 <product-config zeit.workflow>
     path-prefix work
+    # WorkflowScriptsLayer overrides these anyway, but we provide some defaults
+    # so other packages simply add our product_config for their tests.
+    publish-script /bin/true
+    retract-script /bin/true
+    dependency-publish-limit 100
 </product-config>
 """
 
@@ -85,13 +91,16 @@ class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
 selenium_layer = gocept.selenium.ztk.Layer(WorkflowLayer)
 
 
-def run_publish():
+def run_publish(priorities=(PRIORITY_DEFAULT,)):
     handler = logging.StreamHandler(sys.stdout)
     logging.root.addHandler(handler)
     oldlevel = logging.root.level
     logging.root.setLevel(logging.ERROR)
-    tasks = zope.component.getUtility(
-        lovely.remotetask.interfaces.ITaskService, 'general')
-    tasks.process()
+    if isinstance(priorities, str):
+        priorities = [priorities]
+    for priority in priorities:
+        tasks = zope.component.getUtility(
+            lovely.remotetask.interfaces.ITaskService, priority)
+        tasks.process()
     logging.root.removeHandler(handler)
     logging.root.setLevel(oldlevel)

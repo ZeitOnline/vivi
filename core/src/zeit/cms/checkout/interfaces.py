@@ -126,6 +126,10 @@ class IBeforeCheckoutEvent(ICheckinCheckoutEvent):
 class IAfterCheckoutEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked out."""
 
+    publishing = zope.interface.Attribute(
+        """NOTE: this common checkin/checkout attribute does not apply for
+        this event""")
+
 
 class IValidateCheckinEvent(ICheckinCheckoutEvent):
     """Allows subscribers to influence whether a content object can be checked
