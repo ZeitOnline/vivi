@@ -4,7 +4,7 @@ zeit.cms changes
 1.52.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use gocept.testing.
 
 
 1.52.0 (2011-12-08)
