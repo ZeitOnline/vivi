@@ -28,6 +28,7 @@ setup(
         'gocept.mochikit>=1.4.2.2',
         'gocept.pagelet',
         'gocept.runner',
+        'gocept.testing',
         'grokcore.component',
         'grokcore.view',
         'guppy',

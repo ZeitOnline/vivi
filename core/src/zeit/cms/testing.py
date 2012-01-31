@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zope.testing import doctest
@@ -7,6 +7,7 @@ import __future__
 import contextlib
 import copy
 import gocept.selenium.ztk
+import gocept.testing.assertion
 import inspect
 import logging
 import pkg_resources
@@ -373,6 +374,7 @@ class BrowserAssertions(object):
 
 
 class BrowserTestCase(unittest2.TestCase,
+                      gocept.testing.assertion.Exceptions,
                       BrowserAssertions,
                       RepositoryHelper):
 
