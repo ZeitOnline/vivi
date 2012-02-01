@@ -183,7 +183,7 @@ class EditAudio(zeit.edit.browser.form.InlineForm):
 class EditCitation(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.ICitation)
+        zeit.content.article.edit.interfaces.ICitation).omit('__name__', 'xml')
 
 
 class EditCitationAction(zeit.edit.browser.view.EditBoxAction):
