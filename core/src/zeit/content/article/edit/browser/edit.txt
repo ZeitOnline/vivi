@@ -136,47 +136,6 @@ The changed xml is displayed:
 </div>
 ...
 
-Audio
------
-
->>> for p in article.xml.body.division.getchildren():
-...     article.xml.body.division.remove(p)
->>> article.xml.body.division.audio = ''
->>> article.xml.body.division.audio.set(
-...     '{http://namespaces.zeit.de/CMS/cp}__name__', 'name')
->>> article._p_changed = True
->>> browser.open(contents_url)
->>> print browser.contents
-<...
-  <div>
-    Audio-Id: <span></span>
-  </div>
-  <div>
-    <span>Expires</span>:
-    <span></span>
-  </div>
-...
-
-Edit the block:
-
->>> browser.getLink('Edit').click()
->>> browser.getControl('Audio id').value = '1234'
->>> browser.getControl('Expires').value = '2010-01-01'
->>> browser.getControl('Apply').click()
->>> print browser.contents
-<...self.close()...
->>> browser.open(contents_url)
->>> print browser.contents
-<...
-  <div>
-    Audio-Id: <span>1234</span>
-  </div>
-  <div>
-    <span>Expires</span>:
-    <span>2009 12 31  23:00:00 </span>
-  </div>
-  ...
-
 
 Citation
 --------
