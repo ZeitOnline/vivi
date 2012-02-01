@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # Copyright (c) 2009 StudioNow, Inc <patrick@studionow.com>
 # See also LICENSE.txt
 
@@ -12,7 +12,18 @@ import zope.app.appsetup.product
 log = logging.getLogger(__name__)
 
 
+# see JSON spec which excludes Unicode control characters
+# Brightcove is still capable of delivering these characters within JSON data.
 JSON_CONTROL_CHARACTERS = ''.join(chr(x) for x in range(0, 0x1f))
+
+# see http://www.w3.org/TR/xml11/#NT-RestrictedChar
+XML_RESTRICTED_CHARACTERS = ''.join(
+    chr(x) for x in sum(
+        (range(a, b + 1) for a, b in
+         [(0x1, 0x8), (0xb, 0xc), (0xe, 0x1f), (0x7f, 0x84), (0x86, 0x9f)]),
+        []))
+
+RESTRICTED_CHARACTERS = JSON_CONTROL_CHARACTERS + XML_RESTRICTED_CHARACTERS
 
 
 class APIConnection(object):
@@ -24,9 +35,9 @@ class APIConnection(object):
         self.write_url = write_url
         self.timeout = timeout
 
-    def decode_broken_brightcove_json(self, text):
+    def parse_json(self, text):
         return json.loads(
-            text.translate(None, JSON_CONTROL_CHARACTERS))
+            text.translate(None, RESTRICTED_CHARACTERS))
 
     def post(self, command, **kwargs):
         params = dict(
@@ -38,7 +49,7 @@ class APIConnection(object):
         log.debug("Posting %s(%s)", command, data)
         request = urllib2.urlopen(
             self.write_url, post_data, timeout=self.timeout)
-        response = self.decode_broken_brightcove_json(request.read())
+        response = self.parse_json(request.read())
         __traceback_info__ = (response, )
         log.debug("response info %s", response)
         error = response.get('error')
@@ -55,7 +66,7 @@ class APIConnection(object):
             **kwargs)))
         log.info("Requesting %s", url)
         request = urllib2.urlopen(url, timeout=self.timeout)
-        response = self.decode_broken_brightcove_json(request.read())
+        response = self.parse_json(request.read())
         __traceback_info__ = (url, response)
         error = response.get('error')
         if error:
