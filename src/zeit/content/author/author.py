@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -64,10 +64,14 @@ def update_display_name(obj, event):
         obj.display_name = u'%s %s' % (obj.firstname, obj.lastname)
 
 
+# Note: This is needed by zeit.vgwort, among others.
+# zeit.vgwort.report uses the fact that the references to author objects are
+# copied to the freetext 'author' webdav property to filter out which content
+# objects to report.
 @grokcore.component.subscribe(
     zeit.cms.content.interfaces.ICommonMetadata,
     zope.lifecycleevent.interfaces.IObjectModifiedEvent)
-def modified(obj, event):
+def update_author_freetext(obj, event):
     if event.descriptions:
         for description in event.descriptions:
             if (description.interface ==
