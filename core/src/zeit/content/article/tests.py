@@ -1,10 +1,7 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zope.testing import doctest
 import __future__
-import os
-import pkg_resources
 import re
 import shutil
 import tempfile
@@ -70,7 +67,7 @@ class CDSLayer(CDSZCMLLayer):
         product_config = zope.app.appsetup.product._configs[
             'zeit.content.article']
         # I don't know why, but those directories get removed automatically
-        # somehow. 
+        # somehow.
         try:
             shutil.rmtree(product_config['cds-export'])
         except OSError:
