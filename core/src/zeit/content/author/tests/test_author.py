@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import mock
@@ -34,7 +34,7 @@ class ModifiedHandlerTest(unittest.TestCase):
     def test_author_references_should_be_copied_to_freetext(self):
         from zope.lifecycleevent import ObjectModifiedEvent, Attributes
         from zeit.cms.content.interfaces import ICommonMetadata
-        from zeit.content.author.author import modified
+        from zeit.content.author.author import update_author_freetext
         content = mock.Mock()
         author1, author2 = mock.Mock(), mock.Mock()
         author1.display_name = mock.sentinel.author1
@@ -42,7 +42,7 @@ class ModifiedHandlerTest(unittest.TestCase):
         content.author_references = (author1, author2)
         event = ObjectModifiedEvent(content, Attributes(ICommonMetadata,
                                                         'author_references'))
-        modified(content, event)
+        update_author_freetext(content, event)
         self.assertEqual([mock.sentinel.author1, mock.sentinel.author2],
                          content.authors)
 
@@ -50,24 +50,24 @@ class ModifiedHandlerTest(unittest.TestCase):
         self):
         from zope.lifecycleevent import ObjectModifiedEvent, Attributes
         from zeit.cms.content.interfaces import ICommonMetadata
-        from zeit.content.author.author import modified
+        from zeit.content.author.author import update_author_freetext
         content = mock.Mock()
         content.authors = mock.sentinel.unchanged
         author1, author2 = mock.Mock(), mock.Mock()
         content.author_references = (author1, author2)
         event = ObjectModifiedEvent(content, Attributes(ICommonMetadata,
                                                         'some-field'))
-        modified(content, event)
+        update_author_freetext(content, event)
         self.assertEqual(mock.sentinel.unchanged, content.authors)
 
     def test_author_references_should_clear_authors_when_empty(self):
         from zope.lifecycleevent import ObjectModifiedEvent, Attributes
         from zeit.cms.content.interfaces import ICommonMetadata
-        from zeit.content.author.author import modified
+        from zeit.content.author.author import update_author_freetext
         content = mock.Mock()
         content.authors = mock.sentinel.unchanged
         content.author_references = ()
         event = ObjectModifiedEvent(content, Attributes(ICommonMetadata,
                                                         'author_references'))
-        modified(content, event)
+        update_author_freetext(content, event)
         self.assertEqual([], content.authors)
