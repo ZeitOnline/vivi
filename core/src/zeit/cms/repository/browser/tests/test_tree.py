@@ -21,5 +21,5 @@ class TestTree(zeit.cms.testing.SeleniumTestCase):
 
         # Tree is still open after reload."
         self.open('/', auth='zmgr:mgrpw')
-        s.verifyElementPresent(
+        s.waitForElementPresent(
             '//li[@uniqueid="http://xml.zeit.de/online/2007"]')

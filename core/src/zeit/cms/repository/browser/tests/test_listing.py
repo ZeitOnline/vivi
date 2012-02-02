@@ -16,8 +16,8 @@ class TestListing(zeit.cms.testing.SeleniumTestCase):
         self.verifyTextDisplayed('presseschau')
 
         # Type in a word to filter the table
+        s.type('name=tableFilter', 'internat')
         s.typeKeys('name=tableFilter', 'internat')
-        #s.keyUp('tableFilter', '\13')
         self.verifyTextNotDisplayed('Somalia')
         self.verifyTextDisplayed('presseschau')
 
