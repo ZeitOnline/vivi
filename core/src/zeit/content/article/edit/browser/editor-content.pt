@@ -1,6 +1,7 @@
 <div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
       id="cp-content-inner"
-      class="cp-content-inner article-editor-inner">
+      class="cp-content-inner article-editor-inner"
+      i18n:domain="zeit.cms">
   <script
     type="text/javascript"
     tal:attributes="
@@ -14,6 +15,7 @@
     tal:attributes="
     href string:${request/++resource++zeit.content.article.edit}/editor.css"/>
 
+  <h1 id="pagetitle" i18n:translate="">Articleeditor</h1>
   <div id="editor-forms"
        tal:content="structure context/@@edit-forms">
   </div>

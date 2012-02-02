@@ -856,3 +856,14 @@ form[action$="zeit.content.author.add_contextfree"] .summary {
   padding-left:19px;
   font-weight:bold;
 }
+
+h1#pagetitle {
+  float: left;
+  font-size: 17px;
+  font-weight: normal;
+  height: 40px;
+  margin-left: 5px;
+  position: absolute;
+  top: 5px;
+  width: 100%;
+}
