@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2009 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zope.testing import doctest
@@ -11,6 +11,7 @@ import tempfile
 import unittest
 import zeit.cms.testing
 import zeit.content.cp.testing
+import zeit.workflow.testing
 import zope.app.testing.functional
 import zope.testing.renormalizing
 
@@ -33,6 +34,7 @@ ArticleLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         product_config +
+        zeit.workflow.testing.product_config +
         zeit.content.cp.testing.product_config +
         zeit.cms.testing.cms_product_config))
 
@@ -41,6 +43,7 @@ CDSZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'cds_ftesting.zcml',
     product_config=(
         product_config +
+        zeit.workflow.testing.product_config +
         zeit.content.cp.testing.product_config +
         zeit.cms.testing.cms_product_config))
 
@@ -94,8 +97,5 @@ def test_suite():
         'layout.txt',
         layer=CDSLayer,
         checker=checker,
-        product_config={
-            'zeit.workflow': {'publish-script': 'cat',
-                              'path-prefix': ''}},
         globs={'with_statement': __future__.with_statement}))
     return suite
