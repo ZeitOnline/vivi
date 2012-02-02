@@ -563,11 +563,6 @@ fieldset.table .label {
 
 #edit-form-filename fieldset.table .label {
   width: 10em;
-  height: 21px;
-}
-
-#edit-form-filename fieldset.table .label label {
-  height: 21px;
 }
 
 fieldset.table label {
