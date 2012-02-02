@@ -3,12 +3,13 @@
 
 import SimpleHTTPServer
 import __future__
-import os
 import gocept.selenium.ztk
+import os
 import pkg_resources
 import re
 import transaction
 import zeit.cms.testing
+import zeit.workflow.testing
 import zope.testing.doctest
 import zope.testing.renormalizing
 
@@ -24,11 +25,6 @@ product_config = """
     rules-url file://%s
     scales-fullgraphical-url file://%s
 </product-config>
-
-<product-config zeit.workflow>
-    publish-script cat
-    path-prefix
-</product-config>
 """ % (pkg_resources.resource_filename(__name__, 'layout.xml'),
     pkg_resources.resource_filename(__name__, 'cpextra.xml'),
     pkg_resources.resource_filename(__name__, 'cp-types.xml'),
@@ -40,8 +36,8 @@ product_config = """
 
 layer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config)
-
+    product_config=zeit.cms.testing.cms_product_config + product_config +
+    zeit.workflow.testing.product_config)
 
 
 class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
