@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2009 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import __future__
@@ -22,8 +22,5 @@ def test_suite():
         package='zeit.content.article',
         layer=zeit.content.article.testing.CDSLayer,
         checker=zeit.content.article.testing.checker,
-        product_config={
-            'zeit.workflow': {'publish-script': 'cat',
-                              'path-prefix': ''}},
         globs={'with_statement': __future__.with_statement}))
     return suite
