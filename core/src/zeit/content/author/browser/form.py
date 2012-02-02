@@ -106,6 +106,7 @@ class AddContextfree(
         self.result = container['index'].uniqueId
 
     def create_folder(self, object):
+        # XXX use zeit.addcentral.interfaces.IAddLocation
         path = self.author_folder + [object.lastname[0].upper()]
         repos = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)

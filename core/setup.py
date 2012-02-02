@@ -19,7 +19,7 @@ setup(
         'mock',
         'pysolr',
         'setuptools',
-        'zeit.cms>1.48.0',
+        'zeit.cms>1.52.0',
         'zeit.find',
         'zope.annotation',
         'zope.component',

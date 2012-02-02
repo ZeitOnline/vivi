@@ -1,7 +1,8 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import zeit.cms.testing
+import zeit.workflow.testing
 import zope.testing.doctest
 
 product_config = """
@@ -12,7 +13,10 @@ product_config = """
 
 ZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config)
+    product_config=
+    zeit.cms.testing.cms_product_config +
+    zeit.workflow.testing.product_config +
+    product_config)
 
 
 def FunctionalDocFileSuite(*args, **kw):
