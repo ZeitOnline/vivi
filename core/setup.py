@@ -24,6 +24,7 @@ setup(
         'gocept.cache>=0.2',
         'gocept.fckeditor',
         'gocept.form[formlib]>=0.7.5',
+        'gocept.jslint>=0.2',
         'gocept.lxml>=0.2.1',
         'gocept.mochikit>=1.4.2.2',
         'gocept.pagelet',
