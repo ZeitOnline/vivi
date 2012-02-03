@@ -24,7 +24,6 @@ setup(
         'lovely.remotetask',
         'lxml>=2.0.2',
         'mock',
-        'python-cjson',
         'rwproperty>=1.0',
         'setuptools',
         'sprout',
