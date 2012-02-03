@@ -4,9 +4,10 @@
 import zeit.cms.testing
 
 
-ImageLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=True)
+layer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=True)
 
 
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
-        'README.txt')
+        'README.txt',
+        layer=layer)
