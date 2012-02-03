@@ -9,8 +9,6 @@ import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
-import zeit.content.image.imagegroup
-import zeit.content.image.interfaces
 import zeit.content.image.tests
 import zeit.imp.tests
 import zope.app.file.image
@@ -89,7 +87,8 @@ class CropTest(TestBase):
                 x2='800', y2='300',
                 name='400x200', **form))
         path = response.getBody().replace('http://localhost', '', 1)
-        self.assertEqual('/++skin++cms/repository/group/group-400x200.jpg', path)
+        self.assertEqual(
+            '/++skin++cms/repository/group/group-400x200.jpg', path)
         return self.publish(path, basic=self.auth).getBody()
 
     def test_crop_returns_image_url(self):
@@ -122,7 +121,7 @@ class CropTest(TestBase):
         image = PIL.Image.open(StringIO.StringIO(image_data))
         # Verify some pixels around the border, they're all black:
 
-        self.looks_black(image, 0,0)
+        self.looks_black(image, 0, 0)
         self.looks_black(image, 0, 1)
         self.looks_black(image, 0, 143)
         self.looks_black(image, 0, 199)
@@ -130,7 +129,7 @@ class CropTest(TestBase):
 
     def test_crop_no_border_for_invalid_colours(self):
         # Basically makes only sure that we don't have an error.
-        image_data = self.get_image_data(border='#asdf')
+        self.get_image_data(border='#asdf')
 
     def looks_black(self, img, x, y):
         # The pixels are not really black because we've got a jpeg.
