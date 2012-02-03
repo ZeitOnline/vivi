@@ -46,7 +46,7 @@ We get the image itself just by accessing its url:
 >>> image = zope.testbrowser.testing.Browser()
 >>> image.addHeader('Authorization', 'Basic user:userpw')
 >>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
+...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@index.html')
 >>> image.headers['content-type']
 'image/jpeg'
 >>> image.contents[:16]
@@ -118,7 +118,7 @@ Verify some values:
 Let's verify get the right file data back from the image:
 
 >>> image.open('http://localhost/++skin++cms/workingcopy/zope.user/'
-...            'DSC00109_2.JPG')
+...            'DSC00109_2.JPG/@@index.html')
 >>> test_data.seek(0)
 >>> image.contents == test_data.read()
 True
@@ -648,7 +648,7 @@ Headers and caching
 Images are sent with correct-type, length and last-modified headers:
 
 >>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
+...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@index.html')
 >>> print image.headers
 Status: 200 Ok
 Content-Length: 2926
@@ -664,7 +664,7 @@ An if-modified-since header is also honoured:
 >>> modified = modified.strftime('%a, %d %b %Y %H:%M:%S GMT')
 >>> image.addHeader('If-Modified-Since', modified)
 >>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
+...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@index.html')
 Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 304: Not Modified
@@ -680,7 +680,7 @@ X-Powered-By: Zope (www.zope.org), Python (www.python.org)
 >>> image.addHeader('Authorization', 'Basic user:userpw')
 >>> image.addHeader('If-Modified-Since', 'Fri, 07 Feb 2008 12:47:16 GMT')
 >>> image.open(
-...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG')
+...     'http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@index.html')
 >>> print image.headers
 Status: 200 Ok
 Content-Length: 2926

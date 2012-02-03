@@ -26,7 +26,7 @@
     </tr>
   </table>
   <a href="#" target="_new"
-    tal:attributes="href context/@@absolute_url">
+    tal:attributes="href string:${context/@@absolute_url}/@@index.html">
     <img tal:replace="structure context/@@preview/tag" />
   </a>
   
