@@ -1,7 +1,6 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import cjson
 import zeit.imp.browser.imp
 import zeit.content.gallery.interfaces
 import zeit.imp.browser.scale
