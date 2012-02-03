@@ -9,6 +9,7 @@ import copy
 import gocept.selenium.ztk
 import gocept.testing.assertion
 import inspect
+import json
 import logging
 import pkg_resources
 import random
@@ -366,10 +367,9 @@ class BrowserAssertions(object):
         self.fail('Differences (%s):\n' % kind + ''.join(diff))
 
     def assert_json(self, want, got=None):
-        import simplejson
         if got is None:
             got = self.browser.contents
-        data = simplejson.loads(got)
+        data = json.loads(got)
         self.assertEqual(want, data)
         return data
 
