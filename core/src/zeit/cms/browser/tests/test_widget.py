@@ -288,6 +288,7 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
 
     def test_selecting_autocomplete_should_add_object(self):
         s = self.selenium
+        s.type('css=.autocomplete', 'a')
         s.typeKeys('css=.autocomplete', 'a')
         s.waitForElementPresent('link=*Test Autor*')
         s.mouseOver('link=*Test Autor*')
