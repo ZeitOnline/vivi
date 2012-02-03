@@ -13,11 +13,11 @@ setup(
     description="""\
 """,
     packages=find_packages('src'),
-    package_dir = {'': 'src'},
-    include_package_data = True,
+    package_dir={'': 'src'},
+    include_package_data=True,
     zip_safe=False,
     license='gocept proprietary',
-    namespace_packages = ['zeit', 'zeit.content'],
+    namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'feedparser',
         'gocept.cache',
@@ -47,7 +47,7 @@ setup(
         'zope.lifecycleevent',
         'zope.viewlet',
     ],
-    entry_points = """
+    entry_points="""
         [console_scripts]
         refresh-feeds = zeit.content.cp.feed:refresh_all
         sweep-teasergroup-repository = zeit.content.cp.teasergroup.teasergroup:sweep_repository
