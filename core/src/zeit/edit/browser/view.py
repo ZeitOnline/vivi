@@ -4,8 +4,8 @@
 from zeit.cms.i18n import MessageFactory as _
 import ZODB.POSException
 import cgi
+import json
 import logging
-import simplejson
 import transaction
 import zeit.cms.browser.form
 import zeit.cms.browser.view
@@ -31,7 +31,7 @@ class Form(object):
 
         if (instance.request.method == 'POST'
             and not instance.request.form.get('_body_decoded')):
-            decoded = simplejson.loads(instance.request.bodyStream.read())
+            decoded = json.loads(instance.request.bodyStream.read())
             instance.request.form.update(decoded)
             instance.request.form['_body_decoded'] = True
 
@@ -39,7 +39,7 @@ class Form(object):
         if value is self.default:
             return value
         if self.json and isinstance(value, basestring):
-            value = simplejson.loads(value)
+            value = json.loads(value)
         return value
 
 
@@ -90,7 +90,7 @@ class Action(zeit.cms.browser.view.Base, UndoableMixin):
 
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/json')
-        return simplejson.dumps(dict(signals=self.signals))
+        return json.dumps(dict(signals=self.signals))
 
     def __call__(self):
         self.signals = []
