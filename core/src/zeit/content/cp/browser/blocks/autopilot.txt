@@ -82,13 +82,13 @@ True
 We can now switch it of again:
 
 >>> browser.getLink('Switch autopilot').click()
->>> import cjson
+>>> import json
 >>> import pprint
->>> pprint.pprint(cjson.decode(browser.contents))
-{'signals': [{'args': ['c8d4c0eb-368c-427c-9a47-d63d9559b78b',
-                       'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/14978ec2-a9a5-4c03-8d53-7f8c98480ed4/c8d4c0eb-368c-427c-9a47-d63d9559b78b/@@contents'],
-              'name': 'reload',
-              'when': None}]}
+>>> pprint.pprint(json.loads(browser.contents))
+{u'signals': [{u'args': [u'c8d4c0eb-368c-427c-9a47-d63d9559b78b',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/14978ec2-a9a5-4c03-8d53-7f8c98480ed4/c8d4c0eb-368c-427c-9a47-d63d9559b78b/@@contents'],
+              u'name': u'reload',
+              u'when': None}]}
 >>> browser.open(contents_url)
 >>> 'autopilot-off' in browser.contents
 True
@@ -125,8 +125,8 @@ automatically disabled then:
 >>> update_order_url = browser.getLink('Edit teaser list').url.replace(
 ...     'teaser.edit-contents', 'updateOrder')
 >>> order = ['http://xml.zeit.de/testcontent']
->>> import cjson
->>> browser.open(update_order_url + '?keys=' + cjson.encode(order))
+>>> import json
+>>> browser.open(update_order_url + '?keys=' + json.dumps(order))
 >>> browser.open(contents_url)
 >>> 'autopilot-on' in browser.contents
 False

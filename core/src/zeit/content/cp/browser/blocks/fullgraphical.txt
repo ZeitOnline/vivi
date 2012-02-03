@@ -17,16 +17,16 @@ Set up test data:
 >>> contents_url = browser.url
 >>> browser.open('informatives/@@landing-zone-drop-module'
 ...              '?block_type=fullgraphical')
->>> import cjson
+>>> import json
 >>> import pprint
->>> pprint.pprint(cjson.decode(browser.contents))
-{'signals': [{'args': ['d05c75bb-39b9-44b6-8fc0-e319c47c51e7'],
-              'name': 'added',
-              'when': 'after-reload'},
-             {'args': ['informatives',
-                       'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
-              'name': 'reload',
-              'when': None}]}
+>>> pprint.pprint(json.loads(browser.contents))
+{u'signals': [{u'args': [u'd05c75bb-39b9-44b6-8fc0-e319c47c51e7'],
+              u'name': u'added',
+              u'when': u'after-reload'},
+             {u'args': [u'informatives',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
+              u'name': u'reload',
+              u'when': None}]}
 >>> browser.open(contents_url)
 >>> print browser.contents
 <...

@@ -27,7 +27,6 @@ setup(
         'gocept.selenium>=0.6',
         'grokcore.component',
         'lxml',
-        'python-cjson',
         'setuptools',
         'stabledict',
         'zc.sourcefactory',

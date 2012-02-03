@@ -133,13 +133,13 @@ teaser bar:
 
 Reverse the bars:
 
->>> import cjson
+>>> import json
 >>> import zeit.content.cp.centerpage
 >>> reversed_ids = tuple(reversed(bar_ids))
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'teaser-mosaic/updateOrder?keys=' + cjson.encode(reversed_ids))
+...     'teaser-mosaic/updateOrder?keys=' + json.dumps(reversed_ids))
 
 The order has been updated now:
 
@@ -156,7 +156,7 @@ Restore the original order again:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'teaser-mosaic/updateOrder?keys=' + cjson.encode(original_ids))
+...     'teaser-mosaic/updateOrder?keys=' + json.dumps(original_ids))
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
 ...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-teaser-bar")]')
