@@ -5,7 +5,7 @@
     inside a form. In a real browser this snipped is injected in form-tag so
     there must not be an extra form element.
   </tal:comment>
-  <fieldset tal:attributes="class view/css_class">
+  <fieldset tal:attributes="class view/css_class" i18n:domain="zeit.cms">
 
     <legend tal:content="view/legend"
             tal:condition="view/legend"
