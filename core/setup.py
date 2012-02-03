@@ -29,7 +29,6 @@ setup(
         'lxml',
         'python-cjson',
         'setuptools',
-        'simplejson',
         'stabledict',
         'zc.sourcefactory',
         'zeit.content.video',
