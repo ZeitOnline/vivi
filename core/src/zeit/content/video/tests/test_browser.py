@@ -1,7 +1,6 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import mock
 import zeit.cms.testing
 import zeit.content.video.testing
 
@@ -20,8 +19,8 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
         with zeit.cms.testing.site(self.getRootFolder()):
             whitelist = zope.component.getUtility(
                 zeit.cms.tagging.interfaces.IWhitelist)
-            whitelist['test1'] = Tag('t1', 'test1')
-            whitelist['test2'] = Tag('t2', 'test2')
+            whitelist['test1'] = Tag('test1', 'test1')
+            whitelist['test2'] = Tag('test2', 'test2')
         transaction.commit()
 
     def test_autocomplete_and_save(self):
@@ -31,6 +30,7 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
         self.open('/repository/video/@@checkout')
         s = self.selenium
         s.waitForElementPresent('css=input.autocomplete')
+        s.type('css=input.autocomplete', 't')
         s.typeKeys('css=input.autocomplete', 't')
         s.waitForVisible('css=.ui-autocomplete')
         s.assertText('css=.ui-autocomplete a', 'test1')
