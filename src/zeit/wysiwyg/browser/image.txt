@@ -12,10 +12,10 @@ Initially the testcontent doesn't have an image assigned:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/testcontent/@@images.json')
->>> import cjson
+>>> import json
 >>> import pprint
->>> pprint.pprint(cjson.decode(browser.contents))
-{'images': []}
+>>> pprint.pprint(json.loads(browser.contents))
+{u'images': []}
 
 After assigning an image group it contained images are returned:
 
@@ -35,8 +35,8 @@ After assigning an image group it contained images are returned:
 ...                 image, image_group)
 >>> browser.handleErrors = False
 >>> browser.reload()
->>> pprint.pprint(cjson.decode(browser.contents))
-{'images': ['http://xml.zeit.de/2006/DSC00109_2.JPG',
-            'http://xml.zeit.de/image-group/new-hampshire-450x....jpg',
-            'http://xml.zeit.de/image-group/new-hampshire-artikel.jpg',
-            'http://xml.zeit.de/image-group/obama-clinton-120x....jpg']}
+>>> pprint.pprint(json.loads(browser.contents))
+{u'images': [u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+            u'http://xml.zeit.de/image-group/new-hampshire-450x....jpg',
+            u'http://xml.zeit.de/image-group/new-hampshire-artikel.jpg',
+            u'http://xml.zeit.de/image-group/obama-clinton-120x....jpg']}
