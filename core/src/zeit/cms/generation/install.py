@@ -1,21 +1,19 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
-
-import zope.component
 
 import lovely.remotetask
-import lovely.remotetask.processor
 import lovely.remotetask.interfaces
-
+import lovely.remotetask.processor
 import zeit.cms.content.interfaces
 import zeit.cms.content.template
 import zeit.cms.generation
 import zeit.cms.relation.relation
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.repository
-import zeit.cms.syndication.feed
 import zeit.cms.workingcopy.workingcopy
+import zope.component
+import zope.component.interfaces
+import zope.error.interfaces
 
 
 def installLocalUtility(root, factory, name, interface, utility_name=u''):
@@ -63,6 +61,15 @@ def installRelations():
         zeit.cms.relation.interfaces.IRelations)
     relations.add_index(
         zeit.cms.relation.relation.referenced_by, multiple=True)
+
+
+@zope.component.adapter(
+    zope.error.interfaces.IErrorReportingUtility,
+    zope.component.interfaces.IRegistered)
+def configure_error_utility(errUtility, event):
+    # The error utility is installed by zope.app.appsetup. This is a point in
+    # time that works for making our configuration wishes heard.
+    errUtility.copy_to_zlog = True
 
 
 def install(root):
