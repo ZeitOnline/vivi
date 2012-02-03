@@ -5,7 +5,7 @@ import StringIO
 import xml.sax.saxutils
 
 import SilverCity.XML
-import cjson
+import json
 import lxml.etree
 import lxml.objectify
 import pytz
@@ -123,4 +123,4 @@ class SubNavigationUpdater(object):
         result = self.get_result(master_token)
         self.request.response.setHeader('Cache-Control', 'public;max-age=3600')
         self.request.response.setHeader('Content-Type', 'application/json')
-        return cjson.encode(sorted(result)).encode('utf8')
+        return json.dumps(sorted(result)).encode('utf8')

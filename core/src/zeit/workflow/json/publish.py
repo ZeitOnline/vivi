@@ -1,17 +1,17 @@
 # Copyright (c) 2009-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import cjson
+import json
 import zeit.cms.workflow.interfaces
 
 
 class Publish(object):
 
     def publish(self):
-        return cjson.encode(self._publish(self.context))
+        return json.dumps(self._publish(self.context))
 
     def can_publish(self):
-        return cjson.encode(self._can_publish(self.context))
+        return json.dumps(self._can_publish(self.context))
 
     def _publish(self, content):
         if not self._can_publish(content):
