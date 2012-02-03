@@ -89,7 +89,7 @@ class CropTest(TestBase):
         path = response.getBody().replace('http://localhost', '', 1)
         self.assertEqual(
             '/++skin++cms/repository/group/group-400x200.jpg', path)
-        return self.publish(path, basic=self.auth).getBody()
+        return self.publish(path + '/@@index.html', basic=self.auth).getBody()
 
     def test_crop_returns_image_url(self):
         response = self.publish(
