@@ -1,7 +1,7 @@
 # Copyright (c) 2009-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import cjson
+import json
 import lovely.remotetask.interfaces
 import transaction
 import zeit.cms.testing
@@ -24,7 +24,7 @@ class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
     def call_json(self, url):
         zope.security.management.endInteraction()
         self.browser.open(url)
-        return cjson.decode(self.browser.contents)
+        return json.loads(self.browser.contents)
 
     def enable_publish(self, unique_id):
         zope.security.management.endInteraction()

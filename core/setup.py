@@ -37,7 +37,6 @@ setup(
         'lxml>=2.0.2',
         'martian',
         'mock',
-        'python-cjson',
         'rwproperty>=1.0',
         'setuptools',
         'sprout',

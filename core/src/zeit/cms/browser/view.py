@@ -4,7 +4,7 @@
 
 """
 
-import cjson
+import json
 import z3c.flashmessage.interfaces
 import zope.component
 
@@ -60,7 +60,7 @@ class JSON(Base):
             template = self.template
         if template is not None:
             result['template_url'] = self.resources[template]()
-        return cjson.encode(result)
+        return json.dumps(result)
 
     def json(self):
         return {}
