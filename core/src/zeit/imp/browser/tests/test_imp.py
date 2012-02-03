@@ -3,7 +3,7 @@
 
 import PIL.Image
 import StringIO
-import cjson
+import json
 import pkg_resources
 import transaction
 import zeit.cms.repository.interfaces
@@ -44,7 +44,7 @@ class ImageBarTest(TestBase):
         response = self.publish(
             self.image_path + '/@@imp-image-bar',
             basic=self.auth)
-        return cjson.decode(response.getBody())
+        return json.loads(response.getBody())
 
     def assertAPI(self, expected):
         self.assertEquals(expected, self.get_image_bar_data())

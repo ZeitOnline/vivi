@@ -1,7 +1,7 @@
 # Copyright (c) 2008-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import cjson
+import json
 import transaction
 import zeit.cms.browser.view
 import zeit.content.image.interfaces
@@ -60,7 +60,7 @@ class ImageBar(zeit.cms.browser.view.Base):
                 url=self.url(image),
                 name=image.__name__,
                 scale_name=scale_name))
-        return cjson.encode(result)
+        return json.dumps(result)
 
     @property
     def images(self):
