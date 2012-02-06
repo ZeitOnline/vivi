@@ -244,6 +244,7 @@ class RepositoryHelper(object):
 
 class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
                          unittest2.TestCase,
+                         gocept.testing.assertion.Exceptions,
                          RepositoryHelper):
 
     layer = cms_layer
