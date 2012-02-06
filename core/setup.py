@@ -6,7 +6,7 @@ setup(
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
-    description="ZEIT portraitbox",
+    description="ZEIT infobox",
     packages=find_packages('src'),
     package_dir = {'': 'src'},
     include_package_data = True,
@@ -15,6 +15,7 @@ setup(
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
         'gocept.form',
+        'mock',
         'setuptools',
         'zeit.cms>1.40.3',
         'zeit.wysiwyg',
