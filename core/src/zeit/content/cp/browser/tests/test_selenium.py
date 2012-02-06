@@ -154,12 +154,12 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         height = s.getElementHeight(li('c3'))
         height_landing = s.getElementHeight(li('c3', True))
 
-        delta_y = (height + height_landing) * 2.75
+        delta_y = int((height + height_landing) * 2.75)
         s.dragAndDrop(li('c3'), '0,%s' % delta_y)
 
         s.waitForElementPresent('css=div.teaser-list-edit-box')
         s.waitForOrdered(li('c2', True), li('c1'))
-        s.verifyOrdered(li('c1', True), li('c3'))
+        s.waitForOrdered(li('c1', True), li('c3'))
 
         # Drag the c1 node .75 up; the resulting order is 1, 2, 3
         delta_y = (height + height_landing) * -0.75
