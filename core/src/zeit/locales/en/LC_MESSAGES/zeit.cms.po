@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue Jan 24 15:53:50 2012\n"
+"POT-Creation-Date: Fri Feb  3 11:17:19 2012\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
@@ -576,7 +576,7 @@ msgstr ""
 msgid "\"${name}\" has been checked in."
 msgstr ""
 
-#: zeit/cms/checkout/interfaces.py:181
+#: zeit/cms/checkout/interfaces.py:185
 msgid "not allowed"
 msgstr ""
 
@@ -1395,7 +1395,7 @@ msgid "Type to find entries ..."
 msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:16
-#: zeit/cms/workflow/interfaces.py:35 zeit/workflow/publish.py:404
+#: zeit/cms/workflow/interfaces.py:35 zeit/workflow/publish.py:411
 msgid "Published"
 msgstr "Published"
 
@@ -1561,6 +1561,11 @@ msgstr ""
 #: zeit/content/article/edit/browser/edit.video.pt:31
 msgid "No content referenced."
 msgstr ""
+
+#: zeit/content/article/edit/browser/editor-content.pt:18
+#, fuzzy
+msgid "Articleeditor"
+msgstr "Edit event"
 
 #: zeit/content/article/edit/browser/form.py:111
 msgid "edit asset badges"
@@ -2783,20 +2788,20 @@ msgstr ""
 msgid "View infobox"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:25
+#: zeit/content/link/browser/form.py:23
 msgid "Add link"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:33
+#: zeit/content/link/browser/form.py:31
 #, fuzzy
 msgid "Edit link"
 msgstr "Edit event"
 
-#: zeit/content/link/browser/form.py:38
+#: zeit/content/link/browser/form.py:36
 msgid "View link metadata"
 msgstr ""
 
-#: zeit/content/link/interfaces.py:15
+#: zeit/content/link/interfaces.py:14
 msgid "New window"
 msgstr ""
 
@@ -3219,12 +3224,12 @@ msgstr ""
 "Select for newsflashs or on a weekend to publish without setting corrected/"
 "refined/etc."
 
-#: zeit/workflow/publish.py:104
+#: zeit/workflow/publish.py:105
 #, fuzzy
 msgid "Publication scheduled"
 msgstr "Publication period"
 
-#: zeit/workflow/publish.py:110
+#: zeit/workflow/publish.py:111
 #, fuzzy
 msgid "Retracting scheduled"
 msgstr "Publication period"
@@ -3238,11 +3243,11 @@ msgstr ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: zeit/workflow/publish.py:360
+#: zeit/workflow/publish.py:367
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:431
+#: zeit/workflow/publish.py:438
 #, fuzzy
 msgid "Retracted"
 msgstr "Related content"

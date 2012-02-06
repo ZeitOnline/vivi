@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Jan 24 15:53:50 2012\n"
+"POT-Creation-Date: Fri Feb  3 11:17:19 2012\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -615,7 +615,7 @@ msgstr ""
 msgid "\"${name}\" has been checked in."
 msgstr ""
 
-#: zeit/cms/checkout/interfaces.py:181
+#: zeit/cms/checkout/interfaces.py:185
 msgid "not allowed"
 msgstr ""
 
@@ -1440,7 +1440,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:16
 #: zeit/cms/workflow/interfaces.py:35
-#: zeit/workflow/publish.py:404
+#: zeit/workflow/publish.py:411
 msgid "Published"
 msgstr ""
 
@@ -1592,6 +1592,10 @@ msgstr ""
 #: zeit/content/article/edit/browser/edit.video.pt:14
 #: zeit/content/article/edit/browser/edit.video.pt:31
 msgid "No content referenced."
+msgstr ""
+
+#: zeit/content/article/edit/browser/editor-content.pt:18
+msgid "Articleeditor"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:111
@@ -2837,19 +2841,19 @@ msgstr ""
 msgid "View infobox"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:25
+#: zeit/content/link/browser/form.py:23
 msgid "Add link"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:33
+#: zeit/content/link/browser/form.py:31
 msgid "Edit link"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:38
+#: zeit/content/link/browser/form.py:36
 msgid "View link metadata"
 msgstr ""
 
-#: zeit/content/link/interfaces.py:15
+#: zeit/content/link/interfaces.py:14
 msgid "New window"
 msgstr ""
 
@@ -3252,11 +3256,11 @@ msgstr ""
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
-#: zeit/workflow/publish.py:104
+#: zeit/workflow/publish.py:105
 msgid "Publication scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:110
+#: zeit/workflow/publish.py:111
 msgid "Retracting scheduled"
 msgstr ""
 
@@ -3269,11 +3273,11 @@ msgstr ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: zeit/workflow/publish.py:360
+#: zeit/workflow/publish.py:367
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:431
+#: zeit/workflow/publish.py:438
 msgid "Retracted"
 msgstr ""
 
