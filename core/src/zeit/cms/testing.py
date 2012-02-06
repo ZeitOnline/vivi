@@ -274,6 +274,7 @@ class ZCAHelper(object):
 
 class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
                          unittest2.TestCase,
+                         gocept.testing.assertion.Exceptions,
                          RepositoryHelper,
                          ZCAHelper):
 
