@@ -15,6 +15,7 @@ setup(
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
         'gocept.form',
+        'mock',
         'setuptools',
         'zeit.cms>1.40.3',
         'zeit.wysiwyg',
