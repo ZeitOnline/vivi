@@ -4,7 +4,7 @@ zeit.content.infobox changes
 1.23.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fixed the existence test for security declarations. (#10363)
 
 
 1.23.5 (2011-11-24)
