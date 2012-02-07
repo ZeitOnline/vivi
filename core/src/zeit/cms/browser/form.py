@@ -1,4 +1,4 @@
-# Copyright (c) 2006-2011 gocept gmbh & co. kg
+# Copyright (c) 2006-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -53,6 +53,9 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
     return changed
 
 
+MARKER = object()
+
+
 def apply_default_values(context, interface):
     """Apply default values from ``interface`` to ``context``."""
     for name, value in zope.schema.getFields(interface).items():
@@ -60,9 +63,24 @@ def apply_default_values(context, interface):
             continue
         __traceback_info__ = (name,)
         default = getattr(value, 'default')
-        current = getattr(context, name)
-        if default is not None and default != current:
-            setattr(context, name, default)
+        # don't set None values (#9406)
+        if default is None:
+            continue
+        current = getattr(context, name, MARKER)
+        # don't cause a field to be written unnecessarily
+        if current == default:
+            continue
+        # if a value exists, don't overwrite it if it's valid (#10362)
+        if current is not MARKER:
+            try:
+                value.validate(current)
+            except zope.schema.ValidationError:
+                pass
+            else:
+                continue
+        # now we have both an attribute without a meaningful value and a
+        # meaningful value to set it to
+        setattr(context, name, default)
 
 
 class FormBase(zeit.cms.browser.view.Base):

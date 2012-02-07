@@ -26,6 +26,9 @@ editor-ng branch changes
 
 - Introduce ICheckinCheckoutEvent.publishing (for #8996).
 
+- Changed zeit.cms.browser.form.apply_default_values to not overwrite an
+  objects's existing data attributes.
+
 
 1.52.1 (unreleased)
 -------------------
