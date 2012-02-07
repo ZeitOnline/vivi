@@ -391,7 +391,7 @@ class FilterTests(Selenium):
                 str(filter))
 
         verify_mappers(0, -100, 0.75)
-        verify_mappers(375, -62.5, 0.8)
+        verify_mappers(600, -40, 0.9)
         verify_mappers(1000, 0, 1)
         verify_mappers(1800, 80, 2)
         verify_mappers(2000, 100, 2.25)
