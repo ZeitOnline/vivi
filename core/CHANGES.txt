@@ -4,7 +4,7 @@ zeit.imp changes
 0.13.1 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Fixed the expected values when testing the contrast filter. (#10355)
 
 
 0.13.0 (2010-08-30)
