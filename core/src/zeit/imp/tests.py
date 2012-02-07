@@ -183,9 +183,9 @@ class TestCrop(zope.app.testing.functional.BrowserTestCase):
         self.assertEquals(40000, sum(r))
         self.assertEquals(40000, sum(g))
         self.assertEquals(40000, sum(b))
-        self.assertEquals(40000, r[156])
-        self.assertEquals(40000, g[156])
-        self.assertEquals(40000, b[156])
+        self.assertEquals(40000, r[99])
+        self.assertEquals(40000, g[99])
+        self.assertEquals(40000, b[99])
 
     def test_sharpness_filter(self):
         # Testing the sharpnes is not quite trival. We just check that the
