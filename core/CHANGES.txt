@@ -6,6 +6,8 @@ zeit.imp changes
 
 - Fixed the expected values when testing the contrast filter. (#10355)
 
+- Fixed the filter value mapping for slider values less than 0.
+
 
 0.13.0 (2010-08-30)
 +++++++++++++++++++
