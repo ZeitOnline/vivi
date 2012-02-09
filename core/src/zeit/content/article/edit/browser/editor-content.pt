@@ -15,7 +15,6 @@
     tal:attributes="
     href string:${request/++resource++zeit.content.article.edit}/editor.css"/>
 
-  <h1 id="pagetitle" i18n:translate="">Articleeditor</h1>
   <div id="editor-forms"
        tal:content="structure context/@@edit-forms">
   </div>

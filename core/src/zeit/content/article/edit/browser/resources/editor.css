@@ -852,12 +852,24 @@ form[action$="zeit.content.author.add_contextfree"] .summary {
   font-weight:bold;
 }
 
-h1#pagetitle {
-  float: left;
+/* title for editorpage */
+
+h1#editorpagetitle {
+  background: none repeat scroll 0 0 white;
+  border-radius: 5px 5px 5px 5px;
   font-size: 17px;
   font-weight: normal;
-  height: 40px;
-  margin-left: 5px;
-  position: absolute;
-  top: 5px;
+  height: 35px;
+  line-height: 35px;
+  margin-bottom: 23px;
+  margin-left: 11px;
+  margin-top: -22px;
+  padding-left: 13px;
+  padding-top: 0px;
+  padding-bottom:0px;
+  width: 50%;
+}
+
+.article-editor-inner  #edit-form-filename {
+  margin-top:0px;
 }
