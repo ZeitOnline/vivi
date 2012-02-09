@@ -854,6 +854,15 @@ form[action$="zeit.content.author.add_contextfree"] .summary {
 
 /* title for editorpage */
 
+/* quick and dirty - to prevent that the title is displayed in other areas */
+#editor-forms h1 {
+  display:none;
+}
+
+#editor-forms #edit-form-filename h1 {
+  display:block;
+}
+
 h1#editorpagetitle {
   background: none repeat scroll 0 0 white;
   border-radius: 5px 5px 5px 5px;
@@ -868,8 +877,16 @@ h1#editorpagetitle {
   padding-top: 0px;
   padding-bottom:0px;
   width: 50%;
+  width: 300px;
+  border: 1px solid #eee;
+  text-align: center;
+  box-shadow: 0 0 2px #EEEEEE;
 }
 
 .article-editor-inner  #edit-form-filename {
   margin-top:0px;
+}
+
+#edit-form-filename form[action$="edit.form.new-filename"] fieldset {
+  margin-left:4px
 }
