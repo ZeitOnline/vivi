@@ -1,4 +1,4 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from setuptools import setup, find_packages
@@ -32,6 +32,7 @@ setup(
         'setuptools',
         'simplejson',
         'stabledict',
+        'unittest2',
         'zc.sourcefactory',
         'zeit.content.video',
         'zeit.cms>1.44.0',
