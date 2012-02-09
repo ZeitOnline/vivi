@@ -1,7 +1,8 @@
 # coding: utf8
-# Copyright (c) 2008-2009 gocept gmbh & co. kg
+# Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import unittest2 as unittest
 import zeit.connector.interfaces
 import zeit.content.image.tests
 import zeit.cms.testing
@@ -322,6 +323,7 @@ class ResizeTests(Selenium):
             int(s.getEval("window.document.imp.mask_image_dimensions.h"))
             > height)
 
+    @unittest.skip('waiting for Selenium API 2')
     def test_window_resize_moves_image(self):
         # When the area changes it's size the crop area remains centered. This
         # means we must move the image to not change the current view. That
