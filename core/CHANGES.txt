@@ -8,6 +8,8 @@ zeit.imp changes
 
 - Fixed the filter value mapping for slider values less than 0.
 
+- Skip a flaky test until we have the Selenium 2 API available. (#10356)
+
 
 0.13.0 (2010-08-30)
 +++++++++++++++++++
