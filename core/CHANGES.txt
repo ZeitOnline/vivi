@@ -12,6 +12,9 @@ zeit.content.cp changes
 
 - Adds fields for OG-metadata in CP-metadata-form
 
+- Skip two flaky tests until we have the Selenium 2 API available.
+  (#10340, #10364)
+
 
 0.50.2 (2011-12-19)
 -------------------

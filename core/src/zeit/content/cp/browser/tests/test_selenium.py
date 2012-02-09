@@ -1,9 +1,10 @@
 # coding: utf8
-# Copyright (c) 2009 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import lovely.remotetask.interfaces
 import lxml.cssselect
+import unittest2 as unittest
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.clipboard.interfaces
@@ -118,6 +119,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.click('css=a.CloseButton')
         s.waitForTextNotPresent('c2 teaser')
 
+    @unittest.skip('waiting for Selenium API 2')
     def test_sorting(self):
         s = self.selenium
         self.create_content_and_fill_clipboard()
@@ -271,6 +273,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyOrdered(block1, block2)
         s.verifyOrdered(block2, block4)
 
+    @unittest.skip('waiting for Selenium API 2')
     def test_mosaic(self):
         self.open_centerpage()
         s = self.selenium
