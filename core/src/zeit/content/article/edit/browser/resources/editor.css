@@ -591,10 +591,6 @@ button.log-expander {
 
 /* Pageteaser division in article */
 
-.zeit-content-article-edit-interfaces-IDivision .block-inner form.inline-form  * {
-  width: 100%;
-}
-
 .zeit-content-article-edit-interfaces-IDivision .block-inner fieldset,
 .zeit-content-article-edit-interfaces-IDivision .block-inner .widget-outer {
   margin-right: 0px;
@@ -759,6 +755,10 @@ div[id^="assets"] {
 
 .inline-form div.widget > input {
   margin-left:0px;
+}
+
+form[action$="edit-division"] div.widget input {
+  margin-left:12px;
 }
 
 .inline-form div.widget > input#new-filename\.rename_to {
