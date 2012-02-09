@@ -6,6 +6,9 @@ zeit.brightcove changes
 
 - Log a warning if multiple video objects with the same id are found (#10254).
 
+- Filter xml restricted characters from brightcove's json responses in
+  addition to json invalid characters. (#9705)
+
 
 2.2.0 (2012-01-17)
 ------------------
