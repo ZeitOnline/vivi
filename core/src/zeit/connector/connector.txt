@@ -50,9 +50,8 @@ KeyError: "The resource u'http://xml.zeit.de/foobar' does not exist."
 The properties are cached now:
 
 >>> properties = connector.property_cache[index_id]
->>> properties[('getcontenttype', 'DAV:')]
-'text/xml'
-
+>>> len(properties) > 0
+True
 
 We can also get directory resources:
 

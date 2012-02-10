@@ -4,7 +4,8 @@ CHANGES
 1.23.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix connector.txt test which (probably) broker after the last DAV server
+  update (#10337)
 
 
 1.23.1 (2012-01-18)
