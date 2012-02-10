@@ -864,8 +864,6 @@ form[action$="zeit.content.author.add_contextfree"] .summary {
 }
 
 h1#editorpagetitle {
-  background: none repeat scroll 0 0 white;
-  border-radius: 5px 5px 5px 5px;
   font-size: 17px;
   font-weight: normal;
   height: 35px;
@@ -877,10 +875,6 @@ h1#editorpagetitle {
   padding-top: 0px;
   padding-bottom:0px;
   width: 50%;
-  width: 300px;
-  border: 1px solid #eee;
-  text-align: center;
-  box-shadow: 0 0 2px #EEEEEE;
 }
 
 .article-editor-inner  #edit-form-filename {
