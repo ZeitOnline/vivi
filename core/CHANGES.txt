@@ -7,6 +7,9 @@ CHANGES
 - Fix connector.txt test which (probably) broker after the last DAV server
   update (#10337)
 
+- Fix search test which expected a result from the server which is not strictly
+  necessary (#10339).
+
 
 1.23.1 (2012-01-18)
 -------------------

@@ -325,7 +325,15 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
         from zeit.connector.search import SearchVar
         var = SearchVar('name', 'namespace')
         result = self.connector.search([var], var == u'föö')
-        result.next()
+        try:
+            # This call renders the search var, sends it to the server and
+            # gets one result. If there is no result (which is likely)
+            # StopIteration will be raised. This is okay as the test should
+            # only assert that the unicode search var is correctly rendered
+            # and sent to the server.
+            result.next()
+        except StopIteration:
+            pass
 
 
 class TestXMLSupport(zeit.connector.testing.ConnectorTest):
