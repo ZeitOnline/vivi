@@ -613,6 +613,7 @@ class TestResizeFont(
         s.assertAttribute(
             'css=.block.type-p .editable@style', u'font-size: 17px;')
 
+
 class TestGuessFilename(
     zeit.content.article.edit.browser.testing.EditorTestCase):
 
