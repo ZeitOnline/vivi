@@ -1,6 +1,12 @@
 zeit.locales CHANGES
 ====================
 
+0.22.4 (unreleased)
++++++++++++++++++++
+
+- zeit.edit in buildout.cfg
+- Übersetzungen aktualisiert
+
 0.22.3 (unreleased)
 +++++++++++++++++++
 
