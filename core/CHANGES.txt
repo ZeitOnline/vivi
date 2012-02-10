@@ -10,6 +10,9 @@ CHANGES
 - Fix search test which expected a result from the server which is not strictly
   necessary (#10339).
 
+- Removed flaky threading test which was not actually useful because of a
+  different database behaviour in test vs. production (#10352)
+
 
 1.23.1 (2012-01-18)
 -------------------
