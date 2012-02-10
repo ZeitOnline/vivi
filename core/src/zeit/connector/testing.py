@@ -21,7 +21,7 @@ def ZCMLLayer(
     config_file, module=None, name=None, allow_teardown=True,
     product_config=None):
     if module is None:
-        module = stack = inspect.stack()[1][0].f_globals['__name__']
+        module = inspect.stack()[1][0].f_globals['__name__']
     if name is None:
         name = 'ZCMLLayer(%s)' % config_file
     if not config_file.startswith('/'):
