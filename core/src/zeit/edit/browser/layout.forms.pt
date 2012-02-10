@@ -1,7 +1,9 @@
-<tal:block i18n:domain="zeit.cms">
+<tal:block>
   <div class="editable-area"
        tal:define="block_id string:edit-form-${view/__name__}"
-       tal:attributes="id block_id">
+       tal:attributes="id block_id"
+       i18n:domain="zeit.cms"
+       xmlns:cms="http://namespaces.gocept.com/zeit-cms">
     <h1 id="editorpagetitle" i18n:translate="">Article editor</h1>
     <div class="block-inner">
       <tal:block replace="structure provider:zeit.edit.contents" />
