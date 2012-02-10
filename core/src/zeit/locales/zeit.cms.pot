@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Feb  3 11:17:19 2012\n"
+"POT-Creation-Date: Fri Feb 10 16:04:49 2012\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -55,9 +55,10 @@ msgstr ""
 
 #: zeit/addcentral/sidebar.py:30
 #: zeit/addcentral/sidebar.pt:12
-#: zeit/cms/browser/form.py:129
+#: zeit/cms/browser/form.py:147
 #: zeit/cms/application.zcml:44
 #: zeit/content/article/edit/browser/recension-list.pt:77
+#: zeit/edit/browser/view.py:166
 msgid "Add"
 msgstr ""
 
@@ -162,6 +163,12 @@ msgstr ""
 #: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
+#: zeit/edit/browser/diver.pt:5
+#: zeit/edit/browser/diver.pt:17
+#: zeit/edit/browser/inlineform.pt:10
+#: zeit/edit/browser/inlineform.pt:22
+#: zeit/edit/browser/layout.foldable-forms.pt:16
+#: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
 #: zeit/workflow/browser/workflow-preview.pt:10
 msgid "${DYNAMIC_CONTENT}"
@@ -238,12 +245,13 @@ msgid "Edit event"
 msgstr ""
 
 #: zeit/calendar/browser/event.py:73
-#: zeit/cms/browser/form.py:226
+#: zeit/cms/browser/form.py:244
 #: zeit/cms/repository/browser/file.py:109
 #: zeit/content/cp/browser/blocks/teaser.py:73
 #: zeit/content/quiz/browser/answer.py:44
 #: zeit/content/quiz/browser/question.py:42
 #: zeit/content/quiz/browser/quiz.py:80
+#: zeit/edit/browser/view.py:143
 msgid "Apply"
 msgstr ""
 
@@ -409,14 +417,14 @@ msgstr ""
 msgid "folder specific actions"
 msgstr ""
 
-#: zeit/cms/browser/form.py:157
+#: zeit/cms/browser/form.py:175
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:28
 #: zeit/content/quiz/browser/answer.py:57
 #: zeit/content/quiz/browser/question.py:55
 msgid "Cancel"
 msgstr ""
 
-#: zeit/cms/browser/form.py:184
+#: zeit/cms/browser/form.py:202
 #: zeit/cms/repository/browser/file.zcml:34
 #: zeit/cms/content/browser/template.zcml:41
 #: zeit/content/article/edit/browser/edit.py:167
@@ -427,17 +435,18 @@ msgstr ""
 #: zeit/content/quiz/browser/configure.zcml:96
 #: zeit/content/quiz/browser/configure.zcml:114
 #: zeit/content/rawxml/browser/configure.zcml:15
+#: zeit/edit/browser/editor.py:11
 #: zeit/content/gallery/browser/configure.zcml:141
 #: zeit/content/image/browser/configure.zcml:106
 #: zeit/content/text/browser/configure.zcml:14
 msgid "Edit"
 msgstr ""
 
-#: zeit/cms/browser/form.py:223
+#: zeit/cms/browser/form.py:241
 msgid "No changes"
 msgstr ""
 
-#: zeit/cms/browser/form.py:234
+#: zeit/cms/browser/form.py:252
 #: zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/cms/repository/browser/folder.zcml:16
 #: zeit/cms/repository/browser/file.zcml:24
@@ -713,6 +722,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:51
 #: zeit/content/article/browser/form.py:36
 #: zeit/content/video/browser.py:46
+#: zeit/edit/browser/form.py:91
 msgid "Options"
 msgstr ""
 
@@ -1274,6 +1284,7 @@ msgstr ""
 
 #: zeit/cms/syndication/browser/configure.zcml:51
 #: zeit/content/article/browser/menu.py:29
+#: zeit/edit/browser/menu.py:19
 msgid "Edit contents"
 msgstr ""
 
@@ -1592,10 +1603,6 @@ msgstr ""
 #: zeit/content/article/edit/browser/edit.video.pt:14
 #: zeit/content/article/edit/browser/edit.video.pt:31
 msgid "No content referenced."
-msgstr ""
-
-#: zeit/content/article/edit/browser/editor-content.pt:18
-msgid "Articleeditor"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:111
@@ -3041,6 +3048,51 @@ msgstr ""
 
 #: zeit/content/video/playlist.py:33
 msgid "Playlist"
+msgstr ""
+
+#: zeit/edit/browser/block.py:35
+#: zeit/edit/browser/landing.py:13
+#. Default: ""
+msgid "add '${type}' block"
+msgstr ""
+
+#: zeit/edit/browser/block.py:50
+#. Default: ""
+msgid "delete '${type}' block"
+msgstr ""
+
+#: zeit/edit/browser/container.py:15
+#: zeit/edit/browser/container.py:26
+msgid "change block order"
+msgstr ""
+
+#: zeit/edit/browser/diver.pt:24
+#: zeit/edit/browser/inlineform.pt:29
+msgid "required"
+msgstr ""
+
+#: zeit/edit/browser/form.py:93
+msgid "edit options"
+msgstr ""
+
+#: zeit/edit/browser/layout.fold.pt:2
+#: zeit/edit/browser/layout.fold.pt:6
+#: zeit/edit/browser/layout.foldable-forms.pt:6
+#: zeit/edit/browser/layout.foldable-forms.pt:11
+msgid "Fold"
+msgstr ""
+
+#: zeit/edit/browser/layout.forms.pt:6
+msgid "Article editor"
+msgstr ""
+
+#: zeit/edit/browser/undo.py:42
+#. Default: ""
+msgid "revert up to \"${action}\""
+msgstr ""
+
+#: zeit/edit/interfaces.py:19
+msgid "Block type"
 msgstr ""
 
 #: zeit/find/browser/selector.pt:2

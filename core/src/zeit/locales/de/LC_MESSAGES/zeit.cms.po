@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Feb  3 11:17:19 2012\n"
-"PO-Revision-Date: 2012-02-03 11:30+0100\n"
+"POT-Creation-Date: Fri Feb 10 15:47:24 2012\n"
+"PO-Revision-Date: 2012-02-10 16:18+0100\n"
 "Last-Translator: Thomas <thomas.baumann@zeit.de>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -56,9 +56,10 @@ msgstr "Monat"
 
 #: zeit/addcentral/sidebar.py:30
 #: zeit/addcentral/sidebar.pt:12
-#: zeit/cms/browser/form.py:129
+#: zeit/cms/browser/form.py:147
 #: zeit/cms/application.zcml:44
 #: zeit/content/article/edit/browser/recension-list.pt:77
+#: zeit/edit/browser/view.py:166
 msgid "Add"
 msgstr "Inhalte hinzufügen..."
 
@@ -160,6 +161,12 @@ msgstr "Termin erledigen"
 #: zeit/cms/browser/menu-context-actions.pt:15
 #: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
+#: zeit/edit/browser/diver.pt:5
+#: zeit/edit/browser/diver.pt:17
+#: zeit/edit/browser/inlineform.pt:10
+#: zeit/edit/browser/inlineform.pt:22
+#: zeit/edit/browser/layout.foldable-forms.pt:16
+#: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
 #: zeit/workflow/browser/workflow-preview.pt:10
 msgid "${DYNAMIC_CONTENT}"
@@ -236,12 +243,13 @@ msgid "Edit event"
 msgstr "Termin bearbeiten"
 
 #: zeit/calendar/browser/event.py:73
-#: zeit/cms/browser/form.py:226
+#: zeit/cms/browser/form.py:244
 #: zeit/cms/repository/browser/file.py:109
 #: zeit/content/cp/browser/blocks/teaser.py:73
 #: zeit/content/quiz/browser/answer.py:44
 #: zeit/content/quiz/browser/question.py:42
 #: zeit/content/quiz/browser/quiz.py:80
+#: zeit/edit/browser/view.py:143
 msgid "Apply"
 msgstr "Speichern"
 
@@ -407,14 +415,14 @@ msgstr "context sensitive views"
 msgid "folder specific actions"
 msgstr "folder specific actions"
 
-#: zeit/cms/browser/form.py:157
+#: zeit/cms/browser/form.py:175
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:28
 #: zeit/content/quiz/browser/answer.py:57
 #: zeit/content/quiz/browser/question.py:55
 msgid "Cancel"
 msgstr "Abbrechen"
 
-#: zeit/cms/browser/form.py:184
+#: zeit/cms/browser/form.py:202
 #: zeit/cms/repository/browser/file.zcml:34
 #: zeit/cms/content/browser/template.zcml:41
 #: zeit/content/article/edit/browser/edit.py:167
@@ -425,16 +433,17 @@ msgstr "Abbrechen"
 #: zeit/content/quiz/browser/configure.zcml:96
 #: zeit/content/quiz/browser/configure.zcml:114
 #: zeit/content/rawxml/browser/configure.zcml:15
+#: zeit/edit/browser/editor.py:11
 #: zeit/content/image/browser/configure.zcml:106
 #: zeit/content/text/browser/configure.zcml:14
 msgid "Edit"
 msgstr "Bearbeiten"
 
-#: zeit/cms/browser/form.py:223
+#: zeit/cms/browser/form.py:241
 msgid "No changes"
 msgstr "Keine Änderungen"
 
-#: zeit/cms/browser/form.py:234
+#: zeit/cms/browser/form.py:252
 #: zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/cms/repository/browser/folder.zcml:16
 #: zeit/cms/repository/browser/file.zcml:24
@@ -705,6 +714,7 @@ msgstr "Texte"
 #: zeit/cms/content/browser/form.py:51
 #: zeit/content/article/browser/form.py:36
 #: zeit/content/video/browser.py:46
+#: zeit/edit/browser/form.py:91
 msgid "Options"
 msgstr "Optionen"
 
@@ -1265,6 +1275,7 @@ msgstr "Metadaten"
 
 #: zeit/cms/syndication/browser/configure.zcml:51
 #: zeit/content/article/browser/menu.py:29
+#: zeit/edit/browser/menu.py:19
 msgid "Edit contents"
 msgstr "Bearbeiten"
 
@@ -1585,11 +1596,6 @@ msgstr "Ziehen Sie Inhalte hierher um einen Teaser hinzuzufügen."
 #: zeit/content/article/edit/browser/edit.video.pt:31
 msgid "No content referenced."
 msgstr "Kein Inhalt referenziert."
-
-#: zeit/content/article/edit/browser/editor-content.pt:18
-#, fuzzy
-msgid "Articleeditor"
-msgstr "Artikelanlage"
 
 #: zeit/content/article/edit/browser/form.py:111
 #, fuzzy
@@ -2977,6 +2983,54 @@ msgstr "Video-Playlist anzeigen"
 msgid "Playlist"
 msgstr "Playlist"
 
+#. Default: ""
+#: zeit/edit/browser/block.py:35
+#: zeit/edit/browser/landing.py:13
+msgid "add '${type}' block"
+msgstr "'${type}'-Block hinzufügen"
+
+#. Default: ""
+#: zeit/edit/browser/block.py:50
+msgid "delete '${type}' block"
+msgstr "'${type}'-Block entfernen"
+
+#: zeit/edit/browser/container.py:15
+#: zeit/edit/browser/container.py:26
+#, fuzzy
+msgid "change block order"
+msgstr "Sperre verwalten"
+
+#: zeit/edit/browser/diver.pt:24
+#: zeit/edit/browser/inlineform.pt:29
+msgid "required"
+msgstr "erforderlich"
+
+#: zeit/edit/browser/form.py:93
+#, fuzzy
+msgid "edit options"
+msgstr "Frage bearbeiten"
+
+#: zeit/edit/browser/layout.fold.pt:2
+#: zeit/edit/browser/layout.fold.pt:6
+#: zeit/edit/browser/layout.foldable-forms.pt:6
+#: zeit/edit/browser/layout.foldable-forms.pt:11
+#, fuzzy
+msgid "Fold"
+msgstr "Ordner"
+
+#: zeit/edit/browser/layout.forms.pt:6
+msgid "Article editor"
+msgstr "Artikelanlage"
+
+#. Default: ""
+#: zeit/edit/browser/undo.py:42
+msgid "revert up to \"${action}\""
+msgstr "Rückgängig machen bis \"${action}\""
+
+#: zeit/edit/interfaces.py:19
+msgid "Block type"
+msgstr "Block-Typ"
+
 #: zeit/find/browser/selector.pt:2
 msgid "Search"
 msgstr "Suche"
@@ -3357,9 +3411,6 @@ msgstr "Zweites Video"
 
 #~ msgid "Paragraphs per page until a pagebreak."
 #~ msgstr "Absätze pro Seite."
-
-#~ msgid "Block type"
-#~ msgstr "Block-Typ"
 
 #~ msgid "Omit root node when syndicting"
 #~ msgstr "Wurzelknoten beim Syndizieren weglassen"
