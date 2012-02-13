@@ -1,6 +1,7 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
@@ -230,6 +231,12 @@
     template="layout.fold.pt"
     permission="zeit.EditContent"
     weight="-10"
+    />
+
+  <browser:resourceDirectory
+    zcml:condition="have zeit.cms.testing"
+    name="zeit.edit.browser.tests.fixtures"
+    directory="tests/fixtures"
     />
 
 </configure>

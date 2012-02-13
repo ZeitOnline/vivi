@@ -3,6 +3,8 @@
    xmlns:meta="http://namespaces.zope.org/meta"
    i18n_domain="zope">
 
+   <meta:provides feature="zeit.cms.testing" />
+
   <!-- This file is the equivalent of site.zcml and it is -->
   <!-- used for functional testing setup -->
 
@@ -42,6 +44,7 @@
       permission="zeit.EditContent"
       />
   </class>
+
 
 </configure>
 
