@@ -23,7 +23,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Ich, ich, ich</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">manthe</attribute>
