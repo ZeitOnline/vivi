@@ -40,7 +40,7 @@ layer = zeit.cms.testing.ZCMLLayer(
     zeit.workflow.testing.product_config)
 
 
-class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
 
     serve_from = pkg_resources.resource_filename(__name__, 'tests/feeds/')
     serve_favicon = False
