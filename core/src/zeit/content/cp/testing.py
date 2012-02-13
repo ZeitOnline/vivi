@@ -40,7 +40,8 @@ layer = zeit.cms.testing.ZCMLLayer(
     zeit.workflow.testing.product_config)
 
 
-class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler,
+                     SimpleHTTPServer.SimpleHTTPRequestHandler):
 
     serve_from = pkg_resources.resource_filename(__name__, 'tests/feeds/')
     serve_favicon = False
@@ -61,9 +62,6 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
 
     def guess_type(self, path):
         return 'application/xml'
-
-    def log_message(self, format, *args):
-        pass
 
 
 HTTPLayer, httpd_port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
