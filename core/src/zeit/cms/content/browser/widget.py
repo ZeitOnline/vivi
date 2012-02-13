@@ -1,27 +1,20 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import StringIO
-import xml.sax.saxutils
-
 import SilverCity.XML
-import cjson
+import StringIO
+import json
 import lxml.etree
-import lxml.objectify
-import pytz
-
 import zc.form.browser.combinationwidget
+import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zope.app.form.browser.interfaces
 import zope.app.form.browser.textwidgets
 import zope.app.form.browser.widget
 import zope.app.form.interfaces
 import zope.app.pagetemplate
 import zope.component
-import zope.formlib.namedtemplate
 import zope.interface
-
-import zeit.cms.content.interfaces
-import zeit.cms.content.sources
 
 
 class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
@@ -123,4 +116,4 @@ class SubNavigationUpdater(object):
         result = self.get_result(master_token)
         self.request.response.setHeader('Cache-Control', 'public;max-age=3600')
         self.request.response.setHeader('Content-Type', 'application/json')
-        return cjson.encode(sorted(result)).encode('utf8')
+        return json.dumps(sorted(result)).encode('utf8')

@@ -6,7 +6,7 @@ import re
 import os.path
 import sys
 
-import cjson
+import json
 import decorator
 import lxml.etree
 
@@ -51,7 +51,7 @@ def ajax(method, *args, **kwargs):
         result = error(e)
     else:
         result = success(value)
-    return cjson.encode(result)
+    return json.dumps(result)
 
 
 class Editor(object):

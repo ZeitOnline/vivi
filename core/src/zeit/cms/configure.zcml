@@ -43,6 +43,8 @@
     component=".generation.manager"
     />
 
+  <subscriber handler=".generation.install.configure_error_utility" />
+
   <!-- cleanup -->
   <subscriber handler=".cleanup.clean_exc_info" />
   <subscriber handler=".cleanup.clean_previous_interaction" />

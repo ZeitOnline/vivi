@@ -10,6 +10,7 @@ import gocept.jslint
 import gocept.selenium.ztk
 import gocept.testing.assertion
 import inspect
+import json
 import logging
 import mock
 import pkg_resources
@@ -412,10 +413,9 @@ class BrowserAssertions(gocept.testing.assertion.Ellipsis):
         self.assertEllipsis(want, got)
 
     def assert_json(self, want, got=None):
-        import simplejson
         if got is None:
             got = self.browser.contents
-        data = simplejson.loads(got)
+        data = json.loads(got)
         self.assertEqual(want, data)
         return data
 

@@ -119,7 +119,7 @@ properties:
 >>> properties
 <zeit.cms.content.liveproperty.LiveProperties object at 0x...>
 >>> pprint(dict(properties))
-{('DailyNL', 'http://namespaces.zeit.de/CMS/workflow'): 'no',
+{('DailyNL', 'http://namespaces.zeit.de/CMS/document'): 'no',
  ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
  ('banner', 'http://namespaces.zeit.de/CMS/document'): 'yes',
  ('comments', 'http://namespaces.zeit.de/CMS/document'): '1',
@@ -162,7 +162,7 @@ are still there:
 >>> resource.properties
 <zeit.connector.resource.WebDAVProperties object at 0x...>
 >>> pprint(dict(resource.properties))
-{('DailyNL', 'http://namespaces.zeit.de/CMS/workflow'): 'no',
+{('DailyNL', 'http://namespaces.zeit.de/CMS/document'): 'no',
  ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
  ('banner', 'http://namespaces.zeit.de/CMS/document'): 'yes',
  ('comments', 'http://namespaces.zeit.de/CMS/document'): '1',
