@@ -5,7 +5,6 @@ import lxml.objectify
 import zeit.edit.interfaces
 import zeit.edit.testing
 import zope.component
-import zope.publisher.browser
 import zope.security.management
 
 
