@@ -2,23 +2,16 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.testing
 import zeit.content.article.testing
 
 
 class WorkingcopyTest(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
-        from zeit.content.article.interfaces import IArticle
         import transaction
-        import zeit.cms.browser.form
         super(WorkingcopyTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/')
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        article = self.getRootFolder()[
-            'workingcopy']['zope.user']['Somalia']
-        with zeit.cms.testing.site(self.getRootFolder()):
-            zeit.cms.browser.form.apply_default_values(article, IArticle)
         transaction.commit()
         self.open(self.selenium.getLocation())
         self.selenium.waitForElementPresent('id=checkin')

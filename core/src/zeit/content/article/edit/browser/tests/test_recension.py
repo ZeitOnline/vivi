@@ -11,14 +11,11 @@ import zeit.content.article.testing
 class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
 
     def create_recension(self):
-        from zeit.content.article.interfaces import IArticle
-        import zeit.cms.browser.form
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 with zeit.cms.checkout.helper.checked_out(
                     zeit.cms.interfaces.ICMSContent(
                         'http://xml.zeit.de/online/2007/01/Somalia')) as co:
-                    zeit.cms.browser.form.apply_default_values(co, IArticle)
                     recension = zeit.content.article.recension.BookRecension()
                     recension.authors = ['William Shakespeare']
                     recension.title = 'Hamlet'

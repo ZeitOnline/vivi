@@ -17,17 +17,11 @@ class GalleryTest(unittest2.TestCase,
     attribute = 'href'
 
     def setUp(self):
-        from zeit.content.article.interfaces import IArticle
         from zope.testbrowser.testing import Browser
-        import zeit.cms.browser.form
         self.browser = browser = Browser()
         browser.addHeader('Authorization', 'Basic user:userpw')
         browser.open('http://localhost:8080/++skin++vivi/repository/online'
                      '/2007/01/Somalia/@@checkout')
-        article = self.layer.setup.getRootFolder()[
-            'workingcopy']['zope.user']['Somalia']
-        with zeit.cms.testing.site(self.layer.setup.getRootFolder()):
-            zeit.cms.browser.form.apply_default_values(article, IArticle)
         self.article_url = browser.url
         browser.open('@@contents')
         self.contents_url = browser.url
