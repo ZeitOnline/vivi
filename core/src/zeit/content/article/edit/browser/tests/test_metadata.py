@@ -226,14 +226,17 @@ class AuthorTest(zeit.content.article.testing.SeleniumTestCase):
 
     def setUp(self):
         super(AuthorTest, self).setUp()
+        # there will be two search requests for author in this test:
+        # - the default search form when opening the editor
+        # - the author add form checks whether the author already exists
+        self.layer.REQUEST_HANDLER.serve[:] = ["""
+            {"response": {"numFound":0, "docs":[]}}
+            """] * 2
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=metadata-c.author_references')
 
     def test_authors_should_be_inline_addable(self):
         s = self.selenium
-        self.layer.REQUEST_HANDLER.serve[:] = ["""
-            {"response": {"numFound":0, "docs":[]}}
-            """]*2
         s.click(
             '//*[@id="metadata-c.author_references"]//a[@rel="show_add_view"]')
         s.waitForElementPresent('id=form.firstname')
