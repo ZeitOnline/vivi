@@ -338,7 +338,7 @@ class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
     def test_should_raise_and_warn_if_multiple_objects_are_found(self):
         log = logging.getLogger(zeit.brightcove.converter.__name__)
         with mock.patch('zeit.connector.mock.Connector.search') as search:
-            with mock.patch_object(log, 'warning') as log_warning:
+            with mock.patch.object(log, 'warning') as log_warning:
                 search.return_value = iter(
                     (('http://xml.zeit.de/video/2010-03/1234',),
                      ('http://xml.zeit.de/video/2010-03/1234',),))
