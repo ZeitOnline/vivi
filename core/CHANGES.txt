@@ -10,6 +10,9 @@ zeit.content.cp changes
 - Skip two flaky tests until we have the Selenium 2 API available.
   (#10340, #10364)
 
+- Register TeaserBlock only for CenterPages, when it shows up in an Article it
+  causes nothing but trouble, since it doesn't belong there (#9914).
+
 
 0.43.3 (2011-06-23)
 -------------------
