@@ -43,7 +43,13 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Schiedsrichter der Eifersucht </attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">husmann</attribute>
-  </head>
+  
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="is_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+</head>
   <body bottommargin="15" leftmargin="10" topmargin="15" rightmargin="10">
     <supertitle>Nachruf </supertitle>
     <title>Schiedsrichter der Eifersucht </title>

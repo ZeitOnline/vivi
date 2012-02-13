@@ -44,7 +44,13 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Einmischung als Willkommensgeschenk</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">alain</attribute>
     <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">5</attribute>
-  </head>
+  
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="is_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+</head>
   <body>
     <supertitle font-size="20">Umwelt</supertitle>
     <title>Einmischung als Willkommensgeschenk</title>

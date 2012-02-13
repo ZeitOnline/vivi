@@ -45,7 +45,13 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Fest im Sattel</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">zyber</attribute>
-  </head>
+  
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="is_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+</head>
   <body>
     <supertitle>CSU</supertitle>
     <title>Fest im Sattel</title>
