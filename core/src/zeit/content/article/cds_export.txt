@@ -47,12 +47,10 @@ We start out with an empty cds filestore:
 >>> fs.list('new')
 []
 
-Unset `export_cds`. The inital value is None:
+Unset `export_cds`.
 
 >>> import zeit.content.article.interfaces
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
->>> print cdswf.export_cds
-None
 >>> cdswf.export_cds = False
 
 
@@ -94,15 +92,16 @@ Only if the content object has the product_id 'ZEDE', the default is to export
 to the CDS:
 
 >>> content = repository['online']['2007']['01']['saddam-exekution']
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     co.product = zeit.cms.content.sources.Product(u'ZEI')
+...     co.ressort = u'International'
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> print cdswf.export_cds
 None
 >>> from zeit.content.article.interfaces import IArticle
 >>> import zeit.cms.browser.form
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
-...     zeit.cms.browser.form.apply_default_values(co, IArticle)
 ...     co.product = zeit.cms.content.sources.Product(u'ZEDE')
-...     co.ressort = u'International'
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> cdswf.export_cds
 True
@@ -113,8 +112,6 @@ export_cds flag set to true
 We will now set the ``export_cds`` flag to ``True``:
 
 >>> content = repository['online']['2007']['01']['elterngeld-schlieben']
->>> with zeit.cms.checkout.helper.checked_out(content) as co:
-...     zeit.cms.browser.form.apply_default_values(co, IArticle)
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> cdswf.export_cds = True
 
