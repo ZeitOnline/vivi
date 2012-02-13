@@ -114,6 +114,6 @@ def create_factory_class(element_type, adapts, name, module, title, cp_module,
     factory.tag_name = tag_name
     factory.__name__ = name
     # so that the grokkers will pick it up
-    factory.__grok_module__ = module
+    factory.__module__ = module
 
     return factory
