@@ -21,6 +21,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
     layer = SELENIUM_LAYER
+    skin = 'vivi'
 
 
 class IContainer(zeit.edit.interfaces.IArea,
