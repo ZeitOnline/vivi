@@ -1,11 +1,30 @@
 <html>
 <head>
+    <script type="text/javascript">
+        application_url = '/';
+        context_url = '.';
+    </script>
     <tal:block replace="resource_library:zeit.edit"/>
 </head>
 <body>
+<div id="content">
+
 <div id="cp-content">
 </div>
 <div id="cp-forms">
 </div>
+
+<script language="javascript">
+  (function() {
+    var tabs = new zeit.cms.Tabs('cp-forms');
+    tabs.add(new zeit.cms.Tab('cp-search', 'Inhalte'));
+    tabs.add(new zeit.cms.Tab('cp-library', 'Module'));
+    tabs.add(new zeit.cms.Tab('cp-undo', 'Undo'));
+  })();
+</script>
+
+</div> <!-- #content -->
+
+
 </body>
 </html>
