@@ -1,8 +1,11 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.lxml.objectify
+import urllib2
 import zeit.cms.content.interfaces
 import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.tag
 import zope.container.btree
 import zope.interface
 
@@ -21,6 +24,22 @@ class Whitelist(zope.container.btree.BTreeContainer):
             if tag.label.lower().startswith(prefix.lower()):
                 result.append(tag)
         return result
+
+    def _get_url(self):
+        cms_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        return cms_config.get('whitelist-url')
+
+    def _fetch(self):
+        return urllib2.urlopen(self._get_url())
+
+    def _load(self):
+        tags = {}
+        tags_xml = gocept.lxml.objectify.fromfile(self._fetch())
+        for tag_node in tags_xml.iterchildren('tag'):
+            tag = zeit.cms.tagging.tag.Tag(
+                tag_node.get('uuid'), unicode(tag_node).strip())
+            tags[tag.code] = tag
 
 
 class WhitelistSource(object):
@@ -44,4 +63,5 @@ class WhitelistSource(object):
         return iter(self.whitelist.values())
 
     def get_check_types(self):
+        """IAutocompleteSource"""
         return ['tag']
