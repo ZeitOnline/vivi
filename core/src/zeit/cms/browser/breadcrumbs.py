@@ -1,14 +1,13 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.traversing.api
-import zope.component
+import zeit.cms.browser.view
 import zope.cachedescriptors.property
 import zope.location.interfaces
+import zope.traversing.api
 
 
-class Breadcrumbs(object):
+class Breadcrumbs(zeit.cms.browser.view.Base):
 
     @zope.cachedescriptors.property.Lazy
     def get_breadcrumbs(self):
@@ -20,13 +19,11 @@ class Breadcrumbs(object):
         for item in traverse_items:
             if zope.location.interfaces.ISite.providedBy(item):
                 break
-            url = zope.component.getMultiAdapter(
-                (item, self.request), name="absolute_url")()
             title = item.__name__
             uniqueId = getattr(item, 'uniqueId', None)
             result.append(
                 dict(title=title,
-                     url=url,
+                     url=self.url(item),
                      uniqueId=uniqueId))
 
         result.reverse()
