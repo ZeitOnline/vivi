@@ -50,7 +50,7 @@ class Tag(object):
 @grok.adapter(
     basestring, name=zeit.cms.tagging.interfaces.ID_NAMESPACE)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
-def unique_id_toteasergroup(unique_id):
+def unique_id_to_tag(unique_id):
     assert unique_id.startswith(
         zeit.cms.tagging.interfaces.ID_NAMESPACE)
     token = unique_id.replace(
