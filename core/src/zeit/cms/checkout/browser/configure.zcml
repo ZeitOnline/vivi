@@ -65,11 +65,11 @@
     />
 
   <browser:viewlet
-    name="Checkin_NonSemanticChange"
+    name="NonSemanticChangeCheckin"
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".manager.NonSemanticChangeCheckinMenuItem"
-    manager="zeit.cms.browser.interfaces.IContextActions"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.Checkin"
     icon="/@@/zeit.cms/icons/checkin_correction.png"
     />
