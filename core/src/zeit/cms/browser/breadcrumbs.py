@@ -32,20 +32,35 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
 
         if context.ressort:
             ressort_id = 'http://xml.zeit.de/%s' % (context.ressort.lower())
-            result.append(self.breadcrumb_from(ressort_id, context.ressort))
+            url = self.cms_url(ressort_id)
+            if url:
+                result.append(dict(
+                        title=context.ressort,
+                        url=url,
+                        uniqueId=ressort_id,
+                        ))
 
         if context.sub_ressort:
             sub_ressort_id = '%s/%s' % (
                 ressort_id, context.sub_ressort.lower())
-            result.append(
-                self.breadcrumb_from(sub_ressort_id, context.sub_ressort))
+            url = self.cms_url(sub_ressort_id)
+            if url:
+                result.append(dict(
+                        title=context.sub_ressort,
+                        url=url,
+                        uniqueId=sub_ressort_id,
+                        ))
 
         name = context.__name__
         url = self.url(context)
         unique_id = getattr(context, 'uniqueId', None)
-        result.append(self.breadcrumb_from(unique_id, name, url))
+        result.append(dict(
+            title=name,
+            url=url,
+            uniqueId=unique_id,
+            ))
 
-        return filter(None, result)
+        return result
 
     def get_breadcrumbs_from_path(self, context):
         has_parents = True
@@ -72,16 +87,8 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
         result.reverse()
         return result
 
-    def breadcrumb_from(self, unique_id, title, url=MARKER):
-        if url is MARKER:
+    def cms_url(self, unique_id):
             try:
-                url = self.url(
-                    zeit.cms.interfaces.ICMSContent(unique_id))
+                return self.url(zeit.cms.interfaces.ICMSContent(unique_id))
             except TypeError:
                 return None
-
-        return dict(
-            title=title,
-            url=url,
-            uniqueId=unique_id,
-            )
