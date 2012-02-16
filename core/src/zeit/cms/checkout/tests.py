@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import unittest
@@ -7,28 +7,12 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
-import zope.app.locking.interfaces
-import zope.app.testing.functional
 import zope.component
 import zope.security.management
 import zope.security.testing
 
 
-class TestHelper(zope.app.testing.functional.BrowserTestCase):
-
-    layer = zeit.cms.testing.cms_layer
-
-    def setUp(self):
-        super(TestHelper, self).setUp()
-        self.setSite(self.getRootFolder())
-        self.repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        principal = zeit.cms.testing.create_interaction(u'zope.user')
-
-    def tearDown(self):
-        zeit.cms.testing.tearDown(self)
-        self.setSite(None)
-        super(TestHelper, self).tearDown()
+class TestHelper(zeit.cms.testing.FunctionalTestCase):
 
     def test_changes(self):
         content = self.repository['testcontent']
