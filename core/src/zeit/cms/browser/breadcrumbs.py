@@ -37,7 +37,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
                 result.append(dict(
                         title=context.ressort,
                         url=url,
-                        uniqueId=ressort_id,
+                        uniqueId=None,
                         ))
 
         if context.sub_ressort:
@@ -48,7 +48,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
                 result.append(dict(
                         title=context.sub_ressort,
                         url=url,
-                        uniqueId=sub_ressort_id,
+                        uniqueId=None,
                         ))
 
         name = context.__name__

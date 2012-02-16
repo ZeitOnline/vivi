@@ -35,11 +35,11 @@ class Breadcrumbs(zeit.cms.testing.FunctionalTestCase):
         content.sub_ressort = u'Musik'
         self.assertEqual([
                 dict(title=u'Kultur',
-                     uniqueId='http://xml.zeit.de/kultur',
+                     uniqueId=None,
                      url='http://127.0.0.1/repository/kultur',
                     ),
                 dict(title=u'Musik',
-                     uniqueId='http://xml.zeit.de/kultur/musik',
+                     uniqueId=None,
                      url='http://127.0.0.1/repository/kultur/musik',
                     ),
                 dict(title='foo',
@@ -64,7 +64,7 @@ class Breadcrumbs(zeit.cms.testing.FunctionalTestCase):
         content.ressort = u'Kultur'
         self.assertEqual([
                 dict(title=u'Kultur',
-                     uniqueId='http://xml.zeit.de/kultur',
+                     uniqueId=None,
                      url='http://127.0.0.1/repository/kultur',
                     ),
                 dict(title='foo',
