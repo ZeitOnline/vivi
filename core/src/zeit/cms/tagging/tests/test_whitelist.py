@@ -64,3 +64,13 @@ class TestWhitelist(unittest.TestCase):
         self.assertEqual(52, Tag.call_count)
         Tag.assert_called_with(
             'ae11024e-69e0-4434-b7d3-f66efddb0459', u'Polarkreis'),
+
+    def test_before_load_whitelist_should_be_empty(self):
+        self.assertEqual(0, len(self.whitelist()))
+
+    def test_load_should_add_tags_to_whitelist(self):
+        wl = self.whitelist()
+        wl._fetch = lambda: pkg_resources.resource_stream(
+            __name__, 'whitelist.xml')
+        wl._load()
+        self.assertEqual(52, len(wl))

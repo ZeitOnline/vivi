@@ -1,20 +1,18 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import UserDict
 import gocept.lxml.objectify
+import grokcore.component as grok
 import urllib2
 import zeit.cms.content.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
-import zope.container.btree
 import zope.interface
 
 
-class Whitelist(zope.container.btree.BTreeContainer):
-
-    # XXX this is only a toy implementation, see #8624
-    # add tags for testing like this:
-    # whitelist['mytag'] = zeit.cms.tagging.tag.Tag('mytag')
+class Whitelist(UserDict.UserDict,
+                grok.GlobalUtility):
 
     zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
 
@@ -40,6 +38,7 @@ class Whitelist(zope.container.btree.BTreeContainer):
             tag = zeit.cms.tagging.tag.Tag(
                 tag_node.get('uuid'), unicode(tag_node).strip())
             tags[tag.code] = tag
+        self.data = tags  # replace already stored tags all at once
 
 
 class WhitelistSource(object):

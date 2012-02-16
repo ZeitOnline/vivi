@@ -82,9 +82,6 @@ def install(root):
     installLocalUtility(
         root, zeit.cms.content.template.TemplateManagerContainer,
         'templates', zeit.cms.content.interfaces.ITemplateManagerContainer)
-    installLocalUtility(
-        root, zeit.cms.tagging.whitelist.Whitelist,
-        'tag-whitelist', zeit.cms.tagging.interfaces.IWhitelist)
     installGeneralTaskService()
     installEventTaskService()
     installLowPriorityTaskService()
