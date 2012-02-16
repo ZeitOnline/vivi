@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from __future__ import with_statement
@@ -9,11 +9,10 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.imagegroup
-import zope.app.testing.functional
 import zope.component
 
 
-ImageLayer = zope.app.testing.functional.ZCMLLayer(
+ImageLayer = zeit.cms.testing.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'ImageLayer', allow_teardown=True)
 
