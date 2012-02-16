@@ -14,6 +14,12 @@ import zope.schema.interfaces
 
 class Widget(grokcore.component.MultiAdapter,
              zope.formlib.source.SourceMultiCheckBoxWidget):
+    """Widget to edit tags on context.
+
+    - "Update" link uses an tagging mechanism to add tags to content
+    - The user can sort and (de-)activate tags, but not manually add them.
+
+    """
 
     grokcore.component.adapts(
         zope.schema.interfaces.ITuple,
