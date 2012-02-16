@@ -1,8 +1,10 @@
 CHANGES
 =======
 
-1.23.2 (unreleased)
+1.24.0 (unreleased)
 -------------------
+
+- Update mock fixture: DailyNL has moved to the 'document' namespace (#10056).
 
 - Fix connector.txt test which (probably) broker after the last DAV server
   update (#10337)
