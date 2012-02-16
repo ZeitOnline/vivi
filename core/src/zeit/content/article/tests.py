@@ -9,7 +9,6 @@ import unittest
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zeit.workflow.testing
-import zope.app.testing.functional
 import zope.testing.renormalizing
 
 
