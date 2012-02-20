@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.52.1 (unreleased)
+1.53.0 (unreleased)
 -------------------
 
 - Limit the amount of PubliationDependencies that are actually published;
