@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import SimpleHTTPServer
@@ -22,6 +22,7 @@ product_config = """
     cp-types-url file://%s
     feed-update-minimum-age 30
     rss-folder rss
+    scales-fullgraphical-url file://%s
 </product-config>
 
 <product-config zeit.edit>
@@ -30,8 +31,10 @@ product_config = """
 """ % (pkg_resources.resource_filename(__name__, 'layout.xml'),
     pkg_resources.resource_filename(__name__, 'cpextra.xml'),
     pkg_resources.resource_filename(__name__, 'cp-types.xml'),
+    pkg_resources.resource_filename(__name__, 'scales-fullgraphical.xml'),
     pkg_resources.resource_filename('zeit.content.cp.tests.fixtures',
-                                    'example_rules.py'))
+                                    'example_rules.py'),
+       )
 
 
 layer = zeit.cms.testing.ZCMLLayer(
@@ -40,7 +43,8 @@ layer = zeit.cms.testing.ZCMLLayer(
     zeit.workflow.testing.product_config)
 
 
-class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
+class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler,
+                     SimpleHTTPServer.SimpleHTTPRequestHandler):
 
     serve_from = pkg_resources.resource_filename(__name__, 'tests/feeds/')
     serve_favicon = False
@@ -62,13 +66,6 @@ class RequestHandler(SimpleHTTPServer.SimpleHTTPRequestHandler):
     def guess_type(self, path):
         return 'application/xml'
 
-    def log_message(self, format, *args):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
 
 HTTPLayer, httpd_port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
 
@@ -81,6 +78,14 @@ class FeedServer(HTTPLayer, layer):
 
     @classmethod
     def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        pass
+
+    @classmethod
+    def testTearDown(cls):
         pass
 
 

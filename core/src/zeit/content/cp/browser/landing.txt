@@ -31,16 +31,16 @@ Drop testcontent on the landing zone:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
 >>> browser.open(url)
->>> import cjson
+>>> import json
 >>> import pprint
->>> pprint.pprint(cjson.decode(browser.contents))
-{'signals': [{'args': ['f8384296-555c-49a2-819b-ffb4e633d59d'],
-              'name': 'added',
-              'when': 'after-reload'},
-             {'args': ['lead',
-                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
-              'name': 'reload',
-              'when': None}]}
+>>> pprint.pprint(json.loads(browser.contents))
+{u'signals': [{u'args': [u'f8384296-555c-49a2-819b-ffb4e633d59d'],
+              u'name': u'added',
+              u'when': u'after-reload'},
+             {u'args': [u'lead',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+              u'name': u'reload',
+              u'when': None}]}
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(contents_url)
@@ -59,14 +59,14 @@ There is another landing zone after the created block now:
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(url)
->>> pprint.pprint(cjson.decode(browser.contents))
-{'signals': [{'args': ['63734348-b8d8-4eb9-9098-d8a47efd1eb6'],
-              'name': 'added',
-              'when': 'after-reload'},
-             {'args': ['lead',
-                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
-              'name': 'reload',
-              'when': None}]}
+>>> pprint.pprint(json.loads(browser.contents))
+{u'signals': [{u'args': [u'63734348-b8d8-4eb9-9098-d8a47efd1eb6'],
+              u'name': u'added',
+              u'when': u'after-reload'},
+             {u'args': [u'lead',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+              u'name': u'reload',
+              u'when': None}]}
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(contents_url)
@@ -88,14 +88,14 @@ area on 2+ blocks):
 ...     '{http://namespaces.gocept.com/zeit-cms}drop-url')
 >>> url = '%s?uniqueId=http://xml.zeit.de/testcontent' % (drop_url,)
 >>> browser.open(url)
->>> pprint.pprint(cjson.decode(browser.contents))
-{'signals': [{'args': ['f84a5439-3fe4-42ac-8a44-b54822d50a8f'],
-              'name': 'added',
-              'when': 'after-reload'},
-             {'args': ['lead',
-                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
-              'name': 'reload',
-              'when': None}]}
+>>> pprint.pprint(json.loads(browser.contents))
+{u'signals': [{u'args': [u'f84a5439-3fe4-42ac-8a44-b54822d50a8f'],
+              u'name': u'added',
+              u'when': u'after-reload'},
+             {u'args': [u'lead',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+              u'name': u'reload',
+              u'when': None}]}
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...

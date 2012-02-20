@@ -441,6 +441,12 @@ margin-top: 4px;
   text-transform: uppercase;
 }
 
+.block.type-fullgraphical .teaserTitle {
+  display: block;
+  font-weight: bold;
+  margin: 0.5em;
+}
+
 .object-widget .object-reference {
   width:30em;
 }

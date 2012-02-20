@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
@@ -6,6 +6,7 @@ from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
 import urlparse
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.content.cp.blocks.avsource
@@ -47,6 +48,47 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         title=_('Snapshot (HP only)'),
         required=False,
         source=zeit.content.image.interfaces.imageSource)
+
+    topiclink_title = zope.schema.TextLine(
+        title=_('Name for topiclinks'),
+        required=False)
+
+    topiclink_label_1 = zope.schema.TextLine(
+        title=_('Label for topiclink #1'),
+        required=False)
+
+    topiclink_label_2 = zope.schema.TextLine(
+        title=_('Label for topiclink #2'),
+        required=False)
+
+    topiclink_label_3 = zope.schema.TextLine(
+        title=_('Label for topiclink #3'),
+        required=False)
+
+    topiclink_url_1 = zope.schema.TextLine(
+        title=_('URL for topiclink #1'),
+        required=False)
+
+    topiclink_url_2 = zope.schema.TextLine(
+        title=_('URL for topiclink #2'),
+        required=False)
+
+    topiclink_url_3 = zope.schema.TextLine(
+        title=_('URL for topiclink #3'),
+        required=False)
+
+    og_title = zope.schema.TextLine(
+        title=_('Titel'),
+        required=False)
+
+    og_description = zope.schema.TextLine(
+       title=_('Description'),
+        required=False)
+
+    og_image = zope.schema.TextLine(
+       title=_('Image'),
+        required=False)
+
 
     def __getitem__(area_key):
         """Return IArea for given key.
@@ -120,14 +162,14 @@ class IBlock(zeit.edit.interfaces.IBlock):
         title=_("Title"),
         required=False)
 
-    publisher  = zope.schema.TextLine(
+    publisher = zope.schema.TextLine(
         title=_("Publisher"),
         required=False)
     publisher_url = zope.schema.TextLine(
         title=_("Publisher URL"),
         required=False)
 
-    supertitle  = zope.schema.TextLine(
+    supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
         required=False)
     supertitle_url = zope.schema.TextLine(
@@ -407,7 +449,6 @@ class IXMLTeaser(zeit.cms.interfaces.ICMSContent,
         u'The content referenced by the teaser')
 
 
-
 class IReadTeaserBar(IReadRegion, zeit.edit.interfaces.IElement):
 
     layout = zope.schema.Choice(
@@ -436,6 +477,19 @@ class IQuizBlock(IBlock):
         source=zeit.content.quiz.source.QuizSource())
 
 
+class FullgraphicalScaleSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'scales-fullgraphical-url'
+    attribute = 'name'
+
+    def getToken(self, context, value):
+        return value
+
+
+fullgraphical_scale_source = FullgraphicalScaleSource()
+
+
 class IFullGraphicalBlock(IBlock):
     """The Fullgraphical block with a reference to an object and an image."""
 
@@ -445,4 +499,9 @@ class IFullGraphicalBlock(IBlock):
 
     image = zope.schema.Choice(
         title=_("Image"),
-        source=zeit.content.image.interfaces.ImageSource())
+        source=zeit.content.image.interfaces.ImageSource(),
+        required=False)
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=fullgraphical_scale_source)

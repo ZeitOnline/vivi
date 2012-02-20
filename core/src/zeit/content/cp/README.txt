@@ -78,6 +78,46 @@ Header image
 </centerpage>
 
 
+Topic Links
++++++++++++
+
+>>> cp.topiclink_title = 'Sachsen Linkse' 
+>>> cp.topiclink_label_1 = 'Sachsen spezial' 
+>>> cp.topiclink_url_1 = 'http://www.zeit.de/themen/sachsen/index' 
+>>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+<centerpage...>
+  <head>
+...
+    <topiclinks>
+      <topiclink_title...>Sachsen Linkse</topiclink_title>
+      <topiclink>
+        <topiclink_label_1...>Sachsen spezial</topiclink_label_1>
+        <topiclink_url_1...>http://www.zeit.de/themen/sachsen/index</topiclink_url_1>
+      </topiclink>
+    </topiclinks>
+  ...
+</centerpage>
+
+
+OG-Metadata
++++++++++++
+
+>>> cp.og_title = 'Isch bin da Title' 
+>>> cp.og_description = 'Hier geht die Description' 
+>>> cp.og_image = 'yo-man.jpg' 
+>>> print lxml.etree.tostring(cp.xml, pretty_print=True)
+<centerpage...>
+  <head>
+...
+    <og_meta>
+       <og_title...>Isch bin da Title</og_title>
+       <og_description...>Hier geht die Description</og_description>
+       <og_image...>yo-man.jpg</og_image>    
+    </og_meta>
+  ...
+</centerpage>
+
+
 Blocks
 ++++++
 

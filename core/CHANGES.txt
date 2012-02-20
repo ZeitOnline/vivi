@@ -1,17 +1,50 @@
 zeit.content.cp changes
 =======================
 
-0.43.4 (unreleased)
+
+Changes specific to branch
+--------------------------
+
+- Register TeaserBlock only for CenterPages, when it shows up in an Article it
+  causes nothing but trouble, since it doesn't belong there (#9914).
+
+
+0.50.3 (unreleased)
+-------------------
+
+- Introduced fall-back behaviour to the full-graphical block so that the
+  teaser image and title, resp., of the referenced object are used when the
+  block doesn't have its own image or title. Added the selection of a layout
+  to choose an image from an image group (#10158).
+
+- Adds fields for OG-metadata in CP-metadata-form
+
+- Skip two flaky tests until we have the Selenium 2 API available.
+  (#10340, #10364)
+
+
+0.50.2 (2011-12-19)
+-------------------
+
+- Use low-priority queue for publishing RSS feeds (#10037).
+- Use BeforeCheckin(while_publishing) instead of BeforePublish+cycle for
+  update_feed_items to avoid the extra checkin/checkout-cycle (for #10068).
+
+
+0.50.1 (2011-11-15)
+-------------------
+
+- Removed 4th topiclink
+
+
+0.50.0 (2011-11-13)
 -------------------
 
 - Accomodated article to cope for the changed videos: videos are now full CMS
   objects and moved to zeit.content.video (for #8996)
 
-- Skip two flaky tests until we have the Selenium 2 API available.
-  (#10340, #10364)
-
-- Register TeaserBlock only for CenterPages, when it shows up in an Article it
-  causes nothing but trouble, since it doesn't belong there (#9914).
+- In den Metadaten für den Centerpage-Editor sind nun Felder für 4 sog. Topic-
+  links (jeweils Linktext un URL) sowie ein Title-Feld (ohne Ticket)
 
 
 0.43.3 (2011-06-23)

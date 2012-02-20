@@ -64,6 +64,46 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         '.head.snapshot',
         xml_reference_name='image', attributes=('base-id', 'src'))
 
+    topiclink_title = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink_title',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_title'])
+
+    topiclink_label_1 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_1',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_1'])
+
+    topiclink_url_1 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_1',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_1'])
+
+    topiclink_label_2 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_2',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_2'])
+
+    topiclink_url_2 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_2',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_2'])
+
+    topiclink_label_3 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_label_3',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_label_3'])
+
+    topiclink_url_3 = zeit.cms.content.property.ObjectPathProperty(
+        '.head.topiclinks.topiclink.topiclink_url_3',
+        zeit.content.cp.interfaces.ICenterPage['topiclink_url_3'])
+
+    og_title = zeit.cms.content.property.ObjectPathProperty(
+        '.head.og_meta.og_title',
+        zeit.content.cp.interfaces.ICenterPage['og_title'])
+
+    og_description = zeit.cms.content.property.ObjectPathProperty(
+        '.head.og_meta.og_description',
+        zeit.content.cp.interfaces.ICenterPage['og_description'])
+
+    og_image = zeit.cms.content.property.ObjectPathProperty(
+        '.head.og_meta.og_image',
+        zeit.content.cp.interfaces.ICenterPage['og_image'])
+
     def __getitem__(self, key):
         xml = self.editable_areas[key](self.xml['body'])[0]
         area = zope.component.getMultiAdapter(
@@ -189,43 +229,41 @@ class Feed(zeit.cms.related.related.RelatedBase):
 
 @zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage,
-    zeit.cms.workflow.interfaces.IBeforePublishEvent)
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_feed_items(context, event):
-    # The CP is cycled during publish but we need to do that again :(
-    # Ignore conflicts during checkin here. It's almost impossible that
-    # somebody else has changed the CP. Unfortunately there is no explicit test
-    # for ignoring conflicts.
-    with zeit.cms.checkout.helper.checked_out(
-        context, events=False, ignore_conflicts=True) as co:
-        if co is None:
-            return
-        feed = zeit.content.cp.interfaces.ICPFeed(co)
-        items = []
-        check_items = []
-        for item in feed.items:
-            if zeit.content.cp.interfaces.IXMLTeaser.providedBy(item):
-                check_item = item.original_content
-            else:
-                check_item = item
-            items.append(item)
-            check_items.append(check_item)
+    if not event.publishing:
+        # This event should only happen while publishing. It used to be on
+        # BeforePublish, but since that requires another checkin/checkout
+        # cycle, and the centerpage is cycled during publish anyway, we can
+        # register it like this and avoid the additional cycle.
+        return
+    feed = zeit.content.cp.interfaces.ICPFeed(context)
+    items = []
+    check_items = []
+    for item in feed.items:
+        if zeit.content.cp.interfaces.IXMLTeaser.providedBy(item):
+            check_item = item.original_content
+        else:
+            check_item = item
+        items.append(item)
+        check_items.append(check_item)
 
-        for item in zeit.cms.syndication.interfaces.IReadFeed(context):
-            if zeit.content.cp.interfaces.IXMLTeaser.providedBy(item):
-                if item.original_content in check_items:
-                    continue
-            elif item in check_items:
+    for item in zeit.cms.syndication.interfaces.IReadFeed(context):
+        if zeit.content.cp.interfaces.IXMLTeaser.providedBy(item):
+            if item.original_content in check_items:
                 continue
-            items.insert(0, item)
+        elif item in check_items:
+            continue
+        items.insert(0, item)
 
-        items_in_lead = len(zeit.cms.syndication.interfaces.IReadFeed(context))
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.cp')
-        max_items = max(items_in_lead, int(config['cp-feed-max-items']))
-        while len(items) > max_items:
-            del items[-1]
+    items_in_lead = len(zeit.cms.syndication.interfaces.IReadFeed(context))
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.cp')
+    max_items = max(items_in_lead, int(config['cp-feed-max-items']))
+    while len(items) > max_items:
+        del items[-1]
 
-        feed.items = items
+    feed.items = items
 
 
 def has_changed(context):

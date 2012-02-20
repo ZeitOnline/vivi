@@ -58,14 +58,14 @@ the left side currently:
 
 Changing the order works like with every other type:
 
->>> import cjson
+>>> import json
 >>> order = [
 ...     'http://xml.zeit.de/c1',
 ...     'column://',
 ...     'http://xml.zeit.de/c2',
 ...     'http://xml.zeit.de/c3']
 >>> url = lightbox_url.replace('teaser.edit-contents', 'updateOrder')
->>> browser.open(url + '?keys=' + cjson.encode(order))
+>>> browser.open(url + '?keys=' + json.dumps(order))
 >>> browser.open(lightbox_url)
 >>> print browser.contents,
 <div...

@@ -134,12 +134,12 @@ Sorting
 Sorting works by passing the order of keys as a JSON encoded list to the
 updateOrder view:
 
->>> import cjson
+>>> import json
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> order = ['http://xml.zeit.de/testcontent', 'http://xml.zeit.de/c1',
 ...          'http://xml.zeit.de/online/2007/01/Somalia']
 >>> url = lightbox_url.replace('teaser.edit-contents', 'updateOrder')
->>> browser.open(url + '?keys=' + cjson.encode(order))
+>>> browser.open(url + '?keys=' + json.dumps(order))
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> browser.open(lightbox_url)
@@ -155,7 +155,7 @@ Sort another time:
 >>> order = ['http://xml.zeit.de/c1', 'http://xml.zeit.de/testcontent',
 ...          'http://xml.zeit.de/online/2007/01/Somalia']
 >>> url = lightbox_url.replace('teaser.edit-contents', 'updateOrder')
->>> browser.open(url + '?keys=' + cjson.encode(order))
+>>> browser.open(url + '?keys=' + json.dumps(order))
 
 
 Deleting entries

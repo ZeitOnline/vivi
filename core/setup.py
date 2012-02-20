@@ -6,18 +6,18 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.cp',
-    version='0.43.4dev',
+    version='0.50.3dev',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://intra.gocept.com/projects/projects/zeit-cms',
     description="""\
 """,
     packages=find_packages('src'),
-    package_dir = {'': 'src'},
-    include_package_data = True,
+    package_dir={'': 'src'},
+    include_package_data=True,
     zip_safe=False,
     license='gocept proprietary',
-    namespace_packages = ['zeit', 'zeit.content'],
+    namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'feedparser',
         'gocept.cache',
@@ -28,9 +28,7 @@ setup(
         'gocept.selenium>=0.6',
         'grokcore.component',
         'lxml',
-        'python-cjson',
         'setuptools',
-        'simplejson',
         'stabledict',
         'unittest2',
         'zc.sourcefactory',
@@ -51,7 +49,7 @@ setup(
         'zope.lifecycleevent',
         'zope.viewlet',
     ],
-    entry_points = """
+    entry_points="""
         [console_scripts]
         refresh-feeds = zeit.content.cp.feed:refresh_all
         sweep-teasergroup-repository = zeit.content.cp.teasergroup.teasergroup:sweep_repository

@@ -24,17 +24,17 @@ Create a teaserblock with a few teasers:
 >>> zeit.content.cp.browser.blocks.testing.create_content(getRootFolder())
 >>> browser.open(
 ...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c3')
->>> import cjson
+>>> import json
 >>> import pprint
->>> result = cjson.decode(browser.contents)
+>>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
-{'signals': [{'args': ['cbbf6f19-58b9-4cbb-926b-e3fb521e4900'],
-              'name': 'added',
-              'when': 'after-reload'},
-             {'args': ['lead',
-                       'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
-              'name': 'reload',
-              'when': None}]}
+{u'signals': [{u'args': [u'cbbf6f19-58b9-4cbb-926b-e3fb521e4900'],
+              u'name': u'added',
+              u'when': u'after-reload'},
+             {u'args': [u'lead',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+              u'name': u'reload',
+              u'when': None}]}
 >>> uuid = result['signals'][0]['args'][0]
 >>> browser.open(contents_url)
 >>> browser.open('lead/%s/@@drop?uniqueId=http://xml.zeit.de/c2' % uuid)
