@@ -1,17 +1,12 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import os
+import os.path
 import unittest
-
-from zope.testing import doctest
-
-import zope.app.testing.functional
-
 import zeit.cms.testing
 
 
-GhostLayer = zope.app.testing.functional.ZCMLLayer(
+GhostLayer = zeit.cms.testing.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'GhostLayer', allow_teardown=True)
 

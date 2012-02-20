@@ -37,8 +37,8 @@ import zope.testing.renormalizing
 
 
 def ZCMLLayer(
-    config_file, module=None, name=None, allow_teardown=True,
-    product_config=None):
+        config_file, module=None, name=None, allow_teardown=True,
+        product_config=None):
     if module is None:
         module = inspect.stack()[1][0].f_globals['__name__']
     if name is None:
@@ -57,10 +57,31 @@ def ZCMLLayer(
         if not allow_teardown:
             raise NotImplementedError
 
+    def testSetUp(cls):
+        cls.setup.setUp()
+        cls.setup.base_product_config = copy.deepcopy(
+        zope.app.appsetup.product.saveConfiguration())
+
+    def testTearDown(cls):
+        try:
+            connector = zope.component.getUtility(
+                zeit.connector.interfaces.IConnector)
+        except zope.component.interfaces.ComponentLookupError:
+            pass
+        else:
+            connector._reset()
+        zope.app.appsetup.product.restoreConfiguration(
+            cls.setup.base_product_config)
+        zope.site.hooks.setSite(None)
+        zope.security.management.endInteraction()
+        cls.setup.tearDown()
+
     layer = type(name, (object,), dict(
         __module__=module,
         setUp=classmethod(setUp),
         tearDown=classmethod(tearDown),
+        testSetUp=classmethod(testSetUp),
+        testTearDown=classmethod(testTearDown),
     ))
     return layer
 
@@ -172,29 +193,6 @@ checker = zope.testing.renormalizing.RENormalizing([
 ])
 
 
-def setUpDoctests(test):
-    test.old_product_config = copy.deepcopy(
-        zope.app.appsetup.product.saveConfiguration())
-    config = test.globs.get('product_config', {})
-    __traceback_info__ = (config,)
-    setup_product_config(config)
-
-
-def tearDown(test):
-    zope.security.management.endInteraction()
-    # only for functional tests
-    if hasattr(test, 'globs'):
-        old_site = test.globs.get('old_site')
-        if old_site is not None:
-            zope.site.hooks.setSite(old_site)
-    connector = zope.component.getUtility(
-        zeit.connector.interfaces.IConnector)
-    connector._reset()
-    old_config = getattr(test, 'old_product_config', None)
-    if old_config is not None:
-        zope.app.appsetup.product.restoreConfiguration(old_config)
-
-
 def setup_product_config(product_config={}):
     zope.app.appsetup.product._configs.update(product_config)
 
@@ -212,18 +210,22 @@ def DocFileSuite(*paths, **kw):
 
 
 def FunctionalDocFileSuite(*paths, **kw):
+
+    def setUp(test):
+        config = test.globs.get('product_config', {})
+        __traceback_info__ = (config,)
+        setup_product_config(config)
+
     layer = kw.pop('layer', cms_layer)
     kw['package'] = doctest._normalize_module(kw.get('package'))
-    kw['setUp'] = setUpDoctests
-    kw['tearDown'] = tearDown
+    kw['setUp'] = setUp
     kw.setdefault('globs', {})['product_config'] = kw.pop(
         'product_config', {})
     kw['globs']['with_statement'] = __future__.with_statement
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
 
-    test = zope.app.testing.functional.FunctionalDocFileSuite(
-        *paths, **kw)
+    test = zope.app.testing.functional.FunctionalDocFileSuite(*paths, **kw)
     test.layer = layer
 
     return test
@@ -273,28 +275,32 @@ class ZCAHelper(object):
             self.utilities = []
 
 
-class FunctionalTestCase(zope.app.testing.functional.FunctionalTestCase,
-                         unittest2.TestCase,
-                         gocept.testing.assertion.Exceptions,
-                         RepositoryHelper,
-                         ZCAHelper):
+class FunctionalTestCaseCommon(
+    unittest2.TestCase,
+    gocept.testing.assertion.Exceptions,
+    RepositoryHelper,
+    ZCAHelper,
+    ):
 
     layer = cms_layer
     product_config = {}
 
+    def getRootFolder(self):
+        """Returns the Zope root folder."""
+        return zope.app.testing.functional.FunctionalTestSetup().\
+            getRootFolder()
+
+    def setUp(self):
+        super(FunctionalTestCaseCommon, self).setUp()
+        setup_product_config(self.product_config)
+
+
+class FunctionalTestCase(FunctionalTestCaseCommon):
+
     def setUp(self):
         super(FunctionalTestCase, self).setUp()
-        self.old_product_config = copy.deepcopy(
-            zope.app.appsetup.product.saveConfiguration())
-        setup_product_config(self.product_config)
         zope.site.hooks.setSite(self.getRootFolder())
-        self.principal = zeit.cms.testing.create_interaction(u'zope.user')
-
-    def tearDown(self):
-        self.restoreUtilities()
-        zeit.cms.testing.tearDown(self)
-        zope.site.hooks.setSite(None)
-        super(FunctionalTestCase, self).tearDown()
+        self.principal = create_interaction(u'zope.user')
 
 
 class SeleniumTestCase(gocept.selenium.ztk.TestCase,
@@ -323,7 +329,6 @@ class SeleniumTestCase(gocept.selenium.ztk.TestCase,
         self.selenium.getEval('window.sessionStorage.clear()')
 
     def tearDown(self):
-        zeit.cms.testing.tearDown(self)
         super(SeleniumTestCase, self).tearDown()
         if self.log_errors:
             logging.root.removeHandler(self.log_handler)
@@ -420,16 +425,10 @@ class BrowserAssertions(gocept.testing.assertion.Ellipsis):
         return data
 
 
-class BrowserTestCase(FunctionalTestCase,
-                      gocept.testing.assertion.Exceptions,
-                      BrowserAssertions):
+class BrowserTestCase(FunctionalTestCaseCommon, BrowserAssertions):
 
     def setUp(self):
         super(BrowserTestCase, self).setUp()
-        # undo some setup that would break browser tests
-        zope.security.management.endInteraction()
-        zope.component.hooks.setSite(None)
-
         self.browser = zope.testbrowser.testing.Browser()
         self.browser.addHeader('Authorization', 'Basic user:userpw')
 

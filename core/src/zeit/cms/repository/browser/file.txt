@@ -115,7 +115,7 @@ Let's upload a new file:
 We can download the new file now:
 
 >>> bookmark = browser.url
->>> browser.getLink('DSC00109_2').click()
+>>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/DSC00109_2.JPG')
 >>> print browser.headers
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"

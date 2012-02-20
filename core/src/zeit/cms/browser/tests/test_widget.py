@@ -1,5 +1,5 @@
 # coding: utf8
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import contextlib
@@ -20,9 +20,6 @@ class TestObjectDetails(zeit.cms.testing.FunctionalTestCase,
         browser.addHeader('Authorization', 'Basic user:userpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/repository/testcontent/')
-
-    def tearDown(self):
-        self.layer.setup.tearDown()
 
     @contextlib.contextmanager
     def get_content(self):

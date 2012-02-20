@@ -1,16 +1,11 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import os
+from zope.testing import doctest
 import re
 import unittest
-
-import zope.testing.renormalizing
-from zope.testing import doctest
-
-import zope.app.testing.functional
-
 import zeit.cms.testing
+import zope.testing.renormalizing
 
 
 checker = zope.testing.renormalizing.RENormalizing([
