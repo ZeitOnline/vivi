@@ -163,10 +163,9 @@ zeit.edit.Editor = gocept.Class.extend({
 
     replace_element: function(element, result) {
         var self = this;
-        var dom = DIV();
-        dom.innerHTML = result.responseText;
-        MochiKit.DOM.swapDOM(element, dom.firstChild);
-        return element; // XXX
+        // XXX Franken-Vivi
+        jQuery(element).html(result.responseText);
+        return element;
     },
 
     busy_until_reload_of: function(component, delay) {
