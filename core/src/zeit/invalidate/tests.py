@@ -1,23 +1,20 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
+# Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+import doctest
 import os
 import unittest
-
-from zope.testing import doctest
-
-import zope.app.testing.functional
+import zeit.cms.testing
 
 
-invalidate_layer = zope.app.testing.functional.ZCMLLayer(
+invalidate_layer = zeit.cms.testing.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'InvalidateLayer', allow_teardown=True)
 
 
 def test_suite():
     suite = unittest.TestSuite()
-    test = zope.app.testing.functional.FunctionalDocFileSuite(
+    test = zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
                      doctest.ELLIPSIS))
