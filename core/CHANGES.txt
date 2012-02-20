@@ -4,7 +4,7 @@ zeit.securitypolicy changes
 0.7.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Updated test mechanics after refactoring zeit.cms.testing. (#10456)
 
 
 0.7.1 (2010-08-09)
