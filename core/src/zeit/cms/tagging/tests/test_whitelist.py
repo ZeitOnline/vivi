@@ -6,17 +6,15 @@ import mock
 import pkg_resources
 import unittest2 as unittest
 import zeit.cms.testing
+import zope.testing.cleanup
 
 
-class TestWhitelist(unittest.TestCase):
+class TestWhitelist(unittest.TestCase,
+                    zope.testing.cleanup.CleanUp):
 
     def whitelist(self):
         from ..whitelist import Whitelist
         return Whitelist()
-
-    def test_keys_should_tigger_load(self):
-        wl = self.whitelist()
-        wl.keys()
 
     def test_get_url_should_use_cms_product_config(self):
         wl = self.whitelist()
@@ -65,12 +63,25 @@ class TestWhitelist(unittest.TestCase):
         Tag.assert_called_with(
             'ae11024e-69e0-4434-b7d3-f66efddb0459', u'Polarkreis'),
 
-    def test_before_load_whitelist_should_be_empty(self):
-        self.assertEqual(0, len(self.whitelist()))
-
     def test_load_should_add_tags_to_whitelist(self):
         wl = self.whitelist()
         wl._fetch = lambda: pkg_resources.resource_stream(
             __name__, 'whitelist.xml')
         wl._load()
         self.assertEqual(52, len(wl))
+
+    def test_accessing_data_attribute_should_trigger_load(self):
+        wl = self.whitelist()
+        wl._load = mock.Mock(return_value={})
+        wl.get(mock.sentinel.code)
+        self.assertTrue(wl._load.called)
+
+    def test_load_result_should_be_cached(self):
+        wl = self.whitelist()
+        wl._fetch = mock.Mock()
+        with mock.patch('gocept.lxml.objectify.fromfile') as fromfile:
+            fromfile().iterchildren.return_value = []
+            fromfile.reset_mock()
+            wl._load()
+            wl._load()
+        self.assertEqual(1, fromfile.call_count)

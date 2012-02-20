@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import UserDict
+import gocept.cache.method
 import gocept.lxml.objectify
 import grokcore.component as grok
 import urllib2
@@ -16,6 +17,15 @@ class Whitelist(UserDict.UserDict,
 
     zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
 
+    def __init__(self):
+        # Super __init__ set's data attribute. The data attribute is repalced
+        # with a property here, breaking the super __init__.
+        pass
+
+    @property
+    def data(self):
+        return self._load()
+
     def search(self, prefix):
         result = []
         for tag in self.values():
@@ -29,8 +39,11 @@ class Whitelist(UserDict.UserDict,
         return cms_config.get('whitelist-url')
 
     def _fetch(self):
-        return urllib2.urlopen(self._get_url())
+        url = self._get_url()
+        __traceback_info__ = (url,)
+        return urllib2.urlopen(url)
 
+    @gocept.cache.method.Memoize(600)
     def _load(self):
         tags = {}
         tags_xml = gocept.lxml.objectify.fromfile(self._fetch())
@@ -38,7 +51,7 @@ class Whitelist(UserDict.UserDict,
             tag = zeit.cms.tagging.tag.Tag(
                 tag_node.get('uuid'), unicode(tag_node).strip())
             tags[tag.code] = tag
-        self.data = tags  # replace already stored tags all at once
+        return tags
 
 
 class WhitelistSource(object):
