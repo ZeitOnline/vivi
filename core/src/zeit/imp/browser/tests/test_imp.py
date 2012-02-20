@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2009 gocept gmbh & co. kg
+# Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import PIL.Image
@@ -6,43 +6,33 @@ import StringIO
 import json
 import pkg_resources
 import transaction
+import urllib
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.tests
 import zeit.imp.tests
 import zope.app.file.image
-import zope.app.testing.functional
 import zope.component
+import zope.component.hooks
 
 
-class TestBase(zope.app.testing.functional.BrowserTestCase):
+class TestBase(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.imp.tests.imp_layer
-    image_path = '/++skin++cms/repository/group'
-    auth = 'user:userpw'
+    image_path = 'http://localhost/++skin++cms/repository/group'
 
     def setUp(self):
         super(TestBase, self).setUp()
-        self.setSite(self.getRootFolder())
-        self.repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
+        zope.component.hooks.setSite(self.getRootFolder())
         zeit.content.image.tests.create_image_group_with_master_image()
-
-    def tearDown(self):
-        del self.repository
-        self.setSite(None)
-        zeit.cms.testing.tearDown(self)
-        super(TestBase, self).tearDown()
 
 
 class ImageBarTest(TestBase):
 
     def get_image_bar_data(self):
-        response = self.publish(
-            self.image_path + '/@@imp-image-bar',
-            basic=self.auth)
-        return json.loads(response.getBody())
+        self.browser.open(self.image_path + '/@@imp-image-bar')
+        return json.loads(self.browser.contents)
 
     def assertAPI(self, expected):
         self.assertEquals(expected, self.get_image_bar_data())
@@ -78,32 +68,31 @@ class ImageBarTest(TestBase):
 class CropTest(TestBase):
 
     def get_image_data(self, **form):
-        response = self.publish(
+        self.browser.post(
             self.image_path + '/@@imp-crop',
-            basic=self.auth,
-            form=dict(
+            urllib.urlencode(dict(
                 w='1000', h='500',
                 x1='400', y1='100',
                 x2='800', y2='300',
-                name='400x200', **form))
-        path = response.getBody().replace('http://localhost', '', 1)
+                name='400x200', **form)))
+        path = self.browser.contents.replace('http://localhost', '', 1)
         self.assertEqual(
             '/++skin++cms/repository/group/group-400x200.jpg', path)
-        return self.publish(path, basic=self.auth).getBody()
+        self.browser.open(path)
+        return self.browser.contents
 
     def test_crop_returns_image_url(self):
-        response = self.publish(
+        self.browser.post(
             self.image_path + '/@@imp-crop',
-            basic=self.auth,
-            form=dict(
+            urllib.urlencode(dict(
                 w='1200', h='749',
                 x1='400', y1='100',
                 x2='800', y2='300',
-                name='400x200'))
+                name='400x200')))
         # The image name contains the parent name, the given name and .jpg
         self.assertEquals(
             'http://localhost/++skin++cms/repository/group/group-400x200.jpg',
-            response.getBody())
+            self.browser.contents)
 
     def test_crop_size(self):
         image_data = self.get_image_data()
