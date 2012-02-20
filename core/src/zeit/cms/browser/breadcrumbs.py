@@ -95,8 +95,10 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
                 return None
 
     def content_name(self, content):
-        if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            content).renamable:
-            return _('(new)')
-        else:
-            return content.__name__
+        try:
+            if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+                content).renamable:
+                return _('(new)')
+        except TypeError:
+            pass
+        return content.__name__
