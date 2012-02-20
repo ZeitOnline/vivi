@@ -7,10 +7,9 @@ import unittest
 import zeit.cms.content.tests.test_contentsource
 import zeit.cms.testing
 import zeit.content.infobox.interfaces
-import zope.app.testing.functional
 
 
-InfoboxLayer = zope.app.testing.functional.ZCMLLayer(
+InfoboxLayer = zeit.cms.testing.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'InfoboxLayer', allow_teardown=True)
 
