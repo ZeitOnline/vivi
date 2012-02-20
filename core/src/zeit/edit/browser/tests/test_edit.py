@@ -6,7 +6,11 @@ import zeit.edit.testing
 
 class EditorJavascript(zeit.edit.testing.SeleniumTestCase):
 
-    def test_reload_loads_script_tags(self):
-        s = self.selenium
+    def setUp(self):
+        super(EditorJavascript, self).setUp()
         self.open('/@@/zeit.edit.browser.tests.fixtures/editor.html')
-        foo = s.getEval('window.zeit.edit.editor')
+        self.wait_for_condition('!zeit.edit.editor.busy')
+
+    def test_reload_loads_external_scripts(self):
+        self.eval('zeit.edit.editor.reload("myblock", "external.html")')
+        self.wait_for_condition('zeit.edit.external')
