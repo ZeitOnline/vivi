@@ -2,7 +2,7 @@
       id="cp-content-inner"
       class="cp-content-inner article-editor-inner"
       i18n:domain="zeit.cms">
-<h1>foo</h1>
+<h1>cp-content-inner</h1>
 
 <div id="myblock">
 </div>
