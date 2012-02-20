@@ -8,17 +8,11 @@ import unittest2
 import zeit.cms.testing
 
 
-class TestObjectDetails(zeit.cms.testing.FunctionalTestCase,
-                        zeit.cms.testing.BrowserAssertions):
+class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
 
     def setUp(self):
-        from zope.testbrowser.testing import Browser
-        import zope.security.management
         super(TestObjectDetails, self).setUp()
-        zope.security.management.endInteraction()
-        self.browser = browser = Browser()
-        browser.addHeader('Authorization', 'Basic user:userpw')
-        browser.open(
+        self.browser.open(
             'http://localhost:8080/++skin++vivi/repository/testcontent/')
 
     @contextlib.contextmanager
