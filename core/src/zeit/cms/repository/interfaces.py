@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -176,7 +176,7 @@ class IAutomaticallyRenameable(zope.interface.Interface):
 
     """
 
-    renamable = zope.schema.Bool(title=u'Object renamable?')
+    renameable = zope.schema.Bool(title=u'Object renameable?')
     rename_to = zope.schema.TextLine(
         title=_("New file name"),
         required=False,

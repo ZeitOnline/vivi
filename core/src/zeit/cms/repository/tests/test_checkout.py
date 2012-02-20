@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import zeit.cms.testing
@@ -44,65 +44,65 @@ class TestRenameOnCheckin(zeit.cms.testing.FunctionalTestCase):
         return zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/{0}'.format(name))
 
-    def test_content_should_not_be_automatically_renamable_by_default(self):
+    def test_content_should_not_be_automatically_renameable_by_default(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         self.assertFalse(
-            IAutomaticallyRenameable(self.get_content()).renamable)
+            IAutomaticallyRenameable(self.get_content()).renameable)
 
-    def test_renamable_and_new_name_should_rename(self):
+    def test_renameable_and_new_name_should_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
         with checked_out(content) as co:
-            renamable = IAutomaticallyRenameable(co)
-            renamable.renamable = True
-            renamable.rename_to = u'new-name'
+            renameable = IAutomaticallyRenameable(co)
+            renameable.renameable = True
+            renameable.rename_to = u'new-name'
         self.assertIn('new-name', content.__parent__.keys())
         self.assertNotIn('testcontent', content.__parent__.keys())
 
-    def test_renamable_and_no_new_name_should_not_rename(self):
+    def test_renameable_and_no_new_name_should_not_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
         self.assertIn('testcontent', content.__parent__.keys())
         with checked_out(content) as co:
-            renamable = IAutomaticallyRenameable(co)
-            renamable.renamable = True
-            self.assertIsNone(renamable.rename_to)
+            renameable = IAutomaticallyRenameable(co)
+            renameable.renameable = True
+            self.assertIsNone(renameable.rename_to)
         self.assertIn('testcontent', content.__parent__.keys())
 
-    def test_not_renamable_and_new_name_should_not_rename(self):
+    def test_not_renameable_and_new_name_should_not_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
         with checked_out(content) as co:
-            renamable = IAutomaticallyRenameable(co)
-            renamable.renamable = False
-            renamable.rename_to = u'new-name'
+            renameable = IAutomaticallyRenameable(co)
+            renameable.renameable = False
+            renameable.rename_to = u'new-name'
         self.assertNotIn('new-name', content.__parent__.keys())
         self.assertIn('testcontent', content.__parent__.keys())
 
-    def test_not_renamable_and_no_new_name_should_not_rename(self):
+    def test_not_renameable_and_no_new_name_should_not_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
         with checked_out(content) as co:
-            renamable = IAutomaticallyRenameable(co)
-            renamable.renamable = False
+            renameable = IAutomaticallyRenameable(co)
+            renameable.renameable = False
         self.assertNotIn('new-name', content.__parent__.keys())
         self.assertIn('testcontent', content.__parent__.keys())
 
-    def test_renamable_should_be_none_after_rename(self):
+    def test_renameable_should_be_none_after_rename(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         content = self.get_content()
         from zeit.cms.checkout.helper import checked_out
         with checked_out(content) as co:
-            renamable = IAutomaticallyRenameable(co)
-            renamable.renamable = True
-            renamable.rename_to = u'new-name'
+            renameable = IAutomaticallyRenameable(co)
+            renameable.renameable = True
+            renameable.rename_to = u'new-name'
         content = self.get_content('new-name')
-        renamable = IAutomaticallyRenameable(content)
+        renameable = IAutomaticallyRenameable(content)
         # Test for None as this is the value which we get when the DAV property
         # does not exist. And thats what we really want.
-        self.assertIsNone(renamable.renamable)
-        self.assertIsNone(renamable.rename_to)
+        self.assertIsNone(renameable.renameable)
+        self.assertIsNone(renameable.rename_to)

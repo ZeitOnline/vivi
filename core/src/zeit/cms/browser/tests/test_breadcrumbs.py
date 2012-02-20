@@ -150,7 +150,7 @@ class Breadcrumbs(zeit.cms.testing.FunctionalTestCase):
         content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
         self.repository['foo'] = content
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            content).renamable = True
+            content).renameable = True
         self.assertEqual([
                 dict(title='(new)',
                      uniqueId=u'http://xml.zeit.de/foo',
