@@ -7,6 +7,7 @@ import __future__
 import contextlib
 import copy
 import gocept.jslint
+import gocept.selenium.base
 import gocept.selenium.ztk
 import gocept.testing.assertion
 import inspect
@@ -26,6 +27,7 @@ import xml.sax.saxutils
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
+import zope.app.wsgi
 import zope.component
 import zope.publisher.browser
 import zope.security.management
@@ -271,7 +273,7 @@ class FunctionalTestCase(FunctionalTestCaseCommon):
         self.principal = create_interaction(u'zope.user')
 
 
-class SeleniumTestCase(gocept.selenium.ztk.TestCase,
+class SeleniumTestCase(gocept.selenium.base.TestCase,
                        unittest2.TestCase,
                        RepositoryHelper):
 
@@ -283,6 +285,16 @@ class SeleniumTestCase(gocept.selenium.ztk.TestCase,
 
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
+
+        # XXX The following 5 lines are copied from
+        # gocept.selenium.ztk.TestCase in order to avoid inheriting from
+        # zope.app.testing.functional.TestCase.
+        db = zope.app.testing.functional.FunctionalTestSetup().db
+        application = self.layer.http.application
+        assert isinstance(application, zope.app.wsgi.WSGIPublisherApplication)
+        factory = type(application.requestFactory)
+        application.requestFactory = factory(db)
+
         if self.log_errors:
             with site(self.getRootFolder()):
                 error_log = zope.component.getUtility(
