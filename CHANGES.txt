@@ -1,13 +1,20 @@
 zeit.securitypolicy changes
 ===========================
 
-0.7.2 (unreleased)
-------------------
+
+Changes on editor-ng branch
+---------------------------
 
 - Removed test for article asset view as it does not exist any more (#10428)
 
 - Added test for article ``@@edit.html`` in repository which is accessible and
   renders the read-only view.
+
+
+0.7.2 (unreleased)
+------------------
+
+- Updated test mechanics after refactoring zeit.cms.testing. (#10456)
 
 
 0.7.1 (2010-08-09)

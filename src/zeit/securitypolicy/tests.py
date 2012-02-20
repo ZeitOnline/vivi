@@ -1,15 +1,17 @@
-# Copyright (c) 2007-2010 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import os.path
 import unittest
+import urllib
 import xlrd
 import zeit.brightcove.testing
 import zeit.cms.testing
 import zeit.connector.interfaces
 import zeit.imp.tests
-import zope.app.testing.functional
 import zope.component
+import zope.component.hooks
+import zope.testbrowser.testing
 
 
 SecurityPolicyLayer = zeit.cms.testing.ZCMLLayer(
@@ -20,8 +22,7 @@ SecurityPolicyLayer = zeit.cms.testing.ZCMLLayer(
         zeit.brightcove.testing.product_config))
 
 
-class TestSecurityPolicyXLSSheet(
-    zope.app.testing.functional.BrowserTestCase):
+class TestSecurityPolicyXLSSheet(zeit.cms.testing.FunctionalTestCaseCommon):
 
     layer = SecurityPolicyLayer
 
@@ -31,11 +32,12 @@ class TestSecurityPolicyXLSSheet(
         self.cases = cases
         self.description = description
 
-        if username == 'anonymous':
-            self.basic = None
-        else:
+        self.browser = zope.testbrowser.testing.Browser()
+        self.browser.raiseHttpErrors = False
+        if username != 'anonymous':
             password = self.username + 'pw'
-            self.basic = '%s:%s' % (self.username, password)
+            self.browser.addHeader(
+                'Authorization', 'Basic %s:%s' % (self.username, password))
 
     def tearDown(self):
         self.connector._reset()
@@ -44,31 +46,31 @@ class TestSecurityPolicyXLSSheet(
     def runTest(self):
         for skin, path, form, expected in self.cases:
             if skin.strip() == 'python:':
-                test = self
-                site = self.getSite()
-                self.setSite(self.getRootFolder())
+                test = self  # needed by the eval() call below
+                site = zope.component.hooks.getSite()
+                zope.component.hooks.setSite(self.getRootFolder())
                 try:
+                    # XXX pass variables in explicitly
                     eval(path)
                 finally:
-                    self.setSite(site)
+                    zope.component.hooks.setSite(site)
                 continue
-            path_with_skin = '/++skin++%s%s' % (skin, path)
+            path_with_skin = 'http://localhost/++skin++%s%s' % (skin, path)
             path_with_skin = path_with_skin % dict(username=self.username)
 
             if form:
-                form_dict = eval(form)
+                self.browser.post(
+                    # XXX pass variables in explicitly
+                    path_with_skin, urllib.urlencode(eval(form)))
             else:
-                form_dict = None
+                self.browser.open(path_with_skin)
 
-            response = self.publish(
-                path_with_skin, basic=self.basic, form=form_dict,
-                handle_errors=True)
-            status = response.getStatus()
+            status, msg = self.browser.headers['Status'].split(' ', 1)
             self.assertEquals(
-                (status < 400), expected,
+                (int(status) < 400), expected,
                 '%s: %s (expected <400: %s)\n%s' % (
                     path.encode('utf8'), status, bool(expected),
-                    response.getBody()))
+                    self.browser.contents))
 
     def __str__(self):
         return '%s (%s.%s)' % (
@@ -78,6 +80,7 @@ class TestSecurityPolicyXLSSheet(
     @property
     def connector(self):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
 
 def xls_tests():
     book = xlrd.open_workbook(os.path.join(
