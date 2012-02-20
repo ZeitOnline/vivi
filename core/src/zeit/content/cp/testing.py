@@ -77,6 +77,14 @@ class FeedServer(HTTPLayer, layer):
     def tearDown(cls):
         pass
 
+    @classmethod
+    def testSetUp(cls):
+        pass
+
+    @classmethod
+    def testTearDown(cls):
+        pass
+
 
 
 checker = zope.testing.renormalizing.RENormalizing([
