@@ -13,6 +13,9 @@ zeit.cms changes
 - For an article, include ressort and sub-ressort in the breadcrumbs instead
   of the repository path. (#10151)
 
+- Restructured test layer and test cases so as to have a more reliable
+  tear-down. (#10456)
+
 
 1.52.0 (2011-12-08)
 -------------------
