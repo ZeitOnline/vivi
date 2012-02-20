@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
@@ -51,7 +52,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
                         uniqueId=None,
                         ))
 
-        name = context.__name__
+        name = self.content_name(context)
         url = self.url(context)
         unique_id = getattr(context, 'uniqueId', None)
         result.append(dict(
@@ -77,7 +78,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
         for item in traverse_items:
             if zope.location.interfaces.ISite.providedBy(item):
                 break
-            title = item.__name__
+            title = self.content_name(item)
             uniqueId = getattr(item, 'uniqueId', None)
             result.append(
                 dict(title=title,
@@ -92,3 +93,10 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
                 return self.url(zeit.cms.interfaces.ICMSContent(unique_id))
             except TypeError:
                 return None
+
+    def content_name(self, content):
+        if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            content).renamable:
+            return _('(new)')
+        else:
+            return content.__name__

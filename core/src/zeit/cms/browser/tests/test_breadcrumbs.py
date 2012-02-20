@@ -6,6 +6,7 @@ import zeit.cms.browser.breadcrumbs
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.file
 import zeit.cms.repository.folder
+import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
@@ -144,3 +145,15 @@ class Breadcrumbs(zeit.cms.testing.FunctionalTestCase):
                      url='http://127.0.0.1/workingcopy/zope.user/DSC00109_2.JPG',
                     ),
                 ], BreadcrumbsView(co).get_breadcrumbs)
+
+    def test_temporary_document_name_is_abbreviated_as_new(self):
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        self.repository['foo'] = content
+        zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            content).renamable = True
+        self.assertEqual([
+                dict(title='(new)',
+                     uniqueId=u'http://xml.zeit.de/foo',
+                     url='http://127.0.0.1/repository/foo',
+                     ),
+                ], BreadcrumbsView(content).get_breadcrumbs)
