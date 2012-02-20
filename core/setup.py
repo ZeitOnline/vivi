@@ -5,7 +5,7 @@ setup(
     version='0.7.2dev',
     author='gocept',
     author_email='mail@gocept.com',
-    url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
+    url='https://code.gocept.com/hg/public/zeit.securitypolicy',
     description="""\
 """,
     packages=find_packages('src'),
@@ -19,7 +19,7 @@ setup(
         'xlrd',
         'zeit.brightcove',
         'zeit.calendar',
-        'zeit.cms>1.37.1',
+        'zeit.cms>=1.53dev',
         'zeit.content.article',
         'zeit.content.quiz',
         'zeit.content.rawxml',
