@@ -274,8 +274,7 @@ class FunctionalTestCase(FunctionalTestCaseCommon):
 
 
 class SeleniumTestCase(gocept.selenium.base.TestCase,
-                       unittest2.TestCase,
-                       RepositoryHelper):
+                       FunctionalTestCaseCommon):
 
     layer = selenium_layer
     skin = 'cms'
