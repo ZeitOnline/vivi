@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -92,7 +92,7 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
                 '__name__', 'rename_to')
         if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            self.context).renamable:
+            self.context).renameable:
             form_fields = form_fields.omit('__name__')
         else:
             form_fields = form_fields.omit('rename_to')

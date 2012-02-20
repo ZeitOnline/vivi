@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import unittest2 as unittest
@@ -65,27 +65,27 @@ class TestAdding(unittest.TestCase,
         article = self.get_article()
         self.assertEqual('ZEDE', article.product.id)
 
-    def test_article_should_be_renamable(self):
+    def test_article_should_be_renameable(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Article']
         url = menu.value[0]
         self.browser.open(url)
         article = self.get_article()
-        self.assertTrue(IAutomaticallyRenameable(article).renamable)
+        self.assertTrue(IAutomaticallyRenameable(article).renameable)
         self.assertFalse(IAutomaticallyRenameable(article).rename_to)
 
-    def test_filename_should_be_editable_when_article_is_renamable(self):
+    def test_filename_should_be_editable_when_article_is_renameable(self):
         from zeit.cms.repository.interfaces import IAutomaticallyRenameable
         self.browser.open('Somalia/@@checkout')
         article = self.get_article()
-        IAutomaticallyRenameable(article).renamable = True
+        IAutomaticallyRenameable(article).renameable = True
         self.browser.handleErrors = False
         self.browser.open('@@edit.form.new-filename?show_form=yes')
         ctrl = self.browser.getControl('New file name')
         self.assertEqual('', ctrl.value)
 
-    def test_filename_should_not_be_editable_when_article_is_not_renamable(
+    def test_filename_should_not_be_editable_when_article_is_not_renameable(
             self):
         self.browser.open('Somalia/@@checkout')
         self.get_article()

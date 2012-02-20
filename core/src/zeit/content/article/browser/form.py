@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2009 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.content.article.i18n import MessageFactory as _
@@ -45,7 +45,7 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         article = self.get_article()
         name = '{0}.tmp'.format(uuid.uuid4())
         zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            article).renamable = True
+            article).renameable = True
         self.context[name] = article
         self.redirect(self.url(self.context[name], '@@checkout'))
 
