@@ -1,9 +1,8 @@
 # coding: utf8
-# Copyright (c) 2008-2009 gocept gmbh & co. kg
+# Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import PIL.Image
-import StringIO
 import pkg_resources
 import unittest
 import zeit.cms.testing
@@ -11,7 +10,6 @@ import zeit.content.image.tests
 import zeit.imp.interfaces
 import zeit.imp.mask
 import zeit.imp.source
-import zope.app.testing.functional
 import zope.interface.verify
 
 
@@ -105,7 +103,7 @@ class TestLayerMask(unittest.TestCase):
         self.assertEqual(29, y2 - y1)
 
 
-class TestSources(zope.app.testing.functional.BrowserTestCase):
+class TestSources(zeit.cms.testing.FunctionalTestCase):
 
     layer = imp_layer
 
@@ -131,20 +129,15 @@ class TestSources(zope.app.testing.functional.BrowserTestCase):
         self.assertEquals('#000000', value.color)
 
 
-class TestCrop(zope.app.testing.functional.BrowserTestCase):
+class TestCrop(zeit.cms.testing.FunctionalTestCase):
 
     layer = imp_layer
 
     def setUp(self):
         super(TestCrop, self).setUp()
-        self.setSite(self.getRootFolder())
         self.group = (
             zeit.content.image.tests.create_image_group_with_master_image())
         self.crop = zeit.imp.interfaces.ICropper(self.group)
-
-    def tearDown(self):
-        self.setSite(None)
-        super(TestCrop, self).tearDown()
 
     def get_histogram(self, image):
         histogram = image.histogram()
