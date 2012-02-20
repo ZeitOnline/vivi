@@ -1,15 +1,12 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
+# Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import os
 import unittest
-
-import zope.app.testing.functional
-
 import zeit.cms.testing
 
 
-RawXMLLayer = zope.app.testing.functional.ZCMLLayer(
+RawXMLLayer = zeit.cms.testing.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'RawXMLLayer', allow_teardown=True)
 
