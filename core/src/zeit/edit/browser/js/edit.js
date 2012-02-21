@@ -165,8 +165,7 @@ zeit.edit.Editor = gocept.Class.extend({
         var self = this;
         var dom = DIV();
         dom.innerHTML = result.responseText;
-        MochiKit.DOM.swapDOM(element, dom.firstChild);
-        return element; // XXX
+        return MochiKit.DOM.swapDOM(element, dom.firstChild);
     },
 
     busy_until_reload_of: function(component, delay) {
