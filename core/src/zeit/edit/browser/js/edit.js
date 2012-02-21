@@ -46,7 +46,7 @@ zeit.edit.Editor = gocept.Class.extend({
             'content', 'onclick',
             self, self.handleContentClick);
         MochiKit.Signal.connect(
-            self, 'reload', self, self.reload);
+            self, 'reload', self, self.reload_editor);
         new zeit.cms.ToolTipManager(self.content);
     },
 
@@ -80,19 +80,18 @@ zeit.edit.Editor = gocept.Class.extend({
         }
     },
 
+    reload_editor: function(){
+        var self = this;
+        return self.reload('cp-content-inner', context_url + '/contents');
+    },
+
     reload: function(element_id, url) {
         var self = this;
         log("Reloading", element_id, url);
-        if (isUndefinedOrNull(element_id)) {
-            element_id = 'cp-content-inner';
-        }
         var element = $(element_id);
-        if (isUndefinedOrNull(url)) {
-            url = context_url + '/contents';
-        }
         MochiKit.Signal.signal(self, 'before-reload');
         var d = zeit.edit.with_lock(
-        MochiKit.Async.doSimpleXMLHttpRequest, url);
+            MochiKit.Async.doSimpleXMLHttpRequest, url);
         d.addCallback(function(result) {
             return self.replace_element(element, result);
         });
@@ -186,7 +185,7 @@ zeit.edit.Editor = gocept.Class.extend({
         MochiKit.Signal.signal(window, 'cp-editor-initialized');
         zeit.edit.editor.busy_until_reload_of(
             zeit.edit.editor, 0);
-        var d = zeit.edit.editor.reload();
+        var d = zeit.edit.editor.reload_editor();
         d.addCallback(function(result) {
             MochiKit.Signal.signal(window, 'cp-editor-loaded');
             return result;
