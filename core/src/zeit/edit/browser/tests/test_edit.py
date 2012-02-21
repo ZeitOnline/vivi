@@ -24,3 +24,13 @@ class EditorJavascript(zeit.edit.testing.SeleniumTestCase):
         self.eval('zeit.edit.editor.reload("myblock", "style.html")')
         s.waitForElementPresent('css=#myblock h3')
         s.waitForNotVisible('css=#myblock h3')
+
+    def test_initial_editor_load_loads_js_and_css(self):
+        self.open(
+            '/@@/zeit.edit.browser.tests.fixtures/initial-load/editor.html')
+        self.wait_for_condition('!zeit.edit.editor.busy')
+        self.wait_for_condition('zeit.edit.inline')
+        self.wait_for_condition('zeit.edit.external')
+        s = self.selenium
+        s.waitForElementPresent('css=#myblock h3')
+        s.waitForNotVisible('css=#myblock h3')
