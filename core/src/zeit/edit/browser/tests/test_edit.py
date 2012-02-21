@@ -18,3 +18,9 @@ class EditorJavascript(zeit.edit.testing.SeleniumTestCase):
     def test_reload_loads_inline_scripts(self):
         self.eval('zeit.edit.editor.reload("myblock", "inline.html")')
         self.wait_for_condition('zeit.edit.inline')
+
+    def test_reload_imports_style_sheets(self):
+        s = self.selenium
+        self.eval('zeit.edit.editor.reload("myblock", "style.html")')
+        s.waitForElementPresent('css=#myblock h3')
+        s.waitForNotVisible('css=#myblock h3')
