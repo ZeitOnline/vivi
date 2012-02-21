@@ -109,8 +109,12 @@ zeit.edit.Editor = gocept.Class.extend({
                 MochiKit.DOM.getElementsByTagAndClassName(
                     'SCRIPT', null, result),
                 function(script) {
-                    loading.push(zeit.cms.import(script.src));
-                    MochiKit.DOM.removeElement(script);
+                    if (script.src !== '') {
+                        loading.push(zeit.cms.import(script.src));
+                        MochiKit.DOM.removeElement(script);
+                    } else {
+                        jQuery.globalEval(jQuery(script).text());
+                    }
                 });
             MochiKit.Iter.forEach(
                 MochiKit.DOM.getElementsByTagAndClassName(
