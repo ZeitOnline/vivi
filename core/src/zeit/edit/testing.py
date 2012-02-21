@@ -2,18 +2,37 @@
 # See also LICENSE.txt
 
 import gocept.lxml.interfaces
+import gocept.selenium.ztk
 import grokcore.component as grok
 import zeit.cms.testing
 import zeit.edit.container
 import zeit.edit.interfaces
 
 
-EditLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+SELENIUM_LAYER = gocept.selenium.ztk.Layer(ZCML_LAYER)
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = EditLayer
+    layer = ZCML_LAYER
+
+
+class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+
+    layer = SELENIUM_LAYER
+    skin = 'vivi'
+
+    def eval(self, text):
+        return self.selenium.getEval(
+            "var zeit = selenium.browserbot.getCurrentWindow().zeit;\n"
+            + text)
+
+    def wait_for_condition(self, text):
+        self.selenium.waitForCondition("""\
+        var zeit = selenium.browserbot.getCurrentWindow().zeit;
+        Boolean(%s);
+        """ % text)
 
 
 class IContainer(zeit.edit.interfaces.IArea,

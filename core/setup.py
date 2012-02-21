@@ -12,6 +12,7 @@ install_requires = [
     'setuptools',
     'gocept.jslint>=0.2',
     'gocept.lxml',
+    'gocept.selenium',
     'grokcore.component',
     'lxml',
     'zc.resourcelibrary',
