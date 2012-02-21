@@ -14,3 +14,7 @@ class EditorJavascript(zeit.edit.testing.SeleniumTestCase):
     def test_reload_loads_external_scripts(self):
         self.eval('zeit.edit.editor.reload("myblock", "external.html")')
         self.wait_for_condition('zeit.edit.external')
+
+    def test_reload_loads_inline_scripts(self):
+        self.eval('zeit.edit.editor.reload("myblock", "inline.html")')
+        self.wait_for_condition('zeit.edit.inline')
