@@ -83,25 +83,19 @@ zeit.edit.Editor = gocept.Class.extend({
     reload: function(element_id, url) {
         var self = this;
         log("Reloading", element_id, url);
-        var element = null;
-        if (!isUndefinedOrNull(element_id)) {
-             element = $(element_id);
+        if (isUndefinedOrNull(element_id)) {
+            element_id = 'cp-content-inner';
         }
-        MochiKit.Signal.signal(self, 'before-reload');
+        var element = $(element_id);
         if (isUndefinedOrNull(url)) {
             url = context_url + '/contents';
         }
+        MochiKit.Signal.signal(self, 'before-reload');
         var d = zeit.edit.with_lock(
-            MochiKit.Async.doSimpleXMLHttpRequest, url);
-        if (isNull(element)) {
-            d.addCallback(function(result) {
-                return self.replace_whole_editor(result);
-            });
-        } else {
-            d.addCallback(function(result) {
-                return self.replace_element(element, result);
-            });
-        }
+        MochiKit.Async.doSimpleXMLHttpRequest, url);
+        d.addCallback(function(result) {
+            return self.replace_element(element, result);
+        });
         d.addCallback(function(result) {
             // Result: replaced element
             var loading = [];
@@ -142,27 +136,6 @@ zeit.edit.Editor = gocept.Class.extend({
             return error;
         });
         return d;
-    },
-
-    replace_whole_editor: function(result) {
-        var self = this;
-        if (isNull(self.inner_content)) {
-            self.content.innerHTML = result.responseText;
-            self.inner_content = (
-                MochiKit.DOM.getFirstElementByTagAndClassName(
-                    'div', 'cp-content-inner', self.content));
-        } else {
-            var dom = DIV();
-            dom.innerHTML = result.responseText;
-            var new_inner = (
-                MochiKit.DOM.getFirstElementByTagAndClassName(
-                    'div', 'cp-content-inner', dom));
-            self.inner_content.innerHTML = new_inner.innerHTML;
-        }
-        if (isUndefinedOrNull(self.inner_content)) {
-            throw Error("Invalid editor content.");
-        }
-        return self.inner_content;
     },
 
     replace_element: function(element, result) {
