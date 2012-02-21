@@ -84,6 +84,8 @@ The inital page doens't contain much:
 <?xml ...
  <div id="content">
      <div id="cp-content">
+       <div id="cp-content-inner">
+       </div>
      </div>
      <div id="cp-forms">
      </div>
