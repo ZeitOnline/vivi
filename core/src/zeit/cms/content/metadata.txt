@@ -11,6 +11,10 @@ Set "comments allowed" from common metadata:
 
 >>> content.commentsAllowed = True
 
+Set "show commentthread from common metadata:
+
+>>> content.show_commentthread = True
+
 The initial value for the copyright is None:
 
 >>> content.copyrights is None
