@@ -5,7 +5,8 @@ zeit.wysiwyg changes
 -------------------
 
 - Use separate ordering values instead of a single weight for conversion steps
-  from XML to HTML and vice versa. (#10251)
+  from XML to HTML and vice versa; protect raw HTML content from any
+  conversions. (#10251)
 
 
 1.40.3 (2011-12-08)

@@ -19,6 +19,7 @@ import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.cms.repository.interfaces
 import zeit.wysiwyg.interfaces
+import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
@@ -91,6 +92,8 @@ class HTMLConverter(object):
         return steps
 
     def _apply_steps(self, tree, xpath, method):
+        annotations = zope.annotation.interfaces.IAnnotations(self.context)
+        annotations['zeit.wysiwyg.html'] = {}
         for adapter in self._steps(direction=method):
             xp = getattr(adapter, xpath)
             if xp is SKIP:
@@ -101,6 +104,7 @@ class HTMLConverter(object):
                 if filtered is not None:
                     node.getparent().replace(node, filtered)
                     filtered.tail = node.tail
+        del annotations['zeit.wysiwyg.html']
 
     def references(self, tree):
         return self._retrieve_content(self._extract_referenced_ids(tree))
@@ -636,9 +640,60 @@ class VideoStep(ConversionStep):
         return expires.isoformat()
 
 
+class RawXMLProtectStep(ConversionStep):
+    """Contents of <raw> must not be subjected to any other conversion steps.
+    """
+
+    order_to_html = -50
+    order_to_xml = -50
+    xpath_xml = './/raw'
+    xpath_html = './/*[contains(@class, "raw")]'
+
+    def to_html(self, node):
+        self.store(node)
+        return node
+
+    def to_xml(self, node):
+        self.store(node)
+        return node
+
+    def store(self, node):
+        annotations = zope.annotation.interfaces.IAnnotations(self.context)
+        storage = annotations['zeit.wysiwyg.html'].setdefault('raw', {})
+        children = storage[node] = list(node.iterchildren())
+        for child in children:
+            node.remove(child)
+
+
+class RawXMLUnprotectStep(ConversionStep):
+    """Contents of <raw> must not be subjected to any other conversion steps.
+    """
+
+    order_to_html = 50
+    order_to_xml = 50
+    xpath_xml = './/raw'
+    xpath_html = './/*[contains(@class, "raw")]'
+
+    def to_html(self, node):
+        self.restore(node)
+        return node
+
+    def to_xml(self, node):
+        self.restore(node)
+        return node
+
+    def restore(self, node):
+        annotations = zope.annotation.interfaces.IAnnotations(self.context)
+        storage = annotations['zeit.wysiwyg.html']['raw']
+        for child in storage[node]:
+            node.append(child)
+
+
 class RawXMLStep(ConversionStep):
     """Make <raw> editable."""
 
+    order_to_html = 51
+    order_to_xml = 51
     xpath_xml = './/raw'
     xpath_html = './/*[contains(@class, "raw")]'
 

@@ -16,6 +16,8 @@
   <adapter factory=".html.PassThroughStep" name="PassThroughStep" />
   <adapter factory=".html.PortraitboxStep" name="PortraitboxStep" />
   <adapter factory=".html.RawXMLStep" name="RawXMLStep" />
+  <adapter factory=".html.RawXMLProtectStep" name="RawXMLProtectStep" />
+  <adapter factory=".html.RawXMLUnprotectStep" name="RawXMLUnprotectStep" />
   <adapter factory=".html.TableStep" name="TableStep" />
   <adapter factory=".html.TagReplaceStep" name="TagReplaceStep" />
   <adapter factory=".html.URLStep" name="URLStep" />
