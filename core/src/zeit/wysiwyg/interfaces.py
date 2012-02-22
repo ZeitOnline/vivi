@@ -29,8 +29,11 @@ class IConversionStep(zope.interface.Interface):
     """Encapsulates one step of XML<-->HTML conversion.
     see zeit.wysiwyg.html.ConversionStep for details."""
 
-    weight = zope.interface.Attribute(
-        "determines the ordering of all ConversionSteps.")
+    order_to_html = zope.interface.Attribute(
+        "determines the ordering of ConversionSteps from XML to HTML.")
+
+    order_to_xml = zope.interface.Attribute(
+        "determines the ordering of ConversionSteps from HTML to XML.")
 
     def to_html(node):
         pass

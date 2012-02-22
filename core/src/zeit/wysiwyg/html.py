@@ -1,5 +1,5 @@
 # coding: utf8
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
+# Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.wysiwyg.util import contains_element
@@ -36,8 +36,9 @@ class HTMLConverter(object):
     registered easily.
 
     The actual conversion work is delegated to `ConversionStep`s which are
-    registered as named adapters, and sorted by their weight
-    (ascending for to_html() and descending for to_xml()).
+    registered as named adapters, and sorted by their order specific to the
+    conversion direction.
+
     """
 
     zope.component.adapts(zope.interface.Interface)
@@ -52,7 +53,7 @@ class HTMLConverter(object):
         tree = zope.security.proxy.removeSecurityProxy(tree)
         # copy so the conversion steps can work in-place
         tree = self._copy(tree)
-        self._apply_steps(tree, 'xpath_xml', 'to_html', reverse=False)
+        self._apply_steps(tree, 'xpath_xml', 'to_html')
 
         result = []
         for child in tree.iterchildren():
@@ -73,7 +74,7 @@ class HTMLConverter(object):
         __traceback_info__ = (value,)
         html = lxml.etree.fromstring(value)
 
-        self._apply_steps(html, 'xpath_html', 'to_xml', reverse=True)
+        self._apply_steps(html, 'xpath_html', 'to_xml')
         for node in html.iterchildren():
             # support tails at the toplevel by faking a wrapper node
             xml = '<foo>%s</foo>' % lxml.etree.tostring(node, encoding=unicode)
@@ -83,14 +84,14 @@ class HTMLConverter(object):
 
         zope.security.proxy.removeSecurityProxy(self.context)._p_changed = 1
 
-    def _steps(self, reverse=False):
+    def _steps(self, direction):
         steps = [adapter for name, adapter in zope.component.getAdapters(
                 (self.context,), zeit.wysiwyg.interfaces.IConversionStep)]
-        steps = sorted(steps, key=lambda x: x.weight, reverse=reverse)
+        steps = sorted(steps, key=lambda x: getattr(x, 'order_' + direction))
         return steps
 
-    def _apply_steps(self, tree, xpath, method, reverse):
-        for adapter in self._steps(reverse):
+    def _apply_steps(self, tree, xpath, method):
+        for adapter in self._steps(direction=method):
             xp = getattr(adapter, xpath)
             if xp is SKIP:
                 continue
@@ -107,7 +108,7 @@ class HTMLConverter(object):
     def _extract_referenced_ids(self, tree):
         result = []
         tree = zope.security.proxy.removeSecurityProxy(tree)
-        for adapter in self._steps():
+        for adapter in self._steps('to_html'):
             xp = getattr(adapter, 'xpath_xml')
             if xp is SKIP:
                 continue
@@ -130,7 +131,7 @@ class HTMLConverter(object):
     def covered_xpath(self):
         """return an xpath query that matches all nodes for which there is a
         ConversionStep registered."""
-        xpath = [s.xpath_xml for s in self._steps()
+        xpath = [s.xpath_xml for s in self._steps('to_html')
                  if s.xpath_xml is not SKIP and s.xpath_xml != '.']
         return '|'.join(xpath)
 
@@ -179,9 +180,8 @@ class ConversionStep(object):
     processing (such as dropping or rearranging nodes), use '.' to be called
     just once, with the root node.
 
-    To specify the order in which the steps are applied, set their weight
-    accordingly. The default is 0, and steps are sorted ascending for to_html()
-    and descending for to_xml().
+    To specify the order in which the steps are applied, set their orders
+    specific to the conversion direction.
 
     The adapter context can be used to fine-tune for which objects a conversion
     step applies, but probably should not be touched for anything else.
@@ -191,7 +191,8 @@ class ConversionStep(object):
 
     zope.component.adapts(zope.interface.Interface)
     zope.interface.implements(zeit.wysiwyg.interfaces.IConversionStep)
-    weight = 0.0
+    order_to_html = 0.0
+    order_to_xml = 0.0
 
     def __init__(self, context):
         self.context = context
@@ -250,7 +251,7 @@ class ConversionStep(object):
 class DropEmptyStep(ConversionStep):
     """Drop empty HTML toplevel nodes."""
 
-    weight = 1.0
+    order_to_xml = -1.0
     xpath_html = 'child::*'
 
     def to_xml(self, node):
@@ -269,7 +270,8 @@ class DropEmptyStep(ConversionStep):
 class TagReplaceStep(ConversionStep):
     """Convert between XML tag names and HTML ones."""
 
-    weight = 0.9
+    order_to_html = 0.9
+    order_to_xml = -0.9
     xpath_html = './/*'
 
     xml_html_tags = {
@@ -333,7 +335,7 @@ ContentOnlyElement = lxml.etree.__ContentOnlyElement
 class NormalizeToplevelStep(ConversionStep):
     """Normalize any toplevel tag we don't have a ConversionStep for to <p>."""
 
-    weight = -1.0
+    order_to_xml = 1.0
     xpath_html = '.'
 
     def to_xml(self, node):
@@ -351,7 +353,7 @@ class NormalizeToplevelStep(ConversionStep):
 class NestedParagraphsStep(ConversionStep):
     """Un-nest nested <p>s."""
 
-    weight = -1.0
+    order_to_xml = 1.0
     xpath_html = 'child::p'
 
     def to_xml(self, node):
@@ -397,7 +399,7 @@ class ImageStructureStep(ConversionStep):
 class HTMLImageStructureStep(ImageStructureStep):
 
     xpath_html = './*//img'
-    weight = 2
+    order_to_xml = -2
 
     def to_xml(self, node):
         return self._convert(node)
@@ -409,7 +411,7 @@ class HTMLImageStructureStep(ImageStructureStep):
 class XMLImageStructureStep(ImageStructureStep):
 
     xpath_xml = './*//image'
-    weight = -2
+    order_to_html = -2
 
     def to_html(self, node):
         return self._convert(node)
@@ -753,7 +755,8 @@ class RelatedsStep(ConversionStep):
 
     xpath_xml = './/relateds'
     xpath_html = './/*[contains(@class, "related")]'
-    weight = +1.5
+    order_to_html = 1.5
+    order_to_xml = -1.5
 
     def to_html(self, node):
         new_node = lxml.builder.E.div(
@@ -773,7 +776,7 @@ class InlineElementAppendParagraph(ConversionStep):
 
     """
 
-    weight = 100
+    order_to_html = 100
     xpath_xml = './/*[contains(@class, "inline-element")]'
 
     def to_html(self, node):
