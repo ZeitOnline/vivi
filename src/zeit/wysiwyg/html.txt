@@ -283,7 +283,7 @@ Mapping of cms urls to unique id and vice versa
 The converter has a helper method to convert urls which point to the cms to a
 unique id:
 
->>> step = zeit.wysiwyg.html.URLStep(article)
+>>> step = zeit.wysiwyg.html.URLStep(article, None)
 
 >>> step._url_to_id('http://127.0.0.1/repository/wirtschaft.feed')
 u'http://xml.zeit.de/wirtschaft.feed'
