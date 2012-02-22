@@ -994,6 +994,31 @@ The other way round converts a ``<div class="raw">`` to a ``<raw>`` tag:
     </body>
 </article>
 
+In particular, <img> tags inside raw content will be left alone:
+
+>>> converter.from_html(article.xml['body'], """\
+... <div class="inline-element raw">
+... &lt;img class="foo" src="bar"/&gt;
+... </div>
+... <div class="inline-element raw">
+... &lt;img class="baz" src="qux"/&gt;
+... </div>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <raw>
+      <img .../>
+    </raw>
+    <raw>
+      <img .../>
+    </raw>
+    </body>
+</article>
+>>> [sorted(node.attrib.items()) for node in article.xml.xpath('//img')]
+[[('class', 'foo'), ('src', 'bar')],
+ [('class', 'baz'), ('src', 'qux')]]
+
 When there are other element nodes in the div, everything after will be
 discarded:
 
