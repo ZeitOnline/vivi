@@ -4,7 +4,7 @@ zeit.content.article changes
 2.9.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to new ConversionStep API. (#10251)
 
 
 2.9.4 (2011-12-01)

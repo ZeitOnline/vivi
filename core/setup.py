@@ -45,7 +45,7 @@ setup(
         'zeit.connector>1.14.1',
         'zeit.content.cp>=0.33.0',
         'zeit.objectlog>=0.2',
-        'zeit.wysiwyg>1.22',
+        'zeit.wysiwyg>=1.41.0dev',
         'zope.app.apidoc',
         'zope.app.catalog',
         'zope.app.component>=3.4.0b3',
