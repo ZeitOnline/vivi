@@ -13,7 +13,7 @@ class VideoExpiresTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
 
     def setUp(self):
         super(VideoExpiresTest, self).setUp()
-        self.step = zeit.wysiwyg.html.VideoStep(None)
+        self.step = zeit.wysiwyg.html.VideoStep(None, None)
         self.video1 = zeit.cms.interfaces.ICMSContent(VIDEO1)
         self.video2 = zeit.cms.interfaces.ICMSContent(VIDEO2)
 

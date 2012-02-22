@@ -18,6 +18,11 @@ class IHTMLContent(zope.interface.Interface):
 class IHTMLConverter(zope.interface.Interface):
     """A html converter converts xml to/from html."""
 
+    storage = zope.interface.Attribute("""\
+        (Mapping) container that can be used by conversion steps to store
+        stuff.
+        """)
+
     def to_html(tree):
         """Convert `tree` to html."""
 

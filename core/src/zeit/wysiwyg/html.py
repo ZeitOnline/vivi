@@ -19,7 +19,6 @@ import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.cms.repository.interfaces
 import zeit.wysiwyg.interfaces
-import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.interface
@@ -47,6 +46,7 @@ class HTMLConverter(object):
 
     def __init__(self, context):
         self.context = context
+        self.storage = {}
 
     def to_html(self, tree):
         """converts XML `tree` to HTML."""
@@ -87,13 +87,11 @@ class HTMLConverter(object):
 
     def _steps(self, direction):
         steps = [adapter for name, adapter in zope.component.getAdapters(
-                (self.context,), zeit.wysiwyg.interfaces.IConversionStep)]
+                (self.context, self), zeit.wysiwyg.interfaces.IConversionStep)]
         steps = sorted(steps, key=lambda x: getattr(x, 'order_' + direction))
         return steps
 
     def _apply_steps(self, tree, xpath, method):
-        annotations = zope.annotation.interfaces.IAnnotations(self.context)
-        annotations['zeit.wysiwyg.html'] = {}
         for adapter in self._steps(direction=method):
             xp = getattr(adapter, xpath)
             if xp is SKIP:
@@ -104,7 +102,6 @@ class HTMLConverter(object):
                 if filtered is not None:
                     node.getparent().replace(node, filtered)
                     filtered.tail = node.tail
-        del annotations['zeit.wysiwyg.html']
 
     def references(self, tree):
         return self._retrieve_content(self._extract_referenced_ids(tree))
@@ -193,13 +190,15 @@ class ConversionStep(object):
     matter), so the HTMLConverter can pick them all up using getAdapters().
     """
 
-    zope.component.adapts(zope.interface.Interface)
+    zope.component.adapts(
+        zope.interface.Interface, zeit.wysiwyg.interfaces.IHTMLConverter)
     zope.interface.implements(zeit.wysiwyg.interfaces.IConversionStep)
     order_to_html = 0.0
     order_to_xml = 0.0
 
-    def __init__(self, context):
+    def __init__(self, context, converter):
         self.context = context
+        self.converter = converter
         self.request = (
             zope.security.management.getInteraction().participations[0])
 
@@ -284,8 +283,8 @@ class TagReplaceStep(ConversionStep):
     html_xml_tags = dict((value, key) for key, value in xml_html_tags.items())
     assert len(html_xml_tags) == len(xml_html_tags)
 
-    def __init__(self, context):
-        super(TagReplaceStep, self).__init__(context)
+    def __init__(self, context, converter):
+        super(TagReplaceStep, self).__init__(context, converter)
         self.xpath_xml = '|'.join(['.//%s' % tag for tag
                                    in self.xml_html_tags.keys()])
 
@@ -309,8 +308,8 @@ class PassThroughStep(ConversionStep):
 
     allow_tags = ['p', 'ul', 'ol']
 
-    def __init__(self, context):
-        super(PassThroughStep, self).__init__(context)
+    def __init__(self, context, converter):
+        super(PassThroughStep, self).__init__(context, converter)
         self.xpath_xml = '|'.join(['.//%s' % tag for tag in self.allow_tags])
 
     def to_html(self, node):
@@ -344,8 +343,7 @@ class NormalizeToplevelStep(ConversionStep):
 
     def to_xml(self, node):
         # XXX having to go back to the HTMLConverter is a little kludgy
-        converter = zeit.wysiwyg.interfaces.IHTMLConverter(self.context)
-        xpath = converter.covered_xpath()
+        xpath = self.converter.covered_xpath()
         covered = node.xpath(xpath)
         for child in node.iterchildren():
             if isinstance(child, ContentOnlyElement):
@@ -658,8 +656,7 @@ class RawXMLProtectStep(ConversionStep):
         return node
 
     def store(self, node):
-        annotations = zope.annotation.interfaces.IAnnotations(self.context)
-        storage = annotations['zeit.wysiwyg.html'].setdefault('raw', {})
+        storage = self.converter.storage.setdefault('raw', {})
         children = storage[node] = list(node.iterchildren())
         for child in children:
             node.remove(child)
@@ -683,8 +680,7 @@ class RawXMLUnprotectStep(ConversionStep):
         return node
 
     def restore(self, node):
-        annotations = zope.annotation.interfaces.IAnnotations(self.context)
-        storage = annotations['zeit.wysiwyg.html']['raw']
+        storage = self.converter.storage.setdefault('raw', {})
         for child in storage[node]:
             node.append(child)
 
@@ -718,8 +714,8 @@ class ReferenceStep(ConversionStep):
 
     content_type = None # override in subclass
 
-    def __init__(self, context):
-        super(ReferenceStep, self).__init__(context)
+    def __init__(self, context, converter):
+        super(ReferenceStep, self).__init__(context, converter)
         self.xpath_xml = './/%s' % self.content_type
         self.xpath_html = './/*[contains(@class, "%s")]' % self.content_type
 
