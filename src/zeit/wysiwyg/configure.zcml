@@ -2,7 +2,7 @@
 
   <adapter factory=".html.HTMLConverter" />
 
-  <!-- sorted alphabetically, see the weights on the classes
+  <!-- sorted alphabetically, see the ordering values on the classes
   for execution order -->
   <adapter factory=".html.InlineElementAppendParagraph"
            name="InlineElementAppendParagraph" />

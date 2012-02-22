@@ -1,10 +1,11 @@
 zeit.wysiwyg changes
 ====================
 
-1.40.4 (unreleased)
+1.41.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use separate ordering values instead of a single weight for conversion steps
+  from XML to HTML and vice versa. (#10251)
 
 
 1.40.3 (2011-12-08)
