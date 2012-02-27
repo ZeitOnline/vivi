@@ -46,7 +46,7 @@ zeit.edit.Editor = gocept.Class.extend({
             'content', 'onclick',
             self, self.handleContentClick);
         MochiKit.Signal.connect(
-            self, 'reload', self, self.reload_editor);
+            self, 'reload', self, self.reload);
         new zeit.cms.ToolTipManager(self.content);
     },
 
@@ -80,7 +80,7 @@ zeit.edit.Editor = gocept.Class.extend({
         }
     },
 
-    reload_editor: function(){
+    load_editor: function(){
         var self = this;
         return self.reload('cp-content-inner', context_url + '/contents');
     },
@@ -185,7 +185,7 @@ zeit.edit.Editor = gocept.Class.extend({
         MochiKit.Signal.signal(window, 'cp-editor-initialized');
         zeit.edit.editor.busy_until_reload_of(
             zeit.edit.editor, 0);
-        var d = zeit.edit.editor.reload_editor();
+        var d = zeit.edit.editor.load_editor();
         d.addCallback(function(result) {
             MochiKit.Signal.signal(window, 'cp-editor-loaded');
             return result;

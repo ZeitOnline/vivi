@@ -26,6 +26,8 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     def eval(self, text):
         return self.selenium.getEval(
             "var zeit = selenium.browserbot.getCurrentWindow().zeit;\n"
+            + "var window = selenium.browserbot.getCurrentWindow();\n"
+            + "var document = window.document;\n"
             + text)
 
     def wait_for_condition(self, text):
