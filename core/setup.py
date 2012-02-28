@@ -15,6 +15,7 @@ install_requires = [
     'gocept.selenium',
     'grokcore.component',
     'lxml',
+    'mock',
     'zc.resourcelibrary',
     'zeit.cms',
     'zeit.find',
