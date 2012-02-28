@@ -1,4 +1,3 @@
-# coding: utf-8
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -613,41 +612,3 @@ class TestResizeFont(
         s.assertAttribute(
             'css=.block.type-p .editable@style', u'font-size: 17px;')
 
-
-class TestGuessFilename(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
-
-    def setUp(self):
-        super(TestGuessFilename, self).setUp()
-        self.add_article()
-
-    def test_filename_should_be_copied_from_title_when_empty(self):
-        s = self.selenium
-        s.waitForElementPresent('id=new-filename.rename_to')
-        s.waitForElementPresent('id=article-content-head.title')
-        s.type('id=article-content-head.title', u'This is a cußtöm @# title')
-        s.fireEvent('id=article-content-head.title', 'keyup')
-        s.fireEvent('id=article-content-head.title', 'blur')
-        s.assertValue('id=new-filename.rename_to', u'this-is-a-cusstoem-title')
-        s.open(s.getLocation())
-        s.waitForElementPresent('id=new-filename.rename_to')
-        s.assertValue('id=new-filename.rename_to', u'this-is-a-cusstoem-title')
-
-    def test_filename_should_stay_unchanged_when_not_empty(self):
-        s = self.selenium
-        s.waitForElementPresent('id=new-filename.rename_to')
-        s.waitForElementPresent('id=article-content-head.title')
-        s.type('id=new-filename.rename_to', u'persistent_filename')
-        s.fireEvent('id=new-filename.rename_to', 'blur')
-        s.waitForElementNotPresent('css=.widget-outer.dirty')
-        s.assertValue('id=new-filename.rename_to', u'persistent_filename')
-        s.type('id=article-content-head.title', u'Custom title')
-        s.fireEvent('id=article-content-head.title', 'blur')
-        s.waitForElementNotPresent('css=.widget-outer.dirty')
-        s.assertValue('id=article-content-head.title', u'Custom title')
-        s.assertValue('id=new-filename.rename_to', u'persistent_filename')
-        s.open(s.getLocation())
-        s.waitForElementPresent('id=new-filename.rename_to')
-        s.waitForElementPresent('id=article-content-head.title')
-        s.assertValue('id=new-filename.rename_to', u'persistent_filename')
-        s.assertValue('id=article-content-head.title', u'Custom title')
