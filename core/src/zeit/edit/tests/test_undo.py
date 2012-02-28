@@ -1,4 +1,5 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# coding: utf-8
+# Copyright (c) 2011-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import lxml.etree
@@ -7,6 +8,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.edit.interfaces
 import zeit.edit.testing
+import zeit.edit.undo
 import zope.component
 
 
