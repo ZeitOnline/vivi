@@ -249,6 +249,7 @@ class RepositoryHelper(object):
 
 class FunctionalTestCaseCommon(
     unittest2.TestCase,
+    gocept.testing.assertion.Ellipsis,
     gocept.testing.assertion.Exceptions,
     RepositoryHelper):
 
