@@ -144,6 +144,10 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Comments allowed"),
         default=True)
 
+    commentSectionEnable = zope.schema.Bool(
+        title=_("Show commentthread"),
+        default=True)
+
     banner = zope.schema.Bool(
         title=_("Banner"),
         default=True)

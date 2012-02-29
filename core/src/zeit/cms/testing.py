@@ -279,6 +279,7 @@ class ZCAHelper(object):
 
 class FunctionalTestCaseCommon(
     unittest2.TestCase,
+    gocept.testing.assertion.Ellipsis,
     gocept.testing.assertion.Exceptions,
     RepositoryHelper,
     ZCAHelper,

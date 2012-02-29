@@ -56,6 +56,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     keywords = zeit.cms.tagging.tag.Tags()
 
+    commentSectionEnable = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['commentSectionEnable'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread')
+
     title = zeit.cms.content.property.Structure(
         '.body.title',
         zeit.cms.content.interfaces.ICommonMetadata['title'])

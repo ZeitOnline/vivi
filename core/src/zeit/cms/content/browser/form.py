@@ -49,7 +49,7 @@ class CommonMetadataFormBase(object):
         css_class='wide-widgets column-left')
     option_fields = gocept.form.grouped.Fields(
         _("Options"),
-        ('dailyNewsletter', 'commentsAllowed', 'foldable',
+        ('dailyNewsletter', 'commentsAllowed', 'commentSectionEnable', 'foldable',
          'minimal_header', 'countings', 'is_content',
          'banner', 'banner_id', 'breaking_news'),
         css_class='column-right checkboxes')
