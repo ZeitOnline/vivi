@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zope.testing import doctest
@@ -13,6 +13,7 @@ import zc.queue.tests
 import zeit.connector.connector
 import zeit.connector.interfaces
 import zope.app.testing.functional
+import zope.component.hooks
 import zope.testing.renormalizing
 
 
@@ -148,8 +149,8 @@ def reset_testing_folder(test):
     old_site = no_site
     if hasattr(test, 'globs'):
         root = test.globs['getRootFolder']()
-        old_site = zope.site.hooks.getSite()
-        zope.site.hooks.setSite(root)
+        old_site = zope.component.hooks.getSite()
+        zope.component.hooks.setSite(root)
 
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
     for name, uid in connector.listCollection(
@@ -157,7 +158,7 @@ def reset_testing_folder(test):
         del connector[uid]
 
     if old_site is not no_site:
-        zope.site.hooks.setSite(old_site)
+        zope.component.hooks.setSite(old_site)
 
 
 def get_storage(blob_dir):
