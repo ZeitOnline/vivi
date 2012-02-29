@@ -1,7 +1,8 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 
+import lxml.etree
 import unittest2
 import zeit.content.article.testing
 
@@ -35,3 +36,6 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         self.assertTrue(
             zeit.content.article.edit.interfaces.IRawXML.providedBy(div))
         self.assertEqual('raw', div.xml.tag)
+        self.assertEllipsis(
+            '<raw...>\n\n</raw>',
+            lxml.etree.tostring(div.xml, pretty_print=True))
