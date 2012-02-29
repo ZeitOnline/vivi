@@ -37,6 +37,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Deutschland</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
