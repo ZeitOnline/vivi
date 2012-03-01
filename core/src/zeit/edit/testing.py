@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import gocept.lxml.interfaces
@@ -22,19 +22,6 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
     layer = SELENIUM_LAYER
     skin = 'vivi'
-
-    def eval(self, text):
-        return self.selenium.getEval(
-            "var zeit = selenium.browserbot.getCurrentWindow().zeit;\n"
-            + "var window = selenium.browserbot.getCurrentWindow();\n"
-            + "var document = window.document;\n"
-            + text)
-
-    def wait_for_condition(self, text):
-        self.selenium.waitForCondition("""\
-        var zeit = selenium.browserbot.getCurrentWindow().zeit;
-        Boolean(%s);
-        """ % text)
 
 
 class IContainer(zeit.edit.interfaces.IArea,
