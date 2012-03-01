@@ -18,6 +18,7 @@ setup(
         'pytz',
         'setuptools',
         'zc.sourcefactory',
+        'zeit.cms',
         'zope.app.component',
         'zope.app.form',
         'zope.app.generations',
