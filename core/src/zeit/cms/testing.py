@@ -331,6 +331,20 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         self.selenium.click('//label[contains(string(.), %s)]' %
                             xml.sax.saxutils.quoteattr(label))
 
+    setup_globals = """\
+        var window = selenium.browserbot.getCurrentWindow();
+        var document = window.document;
+        var zeit = window.zeit;
+        """
+
+    def eval(self, text):
+        return self.selenium.getEval(self.setup_globals + text)
+
+    def wait_for_condition(self, text):
+        self.selenium.waitForCondition(self.setup_globals + """\
+        Boolean(%s);
+        """ % text)
+
 
 def click_wo_redirect(browser, *args, **kwargs):
     browser.mech_browser.set_handle_redirect(False)
