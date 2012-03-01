@@ -10,6 +10,7 @@ import gocept.jslint
 import gocept.selenium.base
 import gocept.selenium.ztk
 import gocept.testing.assertion
+import gocept.zcapatch
 import inspect
 import json
 import logging
@@ -62,7 +63,8 @@ def ZCMLLayer(
     def testSetUp(cls):
         cls.setup.setUp()
         cls.setup.base_product_config = copy.deepcopy(
-        zope.app.appsetup.product.saveConfiguration())
+            zope.app.appsetup.product.saveConfiguration())
+        cls.setup.zca = gocept.zcapatch.Patches()
 
     def testTearDown(cls):
         try:
@@ -72,6 +74,7 @@ def ZCMLLayer(
             pass
         else:
             connector._reset()
+        cls.setup.zca.reset()
         zope.app.appsetup.product.restoreConfiguration(
             cls.setup.base_product_config)
         zope.site.hooks.setSite(None)
@@ -292,6 +295,10 @@ class FunctionalTestCaseCommon(
         """Returns the Zope root folder."""
         return zope.app.testing.functional.FunctionalTestSetup().\
             getRootFolder()
+
+    @property
+    def zca(self):
+        return zope.app.testing.functional.FunctionalTestSetup().zca
 
     def setUp(self):
         super(FunctionalTestCaseCommon, self).setUp()
