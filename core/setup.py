@@ -30,6 +30,7 @@ setup(
         'gocept.pagelet',
         'gocept.runner',
         'gocept.testing>=1.3',
+        'gocept.zcapatch',
         'grokcore.component',
         'grokcore.view',
         'guppy',
