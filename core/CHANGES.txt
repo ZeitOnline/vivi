@@ -46,6 +46,9 @@ editor-ng branch changes
 - Restructured test layer and test cases so as to have a more reliable
   tear-down. (#10456)
 
+- Added helpers for selenium tests: eval JS and wait for conditions in the
+  current window.
+
 
 1.52.0 (2011-12-08)
 -------------------
