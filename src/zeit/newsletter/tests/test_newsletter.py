@@ -75,11 +75,13 @@ class SendTest(zeit.newsletter.testing.TestCase):
         self.newsletter = self.repository['mynl']['newsletter']
         self.newsletter.subject = 'thesubject'
 
-        self.renderer = self.patchUtility(zeit.newsletter.interfaces.IRenderer)
+        self.renderer = self.zca.patch_utility(
+            mock.Mock(), zeit.newsletter.interfaces.IRenderer)
         self.renderer.return_value = dict(
             html=mock.sentinel.html, text=mock.sentinel.text)
 
-        self.optivo = self.patchUtility(zeit.newsletter.interfaces.IOptivo)
+        self.optivo = self.zca.patch_utility(
+            mock.Mock(), zeit.newsletter.interfaces.IOptivo)
 
     def test_send_uses_renderer_and_calls_optivo(self):
             self.newsletter.send()
