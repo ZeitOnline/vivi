@@ -23,7 +23,7 @@ setup(
         'setuptools',
         'zeit.addcentral',
         'zeit.edit',
-        'zeit.cms',
+        'zeit.cms>=1.53.0.dev',
         'zeit.connector',
         'zope.interface',
         'zope.cachedescriptors',
