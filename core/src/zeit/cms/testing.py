@@ -250,42 +250,11 @@ class RepositoryHelper(object):
         self.__dict__['repository'] = value
 
 
-class ZCAHelper(object):
-
-    def patchUtility(self, interface, new=None, name=None, sm=None):
-        self._ensure_storage()
-        if sm is None:
-            sm = zope.component.getSiteManager()
-        if new is None:
-            new = mock.Mock()
-        orig = sm.queryUtility(interface)
-        if orig is not None:
-            self.utilities.append((sm, orig, interface, name))
-        if name is None:
-            sm.registerUtility(new, interface)
-        else:
-            sm.registerUtility(new, interface, name)
-        return new
-
-    def restoreUtilities(self):
-        self._ensure_storage()
-        for sm, orig, interface, name in self.utilities:
-            if name is None:
-                sm.registerUtility(orig, interface)
-            else:
-                sm.registerUtility(orig, interface, name)
-
-    def _ensure_storage(self):
-        if not hasattr(self, 'utilities'):
-            self.utilities = []
-
-
 class FunctionalTestCaseCommon(
     unittest2.TestCase,
     gocept.testing.assertion.Ellipsis,
     gocept.testing.assertion.Exceptions,
     RepositoryHelper,
-    ZCAHelper,
     ):
 
     layer = cms_layer
