@@ -80,6 +80,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             function(result) {
                 li.innerHTML = result;
                 li.insertBefore(
+                    // XXX proper i18n
                     A({href: index, rel: "remove", title: "Entfernen"}),
                     li.firstChild);
                 return result;
