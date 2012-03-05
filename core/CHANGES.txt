@@ -20,6 +20,9 @@ zeit.cms changes
 - Added helpers for selenium tests: eval JS and wait for conditions in the
   current window. Also use gocept.zcapatch to register temporary views etc.
 
+- Added a checkbox to indicate whether a content object should appear in
+  rankings or not. (#10534)
+
 
 1.52.0 (2011-12-08)
 -------------------
