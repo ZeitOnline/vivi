@@ -5,12 +5,7 @@
 import lovely.remotetask.interfaces
 import lxml.cssselect
 import unittest2 as unittest
-import zeit.cms.browser.view
-import zeit.cms.checkout.interfaces
-import zeit.cms.clipboard.interfaces
 import zeit.cms.repository.interfaces
-import zeit.cms.testcontenttype.testcontenttype
-import zeit.content.cp.centerpage
 import zeit.content.quiz.quiz
 import zope.component
 
@@ -27,7 +22,8 @@ class TestDottedName(zeit.content.cp.testing.SeleniumTestCase):
 
         # Test a name that we know that exists
         s.verifyEval(
-            'new (window.zeit.content.cp.resolveDottedName("zeit.content.cp.Editor"))',
+            'new (window.zeit.content.cp.resolveDottedName('
+            '"zeit.content.cp.Editor"))',
             '[object Object]')
 
 
@@ -147,8 +143,8 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         # it overlaps the third row. The initial order is 3, 2, 1. After drag
         # it is 2, 1, 3.
         def li(text, following_sibling=False):
-            path = '//div[@class="lightbox"]//li[contains(string(.), "%s")]' % (
-                text,)
+            path = ('//div[@class="lightbox"]//li[contains(string(.), "%s")]' %
+                    text)
             if following_sibling:
                 path += '/following-sibling::li[1]'
             return path
@@ -186,7 +182,8 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         # Changing the value and submitting the form will reload the teaser
         # list light box. The text will be in there then.
         s.type('id=form.teaserTitle', 'A nice new teaser')
-        s.click('//form[contains(@action, "edit-teaser.html")]//input[@id="form.actions.apply_in_article"]')
+        s.click('//form[contains(@action, "edit-teaser.html")]'
+                '//input[@id="form.actions.apply_in_article"]')
         s.waitForTextPresent('A nice new teaser')
 
     def test_inplace_teaser_editing_with_abort(self):
@@ -251,7 +248,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
             s.click('css=a.choose-block')
             s.waitForElementPresent(teaser_module)
             s.dragAndDropToObject(teaser_module, 'css=a.choose-block')
-            s.waitForXpathCount(path, nr+1)
+            s.waitForXpathCount(path, nr + 1)
 
         path = 'xpath=' + path
         # Get the ids of the blocks
@@ -354,7 +351,6 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
         self.open_centerpage()
         # There are two modules in the informatives anyway, don't create any
-        teaser_module = self.get_module('informatives', 'List of teasers')
         block1 = s.getAttribute('css=.block.type-cpextra@id')
         block2 = s.getAttribute('css=.block.type-cpextra + * + .block@id')
         s.assertElementPresent('css=#%s + * + #%s' % (block1, block2))
