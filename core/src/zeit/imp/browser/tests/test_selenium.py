@@ -273,8 +273,8 @@ class SeleniumMaskTests(Selenium):
         s.verifyEval('window.document.imp.get_crop_arguments().x1', '0')
         s.verifyEval('window.document.imp.get_crop_arguments().x2', '410')
         # Y is aligned middle
-        s.verifyEval('window.document.imp.get_crop_arguments().y1', '53')
-        s.verifyEval('window.document.imp.get_crop_arguments().y2', '253')
+        s.verifyEval('window.document.imp.get_crop_arguments().y1', '54')
+        s.verifyEval('window.document.imp.get_crop_arguments().y2', '254')
 
     def test_mask_select_should_fit_image_into_mask_y(self):
         s = self.selenium
