@@ -48,7 +48,7 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.NotPublishablePublishInfo):
         zope.schema.Int(), WORKFLOW_NS, 'retract_job_id', live=True)
 
     def __init__(self, context):
-        self.context = self.__parent__ = context
+        self.context = context
 
     @rwproperty.getproperty
     def release_period(self):
