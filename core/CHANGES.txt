@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+2.9.6 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.9.5 (2012-03-06)
 ------------------
 
