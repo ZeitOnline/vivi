@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Removed unused import.
 
 
 2.4.1 (2011-06-27)
