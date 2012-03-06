@@ -36,7 +36,7 @@ class ReportTest(zeit.vgwort.testing.TestCase):
         self.assertEqual([content], self.vgwort.calls)
         info = zeit.vgwort.interfaces.IReportInfo(content)
         self.assertEqual(None, info.reported_error)
-        self.assert_(info.reported_on > now)
+        self.assertTrue(info.reported_on > now)
 
     def test_semantic_error_should_mark_content(self):
         self.vgwort.error = zeit.vgwort.interfaces.WebServiceError
