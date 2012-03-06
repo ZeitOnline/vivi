@@ -241,11 +241,6 @@ class ImageTest(GalleryTest):
         # NOTE: the error message should be improved
         self.assert_ellipsis("ComponentLookupError...")
 
-    def test_empty_block_should_not_provide_drop_in_readonly_mode(self):
-        # Disable inherited test because empty images are removed during
-        # checkin. This will change hopefully once #8194 is implemented.
-        pass
-
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
