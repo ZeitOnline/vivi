@@ -3,6 +3,7 @@ zeit.cms changes
 
 1.53.0 (unreleased)
 -------------------
+
 - Added metadata checkbox show commentthread (zeit-mantis 3664)
 
 - Limit the amount of PubliationDependencies that are actually published;
