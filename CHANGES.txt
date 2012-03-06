@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-0.4.4 (unreleased)
+0.4.4 (2012-03-06)
 ------------------
 
 - Objects can be copied from clipboards again. (#9960)
