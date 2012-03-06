@@ -1,12 +1,12 @@
 Page breaks
 ===========
 
-[#needsinteraction]_
-
 >>> import StringIO
 >>> import lxml.etree
+>>> import zeit.cms.testing
 >>> import zeit.content.article.article
 >>> import zeit.wysiwyg.interfaces
+>>> principal = zeit.cms.testing.create_interaction()
 
 
 XML->HTML
@@ -250,8 +250,3 @@ are added:
     <p>4</p>
   </division>
 </body>
-
-
-.. [#needsinteraction]
-    >>> import zeit.cms.testing
-    >>> principal = zeit.cms.testing.create_interaction()
