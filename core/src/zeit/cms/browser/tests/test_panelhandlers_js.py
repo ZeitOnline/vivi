@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import time
 import zeit.cms.testing
 
 
@@ -15,6 +16,7 @@ class TestPanels(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.waitForElementPresent('//div[@id ="%s"][@class = "panel %s"]' %(
             id, state))
+        time.sleep(0.25)
 
     def test_panels_should_be_foldable(self):
         s = self.selenium
