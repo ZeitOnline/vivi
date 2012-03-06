@@ -16,7 +16,6 @@ setup(
     install_requires=[
         'setuptools',
         'zeit.connector>=0.12',
-        'zeit.cms',
         'zope.app.securitypolicy',
         'zope.app.zcmlfiles',
         'zope.location',
