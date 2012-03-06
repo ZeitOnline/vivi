@@ -4,7 +4,10 @@ zeit.cms changes
 1.53.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Backout changeset:89a6328dd4d0: This changeset was grafted from editor-ng but
+  does not work on default as it changes publication security. The change
+  prevents quick publish in zeit.content.cp then.
+
 
 
 1.53.1 (2012-03-06)
