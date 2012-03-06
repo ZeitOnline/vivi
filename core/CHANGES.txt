@@ -1,6 +1,12 @@
 zeit.content.infobox changes
 ============================
 
+1.23.7 (unreleased)
+-------------------
+
+- Nothing changed yet.
+
+
 1.23.6 (2012-03-06)
 -------------------
 
