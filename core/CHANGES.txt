@@ -4,7 +4,8 @@ zeit.cms changes
 1.53.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Testing expected ``/bin/true`` to exist which is not the case on all systems.
+  Just using ``true`` now, expecting true to be somewhere in the path.
 
 
 1.53.0 (2012-03-06)
