@@ -323,27 +323,55 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_videos_should_be_editable(self):
         s = self.selenium
         self.add_article()
-        self.create_block('video')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/my_video_0"]',
-            'css=div.video_1')
+        block_id = self.create_block('video', wait_for_inline=True)
+        video = 'css=div[id="form.division.%s.video"]' % block_id
+        video_2 = 'css=div[id="form.division.%s.video_2"]' % block_id
+
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_0"]', video)
         s.waitForElementPresent(
-            'css=div.video_1 div.supertitle:contains("MyVideo_0")')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/my_video_1"]',
-            'css=div.video_2')
+            video + ' div.supertitle:contains("MyVideo_0")')
+
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_1"]', video_2)
         s.waitForElementPresent(
-            'css=div.video_2 div.supertitle:contains("MyVideo_1")')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/my_video_2"]',
-            'css=div.video_1')
+            video_2 + ' div.supertitle:contains("MyVideo_1")')
+
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_2"]', video)
         s.waitForElementPresent(
-            'css=div.video_1 div.supertitle:contains("MyVideo_2")')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/my_video_3"]',
-            'css=div.video_2')
+            video + ' div.supertitle:contains("MyVideo_2")')
+
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_3"]', video_2)
         s.waitForElementPresent(
-            'css=div.video_2 div.supertitle:contains("MyVideo_3")')
+            video_2 + ' div.supertitle:contains("MyVideo_3")')
+
+    def test_videos_should_be_removeable(self):
+        s = self.selenium
+        self.add_article()
+        block_id = self.create_block('video', wait_for_inline=True)
+        video = 'css=div[id="form.division.%s.video"]' % block_id
+        video_2 = 'css=div[id="form.division.%s.video_2"]' % block_id
+
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_0"]', video)
+        s.waitForElementPresent(
+            video + ' div.supertitle:contains("MyVideo_0")')
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_1"]', video_2)
+        s.waitForElementPresent(
+            video_2 + ' div.supertitle:contains("MyVideo_1")')
+
+        s.click(video + ' a[rel=remove]')
+        s.waitForElementNotPresent(
+            video + ' div.supertitle:contains("MyVideo_0")')
+        s.assertElementPresent(
+            video_2 + ' div.supertitle:contains("MyVideo_1")')
+
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_0"]', video)
+        s.waitForElementPresent(
+            video + ' div.supertitle:contains("MyVideo_0")')
+
+        s.click(video_2 + ' a[rel=remove]')
+        s.waitForElementNotPresent(
+            video_2 + ' div.supertitle:contains("MyVideo_1")')
+        s.assertElementPresent(
+            video + ' div.supertitle:contains("MyVideo_0")')
 
     def test_layout_should_be_editable(self):
         s = self.selenium

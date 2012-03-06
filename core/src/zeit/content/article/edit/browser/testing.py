@@ -31,11 +31,16 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
             "   this.browserbot.findElement('{0}'), 'save')".format(locator))
         self.selenium.waitForElementNotPresent('xpath=//*[@contenteditable]')
 
-    def create_block(self, block):
+    def create_block(self, block, wait_for_inline=False):
         s = self.selenium
         s.click('link=Module')
         s.waitForElementPresent('css=#article-modules .module')
+        block_sel = '.block.type-{0}'.format(block)
         s.dragAndDropToObject(
             'css=#article-modules .module[cms\\:block_type={0}]'.format(block),
             'css=#article-editor-text .landing-zone.visible')
-        s.waitForElementPresent('css=.block.type-{0}'.format(block))
+        s.waitForElementPresent('css={0}'.format(block_sel))
+        if wait_for_inline:
+            s.waitForElementPresent(
+                'css={0} form.inline-form.wired'.format(block_sel))
+        return s.getAttribute('css={0}@id'.format(block_sel))

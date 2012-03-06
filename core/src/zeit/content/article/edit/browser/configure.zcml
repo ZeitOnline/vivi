@@ -150,33 +150,6 @@
 
   <!-- video -->
 
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IVideo"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    class=".video.View"
-    template="edit.video.pt"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="zeit.content.article.edit.interfaces.IVideo"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="set_reference"
-    class=".video.SetVideo"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.article.edit.interfaces.IVideo"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="set_reference_2"
-    class=".video.SetVideo2"
-    permission="zeit.EditContent"
-    />
-
   <browser:page
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -192,7 +165,6 @@
     name="edit-video"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="10"
     />
 
   <!-- references -->
