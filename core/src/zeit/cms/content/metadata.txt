@@ -15,6 +15,10 @@ Set "show commentthread from common metadata:
 
 >>> content.show_commentthread = True
 
+Set content to be in rankings:
+
+>>> content.in_rankings = True
+
 The initial value for the copyright is None:
 
 >>> content.copyrights is None
@@ -35,7 +39,8 @@ Verify the data:
 >>> pprint.pprint(dict(properties))
 {('comments', u'http://namespaces.zeit.de/CMS/document'): 'yes',
  ('copyrights', u'http://namespaces.zeit.de/CMS/document'): u'ich',
- ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...'}
+ ('date-last-modified', u'http://namespaces.zeit.de/CMS/document'): '...',
+ ('in_rankings', u'http://namespaces.zeit.de/CMS/document'): 'yes'}
 
 Products
 ++++++++

@@ -26,6 +26,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'copyrights',
             'countings',
             'foldable',
+            'in_rankings',
             'is_content',
             'minimal_header',
             'page',
