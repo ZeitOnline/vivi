@@ -117,7 +117,8 @@ class ArticleHTMLContent(zeit.wysiwyg.html.HTMLContentBase):
 
 class PageBreakStep(zeit.wysiwyg.html.ConversionStep):
 
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+    zope.component.adapts(zeit.content.article.interfaces.IArticle,
+                          zeit.wysiwyg.interfaces.IHTMLConverter)
 
     order_to_html = -10
     order_to_xml = 10
@@ -170,7 +171,8 @@ class DivisionStep(zeit.wysiwyg.html.ConversionStep):
 
     # XXX structurally similar to zeit.wysiwyg.html.RawXMLStep
 
-    zope.component.adapts(zeit.content.article.interfaces.IArticle)
+    zope.component.adapts(zeit.content.article.interfaces.IArticle,
+                          zeit.wysiwyg.interfaces.IHTMLConverter)
 
     xpath_xml = './/division[@type="page"]'
     xpath_html = './/*[contains(@class, "page-break")]'
