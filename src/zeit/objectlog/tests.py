@@ -1,15 +1,18 @@
-# Copyright (c) 2008-2012 gocept gmbh & co. kg
+# Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
+# $Id$
 
-from zope.testing import doctest
-import os
 import re
+import os
 import unittest
-import zeit.cms.testing
+
 import zope.testing.renormalizing
+from zope.testing import doctest
+
+import zope.app.testing.functional
 
 
-ObjectLogLayer = zeit.cms.testing.ZCMLLayer(
+ObjectLogLayer = zope.app.testing.functional.ZCMLLayer(
     os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
     __name__, 'ObjectLogLayer', allow_teardown=True)
 
@@ -21,7 +24,7 @@ checker = zope.testing.renormalizing.RENormalizing([
 
 def test_suite():
     suite = unittest.TestSuite()
-    test = zeit.cms.testing.FunctionalDocFileSuite(
+    test = zope.app.testing.functional.FunctionalDocFileSuite(
         'README.txt',
         optionflags=(doctest.INTERPRET_FOOTNOTES | doctest.ELLIPSIS |
                      doctest.REPORT_NDIFF | doctest.NORMALIZE_WHITESPACE),
@@ -29,3 +32,4 @@ def test_suite():
     test.layer = ObjectLogLayer
     suite.addTest(test)
     return suite
+
