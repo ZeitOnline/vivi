@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.41.0 (unreleased)
+1.41.0 (2012-03-06)
 -------------------
 
 - Use separate ordering values instead of a single weight for conversion steps
