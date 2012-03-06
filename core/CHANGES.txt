@@ -4,7 +4,8 @@ CHANGES
 1.25.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Added random value to mock connector's etag generator as subsequent calls to
+  ``time.time()`` may the same value.
 
 
 1.24.0 (2012-03-01)

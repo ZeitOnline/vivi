@@ -10,6 +10,7 @@ import lxml.etree
 import os
 import os.path
 import pytz
+import random
 import time
 import urlparse
 import uuid
@@ -161,7 +162,8 @@ class Connector(object):
         resource.properties[('getlastmodified', 'DAV:')] = unicode(
             datetime.datetime.now(pytz.UTC).strftime(
                 '%a, %d %b %Y %H:%M:%S GMT'))
-        resource.properties[('getetag', 'DAV:')] = repr(time.time())
+        resource.properties[('getetag', 'DAV:')] = repr(
+            time.time()) + repr(random.random())
 
         self._set_properties(id, resource.properties)
         self._content_types[id] = resource.contentType
