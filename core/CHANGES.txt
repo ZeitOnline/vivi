@@ -1,7 +1,7 @@
 zeit.addcentral changes
 =======================
 
-1.0.2 (unreleased)
+1.0.3 (2012-03-06)
 ------------------
 
 - Provide name of interface in dummy add context to make debugging easier.
