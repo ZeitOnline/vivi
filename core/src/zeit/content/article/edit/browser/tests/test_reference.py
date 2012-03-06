@@ -1,6 +1,7 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import json
 import mock
 import transaction
 import unittest2
@@ -64,6 +65,10 @@ class GalleryTest(unittest2.TestCase,
         transaction.commit()
         return article
 
+    def call_set_reference(self, uniqueId):
+        self.browser.open(
+            'editable-body/blockname/@@set_reference?uniqueId=%s' % uniqueId)
+
     def test_no_reference_should_render(self):
         self.get_article(with_empty_block=True)
         self.browser.open('editable-body/@@contents')
@@ -74,9 +79,7 @@ class GalleryTest(unittest2.TestCase,
     def test_empty_block_should_be_landing_zone(self):
         self.get_article(with_empty_block=True)
         self.setup_content()
-        self.browser.open(
-            'editable-body/blockname/@@set_reference?uniqueId=%s' %
-            self.content_id)
+        self.call_set_reference(self.content_id)
         self.assert_json(
             {'signals': [{'args': [
                 'blockname',
@@ -91,9 +94,7 @@ class GalleryTest(unittest2.TestCase,
         self.get_article(with_empty_block=True)
         self.setup_content()
         with self.assertRaises(Exception):
-            self.browser.open(
-                'editable-body/blockname/@@set_reference?uniqueId='
-                'http://xml.zeit.de/testcontent')
+            self.call_set_reference('http://xml.zeit.de/testcontent')
         # NOTE: the error message should be improved
         self.assert_ellipsis(
             "ConstraintNotSatisfied(<zeit.cms.repository.unknown..."
@@ -144,9 +145,7 @@ class GalleryTest(unittest2.TestCase,
     def test_should_be_visible_in_read_only_mode(self):
         self.get_article(with_empty_block=True)
         self.setup_content()
-        self.browser.open(
-            'editable-body/blockname/@@set_reference?uniqueId=%s' %
-            self.content_id)
+        self.call_set_reference(self.content_id)
         self.browser.open(self.article_url)
         self.browser.getLink('Checkin').click()
         self.browser.open('@@contents')
@@ -156,9 +155,7 @@ class GalleryTest(unittest2.TestCase,
     def test_reference_should_be_stored_by_set_ref(self):
         article = self.get_article(with_empty_block=True)
         self.setup_content()
-        self.browser.open(
-            'editable-body/blockname/@@set_reference?uniqueId={0}'.format(
-                self.content_id))
+        self.call_set_reference(self.content_id)
         self.assertEqual(
             self.content_id,
             article.xml.body.division[self.expected_type].get(self.attribute))
@@ -167,9 +164,7 @@ class GalleryTest(unittest2.TestCase,
         import zeit.cms.interfaces
         article = self.get_article(with_empty_block=True)
         self.setup_content()
-        self.browser.open(
-            'editable-body/blockname/@@set_reference?uniqueId={0}'.format(
-                self.content_id))
+        self.call_set_reference(self.content_id)
         self.browser.open(self.article_url)
         self.browser.getLink('Checkin').click()
         with zeit.cms.testing.site(self.layer.setup.getRootFolder()):
@@ -190,9 +185,7 @@ class GalleryTest(unittest2.TestCase,
     def test_contents_should_not_have_cache_control_header(self):
         self.get_article(with_empty_block=True)
         self.setup_content()
-        self.browser.open(
-            'editable-body/blockname/@@set_reference?uniqueId={0}'.format(
-                self.content_id))
+        self.call_set_reference(self.content_id)
         self.browser.open('@@contents')
         self.assertNotIn('Cache-Control', self.browser.headers)
 
