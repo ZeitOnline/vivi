@@ -3,6 +3,7 @@
 
 import datetime
 import pytz
+import time
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.vgwort.interfaces
 import zeit.vgwort.report
@@ -30,6 +31,7 @@ class ReportTest(zeit.vgwort.testing.TestCase):
 
     def test_successful_report_should_mark_content(self):
         now = datetime.datetime.now(pytz.UTC)
+        time.sleep(0.25)
         content = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent')
         zeit.vgwort.report.report(content)
