@@ -9,7 +9,6 @@ Article Layout
 The centerpage referenced by an article as its layout is published when the
 article is published.
 
->>> dummy = with_statement
 >>> import zeit.content.article.article
 >>> import zeit.content.cp.centerpage
 >>> import zope.component
