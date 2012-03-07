@@ -165,7 +165,7 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         with mock.patch.object(
                 field.value_type.source, 'get_check_types') as types:
             types.return_value = [u'foo', 'bar']
-            self.assertEqual("['type-foo', 'type-bar']", widget.accept_classes)
+            self.assertEqual('["type-foo", "type-bar"]', widget.accept_classes)
 
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
@@ -416,7 +416,7 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
         widget = DropObjectWidget(choice, choice.source, ANY)
         with mock.patch.object(choice.source, 'get_check_types') as types:
             types.return_value = [u'foo', 'bar']
-            self.assertEqual("['type-foo', 'type-bar']", widget.accept_classes)
+            self.assertEqual('["type-foo", "type-bar"]', widget.accept_classes)
 
 
 class DropObjectWidget(zeit.cms.testing.FunctionalTestCase):

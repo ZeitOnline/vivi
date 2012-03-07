@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import json
 import time
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
@@ -329,7 +330,7 @@ class MultiObjectSequenceDisplayWidget(
 
 def js_escape_check_types(source):
     # convert unicode, JS needs 'foo', not u'foo'
-    return repr(['type-' + str(x) for x in source.get_check_types()])
+    return json.dumps([u'type-' + x for x in source.get_check_types()])
 
 
 DROP_TEMPLATE = u"""\
