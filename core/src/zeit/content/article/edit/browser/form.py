@@ -265,7 +265,7 @@ class MiscFeatures(zeit.edit.browser.form.InlineForm):
         zeit.cms.content.interfaces.ICommonMetadata,
         zeit.content.article.interfaces.ICDSWorkflow,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'commentsAllowed', 'export_cds', 'serie')
+            'commentsAllowed', 'commentSectionEnable', 'export_cds', 'serie')
 
 
 class MiscProductManagementA(zeit.edit.browser.form.InlineForm):
