@@ -69,7 +69,8 @@ class InlineForm(zope.formlib.form.SubPageEditForm,
     def widget_data(self):
         result = []
         for widget in self.widgets:
-            css_class = ['widget-outer']
+            css_class = [
+                'widget-outer', 'fieldname-' + widget.context.__name__]
             if widget.error():
                 css_class.append('error')
             result.append(dict(
