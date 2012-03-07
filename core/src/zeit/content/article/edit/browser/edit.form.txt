@@ -25,18 +25,18 @@ Those forms are loaded via javascript:
 >>> browser.open('@@edit.form.metadata-a')
 >>> print browser.contents
 <fieldset>
-<div class="widget-outer">
+<div class="widget-outer fieldname-ressort">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.ressort">Ressort</label>
     <span class="required">required</span>
   </div>
 ...
-<div class="widget-outer">
+<div class="widget-outer fieldname-sub_ressort">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.sub_ressort">Sub ressort</label>
   </div>
 ...
-<div class="widget-outer">
+<div class="widget-outer fieldname-keywords">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.keywords">Keywords</label>
   </div>
@@ -45,101 +45,48 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-b')
 >>> print browser.contents
-<fieldset>
-<div class="widget-outer">
-  <div class="label">
-    <label cms:tooltip="" for="metadata-b.product">Product id</label>
-    <span class="required">required</span>
-  </div>
-  <div class="widget">...
-</div>
-<div class="widget-outer">
-  <div class="label">
-    <label cms:tooltip="Do not enter (c)."
-        for="metadata-b.copyrights">Copyright (c)</label>
-  </div>
-  <div class="widget">...
-</div>
-<div class="widget-outer">
-  <div class="widget">...
-  <div class="label">
-    <label cms:tooltip="Should this article be listed in the daily newsletter?"
-        for="metadata-b.dailyNewsletter">Daily newsletter</label>
-  </div>
-...
+<...
+...<label cms:tooltip="" for="metadata-b.product">Product id</label>...
+...<label cms:tooltip="Do not enter (c)."
+        for="metadata-b.copyrights">Copyright (c)</label>...
+...<label cms:tooltip="Should this article be listed in the daily newsletter?"
+        for="metadata-b.dailyNewsletter">Daily newsletter</label>...
 
 
 >>> browser.open('@@edit.form.metadata-c')
 >>> print browser.contents
-<fieldset>
-<div class="widget-outer">
-  <div class="label">
-    <label cms:tooltip=""
-        for="metadata-c.author_references">Authors</label>
-  </div>
-  <div class="widget">...
-</div>
-...
+<...
+...<label cms:tooltip=""
+        for="metadata-c.author_references">Authors</label>...
 
 
 >>> browser.open('@@edit.form.assets')
 >>> print browser.contents
-<fieldset>
-<legend>Assets</legend>
-<div class="widget-outer">
-  <div class="label">
-    <label cms:tooltip="Objects that are related to this object."
-        for="assets.related">Related content</label>
-  </div>
-  <div class="widget">...
-</div>
-...
+<...
+...<label cms:tooltip="Objects that are related to this object."
+        for="assets.related">Related content</label>...
 
 
 >>> browser.open('@@edit.form.recension-list')
 >>> print browser.contents
-<fieldset id="recensions">
-    <legend>
-      Recensions
-    </legend>
-    <div class="recensions">
-...
-</fieldset>
+<...<div class="recensions">...
 
 
 >>> browser.open('@@edit.form.workflow-status')
 >>> print browser.contents
-<fieldset>
-<legend>Status</legend>
-<div class="widget-outer">
-  <div class="widget">...
-  <div class="label">
-    <label cms:tooltip=""
-        for="workflow-status.published">Published</label>
-  </div>
-...
+<...
+...<label cms:tooltip=""
+        for="workflow-status.published">Published</label>...
 
 
 >>> browser.open('@@edit.form.workflow-publication-period')
 >>> print browser.contents
-<fieldset>
-<legend>Publication period</legend>
-<div class="widget-outer">
-  <div class="label">
-    <label cms:tooltip="Leave empty for no constraint."
-        for="workflow-publication-period.release_period">Publication period</label>
-  </div>
-  <div class="widget">...
-...
+<...
+...<label cms:tooltip="Leave empty for no constraint."
+        for="workflow-publication-period.release_period">Publication period</label>...
 
 
 >>> browser.open('@@edit.form.workflow-log')
 >>> print browser.contents
-<fieldset class="workflow-log">
-<legend>Log</legend>
-<div class="widget-outer">
-  <div class="label">
-    <label cms:tooltip="" for="workflow-log.logs">Log</label>
-  </div>
-  <div class="widget">...
-...
+<...
+...<label cms:tooltip="" for="workflow-log.logs">Log</label>...
