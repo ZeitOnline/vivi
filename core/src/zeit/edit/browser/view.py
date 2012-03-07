@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -19,6 +19,14 @@ log = logging.getLogger(__name__)
 
 
 class Form(object):
+    """Descriptor that extracts a variable's value from the request.
+
+    The variable may or may not be JSON-encoded, and the request may use
+    either POST or GET. It is assumed that a POSTed body is JSON-encoded as a
+    whole. This means that variables may be JSON-encoded twice; it is not
+    clear whether this acctually happens anywhere in the CMS, though.
+
+    """
 
     def __init__(self, var_name, json=False, default=None):
         self.var_name = var_name
