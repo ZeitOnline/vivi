@@ -264,10 +264,6 @@
   margin-right:12px;
 }
 
-#cp-content .action-content-droppable.video-image.landing-zone.visible {
-  width:43%
-}
-
 form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin:1em;    
 }
