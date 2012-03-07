@@ -1,7 +1,6 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import json
 import mock
 import transaction
 import unittest2
@@ -275,23 +274,6 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent(text)
         s.assertValue(text, 'A custom caption')
-
-
-class VideoTest(GalleryTest):
-
-    expected_type = 'video'
-
-    def setup_content(self):
-        import zope.component
-        import zeit.cms.repository.interfaces
-        from zeit.content.video.video import Video
-        with zeit.cms.testing.site(self.layer.setup.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                repository = zope.component.getUtility(
-                    zeit.cms.repository.interfaces.IRepository)
-                repository['video'] = Video()
-                repository['video_2'] = Video()
-        self.content_id = repository['video'].uniqueId
 
 
 class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
