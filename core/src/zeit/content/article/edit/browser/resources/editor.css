@@ -517,6 +517,32 @@ span.charcount {
 #article-editor-text .zeit-content-article-edit-interfaces-IVideo .content-details .object-link a {
   -moz-appearance: none;
 }
+
+/* display landing zones of the two videos side by side */
+
+#edit-form-article-content .block.type-video .widget-outer.fieldname-video {
+  float:left;
+}
+
+#edit-form-article-content .block.type-video .widget-outer.fieldname-video_2 {
+  float:right;
+  clear:none;
+}
+
+#edit-form-article-content .block.type-video .widget-outer.fieldname-layout {
+  clear:both;
+}
+
+#edit-form-article-content .block.type-video .widget-outer.fieldname-video .label,
+#edit-form-article-content .block.type-video .widget-outer.fieldname-video_2 .label {
+  display:none;
+}
+
+#edit-form-article-content .block.type-video .widget-outer.fieldname-video,
+#edit-form-article-content .block.type-video .widget-outer.fieldname-video_2 {
+  width:43%
+}
+
 /* xml block */
 
 .block.type-raw .rawxml {
