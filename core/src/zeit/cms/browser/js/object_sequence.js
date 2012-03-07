@@ -293,7 +293,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
                     return result;
                 },
                 function(error) {
-                    self.etails.innerHTML = 'Fehler';
+                    self.details.innerHTML = 'Fehler';
                     return error;
                 });
             d.addBoth(function(result) {
