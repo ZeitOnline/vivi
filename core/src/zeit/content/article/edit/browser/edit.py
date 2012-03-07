@@ -177,7 +177,7 @@ class EditAudio(zeit.edit.browser.form.InlineForm):
 
     @property
     def prefix(self):
-        return 'form.division.{0}'.format(self.context.__name__)
+        return 'audio.{0}'.format(self.context.__name__)
 
 
 class EditCitation(zeit.edit.browser.view.EditBox):
@@ -212,4 +212,4 @@ class EditDivision(zeit.edit.browser.form.InlineForm):
 
     @property
     def prefix(self):
-        return 'form.divison.{0}'.format(self.context.__name__)
+        return 'division.{0}'.format(self.context.__name__)

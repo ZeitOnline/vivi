@@ -19,7 +19,7 @@ class EditVideo(zeit.edit.browser.form.InlineForm):
 
     @property
     def prefix(self):
-        return 'form.division.{0}'.format(self.context.__name__)
+        return 'video.{0}'.format(self.context.__name__)
 
     def __call__(self):
         zope.interface.alsoProvides(

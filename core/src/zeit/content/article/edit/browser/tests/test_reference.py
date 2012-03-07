@@ -306,8 +306,8 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         block_id = self.create_block('video', wait_for_inline=True)
-        video = 'css=div[id="form.division.%s.video"]' % block_id
-        video_2 = 'css=div[id="form.division.%s.video_2"]' % block_id
+        video = 'css=div[id="video.%s.video"]' % block_id
+        video_2 = 'css=div[id="video.%s.video_2"]' % block_id
 
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_0"]', video)
         s.waitForElementPresent(
@@ -329,8 +329,8 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         block_id = self.create_block('video', wait_for_inline=True)
-        video = 'css=div[id="form.division.%s.video"]' % block_id
-        video_2 = 'css=div[id="form.division.%s.video_2"]' % block_id
+        video = 'css=div[id="video.%s.video"]' % block_id
+        video_2 = 'css=div[id="video.%s.video_2"]' % block_id
 
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_0"]', video)
         s.waitForElementPresent(
