@@ -29,6 +29,9 @@ editor-ng branch changes
 - Changed zeit.cms.browser.form.apply_default_values to not overwrite an
   objects's existing data attributes.
 
+- DropObjectWidget raises ValidationError when the given uniqueId does not
+  exist in the repository.
+
 
 1.53.0 (unreleased)
 -------------------

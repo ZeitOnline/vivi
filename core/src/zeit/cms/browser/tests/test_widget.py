@@ -6,6 +6,7 @@ import contextlib
 import mock
 import unittest2
 import zeit.cms.testing
+import zope.formlib.interfaces
 
 
 class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
@@ -416,6 +417,27 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
         with mock.patch.object(choice.source, 'get_check_types') as types:
             types.return_value = [u'foo', 'bar']
             self.assertEqual("['type-foo', 'type-bar']", widget.accept_classes)
+
+
+class DropObjectWidget(zeit.cms.testing.FunctionalTestCase):
+
+    def test_setting_invalid_uniqueId_should_raise(self):
+        context = mock.Mock()
+        context.__name__ = 'foo'
+        widget = zeit.cms.browser.widget.DropObjectWidget(
+            context, mock.Mock(), mock.Mock())
+        self.assertRaises(
+            zope.formlib.interfaces.ConversionError,
+            lambda: widget._toFieldValue('http://xml.zeit.de/nonexistent'))
+
+    def test_setting_valid_uniqueId_returns_content_object(self):
+        context = mock.Mock()
+        context.__name__ = 'foo'
+        widget = zeit.cms.browser.widget.DropObjectWidget(
+            context, mock.Mock(), mock.Mock())
+        self.assertEqual(
+            self.repository['testcontent'],
+            widget._toFieldValue('http://xml.zeit.de/testcontent'))
 
 
 class TestObjectSequenceDisplayWidget(unittest2.TestCase):

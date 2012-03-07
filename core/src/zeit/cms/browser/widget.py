@@ -357,7 +357,13 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
     def _toFieldValue(self, input):
         if input == self._missing:
             return self.context.missing_value
-        return zeit.cms.interfaces.ICMSContent(input, None)
+        try:
+            return zeit.cms.interfaces.ICMSContent(input)
+        except TypeError:
+            msg = _("The object '${id}' could not be found.",
+                    mapping=dict(id=input))
+            msg = zope.i18n.translate(msg, context=self.request)
+            raise zope.formlib.interfaces.ConversionError(msg)
 
     def _toFormValue(self, value):
         if value == self.context.missing_value:
