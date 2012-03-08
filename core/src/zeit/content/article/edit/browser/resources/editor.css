@@ -533,6 +533,7 @@ span.charcount {
   clear:both;
 }
 
+#edit-form-article-content .block.type-raw .widget-outer.fieldname-xml .label,
 #edit-form-article-content .block.type-video .widget-outer.fieldname-video .label,
 #edit-form-article-content .block.type-video .widget-outer.fieldname-video_2 .label {
   display:none;
@@ -541,15 +542,6 @@ span.charcount {
 #edit-form-article-content .block.type-video .widget-outer.fieldname-video,
 #edit-form-article-content .block.type-video .widget-outer.fieldname-video_2 {
   width:43%
-}
-
-/* xml block */
-
-.block.type-raw .rawxml {
-  font-family: monospace;
-  font-size: 80%;
-  white-space: pre-wrap;
-  margin: 0 1em;
 }
 
 /* imitate table design */

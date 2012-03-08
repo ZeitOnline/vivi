@@ -75,59 +75,6 @@ Intertitle
     ...
 
 
-Raw XML
--------
-
->>> for p in article.xml.body.division.getchildren():
-...     article.xml.body.division.remove(p)
->>> article.xml.body.division.append(lxml.objectify.Element('raw'))
->>> article.xml.body.division.raw.set(
-...     '{http://namespaces.zeit.de/CMS/cp}__name__', 'rxname')
->>> article._p_changed = True
->>> browser.open('@@contents')
->>> print browser.contents
-<...
-    <div class="rawxml">&lt;raw
-    xmlns:py="http://codespeak.net/lxml/objectify/pytype"
-    xmlns:ns0="http://namespaces.zeit.de/CMS/cp"
-    py:pytype="TREE"
-    ns0:__name__="rxname"/&gt;
-    ...
-
-Edit the xml:
-
->>> browser.getLink('Edit').click()
->>> print browser.getControl('XML').value,
-<raw ... ns0:__name__="rxname"/>
-
-The root tag is validated:
-
->>> browser.getControl('XML').value = '<foo/>'
->>> browser.getControl('Apply').click()
->>> print browser.contents
-<...XML source: <span class="error">The root element must be &lt;raw&gt;.</span>...
-
-With valid input the box closes:
-
->>> browser.getControl('XML').value = """
-... <raw xmlns:ns0="http://namespaces.zeit.de/CMS/cp" ns0:__name__="rxname">
-... <bla/></raw>"""
->>> browser.getControl('Apply').click()
->>> print browser.contents
-<...self.close()...
-
-The changed xml is displayed:
-
->>> browser.open('@@contents')
->>> print browser.contents
-<...
-    <div class="rawxml">&lt;raw xmlns:ns0="http://namespaces.zeit.de/CMS/cp" ns0:__name__="rxname"&gt;
-  &lt;bla/&gt;
-&lt;/raw&gt;
-</div>
-...
-
-
 Checkin handling
 ================
 

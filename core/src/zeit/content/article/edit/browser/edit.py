@@ -146,26 +146,16 @@ class BlockLandingZone(LandingZoneBase):
     order = 'after-context'
 
 
-class ViewRawXML(object):
+class EditRawXML(zeit.edit.browser.form.InlineForm):
 
-    @property
-    def xml_string(self):
-        return lxml.etree.tostring(
-            copy.copy(zope.proxy.removeAllProxies(self.context.xml)),
-            pretty_print=True, encoding=unicode)
-
-
-class EditRawXML(zeit.edit.browser.view.EditBox):
-
+    legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IRawXML)
+        zeit.content.article.edit.interfaces.IRawXML).omit('__name__')
     undo_description = _('edit XML block')
 
-
-class EditRawXMLAction(zeit.edit.browser.view.EditBoxAction):
-
-    title = _('Edit')
-    action = 'edit-rawxml'
+    @property
+    def prefix(self):
+        return 'rawxml.{0}'.format(self.context.__name__)
 
 
 class EditAudio(zeit.edit.browser.form.InlineForm):
