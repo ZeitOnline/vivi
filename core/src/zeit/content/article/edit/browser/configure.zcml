@@ -248,8 +248,8 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    template="edit.citation.pt"
+    name="edit-citation"
+    class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     />
 
@@ -258,18 +258,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-citation"
     class=".edit.EditCitation"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.ICitation"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="edit-box"
-    class=".edit.EditCitationAction"
-    permission="zeit.EditContent"
-    weight="0"
+    permission="zope.View"
     />
 
   <!-- relateds -->

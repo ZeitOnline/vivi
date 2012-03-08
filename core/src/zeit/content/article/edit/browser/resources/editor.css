@@ -552,31 +552,6 @@ span.charcount {
   margin: 0 1em;
 }
 
-
-/* citation block */
-
-.block.type-citation .citation {
-  float: left;
-  width: 50%;
-}
-
-.block.type-citation .citation > * {
-  padding: 0 0.5em;
-}
-
-.block.type-citation .citation .attribution {
-  font-style: italic;
-}
-
-.block.type-citation .citation.citation_2 {
-  opacity: 0.5;
-}
-
-.block.type-citation .double .citation.citation_2 {
-  opacity: 1;
-}
-
-
 /* imitate table design */
 
 fieldset.table .widget-outer {

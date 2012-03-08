@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -180,17 +180,16 @@ class EditAudio(zeit.edit.browser.form.InlineForm):
         return 'audio.{0}'.format(self.context.__name__)
 
 
-class EditCitation(zeit.edit.browser.view.EditBox):
+class EditCitation(zeit.edit.browser.form.InlineForm):
 
+    legend = None
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.ICitation).omit('__name__', 'xml')
-
-
-class EditCitationAction(zeit.edit.browser.view.EditBoxAction):
-
-    title = _('Edit')
-    action = 'edit-citation'
     undo_description = _('edit citation block')
+
+    @property
+    def prefix(self):
+        return 'citation.{0}'.format(self.context.__name__)
 
 
 class ViewRelateds(object):
