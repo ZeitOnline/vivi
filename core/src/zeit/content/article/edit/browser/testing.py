@@ -1,7 +1,37 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import transaction
 import zeit.content.article.testing
+
+
+class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.TestBrowserLayer
+
+    expected_type = NotImplemented
+
+    def setUp(self):
+        super(BrowserTestCase, self).setUp()
+        browser = self.browser
+        browser.open('http://localhost:8080/++skin++vivi/repository/online'
+                     '/2007/01/Somalia/@@checkout')
+        self.article_url = browser.url
+        browser.open('@@contents')
+        self.contents_url = browser.url
+
+    def get_article(self, with_empty_block=False):
+        article = self.layer.setup.getRootFolder()[
+            'workingcopy']['zope.user']['Somalia']
+        for p in article.xml.findall('//division/*'):
+            p.getparent().remove(p)
+        if with_empty_block:
+            article.xml.body.division[self.expected_type] = ''
+            article.xml.body.division[self.expected_type].set(
+                '{http://namespaces.zeit.de/CMS/cp}__name__', 'blockname')
+        article._p_changed = True
+        transaction.commit()
+        return article
 
 
 class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):

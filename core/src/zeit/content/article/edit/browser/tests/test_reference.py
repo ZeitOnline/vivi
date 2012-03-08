@@ -5,24 +5,13 @@ import mock
 import transaction
 import zeit.cms.interfaces
 import zeit.cms.testing
-import zeit.content.article.testing
+import zeit.content.article.edit.browser.testing
 
 
-class GalleryTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.TestBrowserLayer
+class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
     expected_type = 'gallery'
     attribute = 'href'
-
-    def setUp(self):
-        super(GalleryTest, self).setUp()
-        browser = self.browser
-        browser.open('http://localhost:8080/++skin++vivi/repository/online'
-                     '/2007/01/Somalia/@@checkout')
-        self.article_url = browser.url
-        browser.open('@@contents')
-        self.contents_url = browser.url
 
     def setup_content(self):
         """Create a gallery (requires folder with images)"""
@@ -46,19 +35,6 @@ class GalleryTest(zeit.cms.testing.BrowserTestCase):
         browser.getLink('Checkin').click()
         self.content_id = 'http://xml.zeit.de/online/2007/01/island'
         browser.open(self.contents_url)
-
-    def get_article(self, with_empty_block=False):
-        article = self.layer.setup.getRootFolder()[
-            'workingcopy']['zope.user']['Somalia']
-        for p in article.xml.findall('//division/*'):
-            p.getparent().remove(p)
-        if with_empty_block:
-            article.xml.body.division[self.expected_type] = ''
-            article.xml.body.division[self.expected_type].set(
-                '{http://namespaces.zeit.de/CMS/cp}__name__', 'blockname')
-        article._p_changed = True
-        transaction.commit()
-        return article
 
     def call_set_reference(self, uniqueId):
         self.browser.open(
