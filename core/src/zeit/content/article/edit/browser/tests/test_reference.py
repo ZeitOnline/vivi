@@ -3,13 +3,12 @@
 
 import mock
 import transaction
-import unittest2
+import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
 
 
-class GalleryTest(unittest2.TestCase,
-                  zeit.cms.testing.BrowserAssertions):
+class GalleryTest(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.article.testing.TestBrowserLayer
 
@@ -17,15 +16,13 @@ class GalleryTest(unittest2.TestCase,
     attribute = 'href'
 
     def setUp(self):
-        from zope.testbrowser.testing import Browser
-        self.browser = browser = Browser()
-        browser.addHeader('Authorization', 'Basic user:userpw')
+        super(GalleryTest, self).setUp()
+        browser = self.browser
         browser.open('http://localhost:8080/++skin++vivi/repository/online'
                      '/2007/01/Somalia/@@checkout')
         self.article_url = browser.url
         browser.open('@@contents')
         self.contents_url = browser.url
-        browser.open(self.contents_url)
 
     def setup_content(self):
         """Create a gallery (requires folder with images)"""
@@ -51,7 +48,6 @@ class GalleryTest(unittest2.TestCase,
         browser.open(self.contents_url)
 
     def get_article(self, with_empty_block=False):
-        import transaction
         article = self.layer.setup.getRootFolder()[
             'workingcopy']['zope.user']['Somalia']
         for p in article.xml.findall('//division/*'):
@@ -160,7 +156,6 @@ class GalleryTest(unittest2.TestCase,
             article.xml.body.division[self.expected_type].get(self.attribute))
 
     def test_reference_should_be_stored_after_checkin(self):
-        import zeit.cms.interfaces
         article = self.get_article(with_empty_block=True)
         self.setup_content()
         self.call_set_reference(self.content_id)
@@ -195,7 +190,6 @@ class InfoboxTest(GalleryTest):
 
     def setup_content(self):
         from zeit.content.infobox.infobox import Infobox
-        import transaction
         ib = Infobox()
         ib.supertitle = u'infobox title'
         root = self.layer.setup.getRootFolder()
@@ -211,8 +205,6 @@ class PortraitboxTest(GalleryTest):
 
     def setup_content(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
-        import transaction
-        import zeit.cms.testing
         pb = Portraitbox()
         root = self.layer.setup.getRootFolder()
         with zeit.cms.testing.site(root):
