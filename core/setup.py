@@ -37,6 +37,7 @@ setup(
         'zeit.find >= 0.4',
         'zeit.solr',
         'zope.app.appsetup',
+        'zope.app.generations',
         'zope.app.pagetemplate',
         'zope.component',
         'zope.container>=3.8.1',
