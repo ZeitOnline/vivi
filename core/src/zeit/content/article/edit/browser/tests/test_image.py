@@ -14,11 +14,9 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
         browser.open('editable-body/blockname/@@edit-image?show_form=1')
         browser.getControl('Custom image sub text').value = 'foo bar'
         browser.getControl('Apply').click()
-        self.assertEllipsis("""...
-      <div class="widget"><textarea...
-        id="image.blockname.custom_caption"...>foo bar</textarea></div>
-    </div>...
-""", self.browser.contents)
+        browser.open('@@edit-image?show_form=1')  # XXX
+        self.assertEqual(
+            'foo bar', browser.getControl('Custom image sub text').value)
 
 
 class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
