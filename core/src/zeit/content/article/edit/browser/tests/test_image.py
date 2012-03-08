@@ -10,13 +10,13 @@ class Form(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
     def test_inline_form_saves_values(self):
         self.get_article(with_empty_block=True)
-        browser = self.browser
-        browser.open('editable-body/blockname/@@edit-image?show_form=1')
-        browser.getControl('Custom image sub text').value = 'foo bar'
-        browser.getControl('Apply').click()
-        browser.open('@@edit-image?show_form=1')  # XXX
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-image?show_form=1')
+        b.getControl('Custom image sub text').value = 'foo bar'
+        b.getControl('Apply').click()
+        b.open('@@edit-image?show_form=1')  # XXX
         self.assertEqual(
-            'foo bar', browser.getControl('Custom image sub text').value)
+            'foo bar', b.getControl('Custom image sub text').value)
 
 
 class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
