@@ -10,7 +10,7 @@ import zeit.content.article.edit.browser.testing
 
 class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
-    expected_type = 'gallery'
+    block_type = 'gallery'
     attribute = 'href'
 
     def setup_content(self):
@@ -45,7 +45,7 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.browser.open('editable-body/@@contents')
         self.assert_ellipsis(
             """<...
-            <div ...class="block type-%s...""" % self.expected_type)
+            <div ...class="block type-%s...""" % self.block_type)
 
     def test_empty_block_should_be_landing_zone(self):
         self.get_article(with_empty_block=True)
@@ -59,7 +59,7 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
                 'when': None}]})
         self.browser.open('@@contents')
         self.assert_ellipsis(
-            """<div ...class="block type-%s...""" % self.expected_type)
+            """<div ...class="block type-%s...""" % self.block_type)
 
     def test_only_specific_type_should_be_droppable(self):
         self.get_article(with_empty_block=True)
@@ -91,7 +91,7 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.browser.open(self.contents_url)
         self.assert_ellipsis(
             """<...
-                <div ...class="block type-%s...""" % self.expected_type)
+                <div ...class="block type-%s...""" % self.block_type)
         # Each block has its own landing zone:
         id = data['signals'][0]['args'][0]
         with mock.patch('uuid.uuid4', new=uuid4):
@@ -121,7 +121,7 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.browser.getLink('Checkin').click()
         self.browser.open('@@contents')
         self.assert_ellipsis(
-            """<div ...class="block type-%s...""" % self.expected_type)
+            """<div ...class="block type-%s...""" % self.block_type)
 
     def test_reference_should_be_stored_by_set_ref(self):
         article = self.get_article(with_empty_block=True)
@@ -129,7 +129,7 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.call_set_reference(self.content_id)
         self.assertEqual(
             self.content_id,
-            article.xml.body.division[self.expected_type].get(self.attribute))
+            article.xml.body.division[self.block_type].get(self.attribute))
 
     def test_reference_should_be_stored_after_checkin(self):
         article = self.get_article(with_empty_block=True)
@@ -141,7 +141,7 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
             article = zeit.cms.interfaces.ICMSContent(article.uniqueId)
         self.assertEqual(
             self.content_id,
-            article.xml.body.division[self.expected_type].get(self.attribute))
+            article.xml.body.division[self.block_type].get(self.attribute))
 
     def test_empty_block_should_not_provide_drop_in_readonly_mode(self):
         self.get_article(with_empty_block=True)
@@ -150,7 +150,7 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.browser.open('@@contents')
         self.assert_ellipsis(
             '<div ...class="block type-{0}...No content referenced...'.format(
-                self.expected_type))
+                self.block_type))
 
     def test_contents_should_not_have_cache_control_header(self):
         self.get_article(with_empty_block=True)
@@ -162,7 +162,7 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
 class InfoboxTest(GalleryTest):
 
-    expected_type = 'infobox'
+    block_type = 'infobox'
 
     def setup_content(self):
         from zeit.content.infobox.infobox import Infobox
@@ -177,7 +177,7 @@ class InfoboxTest(GalleryTest):
 
 class PortraitboxTest(GalleryTest):
 
-    expected_type = 'portraitbox'
+    block_type = 'portraitbox'
 
     def setup_content(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
@@ -192,7 +192,7 @@ class PortraitboxTest(GalleryTest):
 
 class ImageTest(GalleryTest):
 
-    expected_type = 'image'
+    block_type = 'image'
     attribute = 'src'
 
     def setup_content(self):

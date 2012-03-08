@@ -9,7 +9,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.article.testing.TestBrowserLayer
 
-    expected_type = NotImplemented
+    block_type = NotImplemented
 
     def setUp(self):
         super(BrowserTestCase, self).setUp()
@@ -26,8 +26,8 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
         for p in article.xml.findall('//division/*'):
             p.getparent().remove(p)
         if with_empty_block:
-            article.xml.body.division[self.expected_type] = ''
-            article.xml.body.division[self.expected_type].set(
+            article.xml.body.division[self.block_type] = ''
+            article.xml.body.division[self.block_type].set(
                 '{http://namespaces.zeit.de/CMS/cp}__name__', 'blockname')
         article._p_changed = True
         transaction.commit()
