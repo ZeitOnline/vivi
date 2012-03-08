@@ -16,4 +16,4 @@ class EditImage(zeit.edit.browser.form.InlineForm):
 
     @property
     def prefix(self):
-        return 'form.divison.{0}'.format(self.context.__name__)
+        return 'image.{0}'.format(self.context.__name__)
