@@ -5,12 +5,11 @@ from __future__ import absolute_import
 import mock
 import pkg_resources
 import unittest2 as unittest
-import zeit.cms.testing
 import zope.testing.cleanup
 
 
-class TestWhitelist(unittest.TestCase,
-                    zope.testing.cleanup.CleanUp):
+class TestWhitelist(zope.testing.cleanup.CleanUp,
+                    unittest.TestCase):
 
     def whitelist(self):
         from ..whitelist import Whitelist
