@@ -180,6 +180,7 @@ cms_product_config = string.Template("""\
 
   suggest-keyword-email-address none@testing
   suggest-keyword-real-name Dr. No
+  whitelist-url file://${base}/tagging/tests/whitelist.xml
 </product-config>
 """).substitute(
     base=pkg_resources.resource_filename(__name__, ''))

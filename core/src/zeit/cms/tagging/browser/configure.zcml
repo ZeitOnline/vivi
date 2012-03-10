@@ -11,9 +11,9 @@
     />
 
   <browser:page
-    for="zeit.cms.tagging.interfaces.IWhitelist"
+    for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="search"
+    name="zeit.cms.tagging.search"
     class=".autocomplete.Search"
     permission="zope.View"
     />

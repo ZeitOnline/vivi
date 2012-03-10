@@ -7,6 +7,7 @@ import xml.sax.saxutils
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
+import zeit.cms.tagging.interfaces
 import zeit.find.browser.find
 import zope.formlib.interfaces
 import zope.i18n
@@ -29,10 +30,11 @@ class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
 
     def __call__(self):
         return (
-            '<input type="text" class="autocomplete" '
-            'placeholder={placeholder} '
-            'cms:autocomplete-source="{url}" />').format(
-                url=self.url(self.source.whitelist, '@@search'),
+            u'<input type="text" class="autocomplete" '
+            u'placeholder={placeholder} '
+            u'cms:autocomplete-source="{url}" />').format(
+                url=self.url(zope.site.hooks.getSite(),
+                             '@@zeit.cms.tagging.search'),
                 placeholder=xml.sax.saxutils.quoteattr(
                     zope.i18n.translate(_('Type to find entries ...'),
                                         context=self.request)))
@@ -40,10 +42,16 @@ class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
 
 class Search(zeit.cms.browser.view.JSON):
 
+    @property
+    def whitelist(self):
+        return zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+
     def json(self):
+
         term = self.request.form.get('term')
         if term:
-            results = self.context.search(term)
+            results = self.whitelist.search(term)
         else:
             results = []
         return [dict(label=result.label, value=result.uniqueId)

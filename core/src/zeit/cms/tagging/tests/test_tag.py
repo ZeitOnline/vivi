@@ -74,6 +74,7 @@ class TestCMSContentWiring(zeit.cms.testing.FunctionalTestCase):
 
         base = 'http://localhost/++skin++vivi/'
         b = self.browser
+        b.handleErrors = False
         b.open(
             base + '@@redirect_to?unique_id=tag://foo&view=@@object-details')
         self.assertEqual('<h3>foo</h3>', b.contents)

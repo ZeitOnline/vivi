@@ -7,8 +7,13 @@ import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.component
 import zope.interface
+import zope.location.interfaces
+import zope.publisher.interfaces
+import zope.site.hooks
+import zope.site.interfaces
 import zope.traversing.browser
 import zope.traversing.browser.absoluteurl
+import zope.traversing.interfaces
 
 
 class Tags(object):
@@ -65,7 +70,27 @@ class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):
     zope.component.adapts(Tag, zeit.cms.browser.interfaces.ICMSLayer)
 
     def __str__(self):
+        base = zope.traversing.browser.absoluteURL(
+            zope.site.hooks.getSite(), self.request)
+        return base + '/++tag++' + self.context.code
+
+
+class TagTraverser(grok.MultiAdapter):
+
+    zope.interface.implements(zope.traversing.interfaces.ITraversable)
+    grok.adapts(
+        zope.site.interfaces.IRootFolder,
+        zope.publisher.interfaces.IRequest)
+    grok.name('tag')
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def traverse(self, name, ignored):
         whitelist = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
-        base = zope.traversing.browser.absoluteURL(whitelist, self.request)
-        return base + '/' + self.context.code
+        tag = whitelist.get(name)
+        if tag is None:
+            raise zope.location.interfaces.LocationError(self.context, name)
+        return tag
