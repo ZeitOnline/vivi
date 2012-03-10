@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import grokcore.component
@@ -38,13 +38,13 @@ def default_local_content_adapter(context):
 def add_to_repository(context, ignore_conflicts):
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
-    renamable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+    renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
         context)
-    if renamable.renamable and renamable.rename_to:
-        rename_to = renamable.rename_to
+    if renameable.renameable and renameable.rename_to:
+        rename_to = renameable.rename_to
         # Remove the attributes so we don't clutter the dav.
-        renamable.renamable = None
-        renamable.rename_to = None
+        renameable.renameable = None
+        renameable.rename_to = None
     else:
         rename_to = None
 
@@ -77,7 +77,7 @@ def default_repository_content_adapter_non_conflicting(context):
     return add_to_repository(context, True)
 
 
-class AutomaticallyRenamable(zeit.cms.content.dav.DAVPropertiesAdapter):
+class AutomaticallyRenameable(zeit.cms.content.dav.DAVPropertiesAdapter):
 
     grokcore.component.adapts(zeit.cms.repository.interfaces.IDAVContent)
     grokcore.component.implements(
@@ -86,4 +86,4 @@ class AutomaticallyRenamable(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.repository.interfaces.IAutomaticallyRenameable,
         'http//namespaces.zeit.de/CMS/meta',
-        ('renamable', 'rename_to'))
+        ('renameable', 'rename_to'))

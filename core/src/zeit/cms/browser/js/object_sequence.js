@@ -81,6 +81,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             function(result) {
                 li.innerHTML = result;
                 li.insertBefore(
+                    // XXX proper i18n
                     A({href: index, rel: "remove", title: "Entfernen"}),
                     li.firstChild);
                 return result;
@@ -293,7 +294,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
                     return result;
                 },
                 function(error) {
-                    self.etails.innerHTML = 'Fehler';
+                    self.details.innerHTML = 'Fehler';
                     return error;
                 });
             d.addBoth(function(result) {

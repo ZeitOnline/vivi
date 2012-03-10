@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import json
 import time
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
@@ -329,7 +330,7 @@ class MultiObjectSequenceDisplayWidget(
 
 def js_escape_check_types(source):
     # convert unicode, JS needs 'foo', not u'foo'
-    return repr(['type-' + str(x) for x in source.get_check_types()])
+    return json.dumps([u'type-' + x for x in source.get_check_types()])
 
 
 DROP_TEMPLATE = u"""\
@@ -357,7 +358,13 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
     def _toFieldValue(self, input):
         if input == self._missing:
             return self.context.missing_value
-        return zeit.cms.interfaces.ICMSContent(input, None)
+        try:
+            return zeit.cms.interfaces.ICMSContent(input)
+        except TypeError:
+            msg = _("The object '${id}' could not be found.",
+                    mapping=dict(id=input))
+            msg = zope.i18n.translate(msg, context=self.request)
+            raise zope.formlib.interfaces.ConversionError(msg)
 
     def _toFormValue(self, value):
         if value == self.context.missing_value:

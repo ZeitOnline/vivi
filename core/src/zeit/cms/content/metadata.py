@@ -1,16 +1,12 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import grokcore.component
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.tagging.tag
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
-import zope.browser.interfaces
-import zope.component
 import zope.interface
-import zope.publisher.browser
 
 
 class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -55,6 +51,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
 
     keywords = zeit.cms.tagging.tag.Tags()
+
+    commentSectionEnable = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['commentSectionEnable'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread')
 
     title = zeit.cms.content.property.Structure(
         '.body.title',
