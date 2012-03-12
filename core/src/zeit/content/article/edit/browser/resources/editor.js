@@ -1,24 +1,5 @@
 (function($){
 
-    $.fn.guessFilename = function() {
-        var self = $(this);
-        if (self.val()) { return; }
-        $('#article-content-head\\.title').keyup(function() {
-            var title = $(this).val()
-                            .toLowerCase()
-                            .replace(/[ä]+/g, 'ae')
-                            .replace(/[ö]+/g, 'oe')
-                            .replace(/[ü]+/g, 'ue')
-                            .replace(/[ß]+/g, 'ss')
-                            .replace(/[^a-z0-9\s-]+/g, '')
-                            .replace(/[\s]+/g, '-');
-            self.val(title);
-        });
-        $('#article-content-head\\.title').focusout(function() {
-            self.click();
-        });
-    };
-
     $.fn.limitedInput = function(limit) {
         return this.each(function() {
             var self = $(this);

@@ -59,7 +59,6 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
                 '<script type="text/javascript">'
                 '    jQuery("#article-editor-text").countedInput();'
                 '    jQuery("#article-editor-text").resizeFont();'
-                '    jQuery("input[id^=\'new-filename\']").guessFilename();'
                 '</script>')
         return result
 
