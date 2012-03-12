@@ -10,6 +10,8 @@ class TestTypeChangeBox(zeit.cms.testing.SeleniumTestCase):
     def test_box_should_scroll(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia')
+        s.getEval('window.resizeTo(1000, 300)')
+        s.waitForEval('window.outerHeight', '300')
         s.click('link=Change type')
         s.waitForElementPresent('css=.lightbox-full')
         element = "this.browserbot.findElement('css=.lightbox-full')"
