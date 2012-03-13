@@ -26,6 +26,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">02</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="in_rankings">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Ecos Albträume</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">kpm</attribute>
