@@ -47,8 +47,10 @@ We start out with an empty cds filestore:
 >>> fs.list('new')
 []
 
-Unset `export_cds`. The inital value is None:
+Unset `export_cds`. The inital value is None, for non ZEDE products:
 
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     co.product = zeit.cms.content.sources.Product(u'KINZ')
 >>> import zeit.content.article.interfaces
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> print cdswf.export_cds
@@ -59,8 +61,6 @@ Only if the content object has the product_id 'ZEDE', the default is True:
 
 >>> article = repository['online']['2007']['01']['Guantanamo']
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(article)
->>> print cdswf.export_cds
-None
 >>> with zeit.cms.checkout.helper.checked_out(article) as co:
 ...     co.product = zeit.cms.content.sources.Product(u'ZEDE')
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(article)
