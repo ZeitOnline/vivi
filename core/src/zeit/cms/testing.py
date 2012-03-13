@@ -14,7 +14,6 @@ import gocept.zcapatch
 import inspect
 import json
 import logging
-import mock
 import pkg_resources
 import random
 import re
@@ -255,8 +254,7 @@ class FunctionalTestCaseCommon(
     unittest2.TestCase,
     gocept.testing.assertion.Ellipsis,
     gocept.testing.assertion.Exceptions,
-    RepositoryHelper,
-    ):
+    RepositoryHelper):
 
     layer = cms_layer
     product_config = {}

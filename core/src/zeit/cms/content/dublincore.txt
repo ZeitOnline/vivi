@@ -58,6 +58,8 @@ datetime.datetime(2009, 1, 1, 0, 0, tzinfo=<UTC>)
 After committing the object has its own modified:
 
 >>> before_commit_time = datetime.datetime.now(pytz.UTC)
+>>> import time  # wait a bit to be sure modified is > before_commit_time
+>>> time.sleep(0.25)
 >>> import transaction
 >>> transaction.commit()
 >>> dc.modified

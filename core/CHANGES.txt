@@ -32,8 +32,29 @@ editor-ng branch changes
 - DropObjectWidget raises ValidationError when the given uniqueId does not
   exist in the repository.
 
+1.53.3 (unreleased)
+-------------------
 
-1.53.0 (unreleased)
+- Nothing changed yet.
+
+
+1.53.2 (2012-03-06)
+-------------------
+
+- Backout changeset:89a6328dd4d0: This changeset was grafted from editor-ng but
+  does not work on default as it changes publication security. The change
+  prevents quick publish in zeit.content.cp then.
+
+
+
+1.53.1 (2012-03-06)
+-------------------
+
+- Testing expected ``/bin/true`` to exist which is not the case on all systems.
+  Just using ``true`` now, expecting true to be somewhere in the path.
+
+
+1.53.0 (2012-03-06)
 -------------------
 - Added metadata checkbox show commentthread (zeit-mantis 3664)
 
