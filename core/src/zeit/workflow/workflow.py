@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component
 import logging
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
@@ -17,6 +18,7 @@ import zope.component
 import zope.event
 import zope.interface
 import zope.location.location
+import zope.securitypolicy.interfaces
 
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
@@ -86,3 +88,22 @@ def remove_from_channels_after_retract(context, event):
                     # Was not in the feed, i.e. the index wasn't up to date.
                     # Ignore.
                     pass
+
+
+class LocalContentPrincipalPermissionMap(grokcore.component.Adapter):
+    """Forbid publish for local content.
+
+    NOTE: when the need for another permission map arises we need to multiplex
+    the settings somehow.
+
+    """
+
+    grokcore.component.context(zeit.cms.checkout.interfaces.ILocalContent)
+    grokcore.component.implements(
+        zope.securitypolicy.interfaces.IPrincipalPermissionMap)
+
+    def getSetting(self, permission_id, principal_id,
+                   default=None):
+        if permission_id == 'zeit.workflow.Publish':
+            return zope.securitypolicy.interfaces.Deny
+        return default
