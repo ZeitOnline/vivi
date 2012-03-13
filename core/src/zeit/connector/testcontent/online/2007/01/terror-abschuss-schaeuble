@@ -38,6 +38,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Kriegsrecht soll Abschuss erlauben</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">kpm</attribute>
@@ -56,7 +57,13 @@
 	<keyword source="auto" intaxo="no">Verteidigungspolitik</keyword>
 </keywordset>
     <attribute name="revision" ns="http://namespaces.zeit.de/CMS/document">2</attribute>
-  </head>
+  
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="is_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+</head>
   <body>
     <supertitle>Terrorabwehr</supertitle>
     <title>Kriegsrecht soll Abschuss erlauben</title>

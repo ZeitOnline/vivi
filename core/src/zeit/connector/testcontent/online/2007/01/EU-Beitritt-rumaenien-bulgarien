@@ -52,13 +52,20 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Deutschland</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">International</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Die alten Europäer </attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">richter</attribute>
-  </head>
+  
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="is_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+</head>
   <body bottommargin="15" leftmargin="10" topmargin="15" rightmargin="10">
     <supertitle>EU-Beitritt</supertitle>
     <title>Die alten Europäer </title>

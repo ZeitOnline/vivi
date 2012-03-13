@@ -38,13 +38,20 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">1</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">International</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Politik</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="topic">Kultur</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Optimisten gesucht</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">zinkant</attribute>
-  <references count="2"><reference source="auto" type="intern" year="2006" issue="30" publication="ZEIT online" href="cms:/cms/work/online/2006/30/presseschau-atomruestung"><title>Nukleare Gefahr</title><description>Kann eine zweite Welle der Verbreitung von Atomwaffentechnik verhindert werden? Gero von Randow analysiert das internationale Meinungsbild</description></reference><reference source="auto" type="intern" year="2006" issue="24" publication="ZEIT online" href="cms:/cms/work/online/2006/24/SIPRI-Jahrbuch-2006"><title>Teures Töten</title><description>Das "Jahrbuch 2006" des Stockholmer Friedensforschungsinstituts SIPRI beschreibt die weltweiten Militärausgaben und nuklearen Risiken. Ein Überblick</description></reference></references></head>
+  <references count="2"><reference source="auto" type="intern" year="2006" issue="30" publication="ZEIT online" href="cms:/cms/work/online/2006/30/presseschau-atomruestung"><title>Nukleare Gefahr</title><description>Kann eine zweite Welle der Verbreitung von Atomwaffentechnik verhindert werden? Gero von Randow analysiert das internationale Meinungsbild</description></reference><reference source="auto" type="intern" year="2006" issue="24" publication="ZEIT online" href="cms:/cms/work/online/2006/24/SIPRI-Jahrbuch-2006"><title>Teures Töten</title><description>Das "Jahrbuch 2006" des Stockholmer Friedensforschungsinstituts SIPRI beschreibt die weltweiten Militärausgaben und nuklearen Risiken. Ein Überblick</description></reference></references>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="is_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+</head>
   <body bottommargin="15" leftmargin="10" topmargin="15" rightmargin="10">
     <supertitle>Ausblick 2007</supertitle>
     <title>Optimisten gesucht</title>

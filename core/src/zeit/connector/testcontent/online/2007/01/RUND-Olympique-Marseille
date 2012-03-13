@@ -39,6 +39,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="show_commentthread">no</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">"OM wird uns alle überleben"</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">manthe</attribute>
@@ -54,7 +55,13 @@
 	<keyword source="auto" intaxo="no">Jubiläen</keyword>
 	<keyword source="auto" intaxo="no">Aachen</keyword>
 	<keyword source="auto" intaxo="no">Madrif</keyword>
-</keywordset></head>
+</keywordset>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/document" name="is_content">yes</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="product-id">ZEDE</attribute>
+</head>
   <body bottommargin="15" leftmargin="10" topmargin="15" rightmargin="10">
     <supertitle>Skandalverein</supertitle>
     <title>"OM wird uns alle überleben"</title>
