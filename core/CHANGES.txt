@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.53.3 (unreleased)
+1.53.3 (2012-03-14)
 -------------------
 
 - The enhanced breadcrumbs (#10151) are configurable now via the product-config
