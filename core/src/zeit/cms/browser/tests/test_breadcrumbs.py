@@ -167,3 +167,14 @@ class Breadcrumbs(zeit.cms.testing.FunctionalTestCase):
         view.get_breadcrumbs_from_path = mock.Mock()
         view.get_breadcrumbs
         self.assertTrue(view.get_breadcrumbs_from_path.called)
+
+    def test_missing_config_should_use_from_path_only(self):
+        # This makes testing easier
+        import zope.app.appsetup.product
+        del zope.app.appsetup.product._configs['zeit.cms']
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        self.repository['foo'] = content
+        view = BreadcrumbsView(content)
+        view.get_breadcrumbs_from_path = mock.Mock()
+        view.get_breadcrumbs
+        self.assertTrue(view.get_breadcrumbs_from_path.called)

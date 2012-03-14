@@ -100,6 +100,6 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
         cms_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.cms')
         return (
-            cms_config.get('breadcrumbs-use-common-metadata', '').lower() ==
-            'true')
+            cms_config and cms_config.get(
+                'breadcrumbs-use-common-metadata', '').lower() == 'true')
 
