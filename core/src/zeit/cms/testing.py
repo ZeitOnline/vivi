@@ -61,8 +61,11 @@ def ZCMLLayer(
 
     def testSetUp(cls):
         cls.setup.setUp()
-        cls.setup.base_product_config = copy.deepcopy(
-            zope.app.appsetup.product.saveConfiguration())
+        # Make a copy of the product config because tests may modify the data
+        # structures. The *next* setup call will re-use local_product_config
+        # and re-set the system product config to the inital state.
+        cls.setup.local_product_config = copy.deepcopy(
+            cls.setup.local_product_config)
         cls.setup.zca = gocept.zcapatch.Patches()
 
     def testTearDown(cls):
@@ -74,8 +77,6 @@ def ZCMLLayer(
         else:
             connector._reset()
         cls.setup.zca.reset()
-        zope.app.appsetup.product.restoreConfiguration(
-            cls.setup.base_product_config)
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
         cls.setup.tearDown()
@@ -179,6 +180,8 @@ cms_product_config = string.Template("""\
 
   suggest-keyword-email-address none@testing
   suggest-keyword-real-name Dr. No
+
+  breadcrumbs-use-common-metadata true
 </product-config>
 """).substitute(
     base=pkg_resources.resource_filename(__name__, ''))
