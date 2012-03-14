@@ -4,6 +4,9 @@ zeit.cms changes
 1.53.3 (unreleased)
 -------------------
 
+- The enhanced breadcrumbs (#10151) are configurable now via the product-config
+  option ``breadcrumbs-use-common-metadata`` (true or false).
+
 - Fixed isolation of ``product_config`` between tests.
 
 

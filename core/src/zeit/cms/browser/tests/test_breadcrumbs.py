@@ -2,6 +2,7 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
 import zeit.cms.browser.breadcrumbs
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.file
@@ -144,3 +145,25 @@ class Breadcrumbs(zeit.cms.testing.FunctionalTestCase):
                      url='http://127.0.0.1/workingcopy/zope.user/DSC00109_2.JPG',
                     ),
                 ], BreadcrumbsView(co).get_breadcrumbs)
+
+    def test_deconfigured_should_use_from_path_only(self):
+        import zope.app.appsetup.product
+        zope.app.appsetup.product._configs['zeit.cms'][
+            'breadcrumbs-use-common-metadata'] = 'false'
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        self.repository['foo'] = content
+        view = BreadcrumbsView(content)
+        view.get_breadcrumbs_from_path = mock.Mock()
+        view.get_breadcrumbs
+        self.assertTrue(view.get_breadcrumbs_from_path.called)
+
+    def test_missing_option_should_use_from_path_only(self):
+        import zope.app.appsetup.product
+        del zope.app.appsetup.product._configs['zeit.cms'][
+            'breadcrumbs-use-common-metadata']
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        self.repository['foo'] = content
+        view = BreadcrumbsView(content)
+        view.get_breadcrumbs_from_path = mock.Mock()
+        view.get_breadcrumbs
+        self.assertTrue(view.get_breadcrumbs_from_path.called)
