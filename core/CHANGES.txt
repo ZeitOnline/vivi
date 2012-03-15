@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-1.53.4 (unreleased)
+1.53.4 (2012-03-15)
 -------------------
 
 - Fixed the fixed isolation of ``product_config`` between tests.
