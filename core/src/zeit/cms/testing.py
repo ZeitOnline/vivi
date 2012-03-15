@@ -61,9 +61,8 @@ def ZCMLLayer(
 
     def testSetUp(cls):
         cls.setup.setUp()
-        # Make a copy of the product config because tests may modify the data
-        # structures. The *next* setup call will re-use local_product_config
-        # and re-set the system product config to the inital state.
+        # ``local_product_config`` contains mutable elements which tests may
+        # modify. Create a copy to let setup restore the *original* config.
         cls.setup.local_product_config = copy.deepcopy(
             cls.setup.local_product_config)
         cls.setup.zca = gocept.zcapatch.Patches()
@@ -227,13 +226,14 @@ def FunctionalDocFileSuite(*paths, **kw):
     layer = kw.pop('layer', cms_layer)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw['setUp'] = setUp
-    kw.setdefault('globs', {})['product_config'] = kw.pop(
-        'product_config', {})
-    kw['globs']['with_statement'] = __future__.with_statement
+    globs = kw.setdefault('globs', {})
+    globs['product_config'] = kw.pop('product_config', {})
+    globs['with_statement'] = __future__.with_statement
+    globs['getRootFolder'] = zope.app.testing.functional.getRootFolder
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
 
-    test = zope.app.testing.functional.FunctionalDocFileSuite(*paths, **kw)
+    test = doctest.DocFileSuite(*paths, **kw)
     test.layer = layer
 
     return test
