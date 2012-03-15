@@ -6,6 +6,10 @@ zeit.cms changes
 
 - Fixed the fixed isolation of ``product_config`` between tests.
 
+- When the enhanced breadcrumbs (#10151) are disabled, the path to the
+  workingcopy is shown again, instead of always showing the path to the
+  repository object.
+
 
 1.53.3 (2012-03-14)
 -------------------

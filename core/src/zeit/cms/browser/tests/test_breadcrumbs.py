@@ -178,3 +178,25 @@ class Breadcrumbs(zeit.cms.testing.FunctionalTestCase):
         view.get_breadcrumbs_from_path = mock.Mock()
         view.get_breadcrumbs
         self.assertTrue(view.get_breadcrumbs_from_path.called)
+
+    def test_deconfigured_no_icommonmetadata_in_wc_lists_wc_path(self):
+        content = self.repository['2006']['DSC00109_2.JPG']
+        zope.app.appsetup.product._configs['zeit.cms'][
+            'breadcrumbs-use-common-metadata'] = 'false'
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
+        co = manager.checkout()
+        self.maxDiff = None
+        self.assertEqual([
+                dict(title=u'workingcopy',
+                     uniqueId=None,
+                     url='http://127.0.0.1/workingcopy',
+                    ),
+                dict(title=u'zope.user',
+                     uniqueId=None,
+                     url='http://127.0.0.1/workingcopy/zope.user',
+                    ),
+                dict(title=u'DSC00109_2.JPG',
+                     uniqueId=u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+                     url='http://127.0.0.1/workingcopy/zope.user/DSC00109_2.JPG',
+                    ),
+                ], BreadcrumbsView(co).get_breadcrumbs)

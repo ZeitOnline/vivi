@@ -66,7 +66,8 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
 
     def get_breadcrumbs_from_path(self, context):
         has_parents = True
-        if zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
+        if (self._use_common_metadata and
+            zeit.cms.checkout.interfaces.ILocalContent.providedBy(context)):
             try:
                 context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
             except TypeError:
