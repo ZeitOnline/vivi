@@ -1,4 +1,4 @@
-<form tal:omit-tag="not:request/show_form|nothing">
+<form tal:omit-tag="not:request/show_form|nothing" method="POST">
   <tal:comment condition="nothing">
     When the requets contains ``show_form`` a form tag is rendered. This
     supports testing as the testbrowser does only recognise form elements
