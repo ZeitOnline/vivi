@@ -14,16 +14,13 @@ log = logging.getLogger(__name__)
 
 # see JSON spec which excludes Unicode control characters
 # Brightcove is still capable of delivering these characters within JSON data.
-JSON_CONTROL_CHARACTERS = ''.join(chr(x) for x in range(0, 0x1f))
+RESTRICTED_CHARACTERS = set(xrange(0, 0x1f))
 
 # see http://www.w3.org/TR/xml11/#NT-RestrictedChar
-XML_RESTRICTED_CHARACTERS = ''.join(
-    chr(x) for x in sum(
-        (range(a, b + 1) for a, b in
-         [(0x1, 0x8), (0xb, 0xc), (0xe, 0x1f), (0x7f, 0x84), (0x86, 0x9f)]),
-        []))
+for a, b in [(0x1, 0x8), (0xb, 0xc), (0xe, 0x1f), (0x7f, 0x84), (0x86, 0x9f)]:
+    RESTRICTED_CHARACTERS.update(xrange(a, b + 1))
 
-RESTRICTED_CHARACTERS = JSON_CONTROL_CHARACTERS + XML_RESTRICTED_CHARACTERS
+RESTRICTED_CHARACTERS_MAP = dict((c, None) for c in RESTRICTED_CHARACTERS)
 
 
 class APIConnection(object):
@@ -36,8 +33,10 @@ class APIConnection(object):
         self.timeout = timeout
 
     def parse_json(self, text):
-        return json.loads(
-            text.translate(None, RESTRICTED_CHARACTERS))
+        # decode to make sure not to filter characters from utf-8 strings
+        # since that might leave strings behind that aren't valid utf-8
+        text = text.decode('utf-8')
+        return json.loads(text.translate(RESTRICTED_CHARACTERS_MAP))
 
     def post(self, command, **kwargs):
         params = dict(
