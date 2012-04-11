@@ -691,10 +691,6 @@ fieldset {
   padding: 0;
 }
 
-fieldset.palette {
-  float: right;
-}
-
 fieldset .hlink {
   display: inline-block;
   margin-right: 10px;
