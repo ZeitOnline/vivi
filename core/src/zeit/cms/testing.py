@@ -290,8 +290,14 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
     log_errors_ignore = ()
     level = 2
 
+    TIMEOUT = 10
+
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
+        # XXX waiting for a version of gocept.selenium that handles timeouts
+        # consistently (#10750)
+        self.layer.selenium.setTimeout(self.TIMEOUT*1000)
+        self.layer.selenium.selenium.set_timeout(self.TIMEOUT*1000)
 
         # XXX The following 5 lines are copied from
         # gocept.selenium.ztk.TestCase in order to avoid inheriting from
