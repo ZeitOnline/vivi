@@ -764,7 +764,7 @@ form[action$="edit-division"] div.widget input {
 }
 
 .article-editor-inner .objectsequencewidget ul li {
-  margin-bottom:1em;
+  margin-top:1em;
 }
 
 .article-editor-inner .objectsequencewidget.landing-zone.visible ul[id^="sortable"] li {

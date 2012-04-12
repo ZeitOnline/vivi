@@ -17,6 +17,8 @@ zeit.content.article changes
 
 - Removed 'preview' and 'live' links from the workflow form (#10660).
 
+- Updated styling of items in the ObjectSequenceWidget (#10666).
+
 
 2.9.1 (2010-08-09)
 ------------------
