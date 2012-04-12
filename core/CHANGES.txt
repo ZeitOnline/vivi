@@ -2,6 +2,7 @@ zeit.cms changes
 ================
 
 editor-ng branch changes
+------------------------
 
 - Publish is not allowed in ILocalContent via the security machinery now (for
   #8413).
@@ -31,6 +32,10 @@ editor-ng branch changes
 
 - DropObjectWidget raises ValidationError when the given uniqueId does not
   exist in the repository.
+
+- In the ObjectSequenceWidget, placed the search field and add button above
+  the list of sequence items (#10666).
+
 
 1.53.3 (unreleased)
 -------------------

@@ -10,9 +10,6 @@
   </tal:data>
   <input tal:replace="structure view/marker" />
 
-  <ul>
-    <!-- data will be inserted here by javascript -->
-  </ul>
   <div class="add_view"
        tal:condition="view/add_view">
     <a rel="show_add_view"
@@ -25,6 +22,9 @@
     tal:condition="view/query_view"
     tal:content="structure view/query_view">
   </div>
+  <ul>
+    <!-- data will be inserted here by javascript -->
+  </ul>
 </div>
 <script tal:content="string:
   new zeit.cms.ObjectSequenceWidget('${view/name}', ${view/accept_classes});
