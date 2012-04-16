@@ -1637,10 +1637,6 @@ msgstr ""
 msgid "edit teaser text"
 msgstr ""
 
-#: zeit/content/article/edit/browser/form.py:242
-msgid "Miscellaneous"
-msgstr ""
-
 #: zeit/content/article/edit/browser/form.py:247
 msgid "Printdata"
 msgstr ""

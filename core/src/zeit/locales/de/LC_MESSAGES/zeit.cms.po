@@ -1630,10 +1630,6 @@ msgstr "Teaser-Titel bearbeiten"
 msgid "edit teaser text"
 msgstr "Teaser-Text bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:242
-msgid "Miscellaneous"
-msgstr "Diverses"
-
 #: zeit/content/article/edit/browser/form.py:247
 msgid "Printdata"
 msgstr "Erscheinungsjahr und Daten für Druckausgabe"
