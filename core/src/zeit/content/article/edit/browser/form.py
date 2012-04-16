@@ -237,9 +237,9 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
-    """Miscellaneous"""
+    """Miscellaneous, options"""
 
-    title = _('Miscellaneous')
+    title = _('Options')
 
 
 class MiscPrintdata(zeit.edit.browser.form.InlineForm):
