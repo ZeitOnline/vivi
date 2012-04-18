@@ -90,6 +90,14 @@ Traceback (most recent call last):
     ...
 LinkNotFoundError
 
+>>> browser.getControl('Gallery type').displayValue
+['eigenst\xc3\xa4ndig']
+>>> browser.getControl('Gallery type').displayValue = ['inline']
+>>> browser.getControl('Apply').click()
+>>> print browser.contents
+<...<div class="summary">Updated on ...
+>>> browser.getControl('Gallery type').displayValue
+['inline']
 
 The 'text' field enforces a maximum length:
 

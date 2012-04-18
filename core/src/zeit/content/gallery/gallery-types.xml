@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<gallery-types>
+    <type name="standalone">eigenständig</type>
+    <type name="inline">inline</type>
+</gallery-types>

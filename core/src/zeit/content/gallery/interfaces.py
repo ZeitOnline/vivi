@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2009 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -30,6 +30,11 @@ galleryFolderSource = GalleryFolderSource()
 
 class IGalleryMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Center page metadata."""
+
+    type = zope.schema.Choice(
+        title=_('Gallery type'),
+        source=zeit.content.gallery.source.GalleryTypeSource(),
+        default=u'standalone')
 
     image_folder = zope.schema.Choice(
         title=_("Image folder"),

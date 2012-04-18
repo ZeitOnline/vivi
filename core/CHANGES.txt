@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Introduced gallery types (standalone, inline) (#10761).
 
 
 2.4.2 (2012-03-06)

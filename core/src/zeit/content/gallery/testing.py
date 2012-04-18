@@ -1,4 +1,4 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
+# Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import pkg_resources
@@ -15,8 +15,12 @@ product_config = """
 <product-config zeit.content.gallery>
     scale-source file://%s
     ticket-secret All work and no play makes jack a dull boy
+    gallery-types-url file://%s
 </product-config>
-""" % (pkg_resources.resource_filename(__name__, 'scales.xml'),)
+""" % (
+    pkg_resources.resource_filename(__name__, 'scales.xml'),
+    pkg_resources.resource_filename(__name__, 'gallery-types.xml'),
+    )
 
 
 GalleryLayer = zeit.cms.testing.ZCMLLayer(

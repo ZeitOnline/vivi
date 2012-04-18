@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2009 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -10,6 +10,7 @@ import rwproperty
 import xml.sax.saxutils
 import zeit.cms.connector
 import zeit.cms.content.adapter
+import zeit.cms.content.dav
 import zeit.cms.content.metadata
 import zeit.cms.content.util
 import zeit.cms.interfaces
@@ -49,6 +50,11 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
         '.head.image-folder')
 
     default_template = GALLERY_TEMPLATE
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.gallery.interfaces.IGalleryMetadata,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('type',))
 
     @property
     def xml_source(self):
