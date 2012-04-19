@@ -1,7 +1,13 @@
 zeit.imp changes
 ================
 
-0.13.1 (unreleased)
+0.14.1 (unreleased)
++++++++++++++++++++
+
+- Nothing changed yet.
+
+
+0.14.0 (2012-03-06)
 +++++++++++++++++++
 
 - Fixed a test concerning #9608.
