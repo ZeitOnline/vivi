@@ -351,10 +351,13 @@ zeit.imp.Imp = Class.extend({
         log('INFO', pos.__repr__());
 
         var dim = this.get_visual_area_dimensions();
-        var move_x = Math.floor((
-            this.stored_visual_area_dimensions.w - dim.w) / 2);
-        var move_y = Math.floor((
-            this.stored_visual_area_dimensions.h - dim.h) / 2);
+        var f = Math.floor;
+        // We want rounding errors to cancel each other out between calls of
+        // this method. Thus we need to round the *stored values* directly,
+        // and not the difference between the stored and the new value
+        // (which may or may not produce a rounding error).
+        var move_x = f(this.stored_visual_area_dimensions.w / 2) - f(dim.w / 2);
+        var move_y = f(this.stored_visual_area_dimensions.h / 2) - f(dim.h / 2);
         pos.x -= move_x;
         pos.y -= move_y;
         MochiKit.Style.setElementPosition('imp-image-drag', pos);

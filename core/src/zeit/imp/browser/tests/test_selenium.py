@@ -325,7 +325,6 @@ class ResizeTests(Selenium):
             int(s.getEval("window.document.imp.mask_image_dimensions.h"))
             > height)
 
-    @unittest.skip('waiting for Selenium API 2')
     def test_window_resize_moves_image(self):
         # When the area changes it's size the crop area remains centered. This
         # means we must move the image to not change the current view. That
