@@ -269,7 +269,6 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyOrdered(block1, block2)
         s.verifyOrdered(block2, block4)
 
-    @unittest.skip('waiting for Selenium API 2')
     def test_mosaic(self):
         self.open_centerpage()
         s = self.selenium
@@ -301,9 +300,19 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
         # Drag bar3 to the first position.
         # 2 1 3 -> 3 2 1
+
+        # XXX Selenium's drag&drop behaves strangely. It works better when the
+        # target area is visible, but we don't really understand what's going
+        # on here. :-(
+        self.eval(
+            'document.getElementById("%s").scrollIntoView(false);' % bar2)
+        self.eval(
+            'document.getElementById("cp-content-inner").scrollTop -= 50;')
+
         delta_y = -(bar_height * 2.75)
         s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % bar3,
                       '0,%s' % delta_y)
+
         s.waitForAttribute(path + '[1]@id', bar3)
         s.verifyAttribute(path + '[2]@id', bar2)
         s.verifyAttribute(path + '[3]@id', bar1)
