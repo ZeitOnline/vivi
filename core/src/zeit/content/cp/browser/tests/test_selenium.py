@@ -115,7 +115,6 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.click('css=a.CloseButton')
         s.waitForTextNotPresent('c2 teaser')
 
-    @unittest.skip('waiting for Selenium API 2')
     def test_sorting(self):
         s = self.selenium
         self.create_content_and_fill_clipboard()
@@ -152,7 +151,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         height = s.getElementHeight(li('c3'))
         height_landing = s.getElementHeight(li('c3', True))
 
-        delta_y = int((height + height_landing) * 2.75)
+        delta_y = (height + height_landing) * 2.75
         s.dragAndDrop(li('c3'), '0,%s' % delta_y)
 
         s.waitForElementPresent('css=div.teaser-list-edit-box')
