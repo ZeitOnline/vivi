@@ -54,7 +54,7 @@ Also wait bit to make sure the modification date is larger. This is necessary
 because it doesn't have microseconds:
 
 >>> import time
->>> time.sleep(1)
+>>> time.sleep(2)
 
 Make a non semantic change to "Somalia"
 
