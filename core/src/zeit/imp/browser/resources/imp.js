@@ -346,7 +346,7 @@ zeit.imp.Imp = Class.extend({
 
     move_image_on_size_change: function(event) {
         var pos = this.get_image_position();
-        pos.x -= 1;
+        pos.x -= 1;  // XXX why?
         pos.y -= 1;
         log('INFO', pos.__repr__());
 
