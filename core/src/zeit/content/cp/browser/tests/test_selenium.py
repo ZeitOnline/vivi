@@ -36,8 +36,9 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.click(link)
         s.waitForElementPresent('id=tab-1')
         s.click('//a[@href="tab-1"]')
-        s.waitForElementPresent('form.actions.apply')
-        s.click('form.actions.apply')
+        apply_button = r'css=#tab-1 #form\.actions\.apply'
+        s.waitForElementPresent(apply_button)
+        s.click(apply_button)
         s.waitForElementNotPresent('css=.lightbox')
 
         s.verifyXpathCount(css_path('#informatives a.delete-link'), 3)
