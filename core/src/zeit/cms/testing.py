@@ -316,7 +316,6 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
             self.old_log_level = logging.root.level
             logging.root.setLevel(logging.ERROR)
             transaction.commit()
-        self.selenium.getEval('window.sessionStorage.clear()')
 
     def tearDown(self):
         super(SeleniumTestCase, self).tearDown()
