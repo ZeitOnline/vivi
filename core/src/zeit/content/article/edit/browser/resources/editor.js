@@ -110,6 +110,8 @@ MochiKit.Signal.connect(
             $('#cp-content-inner').animate({scrollTop: 0}, 300);
         });
 
+        // $('.type-p').find('p').eq(1).addClass('ad-dummy');
+
     }(jQuery));
 
 });
@@ -177,6 +179,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.editable, 'onkeydown', self, self.handle_keydown));
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeyup', self, self.handle_keyup));
+            jQuery('.editable').bind('paste', function() {
+                self.handle_paste();
+            });
             // This handler is there to support saving during selenium tests as
             // it doesn't seem to be possible to synthesize an blur event which
             // triggers the capuring phase handler:
@@ -498,7 +503,16 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         self.update_toolbar();
         self.relocate_toolbar();
-        self.fix_html();
+    },
+
+    handle_paste: function() {
+        var self = this;
+        // Get rid of obsolete mark-up when pasting content from third party
+        // software. Ensure that content is processed AFTER it has been pasted.
+        setTimeout(function() {
+            self.fix_html();
+            jQuery(self.editable).children().has('style').remove();
+        }, 0);
     },
 
     fix_html: function() {
