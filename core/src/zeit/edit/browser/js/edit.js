@@ -47,6 +47,8 @@ zeit.edit.Editor = gocept.Class.extend({
             self, self.handleContentClick);
         MochiKit.Signal.connect(
             self, 'reload', self, self.reload);
+        MochiKit.Signal.connect(
+            self, 'reload-editor', self, self.load_editor);
         new zeit.cms.ToolTipManager(self.content);
     },
 

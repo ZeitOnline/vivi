@@ -45,4 +45,4 @@ class Revert(zeit.edit.browser.view.Action):
                 break
 
         undo.revert(tid)
-        self.signal(None, 'reload')
+        self.signal(None, 'reload-editor')
