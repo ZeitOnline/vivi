@@ -570,8 +570,8 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
             self._fill_lead()
             s.click('xpath=//a[@title="Publish"]')
             s.waitForElementPresent('css=div.lightbox')
-            s.waitForPageToLoad()
             s.waitForElementPresent('css=div.landing-zone')
+            s.waitForElementPresent('css=li.error')
             s.verifyText('css=li.error',
                          'Error during publish/retract: OSError*')
         finally:
