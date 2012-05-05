@@ -67,9 +67,9 @@ class Undo(grok.Adapter):
 
     def _state_before(self, obj, tid):
         # This is an adapted version of ZODB.Connection.oldstate that uses
-        # loadBefore instead of loadSerial (which one might call loadAt), since
-        # we can't be sure that/which either the XML or the DAV properties have
-        # changed exactly in the given transaction.
+        # loadBefore instead of loadSerial (the latter might call loadAt),
+        # since we can't be sure that/which either the XML or the DAV
+        # properties have changed exactly in the given transaction.
         # Unfortunately we have to access the private _reader to unpickle the
         # data record.
         result = self._connection.db().storage.loadBefore(obj._p_oid, tid)
