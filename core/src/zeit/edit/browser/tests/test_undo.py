@@ -4,6 +4,7 @@
 import mock
 import unittest2 as unittest
 
+
 class HistoryTest(unittest.TestCase):
 
     def test_history_should_urlencoe_tid(self):
