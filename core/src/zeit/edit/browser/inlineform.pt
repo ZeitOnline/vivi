@@ -21,15 +21,13 @@
       <div class="label">
         <label tal:attributes="
                cms:tooltip widget/hint;
-               for widget/name"
-               tal:content="widget/label"
-               i18n:translate="">
-          Label
+               for widget/name">
+          <span i18n:translate="" tal:content="widget/label">label</span>
+          <span class="required"
+                tal:condition="widget/required"
+                i18n:translate=""
+                >required</span>
         </label>
-        <span class="required"
-              tal:condition="widget/required"
-              i18n:translate=""
-              >required</span>
         <div class="error"
              tal:condition="widget/error"
              tal:content="structure widget/error">

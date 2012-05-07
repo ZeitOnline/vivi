@@ -637,6 +637,10 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin-top:2px;
 }
 
+.field.required label > span:after {
+    content: "";
+}
+
 .field span.charlimit {
   color: #777;
   font-weight: 700;
