@@ -16,14 +16,14 @@
 
 /* Textareas not inline */
 
-#edit-form-article-content .widget-outer {
+#edit-form-article-content .field {
   display: block;
   clear: both;
 }
 
-#edit-form-teaser-title .inline-form.wired .widget-outer,
+#edit-form-teaser-title .inline-form.wired .field,
 #edit-form-teaser-title .inline-form.wired .widget,
-#edit-form-article-content .inline-form.wired .widget-outer,
+#edit-form-article-content .inline-form.wired .field,
 #edit-form-article-content .inline-form.wired .widget {
   width: 100%
 }
@@ -79,7 +79,7 @@
   padding-bottom: 40px;
 }
 
-#edit-form-filename .widget-outer,
+#edit-form-filename .field,
 #edit-form-filename .widget {
   margin: 0;
 }
@@ -520,33 +520,33 @@ span.charcount {
 
 /* display landing zones of the two videos side by side */
 
-#edit-form-article-content .block.type-video .widget-outer.fieldname-video {
+#edit-form-article-content .block.type-video .field.fieldname-video {
   float:left;
 }
 
-#edit-form-article-content .block.type-video .widget-outer.fieldname-video_2 {
+#edit-form-article-content .block.type-video .field.fieldname-video_2 {
   float:right;
   clear:none;
 }
 
-#edit-form-article-content .block.type-video .widget-outer.fieldname-layout {
+#edit-form-article-content .block.type-video .field.fieldname-layout {
   clear:both;
 }
 
-#edit-form-article-content .block.type-raw .widget-outer.fieldname-xml .label,
-#edit-form-article-content .block.type-video .widget-outer.fieldname-video .label,
-#edit-form-article-content .block.type-video .widget-outer.fieldname-video_2 .label {
+#edit-form-article-content .block.type-raw .field.fieldname-xml .label,
+#edit-form-article-content .block.type-video .field.fieldname-video .label,
+#edit-form-article-content .block.type-video .field.fieldname-video_2 .label {
   display:none;
 }
 
-#edit-form-article-content .block.type-video .widget-outer.fieldname-video,
-#edit-form-article-content .block.type-video .widget-outer.fieldname-video_2 {
+#edit-form-article-content .block.type-video .field.fieldname-video,
+#edit-form-article-content .block.type-video .field.fieldname-video_2 {
   width:43%
 }
 
 /* imitate table design */
 
-fieldset.table .widget-outer {
+fieldset.table .field {
   clear: both;
 }
 
@@ -585,7 +585,7 @@ button.log-expander {
 /* Pageteaser division in article */
 
 .zeit-content-article-edit-interfaces-IDivision .block-inner fieldset,
-.zeit-content-article-edit-interfaces-IDivision .block-inner .widget-outer {
+.zeit-content-article-edit-interfaces-IDivision .block-inner .field {
   margin-right: 0px;
   margin-left: 0px;
 }
@@ -648,7 +648,7 @@ label[for^="asset-badges"] .checkboxType {
 
 /* Decrease distance between two product-management-formas a and b  */
 form[action$="misc-product-management-a"],
-form[action$="misc-product-management-a"] .widget-outer {
+form[action$="misc-product-management-a"] .field {
   margin-bottom:0px;
 }
 
@@ -734,7 +734,7 @@ form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
   padding-left:0px;
 }
 
-#edit-form-filename .widget-outer .label {
+#edit-form-filename .field .label {
   width:12em !important;
 }
 
@@ -805,7 +805,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 /* Assets-Stuff */
 
-#edit-form-assets .inline-form .widget-outer .widget {
+#edit-form-assets .inline-form .field .widget {
   padding-left:10px;
 }
 
