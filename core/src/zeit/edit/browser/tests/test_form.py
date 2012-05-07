@@ -34,7 +34,7 @@ class InlineForm(zeit.cms.testing.FunctionalTestCase):
                 self.widgets['foo'].vivi_css_class = 'barbaz qux'
 
         self.assertEllipsis("""\
-...<div class="widget-outer fieldname-foo barbaz qux">
+...<div class="field fieldname-foo required barbaz qux">
 <div class="label">...""", self.render_form(ExampleForm))
 
     def test_widget_without_css_class_does_not_break(self):
@@ -43,5 +43,5 @@ class InlineForm(zeit.cms.testing.FunctionalTestCase):
             legend = 'Legend'
 
         self.assertEllipsis("""\
-...<div class="widget-outer fieldname-foo">
+...<div class="field fieldname-foo required">
 <div class="label">...""", self.render_form(ExampleForm))

@@ -53,7 +53,8 @@ class DiverFormGroup(zope.viewlet.viewlet.SimpleViewletClass('layout.diver-forms
         return result
 
 
-class InlineForm(zope.formlib.form.SubPageEditForm,
+class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
+                 zope.formlib.form.SubPageEditForm,
                  zeit.edit.browser.view.UndoableMixin,
                  zeit.cms.browser.view.Base):
 
@@ -64,22 +65,6 @@ class InlineForm(zope.formlib.form.SubPageEditForm,
     def __call__(self):
         self.mark_transaction_undoable()
         return super(InlineForm, self).__call__()
-
-    @property
-    def widget_data(self):
-        result = []
-        for widget in self.widgets:
-            css_class = [
-                'widget-outer', 'fieldname-' + widget.context.__name__]
-            if widget.error():
-                css_class.append('error')
-            custom_css_class = getattr(widget, 'vivi_css_class', '')
-            css_class.extend(custom_css_class.split())
-            result.append(dict(
-                css_class=' '.join(css_class),
-                widget=widget,
-            ))
-        return result
 
 
 class DiverForm(InlineForm):
