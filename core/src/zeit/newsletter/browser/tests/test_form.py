@@ -13,7 +13,7 @@ class MetadataTest(zeit.newsletter.testing.SeleniumTestCase):
         s.assertValue('id=metadata.subject', '')
         s.type('id=metadata.subject', 'flubber')
         s.fireEvent('id=metadata.subject', 'blur')
-        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('id=metadata.subject')
