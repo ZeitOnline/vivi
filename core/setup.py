@@ -6,7 +6,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.cp',
-    version='0.50.3dev',
+    version='0.51.1.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://intra.gocept.com/projects/projects/zeit-cms',
@@ -39,6 +39,7 @@ setup(
         'zeit.find >= 0.4',
         'zeit.solr',
         'zope.app.appsetup',
+        'zope.app.generations',
         'zope.app.pagetemplate',
         'zope.component',
         'zope.container>=3.8.1',

@@ -12,8 +12,6 @@
   <include package="zeit.cms" file="securitypolicy.zcml" />
   <include package="zeit.cms.browser" />
 
-  <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
-
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.workflow" file="ftesting.zcml" />

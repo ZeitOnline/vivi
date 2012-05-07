@@ -4,13 +4,7 @@
 
 import lovely.remotetask.interfaces
 import lxml.cssselect
-import unittest2 as unittest
-import zeit.cms.browser.view
-import zeit.cms.checkout.interfaces
-import zeit.cms.clipboard.interfaces
 import zeit.cms.repository.interfaces
-import zeit.cms.testcontenttype.testcontenttype
-import zeit.content.cp.centerpage
 import zeit.content.quiz.quiz
 import zope.component
 
@@ -42,8 +36,9 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.click(link)
         s.waitForElementPresent('id=tab-1')
         s.click('//a[@href="tab-1"]')
-        s.waitForElementPresent('form.actions.apply')
-        s.click('form.actions.apply')
+        apply_button = r'css=#tab-1 #form\.actions\.apply'
+        s.waitForElementPresent(apply_button)
+        s.click(apply_button)
         s.waitForElementNotPresent('css=.lightbox')
 
         s.verifyXpathCount(css_path('#informatives a.delete-link'), 3)
@@ -120,7 +115,6 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.click('css=a.CloseButton')
         s.waitForTextNotPresent('c2 teaser')
 
-    @unittest.skip('waiting for Selenium API 2')
     def test_sorting(self):
         s = self.selenium
         self.create_content_and_fill_clipboard()
@@ -148,8 +142,8 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         # it overlaps the third row. The initial order is 3, 2, 1. After drag
         # it is 2, 1, 3.
         def li(text, following_sibling=False):
-            path = '//div[@class="lightbox"]//li[contains(string(.), "%s")]' % (
-                text,)
+            path = ('//div[@class="lightbox"]//li[contains(string(.), "%s")]' %
+                    text)
             if following_sibling:
                 path += '/following-sibling::li[1]'
             return path
@@ -157,7 +151,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         height = s.getElementHeight(li('c3'))
         height_landing = s.getElementHeight(li('c3', True))
 
-        delta_y = int((height + height_landing) * 2.75)
+        delta_y = (height + height_landing) * 2.75
         s.dragAndDrop(li('c3'), '0,%s' % delta_y)
 
         s.waitForElementPresent('css=div.teaser-list-edit-box')
@@ -187,7 +181,8 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         # Changing the value and submitting the form will reload the teaser
         # list light box. The text will be in there then.
         s.type('id=form.teaserTitle', 'A nice new teaser')
-        s.click('//form[contains(@action, "edit-teaser.html")]//input[@id="form.actions.apply_in_article"]')
+        s.click('//form[contains(@action, "edit-teaser.html")]'
+                '//input[@id="form.actions.apply_in_article"]')
         s.waitForTextPresent('A nice new teaser')
 
     def test_inplace_teaser_editing_with_abort(self):
@@ -252,7 +247,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
             s.click('css=a.choose-block')
             s.waitForElementPresent(teaser_module)
             s.dragAndDropToObject(teaser_module, 'css=a.choose-block')
-            s.waitForXpathCount(path, nr+1)
+            s.waitForXpathCount(path, nr + 1)
 
         path = 'xpath=' + path
         # Get the ids of the blocks
@@ -274,7 +269,6 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyOrdered(block1, block2)
         s.verifyOrdered(block2, block4)
 
-    @unittest.skip('waiting for Selenium API 2')
     def test_mosaic(self):
         self.open_centerpage()
         s = self.selenium
@@ -308,9 +302,19 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
         # Drag bar3 to the first position.
         # 2 1 3 -> 3 2 1
+
+        # XXX Selenium's drag&drop behaves strangely. It works better when the
+        # target area is visible, but we don't really understand what's going
+        # on here. :-(
+        self.eval(
+            'document.getElementById("%s").scrollIntoView(false);' % bar2)
+        self.eval(
+            'document.getElementById("cp-content-inner").scrollTop -= 50;')
+
         delta_y = -(bar_height * 2.75)
         s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % bar3,
                       '0,%s' % delta_y)
+
         s.waitForAttribute(path + '[1]@id', bar3)
         s.verifyAttribute(path + '[2]@id', bar2)
         s.verifyAttribute(path + '[3]@id', bar1)
@@ -357,7 +361,6 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
         self.open_centerpage()
         # There are two modules in the informatives anyway, don't create any
-        teaser_module = self.get_module('informatives', 'List of teasers')
         block1 = s.getAttribute('css=.block.type-cpextra@id')
         block2 = s.getAttribute('css=.block.type-cpextra + * + .block@id')
         s.assertElementPresent('css=#%s + * + #%s' % (block1, block2))

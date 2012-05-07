@@ -9,7 +9,13 @@ Changes specific to branch
   causes nothing but trouble, since it doesn't belong there (#9914).
 
 
-0.50.3 (unreleased)
+0.51.1 (unreleased)
+-------------------
+
+- Cleaned up dependencies on zope.app packages.
+
+
+0.51.0 (2012-03-06)
 -------------------
 
 - Introduced fall-back behaviour to the full-graphical block so that the
