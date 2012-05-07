@@ -17,6 +17,11 @@ class IExample(zope.interface.Interface):
 
 class InlineForm(zeit.cms.testing.FunctionalTestCase):
 
+    # XXX This test should be moved to zeit.cms.browser, but it seems nearly
+    # impossible to instantiate an EditForm, so we punt on this for now;
+    # InlineForms are friendlier (since they don't pull in the
+    # main_template.pt)
+
     def render_form(self, form_class):
         ANY_CONTEXT = Mock()
         zope.interface.alsoProvides(ANY_CONTEXT, IExample)
