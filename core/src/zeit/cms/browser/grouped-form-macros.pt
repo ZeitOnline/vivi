@@ -48,7 +48,7 @@
       <div 
         class="field" 
         tal:define="hint widget/hint"
-        tal:attributes="class python:'field ' + ((widget.required and 'required ') or ' ') + ((widget.error() and 'error') or ' ')">
+        tal:attributes="class widget/field_css_class">
 
         <div class="widget reversed" 
              tal:condition="widget/reversed|nothing"

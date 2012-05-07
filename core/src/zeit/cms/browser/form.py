@@ -83,7 +83,26 @@ def apply_default_values(context, interface):
         setattr(context, name, default)
 
 
-class FormBase(zeit.cms.browser.view.Base):
+class WidgetCSSMixin(object):
+
+    def setUpWidgets(self, *args, **kw):
+        super(WidgetCSSMixin, self).setUpWidgets(*args, **kw)
+        for widget in self.widgets:
+            widget.field_css_class = self._assemble_css_classes.__get__(widget)
+
+    @staticmethod
+    def _assemble_css_classes(widget):
+        css_class = ['field', 'fieldname-' + widget.context.__name__]
+        if widget.error():
+            css_class.append('error')
+        if widget.required:
+            css_class.append('required')
+        custom_css_class = getattr(widget, 'vivi_css_class', '')
+        css_class.extend(custom_css_class.split())
+        return ' '.join(css_class)
+
+
+class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin):
 
     widget_groups = ()
     template = zope.app.pagetemplate.ViewPageTemplateFile('grouped-form.pt')
