@@ -29,4 +29,4 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.add_article()
         self.create_block('video')
         s.assertElementPresent('css=.block.type-video .inline-form '
-                               '.widget-outer.fieldname-layout')
+                               '.field.fieldname-layout')

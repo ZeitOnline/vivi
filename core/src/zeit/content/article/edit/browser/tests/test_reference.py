@@ -222,7 +222,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             s.getSelectOptions(select))
         s.select(select, 'label=small')
         s.fireEvent(select, 'blur')
-        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent(select)
@@ -237,7 +237,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertValue(text, '')
         s.type(text, 'A custom caption')
         s.fireEvent(text, 'blur')
-        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent(text)
@@ -334,7 +334,7 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             s.getSelectOptions(select))
         s.select(select, 'label=large')
         s.fireEvent(select, 'blur')
-        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent(select)

@@ -26,6 +26,6 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.add_article()
         self.create_block('image')
         s.assertElementPresent('css=.block.type-image .inline-form '
-                               '.widget-outer.fieldname-custom_caption')
+                               '.field.fieldname-custom_caption')
         s.assertElementPresent('css=.block.type-image .inline-form '
-                               '.widget-outer.fieldname-layout')
+                               '.field.fieldname-layout')

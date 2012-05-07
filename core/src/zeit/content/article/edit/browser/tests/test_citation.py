@@ -27,6 +27,6 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.add_article()
         self.create_block('citation')
         s.assertElementPresent('css=.block.type-citation .inline-form '
-                               '.widget-outer.fieldname-text')
+                               '.field.fieldname-text')
         s.assertElementPresent('css=.block.type-citation .inline-form '
-                               '.widget-outer.fieldname-attribution_2')
+                               '.field.fieldname-attribution_2')

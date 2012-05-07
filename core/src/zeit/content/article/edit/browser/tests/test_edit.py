@@ -504,7 +504,7 @@ class TestDivision(
         s.waitForElementPresent('css=.type-division input')
         s.type('css=.type-division input', 'Division teaser')
         s.fireEvent('css=.type-division input', 'blur')
-        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('css=.type-division input')

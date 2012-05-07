@@ -25,7 +25,7 @@
     $.fn.createLogExpander = function() {
         var self = $(this);
         if (self.find('br').length < 5) { return; }
-        var log  = self.children('.widget-outer:first')
+        var log  = self.children('.field:first')
                        .css({'max-height': '7.5em', 'overflow': 'hidden'});
         var expander = $('<button />').html('Log ausklappen').appendTo(self);
         expander.addClass('log-expander');

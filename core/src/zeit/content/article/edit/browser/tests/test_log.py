@@ -50,21 +50,21 @@ class WorkflowLogTest(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementPresent('id=urgent.urgent')
 
         s.assertAttribute(
-            'css=fieldset.workflow-log div.widget-outer@style',
+            'css=fieldset.workflow-log div.field@style',
             '*max-height: 7.5em;*')
         s.assertAttribute(
-            'css=fieldset.workflow-log div.widget-outer@style',
+            'css=fieldset.workflow-log div.field@style',
             '*overflow: hidden;*')
 
         s.click('xpath=//button[@class="log-expander"]')
         s.assertAttribute(
-            'css=fieldset.workflow-log div.widget-outer@style',
+            'css=fieldset.workflow-log div.field@style',
             'overflow: hidden;')
 
         s.click('xpath=//button[@class="log-expander"]')
         s.assertAttribute(
-            'css=fieldset.workflow-log div.widget-outer@style',
+            'css=fieldset.workflow-log div.field@style',
             '*max-height: 7.5em;*')
         s.assertAttribute(
-            'css=fieldset.workflow-log div.widget-outer@style',
+            'css=fieldset.workflow-log div.field@style',
             '*overflow: hidden;*')

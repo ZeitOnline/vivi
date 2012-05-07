@@ -25,7 +25,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.add_article()
         self.create_block('audio')
         s.assertElementPresent('css=.block.type-audio .inline-form '
-                               '.widget-outer.fieldname-audio_id')
+                               '.field.fieldname-audio_id')
 
 
 class AudioEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
@@ -39,7 +39,7 @@ class AudioEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(input)
         s.type(input, 'asdf')
         s.fireEvent(input, 'blur')
-        s.waitForElementNotPresent('css=.widget-outer.dirty')
+        s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent(input)
