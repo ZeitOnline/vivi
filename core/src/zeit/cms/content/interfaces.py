@@ -195,7 +195,8 @@ class ICommonMetadata(zope.interface.Interface):
 
     in_rankings = zope.schema.Bool(
         title=_('Show in rankings'),
-        default=True)
+        default=True,
+        required=False)
 
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
