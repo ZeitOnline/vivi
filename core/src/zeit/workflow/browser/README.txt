@@ -148,7 +148,7 @@ Reload the workflow page.
         <div class="hint"></div>
         <div class="widget">User</div>
         ...
-      <div class="field   ">
+      <div class="field fieldname-date_last_modified">
         <label for="form.date_last_modified">
           <span>Date last modified</span>
         </label>
