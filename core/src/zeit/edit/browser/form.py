@@ -73,6 +73,8 @@ class InlineForm(zope.formlib.form.SubPageEditForm,
                 'widget-outer', 'fieldname-' + widget.context.__name__]
             if widget.error():
                 css_class.append('error')
+            custom_css_class = getattr(widget, 'vivi_css_class', '')
+            css_class.extend(custom_css_class.split())
             result.append(dict(
                 css_class=' '.join(css_class),
                 widget=widget,
