@@ -340,7 +340,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.form_events.push(MochiKit.Signal.connect(
                node, 'onchange', function(event) {
                     var outer = MochiKit.DOM.getFirstParentByTagAndClassName(
-                        event.target(), null, 'widget-outer');
+                        event.target(), null, 'field');
                     MochiKit.DOM.addElementClass(outer, 'dirty');
                     if (event.target().nodeName == 'INPUT' &&
                         event.target().type == 'hidden') {
