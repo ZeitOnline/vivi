@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import ZODB.POSException
 import datetime
 import gocept.async
@@ -11,7 +12,6 @@ import pytz
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.connector.interfaces
-import zeit.connector.search
 import zeit.vgwort.interfaces
 import zope.app.appsetup.product
 import zope.interface
@@ -60,7 +60,7 @@ class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.vgwort.interfaces.IReportInfo,
         'http://namespaces.zeit.de/CMS/vgwort',
         ('reported_on', 'reported_error'),
-        live=True)
+        writeable=WRITEABLE_LIVE)
 
 
 @gocept.runner.once(principal=gocept.runner.from_config(

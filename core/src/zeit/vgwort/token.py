@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import BTrees.Length
 import csv
 import gocept.runner
@@ -104,7 +105,7 @@ class Token(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.vgwort.interfaces.IToken,
         'http://namespaces.zeit.de/CMS/vgwort',
         ('public_token', 'private_token'),
-        live=True)
+        writeable=WRITEABLE_LIVE)
 
 
 @grokcore.component.subscribe(
