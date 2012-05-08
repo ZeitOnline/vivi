@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component
 import logging
@@ -15,9 +16,7 @@ import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.timebased
 import zope.component
-import zope.event
 import zope.interface
-import zope.location.location
 import zope.securitypolicy.interfaces
 
 
@@ -39,7 +38,7 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         zeit.workflow.interfaces.IContentWorkflow,
         WORKFLOW_NS,
         ('edited', 'corrected', 'refined', 'images_added', 'urgent'),
-        live=True)
+        writeable=WRITEABLE_LIVE)
 
     def can_publish(self):
         if self.urgent:

@@ -37,11 +37,12 @@ Forbidden: ('foo', 'test')
 Register foo/test as live property:
 
 >>> import zeit.cms.content.interfaces
+>>> from zeit.cms.content.interfaces import WRITEABLE_LIVE
 >>> lp_manager = zope.component.getUtility(
 ...     zeit.cms.content.interfaces.ILivePropertyManager)
 >>> lp_manager.is_live_property('foo', 'test')
 False
->>> lp_manager.register_live_property('foo', 'test')
+>>> lp_manager.register_live_property('foo', 'test', WRITEABLE_LIVE)
 >>> lp_manager.is_live_property('foo', 'test')
 True
 

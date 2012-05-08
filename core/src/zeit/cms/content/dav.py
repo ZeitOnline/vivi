@@ -1,8 +1,8 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN, WRITEABLE_LIVE
 import datetime
-import gocept.lxml.interfaces
 import grokcore.component
 import logging
 import lxml.etree
@@ -22,8 +22,8 @@ import zope.component
 import zope.event
 import zope.proxy
 import zope.schema.interfaces
-import zope.security.proxy
 import zope.security.adapter
+import zope.security.proxy
 import zope.xmlpickle
 
 
@@ -33,7 +33,8 @@ logger = logging.getLogger(__name__)
 class DAVProperty(object):
     """WebDAV properties."""
 
-    def __init__(self, field, namespace, name, use_default=False, live=False):
+    def __init__(self, field, namespace, name, use_default=False,
+                 writeable=WRITEABLE_ON_CHECKIN):
         self.field = field
         self.namespace = namespace
         self.name = name
@@ -41,7 +42,7 @@ class DAVProperty(object):
             self.missing_value = field.default
         else:
             self.missing_value = field.missing_value
-        if live:
+        if writeable is WRITEABLE_LIVE:
             # We cannot use a getUtility here, because this happens on import
             # time. We haven't got CA then.
             (zeit.cms.content.liveproperty.LiveProperties
@@ -428,16 +429,17 @@ class GenericCollectionProperty(GenericProperty):
         return super(GenericCollectionProperty, self).toProperty(value)
 
 
-def mapProperties(interface, namespace, names, use_default=False, live=False):
+def mapProperties(interface, namespace, names, use_default=False,
+                  writeable=WRITEABLE_ON_CHECKIN):
     vars = sys._getframe(1).f_locals
     for name in names:
         field = interface[name]
         mapProperty(field, namespace, name, vars, use_default=use_default,
-                    live=live)
+                    writeable=writeable)
 
 
 def mapProperty(field, namespace, name=None, vars=None, use_default=False,
-                live=False):
+                writeable=WRITEABLE_ON_CHECKIN):
     if vars is None:
         vars = sys._getframe(1).f_locals
 
@@ -445,7 +447,7 @@ def mapProperty(field, namespace, name=None, vars=None, use_default=False,
         name = field.__name__
 
     vars[name] = DAVProperty(field, namespace, name, use_default=use_default,
-                             live=live)
+                             writeable=writeable)
 
 
 _provides_dav_property = DAVProperty(

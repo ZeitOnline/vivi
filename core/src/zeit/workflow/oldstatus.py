@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import zeit.cms.interfaces
 import zeit.connector.interfaces
 import zeit.workflow.interfaces
@@ -18,7 +19,7 @@ class OldStatus(object):
         zeit.workflow.interfaces.IOldCMSStatus,
         zeit.workflow.interfaces.WORKFLOW_NS,
         ('status', ),
-        live=True)
+        writeable=WRITEABLE_LIVE)
 
     def __init__(self, context):
         self.context = context

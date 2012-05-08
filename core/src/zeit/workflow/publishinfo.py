@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -20,12 +21,12 @@ class NotPublishablePublishInfo(object):
         zeit.cms.workflow.interfaces.IPublishInfo,
         zeit.workflow.interfaces.WORKFLOW_NS,
         ('published', 'date_last_published'),
-        use_default=True, live=True)
+        use_default=True, writeable=WRITEABLE_LIVE)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IPublishInfo,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, ('date_first_released',),
-        live=True)
+        writeable=WRITEABLE_LIVE)
 
     def __init__(self, context):
         self.context = context

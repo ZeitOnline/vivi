@@ -211,6 +211,10 @@ class IProduct(zope.interface.Interface):
     vgwortcode = zope.interface.Attribute('VGWort code, optional')
 
 
+WRITEABLE_ON_CHECKIN = object()
+WRITEABLE_LIVE = object()
+
+
 class IDAVPropertyConverter(zope.interface.Interface):
     """Parse a unicode string from a DAV property to a value and vice versa."""
 

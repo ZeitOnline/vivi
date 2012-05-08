@@ -78,11 +78,12 @@ Let's add some properties under the hood. Note that properties in the DAV: or
 INTERNAL namespace are *not* mapped:
 
 >>> import zeit.connector.interfaces
+>>> from zeit.cms.content.interfaces import WRITEABLE_LIVE
 >>> properties = zeit.connector.interfaces.IWebDAVProperties(
 ...     repository['testcontent'])
->>> properties.register_live_property('am-i', 'under-the-hood')
->>> properties.register_live_property('foobar', 'DAV:')
->>> properties.register_live_property('foobar', 'INTERNAL')
+>>> properties.register_live_property('am-i', 'under-the-hood', WRITEABLE_LIVE)
+>>> properties.register_live_property('foobar', 'DAV:', WRITEABLE_LIVE)
+>>> properties.register_live_property('foobar', 'INTERNAL', WRITEABLE_LIVE)
 >>> properties[('am-i', 'under-the-hood')] = '4711'
 >>> properties[('foobar', 'DAV:')] = 'no-dav-sync'
 >>> properties[('foobar', 'INTERNAL')] = 'no-dav-sync'

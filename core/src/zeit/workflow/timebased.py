@@ -1,29 +1,20 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
+from zeit.cms.i18n import MessageFactory as _
 import datetime
-
+import lovely.remotetask.interfaces
 import pytz
 import rwproperty
-
-import zope.component
-import zope.event
-import zope.interface
-import zope.location.location
-
-import lovely.remotetask.interfaces
-
-import zeit.connector.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
-import zeit.cms.checkout.interfaces
-import zeit.cms.interfaces
-import zeit.cms.workflow.interfaces
-from zeit.cms.i18n import MessageFactory as _
-
 import zeit.workflow.interfaces
 import zeit.workflow.publish
 import zeit.workflow.publishinfo
+import zope.component
+import zope.interface
+
 
 WORKFLOW_NS = zeit.workflow.interfaces.WORKFLOW_NS
 
@@ -36,16 +27,18 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.NotPublishablePublishInfo):
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.ITimeBasedPublishing[
             'release_period'].fields[0],
-        WORKFLOW_NS, 'released_from', live=True)
+        WORKFLOW_NS, 'released_from', writeable=WRITEABLE_LIVE)
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.ITimeBasedPublishing[
             'release_period'].fields[1],
-        WORKFLOW_NS, 'released_to', live=True)
+        WORKFLOW_NS, 'released_to', writeable=WRITEABLE_LIVE)
 
     publish_job_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Int(), WORKFLOW_NS, 'publish_job_id', live=True)
+        zope.schema.Int(), WORKFLOW_NS, 'publish_job_id',
+        writeable=WRITEABLE_LIVE)
     retract_job_id = zeit.cms.content.dav.DAVProperty(
-        zope.schema.Int(), WORKFLOW_NS, 'retract_job_id', live=True)
+        zope.schema.Int(), WORKFLOW_NS, 'retract_job_id',
+        writeable=WRITEABLE_LIVE)
 
     def __init__(self, context):
         self.context = self.__parent__ = context
