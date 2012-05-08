@@ -152,10 +152,9 @@ class PropertyToXMLAttribute(object):
             else:
                 live_properties = zeit.connector.interfaces.IWebDAVProperties(
                     repository_content)
-                self.properties.update(dict(
-                    (key, live_properties[key]) for key, writeable
-                    in live_properties.items()
-                    if writeable is not WRITEABLE_ON_CHECKIN))
+                for key, value in live_properties.items():
+                    if not live_properties.is_writeable_on_checkin(*key):
+                        self.properties[key] = value
 
     def set(self, namespace, name, value=_default_marker):
         self.delAttribute(namespace, name)

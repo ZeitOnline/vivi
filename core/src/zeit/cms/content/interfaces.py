@@ -213,6 +213,7 @@ class IProduct(zope.interface.Interface):
 
 WRITEABLE_ON_CHECKIN = object()
 WRITEABLE_LIVE = object()
+WRITEABLE_ALWAYS = object()
 
 
 class IDAVPropertyConverter(zope.interface.Interface):

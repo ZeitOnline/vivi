@@ -1,7 +1,8 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN, WRITEABLE_LIVE
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE
+from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 import UserDict
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
@@ -65,12 +66,12 @@ class LiveProperties(object, UserDict.DictMixin):
     @classmethod
     def is_writeable_live(cls, name, namespace):
         writeable = cls.live_properties.get((name, namespace))
-        return writeable is WRITEABLE_LIVE
+        return writeable in [WRITEABLE_LIVE, WRITEABLE_ALWAYS]
 
     @classmethod
     def is_writeable_on_checkin(cls, name, namespace):
         writeable = cls.live_properties.get((name, namespace))
-        return writeable is WRITEABLE_ON_CHECKIN
+        return writeable in [WRITEABLE_ON_CHECKIN, WRITEABLE_ALWAYS]
 
 
 @zope.component.adapter(

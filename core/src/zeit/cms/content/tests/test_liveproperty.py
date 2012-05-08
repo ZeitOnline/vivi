@@ -1,8 +1,12 @@
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import mock
+import zeit.cms.content.interfaces
 import zeit.cms.testing
+import zeit.connector.interfaces
+import zope.component
 
 
 class TestRemoveOnCheckin(zeit.cms.testing.FunctionalTestCase):
@@ -23,3 +27,27 @@ class TestRemoveOnCheckin(zeit.cms.testing.FunctionalTestCase):
         content = mock.Mock()
         zope.event.notify(BeforeCheckinEvent(
             content, mock.Mock(), mock.Mock()))
+
+
+class AlwaysWriteableProperty(zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(AlwaysWriteableProperty, self).setUp()
+        manager = zope.component.getUtility(
+            zeit.cms.content.interfaces.ILivePropertyManager)
+        manager.register_live_property('foo', 'bar', WRITEABLE_ALWAYS)
+
+    def test_is_writeable_in_repository(self):
+        content = self.repository['testcontent']
+        properties = zeit.connector.interfaces.IWebDAVProperties(content)
+        properties[('foo', 'bar')] = 'qux'
+        self.assertEqual('qux', properties[('foo', 'bar')])
+
+    def test_is_writeable_in_workingcopy_and_survives_checkin(self):
+        content = self.repository['testcontent']
+        properties = zeit.connector.interfaces.IWebDAVProperties(content)
+        properties[('foo', 'bar')] = 'one'
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            wc_properties = zeit.connector.interfaces.IWebDAVProperties(co)
+            wc_properties[('foo', 'bar')] = 'two'
+        self.assertEqual('two', properties[('foo', 'bar')])
