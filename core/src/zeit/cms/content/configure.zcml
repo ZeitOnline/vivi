@@ -158,7 +158,7 @@
       interface=".interfaces.IMemo"
       />
     <require
-      permission="zeit.EditContent"
+      permission="zope.View"
       set_schema=".interfaces.IMemo"
       />
   </class>

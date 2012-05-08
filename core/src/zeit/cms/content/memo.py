@@ -1,6 +1,7 @@
 # Copyright (c) 2009-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import grokcore.component
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -15,7 +16,7 @@ class Memo(zeit.cms.content.dav.DAVPropertiesAdapter):
     memo = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.IMemo['memo'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'memo')
+        'memo', writeable=WRITEABLE_ALWAYS)
 
 
 @grokcore.component.subscribe(
