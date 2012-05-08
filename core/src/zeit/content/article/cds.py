@@ -1,7 +1,7 @@
 # Copyright (c) 2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from __future__ import with_statement
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import datetime
 import gocept.filestore
 import gocept.runner
@@ -203,7 +203,7 @@ class CDSWorkflow(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.content.article.interfaces.ICDSWorkflow,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('export_cds',),
-        live=True)
+        writeable=WRITEABLE_LIVE)
 
     def __init__(self, context):
         self.context = context
