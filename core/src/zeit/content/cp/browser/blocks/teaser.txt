@@ -17,9 +17,9 @@ teasers in the lead area[#fill-dav-with-content]_:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-<div...class="block type-teaser... id="<GUID>">
+<div...class="block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
-    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
+    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop"
      class="teaser-contents action-content-droppable leader">
      ...
   <div class="teaser">...
@@ -46,10 +46,10 @@ When a teaser is dragged on the teaser block, it is added as the first teaser:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-<div...class="block type-teaser... id="<GUID>">
+<div...class="block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
      ...<span class="position">1</span>...
-    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
+    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop"
          class="teaser-contents action-content-droppable leader">
          ...
   <div class="teaser">...
@@ -88,7 +88,7 @@ The teaser block can be edited:
 >>> print browser.contents
 <div class="lightbox-full teaser-list-edit-box">
   <ol id="teaser-list-edit-box-sorter"
-      cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>">
+      cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/id-<GUID>">
     <li class="action-content-droppable...index=0...
     <li class="edit-bar teaser"
         cms:uniqueid="http://xml.zeit.de/online/2007/01/Somalia">
@@ -100,7 +100,7 @@ The teaser block can be edited:
         cms:uniqueid="http://xml.zeit.de/c1">
         <a class="edit-link" title="Edit in place"
            ...
-           href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/++item++1/@@edit-teaser.html">
+           href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/id-f36f26af-4b39-4101-b6c7-ba605610dc0d/++item++1/@@edit-teaser.html">
           <span class="action-title">Edit inline</span>
         </a>
         <a class="edit-object-link"
@@ -110,7 +110,7 @@ The teaser block can be edited:
         </a>
         <a class="delete-link" title="Delete"
           ...
-           href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
+           href="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/id-f36f26af-4b39-4101-b6c7-ba605610dc0d/delete?uniqueId=http://xml.zeit.de/c1">
           <span class="action-title">Delete</span>
         </a>
         <div title="http://xml.zeit.de/c1">c1 teaser</div>
@@ -172,7 +172,7 @@ True
 >>> print browser.contents
 <div class="lightbox-full teaser-list-edit-box">
   <ol id="teaser-list-edit-box-sorter"
-      cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>">
+      cms:url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/id-<GUID>">
     <li class="action-content-droppable...
     <li class="edit-bar teaser" ...
         ...
@@ -187,9 +187,9 @@ The cp contents also has changed of course:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div ...
-<div...class="block type-teaser... id="<GUID>">
+<div...class="block type-teaser... id="id-<GUID>">
   <div class="block-inner">...
-    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/dde08c15-e09f-471f-8526-649672684a22/drop"
+    <div cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/lead/id-dde08c15-e09f-471f-8526-649672684a22/drop"
         class="teaser-contents action-content-droppable leader">
      ...
   <div class="teaser">...

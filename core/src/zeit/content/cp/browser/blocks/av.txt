@@ -66,8 +66,8 @@ The video block also supports dropping of videos:
 >>> import pprint
 >>> import json
 >>> pprint.pprint(json.loads(browser.contents))
-{u'signals': [{u'args': [u'<GUID>',
-                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/666b0a7d-3020-475c-b17d-b82a895e74de/@@contents'],
+{u'signals': [{u'args': [u'id-<GUID>',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/id-666b0a7d-3020-475c-b17d-b82a895e74de/@@contents'],
               u'name': u'reload',
               u'when': None}]}
 >>> browser.open(edit_form_url)
@@ -93,8 +93,8 @@ Expiration date and player are updated automatically:
 
 >>> browser.open('@@drop?uniqueId=http://xml.zeit.de/pls')
 >>> pprint.pprint(json.loads(browser.contents))
-{u'signals': [{u'args': [u'<GUID>',
-                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/03ffb451-4719-419a-863a-2481451bf6be/@@contents'],
+{u'signals': [{u'args': [u'id-<GUID>',
+                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/id-03ffb451-4719-419a-863a-2481451bf6be/@@contents'],
               u'name': u'reload',
               u'when': None}]}
 >>> browser.open(edit_form_url)
@@ -153,9 +153,9 @@ XML of an audio/video block
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="audio" module="audio" cp:__name__="<GUID>">
+<container cp:type="audio" module="audio" cp:__name__="id-<GUID>">
   <audio audioID="98765" format="large"/>
 </container>
-<container cp:type="video" module="video" cp:__name__="<GUID>">
+<container cp:type="video" module="video" cp:__name__="id-<GUID>">
   <video videoID="pls" player="pls" expires="" format="small"/>
 </container>...

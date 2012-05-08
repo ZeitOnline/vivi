@@ -77,7 +77,7 @@ information about the created block:
 ...              '?block_type=cpextra')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
-{u'signals': [{u'args': [u'7ccff7a0-3758-416c-ad30-d0183a2543fd'],
+{u'signals': [{u'args': [u'id-7ccff7a0-3758-416c-ad30-d0183a2543fd'],
               u'name': u'added',
               u'when': u'after-reload'},
              {u'args': [u'informatives',
@@ -101,10 +101,10 @@ it, is rendered too:
 <div class="landing-zone action-informatives-module-droppable"
      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
 </div>
-  <div ...class="block type-cpextra"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+  <div ...class="block type-cpextra"...id="id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
     ...
   <div class="landing-zone action-informatives-module-droppable"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
   </div>
   ...
 
@@ -121,10 +121,10 @@ Add an audio block after the just created cpextra block now:
 <div class="landing-zone action-informatives-module-droppable"
      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
 </div>
-  <div ...class="block type-cpextra"...id="c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+  <div ...class="block type-cpextra"...id="id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
     ...
   <div class="landing-zone action-informatives-module-droppable"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
   </div>
   ...<div...class="block type-audio"...
 

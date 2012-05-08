@@ -44,7 +44,7 @@ The source of a quiz block:
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="quiz" module="quiz" cp:__name__="03299ac7-949a-42ee-ae9c-9defe891fff1">
+<container cp:type="quiz" module="quiz" cp:__name__="id-03299ac7-949a-42ee-ae9c-9defe891fff1">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...>
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>

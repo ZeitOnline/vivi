@@ -21,7 +21,7 @@ Initialy the block is empty and has no module assinged:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(cpextra.xml, pretty_print=True)
-<container ... cp:type="cpextra" module="" cp:__name__="ce7dc496-327f-432d-b6ec-380866c1ce29"/>
+<container ... cp:type="cpextra" module="" cp:__name__="id-ce7dc496-327f-432d-b6ec-380866c1ce29"/>
 
 
 MostRead

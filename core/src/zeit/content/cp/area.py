@@ -66,7 +66,7 @@ class Container(UserDict.DictMixin,
             if name in self:
                 raise zope.container.interfaces.DuplicateIDError(name)
         else:
-            name = str(uuid.uuid4())
+            name = 'id-' + str(uuid.uuid4())
         item.__name__ = name
         self.xml.append(item.xml)
         return name
