@@ -165,6 +165,19 @@
   background: -moz-linear-gradient(center top , #FFFFFF, #EDEDED) repeat scroll 0 0 transparent;
 }
 
+#article-editor-text #editable-body {
+    border: 1px solid #BBBBBB;
+}
+
+#article-editor-text #editable-body .type-p .edit-bar{
+    display:none;
+}
+
+#article-editor-text #editable-body .type-p .block-inner {
+  border: none;
+  margin:0;
+}
+
 .zeit-edit-interfaces-IFoldable .edit-bar a.fold-link:after {
   color: grey;
   font-size: 9px;
@@ -327,13 +340,14 @@ span.charcount {
   right: 150px;
 }
 
+/*
 #article-editor-text .editing p:last-child,
 #article-editor-text .editing ol:last-child,
 #article-editor-text .editing ul:last-child,
 #article-editor-text .editing h3:last-child {
   min-height: 141px;
   margin-bottom: 0px;
-}
+} */
 
 #article-editor-text .editable a {
   text-decoration: underline;
@@ -368,7 +382,7 @@ span.charcount {
 
 .editing .block-inner p,
 .editing .block-inner h3{
-  margin-top: 41px;
+  margin-top: 22px;
 }
 
 .editing .block-inner ul {
@@ -386,7 +400,7 @@ span.charcount {
 .rte-toolbar {
   background-color: #f0f0ee;
   border : 1px solid #cccccc;
-  left: -22px;
+  left: -10px;
   position: absolute;
 }
 
