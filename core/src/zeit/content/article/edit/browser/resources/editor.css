@@ -400,8 +400,9 @@ span.charcount {
 .rte-toolbar {
   background-color: #f0f0ee;
   border : 1px solid #cccccc;
-  left: -10px;
+  left: -30px;
   position: absolute;
+  z-index:9999;
 }
 
 .rte-toolbar > a {
