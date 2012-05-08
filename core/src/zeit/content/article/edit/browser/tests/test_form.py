@@ -90,3 +90,23 @@ class CheckinValidationTest(zeit.cms.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
         b.open('@@edit.form.context-action')
         self.assert_ellipsis('...Title:...Required input is missing...')
+
+
+class MemoTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.ArticleLayer
+
+    def test_memo_is_editable_while_checked_in(self):
+        from zeit.content.article.article import Article
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['article'] = Article()
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/article/@@edit.form.memo-diver?show_form=1')
+        b.getControl('Memo').value = 'foo bar baz'
+        b.getControl('Apply').click()
+        # reload() forgets the query-paramter, sigh.
+        b.open('http://localhost/++skin++vivi/repository'
+               '/article/@@edit.form.memo-diver?show_form=1')
+        self.assertEqual('foo bar baz', b.getControl('Memo').value)
