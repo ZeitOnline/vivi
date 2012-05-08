@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import grokcore.component as grok
@@ -33,7 +34,7 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
     zeit.cms.content.dav.mapProperties(
         zeit.newsletter.interfaces.INewsletterCategory,
         zeit.newsletter.interfaces.DAV_NAMESPACE,
-        ['last_created'], live=True)
+        ['last_created'], writeable=WRITEABLE_LIVE)
 
     def create(self):
         now = datetime.datetime.now(pytz.UTC)

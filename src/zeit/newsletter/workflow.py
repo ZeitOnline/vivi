@@ -1,13 +1,13 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import grokcore.component as grok
 import logging
 import zeit.cms.workflow.interfaces
 import zeit.newsletter.interfaces
 import zeit.workflow.interfaces
 import zeit.workflow.publishinfo
-import zope.interface
 import zope.session.interfaces
 
 
@@ -22,7 +22,7 @@ class Workflow(zeit.workflow.publishinfo.NotPublishablePublishInfo,
         zeit.newsletter.interfaces.INewsletterWorkflow,
         zeit.workflow.interfaces.WORKFLOW_NS,
         ('sent',),
-        use_default=True, live=True)
+        use_default=True, writeable=WRITEABLE_LIVE)
 
     def can_publish(self):
         return True
