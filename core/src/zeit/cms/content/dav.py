@@ -1,7 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN, WRITEABLE_LIVE
+from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 import datetime
 import grokcore.component
 import logging
@@ -42,11 +42,10 @@ class DAVProperty(object):
             self.missing_value = field.default
         else:
             self.missing_value = field.missing_value
-        if writeable is WRITEABLE_LIVE:
-            # We cannot use a getUtility here, because this happens on import
-            # time. We haven't got CA then.
-            (zeit.cms.content.liveproperty.LiveProperties
-             .register_live_property(name, namespace))
+        # We cannot use a getUtility here, because this happens on import
+        # time. We haven't got CA then.
+        (zeit.cms.content.liveproperty.LiveProperties
+         .register_live_property(name, namespace, writeable))
 
     def __get__(self, instance, class_, properties=None):
         __traceback_info = (instance, )

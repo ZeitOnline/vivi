@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN
 import StringIO
 import datetime
 import gocept.lxml.objectify
@@ -152,8 +153,9 @@ class PropertyToXMLAttribute(object):
                 live_properties = zeit.connector.interfaces.IWebDAVProperties(
                     repository_content)
                 self.properties.update(dict(
-                    (key, live_properties[key]) for key in live_properties if
-                    live_properties.is_live_property(key[0], key[1])))
+                    (key, live_properties[key]) for key, writeable
+                    in live_properties.items()
+                    if writeable is not WRITEABLE_ON_CHECKIN))
 
     def set(self, namespace, name, value=_default_marker):
         self.delAttribute(namespace, name)

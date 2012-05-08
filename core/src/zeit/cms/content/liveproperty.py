@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import WRITEABLE_ON_CHECKIN, WRITEABLE_LIVE
 import UserDict
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
@@ -18,7 +19,7 @@ class LiveProperties(object, UserDict.DictMixin):
     zope.interface.classProvides(
         zeit.cms.content.interfaces.ILivePropertyManager)
 
-    live_properties = set()
+    live_properties = dict()
 
     def __init__(self, context):
         self.context = context
@@ -36,7 +37,7 @@ class LiveProperties(object, UserDict.DictMixin):
         return key in self.resource.properties
 
     def __setitem__(self, key, value):
-        if key not in self.live_properties:
+        if not self.is_writeable_live(*key):
             raise zope.security.interfaces.Forbidden(key)
         if self.get(key, self) != value:  # use self as marker
             # Only call DAV when there actually is a change
@@ -54,16 +55,22 @@ class LiveProperties(object, UserDict.DictMixin):
     # ILivePropertyManager
 
     @classmethod
-    def register_live_property(cls, name, namespace):
-        cls.live_properties.add((name, namespace))
+    def register_live_property(cls, name, namespace, writeable):
+        cls.live_properties[(name, namespace)] = writeable
 
     @classmethod
     def unregister_live_property(cls, name, namespace):
-        cls.live_properties.remove((name, namespace))
+        del cls.live_properties[(name, namespace)]
 
     @classmethod
-    def is_live_property(cls, name, namespace):
-        return (name, namespace) in cls.live_properties
+    def is_writeable_live(cls, name, namespace):
+        writeable = cls.live_properties.get((name, namespace))
+        return writeable is WRITEABLE_LIVE
+
+    @classmethod
+    def is_writeable_on_checkin(cls, name, namespace):
+        writeable = cls.live_properties.get((name, namespace))
+        return writeable is WRITEABLE_ON_CHECKIN
 
 
 @zope.component.adapter(
@@ -82,7 +89,8 @@ def remove_live_properties(context, event):
     manager = zope.component.getUtility(
         zeit.cms.content.interfaces.ILivePropertyManager)
     for live_property in manager.live_properties:
-        properties.pop(live_property, None)
+        if not manager.is_writeable_on_checkin(*live_property):
+            properties.pop(live_property, None)
 
 
 @zope.component.adapter(LiveProperties)

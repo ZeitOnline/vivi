@@ -714,10 +714,10 @@ The DAVProperty has some support for marking properties as live properties:
 >>> import zeit.cms.content.interfaces
 >>> lp_manager = zope.component.getUtility(
 ...     zeit.cms.content.interfaces.ILivePropertyManager)
->>> lp_manager.is_live_property('changed', 'myns')
+>>> lp_manager.is_writeable_live('changed', 'myns')
 False
 >>> class Foo(object):
 ...     changed = DAVProperty(zope.schema.TextLine(), 'myns', 'changed',
 ...                           writeable=WRITEABLE_LIVE)
->>> lp_manager.is_live_property('changed', 'myns')
+>>> lp_manager.is_writeable_live('changed', 'myns')
 True
