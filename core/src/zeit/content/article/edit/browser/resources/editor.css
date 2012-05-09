@@ -45,9 +45,17 @@
 }
 
 #editor-forms div div.edit-bar {
-  margin: 0 0 4px 0px;
-  background: none 0;
+  background: none repeat scroll 0 0 #FFF;
+  border-radius: 5px 5px 0px 0px;
+  font-size: 12px;
+  margin: 0 10px;
+  padding: 0px 10px;
+  position: relative;
+  border-bottom: 1px solid #DDD;
+  height: 26px;
+  line-height: 26px;
 }
+
 
 #editor-forms div div.edit-bar > .edit-link {
   background-size: 80%;
@@ -56,8 +64,7 @@
 }
 
 #editor-forms div div.edit-bar a {
-  margin: 4px;
-  margin-top: 1px;
+  margin: 10px 4px 4px;
 }
 
 #article-form-workflow.folded,
@@ -104,6 +111,7 @@
 
 .article-editor-inner .edit-bar > a {
   height: 10px;
+  width: 10px;
   margin: 0;
   padding: 0;
   margin-top: 1px;
@@ -253,7 +261,7 @@ span.charcount {
 
 .block-inner{
   background: none repeat scroll 0 0 #FFFFFF;
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 0px 0px 5px 5px;
   font-size: 12px;
   margin: 0 10px;
   padding: 5px 10px;
