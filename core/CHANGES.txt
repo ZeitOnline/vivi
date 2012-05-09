@@ -6,6 +6,7 @@ zeit.content.author changes
 
 - Remove the last author from freetext when the last author is removed from
   referenced authors (#9918).
+- New field: Community-Profile (#10670).
 
 
 0.4.0 (2011-11-13)
