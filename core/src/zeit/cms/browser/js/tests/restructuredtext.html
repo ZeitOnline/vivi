@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="resource_library:zeit.cms.javascript"/>
+  </head>
+  <body id="body">
+    <textarea id="testwidget">foo bar</textarea>
+    <div id="testwidget.preview">
+      foo <a target="_blank" href="objectsequencewidget.html">my link</a> baz
+    </div>
+
+    <script type="text/javascript">
+      var application_url = '../../../';
+      var widget = new zeit.cms.RestructuredTextWidget('testwidget');
+    </script>
+  </body>
+</html>

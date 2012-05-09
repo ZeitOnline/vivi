@@ -321,11 +321,19 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
             transaction.commit()
         self.selenium.getEval('window.sessionStorage.clear()')
 
+        self.original_windows = set(self.selenium.getAllWindowNames())
+
     def tearDown(self):
         super(SeleniumTestCase, self).tearDown()
         if self.log_errors:
             logging.root.removeHandler(self.log_handler)
             logging.root.setLevel(self.old_log_level)
+
+        current_windows = set(self.selenium.getAllWindowNames())
+        for window in current_windows - self.original_windows:
+            self.selenium.selectWindow(window)
+            self.selenium.close()
+        self.selenium.selectWindow()
 
     def open(self, path, auth='user:userpw'):
         auth_sent = getattr(self.layer, 'auth_sent', None)

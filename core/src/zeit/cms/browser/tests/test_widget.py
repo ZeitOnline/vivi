@@ -519,3 +519,54 @@ class TestObjectSequenceDisplayWidgetIntegration(
         with zeit.cms.testing.interaction():
             self.assert_ellipsis(
                 '...<div class="content-details...supertitle...', widget())
+
+
+class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(RestructuredTextWidgetTest, self).setUp()
+        from zeit.cms.browser.widget import RestructuredTextWidget
+        request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.IViviSkin)
+        field = zope.schema.Text()
+        field.__name__ = 'foo'
+        self.widget = RestructuredTextWidget(field, request)
+
+    def test_renders_both_textarea_and_preview(self):
+        self.widget.setRenderedValue('foo bar baz')
+        self.assertEllipsis("""\
+<textarea...id="field.foo"...>foo bar baz</textarea>...
+<div...id="field.foo.preview"...><p>foo bar baz</p> </div>
+<script...new zeit.cms.RestructuredTextWidget('field.foo'); </script>""",
+                            self.widget())
+
+    def test_text_starting_with_http_is_rendered_as_link(self):
+        self.widget.setRenderedValue('foo http://example.com bar')
+        self.assertEllipsis(
+            '...<a...href="http://example.com">http://example.com</a>...',
+            self.widget())
+
+
+class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(RestructuredTextWidgetJavascriptTest, self).setUp()
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/restructuredtext.html')
+
+    def test_clicking_preview_div_shows_textarea(self):
+        s = self.selenium
+        s.assertVisible('id=testwidget.preview')
+        s.waitForNotVisible('id=testwidget')
+        s.click('id=testwidget.preview')
+        s.waitForVisible('id=testwidget')
+        s.assertNotVisible('id=testwidget.preview')
+
+    def test_clicking_on_a_link_opens_it(self):
+        s = self.selenium
+        s.click('link=my link')
+        s.selectWindow(s.getAllWindowNames()[-1])
+        s.assertNotLocation('*/restructuredtext.html')
+        s.close()
+        s.selectWindow()
+        s.assertNotVisible('id=testwidget')

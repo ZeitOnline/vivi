@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import docutils.core
 import json
 import time
 import xml.sax.saxutils
@@ -21,6 +22,7 @@ import zope.app.pagetemplate
 import zope.cachedescriptors.property
 import zope.component
 import zope.formlib.interfaces
+import zope.formlib.textwidgets
 import zope.interface
 import zope.schema
 import zope.schema.interfaces
@@ -431,3 +433,23 @@ def CheckboxDisplayWidget(context, request):
     widget = CheckboxWidget(context, request)
     widget.extra = 'disabled="disabled"'
     return widget
+
+
+RST_TEMPLATE = """\
+%(textarea)s
+<div id="%(id)s.preview">%(rendered)s</div>
+<script type="text/javascript">
+new zeit.cms.RestructuredTextWidget('%(id)s');
+</script>
+"""
+
+
+class RestructuredTextWidget(zope.formlib.textwidgets.TextAreaWidget):
+
+    def __call__(self):
+        textarea = super(RestructuredTextWidget, self).__call__()
+        rendered = docutils.core.publish_parts(
+            self._getFormValue(), writer_name='html')['fragment']
+        return RST_TEMPLATE % dict(textarea=textarea,
+                                   id=self.name,
+                                   rendered=rendered)

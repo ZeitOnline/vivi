@@ -20,6 +20,7 @@ setup(
         'SilverCity',
         'ZODB3>=3.8.1',
         'decorator',
+        'docutils',
         'gocept.async>=0.1.1',
         'gocept.cache>=0.2',
         'gocept.fckeditor',

@@ -36,6 +36,8 @@ editor-ng branch changes
 - In the ObjectSequenceWidget, placed the search field and add button above
   the list of sequence items (#10666).
 
+- Introduce RestructuredTextWidget (#10661).
+
 
 1.53.3 (unreleased)
 -------------------
