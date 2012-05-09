@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.interfaces
@@ -28,6 +29,8 @@ class MemoDiver(zeit.edit.browser.form.DiverForm):
         zeit.cms.content.interfaces.IMemo,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'memo')
+
+    form_fields['memo'].custom_widget = RestructuredTextWidget
 
 
 class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
