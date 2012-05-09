@@ -35,6 +35,9 @@ class IAuthor(zope.interface.Interface):
         required=False,
         description=_(u"Default: 'Firstname Lastname'"))
 
+    community_profile = zope.schema.TextLine(
+        title=_('Community-Profile URL'), required=False)
+
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
         source=StatusSource())
