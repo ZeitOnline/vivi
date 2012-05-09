@@ -378,7 +378,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var move = {
             duration: 0.5,
             mode: 'absolute',
-            x: MochiKit.Style.getElementPosition(self.toolbar, self.block).x - 11,
+            x: MochiKit.Style.getElementPosition(self.toolbar, self.block).x,
             y: MochiKit.Style.getElementPosition(container, self.block).y
         };
         if (fast) {
@@ -386,7 +386,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         } else {
             MochiKit.Visual.Move(self.toolbar, move);
         }
-    },
+     },
 
     handle_click: function(event) {
         var self = this;

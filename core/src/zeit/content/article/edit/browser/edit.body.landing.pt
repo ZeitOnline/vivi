@@ -1,9 +1,5 @@
 <div class="article-text">
-  <label i18n:domain="zeit.cms"
-         i18n:translate="">
-  Article text
-  </label>
-  <div class="landing-zone visible action-content-droppable action-editable-body-module-droppable"
+   <div class="landing-zone visible action-content-droppable action-editable-body-module-droppable"
        tal:attributes="
        cms:drop-url string:${context/@@absolute_url}/@@article-landing-zone-drop;
        cms:create-block-url string:${context/@@absolute_url}/@@landing-zone-drop-module"

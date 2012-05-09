@@ -173,6 +173,24 @@
   background: -moz-linear-gradient(center top , #FFFFFF, #EDEDED) repeat scroll 0 0 transparent;
 }
 
+#article-editor-text #editable-body {
+    border: 1px solid #dddddd;
+    -moz-box-shadow:inset 0px 1px 2px 0px #dddddd;
+    border-top:1px solid #BBBBBB;
+    margin-left:8px;
+}
+
+
+
+#article-editor-text #editable-body .type-p .edit-bar{
+    display:none;
+}
+
+#article-editor-text #editable-body .type-p .block-inner {
+  border: none;
+  margin:0;
+}
+
 .zeit-edit-interfaces-IFoldable .edit-bar a.fold-link:after {
   color: grey;
   font-size: 9px;
@@ -335,13 +353,14 @@ span.charcount {
   right: 150px;
 }
 
+/*
 #article-editor-text .editing p:last-child,
 #article-editor-text .editing ol:last-child,
 #article-editor-text .editing ul:last-child,
 #article-editor-text .editing h3:last-child {
   min-height: 141px;
   margin-bottom: 0px;
-}
+} */
 
 #article-editor-text .editable a {
   text-decoration: underline;
@@ -376,7 +395,7 @@ span.charcount {
 
 .editing .block-inner p,
 .editing .block-inner h3{
-  margin-top: 41px;
+  margin-top: 22px;
 }
 
 .editing .block-inner ul {
