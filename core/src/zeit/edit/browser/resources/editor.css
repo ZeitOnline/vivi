@@ -462,13 +462,13 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 /* forms */
 
-.inline-form .widget-outer {
+.inline-form .field {
   float: left;
   margin: 0 20px 10px 0;
   position: relative;
 }
 
-#edit-form-assets .inline-form .widget-outer {
+#edit-form-assets .inline-form .field {
   margin: 0 0px 20px 0;
   position: relative;
   background: #F2F2F2;
@@ -481,7 +481,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   width:95%:
 }
 
-#edit-form-assets .inline-form .widget-outer div.droppable-active {
+#edit-form-assets .inline-form .field div.droppable-active {
   background: -moz-linear-gradient(center top , #FFF, #DFD) repeat scroll 0 0 transparent;
   border: 1px solid #0A0;
   -moz-border-radius: 5px;
@@ -523,14 +523,14 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   float: left;
 }
 
-#edit-form-assets .inline-form .widget-outer,
+#edit-form-assets .inline-form .field,
 #edit-form-assets .inline-form .widget {
   padding: 0px 0 0;
   margin-bottom: 10px;
   width: 100%;
 }
 
-#edit-form-assets .inline-form .widget-outer div.label{
+#edit-form-assets .inline-form .field div.label{
   margin: 3px 0px 3px 3px;
 }
 
@@ -608,11 +608,11 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   background: #F00;
 }
 
-.widget-outer select {
+.field select {
   width: 180px;
 }
 
-.widget-outer button {
+.field button {
   width: 180px;
 }
 
@@ -620,7 +620,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   display: none;
 }
 
-.widget-outer span.required {
+.field span.required {
   background-color: #a00;
   border-radius: 5px 5px 5px 5px;
   color: #fff;
@@ -631,13 +631,17 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 /* For editor-ng only, don't want to overwrite other required-spans:  */ 
-.article-editor-inner .widget-outer span.required {
+.article-editor-inner .field span.required {
   display:block;
   float:right;
   margin-top:2px;
 }
 
-.widget-outer span.charlimit {
+.field.required label > span:after {
+    content: "";
+}
+
+.field span.charlimit {
   color: #777;
   font-weight: 700;
   padding: 2px
