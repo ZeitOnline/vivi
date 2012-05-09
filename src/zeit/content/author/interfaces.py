@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -35,5 +36,5 @@ class IAuthor(zope.interface.Interface):
         description=_(u"Default: 'Firstname Lastname'"))
 
     status = zope.schema.Choice(
-        title=_('Status'),
+        title=_(u'Redaktionszugehörigkeit'),
         source=StatusSource())
