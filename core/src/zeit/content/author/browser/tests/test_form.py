@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -36,7 +37,7 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Firstname').value = 'William'
         b.getControl('Lastname').value = 'Shakespeare'
         b.getControl('VG-Wort ID').value = vgwort_id
-        b.getControl('Status').displayValue = ['Print']
+        b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
         b.getControl(name='form.actions.add').click()
 
     def test_add_form(self):
@@ -93,7 +94,7 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         self.author_exists.return_value = True
 
         self.open('/@@zeit.content.author.add_contextfree')
-        self.assertNotIn(u'Add duplicate author', b.contents)
+        self.assertNotIn('Add duplicate author', b.contents)
         self.add_william(vgwort_id='9876')
         self.assertEllipsis(u"""\
             ...There were errors...
