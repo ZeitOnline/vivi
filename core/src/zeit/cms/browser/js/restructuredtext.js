@@ -21,6 +21,10 @@ zeit.cms.RestructuredTextWidget = gocept.Class.extend({
             self.textarea.show();
             self.textarea.focus();
         });
+
+        $('a', self.preview).each(function(i, elem) {
+            $(elem).attr('target', '_blank');
+        });
     }
 
 });
