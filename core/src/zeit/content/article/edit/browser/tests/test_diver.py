@@ -40,6 +40,19 @@ class MemoDiverTest(zeit.content.article.testing.SeleniumTestCase):
         s.assertValue(
             'id=memo-diver.memo', 'Do not publish this article, yet.')
 
+    def test_links_are_clickable(self):
+        s = self.selenium
+        s.waitForElementPresent('id=memo-diver')
+        s.click('id=memo-diver')
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval('document.getElementById("memo-diver.memo").value = '
+                  '"foo http://localhost/blub bar"')
+        s.fireEvent('id=memo-diver.memo', 'blur')
+        s.waitForElementPresent('link=*blub*')
+        s.click('link=*blub*')
+        s.selectWindow(s.getAllWindowNames()[-1])
+        s.assertLocation('*blub')
+
 
 class OptionsDiverTest(zeit.content.article.testing.SeleniumTestCase):
 
