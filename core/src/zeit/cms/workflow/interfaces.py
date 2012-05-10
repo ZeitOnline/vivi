@@ -47,6 +47,11 @@ class IPublishInfo(zope.interface.Interface):
         required=False,
         readonly=True)
 
+    last_published_by = zope.schema.TextLine(
+        title=_('Last published by'),
+        required=False,
+        readonly=True)
+
     def can_publish():
         """Return whether the object can be published right now.
 

@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -30,6 +31,15 @@ class NotPublishablePublishInfo(object):
 
     def __init__(self, context):
         self.context = context
+
+    @property
+    def last_published_by(self):
+        log = zeit.objectlog.interfaces.ILog(self.context)
+        for entry in reversed(list(log.get_log())):
+            if entry.message == _('Published'):
+                return entry.principal
+        else:
+            return None
 
     def can_publish(self):
         return False

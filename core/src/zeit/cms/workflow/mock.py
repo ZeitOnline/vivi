@@ -61,6 +61,7 @@ class MockPublishInfo(object):
 
     date_first_released = None
     last_modified_by = u'testuser'
+    last_published_by = u'testuser'
 
     def __init__(self, context):
         self.context = context
