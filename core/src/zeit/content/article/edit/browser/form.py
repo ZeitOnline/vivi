@@ -163,6 +163,21 @@ class WorkflowStatusDisplay(zeit.edit.browser.form.InlineForm):
     form_fields['corrected'].custom_widget = CheckboxDisplayWidget
 
 
+class LastPublished(object):
+
+    @property
+    def publishinfo(self):
+        return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+
+    @property
+    def date(self):
+        return self.publishinfo.date_last_published.strftime('%d.%m.%Y')
+
+    @property
+    def time(self):
+        return self.publishinfo.date_last_published.strftime('%M:%H')
+
+
 class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
     """Metadata forms view."""
 

@@ -1,0 +1,8 @@
+<div id="lastpublished" tal:condition="view/publishinfo/published">
+zuletzt veröffentlicht am <span tal:content="view/date"/>
+um <span tal:content="view/time"/>
+von <span tal:content="view/publishinfo/last_published_by"/>
+</div>
+<div tal:condition="not:view/publishinfo/published">
+noch nie veröffentlicht
+</div>

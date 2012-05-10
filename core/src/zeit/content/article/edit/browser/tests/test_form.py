@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -130,3 +131,21 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
         b.open('@@edit.form.workflow-display?show_form=1')
         self.assertFalse(b.getControl('Edited').selected)
         self.assertTrue(b.getControl('Corrected').selected)
+
+    def test_displays_last_published_information(self):
+        from zeit.workflow.interfaces import IContentWorkflow
+        from zeit.cms.workflow.interfaces import IPublish
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                article = zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+                IContentWorkflow(article).urgent = True
+                IPublish(article).publish()
+                zeit.workflow.testing.run_publish()
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/online/2007/01/Somalia/@@checkout')
+        b.open('@@contents')
+        self.assertEllipsis(
+            '...zuletzt veröffentlicht am...von...zope.user...', b.contents)
