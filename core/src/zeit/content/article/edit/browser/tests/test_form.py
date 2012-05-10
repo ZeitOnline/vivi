@@ -110,3 +110,23 @@ class MemoTest(zeit.cms.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/repository'
                '/article/@@edit.form.memo-diver?show_form=1')
         self.assertEqual('foo bar baz', b.getControl('Memo').value)
+
+
+class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.ArticleLayer
+
+    def test_displays_status_fields_as_checkboxes(self):
+        from zeit.workflow.interfaces import IContentWorkflow
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                somalia = zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+                IContentWorkflow(somalia).corrected = True
+
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.workflow-display?show_form=1')
+        self.assertFalse(b.getControl('Edited').selected)
+        self.assertTrue(b.getControl('Corrected').selected)

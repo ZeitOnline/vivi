@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
@@ -144,6 +145,22 @@ class Assets(zeit.edit.browser.form.InlineForm):
             *interfaces,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).omit(
                 'badges')
+
+
+class StatusForms(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Status')
+
+
+class WorkflowStatusDisplay(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.workflow.interfaces.IContentWorkflow,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE
+        ).select('edited', 'corrected')
+    form_fields['edited'].custom_widget = CheckboxDisplayWidget
+    form_fields['corrected'].custom_widget = CheckboxDisplayWidget
 
 
 class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):

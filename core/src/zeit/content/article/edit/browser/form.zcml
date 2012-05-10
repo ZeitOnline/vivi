@@ -87,6 +87,39 @@
     permission="zope.View"
     />
 
+
+  <!-- status -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="status"
+    class=".form.StatusForms"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.StatusForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.workflow-display"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.workflow-display"
+    class=".form.WorkflowStatusDisplay"
+    permission="zope.View"
+    />
+
   <!-- metadata -->
 
   <browser:viewlet
@@ -97,7 +130,7 @@
     name="metadata"
     class=".form.MetadataForms"
     permission="zope.View"
-    weight="5"
+    weight="15"
     />
 
   <browser:viewlet
