@@ -61,8 +61,10 @@ def ZCMLLayer(
 
     def testSetUp(cls):
         cls.setup.setUp()
-        cls.setup.base_product_config = copy.deepcopy(
-            zope.app.appsetup.product.saveConfiguration())
+        # ``local_product_config`` contains mutable elements which tests may
+        # modify. Create a copy to let setup restore the *original* config.
+        cls.setup.local_product_config = copy.deepcopy(
+            cls.setup.local_product_config)
         cls.setup.zca = gocept.zcapatch.Patches()
 
     def testTearDown(cls):
@@ -74,8 +76,6 @@ def ZCMLLayer(
         else:
             connector._reset()
         cls.setup.zca.reset()
-        zope.app.appsetup.product.restoreConfiguration(
-            cls.setup.base_product_config)
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
         cls.setup.tearDown()
@@ -180,6 +180,7 @@ cms_product_config = string.Template("""\
   suggest-keyword-email-address none@testing
   suggest-keyword-real-name Dr. No
   whitelist-url file://${base}/tagging/tests/whitelist.xml
+  breadcrumbs-use-common-metadata true
 </product-config>
 """).substitute(
     base=pkg_resources.resource_filename(__name__, ''))
@@ -224,13 +225,14 @@ def FunctionalDocFileSuite(*paths, **kw):
     layer = kw.pop('layer', cms_layer)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw['setUp'] = setUp
-    kw.setdefault('globs', {})['product_config'] = kw.pop(
-        'product_config', {})
-    kw['globs']['with_statement'] = __future__.with_statement
+    globs = kw.setdefault('globs', {})
+    globs['product_config'] = kw.pop('product_config', {})
+    globs['with_statement'] = __future__.with_statement
+    globs['getRootFolder'] = zope.app.testing.functional.getRootFolder
     kw.setdefault('checker', checker)
     kw.setdefault('optionflags', optionflags)
 
-    test = zope.app.testing.functional.FunctionalDocFileSuite(*paths, **kw)
+    test = doctest.DocFileSuite(*paths, **kw)
     test.layer = layer
 
     return test
@@ -319,7 +321,6 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
             self.old_log_level = logging.root.level
             logging.root.setLevel(logging.ERROR)
             transaction.commit()
-        self.selenium.getEval('window.sessionStorage.clear()')
 
         self.original_windows = set(self.selenium.getAllWindowNames())
 

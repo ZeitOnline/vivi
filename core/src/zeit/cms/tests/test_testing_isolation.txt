@@ -1,0 +1,7 @@
+test_config_set_in_layer_should_be_available
+
+>>> import zope.app.appsetup.product
+>>> product_config = zope.app.appsetup.product.getProductConfiguration(
+...     'zeit.foo')
+>>> 'available' in product_config
+True

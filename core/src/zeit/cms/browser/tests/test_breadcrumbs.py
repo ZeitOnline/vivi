@@ -2,6 +2,7 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
 import zeit.cms.browser.breadcrumbs
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.file
@@ -157,3 +158,58 @@ class Breadcrumbs(zeit.cms.testing.FunctionalTestCase):
                      url='http://127.0.0.1/repository/foo',
                      ),
                 ], BreadcrumbsView(content).get_breadcrumbs)
+
+    def test_deconfigured_should_use_from_path_only(self):
+        import zope.app.appsetup.product
+        zope.app.appsetup.product._configs['zeit.cms'][
+            'breadcrumbs-use-common-metadata'] = 'false'
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        self.repository['foo'] = content
+        view = BreadcrumbsView(content)
+        view.get_breadcrumbs_from_path = mock.Mock()
+        view.get_breadcrumbs
+        self.assertTrue(view.get_breadcrumbs_from_path.called)
+
+    def test_missing_option_should_use_from_path_only(self):
+        import zope.app.appsetup.product
+        del zope.app.appsetup.product._configs['zeit.cms'][
+            'breadcrumbs-use-common-metadata']
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        self.repository['foo'] = content
+        view = BreadcrumbsView(content)
+        view.get_breadcrumbs_from_path = mock.Mock()
+        view.get_breadcrumbs
+        self.assertTrue(view.get_breadcrumbs_from_path.called)
+
+    def test_missing_config_should_use_from_path_only(self):
+        # This makes testing easier
+        import zope.app.appsetup.product
+        del zope.app.appsetup.product._configs['zeit.cms']
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        self.repository['foo'] = content
+        view = BreadcrumbsView(content)
+        view.get_breadcrumbs_from_path = mock.Mock()
+        view.get_breadcrumbs
+        self.assertTrue(view.get_breadcrumbs_from_path.called)
+
+    def test_deconfigured_no_icommonmetadata_in_wc_lists_wc_path(self):
+        content = self.repository['2006']['DSC00109_2.JPG']
+        zope.app.appsetup.product._configs['zeit.cms'][
+            'breadcrumbs-use-common-metadata'] = 'false'
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
+        co = manager.checkout()
+        self.maxDiff = None
+        self.assertEqual([
+                dict(title=u'workingcopy',
+                     uniqueId=None,
+                     url='http://127.0.0.1/workingcopy',
+                    ),
+                dict(title=u'zope.user',
+                     uniqueId=None,
+                     url='http://127.0.0.1/workingcopy/zope.user',
+                    ),
+                dict(title=u'DSC00109_2.JPG',
+                     uniqueId=u'http://xml.zeit.de/2006/DSC00109_2.JPG',
+                     url='http://127.0.0.1/workingcopy/zope.user/DSC00109_2.JPG',
+                    ),
+                ], BreadcrumbsView(co).get_breadcrumbs)

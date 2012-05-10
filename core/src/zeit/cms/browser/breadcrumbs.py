@@ -6,6 +6,7 @@ import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zope.app.appsetup.product
 import zope.cachedescriptors.property
 import zope.location.interfaces
 import zope.traversing.api
@@ -19,13 +20,14 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
     @zope.cachedescriptors.property.Lazy
     def get_breadcrumbs(self):
         """Returns a list of dicts with title and URL."""
-        try:
-            metadata = zeit.cms.content.interfaces.ICommonMetadata(
-                self.context)
-        except TypeError:
-            pass
-        else:
-            return self.get_breadcrumbs_from_commonmetadata(metadata)
+        if self._use_common_metadata:
+            try:
+                metadata = zeit.cms.content.interfaces.ICommonMetadata(
+                    self.context)
+            except TypeError:
+                pass
+            else:
+                return self.get_breadcrumbs_from_commonmetadata(metadata)
         return self.get_breadcrumbs_from_path(self.context)
 
     def get_breadcrumbs_from_commonmetadata(self, context):
@@ -65,7 +67,8 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
 
     def get_breadcrumbs_from_path(self, context):
         has_parents = True
-        if zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
+        if (self._use_common_metadata and
+            zeit.cms.checkout.interfaces.ILocalContent.providedBy(context)):
             try:
                 context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
             except TypeError:
@@ -102,3 +105,11 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
         except TypeError:
             pass
         return content.__name__
+
+    @zope.cachedescriptors.property.Lazy
+    def _use_common_metadata(self):
+        cms_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.cms')
+        return (
+            cms_config and cms_config.get(
+                'breadcrumbs-use-common-metadata', '').lower() == 'true')

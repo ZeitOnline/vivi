@@ -17,4 +17,4 @@ class TestTypeChangeBox(zeit.cms.testing.SeleniumTestCase):
         element = "this.browserbot.findElement('css=.lightbox-full')"
         scroll = s.getEval(element + '.scrollHeight')
         offset = s.getEval(element + '.offsetHeight')
-        self.assertTrue(scroll > offset)
+        self.assertGreater(scroll, offset)

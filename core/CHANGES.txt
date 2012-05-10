@@ -39,10 +39,29 @@ editor-ng branch changes
 - Introduce RestructuredTextWidget (#10661).
 
 
-1.53.3 (unreleased)
+1.53.5 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+1.53.4 (2012-03-15)
+-------------------
+
+- Fixed the fixed isolation of ``product_config`` between tests.
+
+- When the enhanced breadcrumbs (#10151) are disabled, the path to the
+  workingcopy is shown again, instead of always showing the path to the
+  repository object.
+
+
+1.53.3 (2012-03-14)
+-------------------
+
+- The enhanced breadcrumbs (#10151) are configurable now via the product-config
+  option ``breadcrumbs-use-common-metadata`` (true or false).
+
+- Fixed isolation of ``product_config`` between tests.
 
 
 1.53.2 (2012-03-06)
