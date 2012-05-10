@@ -13,7 +13,10 @@ zeit.cms.RestructuredTextWidget = gocept.Class.extend({
         self.preview = $('#' + widget_id + '\\.preview');
         self.textarea.hide();
 
-        self.preview.bind('click', function(event) {
+        // XXX This assumes knowlegde outside the widget about how the form is
+        // rendered. Unfortunately there doesn't seem to be another way to
+        // achieve a large enough click area.
+        self.preview.closest('.field').bind('click', function(event) {
             if (event.target.nodeName == 'A') {
                 return;
             }
@@ -25,6 +28,10 @@ zeit.cms.RestructuredTextWidget = gocept.Class.extend({
         $('a', self.preview).each(function(i, elem) {
             $(elem).attr('target', '_blank');
         });
+
+        if (! self.preview.text()) {
+            self.preview.text('(hier Text eingeben)');
+        }
     }
 
 });

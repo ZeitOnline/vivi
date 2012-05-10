@@ -260,6 +260,9 @@ form .column-right-small {
     width: 58%;
 }
 
+.fieldname-memo {
+    width: 100%;
+}
 
 /* reversed rendering */
 

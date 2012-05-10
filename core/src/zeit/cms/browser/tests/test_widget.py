@@ -570,3 +570,10 @@ class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
         s.close()
         s.selectWindow()
         s.assertNotVisible('id=testwidget')
+
+    def test_empty_preview_can_be_clicked(self):
+        s = self.selenium
+        self.eval('window.jQuery("#testwidget\\\\.preview").text("")')
+        s.click('css=.field')
+        s.waitForVisible('id=testwidget')
+        s.assertNotVisible('id=testwidget.preview')
