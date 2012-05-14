@@ -44,7 +44,7 @@
   line-height: 1.5em;
 }
 
-#editor-forms div div.edit-bar {
+#editor-forms div.editable-area > div.edit-bar {
   background: none repeat scroll 0 0 #FFF;
   border-radius: 5px 5px 0px 0px;
   font-size: 12px;
@@ -128,7 +128,7 @@
 }
 
 .article-editor-inner .dragger .center {
-  height: 12px;
+  height: 25px;
 }
 
 .article-editor-inner .editing .edit-bar > a {
@@ -163,14 +163,23 @@
 
 #article-editor-text #editable-body .block-inner{
   padding-top: 0px !important;
+  border-radius: 5px 5px 0px 0px;
+  border: 1px solid #DDD;
+}
+
+#article-editor-text #editable-body .block-inner .content-details{
+  border: 0px solid white;
 }
 
 #article-editor-text #editable-body .block-inner .edit-bar {
   padding-top: 0px !important;
+  height:25px;
 }
 
 #article-editor-text .block-inner .edit-bar {
-  background: -moz-linear-gradient(center top , #FFFFFF, #EDEDED) repeat scroll 0 0 transparent;
+  background: none repeat scroll 0 0 #F8F9FD;
+  border-radius: 5px 5px 0 0px;
+  border: 0px solid #DDD;
 }
 
 #article-editor-text #editable-body {
