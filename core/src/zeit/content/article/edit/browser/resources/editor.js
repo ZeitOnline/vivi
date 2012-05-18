@@ -110,8 +110,6 @@ MochiKit.Signal.connect(
             $('#cp-content-inner').animate({scrollTop: 0}, 300);
         });
 
-        // $('.type-p').find('p').eq(1).addClass('ad-dummy');
-
     }(jQuery));
 
 });
@@ -208,6 +206,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     self.save(/*no_reload=*/true);
                 }));
             self.fix_html();
+            self.add_dummy_ad();
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_linkbar();
             self.init_toolbar();
@@ -219,6 +218,32 @@ zeit.content.article.Editable = gocept.Class.extend({
                     }
                 }));
         });
+    },
+
+    add_dummy_ad: function() {
+        // When creating a new paragraph content editable will always copy all
+        // attributes, which leads to duplicated ads. Even if we flush the
+        // styles right after the paragraph has been created, there still is
+        // some annoying flickering visible.
+        // Therefore, when content editable is active, we need to create a
+        // temporary style element which will contain all style informations for
+        // the ad placeholders.
+        var ad_place      = 2, //FIXME make it configurable!
+            p_index       = ad_place - 1, // Index starts with 0.
+            ad_paragraph  = jQuery('.type-p').find('p').eq(p_index),
+            pos_div       = ad_paragraph.parents('.type-p').index() + 1,
+            pos_paragraph = ad_paragraph.index() + 1; // Position starts with 1.
+
+        // Dynamically created styles up here.
+        var sheet    = jQuery('<style>').attr('id', 'content_editable_hacks'),
+            dummy_ad = application_url+'/@@/zeit.content.article.edit/ad-dummy.jpg',
+            styles   = '.type-p:nth-child(' + pos_div + ')'
+                     + ' p:nth-child(' + pos_paragraph + ')'
+                     + ' { background: url("' + dummy_ad + '")'
+                     + ' no-repeat scroll center bottom transparent;'
+                     + ' padding-bottom: 20em; min-height: 10px }';
+        sheet.html(styles);
+        jQuery('body').append(sheet);
     },
 
     place_cursor: function(element, place_cursor_at_end) {
