@@ -452,30 +452,30 @@ class BrowserTestCase(FunctionalTestCaseCommon, BrowserAssertions):
 class JSLintTestCase(gocept.jslint.TestCase):
 
     options = (gocept.jslint.TestCase.options +
-               ('--eqeq',
-                '--evil',
-                '--forin',
-                '--plusplus',
-                '--predef='
-                'zeit,gocept,application_url,context_url,'
-                'jQuery,DOMParser,'
-                'console,'
-                'alert,confirm,prompt,escape,unescape,getSelection,'
-                'jsontemplate,'
-                'MochiKit,$,$$,forEach,filter,map,extend,bind,'
-                'log,repr,logger,logDebug,logError,' # XXX
-                'DIV,A,UL,LI,INPUT,IMG,SELECT,OPTION,BUTTON,'
-                'isNull,isUndefined,isUndefinedOrNull',
+               ('evil',
+                'eqnull',
+                'multistr',
+                'sub',
+                'undef',
+                'browser',
+                'jquery',
+                'devel'
                 ))
+    predefined = (
+        'zeit', 'gocept',
+        'application_url', 'context_url',
+        'DOMParser', 'escape', 'unescape', 'getSelection',
+        'jsontemplate',
+        'MochiKit', '$$', 'forEach', 'filter', 'map', 'extend', 'bind',
+        'log', 'repr', 'logger', 'logDebug', 'logError', # XXX
+        'DIV', 'A', 'UL', 'LI', 'INPUT', 'IMG', 'SELECT', 'OPTION', 'BUTTON',
+        'isNull', 'isUndefined', 'isUndefinedOrNull',
+        )
 
     ignore = (
-        "Avoid 'arguments.callee'",
-        "Compare with undefined, or use the hasOwnProperty method instead",
-        "Do not use 'new' for side effects",
         "Don't make functions within a loop",
         "Expected an identifier and instead saw 'import'",
-        "This is an ES5 feature",
-        "Use a named parameter",
-        "unused variable: self",
+        "Use '===' to compare with",
+        "Use '!==' to compare with",
         "Missing radix parameter",
         )
