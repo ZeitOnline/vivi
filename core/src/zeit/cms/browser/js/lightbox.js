@@ -166,8 +166,8 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             }, self.form.elements);
 
         var data = map(function(element) {
-                if ((element.type == 'radio' || element.type == 'checkbox')
-                    && !element.checked) {
+                if ((element.type == 'radio' || element.type == 'checkbox') &&
+                    !element.checked) {
                     return;
                 }
                 return element.name + "=" + encodeURIComponent(element.value);
