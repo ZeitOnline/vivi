@@ -371,7 +371,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     relocate_toolbar: function(fast) {
         var self = this;
         var range = getSelection().getRangeAt(0);
-        var container = range.commonAncestorContainer;
+        var container = range.endContainer;
         while (container.nodeType != container.ELEMENT_NODE) {
             container = container.parentNode;
         }
