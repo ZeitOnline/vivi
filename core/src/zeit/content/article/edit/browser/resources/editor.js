@@ -230,18 +230,30 @@ zeit.content.article.Editable = gocept.Class.extend({
         // the ad placeholders.
         var ad_place      = 2, //FIXME make it configurable!
             p_index       = ad_place - 1, // Index starts with 0.
-            ad_paragraph  = jQuery('.type-p').find('p').eq(p_index),
+            ad_paragraph  = jQuery('.type-p').find('p').eq( p_index ),
+            dummy_ad      = '',
+            pos_paragraph = 0,
+            sheet         = '',
+            styles        = '',
+            pos_div       = 0;
+
+        if (ad_paragraph.length === 0) {
+            pos_div       = jQuery('.type-p').eq(0).index() + 1;
+            pos_paragraph = ad_place;
+        } else {
+            // Position starts with 1.
             pos_div       = ad_paragraph.parents('.type-p').index() + 1,
-            pos_paragraph = ad_paragraph.index() + 1; // Position starts with 1.
+            pos_paragraph = ad_paragraph.index() + 1;
+        }
 
         // Dynamically created styles up here.
-        var sheet    = jQuery('<style>').attr('id', 'content_editable_hacks'),
-            dummy_ad = application_url+'/@@/zeit.content.article.edit/ad-dummy.jpg',
-            styles   = '.type-p:nth-child(' + pos_div + ')'
-                     + ' p:nth-child(' + pos_paragraph + ')'
-                     + ' { background: url("' + dummy_ad + '")'
-                     + ' no-repeat scroll center bottom transparent;'
-                     + ' padding-bottom: 20em; min-height: 10px }';
+        sheet    = jQuery('<style>').attr('id', 'content_editable_hacks'),
+        dummy_ad = application_url+'/@@/zeit.content.article.edit/ad-dummy.jpg',
+        styles   = '.type-p:nth-child(' + pos_div + ')'
+                 + ' p:nth-child(' + pos_paragraph + ')'
+                 + ' { background: url("' + dummy_ad + '")'
+                 + ' no-repeat scroll center bottom transparent;'
+                 + ' padding-bottom: 20em; min-height: 10px }';
         sheet.html(styles);
         jQuery('body').append(sheet);
     },
