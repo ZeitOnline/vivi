@@ -84,6 +84,18 @@ def apply_default_values(context, interface):
 
 
 class WidgetCSSMixin(object):
+    """Form mix-in to manage CSS classes on widgets.
+
+    - Adds "error" and "required" classes automatically.
+
+    - Allows specifying a number of additional classes manually. This is done
+      by setting the ``vivi_css_class`` attribute on each widget:
+
+        def setUpWidgets(self):
+            super(ExampleForm, self).setUpWidgets()
+            self.widgets['foo'].vivi_css_class = 'barbaz qux'
+
+    """
 
     def setUpWidgets(self, *args, **kw):
         super(WidgetCSSMixin, self).setUpWidgets(*args, **kw)
