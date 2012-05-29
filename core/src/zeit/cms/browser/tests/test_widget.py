@@ -272,17 +272,17 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
                       'http://xml.zeit.de/testcontent')
 
 
-class ObjectSequenceWidgetMyDetails(zeit.cms.browser.view.Base):
+class ObjectWidgetMyDetails(zeit.cms.browser.view.Base):
 
     def __call__(self):
         return '<div class="mydetails" />'
 
 
-class ObjectSequenceWidgetJavascriptDetailViews(
+class ObjectWidgetDetailViews(
     zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
-        super(ObjectSequenceWidgetJavascriptDetailViews, self).setUp()
+        super(ObjectWidgetDetailViews, self).setUp()
         zope.configuration.xmlconfig.string("""\
 <?xml version="1.0" encoding="UTF-8" ?>
 <configure
@@ -295,7 +295,7 @@ class ObjectSequenceWidgetJavascriptDetailViews(
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="mydetails"
-    class=".test_widget.ObjectSequenceWidgetMyDetails"
+    class=".test_widget.ObjectWidgetMyDetails"
     permission="zope.View"
     />
 
@@ -308,7 +308,7 @@ class ObjectSequenceWidgetJavascriptDetailViews(
                       zeit.cms.browser.interfaces.ICMSLayer),
             provided=zope.interface.Interface,
             name='mydetails')
-        super(ObjectSequenceWidgetJavascriptDetailViews, self).tearDown()
+        super(ObjectWidgetDetailViews, self).tearDown()
 
     def test_object_sequence_widgets_use_their_configured_views(self):
         self.open(
