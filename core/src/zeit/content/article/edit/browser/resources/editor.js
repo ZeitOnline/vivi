@@ -478,6 +478,16 @@ zeit.content.article.Editable = gocept.Class.extend({
             direction = 'previousSibling';
             cursor_at_end = true;
         } else if (
+            event.key().string == 'KEY_ENTER') {
+            setTimeout(function() {
+                jQuery('body').trigger('update-ads');
+            }, 0);
+        } else if (
+            event.key().string == 'KEY_BACKSPACE') {
+            setTimeout(function() {
+                jQuery('body').trigger('update-ads');
+            }, 0);
+        } else if (
             container.nodeType == container.TEXT_NODE &&
             container.parentNode.tagName == 'DIV') {
             /*
