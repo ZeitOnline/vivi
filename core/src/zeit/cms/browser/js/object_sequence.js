@@ -248,9 +248,11 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
 zeit.cms.DropObjectWidget = gocept.Class.extend({
 
-    construct: function(element, accept) {
+    construct: function(element, accept, detail_view_name) {
         var self = this;
         self.element = element;
+        self.detail_view_name = detail_view_name;
+
         self.input = MochiKit.DOM.getFirstElementByTagAndClassName(
             'input', null, self.element);
         self.details = MochiKit.DOM.getFirstElementByTagAndClassName(
@@ -267,18 +269,21 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         self.update_details();
     },
 
-    handleDrop: function(element) {
+    set: function(value) {
         var self = this;
-        self.input.value = element.uniqueId;
+        self.input.value = value;
         self.changed();
         self.update_details();
     },
 
+    handleDrop: function(element) {
+        var self = this;
+        self.set(element.uniqueId);
+    },
+
     remove: function() {
         var self = this;
-        self.input.value = '';
-        self.changed();
-        self.update_details();
+        self.set('');
     },
 
     changed: function() {
@@ -292,7 +297,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         if (self.input.value) {
             MochiKit.DOM.addElementClass(self.element, 'busy');
             var d = zeit.cms.load_object_details(
-                self.input.value, '@@object-details');
+                self.input.value, self.detail_view_name);
             d.addCallbacks(
                 function(result) {
                     self.details.innerHTML = result;

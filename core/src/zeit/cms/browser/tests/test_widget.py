@@ -283,9 +283,6 @@ class ObjectSequenceWidgetJavascriptDetailViews(
 
     def setUp(self):
         super(ObjectSequenceWidgetJavascriptDetailViews, self).setUp()
-        self.open(
-            '/@@/zeit.cms.javascript.base/tests/'
-            'objectsequencewidget-detail-views.html')
         zope.configuration.xmlconfig.string("""\
 <?xml version="1.0" encoding="UTF-8" ?>
 <configure
@@ -313,7 +310,10 @@ class ObjectSequenceWidgetJavascriptDetailViews(
             name='mydetails')
         super(ObjectSequenceWidgetJavascriptDetailViews, self).tearDown()
 
-    def test_widgets_use_their_configured_views(self):
+    def test_object_sequence_widgets_use_their_configured_views(self):
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/'
+            'objectsequencewidget-detail-views.html')
         s = self.selenium
         s.assertElementNotPresent('css=div.supertitle')
         self.eval(
@@ -322,6 +322,20 @@ class ObjectSequenceWidgetJavascriptDetailViews(
         s.assertElementNotPresent('css=div.mydetails')
         self.eval(
             "zeit.cms.test_widget2.add('http://xml.zeit.de/testcontent');")
+        s.waitForElementPresent('css=div.mydetails')
+
+    def test_drop_object_widgets_use_their_configured_views(self):
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/'
+            'dropobjectwidget-detail-views.html')
+        s = self.selenium
+        s.assertElementNotPresent('css=div.supertitle')
+        self.eval(
+            "zeit.cms.test_widget.set('http://xml.zeit.de/testcontent');")
+        s.waitForElementPresent('css=div.supertitle')
+        s.assertElementNotPresent('css=div.mydetails')
+        self.eval(
+            "zeit.cms.test_widget2.set('http://xml.zeit.de/testcontent');")
         s.waitForElementPresent('css=div.mydetails')
 
 
@@ -482,6 +496,15 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
         with mock.patch.object(choice.source, 'get_check_types') as types:
             types.return_value = [u'foo', 'bar']
             self.assertEqual('["type-foo", "type-bar"]', widget.accept_classes)
+
+    def test_widget_detail_view_name_can_be_configured(self):
+        choice = self.get_choice()
+        request = zope.publisher.browser.TestRequest()
+        widget = zeit.cms.browser.widget.DropObjectWidget(
+            choice, choice.source, request)
+        widget.detail_view_name = '@@mydetails'
+        self.assertEllipsis("""...new zeit.cms.DropObjectWidget(
+                "field.", [...], "@@mydetails");...""", widget())
 
 
 class DropObjectWidget(zeit.cms.testing.FunctionalTestCase):

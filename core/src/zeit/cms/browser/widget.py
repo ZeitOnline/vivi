@@ -342,11 +342,14 @@ DROP_TEMPLATE = u"""\
     <input type="hidden" name="%(name)s" value="%(value)s" />
     <div class="object-reference"></div>
 </div>
-<script>new zeit.cms.DropObjectWidget("%(name)s", %(accept)s);</script>
+<script>new zeit.cms.DropObjectWidget(
+    "%(name)s", %(accept)s, "%(detail_view_name)s");</script>
 """
 
 
 class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
+
+    detail_view_name = '@@object-details'
 
     def __init__(self, context, source, request):
         super(DropObjectWidget, self).__init__(context, request)
@@ -357,6 +360,7 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
             'name': self.name,
             'value': self._getFormValue(),
             'accept': self.accept_classes,
+            'detail_view_name': self.detail_view_name,
         }
 
     def _toFieldValue(self, input):
