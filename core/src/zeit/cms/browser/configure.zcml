@@ -277,17 +277,6 @@
     layer=".interfaces.ICMSLayer"
     />
 
-  <!-- Selenium Tests -->
-
-  <configure zcml:condition="have zeit.cms.selenium"
-    xmlns:zcml="http://namespaces.zope.org/zcml">
-    <adapter 
-      factory=".test_panels.Test" 
-      name="test_panels.html"
-      permission="zope.Public"
-      />
-  </configure>
-
   <include package="zc.sourcefactory.browser" />
   <include package="zeit.cms.asset.browser" />
   <include package="zeit.cms.checkout.browser" />
