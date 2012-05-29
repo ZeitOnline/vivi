@@ -75,6 +75,7 @@ setup(
         'zope.app.securitypolicy',
         'zope.app.server',
         'zope.authentication',
+        'zope.configuration',
         'zope.copypastemove',
         'zope.file',
         'zope.i18n>3.4.0',

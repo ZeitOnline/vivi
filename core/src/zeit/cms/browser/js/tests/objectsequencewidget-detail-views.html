@@ -11,23 +11,18 @@
     </div>
     <script type="text/javascript">
       var application_url = '../../../';
-      var widget = new zeit.cms.ObjectSequenceWidget(
+      zeit.cms.test_widget = new zeit.cms.ObjectSequenceWidget(
             'testwidget', ['type-foo'], '@@object-details');
     </script>
 
-    <div id="drag" class="type-foo">
-      <span class="uniqueId"
-        style="display: none">http://xml.zeit.de/testcontent</span>
-      Drag
-    </div>
-    <div id="drag2" class="type-foo">
-      <span class="uniqueId"
-        style="display: none">http://xml.zeit.de/2007</span>
-      Drag-2
+    <div class="objectsequencewidget" id="testwidget2">
+      <input type="hidden" name="testwidget2.count" id="testwidget2.count" value="0" />
+      <ul>
+      </ul>
     </div>
     <script type="text/javascript">
-      zeit.cms.createDraggableContentObject('drag');
-      zeit.cms.createDraggableContentObject('drag2');
+      zeit.cms.test_widget2 = new zeit.cms.ObjectSequenceWidget(
+            'testwidget2', ['type-foo'], '@@mydetails');
     </script>
   </body>
 </html>

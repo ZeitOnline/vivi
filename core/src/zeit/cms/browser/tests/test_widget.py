@@ -5,7 +5,11 @@
 import contextlib
 import mock
 import unittest2
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.view
+import zeit.cms.interfaces
 import zeit.cms.testing
+import zope.configuration.xmlconfig
 import zope.formlib.interfaces
 
 
@@ -167,6 +171,14 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
             types.return_value = [u'foo', 'bar']
             self.assertEqual('["type-foo", "type-bar"]', widget.accept_classes)
 
+    def test_widget_detail_view_name_can_be_configured(self):
+        field = self.get_field()
+        widget = self.get_widget(field)
+        widget.detail_view_name = '@@mydetails'
+        self.assert_ellipsis("""...
+            new zeit.cms.ObjectSequenceWidget(
+                'field.', [...], '@@mydetails');...""", widget())
+
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
 
@@ -258,6 +270,59 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
                       'http://xml.zeit.de/2007')
         s.assertValue("//input[@name='testwidget.1']",
                       'http://xml.zeit.de/testcontent')
+
+
+class ObjectSequenceWidgetMyDetails(zeit.cms.browser.view.Base):
+
+    def __call__(self):
+        return '<div class="mydetails" />'
+
+
+class ObjectSequenceWidgetJavascriptDetailViews(
+    zeit.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(ObjectSequenceWidgetJavascriptDetailViews, self).setUp()
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/'
+            'objectsequencewidget-detail-views.html')
+        zope.configuration.xmlconfig.string("""\
+<?xml version="1.0" encoding="UTF-8" ?>
+<configure
+  package="zeit.cms.browser.tests"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <include package="zope.browserpage" file="meta.zcml" />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="mydetails"
+    class=".test_widget.ObjectSequenceWidgetMyDetails"
+    permission="zope.View"
+    />
+
+</configure>
+""")
+
+    def tearDown(self):
+        zope.component.getSiteManager().unregisterAdapter(
+            required=(zeit.cms.interfaces.ICMSContent,
+                      zeit.cms.browser.interfaces.ICMSLayer),
+            provided=zope.interface.Interface,
+            name='mydetails')
+        super(ObjectSequenceWidgetJavascriptDetailViews, self).tearDown()
+
+    def test_widgets_use_their_configured_views(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=div.supertitle')
+        self.eval(
+            "zeit.cms.test_widget.add('http://xml.zeit.de/testcontent');")
+        s.waitForElementPresent('css=div.supertitle')
+        s.assertElementNotPresent('css=div.mydetails')
+        self.eval(
+            "zeit.cms.test_widget2.add('http://xml.zeit.de/testcontent');")
+        s.waitForElementPresent('css=div.mydetails')
 
 
 class TestObjectSequenceWidgetAutocompleteJavascript(

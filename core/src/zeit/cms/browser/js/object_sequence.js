@@ -4,12 +4,14 @@
 
 zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
-    construct: function(widget_id, accept) {
+    construct: function(widget_id, accept, detail_view_name) {
         var self = this;
         self.widget_id = widget_id;
         self.element = $(widget_id);
         self.ul_element = MochiKit.DOM.getFirstElementByTagAndClassName(
             'ul', null, self.element);
+
+        self.detail_view_name = detail_view_name;
 
         self.initialize_autocomplete();
         self.initialize();
@@ -81,7 +83,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         var self = this;
         var li_id = self.widget_id + '_sort_li_' + index;
         var li = LI({'class': 'element busy', 'index': index, 'id': li_id});
-        var d = zeit.cms.load_object_details(uniqueId);
+        var d = zeit.cms.load_object_details(uniqueId, self.detail_view_name);
         d.addCallbacks(
             function(result) {
                 li.innerHTML = result;
@@ -289,7 +291,8 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         var self = this;
         if (self.input.value) {
             MochiKit.DOM.addElementClass(self.element, 'busy');
-            var d = zeit.cms.load_object_details(self.input.value);
+            var d = zeit.cms.load_object_details(
+                self.input.value, '@@object-details');
             d.addCallbacks(
                 function(result) {
                     self.details.innerHTML = result;
@@ -336,18 +339,19 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
 
 zeit.cms._load_object_details_cache = {};
 
-zeit.cms.load_object_details = function(uniqueId) {
-    var content = zeit.cms._load_object_details_cache[uniqueId];
+zeit.cms.load_object_details = function(uniqueId, detail_view_name) {
+    var cache_key = uniqueId + detail_view_name;
+    var content = zeit.cms._load_object_details_cache[cache_key];
     var d = new MochiKit.Async.Deferred();
     if (isUndefinedOrNull(content)) {
         d = MochiKit.Async.doSimpleXMLHttpRequest(
             application_url + '/@@redirect_to', {
             unique_id: uniqueId,
-            view: '@@object-details'});
+            view: detail_view_name});
         d.addCallback(function(result) {
             // Store the result for later use. This is just magnitudes
             // faster than an HTTP request.
-            zeit.cms._load_object_details_cache[uniqueId] =
+            zeit.cms._load_object_details_cache[cache_key] =
                 result.responseText;
             return result.responseText;
         });

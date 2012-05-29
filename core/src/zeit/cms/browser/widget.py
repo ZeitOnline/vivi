@@ -191,6 +191,8 @@ class MultiObjectSequenceWidget(
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'objectsequence-edit-widget.pt')
 
+    detail_view_name = '@@object-details'
+
     def __init__(self, context, source, request):
         super(MultiObjectSequenceWidget, self).__init__(context, request)
         self.source = source
