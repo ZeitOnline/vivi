@@ -255,6 +255,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                  + ' no-repeat scroll center bottom transparent;'
                  + ' padding-bottom: 20em; min-height: 10px }';
         sheet.html(styles);
+        jQuery('#content_editable_hacks').remove();
         jQuery('body').append(sheet);
     },
 
