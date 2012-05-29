@@ -1,8 +1,9 @@
 <div class="objectsequencewidget"
-  tal:attributes="id view/name">
+  tal:attributes="id view/name"
+  tal:define="detail_view_name view/detail_view_name">
   <ul>
     <li tal:repeat="item view/get_values">
-      <span tal:replace="structure item/@@object-details" />
+      <span tal:replace="structure item/?detail_view_name" />
     </li>
   </ul>
 </div>

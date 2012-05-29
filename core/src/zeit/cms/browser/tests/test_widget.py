@@ -278,12 +278,8 @@ class ObjectWidgetMyDetails(zeit.cms.browser.view.Base):
         return '<div class="mydetails" />'
 
 
-class ObjectWidgetDetailViews(
-    zeit.cms.testing.SeleniumTestCase):
-
-    def setUp(self):
-        super(ObjectWidgetDetailViews, self).setUp()
-        zope.configuration.xmlconfig.string("""\
+def setup_mydetails():
+    zope.configuration.xmlconfig.string("""\
 <?xml version="1.0" encoding="UTF-8" ?>
 <configure
   package="zeit.cms.browser.tests"
@@ -302,12 +298,23 @@ class ObjectWidgetDetailViews(
 </configure>
 """)
 
+def teardown_mydetails():
+    zope.component.getSiteManager().unregisterAdapter(
+        required=(zeit.cms.interfaces.ICMSContent,
+                  zeit.cms.browser.interfaces.ICMSLayer),
+        provided=zope.interface.Interface,
+        name='mydetails')
+
+
+class ObjectWidgetDetailViews(
+    zeit.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(ObjectWidgetDetailViews, self).setUp()
+        setup_mydetails()
+
     def tearDown(self):
-        zope.component.getSiteManager().unregisterAdapter(
-            required=(zeit.cms.interfaces.ICMSContent,
-                      zeit.cms.browser.interfaces.ICMSLayer),
-            provided=zope.interface.Interface,
-            name='mydetails')
+        teardown_mydetails()
         super(ObjectWidgetDetailViews, self).tearDown()
 
     def test_object_sequence_widgets_use_their_configured_views(self):
@@ -572,6 +579,11 @@ class TestObjectSequenceDisplayWidgetIntegration(
         import zope.security.management
         super(TestObjectSequenceDisplayWidgetIntegration, self).setUp()
         zope.security.management.endInteraction()
+        setup_mydetails()
+
+    def tearDown(self):
+        teardown_mydetails()
+        super(TestObjectSequenceDisplayWidgetIntegration, self).tearDown()
 
     def get_field(self):
         import zeit.cms.content.contentsource
@@ -607,6 +619,16 @@ class TestObjectSequenceDisplayWidgetIntegration(
         with zeit.cms.testing.interaction():
             self.assert_ellipsis(
                 '...<div class="content-details...supertitle...', widget())
+
+    def test_should_use_configured_detail_views(self):
+        widget = self.get_widget()
+        widget.detail_view_name = '@@mydetails'
+        zeit.cms.testing.set_site(self.getRootFolder())
+        content = self.get_content()
+        widget._data = (content,)
+        with zeit.cms.testing.interaction():
+            self.assert_ellipsis(
+                '...<div...id="field."...mydetails...', widget())
 
 
 class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
