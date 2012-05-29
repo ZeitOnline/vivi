@@ -730,7 +730,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             if (window.console) {
                 console.log(e);
             }
-	    }
+	}
         self.editable.focus();
 		self.update_toolbar();
     }
