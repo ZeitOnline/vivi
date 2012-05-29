@@ -177,6 +177,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.editable, 'onkeydown', self, self.handle_keydown));
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeyup', self, self.handle_keyup));
+            jQuery('.editable').bind('paste', function() {
+                self.handle_paste();
+            });
             // This handler is there to support saving during selenium tests as
             // it doesn't seem to be possible to synthesize an blur event which
             // triggers the capuring phase handler:
@@ -203,6 +206,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     self.save(/*no_reload=*/true);
                 }));
             self.fix_html();
+            self.add_dummy_ad();
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_linkbar();
             self.init_toolbar();
@@ -214,6 +218,45 @@ zeit.content.article.Editable = gocept.Class.extend({
                     }
                 }));
         });
+    },
+
+    add_dummy_ad: function() {
+        // When creating a new paragraph content editable will always copy all
+        // attributes, which leads to duplicated ads. Even if we flush the
+        // styles right after the paragraph has been created, there still is
+        // some annoying flickering visible.
+        // Therefore, when content editable is active, we need to create a
+        // temporary style element which will contain all style informations for
+        // the ad placeholders.
+        var ad_place      = 2, //FIXME make it configurable!
+            p_index       = ad_place - 1, // Index starts with 0.
+            ad_paragraph  = jQuery('.type-p').find('p').eq( p_index ),
+            dummy_ad      = '',
+            pos_paragraph = 0,
+            sheet         = '',
+            styles        = '',
+            pos_div       = 0;
+
+        if (ad_paragraph.length === 0) {
+            pos_div       = jQuery('.type-p').eq(0).index() + 1;
+            pos_paragraph = ad_place;
+        } else {
+            // Position starts with 1.
+            pos_div       = ad_paragraph.parents('.type-p').index() + 1,
+            pos_paragraph = ad_paragraph.index() + 1;
+        }
+
+        // Dynamically created styles up here.
+        sheet    = jQuery('<style>').attr('id', 'content_editable_hacks'),
+        dummy_ad = application_url+'/@@/zeit.content.article.edit/ad-dummy.jpg',
+        styles   = '.type-p:nth-child(' + pos_div + ')'
+                 + ' p:nth-child(' + pos_paragraph + ')'
+                 + ' { background: url("' + dummy_ad + '")'
+                 + ' no-repeat scroll center bottom transparent;'
+                 + ' padding-bottom: 20em; min-height: 10px }';
+        sheet.html(styles);
+        jQuery('#content_editable_hacks').remove();
+        jQuery('body').append(sheet);
     },
 
     place_cursor: function(element, place_cursor_at_end) {
@@ -498,7 +541,16 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         self.update_toolbar();
         self.relocate_toolbar();
-        self.fix_html();
+    },
+
+    handle_paste: function() {
+        var self = this;
+        // Get rid of obsolete mark-up when pasting content from third party
+        // software. Ensure that content is processed AFTER it has been pasted.
+        setTimeout(function() {
+            self.fix_html();
+            jQuery(self.editable).children().has('style').remove();
+        }, 0);
     },
 
     fix_html: function() {
