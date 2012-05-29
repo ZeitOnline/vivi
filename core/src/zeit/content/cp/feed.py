@@ -13,8 +13,6 @@ import lxml.etree
 import pytz
 import urllib2
 import urlparse
-import zeit.cms.connector
-import zeit.cms.content.adapter
 import zeit.cms.content.dav
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
