@@ -10,6 +10,7 @@ import zeit.brightcove.testing
 import zeit.cms.testing
 import zeit.content.author.testing
 import zeit.content.cp.testing
+import zeit.content.gallery.testing
 import zeit.solr.testing
 import zeit.workflow.testing
 import zope.testing.renormalizing
@@ -37,6 +38,7 @@ ArticleLayer = zeit.cms.testing.ZCMLLayer(
         product_config +
         zeit.workflow.testing.product_config +
         zeit.content.cp.testing.product_config +
+        zeit.content.gallery.testing.product_config +
         zeit.brightcove.testing.product_config +
         zeit.solr.testing.product_config +
         zeit.content.author.testing.product_config +
