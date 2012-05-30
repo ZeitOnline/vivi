@@ -229,6 +229,10 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'author_references')
 
+    def setUpWidgets(self):
+        super(MetadataC, self).setUpWidgets()
+        self.widgets['author_references'].detail_view_name = '@@author-details'
+
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     """Teaser workflow forms."""
