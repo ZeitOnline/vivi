@@ -1,0 +1,3 @@
+<div class="content-details" i18n:domain="zeit.cms">
+<strong tal:content="context/display_name" />
+</div>
