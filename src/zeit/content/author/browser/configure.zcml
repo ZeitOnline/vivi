@@ -62,4 +62,12 @@
     file="author.png"
     />
 
+  <browser:page
+    for="zeit.content.author.interfaces.IAuthor"
+    name="author-details"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    template="details.pt"
+    permission="zope.View"
+    />
+
 </configure>
