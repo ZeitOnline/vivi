@@ -751,7 +751,7 @@ a.button {
   text-indent: 0;
   cursor: pointer;
   text-decoration:none;
-  border: 1px solid #CCCCCC;
+  border: 1px solid #c1c1c1;
   padding: 2px 6px;
   padding-left: 30px;
   color:rgb(0, 0, 0);
@@ -763,8 +763,13 @@ a.button {
   -moz-border-radius:3px;
   box-shadow:0px 0px 0px rgb(0, 0, 0);
   -moz-box-shadow:0px 0px 0px rgb(0, 0, 0);
-  background: url('dummyicon.png') no-repeat scroll 5px 50%, -moz-linear-gradient(center center -90deg, #EDEDED, #9EB1BC) repeat scroll 0 0 transparent;
-  background-size:20px 20px, 100% auto;
+  background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll, -moz-linear-gradient(top,  #f1f4f9 50%, #dee1e6 94%) repeat scroll 0 0 transparent;
+  background-size: auto, 100% auto;
+}
+
+a.button:hover {
+  background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll, -moz-linear-gradient(top, #f1f4f9 50%, #d2d4d9 94%) repeat scroll 0 0 transparent;
+  border-color: #a6a6a6;
 }
 
 a.button.disabled {
