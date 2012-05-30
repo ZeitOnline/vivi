@@ -15,6 +15,9 @@ import zope.interface.exceptions
 import zope.schema
 
 
+DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.gallery'
+
+
 class IGalleryFolderSource(zeit.cms.content.interfaces.ICMSContentSource):
     """A source for gallery folders."""
 

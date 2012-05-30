@@ -53,7 +53,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.gallery.interfaces.IGalleryMetadata,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        zeit.content.gallery.interfaces.DAV_NAMESPACE,
         ('type',))
 
     @property
