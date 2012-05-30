@@ -140,6 +140,8 @@ MochiKit.Signal.connect(
             form_element.form.reload(); });
 
         jQuery('#article-editor-text').countedInput();
+
+        jQuery('body').trigger('update-ads');
     });
 
     (function($) {
@@ -149,6 +151,8 @@ MochiKit.Signal.connect(
         $('.totop').live("click", function() {
             $('#cp-content-inner').animate({scrollTop: 0}, 300);
         });
+
+        $('body').trigger('update-ads');
 
     }(jQuery));
 
