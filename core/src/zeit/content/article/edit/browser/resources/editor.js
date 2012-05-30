@@ -107,7 +107,7 @@
 
         // Dynamically created styles up here.
         sheet    = $('<style>').attr('id', 'content_editable_hacks'),
-        dummy_ad = application_url+'/@@/zeit.content.article.edit/ad-dummy.jpg',
+        dummy_ad = application_url+'/@@/zeit.content.article.edit/dummy-ad.png',
         styles   = '.type-p:nth-child(' + pos_div + ')'
                  + ' p:nth-child(' + pos_paragraph + ')'
                  + ' { background: url("' + dummy_ad + '")'
