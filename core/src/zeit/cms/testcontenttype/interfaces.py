@@ -1,13 +1,16 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
-"""Interface definitions for the test content type."""
 
 
-import zope.interface
+import zeit.cms.content.interfaces
 
 
-class ITestContentType(zope.interface.Interface):
+class ITestContentType(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.content.interfaces.IXMLContent):
     """A type for testing."""
 
 
 ITestContentType.setTaggedValue('zeit.cms.type', 'testcontenttype')
+ITestContentType.setTaggedValue(
+    'zeit.cms.addform', 'zeit.cms.testcontenttype.Add')

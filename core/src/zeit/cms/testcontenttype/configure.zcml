@@ -19,22 +19,6 @@
       set_schema=".interfaces.ITestContentType"
       permission="zeit.EditContent"
       />
-    <require
-      interface="zeit.cms.content.interfaces.ICommonMetadata"
-      permission="zope.View"
-      />
-    <require
-      set_schema="zeit.cms.content.interfaces.ICommonMetadata"
-      permission="zeit.EditContent"
-      />
-    <require
-      interface="zeit.cms.content.interfaces.IXMLContent"
-      permission="zope.View"
-      />
-    <require
-      set_schema="zeit.cms.content.interfaces.IXMLContent"
-      permission="zeit.EditContent"
-      />
   </class>
 
   <interface
