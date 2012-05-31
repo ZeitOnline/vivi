@@ -28,6 +28,4 @@
     permission="zope.View"
     />
 
-  <grok:grok package="." />
-
 </configure>
