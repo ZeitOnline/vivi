@@ -189,6 +189,9 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         var target = event.target();
         var action;
         var argument;
+        if (target.nodeName == 'A' && target.target) {
+            return;
+        }
         if (target.nodeName == 'A' &&
             target.rel) {
             action = target.rel;
@@ -242,18 +245,6 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             self.getValueField(i).value = ordered_ids[i];
         }
         self.changed();
-    },
-
-    show_add_view: function(add_view) {
-        var self = this;
-        var url = window.application_url + '/@@' + add_view;
-        self.lightbox = new zeit.cms.ObjectAddForm(url, $('body'));
-        self.lightbox.events.push(MochiKit.Signal.connect(
-            self.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
-            function(uniqueId) {
-                self.add(uniqueId);
-                self.lightbox.close();
-            }));
     }
 
 });

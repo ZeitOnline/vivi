@@ -192,6 +192,7 @@ class ObjectSequenceWidget(
         'objectsequence-edit-widget.pt')
 
     detail_view_name = '@@object-details'
+    add_type = None
 
     def __init__(self, context, source, request):
         super(ObjectSequenceWidget, self).__init__(context, request)
@@ -258,8 +259,16 @@ class ObjectSequenceWidget(
 
     @zope.cachedescriptors.property.Lazy
     def add_view(self):
-        return self.context.value_type.queryTaggedValue(
-            'zeit.cms.addform.contextfree')
+        if not self.add_type:
+            return None
+        try:
+            context = zeit.cms.content.interfaces.ICommonMetadata(
+                self.context.context)
+        except TypeError:
+            return None
+        adder = zeit.cms.content.add.ContentAdder(
+            self.request, self.add_type, context.ressort, context.sub_ressort)
+        return adder()
 
     @property
     def accept_classes(self):

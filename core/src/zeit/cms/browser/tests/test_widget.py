@@ -154,13 +154,18 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         self.assertEllipsis('...name="field..url"...', result)
 
     def test_widget_should_render_add_view(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
         field = self.get_field()
-        field.value_type.setTaggedValue(
-            'zeit.cms.addform.contextfree', 'zeit.test.add_me')
+        content = TestContentType()
+        content.ressort = u'Politik'
+        field = field.bind(content)
         widget = self.get_widget(field)
-        result = widget()
+        widget.add_type = zeit.cms.testcontenttype.interfaces.ITestContentType
         self.assert_ellipsis(
-            '...<a rel="show_add_view"...href="zeit.test.add_me"...', result)
+            '...<a target="_blank"'
+            '...href="http://127.0.0.1/repository/politik/'
+            '...zeit.cms.testcontenttype.Add...',
+            widget())
 
     def test_accepted_types_is_escaped_for_javascript(self):
         field = self.get_field()
@@ -383,37 +388,6 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
         s.waitForElementPresent('id=testwidget.0')
         s.assertValue('id=testwidget.0',
                       'http://xml.zeit.de/autoren/A/Test_Autor/index')
-
-
-class TestObjectSequenceWidgetAddView(zeit.cms.testing.SeleniumTestCase):
-
-    def setUp(self):
-        super(TestObjectSequenceWidgetAddView, self).setUp()
-        self.open(
-            '/@@/zeit.cms.javascript.base/tests/'
-            'objectsequencewidget-add.html')
-
-    def test_clicking_add_view_should_show_lightbox(self):
-        s = self.selenium
-        s.click('link=Add new')
-        s.waitForTextPresent('Kropfelmopf')
-
-    def test_selecting_object_adds_it_to_widget_list(self):
-        s = self.selenium
-        s.assertElementNotPresent(
-            '//a[contains(@href, "/repository/testcontent")]')
-
-        s.click('link=Add new')
-        s.waitForTextPresent('Kropfelmopf')
-        s.getEval("""
-var window = selenium.browserbot.getCurrentWindow();
-var widget = window.widget;
-window.MochiKit.Signal.signal(
-    widget.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
-    'http://xml.zeit.de/testcontent');
-""")
-        s.waitForElementPresent(
-            '//a[contains(@href, "/repository/testcontent")]')
 
 
 class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):

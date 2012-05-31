@@ -12,7 +12,7 @@
 
   <div class="add_view"
        tal:condition="view/add_view">
-    <a rel="show_add_view"
+    <a target="_blank"
        tal:attributes="href view/add_view"
        i18n:translate="">
       Add new …
