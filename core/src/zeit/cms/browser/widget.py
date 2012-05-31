@@ -185,7 +185,7 @@ def objectDisplayWidgetMultiplexer(context, field, request):
         zope.app.form.interfaces.IDisplayWidget)
 
 
-class MultiObjectSequenceWidget(
+class ObjectSequenceWidget(
     zope.app.form.browser.widget.SimpleInputWidget):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
@@ -194,7 +194,7 @@ class MultiObjectSequenceWidget(
     detail_view_name = '@@object-details'
 
     def __init__(self, context, source, request):
-        super(MultiObjectSequenceWidget, self).__init__(context, request)
+        super(ObjectSequenceWidget, self).__init__(context, request)
         self.source = source
 
     def __call__(self):
@@ -306,7 +306,7 @@ class ObjectSequenceWidgetDetails(zeit.cms.browser.view.Base):
         return self.url('@@thumbnail')
 
 
-class MultiObjectSequenceDisplayWidget(
+class ObjectSequenceDisplayWidget(
     zope.app.form.browser.widget.DisplayWidget):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
@@ -315,7 +315,7 @@ class MultiObjectSequenceDisplayWidget(
     detail_view_name = '@@object-details'
 
     def __init__(self, context, source, request):
-        super(MultiObjectSequenceDisplayWidget, self).__init__(
+        super(ObjectSequenceDisplayWidget, self).__init__(
             context, request)
         self.source = source
 

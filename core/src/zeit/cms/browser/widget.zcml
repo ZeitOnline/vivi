@@ -72,7 +72,7 @@
     permission="zope.Public"
     />
 
-  <!-- MultiObjectSequenceWidget -->
+  <!-- ObjectSequenceWidget -->
 
   <adapter
     for="
@@ -80,7 +80,7 @@
     zeit.cms.content.interfaces.ICMSContentSource
     .interfaces.IGlobalSearchLayer"
     provides="zope.app.form.interfaces.IInputWidget"
-    factory=".widget.MultiObjectSequenceWidget"
+    factory=".widget.ObjectSequenceWidget"
     permission="zope.Public"
     />
 
@@ -90,7 +90,7 @@
     zeit.cms.content.interfaces.ICMSContentSource
     .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IDisplayWidget"
-    factory=".widget.MultiObjectSequenceDisplayWidget"
+    factory=".widget.ObjectSequenceDisplayWidget"
     permission="zope.Public"
     />
 
@@ -100,7 +100,7 @@
     zeit.cms.content.interfaces.IAutocompleteSource
     .interfaces.ICMSLayer"
     provides="zope.app.form.interfaces.IInputWidget"
-    factory=".widget.MultiObjectSequenceWidget"
+    factory=".widget.ObjectSequenceWidget"
     permission="zope.Public"
     />
 

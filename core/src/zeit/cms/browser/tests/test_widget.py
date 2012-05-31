@@ -2,6 +2,8 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.browser.widget import \
+    ObjectSequenceWidget, ObjectSequenceDisplayWidget
 import contextlib
 import mock
 import unittest2
@@ -54,33 +56,27 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
 class TestObjectSequenceWidget(unittest2.TestCase):
 
     def test_to_form_value_ignores_non_cms_content(self):
-        from zeit.cms.browser.widget import MultiObjectSequenceWidget
         import zeit.cms.interfaces
         import zope.interface
         context = mock.Mock()
         context.__name__ = 'name'
-        widget = MultiObjectSequenceWidget(
-            context, mock.Mock(), mock.Mock())
+        widget = ObjectSequenceWidget(context, mock.Mock(), mock.Mock())
         content = mock.Mock()
         zope.interface.alsoProvides(content, zeit.cms.interfaces.ICMSContent)
         result = widget._toFormValue([mock.sentinel.foo, content])
         self.assertEqual([{'uniqueId': content.uniqueId}], result)
 
     def test_to_field_value_ignores_non_cms_content(self):
-        from zeit.cms.browser.widget import MultiObjectSequenceWidget
         context = mock.Mock()
         context.__name__ = 'name'
-        widget = MultiObjectSequenceWidget(
-            context, mock.Mock(), mock.Mock())
+        widget = ObjectSequenceWidget(context, mock.Mock(), mock.Mock())
         self.assertEqual(
             (), widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar]))
 
     def test_to_form_value_copes_with_none(self):
-        from zeit.cms.browser.widget import MultiObjectSequenceWidget
         context = mock.Mock()
         context.__name__ = 'name'
-        widget = MultiObjectSequenceWidget(
-            context, mock.Mock(), mock.Mock())
+        widget = ObjectSequenceWidget(context, mock.Mock(), mock.Mock())
         self.assertEqual([], widget._toFormValue(None))
 
 
@@ -116,12 +112,10 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         return widget
 
     def test_widget_should_be_available_with_search(self):
-        from zeit.cms.browser.widget import MultiObjectSequenceWidget
         widget = self.get_widget()
-        self.assertIsInstance(widget, MultiObjectSequenceWidget)
+        self.assertIsInstance(widget, ObjectSequenceWidget)
 
     def test_widget_should_not_be_available_without_search(self):
-        from zeit.cms.browser.widget import MultiObjectSequenceWidget
         import zope.app.form.browser.interfaces
         import zope.publisher.browser
         field = self.get_field()
@@ -129,7 +123,7 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         widget = zope.component.getMultiAdapter(
             (field, request),
             zope.app.form.browser.interfaces.IInputWidget)
-        self.assertNotIsInstance(widget, MultiObjectSequenceWidget)
+        self.assertNotIsInstance(widget, ObjectSequenceWidget)
 
     def test_widget_should_render_source_query_view(self):
         import zeit.cms.content.interfaces
@@ -546,11 +540,9 @@ class TestObjectSequenceDisplayWidget(unittest2.TestCase):
         return content
 
     def get_widget(self):
-        from zeit.cms.browser.widget import MultiObjectSequenceDisplayWidget
         context = mock.Mock()
         context.__name__ = 'name'
-        return MultiObjectSequenceDisplayWidget(
-            context, mock.Mock(), mock.Mock())
+        return ObjectSequenceDisplayWidget(context, mock.Mock(), mock.Mock())
 
     def test_get_values_should_ignore_non_cms_content(self):
         widget = self.get_widget()
