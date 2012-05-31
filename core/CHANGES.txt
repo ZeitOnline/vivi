@@ -42,7 +42,8 @@ editor-ng branch changes
 1.53.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fold IContentAdder and IAddLocation into zeit.cms from zeit.addcentral
+  (for #10692).
 
 
 1.53.4 (2012-03-15)
