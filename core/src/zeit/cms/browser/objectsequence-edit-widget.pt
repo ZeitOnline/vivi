@@ -22,6 +22,11 @@
     tal:condition="view/query_view"
     tal:content="structure view/query_view">
   </div>
+  <input type="text"
+         placeholder="Link einfügen"
+         tal:condition="not: view/query_view"
+         tal:attributes="id string:${view/name}.url;
+                         name string:${view/name}.url" />
   <ul>
     <!-- data will be inserted here by javascript -->
   </ul>

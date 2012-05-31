@@ -125,10 +125,9 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
             zope.app.form.browser.interfaces.IInputWidget)
         self.assertNotIsInstance(widget, ObjectSequenceWidget)
 
-    def test_widget_should_render_source_query_view(self):
+    def test_widget_should_render_source_query_view_and_no_url_input(self):
         import zeit.cms.content.interfaces
         import zope.component
-        import zope.formlib.interfaces
         import zope.publisher.interfaces.browser
         adapter = mock.Mock()
         adapter.return_value = mock.Mock(return_value='mock')
@@ -146,7 +145,13 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         widget = self.get_widget()
         result = widget()
         adapter.assert_called()
-        self.assert_ellipsis('...<div>mock</div>...', result)
+        self.assertEllipsis('...<div>mock</div>...', result)
+        self.assertNotEllipsis('...name="field..url"...', result)
+
+    def test_widget_should_render_url_input_if_query_view_is_absent(self):
+        widget = self.get_widget()
+        result = widget()
+        self.assertEllipsis('...name="field..url"...', result)
 
     def test_widget_should_render_add_view(self):
         field = self.get_field()
@@ -207,6 +212,16 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForValue("//input[@name='testwidget.count']", '1')
         s.dragAndDropToObject('id=drag', 'id=testwidget')
+        s.waitForValue("//input[@name='testwidget.count']", '2')
+
+    def test_entering_uid_should_increase_count(self):
+        s = self.selenium
+        s.assertValue("//input[@name='testwidget.count']", '0')
+        s.type("//input[@name='testwidget.url']",
+               'http://xml.zeit.de/testcontent')
+        s.waitForValue("//input[@name='testwidget.count']", '1')
+        s.type("//input[@name='testwidget.url']",
+               'http://xml.zeit.de/testcontent')
         s.waitForValue("//input[@name='testwidget.count']", '2')
 
     def test_widget_should_load_details_from_server(self):

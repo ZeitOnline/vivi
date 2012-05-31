@@ -10,6 +10,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         self.element = $(widget_id);
         self.ul_element = MochiKit.DOM.getFirstElementByTagAndClassName(
             'ul', null, self.element);
+        self.url_input = $(self.widget_id + '.url');
 
         self.detail_view_name = detail_view_name;
 
@@ -18,6 +19,10 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         // XXX Need to unregister those events
         MochiKit.Signal.connect(
             self.element, 'onclick', self, self.handleClick);
+        if (!isNull(self.url_input)) {
+            MochiKit.Signal.connect(
+                self.url_input, 'onchange', self, self.handleUrlChange);
+        }
         new MochiKit.DragAndDrop.Droppable(self.element, {
             accept: accept,
             activeclass: 'droppable-active',
@@ -193,6 +198,14 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             self[action](argument);
             event.stop();
         }
+    },
+
+    handleUrlChange: function(event) {
+        var self = this;
+        var unique_id = self.url_input.value;  // XXX assumption subject to #10737
+        if (unique_id) {
+            self.add.call(self, unique_id);
+        };
     },
 
     handleDrop: function(element) {
