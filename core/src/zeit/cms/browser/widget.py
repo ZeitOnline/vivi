@@ -339,21 +339,10 @@ def js_escape_check_types(source):
     return json.dumps([u'type-' + x for x in source.get_check_types()])
 
 
-DROP_TEMPLATE = u"""\
-<div class="drop-object-widget" id="%(name)s">
-    <input type="hidden" name="%(name)s" value="%(value)s" />
-    <div class="object-reference"></div>
-    <input type="text"
-           placeholder="Link einfügen"
-           id="%(name)s.url"
-           name="%(name)s.url" />
-</div>
-<script>new zeit.cms.DropObjectWidget(
-    "%(name)s", %(accept)s, "%(detail_view_name)s");</script>
-"""
-
-
 class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'dropobject-widget.pt')
 
     detail_view_name = '@@object-details'
 
@@ -362,12 +351,7 @@ class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
         self.source = source
 
     def __call__(self):
-        return DROP_TEMPLATE % {
-            'name': self.name,
-            'value': self._getFormValue(),
-            'accept': self.accept_classes,
-            'detail_view_name': self.detail_view_name,
-        }
+        return self.template()
 
     def _toFieldValue(self, input):
         if input == self._missing:

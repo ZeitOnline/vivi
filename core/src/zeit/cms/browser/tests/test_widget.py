@@ -527,7 +527,7 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
             choice, choice.source, request)
         widget.detail_view_name = '@@mydetails'
         self.assertEllipsis("""...new zeit.cms.DropObjectWidget(
-                "field.", [...], "@@mydetails");...""", widget())
+                'field.', [...], '@@mydetails');...""", widget())
 
     def test_widget_has_url_input(self):
         choice = self.get_choice()
