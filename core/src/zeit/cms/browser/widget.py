@@ -185,8 +185,25 @@ def objectDisplayWidgetMultiplexer(context, field, request):
         zope.app.form.interfaces.IDisplayWidget)
 
 
+class AddViewMixin(object):
+
+    @zope.cachedescriptors.property.Lazy
+    def add_view(self):
+        if not self.add_type:
+            return None
+        try:
+            context = zeit.cms.content.interfaces.ICommonMetadata(
+                self.context.context)
+        except TypeError:
+            return None
+        adder = zeit.cms.content.add.ContentAdder(
+            self.request, self.add_type, context.ressort, context.sub_ressort)
+        return adder()
+
+
 class ObjectSequenceWidget(
-    zope.app.form.browser.widget.SimpleInputWidget):
+    zope.app.form.browser.widget.SimpleInputWidget,
+    AddViewMixin):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'objectsequence-edit-widget.pt')
@@ -256,19 +273,6 @@ class ObjectSequenceWidget(
         return zope.component.queryMultiAdapter(
             (self.source, self.request),
             zope.formlib.interfaces.ISourceQueryView)
-
-    @zope.cachedescriptors.property.Lazy
-    def add_view(self):
-        if not self.add_type:
-            return None
-        try:
-            context = zeit.cms.content.interfaces.ICommonMetadata(
-                self.context.context)
-        except TypeError:
-            return None
-        adder = zeit.cms.content.add.ContentAdder(
-            self.request, self.add_type, context.ressort, context.sub_ressort)
-        return adder()
 
     @property
     def accept_classes(self):
@@ -348,12 +352,15 @@ def js_escape_check_types(source):
     return json.dumps([u'type-' + x for x in source.get_check_types()])
 
 
-class DropObjectWidget(zope.app.form.browser.widget.SimpleInputWidget):
+class DropObjectWidget(
+    zope.app.form.browser.widget.SimpleInputWidget,
+    AddViewMixin):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'dropobject-widget.pt')
 
     detail_view_name = '@@object-details'
+    add_type = None
 
     def __init__(self, context, source, request):
         super(DropObjectWidget, self).__init__(context, request)

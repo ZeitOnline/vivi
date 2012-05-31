@@ -510,6 +510,22 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
             choice, choice.source, request)
         self.assertEllipsis('...name="field..url"...', widget())
 
+    def test_widget_should_render_add_view(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        choice = self.get_choice()
+        request = zope.publisher.browser.TestRequest()
+        content = TestContentType()
+        content.ressort = u'Politik'
+        choice = choice.bind(content)
+        widget = zeit.cms.browser.widget.DropObjectWidget(
+            choice, choice.source, request)
+        widget.add_type = zeit.cms.testcontenttype.interfaces.ITestContentType
+        self.assertEllipsis(
+            '...<a target="_blank"'
+            '...href="http://127.0.0.1/repository/politik/'
+            '...zeit.cms.testcontenttype.Add...',
+            widget())
+
 
 class DropObjectWidget(zeit.cms.testing.FunctionalTestCase):
 

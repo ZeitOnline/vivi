@@ -6,6 +6,15 @@
     <input type="text" placeholder="Link einfügen" tal:attributes="
            id string:${view/name}.url;
            name string:${view/name}.url;" />
+
+    <div class="add_view"
+         tal:condition="view/add_view">
+      <a target="_blank"
+         tal:attributes="href view/add_view"
+         i18n:translate="">
+        Add new …
+      </a>
+    </div>
 </div>
 <script tal:content="string:
 new zeit.cms.DropObjectWidget(
