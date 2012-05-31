@@ -89,7 +89,7 @@
         // the ad placeholders.
         var ad_place      = 2, //FIXME make it configurable!
             p_index       = ad_place - 1, // Index starts with 0.
-            ad_paragraph  = $('.type-p').find('p').eq( p_index ),
+            ad_paragraph  = $('.type-p').find('p').eq(p_index),
             dummy_ad      = '',
             pos_paragraph = 0,
             sheet         = '',
