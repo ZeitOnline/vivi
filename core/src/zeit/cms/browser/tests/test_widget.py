@@ -433,6 +433,13 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s.waitForValue('name=testwidget',
                        'http://xml.zeit.de/testcontent')
 
+    def test_url_input_should_set_input_value(self):
+        s = self.selenium
+        s.type("//input[@name='testwidget.url']",
+               'http://xml.zeit.de/testcontent')
+        s.waitForValue('name=testwidget',
+                       'http://xml.zeit.de/testcontent')
+
     def test_remove_should_clear_input_value(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
@@ -521,6 +528,13 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
         widget.detail_view_name = '@@mydetails'
         self.assertEllipsis("""...new zeit.cms.DropObjectWidget(
                 "field.", [...], "@@mydetails");...""", widget())
+
+    def test_widget_has_url_input(self):
+        choice = self.get_choice()
+        request = zope.publisher.browser.TestRequest()
+        widget = zeit.cms.browser.widget.DropObjectWidget(
+            choice, choice.source, request)
+        self.assertEllipsis('...name="field..url"...', widget())
 
 
 class DropObjectWidget(zeit.cms.testing.FunctionalTestCase):

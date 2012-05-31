@@ -343,6 +343,10 @@ DROP_TEMPLATE = u"""\
 <div class="drop-object-widget" id="%(name)s">
     <input type="hidden" name="%(name)s" value="%(value)s" />
     <div class="object-reference"></div>
+    <input type="text"
+           placeholder="Link einfügen"
+           id="%(name)s.url"
+           name="%(name)s.url" />
 </div>
 <script>new zeit.cms.DropObjectWidget(
     "%(name)s", %(accept)s, "%(detail_view_name)s");</script>

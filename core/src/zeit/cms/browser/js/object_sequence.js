@@ -270,6 +270,8 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             'input', null, self.element);
         self.details = MochiKit.DOM.getFirstElementByTagAndClassName(
             'div', 'object-reference', self.element);
+        self.url_input = $(self.element + '.url');
+
         new MochiKit.DragAndDrop.Droppable(self.element, {
             accept: accept,
             activeclass: 'droppable-active',
@@ -280,6 +282,10 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         MochiKit.Signal.connect(
             self.element, 'onclick', self, self.handleClick);
         self.update_details();
+        if (!isNull(self.url_input)) {
+            MochiKit.Signal.connect(
+                self.url_input, 'onchange', self, self.handleUrlChange);
+        }
     },
 
     set: function(value) {
@@ -287,6 +293,14 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         self.input.value = value;
         self.changed();
         self.update_details();
+    },
+
+    handleUrlChange: function(event) {
+        var self = this;
+        var unique_id = self.url_input.value;  // XXX assumption subject to #10737
+        if (unique_id) {
+            self.set(unique_id);
+        };
     },
 
     handleDrop: function(element) {
@@ -351,7 +365,6 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             event.stop();
         }
     }
-
 });
 
 
