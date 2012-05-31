@@ -3,9 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 from zope.app.pagetemplate.viewpagetemplatefile import ViewPageTemplateFile
-import zeit.addcentral.add
-import zeit.addcentral.interfaces
-import zeit.cms.content.sources
+import zeit.cms.content.add
 import zope.formlib.form
 import zope.session.interfaces
 
@@ -14,7 +12,7 @@ class Form(zope.formlib.form.SubPageForm):
 
     template = ViewPageTemplateFile('form.pt')
     form_fields = zope.formlib.form.FormFields(
-        zeit.addcentral.interfaces.IContentAdder).omit('year', 'month')
+        zeit.cms.content.interfaces.IContentAdder).omit('year', 'month')
     prefix = 'sidebar.form'
 
     next_url = None
@@ -29,7 +27,7 @@ class Form(zope.formlib.form.SubPageForm):
 
     @zope.formlib.form.action(_('Add'))
     def add(self, action, data):
-        adder = zeit.addcentral.add.ContentAdder(self.request, **data)
+        adder = zeit.cms.content.add.ContentAdder(self.request, **data)
         self.next_url = adder()
         zope.session.interfaces.ISession(
             self.request)['zeit.addcentral'].update(data)

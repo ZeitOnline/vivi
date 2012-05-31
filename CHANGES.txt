@@ -4,7 +4,8 @@ zeit.addcentral changes
 1.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fold IContentAdder and IAddLocation into zeit.cms from zeit.addcentral
+  (for #10692).
 
 
 1.0.3 (2012-03-06)
