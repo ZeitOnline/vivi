@@ -204,7 +204,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         var self = this;
         var unique_id = self.url_input.value;  // XXX assumption subject to #10737
         if (unique_id) {
-            self.add.call(self, unique_id);
+            self.add(unique_id);
         };
     },
 
@@ -215,7 +215,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         }
         var unique_id = element.uniqueId;
         if (unique_id) {
-            self.add.call(self, unique_id);
+            self.add(unique_id);
         }
     },
 
