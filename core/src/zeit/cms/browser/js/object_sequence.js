@@ -205,7 +205,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         var unique_id = self.url_input.value;  // XXX assumption subject to #10737
         if (unique_id) {
             self.add(unique_id);
-        };
+        }
     },
 
     handleDrop: function(element) {
@@ -300,7 +300,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         var unique_id = self.url_input.value;  // XXX assumption subject to #10737
         if (unique_id) {
             self.set(unique_id);
-        };
+        }
     },
 
     handleDrop: function(element) {
