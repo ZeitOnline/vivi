@@ -6,7 +6,7 @@ from zeit.cms.i18n import MessageFactory as _
 import datetime
 import grokcore.component as grok
 import pytz
-import zeit.addcentral.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
@@ -151,8 +151,8 @@ class DailyNewsletterBuilder(Builder):
 
 @grok.adapter(
     zeit.newsletter.interfaces.INewsletter,
-    zeit.addcentral.interfaces.IContentAdder)
-@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+    zeit.cms.content.interfaces.IContentAdder)
+@grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 def daily_newsletter(type_, adder):
     # This is not ready for multiple newsletter categories, since there always
     # will be just one INewsletter interface. But since there only is one
