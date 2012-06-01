@@ -697,18 +697,6 @@ form[action$="misc-product-management-b"] {
   margin-bottom:30px;
 }
 
-/* Add new author button */
-#metadata-c\.author_references .add_view {
-  left: 189px;
-  position: absolute;
-  width: 200px;
-  top:3px;
-}
-
-#metadata-c\.author_references .add_view a {
-  -moz-appearance: button;
-}
-
 /* worflow publication period area */
 
 /* until it's not removed from markup  */
