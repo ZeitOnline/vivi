@@ -10,14 +10,6 @@
   </tal:data>
   <input tal:replace="structure view/marker" />
 
-  <div class="add_view"
-       tal:condition="view/add_view">
-    <a target="_blank"
-       tal:attributes="href view/add_view"
-       i18n:translate="">
-      Add new …
-    </a>
-  </div>
   <div
     tal:condition="view/query_view"
     tal:content="structure view/query_view">
@@ -27,6 +19,14 @@
          tal:condition="not: view/query_view"
          tal:attributes="id string:${view/name}.url;
                          name string:${view/name}.url" />
+
+  <a target="_blank" class="add_view"
+     tal:condition="view/add_view"
+     tal:attributes="href view/add_view"
+     i18n:translate="">
+    Add new …
+  </a>
+
   <ul>
     <!-- data will be inserted here by javascript -->
   </ul>

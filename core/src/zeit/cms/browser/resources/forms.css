@@ -535,3 +535,7 @@ iframe {
     float:right;
     width:60%;
 }
+
+a.add_view {
+  -moz-appearance: button;
+}

@@ -7,14 +7,12 @@
            id string:${view/name}.url;
            name string:${view/name}.url;" />
 
-    <div class="add_view"
-         tal:condition="view/add_view">
-      <a target="_blank"
-         tal:attributes="href view/add_view"
-         i18n:translate="">
-        Add new …
-      </a>
-    </div>
+    <a target="_blank" class="add_view"
+       tal:condition="view/add_view"
+       tal:attributes="href view/add_view"
+       i18n:translate="">
+      Add new …
+    </a>
 </div>
 <script tal:content="string:
 new zeit.cms.DropObjectWidget(
