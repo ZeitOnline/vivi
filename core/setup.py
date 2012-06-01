@@ -22,7 +22,7 @@ setup(
         'gocept.selenium',
         'setuptools',
         'zc.resourcelibrary',
-        'zeit.cms>=1.54.0',
+        'zeit.cms>=1.54.0.dev0',
         'zope.app.pagetemplate',
         'zope.browser',
         'zope.cachedescriptors',
