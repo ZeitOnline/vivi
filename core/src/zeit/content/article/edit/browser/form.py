@@ -4,6 +4,7 @@
 from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
 from zeit.content.infobox.interfaces import IInfobox
@@ -243,6 +244,7 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
     def setUpWidgets(self):
         super(MetadataC, self).setUpWidgets()
         self.widgets['author_references'].detail_view_name = '@@author-details'
+        self.widgets['author_references'].add_type = IAuthor
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
