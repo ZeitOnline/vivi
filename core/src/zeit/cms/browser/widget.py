@@ -13,8 +13,6 @@ import zeit.cms.browser.view
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zope.app.form.browser
-import zope.app.form.browser.interfaces
-import zope.app.form.browser.itemswidgets
 import zope.app.form.browser.sequencewidget
 import zope.app.form.browser.widget
 import zope.app.form.interfaces
@@ -199,6 +197,19 @@ class AddViewMixin(object):
         adder = zeit.cms.content.add.ContentAdder(
             self.request, self.add_type, context.ressort, context.sub_ressort)
         return adder()
+
+
+@zope.component.adapter(zope.interface.Interface)
+@zope.interface.implementer(zeit.cms.content.interfaces.ICommonMetadata)
+def find_commonmetadata(context):
+    """AddViewMixin needs the ressort of the current content object.
+    However, the field the widget is used for might not belong to the content
+    object, but to an adapter like an asset reference. Thus, we need to find
+    our way back to the actual content object.
+    """
+    nested_context = getattr(context, 'context', None)
+    if zeit.cms.content.interfaces.ICommonMetadata.providedBy(nested_context):
+        return nested_context
 
 
 class ObjectSequenceWidget(

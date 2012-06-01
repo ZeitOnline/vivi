@@ -113,6 +113,11 @@
     permission="zope.View"
     />
 
+  <adapter
+    factory=".widget.find_commonmetadata"
+    trusted="true"
+    />
+
   <!-- date time -->
   <adapter
     for="zope.schema.interfaces.IDatetime
