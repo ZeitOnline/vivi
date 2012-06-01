@@ -7,6 +7,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.content.author.interfaces
 import zeit.find.search
@@ -54,7 +55,7 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.author.interfaces.IAuthor
     type = 'author'
     title = _('Author')
-    addform = zeit.cms.type.SKIP_ADD
+    addform = 'zeit.content.author.add_contextfree'
 
 
 @grokcore.component.subscribe(
@@ -106,3 +107,12 @@ class Dependencies(grokcore.component.Adapter):
     zeit.cms.relation.interfaces.IReferenceProvider)
 def references(context):
     return context.author_references
+
+
+@grokcore.component.adapter(
+    zeit.content.author.interfaces.IAuthor,
+    zeit.cms.content.interfaces.IContentAdder)
+@grokcore.component.implementer(zeit.cms.content.interfaces.IAddLocation)
+def author_location(type_, adder):
+    return zope.component.getUtility(
+        zeit.cms.repository.interfaces.IRepository)
