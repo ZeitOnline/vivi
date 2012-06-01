@@ -221,6 +221,16 @@ class ProductSource(
         return super(ProductSource, self).getToken(context, value.id)
 
 
+class BannerSource(SimpleXMLSource):
+
+    config_url = 'source-banners'
+
+    def getValues(self):
+        tree = self._get_tree()
+        return [int(node.get('first_below_p'))
+                for node in tree.xpath('//homepage/page_all')]
+
+
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getValues(self):

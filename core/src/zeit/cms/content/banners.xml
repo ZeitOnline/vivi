@@ -1,0 +1,14 @@
+<banners>
+  <article>
+    <homepage>
+      <page_odd first_below_p="2" repeat="10000"/>
+      <page_even first_below_p="0" repeat="10000"/>
+      <page_all first_below_p="2" repeat="10000"/>
+    </homepage>
+    <ipad>
+      <page_odd first_below_p="2" repeat="10000"/>
+      <page_even first_below_p="0" repeat="10000"/>
+      <page_all first_below_p="2" repeat="10000"/>
+    </ipad>
+  </article>
+</banners>

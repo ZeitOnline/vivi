@@ -99,5 +99,12 @@
     sort="120"
     />
 
+  <browser:page
+    for="*"
+    name="banner-rules"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".sources.BannerRules"
+    permission="zope.View"
+    />
 
 </configure>

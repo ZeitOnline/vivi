@@ -351,6 +351,13 @@ u'1234abc'
 True
 
 
+Banners
++++++++
+
+>>> pprint(list(zeit.cms.content.sources.BannerSource()))
+[2]
+
+
 Cache collector
 +++++++++++++++
 
