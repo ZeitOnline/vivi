@@ -8,6 +8,7 @@ import zeit.content.author.author
 import zeit.content.author.interfaces
 import zope.app.pagetemplate
 import zope.formlib.form
+import zope.formlib.interfaces
 import zope.interface
 import zope.schema
 
@@ -43,16 +44,19 @@ class IDuplicateConfirmation(zope.interface.Interface):
     confirmed_duplicate = zope.schema.Bool(title=u'Add duplicate author')
 
 
-# This is the first version of a Lightbox-enabled AddForm,
-# and as such brings together zeit.cms.browser.form.AddForm
-# and zeit.cms.browser.lightbox.Form.
-# Which is to say: the next time we do this, we'll want to review,
-# refactor and extract from here, not take this as "the way it's done",
-# since we don't really know that yet.
-class AddContextfree(
-    zeit.cms.browser.view.Base,
-    zope.formlib.form.SubPageForm,
-    zope.formlib.form.AddFormBase):
+class DuplicateAuthorWarning(Exception):
+
+    zope.interface.implements(zope.formlib.interfaces.IWidgetInputError)
+
+    def doc(self):
+        return _(
+            u'An author with the given name already exists. '
+            u'If you\'d like to create another author with the same '
+            u'name anyway, check "Add duplicate author" '
+            u'and save the form again.')
+
+
+class AddContextfree(zeit.cms.browser.form.AddForm):
     """Adds a new author.
 
     If an author with the given name already exists, the form complains once.
@@ -60,22 +64,13 @@ class AddContextfree(
     duplicate name (the error message the first time around says so).
     """
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile('lightbox.pt')
     title = _('Add author')
     form_fields = FormBase.form_fields.omit('__name__') + \
          zope.formlib.form.FormFields(IDuplicateConfirmation)
     factory = zeit.content.author.author.Author
+    next_view = 'view.html'
 
-    result = None
     need_confirmation_checkbox = False
-
-    @property
-    def form(self):
-        return super(AddContextfree, self).template
-
-    def applyChanges(self, object, data):
-        return zeit.cms.browser.form.apply_changes_with_setattr(
-            object, self.form_fields, data)
 
     def create(self, data):
         self.confirmed_duplicate = data.pop('confirmed_duplicate', None)
@@ -89,11 +84,7 @@ class AddContextfree(
             return False
         transaction.doom()
         self.need_confirmation_checkbox = True
-        self.errors = (_(
-                u'An author with the given name already exists. '
-                u'If you\'d like to create another author with the same '
-                u'name anyway, check "Add duplicate author" '
-                u'and save the form again.'),)
+        self.errors = (DuplicateAuthorWarning(),)
         self.status = _('There were errors')
         self.form_reset = False
         return True
@@ -103,10 +94,10 @@ class AddContextfree(
             return
         container = self.create_folder(object)
         container['index'] = object
-        self.result = container['index'].uniqueId
+        self._created_object = container['index']
+        self._finished_add = True
 
     def create_folder(self, object):
-        # XXX use zeit.addcentral.interfaces.IAddLocation
         path = self.author_folder + [object.lastname[0].upper()]
         repos = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)

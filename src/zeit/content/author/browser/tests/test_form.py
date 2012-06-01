@@ -73,10 +73,9 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         self.open('/@@zeit.content.author.add_contextfree')
         self.assertNotIn('File name', b.contents)
         self.add_william()
-        self.assertEllipsis("""...
-            <span class="result">http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare/index</span>
-            ...""", b.contents)
-        self.open('/repository/foo/bar/authors/S/William_Shakespeare/index')
+        self.assertEqual(
+            'http://localhost/++skin++vivi/repository/foo/bar/authors/S/'
+            'William_Shakespeare/index/@@view.html', b.url)
         self.assertEllipsis("""...
             <label for="form.firstname">...
             <div class="widget">William</div>...
@@ -110,10 +109,9 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         self.assertNotIn('There were errors', b.contents)
         # Make sure the new author gets a new __name__ rather than overwriting
         # the existing one.
-        self.assertEllipsis("""...
-            <span class="result">http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index</span>
-            ...""", b.contents)
-        self.open('/repository/foo/bar/authors/S/William_Shakespeare-2/index')
+        self.assertEqual(
+            'http://localhost/++skin++vivi/repository/foo/bar/authors/S/'
+            'William_Shakespeare-2/index/@@view.html', b.url)
         self.assertEllipsis("""...
             <label for="form.firstname">...
             <div class="widget">William</div>...
