@@ -478,4 +478,5 @@ class JSLintTestCase(gocept.jslint.TestCase):
         "Use '===' to compare with",
         "Use '!==' to compare with",
         "Missing radix parameter",
+        "Bad line breaking",
         )
