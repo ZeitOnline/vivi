@@ -4,6 +4,10 @@
 from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.gallery.interfaces import IGallery
+from zeit.content.image.interfaces import IImageGroup
+from zeit.content.infobox.interfaces import IInfobox
+from zeit.content.portraitbox.interfaces import IPortraitbox
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.interfaces
 import zeit.content.article.interfaces
@@ -145,6 +149,13 @@ class Assets(zeit.edit.browser.form.InlineForm):
             *interfaces,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).omit(
                 'badges')
+
+    def setUpWidgets(self):
+        super(Assets, self).setUpWidgets()
+        self.widgets['images'].add_type = IImageGroup
+        self.widgets['gallery'].add_type = IGallery
+        self.widgets['portraitbox'].add_type = IPortraitbox
+        self.widgets['infobox'].add_type = IInfobox
 
 
 class StatusForms(zeit.edit.browser.form.FoldableFormGroup):
