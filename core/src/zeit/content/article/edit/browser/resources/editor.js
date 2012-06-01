@@ -1,5 +1,7 @@
 (function($){
 
+    var ad_places = [];
+
     $.fn.limitedInput = function(limit) {
         return this.each(function() {
             var self = $(this);
@@ -78,6 +80,13 @@
         });
     };
 
+    $('body').bind('update-ad-places', function() {
+        $.getJSON(application_url + '/@@banner-rules', function(p) {
+            ad_places = p;
+        }).complete(function() {
+            $('body').trigger('update-ads');
+        });
+    });
 
     $('body').bind('update-ads', function() {
         // When creating a new paragraph content editable will always copy all
@@ -87,32 +96,32 @@
         // Therefore, when content editable is active, we need to create a
         // temporary style element which will contain all style informations for
         // the ad placeholders.
-        var ad_place      = 2, //FIXME make it configurable!
-            p_index       = ad_place - 1, // Index starts with 0.
-            ad_paragraph  = $('.type-p').find('p').eq(p_index),
-            dummy_ad      = '',
-            pos_paragraph = 0,
-            sheet         = '',
-            styles        = '',
-            pos_div       = 0;
+        var styles    = '',
+            sheet     = $('<style>').attr('id', 'content_editable_hacks');
+        ad_places.forEach(function(ad_place) {
+            var p_index       = ad_place - 1, // Index starts with 0.
+                ad_paragraph  = $('.type-p').find('p').eq(p_index),
+                dummy_ad      = '',
+                pos_paragraph = 0,
+                sheet         = '',
+                pos_div       = 0;
+            if (ad_paragraph.length === 0) {
+                pos_div       = $('.type-p').eq(0).index() + 1;
+                pos_paragraph = ad_place;
+            } else {
+                // Position starts with 1.
+                pos_div       = ad_paragraph.parents('.type-p').index() + 1,
+                pos_paragraph = ad_paragraph.index() + 1;
+            }
 
-        if (ad_paragraph.length === 0) {
-            pos_div       = $('.type-p').eq(0).index() + 1;
-            pos_paragraph = ad_place;
-        } else {
-            // Position starts with 1.
-            pos_div       = ad_paragraph.parents('.type-p').index() + 1,
-            pos_paragraph = ad_paragraph.index() + 1;
-        }
-
-        // Dynamically created styles up here.
-        sheet    = $('<style>').attr('id', 'content_editable_hacks'),
-        dummy_ad = application_url+'/@@/zeit.content.article.edit/dummy-ad.png',
-        styles   = '.type-p:nth-child(' + pos_div + ')'
-                 + ' p:nth-child(' + pos_paragraph + ')'
-                 + ' { background: url("' + dummy_ad + '")'
-                 + ' no-repeat scroll center bottom transparent;'
-                 + ' padding-bottom: 20em; min-height: 10px }';
+            // Dynamically created styles up here.
+            dummy_ad = application_url+'/@@/zeit.content.article.edit/dummy-ad.png',
+            styles  += '.type-p:nth-child(' + pos_div + ')'
+                    + ' p:nth-child(' + pos_paragraph + ')'
+                    + ' { background: url("' + dummy_ad + '")'
+                    + ' no-repeat scroll center bottom transparent;'
+                    + ' padding-bottom: 20em; min-height: 10px }';
+        });
         sheet.html(styles);
         $('#content_editable_hacks').remove();
         $('body').append(sheet);
@@ -152,7 +161,7 @@ MochiKit.Signal.connect(
             $('#cp-content-inner').animate({scrollTop: 0}, 300);
         });
 
-        $('body').trigger('update-ads');
+        $('body').trigger('update-ad-places');
 
     }(jQuery));
 
