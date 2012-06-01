@@ -5,7 +5,7 @@ import datetime
 import gocept.runner
 import logging
 import pytz
-import zeit.addcentral.interfaces
+import zeit.cms.content.interfaces
 import zeit.brightcove.converter
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
@@ -65,7 +65,7 @@ class BaseUpdater(object):
         if self.cmsobj is None:
             log.info('Adding %s', self.bcobj)
             log.debug('Getting add location')
-            folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
+            folder = zeit.cms.content.interfaces.IAddLocation(self.bcobj)
             log.debug('Adding ...')
             folder[str(self.bcobj.id)] = self.bcobj.to_cms()
             cmsobj = folder[str(self.bcobj.id)]
@@ -99,7 +99,7 @@ class VideoUpdater(BaseUpdater):
             if zeit.cms.workflow.interfaces.IPublishInfo(
                     self.cmsobj).published:
                 zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract()
-            folder = zeit.addcentral.interfaces.IAddLocation(self.bcobj)
+            folder = zeit.cms.content.interfaces.IAddLocation(self.bcobj)
             del folder[str(self.bcobj.id)]
             return True
 
@@ -184,7 +184,7 @@ class PlaylistUpdater(BaseUpdater):
     def delete_remaining_except(cls, bc_objects):
         if not bc_objects:
             return
-        folder = zeit.addcentral.interfaces.IAddLocation(
+        folder = zeit.cms.content.interfaces.IAddLocation(
             iter(bc_objects).next())
         cms_names = set(folder.keys())
         bc_names = set(str(x.id) for x in bc_objects)

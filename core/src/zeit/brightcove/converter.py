@@ -9,9 +9,9 @@ import logging
 import lxml.etree
 import pytz
 import transaction
-import zeit.addcentral.add
-import zeit.addcentral.interfaces
 import zeit.brightcove.interfaces
+import zeit.cms.content.add
+import zeit.cms.content.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -187,7 +187,7 @@ class Converter(object):
 
     @cachedproperty
     def uniqueId(self):
-        path = zeit.addcentral.interfaces.IAddLocation(self).uniqueId
+        path = zeit.cms.content.interfaces.IAddLocation(self).uniqueId
         # XXX folders in the mock connector don't have a trailing slash, while
         # in the real connector they do
         if not path.endswith('/'):
@@ -381,13 +381,13 @@ class Video(Converter):
         return instance
 
 
-@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+@grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 @grok.adapter(Video)
 def video_location(bc_object):
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.brightcove')
     path = config['video-folder']
-    return zeit.addcentral.add.find_or_create_folder(
+    return zeit.cms.content.add.find_or_create_folder(
         *(path.split('/') + [bc_object.date_created.strftime('%Y-%m')]))
 
 
@@ -448,13 +448,13 @@ class Playlist(Converter):
         return instance
 
 
-@grok.implementer(zeit.addcentral.interfaces.IAddLocation)
+@grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 @grok.adapter(Playlist)
 def playlist_location(bc_object):
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.brightcove')
     path = config['playlist-folder']
-    return zeit.addcentral.add.find_or_create_folder(*path.split('/'))
+    return zeit.cms.content.add.find_or_create_folder(*path.split('/'))
 
 
 BRIGHTCOVE_ID = zeit.connector.search.SearchVar(
