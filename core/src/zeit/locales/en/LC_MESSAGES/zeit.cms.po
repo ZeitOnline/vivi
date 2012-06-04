@@ -1507,11 +1507,8 @@ msgstr "Related content"
 
 #: zeit/content/article/edit/browser/edit.body.landing.pt:13
 msgid ""
-"Landing zone ${create-paragraph} <fieldset class=\"fontcontrol\"> <button "
-"class=\"fontbutton fontplus\"> <span> + </span> </button> <button class="
-"\"fontbutton fontminus\"> <span> - </span> </button> <button class="
-"\"fontbutton fontnormal\"> <span> % </span> </button> <span class=\"charcount"
-"\"></span> </fieldset>"
+"Landing zone ${create-paragraph} <fieldset> "
+"<span class=\"charcount\"></span> </fieldset>"
 msgstr ""
 
 #: zeit/content/article/edit/browser/edit.body.landing.pt:14
