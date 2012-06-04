@@ -5,6 +5,16 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
         self.master = master;
         self.slave = slave;
         self.update_url = update_url;
+
+        // XXX The following selector makes sense only in part of the forms
+        // used by vivi. In particular, it doesn't work for the subpage form
+        // of addcentral. When we implemented hiding the slave drop-down to
+        // fix #10664, the resulting difference in behaviour between
+        // addcentral and, e.g., an article's edit form happened to be what
+        // was requested, so we left it at that.
+        self.slave_field = MochiKit.DOM.getFirstParentByTagAndClassName(
+            slave, 'div', 'field');
+
         MochiKit.Signal.connect(master, 'onchange', self, self.update);
         self.update();
     },
@@ -19,6 +29,13 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
             self.update_url, {master_token: self.master.value});
         d.addCallback(function(result) {
             var data = evalJSONRequest(result)
+
+            if (data.length == 0) {
+                MochiKit.Style.hideElement(self.slave_field);
+            } else {
+                MochiKit.Style.showElement(self.slave_field);
+            }
+
             var selected = self.slave.value;
             self.slave.options.length = 1
             forEach(data, function(new_option) {
