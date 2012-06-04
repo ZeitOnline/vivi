@@ -3,6 +3,7 @@
 
 import datetime
 import gocept.runner
+import grokcore.component as grok
 import itertools
 import logging
 import pytz
@@ -11,7 +12,6 @@ import zeit.brightcove.converter
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
-import zeit.content.video.interfaces
 import zope.component
 
 
@@ -36,10 +36,14 @@ def _update_from_brightcove():
     log.info('Update run finished')
 
 
-class BaseUpdater(object):
+class BaseUpdater(grok.Adapter):
+
+    grok.baseclass()
+    grok.implements(zeit.brightcove.interfaces.IUpdate)
 
     def __init__(self, context):
         log.debug('%r(%s)', self, context.uniqueId)
+        self.publish_job_id = None
         self.bcobj = context
         self.cmsobj = zeit.cms.interfaces.ICMSContent(
             self.bcobj.uniqueId, None)
@@ -74,6 +78,7 @@ class BaseUpdater(object):
             self.cmsobj = folder[str(self.bcobj.id)]
             log.debug('Create publish job')
             self._publish_if_allowed()
+            self.changed = True
             return True
 
     def delete(self):
@@ -100,11 +105,13 @@ class BaseUpdater(object):
             self._publish_if_allowed()
 
     def _publish_if_allowed(self):
-        zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish(
-            zeit.cms.workflow.interfaces.PRIORITY_LOW)
+        self.publish_job_id = zeit.cms.workflow.interfaces.IPublish(
+            self.cmsobj).publish(zeit.cms.workflow.interfaces.PRIORITY_LOW)
 
 
 class VideoUpdater(BaseUpdater):
+
+    grok.context(zeit.brightcove.converter.Video)
 
     @classmethod
     def get_objects(cls):
@@ -154,6 +161,7 @@ class VideoUpdater(BaseUpdater):
         if changed:
             self._update_cmsobj()
         self._publish_cmsobj()
+        self.changed = changed
         return True
 
     def _publish_if_allowed(self):
@@ -162,6 +170,8 @@ class VideoUpdater(BaseUpdater):
 
 
 class PlaylistUpdater(BaseUpdater):
+
+    grok.context(zeit.brightcove.converter.Playlist)
 
     @classmethod
     def get_objects(cls):
@@ -190,6 +200,7 @@ class PlaylistUpdater(BaseUpdater):
         if changed:
             self._update_cmsobj()
         self._publish_cmsobj()
+        self.changed = changed
         return True
 
     @classmethod

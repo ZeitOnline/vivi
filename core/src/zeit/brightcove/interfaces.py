@@ -113,3 +113,7 @@ class IPlaylist(IBrightcoveContent):
 
 class IRepository(zope.interface.Interface):
     """legacy interface."""
+
+
+class IUpdate(zope.interface.Interface):
+    """Update a Brightcove object from Brightcove."""

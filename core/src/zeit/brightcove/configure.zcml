@@ -5,6 +5,8 @@
 
   <grok:grok package="." />
 
+  <include package=".browser" />
+
   <permission
     id="zeit.brightcove.video.Edit"
     title="Edit brightcove videos"
