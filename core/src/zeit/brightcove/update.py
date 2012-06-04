@@ -41,6 +41,8 @@ class BaseUpdater(grok.Adapter):
     grok.baseclass()
     grok.implements(zeit.brightcove.interfaces.IUpdate)
 
+    publish_priority = zeit.cms.workflow.interfaces.PRIORITY_DEFAULT
+
     def __init__(self, context):
         log.debug('%r(%s)', self, context.uniqueId)
         self.publish_job_id = None
@@ -62,6 +64,7 @@ class BaseUpdater(grok.Adapter):
     @classmethod
     def update_all(cls):
         for x in cls.get_objects():
+            cls.publish_priority = zeit.cms.workflow.interfaces.PRIORITY_LOW
             yield cls(x)
 
     @classmethod
@@ -106,7 +109,7 @@ class BaseUpdater(grok.Adapter):
 
     def _publish_if_allowed(self):
         self.publish_job_id = zeit.cms.workflow.interfaces.IPublish(
-            self.cmsobj).publish(zeit.cms.workflow.interfaces.PRIORITY_LOW)
+            self.cmsobj).publish(self.publish_priority)
 
 
 class VideoUpdater(BaseUpdater):
@@ -181,6 +184,7 @@ class PlaylistUpdater(BaseUpdater):
     def update_all(cls):
         objects = cls.get_objects()
         for x in objects:
+            cls.publish_priority = zeit.cms.workflow.interfaces.PRIORITY_LOW
             yield cls(x)
         yield lambda: cls.delete_remaining_except(objects)
 
