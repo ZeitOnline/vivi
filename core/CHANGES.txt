@@ -6,6 +6,7 @@ zeit.brightcove changes
 
 - Fixed removal of restricted characters from Brightcove JSON response in
   conjunction with UTF-8 encoding. (#10600)
+- Add view for manually updating Brightcove objects (#10934).
 
 
 2.3.0 (2012-03-06)
