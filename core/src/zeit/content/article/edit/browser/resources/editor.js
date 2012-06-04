@@ -54,32 +54,6 @@
         count();
     };
 
-    $.fn.resizeFont = function() {
-        var self = $(this);
-        var resize = function(size) {
-            var editable = $('#editable-body .editable');
-            editable.css("font-size", size);
-            sessionStorage.setItem("editor-font-size", size);
-        };
-        var curr_size = parseFloat(sessionStorage.getItem("editor-font-size")) || 16;
-        resize(curr_size);
-
-        $('.fontbutton').live("click", function(e) {
-            if ($(e.target).hasClass("fontplus") && (curr_size < 25)) {
-                ++curr_size;
-            } else if ($(e.target).hasClass("fontminus") && (curr_size > 11)) {
-                --curr_size;
-            } else if ($(e.target).hasClass("fontnormal")) {
-                curr_size = 16;
-            }
-            resize(curr_size);
-        });
-
-        MochiKit.Signal.connect(zeit.edit.editor, 'after-reload', function() {
-            resize(curr_size);
-        });
-    };
-
     $('body').bind('update-ad-places', function() {
         $.getJSON(application_url + '/@@banner-rules', function(p) {
             ad_places = p;

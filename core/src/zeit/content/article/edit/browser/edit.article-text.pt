@@ -1,14 +1,5 @@
 <div id="article-editor-text" tal:content="structure view/body/@@contents">
 </div>
-<fieldset id="text-control-bottom" class="fontcontrol">
-  <button class="fontbutton fontplus">
-    <span> + </span>
-  </button>
-  <button class="fontbutton fontminus">
-    <span> - </span>
-  </button>
-  <button class="fontbutton fontnormal">
-    <span> % </span>
-  </button>
+<fieldset id="text-control-bottom">
   <span class="charcount"></span>
 </fieldset>
