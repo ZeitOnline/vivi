@@ -3,7 +3,6 @@
 
 import gocept.testing.mock
 import json
-import urllib
 import zeit.brightcove.testing
 import zeit.cms.testing
 
@@ -25,9 +24,8 @@ class UpdateItem(zeit.cms.testing.BrowserTestCase):
 
     def test_update_playlist(self):
         b = self.browser
-        b.post('http://localhost/++skin++vivi/@@update-brightcove-item',
-               urllib.urlencode(dict(
-                        parameters=json.dumps(dict(playlist_id=2345)))))
+        b.open('http://localhost/++skin++vivi/'
+               '@@update-brightcove-item?playlist_id=2345')
         result = json.loads(b.contents)
         self.assertEqual(
             dict(publish_job=9876, changed=True, error=None),
@@ -35,9 +33,8 @@ class UpdateItem(zeit.cms.testing.BrowserTestCase):
 
     def test_update_video(self):
         b = self.browser
-        b.post('http://localhost/++skin++vivi/@@update-brightcove-item',
-               urllib.urlencode(dict(
-                        parameters=json.dumps(dict(video_id=1234)))))
+        b.open('http://localhost/++skin++vivi/'
+               '@@update-brightcove-item?video_id=1234')
         result = json.loads(b.contents)
         self.assertEqual(
             dict(publish_job=9876, changed=True, error=None),
@@ -45,9 +42,8 @@ class UpdateItem(zeit.cms.testing.BrowserTestCase):
 
     def test_exception_is_returned_as_error_message(self):
         b = self.browser
-        b.post('http://localhost/++skin++vivi/@@update-brightcove-item',
-               urllib.urlencode(dict(
-                        parameters=json.dumps(dict(playlist_id=9988)))))
+        b.open('http://localhost/++skin++vivi/'
+               '@@update-brightcove-item?playlist_id=9988')
         result = json.loads(b.contents)
         self.assertEqual(dict(
                 error='ValueError: playlist_id=9988 not found in Brightcove.'),

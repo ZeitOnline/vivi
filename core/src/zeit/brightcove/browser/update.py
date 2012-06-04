@@ -14,8 +14,7 @@ class UpdateItem(object):
         }
 
     def __call__(self):
-        parameters = json.loads(self.request.form['parameters'])
-        key, id = parameters.items()[0]
+        key, id = self.request.form.items()[0]
         class_ = self.classes[key]
         try:
             result = class_.find_by_ids([id])
