@@ -288,74 +288,71 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
-    """Miscellaneous, options"""
 
     title = _('Options')
 
 
-class MiscPrintdata(zeit.edit.browser.form.InlineForm):
+class OptionsA(zeit.edit.browser.form.InlineForm):
 
-    legend = _('Printdata')
-    prefix = 'misc-printdata'
-    undo_description = _('edit misc printdata')
+    legend = ''
+    prefix = 'options-a'
+    undo_description = _('edit options')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+        'serie', 'breaking_news')
+
+
+class OptionsB(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'options-b'
+    undo_description = _('edit options')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'year', 'volume', 'page')
+            'year', 'volume', 'page', 'printRessort')
 
 
-class MiscFeatures(zeit.edit.browser.form.InlineForm):
+class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
 
-    legend = _('Features')
-    prefix = 'misc-features'
-    undo_description = _('edit misc features')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.content.article.interfaces.ICDSWorkflow,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'commentsAllowed', 'commentSectionEnable', 'export_cds', 'serie')
-
-
-class MiscProductManagementA(zeit.edit.browser.form.InlineForm):
-
-    legend = _('Product Management')
-    prefix = 'misc-product-management-a'
-    undo_description = _('edit misc product management')
+    legend = _('Product management')
+    prefix = 'options-productmanagement'
+    undo_description = _('edit options')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'banner_id', 'cap_title', 'color_scheme')
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+            'cap_title', 'banner_id', 'vg_wort_id')
 
 
-class MiscProductManagementB(zeit.edit.browser.form.InlineForm):
+class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'misc-product-management-b'
     undo_description = _('edit misc product management')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+            'minimal_header', 'in_rankings', 'is_content',
             'banner', 'countings')
 
 
-class MiscLayout(zeit.edit.browser.form.InlineForm):
+class OptionsLayout(zeit.edit.browser.form.InlineForm):
 
-    legend = _('')
-    prefix = 'misc-layout'
-    undo_description = _('edit misc layout')
+    legend = ''
+    prefix = 'options-layout'
+    undo_description = _('edit options')
 
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(MiscLayout, self).__call__()
+        return super(OptionsLayout, self).__call__()
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.interfaces.IArticleMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+            'color_scheme') + zope.formlib.form.FormFields(
+        zeit.content.article.interfaces.IArticleMetadata).select(
             'layout')
 
 

@@ -374,7 +374,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.MiscForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.misc-printdata"
+    name="edit.form.options-a"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
@@ -383,8 +383,8 @@
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.misc-printdata"
-    class=".form.MiscPrintdata"
+    name="edit.form.options-a"
+    class=".form.OptionsA"
     permission="zope.View"
     />
 
@@ -393,17 +393,55 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.MiscForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.misc-features"
+    name="edit.form.options-b"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="20"
+    weight="10"
     />
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.misc-features"
-    class=".form.MiscFeatures"
+    name="edit.form.options-b"
+    class=".form.OptionsB"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MiscForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.options-productmanagement"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.options-productmanagement"
+    class=".form.OptionsProductManagement"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.MiscForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.options-productmanagement-b"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.options-productmanagement-b"
+    class=".form.OptionsProductManagementB"
     permission="zope.View"
     />
 
@@ -415,7 +453,7 @@
     name="edit.form.recension-list"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="30"
+    weight="80"
     />
 
   <browser:page
@@ -448,44 +486,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.MiscForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.misc-product-management-a"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="40"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.misc-product-management-a"
-    class=".form.MiscProductManagementA"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MiscForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.misc-product-management-b"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="50"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.misc-product-management-b"
-    class=".form.MiscProductManagementB"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MiscForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.misc-layout"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
@@ -496,7 +496,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.misc-layout"
-    class=".form.MiscLayout"
+    class=".form.OptionsLayout"
     permission="zope.View"
     />
 
