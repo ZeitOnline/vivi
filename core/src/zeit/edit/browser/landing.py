@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -29,10 +29,10 @@ class LandingZone(zeit.edit.browser.view.Action):
         pass
 
     def update_order(self):
-        order = list(self.create_in)
-        order.remove(self.block.__name__)
-        order = self.get_order(order, self.block.__name__)
-        self.create_in.updateOrder(order)
+        keys = list(self.create_in)
+        keys.remove(self.block.__name__)
+        keys = self.add_block_in_order(keys, self.block.__name__)
+        self.create_in.updateOrder(keys)
 
     @property
     def create_in(self):
@@ -40,12 +40,12 @@ class LandingZone(zeit.edit.browser.view.Action):
             return self.context.__parent__
         return self.context
 
-    def get_order(self, order, new_name):
+    def add_block_in_order(self, keys, new_name):
         if isinstance(self.order, int):
-            order.insert(self.order, new_name)
+            keys.insert(self.order, new_name)
         elif self.order == 'after-context':
-            after = order.index(self.context.__name__)
-            order.insert(after + 1, new_name)
+            after = keys.index(self.context.__name__)
+            keys.insert(after + 1, new_name)
         else:
             raise NotImplementedError
-        return order
+        return keys
