@@ -9,6 +9,8 @@ import zope.component
 class LandingZone(zeit.edit.browser.view.Action):
 
     def update(self):
+        if 'order' in self.request.form:
+            self.order = self.request.form['order']
         self.create_block()
         self.undo_description = _(
             "add '${type}' block", mapping=dict(type=self.block.type))
@@ -43,6 +45,8 @@ class LandingZone(zeit.edit.browser.view.Action):
     def add_block_in_order(self, keys, new_name):
         if isinstance(self.order, int):
             keys.insert(self.order, new_name)
+        elif self.order == 'bottom':
+            keys.append(new_name)
         elif self.order == 'after-context':
             after = keys.index(self.context.__name__)
             keys.insert(after + 1, new_name)
