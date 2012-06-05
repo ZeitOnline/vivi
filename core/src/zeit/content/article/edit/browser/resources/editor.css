@@ -264,17 +264,6 @@
   padding: 0.5em;
 }
 
-.fontcontrol {
-  bottom: 0;
-  position: absolute;
-  right: 0;
-}
-
-.fontbutton {
-  height: 18px;
-  width: 28px;
-}
-
 span.charcount {
   color: #777;
   font-size: 14px;
@@ -819,12 +808,6 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   position:absolute;
   left: 430px;
   top: 3px;
-}
-
-#article-editor-text fieldset.fontcontrol:before {
-  content: "Schriftgröße";
-  color: #AAAAAA;
-  margin-right:5px;
 }
 
 /* Assets-Stuff */
