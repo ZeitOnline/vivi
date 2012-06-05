@@ -91,8 +91,8 @@ class WidgetCSSMixin(object):
     - Allows specifying a number of additional classes manually. This is done
       by setting the ``vivi_css_class`` attribute on each widget:
 
-        def setUpWidgets(self):
-            super(ExampleForm, self).setUpWidgets()
+        def setUpWidgets(self, *args, **kw):
+            super(ExampleForm, self).setUpWidgets(*args, **kw)
             self.widgets['foo'].vivi_css_class = 'barbaz qux'
 
     """
