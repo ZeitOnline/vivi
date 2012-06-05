@@ -124,8 +124,8 @@ class AssetBadges(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'badges')
 
-    def setUpWidgets(self):
-        super(AssetBadges, self).setUpWidgets()
+    def setUpWidgets(self, *args, **kw):
+        super(AssetBadges, self).setUpWidgets(*args, **kw)
         self.widgets['badges'].orientation = 'horizontal'
 
 
@@ -151,8 +151,8 @@ class Assets(zeit.edit.browser.form.InlineForm):
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).omit(
                 'badges')
 
-    def setUpWidgets(self):
-        super(Assets, self).setUpWidgets()
+    def setUpWidgets(self, *args, **kw):
+        super(Assets, self).setUpWidgets(*args, **kw)
         self.widgets['images'].add_type = IImageGroup
         self.widgets['gallery'].add_type = IGallery
         self.widgets['portraitbox'].add_type = IPortraitbox
@@ -241,8 +241,8 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'author_references')
 
-    def setUpWidgets(self):
-        super(MetadataC, self).setUpWidgets()
+    def setUpWidgets(self, *args, **kw):
+        super(MetadataC, self).setUpWidgets(*args, **kw)
         self.widgets['author_references'].detail_view_name = '@@author-details'
         self.widgets['author_references'].add_type = IAuthor
 
