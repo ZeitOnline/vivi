@@ -159,8 +159,8 @@ zeit.cms.log_error = function(err) {
     if (isUndefinedOrNull(real_error.message)) {
         real_error = err;
     }
-    console.trace();
-    console.error(real_error.name + ': ' + real_error.message);
+    console.exception(real_error);
+    console.error(real_error.stack);
     return err;
 };
 
