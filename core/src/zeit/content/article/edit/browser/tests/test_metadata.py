@@ -12,26 +12,26 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
     def setUp(self):
         super(HeadTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        self.selenium.waitForElementPresent('id=misc-printdata.year')
+        self.selenium.waitForElementPresent('id=options-b.year')
 
     def test_form_should_highlight_changed_data(self):
         s = self.selenium
-        s.assertValue('id=misc-printdata.year', '2007')
+        s.assertValue('id=options-b.year', '2007')
         s.assertElementNotPresent('css=.widget-outer.dirty')
-        s.type('id=misc-printdata.year', '2010')
-        s.click('id=misc-printdata.volume')
+        s.type('id=options-b.year', '2010')
+        s.click('id=options-b.volume')
         s.waitForElementPresent('css=.field.dirty')
 
     def test_form_should_save_entered_text_on_blur(self):
         s = self.selenium
-        s.assertValue('id=misc-printdata.year', '2007')
-        s.type('id=misc-printdata.year', '2010')
-        s.fireEvent('id=misc-printdata.year', 'blur')
+        s.assertValue('id=options-b.year', '2007')
+        s.type('id=options-b.year', '2010')
+        s.fireEvent('id=options-b.year', 'blur')
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
-        s.waitForElementPresent('id=misc-printdata.year')
-        s.assertValue('id=misc-printdata.year', '2010')
+        s.waitForElementPresent('id=options-b.year')
+        s.assertValue('id=options-b.year', '2010')
 
     def test_form_should_save_selection_on_blur(self):
         s = self.selenium
@@ -62,9 +62,9 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_invalid_input_should_display_error_message(self):
         s = self.selenium
-        s.assertValue('id=misc-printdata.year', '2007')
-        s.type('id=misc-printdata.year', 'ASDF')
-        s.click('misc-printdata.actions.apply')
+        s.assertValue('id=options-b.year', '2007')
+        s.type('id=options-b.year', 'ASDF')
+        s.click('options-b.actions.apply')
         s.waitForElementPresent('css=.inline-form div.error')
 
     def test_relateds_should_be_addable(self):
@@ -138,7 +138,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia/@@edit.html')
 
     def test_head_should_be_readonly_visible(self):
-        self.assert_widget_text("misc-printdata.year", '2007')
+        self.assert_widget_text("options-b.year", '2007')
         self.assert_widget_text("metadata-a.ressort", 'International')
 
     def test_navigation_should_readonly_visible(self):
