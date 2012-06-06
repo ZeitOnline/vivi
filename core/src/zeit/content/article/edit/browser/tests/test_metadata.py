@@ -5,7 +5,6 @@
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing
-import zeit.solr.testing
 
 
 class HeadTest(zeit.content.article.testing.SeleniumTestCase):
