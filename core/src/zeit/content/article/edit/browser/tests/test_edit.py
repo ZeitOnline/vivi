@@ -603,3 +603,30 @@ class TestCountedInput(
         s.click('css=.block a.delete-link')
         s.waitForElementNotPresent('css=.block.type-p .editable p')
         s.assertText('xpath=//span[@class="charcount"]', '0 Zeichen')
+
+
+class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(TestDummyAd, self).setUp()
+        self.add_article()
+        from zope.testbrowser.testing import Browser
+        import json
+        browser = Browser()
+        browser.addHeader('Authorization', 'Basic user:userpw')
+        browser.open(
+            'http://localhost:8080/++skin++vivi/@@banner-rules')
+        self.rules = json.loads(browser.contents)
+
+    def test_dummy_ad_should_be_rendered_on_banner_rules(self):
+        style = ''
+        for r in self.rules:
+            style += 'p:nth-child\(' + str(r) + '\).*background:.*dummy-ad'
+        s = self.selenium
+        self.create()
+        s.typeKeys('css=.block.type-p .editable p', 'First paragraph.')
+        s.keyPress('css=.block.type-p .editable p', '13')
+        s.typeKeys('css=.block.type-p .editable p', 'Second paragraph.')
+        s.waitForElementPresent('css=.editable p:contains(Second paragraph)')
+        s.assertText('css=#content_editable_hacks', 'regex:' + style)
+
