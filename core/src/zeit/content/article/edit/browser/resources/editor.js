@@ -245,6 +245,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     }
                 }));
         });
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
     place_cursor: function(element, place_cursor_at_end) {
