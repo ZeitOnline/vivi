@@ -138,6 +138,7 @@ class TestTextEditing(
         s.click('link=Create paragraph')
         s.waitForElementPresent('css=.block.type-p')
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_typed_text_should_be_saved(self):
         s = self.selenium
         self.create()
@@ -242,6 +243,7 @@ class TestTextEditing(
             'selenium.browserbot.getCurrentWindow()'
             '.getSelection().getRangeAt(0).startOffset', '3')
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_newline_should_create_paragraph(self):
         s = self.selenium
         s.waitForElementPresent('link=Create paragraph')
@@ -560,6 +562,7 @@ class TestLimitedInput(
         super(TestLimitedInput, self).setUp()
         self.add_article()
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_limitation_should_decrease_on_input(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
@@ -583,6 +586,7 @@ class TestCountedInput(
         super(TestCountedInput, self).setUp()
         self.add_article()
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_input_should_be_counted_on_input(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
@@ -592,6 +596,7 @@ class TestCountedInput(
         self.save()
         s.assertText('xpath=//span[@class="charcount"]', '23 Zeichen')
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_deleting_paragraphs_should_update_counter(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
