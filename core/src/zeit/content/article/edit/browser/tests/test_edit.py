@@ -218,11 +218,6 @@ class TestTextEditing(
         s.typeKeys('css=.block.type-p .editable h3', 'Second paragraph.')
         s.waitForElementPresent('css=.editable p:contains(Second paragraph)')
 
-    def test_action_links_should_be_hidden_while_editing(self):
-        s = self.selenium
-        self.create()
-        s.waitForNotVisible('css=.block a.delete-link')
-
     def test_editing_should_end_on_content_drag(self):
         self.selenium.windowMaximize()
         s = self.selenium
