@@ -83,14 +83,17 @@ http://localhost/++skin++cms/workingcopy/zope.user/e0135811-d21a-4e29-918e-1b0dd
 Since we have a new article editor a lot of basic tests were removed such as
 edit-metadata, wysiwyg, etc. pp
 
-Let's have a look at the source (which is quite boring now because nothing
-happened here):
+When a new article is created, its body already contains an image block,
+so the user is nuged to put an image there (or explicitly decide they don't
+want one):
 
 >>> browser.getLink('Source').click()
 >>> print browser.getControl('Source').value.replace('\r\n', '\n')
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-    ...
-  <body/>
+  ...
+  <body>
+    <division...
+      <image...
 </article>
 
 Checking in

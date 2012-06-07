@@ -232,6 +232,8 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         self.create_block('image')
+        # Article always has one image block already
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
         text = 'css=.block.type-image form.wired textarea'
         s.waitForElementPresent(text)
         s.assertValue(text, '')
