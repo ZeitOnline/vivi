@@ -257,7 +257,9 @@ class TestLinkEditing(
 
     def select_text(self):
         s = self.selenium
-        self.create('<p>I want to link something</p>')
+        self.create('<p>I want to link something</p>'
+                    '<p>And I need distance<p>'
+                    '<p>from the bottom landing zone<p>')
         s.getEval("""(function(s) {
             var p = s.browserbot.findElement('css=.block.type-p .editable p');
             var range = window.getSelection().getRangeAt(0);
