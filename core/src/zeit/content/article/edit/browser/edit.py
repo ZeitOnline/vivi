@@ -2,8 +2,6 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import copy
-import lxml.etree
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.article.edit.interfaces
@@ -24,7 +22,7 @@ class EditorContents(object):
             self.context)
 
 
-class Fold(object):
+class Empty(object):
 
     def render(self):
         return u''

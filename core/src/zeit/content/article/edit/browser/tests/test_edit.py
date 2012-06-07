@@ -167,31 +167,6 @@ class TestTextEditing(
         s.assertCssCount('css=.block.type-p', 1)
         s.assertCssCount('css=.block.type-p .editable > *', 2)
 
-    @unittest2.skip('This test is broken but will go away anyway with #10721.')
-    def test_joined_paragraphs_should_be_movable_together_while_edited(
-        self):
-        s = self.selenium
-        # Prepare content: p, p, division, p, p
-        self.create('<p>foo</p><p>bar</p>')
-        self.save()
-        s.waitForCssCount('css=.block.type-p', 2)
-        s.waitForElementPresent('link=Module')
-        s.click('link=Module')
-        s.waitForElementPresent('css=#article-modules .module')
-        s.dragAndDropToObject(
-            'css=#article-modules .module[cms\\:block_type=division]',
-            'css=#article-editor-text .landing-zone.visible')
-        s.waitForElementPresent('css=.block.type-division')
-        self.create('<p>foo</p><p>bar</p>', existing=2)
-        self.save()
-        s.waitForCssCount('css=.block.type-p', 4)
-        # Start editing
-        s.click('css=.block.type-p .editable')
-        height = s.getElementHeight('css=.block.type-p')
-        s.click('css=.block.type-p .dragger')
-        s.dragAndDrop('css=.block.type-p .dragger',
-                      '0,{0}'.format(height*2))
-
     def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(
         self):
         from zeit.cms.checkout.helper import checked_out
