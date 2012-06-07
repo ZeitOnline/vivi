@@ -11,6 +11,8 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
         scroll: 'cp-content-inner'
     },
 
+    NOT_DRAGGABLE: {},
+
     construct: function(container, passed_options) {
         var self = this;
         self.container = container;
@@ -27,16 +29,18 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
         var nodes = self.get_sortable_nodes();
         forEach(nodes, function(node) {
             var handle = self.get_handle(node);
-            self.dnd_objects.push(
-                new MochiKit.DragAndDrop.Draggable(node, {
-                    constraint: self.options()['constraint'],
-                    handle: handle,
-                    ghosting: false,
-                    revert: true,
-                    scroll: self.options()['scroll'],
-                    //selectclass: 'hover',
-                    zindex: 10000
-            }));
+            if (handle !== self.NOT_DRAGGABLE) {
+                self.dnd_objects.push(
+                    new MochiKit.DragAndDrop.Draggable(node, {
+                        constraint: self.options()['constraint'],
+                        handle: handle,
+                        ghosting: false,
+                        revert: true,
+                        scroll: self.options()['scroll'],
+                        //selectclass: 'hover',
+                        zindex: 10000
+                }));
+            }
             self.dnd_objects.push(
                 new MochiKit.DragAndDrop.Droppable(node, {
                     containment: [container],
@@ -131,8 +135,13 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
     },
 
     get_handle: function(element) {
-        return MochiKit.Selector.findChildElements(
-            element, ['> .block-inner > .edit > .dragger'])[0];
+        var result = MochiKit.Selector.findChildElements(
+            element, ['> .block-inner > .edit > .dragger']);
+        if (result.length) {
+            return result[0];
+        } else {
+            return self.NOT_DRAGGABLE;
+        }
     },
 
     on_update: function(element) {
