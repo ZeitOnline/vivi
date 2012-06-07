@@ -265,6 +265,12 @@ class TestTextEditing(
         # Saved, no longer ediable
         s.waitForElementNotPresent('css=.block.type-p.editing')
 
+    def test_create_paragraph_should_be_hidden_while_editing(self):
+        s = self.selenium
+        s.waitForElementPresent('css=.create-paragraph')
+        s.click('css=.create-paragraph')
+        s.waitForElementNotPresent('css=.create-paragraph')
+
 
 class TestLinkEditing(
     zeit.content.article.edit.browser.testing.EditorTestCase):

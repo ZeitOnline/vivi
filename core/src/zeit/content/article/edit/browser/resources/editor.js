@@ -748,6 +748,7 @@ zeit.content.article.AppendParagraph = zeit.edit.LoadAndReload.extend({
                 MochiKit.Signal.disconnect(ident);
                 var new_p = jQuery('#editable-body .block.type-p').last()[0];
                 new zeit.content.article.Editable(new_p.firstChild, true);
+                MochiKit.DOM.removeElement($$('.create-paragraph')[0]);
             });
     }
 
