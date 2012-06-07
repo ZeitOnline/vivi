@@ -123,10 +123,6 @@
   height: 25px;
 }
 
-.article-editor-inner .editing .edit-bar > a {
-  display: none;
-}
-
 #article-editor-text .block {
   margin-left: 0em;
 }
