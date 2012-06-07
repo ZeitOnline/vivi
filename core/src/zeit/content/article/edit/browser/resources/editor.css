@@ -475,10 +475,12 @@ span.charcount {
   width: 100%;
 }
 
+.create-paragraph p:empty:before,
 .editable *:empty:before {
   color: #ccc;
 }
 
+.create-paragraph p:empty:before,
 .editable p:empty:before,
 .editable h3:empty:before {
   content: "Geben Sie hier Text ein.";
@@ -487,10 +489,6 @@ span.charcount {
 .editable ul:empty:before,
 .editable ol:empty:before {
   content: "Geben Sie hier eine Liste ein.";
-}
-
-.editable p:empty:before {
-  content: "Geben Sie hier Text ein.";
 }
 
 .editing .editable *:empty:before {

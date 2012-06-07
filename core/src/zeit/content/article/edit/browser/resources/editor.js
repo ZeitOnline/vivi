@@ -264,7 +264,8 @@ zeit.content.article.Editable = gocept.Class.extend({
             text_node = text_node[direction];
         }
         var offset = 0;
-        if (place_cursor_at_end)  {
+        if (place_cursor_at_end &&
+            text_node.nodeType == text_node.TEXT_NODE)  {
             offset = text_node.data.length;
         }
         range.setStart(text_node, offset);
@@ -732,6 +733,22 @@ zeit.content.article.Editable = gocept.Class.extend({
 	}
         self.editable.focus();
 		self.update_toolbar();
+    }
+
+});
+
+
+zeit.content.article.AppendParagraph = zeit.edit.LoadAndReload.extend({
+
+    construct: function(context_element) {
+        var self = this;
+        arguments.callee.$.construct.call(self, context_element);
+        var ident = MochiKit.Signal.connect(
+            zeit.edit.editor, 'after-reload', function() {
+                MochiKit.Signal.disconnect(ident);
+                var new_p = jQuery('#editable-body .block.type-p').last()[0];
+                new zeit.content.article.Editable(new_p.firstChild, true);
+            });
     }
 
 });

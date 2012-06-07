@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import mock
@@ -7,11 +7,6 @@ import unittest2
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 import zope.component
-
-
-def css_path(css):
-    import lxml.cssselect
-    return lxml.cssselect.CSSSelector(css).path
 
 
 class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
@@ -131,11 +126,11 @@ class TestTextEditing(
         s.waitForElementPresent('css=#article-modules .module:contains(Video)')
         s.assertElementNotPresent('css=#article-modules .module:contains(<p>)')
 
-    def test_create_paragraph_link_should_create_paragraph(self):
+    def test_clicking_empty_paragraph_at_end_should_create_paragraph(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
+        s.waitForElementPresent('css=.create-paragraph')
+        s.click('css=.create-paragraph')
         s.waitForElementPresent('css=.block.type-p')
 
     @unittest2.skip("no typeKeys 'til webdriver")
@@ -165,36 +160,31 @@ class TestTextEditing(
 
     def test_consequent_paragraphs_should_be_editable_together(self):
         s = self.selenium
-        s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 2)
+        self.create('<p>foo</p><p>bar</p>')
+        self.save()
+        s.waitForCssCount('css=.block.type-p', 2)
         s.click('css=.block.type-p .editable')
-        s.assertXpathCount(css_path('.block.type-p'), 1)
-        s.assertXpathCount(css_path('.block.type-p .editable > *'), 2)
+        s.assertCssCount('css=.block.type-p', 1)
+        s.assertCssCount('css=.block.type-p .editable > *', 2)
 
+    @unittest2.skip('This test is broken but will go away anyway with #10721.')
     def test_joined_paragraphs_should_be_movable_together_while_edited(
         self):
         s = self.selenium
         # Prepare content: p, p, division, p, p
-        s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 2)
+        self.create('<p>foo</p><p>bar</p>')
+        self.save()
+        s.waitForCssCount('css=.block.type-p', 2)
+        s.waitForElementPresent('link=Module')
         s.click('link=Module')
         s.waitForElementPresent('css=#article-modules .module')
         s.dragAndDropToObject(
             'css=#article-modules .module[cms\\:block_type=division]',
             'css=#article-editor-text .landing-zone.visible')
         s.waitForElementPresent('css=.block.type-division')
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 3)
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 4)
+        self.create('<p>foo</p><p>bar</p>', existing=2)
+        self.save()
+        s.waitForCssCount('css=.block.type-p', 4)
         # Start editing
         s.click('css=.block.type-p .editable')
         height = s.getElementHeight('css=.block.type-p')
@@ -246,7 +236,6 @@ class TestTextEditing(
     @unittest2.skip("no typeKeys 'til webdriver")
     def test_newline_should_create_paragraph(self):
         s = self.selenium
-        s.waitForElementPresent('link=Create paragraph')
         self.create()
         s.typeKeys('css=.block.type-p .editable p', 'First paragraph.')
         s.click('xpath=//a[@href="formatBlock/h3"]')
@@ -256,21 +245,15 @@ class TestTextEditing(
 
     def test_action_links_should_be_hidden_while_editing(self):
         s = self.selenium
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('css=.block.type-p .editable')
+        self.create()
         s.waitForNotVisible('css=.block a.delete-link')
 
     def test_editing_should_end_on_content_drag(self):
         self.selenium.windowMaximize()
         s = self.selenium
-        s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 2)
+        self.create('<p>foo</p><p>bar</p>')
+        self.save()
+        s.waitForCssCount('css=.block.type-p', 2)
         # Start editing
         time.sleep(0.25)
         s.click('css=.block.type-p .editable')
