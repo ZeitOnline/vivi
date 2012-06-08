@@ -1,3 +1,10 @@
 <div class="content-details" i18n:domain="zeit.cms">
 <strong tal:content="context/display_name" />
+<a tal:condition="context/community_profile" tal:attributes=" href context/community_profile" target="_blank" class="communitylink">Profilseite Community</a>
+<a class="fold-link"><span class="action-title"> Fold </span></a>
+</div>
+<div class="more">
+<img src="http://community.zeit.de/sites/default/files/pictures/picture-24.png" />
+<strong tal:content="context/display_name" />
+<strong tal:condition="context/status" tal:content="context/status"/>
 </div>
