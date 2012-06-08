@@ -331,9 +331,9 @@ span.charcount {
   background: none;
   border: none;
   font-size: 14px;
-  height: 4em;
+  height: 9em;
   margin-top: -1em;
-  width: 181%;
+  width: 100%;
 }
 
 #memo-diver {
