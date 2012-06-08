@@ -75,6 +75,24 @@ zeit.cms.configure_ressort_dropdown = function(prefix) {
 };
 
 
+/**
+ * The item currently in display belongs to the <select>, not the <option>,
+ * but since CSS doesn't have neither a parent selector nor a
+ * 'attribute != value' comparison, we need to use JS for this.
+ */
+zeit.cms.style_dropdowns = function() {
+    jQuery('.required option[value = ""]').parent().css('color', 'red');
+    jQuery('.required option[value = ""]').css('color', 'red');
+    jQuery('.required option[value != ""]').css('color', 'black');
+};
+
+
 MochiKit.Signal.connect(window, 'onload', function(event) {
     zeit.cms.configure_ressort_dropdown();
+    zeit.cms.style_dropdowns();
+});
+
+
+MochiKit.Signal.connect(zeit.cms.SubPageForm, 'after-reload', function(event) {
+    zeit.cms.style_dropdowns();
 });

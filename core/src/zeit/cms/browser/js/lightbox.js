@@ -123,6 +123,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             function(result) {
                 self.container.innerHTML = result;
                 self.post_process_html();
+                MochiKit.Signal.signal(zeit.cms.SubPageForm, 'after-reload');
                 MochiKit.Signal.signal(self, 'after-reload');
                 MochiKit.DOM.removeElementClass(self.container, 'busy');
                 return result;
