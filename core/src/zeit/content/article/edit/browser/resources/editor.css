@@ -468,6 +468,10 @@ span.charcount {
   color: transparent;
 }
 
+.add_view .button.addbutton {
+  background-position: -114px 14px;
+}
+
 .rte-toolbar a:hover,
 .rte-toolbar a.active {
   outline: 1px solid #0A246A;
@@ -638,8 +642,7 @@ button.log-expander {
 
 /* METADATA AREA (TB) */
 
-#edit-form-metadata #metadata-b\.copyrights,
-#edit-form-metadata #metadata-c\.author_references {
+#edit-form-metadata #metadata-b\.copyrights {
   width:172px;
 }
 
@@ -703,7 +706,7 @@ form[action$="misc-product-management-b"] {
 
 /* Add new author button */
 #metadata-c\.author_references .add_view {
-  left: 189px;
+  left: 210px;
   position: absolute;
   width: 200px;
   top:3px;
