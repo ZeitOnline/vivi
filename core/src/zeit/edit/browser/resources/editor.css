@@ -533,6 +533,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   padding: 0px 0 0;
   margin-bottom: 10px;
   float: left;
+  width: 100%;
 }
 
 #edit-form-assets .inline-form .field,
