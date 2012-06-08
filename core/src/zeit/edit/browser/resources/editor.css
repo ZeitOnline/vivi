@@ -429,7 +429,8 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 /* fold */
 
-.cp-content-inner .edit-bar > .fold-link {
+.cp-content-inner .edit-bar > .fold-link,
+.cp-content-inner .content-details .fold-link {
   background-image: url('arrow_down.png');
 }
 
@@ -467,6 +468,17 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin: 0 20px 10px 0;
   position: relative;
 }
+
+/* Authors obj sequence widget  */
+
+.inline-form .field .fieldname-author_references {
+  float:auto;
+}
+
+.inline-form .field input.autocomplete {
+  width: 180px;
+}
+
 
 #edit-form-assets .inline-form .field {
   margin: 0 0px 20px 0;
@@ -579,8 +591,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 .inline-form .dirty div.widget > input,
 .inline-form .dirty div.widget > textarea,
-.inline-form .dirty div.widget > div > div > select,
-.inline-form .dirty div.widget > .objectsequencewidget {
+.inline-form .dirty div.widget > div > div > select {
   background: -moz-linear-gradient(center top , #FFF, #EFE) repeat scroll 0 0 transparent;
   border: 1px solid #0A0;
 }
