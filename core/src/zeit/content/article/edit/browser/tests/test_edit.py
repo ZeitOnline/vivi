@@ -167,47 +167,6 @@ class TestTextEditing(
         s.assertCssCount('css=.block.type-p', 1)
         s.assertCssCount('css=.block.type-p .editable > *', 2)
 
-    def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(
-        self):
-        from zeit.cms.checkout.helper import checked_out
-        from zeit.edit.interfaces import IElementFactory
-        from zeit.content.article.article import Article
-        from zeit.content.article.interfaces import IArticle
-        from zeit.content.article.edit.interfaces import IEditableBody
-
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
-                with checked_out(self.repository['article']) as co:
-                    zeit.cms.browser.form.apply_default_values(
-                        co, IArticle)
-                    co.year = 2010
-                    co.ressort = u'International'
-                    co.title = 'foo'
-                    body = IEditableBody(co)
-                    p_factory = zope.component.getAdapter(
-                        body, IElementFactory, 'p')
-                    img_factory = zope.component.getAdapter(
-                        body, IElementFactory, 'image')
-                    paragraph = p_factory()
-                    paragraph.text = 'foo'
-                    img_factory()
-                    paragraph = p_factory()
-                    paragraph.text = 'bar'
-
-        s = self.selenium
-        self.open('/repository/article/@@checkout')
-        second_p = (
-            '//*[contains(@class, "block") and contains(@class, "type-p")][2]'
-            '//*[contains(@class, "editable")]/p')
-        s.waitForElementPresent(second_p)
-        s.click(second_p)
-        s.keyDown(second_p, '\\38')
-        s.keyUp(second_p, '\\38')
-        s.waitForEval(
-            'selenium.browserbot.getCurrentWindow()'
-            '.getSelection().getRangeAt(0).startOffset', '3')
-
     @unittest2.skip("no typeKeys 'til webdriver")
     def test_newline_should_create_paragraph(self):
         s = self.selenium
@@ -240,6 +199,65 @@ class TestTextEditing(
         s.waitForElementPresent('css=.create-paragraph')
         s.click('css=.create-paragraph')
         s.waitForElementNotPresent('css=.create-paragraph')
+
+
+class TestEditingMultipleParagraphs(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(TestEditingMultipleParagraphs, self).setUp()
+        from zeit.cms.checkout.helper import checked_out
+        from zeit.edit.interfaces import IElementFactory
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        from zeit.content.article.edit.interfaces import IEditableBody
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['article'] = Article()
+                with checked_out(self.repository['article']) as co:
+                    zeit.cms.browser.form.apply_default_values(
+                        co, IArticle)
+                    co.year = 2010
+                    co.ressort = u'International'
+                    co.title = 'foo'
+                    body = IEditableBody(co)
+                    p_factory = zope.component.getAdapter(
+                        body, IElementFactory, 'p')
+                    img_factory = zope.component.getAdapter(
+                        body, IElementFactory, 'image')
+                    paragraph = p_factory()
+                    paragraph.text = 'foo'
+                    img_factory()
+                    paragraph = p_factory()
+                    paragraph.text = 'bar'
+        self.open('/repository/article/@@checkout')
+
+    def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(
+        self):
+        s = self.selenium
+        second_p = (
+            '//*[contains(@class, "block") and contains(@class, "type-p")][2]'
+            '//*[contains(@class, "editable")]/p')
+        s.waitForElementPresent(second_p)
+        s.click(second_p)
+        s.keyDown(second_p, '\\38')
+        s.keyUp(second_p, '\\38')
+        s.waitForEval(
+            'selenium.browserbot.getCurrentWindow()'
+            '.getSelection().getRangeAt(0).startOffset', '3')
+
+    def test_arrow_down_moves_across_non_text_block_and_places_cursor_at_start(
+        self):
+        s = self.selenium
+        first_p = 'css=.block.type-p .editable p'
+        s.waitForElementPresent(first_p)
+        s.click(first_p)
+        s.keyDown(first_p, '\\40')
+        s.keyUp(first_p, '\\40')
+        s.waitForEval(
+            'selenium.browserbot.getCurrentWindow()'
+            '.getSelection().getRangeAt(0).startOffset', '0')
 
 
 class TestLinkEditing(
