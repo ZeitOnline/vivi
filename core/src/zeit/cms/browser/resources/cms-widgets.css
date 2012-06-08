@@ -495,20 +495,19 @@ table.properties textarea {
   height: 16px;
   position: absolute;
   right: 1em;
-  top: 1em;
+  top: 0em;
   width: 16px;
+  margin-top: 5px;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -416px transparent; 
+}
+
+.objectsequencewidget li:hover a[rel="remove"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -446px transparent;
 }
 
 .objectsequencewidget.droppable-active a[rel="remove"],
 .drop-object-widget.droppable-active  a[rel="remove"] {
   display: none;
-}
-
-.objectsequencewidget li:hover a[rel="remove"],
-.drop-object-widget .object-reference:hover a[rel="remove"] {
-  -moz-box-shadow: 5px 5px 10px #666;
-  background: white url(icons/cross.png) no-repeat center center;
-  border: 1px solid #bbb;
 }
 
 .object-widget.droppable-active input[type=text],
@@ -544,6 +543,55 @@ table.properties textarea {
   border: transparent;
 }
 
+.objectsequencewidget .content-details,
+.objectsequencewidget .content-details:hover {
+  min-width: 400px;
+  padding-right: 50px;
+  border: 0px solid #E4E4E4;
+  border-top: 1px solid #E4E4E4;
+  padding: 0px;
+  padding-top: 5px;
+  border-radius: 0px;
+}
+
+.objectsequencewidget li:last-child .content-details {
+  border-bottom: 1px solid #e4e4e4;
+  padding-bottom: 10px;
+}
+
+.objectsequencewidget .more {
+  display: none;
+}
+
+.objectsequencewidget strong.profile {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 168px 2px transparent;
+  padding-right:20px;
+}
+
+.objectsequencewidget .content-details strong {
+  display: block;
+  float: left;
+}
+
+.objectsequencewidget .content-details a.communitylink {
+  display: block;
+  float:left;
+  color: transparent;
+  text-indent: -1000px;
+  width: 15px;
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 4px -116px transparent;
+  cursor: pointer;
+}
+
+.objectsequencewidget .content-details a.fold-link {
+  display: block;
+  float: left;
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  margin: 5px 7px 0px;
+  background-repeat: no-repeat;
+}
 
 /* Notifications and messages*/
 #messages {
