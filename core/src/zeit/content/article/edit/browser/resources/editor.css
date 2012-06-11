@@ -239,6 +239,12 @@
   height: 4px;
 }
 
+#text-control-bottom {
+  border: 1px dotted #777;
+  margin-right: 24px;
+  padding: 0.5em;
+}
+
 span.charcount {
   color: #777;
   font-size: 14px;
