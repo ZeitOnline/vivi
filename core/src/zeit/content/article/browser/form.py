@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.content.article.i18n import MessageFactory as _
 import gocept.form.grouped
 import uuid
@@ -9,6 +10,7 @@ import zeit.cms.content.browser.form
 import zeit.cms.interfaces
 import zeit.cms.settings.interfaces
 import zeit.content.article.interfaces
+import zeit.edit.interfaces
 import zeit.wysiwyg.interfaces
 import zope.browser.interfaces
 import zope.formlib.form
@@ -59,6 +61,10 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         article.sub_ressort = self.get_sub_ressort(article)
         zeit.cms.browser.form.apply_default_values(
             article, zeit.content.article.interfaces.IArticle)
+        image_factory = zope.component.getAdapter(
+            IEditableBody(article), zeit.edit.interfaces.IElementFactory,
+            name='image')
+        image_factory()
         return article
 
     def get_ressort(self):

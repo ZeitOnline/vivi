@@ -1,4 +1,4 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import mock
@@ -6,11 +6,7 @@ import time
 import unittest2
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
-
-
-def css_path(css):
-    import lxml.cssselect
-    return lxml.cssselect.CSSSelector(css).path
+import zope.component
 
 
 class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
@@ -130,13 +126,14 @@ class TestTextEditing(
         s.waitForElementPresent('css=#article-modules .module:contains(Video)')
         s.assertElementNotPresent('css=#article-modules .module:contains(<p>)')
 
-    def test_create_paragraph_link_should_create_paragraph(self):
+    def test_clicking_empty_paragraph_at_end_should_create_paragraph(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
+        s.waitForElementPresent('css=.create-paragraph')
+        s.click('css=.create-paragraph')
         s.waitForElementPresent('css=.block.type-p')
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_typed_text_should_be_saved(self):
         s = self.selenium
         self.create()
@@ -163,46 +160,16 @@ class TestTextEditing(
 
     def test_consequent_paragraphs_should_be_editable_together(self):
         s = self.selenium
-        s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 2)
+        self.create('<p>foo</p><p>bar</p>')
+        self.save()
+        s.waitForCssCount('css=.block.type-p', 2)
         s.click('css=.block.type-p .editable')
-        s.assertXpathCount(css_path('.block.type-p'), 1)
-        s.assertXpathCount(css_path('.block.type-p .editable > *'), 2)
+        s.assertCssCount('css=.block.type-p', 1)
+        s.assertCssCount('css=.block.type-p .editable > *', 2)
 
-    def test_joined_paragraphs_should_be_movable_together_while_edited(
-        self):
-        s = self.selenium
-        # Prepare content: p, p, division, p, p
-        s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 2)
-        s.click('link=Module')
-        s.waitForElementPresent('css=#article-modules .module')
-        s.dragAndDropToObject(
-            'css=#article-modules .module[cms\\:block_type=division]',
-            'css=#article-editor-text .landing-zone.visible')
-        s.waitForElementPresent('css=.block.type-division')
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 3)
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 4)
-        # Start editing
-        s.click('css=.block.type-p .editable')
-        height = s.getElementHeight('css=.block.type-p')
-        s.click('css=.block.type-p .dragger')
-        s.dragAndDrop('css=.block.type-p .dragger',
-                      '0,{0}'.format(height*2))
-
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_newline_should_create_paragraph(self):
         s = self.selenium
-        s.waitForElementPresent('link=Create paragraph')
         self.create()
         s.typeKeys('css=.block.type-p .editable p', 'First paragraph.')
         s.click('xpath=//a[@href="formatBlock/h3"]')
@@ -210,23 +177,12 @@ class TestTextEditing(
         s.typeKeys('css=.block.type-p .editable h3', 'Second paragraph.')
         s.waitForElementPresent('css=.editable p:contains(Second paragraph)')
 
-    def test_action_links_should_be_hidden_while_editing(self):
-        s = self.selenium
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('css=.block.type-p .editable')
-        s.waitForNotVisible('css=.block a.delete-link')
-
     def test_editing_should_end_on_content_drag(self):
         self.selenium.windowMaximize()
         s = self.selenium
-        s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('link=Create paragraph')
-        s.waitForXpathCount(css_path('.block.type-p'), 2)
+        self.create('<p>foo</p><p>bar</p>')
+        self.save()
+        s.waitForCssCount('css=.block.type-p', 2)
         # Start editing
         time.sleep(0.25)
         s.click('css=.block.type-p .editable')
@@ -237,6 +193,71 @@ class TestTextEditing(
         time.sleep(0.25)
         # Saved, no longer ediable
         s.waitForElementNotPresent('css=.block.type-p.editing')
+
+    def test_create_paragraph_should_be_hidden_while_editing(self):
+        s = self.selenium
+        s.waitForElementPresent('css=.create-paragraph')
+        s.click('css=.create-paragraph')
+        s.waitForElementNotPresent('css=.create-paragraph')
+
+
+class TestEditingMultipleParagraphs(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(TestEditingMultipleParagraphs, self).setUp()
+        from zeit.cms.checkout.helper import checked_out
+        from zeit.edit.interfaces import IElementFactory
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        from zeit.content.article.edit.interfaces import IEditableBody
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['article'] = Article()
+                with checked_out(self.repository['article']) as co:
+                    zeit.cms.browser.form.apply_default_values(
+                        co, IArticle)
+                    co.year = 2010
+                    co.ressort = u'International'
+                    co.title = 'foo'
+                    body = IEditableBody(co)
+                    p_factory = zope.component.getAdapter(
+                        body, IElementFactory, 'p')
+                    img_factory = zope.component.getAdapter(
+                        body, IElementFactory, 'image')
+                    paragraph = p_factory()
+                    paragraph.text = 'foo'
+                    img_factory()
+                    paragraph = p_factory()
+                    paragraph.text = 'bar'
+        self.open('/repository/article/@@checkout')
+
+    def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(
+        self):
+        s = self.selenium
+        second_p = (
+            '//*[contains(@class, "block") and contains(@class, "type-p")][2]'
+            '//*[contains(@class, "editable")]/p')
+        s.waitForElementPresent(second_p)
+        s.click(second_p)
+        s.keyDown(second_p, '\\38')
+        s.keyUp(second_p, '\\38')
+        s.waitForEval(
+            'selenium.browserbot.getCurrentWindow()'
+            '.getSelection().getRangeAt(0).startOffset', '3')
+
+    def test_arrow_down_moves_across_non_text_block_and_places_cursor_at_start(
+        self):
+        s = self.selenium
+        first_p = 'css=.block.type-p .editable p'
+        s.waitForElementPresent(first_p)
+        s.click(first_p)
+        s.keyDown(first_p, '\\40')
+        s.keyUp(first_p, '\\40')
+        s.waitForEval(
+            'selenium.browserbot.getCurrentWindow()'
+            '.getSelection().getRangeAt(0).startOffset', '0')
 
 
 class TestLinkEditing(
@@ -249,7 +270,9 @@ class TestLinkEditing(
 
     def select_text(self):
         s = self.selenium
-        self.create('<p>I want to link something</p>')
+        self.create('<p>I want to link something</p>'
+                    '<p>And I need distance<p>'
+                    '<p>from the bottom landing zone<p>')
         s.getEval("""(function(s) {
             var p = s.browserbot.findElement('css=.block.type-p .editable p');
             var range = window.getSelection().getRangeAt(0);
@@ -518,6 +541,7 @@ class TestLimitedInput(
         super(TestLimitedInput, self).setUp()
         self.add_article()
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_limitation_should_decrease_on_input(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
@@ -541,6 +565,7 @@ class TestCountedInput(
         super(TestCountedInput, self).setUp()
         self.add_article()
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_input_should_be_counted_on_input(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
@@ -550,6 +575,7 @@ class TestCountedInput(
         self.save()
         s.assertText('xpath=//span[@class="charcount"]', '23 Zeichen')
 
+    @unittest2.skip("no typeKeys 'til webdriver")
     def test_deleting_paragraphs_should_update_counter(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
@@ -563,52 +589,28 @@ class TestCountedInput(
         s.assertText('xpath=//span[@class="charcount"]', '0 Zeichen')
 
 
-class TestResizeFont(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
-        super(TestResizeFont, self).setUp()
+        super(TestDummyAd, self).setUp()
         self.add_article()
+        from zope.testbrowser.testing import Browser
+        import json
+        browser = Browser()
+        browser.addHeader('Authorization', 'Basic user:userpw')
+        browser.open(
+            'http://localhost:8080/++skin++vivi/@@banner-rules')
+        self.rules = json.loads(browser.contents)
 
-    def test_fontsize_should_be_resizable(self):
+    @unittest2.skip("no typeKeys 'til webdriver")
+    def test_dummy_ad_should_be_rendered_on_banner_rules(self):
+        style = ''
+        for r in self.rules:
+            style += 'p:nth-child\(' + str(r) + '\).*background:.*dummy-ad'
         s = self.selenium
-        s.waitForElementPresent('xpath=//fieldset[@class="fontcontrol"]')
         self.create()
-        s.typeKeys('css=.block.type-p .editable p', 'Saskia had a little pig')
-        self.save()
-        s.assertAttribute(
-            'css=.block.type-p .editable@style', u'font-size: 16px;')
-        s.click('css=.fontplus')
-        s.assertAttribute(
-            'css=.block.type-p .editable@style', u'font-size: 17px;')
-        s.click('css=.fontnormal')
-        s.assertAttribute(
-            'css=.block.type-p .editable@style', u'font-size: 16px;')
-        s.click('css=.fontminus')
-        s.assertAttribute(
-            'css=.block.type-p .editable@style', u'font-size: 15px;')
-
-    def test_fontsize_should_not_exceed_limit(self):
-        s = self.selenium
-        s.waitForElementPresent('xpath=//fieldset[@class="fontcontrol"]')
-        self.create()
-        s.typeKeys('css=.block.type-p .editable p', 'Saskia had a little pig')
-        self.save()
-        for i in range(20):
-            s.click('css=.fontplus')
-        s.assertAttribute(
-            'css=.block.type-p .editable@style', u'font-size: 25px;')
-
-    def test_fontsize_should_stay_after_reload(self):
-        s = self.selenium
-        s.waitForElementPresent('xpath=//fieldset[@class="fontcontrol"]')
-        self.create()
-        s.typeKeys('css=.block.type-p .editable p', 'Saskia had a little pig')
-        self.save()
-        s.click('css=.fontplus')
-        s.open(s.getLocation())
-        s.waitForElementPresent('xpath=//fieldset[@class="fontcontrol"]')
-        s.pause(100)
-        s.assertAttribute(
-            'css=.block.type-p .editable@style', u'font-size: 17px;')
-
+        s.typeKeys('css=.block.type-p .editable p', 'First paragraph.')
+        s.keyPress('css=.block.type-p .editable p', '13')
+        s.typeKeys('css=.block.type-p .editable p', 'Second paragraph.')
+        s.waitForElementPresent('css=.editable p:contains(Second paragraph)')
+        s.assertText('css=#content_editable_hacks', 'regex:' + style)

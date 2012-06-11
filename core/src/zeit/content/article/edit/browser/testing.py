@@ -42,18 +42,20 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
         s.select('id=add_menu', 'label=Article')
         s.waitForPageToLoad()
 
-    def create(self, contents=None):
+    def create(self, contents=None, existing=0):
         s = self.selenium
-        s.assertElementNotPresent('css=.block.type-p')
-        s.waitForElementPresent('link=Create paragraph')
-        s.click('link=Create paragraph')
-        s.waitForElementPresent('css=.block.type-p')
-        s.click('css=.block.type-p .editable')
+        s.assertCssCount('css=.block.type-p', existing)
+        s.waitForElementPresent('css=.create-paragraph')
+        s.click('css=.create-paragraph')
+        s.waitForCssCount('css=.block.type-p', existing + 1)
         if contents:
-            s.getEval(
+            code = (
                 "this.browserbot.findElement("
-                "  'css=.block.type-p .editable').innerHTML = '{0}'".format(
-                    contents.replace("'", "\\'")))
+                "    '//*[contains(@class, \"block\") and"
+                "         contains(@class, \"type-p\")][{0}]"
+                "     //*[contains(@class, \"editable\")]').innerHTML = '{1}'"
+                ).format(existing + 1, contents.replace("'", "\\'"))
+            s.getEval(code)
 
     def save(self, locator='css=.block.type-p .editable'):
         self.selenium.getEval(

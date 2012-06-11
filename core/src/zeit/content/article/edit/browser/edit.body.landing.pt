@@ -6,23 +6,7 @@
        i18n:domain="zeit.cms"
        i18n:translate="">
     Landing zone 
-    <span i18n:name="create-paragraph">
-      <a i18n:translate=""
-         cms:cp-module="zeit.edit.LoadAndReload"
-         tal:attributes="href string:${context/@@absolute_url}/@@landing-zone-drop-module?block_type=p">
-        Create paragraph
-      </a>
-    </span>
-    <fieldset class="fontcontrol">
-      <button class="fontbutton fontplus">
-        <span> + </span>
-      </button>
-      <button class="fontbutton fontminus">
-        <span> - </span>
-      </button>
-      <button class="fontbutton fontnormal">
-        <span> % </span>
-      </button>
+    <fieldset>
       <span class="charcount"></span>
     </fieldset>
   </div>

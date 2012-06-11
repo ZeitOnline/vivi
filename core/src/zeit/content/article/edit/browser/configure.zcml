@@ -73,6 +73,17 @@
     weight="-10"
     />
 
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="landing-zone-bottom"
+    template="edit.body.landing-bottom.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
   <browser:page
     for="zeit.content.article.edit.interfaces.IEditableBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -87,19 +98,6 @@
     name="article-landing-zone-drop"
     class=".edit.BlockLandingZone"
     permission="zeit.EditContent"
-    />
-
-  <!-- folding -->
-
-  <browser:viewlet
-    for="..interfaces.IParagraph"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="fold"
-    class=".edit.Fold"
-    permission="zeit.EditContent"
-    weight="-10"
     />
 
   <!-- paragraph -->
@@ -124,6 +122,19 @@
     class=".edit.Intertitle"
     template="edit.paragraph.pt"
     permission="zope.View"
+    />
+
+  <!-- override edit-bar to hide it for paragraphs -->
+
+  <browser:viewlet
+    for="..interfaces.IParagraph"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit"
+    class=".edit.Empty"
+    permission="zeit.EditContent"
+    weight="-20"
     />
 
   <!-- image -->

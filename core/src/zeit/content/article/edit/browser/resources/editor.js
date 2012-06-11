@@ -1,5 +1,7 @@
 (function($){
 
+    var ad_places = [];
+
     $.fn.limitedInput = function(limit) {
         return this.each(function() {
             var self = $(this);
@@ -52,31 +54,52 @@
         count();
     };
 
-    $.fn.resizeFont = function() {
-        var self = $(this);
-        var resize = function(size) {
-            var editable = $('#editable-body .editable');
-            editable.css("font-size", size);
-            sessionStorage.setItem("editor-font-size", size);
-        };
-        var curr_size = parseFloat(sessionStorage.getItem("editor-font-size")) || 16;
-        resize(curr_size);
+    $('body').bind('update-ad-places', function() {
+        $.getJSON(application_url + '/@@banner-rules', function(p) {
+            ad_places = p;
+        }).complete(function() {
+            $('body').trigger('update-ads');
+        });
+    });
 
-        $('.fontbutton').live("click", function(e) {
-            if ($(e.target).hasClass("fontplus") && (curr_size < 25)) {
-                ++curr_size;
-            } else if ($(e.target).hasClass("fontminus") && (curr_size > 11)) {
-                --curr_size;
-            } else if ($(e.target).hasClass("fontnormal")) {
-                curr_size = 16;
+    $('body').bind('update-ads', function() {
+        // When creating a new paragraph content editable will always copy all
+        // attributes, which leads to duplicated ads. Even if we flush the
+        // styles right after the paragraph has been created, there still is
+        // some annoying flickering visible.
+        // Therefore, when content editable is active, we need to create a
+        // temporary style element which will contain all style informations for
+        // the ad placeholders.
+        var styles    = '',
+            sheet     = $('<style>').attr('id', 'content_editable_hacks');
+        ad_places.forEach(function(ad_place) {
+            var p_index       = ad_place - 1, // Index starts with 0.
+                ad_paragraph  = $('.type-p').find('p').eq(p_index),
+                dummy_ad      = '',
+                pos_paragraph = 0,
+                sheet         = '',
+                pos_div       = 0;
+            if (ad_paragraph.length === 0) {
+                pos_div       = $('.type-p').eq(0).index() + 1;
+                pos_paragraph = ad_place;
+            } else {
+                // Position starts with 1.
+                pos_div       = ad_paragraph.parents('.type-p').index() + 1,
+                pos_paragraph = ad_paragraph.index() + 1;
             }
-            resize(curr_size);
-        });
 
-        MochiKit.Signal.connect(zeit.edit.editor, 'after-reload', function() {
-            resize(curr_size);
+            // Dynamically created styles up here.
+            dummy_ad = application_url+'/@@/zeit.content.article.edit/dummy-ad.png',
+            styles  += '.type-p:nth-child(' + pos_div + ')'
+                    + ' p:nth-child(' + pos_paragraph + ')'
+                    + ' { background: url("' + dummy_ad + '")'
+                    + ' no-repeat scroll center bottom transparent;'
+                    + ' padding-bottom: 20em; min-height: 10px }';
         });
-    };
+        sheet.html(styles);
+        $('#content_editable_hacks').remove();
+        $('body').append(sheet);
+    });
 
 }(jQuery));
 
@@ -100,6 +123,8 @@ MochiKit.Signal.connect(
             form_element.form.reload(); });
 
         jQuery('#article-editor-text').countedInput();
+
+        jQuery('body').trigger('update-ads');
     });
 
     (function($) {
@@ -109,6 +134,8 @@ MochiKit.Signal.connect(
         $('.totop').live("click", function() {
             $('#cp-content-inner').animate({scrollTop: 0}, 300);
         });
+
+        $('body').trigger('update-ad-places');
 
     }(jQuery));
 
@@ -177,6 +204,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.editable, 'onkeydown', self, self.handle_keydown));
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeyup', self, self.handle_keyup));
+            jQuery('.editable').bind('paste', function() {
+                self.handle_paste();
+            });
             // This handler is there to support saving during selenium tests as
             // it doesn't seem to be possible to synthesize an blur event which
             // triggers the capuring phase handler:
@@ -203,6 +233,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     self.save(/*no_reload=*/true);
                 }));
             self.fix_html();
+            jQuery('body').trigger('update-ads');
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
             self.init_linkbar();
             self.init_toolbar();
@@ -214,6 +245,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     }
                 }));
         });
+        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
     place_cursor: function(element, place_cursor_at_end) {
@@ -232,7 +264,8 @@ zeit.content.article.Editable = gocept.Class.extend({
             text_node = text_node[direction];
         }
         var offset = 0;
-        if (place_cursor_at_end)  {
+        if (place_cursor_at_end &&
+            text_node.nodeType == text_node.TEXT_NODE)  {
             offset = text_node.data.length;
         }
         range.setStart(text_node, offset);
@@ -434,6 +467,16 @@ zeit.content.article.Editable = gocept.Class.extend({
             direction = 'previousSibling';
             cursor_at_end = true;
         } else if (
+            event.key().string == 'KEY_ENTER') {
+            setTimeout(function() {
+                jQuery('body').trigger('update-ads');
+            }, 0);
+        } else if (
+            event.key().string == 'KEY_BACKSPACE') {
+            setTimeout(function() {
+                jQuery('body').trigger('update-ads');
+            }, 0);
+        } else if (
             container.nodeType == container.TEXT_NODE &&
             container.parentNode.tagName == 'DIV') {
             /*
@@ -498,7 +541,16 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         self.update_toolbar();
         self.relocate_toolbar();
-        self.fix_html();
+    },
+
+    handle_paste: function() {
+        var self = this;
+        // Get rid of obsolete mark-up when pasting content from third party
+        // software. Ensure that content is processed AFTER it has been pasted.
+        setTimeout(function() {
+            self.fix_html();
+            jQuery(self.editable).children().has('style').remove();
+        }, 0);
     },
 
     fix_html: function() {
@@ -681,6 +733,23 @@ zeit.content.article.Editable = gocept.Class.extend({
 	}
         self.editable.focus();
 		self.update_toolbar();
+    }
+
+});
+
+
+zeit.content.article.AppendParagraph = zeit.edit.LoadAndReload.extend({
+
+    construct: function(context_element) {
+        var self = this;
+        arguments.callee.$.construct.call(self, context_element);
+        var ident = MochiKit.Signal.connect(
+            zeit.edit.editor, 'after-reload', function() {
+                MochiKit.Signal.disconnect(ident);
+                var new_p = jQuery('#editable-body .block.type-p').last()[0];
+                new zeit.content.article.Editable(new_p.firstChild, true);
+                MochiKit.DOM.removeElement($$('.create-paragraph')[0]);
+            });
     }
 
 });

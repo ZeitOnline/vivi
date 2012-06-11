@@ -25,7 +25,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         self.create_block('image')
-        s.assertElementPresent('css=.block.type-image .inline-form '
+        s.waitForElementPresent('css=.block.type-image .inline-form '
                                '.field.fieldname-custom_caption')
-        s.assertElementPresent('css=.block.type-image .inline-form '
+        s.waitForElementPresent('css=.block.type-image .inline-form '
                                '.field.fieldname-layout')

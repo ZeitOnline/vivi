@@ -4,6 +4,11 @@
 from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.author.interfaces import IAuthor
+from zeit.content.gallery.interfaces import IGallery
+from zeit.content.image.interfaces import IImageGroup
+from zeit.content.infobox.interfaces import IInfobox
+from zeit.content.portraitbox.interfaces import IPortraitbox
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.interfaces
 import zeit.content.article.interfaces
@@ -62,7 +67,6 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
             result += (
                 '<script type="text/javascript">'
                 '    jQuery("#article-editor-text").countedInput();'
-                '    jQuery("#article-editor-text").resizeFont();'
                 '</script>')
         return result
 
@@ -119,8 +123,8 @@ class AssetBadges(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'badges')
 
-    def setUpWidgets(self):
-        super(AssetBadges, self).setUpWidgets()
+    def setUpWidgets(self, *args, **kw):
+        super(AssetBadges, self).setUpWidgets(*args, **kw)
         self.widgets['badges'].orientation = 'horizontal'
 
 
@@ -145,6 +149,13 @@ class Assets(zeit.edit.browser.form.InlineForm):
             *interfaces,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).omit(
                 'badges')
+
+    def setUpWidgets(self, *args, **kw):
+        super(Assets, self).setUpWidgets(*args, **kw)
+        self.widgets['images'].add_type = IImageGroup
+        self.widgets['gallery'].add_type = IGallery
+        self.widgets['portraitbox'].add_type = IPortraitbox
+        self.widgets['infobox'].add_type = IInfobox
 
 
 class StatusForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -229,9 +240,10 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'author_references')
 
-    def setUpWidgets(self):
-        super(MetadataC, self).setUpWidgets()
+    def setUpWidgets(self, *args, **kw):
+        super(MetadataC, self).setUpWidgets(*args, **kw)
         self.widgets['author_references'].detail_view_name = '@@author-details'
+        self.widgets['author_references'].add_type = IAuthor
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -276,74 +288,71 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
-    """Miscellaneous, options"""
 
     title = _('Options')
 
 
-class MiscPrintdata(zeit.edit.browser.form.InlineForm):
+class OptionsA(zeit.edit.browser.form.InlineForm):
 
-    legend = _('Printdata')
-    prefix = 'misc-printdata'
-    undo_description = _('edit misc printdata')
+    legend = ''
+    prefix = 'options-a'
+    undo_description = _('edit options')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+        'serie', 'breaking_news')
+
+
+class OptionsB(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'options-b'
+    undo_description = _('edit options')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'year', 'volume', 'page')
+            'year', 'volume', 'page', 'printRessort')
 
 
-class MiscFeatures(zeit.edit.browser.form.InlineForm):
+class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
 
-    legend = _('Features')
-    prefix = 'misc-features'
-    undo_description = _('edit misc features')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.content.article.interfaces.ICDSWorkflow,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'commentsAllowed', 'commentSectionEnable', 'export_cds', 'serie')
-
-
-class MiscProductManagementA(zeit.edit.browser.form.InlineForm):
-
-    legend = _('Product Management')
-    prefix = 'misc-product-management-a'
-    undo_description = _('edit misc product management')
+    legend = _('Product management')
+    prefix = 'options-productmanagement'
+    undo_description = _('edit options')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'banner_id', 'cap_title', 'color_scheme')
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+            'cap_title', 'banner_id', 'vg_wort_id')
 
 
-class MiscProductManagementB(zeit.edit.browser.form.InlineForm):
+class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'misc-product-management-b'
     undo_description = _('edit misc product management')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+            'minimal_header', 'in_rankings', 'is_content',
             'banner', 'countings')
 
 
-class MiscLayout(zeit.edit.browser.form.InlineForm):
+class OptionsLayout(zeit.edit.browser.form.InlineForm):
 
-    legend = _('')
-    prefix = 'misc-layout'
-    undo_description = _('edit misc layout')
+    legend = ''
+    prefix = 'options-layout'
+    undo_description = _('edit options')
 
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(MiscLayout, self).__call__()
+        return super(OptionsLayout, self).__call__()
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.interfaces.IArticleMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+            'color_scheme') + zope.formlib.form.FormFields(
+        zeit.content.article.interfaces.IArticleMetadata).select(
             'layout')
 
 
