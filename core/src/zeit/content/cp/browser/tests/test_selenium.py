@@ -2,6 +2,7 @@
 # Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from unittest2 import skip
 import lovely.remotetask.interfaces
 import lxml.cssselect
 import zeit.cms.repository.interfaces
@@ -232,6 +233,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
 class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
+    @skip('Drag&drop hopefully will be better with WebDriver')
     def test_blocks_in_mosaic(self):
         self.open_centerpage()
         s = self.selenium
@@ -269,6 +271,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyOrdered(block1, block2)
         s.verifyOrdered(block2, block4)
 
+    @skip('Drag&drop hopefully will be better with WebDriver')
     def test_mosaic(self):
         self.open_centerpage()
         s = self.selenium
@@ -405,6 +408,7 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
             'css=.block + .landing-zone')
         s.waitForElementPresent('css=.block.type-teaser')
 
+    @skip('Drag&drop hopefully will be better with WebDriver')
     def test_mosaic_placeholder(self):
         self.create_content_and_fill_clipboard()
         self.open_centerpage()
