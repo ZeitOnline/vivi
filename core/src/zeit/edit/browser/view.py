@@ -108,6 +108,10 @@ class Action(zeit.cms.browser.view.Base, UndoableMixin):
         except ZODB.POSException.ConflictError:
             raise
         except Exception, e:
+            # XXX using a view for Exception so that all AJAX/JSON request get
+            # their errors handled appropriately would be nicer, but it's not
+            # clear how that view would determine whether it's a json request
+            # or a normal browser request.
             log.warning('Error in action', exc_info=True)
             transaction.doom()
             message = None
