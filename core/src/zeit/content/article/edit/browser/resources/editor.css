@@ -718,10 +718,14 @@ form[action$="misc-product-management-b"] {
 
 /* Add new author button */
 #metadata-c\.author_references .add_view {
-  left: 210px;
   position: absolute;
-  width: 200px;
-  top:3px;
+  top:0px;
+  left: 210px;
+  background-position: 10px -113px, 0% 0%;
+}
+
+#metadata-c\.author_references .add_view:hover {
+  background-position: 10px -143px, 0% 0%;
 }
 
 #metadata-c\.author_references .add_view a {
