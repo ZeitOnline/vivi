@@ -541,6 +541,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         self.update_toolbar();
         self.relocate_toolbar();
+        self.fix_html();
     },
 
     handle_paste: function() {
