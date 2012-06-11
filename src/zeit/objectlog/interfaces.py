@@ -1,4 +1,4 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
+# Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.objectlog.i18n import MessageFactory as _
@@ -6,6 +6,7 @@ import zeit.objectlog.source
 import zope.app.security.vocabulary
 import zope.configuration.fields
 import zope.interface
+import zope.schema
 
 
 class IObjectLog(zope.interface.Interface):
@@ -19,6 +20,7 @@ class IObjectLog(zope.interface.Interface):
 
         Oldest first.
         """
+
 
 class ILogEntry(zope.interface.Interface):
     """One entry in the log."""
@@ -37,6 +39,10 @@ class ILogEntry(zope.interface.Interface):
         title=u'Arbitrary data to stroge along the log.',
         readonly=True,
         required=False)
+
+    time = zope.schema.Datetime(
+        title=u'Timestamp',
+        readonly=True)
 
     def get_object():
         """return the affected object."""
