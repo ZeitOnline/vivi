@@ -44,6 +44,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.type('form.year', '2001')
         s.click('form.actions.apply')
         s.waitForElementNotPresent('id=lightbox.form')
+        s.waitForElementPresent('css=dd.year')
         s.waitForText('css=dd.year', '2001')
 
     def test_submitting_for_list_widget_should_work(self):
