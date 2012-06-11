@@ -1,7 +1,4 @@
 <fieldset i18n:domain="zeit.cms" id="recensions">
-  <legend i18n:translate="">
-    Recensions
-  </legend>
   <div class="recensions" i18n:domain="zeit.cms"
     tal:define="can_edit python:request.interaction.checkPermission(
       'zeit.EditContent', context)">

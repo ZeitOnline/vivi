@@ -41,9 +41,6 @@ Let's add one:
 >>> browser.open(listing)
 >>> print browser.contents
 <fieldset id="recensions">
-  <legend>
-    Recensions
-  </legend>
   <div class="recensions">...
     <div class="recension">
       <a...>
@@ -71,9 +68,6 @@ Let's edit and add some more information:
 >>> browser.open(listing)
 >>> print browser.contents
 <fieldset id="recensions">
-  <legend>
-    Recensions
-  </legend>
   <div class="recensions">...
     <div class="recension">
       <a...>
@@ -133,9 +127,6 @@ Let's add another recension:
 >>> browser.open(listing)
 >>> print browser.contents
 <fieldset id="recensions">
-  <legend>
-    Recensions
-  </legend>
   <div class="recensions">...
     <div class="recension">
       <a...>

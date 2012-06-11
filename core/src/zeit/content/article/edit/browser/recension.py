@@ -9,7 +9,7 @@ import zope.cachedescriptors.property
 import zope.component
 
 
-class RecensionForms(zeit.edit.browser.form.FormGroup):
+class RecensionForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article recension forms."""
 
     title = _('Recensions')
@@ -18,7 +18,7 @@ class RecensionForms(zeit.edit.browser.form.FormGroup):
 class Overview(zeit.cms.browser.view.Base):
     """Overview of book information items."""
 
-    title = _('Recensions')
+    title = ''
 
     @zope.cachedescriptors.property.Lazy
     def recensions(self):

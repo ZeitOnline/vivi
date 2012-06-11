@@ -366,7 +366,7 @@
     name="misc"
     class=".form.MiscForms"
     permission="zope.View"
-    weight="50"
+    weight="20"
     />
 
   <browser:viewlet
@@ -448,7 +448,18 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MiscForms"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="recensions"
+    class=".recension.RecensionForms"
+    permission="zope.View"
+    weight="50"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".recension.RecensionForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.recension-list"
     class="zeit.edit.browser.form.FormLoader"
