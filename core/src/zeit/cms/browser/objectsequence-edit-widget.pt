@@ -20,8 +20,7 @@
          tal:attributes="id string:${view/name}.url;
                          name string:${view/name}.url" />
 
-  <a target="_blank" class="add_view"
-     tal:condition="view/add_view"
+  <a target="_blank" class="add_view button"
      tal:attributes="href view/add_view"
      i18n:translate="">
     Add new …
