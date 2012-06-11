@@ -79,7 +79,7 @@
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="landing-zone-bottom"
-    template="edit.body.landing-bottom.pt"
+    template="edit.body.create-paragraph.pt"
     permission="zeit.EditContent"
     weight="10"
     />
