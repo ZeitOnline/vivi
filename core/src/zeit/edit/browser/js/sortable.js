@@ -135,6 +135,7 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
     },
 
     get_handle: function(element) {
+        var self = this;
         var result = MochiKit.Selector.findChildElements(
             element, ['> .block-inner > .edit > .dragger']);
         if (result.length) {
