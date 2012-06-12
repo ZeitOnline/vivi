@@ -5,6 +5,7 @@
   i18n_domain="zeit.cms">
 
   <include file="form.zcml" />
+  <include package="zeit.workflow.browser" />
 
   <adapter
       for="zope.schema.ValidationError
