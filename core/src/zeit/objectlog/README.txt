@@ -19,10 +19,7 @@ True
 Create an object for logging. Make it persistent to use the persistent
 KeyReference.
 
->>> import persistent
->>> class Content(persistent.Persistent):
-...     pass
->>> __builtins__['Content'] = Content  # to satify persistence
+>>> from zeit.objectlog.testing import Content
 
 Instanciate and add to the database:
 
@@ -261,7 +258,6 @@ Cleaning everything that is older than 30 days changes nogthing here:
 Tear down / Clean up
 ====================
 
->>> del __builtins__['Content']
 >>> sm.unregisterAdapter(
 ...     tzinfo, (zope.interface.Interface,),
 ...     zope.interface.common.idatetime.ITZInfo)
