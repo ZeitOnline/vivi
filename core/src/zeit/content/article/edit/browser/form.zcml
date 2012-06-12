@@ -125,6 +125,18 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.StatusForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
+    name="objectlog"
+    class=".objectlog.ObjectLog"
+    template="objectlog.pt"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.StatusForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.workflow-lastpublished"
     class=".form.LastPublished"
     template="edit.lastpublished.pt"

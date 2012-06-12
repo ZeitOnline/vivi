@@ -895,3 +895,18 @@ h1#editorpagetitle {
 #edit-form-filename form[action$="edit.form.new-filename"] fieldset {
   margin-left:4px
 }
+
+div.objectlog {
+    padding: 20px;
+    margin-top: 20px;
+    border-top: 1px solid #cccccc;
+}
+
+div.objectlog legend {
+    border: none;
+}
+
+div.objectlog div {
+    height: 15em;
+    overflow-y: scroll;
+    border: 1px solid #999999;
