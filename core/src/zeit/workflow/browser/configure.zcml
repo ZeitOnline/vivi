@@ -52,6 +52,22 @@
 
   <adapter factory=".objectlog.ProcessForDisplay" />
 
+  <browser:page
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="objectlog"
+    class=".objectlog.ObjectLog"
+    template="objectlog.pt"
+    permission="zope.View"
+    />
+
+  <resourceLibrary
+    name="zeit.workflow"
+    require="zeit.cms">
+    <directory
+      source="resources"
+      include="workflow.css"/>
+  </resourceLibrary>
 
   <!-- Status indicators -->
 

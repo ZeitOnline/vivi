@@ -1,0 +1,15 @@
+table.objectlog {
+    border-collapse: collapse;
+}
+
+table.objectlog th {
+    border-top: 1px solid #999999;
+    background-color: #f8f9fd;
+    color: #9bbbd3;
+    font-weight: bold;
+}
+
+table.objectlog td.principal:before {
+    content: " von ";
+    color: #999999;
+}

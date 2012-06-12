@@ -1,0 +1,14 @@
+<table class="objectlog">
+  <tbody>
+    <tal:group repeat="group view/groups">
+      <tr>
+        <th colspan="3" tal:content="group/display_date" />
+      </tr>
+      <tr tal:repeat="entry group/entries">
+        <td tal:content="entry/entry/message" />
+        <td tal:content="entry/display_time" />
+        <td class="principal" tal:content="entry/entry/principal/title" />
+      </tr>
+    </tal:group>
+  </tbody>
+</table>
