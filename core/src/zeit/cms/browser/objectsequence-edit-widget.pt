@@ -22,6 +22,7 @@
 
   <a target="_blank" class="add_view button"
      tal:attributes="href view/add_view"
+     tal:condition="view/add_view"
      i18n:translate="">
     Add new …
   </a>
