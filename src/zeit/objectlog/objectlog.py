@@ -1,4 +1,4 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
+# Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.objectlog.i18n import MessageFactory as _
@@ -36,7 +36,7 @@ class ObjectLog(persistent.Persistent):
         for key in object_log:
             yield object_log[key]
 
-    def log(self, object, message, mapping=None):
+    def log(self, object, message, mapping=None, timestamp=None):
         logger.debug("Logging: %s %s %s" % (object, message, mapping))
         obj_key = zope.app.keyreference.interfaces.IKeyReference(object)
 
@@ -45,9 +45,9 @@ class ObjectLog(persistent.Persistent):
             # Create a timeline for the object.
             object_log = self._object_log[obj_key] = BTrees.family64.IO.BTree()
 
-        log_entry = LogEntry(object, message, mapping)
+        log_entry = LogEntry(object, message, mapping, timestamp)
 
-        time_key = int(time.time() * 10e6)
+        time_key = int(time.mktime(log_entry.time.utctimetuple()) * 10e6)
         while not object_log.insert(time_key, log_entry):
             time_key += 1
 
@@ -75,8 +75,8 @@ class LogEntry(persistent.Persistent):
 
     zope.interface.implements(zeit.objectlog.interfaces.ILogEntry)
 
-    def __init__(self, object, message, mapping):
-        self.time = datetime.datetime.now(pytz.UTC)
+    def __init__(self, object, message, mapping, timestamp):
+        self.time = timestamp or datetime.datetime.now(pytz.UTC)
         self.object_reference = zope.app.keyreference.interfaces.IKeyReference(
             object)
         self.message = message
@@ -100,9 +100,9 @@ class Log(object):
     def __init__(self, context):
         self.context = context
 
-    def log(self, message, mapping=None):
+    def log(self, message, mapping=None, timestamp=None):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-        log.log(self.context, message, mapping)
+        log.log(self.context, message, mapping, timestamp)
 
     def get_log(self):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
