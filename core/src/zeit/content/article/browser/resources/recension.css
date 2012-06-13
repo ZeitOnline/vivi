@@ -13,15 +13,17 @@
   margin: 0px;
   -moz-padding-start: 0px;
   background: #F8F9FD;
-  height: 30px; 
-  border-radius: 5px;
-  padding: 10px;
+  height: 25px; 
+  line-height: 25px;
+  border-radius: 5px 5px 0px 0px;
+  padding: 0px 10px 0px 10px;
 }
 
 .recension ul#recensionheader > li {
   display: block;
   float: left;
   width: 49%;
+  height: 25px;
 }
 
 .recension ul#recensionheader li#recensionactions {
@@ -32,12 +34,27 @@
 .recension ul#recensionheader li#recensionactions li {
   list-style: none;
   position: absolute;
-  right: 24px;
+  right: 0px;
   border-left: 1px solid #CCC;
+  height: 25px;
 }
 
 .recension ul#recensionheader li#recensionactions li:first-child {
-  right: 90px;
+  right: 60px;
+}
+
+#recensionactions li a[rel="edit"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 18px 2px transparent; 
+  width: 30px;
+  overflow: hidden;
+  color: transparent;
+}
+
+#recensionactions li a[rel="remove"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 18px -418px transparent; 
+  width: 30px;
+  overflow: hidden;
+  color: transparent;
 }
 
 .recension .rensionlist dt {
