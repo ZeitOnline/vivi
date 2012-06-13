@@ -10,32 +10,45 @@
       tal:condition="view/recensions"
       tal:repeat="recension view/recensions">
   
-      <a href="#" title="Edit" class="RecensionTitle"
-        tal:condition="can_edit"
-        tal:attributes="
-        href string:${recension/url}/@@edit.html;
-        cms:lightbox-reload-url string:${context/@@absolute_url}/@@edit.form.recension-list;"
-        cms:lightbox-reload-id="recensions"
-        cms:cp-module="zeit.edit.LightBoxForm"
-        i18n:attributes="title"
-        i18n:translate="">
-        <span i18n:name="authors" tal:replace="recension/authors" />:
-        <span i18n:name="title" tal:replace="recension/title" />
-        [edit]
-      </a>
+      <ul id="recensionheader">
+        <li i18n:translate="">Recensionentry</li>
+        <li id="recensionactions">
+            <ul>
+                <li i18n:translate="">
+                  <a href="#" title="Edit" class="RecensionTitle"
+                    tal:condition="can_edit"
+                    tal:attributes="
+                    href string:${recension/url}/@@edit.html;
+                    cms:lightbox-reload-url string:${context/@@absolute_url}/@@edit.form.recension-list;"
+                    cms:lightbox-reload-id="recensions"
+                    cms:cp-module="zeit.edit.LightBoxForm"
+                    i18n:attributes="title"
+                    i18n:translate="">
+                    [edit]
+                  </a>
+                </li>
+                <li i18n:translate="">
+                  <a href="0" rel="remove" title="Entfernen">[remove]</a>
+                </li>
+            </ul>
+        </li>
+      </ul>
 
-      <div class="RecensionTitle"
-        tal:condition="not:can_edit">
-        <span tal:replace="recension/authors" />:
-        <span tal:replace="recension/title" />
-      </div>
 
-      <dl>
-        <tal:con condition="recension/publisher">
-          <dt i18n:translate="">Publisher</dt>
-          <dd class="publisher"
-            tal:content="recension/publisher">
-            Suhrkamp
+      <dl class="rensionlist">
+        <tal:con condition="recension/authors">
+          <dt i18n:translate="">Authors</dt>
+          <dd class="authors"
+            tal:content="recension/authors">
+            Goethe
+          </dd>
+        </tal:con>
+
+        <tal:con condition="recension/title">
+          <dt i18n:translate="">Title</dt>
+          <dd class="title"
+            tal:content="recension/title">
+            Faust
           </dd>
         </tal:con>
 
@@ -47,6 +60,14 @@
           </dd>
         </tal:con>
 
+        <tal:con condition="recension/publisher">
+          <dt i18n:translate="">Publisher</dt>
+          <dd class="publisher"
+            tal:content="recension/publisher">
+            Suhrkamp
+          </dd>
+        </tal:con>
+
         <tal:con condition="recension/year">
           <dt i18n:translate="">Year</dt>
           <dd class="year"
@@ -54,6 +75,20 @@
             2007
           </dd>
         </tal:con>
+
+<!--
+        <tal:con condition="recension/pages">
+          <dt i18n:translate="">Pages</dt>
+          <dd class="pages"
+            tal:condition="recension/pages"
+            tal:content="recension/pages">
+            100
+          </dd>
+        </tal:con>
+-->
+          <!-- Testing -->
+          <dt>Pages</dt>
+          <dd class="pages">100</dd>
 
         <tal:con condition="recension/price">
           <dt i18n:translate="">Price</dt>
@@ -64,6 +99,7 @@
           </dd>
         </tal:con>
       </dl>
+      <hr class="dummy" />
     </div>
 
     <p tal:condition="not:view/has_recensions"
