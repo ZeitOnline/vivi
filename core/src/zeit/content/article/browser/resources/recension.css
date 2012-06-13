@@ -1,17 +1,93 @@
 .recension {
    margin: 1.5em 0;
-}
-
-.RecensionTitle {
-   font-size: 120%;
-   font-weight: bold;
+   border: 1px solid #CCC;
+   border-radius: 5px;
+   padding: 0px;
 }
 
 .recension dl {
    margin: 0.5em 0;
 }
+
+.recension  ul#recensionheader {
+  margin: 0px;
+  -moz-padding-start: 0px;
+  background: #F8F9FD;
+  height: 30px; 
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.recension ul#recensionheader > li {
+  display: block;
+  float: left;
+  width: 49%;
+}
+
+.recension ul#recensionheader li#recensionactions {
+  display: block; 
+  float: left;
+}
+
+.recension ul#recensionheader li#recensionactions li {
+  list-style: none;
+  position: absolute;
+  right: 24px;
+  border-left: 1px solid #CCC;
+}
+
+.recension ul#recensionheader li#recensionactions li:first-child {
+  right: 90px;
+}
+
+.recension .rensionlist dt {
+  display: none;
+}
+
+.recension dd {
+  display: block;
+  float: left;
+  -moz-margin-start: 5px;
+}
+
+.recension dd.authors,
+.recension dd.pages,
+.recension dd.location {
+  -moz-margin-start: 10px;  
+}
+
+.recension dd.authors:after,
+.recension dd.location:after {
+  content:":";
+}
+
+.recension dd.publisher:after {
+  content:",";
+}
+
+.recension dd.pages:after {
+  content:";";
+}
+
+.recension dd.title {
+  font-size: 100%;
+  font-weight: normal;
+  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
+  font-style: italic;
+}
+
+.recension dd.location, .recension dd.pages {
+  clear: both;
+}
+
 .recension dt {
-   font-weight: bold;
+   font-weight: 
    float: left;
    margin-right: 1em;
+}
+
+.recension hr.dummy {
+  display: block;
+  visibility: hidden;
+  clear: both;
 }
