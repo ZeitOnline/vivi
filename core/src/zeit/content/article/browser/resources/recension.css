@@ -26,6 +26,11 @@
   height: 25px;
 }
 
+.recension ul#recensionheader > li span {
+  color: #90b0c3;
+  padding-left: 20px;
+}
+
 .recension ul#recensionheader li#recensionactions {
   display: block; 
   float: left;
