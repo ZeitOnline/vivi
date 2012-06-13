@@ -26,13 +26,9 @@ class Overview(zeit.cms.browser.view.Base):
             url = zope.component.getMultiAdapter(
                 (recension, self.request), name='absolute_url')()
             authors = ' '.join(recension.authors)
-            yield dict(publisher=recension.publisher,
-                       location=recension.location,
-                       year=recension.year,
-                       price=recension.price,
+            yield dict(recension=recension,
                        authors=authors,
-                       url=url,
-                       title=recension.title)
+                       url=url)
 
     @zope.cachedescriptors.property.Lazy
     def has_recensions(self):

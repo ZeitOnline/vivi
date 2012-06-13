@@ -44,44 +44,44 @@
           </dd>
         </tal:con>
 
-        <tal:con condition="recension/title">
+        <tal:con condition="recension/recension/title">
           <dt i18n:translate="">Title</dt>
           <dd class="title"
-            tal:content="recension/title">
+            tal:content="recension/recension/title">
             Faust
           </dd>
         </tal:con>
 
-        <tal:con condition="recension/location">
+        <tal:con condition="recension/recension/location">
           <dt i18n:translate="">Location</dt>
           <dd class="location"
-            tal:content="recension/location">
+            tal:content="recension/recension/location">
             Zuerich
           </dd>
         </tal:con>
 
-        <tal:con condition="recension/publisher">
+        <tal:con condition="recension/recension/publisher">
           <dt i18n:translate="">Publisher</dt>
           <dd class="publisher"
-            tal:content="recension/publisher">
+            tal:content="recension/recension/publisher">
             Suhrkamp
           </dd>
         </tal:con>
 
-        <tal:con condition="recension/year">
+        <tal:con condition="recension/recension/year">
           <dt i18n:translate="">Year</dt>
           <dd class="year"
-            tal:content="recension/year">
+            tal:content="recension/recension/year">
             2007
           </dd>
         </tal:con>
 
 <!--
-        <tal:con condition="recension/pages">
+        <tal:con condition="recension/recension/pages">
           <dt i18n:translate="">Pages</dt>
           <dd class="pages"
-            tal:condition="recension/pages"
-            tal:content="recension/pages">
+            tal:condition="recension/recension/pages"
+            tal:content="recension/recension/pages">
             100
           </dd>
         </tal:con>
@@ -90,11 +90,11 @@
           <dt>Pages</dt>
           <dd class="pages">100</dd>
 
-        <tal:con condition="recension/price">
+        <tal:con condition="recension/recension/price">
           <dt i18n:translate="">Price</dt>
           <dd class="price"
-            tal:condition="recension/price"
-            tal:content="recension/price">
+            tal:condition="recension/recension/price"
+            tal:content="recension/recension/price">
             29,90
           </dd>
         </tal:con>
