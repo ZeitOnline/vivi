@@ -411,7 +411,13 @@ zeit.content.article.Editable = gocept.Class.extend({
         var move = {
             duration: 0.5,
             mode: 'absolute',
-            x: MochiKit.Style.getElementPosition(self.toolbar, self.block).x,
+            // By mode=absolute MochiKit means 'left' and 'top' CSS values.
+            // Since they refer to the next parent with a specified 'position'
+            // value, which is not necessarily self.block, we need to look at
+            // the 'left' value instead of calling getElementPosition() in
+            // order to retrieve the current x position (which is to be the
+            // target x position, i.e. we don't want any horizontal motion).
+            x: MochiKit.Style.getStyle(self.toolbar, 'left'),
             y: MochiKit.Style.getElementPosition(container, self.block).y
         };
         if (fast) {

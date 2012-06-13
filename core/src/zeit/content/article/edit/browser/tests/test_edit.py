@@ -200,6 +200,24 @@ class TestTextEditing(
         s.click('css=.create-paragraph')
         s.waitForElementNotPresent('css=.create-paragraph')
 
+    @unittest2.skip('wait for gocept.selenium to implement element positions '
+                    'and for webdriver to allow clicking inside a paragraph')
+    def test_toolbar_moves_only_vertically(self):
+        s = self.selenium
+        self.create('<p>foo</p><p>bar</p>')
+        self.save()
+        s.waitForCssCount('css=.block.type-p', 2)
+        # Start editing
+        s.click('css=.block.type-p .editable')
+        toolbar = 'css=.block.type-p.editing .rte-toolbar'
+        s.waitForElementPresent(toolbar)
+        x = s.getElementPositionLeft(toolbar)
+        y = s.getElementPositionTop(toolbar)
+        s.click('css=.block.type-p .editable p:contains(bar)')
+        while s.getElementPositionTop(toolbar) - y < 10:
+            time.sleep(0.1)
+        self.assertEqual(x, s.getElementPositionLeft(toolbar))
+
 
 class TestEditingMultipleParagraphs(
     zeit.content.article.edit.browser.testing.EditorTestCase):
