@@ -65,21 +65,3 @@ Those forms are loaded via javascript:
 >>> browser.open('@@edit.form.recension-list')
 >>> print browser.contents
 <...<div class="recensions">...
-
-
->>> browser.open('@@edit.form.workflow-status')
->>> print browser.contents
-<...<label cms:tooltip="" for="workflow-status.published">...
-
-
->>> browser.open('@@edit.form.workflow-publication-period')
->>> print browser.contents
-<...
-...<label cms:tooltip="Leave empty for no constraint."
-        for="workflow-publication-period.release_period">...
-
-
->>> browser.open('@@edit.form.workflow-log')
->>> print browser.contents
-<...
-...<label cms:tooltip="" for="workflow-log.logs">...
