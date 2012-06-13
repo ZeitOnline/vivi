@@ -1,24 +1,14 @@
 # coding: utf-8
-# Copyright (c) 2010 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.workflow.interfaces import IPublish
+from zeit.content.article.article import Article
+from zeit.workflow.interfaces import IContentWorkflow
+import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
-
-
-class CheckinValidationTest(zeit.cms.testing.BrowserTestCase):
-
-    layer = zeit.content.article.testing.ArticleLayer
-
-    def test_validation_errors_should_be_displayed_at_checkin_button(self):
-        from zeit.content.article.article import Article
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
-        b.open('@@edit.form.context-action')
-        self.assert_ellipsis('...Title:...Required input is missing...')
+import zeit.workflow.testing
 
 
 class MemoTest(zeit.cms.testing.BrowserTestCase):
@@ -26,7 +16,6 @@ class MemoTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.article.testing.ArticleLayer
 
     def test_memo_is_editable_while_checked_in(self):
-        from zeit.content.article.article import Article
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 self.repository['article'] = Article()
@@ -46,7 +35,6 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.article.testing.ArticleLayer
 
     def test_displays_status_fields_as_checkboxes(self):
-        from zeit.workflow.interfaces import IContentWorkflow
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 somalia = zeit.cms.interfaces.ICMSContent(
@@ -61,9 +49,6 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
         self.assertTrue(b.getControl('Corrected').selected)
 
     def test_displays_last_published_information(self):
-        from zeit.workflow.interfaces import IContentWorkflow
-        from zeit.cms.workflow.interfaces import IPublish
-
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 article = zeit.cms.interfaces.ICMSContent(

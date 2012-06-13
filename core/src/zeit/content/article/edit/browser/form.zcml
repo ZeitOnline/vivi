@@ -523,15 +523,15 @@
     permission="zope.View"
     />
 
-  <!-- context actions -->
+  <!-- workflow -->
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="context-action"
-    class=".form.ContextActionForms"
+    name="workflow"
+    class=".workflow.WorkflowContainer"
     permission="zope.View"
     weight="70"
     />
@@ -539,7 +539,7 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ContextActionForms"
+    view=".workflow.WorkflowContainer"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.urgent"
     class="zeit.edit.browser.form.FormLoader"
@@ -551,16 +551,16 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.urgent"
-    class=".form.Urgent"
+    class=".workflow.Urgent"
     permission="zope.View"
     />
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.ContextActionForms"
+    view=".workflow.WorkflowContainer"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.context-action"
+    name="edit.form.checkin"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="30"
@@ -569,8 +569,9 @@
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.context-action"
-    class=".form.ContextAction"
+    name="edit.form.checkin"
+    class=".workflow.Checkin"
+    template="checkin.pt"
     permission="zope.View"
     />
 
