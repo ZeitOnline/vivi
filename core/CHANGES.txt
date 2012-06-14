@@ -40,6 +40,9 @@ editor-ng branch changes
 
 - Introduce IPublishInfo.date_last_published_semantic (#10704).
 
+- Introduce zeit.workflow.publishinfo.PublishInfo as base class for workflows
+  instead of NotPublishablePublishInfo (#10739).
+
 
 1.53.5 (unreleased)
 -------------------

@@ -12,8 +12,7 @@ import zope.component
 import zope.interface
 
 
-class NotPublishablePublishInfo(object):
-    """A publish info which indicates that the content is not publishable."""
+class PublishInfo(object):
 
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
@@ -43,10 +42,16 @@ class NotPublishablePublishInfo(object):
             return None
 
     def can_publish(self):
+        raise NotImplementedError()
+
+
+class NotPublishablePublishInfo(PublishInfo):
+
+    def can_publish(self):
         return False
 
 
-@zope.component.adapter(NotPublishablePublishInfo)
+@zope.component.adapter(PublishInfo)
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def workflowProperties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
