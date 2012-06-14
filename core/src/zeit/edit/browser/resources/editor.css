@@ -730,7 +730,7 @@ legend {
 
 /* Render links as buttons */
 
-a.button {
+.button {
   white-space: inherit;
   text-indent: 0;
   cursor: pointer;
@@ -751,12 +751,12 @@ a.button {
   background-size: auto, 100% auto;
 }
 
-a.button:hover {
+.button:hover {
   background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll, -moz-linear-gradient(top, #f1f4f9 50%, #d2d4d9 94%) repeat scroll 0 0 transparent;
   border-color: #a6a6a6;
 }
 
-a.button.disabled {
+.button.disabled, .button[disabled] {
   color: #999999;
 }
 
