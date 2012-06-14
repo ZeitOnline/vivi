@@ -16,6 +16,7 @@ import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.rule
 import zeit.workflow.interfaces
+import zeit.workflow.publishinfo
 import zope.component
 import zope.dublincore.interfaces
 import zope.index.text.interfaces
@@ -137,15 +138,18 @@ class SearchableText(grokcore.component.Adapter):
         return main_text
 
 
-class ValidatingContentWorkflow(zeit.edit.rule.ValidatingWorkflow):
+class ArticleWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
     zope.component.adapts(zeit.content.article.interfaces.IArticle)
 
     def can_publish(self):
-        cwf = zeit.workflow.interfaces.IContentWorkflow(self.context)
-        if not cwf.can_publish():
+        review = zeit.workflow.interfaces.IReview(self.context)
+        if not review.can_publish():
             return False
-        return super(ValidatingContentWorkflow, self).can_publish()
+        validator = zeit.edit.interfaces.IValidator(self.context)
+        if validator.status == zeit.edit.rule.ERROR:
+            return False
+        return True
 
 
 @grokcore.component.subscribe(

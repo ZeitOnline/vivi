@@ -32,14 +32,14 @@
 
   <subscriber handler=".article.updateTextLengthOnChange" />
 
-  <class class=".article.ValidatingContentWorkflow">
-    <require like_class="zeit.edit.rule.ValidatingWorkflow" />
+  <class class=".article.ArticleWorkflow">
+    <require like_class="zeit.workflow.publishinfo.PublishInfo" />
   </class>
 
   <adapter
-    factory=".article.ValidatingContentWorkflow"
-    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    factory=".article.ArticleWorkflow"
     for=".interfaces.IArticle"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
     trusted="yes"
     />
 
