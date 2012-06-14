@@ -12,21 +12,29 @@ import zope.formlib.interfaces
 import zope.i18n
 
 
-class WorkflowContainer(zeit.edit.browser.form.FormGroup):
+class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
     """Article workflow forms."""
 
+    title = _('Status')
 
-class Urgent(zeit.edit.browser.form.InlineForm):
+
+class Publish(zeit.edit.browser.form.InlineForm,
+             zeit.workflow.browser.form.WorkflowActions):
 
     legend = _('')
-    prefix = 'urgent'
-    undo_description = _('edit urgent')
+    prefix = 'publish'
+    undo_description = _('edit workflow status')
 
     form_fields = (
         zope.formlib.form.FormFields(
-            zeit.workflow.interfaces.IContentWorkflow,
-            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-                'urgent'))
+            zeit.workflow.interfaces.IReview,
+            zeit.content.article.interfaces.ICDSWorkflow))
+
+    @zope.formlib.form.action(_('Save & Publish'), name='publish')
+    def handle_publish(self, action, data):
+        # "super" call to apply changes
+        self.handle_edit_action.success_handler(self, action, data)
+        self.do_publish()
 
 
 class Checkin(zeit.cms.browser.view.Base):

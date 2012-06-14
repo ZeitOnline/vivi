@@ -24,7 +24,6 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
 
     def test_checkin_does_not_set_last_semantic_change_by_default(self):
         b = self.browser
-        b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/'
                'online/2007/01/Somalia/@@checkout')
         with mock.patch(
@@ -36,7 +35,6 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
 
     def test_checkin_sets_last_semantic_change_if_checked(self):
         b = self.browser
-        b.handleErrors = False
         b.open('http://localhost/++skin++vivi/repository/'
                'online/2007/01/Somalia/@@checkout')
         with mock.patch(
@@ -57,3 +55,19 @@ class CheckinJS(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.assertNotIn('repository', s.getLocation())
         s.clickAndWait('name=checkin')
         self.assertIn('repository', s.getLocation())
+
+
+class Publish(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.ArticleLayer
+
+    def test_smoke_publish_button_publishes_article(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/'
+               'online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.publish?show_form=1')
+        b.getControl('Urgent').selected = True
+        with mock.patch('zeit.cms.workflow.interfaces.IPublish') as publish:
+            b.handleErrors = False
+            b.getControl('Save & Publish').click()
+            self.assertTrue(publish().publish.called)
