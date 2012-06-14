@@ -109,3 +109,20 @@ class IPublicationDependencies(zope.interface.Interface):
     adapted object. Dependent containers will be published recursively.
 
     """
+
+
+class IReview(zope.interface.Interface):
+
+    edited = zope.schema.Bool(
+        title=_('status-edited', default=u'Edited'),
+        default=False)
+
+    corrected = zope.schema.Bool(
+        title=_('status-corrected', default=u'Corrected'),
+        default=False)
+
+    urgent = zope.schema.Bool(
+        title=_('Urgent'),
+        description=_('Select for newsflashs or on a weekend to publish '
+                      'without setting corrected/refined/etc.'),
+        default=False)

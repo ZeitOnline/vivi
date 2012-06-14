@@ -51,6 +51,22 @@
       />
   </class>
 
+  <class class=".workflow.Review">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IReview"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IReview"
+      />
+  </class>
+
+  <adapter factory=".workflow.Review" />
+  <adapter
+    for=".interfaces.IReview"
+    factory=".publishinfo.workflowProperties" />
+
   <!-- Publish -->
   <adapter factory=".publish.Publish" />
   <utility factory=".publish.PublishTask" name="zeit.workflow.publish" />

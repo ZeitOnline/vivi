@@ -1,7 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.content.interfaces import WRITEABLE_LIVE
+from zeit.cms.content.interfaces import WRITEABLE_LIVE, WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component
 import logging
@@ -65,6 +65,38 @@ def log_workflow_changes(workflow, event):
 
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.log(content, message)
+
+
+class Review(object):
+    """
+    This is almost the same as ContentWorkflow, with some subtle differences:
+
+    * The properties can also be written while checked out
+    * It only uses three properties (refined, images_added are not needed)
+    * It uses Bool instead of TriState.
+    * It's not a PublishInfo, but only implements rules.
+      The actual PublishInfo (e.g. ArticleWorkflow) is expected to delegate to
+      this.
+    """
+
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+    zope.interface.implements(zeit.workflow.interfaces.IReview)
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.workflow.interfaces.IReview,
+        WORKFLOW_NS,
+        ('edited', 'corrected', 'urgent'),
+        writeable=WRITEABLE_ALWAYS)
+
+    def __init__(self, context):
+        self.context = context
+
+    def can_publish(self):
+        if self.urgent:
+            return True
+        if self.edited and self.corrected:
+            return True
+        return False
 
 
 @zope.component.adapter(
