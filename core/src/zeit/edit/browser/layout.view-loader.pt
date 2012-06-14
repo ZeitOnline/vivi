@@ -1,0 +1,4 @@
+<div
+  class="inline-view"
+  tal:attributes="cms:href string:${context/@@absolute_url}/@@${view/__name__}">
+</div>
