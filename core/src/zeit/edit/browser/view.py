@@ -202,3 +202,6 @@ class EditBoxAction(zope.viewlet.viewlet.ViewletBase):
     title = NotImplemented
     action = NotImplemented
     type = 'edit-link'
+
+
+ViewLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.view-loader.pt')

@@ -252,6 +252,21 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
         });
 }());
 
+// XXX refactor the following two functions to use, e.g., an element attribute
+// that specifies the factory, instead of doing two similar loops
+
+var setup_views = function() {
+    forEach($$('.inline-view'), function(container) {
+        if (MochiKit.DOM.hasElementClass(container, 'setup-done')) {
+            return;
+        }
+        var url = container.getAttribute('cms:href');
+        container.view = new zeit.cms.View(url, container);
+        container.view.render();
+        MochiKit.DOM.addElementClass(container, 'setup-done');
+    });
+};
+
 
 var wire_forms = function() {
     forEach($$('.inline-form'), function(container) {
@@ -268,6 +283,7 @@ var wire_forms = function() {
 
 
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+    setup_views();
     wire_forms();
 });
 
