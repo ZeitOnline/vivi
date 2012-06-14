@@ -22,6 +22,17 @@
 
   <adapter factory=".source.fromNotNecessary" />
 
+  <class class=".publishinfo.PublishInfo">
+    <require
+      permission="zope.View"
+      interface="zeit.cms.workflow.interfaces.IPublishInfo"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema="zeit.cms.workflow.interfaces.IPublishInfo"
+      />
+  </class>
+
   <class class=".workflow.ContentWorkflow">
     <require
       permission="zope.View"
