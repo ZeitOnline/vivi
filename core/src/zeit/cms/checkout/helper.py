@@ -24,11 +24,11 @@ def with_checked_out(content, function, events=True):
 
 @contextlib.contextmanager
 def checked_out(content, events=True, semantic_change=False,
-                ignore_conflicts=False):
+                ignore_conflicts=False, temporary=True):
     __traceback_info__ = (content.uniqueId,)
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
     try:
-        checked_out = manager.checkout(temporary=True, event=events)
+        checked_out = manager.checkout(temporary=temporary, event=events)
     except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
         log.warning("Could not checkout %s." %
                        content.uniqueId, exc_info=True)
