@@ -4,6 +4,7 @@
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.testing
 import zeit.workflow.testing
+import zope.interface.verify
 
 
 class PublishInfoTest(zeit.cms.testing.FunctionalTestCase):
@@ -18,3 +19,8 @@ class PublishInfoTest(zeit.cms.testing.FunctionalTestCase):
         IPublish(content).publish()
         zeit.workflow.testing.run_publish()
         self.assertEqual('zope.user', info.last_published_by)
+
+    def test_provides_interface(self):
+        content = self.repository['testcontent']
+        info = IPublishInfo(content)
+        zope.interface.verify.verifyObject(IPublishInfo, info)

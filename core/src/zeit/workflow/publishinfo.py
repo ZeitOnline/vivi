@@ -21,12 +21,13 @@ class NotPublishablePublishInfo(object):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IPublishInfo,
         zeit.workflow.interfaces.WORKFLOW_NS,
-        ('published', 'date_last_published'),
+        ('published', 'date_last_published', 'date_last_published_semantic'),
         use_default=True, writeable=WRITEABLE_LIVE)
 
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IPublishInfo,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, ('date_first_released',),
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('date_first_released',),
         writeable=WRITEABLE_LIVE)
 
     def __init__(self, context):

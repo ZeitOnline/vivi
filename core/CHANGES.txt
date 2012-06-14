@@ -38,6 +38,8 @@ editor-ng branch changes
 
 - Introduce RestructuredTextWidget (#10661).
 
+- Introduce IPublishInfo.date_last_published_semantic (#10704).
+
 
 1.53.5 (unreleased)
 -------------------

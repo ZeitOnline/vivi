@@ -52,6 +52,8 @@ _published = {}
 zope.testing.cleanup.addCleanUp(_published.clear)
 _publish_times = {}
 zope.testing.cleanup.addCleanUp(_publish_times.clear)
+_publish_times_semantic = {}
+zope.testing.cleanup.addCleanUp(_publish_times_semantic.clear)
 
 
 class MockPublishInfo(object):
@@ -70,9 +72,25 @@ class MockPublishInfo(object):
     def published(self):
         return _published.get(self.context.uniqueId, False)
 
+    @published.setter
+    def published(self, value):
+        _published[self.context.uniqueId] = value
+
     @property
     def date_last_published(self):
         return _publish_times.get(self.context.uniqueId)
+
+    @date_last_published.setter
+    def date_last_published(self, value):
+        _publish_times[self.context.uniqueId] = value
+
+    @property
+    def date_last_published_semantic(self):
+        return _publish_times_semantic.get(self.context.uniqueId)
+
+    @date_last_published_semantic.setter
+    def date_last_published_semantic(self, value):
+        _publish_times_semantic[self.context.uniqueId] = value
 
     def can_publish(self):
         return _can_publish.get(self.context.uniqueId, False)

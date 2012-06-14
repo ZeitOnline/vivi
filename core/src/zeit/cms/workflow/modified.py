@@ -1,13 +1,17 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from datetime import datetime
+import pytz
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zope.component
 import zope.dublincore.interfaces
 import zope.interface
-import zope.security.proxy
+
+
+MIN_DATE = datetime.min.replace(tzinfo=pytz.UTC)
 
 
 class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
@@ -36,3 +40,16 @@ def update_last_modified_by(context, event):
         return
     zope.security.proxy.removeSecurityProxy(modified).last_modified_by = (
         event.principal.id)
+
+
+@zope.component.adapter(
+    zope.interface.Interface,
+    zeit.cms.workflow.interfaces.IPublishedEvent)
+def update_date_last_published_semantic(context, event):
+    published = zeit.cms.workflow.interfaces.IPublishInfo(context)
+    date_last_published_semantic = (
+        published.date_last_published_semantic or MIN_DATE)
+    lsc = zeit.cms.content.interfaces.ISemanticChange(context)
+    last_semantic_change = lsc.last_semantic_change or MIN_DATE
+    if last_semantic_change > date_last_published_semantic:
+        published.date_last_published_semantic = datetime.now(pytz.UTC)
