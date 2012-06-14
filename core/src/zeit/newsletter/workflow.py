@@ -11,7 +11,7 @@ import zeit.workflow.publishinfo
 import zope.session.interfaces
 
 
-class Workflow(zeit.workflow.publishinfo.NotPublishablePublishInfo,
+class Workflow(zeit.workflow.publishinfo.PublishInfo,
                grok.Adapter):
 
     grok.context(zeit.newsletter.interfaces.INewsletter)
