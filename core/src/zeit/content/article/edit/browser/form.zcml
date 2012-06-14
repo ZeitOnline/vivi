@@ -561,7 +561,7 @@
     view=".workflow.WorkflowContainer"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.checkin"
-    class="zeit.edit.browser.form.FormLoader"
+    class="zeit.edit.browser.view.ViewLoader"
     permission="zope.View"
     weight="30"
     />

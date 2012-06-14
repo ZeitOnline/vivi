@@ -70,3 +70,12 @@ class Checkin(zeit.cms.browser.view.Base):
     def published(self):
         publish_info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         return publish_info.published
+
+    def __call__(self, semantic_change=False):
+        if self.request.method != 'POST':
+            return super(Checkin, self).__call__()
+        checkin = zope.component.getMultiAdapter(
+            (self.context, self.request),
+            zope.interface.Interface,
+            name='checkin')
+        return checkin(semantic_change=(semantic_change == 'true'))
