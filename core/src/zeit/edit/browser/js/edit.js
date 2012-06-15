@@ -253,7 +253,7 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
 }());
 
 // XXX refactor the following two functions to use, e.g., an element attribute
-// that specifies the factory, instead of doing two similar loops
+// that specifies the factory, instead of doing two similar loops (#11016)
 
 var setup_views = function() {
     forEach($$('.inline-view'), function(container) {
