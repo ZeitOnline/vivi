@@ -41,12 +41,12 @@ Let's add one:
 >>> browser.open(listing)
 >>> print browser.contents
 <fieldset id="recensions">
-  <div class="recensions">...
-    <div class="recension">
-      <a...>
-        Frank Schwanitz:
-        Der Schwarm [edit]
-      </a>
+  <div class="recensions">
+    ...
+      <dt>Authors</dt>
+      <dd class="authors">Frank Schwanitz</dd>
+      <dt>Title</dt>
+      <dd class="title">Der Schwarm</dd>
       ...
 
 After adding the first recensions, has_recensions is set (it's needed for
@@ -59,31 +59,35 @@ True
 
 Let's edit and add some more information:
 
->>> browser.getLink('Schwanitz').click()
+>>> browser.getLink('edit').click()
 >>> browser.getControl('Publisher').value = 'Kiepenheuer & Witsch'
 >>> browser.getControl('Location').value = 'Koeln'
 >>> browser.getControl('Year').value = '2004'
+>>> browser.getControl('Pages').value = '999'
 >>> browser.getControl('Price').value = '24.90'
 >>> browser.getControl('Apply').click()
 >>> browser.open(listing)
 >>> print browser.contents
 <fieldset id="recensions">
-  <div class="recensions">...
-    <div class="recension">
-      <a...>
-        Frank Schwanitz:
-        Der Schwarm [edit]
-      </a>
-      <dl>
-        <dt>Publisher</dt>
-        <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
-        ...
+  <div class="recensions">
+  <link ...
+...
+      <dt>Authors</dt>
+      <dd class="authors">Frank Schwanitz</dd>
+      <dt>Title</dt>
+      <dd class="title">Der Schwarm</dd>
+      <dt>Location</dt>
       <dd class="location">Koeln</dd>
-      ...
+      <dt>Publisher</dt>
+      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+      <dt>Year</dt>
       <dd class="year">2004</dd>
-      ...
+      <dt>Pages</dt>
+      <dd class="pages">999</dd>
+      <dt>Price</dt>
       <dd class="price">24.90</dd>
-      ...
+...
+</fieldset>
 
 Note that the price is not rendered correctly, yet. We would like a decimal or
 just a TextLine but we need lxml 2.0 for this.
@@ -105,6 +109,7 @@ Let's have a look at the source code:
         <publisher py:pytype="str">Kiepenheuer &amp; Witsch</publisher>
         <location py:pytype="str">Koeln</location>
         <year py:pytype="int">2004</year>
+        <pages py:pytype="int">999</pages>
         <price py:pytype="str">24.90</price>
       </edition>
     </entry>
@@ -122,37 +127,40 @@ Let's add another recension:
 >>> browser.getControl('Publisher').value = 'Suhrkamp'
 >>> browser.getControl('Location').value = 'Zuerich'
 >>> browser.getControl('Year').value = '2001'
+>>> browser.getControl('Pages').value = '123'
 >>> browser.getControl('Price').value = '13.80'
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.open(listing)
 >>> print browser.contents
 <fieldset id="recensions">
-  <div class="recensions">...
-    <div class="recension">
-      <a...>
-        Frank Schwanitz:
-        Der Schwarm [edit]
-      </a>
+  <div class="recensions">
       ...
-        <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
+        <dd class="authors">Frank Schwanitz</dd>
+        ...
+        <dd class="title">Der Schwarm</dd>
         ...
         <dd class="location">Koeln</dd>
         ...
-        <dd class="year">2004</dd>
+        <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
         ...
+        <dd class="year">2004</dd>
+        <dt>Pages</dt>
+        <dd class="pages">999</dd>
+        <dt>Price</dt>
         <dd class="price">24.90</dd>
         ...
-    <div class="recension">
-      <a...>
-        Theodor W. Adorno:
-        Minima Moralia [edit]
-      </a>
-      ...
-      <dd class="publisher">Suhrkamp</dd>
-      ...
-      <dd class="location">Zuerich</dd>
-      ...
-      <dd class="year">2001</dd>
-      ...
-      <dd class="price">13.80</dd>
+        <dt>Authors</dt>
+        <dd class="authors">Theodor W. Adorno</dd>
+        ...
+        <dd class="title">Minima Moralia</dd>
+        ...
+        <dd class="location">Zuerich</dd>
+        ...
+        <dd class="publisher">Suhrkamp</dd>
+        ...
+        <dd class="year">2001</dd>
+        <dt>Pages</dt>
+        <dd class="pages">123</dd>
+        <dt>Price</dt>
+        <dd class="price">13.80</dd>
     ...
