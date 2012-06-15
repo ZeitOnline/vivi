@@ -11,7 +11,7 @@
       tal:repeat="recension view/recensions">
   
       <ul id="recensionheader">
-        <li i18n:translate="">Recensionentry</li>
+        <li i18n:translate="">Recensionentry <span>01.01.1970 | Max Mustermann</li>
         <li id="recensionactions">
             <ul>
                 <li i18n:translate="">
