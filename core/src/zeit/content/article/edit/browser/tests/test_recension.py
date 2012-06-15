@@ -32,7 +32,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
     def test_recensions_should_be_listed(self):
         self.create_recension()
         s = self.selenium
-        s.assertText('css=a.RecensionTitle', 'William Shakespeare: Hamlet*')
+        s.assertText('css=a.RecensionTitle', '[edit]')
         s.assertText('css=dd.publisher', 'Suhrkamp')
         s.assertText('css=dd.location', 'Berlin')
 
@@ -57,7 +57,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.type('form.authors.1.', 'Lord Byron')
         s.click('form.actions.apply')
         s.waitForElementNotPresent('id=lightbox.form')
-        s.waitForText('css=a.RecensionTitle', '*Byron*')
+        s.waitForText('css=a.RecensionTitle', '[edit]')
 
     def test_add_recension_should_happen_in_lightbox(self):
         s = self.selenium
@@ -72,4 +72,4 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('name=form.actions.add')
         s.waitForElementNotPresent('id=lightbox.form')
         s.waitForElementPresent('css=a.RecensionTitle')
-        s.assertText('css=a.RecensionTitle', 'Lord Byron: Poems*')
+        s.assertText('css=a.RecensionTitle', '[edit]')
