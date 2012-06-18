@@ -114,7 +114,7 @@ MochiKit.Signal.connect(
     zeit.edit.library.create(
         'article-modules', context_url + '/editable-body', 'Artikel');
 
-    var form_element = jQuery('form[action$="@@edit.form.context-action"]')[0];
+    var form_element = jQuery('form[action$="@@edit.form.publish"]')[0];
     MochiKit.Signal.connect(window, 'changed', function(form) {
         if (form_element.form === form) {
             return;
