@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.workflow.interfaces import IReview
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.view
@@ -29,6 +30,14 @@ class Publish(zeit.edit.browser.form.InlineForm,
         zope.formlib.form.FormFields(
             zeit.workflow.interfaces.IReview,
             zeit.content.article.interfaces.ICDSWorkflow))
+
+    def setUpWidgets(self, *args, **kw):
+        super(Publish, self).setUpWidgets(*args, **kw)
+        if IReview(self.context).urgent:
+            # XXX This needs a better mechanism.
+            for name in ('corrected', 'edited'):
+                self.widgets[name].extra = 'disabled="disabled"'
+                self.widgets[name].vivi_css_class = 'disabled'
 
     @zope.formlib.form.action(_('Save & Publish'), name='publish')
     def handle_publish(self, action, data):

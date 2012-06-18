@@ -2,6 +2,7 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.workflow.interfaces import IReview
 from zeit.content.article.article import Article
 import mock
 import zeit.cms.testing
@@ -61,6 +62,14 @@ class Publish(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.article.testing.ArticleLayer
 
+    def prepare_content(self, urgent):
+        root = self.getRootFolder()
+        with zeit.cms.testing.site(root):
+            with zeit.cms.testing.interaction():
+                content = zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+                IReview(content).urgent = urgent
+
     def test_smoke_publish_button_publishes_article(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/'
@@ -71,3 +80,21 @@ class Publish(zeit.cms.testing.BrowserTestCase):
             b.handleErrors = False
             b.getControl('Save & Publish').click()
             self.assertTrue(publish().publish.called)
+
+    def test_urgent_denies_marking_edited_and_corrected(self):
+        self.prepare_content(urgent=True)
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/'
+               'online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.publish?show_form=1')
+        self.assertTrue(b.getControl('Corrected').disabled)
+        self.assertTrue(b.getControl('Edited').disabled)
+
+    def test_non_urgent_allows_marking_edited_and_corrected(self):
+        self.prepare_content(urgent=False)
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/'
+               'online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.publish?show_form=1')
+        self.assertFalse(b.getControl('Corrected').disabled)
+        self.assertFalse(b.getControl('Edited').disabled)

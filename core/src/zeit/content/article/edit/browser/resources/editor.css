@@ -911,3 +911,7 @@ div.objectlog div {
     overflow-y: scroll;
     border: 1px solid #999999;
 }
+
+.disabled label {
+    color: #999999;
+}
