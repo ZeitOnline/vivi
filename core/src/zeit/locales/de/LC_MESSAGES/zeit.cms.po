@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Feb 10 15:47:24 2012\n"
-"PO-Revision-Date: 2012-02-10 16:18+0100\n"
+"PO-Revision-Date: 2012-06-18 19:43+0100\n"
 "Last-Translator: Thomas <thomas.baumann@zeit.de>\n"
 "Language-Team: \n"
 "Language: \n"
@@ -2121,7 +2121,7 @@ msgstr "VG-Wort-ID"
 
 #: zeit/content/author/interfaces.py:27
 msgid "VG-Wort Code"
-msgstr "VG-Wort-ID"
+msgstr "VG-Wort-Code"
 
 #: zeit/content/author/interfaces.py:33
 msgid "Display name"
