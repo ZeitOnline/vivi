@@ -28,9 +28,9 @@ class Empty(object):
         return u''
 
 
-class SaveText(zeit.edit.browser.view.Action):
+class AutoSaveText(zeit.edit.browser.view.Action):
 
-    undo_description = _('edit body text')
+    undo_description = _('auto-save body text')
 
     text = zeit.edit.browser.view.Form('text')
     paragraphs = zeit.edit.browser.view.Form('paragraphs')
@@ -45,6 +45,7 @@ class SaveText(zeit.edit.browser.view.Action):
         for key in self.paragraphs:
             del self.context[key]
         order = list(self.context.keys())
+        self.data['new_ids'] = []
         for new in self.text:
             factory = new['factory']
             text = new['text']
@@ -58,6 +59,7 @@ class SaveText(zeit.edit.browser.view.Action):
                     self.context, zeit.edit.interfaces.IElementFactory,
                     name='p')
             p = factory()
+            self.data['new_ids'].append(p.__name__)
             p.text = text
             if insert_at is not None:
                 order.insert(insert_at, p.__name__)
@@ -65,6 +67,14 @@ class SaveText(zeit.edit.browser.view.Action):
                 insert_at += 1
         if insert_at is not None:
             self.context.updateOrder(order)
+
+
+class SaveText(AutoSaveText):
+
+    undo_description = _('edit body text')
+
+    def update(self):
+        super(SaveText, self).update()
         self.signal(
             None, 'reload',
             'editable-body', self.url(self.context, '@@contents'))

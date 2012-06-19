@@ -1,22 +1,25 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.article.edit.browser.edit import SaveText, AutoSaveText
+import json
+import lxml.objectify
 import mock
 import time
 import unittest2
+import zeit.content.article.article
+import zeit.content.article.edit.body
 import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 import zope.component
 
 
-class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
+class TextViewHelper(object):
+
+    view_class = NotImplemented
 
     def get_view(self, body=None):
-        from zeit.content.article.edit.browser.edit import SaveText
-        import lxml.objectify
-        import zeit.content.article.article
-        import zeit.content.article.edit.body
-        if not body:
+        if body is None:
             body = ("<division><p>Para 1</p><p>Para 2</p></division>"
                      "<division><p>Para 3</p><p>Para 4</p></division>")
         article = zeit.content.article.article.Article()
@@ -30,13 +33,18 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
         self.uuid.side_effect = lambda: self.uuid.call_count
         with mock.patch('uuid.uuid4', new=self.uuid):
             body.keys()
-        view = SaveText()
+        view = self.view_class()
         view.context = body
         view.request = mock.Mock()
         view.request.form = {}
         view.url = mock.Mock()
-        view.signals = []
         return view
+
+
+class SaveTextTest(zeit.content.article.testing.FunctionalTestCase,
+                   TextViewHelper):
+
+    view_class = SaveText
 
     def test_update_should_remove_given_paragrahs(self):
         view = self.get_view()
@@ -110,6 +118,24 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase):
         with mock.patch('uuid.uuid4', new=self.uuid):
             view.update()
         self.assertEqual('p', view.context['7'].type)
+
+
+class AutoSaveTextTest(zeit.content.article.testing.FunctionalTestCase,
+                       TextViewHelper):
+
+    view_class = AutoSaveText
+
+    def test_autosave_returns_list_of_new_paragraph_ids(self):
+        view = self.get_view('')
+        view.request.form['paragraphs'] = []
+        view.request.form['text'] = [
+            dict(factory='p', text='Hinter'),
+            dict(factory='p', text='den'),
+            dict(factory='p', text='Wortbergen')]
+        with mock.patch('uuid.uuid4', new=self.uuid):
+            view.update()
+        result = json.loads(view.render())
+        self.assertEqual(['2', '3', '4'], result['data']['new_ids'])
 
 
 class TestTextEditing(

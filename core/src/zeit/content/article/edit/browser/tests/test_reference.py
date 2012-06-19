@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import json
 import mock
 import transaction
 import zeit.cms.interfaces
@@ -51,12 +52,13 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.get_article(with_empty_block=True)
         self.setup_content()
         self.call_set_reference(self.content_id)
-        self.assert_json(
-            {'signals': [{'args': [
-                'blockname',
-                'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/blockname/@@contents'],
-                'name': 'reload',
-                'when': None}]})
+        result = json.loads(self.browser.contents)
+        self.assertEqual(
+            [{'args': [
+                        'blockname',
+                        'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/blockname/@@contents'],
+              'name': 'reload',
+              'when': None}], result['signals'])
         self.browser.open('@@contents')
         self.assert_ellipsis(
             """<div ...class="block type-%s...""" % self.block_type)
@@ -81,30 +83,32 @@ class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
             self.browser.open(
                 'editable-body/@@article-landing-zone-drop?uniqueId=%s' %
                 self.content_id)
-        data = self.assert_json(
-            {'signals': [{'args': ['1'], 'name': 'added',
-                          'when': 'after-reload'},
-                         {'args': ['editable-body',
-                                   'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
-                          'name': 'reload',
-                          'when': None}]})
+        result = json.loads(self.browser.contents)
+        self.assertEqual(
+            [{'args': ['1'], 'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['editable-body',
+                       'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
+              'name': 'reload',
+              'when': None}], result['signals'])
         self.browser.open(self.contents_url)
         self.assert_ellipsis(
             """<...
                 <div ...class="block type-%s...""" % self.block_type)
         # Each block has its own landing zone:
-        id = data['signals'][0]['args'][0]
+        id = result['signals'][0]['args'][0]
         with mock.patch('uuid.uuid4', new=uuid4):
             self.browser.open(
                 'editable-body/%s/@@article-landing-zone-drop?uniqueId=%s' % (
                     id, self.content_id))
-        self.assert_json(
-            {'signals': [{'args': ['2'], 'name': 'added',
-                          'when': 'after-reload'},
-                         {'args': ['editable-body',
-                                   'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
-                          'name': 'reload',
-                          'when': None}]})
+        result = json.loads(self.browser.contents)
+        self.assertEqual(
+            [{'args': ['2'], 'name': 'added',
+              'when': 'after-reload'},
+             {'args': ['editable-body',
+                       'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
+              'name': 'reload',
+              'when': None}], result['signals'])
 
     def test_checkin_should_work_with_empty_block(self):
         self.get_article(with_empty_block=True)
