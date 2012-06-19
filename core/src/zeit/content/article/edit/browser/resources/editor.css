@@ -253,6 +253,10 @@ span.charcount {
   margin-right: 1em;
 }
 
+.charcount.charalert {
+  color: red;
+}
+
 
 /* Editable blocks */
 
