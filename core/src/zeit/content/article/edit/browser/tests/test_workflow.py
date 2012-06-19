@@ -98,3 +98,23 @@ class Publish(zeit.cms.testing.BrowserTestCase):
         b.open('@@edit.form.publish?show_form=1')
         self.assertFalse(b.getControl('Corrected').disabled)
         self.assertFalse(b.getControl('Edited').disabled)
+
+
+class Delete(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.ArticleLayer
+
+    def test_checked_out_article_has_cancel_but_no_delete(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/'
+               'online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.checkin?show_form=1')
+        self.assertNothingRaised(b.getLink, 'Cancel')
+        self.assertNotIn('Delete', b.contents)
+
+    def test_checked_in_article_has_delete_but_no_cancel(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/'
+               'online/2007/01/Somalia/@@edit.form.checkin?show_form=1')
+        self.assertNothingRaised(b.getLink, 'Delete')
+        self.assertNotIn('Cancel', b.contents)
