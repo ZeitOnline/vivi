@@ -297,6 +297,11 @@ span.charcount {
   padding: 10px;
 }
 
+#edit-form-diver #memo-diver\.memo\.preview,
+#edit-form-diver #memo-diver\.memo\.preview #edit-form-diver > * {
+  height: 9em;
+}
+
 #edit-form-diver textarea, 
 #edit-form-diver p {
   background: none;
