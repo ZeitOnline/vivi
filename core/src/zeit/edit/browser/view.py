@@ -85,6 +85,11 @@ class UndoableMixin(object):
 
 class Action(zeit.cms.browser.view.Base, UndoableMixin):
 
+    def __init__(self, *args, **kw):
+        super(Action, self).__init__(*args, **kw)
+        self.signals = []
+        self.data = {}
+
     def signal_context_reload(self):
         self.signal(
             None, 'reload', self.context.__name__, self.url('@@contents'))
@@ -98,10 +103,9 @@ class Action(zeit.cms.browser.view.Base, UndoableMixin):
 
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/json')
-        return json.dumps(dict(signals=self.signals))
+        return json.dumps(dict(signals=self.signals, data=self.data))
 
     def __call__(self):
-        self.signals = []
         try:
             self.update()
             self.mark_transaction_undoable()
