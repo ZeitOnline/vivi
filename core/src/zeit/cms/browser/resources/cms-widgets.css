@@ -573,6 +573,10 @@ table.properties textarea {
   float: left;
 }
 
+.objectsequencewidget .goto-object.object-link {
+  float: none;
+}
+
 .objectsequencewidget .content-details a.communitylink {
   display: block;
   float:left;
