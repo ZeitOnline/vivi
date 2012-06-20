@@ -49,6 +49,11 @@
             var l = self.find('.editable').children().text().length || 0;
             var container = self.parent();
             container.find('.charcount').html(l + " Zeichen");
+            if(l > 5000) {
+              container.find('.charcount').addClass('charalert');
+            } else {
+              container.find('.charcount').removeClass('charalert');
+            }
         };
         self.bind('keyup', count);
         count();

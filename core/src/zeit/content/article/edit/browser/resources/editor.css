@@ -253,6 +253,10 @@ span.charcount {
   margin-right: 1em;
 }
 
+.charcount.charalert {
+  color: red;
+}
+
 
 /* Editable blocks */
 
@@ -694,6 +698,7 @@ form[action$="misc-product-management-b"] {
   top:0px;
   left: 210px;
   background-position: 10px -113px, 0% 0%;
+  width: 80px;
 }
 
 #metadata-c\.author_references .add_view:hover {
