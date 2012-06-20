@@ -3,9 +3,11 @@
 
 from zeit.content.article.edit.browser.edit import SaveText, AutoSaveText
 import json
+import lxml.etree
 import lxml.objectify
 import mock
 import time
+import transaction
 import unittest2
 import zeit.content.article.article
 import zeit.content.article.edit.body
@@ -658,3 +660,39 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.typeKeys('css=.block.type-p .editable p', 'Second paragraph.')
         s.waitForElementPresent('css=.editable p:contains(Second paragraph)')
         s.assertText('css=#content_editable_hacks', 'regex:' + style)
+
+
+class AutoSaveIntegration(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(AutoSaveIntegration, self).setUp()
+        self.add_article()
+
+    def autosave(self, locator='css=.block.type-p .editable'):
+        old_ids = self.selenium.getEval(
+            "this.browserbot.findElement('{0}').editable."
+            "edited_paragraphs".format(locator))
+        self.selenium.getEval(
+            "this.browserbot.findElement('{0}').editable.autosave()".format(
+                locator))
+        self.selenium.waitForCondition(
+            "this.browserbot.findElement('{0}').editable."
+            "edited_paragraphs != '{1}'".format(locator, old_ids))
+
+    def assert_paragraphs(self, *contents):
+        transaction.abort()
+        wc = self.getRootFolder()['workingcopy']['zope.user']
+        article = wc.values().next()
+        self.assertEqual(
+            contents, tuple(el.text for el in article.xml.xpath('//p')))
+
+    def test_text_is_saved_correctly_by_autosave_and_normal_save_after(self):
+        self.create('<p>foo</p><p>bar</p>')
+        # create() causes an empty paragraph to be created on the server, then
+        # writes content that isn't saved yet
+        self.assert_paragraphs(None)
+        self.autosave()
+        self.assert_paragraphs('foo', 'bar')
+        self.save()
+        self.assert_paragraphs('foo', 'bar')

@@ -589,6 +589,24 @@ zeit.content.article.Editable = gocept.Class.extend({
         return result;
     },
 
+    autosave: function() {
+        var self = this;
+        log('Autosaving', self.block_id);
+        var url = $('editable-body').getAttribute('cms:url') + '/@@autosave_text';
+        var data = {paragraphs: self.edited_paragraphs,
+                    text: self.get_text_list()};
+        data = MochiKit.Base.serializeJSON(data);
+        zeit.edit.with_lock(function() {
+            var d = MochiKit.Async.doXHR(
+                url, {method: 'POST', sendContent: data});
+            d.addCallback(function(result) {
+                result = MochiKit.Async.evalJSONRequest(result);
+                self.edited_paragraphs = result['data']['new_ids'];
+            });
+            d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
+        });
+    },
+
     save: function(no_reload) {
         var self = this;
         log('Saving', self.block_id);

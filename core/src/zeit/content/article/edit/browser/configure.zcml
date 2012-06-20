@@ -51,6 +51,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="autosave_text"
+    class=".edit.AutoSaveText"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IEditableBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
