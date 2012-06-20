@@ -183,6 +183,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.editable.removeAttribute('cms:cp-module');
             self.editable.contentEditable = true;
             self.editable.focus();
+            self.editable.editable = self; // make instance available for tests
             self.command('styleWithCSS', false);
             MochiKit.DOM.addElementClass(self.block, 'editing');
 
@@ -207,11 +208,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             jQuery('.editable').bind('paste', function() {
                 self.handle_paste();
             });
-            // This handler is there to support saving during selenium tests as
-            // it doesn't seem to be possible to synthesize an blur event which
-            // triggers the capuring phase handler:
-            self.events.push(MochiKit.Signal.connect(
-                self.editable, 'save', function() {self.save();}));
             self.events.push(MochiKit.Signal.connect(
                 zeit.edit.editor, 'before-reload', function() {
                     // XXX giant hack around strange browser behaviour.

@@ -59,8 +59,7 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
 
     def save(self, locator='css=.block.type-p .editable'):
         self.selenium.getEval(
-            "window.MochiKit.Signal.signal("
-            "   this.browserbot.findElement('{0}'), 'save')".format(locator))
+            "this.browserbot.findElement('{0}').editable.save()".format(locator))
         self.selenium.waitForElementNotPresent('xpath=//*[@contenteditable]')
 
     def create_block(self, block, wait_for_inline=False):
