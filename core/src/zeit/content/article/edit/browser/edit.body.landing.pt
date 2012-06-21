@@ -6,8 +6,5 @@
        i18n:domain="zeit.cms"
        i18n:translate="">
     Landing zone 
-    <fieldset>
-      <span class="charcount"></span>
-    </fieldset>
   </div>
 </div>
