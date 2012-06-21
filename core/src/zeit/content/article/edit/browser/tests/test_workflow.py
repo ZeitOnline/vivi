@@ -47,7 +47,8 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
             checkin.assert_called_with(semantic_change=True)
 
 
-class CheckinJS(zeit.content.article.edit.browser.testing.EditorTestCase):
+class WorkflowEndToEnd(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_checkin_redirects_to_repository(self):
         s = self.selenium
@@ -56,6 +57,33 @@ class CheckinJS(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.assertNotIn('repository', s.getLocation())
         s.clickAndWait('name=checkin')
         self.assertIn('repository', s.getLocation())
+
+    def test_checkout_redirects_to_working_copy(self):
+        s = self.selenium
+        self.open('/repository/online/2007/01/Somalia/')
+        checkout_button = 'xpath=//a[contains(@title, "Checkout")]'
+        s.waitForElementPresent(checkout_button)
+        self.assertIn('repository', s.getLocation())
+        s.clickAndWait(checkout_button)
+        self.assertNotIn('repository', s.getLocation())
+
+    def test_publish_shows_lightbox(self):
+        s = self.selenium
+        self.open('/')  # XXX else the next open() fails as Unauthenticated
+        self.open('/repository/online/2007/01/Somalia/')
+        s.waitForElementPresent('id=publish')
+        s.click('id=publish')
+        s.waitForElementPresent('css=.lightbox')
+        # lightbox content is covered by zeit.workflow, see there for detailed
+        # tests
+
+    def test_delete_shows_lightbox(self):
+        s = self.selenium
+        self.open('/') # XXX
+        self.open('/repository/online/2007/01/Somalia/')
+        s.waitForElementPresent('id=delete_from_repository')
+        s.click('id=delete_from_repository')
+        s.waitForElementPresent('css=.lightbox')
 
 
 class Publish(zeit.cms.testing.BrowserTestCase):
