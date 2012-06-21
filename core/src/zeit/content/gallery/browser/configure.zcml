@@ -85,7 +85,16 @@
     class=".form.AddGallery"
     permission="zeit.AddContent"
     menu="zeit-add-menu" title="Gallery"
-    />
+  />
+
+  <browser:page
+    for="zeit.content.gallery.interfaces.IGallery"
+    name="gallery-details"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".details.Details"
+    template="details.pt"
+    permission="zope.View"
+  />
 
   <gocept:pagelet
     for="..interfaces.IGallery"

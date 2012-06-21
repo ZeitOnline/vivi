@@ -1,0 +1,37 @@
+<div class="gallery-details" i18n:domain="zeit.cms">
+  <script src="http://localhost:8080/++skin++vivi/++noop++63c1bc2eb898f68b943e1b0fdd98c746/@@/jquery/jquery-1.5.0.min.js" 
+      type="text/javascript">
+  </script>
+  <div id="gallery_details_clickable" />
+  
+  
+  <tal:tag tal:replace="structure string:<script type='text/javascript'>" />
+
+  GalleryDetails = (function () {
+    var privateEigenschaft = 123;
+    function privateMethode () {
+    alert(privateEigenschaft);
+    }
+    function priviligierteMethode () {
+       privateMethode();
+    }
+   
+    return {
+       priviligierteMethode : priviligierteMethode
+      
+       };
+    })();
+    
+  MeinModul.priviligierteMethode();
+  
+  <tal:tag tal:replace="string:entries=${view/entries}" />
+
+  foo = entries[0].url;
+
+  url = $("<img src='+foo+'/>");
+  inline_gallery = $("#gallery_details_clickable"); 
+
+  inline_gallery.append(url)
+  <tal:tag tal:replace="structure string:</script>" />
+
+</div>
