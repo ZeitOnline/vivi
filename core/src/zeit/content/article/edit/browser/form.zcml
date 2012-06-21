@@ -571,7 +571,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.checkin"
     class=".workflow.Checkin"
-    template="checkin.pt"
+    template="workflow.pt"
     permission="zope.View"
     />
 
