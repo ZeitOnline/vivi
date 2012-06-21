@@ -9,6 +9,10 @@
   <div class="gallery_details_controls">
     <ul>
       <li><span id="gallery_details_prev">previous</span></li>
+      <li>
+        <span id="gallery_details_pos"></span> von 
+        <span id="gallery_details_max"></span>
+      </li>
       <li><span id="gallery_details_next" >next</span></li>   
     </ul>
   </div>
@@ -36,7 +40,12 @@
           }
           html.append(val[0]);
           copy_html.append(html);
-       }); 
+       });
+       
+       $("#gallery_details_pos").text(pos+1);
+       $("#gallery_details_max").text(entries.length);
+
+
     }
 
     $("#gallery_details_prev").click(function(){
