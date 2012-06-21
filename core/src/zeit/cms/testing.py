@@ -369,6 +369,12 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         Boolean(%s);
         """ % text)
 
+    def wait_for_dotted_name(self, dotted_name):
+        partial = []
+        for part in dotted_name.split('.'):
+            partial.append(part)
+            self.wait_for_condition('.'.join(partial))
+
 
 def click_wo_redirect(browser, *args, **kwargs):
     browser.mech_browser.set_handle_redirect(False)
