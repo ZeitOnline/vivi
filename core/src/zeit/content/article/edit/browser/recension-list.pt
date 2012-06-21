@@ -15,7 +15,7 @@
         <li id="recensionactions">
             <ul>
                 <li i18n:translate="">
-                  <a href="#" rel="edit" title="Edit" class="RecensionTitle"
+                  <a href="#" rel="edit" title="Edit"
                     tal:condition="can_edit"
                     tal:attributes="
                     href string:${recension/url}/@@edit.html;

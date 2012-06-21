@@ -40,7 +40,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
     def test_edit_recension_should_happen_in_lightbox(self):
         self.create_recension()
         s = self.selenium
-        s.click('css=a.RecensionTitle')
+        s.click('css=#recensionactions a[rel="edit"]')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.year', '2001')
         s.click('form.actions.apply')
@@ -51,7 +51,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
     def test_submitting_for_list_widget_should_work(self):
         self.create_recension()
         s = self.selenium
-        s.click('css=a.RecensionTitle')
+        s.click('css=#recensionactions a[rel="edit"]')
         s.waitForElementPresent('id=lightbox.form')
         s.click('name=form.authors.add')
         s.waitForElementPresent('form.authors.1.')
