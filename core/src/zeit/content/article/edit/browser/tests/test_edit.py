@@ -668,17 +668,9 @@ class AutoSaveIntegration(
     def setUp(self):
         super(AutoSaveIntegration, self).setUp()
         self.add_article()
-
-    def autosave(self, locator='css=.block.type-p .editable'):
-        old_ids = self.selenium.getEval(
-            "this.browserbot.findElement('{0}').editable."
-            "edited_paragraphs".format(locator))
-        self.selenium.getEval(
-            "this.browserbot.findElement('{0}').editable.autosave()".format(
-                locator))
-        self.selenium.waitForCondition(
-            "this.browserbot.findElement('{0}').editable."
-            "edited_paragraphs != '{1}'".format(locator, old_ids))
+        self.wait_for_dotted_name("zeit.content.article.Editable")
+        self.eval(
+            "zeit.content.article.Editable.prototype.autosave_interval = 0.2;")
 
     def assert_paragraphs(self, *contents):
         transaction.abort()
@@ -689,10 +681,9 @@ class AutoSaveIntegration(
 
     def test_text_is_saved_correctly_by_autosave_and_normal_save_after(self):
         self.create('<p>foo</p><p>bar</p>')
-        # create() causes an empty paragraph to be created on the server, then
-        # writes content that isn't saved yet
-        self.assert_paragraphs(None)
-        self.autosave()
+        self.selenium.waitForCondition(
+            "this.browserbot.findElement('css=.block.type-p .editable')"
+            ".editable.edited_paragraphs.length == 2")
         self.assert_paragraphs('foo', 'bar')
         self.save()
         self.assert_paragraphs('foo', 'bar')

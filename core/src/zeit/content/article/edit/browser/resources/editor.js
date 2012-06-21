@@ -159,6 +159,7 @@ zeit.edit.drop.registerHandler({
 zeit.content.article.Editable = gocept.Class.extend({
     // Inline editing module
 
+    autosave_interval: 10,
     editor_active_lock: new MochiKit.Async.DeferredLock(),
 
     construct: function(context_element, place_cursor_at_end) {
@@ -179,6 +180,9 @@ zeit.content.article.Editable = gocept.Class.extend({
             }
             self.events = [];
             self.edited_paragraphs = [];
+            self.autosave_timer = window.setInterval(
+                MochiKit.Base.bind(self.autosave, self),
+                self.autosave_interval*1000);
             self.initial_paragraph = MochiKit.Selector.findChildElements(
                 block, ['.editable > *'])[0];
             self.editable = self.merge(block);
@@ -616,6 +620,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         log('Saving', self.block_id);
         MochiKit.DOM.addElementClass(self.block, 'busy');
+        window.clearInterval(self.autosave_timer);
         while (self.events.length) {
             MochiKit.Signal.disconnect(self.events.pop());
         }
