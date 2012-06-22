@@ -1,5 +1,5 @@
 <div class="gallery-details" i18n:domain="zeit.cms">
-  <script src="http://localhost:8080/++skin++vivi/++noop++63c1bc2eb898f68b943e1b0fdd98c746/@@/jquery/jquery-1.5.0.min.js" 
+  <script src="http://localhost:8080/++skin++vivi/++noop++63c1bc2eb898f68b943e1b0fdd98c746/@@/jquery/jquery-1.5.0.min.js"
       type="text/javascript">
   </script>
   <div id="gallery_details_clickable">
@@ -10,26 +10,26 @@
     <ul>
       <li><span id="gallery_details_prev">previous</span></li>
       <li>
-        <span id="gallery_details_pos"></span> von 
+        <span id="gallery_details_pos"></span> von
         <span id="gallery_details_max"></span>
       </li>
-      <li><span id="gallery_details_next" >next</span></li>   
+      <li><span id="gallery_details_next" >next</span></li>
     </ul>
   </div>
-  
+
   <tal:tag tal:replace="structure string:<script type='text/javascript'>" />
 
     GalleryDetails = (function () {
       <tal:tag tal:replace="string:var entries=${view/entries}" />
-      
+
       var pos = 0;
-      
+
       function change_img (index) {
          pos = index
          var url = entries[pos].url;
-         var img = $("#gallery_details_clickable img:first-child"); 
+         var img = $("#gallery_details_clickable img:first-child");
          img.attr("src",url);
-  
+
          var copy = entries[pos].copyrights;
          var copy_html = $("#gallery_details_clickable p");
          copy_html.children().remove();
@@ -42,24 +42,24 @@
             html.append(val[0]);
             copy_html.append(html);
          });
-         
+
          $("#gallery_details_pos").text(pos+1);
          $("#gallery_details_max").text(entries.length);
       }
-  
+
       $("#gallery_details_prev").click(function(){
        if (pos>0){ change_img(pos-1) }
       });
-     
+
       $("#gallery_details_next").click(function(){
         if (pos < (entries.length-1)){ change_img(pos+1) }
       });
-  
+
       return {
          change_img : change_img
          };
       })(jQuery);
-      
+
       $(GalleryDetails.change_img(0));
   <tal:tag tal:replace="structure string:</script>" />
 </div>
