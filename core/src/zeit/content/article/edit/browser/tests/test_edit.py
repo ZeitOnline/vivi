@@ -28,6 +28,10 @@ class TextViewHelper(object):
         self.uuid.side_effect = lambda: self.uuid.call_count
         self.patches.add('uuid.uuid4', self.uuid)
 
+    def tearDown(self):
+        self.patches.reset()
+        super(TextViewHelper, self).tearDown()
+
     def get_view(self, body=None):
         if body is None:
             body = ("<division><p>Para 1</p><p>Para 2</p></division>"
