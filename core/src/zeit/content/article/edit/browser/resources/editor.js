@@ -106,12 +106,9 @@
         $('body').append(sheet);
     });
 
-}(jQuery));
-
-
-(function() {
 
 zeit.cms.declare_namespace('zeit.content.article');
+
 
 MochiKit.Signal.connect(
     window, 'cp-editor-loaded', function() {
@@ -129,24 +126,22 @@ MochiKit.Signal.connect(
         MochiKit.Async.callLater(0.25, function() {
             workflow_form.form.reload(); });
 
-        jQuery('#article-editor-text').countedInput();
+        $('#article-editor-text').countedInput();
 
-        jQuery('body').trigger('update-ads');
+        $('body').trigger('update-ads');
     });
 
-    (function($) {
 
-        $('.editable-area > .block-inner').append('<div class="totop">↑</div>');
+    $('.editable-area > .block-inner').append('<div class="totop">↑</div>');
 
-        $('.totop').live("click", function() {
-            $('#cp-content-inner').animate({scrollTop: 0}, 300);
-        });
+    $('.totop').live("click", function() {
+        $('#cp-content-inner').animate({scrollTop: 0}, 300);
+    });
 
-        $('body').trigger('update-ad-places');
-
-    }(jQuery));
+    $('body').trigger('update-ad-places');
 
 });
+
 
 zeit.edit.drop.registerHandler({
     accept: ['editable-body-module'],
@@ -157,6 +152,10 @@ zeit.edit.drop.registerHandler({
     }
 });
 
+}(jQuery));
+
+
+(function() {
 
 zeit.content.article.Editable = gocept.Class.extend({
     // Inline editing module
