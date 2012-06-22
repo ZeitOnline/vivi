@@ -113,19 +113,21 @@
 
 zeit.cms.declare_namespace('zeit.content.article');
 
-// Initialize module library
 MochiKit.Signal.connect(
     window, 'cp-editor-loaded', function() {
+
+    // Initialize module library
     zeit.edit.library.create(
         'article-modules', context_url + '/editable-body', 'Artikel');
 
-    var form_element = jQuery('form[action$="@@edit.form.publish"]')[0];
+    // Update error messages and checkin button disabled status
+    var workflow_form = jQuery('form[action$="@@edit.form.publish"]')[0];
     MochiKit.Signal.connect(window, 'changed', function(form) {
-        if (form_element.form === form) {
+        if (workflow_form.form === form) {
             return;
         }
         MochiKit.Async.callLater(0.25, function() {
-            form_element.form.reload(); });
+            workflow_form.form.reload(); });
 
         jQuery('#article-editor-text').countedInput();
 
