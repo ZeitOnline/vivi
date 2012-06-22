@@ -100,6 +100,19 @@ class Review(object):
 
 
 @zope.component.adapter(
+    zeit.workflow.interfaces.IReview,
+    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
+def log_review_changes(workflow, event):
+    content = workflow.context
+    message = _('${name}: ${new_value}',
+                mapping=dict(name=event.field.title,
+                             old_value=event.old_value,
+                             new_value=event.new_value))
+    log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
+    log.log(content, message)
+
+
+@zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.workflow.interfaces.IRetractedEvent)
 def remove_from_channels_after_retract(context, event):
