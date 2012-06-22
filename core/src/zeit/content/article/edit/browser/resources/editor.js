@@ -24,25 +24,6 @@
         });
     };
 
-    $.fn.createLogExpander = function() {
-        var self = $(this);
-        if (self.find('br').length < 5) { return; }
-        var log  = self.children('.field:first')
-                       .css({'max-height': '7.5em', 'overflow': 'hidden'});
-        var expander = $('<button />').html('Log ausklappen').appendTo(self);
-        expander.addClass('log-expander');
-        expander.toggle(
-            function() {
-                log.css({'max-height': ''});
-                expander.html('Log einklappen');
-            },
-            function() {
-                log.css({'max-height': '7.5em'});
-                expander.html('Log ausklappen');
-            }
-        );
-    };
-
     $.fn.countedInput = function() {
         var self = $(this);
         var count = function() {
@@ -118,7 +99,7 @@ MochiKit.Signal.connect(
         'article-modules', context_url + '/editable-body', 'Artikel');
 
     // Update error messages and checkin button disabled status
-    var workflow_form = jQuery('form[action$="@@edit.form.publish"]')[0];
+    var workflow_form = $('form[action$="@@edit.form.publish"]')[0];
     MochiKit.Signal.connect(window, 'changed', function(form) {
         if (workflow_form.form === form) {
             return;
