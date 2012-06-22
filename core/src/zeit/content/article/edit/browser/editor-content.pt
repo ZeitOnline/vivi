@@ -9,6 +9,10 @@
   <script
     type="text/javascript"
     tal:attributes="
+    src string:${request/++resource++zeit.content.article.edit}/counter.js"></script>
+  <script
+    type="text/javascript"
+    tal:attributes="
     src string:${request/++resource++zeit.content.article.edit}/html.js"></script>
   <link
     rel="stylesheet" type="text/css"
