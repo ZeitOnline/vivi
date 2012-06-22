@@ -19,51 +19,47 @@
   
   <tal:tag tal:replace="structure string:<script type='text/javascript'>" />
 
-  GalleryDetails = (function () {
-    <tal:tag tal:replace="string:var entries=${view/entries}" />
-    
-    var pos = 0;
-    function change_img (index) {
-       pos = index
-       url = entries[pos].url;
-       img = $("#gallery_details_clickable img:first-child"); 
-       img.attr("src",url);
-
-       copy = entries[pos].copyrights;
-       copy_html = $("#gallery_details_clickable p");
-       copy_html.children().remove();
-       copy = $(copy).each(function(index,val){
-          html = $("<span></span>");
-          if (val[1] != null){
-             html = $("<a></a>");
-             html.attr("href",val[1]);
-          }
-          html.append(val[0]);
-          copy_html.append(html);
-       });
-       
-       $("#gallery_details_pos").text(pos+1);
-       $("#gallery_details_max").text(entries.length);
-
-
-    }
-
-    $("#gallery_details_prev").click(function(){
-     if (pos>0){ change_img(pos-1) }
-    });
-   
-    $("#gallery_details_next").click(function(){
-      if (pos < (entries.length-1)){ change_img(pos+1) }
-    });
-
-    return {
-       change_img : change_img
-       };
-    })(jQuery);
-    
-    $(GalleryDetails.change_img(0));
+    GalleryDetails = (function () {
+      <tal:tag tal:replace="string:var entries=${view/entries}" />
+      
+      var pos = 0;
+      
+      function change_img (index) {
+         pos = index
+         var url = entries[pos].url;
+         var img = $("#gallery_details_clickable img:first-child"); 
+         img.attr("src",url);
   
-
+         var copy = entries[pos].copyrights;
+         var copy_html = $("#gallery_details_clickable p");
+         copy_html.children().remove();
+         copy = $(copy).each(function(index,val){
+            html = $("<span></span>");
+            if (val[1] != null){
+               html = $("<a></a>");
+               html.attr("href",val[1]);
+            }
+            html.append(val[0]);
+            copy_html.append(html);
+         });
+         
+         $("#gallery_details_pos").text(pos+1);
+         $("#gallery_details_max").text(entries.length);
+      }
+  
+      $("#gallery_details_prev").click(function(){
+       if (pos>0){ change_img(pos-1) }
+      });
+     
+      $("#gallery_details_next").click(function(){
+        if (pos < (entries.length-1)){ change_img(pos+1) }
+      });
+  
+      return {
+         change_img : change_img
+         };
+      })(jQuery);
+      
+      $(GalleryDetails.change_img(0));
   <tal:tag tal:replace="structure string:</script>" />
-
 </div>
