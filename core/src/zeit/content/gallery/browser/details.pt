@@ -19,7 +19,7 @@
 
   <tal:tag tal:replace="structure string:<script type='text/javascript'>" />
 
-    GalleryDetails = (function () {
+    GalleryDetails = (function ($) {
       <tal:tag tal:replace="string:var entries=${view/entries}" />
 
       var pos = 0;
@@ -60,6 +60,6 @@
          };
       })(jQuery);
 
-      $(GalleryDetails.change_img(0));
+      GalleryDetails.change_img(0);
   <tal:tag tal:replace="structure string:</script>" />
 </div>
