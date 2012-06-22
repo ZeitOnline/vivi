@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.article.edit.browser.edit import SaveText, AutoSaveText
+import gocept.testing.mock
 import json
 import lxml.etree
 import lxml.objectify
@@ -20,6 +21,13 @@ class TextViewHelper(object):
 
     view_class = NotImplemented
 
+    def setUp(self):
+        super(TextViewHelper, self).setUp()
+        self.patches = gocept.testing.mock.Patches()
+        self.uuid = mock.Mock()
+        self.uuid.side_effect = lambda: self.uuid.call_count
+        self.patches.add('uuid.uuid4', self.uuid)
+
     def get_view(self, body=None):
         if body is None:
             body = ("<division><p>Para 1</p><p>Para 2</p></division>"
@@ -31,10 +39,7 @@ class TextViewHelper(object):
             division.set('type', 'page')
         body = zeit.content.article.edit.body.EditableBody(
             article, article.xml.body)
-        self.uuid = mock.Mock()
-        self.uuid.side_effect = lambda: self.uuid.call_count
-        with mock.patch('uuid.uuid4', new=self.uuid):
-            body.keys()
+        body.keys() # force uuid generation
         view = self.view_class()
         view.context = body
         view.request = mock.Mock()
@@ -43,8 +48,8 @@ class TextViewHelper(object):
         return view
 
 
-class SaveTextTest(zeit.content.article.testing.FunctionalTestCase,
-                   TextViewHelper):
+class SaveTextTest(TextViewHelper,
+                   zeit.content.article.testing.FunctionalTestCase):
 
     view_class = SaveText
 
@@ -63,8 +68,7 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase,
             dict(factory='p', text='Hinter'),
             dict(factory='p', text='den'),
             dict(factory='p', text='Wortbergen')]
-        with mock.patch('uuid.uuid4', new=self.uuid):
-            view.update()
+        view.update()
         self.assertEqual(['7', '8', '9', '4', '5', '6'],
                          view.context.keys())
 
@@ -75,8 +79,7 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase,
             dict(factory='p', text='Hinter'),
             dict(factory='p', text='den'),
             dict(factory='p', text='Wortbergen')]
-        with mock.patch('uuid.uuid4', new=self.uuid):
-            view.update()
+        view.update()
         self.assertEqual(['2', '3', '4', '5', '6', '7', '8', '9'],
                          view.context.keys())
 
@@ -87,8 +90,7 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase,
             dict(factory='p', text='Hinter'),
             dict(factory='p', text='den'),
             dict(factory='p', text='Wortbergen')]
-        with mock.patch('uuid.uuid4', new=self.uuid):
-            view.update()
+        view.update()
         self.assertEqual(['2', '3', '4', '5', '6', '7', '8', '9'],
                          view.context.keys())
 
@@ -109,21 +111,19 @@ class SaveTextTest(zeit.content.article.testing.FunctionalTestCase,
         view.request.form['paragraphs'] = ['2', '3']
         view.request.form['text'] = [
             dict(factory='iaminvalid', text='Hinter')]
-        with mock.patch('uuid.uuid4', new=self.uuid):
-            view.update()
+        view.update()
         self.assertEqual('p', view.context['7'].type)
 
     def test_wild_html_should_be_munged_into_paragraph(self):
         view = self.get_view()
         view.request.form['paragraphs'] = ['2', '3']
         view.request.form['text'] = [{'text': u'\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n', 'factory': 'div'}, {'text': '\n<a><strong></strong></a>', 'factory': 'p'}]
-        with mock.patch('uuid.uuid4', new=self.uuid):
-            view.update()
+        view.update()
         self.assertEqual('p', view.context['7'].type)
 
 
-class AutoSaveTextTest(zeit.content.article.testing.FunctionalTestCase,
-                       TextViewHelper):
+class AutoSaveTextTest(TextViewHelper,
+                       zeit.content.article.testing.FunctionalTestCase):
 
     view_class = AutoSaveText
 
@@ -134,8 +134,7 @@ class AutoSaveTextTest(zeit.content.article.testing.FunctionalTestCase,
             dict(factory='p', text='Hinter'),
             dict(factory='p', text='den'),
             dict(factory='p', text='Wortbergen')]
-        with mock.patch('uuid.uuid4', new=self.uuid):
-            view.update()
+        view.update()
         result = json.loads(view.render())
         self.assertEqual(['2', '3', '4'], result['data']['new_ids'])
 
