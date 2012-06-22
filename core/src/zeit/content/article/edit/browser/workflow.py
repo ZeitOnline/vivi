@@ -1,8 +1,9 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.workflow.interfaces import IReview
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+from zeit.workflow.interfaces import IReview
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.view
 import zeit.content.article.interfaces
@@ -87,6 +88,10 @@ class Checkin(zeit.cms.browser.view.Base):
     def published(self):
         publish_info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         return publish_info.published
+
+    @property
+    def is_new(self):
+        return IAutomaticallyRenameable(self.context).renameable
 
     def __call__(self, semantic_change=False):
         if self.request.method != 'POST':

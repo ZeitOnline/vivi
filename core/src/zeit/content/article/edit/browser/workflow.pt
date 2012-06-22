@@ -48,7 +48,8 @@
      id="retract"
      cms:cp-module='zeit.edit.LightBoxForm'
      tal:attributes="href string:${context/@@absolute_url}/@@retract.html"
-     tal:condition="python:view.published and view.can_checkout"
+     tal:condition="python:view.published and view.can_checkout
+                    and not view.is_new"
      i18n:translate="">Retract</a>
 
 </fieldset>
