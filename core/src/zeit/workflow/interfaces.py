@@ -114,11 +114,11 @@ class IPublicationDependencies(zope.interface.Interface):
 class IReview(zope.interface.Interface):
 
     edited = zope.schema.Bool(
-        title=_('status-edited', default=u'Edited'),
+        title=_('Edited'),
         default=False)
 
     corrected = zope.schema.Bool(
-        title=_('status-corrected', default=u'Corrected'),
+        title=_('Corrected'),
         default=False)
 
     urgent = zope.schema.Bool(
