@@ -43,6 +43,7 @@ alksdf
   <tal:tag tal:replace="structure string:</script>" />
 
 
+</div>
 
 <!-- Here all available data for further development...
 
@@ -70,6 +71,5 @@ Copyrights: <strong tal:content="view/copyrights" /><br><br>
 <strong tal:content="view/metadata/alignment" /><br>
 <strong tal:content="view/metadata/acquire_metadata" /><br>
 <strong tal:content="view/metadata/title" /><br>
-</div>
 
 -->
