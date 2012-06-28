@@ -1,0 +1,75 @@
+<script tal:condition="exists:request/testing"  
+  tal:attributes="src string:${request/++resource++jquery}/jquery-1.5.0.min.js" 
+  type="text/javascript">
+</script>
+
+
+
+<div class="content-details" i18n:domain="zeit.cms">
+
+<img tal:replace="structure context/@@preview/tag" />
+
+<button class="foldctrl" id="foldctrl_picture_information" style="display:block">Picture informations</button>
+<p tal:content="view/metadata/caption" class="picture_information" style="display:none">
+alksdf
+</p>
+
+
+
+  <tal:tag tal:replace="structure string:<script type='text/javascript'>" />
+
+    CaptionTroggle = (function ($) {
+
+      var start = 1;
+      function change_captionstate () {
+        if(start != 1) {
+          $(".picture_information").slideToggle("slow");
+        }
+        start = 0;
+      }
+        
+      $("#foldctrl_picture_information").click(function(){
+          change_captionstate();
+      });
+
+      return {
+        change_captionstate : change_captionstate
+      };
+
+    })(jQuery);
+
+    CaptionTroggle.change_captionstate();
+
+  <tal:tag tal:replace="structure string:</script>" />
+
+
+
+<!-- Here all available data for further development...
+
+<hr />
+<hr />
+<hr />
+<hr />
+
+
+
+<strong>--- WERTE ---</strong><br><br>
+Tag: <strong tal:content="view/tag" /><br>
+Width: <strong tal:content="view/width" /><br>
+Height: <strong tal:content="view/height" /><br>
+Copyrights: <strong tal:content="view/copyrights" /><br><br>
+--- META ---<br><br>
+<strong tal:content="view/metadata/title" /><br>
+<strong tal:content="view/metadata/year" /><br>
+<strong tal:content="view/metadata/volume" /><br>
+<strong tal:content="view/metadata/copyrights" /><br>
+<strong tal:content="view/metadata/alt" /><br>
+<strong tal:content="view/metadata/caption" /><br>
+<strong tal:content="view/metadata/alignment" /><br>
+<strong tal:content="view/metadata/links_to" /><br>
+<strong tal:content="view/metadata/alignment" /><br>
+<strong tal:content="view/metadata/acquire_metadata" /><br>
+<strong tal:content="view/metadata/title" /><br>
+</div>
+
+-->
