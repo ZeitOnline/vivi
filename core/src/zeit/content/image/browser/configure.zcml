@@ -276,4 +276,13 @@
     permission="zeit.Checkout"
     />
 
+  <browser:page
+    for="zeit.content.image.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="image-details"
+    class=".image.ImageView"
+    template="image-details.pt"
+    permission="zope.View"
+    />
+
 </configure>
