@@ -41,7 +41,7 @@ class Widget(grokcore.component.MultiAdapter,
         contents.append(self._emptyMarker())
         contents.append(('<script type="text/javascript">'
                          'new zeit.cms.tagging.Widget("{0}");'
-                        '</script').format(self.name))
+                        '</script>').format(self.name))
 
         return self._div(self.cssClass, "\n".join(contents), id=self.name)
 
