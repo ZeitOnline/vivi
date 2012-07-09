@@ -100,11 +100,21 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         self.container = container;
         self.url = url;
         self.events = [];
-        self.events.push(
-            MochiKit.Signal.connect(
-                self.container, 'onclick', self, self.handle_click));
+        self.bind(self.container, 'click', self.handle_click);
+        if (self.save_on_change) {
+            self.bind(self.container, 'change', self.mark_dirty);
+            self.bind(self.container, 'focusin', self.store_focus);
+            self.bind(self.container, 'focusout', self.fire_submit);
+        }
         self.form_events = [];
         self.reload();
+    },
+
+    bind: function(target, event, handler) {
+        var self = this;
+        handler = MochiKit.Base.bind(handler, self);
+        self.events.push([target, event, handler]);
+        jQuery(target).bind(event, handler);
     },
 
     reload: function() {
@@ -136,25 +146,72 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         var self = this;
         MochiKit.Signal.signal(self, 'close');
         while(self.events.length) {
-            MochiKit.Signal.disconnect(self.events.pop());
+            var item = self.events.pop();
+            jQuery(item[0]).unbind(item[1], item[2]);
         }
     },
 
     handle_click: function(event) {
         var self = this;
+        var target = event.target;
 
-        var target = event.target();
-        if (target.nodeName != 'INPUT') {
+        if (target.nodeName == 'INPUT' && target.type == 'button'
+            && MochiKit.DOM.hasElementClass(target, 'submit')) {
+            self.handle_submit(target.name);
+            event.stopPropagation();
+        }
+
+        if (self.save_on_change
+            && target.nodeName == 'INPUT' && target.type == 'checkbox') {
+            self.focus_node = target;
+            MochiKit.Async.callLater(0.25, function() {
+                // simulate blur
+                if (self.focus_node == target) {
+                    self.handle_submit();
+                }
+            });
+        }
+    },
+
+    mark_dirty: function(event) {
+        var self = this;
+        var target = event.target;
+
+        if (zeit.cms.in_array(
+            target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT'])) {
+            var outer = MochiKit.DOM.getFirstParentByTagAndClassName(
+                target, null, 'field');
+            MochiKit.DOM.addElementClass(outer, 'dirty');
+            if (target.nodeName == 'INPUT' && target.type == 'hidden') {
+                self.handle_submit();
+            }
+        }
+    },
+
+    store_focus: function(event) {
+        var self = this;
+        var target = event.target;
+        if (zeit.cms.in_array(
+            target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT'])) {
+            self.focus_node = target;
+        }
+    },
+
+    fire_submit: function(event) {
+        var self = this;
+        var target = event.target;
+        if (! zeit.cms.in_array(
+            target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT'])) {
             return;
         }
-        if (target.type != 'button') {
-            return;
-        }
-        if (! MochiKit.DOM.hasElementClass(target, 'submit')) {
-            return;
-        }
-        self.handle_submit(target.name);
-        event.stop();
+
+        self.focus_node = null;
+        MochiKit.Async.callLater(0.25, function() {
+            // Save iff nothing is focused after the timeout.
+            if (self.focus_node === null) {
+                self.handle_submit();
+            }
+        });
     },
 
     handle_submit: function(action) {
@@ -273,7 +330,6 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 'form', null, self.container);
         }
         self.rewire_submit_buttons();
-        self.wire_save_on_change();
         self.eval_javascript_tags();
     },
 
@@ -294,61 +350,9 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.form_events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
                 self.handle_submit();
-                event.stop();
+                event.stopPropagation();
             }));
         }
-    },
-
-    wire_save_on_change: function() {
-        var self = this;
-        if (!self.save_on_change) {
-            return;
-        }
-        forEach(MochiKit.Selector.findChildElements(
-            self.form, ['textarea', 'input', 'select']), function(node) {
-            if (node.nodeName == 'INPUT' && (
-                    node.type == 'button' ||
-                    MochiKit.DOM.hasElementClass(node, 'autocomplete'))) {
-                return;
-            }
-            if (node.nodeName == 'INPUT' && node.type == 'checkbox') {
-                self.form_events.push(MochiKit.Signal.connect(
-                    node, 'onclick', function(event) {
-                        self.focus_node = event.target();
-                        MochiKit.Async.callLater(0.25, function() {
-                            // simulate blur
-                            if (self.focus_node == event.target()) {
-                                self.handle_submit();
-                            }
-                        });
-                }));
-            } else {
-                self.form_events.push(MochiKit.Signal.connect(
-                    node, 'onfocus', function(event) {
-                        self.focus_node = event.target();
-                }));
-                self.form_events.push(MochiKit.Signal.connect(
-                    node, 'onblur', function(event) {
-                        self.focus_node = null;
-                        MochiKit.Async.callLater(0.25, function() {
-                            // Save iff nothing is focused after the timeout.
-                            if (self.focus_node === null) {
-                                self.handle_submit();
-                            }
-                        });
-                }));
-            }
-            self.form_events.push(MochiKit.Signal.connect(
-               node, 'onchange', function(event) {
-                    var outer = MochiKit.DOM.getFirstParentByTagAndClassName(
-                        event.target(), null, 'field');
-                    MochiKit.DOM.addElementClass(outer, 'dirty');
-                    if (event.target().nodeName == 'INPUT' &&
-                        event.target().type == 'hidden') {
-                        self.handle_submit();
-                    }
-            }));
-        });
     },
 
     eval_javascript_tags: function() {
@@ -372,12 +376,13 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
         }
         self.lightbox = self.create_lightbox(container);
         arguments.callee.$.construct.call(self, url, self.lightbox.content_box);
-        self.events.push(
+        self.mochi_events = [];
+        self.mochi_events.push(
             MochiKit.Signal.connect(
                 window, 'zeit.cms.LightboxReload', function(event) {
                 self.loading();
             }));
-        self.events.push(
+        self.mochi_events.push(
             MochiKit.Signal.connect(
                 self.lightbox, 'before-close', self, self.close));
     },
@@ -403,6 +408,9 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
     close: function() {
         var self = this;
         arguments.callee.$.close.call(self);
+         while(self.mochi_events.length) {
+             MochiKit.Signal.disconnect(self.mochi_events.pop());
+         }
         self.lightbox.close();
     }
 });
