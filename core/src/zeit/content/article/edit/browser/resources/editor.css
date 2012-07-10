@@ -662,7 +662,8 @@ form[action$="asset-badges"] fieldset legend {
 }
 
 /*...except of some special checkboxes....*/
-input#form\.confirmed_duplicate {
+input#form\.confirmed_duplicate,
+.fieldname-keywords .checkboxType {
   position:relative;
   top: 0px;
 }
