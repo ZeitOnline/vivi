@@ -6,13 +6,13 @@
 
     zeit.cms.tagging.Widget = gocept.Class.extend({
 
-        construct: function(id) {
+        construct: function(id, tags) {
             var self = this;
             self.id = id;
             self.list = $(id + ".list");
             self.empty_marker = jQuery(
                 'input[name="' + id + '-empty-marker"]')[0];
-            self._sortable();
+            self.populate_keywords(tags);
             MochiKit.Signal.connect(id, 'onclick', self, self.handle_click);
         },
 
@@ -39,32 +39,35 @@
             }
         },
 
+        populate_keywords: function(tags) {
+            var self = this;
+            var id;
+            self.list.innerHTML = '';
+            for(var i=0; i<tags.length; i++) {
+                id = self.id + "." + i;
+                tag = tags[i];
+                var input_attrs = {
+                    name: self.id,
+                    id: id,
+                    type: 'checkbox',
+                    value: tag.code};
+               if (!tag.disabled) {
+                    input_attrs['checked'] = 'checked';
+                }
+                self.list.appendChild(LI(
+                    {}, LABEL({}, INPUT(input_attrs), nbsp, tag.label)));
+            }
+            self._sortable();
+        },
+
         update_tags: function() {
             var self = this;
             var d = MochiKit.Async.doXHR('@@update_tags', {method: 'POST'});
             MochiKit.DOM.addElementClass(self.list, 'busy');
             d.addCallback(function(result) {
                 var json = MochiKit.Async.evalJSONRequest(result);
-                var id;
-                self.list.innerHTML = '';
-                for(var i=0; i<json.tags.length; i++) {
-                    id = self.id + "." + i;
-                    tag = json.tags[i];
-                    var input_attrs = {
-                        name: self.id,
-                        id: id,
-                        type: 'checkbox',
-                        value: tag.code};
-                   if (!tag.disabled) {
-                        input_attrs['checked'] = 'checked';
-                    }
-                    self.list.appendChild(
-                        LI({}, LABEL({},
-                                     INPUT(input_attrs),
-                                     nbsp, tag.label)));
-                }
-            self._sortable();
-            return result;
+                self.populate_keywords(json.tags);
+                return result;
             });
             d.addBoth(function(result_or_error) {
                 MochiKit.DOM.removeElementClass(self.list, 'busy');

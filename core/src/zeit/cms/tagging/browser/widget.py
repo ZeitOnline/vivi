@@ -1,9 +1,10 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zc.resourcelibrary
 import grokcore.component
+import json
 import xml.sax.saxutils
+import zc.resourcelibrary
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.tagging.interfaces
@@ -39,23 +40,24 @@ class Widget(grokcore.component.MultiAdapter,
             id="{0}.update".format(self.name)))
         contents.append(self._div('value', self.renderValue(value)))
         contents.append(self._emptyMarker())
-        contents.append(('<script type="text/javascript">'
-                         'new zeit.cms.tagging.Widget("{0}");'
-                        '</script>').format(self.name))
+        contents.append("""\
+<script type="text/javascript">
+ var widget = new zeit.cms.tagging.Widget(
+ "{name}", {tags});
+</script>
+""".format(name=self.name,
+           tags=json.dumps(self.renderItems(value)),
+           ))
 
         return self._div(self.cssClass, "\n".join(contents), id=self.name)
 
     def renderValue(self, value):
-        rendered_items = self.renderItems(value)
-        return u'<ol id={1}>{0}</ol>'.format(
-            ''.join(rendered_items),
+        return u'<ol id={0}></ol>'.format(
             xml.sax.saxutils.quoteattr(self.name + ".list"))
 
     def _renderItem(self, index, text, value, name, cssClass, checked=False):
         """Render an item of the list."""
-        return u'<li>{0}</li>'.format(
-            super(Widget, self)._renderItem(
-                index, text, value, name, cssClass, checked=checked))
+        return dict(code=value, label=text)
 
 
 class UpdateTags(zeit.cms.browser.view.JSON):
