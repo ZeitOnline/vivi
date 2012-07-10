@@ -1,8 +1,11 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.testing
+import gocept.testing.mock
+import mock
 import zeit.cms.tagging.testing
+import zeit.cms.testing
+import zope.app.appsetup.product
 
 
 class TestWidget(zeit.cms.testing.SeleniumTestCase,
@@ -70,3 +73,16 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase,
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
         s.assertChecked('id=form.keywords.0')
+
+    def test_configured_number_of_items_is_marked(self):
+        with mock.patch(
+            'zeit.cms.tagging.interfaces.KeywordConfiguration.keywords_shown',
+            gocept.testing.mock.Property()) as keywords_shown:
+            keywords_shown.return_value = 2
+
+            self.setup_tags('t1', 't2', 't3')
+            self.open_content()
+            s = self.selenium
+            s.click('css=a[href="#update_tags"]')
+            s.waitForCssCount('css=.fieldname-keywords li.not-shown', 1)
+            s.waitForCssCount('css=.fieldname-keywords li.shown', 2)

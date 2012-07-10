@@ -181,6 +181,7 @@ cms_product_config = string.Template("""\
   suggest-keyword-email-address none@testing
   suggest-keyword-real-name Dr. No
   whitelist-url file://${base}/tagging/tests/whitelist.xml
+  keyword-configuration file://${base}/tagging/tests/keywords_config.xml
   breadcrumbs-use-common-metadata true
 </product-config>
 """).substitute(

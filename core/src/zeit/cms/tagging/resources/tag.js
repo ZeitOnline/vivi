@@ -6,9 +6,10 @@
 
     zeit.cms.tagging.Widget = gocept.Class.extend({
 
-        construct: function(id, tags) {
+        construct: function(id, keywords_shown, tags) {
             var self = this;
             self.id = id;
+            self.keywords_shown = keywords_shown;
             self.list = $(id + ".list");
             self.empty_marker = jQuery(
                 'input[name="' + id + '-empty-marker"]')[0];
@@ -54,8 +55,14 @@
                if (!tag.disabled) {
                     input_attrs['checked'] = 'checked';
                 }
+                var attrs = {};
+                if (i < self.keywords_shown) {
+                    attrs['class'] = 'shown';
+                } else {
+                    attrs['class'] = 'not-shown';
+                }
                 self.list.appendChild(LI(
-                    {}, LABEL({}, INPUT(input_attrs), nbsp, tag.label)));
+                    attrs, LABEL({}, INPUT(input_attrs), nbsp, tag.label)));
             }
             self._sortable();
         },

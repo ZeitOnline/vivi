@@ -679,3 +679,11 @@ table.properties textarea {
   color: #ddd;
   float: right;
 }
+
+.not-shown {
+    color: #666666;
+}
+
+.shown {
+    border-right: 3px solid #999999;
+}

@@ -43,11 +43,13 @@ class Widget(grokcore.component.MultiAdapter,
         contents.append("""\
 <script type="text/javascript">
  var widget = new zeit.cms.tagging.Widget(
- "{name}", {tags});
+ "{name}", {keywords_shown}, {tags});
 </script>
-""".format(name=self.name,
-           tags=json.dumps(self.renderItems(value)),
-           ))
+""".format(
+name=self.name,
+keywords_shown=zeit.cms.tagging.interfaces.KEYWORD_CONFIGURATION.keywords_shown,
+tags=json.dumps(self.renderItems(value)),
+))
 
         return self._div(self.cssClass, "\n".join(contents), id=self.name)
 

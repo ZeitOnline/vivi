@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zc.sourcefactory.source
+import zeit.cms.content.sources
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema.interfaces
@@ -84,3 +85,23 @@ class IWhitelistSource(zope.schema.interfaces.IIterableSource):
 
 
 ID_NAMESPACE = 'tag://'
+
+
+class KeywordConfigurationHelper(zeit.cms.content.sources.SimpleXMLSource):
+
+    config_url = 'keyword-configuration'
+
+    def getValues(self):
+        tree = self._get_tree()
+        return [int(tree.xpath('/keywords/article/display_num')[0].text)]
+
+_KEYWORD_CONFIG_HELPER = KeywordConfigurationHelper()
+
+
+class KeywordConfiguration(object):
+
+    @property
+    def keywords_shown(self):
+        return list(_KEYWORD_CONFIG_HELPER)[0]
+
+KEYWORD_CONFIGURATION = KeywordConfiguration()
