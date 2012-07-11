@@ -2,6 +2,16 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser">
 
+  <resourceLibrary
+    name="zeit.cms.tagger"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    require="zeit.cms.javascript.base">
+    <directory
+      source="resources"
+      include="tag.js"
+      />
+  </resourceLibrary>
+
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

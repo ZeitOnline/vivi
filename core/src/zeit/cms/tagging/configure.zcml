@@ -2,16 +2,6 @@
 
   <include package=".browser" />
 
-  <resourceLibrary
-    name="zeit.cms.tagger"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    require="zeit.cms.javascript.base">
-    <directory
-      source="resources"
-      include="tag.js"
-      />
-  </resourceLibrary>
-
   <class class=".tag.Tag">
     <require
       interface="zeit.cms.tagging.interfaces.ITag"
