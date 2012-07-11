@@ -5,6 +5,7 @@
 from unittest2 import skip
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zeit.content.article.edit.browser.testing
 import zeit.content.article.testing
 
 
@@ -176,7 +177,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.assert_widget_text('assets.related', '*testcontent*')
 
 
-class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
+class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
 
     @skip('KeywordWidget is kind of broken,'
@@ -194,3 +195,15 @@ class KeywordTest(zeit.content.article.testing.SeleniumTestCase,
         self.assertEqual(
             ['t2', 't1', 't3'],
             list(self.tagger().updateOrder.call_args[0][0]))
+
+    def test_helptext_should_be_shown_for_new_article(self):
+        self.add_article()
+        s = self.selenium
+        s.waitForElementPresent('id=metadata-a.keywords')
+        s.assertTextPresent('Only the first 6 keywords are shown')
+
+    def test_helptext_should_not_be_shown_for_existing_article(self):
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s = self.selenium
+        s.waitForElementPresent('id=metadata-a.keywords')
+        s.assertNotTextPresent('Only the first 6 keywords are shown')

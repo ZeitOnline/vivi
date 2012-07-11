@@ -4,6 +4,7 @@
 from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
@@ -201,6 +202,11 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'ressort', 'sub_ressort', 'keywords')
+
+    def setUpWidgets(self, *args, **kw):
+        super(MetadataA, self).setUpWidgets(*args, **kw)
+        if IAutomaticallyRenameable(self.context).renameable:
+            self.widgets['keywords'].show_helptext = True
 
     def render(self):
         result = super(MetadataA, self).render()
