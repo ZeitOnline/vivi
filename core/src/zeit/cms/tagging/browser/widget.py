@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.tagging.interfaces import KEYWORD_CONFIGURATION
 import grokcore.component
 import json
 import xml.sax.saxutils
@@ -30,8 +31,9 @@ class Widget(grokcore.component.MultiAdapter,
         zope.formlib.interfaces.IInputWidget)
 
     def __call__(self):
-        """See IBrowserWidget."""
-        zc.resourcelibrary.need('zeit.cms.tagger')
+        # adapted from zope.formlib.itemswidgets.ItemsEditWidgetBase to
+        # - Add update button
+        # - Add id and extra css class to our outer div
         value = self._getFormValue()
         contents = []
 
@@ -40,24 +42,26 @@ class Widget(grokcore.component.MultiAdapter,
             id="{0}.update".format(self.name)))
         contents.append(self._div('value', self.renderValue(value)))
         contents.append(self._emptyMarker())
-        contents.append("""\
-<script type="text/javascript">
- var widget = new zeit.cms.tagging.Widget(
- "{name}", {keywords_shown}, {tags});
-</script>
-""".format(
-name=self.name,
-keywords_shown=zeit.cms.tagging.interfaces.KEYWORD_CONFIGURATION.keywords_shown,
-tags=json.dumps(self.renderItems(value)),
-))
 
         return self._div(
             self.cssClass + ' keyword-widget',
             "\n".join(contents), id=self.name)
 
     def renderValue(self, value):
-        return u'<ol id={0}></ol>'.format(
+        zc.resourcelibrary.need('zeit.cms.tagger')
+        list_container = u'<ol id={0}></ol>'.format(
             xml.sax.saxutils.quoteattr(self.name + ".list"))
+        javascript = """\
+<script type="text/javascript">
+ var widget = new zeit.cms.tagging.Widget(
+ "{name}", {keywords_shown}, {tags});
+</script>
+""".format(
+name=self.name,
+keywords_shown=KEYWORD_CONFIGURATION.keywords_shown,
+tags=json.dumps(self.renderItems(value)),
+        )
+        return list_container + javascript
 
     def _renderItem(self, index, text, value, name, cssClass, checked=False):
         """Render an item of the list."""
