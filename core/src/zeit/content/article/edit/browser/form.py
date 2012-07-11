@@ -16,16 +16,15 @@ import zope.formlib.form
 import zope.formlib.interfaces
 
 
-class DiverFormGroup(zeit.edit.browser.form.DiverFormGroup):
-    """ Contains  """
+class MemoFormGroup(zeit.edit.browser.form.FormGroup):
 
-    title = _('Diver')
+    title = u''
 
 
-class MemoDiver(zeit.edit.browser.form.DiverForm):
+class Memo(zeit.edit.browser.form.InlineForm):
 
-    legend = _('Memo')
-    prefix = 'memo-diver'
+    legend = u''
+    prefix = 'memo'
     undo_description = _('edit memo')
 
     form_fields = zope.formlib.form.FormFields(

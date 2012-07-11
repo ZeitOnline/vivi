@@ -21,12 +21,12 @@ class MemoTest(zeit.cms.testing.BrowserTestCase):
                 self.repository['article'] = Article()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
-               '/article/@@edit.form.memo-diver?show_form=1')
+               '/article/@@edit.form.memo?show_form=1')
         b.getControl('Memo').value = 'foo bar baz'
         b.getControl('Apply').click()
         # reload() forgets the query-paramter, sigh.
         b.open('http://localhost/++skin++vivi/repository'
-               '/article/@@edit.form.memo-diver?show_form=1')
+               '/article/@@edit.form.memo?show_form=1')
         self.assertEqual('foo bar baz', b.getControl('Memo').value)
 
 

@@ -296,68 +296,6 @@ span.charcount {
   display: none;
 }
 
-
-/* Diver */
-
-#edit-form-diver fieldset {
-  margin: 0;
-  padding: 10px;
-}
-
-#edit-form-diver #memo-diver\.memo\.preview,
-#edit-form-diver #memo-diver\.memo\.preview #edit-form-diver > * {
-  height: 9em;
-}
-
-#edit-form-diver textarea, 
-#edit-form-diver p {
-  background: none;
-  border: none;
-  font-size: 12px;
-  height: 9em;
-  margin-top: -1em;
-  width: 100%;
-  padding: 0px;
-}
-
-#memo-diver {
-  background: #FFF799;
-  border-bottom: 1px solid #CCC;
-  display: none;
-}
-
-#memo-diver label {
-  visibility: hidden;
-}
-
-#edit-form-diver h2 {
-  border-bottom: 1px dotted #999999;
-  color: #999999;
-  display: block;
-  font-weight: normal;
-  margin-bottom: 5px;
-  width: 100%;
-  text-transform: none;
-}
-
-.diver-bar span {
-    background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 12px 7px white;
-    border: 1px solid #CCCCCC;
-    color: #AAA;
-    cursor: pointer;
-    display: block;
-    height: 12px;
-    margin: 11px;
-    padding: 5px 30px;
-    -moz-appearance: textfield;
-    -webkit-appearance: textfield;
-    background-color: -moz-field;
-    border: 1px solid darkgray;
-    box-shadow: 1px 1px 1px 0 lightgray inset;
-    font: -moz-field;
-    font: -webkit-small-control;
-}
-
 /*
 #article-editor-text .editing p:last-child,
 #article-editor-text .editing ol:last-child,

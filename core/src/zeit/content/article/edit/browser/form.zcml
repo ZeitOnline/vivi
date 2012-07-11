@@ -4,15 +4,15 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
-  <!-- diver -->
+  <!-- memo -->
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="diver"
-    class=".form.DiverFormGroup"
+    name="memo"
+    class=".form.MemoFormGroup"
     permission="zope.View"
     weight="1"
     />
@@ -20,9 +20,9 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.DiverFormGroup"
+    view=".form.MemoFormGroup"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.memo-diver"
+    name="edit.form.memo"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="10"
@@ -31,8 +31,8 @@
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.memo-diver"
-    class=".form.MemoDiver"
+    name="edit.form.memo"
+    class=".form.Memo"
     permission="zope.View"
     />
 
