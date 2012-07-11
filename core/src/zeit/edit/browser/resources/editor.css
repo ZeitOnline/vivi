@@ -105,27 +105,6 @@
   border: 0px solid #ffffff;
 }
 
-#options-diver {
-  background: #FFF;
-  border-bottom: 1px solid #CCC;
-  display: none;
-}
-
-#options-diver .widget {
-  clear: none;
-}
-
-#options-diver-button {
-  background: none repeat scroll 0 0 #FFFFFF;
-  color: #666666;
-  right: 20px;
-}
-
-.diver-bar {
-  padding-bottom: 35px;
-  position: relative;
-}
-
 .tab-content > .context-views > ul > li.selected > a {
   background: #EEF3F7;
   border-bottom: 1px solid #EEF3F7;
