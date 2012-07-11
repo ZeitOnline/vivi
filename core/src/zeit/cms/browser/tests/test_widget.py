@@ -655,11 +655,11 @@ class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_renders_both_textarea_and_preview(self):
         self.widget.setRenderedValue('foo bar baz')
-        self.assertEllipsis("""\
+        self.assertEllipsis("""...
 <textarea...id="field.foo"...>foo bar baz</textarea>...
 <div...id="field.foo.preview"...><p>foo bar baz</p> </div>
-<script...new zeit.cms.RestructuredTextWidget('field.foo'); </script>""",
-                            self.widget())
+<script...new zeit.cms.RestructuredTextWidget('field.foo'); </script>
+...""", self.widget())
 
     def test_text_starting_with_http_is_rendered_as_link(self):
         self.widget.setRenderedValue('foo http://example.com bar')

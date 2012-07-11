@@ -30,7 +30,7 @@ zeit.cms.RestructuredTextWidget = gocept.Class.extend({
         });
 
         if (! self.preview.text()) {
-            self.preview.text('(hier Text eingeben)');
+            self.preview.addClass('empty');
         }
     }
 

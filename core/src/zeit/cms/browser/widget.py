@@ -459,11 +459,13 @@ def CheckboxDisplayWidget(context, request):
 
 
 RST_TEMPLATE = """\
+<div class="rst-widget">
 %(textarea)s
-<div id="%(id)s.preview" style="white-space: pre-wrap">%(rendered)s</div>
+<div id="%(id)s.preview" class="rst-preview">%(rendered)s</div>
 <script type="text/javascript">
 new zeit.cms.RestructuredTextWidget('%(id)s');
 </script>
+</div>
 """
 
 

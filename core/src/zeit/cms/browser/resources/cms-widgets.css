@@ -720,3 +720,11 @@ table.properties textarea {
 .keyword-widget label:hover {
     background-position: 1px -448px;
 }
+
+.rst-preview {
+    white-space: pre-wrap;
+}
+
+.rst-preview.empty:before {
+    content: "(hier Text eingeben)";
+}
