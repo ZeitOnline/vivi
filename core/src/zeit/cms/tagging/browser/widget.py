@@ -37,11 +37,11 @@ class Widget(grokcore.component.MultiAdapter,
         value = self._getFormValue()
         contents = []
 
-        contents.append(self._div(
-            'update', '<a href="#update_tags">Update tags</a>',
-            id="{0}.update".format(self.name)))
         contents.append(self._div('value', self.renderValue(value)))
         contents.append(self._emptyMarker())
+        contents.append(self._div(
+            'update', '<a class="button" href="#update_tags">Update tags</a>',
+            id="{0}.update".format(self.name)))
 
         return self._div(
             self.cssClass + ' keyword-widget',
