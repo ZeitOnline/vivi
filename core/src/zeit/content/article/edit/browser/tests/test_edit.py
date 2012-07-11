@@ -441,9 +441,7 @@ class TestLinkEditing(
         s.click('xpath=//a[@href="insert_link"]')
         # We need to scroll the inner "frame" to top, otherwise dragging will
         # get confused:
-        s.getEval(
-            "this.browserbot.findElement('css=.diver-bar')."
-            "   scrollIntoView(true)")
+        self.eval("document.getElementById('cp-content-inner').scrollTop = 0;")
         s.dragAndDropToObject(
             'css=#breadcrumbs li:last a', 'css=.link_input')
         s.assertValue(
