@@ -4,7 +4,6 @@
        tal:attributes="id block_id"
        i18n:domain="zeit.cms"
        xmlns:cms="http://namespaces.gocept.com/zeit-cms">
-    <h1 id="editorpagetitle" i18n:translate="">Article editor</h1>
     <div class="block-inner">
       <tal:block replace="structure provider:zeit.edit.contents" />
     </div>
