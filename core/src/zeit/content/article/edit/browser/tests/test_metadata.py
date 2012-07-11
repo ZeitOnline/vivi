@@ -180,8 +180,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
 class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
 
-    @skip('KeywordWidget is kind of broken,'
-          ' postponed until the corresponding milestone')
+    @skip("no d'n'd 'til webdriver")
     def test_sorting_should_trigger_write(self):
         s = self.selenium
         self.setup_tags('t1', 't2', 't3')
