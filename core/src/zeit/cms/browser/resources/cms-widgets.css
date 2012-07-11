@@ -680,10 +680,11 @@ table.properties textarea {
   float: right;
 }
 
-.not-shown {
+.keyword-widget .not-shown {
     color: #666666;
 }
 
-.shown {
+.keyword-widget .shown {
     border-right: 3px solid #999999;
 }
+

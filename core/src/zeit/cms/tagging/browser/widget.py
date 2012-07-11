@@ -51,7 +51,9 @@ keywords_shown=zeit.cms.tagging.interfaces.KEYWORD_CONFIGURATION.keywords_shown,
 tags=json.dumps(self.renderItems(value)),
 ))
 
-        return self._div(self.cssClass, "\n".join(contents), id=self.name)
+        return self._div(
+            self.cssClass + ' keyword-widget',
+            "\n".join(contents), id=self.name)
 
     def renderValue(self, value):
         return u'<ol id={0}></ol>'.format(
