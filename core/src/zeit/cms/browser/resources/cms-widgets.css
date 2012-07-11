@@ -688,3 +688,35 @@ table.properties textarea {
     border-right: 3px solid #999999;
 }
 
+.keyword-widget ol {
+    list-style: none;
+    padding-left: 0;
+    border-top: 1px solid #dddddd;
+}
+
+.keyword-widget li {
+    clear: both;
+    cursor: default;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #dddddd;
+    width: 100%;
+}
+
+.keyword-widget input {
+    display: none;
+}
+
+.keyword-widget label.icon {
+    display: block;
+    float: right;
+    width: 14px;
+    height: 14px;
+    margin-left: 1em;
+    padding-top: 0px;
+    background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -418px transparent;
+}
+
+.keyword-widget label:hover {
+    background-position: 1px -448px;
+}

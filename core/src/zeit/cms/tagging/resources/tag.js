@@ -62,8 +62,10 @@
                     attrs['class'] = 'not-shown';
                 }
                 self.list.appendChild(LI(
-                    attrs, LABEL({}, INPUT(input_attrs), nbsp, tag.label)));
+                    attrs, LABEL({'class': 'icon'}, INPUT(input_attrs)),
+                    tag.label));
             }
+            jQuery(self.list).css('width', jQuery(self.list).width() + 'px');
             self._sortable();
         },
 

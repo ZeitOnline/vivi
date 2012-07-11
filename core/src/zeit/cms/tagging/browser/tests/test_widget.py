@@ -5,7 +5,6 @@ import gocept.testing.mock
 import mock
 import zeit.cms.tagging.testing
 import zeit.cms.testing
-import zope.app.appsetup.product
 
 
 class TestWidget(zeit.cms.testing.SeleniumTestCase,
@@ -47,7 +46,7 @@ class TestWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click("xpath=//li/label[contains(., 't1')]")
+        s.click("xpath=//li[contains(., 't1')]/label")
         s.clickAndWait('name=form.actions.apply')
         self.assertNotIn('t1', self.tagger())
         self.assertIn('t2', self.tagger())
