@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.tagging.interfaces import KEYWORD_CONFIGURATION
 import grokcore.component
 import json
@@ -30,6 +31,8 @@ class Widget(grokcore.component.MultiAdapter,
     grokcore.component.provides(
         zope.formlib.interfaces.IInputWidget)
 
+    show_helptext = False
+
     def __call__(self):
         # adapted from zope.formlib.itemswidgets.ItemsEditWidgetBase to
         # - Add update button
@@ -42,6 +45,12 @@ class Widget(grokcore.component.MultiAdapter,
         contents.append(self._div(
             'update', '<a class="button" href="#update_tags">Update tags</a>',
             id="{0}.update".format(self.name)))
+        if self.show_helptext:
+            contents.append(self._div(
+                'help', self.translate(
+                _('Only the first ${keywords_shown} keywords'
+                  ' are shown with the article.', mapping=dict(
+                keywords_shown=KEYWORD_CONFIGURATION.keywords_shown)))))
 
         return self._div(
             self.cssClass + ' keyword-widget',
