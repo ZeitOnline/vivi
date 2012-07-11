@@ -11,21 +11,10 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="memo"
-    class=".form.MemoFormGroup"
-    permission="zope.View"
-    weight="1"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MemoFormGroup"
-    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.memo"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="10"
+    weight="1"
     />
 
   <browser:page
