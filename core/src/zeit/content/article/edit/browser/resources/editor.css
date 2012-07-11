@@ -879,34 +879,7 @@ form[action$="zeit.content.author.add_contextfree"] .summary {
   font-weight:bold;
 }
 
-/* title for editorpage */
-
-/* quick and dirty - to prevent that the title is displayed in other areas */
-#editor-forms h1 {
-  display:none;
-}
-
-#editor-forms #edit-form-filename h1 {
-  display:block;
-}
-
-h1#editorpagetitle {
-  font-size: 17px;
-  font-weight: normal;
-  height: 35px;
-  line-height: 35px;
-  margin-bottom: 23px;
-  margin-left: 11px;
-  margin-top: -22px;
-  padding-left: 13px;
-  padding-top: 0px;
-  padding-bottom:0px;
-  width: 50%;
-}
-
-.article-editor-inner  #edit-form-filename {
-  margin-top:0px;
-}
+/* misc */
 
 #edit-form-filename form[action$="edit.form.new-filename"] fieldset {
   margin-left:4px
