@@ -2,9 +2,10 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.workflow.interfaces import IReview
 from zeit.content.article.article import Article
+from zeit.workflow.interfaces import IReview
 import mock
+import unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 
@@ -146,3 +147,21 @@ class Delete(zeit.cms.testing.BrowserTestCase):
                'online/2007/01/Somalia/@@edit.form.checkin?show_form=1')
         self.assertNothingRaised(b.getLink, 'Delete')
         self.assertNotIn('Cancel', b.contents)
+
+
+@unittest.skip('FF shows an HTTP auth dialog for no reason')
+class Objectlog(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def test_objectlog_is_wrapped(self):
+        # this is a sanity check that the views are wired up correctly
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                article = zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+                zeit.objectlog.interfaces.ILog(article).log('example message')
+        self.open(
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/')
+        s = self.selenium
+        s.waitForElementPresent('css=div.objectlog table.objectlog')
+        s.assertText('css=div.objectlog table.objectlog', '*example message*')
