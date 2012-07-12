@@ -18,6 +18,14 @@
     type="text/javascript"
     tal:attributes="
     src string:${request/++resource++zeit.content.article.edit}/html.js"></script>
+  <script
+    type="text/javascript"
+    tal:attributes="
+    src string:${request/++resource++zeit.content.article.edit}/strftime.js"></script>
+  <script
+    type="text/javascript"
+    tal:attributes="
+    src string:${request/++resource++zeit.content.article.edit}/timer.js"></script>
   <link
     rel="stylesheet" type="text/css"
     tal:attributes="

@@ -4,8 +4,9 @@
 
 from zeit.content.article.article import Article
 from zeit.workflow.interfaces import IReview
+import datetime
 import mock
-import unittest
+import unittest2 as unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 
@@ -46,6 +47,23 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
             b.getControl(name='semantic_change').controls[0].selected = True
             b.getControl('Save').click()
             checkin.assert_called_with(semantic_change=True)
+
+
+class CheckinSelenium(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def test_checkin_form_shows_current_timestamp(self):
+        s = self.selenium
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s.waitForElementPresent('css=.timer')
+        s.waitForNotText('css=.timer', '')
+        date_format = '%d.%m.%Y %H:%Mh'
+        timestamp = datetime.datetime.now().strftime(date_format)
+        if s.getText('css=.timer') != timestamp:
+            # the minute has just changed, so we repeat with an updated
+            # timestamp but don't expect this to happen again anytime soon
+            timestamp = datetime.datetime.now().strftime(date_format)
+            s.assertText('css=.timer', timestamp)
 
 
 class WorkflowEndToEnd(
