@@ -458,23 +458,16 @@ def CheckboxDisplayWidget(context, request):
     return widget
 
 
-RST_TEMPLATE = """\
-<div class="rst-widget">
-%(textarea)s
-<div id="%(id)s.preview" class="rst-preview">%(rendered)s</div>
-<script type="text/javascript">
-new zeit.cms.RestructuredTextWidget('%(id)s');
-</script>
-</div>
-"""
-
-
 class RestructuredTextWidget(zope.formlib.textwidgets.TextAreaWidget):
 
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'rst-widget.pt')
+
     def __call__(self):
-        textarea = super(RestructuredTextWidget, self).__call__()
-        rendered = docutils.core.publish_parts(
+        self.textarea = super(RestructuredTextWidget, self).__call__()
+        return self.template()
+
+    @property
+    def rendered_content(self):
+        return docutils.core.publish_parts(
             self._getFormValue(), writer_name='html')['fragment']
-        return RST_TEMPLATE % dict(textarea=textarea,
-                                   id=self.name,
-                                   rendered=rendered)
