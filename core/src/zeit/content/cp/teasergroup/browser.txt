@@ -27,14 +27,14 @@ Create a teaserblock with a few teasers:
 >>> import json
 >>> import pprint
 >>> result = json.loads(browser.contents)
->>> pprint.pprint(result)
-{u'signals': [{u'args': [u'cbbf6f19-58b9-4cbb-926b-e3fb521e4900'],
-              u'name': u'added',
-              u'when': u'after-reload'},
-             {u'args': [u'lead',
-                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
-              u'name': u'reload',
-              u'when': None}]}
+>>> pprint.pprint(result['signals'])
+[{u'args': [u'cbbf6f19-58b9-4cbb-926b-e3fb521e4900'],
+  u'name': u'added',
+  u'when': u'after-reload'},
+ {u'args': [u'lead',
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+  u'name': u'reload',
+  u'when': None}]
 >>> uuid = result['signals'][0]['args'][0]
 >>> browser.open(contents_url)
 >>> browser.open('lead/%s/@@drop?uniqueId=http://xml.zeit.de/c2' % uuid)
@@ -103,5 +103,9 @@ It is also possible to drop a teaser group onto a teaser block:
 >>> browser.open(
 ...     'lead/%s/@@drop?uniqueId=teasergroup://c1%%2C%%20c2%%20and%%20c3' % 
 ...     uuid)
->>> print browser.contents
-{"signals": [{"args": ["<GUID>", "http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>/@@contents"], "when": null, "name": "reload"}]}
+>>> result = json.loads(browser.contents)
+>>> pprint.pprint(result['signals'])
+[{u'args': [u'<GUID>',
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/<GUID>/@@contents'],
+  u'name': u'reload',
+  u'when': None}]

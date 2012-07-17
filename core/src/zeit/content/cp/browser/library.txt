@@ -76,14 +76,14 @@ information about the created block:
 ...              'island/informatives/@@landing-zone-drop-module'
 ...              '?block_type=cpextra')
 >>> result = json.loads(browser.contents)
->>> pprint.pprint(result)
-{u'signals': [{u'args': [u'7ccff7a0-3758-416c-ad30-d0183a2543fd'],
-              u'name': u'added',
-              u'when': u'after-reload'},
-             {u'args': [u'informatives',
-                       u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
-              u'name': u'reload',
-              u'when': None}]}
+>>> pprint.pprint(result['signals'])
+[{u'args': [u'7ccff7a0-3758-416c-ad30-d0183a2543fd'],
+  u'name': u'added',
+  u'when': u'after-reload'},
+ {u'args': [u'informatives',
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
+  u'name': u'reload',
+  u'when': None}]
 >>> print browser.headers
 Status: 200 Ok
 Content-Length: ...
