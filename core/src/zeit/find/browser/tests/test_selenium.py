@@ -130,3 +130,18 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         s.pause(500)
         self.open('/find')
         s.waitForElementPresent('css=#type_search_button.unfolded')
+
+    def test_setting_types_in_search_form(self):
+        #  XXX This should be a unit test!
+        s = self.selenium
+        s.assertNotChecked('id=search-type-file')
+        s.assertNotChecked('id=search-type-collection')
+        s.assertNotChecked('id=search-type-image')
+        self.eval("zeit.find._search.set_types(['file', 'image'])")
+        s.assertChecked('id=search-type-file')
+        s.assertNotChecked('id=search-type-collection')
+        s.assertChecked('id=search-type-image')
+        self.eval("zeit.find._search.set_types(['file', 'collection'])")
+        s.assertChecked('id=search-type-file')
+        s.assertChecked('id=search-type-collection')
+        s.assertNotChecked('id=search-type-image')
