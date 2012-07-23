@@ -227,7 +227,7 @@ class BannerSource(SimpleXMLSource):
 
     def getValues(self):
         tree = self._get_tree()
-        return [int(node.get('first_below_p'))
+        return [int(node.get('paragraph'))
                 for node in tree.xpath('//homepage/page_all')]
 
 
