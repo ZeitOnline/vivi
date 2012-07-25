@@ -73,9 +73,8 @@ zeit.content.article.Editable = gocept.Class.extend({
             log('Editable block', self.block.id);
             self.editable.removeAttribute('cms:cp-module');
             self.editable.contentEditable = true;
-            self.editable.focus();
             self.editable.editable = self; // make instance available for tests
-            self.command('styleWithCSS', false);
+            self.command('styleWithCSS', false, false);
             MochiKit.DOM.addElementClass(self.block, 'editing');
 
             // This catches the blur-signal in the capturing-phase!
@@ -122,6 +121,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.fix_html();
             $('body').trigger('update-ads');
             self.place_cursor(self.initial_paragraph, place_cursor_at_end);
+            self.editable.focus();
             self.init_linkbar();
             self.init_toolbar();
             self.relocate_toolbar(true);
@@ -631,7 +631,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.editable.focus();
     },
 
-    command: function(command, option) {
+    command: function(command, option, refocus) {
         var self = this;
         if (self.locked) {
             return;
@@ -643,8 +643,10 @@ zeit.content.article.Editable = gocept.Class.extend({
             if (window.console) {
                 console.log(e);
             }
-	}
-        self.editable.focus();
+        }
+        if (typeof refocus === 'undefined' || refocus === true) {
+            self.editable.focus();
+        }
 		self.update_toolbar();
     }
 
