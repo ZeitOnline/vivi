@@ -292,10 +292,6 @@ span.charcount {
   background: none repeat scroll 0 0 #666666;
 }
 
-#edit-form-filename .block-inner .totop {
-  display: none;
-}
-
 /*
 #article-editor-text .editing p:last-child,
 #article-editor-text .editing ol:last-child,
@@ -316,6 +312,10 @@ span.charcount {
 
 #editable-body .block-inner {
   overflow: visible;
+}
+
+.article-editor-inner .block-inner #new-filename\.rename_to {
+  width: 350px;
 }
 
 .block-inner > form:first-of-type {

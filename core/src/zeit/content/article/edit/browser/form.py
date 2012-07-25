@@ -74,7 +74,7 @@ class ArticleContentBody(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit article content body')
 
 
-class FilenameFormGroup(zeit.edit.browser.form.FormGroup):
+class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
     """ Filename view. """
 
     title = _('Filename')
