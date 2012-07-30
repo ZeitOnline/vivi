@@ -5,18 +5,18 @@ $.fn.limitedInput = function(limit) {
         var self = $(this);
         var container = self.find('.widget:first');
         var area = $('textarea', container);
-        var val = area.val().length || 0;
-        var span = $('<span />').addClass('charlimit').html(
-            (val > 0 ? limit - val : limit) + " Zeichen");
-        container.prepend(span);
-        area.bind("keyup focus blur", function (e) {
-            var count = limit - $(e.target).val().length;
-            if (count < 21 && count > 10) {
-                span.css("color", "#900").html(count + " Zeichen");
-            } else if (count < 11) {
-                span.css("color", "#ff0000").html(count + " Zeichen");
+        var count = area.val().length || 0;
+        var suffix = '/' + limit;
+        var label = count + suffix;
+        var span = $('<span />').addClass('charlimit').html(label);
+        container.append(span);
+        area.bind("keyup focus blur onload", function (e) {
+            var count = $(e.target).val().length;
+            var label = count + suffix;
+            if ((limit - count) < 0) {
+                span.css("color", "#900").html(label);
             } else {
-                span.css("color", "#777").html(count + " Zeichen");
+                span.css("color", "#000").html(label);
             }
         });
     });
