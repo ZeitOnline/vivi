@@ -395,10 +395,12 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .cp-content-inner .edit-bar > .fold-link,
 .cp-content-inner .content-details .fold-link {
   background-image: url('arrow_down.png');
+  background-position: 0 8px;
 }
 
 .cp-content-inner .folded .edit-bar > .fold-link {
   background-image: url('arrow_right.png');
+  background-position: 0 8px;
 }
 
 .cp-content-inner .folded > .block-inner > * {
@@ -411,12 +413,10 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin-bottom: 0;
 }
 
-#editor-forms div div.edit-bar {
-}
-
 #editor-forms div div.edit-bar a{
-  margin: 4px;
-  margin-top: 5px;
+  height: 2em;
+  padding-left: 15px;
+  width: 98%;
 }
 
 /* override so we don't see a flicker */

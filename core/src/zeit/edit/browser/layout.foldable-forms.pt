@@ -7,13 +7,9 @@
          title="Fold"
          cms:cp-module="zeit.edit.FoldBlock"
          tal:attributes="href block_id"
+         tal:content="view/title"
          i18n:attributes="title">
-        <span class="action-title"
-              i18n:translate="">
-          Fold
-        </span>
       </a>
-      <span i18n:translate="" tal:content="view/title">Metadata</span>
     </div>
     <div class="block-inner">
       <tal:block replace="structure provider:zeit.edit.contents" />
