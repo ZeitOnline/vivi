@@ -362,7 +362,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         var self = this;
         var types = MochiKit.Base.map(
             function(x) { return x.replace('type-', ''); }, self.accept);
-        zeit.find._search.set_types(types);
+        zeit.cms.activate_objectbrowser(types);
     }
 });
 
