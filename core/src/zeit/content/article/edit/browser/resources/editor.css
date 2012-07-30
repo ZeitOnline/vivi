@@ -63,10 +63,6 @@
   right:20px;
 }
 
-#editor-forms div div.edit-bar a {
-  margin: 10px 4px 4px;
-}
-
 #article-form-workflow.folded,
 #article-form-assets.folded,
 #article-form-metadata.folded {
@@ -99,15 +95,6 @@
 .article-editor-inner .block:hover .block-inner,
 .article-editor-inner .block.editing .block-inner {
   border-color: #bbbbbb;
-}
-
-.article-editor-inner .edit-bar > a {
-  height: 10px;
-  width: 10px;
-  margin: 0;
-  padding: 0;
-  margin-top: 1px;
-  margin-right: 2px;
 }
 
 .edit-bar {
