@@ -3,7 +3,7 @@
            name view/name;
            value view/_getFormValue" />
     <div class="object-reference"></div>
-    <a rel="configure_search" class="button">Icon</a>
+    <a rel="configure_search" class="button"></a>
     <input type="text" placeholder="Link einfügen" tal:attributes="
            id string:${view/name}.url;
            name string:${view/name}.url;" />
