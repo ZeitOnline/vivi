@@ -1,0 +1,8 @@
+<div class="rst-widget">
+<textarea tal:replace="structure view/textarea" />
+<div tal:attributes="id string:${view/name}.preview" class="rst-preview"
+     tal:content="structure view/rendered_content"/>
+<script type="text/javascript" tal:content="string:
+new zeit.cms.RestructuredTextWidget('${view/name}');
+"></script>
+</div>
