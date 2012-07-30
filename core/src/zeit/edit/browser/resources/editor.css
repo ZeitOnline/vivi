@@ -616,6 +616,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
     content: "";
 }
 
+span.charcount,
 .field span.charlimit {
   float: right;
   font-weight: 700;
