@@ -285,6 +285,21 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.assertValue("//input[@name='testwidget.1']",
                       'http://xml.zeit.de/testcontent')
 
+    def test_configure_search_calls_activate_objectbrowser_with_types(self):
+        self.eval("""\
+zeit.cms.activate_objectbrowser = function(types) {
+    if (window.isUndefinedOrNull(types)) {
+        types = '__NULL__';
+    }
+    zeit.cms._activate_objectbrowser_arg = types;
+};
+""")
+        self.eval('zeit.cms.widget_under_test.configure_search()')
+        # the serialization in selenium-1 is a little weird (a two-item list
+        # would be "foo,bar")
+        self.assertEqual(
+            'foo', self.eval('zeit.cms._activate_objectbrowser_arg'))
+
 
 class ObjectWidgetMyDetails(zeit.cms.browser.view.Base):
 
@@ -421,6 +436,21 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent('css=#testwidget a')
         s.click('css=#testwidget a')
         s.waitForValue('name=testwidget', '')
+
+    def test_configure_search_calls_activate_objectbrowser_with_types(self):
+        self.eval("""\
+zeit.cms.activate_objectbrowser = function(types) {
+    if (window.isUndefinedOrNull(types)) {
+        types = '__NULL__';
+    }
+    zeit.cms._activate_objectbrowser_arg = types;
+};
+""")
+        self.eval('zeit.cms.widget_under_test.configure_search()')
+        # the serialization in selenium-1 is a little weird (a two-item list
+        # would be "foo,bar")
+        self.assertEqual(
+            'foo', self.eval('zeit.cms._activate_objectbrowser_arg'))
 
 
 class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):

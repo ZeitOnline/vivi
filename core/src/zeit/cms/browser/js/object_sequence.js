@@ -7,6 +7,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     construct: function(widget_id, accept, detail_view_name) {
         var self = this;
         self.widget_id = widget_id;
+        self.accept = accept;
         self.element = $(widget_id);
         self.ul_element = MochiKit.DOM.getFirstElementByTagAndClassName(
             'ul', null, self.element);
@@ -197,7 +198,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             action = target.rel;
             argument = target.getAttribute('href');
         }
-        if (action && argument) {
+        if (action) {
             self[action](argument);
             event.stop();
         }
@@ -245,6 +246,13 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             self.getValueField(i).value = ordered_ids[i];
         }
         self.changed();
+    },
+
+    configure_search: function() {
+        var self = this;
+        var types = MochiKit.Base.map(
+            function(x) { return x.replace('type-', ''); }, self.accept);
+        zeit.cms.activate_objectbrowser(types);
     }
 
 });
@@ -359,6 +367,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
     },
 
     configure_search: function() {
+        // XXX copy&paste from ObjectSequenceWidget
         var self = this;
         var types = MochiKit.Base.map(
             function(x) { return x.replace('type-', ''); }, self.accept);
