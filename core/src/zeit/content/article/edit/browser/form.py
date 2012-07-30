@@ -8,10 +8,11 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
-from zeit.content.infobox.interfaces import IInfobox
-from zeit.content.portraitbox.interfaces import IPortraitbox
 import zeit.cms.browser.interfaces
+import zeit.cms.related.interfaces
 import zeit.content.article.interfaces
+import zeit.content.gallery.interfaces
+import zeit.content.video.interfaces
 import zope.formlib.form
 import zope.formlib.interfaces
 
@@ -102,10 +103,9 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
         return form_fields
 
 
-class AssetForms(zeit.edit.browser.form.FoldableFormGroup):
-    """Article asset forms."""
+class LeadTeaserForms(zeit.edit.browser.form.FoldableFormGroup):
 
-    title = _('Assets')
+    title = _('Lead teaser')
 
 
 class AssetBadges(zeit.edit.browser.form.InlineForm):
@@ -124,34 +124,49 @@ class AssetBadges(zeit.edit.browser.form.InlineForm):
         self.widgets['badges'].orientation = 'horizontal'
 
 
-class Assets(zeit.edit.browser.form.InlineForm):
+class LeadTeaser(zeit.edit.browser.form.InlineForm):
 
-    legend = _('Assets')
-    prefix = 'assets'
-    undo_description = _('edit assets')
+    legend = ''
+    prefix = 'leadteaser'
+    undo_description = _('edit lead teaser')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.image.interfaces.IImages,
+        zeit.content.gallery.interfaces.IGalleryReference,
+        zeit.content.video.interfaces.IVideoAsset,
+        )
 
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(Assets, self).__call__()
-
-    @property
-    def form_fields(self):
-        interfaces = []
-        for name, interface in zope.component.getUtilitiesFor(
-            zeit.cms.asset.interfaces.IAssetInterface):
-            interfaces.append(interface)
-        return zope.formlib.form.FormFields(
-            *interfaces,
-            render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).omit(
-                'badges')
+        return super(LeadTeaser, self).__call__()
 
     def setUpWidgets(self, *args, **kw):
-        super(Assets, self).setUpWidgets(*args, **kw)
+        super(LeadTeaser, self).setUpWidgets(*args, **kw)
         self.widgets['images'].add_type = IImageGroup
         self.widgets['gallery'].add_type = IGallery
-        self.widgets['portraitbox'].add_type = IPortraitbox
-        self.widgets['infobox'].add_type = IInfobox
+
+
+class InternalLinksForms(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Internal links')
+
+
+class InternalLinks(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'internallinks'
+    undo_description = _('edit internal links')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.related.interfaces.IRelatedContent,
+        zeit.content.article.interfaces.IAggregatedComments,
+        )
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(InternalLinks, self).__call__()
 
 
 class StatusForms(zeit.edit.browser.form.FoldableFormGroup):

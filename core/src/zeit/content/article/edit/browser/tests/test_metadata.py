@@ -93,24 +93,24 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
 
         # Open editor again
         s.clickAndWait('css=#WorkingcopyPanel td a')
-        self.selenium.waitForElementPresent('id=assets.related')
+        self.selenium.waitForElementPresent('id=internallinks.related')
 
         # Add elements to widget
         s.dragAndDropToObject(
             'css=#ClipboardPanel ul > li > ul > li > ul > li:first-child',
-            'xpath=//*[@id="assets.related"]//ul')
+            'xpath=//*[@id="internallinks.related"]//ul')
         s.waitForElementPresent(
-            'xpath=//*[@id="assets.related"]//li[1]')
+            'xpath=//*[@id="internallinks.related"]//li[1]')
         s.dragAndDropToObject(
             'css=#ClipboardPanel ul > li > ul > li ul > li:nth-child(2)',
-            'xpath=//*[@id="assets.related"]//ul')
+            'xpath=//*[@id="internallinks.related"]//ul')
         s.waitForElementPresent(
-            'xpath=//*[@id="assets.related"]//li[2]')
+            'xpath=//*[@id="internallinks.related"]//li[2]')
 
     def test_galleries_should_use_drop_widget(self):
         s = self.selenium
         s.waitForElementPresent(
-           'css=.drop-object-widget input[name="assets.gallery"]')
+           'css=.drop-object-widget input[name="leadteaser.gallery"]')
 
     def test_metadata_should_be_foldable_and_unfoldable(self):
         s = self.selenium
@@ -160,7 +160,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.assert_widget_text(
             'article-content-head.subtitle', 'Im Zuge des*')
 
-    def test_assets_should_be_readonly_visible(self):
+    def test_relateds_should_be_readonly_visible(self):
         from zeit.cms.checkout.helper import checked_out
         from zeit.cms.related.interfaces import IRelatedContent
         import zeit.cms.interfaces
@@ -174,7 +174,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
                             'http://xml.zeit.de/testcontent'),)
         s = self.selenium
         s.open(s.getLocation())
-        self.assert_widget_text('assets.related', '*testcontent*')
+        self.assert_widget_text('internallinks.related', '*testcontent*')
 
 
 class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,

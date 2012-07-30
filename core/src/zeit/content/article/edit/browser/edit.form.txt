@@ -55,11 +55,10 @@ Those forms are loaded via javascript:
         for="metadata-c.author_references">...
 
 
->>> browser.open('@@edit.form.assets')
+>>> browser.open('@@edit.form.leadteaser')
 >>> print browser.contents
 <...
-...<label cms:tooltip="Objects that are related to this object."
-        for="assets.related">...
+...<label cms:tooltip="" for="leadteaser.video">...
 
 
 >>> browser.open('@@edit.form.recension-list')

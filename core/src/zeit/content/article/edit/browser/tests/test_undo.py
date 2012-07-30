@@ -45,5 +45,6 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
                      'revert up to "edit metadata"')
 
         # we're back to the 'before' state
+        s.waitForElementPresent('id=metadata-b.copyrights')
         s.assertValue('id=metadata-b.copyrights', '')
         s.assertElementNotPresent('css=.editable p')
