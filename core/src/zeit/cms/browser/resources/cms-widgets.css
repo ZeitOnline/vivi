@@ -533,6 +533,15 @@ table.properties textarea {
     width: 10em;
 }
 
+.objectsequencewidget a[rel="configure_search"],
+.drop-object-widget a[rel="configure_search"] {
+  width: 16px;
+  height: 16px;
+  display: inline-block;
+  padding: 4px !important;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -50px transparent !important;
+}
+
 .objectsequencewidget,
 .drop-object-widget {
   border: 1px solid transparent;

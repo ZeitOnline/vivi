@@ -14,6 +14,7 @@
     tal:condition="view/query_view"
     tal:content="structure view/query_view">
   </div>
+  <a rel="configure_search" class="button"></a>
   <input type="text"
          placeholder="Link einfügen"
          tal:condition="not: view/query_view"

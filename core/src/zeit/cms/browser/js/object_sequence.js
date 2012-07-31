@@ -7,6 +7,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     construct: function(widget_id, accept, detail_view_name) {
         var self = this;
         self.widget_id = widget_id;
+        self.accept = accept;
         self.element = $(widget_id);
         self.ul_element = MochiKit.DOM.getFirstElementByTagAndClassName(
             'ul', null, self.element);
@@ -197,7 +198,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             action = target.rel;
             argument = target.getAttribute('href');
         }
-        if (action && argument) {
+        if (action) {
             self[action](argument);
             event.stop();
         }
@@ -245,6 +246,13 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             self.getValueField(i).value = ordered_ids[i];
         }
         self.changed();
+    },
+
+    configure_search: function() {
+        var self = this;
+        var types = MochiKit.Base.map(
+            function(x) { return x.replace('type-', ''); }, self.accept);
+        zeit.cms.activate_objectbrowser(types);
     }
 
 });
@@ -256,6 +264,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         var self = this;
         self.element = element;
         self.detail_view_name = detail_view_name;
+        self.accept = accept;
 
         self.input = MochiKit.DOM.getFirstElementByTagAndClassName(
             'input', null, self.element);
@@ -264,7 +273,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
         self.url_input = $(self.element + '.url');
 
         new MochiKit.DragAndDrop.Droppable(self.element, {
-            accept: accept,
+            accept: self.accept,
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',
             ondrop: function(element, last_active_element, event) {
@@ -355,6 +364,14 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             self[action](argument);
             event.stop();
         }
+    },
+
+    configure_search: function() {
+        // XXX copy&paste from ObjectSequenceWidget
+        var self = this;
+        var types = MochiKit.Base.map(
+            function(x) { return x.replace('type-', ''); }, self.accept);
+        zeit.cms.activate_objectbrowser(types);
     }
 });
 
