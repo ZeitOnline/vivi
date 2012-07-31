@@ -2,8 +2,6 @@
 # Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest2 as unittest
-import zeit.connector.interfaces
 import zeit.content.image.tests
 import zeit.cms.testing
 import gocept.selenium.ztk
@@ -22,12 +20,7 @@ class Selenium(zeit.cms.testing.SeleniumTestCase):
     def setUp(self):
         super(Selenium, self).setUp()
         self.create_group()
-        s = self.selenium
-        # Set the size to a defined value
-        s.getEval('window.resizeTo(%s, %s)' % (
-            self.window_width, self.window_height))
-        s.waitForEval('window.outerWidth', str(self.window_width))
-        s.waitForEval('window.outerHeight', str(self.window_height))
+        self.set_window_size(self.window_width, self.window_height)
         self.open_imp()
 
     def create_group(self):
