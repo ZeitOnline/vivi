@@ -101,6 +101,31 @@ zeit.find.Search = zeit.find.BaseView.extend({
         });
     },
 
+    clear_search_params: function() {
+        var self = this;
+        forEach($('zeit-find-search-form').elements, function(element) {
+            if (element.nodeName == 'SELECT') {
+                element.selectedIndex = 0;
+            } else if (element.nodeName == 'INPUT') {
+                if (element.type == 'checkbox') {
+                    element.checked = false;
+                } else if (element.type == 'text') {
+                    element.value = '';
+                }
+            }
+        });
+    },
+
+    set_types: function(types) {
+        var self = this;
+        self.clear_search_params();
+        forEach(types, function(type) {
+            jQuery('input[type="checkbox"][value="' + type + '"]',
+                   $('zeit-find-search-form')).attr('checked', 'checked');
+        });
+        self.update_search_result();
+    },
+
     populate_query: function(query) {
         var self = this;
         var form = $('zeit-find-search-form');
@@ -266,11 +291,11 @@ zeit.find.Favorites = zeit.find.BaseView.extend({
 
 zeit.find.init_full_search = function() {
 
-    var search = new zeit.find.Search();
+    zeit.find._search = new zeit.find.Search();
 
     zeit.find.tabs = new zeit.cms.Tabs('cp-search');
     zeit.find.tabs.add(new zeit.cms.ViewTab(
-        'search_form', 'Suche', search));
+        'search_form', 'Suche', zeit.find._search));
     zeit.find.tabs.add(new zeit.cms.ViewTab(
         'favorites', 'Favoriten', new zeit.find.Favorites()));
 }
