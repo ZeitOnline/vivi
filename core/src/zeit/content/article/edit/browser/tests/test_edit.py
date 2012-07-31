@@ -4,7 +4,6 @@
 from zeit.content.article.edit.browser.edit import SaveText, AutoSaveText
 import gocept.testing.mock
 import json
-import lxml.etree
 import lxml.objectify
 import mock
 import time
@@ -35,7 +34,7 @@ class TextViewHelper(object):
     def get_view(self, body=None):
         if body is None:
             body = ("<division><p>Para 1</p><p>Para 2</p></division>"
-                     "<division><p>Para 3</p><p>Para 4</p></division>")
+                    "<division><p>Para 3</p><p>Para 4</p></division>")
         article = zeit.content.article.article.Article()
         article.xml.body = lxml.objectify.XML(
             '<body>%s</body>' % body)
@@ -43,7 +42,7 @@ class TextViewHelper(object):
             division.set('type', 'page')
         body = zeit.content.article.edit.body.EditableBody(
             article, article.xml.body)
-        body.keys() # force uuid generation
+        body.keys()  # force uuid generation
         view = self.view_class()
         view.context = body
         view.request = mock.Mock()
@@ -502,7 +501,7 @@ class TestFolding(
 
 
 class TestReadonlyVisible(unittest2.TestCase,
-                 zeit.cms.testing.BrowserAssertions):
+                          zeit.cms.testing.BrowserAssertions):
 
     layer = zeit.content.article.testing.TestBrowserLayer
 
