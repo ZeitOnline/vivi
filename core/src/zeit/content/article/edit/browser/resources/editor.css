@@ -168,6 +168,15 @@
   border-color: transparent;
 }
 
+
+/* Uppercase and some other properties for some labels */
+
+.article-editor-inner .edit-bar span,
+.article-editor-inner .block-inner .label span {
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
 .zeit-edit-interfaces-IFoldable .edit-bar a.fold-link:after {
   color: grey;
   font-size: 9px;
@@ -613,12 +622,20 @@ form[action$="misc-product-management-b"] {
   width: 80px;
 }
 
-#metadata-c\.author_references .add_view:hover {
-  background-position: 10px -143px, 0% 0%;
-}
-
 #metadata-c\.author_references .add_view a {
   -moz-appearance: button;
+}
+
+/* the_mystery_search_or_sumbit-url_button*/
+
+.article-editor-inner .the_mystery_search_or_submit-url_button {
+  background-position: 10px -55px, 0% 0% !important;
+  font-size: 12px !important;
+  margin-left: 5px;
+}
+
+.article-editor-inner .the_mystery_search_or_submit-url_button:hover {
+  background-position: 10px -85px, 0% 0% !important;
 }
 
 /* worflow publication period area */
