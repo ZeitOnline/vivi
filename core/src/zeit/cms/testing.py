@@ -326,6 +326,8 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         self.selenium.getEval('window.sessionStorage.clear()')
 
         self.original_windows = set(self.selenium.getAllWindowNames())
+        self.original_width = self.selenium.getEval('window.outerWidth')
+        self.original_height = self.selenium.getEval('window.outerHeight')
 
     def tearDown(self):
         super(SeleniumTestCase, self).tearDown()
@@ -338,6 +340,14 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
             self.selenium.selectWindow(window)
             self.selenium.close()
         self.selenium.selectWindow()
+
+        self.set_window_size(self.original_width, self.original_height)
+
+    def set_window_size(self, width, height):
+        s = self.selenium
+        s.getEval('window.resizeTo(%s, %s)' % (width, height))
+        s.waitForEval('window.outerWidth', str(width))
+        s.waitForEval('window.outerHeight', str(height))
 
     def open(self, path, auth='user:userpw'):
         auth_sent = getattr(self.layer, 'auth_sent', None)
