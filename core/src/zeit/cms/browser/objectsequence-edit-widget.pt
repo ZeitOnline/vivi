@@ -10,6 +10,10 @@
   </tal:data>
   <input tal:replace="structure view/marker" />
 
+  <ul>
+    <!-- data will be inserted here by javascript -->
+  </ul>
+
   <div
     tal:condition="view/query_view"
     tal:content="structure view/query_view">
@@ -27,10 +31,6 @@
      i18n:translate="">
     Add new …
   </a>
-
-  <ul>
-    <!-- data will be inserted here by javascript -->
-  </ul>
 </div>
 <script tal:content="string:
   new zeit.cms.ObjectSequenceWidget(
