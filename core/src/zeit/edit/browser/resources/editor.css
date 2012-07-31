@@ -413,7 +413,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin-bottom: 0;
 }
 
-#editor-forms div div.edit-bar a{
+#editor-forms div.editable-area > div.edit-bar > a {
   height: 2em;
   padding-left: 15px;
   width: 98%;
