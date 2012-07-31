@@ -113,7 +113,6 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
             raise ValueError(
                _('The object "${name}" does not exist.', mapping=dict(
                    name=self.uniqueId)))
-        # XXX what happens if there is no factory?
         self.block = zope.component.queryMultiAdapter(
             (self.create_in, content),
             zeit.edit.interfaces.IElement)
