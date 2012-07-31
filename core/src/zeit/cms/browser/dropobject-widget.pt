@@ -1,8 +1,10 @@
-<div class="drop-object-widget" tal:attributes="id view/name">
+<div class="drop-object-widget" tal:attributes="id view/name" i18n:domain="zeit.cms">
     <input type="hidden" tal:attributes="
            name view/name;
            value view/_getFormValue" />
     <div class="object-reference"></div>
+</div>
+<div class="manuelsearch" style="margin-top:15px;">
     <input type="text" placeholder="Link einfügen" tal:attributes="
            id string:${view/name}.url;
            name string:${view/name}.url;" />
@@ -13,6 +15,8 @@
        i18n:translate="">
       Add new …
     </a>
+
+    <input type="button" class="the_mystery_search_or_submit-url_button" i18n:translate="" value="Trigger search or add URL">
 </div>
 <script tal:content="string:
 new zeit.cms.DropObjectWidget(
