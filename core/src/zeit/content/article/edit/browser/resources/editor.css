@@ -185,6 +185,7 @@
   position: absolute;
   top: 0;
   vertical-align: top;
+  line-height: 26px;
 }
 
 .type-portraitbox .edit-bar a.fold-link:after {
