@@ -207,6 +207,19 @@ class TestTextEditing(
         s.typeKeys('css=.block.type-p .editable h3', 'Second paragraph.')
         s.waitForElementPresent('css=.editable p:contains(Second paragraph)')
 
+    def select_text(self):
+        s = self.selenium
+        self.create('<p>I want to link something</p>'
+                    '<p>And I need distance<p>'
+                    '<p>from the bottom landing zone<p>')
+        s.getEval("""(function(s) {
+            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+            var range = window.getSelection().getRangeAt(0);
+            range.setStart(p.firstChild, 10);
+            range.setEnd(p.firstChild, 14);
+        })(this);""")
+        s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
+
     def test_editing_should_end_on_content_drag(self):
         self.selenium.windowMaximize()
         s = self.selenium

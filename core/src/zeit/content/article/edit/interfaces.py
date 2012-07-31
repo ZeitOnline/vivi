@@ -99,7 +99,9 @@ class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
 class IReference(zeit.edit.interfaces.IBlock):
     """A block which references another object."""
 
-    references = zope.schema.Field(title=_('Referenced object.'))
+    references = zope.schema.Field(
+        title=_('Referenced object.'),
+        required=False)
 
 
 class ImageLayoutSource(LayoutSourceBase):
@@ -116,7 +118,8 @@ class IImage(IReference, ILayoutable):
 
     references = zope.schema.Choice(
         title=_("Image"),
-        source=zeit.content.image.interfaces.ImageSource())
+        source=zeit.content.image.interfaces.ImageSource(),
+        required=False)
 
     layout = zope.schema.Choice(
         title=_('Layout'),
@@ -134,7 +137,8 @@ class IGallery(IReference):
 
     references = zope.schema.Choice(
         title=_('Gallery'),
-        source=zeit.content.gallery.interfaces.gallerySource)
+        source=zeit.content.gallery.interfaces.gallerySource,
+        required=False)
 
 
 class IInfobox(IReference):
@@ -142,7 +146,8 @@ class IInfobox(IReference):
 
     references = zope.schema.Choice(
         title=_('Infobox'),
-        source=zeit.content.infobox.interfaces.infoboxSource)
+        source=zeit.content.infobox.interfaces.infoboxSource,
+        required=False)
 
 
 class PortraitboxLayoutSource(LayoutSourceBase):
@@ -158,7 +163,8 @@ class IPortraitbox(IReference, ILayoutable):
 
     references = zope.schema.Choice(
         title=_('Portraitbox'),
-        source=zeit.content.portraitbox.interfaces.portraitboxSource)
+        source=zeit.content.portraitbox.interfaces.portraitboxSource,
+        required=False)
 
     layout = zope.schema.Choice(
         title=_('Layout'),

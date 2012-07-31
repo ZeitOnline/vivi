@@ -1,216 +1,24 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import json
-import mock
 import transaction
-import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
 
 
-class GalleryTest(zeit.content.article.edit.browser.testing.BrowserTestCase):
-
-    block_type = 'gallery'
-    attribute = 'href'
-
-    def setup_content(self):
-        """Create a gallery (requires folder with images)"""
-        from zeit.content.gallery.browser.testing import add_folder, add_image
-        browser = self.browser
-        browser.open('http://localhost/++skin++cms/repository/online/2007/01')
-        add_folder(browser, 'gallery')
-        add_image(browser, '01.jpg')
-        add_image(browser, '02.jpg')
-        browser.getLink('01').click()
-        menu = browser.getControl(name='add_menu')
-        menu.displayValue = ['Gallery']
-        browser.open(menu.value[0])
-        browser.getControl('File name').value = 'island'
-        browser.getControl('Title').value = 'Auf den Spuren der Elfen'
-        browser.getControl('Ressort').displayValue = ['Reisen']
-        browser.getControl(name="form.image_folder").value = (
-            'http://xml.zeit.de/online/2007/01/gallery')
-        browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
-        browser.getControl(name="form.actions.add").click()
-        browser.getLink('Checkin').click()
-        self.content_id = 'http://xml.zeit.de/online/2007/01/island'
-        browser.open(self.contents_url)
-
-    def call_set_reference(self, uniqueId):
-        self.browser.open(
-            'editable-body/blockname/@@set_reference?uniqueId=%s' % uniqueId)
-
-    def test_no_reference_should_render(self):
-        self.get_article(with_empty_block=True)
-        self.browser.open('editable-body/@@contents')
-        self.assert_ellipsis(
-            """<...
-            <div ...class="block type-%s...""" % self.block_type)
-
-    def test_empty_block_should_be_landing_zone(self):
-        self.get_article(with_empty_block=True)
-        self.setup_content()
-        self.call_set_reference(self.content_id)
-        result = json.loads(self.browser.contents)
-        self.assertEqual(
-            [{'args': [
-                        'blockname',
-                        'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/blockname/@@contents'],
-              'name': 'reload',
-              'when': None}], result['signals'])
-        self.browser.open('@@contents')
-        self.assert_ellipsis(
-            """<div ...class="block type-%s...""" % self.block_type)
-
-    def test_only_specific_type_should_be_droppable(self):
-        self.get_article(with_empty_block=True)
-        self.setup_content()
-        with self.assertRaises(Exception):
-            self.call_set_reference('http://xml.zeit.de/testcontent')
-        # NOTE: the error message should be improved
-        self.assert_ellipsis(
-            "ConstraintNotSatisfied(<zeit.cms.repository.unknown..."
-            "object at 0x...>)")
-
-    def test_droping_type_on_landing_zone_creates_block(self):
-        self.get_article()
-        self.setup_content()
-        self.assert_ellipsis(
-            """...cms:drop-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@article-landing-zone-drop"...""")
-        uuid4 = mock.Mock(side_effect=lambda: uuid4.call_count)
-        with mock.patch('uuid.uuid4', new=uuid4):
-            self.browser.open(
-                'editable-body/@@article-landing-zone-drop?uniqueId=%s' %
-                self.content_id)
-        result = json.loads(self.browser.contents)
-        self.assertEqual(
-            [{'args': ['1'], 'name': 'added',
-              'when': 'after-reload'},
-             {'args': ['editable-body',
-                       'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
-              'name': 'reload',
-              'when': None}], result['signals'])
-        self.browser.open(self.contents_url)
-        self.assert_ellipsis(
-            """<...
-                <div ...class="block type-%s...""" % self.block_type)
-        # Each block has its own landing zone:
-        id = result['signals'][0]['args'][0]
-        with mock.patch('uuid.uuid4', new=uuid4):
-            self.browser.open(
-                'editable-body/%s/@@article-landing-zone-drop?uniqueId=%s' % (
-                    id, self.content_id))
-        result = json.loads(self.browser.contents)
-        self.assertEqual(
-            [{'args': ['2'], 'name': 'added',
-              'when': 'after-reload'},
-             {'args': ['editable-body',
-                       'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
-              'name': 'reload',
-              'when': None}], result['signals'])
-
-    def test_checkin_should_work_with_empty_block(self):
-        self.get_article(with_empty_block=True)
-        self.browser.open(self.article_url)
-        # Assertion is that no error is raised
-        self.browser.handleErrors = False
-        self.browser.getLink('Checkin').click()
-
-    def test_should_be_visible_in_read_only_mode(self):
-        self.get_article(with_empty_block=True)
-        self.setup_content()
-        self.call_set_reference(self.content_id)
-        self.browser.open(self.article_url)
-        self.browser.getLink('Checkin').click()
-        self.browser.open('@@contents')
-        self.assert_ellipsis(
-            """<div ...class="block type-%s...""" % self.block_type)
-
-    def test_reference_should_be_stored_by_set_ref(self):
-        article = self.get_article(with_empty_block=True)
-        self.setup_content()
-        self.call_set_reference(self.content_id)
-        self.assertEqual(
-            self.content_id,
-            article.xml.body.division[self.block_type].get(self.attribute))
-
-    def test_reference_should_be_stored_after_checkin(self):
-        article = self.get_article(with_empty_block=True)
-        self.setup_content()
-        self.call_set_reference(self.content_id)
-        self.browser.open(self.article_url)
-        self.browser.getLink('Checkin').click()
-        with zeit.cms.testing.site(self.layer.setup.getRootFolder()):
-            article = zeit.cms.interfaces.ICMSContent(article.uniqueId)
-        self.assertEqual(
-            self.content_id,
-            article.xml.body.division[self.block_type].get(self.attribute))
-
-    def test_empty_block_should_not_provide_drop_in_readonly_mode(self):
-        self.get_article(with_empty_block=True)
-        self.browser.open(self.article_url)
-        self.browser.getLink('Checkin').click()
-        self.browser.open('@@contents')
-        self.assert_ellipsis(
-            '<div ...class="block type-{0}...No content referenced...'.format(
-                self.block_type))
-
-    def test_contents_should_not_have_cache_control_header(self):
-        self.get_article(with_empty_block=True)
-        self.setup_content()
-        self.call_set_reference(self.content_id)
-        self.browser.open('@@contents')
-        self.assertNotIn('Cache-Control', self.browser.headers)
-
-
-class InfoboxTest(GalleryTest):
-
-    block_type = 'infobox'
-
-    def setup_content(self):
-        from zeit.content.infobox.infobox import Infobox
-        ib = Infobox()
-        ib.supertitle = u'infobox title'
-        root = self.layer.setup.getRootFolder()
-        with zeit.cms.testing.site(root):
-            root['repository']['infobox'] = ib
-        self.content_id = 'http://xml.zeit.de/infobox'
-        transaction.commit()
-
-
-class PortraitboxTest(GalleryTest):
-
-    block_type = 'portraitbox'
-
-    def setup_content(self):
-        from zeit.content.portraitbox.portraitbox import Portraitbox
-        pb = Portraitbox()
-        root = self.layer.setup.getRootFolder()
-        with zeit.cms.testing.site(root):
-            with zeit.cms.testing.interaction():
-                root['repository']['pb'] = pb
-        self.content_id = 'http://xml.zeit.de/pb'
-        transaction.commit()
-
-
-class ImageTest(GalleryTest):
+class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
     block_type = 'image'
-    attribute = 'src'
 
-    def setup_content(self):
-        self.content_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
-
-    def test_only_specific_type_should_be_droppable(self):
+    def test_inline_form_saves_values(self):
         self.get_article(with_empty_block=True)
-        self.setup_content()
-        with self.assertRaises(Exception):
-            self.browser.open(
-                'editable-body/blockname/@@set_reference?uniqueId='
-                'http://xml.zeit.de/testcontent')
-        # NOTE: the error message should be improved
-        self.assert_ellipsis("ComponentLookupError...")
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-image?show_form=1')
+        b.getControl('Custom image sub text').value = 'foo bar'
+        b.getControl('Apply').click()
+        b.open('@@edit-image?show_form=1')  # XXX
+        self.assertEqual(
+            'foo bar', b.getControl('Custom image sub text').value)
 
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
@@ -250,6 +58,24 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertValue(text, 'A custom caption')
 
 
+class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
+
+    block_type = 'video'
+
+    def test_inline_form_saves_values(self):
+        self.get_article(with_empty_block=True)
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-video?show_form=1')
+        b.getControl('Layout').displayValue = ['large']
+        b.getControl('Apply').click()
+        # Locate the layout widget by name here since we have several forms
+        # with a "Layout" field so we couldn't be sure we have wired the
+        # correct one just by looking at this one, common label.
+        b.open('@@edit-video?show_form=1')
+        layout = b.getControl(name='EditVideo.blockname.layout')
+        self.assertEqual(['large'], layout.displayValue)
+
+
 class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def create_content_and_fill_clipboard(self):
@@ -280,8 +106,8 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         block_id = self.create_block('video', wait_for_inline=True)
-        video = 'css=div[id="video.%s.video"]' % block_id
-        video_2 = 'css=div[id="video.%s.video_2"]' % block_id
+        video = 'css=div[id="EditVideo.%s.video"]' % block_id
+        video_2 = 'css=div[id="EditVideo.%s.video_2"]' % block_id
 
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_0"]', video)
         s.waitForElementPresent(
@@ -303,8 +129,8 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         block_id = self.create_block('video', wait_for_inline=True)
-        video = 'css=div[id="video.%s.video"]' % block_id
-        video_2 = 'css=div[id="video.%s.video_2"]' % block_id
+        video = 'css=div[id="EditVideo.%s.video"]' % block_id
+        video_2 = 'css=div[id="EditVideo.%s.video_2"]' % block_id
 
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_video_0"]', video)
         s.waitForElementPresent(

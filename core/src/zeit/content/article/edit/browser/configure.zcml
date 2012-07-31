@@ -146,13 +146,13 @@
     weight="-20"
     />
 
-  <!-- image -->
+  <!-- reference blocks (image, gallery, etc.) -->
 
   <browser:page
-    for="zeit.content.article.edit.interfaces.IImage"
+    for="zeit.content.article.edit.interfaces.IPortraitbox"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-image"
-    class=".image.EditImage"
+    name="edit-portraitbox"
+    class=".reference.EditPortraitbox"
     permission="zope.View"
     />
 
@@ -163,18 +163,64 @@
     name="edit-image"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="10"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-gallery"
+    class=".reference.EditGallery"
+    permission="zope.View"
+    />
 
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IGallery"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-gallery"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
 
-  <!-- video -->
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-portraitbox"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-image"
+    class=".reference.EditImage"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-infobox"
+    class=".reference.EditInfobox"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IInfobox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-infobox"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
 
   <browser:page
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-video"
-    class=".video.EditVideo"
+    class=".reference.EditVideo"
     permission="zope.View"
     />
 
@@ -184,27 +230,6 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit-video"
     class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    />
-
-  <!-- references -->
-
-  <browser:page
-    for="zeit.content.article.edit.interfaces.IReference"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="set_reference"
-    class=".reference.SetReference"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IReference"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    class=".reference.View"
-    template="edit.reference.pt"
     permission="zope.View"
     />
 

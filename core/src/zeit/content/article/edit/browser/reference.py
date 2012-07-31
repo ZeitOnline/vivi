@@ -1,47 +1,61 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.cms.interfaces
+from zeit.cms.i18n import MessageFactory as _
 import zeit.content.article.edit.interfaces
-import zeit.edit.browser.view
-import zope.cachedescriptors.property
-import zope.lifecycleevent
-import zope.security
+import zeit.edit.browser.form
+import zope.formlib.form
+import zope.interface
 
 
-class SetReference(zeit.edit.browser.view.Action):
-    """Drop content object on an IReference."""
+class EditBase(zeit.edit.browser.form.InlineForm):
 
-    uniqueId = zeit.edit.browser.view.Form('uniqueId')
-
-    def update(self):
-        content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
-        self.context.references= content
-        zope.lifecycleevent.modified(self.context)
-        self.signal(
-            None, 'reload', self.context.__name__, self.url('@@contents'))
-
-
-class View(object):
-    """View for reference blocks."""
-
-    @zope.cachedescriptors.property.Lazy
-    def writable(self):
-        return zope.security.canWrite(self.context, 'references')
-
-    @zope.cachedescriptors.property.Lazy
-    def has_content(self):
-        return self.context.references is not None
+    interface = NotImplemented
+    fields = ('references',)
+    legend = None
 
     @property
-    def css_class(self):
-        css_class = []
-        if zeit.content.article.edit.interfaces.ILayoutable.providedBy(
-            self.context):
-            if self.context.layout:
-                css_class.append(self.context.layout)
-        if self.writable:
-            css_class.append('action-content-droppable')
-            if not self.has_content:
-                css_class.append('landing-zone visible')
-        return ' '.join(css_class)
+    def form_fields(self):
+        return zope.formlib.form.FormFields(
+            self.interface).select(*self.fields)
+
+    @property
+    def prefix(self):
+        return '%s.%s' % (self.__class__.__name__, self.context.__name__)
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(EditBase, self).__call__()
+
+
+class EditImage(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.IImage
+    fields = ('references', 'layout', 'custom_caption')
+    undo_description = _('edit image block')
+
+
+class EditGallery(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.IGallery
+    undo_description = _('edit gallery block')
+
+
+class EditPortraitbox(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.IPortraitbox
+    undo_description = _('edit portraitbox block')
+
+
+class EditInfobox(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.IInfobox
+    undo_description = _('edit infobox block')
+
+
+class EditVideo(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.IVideo
+    fields = ('video', 'video_2', 'layout')
+    undo_description = _('edit video block')

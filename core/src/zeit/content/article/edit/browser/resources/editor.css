@@ -477,6 +477,10 @@
 }
 
 #edit-form-article-content .block.type-raw .field.fieldname-xml .label,
+#edit-form-article-content .block.type-image .field.fieldname-references .label,
+#edit-form-article-content .block.type-gallery .field.fieldname-references .label,
+#edit-form-article-content .block.type-portraitbox .field.fieldname-references .label,
+#edit-form-article-content .block.type-infobox .field.fieldname-references .label,
 #edit-form-article-content .block.type-video .field.fieldname-video .label,
 #edit-form-article-content .block.type-video .field.fieldname-video_2 .label {
   display:none;
