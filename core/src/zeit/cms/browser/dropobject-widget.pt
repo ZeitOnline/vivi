@@ -2,7 +2,7 @@
     <input type="hidden" tal:attributes="
            name view/name;
            value view/_getFormValue" />
-    <div class="object-reference"></div>
+    <div class="object-reference landing-zone-candidate"></div>
     <a rel="configure_search" class="button"></a>
     <input type="text" placeholder="Link einfügen" tal:attributes="
            id string:${view/name}.url;

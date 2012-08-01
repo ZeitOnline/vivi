@@ -414,7 +414,7 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
 
     def test_no_value_should_create_landing_zone(self):
         s = self.selenium
-        s.waitForElementPresent('css=#testwidget.landing-zone')
+        s.waitForElementPresent('css=#testwidget .landing-zone')
 
     def test_drop_should_set_input_value(self):
         s = self.selenium

@@ -10,7 +10,7 @@
   </tal:data>
   <input tal:replace="structure view/marker" />
 
-  <ul>
+  <ul class="landing-zone-candidate">
     <!-- data will be inserted here by javascript -->
   </ul>
 
