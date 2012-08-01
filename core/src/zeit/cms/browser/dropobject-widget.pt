@@ -3,6 +3,7 @@
            name view/name;
            value view/_getFormValue" />
     <div class="object-reference landing-zone-candidate"></div>
+  <div>
     <a rel="configure_search" class="button"></a>
     <input type="text" placeholder="Link einfügen" tal:attributes="
            id string:${view/name}.url;
@@ -14,6 +15,7 @@
        i18n:translate="">
       Add new …
     </a>
+  </div>
 </div>
 <script tal:content="string:
 new zeit.cms.DropObjectWidget(
