@@ -29,4 +29,9 @@
       set_schema="zeit.cms.content.interfaces.IXMLRepresentation"
       permission="zeit.EditContent" />
   </class>
+
+  <interface
+    interface=".interfaces.IRelatedContent"
+    type="zeit.cms.asset.interfaces.IAssetInterface"
+    />
 </configure>

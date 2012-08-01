@@ -14,10 +14,4 @@
     interface=".interfaces.IBadges"
     type=".interfaces.IAssetInterface"
     />
-
-  <interface
-    interface="zeit.cms.related.interfaces.IRelatedContent"
-    type=".interfaces.IAssetInterface"
-    />
-
 </configure>
