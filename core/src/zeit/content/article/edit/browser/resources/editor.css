@@ -171,10 +171,11 @@
 
 /* Uppercase and some other properties for some labels */
 
-.article-editor-inner .edit-bar span,
+.article-editor-inner .edit-bar a,
 .article-editor-inner .block-inner .label span {
   text-transform: uppercase;
   font-weight: bold;
+  color: #4C4C4C;
 }
 
 .zeit-edit-interfaces-IFoldable .edit-bar a.fold-link:after {
