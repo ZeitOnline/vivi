@@ -631,18 +631,6 @@ form[action$="misc-product-management-b"] {
   -moz-appearance: button;
 }
 
-/* the_mystery_search_or_sumbit-url_button*/
-
-.article-editor-inner .the_mystery_search_or_submit-url_button {
-  background-position: 10px -55px, 0% 0% !important;
-  font-size: 12px !important;
-  margin-left: 5px;
-}
-
-.article-editor-inner .the_mystery_search_or_submit-url_button:hover {
-  background-position: 10px -85px, 0% 0% !important;
-}
-
 /* worflow publication period area */
 
 /* until it's not removed from markup  */
