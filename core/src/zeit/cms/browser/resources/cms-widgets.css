@@ -533,13 +533,24 @@ table.properties textarea {
     width: 10em;
 }
 
-.objectsequencewidget a[rel="configure_search"],
-.drop-object-widget a[rel="configure_search"] {
-  width: 16px;
-  height: 16px;
+.objectsequencewidget a.button[rel="configure_search"],
+.drop-object-widget a.button[rel="configure_search"] {
+  padding-left: 2px;
+  padding-right: 2px;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll transparent;
+  background-position: 2px -55px;
+}
+
+.objectsequencewidget a.button[rel="configure_search"]:before,
+.drop-object-widget a.button[rel="configure_search"]:before {
+  content: "";
   display: inline-block;
-  padding: 4px !important;
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -50px transparent !important;
+  width: 1em;
+}
+
+.objectsequencewidget a[rel="configure_search"]:hover,
+.drop-object-widget a[rel="configure_search"]:hover {
+  background-position: 2px -85px;
 }
 
 .objectsequencewidget,
