@@ -1,2 +1,6 @@
-<div class="content-details"
-     tal:content="structure provider:zeit.cms.object-details" />
+<div class="content-details">
+  <div class="object-details-heading"
+       tal:content="structure context/@@object-details-heading" />
+  <div class="object-details-body"
+       tal:content="structure context/@@object-details-body" />
+</div>

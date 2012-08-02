@@ -106,14 +106,6 @@
 
   <!-- object details -->
 
-  <browser:viewletManager
-    name="zeit.cms.object-details"
-    provides=".objectdetails.IViewlets"
-    layer=".interfaces.ICMSLayer"
-    class="zope.viewlet.manager.WeightOrderedViewletManager"
-    permission="zope.View"
-    />
-
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
     layer=".interfaces.ICMSLayer"
@@ -122,26 +114,22 @@
     permission="zope.View"
     />
 
-  <browser:viewlet
+  <browser:page
     for="zeit.cms.interfaces.ICMSContent"
-    manager=".objectdetails.IViewlets"
     layer=".interfaces.ICMSLayer"
     name="object-details-heading"
     class=".objectdetails.Details"
     template="object-details-heading.pt"
     permission="zope.View"
-    weight="10"
     />
 
-  <browser:viewlet
+  <browser:page
     for="zeit.cms.interfaces.ICMSContent"
-    manager=".objectdetails.IViewlets"
     layer=".interfaces.ICMSLayer"
     name="object-details-body"
     class=".objectdetails.Details"
     template="object-details-body.pt"
     permission="zope.View"
-    weight="20"
     />
 
   <adapter

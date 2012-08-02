@@ -1,4 +1,4 @@
-<div class="object-details-body" i18n:domain="zeit.cms">
+<div i18n:domain="zeit.cms">
   <div class="graphical_preview"
        tal:condition="view/graphical_preview_url">
     <img tal:attributes="src view/graphical_preview_url"/>

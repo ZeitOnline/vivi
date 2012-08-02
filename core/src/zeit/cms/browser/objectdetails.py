@@ -6,11 +6,6 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zope.cachedescriptors.property
 import zope.component
-import zope.viewlet.interfaces
-
-
-class IViewlets(zope.viewlet.interfaces.IViewletManager):
-    """Viewlets for object details."""
 
 
 class Details(zeit.cms.browser.view.Base):
