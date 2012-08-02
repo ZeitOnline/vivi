@@ -1,12 +1,7 @@
-<div class="content-details" i18n:domain="zeit.cms">
+<div class="object-details-body" i18n:domain="zeit.cms">
   <div class="graphical_preview"
        tal:condition="view/graphical_preview_url">
     <img tal:attributes="src view/graphical_preview_url"/>
-  </div>
-  <div class="supertitle">
-    <img tal:replace="structure context/@@zmi_icon|nothing"/>
-    <span tal:replace ="structure provider:zeit.cms.workflow-indicator" />
-    <span class="text" tal:content="view/supertitle" />
   </div>
   <div class="teaser_title"
        tal:content="view/teaser_title">

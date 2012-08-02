@@ -1,0 +1,7 @@
+<div class="object-details-heading" i18n:domain="zeit.cms">
+  <div class="supertitle">
+    <img tal:replace="structure context/@@zmi_icon|nothing"/>
+    <span tal:replace ="structure provider:zeit.cms.workflow-indicator" />
+    <span class="text" tal:content="view/supertitle" />
+  </div>
+</div>

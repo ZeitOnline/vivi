@@ -1,0 +1,2 @@
+<div class="content-details"
+     tal:content="structure provider:zeit.cms.object-details" />

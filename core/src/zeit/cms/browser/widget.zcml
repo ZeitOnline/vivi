@@ -104,13 +104,44 @@
     permission="zope.Public"
     />
 
+  <!-- object details -->
+
+  <browser:viewletManager
+    name="zeit.cms.object-details"
+    provides=".objectdetails.IViewlets"
+    layer=".interfaces.ICMSLayer"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    permission="zope.View"
+    />
+
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
     layer=".interfaces.ICMSLayer"
     name="object-details"
-    class=".widget.ObjectSequenceWidgetDetails"
-    template="objectsequence-widget-details.pt"
+    template="object-details.pt"
     permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.cms.interfaces.ICMSContent"
+    manager=".objectdetails.IViewlets"
+    layer=".interfaces.ICMSLayer"
+    name="object-details-heading"
+    class=".objectdetails.Details"
+    template="object-details-heading.pt"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:viewlet
+    for="zeit.cms.interfaces.ICMSContent"
+    manager=".objectdetails.IViewlets"
+    layer=".interfaces.ICMSLayer"
+    name="object-details-body"
+    class=".objectdetails.Details"
+    template="object-details-body.pt"
+    permission="zope.View"
+    weight="20"
     />
 
   <adapter
