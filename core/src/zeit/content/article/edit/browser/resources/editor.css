@@ -177,57 +177,6 @@
   font-weight: bold;
 }
 
-.zeit-edit-interfaces-IFoldable .edit-bar a.fold-link:after {
-  color: grey;
-  font-size: 9px;
-  padding-left: 10px;
-  padding-top: 0;
-  position: absolute;
-  top: 0;
-  vertical-align: top;
-  line-height: 26px;
-}
-
-.type-portraitbox .edit-bar a.fold-link:after {
-  content: "Portraitbox";
-}
-
-.type-teaserlist .edit-bar a.fold-link:after {
-  content: "Teaserlist";
-}
-
-.type-raw .edit-bar a.fold-link:after {
-  content: "Rawxml";
-}
-
-.type-relateds .edit-bar a.fold-link:after {
-  content: "Relateds-Liste";
-}
-
-.type-infobox .edit-bar a.fold-link:after {
-  content: "Infobox";
-}
-
-.type-image .edit-bar a.fold-link:after {
-  content: "Bild";
-}
-
-.type-gallery .edit-bar a.fold-link:after {
-  content: "Bildergalerie";
-}
-
-.type-audio .edit-bar a.fold-link:after {
-  content: "Audio";
-}
-
-.type-citation .edit-bar a.fold-link:after {
-  content: "Zitat";
-}
-
-.type-video .edit-bar a.fold-link:after {
-  content: "Video";
-}
-
 .article-text {
   margin: 10px;
 }
