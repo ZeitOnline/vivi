@@ -24,9 +24,7 @@
                 axis: 'y',
                 scroll: false,
                 update: function(event, ui) {
-                    MochiKit.Signal.signal(
-                        self.empty_marker, 'onchange',
-                        {target: self.empty_marker});
+                    jQuery(self.empty_marker).trigger('change');
                 }
             });
         },
