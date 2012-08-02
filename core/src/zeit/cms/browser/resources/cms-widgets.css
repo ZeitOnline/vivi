@@ -537,8 +537,7 @@ table.properties textarea {
 .drop-object-widget a.button[rel="configure_search"] {
   padding-left: 2px;
   padding-right: 2px;
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll transparent;
-  background-position: 2px -55px;
+  background-position: 2px -55px, 0 0;
 }
 
 .objectsequencewidget a.button[rel="configure_search"]:before,
@@ -550,7 +549,7 @@ table.properties textarea {
 
 .objectsequencewidget a[rel="configure_search"]:hover,
 .drop-object-widget a[rel="configure_search"]:hover {
-  background-position: 2px -85px;
+  background-position: 2px -85px, 0 0 !important;
 }
 
 .objectsequencewidget,
