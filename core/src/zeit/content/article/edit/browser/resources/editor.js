@@ -348,14 +348,18 @@ zeit.content.article.Editable = gocept.Class.extend({
         var direction = null;
         var cursor_at_end = false;
         if (event.key().string == 'KEY_ARROW_DOWN' &&
-            container.nodeType == container.TEXT_NODE &&  // Last
-            container.parentNode.nextSibling === null &&  // node
-            MochiKit.DOM.scrapeText(container).length == range.endOffset) {
+            ((container.nodeType == container.TEXT_NODE &&  // Last
+            container.parentNode.nextSibling === null) ||   // node
+            (container.tagName == 'P' &&            // Empty
+            container.nextSibling === null)) &&     // node
+            range.endOffset === 0) {
             direction = 'nextSibling';
         } else if (
             event.key().string == 'KEY_ARROW_UP' &&
-            container.nodeType == container.TEXT_NODE &&      // First
-            container.parentNode.previousSibling === null &&  // node
+            ((container.nodeType == container.TEXT_NODE &&      // First
+            container.parentNode.previousSibling === null) ||   // node
+            (container.tagName == 'P' &&                // Empty
+            container.previousSibling === null)) &&     // node
             range.startOffset === 0) {
             direction = 'previousSibling';
             cursor_at_end = true;
