@@ -369,7 +369,14 @@ zeit.content.article.Editable = gocept.Class.extend({
                 $('body').trigger('update-ads');
             }, 0);
         } else if (
-            event.key().string == 'KEY_BACKSPACE') {
+            (event.key().string == 'KEY_BACKSPACE') ||
+             event.key().string == 'KEY_DELETE') {
+            // Don't remove empty paragraphs.
+            if (container.tagName == 'P' &&
+                container.previousSibling === null &&
+                MochiKit.DOM.scrapeText(container).length === 0) {
+                event.preventDefault();
+            }
             setTimeout(function() {
                 $('body').trigger('update-ads');
             }, 0);
