@@ -3,4 +3,5 @@
        tal:content="structure context/@@object-details-heading" />
   <div class="object-details-body"
        tal:content="structure context/@@object-details-body" />
+  <div style="clear:both"></div>
 </div>

@@ -477,15 +477,22 @@ table.properties textarea {
   content: "Type to add …";
 }
 
-.objectsequencewidget ul {
+.objectsequencewidget ul.references {
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
-.objectsequencewidget li {
+.objectsequencewidget ul.references > li {
   cursor: move;
   position: relative;
+  margin: 0;
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
+
+.objectsequencewidget ul.landing-zone > li {
+  margin: 1em;
 }
 
 .objectsequencewidget li a[rel="remove"],
@@ -494,10 +501,11 @@ table.properties textarea {
   display: block;
   height: 16px;
   position: absolute;
-  right: 1em;
+  right: 0em;
   top: 0em;
   width: 16px;
   margin-top: 5px;
+  margin-right: 5px;
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -416px transparent; 
 }
 
@@ -565,17 +573,10 @@ table.properties textarea {
 .objectsequencewidget .content-details,
 .objectsequencewidget .content-details:hover {
   min-width: 400px;
-  padding-right: 50px;
-  border: 0px solid #E4E4E4;
-  border-top: 1px solid #E4E4E4;
   padding: 0px;
-  padding-top: 5px;
-  border-radius: 0px;
-}
-
-.objectsequencewidget li:last-child .content-details {
-  border-bottom: 1px solid #e4e4e4;
   padding-bottom: 10px;
+  border: 1px solid #DDDDDD;
+  border-radius: 5px;
 }
 
 .objectsequencewidget .more {
@@ -614,6 +615,48 @@ table.properties textarea {
   cursor: pointer;
   margin: 5px 7px 0px;
   background-repeat: no-repeat;
+}
+
+.object-details-heading {
+    background: none repeat scroll 0 0 #F8F9FD;
+    padding-top: 5px;
+    padding-right: 30px;
+}
+
+.object-details-heading img {
+    vertical-align: middle;
+}
+
+.object-details-heading ul {
+    font-family: "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+    color: #90B0C3;
+}
+
+.object-details-heading .filename {
+    font-weight: bold;
+}
+
+.object-details-heading ul,
+.object-details-heading li {
+    display: inline;
+}
+
+.object-details-heading li:before {
+    content: "| ";
+}
+
+.object-details-heading li:first-child:before {
+    content: "";
+}
+
+.object-details-heading .metadata {
+    float:right;
+}
+
+.object-details-body {
+    padding-left: 10px;
+    padding-right: 10px;
+    clear: both;
 }
 
 /* Notifications and messages*/
