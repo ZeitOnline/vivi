@@ -1,20 +1,32 @@
 /* style definitions for object-details views . */
 
-.objectsequencewidget .content-details,
-.objectsequencewidget .content-details:hover {
+.content-details {
+  border-radius: 5px;
+  background: #ffffff;
+  border: 1px solid #e4e4e4;
+  cursor: move;
+  margin-bottom: .8em;
+  overflow: hidden;
+  padding: 1em;
+}
+
+.cp-content .content-details {
   min-width: 400px;
   padding: 0px;
   padding-bottom: 10px;
-  border: 1px solid #DDDDDD;
-  border-radius: 5px;
+  border-color: #cccccc;
 }
 
-.objectsequencewidget .content-details strong {
+.cp-content .content-details:hover {
+  border-color: #bbbbbb;
+}
+
+.cp-content .content-details strong {
   display: block;
   float: left;
 }
 
-.objectsequencewidget .content-details a.communitylink {
+.cp-content .content-details a.communitylink {
   display: block;
   float:left;
   color: transparent;
@@ -24,7 +36,7 @@
   cursor: pointer;
 }
 
-.objectsequencewidget .content-details a.fold-link {
+.cp-content .content-details a.fold-link {
   display: block;
   float: left;
   width: 10px;
@@ -74,4 +86,46 @@
     padding-left: 10px;
     padding-right: 10px;
     clear: both;
+}
+
+.content-details .supertitle {
+  display: block;
+  font-weight: 400;
+  margin-bottom: .5em;
+  vertical-align: middle;
+}
+
+.content-details .supertitle .text {
+  white-space: nowrap;
+}
+
+.content-details .supertitle img {
+  margin-right: .5em;
+  vertical-align: middle;}
+
+.content-details .supertitle img:last-child {
+  margin-right: 12px;
+}
+
+.content-details .teaser_title {
+  font-size: 1.2em;
+  font-weight: 700;
+  margin-bottom: .3em;
+}
+
+.content-details .teaser_text {
+  font-size: 1em;
+  margin-top: 0.3em;
+  margin-bottom:0.5em;
+}
+
+.content-details .graphical_preview {
+  float: right;
+}
+
+.content-details .goto-object {
+  clear: right;
+}
+.content-details .object-link {
+  float: right;
 }
