@@ -4,8 +4,18 @@
 
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
+import zeit.cms.content.interfaces
 import zope.cachedescriptors.property
 import zope.component
+
+
+class NullObject(object):
+
+    def __getattr__(self, name):
+        return None
+
+
+NO_METADATA = NullObject()
 
 
 class Details(zeit.cms.browser.view.Base):
@@ -19,19 +29,15 @@ class Details(zeit.cms.browser.view.Base):
 
     @zope.cachedescriptors.property.Lazy
     def common_metadata(self):
-        return zeit.cms.content.interfaces.ICommonMetadata(self.context, None)
+        return zeit.cms.content.interfaces.ICommonMetadata(
+            self.context, NO_METADATA)
 
     @property
     def teaser_title(self):
-        if self.common_metadata is not None:
+        if self.common_metadata is not NO_METADATA:
             return self.common_metadata.teaserTitle
         if self.list_repr is not None:
             return self.list_repr.title
-
-    @property
-    def supertitle(self):
-        if self.common_metadata is not None:
-            return self.common_metadata.supertitle
 
     @property
     def preview_url(self):
@@ -46,3 +52,32 @@ class Details(zeit.cms.browser.view.Base):
         if thumbnail is None:
             return
         return self.url('@@thumbnail')
+
+    @property
+    def author(self):
+        if self.common_metadata is NO_METADATA:
+            return
+        if self.common_metadata.author_references:
+            return self.common_metadata.author_references[0].display_name
+        elif self.common_metadata.authors:
+            return self.common_metadata.authors[0]
+
+    @zope.cachedescriptors.property.Lazy
+    def countings(self):
+        return zeit.cms.content.interfaces.IAccessCounter(self.context, None)
+
+    @property
+    def hits(self):
+        if self.countings is None:
+            return
+        return '%s/%s' % (
+            self.countings.hits or 0, self.countings.total_hits or 0)
+
+    def display_metadata(self):
+        return filter(None, [
+                'XXX Datum',
+                'XXX Ausgabe',
+                self.common_metadata.ressort,
+                self.author,
+                self.hits,
+                ])

@@ -40,12 +40,12 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
         self.assert_ellipsis(
             '...<div class="teaser_title">test title</div>...')
 
-    def test_should_contain_super_title(self):
+    def test_should_contain_metadata(self):
         with self.get_content() as co:
             co.supertitle = u'super'
         self.browser.open('@@object-details')
         self.assert_ellipsis(
-            '...<div class="supertitle">...super...</div>...')
+            '...<ul class="metadata">...</ul>...')
 
     def test_should_contain_workflow_information(self):
         self.browser.open('@@object-details')
@@ -354,7 +354,7 @@ class ObjectWidgetDetailViews(
         s.assertElementNotPresent('css=div.supertitle')
         self.eval(
             "zeit.cms.test_widget.add('http://xml.zeit.de/testcontent');")
-        s.waitForElementPresent('css=div.supertitle')
+        s.waitForElementPresent('css=ul.metadata')
         s.assertElementNotPresent('css=div.mydetails')
         self.eval(
             "zeit.cms.test_widget2.add('http://xml.zeit.de/testcontent');")
@@ -368,7 +368,7 @@ class ObjectWidgetDetailViews(
         s.assertElementNotPresent('css=div.supertitle')
         self.eval(
             "zeit.cms.test_widget.set('http://xml.zeit.de/testcontent');")
-        s.waitForElementPresent('css=div.supertitle')
+        s.waitForElementPresent('css=ul.metadata')
         s.assertElementNotPresent('css=div.mydetails')
         self.eval(
             "zeit.cms.test_widget2.set('http://xml.zeit.de/testcontent');")
@@ -659,7 +659,7 @@ class TestObjectSequenceDisplayWidgetIntegration(
         widget._data = (content,)
         with zeit.cms.testing.interaction():
             self.assert_ellipsis(
-                '...<div class="content-details...supertitle...', widget())
+                '...<div class="content-details...teaser_title...', widget())
 
     def test_should_use_configured_detail_views(self):
         widget = self.get_widget()

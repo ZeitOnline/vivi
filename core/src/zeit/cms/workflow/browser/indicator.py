@@ -9,7 +9,7 @@ import zope.i18n
 import zope.viewlet.viewlet
 
 
-class Published(zope.viewlet.viewlet.ViewletBase):
+class Published(object):
     """Indicate whether an object is published or not."""
 
     messages = {
@@ -34,3 +34,14 @@ class Published(zope.viewlet.viewlet.ViewletBase):
             self.request, name='zeit.cms')
         return (u'<img class="publish-state" src="%s/icons/%s.png" title="%s" '
                 '/>' % (cms_resources(), status, title))
+
+
+class PublishedViewlet(Published, zope.viewlet.viewlet.ViewletBase):
+    pass
+
+
+class PublishedView(Published):
+
+    def __call__(self):
+        self.update()
+        return self.render()

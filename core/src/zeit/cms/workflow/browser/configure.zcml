@@ -16,7 +16,15 @@
     view="zope.interface.Interface"
     manager=".interfaces.IWorkflowIndicator"
     name="published"
-    class=".indicator.Published"
+    class=".indicator.PublishedViewlet"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="published-icon"
+    class=".indicator.PublishedView"
     permission="zope.View"
     />
 
