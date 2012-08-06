@@ -667,18 +667,6 @@ form[action$="edit-division"] div.widget input {
   top:-3px;
 }
 
-.article-editor-inner .objectsequencewidget ul[id^="sortable"] {
-  margin:0em;
-}
-
-.article-editor-inner .objectsequencewidget ul li {
-  margin-top:1em;
-}
-
-.article-editor-inner .objectsequencewidget.landing-zone.visible ul[id^="sortable"] li {
-  margin: 1em 1em 1em 1em;
-}
-
 form[action$="edit.form.workflow-status"] {
   margin-bottom:30px;
 }
