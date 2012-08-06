@@ -1,0 +1,77 @@
+/* style definitions for object-details views . */
+
+.objectsequencewidget .content-details,
+.objectsequencewidget .content-details:hover {
+  min-width: 400px;
+  padding: 0px;
+  padding-bottom: 10px;
+  border: 1px solid #DDDDDD;
+  border-radius: 5px;
+}
+
+.objectsequencewidget .content-details strong {
+  display: block;
+  float: left;
+}
+
+.objectsequencewidget .content-details a.communitylink {
+  display: block;
+  float:left;
+  color: transparent;
+  text-indent: -1000px;
+  width: 15px;
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 4px -116px transparent;
+  cursor: pointer;
+}
+
+.objectsequencewidget .content-details a.fold-link {
+  display: block;
+  float: left;
+  width: 10px;
+  height: 10px;
+  cursor: pointer;
+  margin: 5px 7px 0px;
+  background-repeat: no-repeat;
+}
+
+.object-details-heading {
+    background: none repeat scroll 0 0 #F8F9FD;
+    padding-top: 5px;
+    padding-right: 30px;
+}
+
+.object-details-heading img {
+    vertical-align: middle;
+}
+
+.object-details-heading ul {
+    font-family: "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
+    color: #90B0C3;
+}
+
+.object-details-heading .filename {
+    font-weight: bold;
+}
+
+.object-details-heading ul,
+.object-details-heading li {
+    display: inline;
+}
+
+.object-details-heading li:before {
+    content: "| ";
+}
+
+.object-details-heading li:first-child:before {
+    content: "";
+}
+
+.object-details-heading .metadata {
+    float:right;
+}
+
+.object-details-body {
+    padding-left: 10px;
+    padding-right: 10px;
+    clear: both;
+}
