@@ -8,15 +8,14 @@ There are form stubs at the top of the editor:
 >>> browser.open('@@contents')
 >>> print browser.contents
 <...
-  <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-a">
+<form class="inline-form"
+  action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-a">
 ...
-    <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-b">
+<form class="inline-form"
+  action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-b">
 ...
-    <form class="inline-form"
-      action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-c">
-</form>
+<form class="inline-form"
+  action="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/@@edit.form.metadata-c">
 ...
 
 
