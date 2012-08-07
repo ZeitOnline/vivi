@@ -10,23 +10,23 @@
   padding: 1em;
 }
 
-.cp-content .object-details {
+.cp-content-inner .object-details {
   min-width: 400px;
   padding: 0px;
   padding-bottom: 10px;
   border-color: #cccccc;
 }
 
-.cp-content .object-details:hover {
+.cp-content-inner .object-details:hover {
   border-color: #bbbbbb;
 }
 
-.cp-content .object-details strong {
+.cp-content-inner .object-details strong {
   display: block;
   float: left;
 }
 
-.cp-content .object-details a.communitylink {
+.cp-content-inner .object-details a.communitylink {
   display: block;
   float:left;
   color: transparent;
@@ -36,7 +36,7 @@
   cursor: pointer;
 }
 
-.cp-content .object-details a.fold-link {
+.cp-content-inner .object-details a.fold-link {
   display: block;
   float: left;
   width: 10px;
