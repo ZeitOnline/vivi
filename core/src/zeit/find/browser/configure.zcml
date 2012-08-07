@@ -99,7 +99,7 @@
 
   <browser:page
     for="zeit.cms.repository.interfaces.ICollection"
-    layer="zeit.cms.browser.interfaces.IViviSkin"
+    layer="zeit.cms.browser.interfaces.ICMSSkin"
     name="get_object_browser"
     class=".selector.Selector"
     template="selector.pt"

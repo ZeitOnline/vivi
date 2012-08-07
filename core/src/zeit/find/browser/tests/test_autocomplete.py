@@ -41,7 +41,7 @@ class TestSourceQueryViewIntegration(zeit.cms.testing.FunctionalTestCase):
             source, zeit.cms.content.interfaces.IAutocompleteSource)
         request = mock.Mock()
         zope.interface.alsoProvides(
-            request, zeit.cms.browser.interfaces.IViviSkin)
+            request, zeit.cms.browser.interfaces.ICMSSkin)
         view = zope.component.getMultiAdapter(
             (source, request), zope.formlib.interfaces.ISourceQueryView)
 
