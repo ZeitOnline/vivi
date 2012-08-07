@@ -58,15 +58,6 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'supertitle', 'title', 'subtitle')
 
-    def render(self):
-        result = super(ArticleContentHead, self).render()
-        if result:
-            result += (
-                '<script type="text/javascript">'
-                '    jQuery("#article-editor-text").countedInput();'
-                '</script>')
-        return result
-
 
 class ArticleContentBody(zeit.edit.browser.form.InlineForm):
 
