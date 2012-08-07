@@ -1,4 +1,4 @@
-<div class="objectsequencewidget"
+<div class="object-widget objectsequencewidget"
   tal:attributes="id view/name">
   <tal:data tal:repeat="item view/_getFormValue">
       <input type="hidden" class="uniqueId"

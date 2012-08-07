@@ -513,8 +513,7 @@ table.properties textarea {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -446px transparent;
 }
 
-.objectsequencewidget.droppable-active a[rel="remove"],
-.drop-object-widget.droppable-active  a[rel="remove"] {
+.object-widget.droppable-active  a[rel="remove"] {
   display: none;
 }
 
@@ -541,27 +540,23 @@ table.properties textarea {
     width: 10em;
 }
 
-.objectsequencewidget a.button[rel="configure_search"],
-.drop-object-widget a.button[rel="configure_search"] {
+.object-widget a.button[rel="configure_search"] {
   padding-left: 2px;
   padding-right: 2px;
   background-position: 2px -55px, 0 0;
 }
 
-.objectsequencewidget a.button[rel="configure_search"]:before,
-.drop-object-widget a.button[rel="configure_search"]:before {
+.object-widget a.button[rel="configure_search"]:before {
   content: "";
   display: inline-block;
   width: 1em;
 }
 
-.objectsequencewidget a[rel="configure_search"]:hover,
-.drop-object-widget a[rel="configure_search"]:hover {
+.object-widget a[rel="configure_search"]:hover {
   background-position: 2px -85px, 0 0 !important;
 }
 
-.objectsequencewidget,
-.drop-object-widget {
+.object-widget {
   border: 1px solid transparent;
 }
 

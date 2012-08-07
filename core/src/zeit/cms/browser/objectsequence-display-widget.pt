@@ -1,4 +1,4 @@
-<div class="objectsequencewidget"
+<div class="object-widget objectsequencewidget"
   tal:attributes="id view/name"
   tal:define="detail_view_name view/detail_view_name">
   <ul>

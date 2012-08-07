@@ -1,4 +1,4 @@
-<div class="drop-object-widget" tal:attributes="id view/name">
+<div class="object-widget drop-object-widget" tal:attributes="id view/name">
     <input type="hidden" tal:attributes="
            name view/name;
            value view/_getFormValue" />
