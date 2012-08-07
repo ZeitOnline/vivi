@@ -35,7 +35,6 @@ class IGlobalSearchLayer(zope.publisher.interfaces.browser.IBrowserRequest):
 class ICMSTestingSkin(ICMSOldStyles,
                       ICMSLayer,
                       z3c.hashedresource.interfaces.IHashedResourceSkin,
-                      zope.publisher.interfaces.browser.IBrowserRequest,
                       zope.publisher.interfaces.browser.IDefaultBrowserLayer):
     """Layer/Skin which is only used in tests."""
 
