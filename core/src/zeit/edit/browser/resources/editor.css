@@ -517,24 +517,6 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin-right:0.4em;
 }
 
-#assets\.related .content-details {
-  border: 1px solid #A00;
-  background: -moz-linear-gradient(center top , #FFFFFF, #FFEEEE) repeat scroll 0 0 transparent;
-}
-
-#assets\.related .content-details:hover {
-  border: 1px solid #500;
-}
-
-#assets\.related li:nth-child(-n+3) .content-details {
-  border: 1px solid #E4E4E4;
-  background: #FFF;
-}
-
-#assets\.related li:nth-child(-n+3) .content-details:hover {
-  border: 1px solid #BBB;
-}
-
 .inline-form div.widget > input,
 .inline-form div.widget > textarea,
 .inline-form div.widget > div > div > select {
