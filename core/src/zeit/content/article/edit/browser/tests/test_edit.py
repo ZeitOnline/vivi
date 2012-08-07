@@ -555,7 +555,7 @@ class TestReadonlyVisible(unittest2.TestCase,
 
     def test_landing_zone_after_block_should_not_be_visible(self):
         browser = self.create_block('raw')
-        self.assertNotIn('landing-zone', browser.contents)
+        self.assertNotEllipsis('...class="landing-zone ...', browser.contents)
 
     def test_blocks_should_not_be_sortable(self):
         browser = self.create_block('raw')
