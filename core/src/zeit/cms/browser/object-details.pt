@@ -1,4 +1,4 @@
-<div class="content-details">
+<div class="object-details">
   <div class="object-details-heading"
        tal:content="structure context/@@object-details-heading" />
   <div class="object-details-body"

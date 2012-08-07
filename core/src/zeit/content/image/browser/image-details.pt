@@ -5,7 +5,7 @@
 
 
 
-<div class="content-details" i18n:domain="zeit.cms">
+<div class="object-details" i18n:domain="zeit.cms">
 
 <img tal:replace="structure context/@@preview/tag" />
 

@@ -659,7 +659,7 @@ class TestObjectSequenceDisplayWidgetIntegration(
         widget._data = (content,)
         with zeit.cms.testing.interaction():
             self.assert_ellipsis(
-                '...<div class="content-details...teaser_title...', widget())
+                '...<div class="object-details...teaser_title...', widget())
 
     def test_should_use_configured_detail_views(self):
         widget = self.get_widget()
