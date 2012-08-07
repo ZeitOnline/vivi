@@ -142,8 +142,14 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     layer = selenium_layer
     skin = 'vivi'
 
+    WIDGET_SELECTOR = 'xpath=//label[@for="%s"]/../../*[@class="widget"]'
+
     def assert_widget_text(self, widget_id, text):
-        path = 'xpath=//label[@for="{0}"]/../../*[@class="widget"]'.format(
-            widget_id)
+        path = self.WIDGET_SELECTOR % widget_id
         self.selenium.waitForElementPresent(path)
         self.selenium.assertText(path, text)
+
+    def wait_for_widget_text(self, widget_id, text):
+        path = self.WIDGET_SELECTOR % widget_id
+        self.selenium.waitForElementPresent(path)
+        self.selenium.waitForText(path, text)

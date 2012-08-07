@@ -174,7 +174,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
                             'http://xml.zeit.de/testcontent'),)
         s = self.selenium
         s.open(s.getLocation())
-        self.assert_widget_text('internallinks.related', '*testcontent*')
+        self.wait_for_widget_text('internallinks.related', '*testcontent*')
 
 
 class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
