@@ -87,7 +87,7 @@ We have a special icon:
 >>> browser.open('http://localhost/++skin++cms/repository/2006/')
 >>> print browser.contents
 <?xml...
-       <img src="http://localhost/++skin++cms/@@/zeit-content-text-interfaces-IText-zmi_icon.png" alt="Text" width="18" height="18" border="0" />
+       <img src="http://localhost/++skin++cms/@@/zeit-content-text-interfaces-IText-zmi_icon.png" alt="Text" width="20" height="20" border="0" />
        ...
 
 
