@@ -630,12 +630,21 @@ span.charcount,
   margin-bottom: 0;
 }
 
-.editable-area .widget > textarea {
+
+/* Textareas */
+
+textarea {
   font-family: Georgia,serif;
   font-size: 14px;
   height: 4em;
   line-height: 1.4;
   padding: 5px;
+}
+
+:-moz-placeholder {
+  color: #999;
+  font-size: 12px;
+  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
 }
 
 
@@ -725,4 +734,3 @@ legend {
 #editor-forms #checkin_correction {
   font-size: 14px;
 }
-
