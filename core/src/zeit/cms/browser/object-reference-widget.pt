@@ -1,4 +1,4 @@
-<div class="object-widget"
+<div class="object-reference-widget"
   i18n:domain="zeit.cms"
   tal:attributes="id string:${view/name}.outerdiv">
   <input type="hidden" value="1"

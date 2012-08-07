@@ -518,12 +518,12 @@ table.properties textarea {
   display: none;
 }
 
-.object-widget.droppable-active input[type=text],
-.object-widget.hover-content input[type=text] {
+.object-reference-widget.droppable-active input[type=text],
+.object-reference-widget.hover-content input[type=text] {
   border: 1px solid #00ee5e;
 }
 
-.object-widget.hover-content input[type=text] {
+.object-reference-widget.hover-content input[type=text] {
   outline: 4px solid #00ee5e;
 }
 
@@ -536,7 +536,7 @@ table.properties textarea {
 }
 
 
-.object-widget .object-reference {
+.object-reference-widget .object-reference {
     position: relative;
     width: 10em;
 }

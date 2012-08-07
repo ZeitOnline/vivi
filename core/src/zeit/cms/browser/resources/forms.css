@@ -221,11 +221,11 @@ form .field input[id="form.embedded_gallery"] + input + input
 }
 
 
-form .wide-widgets .field .object-widget > .object-reference {
+form .wide-widgets .field .object-reference-widget > .object-reference {
     width: 80%;
 }
 
-form .wide-widgets .field .object-widget.add-button > .object-reference {
+form .wide-widgets .field .object-reference-widget.add-button > .object-reference {
     width: 70%;
 }
 

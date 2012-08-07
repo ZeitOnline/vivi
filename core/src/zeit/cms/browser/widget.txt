@@ -47,7 +47,7 @@ Render the widget:
 >>> print widget()
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
-<div class="object-widget" id="field.reference.outerdiv">
+<div class="object-reference-widget" id="field.reference.outerdiv">
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
@@ -84,7 +84,7 @@ information:
 >>> print widget()
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
-<div class="object-widget" id="field.reference.outerdiv">
+<div class="object-reference-widget" id="field.reference.outerdiv">
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
@@ -128,7 +128,7 @@ The invalid value is rendered:
 >>> print widget()
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
-<div class="object-widget" id="field.reference.outerdiv">
+<div class="object-reference-widget" id="field.reference.outerdiv">
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
@@ -168,7 +168,7 @@ The invalid value is still rendered though:
 >>> print widget()
 Returning location for <Content object at 0x...>
     <zeit.cms.content.contentsource.CMSContentSource object at 0x...>
-<div class="object-widget" id="field.reference.outerdiv">
+<div class="object-reference-widget" id="field.reference.outerdiv">
   <input type="hidden" value="1"
          name="field.reference.present" />
   <input class="object-reference" type="text"
