@@ -393,7 +393,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 /* fold */
 
 .cp-content-inner .edit-bar > .fold-link,
-.cp-content-inner .content-details .fold-link {
+.cp-content-inner .object-details .fold-link {
   background-image: url('arrow_down.png');
   background-position: 0 8px;
 }
