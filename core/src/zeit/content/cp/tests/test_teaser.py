@@ -76,7 +76,7 @@ class TestXMLTeaser(XMLTeaserBase):
         from zeit.cms.testcontenttype.interfaces import ITestContentType
         self.teaser.free_teaser = True
         request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.IViviSkin)
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
         preview = zope.component.queryMultiAdapter(
             (self.teaser, request), name='preview')
         self.assertEqual(None, preview)

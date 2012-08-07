@@ -31,7 +31,7 @@ class RelatedTest(zeit.content.cp.testing.FunctionalTestCase):
             relateds.related = (c1, c2)
         self.cp = zeit.content.cp.centerpage.CenterPage()
         self.request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.IViviSkin)
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
 
     def test_created_relateds(self):
         self.request.form['uniqueId'] = 'http://xml.zeit.de/testcontent'
