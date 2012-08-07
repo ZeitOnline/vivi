@@ -16,10 +16,8 @@ $.fn.timer = function() {
 };
 
 
-MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
-    MochiKit.Signal.connect(zeit.cms.SubPageForm, 'after-reload', function() {
-        $('.timer').timer();
-    });
+$(document).bind('fragment-ready', function(event) {
+    $('.timer', event.target).timer();
 });
 
 }(jQuery));
