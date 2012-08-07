@@ -227,8 +227,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
     changed: function() {
         var self = this;
-        MochiKit.Signal.signal(
-            self.getCountField(), 'onchange', {target: self.getCountField()});
+        jQuery(self.getCountField()).trigger('change');
     },
 
     update_order_from_ul: function() {
@@ -317,8 +316,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
 
     changed: function() {
         var self = this;
-        MochiKit.Signal.signal(
-            self.input, 'onchange', {target: self.input});
+        jQuery(self.input).trigger('change');
     },
 
     update_details: function() {
