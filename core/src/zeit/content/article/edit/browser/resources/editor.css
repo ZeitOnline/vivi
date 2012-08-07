@@ -703,8 +703,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin: 10px 0px 10px 0;
 }
 
-.objectsequencewidget.landing-zone.visible,
-.drop-object-widget.landing-zone.visible {
+.object-widget.landing-zone.visible {
   padding:0px !important;
   margin:0px !important;
 }
