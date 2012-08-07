@@ -289,6 +289,25 @@ zeit.content.article.Editable = gocept.Class.extend({
     },
 
     relocate_toolbar: function(fast) {
+
+        off = $(".rte-toolbar").parent().offset();
+        scroll = $(this).scrollTop();
+
+        var sel = document.selection, range;
+        var x = 0, y = 0;
+        if (window.getSelection) {
+            sel = getSelection();
+            if (sel.rangeCount) {
+                range = sel.getRangeAt(0).cloneRange();
+                if (range.getClientRects) {
+                    range.collapse(true);
+                    var rect = range.getClientRects()[0];
+                    h = rect.left;
+                    v = rect.top - off.top;
+                }
+            }
+        }
+
         var self = this;
         var range = getSelection().getRangeAt(0);
         var container = range.endContainer;
@@ -305,7 +324,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             // order to retrieve the current x position (which is to be the
             // target x position, i.e. we don't want any horizontal motion).
             x: MochiKit.Style.getStyle(self.toolbar, 'left'),
-            y: MochiKit.Style.getElementPosition(container, self.block).y
+            y: v
         };
         if (fast) {
             MochiKit.Style.setElementPosition(self.toolbar, move);
