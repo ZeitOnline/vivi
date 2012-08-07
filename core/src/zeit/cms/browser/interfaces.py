@@ -47,14 +47,6 @@ class ICMSSkin(ICMSStyles,
     """CMS skin"""
 
 
-class IViviSkin(ICMSStyles,
-                ICMSLayer,
-                z3c.hashedresource.interfaces.IHashedResourceSkin,
-                gocept.form.interfaces.IJSValidationLayer,
-                zope.publisher.interfaces.browser.IDefaultBrowserLayer):
-    """Vivi skin."""
-
-
 class IGlobalInformation(zope.viewlet.interfaces.IViewletManager):
     """Viewlets for the right header area."""
 

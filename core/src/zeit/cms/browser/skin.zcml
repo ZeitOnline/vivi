@@ -24,7 +24,7 @@
     />
 
   <interface
-    interface=".interfaces.IViviSkin"
+    interface=".interfaces.ICMSSkin"
     type="zope.publisher.interfaces.browser.IBrowserSkinType"
     name="vivi"
     />

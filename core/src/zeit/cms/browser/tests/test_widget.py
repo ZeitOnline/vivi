@@ -641,7 +641,7 @@ class TestObjectSequenceDisplayWidgetIntegration(
         field = self.get_field()
         request = zope.publisher.browser.TestRequest()
         zope.interface.alsoProvides(
-            request, zeit.cms.browser.interfaces.IViviSkin)
+            request, zeit.cms.browser.interfaces.ICMSSkin)
         widget = zope.component.getMultiAdapter(
             (field, request),
             zope.formlib.interfaces.IDisplayWidget)
@@ -678,7 +678,7 @@ class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
         super(RestructuredTextWidgetTest, self).setUp()
         from zeit.cms.browser.widget import RestructuredTextWidget
         request = zope.publisher.browser.TestRequest(
-            skin=zeit.cms.browser.interfaces.IViviSkin)
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
         field = zope.schema.Text()
         field.__name__ = 'foo'
         self.widget = RestructuredTextWidget(field, request)
