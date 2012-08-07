@@ -32,14 +32,14 @@ class IGlobalSearchLayer(zope.publisher.interfaces.browser.IBrowserRequest):
     """
 
 
-class ICMSTestingSkin(ICMSOldStyles,
+class ICMSTestingSkin(ICMSStyles,
                       ICMSLayer,
                       z3c.hashedresource.interfaces.IHashedResourceSkin,
                       zope.publisher.interfaces.browser.IDefaultBrowserLayer):
     """Layer/Skin which is only used in tests."""
 
 
-class ICMSSkin(ICMSOldStyles,
+class ICMSSkin(ICMSStyles,
                ICMSLayer,
                z3c.hashedresource.interfaces.IHashedResourceSkin,
                gocept.form.interfaces.IJSValidationLayer,

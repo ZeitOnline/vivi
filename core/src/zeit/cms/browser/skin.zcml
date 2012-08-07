@@ -151,20 +151,6 @@
       "/>
   </resourceLibrary>
 
-  <resourceLibrary
-    name="zeit.cms"
-    require="zeit.cms.javascript"
-    layer=".interfaces.ICMSOldStyles">
-    <directory source="oldstyle" include="
-      forms.css
-      tables.css
-      lightbox.css
-      cms-widgets.css
-      object-details.css
-      cms.css
-      "/>
-  </resourceLibrary>
-
   <!-- remove those ... -->
 
   <resourceLibrary name="zeit.cms.filteringtable">
