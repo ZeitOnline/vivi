@@ -45,6 +45,9 @@ zeit.cms.View = gocept.Class.extend({
         MochiKit.Signal.signal(self, 'before-load');
         target_element.innerHTML = html;
         log('template expanded successfully', self.target_id);
+        var fragment_ready = new jQuery.Event('fragment-ready');
+        fragment_ready.target = target_element;
+        jQuery(document).trigger(fragment_ready);
         MochiKit.Signal.signal(self, 'load', target_element, data);
         return data;
     }
