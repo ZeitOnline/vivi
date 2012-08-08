@@ -3,6 +3,7 @@
 
 import mock
 import unittest2
+import zeit.cms.testing
 
 
 class TestJSON(unittest2.TestCase):
@@ -33,3 +34,15 @@ class TestJSON(unittest2.TestCase):
         self.assertEqual('[1, 2, 3]', view())
         # result is unaltered
         self.assertEqual([1, 2, 3], result)
+
+
+class FragmentReady(zeit.cms.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(FragmentReady, self).setUp()
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/fragmentready.html')
+
+    def test_event_is_fired_on_document_and_contains_actual_dom_element(self):
+        self.eval('window.jQuery("#example").trigger_fragment_ready();')
+        self.assertEqual('example', self.eval('zeit.cms.event_target'))

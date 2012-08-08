@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="resource_library:zeit.cms.javascript"/>
+
+    <script type="text/javascript">
+      (function($) {
+      $(document).ready(function() {
+        zeit.cms.event_target = null;
+        $(document).bind('fragment-ready', function(event) {
+            zeit.cms.event_target = $(event.__target).attr('id');
+        });
+      });
+      }(jQuery));
+    </script>
+  </head>
+  <body id="body">
+    <div id="example"></div>
+  </body>
+</html>

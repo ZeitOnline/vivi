@@ -113,9 +113,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             // so we only need to do the post-processing and send the
             // appropriate signals.
             self.post_process_html();
-            var fragment_ready = new jQuery.Event('fragment-ready');
-            fragment_ready.target = self.container;
-            jQuery(document).trigger(fragment_ready);
+            jQuery(self.container).trigger_fragment_ready();
             MochiKit.Signal.signal(self, 'after-reload');
         }
     },

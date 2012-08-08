@@ -45,9 +45,7 @@ zeit.cms.View = gocept.Class.extend({
         MochiKit.Signal.signal(self, 'before-load');
         target_element.innerHTML = html;
         log('template expanded successfully', self.target_id);
-        var fragment_ready = new jQuery.Event('fragment-ready');
-        fragment_ready.target = target_element;
-        jQuery(document).trigger(fragment_ready);
+        jQuery(target_element).trigger_fragment_ready();
         MochiKit.Signal.signal(self, 'load', target_element, data);
         return data;
     }
@@ -138,3 +136,21 @@ zeit.cms.JSONView = zeit.cms.View.extend({
 
 
 }());
+
+
+(function($) {
+
+// XXX we'd much rather use $(element).trigger('fragment-ready'),
+// then we'd also be able to use the default event.target instead of our own
+// name __target, but we'd need the "special event" API for this, which is
+// undocumented and thus maybe unstable. See #11247
+jQuery.fn.trigger_fragment_ready = function() {
+    var jq_elements = this;
+    return jq_elements.each(function(i, element) {
+        var fragment_ready = new jQuery.Event('fragment-ready');
+        fragment_ready.__target = element;
+        $(document).trigger(fragment_ready);
+    });
+};
+
+}(jQuery));
