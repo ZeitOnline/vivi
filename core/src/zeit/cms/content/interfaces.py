@@ -115,7 +115,8 @@ class ICommonMetadata(zope.interface.Interface):
         required=False)
 
     title = zeit.cms.content.field.XMLSnippet(
-        title=_("Title"))
+        title=_("Title"),
+        missing_value=u'')
 
     subtitle = zeit.cms.content.field.XMLSnippet(
         title=_("Subtitle"),
