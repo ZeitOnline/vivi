@@ -36,6 +36,18 @@
 }
 
 
+/* editor heading */
+
+#editor-forms-heading,
+#editor-forms-title {
+    padding: 5px 1em;
+}
+
+#editor-forms-title {
+    background-color: white;
+}
+
+
 /* editor blocks */
 
 #editable-body .editable {
