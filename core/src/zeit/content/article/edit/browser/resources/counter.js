@@ -1,10 +1,11 @@
 (function($){
 
-$.fn.limitedInput = function(limit) {
+$.fn.limitedInput = function() {
     return this.each(function() {
         var self = $(this);
         var container = self.find('.widget:first');
         var area = $('textarea', container);
+        var limit = area.attr('cms:maxlength');
         var count = area.val().length || 0;
         var suffix = '/' + limit;
         var label = count + suffix;
@@ -45,6 +46,10 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
         $('#article-editor-text').countedInput();
     });
 
+});
+
+$(document).bind('fragment-ready', function(event) {
+    $('.limited-input', event.target).limitedInput();
 });
 
 }(jQuery));

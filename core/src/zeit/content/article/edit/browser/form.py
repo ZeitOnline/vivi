@@ -283,15 +283,10 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'teaserText')
 
-    def render(self):
-        result = super(TeaserText, self).render()
-        if result:
-            max_length = self.widgets['teaserText'].context.max_length
-            result += (
-                '<script type="text/javascript">'
-                '    jQuery(".limited-input").limitedInput(%s)'
-                '</script>' % max_length)
-        return result
+    def setUpWidgets(self, *args, **kw):
+        super(TeaserText, self).setUpWidgets(*args, **kw)
+        self.widgets['teaserText'].extra = 'cms:maxlength="%s"' % (
+            self.widgets['teaserText'].context.max_length)
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
