@@ -276,7 +276,7 @@ var wire_forms = function() {
         //XXX need to make it context aware
         var url = container.getAttribute('action');
         container.form = new zeit.cms.SubPageForm(
-            url, container, {save_on_change: true});
+            url, container, {save_on_change: true, load_immediately: false});
         MochiKit.DOM.addElementClass(container, 'wired');
     });
 };

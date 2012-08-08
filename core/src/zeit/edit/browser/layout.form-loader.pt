@@ -1,4 +1,6 @@
 <form
   class="inline-form"
-  tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}">
+  tal:define="viewname string:@@${view/__name__}"
+  tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}"
+  tal:content="structure context/?viewname">
 </form>
