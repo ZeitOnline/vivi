@@ -129,6 +129,7 @@ class IImage(IReference, ILayoutable):
     custom_caption = zeit.cms.content.field.XMLSnippet(
         title=_("Custom image sub text"),
         default=u'',
+        missing_value=u'',
         required=False)
 
 
