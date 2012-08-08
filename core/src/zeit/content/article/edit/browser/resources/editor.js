@@ -371,7 +371,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             container.parentNode.nextSibling === null) ||   // node
             (container.tagName == 'P' &&            // Empty
             container.nextSibling === null)) &&     // node
-            range.endOffset === 0) {
+            MochiKit.DOM.scrapeText(container).length == range.endOffset) {
             direction = 'nextSibling';
         } else if (
             event.key().string == 'KEY_ARROW_UP' &&
