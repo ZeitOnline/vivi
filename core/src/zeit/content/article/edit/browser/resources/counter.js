@@ -42,7 +42,7 @@ $.fn.countedInput = function() {
 MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 
     MochiKit.Signal.connect(zeit.edit.editor, 'after-reload', function() {
-            $('#article-editor-text').countedInput();
+        $('#article-editor-text').countedInput();
     });
 
 });
