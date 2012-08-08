@@ -49,7 +49,7 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 });
 
 $(document).bind('fragment-ready', function(event) {
-    $('.limited-input', event.target).limitedInput();
+    $('.limited-input', event.__target).limitedInput();
 });
 
 }(jQuery));

@@ -17,7 +17,7 @@ $.fn.timer = function() {
 
 
 $(document).bind('fragment-ready', function(event) {
-    $('.timer', event.target).timer();
+    $('.timer', event.__target).timer();
 });
 
 }(jQuery));
