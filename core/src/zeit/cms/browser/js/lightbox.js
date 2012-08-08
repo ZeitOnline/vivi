@@ -95,6 +95,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         var self = this;
         // initialize defaults
         self.save_on_change = false;
+        self.load_immediately = true;
         // update options
         MochiKit.Base.update(self, options);
         self.container = container;
@@ -107,7 +108,18 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.bind(self.container, 'focusout', self.fire_submit);
         }
         self.form_events = [];
-        self.reload();
+        if (self.load_immediately) {
+            self.reload();
+        } else {
+            // our contents have already been rendered by the server,
+            // so we only need to do the post-processing and send the
+            // appropriate signals.
+            self.post_process_html();
+            var fragment_ready = new jQuery.Event('fragment-ready');
+            fragment_ready.target = self.container;
+            jQuery(document).trigger(fragment_ready);
+            MochiKit.Signal.signal(self, 'after-reload');
+        }
     },
 
     bind: function(target, event, handler) {
