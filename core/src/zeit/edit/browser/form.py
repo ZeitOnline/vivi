@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.edit.browser.view
 import zope.app.pagetemplate
@@ -27,6 +28,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
 
     css_class = None
 
-    def __call__(self):
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
         self.mark_transaction_undoable()
-        return super(InlineForm, self).__call__()
+        return super(InlineForm, self).handle_edit_action.success(data)
