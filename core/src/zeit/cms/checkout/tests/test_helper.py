@@ -14,7 +14,7 @@ class TestHelper(zeit.cms.testing.FunctionalTestCase):
     def test_changes(self):
         content = self.repository['testcontent']
         self.assertEqual(self.repository, content.__parent__)
-        self.assertTrue(self.repository['testcontent'].title is None)
+        self.assertEqual(u'', self.repository['testcontent'].title)
         with zeit.cms.checkout.helper.checked_out(content) as co:
             self.assertNotEqual(self.repository, co.__parent__)
             co.title = u'foo'
@@ -24,11 +24,11 @@ class TestHelper(zeit.cms.testing.FunctionalTestCase):
 
     def test_checkout_without_change(self):
         content = self.repository['testcontent']
-        self.assertEqual(None, self.repository['testcontent'].title)
+        self.assertEqual(u'', self.repository['testcontent'].title)
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.title = u'foo'
             raise zeit.cms.checkout.interfaces.NotChanged
-        self.assertTrue(self.repository['testcontent'].title is None)
+        self.assertEqual(u'', self.repository['testcontent'].title)
 
     def test_checkout_helper_on_locked_doesnt_do_anyting(self):
         connector = zope.component.getUtility(
@@ -49,14 +49,14 @@ class TestHelper(zeit.cms.testing.FunctionalTestCase):
 
     def test_old_style_without_change(self):
         content = self.repository['testcontent']
-        self.assertEqual(None, self.repository['testcontent'].title)
+        self.assertEqual(u'', self.repository['testcontent'].title)
 
         def set_title_and_return_false(co):
             co.title = u'foo'
             return False
         zeit.cms.checkout.helper.with_checked_out(
             content, set_title_and_return_false)
-        self.assertTrue(self.repository['testcontent'].title is None)
+        self.assertEqual(u'', self.repository['testcontent'].title)
 
     def test_ignore_conflict(self):
         content = self.repository['testcontent']

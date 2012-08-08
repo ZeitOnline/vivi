@@ -119,6 +119,7 @@ class ICommonMetadata(zope.interface.Interface):
 
     subtitle = zeit.cms.content.field.XMLSnippet(
         title=_("Subtitle"),
+        missing_value=u'',
         required=False)
 
     teaserTitle = zope.schema.Text(

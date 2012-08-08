@@ -98,7 +98,7 @@ class Structure(ObjectPathProperty):
     def __get__(self, instance, class_):
         node = self.getNode(instance)
         if node is None:
-            return
+            return u''
         node = lxml.objectify.fromstring(unicode(self.remove_namespaces(node)))
         result = [xml.sax.saxutils.escape(unicode(node))]
         for child in node.iterchildren():
