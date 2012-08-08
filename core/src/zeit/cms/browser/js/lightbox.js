@@ -86,8 +86,6 @@ gocept.Lightbox = gocept.Class.extend({
 });
 
 
-
-
 zeit.cms.SubPageForm = gocept.Class.extend({
 
 
