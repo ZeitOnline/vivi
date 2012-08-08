@@ -43,7 +43,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('css=#recensionactions a[rel="edit"]')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.year', '2001')
-        s.click('form.actions.apply')
+        s.click('css=#lightbox\.form #form\.actions\.apply')
         s.waitForElementNotPresent('id=lightbox.form')
         s.waitForElementPresent('css=dd.year')
         s.waitForText('css=dd.year', '2001')
@@ -56,7 +56,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.click('name=form.authors.add')
         s.waitForElementPresent('form.authors.1.')
         s.type('form.authors.1.', 'Lord Byron')
-        s.click('form.actions.apply')
+        s.click('css=#lightbox\.form #form\.actions\.apply')
         s.waitForElementNotPresent('id=lightbox.form')
         s.waitForText('css=dd.authors', '*Byron*')
 
