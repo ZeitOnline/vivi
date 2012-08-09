@@ -221,7 +221,6 @@ class TestTextEditing(
         s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
 
     def test_editing_should_end_on_content_drag(self):
-        self.selenium.windowMaximize()
         s = self.selenium
         self.create('<p>foo</p><p>bar</p>')
         self.save()
