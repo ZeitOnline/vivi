@@ -1,6 +1,5 @@
-<div id="editor-forms-heading">
-  Hello world.
-</div>
+<div id="editor-forms-heading" class="object-details-heading"
+     tal:content="structure context/@@object-details-heading" />
 <div id="editor-forms-title">
-  Hello world.
+  <br/><br/>
 </div>
