@@ -197,6 +197,24 @@ class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Metadata')
 
 
+class Keywords(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'keywords'
+    undo_description = _('edit keywords')
+    css_class = 'keywords'
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'keywords')
+
+    def setUpWidgets(self, *args, **kw):
+        super(Keywords, self).setUpWidgets(*args, **kw)
+        if IAutomaticallyRenameable(self.context).renameable:
+            self.widgets['keywords'].show_helptext = True
+
+
 # This will be renamed properly as soon as the fields are finally decided.
 class MetadataA(zeit.edit.browser.form.InlineForm):
 
@@ -206,12 +224,7 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'ressort', 'sub_ressort', 'keywords')
-
-    def setUpWidgets(self, *args, **kw):
-        super(MetadataA, self).setUpWidgets(*args, **kw)
-        if IAutomaticallyRenameable(self.context).renameable:
-            self.widgets['keywords'].show_helptext = True
+            'ressort', 'sub_ressort')
 
     def render(self):
         result = super(MetadataA, self).render()
