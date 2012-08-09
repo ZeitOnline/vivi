@@ -15,7 +15,7 @@
     </div></div>
   </div>
 
-<button class="foldctrl" id="foldctrl_picture_information" style="display:block">Picture informations</button>
+<button class="foldctrl" id="foldctrl_picture_information" style="display:block">Picture information</button>
 <p tal:content="view/metadata/caption" class="picture_information" style="display:none">
 alksdf
 </p>
