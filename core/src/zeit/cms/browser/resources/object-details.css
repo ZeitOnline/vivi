@@ -80,6 +80,7 @@
 
 .object-details-heading .metadata {
     float:right;
+    margin: 0px;
 }
 
 .object-details-body {
