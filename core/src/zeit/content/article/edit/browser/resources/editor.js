@@ -251,7 +251,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a rel='command' href='bold'>B</a>\
             <a rel='command' href='italic'>I</a>\
             <a rel='command' href='formatBlock/h3'>T</a>\
-            <a rel='command' href='insert_link'>A</a>\
+            <a rel='method' href='insert_link'>A</a>\
             <a rel='command' href='unlink'>A</a>\
             <a rel='command' href='insertunorderedlist'>UL</a>\
             ";
@@ -300,8 +300,10 @@ zeit.content.article.Editable = gocept.Class.extend({
                 if (range.getClientRects) {
                     range.collapse(true);
                     var rect = range.getClientRects()[0];
-                    h = rect.left;
-                    v = rect.top - off.top;
+                    if (rect) {
+                      h = rect.left;
+                      v = rect.top - off.top;
+                    }
                 }
             }
         }
