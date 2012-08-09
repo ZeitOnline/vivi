@@ -3,7 +3,12 @@
 
 from __future__ import absolute_import
 import unittest2 as unittest
+import zeit.cms.browser.form
+import zeit.cms.testing
+import zope.formlib.form
 import zope.interface
+import zope.publisher.browser
+import zope.schema
 
 
 class Test(object):
@@ -54,3 +59,39 @@ class TestApplyDefaultValues(unittest.TestCase):
         context.number = None
         context = self.apply(ITest, context)
         self.assertIsNone(context.number)
+
+
+class ITestSchema(zope.interface.Interface):
+
+    line = zope.schema.TextLine(title=u'text line')
+
+    text = zope.schema.Text(title=u'text')
+
+    check = zope.schema.Bool(title=u'check')
+
+
+class TestAddForm(zeit.cms.browser.form.AddForm):
+
+    form_fields = zope.formlib.form.Fields(ITestSchema)
+
+
+class Placeholder(zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(Placeholder, self).setUp()
+        self.form = TestAddForm(
+            object(), zope.publisher.browser.TestRequest())
+
+    def test_text_input_widgets_get_placeholder(self):
+        self.form.setUpWidgets()
+        self.assertEqual(
+            'placeholder="text line"', self.form.widgets['line'].extra)
+
+    def test_textarea_widgets_get_placeholder(self):
+        self.form.setUpWidgets()
+        self.assertEqual(
+            'placeholder="text"', self.form.widgets['text'].extra)
+
+    def test_non_text_widget_is_not_affected(self):
+        self.form.setUpWidgets()
+        self.assertEqual('', self.form.widgets['check'].extra)

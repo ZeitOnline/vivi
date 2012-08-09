@@ -12,6 +12,7 @@ import zope.app.container.interfaces
 import zope.app.pagetemplate
 import zope.event
 import zope.formlib.form
+import zope.formlib.interfaces
 import zope.interface.common.idatetime
 import zope.schema
 
@@ -114,7 +115,26 @@ class WidgetCSSMixin(object):
         return ' '.join(css_class)
 
 
-class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin):
+class PlaceholderMixin(object):
+
+    def _is_textwidget(self, widget):
+        if not zope.formlib.interfaces.ISimpleInputWidget.providedBy(widget):
+            return False
+        if widget.tag == 'textarea':
+            return True
+        if widget.tag == 'input':
+            return widget.type == 'text' or not widget.type
+        return False
+
+    def setUpWidgets(self):
+        super(PlaceholderMixin, self).setUpWidgets()
+        for widget in self.widgets:
+            if self._is_textwidget(widget):
+                widget.extra = (widget.extra or '') + (
+                    'placeholder="%s"' % (widget.label or ''))
+
+
+class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
 
     widget_groups = ()
     template = zope.app.pagetemplate.ViewPageTemplateFile('grouped-form.pt')
