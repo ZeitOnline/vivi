@@ -250,12 +250,10 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.toolbar.innerHTML = "\
             <a rel='command' href='bold'>B</a>\
             <a rel='command' href='italic'>I</a>\
-            <a rel='command' href='insertunorderedlist'>UL</a>\
-            <a rel='command' href='insertorderedlist'>OL</a>\
             <a rel='command' href='formatBlock/h3'>T</a>\
-            <a rel='command' href='formatBlock/p'>P</a>\
-            <a rel='method' href='insert_link'>A</a>\
+            <a rel='command' href='insert_link'>A</a>\
             <a rel='command' href='unlink'>A</a>\
+            <a rel='command' href='insertunorderedlist'>UL</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
