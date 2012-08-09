@@ -245,7 +245,7 @@ class MetadataB(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'product', 'copyrights', 'dailyNewsletter')
+            'product', 'copyrights')
 
 
 # This will be renamed properly as soon as the fields are finally decided.
@@ -264,6 +264,19 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         super(MetadataC, self).setUpWidgets(*args, **kw)
         self.widgets['author_references'].detail_view_name = '@@author-details'
         self.widgets['author_references'].add_type = IAuthor
+
+
+# This will be renamed properly as soon as the fields are finally decided.
+class MetadataD(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'metadata-d'
+    undo_description = _('edit metadata')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'dailyNewsletter')
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
