@@ -279,7 +279,7 @@
   <browser:page
     for="zeit.content.image.interfaces.IImage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="image-details"
+    name="object-details-body"
     class=".image.ImageView"
     template="image-details.pt"
     permission="zope.View"
