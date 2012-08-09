@@ -128,3 +128,25 @@
 .object-details .object-link {
   float: right;
 }
+
+.overlay-anchor .overlay {
+    display: none;
+}
+
+.overlay-anchor,
+.overlay-anchor:hover .overlay .overlay-position {
+    display: inline-block;
+    position: relative;
+}
+
+.overlay-anchor:hover .overlay {
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+}
+
+.overlay-anchor:hover .overlay .overlay-position {
+    top: -50%;
+    left: -50%;
+}
