@@ -300,6 +300,7 @@
   border : 1px solid #cccccc;
   left: -22px;
   position: absolute;
+  z-index: 1000;
 }
 
 .rte-toolbar > a {
@@ -312,33 +313,57 @@
 }
 
 .rte-toolbar > a[href='bold'] {
-  background-position: 3px -384px;
+  background-position: 3px -355px;
   color: transparent;
+}
+
+.rte-toolbar > a[href='bold']:hover {
+  background-position: 3px -385px;
 }
 
 .rte-toolbar > a[href='italic'] {
-  background-position: -60px 0;
+  background-position: -0px -1013px;
   color: transparent;
+}
+
+.rte-toolbar > a[href='italic']:hover {
+  background-position: -0px -1043px;
 }
 
 .rte-toolbar > a[href='insertunorderedlist'] {
-  background-position: -20px 0;
+  background-position: 0px -1133px;
   color: transparent;
 }
 
-.rte-toolbar > a[href='insertorderedlist'] {
-  background-position: -80px 0;
+.rte-toolbar > a[href='insertunorderedlist']:hover {
+  background-position: 0px -1163px;
+}
+
+.rte-toolbar > a[href='formatBlock/h3'] {
+  background-position: 0px -1075px;
   color: transparent;
+}
+
+.rte-toolbar > a[href='formatBlock/h3']:hover {
+  background-position: 0px -1105px;
 }
 
 .rte-toolbar > a[href='insert_link'] {
-  background-position: -80px 0;
+  background-position: 0px -1194px;
   color: transparent;
 }
 
+.rte-toolbar > a[href='insert_link']:hover {
+  background-position: 0px -1224px;
+}
+
 .rte-toolbar > a[href='unlink'] {
-  background-position: -80px 0;
+  background-position: -2px -1255px;
   color: transparent;
+}
+
+.rte-toolbar > a[href='unlink']:hover {
+  background-position: -2px -1285px;
 }
 
 .add_view .button.addbutton {
