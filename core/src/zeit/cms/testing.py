@@ -296,6 +296,9 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
 
     TIMEOUT = 10
 
+    window_width = 1100
+    window_height = 600
+
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
         # XXX waiting for a version of gocept.selenium that handles timeouts
@@ -328,6 +331,7 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         self.original_windows = set(self.selenium.getAllWindowNames())
         self.original_width = self.selenium.getEval('window.outerWidth')
         self.original_height = self.selenium.getEval('window.outerHeight')
+        self.set_window_size(self.window_width, self.window_height)
 
     def tearDown(self):
         super(SeleniumTestCase, self).tearDown()
