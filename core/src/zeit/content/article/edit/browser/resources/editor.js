@@ -251,6 +251,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a rel='command' href='bold'>B</a>\
             <a rel='command' href='italic'>I</a>\
             <a rel='command' href='formatBlock/h3'>T</a>\
+            <a rel='command' href='formatBlock/p'>P</a>\
             <a rel='method' href='insert_link'>A</a>\
             <a rel='command' href='unlink'>A</a>\
             <a rel='command' href='insertunorderedlist'>UL</a>\
