@@ -276,7 +276,6 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'teaser-text'
     undo_description = _('edit teaser text')
-    css_class = 'limited-input'
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,

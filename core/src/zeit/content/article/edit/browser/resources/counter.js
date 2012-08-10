@@ -2,9 +2,8 @@
 
 $.fn.limitedInput = function() {
     return this.each(function() {
-        var self = $(this);
-        var container = self.find('.widget:first');
-        var area = $('textarea', container);
+        var area = $(this);
+        var container = area.closest('.widget');
         var limit = area.attr('cms:maxlength');
         var count = area.val().length || 0;
         var suffix = '/' + limit;
@@ -49,7 +48,7 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 });
 
 $(document).bind('fragment-ready', function(event) {
-    $('.limited-input', event.__target).limitedInput();
+    $('[cms\\:maxlength]', event.__target).limitedInput();
 });
 
 }(jQuery));
