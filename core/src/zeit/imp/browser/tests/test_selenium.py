@@ -20,7 +20,6 @@ class Selenium(zeit.cms.testing.SeleniumTestCase):
     def setUp(self):
         super(Selenium, self).setUp()
         self.create_group()
-        self.set_window_size(self.window_width, self.window_height)
         self.open_imp()
 
     def create_group(self):
