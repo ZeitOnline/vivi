@@ -126,8 +126,8 @@ class PlaceholderMixin(object):
             return widget.type == 'text' or not widget.type
         return False
 
-    def setUpWidgets(self):
-        super(PlaceholderMixin, self).setUpWidgets()
+    def setUpWidgets(self, *args, **kw):
+        super(PlaceholderMixin, self).setUpWidgets(*args, **kw)
         for widget in self.widgets:
             if self._is_textwidget(widget):
                 widget.extra = (widget.extra or '') + (
