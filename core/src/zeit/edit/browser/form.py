@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.edit.browser.view
 import zope.app.pagetemplate
@@ -20,6 +21,7 @@ FormLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.form-loader.pt')
 
 
 class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
+                 zeit.cms.browser.form.PlaceholderMixin,
                  zope.formlib.form.SubPageEditForm,
                  zeit.edit.browser.view.UndoableMixin,
                  zeit.cms.browser.view.Base):
