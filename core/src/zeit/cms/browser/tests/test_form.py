@@ -69,6 +69,9 @@ class ITestSchema(zope.interface.Interface):
 
     check = zope.schema.Bool(title=u'check')
 
+    special = zope.schema.Text(title=u'special')
+    special.setTaggedValue('placeholder', 'customised')
+
 
 class TestAddForm(zeit.cms.browser.form.AddForm):
 
@@ -95,3 +98,8 @@ class Placeholder(zeit.cms.testing.FunctionalTestCase):
     def test_non_text_widget_is_not_affected(self):
         self.form.setUpWidgets()
         self.assertEqual('', self.form.widgets['check'].extra)
+
+    def test_placeholder_is_looked_up_in_fields_tagged_values(self):
+        self.form.setUpWidgets()
+        self.assertEqual(
+            'placeholder="customised"', self.form.widgets['special'].extra)

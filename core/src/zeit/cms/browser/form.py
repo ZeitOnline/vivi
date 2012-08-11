@@ -14,6 +14,7 @@ import zope.event
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface.common.idatetime
+import zope.interface.interfaces
 import zope.schema
 
 
@@ -129,9 +130,15 @@ class PlaceholderMixin(object):
     def setUpWidgets(self, *args, **kw):
         super(PlaceholderMixin, self).setUpWidgets(*args, **kw)
         for widget in self.widgets:
-            if self._is_textwidget(widget):
-                widget.extra = (widget.extra or '') + (
-                    'placeholder="%s"' % (widget.label or ''))
+            if not self._is_textwidget(widget):
+                continue
+            placeholder = widget.label or ''
+            field = widget.context
+            if zope.interface.interfaces.IElement.providedBy(field):
+                placeholder = field.queryTaggedValue(
+                    'placeholder', default=placeholder)
+            widget.extra = ((widget.extra + ' ' if widget.extra else '') +
+                            'placeholder="%s"' % placeholder)
 
 
 class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
