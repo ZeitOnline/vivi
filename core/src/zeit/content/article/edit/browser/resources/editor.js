@@ -10,13 +10,10 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
         'article-modules', context_url + '/editable-body', 'Artikel');
 
     // Update error messages and checkin button disabled status
-    var workflow_form = $('form[action$="@@edit.form.publish"]')[0];
     MochiKit.Signal.connect(window, 'changed', function(form) {
-        if (workflow_form.form === form) {
-            return;
-        }
+        var workflow_area = $('[cms\\:href$="edit.form.checkin"]')[0];
         MochiKit.Async.callLater(0.25, function() {
-            workflow_form.form.reload(); });
+            workflow_area.view.render(); });
 
     });
 
