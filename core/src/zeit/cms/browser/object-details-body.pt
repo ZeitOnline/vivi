@@ -3,6 +3,9 @@
        tal:condition="view/graphical_preview_url">
     <img tal:attributes="src view/graphical_preview_url"/>
   </div>
+  <div class="supertitle"
+       tal:content="view/common_metadata/supertitle">
+  </div>
   <div class="teaser_title"
        tal:content="view/teaser_title">
   </div>
