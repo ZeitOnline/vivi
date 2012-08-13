@@ -734,3 +734,9 @@ legend {
 #editor-forms #checkin_correction {
   font-size: 14px;
 }
+
+/* Checkboxes */
+
+.inline-form .fieldtype-checkbox .widget {
+  width: auto;
+}
