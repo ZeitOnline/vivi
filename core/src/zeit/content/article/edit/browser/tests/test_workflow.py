@@ -65,6 +65,18 @@ class CheckinSelenium(
             timestamp = datetime.datetime.now().strftime(date_format)
             s.assertText('css=.timer', timestamp)
 
+    def test_validation_errors_are_removed_from_checkin_form_on_change(self):
+        self.add_article()
+        s = self.selenium
+        title_error = 'css=#edit-form-workflow .errors dt:contains(Title)'
+        s.waitForElementPresent(title_error)
+        input_title = 'article-content-head.title'
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval(
+            'document.getElementById("%s").value = "mytitle"' % input_title)
+        s.fireEvent(input_title, 'blur')
+        s.waitForElementNotPresent(title_error)
+
 
 class WorkflowEndToEnd(
     zeit.content.article.edit.browser.testing.EditorTestCase):
