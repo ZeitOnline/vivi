@@ -572,12 +572,6 @@ form[action$="asset-badges"] fieldset legend {
   display:none;
 }
 
-/* Checkboxes should always appear below their lables. Some modifications for asset-badges...  */
-.checkboxType {
-  position: absolute;
-  top: 19px;
-}
-
 /*...except of some special checkboxes....*/
 input#form\.confirmed_duplicate,
 .fieldname-keywords .checkboxType {
