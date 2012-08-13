@@ -5,17 +5,19 @@
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
+import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.component
+import zope.interface
 
 
-class NullObject(object):
+class NoMetadata(zeit.cms.content.metadata.CommonMetadata):
 
-    def __getattr__(self, name):
-        return None
+    zope.interface.implements(zope.annotation.interfaces.IAttributeAnnotatable)
+    default_template = '<empty/>'
 
 
-NO_METADATA = NullObject()
+NO_METADATA = NoMetadata()
 
 
 class Details(zeit.cms.browser.view.Base):
