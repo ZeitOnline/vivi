@@ -148,11 +148,11 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.assert_widget_text("metadata-b.copyrights", 'ZEIT online')
         s = self.selenium
         s.waitForElementPresent(
-            'xpath=//input[@id="metadata-b.dailyNewsletter"]')
+            'xpath=//input[@id="metadata-d.dailyNewsletter"]')
         s.assertAttribute(
-            'xpath=//input[@id="metadata-b.dailyNewsletter"]@disabled',
+            'xpath=//input[@id="metadata-d.dailyNewsletter"]@disabled',
             'regexp:disabled|true')
-        s.assertNotChecked('xpath=//input[@id="metadata-b.dailyNewsletter"]')
+        s.assertNotChecked('xpath=//input[@id="metadata-d.dailyNewsletter"]')
 
     def test_texts_should_be_readonly_visible(self):
         self.assert_widget_text(
@@ -198,11 +198,11 @@ class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
     def test_helptext_should_be_shown_for_new_article(self):
         self.add_article()
         s = self.selenium
-        s.waitForElementPresent('id=metadata-a.keywords')
+        s.waitForElementPresent('id=keywords.keywords')
         s.assertTextPresent('Only the first 6 keywords are shown')
 
     def test_helptext_should_not_be_shown_for_existing_article(self):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
-        s.waitForElementPresent('id=metadata-a.keywords')
+        s.waitForElementPresent('id=keywords.keywords')
         s.assertNotTextPresent('Only the first 6 keywords are shown')
