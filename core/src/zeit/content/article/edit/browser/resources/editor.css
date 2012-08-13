@@ -348,6 +348,15 @@
   background-position: 0px -1105px;
 }
 
+.rte-toolbar > a[href='formatBlock/p'] {
+  background-position: -4px -2185px;
+  color: transparent;
+}
+
+.rte-toolbar > a[href='formatBlock/p']:hover {
+  background-position: -4px -2215px;
+}
+
 .rte-toolbar > a[href='insert_link'] {
   background-position: 0px -1194px;
   color: transparent;
