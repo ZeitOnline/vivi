@@ -530,15 +530,13 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .inline-form .error div.widget > input,
 .inline-form .error div.widget > textarea,
 .inline-form .error div.widget > div > div > select {
-  background: -moz-linear-gradient(center top , #FFF, #FEE) repeat scroll 0 0 transparent;
-  border: 1px solid #A00;
+  background: -moz-linear-gradient(center top , #FFF, #FDD) repeat scroll 0 0 transparent;
 }
 
 .inline-form .dirty div.widget > input,
 .inline-form .dirty div.widget > textarea,
 .inline-form .dirty div.widget > div > div > select {
-  background: -moz-linear-gradient(center top , #FFF, #EFE) repeat scroll 0 0 transparent;
-  border: 1px solid #0A0;
+  background: -moz-linear-gradient(center top , #FFF, #CFD) repeat scroll 0 0 transparent;
 }
 
 .inline-form .dirty div.widget > input[type=checkbox] {
