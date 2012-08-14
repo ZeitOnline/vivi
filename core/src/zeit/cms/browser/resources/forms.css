@@ -16,8 +16,8 @@ textarea{
 /*font:100% Monaco,"Courier New",Courier,monospace;*/
     
 
-input:-moz-placeholder[type="text"] {
-  color: inherit;
+:-moz-placeholder {
+  color: #999;
 }
 
 select {
