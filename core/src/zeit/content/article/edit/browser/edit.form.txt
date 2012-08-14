@@ -24,7 +24,7 @@ Those forms are loaded via javascript:
 >>> browser.open('@@edit.form.metadata-a')
 >>> print browser.contents
 <fieldset>
-<div class="field fieldname-ressort required">
+<div class="field fieldname-ressort required fieldtype-text">
   <div class="label">
     <label cms:tooltip="" for="metadata-a.ressort">
     <span>Ressort</span>
@@ -32,7 +32,7 @@ Those forms are loaded via javascript:
     </label>
   </div>
 ...
-<div class="field fieldname-sub_ressort">...
+<div class="field fieldname-sub_ressort fieldtype-text">...
 ...
 
 
@@ -61,7 +61,7 @@ Those forms are loaded via javascript:
 >>> browser.open('@@edit.form.keywords')
 >>> print browser.contents
 <...
-<div class="field fieldname-keywords">...
+<div class="field fieldname-keywords fieldtype-text">...
 
 >>> browser.open('@@edit.form.leadteaser')
 >>> print browser.contents
