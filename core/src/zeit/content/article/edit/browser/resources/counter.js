@@ -39,13 +39,10 @@ $.fn.countedInput = function() {
 };
 
 
-MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
-
-    MochiKit.Signal.connect(zeit.edit.editor, 'after-reload', function() {
-        $('#article-editor-text').countedInput();
-    });
-
+MochiKit.Signal.connect(zeit.edit.editor, 'after-reload', function() {
+    $('#article-editor-text').countedInput();
 });
+
 
 $(document).bind('fragment-ready', function(event) {
     $('[cms\\:maxlength]', event.__target).limitedInput();
