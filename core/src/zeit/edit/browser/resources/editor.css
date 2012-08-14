@@ -641,12 +641,6 @@ textarea {
   padding: 5px;
 }
 
-:-moz-placeholder {
-  color: #999;
-  font-size: 12px;
-  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
-}
-
 
 /* Fieldsets */
 
