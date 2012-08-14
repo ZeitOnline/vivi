@@ -26,6 +26,10 @@
     type="text/javascript"
     tal:attributes="
     src string:${request/++resource++zeit.content.article.edit}/timer.js"></script>
+  <script
+    type="text/javascript"
+    tal:attributes="
+    src string:${request/++resource++zeit.content.gallery}/details.js"></script>
   <link
     rel="stylesheet" type="text/css"
     tal:attributes="
