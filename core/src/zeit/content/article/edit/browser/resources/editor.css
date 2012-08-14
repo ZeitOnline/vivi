@@ -567,7 +567,7 @@ button.log-expander {
   float: right;
 }
 
-#edit-form-metadata .inline-form .field {
+#edit-form-metadata .inline-form .fieldtype-text {
   float: left;
 }
 
