@@ -23,10 +23,6 @@
                cms:tooltip widget/hint;
                for widget/name">
           <span i18n:translate="" tal:content="widget/label">label</span>
-          <span class="required"
-                tal:condition="widget/required"
-                i18n:translate=""
-                >required</span>
         </label>
         <div class="error"
              tal:condition="widget/error"
