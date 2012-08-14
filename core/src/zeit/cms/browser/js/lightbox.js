@@ -269,7 +269,10 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             if (result === null) {
                 return null;
             }
+            // XXX this is the third place that calls post_process_html and
+            // sends signals -- refactor! (#11270).
             self.post_process_html();
+            jQuery(self.container).trigger_fragment_ready();
             MochiKit.Signal.signal(window, 'changed', self);
             MochiKit.Signal.signal(self, 'after-reload');
             // Delaying the class remove somehow avoids flickering
