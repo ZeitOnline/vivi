@@ -5,6 +5,7 @@
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
+import zeit.cms.content.metadata
 import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.component
