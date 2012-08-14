@@ -28,7 +28,6 @@ Those forms are loaded via javascript:
   <div class="label">
     <label cms:tooltip="" for="metadata-a.ressort">
     <span>Ressort</span>
-    <span class="required">required</span>
     </label>
   </div>
 ...
