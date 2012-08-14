@@ -141,9 +141,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             function(result) {
                 self.container.innerHTML = result;
                 self.post_process_html();
-                var fragment_ready = new jQuery.Event('fragment-ready');
-                fragment_ready.target = self.container;
-                jQuery(document).trigger(fragment_ready);
+                jQuery(self.container).trigger_fragment_ready();
                 MochiKit.Signal.signal(self, 'after-reload');
                 MochiKit.DOM.removeElementClass(self.container, 'busy');
                 return result;
