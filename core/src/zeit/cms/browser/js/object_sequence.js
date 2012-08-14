@@ -92,21 +92,20 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         var li_id = self.widget_id + '_sort_li_' + index;
         var li = LI({'class': 'element busy', 'index': index, 'id': li_id});
         var d = zeit.cms.load_object_details(uniqueId, self.detail_view_name);
-        d.addCallbacks(
-            function(result) {
-                li.innerHTML = result;
-                li.insertBefore(
-                    // XXX proper i18n
-                    A({href: index, rel: "remove", title: "Entfernen"}),
-                    li.firstChild);
-                jQuery(li).trigger_fragment_ready();
-                return result;
-            },
-            function(error) {
-                zeit.cms.log_error(error);
-                li.innerHTML = "Fehler beim Laden";
-                return error;
-            });
+        d.addCallback(function(result) {
+            li.innerHTML = result;
+            li.insertBefore(
+                // XXX proper i18n
+                A({href: index, rel: "remove", title: "Entfernen"}),
+                li.firstChild);
+            jQuery(li).trigger_fragment_ready();
+            return result;
+        });
+        d.addErrback(function(error) {
+            zeit.cms.log_error(error);
+            li.innerHTML = "Fehler beim Laden";
+            return error;
+        });
         d.addBoth(function(result) {
             MochiKit.DOM.removeElementClass(li, 'busy');
             return result;
@@ -328,19 +327,19 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             MochiKit.DOM.addElementClass(self.element, 'busy');
             var d = zeit.cms.load_object_details(
                 self.input.value, self.detail_view_name);
-            d.addCallbacks(
-                function(result) {
-                    self.details.innerHTML = result;
-                    self.details.insertBefore(
-                        A({href: '#', rel: "remove", title: "Entfernen"}),
-                        self.details.firstChild);
-                    jQuery(self.details).trigger_fragment_ready();
-                    return result;
-                },
-                function(error) {
-                    self.details.innerHTML = 'Fehler';
-                    return error;
-                });
+            d.addCallback(function(result) {
+                self.details.innerHTML = result;
+                self.details.insertBefore(
+                    A({href: '#', rel: "remove", title: "Entfernen"}),
+                    self.details.firstChild);
+                jQuery(self.details).trigger_fragment_ready();
+                return result;
+            });
+            d.addErrback(function(error) {
+                zeit.cms.log_error(error);
+                self.details.innerHTML = 'Fehler';
+                return error;
+            });
             d.addBoth(function(result) {
                 MochiKit.DOM.removeElementClass(self.element, 'busy');
                 MochiKit.DOM.removeElementClass(landing_zone, 'landing-zone');
