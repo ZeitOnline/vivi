@@ -48,5 +48,5 @@ class InlineForm(zeit.cms.testing.FunctionalTestCase):
             legend = 'Legend'
 
         self.assertEllipsis("""\
-...<div class="field fieldname-foo required">
+...<div class="field fieldname-foo required fieldtype-text">
 <div class="label">...""", self.render_form(ExampleForm))
