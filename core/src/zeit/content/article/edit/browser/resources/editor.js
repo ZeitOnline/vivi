@@ -287,14 +287,12 @@ zeit.content.article.Editable = gocept.Class.extend({
     relocate_toolbar: function(fast) {
 
         var off = $(".rte-toolbar").parent().offset();
-        var scroll = $(this).scrollTop();
 
         var sel = document.selection;
         var range;
         var x = 0;
         var y = 0;
         var h = 0;
-        var v = 0;
         if (window.getSelection) {
             sel = getSelection();
             if (sel.rangeCount) {
@@ -311,11 +309,6 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
 
         var self = this;
-        range = getSelection().getRangeAt(0);
-        var container = range.endContainer;
-        while (container.nodeType != container.ELEMENT_NODE) {
-            container = container.parentNode;
-        }
         var move = {
             duration: 0.5,
             mode: 'absolute',
