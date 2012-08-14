@@ -23,7 +23,7 @@
                upload.js
                SWFUpload/swfupload.js" />
   </resourceLibrary>
-    
+
   <browser:page
     for="..interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -41,7 +41,7 @@
   <browser:page
     for="..interfaces.IGallery"
     permission="zope.View"
-    template="metadata.pt" 
+    template="metadata.pt"
     name="metadata_preview"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     />
@@ -105,7 +105,7 @@
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Images"
     />
-  
+
   <browser:page
     for="..interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
