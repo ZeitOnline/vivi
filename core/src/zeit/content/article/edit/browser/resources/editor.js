@@ -293,6 +293,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var x = 0;
         var y = 0;
         var h = 0;
+        var v = 0;
         if (window.getSelection) {
             sel = getSelection();
             if (sel.rangeCount) {
