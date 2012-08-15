@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.article.i18n import MessageFactory as _
+import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.content.article.source
 import zeit.content.cp.interfaces
@@ -50,6 +51,12 @@ class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
         the Content-Drehscheibe, where the only property information we have
         is in the XML and there is no head section.
         """
+
+
+class ArticleSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'article'
+    check_interfaces = (IArticle,)
 
 
 class IBookRecensionReadContainer(zope.interface.Interface):
@@ -149,7 +156,7 @@ class IAggregatedComments(zope.interface.Interface):
         title=_('Aggregate comments'),
         description=_('aggregate-comments-description'),
         required=False,
-        source=zeit.cms.content.contentsource.cmsContentSource)
+        source=ArticleSource())
 
 
 class ITagesspiegelArticle(zope.interface.Interface):
