@@ -1,10 +1,9 @@
-<div class="article-text">
-   <div class="landing-zone visible action-content-droppable action-editable-body-module-droppable"
+<div class="article-text editable-area">
+   <div class="landing-zone action-content-droppable action-editable-body-module-droppable"
        tal:attributes="
        cms:drop-url string:${context/@@absolute_url}/@@article-landing-zone-drop;
        cms:create-block-url string:${context/@@absolute_url}/@@landing-zone-drop-module"
        i18n:domain="zeit.cms"
        i18n:translate="">
-    Landing zone 
   </div>
 </div>

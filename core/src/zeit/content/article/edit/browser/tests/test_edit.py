@@ -576,7 +576,7 @@ class TestDivision(
             'css=#article-modules .module[cms\\:block_type=division]')
         s.dragAndDropToObject(
             'css=#article-modules .module[cms\\:block_type=division]',
-            'css=#article-editor-text .landing-zone.visible')
+            'css=#article-editor-text .landing-zone')
         s.waitForElementPresent('css=.block.type-division')
 
     def test_division_should_have_editable_teaser(self):
