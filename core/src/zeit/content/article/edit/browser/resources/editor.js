@@ -293,7 +293,6 @@ zeit.content.article.Editable = gocept.Class.extend({
         var x = 0;
         var y = 0;
         var h = 0;
-        var v = 0;
         if (window.getSelection) {
             sel = getSelection();
             if (sel.rangeCount) {
@@ -310,6 +309,9 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
 
         var self = this;
+        if (typeof v == "undefined") {
+          var v = MochiKit.Style.getStyle(self.toolbar, 'top');
+        }
         var move = {
             duration: 0.5,
             mode: 'absolute',
