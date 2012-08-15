@@ -105,7 +105,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.bind(self.container, 'focusin', self.store_focus);
             self.bind(self.container, 'focusout', self.fire_submit);
         }
-        self.form_events = [];
+        self.bind(self.container, 'submit', self.prevent_submit);
         if (self.load_immediately) {
             self.reload();
         } else {
@@ -179,6 +179,14 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 }
             });
         }
+    },
+
+    prevent_submit: function(event) {
+        var self = this;
+        if (!isNull(self.form)) {
+            self.handle_submit();
+            return false;
+       }
     },
 
     mark_dirty: function(event) {
@@ -286,9 +294,6 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     replace_content: function(result) {
         var self = this;
-        while (self.form_events.length) {
-            MochiKit.Signal.disconnect(self.form_events.pop());
-        }
         self.container.innerHTML = result.responseText;
         return result;
     },
@@ -357,13 +362,6 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                     MochiKit.DOM.addElementClass(button, 'submit');
                 }
             });
-        if (!isNull(self.form)) {
-            self.form_events.push(MochiKit.Signal.connect(
-                self.form, 'onsubmit', function(event) {
-                self.handle_submit();
-                event.stop();
-            }));
-        }
     },
 
     eval_javascript_tags: function() {
