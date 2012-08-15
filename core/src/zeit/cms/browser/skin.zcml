@@ -2,7 +2,11 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:zcml="http://namespaces.zope.org/zcml"
   xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:meta="http://namespaces.zope.org/meta"
   xmlns:z3c="http://namespaces.zope.org/z3c">
+
+  <!-- for development purposes -->
+  <!-- <meta:provides feature="unpack-js" /> -->
 
   <utility
       component="z3c.conditionalviews.ConditionalHTTPRequest"
@@ -76,11 +80,23 @@
   </resourceLibrary>
 
   <resourceLibrary
+    zcml:condition="not-have unpack-js"
     name="mochikit"
     layer=".interfaces.ICMSLayer"
     require="jquery">
     <directory
       source="js"
+      include="MochiKit.js"
+      />
+  </resourceLibrary>
+
+  <resourceLibrary
+    zcml:condition="have unpack-js"
+    name="mochikit"
+    layer=".interfaces.ICMSLayer"
+    require="jquery">
+    <directory
+      source="js/mochikit"
       include="MochiKit.js"
       />
   </resourceLibrary>
