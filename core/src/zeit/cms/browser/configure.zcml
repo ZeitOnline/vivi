@@ -3,6 +3,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:zcml="http://namespaces.zope.org/zcml"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
   <!-- Menus -->
@@ -419,6 +420,14 @@
     class=".debug.Refcount"
     template="debug-refcount.pt"
     permission="zope.ManageApplication"
+    />
+
+  <gocept:pagelet
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="wrap"
+    class=".testing.FragmentHarness"
+    permission="zope.View"
     />
 
 </configure>
