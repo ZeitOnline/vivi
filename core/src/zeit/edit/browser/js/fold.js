@@ -9,6 +9,8 @@ zeit.edit.FoldBlock = gocept.Class.extend({
         var self = this;
         var id = context.getAttribute('href');
         MochiKit.DOM.toggleElementClass('folded', id);
+        sessionStorage['folding.' + id] =
+            MochiKit.DOM.hasElementClass(id, 'folded')?'yes':'';
     },
 
     // @staticmethod
@@ -29,8 +31,12 @@ zeit.edit.FoldBlock = gocept.Class.extend({
 
 });
 
-MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+
+MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
+    MochiKit.Signal.connect(zeit.edit.editor, 'after-reload', function() {
         zeit.edit.FoldBlock.prototype.restore_folding();
+    });
 });
 
-}());
+
+})();
