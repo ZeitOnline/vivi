@@ -3,7 +3,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
-import zeit.cms.interfaces
 import zeit.cms.tagging.whitelist
 import zope.schema
 
@@ -80,7 +79,6 @@ class VideoOrPlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
 videoOrPlaylistSource = VideoOrPlaylistSource()
 
 
-
 class IVideoAsset(zope.interface.Interface):
 
     audio_id = zope.schema.TextLine(
@@ -96,5 +94,3 @@ class IVideoAsset(zope.interface.Interface):
         title=_('Video 2'),
         required=False,
         source=videoOrPlaylistSource)
-
-
