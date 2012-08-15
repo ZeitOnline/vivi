@@ -361,7 +361,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.form_events.push(MochiKit.Signal.connect(
                 self.form, 'onsubmit', function(event) {
                 self.handle_submit();
-                event.stopPropagation();
+                event.stop();
             }));
         }
     },
