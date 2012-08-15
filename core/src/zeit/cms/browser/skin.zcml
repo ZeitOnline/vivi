@@ -68,12 +68,25 @@
   <!-- resource libraries -->
 
   <resourceLibrary
+    zcml:condition="not-have unpack-js"
     name="jquery"
     layer=".interfaces.ICMSLayer">
     <directory
       source="js/jquery"
       include="
       jquery-1.5.0.min.js
+      jquery-ui-1.8.9.custom.min.js
+      ui-lightness/jquery-ui-1.8.9.custom.css"
+      />
+  </resourceLibrary>
+  <resourceLibrary
+    zcml:condition="have unpack-js"
+    name="jquery"
+    layer=".interfaces.ICMSLayer">
+    <directory
+      source="js/jquery"
+      include="
+      jquery-1.5.0.js
       jquery-ui-1.8.9.custom.min.js
       ui-lightness/jquery-ui-1.8.9.custom.css"
       />
@@ -89,7 +102,6 @@
       include="MochiKit.js"
       />
   </resourceLibrary>
-
   <resourceLibrary
     zcml:condition="have unpack-js"
     name="mochikit"
