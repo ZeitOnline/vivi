@@ -114,6 +114,8 @@ class WidgetCSSMixin(object):
         if zope.formlib.interfaces.ISimpleInputWidget.providedBy(widget):
             fieldtype = 'fieldtype-' + widget.type
             css_class.append(fieldtype)
+        else:
+            css_class.append('fieldtype-label')
         custom_css_class = getattr(widget, 'vivi_css_class', '')
         css_class.extend(custom_css_class.split())
         return ' '.join(css_class)
