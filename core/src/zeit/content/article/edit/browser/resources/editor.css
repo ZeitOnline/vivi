@@ -549,6 +549,7 @@ button.log-expander {
   margin-left: 12px;
 }
 
+
 /* METADATA AREA (TB) */
 
 #edit-form-metadata #metadata-b\.copyrights {
@@ -565,10 +566,6 @@ button.log-expander {
 
 #edit-form-metadata .inline-form fieldset.keywords {
   float: right;
-}
-
-#edit-form-metadata .inline-form .fieldtype-text {
-  float: left;
 }
 
 #metadata-a\.keywords #metadata-a\.keywords\.update a {
@@ -845,4 +842,41 @@ div.objectlog div {
 
 label[for="memo.memo"] {
     display: none;
+}
+
+
+/* FORM FIELDS */
+
+/* text */
+
+#edit-form-filename .inline-form .fieldtype-text,
+#edit-form-misc .inline-form .fieldtype-text,
+#edit-form-metadata .inline-form .fieldtype-text {
+  float: left;
+}
+
+
+/* checkbox */
+
+#edit-form-filename .inline-form .fieldtype-checkbox .widget,
+#edit-form-misc .inline-form .fieldtype-checkbox .widget,
+#edit-form-metadata .inline-form .fieldtype-checkbox .widget {
+  margin-left: 0.2em;
+}
+
+
+/* label */
+
+#edit-form-filename .inline-form .fieldtype-label,
+#edit-form-misc .inline-form .fieldtype-label,
+#edit-form-metadata .inline-form .fieldtype-label {
+  float: left;
+  min-width: 15em;
+}
+
+#edit-form-filename .inline-form .fieldtype-label .widget,
+#edit-form-misc .inline-form .fieldtype-label .widget,
+#edit-form-metadata .inline-form .fieldtype-label .widget {
+  margin-left: 0.2em;
+  margin-top: 0.5em;
 }
