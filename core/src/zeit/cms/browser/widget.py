@@ -4,6 +4,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import docutils.core
+import docutils.frontend
 import json
 import time
 import xml.sax.saxutils
@@ -429,4 +430,5 @@ class RestructuredTextWidget(zope.formlib.textwidgets.TextAreaWidget):
     @property
     def rendered_content(self):
         return docutils.core.publish_parts(
-            self._getFormValue(), writer_name='html')['fragment']
+            self._getFormValue(), writer_name='html',
+            settings_overrides=dict(report_level=5))['fragment']

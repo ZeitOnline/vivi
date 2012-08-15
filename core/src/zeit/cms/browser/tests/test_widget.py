@@ -697,6 +697,10 @@ class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
             '...<a...href="http://example.com">http://example.com</a>...',
             self.widget())
 
+    def test_rst_warnings_are_not_shown(self):
+        self.widget.setRenderedValue('* foo\nbar')
+        self.assertNotEllipsis('...System Message...', self.widget())
+
 
 class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
 
