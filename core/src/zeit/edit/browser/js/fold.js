@@ -29,8 +29,7 @@ zeit.edit.FoldBlock = gocept.Class.extend({
 
 });
 
-MochiKit.Signal.connect(
-    window, 'cp-editor-loaded', function() {
+MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
         zeit.edit.FoldBlock.prototype.restore_folding();
 });
 
