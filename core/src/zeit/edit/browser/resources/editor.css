@@ -433,14 +433,42 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 /* Authors obj sequence widget  */
 
+
+.inline-form .fieldname-author_references li div.object-details {
+	border-style: solid none;
+	border-radius: 0;
+	min-width: 0;
+	padding: 5px;
+}
+
+.inline-form .fieldname-author_references .widget .objectsequencewidget > div {
+	float: left;
+}
+
+.inline-form .fieldname-author_references .widget .objectsequencewidget > div:last-child {
+	padding: 13px 0 0 5px;
+}
+
+.inline-form .fieldname-author_references li {
+	margin: 0 0 -1px !important;
+}
+
+.inline-form .fieldname-author_references input.autocomplete,
+.inline-form .fieldname-author_references a.button {
+	margin: 10px 0;
+}
+
+.inline-form .fieldname-author_references div.widget {
+  width: 380px;
+}
+
 .inline-form .field .fieldname-author_references {
-  float:auto;
+  float: auto;
 }
 
 .inline-form .field input.autocomplete {
-  width: 180px;
+  width: 231px;
 }
-
 
 #edit-form-assets .inline-form .field {
   margin: 0 0px 20px 0;
