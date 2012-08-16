@@ -381,3 +381,8 @@ class OptionsLayout(zeit.edit.browser.form.InlineForm):
             'color_scheme') + zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata).select(
             'layout')
+
+    def setUpWidgets(self, *args, **kw):
+        super(OptionsLayout, self).setUpWidgets(*args, **kw)
+        self.widgets['layout'].display_search_button = False
+        self.widgets['layout'].display_url_field = False
