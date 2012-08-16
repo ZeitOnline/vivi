@@ -20,10 +20,11 @@
   </div>
   <div>
   <a rel="configure_search" class="button"
-     tal:condition="not: view/query_view"></a>
-  <input type="text"
-         placeholder="Link einfügen"
-         tal:condition="not: view/query_view"
+     tal:condition="python:
+        view.display_search_button and not view.query_view"></a>
+  <input type="text" placeholder="Link einfügen"
+         tal:condition="python:
+            view.display_url_field and not view.query_view"
          tal:attributes="id string:${view/name}.url;
                          name string:${view/name}.url" />
 

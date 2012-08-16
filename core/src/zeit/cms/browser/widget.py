@@ -221,6 +221,8 @@ class ObjectSequenceWidget(
 
     detail_view_name = '@@object-details'
     add_type = None
+    display_search_button = True
+    display_url_field = True
 
     def __init__(self, context, source, request):
         super(ObjectSequenceWidget, self).__init__(context, request)
@@ -332,6 +334,8 @@ class DropObjectWidget(
 
     detail_view_name = '@@object-details'
     add_type = None
+    display_search_button = True
+    display_url_field = True
 
     def __init__(self, context, source, request):
         super(DropObjectWidget, self).__init__(context, request)
