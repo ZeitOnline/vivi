@@ -76,6 +76,14 @@ MochiKit.Signal.connect(
     if (!isNull(dim)) {
         MochiKit.Style.setElementDimensions(div, dim);
     }
+
+    // XXX klugdy: prepare() (which sets the activeclass on the applicable
+    // droppables) comes *before* the 'start' event (of which we are a handler).
+    // But since we swap the dragged element (and change CSS classes etc.),
+    // prepare() has no chance of activating droppables that match the
+    // newly swapped-in element. Thus, we call it a second time and hope
+    // that's not too much overhead.
+    MochiKit.DragAndDrop.Droppables.prepare(div);
 });
 
 

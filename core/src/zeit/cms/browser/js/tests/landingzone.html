@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <tal:block replace="resource_library:zeit.cms.javascript"/>
+  </head>
+  <body id="body">
+    <div id="drop" style="width: 20em; height:20em;">
+    </div>
+
+    <div id="drag">
+      <span class="uniqueId"
+        style="display: none">http://xml.zeit.de/testcontent</span>
+      Drag
+    </div>
+    <script type="text/javascript">
+      var application_url = '../../../';
+      zeit.cms.createDraggableContentObject('drag');
+      new MochiKit.DragAndDrop.Droppable('drop', {
+          accept: ['content-drag-pane'],
+          activeclass: 'droppable-active',
+          hoverclass: 'hover-content'
+      });
+    </script>
+  </body>
+</html>
