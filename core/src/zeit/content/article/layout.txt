@@ -14,11 +14,8 @@ article is published.
 >>> import zeit.content.cp.centerpage
 >>> import zope.component
 >>> import zeit.cms.repository.interfaces
->>> import lovely.remotetask.interfaces
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
->>> tasks = zope.component.getUtility(
-...     lovely.remotetask.interfaces.ITaskService, 'general')
 
 >>> article = zeit.content.article.article.Article()
 >>> repository['2007']['01']['article'] = article
@@ -41,9 +38,10 @@ After publishing the article, the centerpage is published, too:
 
 >>> from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 >>> from zeit.workflow.interfaces import IContentWorkflow
+>>> from zeit.workflow.testing import run_publish
 >>> IContentWorkflow(article).urgent = True
 >>> job_id = IPublish(article).publish()
->>> tasks.process()
+>>> run_publish()
 
 Check that there were no errors during publishing:
 
@@ -64,7 +62,7 @@ When publishing again, the centerpage is not published again, since it
 is already published:
 
 >>> job_id = IPublish(article).publish()
->>> tasks.process()
+>>> run_publish()
 >>> IPublishInfo(article).date_last_published == published_article
 False
 >>> IPublishInfo(cp).date_last_published == published_cp
