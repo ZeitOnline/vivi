@@ -286,26 +286,11 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     relocate_toolbar: function(fast) {
         var self = this;
-        var offset = $(".rte-toolbar").parent().offset();
-        var selection = document.selection;
-        var y = null;
-
-        if (window.getSelection) {
-            selection = getSelection();
-            if (selection.rangeCount) {
-                var range = selection.getRangeAt(0).cloneRange();
-                if (range.getClientRects) {
-                    range.collapse(true);
-                    var rect = range.getClientRects()[0];
-                    if (rect) {
-                      y = rect.top - offset.top;
-                    }
-                }
-            }
-        }
-
-        if (y === null) {
-          y = MochiKit.Style.getStyle(self.toolbar, 'top');
+        var y = MochiKit.Style.getStyle(self.toolbar, 'top');
+        var selection = self._get_selection_rect();
+        if (selection) {
+            var offset = $(".rte-toolbar").parent().offset();
+            y = selection.top - offset.top;
         }
         var move = {
             duration: 0.5,
@@ -325,6 +310,25 @@ zeit.content.article.Editable = gocept.Class.extend({
             MochiKit.Visual.Move(self.toolbar, move);
         }
      },
+
+    _get_selection_rect: function() {
+        var self = this;
+        var selection = document.selection;
+        if (window.getSelection) {
+            selection = getSelection();
+            if (selection.rangeCount) {
+                var range = selection.getRangeAt(0).cloneRange();
+                if (range.getClientRects) {
+                    range.collapse(true);
+                    var rect = range.getClientRects()[0];
+                    if (rect) {
+                      return rect;
+                    }
+                }
+            }
+        }
+        return null;
+    },
 
     handle_click: function(event) {
         var self = this;
