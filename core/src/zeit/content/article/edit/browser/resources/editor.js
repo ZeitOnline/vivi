@@ -313,18 +313,13 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     _get_selection_rect: function() {
         var self = this;
-        var selection = document.selection;
-        if (window.getSelection) {
-            selection = getSelection();
-            if (selection.rangeCount) {
-                var range = selection.getRangeAt(0).cloneRange();
-                if (range.getClientRects) {
-                    range.collapse(true);
-                    var rect = range.getClientRects()[0];
-                    if (rect) {
-                      return rect;
-                    }
-                }
+        var selection = window.getSelection();
+        if (selection.rangeCount) {
+            var range = selection.getRangeAt(0).cloneRange();
+            range.collapse(true);
+            var rect = range.getClientRects()[0];
+            if (rect) {
+              return rect;
             }
         }
         return null;
