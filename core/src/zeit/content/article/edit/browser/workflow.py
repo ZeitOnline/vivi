@@ -60,7 +60,10 @@ class Checkin(zeit.cms.browser.view.Base):
     @cachedproperty
     def checkin_errors(self):
         self.can_checkin  # cause last_validation_error to be populated
-        if not self.checkin_manager.last_validation_error:
+        if (not self.checkin_manager.last_validation_error
+            # XXX stopgap so it doesn't break, see #10851
+            or not isinstance(
+                self.checkin_manager.last_validation_error, list)):
             return []
 
         result = []
