@@ -511,6 +511,16 @@ class TestFolding(
     def test_video_should_be_foldable(self):
         self.assert_foldable('video')
 
+    def test_folding_state_is_preserved_between_editing_text(self):
+        self.create_block('video')
+        s = self.selenium
+        s.click('css=.block.type-video .edit-bar .fold-link')
+        s.waitForElementPresent('css=.block.type-video.folded')
+        s.click('css=.create-paragraph')
+        s.waitForCssCount('css=.block.type-p', 1)
+        self.save()
+        s.waitForElementPresent('css=.block.type-video.folded')
+
 
 class TestReadonlyVisible(unittest2.TestCase,
                           zeit.cms.testing.BrowserAssertions):
