@@ -276,7 +276,7 @@ class MetadataD(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'dailyNewsletter', 'in_rankings', 'commentsAllowed', 'commentSectionEnable')
+            'dailyNewsletter', 'commentsAllowed', 'commentSectionEnable')
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -371,7 +371,7 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata).select(
-            'minimal_header', 'is_content',
+            'minimal_header', 'in_rankings', 'is_content',
             'banner', 'countings')
 
 
