@@ -437,7 +437,7 @@
     name="edit.form.options-a"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="10"
+    weight="1"
     />
 
   <browser:page
@@ -456,7 +456,7 @@
     name="edit.form.options-b"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="10"
+    weight="2"
     />
 
   <browser:page
@@ -475,7 +475,7 @@
     name="edit.form.options-productmanagement"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="10"
+    weight="3"
     />
 
   <browser:page
@@ -494,7 +494,7 @@
     name="edit.form.options-productmanagement-b"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="10"
+    weight="7"
     />
 
   <browser:page
@@ -560,7 +560,7 @@
     name="edit.form.misc-layout"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
-    weight="60"
+    weight="5"
     />
 
   <browser:page
