@@ -184,10 +184,18 @@
 /* Uppercase and some other properties for some labels */
 
 .article-editor-inner .edit-bar a,
-.article-editor-inner .block-inner .label span {
+.article-editor-inner .block-inner .label span,
+.article-editor-inner .block-inner legend {
   text-transform: uppercase;
   font-weight: bold;
   color: #4C4C4C;
+  border: none;
+}
+
+/* Checkboxes should not be uppercase */
+
+.article-editor-inner .block-inner .fieldtype-checkbox .label span {
+  text-transform: none;
 }
 
 .article-text {
@@ -550,7 +558,7 @@ button.log-expander {
 }
 
 
-/* METADATA AREA (TB) */
+/* METADATA AREA */
 
 #edit-form-metadata #metadata-b\.copyrights {
   width:172px;
@@ -681,7 +689,7 @@ form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
 }
 */
 
-/* MISC STUFF TB*/
+/* MISC / OPTIONS STUFF */
 
 .inline-form.wired legend {
   padding-left:0px;
@@ -720,10 +728,6 @@ form[action$="edit.form.workflow-status"] {
   margin-left:0px;
 }
 
-form[action$="edit.form.misc-layout"] div {
-  width:100%;
-}
-
 form[action$="edit.form.misc-layout"] div.label {
   margin-bottom:3px;
 }
@@ -737,6 +741,27 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   left: 430px;
   top: 3px;
 }
+
+#edit-form-misc .inline-form .fieldtype-label {
+  float:left;
+  min-width: none;
+}
+
+.fieldname-breaking_news {
+  float: left;
+  padding-top: 25px;
+}
+
+#options-layout\.layout .landing-zone.visible {
+  margin-top: 0px;
+  padding-bottom: 2px;
+  padding-top: 2px;
+}
+
+#edit-form-misc .fieldtype-checkbox {
+  float: left;
+}
+
 
 /* Assets-Stuff */
 
@@ -868,7 +893,6 @@ label[for="memo.memo"] {
 /* label */
 
 #edit-form-filename .inline-form .fieldtype-label,
-#edit-form-misc .inline-form .fieldtype-label,
 #edit-form-metadata .inline-form .fieldtype-label {
   float: left;
   min-width: 15em;
