@@ -293,8 +293,18 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.content.image.interfaces.IImages,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'teaserTitle')
+            'images', 'teaserTitle')
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(TeaserTitle, self).__call__()
+
+    def setUpWidgets(self, *args, **kw):
+        super(TeaserTitle, self).setUpWidgets(*args, **kw)
+        self.widgets['images'].add_type = IImageGroup
 
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
