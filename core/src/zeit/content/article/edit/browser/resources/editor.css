@@ -751,7 +751,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   min-width: none;
 }
 
-.fieldname-breaking_news {
+#edit-form-misc form[action$="edit.form.options-a"] .fieldtype-checkbox {
   float: left;
   padding-top: 25px;
 }
