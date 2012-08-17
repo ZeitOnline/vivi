@@ -66,10 +66,48 @@ class ArticleContentBody(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit article content body')
 
 
+class KeywordsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Keywords')
+
+    def render(self):
+        if not IAutomaticallyRenameable(self.context).renameable:
+            return ''
+        return super(KeywordsFormGroup, self).render()
+
+
+class KeywordsNew(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'keywords'
+    undo_description = _('edit keywords')
+    css_class = 'keywords'
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'keywords')
+
+    def render(self):
+        if not IAutomaticallyRenameable(self.context).renameable:
+            return ''
+        return super(KeywordsNew, self).render()
+
+    def setUpWidgets(self, *args, **kw):
+        super(KeywordsNew, self).setUpWidgets(*args, **kw)
+        self.widgets['keywords'].show_helptext = True
+
+
 class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
-    """ Filename view. """
 
     title = _('Filename')
+
+    @property
+    def weight(self):
+        if IAutomaticallyRenameable(self.context).renameable:
+            return 57
+        else:
+            return 5
 
 
 class NewFilename(zeit.edit.browser.form.InlineForm):
@@ -209,10 +247,10 @@ class Keywords(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'keywords')
 
-    def setUpWidgets(self, *args, **kw):
-        super(Keywords, self).setUpWidgets(*args, **kw)
+    def __call__(self):
         if IAutomaticallyRenameable(self.context).renameable:
-            self.widgets['keywords'].show_helptext = True
+            return ''
+        return super(Keywords, self).__call__()
 
 
 # This will be renamed properly as soon as the fields are finally decided.
