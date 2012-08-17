@@ -207,7 +207,7 @@
 }
 
 .charcount.charalert {
-  color: red;
+  color: #FF0000;
 }
 
 
@@ -266,6 +266,10 @@
 
 .article-editor-inner .block-inner #new-filename\.rename_to {
   width: 350px;
+}
+
+.article-editor-inner .block-inner #new-filename\.rename_to:-moz-placeholder {
+  color: #FF0000;
 }
 
 .block-inner > form:first-of-type {
