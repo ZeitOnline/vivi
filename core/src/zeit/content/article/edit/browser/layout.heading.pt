@@ -1,5 +1,6 @@
 <div id="editor-forms-heading" class="object-details-heading"
      tal:content="structure context/@@object-details-heading" />
 <div id="editor-forms-title">
-  <br/><br/>
+  <div class="supertitle" tal:content="context/supertitle"/>
+  <div class="title" tal:content="context/title"/>
 </div>

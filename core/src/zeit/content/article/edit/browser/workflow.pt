@@ -35,10 +35,11 @@
   </tal:block>
 
   <a id="delete_from_repository"
-     cms:cp-module='zeit.edit.LightBoxForm'
      tal:attributes="href string:${context/@@absolute_url}/@@delete.html;
                      class python:'button warning' + (
-                     ' disabled' if view.published else '')"
+                     ' disabled' if view.published else '');
+                     cms:cp-module python:'zeit.edit.LightBoxForm'
+                        if not view.published else None;"
      tal:condition="view/can_checkout"
      i18n:translate="">Delete</a>
 

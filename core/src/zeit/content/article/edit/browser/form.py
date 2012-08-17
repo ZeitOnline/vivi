@@ -66,10 +66,48 @@ class ArticleContentBody(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit article content body')
 
 
+class KeywordsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Keywords')
+
+    def render(self):
+        if not IAutomaticallyRenameable(self.context).renameable:
+            return ''
+        return super(KeywordsFormGroup, self).render()
+
+
+class KeywordsNew(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'keywords'
+    undo_description = _('edit keywords')
+    css_class = 'keywords'
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'keywords')
+
+    def render(self):
+        if not IAutomaticallyRenameable(self.context).renameable:
+            return ''
+        return super(KeywordsNew, self).render()
+
+    def setUpWidgets(self, *args, **kw):
+        super(KeywordsNew, self).setUpWidgets(*args, **kw)
+        self.widgets['keywords'].show_helptext = True
+
+
 class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
-    """ Filename view. """
 
     title = _('Filename')
+
+    @property
+    def weight(self):
+        if IAutomaticallyRenameable(self.context).renameable:
+            return 57
+        else:
+            return 5
 
 
 class NewFilename(zeit.edit.browser.form.InlineForm):
@@ -209,10 +247,10 @@ class Keywords(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'keywords')
 
-    def setUpWidgets(self, *args, **kw):
-        super(Keywords, self).setUpWidgets(*args, **kw)
+    def __call__(self):
         if IAutomaticallyRenameable(self.context).renameable:
-            self.widgets['keywords'].show_helptext = True
+            return ''
+        return super(Keywords, self).__call__()
 
 
 # This will be renamed properly as soon as the fields are finally decided.
@@ -276,7 +314,7 @@ class MetadataD(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'dailyNewsletter', 'in_rankings', 'commentsAllowed', 'commentSectionEnable')
+            'dailyNewsletter', 'commentsAllowed', 'commentSectionEnable')
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -293,8 +331,18 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.content.image.interfaces.IImages,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'teaserTitle')
+            'images', 'teaserTitle')
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(TeaserTitle, self).__call__()
+
+    def setUpWidgets(self, *args, **kw):
+        super(TeaserTitle, self).setUpWidgets(*args, **kw)
+        self.widgets['images'].add_type = IImageGroup
 
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
@@ -326,8 +374,8 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit options')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).select(
-        'serie', 'breaking_news')
+        zeit.content.article.interfaces.IArticle).select(
+        'serie', 'breaking_news', 'has_recensions')
 
 
 class OptionsB(zeit.edit.browser.form.InlineForm):
@@ -361,7 +409,7 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata).select(
-            'minimal_header', 'is_content',
+            'minimal_header', 'in_rankings', 'is_content',
             'banner', 'countings')
 
 
@@ -381,3 +429,8 @@ class OptionsLayout(zeit.edit.browser.form.InlineForm):
             'color_scheme') + zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticleMetadata).select(
             'layout')
+
+    def setUpWidgets(self, *args, **kw):
+        super(OptionsLayout, self).setUpWidgets(*args, **kw)
+        self.widgets['layout'].display_search_button = False
+        self.widgets['layout'].display_url_field = False
