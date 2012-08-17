@@ -336,7 +336,7 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit options')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.interfaces.IArticleMetadata).select(
+        zeit.content.article.interfaces.IArticle).select(
         'serie', 'breaking_news', 'has_recensions')
 
 
