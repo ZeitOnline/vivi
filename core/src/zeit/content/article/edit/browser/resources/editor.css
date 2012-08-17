@@ -766,6 +766,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   float: left;
 }
 
+form[action$="edit.form.options-productmanagement"] legend {
+  border-top: 1px solid #EDEDED !important;
+  padding-top: 15px;
+}
 
 /* Assets-Stuff */
 
