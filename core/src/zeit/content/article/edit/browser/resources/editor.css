@@ -766,10 +766,24 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   float: left;
 }
 
-form[action$="edit.form.options-productmanagement"] legend {
+#edit-form-misc form[action$="edit.form.options-productmanagement"] legend {
   border-top: 1px solid #EDEDED !important;
   padding-top: 15px;
 }
+
+#edit-form-misc form[action$="edit.form.options-productmanagement"] input {
+  width: 200px;
+}
+
+#edit-form-misc #options-a\.serie,
+#edit-form-misc #options-layout\.color_scheme {
+  width: 210px;
+}
+
+#edit-form-misc form[action$="edit.form.options-b"] .widget input.textType {
+  width: 44px;
+}
+
 
 /* The insert link / search input / button should be none displayed temporarily via CSS according to ticket https://projects.gocept.com/issues/11279 */
 #options-layout\.layout div {
