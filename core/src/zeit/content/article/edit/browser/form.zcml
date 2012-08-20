@@ -236,7 +236,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="teaser-title"
+    name="teaser"
     class=".form.TeaserForms"
     permission="zope.View"
     weight="20"

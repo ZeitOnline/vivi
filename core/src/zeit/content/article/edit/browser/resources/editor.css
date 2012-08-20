@@ -21,15 +21,15 @@
   clear: both;
 }
 
-#edit-form-teaser-title .inline-form.wired .field,
-#edit-form-teaser-title .inline-form.wired .widget,
+#edit-form-teaser .inline-form.wired .field,
+#edit-form-teaser .inline-form.wired .widget,
 #edit-form-article-content .inline-form.wired .field,
 #edit-form-article-content .inline-form.wired .widget {
   width: 100%
 }
 
-#edit-form-teaser-title .inline-form.wired textarea,
-#edit-form-teaser-title .inline-form.wired input.textType,
+#edit-form-teaser .inline-form.wired textarea,
+#edit-form-teaser .inline-form.wired input.textType,
 #edit-form-article-content .inline-form.wired textarea,
 #edit-form-article-content .inline-form.wired input.textType {
   width: 98%
