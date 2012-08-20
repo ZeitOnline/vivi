@@ -17,7 +17,7 @@ import zope.i18n
 class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
     """Article workflow forms."""
 
-    title = _('Status')
+    title = _('Workflow')
 
 
 class Publish(zeit.edit.browser.form.InlineForm,
@@ -29,8 +29,7 @@ class Publish(zeit.edit.browser.form.InlineForm,
 
     form_fields = (
         zope.formlib.form.FormFields(
-            zeit.workflow.interfaces.IReview,
-            zeit.content.article.interfaces.ICDSWorkflow))
+            zeit.workflow.interfaces.IReview))
 
     def setUpWidgets(self, *args, **kw):
         super(Publish, self).setUpWidgets(*args, **kw)
@@ -45,6 +44,18 @@ class Publish(zeit.edit.browser.form.InlineForm,
         # "super" call to apply changes
         self.handle_edit_action.success_handler(self, action, data)
         self.do_publish()
+
+
+class ExportCDS(zeit.edit.browser.form.InlineForm,
+                zeit.workflow.browser.form.WorkflowActions):
+
+    legend = _('')
+    prefix = 'export-cds'
+    undo_description = _('edit export cds')
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.article.interfaces.ICDSWorkflow))
 
 
 class Checkin(zeit.cms.browser.view.Base):
