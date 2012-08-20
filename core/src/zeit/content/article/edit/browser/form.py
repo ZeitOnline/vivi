@@ -323,6 +323,29 @@ class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Teaser')
 
 
+class TeaserImage(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'teaser-image'
+    undo_description = _('edit teaser image')
+    css_class = 'teaser-image'
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.content.image.interfaces.IImages,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'images')
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(TeaserImage, self).__call__()
+
+    def setUpWidgets(self, *args, **kw):
+        super(TeaserImage, self).setUpWidgets(*args, **kw)
+        self.widgets['images'].add_type = IImageGroup
+
+
 class TeaserTitle(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
@@ -333,16 +356,7 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
         zeit.cms.content.interfaces.ICommonMetadata,
         zeit.content.image.interfaces.IImages,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'images', 'teaserTitle')
-
-    def __call__(self):
-        zope.interface.alsoProvides(
-            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
-        return super(TeaserTitle, self).__call__()
-
-    def setUpWidgets(self, *args, **kw):
-        super(TeaserTitle, self).setUpWidgets(*args, **kw)
-        self.widgets['images'].add_type = IImageGroup
+            'teaserTitle')
 
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
