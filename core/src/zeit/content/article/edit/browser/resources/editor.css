@@ -39,11 +39,13 @@
 /* editor heading */
 
 #editor-forms-heading,
-#editor-forms-title {
+#editor-forms-title,
+#editor-forms-actions {
     padding: 5px 1em;
 }
 
-#editor-forms-title {
+#editor-forms-title,
+#editor-forms-actions {
     background-color: white;
 }
 
