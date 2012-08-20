@@ -785,14 +785,6 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 
-/* The insert link / search input / button should be none displayed temporarily via CSS according to ticket https://projects.gocept.com/issues/11279 */
-#options-layout\.layout div {
-  display: none;
-}
-#options-layout\.layout div.landing-zone-candidate {
-  display: block;
-}
-
 /* Assets-Stuff */
 
 #edit-form-assets .inline-form .field .widget {
