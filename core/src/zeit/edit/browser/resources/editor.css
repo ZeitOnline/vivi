@@ -689,7 +689,10 @@ legend {
 
 /* Render links as buttons */
 
-.article-editor-inner a.button, .article-editor-inner button, .article-editor-inner input[type=button] {
+.article-editor-inner a.button,
+.article-editor-inner button,
+.article-editor-inner input[type=button],
+.editable-area input.button {
   white-space: inherit;
   text-indent: 0;
   cursor: pointer;
