@@ -389,10 +389,6 @@
   background-position: -2px -1285px;
 }
 
-.add_view .button.addbutton {
-  background-position: -114px 14px;
-}
-
 .rte-toolbar a:hover,
 .rte-toolbar a.active {
   outline: 1px solid #0A246A;
@@ -627,17 +623,21 @@ form[action$="misc-product-management-b"] {
   margin-bottom:30px;
 }
 
-/* Add new author button */
-#metadata-c\.author_references .add_view {
-  position: absolute;
-  top:0px;
-  left: 210px;
-  background-position: 10px -113px, 0% 0%;
-  width: 80px;
+#metadata-c\.author_references > ul > li {
+    border-style: solid;
+    border-color: #e4e4e4;
+    border-width: 0px 0px 1px 0px;
+
+    padding-top: 4px;
+    padding-bottom: 4px;
 }
 
-#metadata-c\.author_references .add_view a {
-  -moz-appearance: button;
+#metadata-c\.author_references .object-details {
+    border-style: none;
+}
+
+#metadata-c\.author_references .add_view {
+  background-position: 10px -113px, 0% 0%;
 }
 
 /* worflow publication period area */
