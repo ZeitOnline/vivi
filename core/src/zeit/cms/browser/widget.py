@@ -4,7 +4,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import docutils.core
-import docutils.frontend
 import json
 import time
 import xml.sax.saxutils
