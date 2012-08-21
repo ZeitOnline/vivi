@@ -8,6 +8,7 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
+from zope.app.form.browser.widget import SimpleInputWidget
 import zeit.cms.browser.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.article.interfaces
@@ -357,6 +358,8 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
         zeit.content.image.interfaces.IImages,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'teaserTitle')
+
+    form_fields['teaserTitle'].custom_widget = SimpleInputWidget
 
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
