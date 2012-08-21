@@ -665,7 +665,7 @@ li.busy {
 
 
 .landing-zone {
-  border: 1px solid #00ee5e;
+  border: 1px solid #a6cc17;
   visibility: hidden;
 }
 
@@ -680,15 +680,15 @@ li.busy {
 
 
 .landing-zone.droppable-active {
-  background: -moz-linear-gradient(center top , #FFF, #EFE) repeat scroll 0 0 transparent;
-  border: 1px solid #0A0;
+  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
+  border: 1px solid #a6cc17;
   display: block;
   visibility: visible;
 }
 
 .landing-zone.hover-content {
-  border-color: #00ee5e;
-  outline: 4px solid #00ee5e;
+  border-color: #a6cc17;
+  outline: 4px solid #a6cc17;
   display: block;
   visibility: visible;
   z-index: 1;
@@ -699,11 +699,11 @@ li.busy {
 }
 
 .droppable-active {
-  border: 1px solid #00ee5e;
+  border: 1px solid #a6cc17;
 }
 
 .hover-content {
-  outline: 4px solid #00ee5e;
+  outline: 4px solid #a6cc17;
 }
 
 .object-link {

@@ -519,19 +519,19 @@ table.properties textarea {
 
 .object-reference-widget.droppable-active input[type=text],
 .object-reference-widget.hover-content input[type=text] {
-  border: 1px solid #00ee5e;
+  border: 1px solid #a6cc17;
 }
 
 .object-reference-widget.hover-content input[type=text] {
-  outline: 4px solid #00ee5e;
+  outline: 4px solid #a6cc17;
 }
 
 .sequencewidget tr.droppable-active {
-  outline: 1px dashed #00ee5e;
+  outline: 1px dashed #a6cc17;
 }
 
 .sequencewidget tr.hover-content {
-  outline: 4px solid #00ee5e;
+  outline: 4px solid #a6cc17;
 }
 
 
