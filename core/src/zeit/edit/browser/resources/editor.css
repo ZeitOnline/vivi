@@ -40,11 +40,11 @@
 
 #cp-content .block.droppable-active > *,
 #cp-content .block.hover-content > * {
-  border: 1px solid #00ee5e;
+  border: 1px solid #a6cc17;
 }
 
 #cp-content .block.hover-content > * {
-  outline: 4px solid #00ee5e;
+  outline: 4px solid #a6cc17;
 }
 
 #cp-forms {
@@ -216,8 +216,8 @@
 }
 
 #cp-content .landing-zone.visible {
-  border: 1px dashed #00dd5e;
-  color: #00dd5e;
+  border: 1px dashed #a6cc17;
+  color: #a6cc17;
   height: auto;
   margin: 1em 0;
 }
@@ -232,7 +232,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 #cp-content .lightbox .landing-zone {
-  border: 1px solid #00ee5e;
+  border: 1px solid #a6cc17;
   height: 0.5em;
   padding: 0;
   margin: 0 1em;
@@ -253,7 +253,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 .editable-area > .edit {
   border-top: none;
-  color: #00ee5e;
+  color: #a6cc17;
   padding: 1em;
 }
 
@@ -456,7 +456,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 #edit-form-assets .inline-form .field div.droppable-active {
-  background: -moz-linear-gradient(center top , #FFF, #DFD) repeat scroll 0 0 transparent;
+  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
   border: 1px solid #0A0;
   -moz-border-radius: 5px;
 }
