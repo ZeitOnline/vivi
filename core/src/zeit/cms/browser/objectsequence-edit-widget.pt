@@ -10,7 +10,8 @@
   </tal:data>
   <input tal:replace="structure view/marker" />
 
-  <ul class="references landing-zone-candidate">
+  <ul tal:condition="not: view/display_list_below_buttons"
+      class="references landing-zone-candidate">
     <!-- data will be inserted here by javascript -->
   </ul>
 
@@ -32,6 +33,11 @@
     Add new …
   </a>
   </div>
+
+  <ul tal:condition="view/display_list_below_buttons"
+      class="references landing-zone-candidate">
+    <!-- data will be inserted here by javascript -->
+  </ul>
 </div>
 <script tal:content="string:
   new zeit.cms.ObjectSequenceWidget(
