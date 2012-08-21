@@ -14,11 +14,8 @@
     <!-- data will be inserted here by javascript -->
   </ul>
 
-  <div
-    tal:condition="view/query_view"
-    tal:content="structure view/query_view">
-  </div>
   <div>
+  <tal:x condition="view/query_view" replace="structure view/query_view"/>
   <a rel="configure_search" class="button"
      tal:condition="python:
         view.display_search_button and not view.query_view"></a>
