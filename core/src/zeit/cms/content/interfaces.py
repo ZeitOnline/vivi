@@ -140,18 +140,22 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Daily newsletter"),
         description=_(
             "Should this article be listed in the daily newsletter?"),
+        required=False,
         default=True)
 
     commentsAllowed = zope.schema.Bool(
         title=_("Comments allowed"),
+        required=False,
         default=True)
 
     commentSectionEnable = zope.schema.Bool(
         title=_("Show commentthread"),
+        required=False,
         default=True)
 
     banner = zope.schema.Bool(
         title=_("Banner"),
+        required=False,
         default=True)
 
     banner_id = zope.schema.TextLine(
@@ -171,11 +175,13 @@ class ICommonMetadata(zope.interface.Interface):
 
     foldable = zope.schema.Bool(
         title=_('Foldable'),
+        required=False,
         default=True)
 
     minimal_header = zope.schema.Bool(
         title=_('Minimal header'),
-        required=False)
+        required=False,
+        default=False)
 
     color_scheme = zope.schema.Choice(
         title=_('Color scheme'),
@@ -184,21 +190,23 @@ class ICommonMetadata(zope.interface.Interface):
 
     countings = zope.schema.Bool(
         title=_('Countings'),
+        required=False,
         default=True)
 
     is_content = zope.schema.Bool(
         title=_('Content'),
+        required=False,
         default=True)
 
     breaking_news = zope.schema.Bool(
         title=_('Breaking news'),
-        default=False,
-        required=False)
+        required=False,
+        default=False)
 
     in_rankings = zope.schema.Bool(
         title=_('Show in rankings'),
-        default=True,
-        required=False)
+        required=False,
+        default=True)
 
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),

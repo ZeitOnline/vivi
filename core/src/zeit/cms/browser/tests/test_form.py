@@ -52,14 +52,6 @@ class TestApplyDefaultValues(unittest.TestCase):
         context = self.apply(ITest, context)
         self.assertEqual(24, context.number)
 
-    def test_none_should_not_be_overwritten_if_valid(self):
-        class ITest(zope.interface.Interface):
-            number = zope.schema.Int(default=42, required=False)
-        context = Test()
-        context.number = None
-        context = self.apply(ITest, context)
-        self.assertIsNone(context.number)
-
 
 class ITestSchema(zope.interface.Interface):
 
