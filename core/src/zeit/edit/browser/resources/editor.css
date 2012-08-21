@@ -637,6 +637,7 @@ textarea {
   height: 4em;
   line-height: 1.4;
   padding: 5px;
+  border: 2px inset threedface;
 }
 
 
