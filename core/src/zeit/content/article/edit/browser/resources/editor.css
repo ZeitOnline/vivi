@@ -578,9 +578,8 @@ button.log-expander {
   float: right;
 }
 
-#metadata-a\.keywords #metadata-a\.keywords\.update a {
-  -moz-appearance: button;
-  display: block;
+.fieldname-keywords .update {
+  margin-top: 0.5em;
 }
 
 /* Until the legend-markup is not removed... */
