@@ -302,6 +302,7 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         super(MetadataC, self).setUpWidgets(*args, **kw)
         self.widgets['author_references'].detail_view_name = '@@author-details'
         self.widgets['author_references'].add_type = IAuthor
+        self.widgets['author_references'].display_list_below_buttons = True
 
 
 # This will be renamed properly as soon as the fields are finally decided.
