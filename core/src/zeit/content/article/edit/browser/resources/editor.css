@@ -576,6 +576,15 @@ button.log-expander {
 
 #edit-form-metadata .inline-form fieldset.keywords {
   float: right;
+  width: 30em;
+}
+
+#edit-form-metadata .inline-form fieldset.keywords .fieldname-keywords {
+  width: 30em;
+}
+
+#keywords\.keywords\.list {
+  width: 30em !important;
 }
 
 .fieldname-keywords .update {
