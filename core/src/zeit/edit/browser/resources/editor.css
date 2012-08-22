@@ -427,7 +427,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 /* forms */
 
 .inline-form .field {
-  margin: 0 20px 10px 0;
+  margin: 5px 20px 5px 0;
   position: relative;
 }
 
@@ -675,7 +675,7 @@ fieldset {
   background: none 0;
   border: medium none;
   overflow: hidden;
-  margin: 10px;
+  margin: 0 10px;
   padding: 0;
 }
 
@@ -765,5 +765,6 @@ legend {
 /* Checkboxes */
 
 .inline-form .fieldtype-checkbox .widget {
+  margin-bottom: 0;
   width: auto;
 }
