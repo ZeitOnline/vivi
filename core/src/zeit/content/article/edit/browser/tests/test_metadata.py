@@ -148,11 +148,11 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.assert_widget_text("metadata-b.copyrights", 'ZEIT online')
         s = self.selenium
         s.waitForElementPresent(
-            'xpath=//input[@id="metadata-d.dailyNewsletter"]')
+            'xpath=//input[@id="metadata-nl.dailyNewsletter"]')
         s.assertAttribute(
-            'xpath=//input[@id="metadata-d.dailyNewsletter"]@disabled',
+            'xpath=//input[@id="metadata-nl.dailyNewsletter"]@disabled',
             'regexp:disabled|true')
-        s.assertNotChecked('xpath=//input[@id="metadata-d.dailyNewsletter"]')
+        s.assertNotChecked('xpath=//input[@id="metadata-nl.dailyNewsletter"]')
 
     def test_texts_should_be_readonly_visible(self):
         self.assert_widget_text(
