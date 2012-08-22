@@ -808,6 +808,10 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin:1em !important;
 }
 
+.fieldname-audio_id .widget {
+  margin-bottom: 2.5em;
+}
+
 /* moz-appearence:button can't handle with padding... */
 #metadata-a\.keywords\.update a:before,
 #metadata-a\.keywords\.update a:after,
