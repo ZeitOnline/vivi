@@ -441,10 +441,6 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 	padding: 5px;
 }
 
-.inline-form .fieldname-author_references .widget .objectsequencewidget > div {
-	float: left;
-}
-
 .inline-form .fieldname-author_references .widget .objectsequencewidget > div:last-child {
 	padding: 13px 0 0 5px;
 }
@@ -455,7 +451,11 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 .inline-form .fieldname-author_references input.autocomplete,
 .inline-form .fieldname-author_references a.button {
-	margin: 10px 0;
+	margin: 7px 0 21px;
+}
+
+.inline-form .fieldname-author_references a.button {
+	float: right;
 }
 
 .inline-form .fieldname-author_references div.widget {
