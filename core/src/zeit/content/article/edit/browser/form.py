@@ -305,17 +305,28 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         self.widgets['author_references'].add_type = IAuthor
 
 
-# This will be renamed properly as soon as the fields are finally decided.
-class MetadataD(zeit.edit.browser.form.InlineForm):
+class MetadataNL(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
-    prefix = 'metadata-d'
+    prefix = 'metadata-nl'
     undo_description = _('edit metadata')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'dailyNewsletter', 'commentsAllowed', 'commentSectionEnable')
+            'dailyNewsletter')
+
+
+class MetadataComments(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'metadata-comments'
+    undo_description = _('edit metadata')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'commentSectionEnable', 'commentsAllowed')
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
