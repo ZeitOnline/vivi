@@ -50,11 +50,11 @@ Those forms are loaded via javascript:
         for="metadata-c.author_references">...
 
 
->>> browser.open('@@edit.form.metadata-d')
+>>> browser.open('@@edit.form.metadata-nl')
 >>> print browser.contents
 <...
 ...<label cms:tooltip="Should this article be listed in the daily newsletter?"
-        for="metadata-d.dailyNewsletter">...
+        for="metadata-nl.dailyNewsletter">...
 
 
 >>> browser.open('@@edit.form.keywords')
