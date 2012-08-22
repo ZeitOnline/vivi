@@ -763,6 +763,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   padding-top: 2px;
 }
 
+#edit-form-status .fieldtype-checkbox,
 #edit-form-metadata .fieldtype-checkbox,
 #edit-form-misc .fieldtype-checkbox,
 #edit-form-workflow .fieldtype-checkbox {
