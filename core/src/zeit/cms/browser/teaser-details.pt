@@ -1,0 +1,5 @@
+<div class="object-details" i18n:domain="zeit.cms">
+  <div class="supertitle"
+       tal:content="view/teaser_title">
+  </div>
+</div>

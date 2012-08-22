@@ -132,6 +132,15 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer=".interfaces.ICMSLayer"
+    name="teaser-details"
+    class=".objectdetails.Details"
+    template="teaser-details.pt"
+    permission="zope.View"
+    />
+
   <adapter
     factory=".widget.find_commonmetadata"
     trusted="true"
