@@ -219,7 +219,7 @@
   border: 1px dashed #a6cc17;
   color: #a6cc17;
   height: auto;
-  margin: 1em 0;
+  margin-bottom: 1em;
 }
 
 #cp-content .zeit-edit-interfaces-IFoldable .landing-zone.visible {
@@ -227,9 +227,17 @@
   margin-right:12px;
 }
 
+
+/* Object sequence widget */
+
+.object-widget {
+  margin-bottom: 1.5em;
+}
+
 form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin:1em;    
 }
+
 
 #cp-content .lightbox .landing-zone {
   border: 1px solid #a6cc17;
@@ -496,6 +504,8 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .inline-form .label {
   display: block;
   float: left;
+  font-size: 10px;
+  margin-bottom: 2px;
   overflow: hidden;
 }
 
@@ -767,4 +777,10 @@ legend {
 .inline-form .fieldtype-checkbox .widget {
   margin-bottom: 0;
   width: auto;
+}
+
+.fieldtype-checkbox .label {
+  margin-bottom: 0;
+  width: auto;
+  font-size: 12px;
 }
