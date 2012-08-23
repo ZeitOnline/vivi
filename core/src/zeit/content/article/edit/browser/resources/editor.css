@@ -222,6 +222,7 @@
   margin: 0 10px;
   padding: 5px 10px;
   position: relative;
+  overflow: hidden;
 }
 
 .block-inner .totop {
