@@ -18,6 +18,15 @@ import zope.formlib.form
 import zope.formlib.interfaces
 
 
+class Heading(object):
+
+    def render(self):
+        # workaround until the title is synchronized to the heading (#11255)
+        if IAutomaticallyRenameable(self.context).renameable:
+            return ''
+        return super(Heading, self).render()
+
+
 class MemoFormGroup(zeit.edit.browser.form.FormGroup):
 
     title = u''

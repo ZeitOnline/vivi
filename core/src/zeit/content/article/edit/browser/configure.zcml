@@ -65,6 +65,7 @@
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="heading"
+    class=".form.Heading"
     template="layout.heading.pt"
     permission="zope.View"
     weight="-1"
