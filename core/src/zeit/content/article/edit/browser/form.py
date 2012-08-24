@@ -356,6 +356,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserImage, self).setUpWidgets(*args, **kw)
+        self.widgets['images'].detail_view_name = '@@teaser-details'
         self.widgets['images'].add_type = IImageGroup
 
 
