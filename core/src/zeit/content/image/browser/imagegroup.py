@@ -137,7 +137,7 @@ class AddImage(zeit.content.image.browser.form.AddForm):
 
 
 class Metadata(object):
-
+   
     @zope.cachedescriptors.property.Lazy
     def metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(self.context)
@@ -152,19 +152,31 @@ class Metadata(object):
                 yield obj
 
 
+def deliver_thumbnail(obj, type):
+    if not obj.context.keys():
+         raise zope.publisher.interfaces.NotFound(
+             obj.context, obj.__name__, obj.request)
+    for name in obj.context.keys():
+        if obj.first_choice.match(name):
+            break
+    else:
+        name = obj.context.keys()[0]
+    view = zope.component.getMultiAdapter(
+        (obj.context[name], obj.request), name=type)
+    return view()
+
+
 class Thumbnail(object):
 
     first_choice = re.compile(r'.*-\d+x\d+')
 
     def __call__(self):
-        if not self.context.keys():
-            raise zope.publisher.interfaces.NotFound(
-                self.context, self.__name__, self.request)
-        for name in self.context.keys():
-            if self.first_choice.match(name):
-                break
-        else:
-            name = self.context.keys()[0]
-        view = zope.component.getMultiAdapter(
-            (self.context[name], self.request), name='thumbnail')
-        return view()
+        return deliver_thumbnail(self, 'thumbnail')
+
+
+class ThumbnailLarge(object):
+
+    first_choice = re.compile(r'.*-[5-9][0-9]+x\d+')
+    
+    def __call__(self):
+        return deliver_thumbnail(self, 'preview')

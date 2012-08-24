@@ -99,6 +99,7 @@
     permission="zope.View"
     class=".image.Thumbnail"
     /> 
+  
 
 
   <!-- Menus -->
@@ -249,6 +250,14 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="thumbnail"
     class=".imagegroup.Thumbnail"
+    permission="zope.View"
+    />
+  
+  <browser:page
+    for="..interfaces.IImageGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="thumbnail_large"
+    class=".imagegroup.ThumbnailLarge"
     permission="zope.View"
     />
 
