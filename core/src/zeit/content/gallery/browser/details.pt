@@ -5,15 +5,10 @@
     <p></p>
   </div>
   <div class="gallery_details_controls">
-    <ul>
-      <li><span class="gallery_details_prev"
-                i18n:translate="">previous</span></li>
-      <li>
-        <span class="gallery_details_pos"></span> von
+    <a class="gallery_details_prev button" i18n:translate=""></a>
+        <span class="gallery_details_pos"></span>
+        <span>von</span>
         <span class="gallery_details_max"></span>
-      </li>
-      <li><span class="gallery_details_next"
-                i18n:translate="">next</span></li>
-    </ul>
+    <a class="gallery_details_next button" i18n:translate=""></a>
   </div>
 </div>
