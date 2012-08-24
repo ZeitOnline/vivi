@@ -433,61 +433,65 @@
 
 /* Gallery block layouts*/
 
-.block.type-gallery .gallery_details .gallery_details_display {
-	width: 540px;
-	margin: 0 1em 1em -1em;
+#leadteaser\.gallery .object-details {
+	margin: 1em 0;
 }
 
-.block.type-gallery .gallery_details .gallery_details_display p {
-	padding: 0;
-}
-
-.block.type-gallery .gallery_details img {
-	max-width: 540px;
-	max-height: 300px;
-}
-
-.block.type-gallery .gallery_details .gallery_details_controls,
-.block.type-gallery .gallery_details .gallery_details_display {
-	float: left;
-}
-
-.block.type-gallery .gallery_details .gallery_details_controls {
-	cursor: default;
-}
-
-.block.type-gallery .gallery_details_controls .button a:hover{
-	cursor: pointer;
-}
-
-.block.type-gallery .gallery_details_controls > ul {
+#leadteaser\.gallery .object-details .gallery_details {
 	margin: 0;
-	padding: 0;
-	position: absolute;
-	top: 50%;
 }
 
-.block.type-gallery .gallery_details_controls > ul > li {
-	list-style: none;
+#leadteaser\.gallery .object-reference a[rel="remove"] {
+	top: 1em;
+}
+
+.object-details .gallery_details {
+	cursor: default;
+	margin: 0 0 0 -1em;
+}
+
+.object-details .gallery_details .gallery_details_display {
+	height: 320px;
+}
+
+.object-details .gallery_details .gallery_details_display p {
+	max-width: 400px;
+	margin: 10px 0;
+	overflow: hidden;
 	float: left;
+	padding: 0;
+	height: 1em;
 }
 
-.block.type-gallery .gallery_details_controls > ul > li:nth-child(2) {
-	margin: 3px 5px;
+.object-details .gallery_details .gallery_details_display img {
+	max-width: 480px;
+	height: 320px;
+	display: block;
+	margin: auto;
 }
-.block.type-gallery .gallery_details_controls .button {
+
+.object-details .gallery_details .gallery_details_controls {
+	display: inline;
+	float: right;
+}
+
+.object-details .gallery_details .gallery_details_controls .button {
 	width: 20px;
 	height: 19px;
 	padding: 0;
 	display: inline-block;
 	background-position: -1px -481px, 0 0;
+	position: relative;
+	top: 5px;
 }
 
-.block.type-gallery .gallery_details_controls .gallery_details_prev {
+/* following two rules should be replaced, once sprite is ready*/
+
+.object-details .gallery_details .gallery_details_controls .gallery_details_prev {
 	-moz-transform: rotate(90deg);
 }
 
-.block.type-gallery .gallery_details_controls .gallery_details_next {
+.object-details .gallery_details .gallery_details_controls .gallery_details_next {
 	-moz-transform: rotate(270deg);
 }
 
