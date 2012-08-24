@@ -1,0 +1,9 @@
+<div class="object-details" i18n:domain="zeit.cms">
+  <img tal:replace="structure context/@@zmi_icon|nothing" />
+  <span tal:replace ="structure context/@@published-icon" />
+  <span class="filename" tal:content="context/__name__" />
+  <div class="graphical_preview"
+       tal:condition="view/graphical_preview_url">
+    <img tal:attributes="src view/graphical_preview_url" />
+  </div>
+</div>
