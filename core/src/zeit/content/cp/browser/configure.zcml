@@ -48,11 +48,17 @@
 
   <resourceLibrary
     name="zeit.content.cp"
-    require="zeit.cms
+    require="zeit.edit
+             zeit.cms
              zeit.find
              zc.datetimewidget
     ">
-    <directory source="resources" />
+    <directory source="resources" include="
+      editor.js
+      library.js
+      teaser.js
+      editor.css
+      "/>
   </resourceLibrary>
 
 
