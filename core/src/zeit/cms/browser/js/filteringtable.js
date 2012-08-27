@@ -7,7 +7,7 @@ zeit.cms.FilteringTable = gocept.Class.extend({
     construct: function() {
         this.contentElement = MochiKit.DOM.getFirstElementByTagAndClassName(
             'table', 'contentListing');
-        if (typeof this.contentElement == 'undefined') {
+        if (! this.contentElement) {
             return;
         }
         var tablefilter = MochiKit.DOM.getElement('tableFilter');
