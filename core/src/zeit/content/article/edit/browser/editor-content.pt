@@ -2,45 +2,7 @@
       id="cp-content-inner"
       class="cp-content-inner article-editor-inner"
       i18n:domain="zeit.cms">
-  <script
-    type="text/javascript"
-    tal:attributes="
-    src string:${request/++resource++zeit.content.article.edit}/editor.js"></script>
-  <script
-    type="text/javascript"
-    tal:attributes="
-    src string:${request/++resource++zeit.content.article.edit}/ads.js"></script>
-  <script
-    type="text/javascript"
-    tal:attributes="
-    src string:${request/++resource++zeit.content.article.edit}/counter.js"></script>
-  <script
-    type="text/javascript"
-    tal:attributes="
-    src string:${request/++resource++zeit.content.article.edit}/html.js"></script>
-  <script
-    type="text/javascript"
-    tal:attributes="
-    src string:${request/++resource++zeit.content.article.edit}/strftime.js"></script>
-  <script
-    type="text/javascript"
-    tal:attributes="
-    src string:${request/++resource++zeit.content.article.edit}/timer.js"></script>
-  <script
-    type="text/javascript"
-    tal:attributes="
-    src string:${request/++resource++zeit.content.gallery}/details.js"></script>
-  <link
-    rel="stylesheet" type="text/css"
-    tal:attributes="
-    href string:${request/++resource++zeit.content.article.edit}/editor.css"/>
-  <link
-    rel="stylesheet" type="text/css"
-    tal:attributes="
-    href string:${request/++resource++zeit.workflow}/workflow.css"/>
-
   <div id="editor-forms"
        tal:content="structure context/@@edit-forms">
   </div>
-
 </div>

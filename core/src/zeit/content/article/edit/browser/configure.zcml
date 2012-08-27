@@ -19,11 +19,24 @@
     <implements interface="zeit.edit.interfaces.IEditable" />
   </class>
 
-  <browser:resourceDirectory
+  <resourceLibrary
     name="zeit.content.article.edit"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    directory="resources"
-    />
+    require="zeit.cms
+             zeit.edit
+             zeit.workflow">
+    <directory
+        source="resources"
+        include="
+        editor.js
+        ads.js
+        counter.js
+        html.js
+        strftime.js
+        timer.js
+        editor.css
+        "/>
+  </resourceLibrary>
 
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
