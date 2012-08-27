@@ -160,6 +160,9 @@ zeit.content.cp.teaser.Drag = zeit.edit.context.ContentActionBase.extend({
     var ident = MochiKit.Signal.connect(
         window, 'script-loading-finished', function() {
         MochiKit.Signal.disconnect(ident);
+        if (! zeit.cms.in_cp_editor()) {
+            return;
+        }
         zeit.content.cp.teaser.drag = new zeit.content.cp.teaser.Drag();
         MochiKit.Signal.connect(
             zeit.edit.drop.content_drop_handler, 'drop-finished',

@@ -1,6 +1,9 @@
 
 zeit.cms.declare_namespace('zeit.content.cp');
 
+zeit.cms.in_cp_editor = function() {
+    return Boolean(jQuery('.cp-editor-inner').length);
+};
 
 zeit.content.cp.BlockHover = gocept.Class.extend({
 
@@ -37,6 +40,9 @@ zeit.content.cp.BlockHover = gocept.Class.extend({
 });
 
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+    if (! zeit.cms.in_cp_editor()) {
+        return;
+    }
     zeit.content.cp.block_hover = new zeit.content.cp.BlockHover();
 });
 
@@ -86,6 +92,9 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
 
 
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+    if (! zeit.cms.in_cp_editor()) {
+        return;
+    }
     zeit.content.cp.lead_sorter = new zeit.edit.sortable.BlockSorter(
         'lead');
     zeit.content.cp.informatives_sorter = new zeit.edit.sortable.BlockSorter(
@@ -122,13 +131,13 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     };
 
     var ident = MochiKit.Signal.connect(
-        window, 'script-loading-finished',
-        function() {
+        window, 'script-loading-finished', function() {
             MochiKit.Signal.disconnect(ident);
-            MochiKit.Signal.connect(
-                zeit.edit.editor, 'added', added);
-            MochiKit.Signal.connect(
-                zeit.edit.editor, 'deleted', deleted);
+            if (! zeit.cms.in_cp_editor()) {
+                return;
+            }
+            MochiKit.Signal.connect(zeit.edit.editor, 'added', added);
+            MochiKit.Signal.connect(zeit.edit.editor, 'deleted', deleted);
     });
 }());
 
@@ -197,9 +206,11 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
     };
 
     var ident = MochiKit.Signal.connect(
-        window, 'script-loading-finished',
-        function() {
+        window, 'script-loading-finished', function() {
             MochiKit.Signal.disconnect(ident);
+            if (! zeit.cms.in_cp_editor()) {
+                return;
+            }
             MochiKit.Signal.connect(
                 zeit.edit.editor, 'after-reload', fix_box_heights);
         });
