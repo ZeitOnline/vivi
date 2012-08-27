@@ -125,7 +125,7 @@ class FeedView(object):
         formatter = zc.table.table.Formatter(
             self.context, self.request, self.content,
             columns=self.columns)
-        formatter.cssClasses['table'] = 'feedsorting'
+        formatter.cssClasses['table'] = 'feedsorting table-sorter'
         return formatter
 
     @zope.cachedescriptors.property.Lazy

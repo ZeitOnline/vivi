@@ -373,7 +373,7 @@ have a look at its display view:
 Politik – Feed contents
 >>> print browser.contents
 <?xml ...
-<table class="feedsorting">
+<table class="feedsorting table-sorter">
   <thead>
     <tr>
       <th>
@@ -419,7 +419,7 @@ Check it out to change the order. We're at the edit/sort page after checking out
 Politik – Edit feed contents
 >>> print browser.contents
 <?xml ...
-<table class="feedsorting">
+<table class="feedsorting table-sorter">
   <thead>
     <tr>
       <th>

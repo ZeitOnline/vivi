@@ -1,7 +1,6 @@
 <html metal:use-macro="context/@@standard_macros/page">
   <div metal:fill-slot="body">
-    
-    <tal:block replace="resource_library:zeit.cms.syndication" />
+
     <div id="edit-form" i18n:domain="zeit.cms">
       <form method="POST">
         <table tal:replace="structure view/contentTable" />
@@ -9,7 +8,7 @@
           i18n:attributes="value" />
       </form>
     </div>
-    
+
   </div>
 </html>
 

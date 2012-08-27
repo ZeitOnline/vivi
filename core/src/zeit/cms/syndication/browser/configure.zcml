@@ -148,13 +148,6 @@
     sort="90"
     />
 
-  <resourceLibrary
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="zeit.cms.syndication"
-    require="zeit.cms">
-    <directory source="resources" include="dragndropHandlers.js"/>
-  </resourceLibrary>
-
   <!-- Syndication Manager -->
 
   <gocept:pagelet
