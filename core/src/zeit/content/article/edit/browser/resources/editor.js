@@ -2,8 +2,15 @@
 
 zeit.cms.declare_namespace('zeit.content.article');
 
+zeit.cms.in_article_editor = function() {
+    return Boolean(jQuery('.article-editor-inner').length);
+};
+
 
 MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+    if (! zeit.cms.in_article_editor()) {
+        return;
+    }
 
     // Initialize module library
     zeit.edit.library.create(
@@ -25,13 +32,18 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 });
 
 
-zeit.edit.drop.registerHandler({
-    accept: ['editable-body-module'],
-    activated_by: 'action-editable-body-module-droppable',
-    url_attribute: 'cms:create-block-url',
-    query_arguments: function(draggable) {
-        return {'block_type': draggable.getAttribute('cms:block_type')};
+MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+    if (! zeit.cms.in_article_editor()) {
+        return;
     }
+    zeit.edit.drop.registerHandler({
+        accept: ['editable-body-module'],
+        activated_by: 'action-editable-body-module-droppable',
+        url_attribute: 'cms:create-block-url',
+        query_arguments: function(draggable) {
+            return {'block_type': draggable.getAttribute('cms:block_type')};
+        }
+    });
 });
 
 

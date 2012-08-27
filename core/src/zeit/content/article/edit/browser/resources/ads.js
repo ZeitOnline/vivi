@@ -53,6 +53,9 @@ $('body').bind('update-ads', function() {
 
 
 MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+    if (! zeit.cms.in_article_editor()) {
+        return;
+    }
 
     $('body').trigger('update-ad-places');
 
