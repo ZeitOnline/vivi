@@ -5,10 +5,8 @@ zeit.cms.TableSorter = gocept.Class.extend({
     // Infrastructure to sort tables
     // Reorders the table on the browser.
 
-    construct: function(class_name) {
-        var othis = this;
-        var table = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'table', class_name);
+    construct: function(table) {
+        var self = this;
         forEach(table.rows, function(row) {
             if (row.cells[0].nodeName == 'TD') {
                 new MochiKit.DragAndDrop.Draggable(row, {
@@ -36,7 +34,7 @@ zeit.cms.TableSorter = gocept.Class.extend({
                     } else {
                         tbody.appendChild(element);
                     }
-                    othis.dropped(element);
+                    self.dropped(element);
                 },
                 hoverclass: 'tablesort-hover'
             });
@@ -49,3 +47,14 @@ zeit.cms.TableSorter = gocept.Class.extend({
     }
 
 });
+
+
+(function($) {
+
+$(document).ready(function(){
+    $('table.table-sorter').each(function(i, table) {
+        table.sorter = new zeit.cms.TableSorter(table);
+    });
+});
+
+}(jQuery));
