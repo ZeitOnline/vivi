@@ -9,6 +9,7 @@ import zeit.cms.content.metadata
 import zope.annotation.interfaces
 import zope.cachedescriptors.property
 import zope.component
+import zope.dublincore.interfaces
 import zope.interface
 
 
@@ -77,9 +78,9 @@ class Details(zeit.cms.browser.view.Base):
             self.countings.hits or 0, self.countings.total_hits or 0)
 
     def display_metadata(self):
+        dc = zope.dublincore.interfaces.IDCTimes(self.context)
         return filter(None, [
-                'XXX Datum',
-                'XXX Ausgabe',
+                dc.created.strftime('%d.%m.%Y'),
                 self.common_metadata.ressort,
                 self.author,
                 self.hits,
