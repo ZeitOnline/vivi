@@ -298,6 +298,14 @@
   margin-top: 24px;
 }
 
+#editor-forms-title .supertitle {
+  display:block;
+}
+
+#editor-forms-title .title {
+  display:block;
+}
+
 .editing .block-inner ul {
   margin-top: 41px;
   margin-bottom: 57px;
