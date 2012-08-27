@@ -710,6 +710,10 @@ zeit.imp.Zoomer = gocept.Class.extend({
 
 (function() {
 
+    if (! $('imp-image-area')) {
+        return;
+    }
+
     var ident = MochiKit.Signal.connect(window, 'onload', function() {
         MochiKit.Signal.disconnect(ident);
         document.imp = new zeit.imp.Imp();
