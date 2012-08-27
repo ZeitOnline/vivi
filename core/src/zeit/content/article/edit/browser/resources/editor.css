@@ -295,7 +295,15 @@
 
 .editing .block-inner p,
 .editing .block-inner h3{
-  margin-top: 22px;
+  margin-top: 24px;
+}
+
+#editor-forms-title .supertitle {
+  display:block;
+}
+
+#editor-forms-title .title {
+  display:block;
 }
 
 .editing .block-inner ul {
