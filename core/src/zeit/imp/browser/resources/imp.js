@@ -1,46 +1,46 @@
 // Copyright (c) 2008-2009 gocept gmbh & co. kg
 // See also LICENSE.txt
 
-zeit.imp = {}
+zeit.imp = {};
 
-zeit.imp.Imp = Class.extend({
+zeit.imp.Imp = gocept.Class.extend({
 
     construct: function() {
         var self = this;
         this.zoom_grid = 0.0625;
 
         this.original_dimensions = new MochiKit.DOM.Dimensions(
-            new Number($('imp-width').textContent),
-            new Number($('imp-height').textContent));
+            Number($('imp-width').textContent),
+            Number($('imp-height').textContent));
         this.current_dimensions = this.original_dimensions;
         this.mask_dimensions = null;
         this.mask_image_dimensions = null;
         this.mask_variable = null;
         var borders = $('imp-configuration-form')['border'];
-        if (isUndefinedOrNull(borders)) { 
+        if (isUndefinedOrNull(borders)) {
             this.border = '';
         } else {
             this.border = borders[0].value;
         }
         // Point for extensions to add arguments.
-        this.crop_arguments = {}
+        this.crop_arguments = {};
 
         this.image = null;
         this.image_server_dimensions = null;
         this.loading_image = $('imp-loading-image');
         this.mask_image = null;
 
-        this.zoom = (this.get_visual_area_dimensions().w / 
-                     this.original_dimensions.w); 
+        this.zoom = (this.get_visual_area_dimensions().w /
+                     this.original_dimensions.w);
         this.stored_visual_area_dimensions = this.get_visual_area_dimensions();
         this.image_dragger = new MochiKit.DragAndDrop.Draggable(
             'imp-image-drag', {
             'handle': $('imp-mask'),
             'starteffect': null,
             'zindex': 0,
-            'snap': function(x, y) { return self.snap_image_to_mask(x, y) },
+            'snap': function(x, y) { return self.snap_image_to_mask(x, y); }
         });
-        
+
         this.resize_monitor = new zeit.imp.ResizeMonitor('imp-image-area');
         MochiKit.Signal.connect(
             this.resize_monitor, 'resize', function(event) {
@@ -65,7 +65,7 @@ zeit.imp.Imp = Class.extend({
             this, 'configuration-change',
             function() {
                 if (!MochiKit.Base.isNull(self.image_server_dimensions)) {
-                    self.load_image(self.image_server_dimensions)
+                    self.load_image(self.image_server_dimensions);
                 }
             });
 
@@ -93,7 +93,7 @@ zeit.imp.Imp = Class.extend({
             return new MochiKit.Style.Coordinates(0, 0);
         }
         var dim = this.get_visual_area_dimensions();
-        pos = this.get_image_position();
+        var pos = this.get_image_position();
         return new MochiKit.Style.Coordinates(
             Math.floor(dim.w / 2 - pos.x),
             Math.floor(dim.h / 2 - pos.y));
@@ -117,7 +117,7 @@ zeit.imp.Imp = Class.extend({
         }
 
         var old_dim = this.current_dimensions;
-        var rnd = Math.floor
+        var rnd = Math.floor;
 
         var new_dim = new MochiKit.DOM.Dimensions(
             rnd(this.original_dimensions.w * this.zoom),
@@ -130,7 +130,7 @@ zeit.imp.Imp = Class.extend({
         var new_center = new MochiKit.Style.Coordinates(
             rnd(old_center.x * new_dim.w / old_dim.w),
             rnd(old_center.y * new_dim.h / old_dim.h));
-        
+
         var old_pos = this.get_image_position();
         var new_pos = new MochiKit.Style.Coordinates(
             old_pos.x + old_center.x - new_center.x -1,
@@ -139,7 +139,7 @@ zeit.imp.Imp = Class.extend({
 
         log("INFO", 'New pos '+ new_pos.x+'x'+new_pos.y);
 
-        // Second, scale on server 
+        // Second, scale on server
         // Fit dim into grid
         var grid_zoom = this.zoom - this.zoom % this.zoom_grid;
         if (grid_zoom < this.zoom) {
@@ -156,7 +156,7 @@ zeit.imp.Imp = Class.extend({
         }
         this._zoom_deferred = MochiKit.Async.callLater(
             0.25, function() {
-                othis.load_image(othis.image_server_dimensions)});
+                othis.load_image(othis.image_server_dimensions); });
     },
 
 
@@ -166,7 +166,7 @@ zeit.imp.Imp = Class.extend({
         MochiKit.Base.update(query, this.crop_arguments);
         var query_string = MochiKit.Base.queryString(query);
         var image_url = window.context_url + '/@@imp-scaled?' + query_string;
-        this.image.src = image_url; 
+        this.image.src = image_url;
     },
 
     get_crop_arguments: function(image_pos) {
@@ -178,13 +178,13 @@ zeit.imp.Imp = Class.extend({
             image_pos = this.get_image_position();
         }
         var visual_dim = this.get_visual_area_dimensions();
-        var f = Math.floor
+        var f = Math.floor;
         var x1 = f(-image_pos.x + visual_dim.w/2 - this.mask_dimensions.w/2);
         var y1 = f(-image_pos.y + visual_dim.h/2 - this.mask_dimensions.h/2);
         var x2 = f(-image_pos.x + visual_dim.w/2 + this.mask_dimensions.w/2);
         var y2 = f(-image_pos.y + visual_dim.h/2 + this.mask_dimensions.h/2);
         var args = MochiKit.Base.clone(this.crop_arguments);
-        MochiKit.Base.update(args, 
+        MochiKit.Base.update(args,
             {'x1': x1,
              'y1': y1,
              'x2': x2,
@@ -209,23 +209,23 @@ zeit.imp.Imp = Class.extend({
             image_position.y != snapped_position[1]) {
             alert('Das Bild ist nicht vollständig in der Maske.' +
                   ' Zuschneiden nicht möglich.');
-            return
+            return;
         }
 
         var crop_arguments = self.get_crop_arguments();
         if (isNull(crop_arguments)) {
             return;
-        } 
+        }
 
         self.cropping = true;
         self.ui_loading(true);
 
         // Crop on server
-        var crop_url = window.context_url + '/@@imp-crop'
+        var crop_url = window.context_url + '/@@imp-crop';
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
             crop_url, crop_arguments);
         d.addCallback(function(result) {
-            MochiKit.Signal.signal('content', 'imp-image-cropped')
+            MochiKit.Signal.signal('content', 'imp-image-cropped');
             self.cropping = false;
             self.ui_loading(false);
             });
@@ -233,7 +233,7 @@ zeit.imp.Imp = Class.extend({
 
     handle_mouse_wheel: function(event) {
         var zoom = -event.mouse().wheel.y;
-        this.zoom = this.zoom + 1/Math.pow(256, 2) * Math.pow(zoom, 2) * 
+        this.zoom = this.zoom + 1/Math.pow(256, 2) * Math.pow(zoom, 2) *
             zoom/Math.abs(zoom);
         if (this.zoom <= 0) {
             this.zoom = 0.001;
@@ -250,15 +250,15 @@ zeit.imp.Imp = Class.extend({
         } else if (target.name == 'border') {
             self.border = target.value;
         } else {
-            return
+            return;
         }
         MochiKit.Signal.signal(self, 'configuration-change', {});
         // Resize the image to fit to mask
         var mask = self.mask_dimensions;
         var width_for_fixed_height = self.original_dimensions.w * (
-            mask.h / self.original_dimensions.h)
+            mask.h / self.original_dimensions.h);
         var height_for_fixed_width = self.original_dimensions.h * (
-            mask.w / self.original_dimensions.w)
+            mask.w / self.original_dimensions.w);
         // prefer width matching
         if (height_for_fixed_width < mask.h) {
             // If we'd fix the width, the image would be to small to fill the
@@ -267,7 +267,7 @@ zeit.imp.Imp = Class.extend({
         } else {
             self.zoom = height_for_fixed_width / self.original_dimensions.h;
         }
-        self.zoom_image()
+        self.zoom_image();
         // Position the image in the mask, centered
         var visual_dim = this.get_visual_area_dimensions();
         var image_position = new MochiKit.Style.Coordinates(
@@ -278,27 +278,27 @@ zeit.imp.Imp = Class.extend({
 
     set_mask: function(value) {
         var self = this;
-        self.name = value.split('/')[0]
-        self.mask_variable = {w: false, h: false}
+        self.name = value.split('/')[0];
+        self.mask_variable = {w: false, h: false};
         var mask_width = value.split('/')[1];
         if (mask_width[0] == '?') {
-            mask_width = mask_width.substr(1)
+            mask_width = mask_width.substr(1);
             self.mask_variable.w = true;
         }
         var mask_height = value.split('/')[2];
         if (mask_height[0] == '?') {
-            mask_height = mask_height .substr(1)
+            mask_height = mask_height .substr(1);
             self.mask_variable.h = true;
         }
         self.mask_dimensions = new MochiKit.DOM.Dimensions(
-            new Number(mask_width), new Number(mask_height));
+            Number(mask_width), Number(mask_height));
     },
 
     load_mask_on_configuration_change: function(event) {
         var self = this;
         var mask = self.mask_dimensions;
         if (!mask) {
-            return
+            return;
         }
         self.mask_image_dimensions = self.get_visual_area_dimensions();
         var query = MochiKit.Base.queryString({
@@ -306,12 +306,12 @@ zeit.imp.Imp = Class.extend({
             'image_height': self.mask_image_dimensions.h,
             'mask_width': mask.w,
             'mask_height': mask.h,
-            'border': self.border,
+            'border': self.border
             });
         var image_url = window.application_url + '/@@imp-cut-mask?' + query;
         if (self.mask_image === null) {
             self.mask_image = $('imp-mask').appendChild(
-                IMG({'id': 'imp-mask-image', 'src': image_url}))
+                IMG({'id': 'imp-mask-image', 'src': image_url}));
         } else {
             self.mask_image.setAttribute('src', image_url);
         }
@@ -322,10 +322,9 @@ zeit.imp.Imp = Class.extend({
         var image_pos = new MochiKit.Style.Coordinates(x, y);
         var args = self.get_crop_arguments(image_pos);
         if (!isNull(args)) {
+            var border_offset = 0;
             if (args.border) {
-                var border_offset = 1;
-            } else {
-                var border_offset = 0;
+                border_offset = 1;
             }
             var visual_dim = this.get_visual_area_dimensions();
             if (args.x1 < 0) {
@@ -341,7 +340,7 @@ zeit.imp.Imp = Class.extend({
                      - self.current_dimensions.h);
             }
         }
-        return [x, y]
+        return [x, y];
     },
 
     move_image_on_size_change: function(event) {
@@ -379,12 +378,12 @@ zeit.imp.Imp = Class.extend({
 
     end_drag_change_mouse_cursor: function(event) {
         MochiKit.DOM.removeElementClass('imp-mask', 'dragging');
-    },
+    }
 
 });
 
 
-zeit.imp.ImageData = Class.extend({
+zeit.imp.ImageData = gocept.Class.extend({
 
     construct: function() {
         this.container = $('imp-image-bar');
@@ -402,13 +401,12 @@ zeit.imp.ImageData = Class.extend({
             othis.data = result;
             MochiKit.Signal.signal(othis, 'data-changed', result);
         });
-    },
-
+    }
 
 });
 
 
-zeit.imp.ImageBar = Class.extend({
+zeit.imp.ImageBar = gocept.Class.extend({
 
     construct: function() {
         this.container = $('imp-image-bar');
@@ -423,21 +421,21 @@ zeit.imp.ImageBar = Class.extend({
         forEach(image_data, function(image) {
             // Add a query argument because we really cannot cache here.
             var url = (image.url + '/metadata-preview?q=' +
-                new Number(new Date()));
+                Number(new Date()));
             divs.push(
                 DIV({'class': 'image'},
-                    IMG({'src': url}), 
+                    IMG({'src': url}),
                     SPAN({}, image.name)));
         });
         if (divs.length > 0) {
             othis.container.appendChild(DIV({}, divs));
         }
-    },
+    }
 
 });
 
 
-zeit.imp.ZoomSlider = Class.extend({
+zeit.imp.ZoomSlider = gocept.Class.extend({
 
     construct: function(imp) {
         var self = this;
@@ -482,16 +480,16 @@ zeit.imp.ZoomSlider = Class.extend({
     get_value: function() {
         var self = this;
         return self.zoom_slider.value;
-    },
+    }
 
 });
 
 
-zeit.imp.DynamicMask = Class.extend({
+zeit.imp.DynamicMask = gocept.Class.extend({
 
     construct: function(imp) {
         this.imp = imp;
-        var form = $('imp-configuration-form')
+        var form = $('imp-configuration-form');
         this.input_w = form['mask-w'];
         this.input_h = form['mask-h'];
         this.d_value_change = null;
@@ -503,14 +501,14 @@ zeit.imp.DynamicMask = Class.extend({
     },
 
     connect_inputs: function(event, method_name) {
-        MochiKit.Signal.connect(this.input_w, event, this, method_name)
-        MochiKit.Signal.connect(this.input_h, event, this, method_name)
+        MochiKit.Signal.connect(this.input_w, event, this, method_name);
+        MochiKit.Signal.connect(this.input_h, event, this, method_name);
     },
 
     update_inputs: function(event) {
         var dim = this.imp.mask_dimensions;
         if (dim === null) {
-            return
+            return;
         }
         this.input_w.value = dim.w;
         this.input_h.value = dim.h;
@@ -526,8 +524,8 @@ zeit.imp.DynamicMask = Class.extend({
     },
 
     update_mask: function() {
-        this.imp.mask_dimensions.w = new Number(this.input_w.value);
-        this.imp.mask_dimensions.h = new Number(this.input_h.value);
+        this.imp.mask_dimensions.w = Number(this.input_w.value);
+        this.imp.mask_dimensions.h = Number(this.input_h.value);
         MochiKit.Signal.signal(this.imp, 'configuration-change');
     },
 
@@ -535,47 +533,48 @@ zeit.imp.DynamicMask = Class.extend({
         var othis = this;
         var input = event.target();
         var key = event.key()['string'];
+        var delta;
         if (key == 'KEY_ARROW_UP' || key == 'KEY_ARROW_RIGHT') {
-            var delta = 1;
+            delta = 1;
         } else if (key == 'KEY_ARROW_DOWN' || key == 'KEY_ARROW_LEFT') {
-            var delta = -1;
+            delta = -1;
         } else {
-            return
+            return;
         }
         event.stop();
         var delay = 0.25;
         var value_changer = function() {
-            input.value = new Number(input.value) + delta;
+            input.value = Number(input.value) + delta;
             othis.d_value_change = MochiKit.Async.callLater(
                 delay, value_changer);
-            delay = 0.05
+            delay = 0.05;
         };
         value_changer();
     },
 
     handle_input_keyup: function(event) {
         if (this.d_value_change == null) {
-            return
+            return;
         }
-        this.d_value_change.cancel()
+        this.d_value_change.cancel();
         this.d_value_change = null;
         this.update_mask();
     },
 
     handle_input_change: function(event) {
         this.update_mask();
-    },
+    }
 
 });
 
 
-zeit.imp.AlreadyCroppedIndicator = Class.extend({
+zeit.imp.AlreadyCroppedIndicator = gocept.Class.extend({
 
     construct: function() {
         MochiKit.Signal.connect(
             document.imp_data, 'data-changed', this, 'update');
     },
-    
+
     update: function(image_data) {
         var othis = this;
         var names = {};
@@ -594,12 +593,12 @@ zeit.imp.AlreadyCroppedIndicator = Class.extend({
             }
             func(label, 'cropped');
         });
-    },
+    }
 
 });
 
 
-zeit.imp.ResizeMonitor = Class.extend({
+zeit.imp.ResizeMonitor = gocept.Class.extend({
 
     construct: function(monitor_element) {
         var self = this;
@@ -619,11 +618,11 @@ zeit.imp.ResizeMonitor = Class.extend({
 
     get_current_dimensions: function() {
         return MochiKit.Style.getElementDimensions(this.element);
-    },
+    }
 });
 
 
-zeit.imp.ImageFilter = Class.extend({
+zeit.imp.ImageFilter = gocept.Class.extend({
 
     construct: function(name) {
         this.name = name;
@@ -636,7 +635,7 @@ zeit.imp.ImageFilter = Class.extend({
                    'value': '1',
                    'class': 'filter'}));
         this.slider_element = this.container.appendChild(
-            DIV({'class': 'uislider'}))
+            DIV({'class': 'uislider'}));
         MochiKit.DOM.getFirstElementByTagAndClassName(
             'label', null, this.container).setAttribute('for', input_id);
 
@@ -673,7 +672,7 @@ zeit.imp.ImageFilter = Class.extend({
 
     to_value: function(step) {
         // [0; 2000] --> [-100; 100]
-        return new Number((step / 10 - 100).toPrecision(3));
+        return Number((step / 10 - 100).toPrecision(3));
     },
 
     to_step: function(value) {
@@ -684,12 +683,12 @@ zeit.imp.ImageFilter = Class.extend({
     to_filter: function(value) {
         if (value < 0) {
             // scale to [0.75;1]
-            return (value + 100) / 400 + 0.75
+            return (value + 100) / 400 + 0.75;
         } else {
             // scale to ]1;2,25]
-            return value / 80 + 1
+            return value / 80 + 1;
         }
-    },
+    }
 
 });
 
@@ -705,7 +704,7 @@ zeit.imp.Zoomer = gocept.Class.extend({
     toggle_zoom: function(event) {
         event.stop();
         MochiKit.DOM.toggleElementClass('imp-zoomed-content', 'content');
-    },
+    }
 
 });
 
