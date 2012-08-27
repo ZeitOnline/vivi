@@ -80,7 +80,7 @@ class Details(zeit.cms.browser.view.Base):
     def display_metadata(self):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
         return filter(None, [
-                dc.created.strftime('%d.%m.%Y'),
+                dc.created and dc.created.strftime('%d.%m.%Y'),
                 self.common_metadata.ressort,
                 self.author,
                 self.hits,
