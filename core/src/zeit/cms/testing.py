@@ -490,8 +490,9 @@ class JSLintTestCase(gocept.jslint.TestCase):
         'DOMParser', 'escape', 'unescape', 'getSelection',
         'jsontemplate',
         'MochiKit', '$$', 'forEach', 'filter', 'map', 'extend', 'bind',
-        'log', 'repr', 'logger', 'logDebug', 'logError', # XXX
+        'log', 'repr', 'logger', 'logDebug', 'logError',  # XXX
         'DIV', 'A', 'UL', 'LI', 'INPUT', 'IMG', 'SELECT', 'OPTION', 'BUTTON',
+        'SPAN',
         'isNull', 'isUndefined', 'isUndefinedOrNull',
         )
 
