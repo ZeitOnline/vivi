@@ -19,6 +19,7 @@
     require="zeit.cms">
     <directory source="resources" include="
                gallery.css
+               details.js
                upload.js
                SWFUpload/swfupload.js" />
   </resourceLibrary>
