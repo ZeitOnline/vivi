@@ -47,10 +47,7 @@
           type="image/x-icon" />
         <link rel="shortcut icon" tal:attributes="href favicon"
           type="image/x-icon" />
-        <tal:replace replace="resource_library:zeit.cms" />
-        <tal:replace replace="resource_library:zeit.cms.panels" /> 
-        <tal:replace replace="resource_library:zeit.cms.content.dropdown" /> 
-        <tal:replace replace="resource_library:zc.datetimewidget" /> 
+        <tal:replace replace="context/@@standard_macros/resource_libraries"/>
 
       </head>
       <body id="body"
@@ -162,8 +159,6 @@
   </metal:macro>
 
   <metal:macro define-macro="content-listing">
-    <tal:block replace="resource_library:zeit.cms.filteringtable" />
-  
 
     <form name="containerContentsForm" method="get"
       action="" id="folderActionForm">

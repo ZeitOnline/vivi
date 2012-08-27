@@ -128,9 +128,10 @@
   </resourceLibrary>
   
   <!-- fake libraries -->
-  <resourceLibrary name="mochikit.Sortable" require="mochikit"/>
-  <resourceLibrary name="mochikit.DragAndDrop"
-                   require="mochikit">
+  <resourceLibrary name="mochikit.Sortable" require="mochikit">
+    <directory source="js" />
+  </resourceLibrary>
+  <resourceLibrary name="mochikit.DragAndDrop" require="mochikit">
     <directory source="js" />
   </resourceLibrary>
   <resourceLibrary name="gocept.mochikit.jsclass"

@@ -25,6 +25,7 @@ import transaction
 import unittest2
 import urllib2
 import xml.sax.saxutils
+import zc.resourcelibrary.resourcelibrary
 import zeit.connector.interfaces
 import zope.app.appsetup.product
 import zope.app.testing.functional
@@ -51,11 +52,16 @@ def ZCMLLayer(
         product_config = cms_product_config
 
     def setUp(cls):
+        resourcelibraries = \
+            zc.resourcelibrary.resourcelibrary.library_info.copy()
         cls.setup = zope.app.testing.functional.FunctionalTestSetup(
             config_file, product_config=product_config)
+        cls.setup.resourcelibraries = resourcelibraries
 
     def tearDown(cls):
         cls.setup.tearDownCompletely()
+        zc.resourcelibrary.resourcelibrary.library_info.update(
+            cls.setup.resourcelibraries)
         if not allow_teardown:
             raise NotImplementedError
 
