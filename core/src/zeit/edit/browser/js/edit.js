@@ -39,7 +39,6 @@ zeit.edit.Editor = gocept.Class.extend({
     construct: function() {
         var self = this;
         self.content = $('cp-content');
-        self.inner_content = null;
         self.content.__handler__ = self;
         self.busy = false;
         MochiKit.Signal.connect(
