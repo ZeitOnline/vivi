@@ -145,7 +145,7 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         widget = self.get_widget()
         result = widget()
         adapter.assert_called()
-        self.assertEllipsis('...<div>mock</div>...', result)
+        self.assertEllipsis('...<div> mock </div>...', result)
         self.assertNotEllipsis('...name="field..url"...', result)
 
     def test_widget_should_render_url_input_if_query_view_is_absent(self):
