@@ -44,8 +44,6 @@ def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'test_testing_isolation.txt',
-        layer = LayerWithProductConfig))
+        layer=LayerWithProductConfig))
     suite.addTest(unittest.makeSuite(TestProductConfigIsolation))
     return suite
-
-
