@@ -41,14 +41,26 @@
 #editor-forms-heading,
 #editor-forms-title,
 #editor-forms-actions {
-    padding: 5px 1em;
+  padding: 5px 1em;
 }
 
 #editor-forms-title,
 #editor-forms-actions {
-    background-color: white;
+  background-color: white;
 }
 
+#editor-forms #editor-forms-title .supertitle {
+  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
+  font-weight: 100;
+  font-size: 0.9em;
+}
+
+#editor-forms #editor-forms-title .title {
+  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
+  font-weight: 600;
+  font-size: 1.2em;
+  padding: 0.2em 0 0.4em;
+}
 
 /* editor blocks */
 
@@ -924,62 +936,68 @@ form[action$="zeit.content.author.add_contextfree"] .summary {
 }
 
 div.objectlog {
-    padding: 20px;
-    margin-top: 20px;
-    border-top: 1px solid #cccccc;
+  padding: 20px;
+  margin-top: 20px;
+  border-top: 1px solid #cccccc;
 }
 
 div.objectlog legend {
-    border: none;
+  border: none;
 }
 
 div.objectlog div {
-    height: 15em;
-    overflow-y: scroll;
-    border: 1px solid #999999;
+  height: 15em;
+  overflow-y: scroll;
+  border: 1px solid #999999;
 }
 
 .disabled label {
-    color: #999999;
+  color: #999999;
 }
 
 .inline-form .fieldname-memo,
 .fieldname-memo .widget {
-    padding-top: 0px;
-    padding-bottom: 0px;
-    margin-top: 0px;
-    margin-bottom: 0px;
+  padding: 0px;
+  margin: 0px;
+}
+
+.fieldname-memo .rst-widget #memo\.memo\.preview.empty {
+  padding: 5px;
 }
 
 .fieldname-memo .rst-widget {
-    border: 2px inset #999999;
+  border: 1px inset #999999;
 }
 
-#memo\.memo {
-    width: 98%;
-    border: none;
+.fieldname-memo #memo\.memo {
+  width: 99%;
+  border: none;
 }
 
-#memo\.memo\.preview {
-    padding: 5px;
+.fieldname-memo #memo\.memo,
+.fieldname-memo #memo\.memo\.preview {
+  background-color: #fff79a;
 }
 
-#memo\.memo,
-#memo\.memo\.preview {
-    background-color: #fff79a;
-    padding: 1%;
+.fieldname-memo #memo\.memo\.preview p,
+.fieldname-memo textarea#memo\.memo {
+  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
+  color: #4C4C4C;
+  font-size: 12px;
+  padding: 5px;
+  margin: 0;
 }
 
-#memo\.memo\.preview.empty {
+.fieldname-memo #memo\.memo\.preview.empty {
     background-color: #ffffff;
 }
 
-#memo\.memo\.preview.empty:before {
-    content: "Memo";
+.fieldname-memo #memo\.memo\.preview.empty:before {
+  content: "Memo";
 }
 
 label[for="memo.memo"] {
-    display: none;
+  display: none;
 }
 
 
