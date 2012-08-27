@@ -10,7 +10,7 @@
 
   <form action="" method="POST">
     <tal:block tal:replace="resource_library:zeit.content.gallery" />
-    <table class="gallery">
+    <table class="gallery table-sorter">
       <tr tal:repeat="entry view/entries"
           tal:attributes="class entry/css_class">
         <td>

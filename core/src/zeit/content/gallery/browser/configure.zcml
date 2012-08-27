@@ -18,7 +18,6 @@
     name="zeit.content.gallery"
     require="zeit.cms">
     <directory source="resources" include="
-               sorting.js
                gallery.css
                upload.js
                SWFUpload/swfupload.js" />
