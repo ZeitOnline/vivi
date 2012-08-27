@@ -1,0 +1,4 @@
+<iframe
+    class="preview"
+    tal:attributes="src string:${context/@@absolute_url}/@@show_preview">
+</iframe>

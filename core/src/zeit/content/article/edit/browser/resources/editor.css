@@ -1009,3 +1009,11 @@ label[for="memo.memo"] {
   margin-left: 0.2em;
   margin-top: 0.5em;
 }
+
+
+iframe.preview {
+    /* XXX why does zeit.cms:forms.css use important? I suspect FCKeditor. */
+    position: inherit !important;
+    width: 100%;
+    height: 500px;
+}
