@@ -1,7 +1,6 @@
 <div i18n:domain="zeit.cms">
   <img tal:replace="structure context/@@zmi_icon|nothing"/>
   <span tal:replace ="structure context/@@published-icon" />
-  <span class="filename" tal:content="context/__name__" />
   <ul class="metadata">
     <li tal:repeat="item view/display_metadata" tal:content="item" />
   </ul>

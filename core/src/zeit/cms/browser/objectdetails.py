@@ -76,11 +76,20 @@ class Details(zeit.cms.browser.view.Base):
             return
         return '%s/%s' % (
             self.countings.hits or 0, self.countings.total_hits or 0)
+	
+    @property
+    def volume(self):
+        year = self.common_metadata.year
+        vol = self.common_metadata.volume
+        if year is None:
+            return
+        return (vol and '%s/%s' % (vol, year)) or '%s' % (year)
 
     def display_metadata(self):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
         return filter(None, [
                 dc.created and dc.created.strftime('%d.%m.%Y'),
+                self.volume,
                 self.common_metadata.ressort,
                 self.author,
                 self.hits,
