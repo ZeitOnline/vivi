@@ -967,10 +967,11 @@ div.objectlog div {
 
 .fieldname-memo .rst-widget {
   border: 1px inset #999999;
+  overflow: hidden;
 }
 
 .fieldname-memo #memo\.memo {
-  width: 99%;
+  resize: none;
   border: none;
 }
 
@@ -986,6 +987,10 @@ div.objectlog div {
   font-size: 12px;
   padding: 5px;
   margin: 0;
+}
+
+.fieldname-memo #memo\.memo\.preview p {
+  color: #333333;
 }
 
 .fieldname-memo #memo\.memo\.preview.empty {
