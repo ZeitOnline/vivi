@@ -154,12 +154,6 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
             'regexp:disabled|true')
         s.assertNotChecked('xpath=//input[@id="metadata-nl.dailyNewsletter"]')
 
-    def test_texts_should_be_readonly_visible(self):
-        self.assert_widget_text(
-            'article-content-head.title', u'Rückkehr der Warlords')
-        self.assert_widget_text(
-            'article-content-head.subtitle', 'Im Zuge des*')
-
     def test_relateds_should_be_readonly_visible(self):
         from zeit.cms.checkout.helper import checked_out
         from zeit.cms.related.interfaces import IRelatedContent

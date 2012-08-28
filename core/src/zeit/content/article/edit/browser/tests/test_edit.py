@@ -522,55 +522,6 @@ class TestFolding(
         s.waitForElementPresent('css=.block.type-video.folded')
 
 
-class TestReadonlyVisible(unittest2.TestCase,
-                          zeit.cms.testing.BrowserAssertions):
-
-    layer = zeit.content.article.testing.TestBrowserLayer
-
-    def create_block(self, block):
-        from zeit.content.article.article import Article
-        article = Article()
-        article.xml.body.division = ''
-        article.xml.body.division.set('type', 'page')
-        article.xml.body.division[block] = ''
-        root = self.layer.setup.getRootFolder()
-        with zeit.cms.testing.site(root):
-            with zeit.cms.testing.interaction():
-                root['repository']['article'] = article
-        from zope.testbrowser.testing import Browser
-        browser = Browser()
-        browser.addHeader('Authorization', 'Basic user:userpw')
-        browser.open(
-            'http://localhost:8080/++skin++vivi/repository/article/@@contents')
-        return browser
-
-    def assert_visible(self, block):
-        browser = self.create_block(block)
-        self.assert_ellipsis(
-            '...<div ...class="block type-{0}...'.format(block),
-            browser.contents)
-
-    def test_raw_xml_should_be_visible_in_readonly_mode(self):
-        self.assert_visible('raw')
-
-    def test_audio_should_be_visible_in_readonly_mode(self):
-        self.assert_visible('audio')
-
-    def test_citation_should_be_visible_in_readonly_mode(self):
-        self.assert_visible('citation')
-
-    def test_relateds_should_be_visible_in_readonly_mode(self):
-        self.assert_visible('relateds')
-
-    def test_landing_zone_after_block_should_not_be_visible(self):
-        browser = self.create_block('raw')
-        self.assertNotEllipsis('...class="landing-zone ...', browser.contents)
-
-    def test_blocks_should_not_be_sortable(self):
-        browser = self.create_block('raw')
-        self.assertNotIn('action-block-sorter', browser.contents)
-
-
 class TestDivision(
     zeit.content.article.edit.browser.testing.EditorTestCase):
 
