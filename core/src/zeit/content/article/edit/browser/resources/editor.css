@@ -884,6 +884,52 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 
+/* TEASER AREA */
+
+#edit-form-teaser .inline-form .object-widget {
+  width: 13em;
+}
+
+#edit-form-teaser a.add_view {
+  width: 9em;
+}
+
+#edit-form-teaser fieldset.teaser-image {
+  float: left;
+}
+
+#edit-form-teaser .inline-form .object-details {
+  width: 148px;
+  min-width: 0;
+  border: 0;
+  border-radius: 0;
+}
+
+#edit-form-teaser .inline-form .object-details img {
+  float: left;
+}
+
+#edit-form-teaser .inline-form .object-details span {
+  float: left;
+  margin-top: 1px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 8em;
+}
+
+#edit-form-teaser .inline-form .large_graphical_preview img {
+  width: 148px;
+  height: 84px;
+}
+
+#teaser-image\.images\.url {
+  display: block;
+  width: 8em;
+  margin-top:
+}
+
+
 /* Assets-Stuff */
 
 #edit-form-assets .inline-form .field .widget {
