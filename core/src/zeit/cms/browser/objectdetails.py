@@ -57,6 +57,14 @@ class Details(zeit.cms.browser.view.Base):
             return
         return self.url('@@thumbnail')
 
+    @zope.cachedescriptors.property.Lazy
+    def large_graphical_preview_url(self):
+        thumbnail = zope.component.queryMultiAdapter(
+            (self.context, self.request), name='thumbnail_large')
+        if thumbnail is None:
+            return
+        return self.url('@@thumbnail_large')
+
     @property
     def author(self):
         if self.common_metadata is NO_METADATA:
