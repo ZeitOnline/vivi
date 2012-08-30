@@ -883,6 +883,12 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   width: 44px;
 }
 
+/* LEAD TEASER AREA */
+
+#edit-form-leadteaser .inline-form .field {
+  margin: 5px 0 5px 0;
+}
+
 
 /* TEASER AREA */
 
@@ -898,6 +904,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #edit-form-teaser fieldset.teaser-image {
   float: left;
+}
+
+#edit-form-teaser .inline-form .fieldname-images {
+  margin: 5px 5px 5px 0;
 }
 
 #edit-form-teaser .inline-form .object-details {
@@ -932,6 +942,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 /* Assets-Stuff */
 
+#edit-form-assets .inline-form .field {
+  margin: 5px 0 5px 0;
+}
+
 #edit-form-assets .inline-form .field .widget {
   padding-left:10px;
 }
@@ -952,6 +966,14 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .fieldname-audio_id .widget {
   margin-bottom: 2.5em;
 }
+
+
+/* INTERNAL LINKS */
+
+#edit-form-internallinks .inline-form .field {
+  margin: 5px 0 5px 0;
+}
+
 
 /* moz-appearence:button can't handle with padding... */
 #metadata-a\.keywords\.update a:before,
