@@ -891,7 +891,9 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #edit-form-teaser a.add_view {
-  width: 9em;
+  display: block;
+  margin-top: 0.7em;
+  width: 8em;
 }
 
 #edit-form-teaser fieldset.teaser-image {
@@ -924,9 +926,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #teaser-image\.images\.url {
-  display: block;
-  width: 8em;
-  margin-top:
+  width: 9em;
 }
 
 
