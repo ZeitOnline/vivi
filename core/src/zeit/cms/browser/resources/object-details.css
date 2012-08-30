@@ -144,11 +144,19 @@
 .overlay-anchor:hover .overlay {
     display: inline-block;
     position: absolute;
-    top: 50%;
-    left: 50%;
+    top: 5%;
+    left: 10%;
 }
 
 .overlay-anchor:hover .overlay .overlay-position {
     top: -50%;
     left: -50%;
+}
+
+.editable-area .overlay-position .edit-button {
+    background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 0 0 #fff;
+    border: 1px solid #000;
+    opacity: 0.8;
+    padding-left: 2em;
+    padding-right: 2em;
 }
