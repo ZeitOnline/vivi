@@ -14,6 +14,7 @@ import gocept.zcapatch
 import inspect
 import json
 import logging
+import os
 import pkg_resources
 import random
 import re
@@ -479,6 +480,8 @@ class BrowserTestCase(FunctionalTestCaseCommon, BrowserAssertions):
 
 
 class JSLintTestCase(gocept.jslint.TestCase):
+
+    jshint_command = os.environ['JSHINT_COMMAND']
 
     options = (gocept.jslint.TestCase.options +
                ('evil',
