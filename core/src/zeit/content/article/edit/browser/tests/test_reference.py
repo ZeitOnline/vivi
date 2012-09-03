@@ -68,8 +68,9 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_image_is_droppable_in_article_text(self):
         s = self.selenium
-        self.add_to_clipboard(
-            self.repository['2006']['DSC00109_2.JPG'], 'my_image')
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.add_to_clipboard(
+                self.repository['2006']['DSC00109_2.JPG'], 'my_image')
         self.add_article()
         s.click('//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
