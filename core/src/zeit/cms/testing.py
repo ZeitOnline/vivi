@@ -362,14 +362,8 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         s.waitForEval('window.outerHeight', str(height))
 
     def open(self, path, auth='user:userpw'):
-        auth_sent = getattr(self.layer, 'auth_sent', None)
-        if auth and auth != auth_sent:
-            # Only set auth when it changed. Firefox will be confused
-            # otherwise.
-            self.layer.auth_sent = auth
-            auth = auth + '@'
-        else:
-            auth = ''
+        if auth:
+            auth += '@'
         self.selenium.open(
             'http://%s%s/++skin++%s%s' % (
                 auth, self.selenium.server, self.skin, path))
