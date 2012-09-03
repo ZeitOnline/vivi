@@ -971,8 +971,9 @@ div.objectlog div {
 }
 
 .fieldname-memo #memo\.memo {
-  resize: none;
+  resize: vertical;
   border: none;
+  width: 99%;
 }
 
 .fieldname-memo #memo\.memo,
