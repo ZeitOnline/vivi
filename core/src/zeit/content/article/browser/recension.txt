@@ -43,10 +43,8 @@ Let's add one:
 <fieldset id="recensions">
   <div class="recensions">
     ...
-      <dt>Authors</dt>
-      <dd class="authors">Frank Schwanitz</dd>
-      <dt>Title</dt>
-      <dd class="title">Der Schwarm</dd>
+    <span class="authors">Frank Schwanitz</span>
+	<span class="title">Der Schwarm</span>
       ...
 
 After adding the first recensions, has_recensions is set (it's needed for
@@ -72,20 +70,14 @@ Let's edit and add some more information:
   <div class="recensions">
   <link ...
 ...
-      <dt>Authors</dt>
-      <dd class="authors">Frank Schwanitz</dd>
-      <dt>Title</dt>
-      <dd class="title">Der Schwarm</dd>
-      <dt>Location</dt>
-      <dd class="location">Koeln</dd>
-      <dt>Publisher</dt>
-      <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
-      <dt>Year</dt>
-      <dd class="year">2004</dd>
-      <dt>Pages</dt>
-      <dd class="pages">999</dd>
-      <dt>Price</dt>
-      <dd class="price">24.90</dd>
+	<span class="authors">Frank Schwanitz</span>
+	<span class="title">Der Schwarm</span>
+	<span class="location">Koeln</span>
+	<span class="publisher">Kiepenheuer &amp; Witsch</span>
+	<span class="year">2004</span>
+	<span class="pages">999</span>
+	<span class="pageslabel">Pages</span>
+	<span class="price">24.90</span>
 ...
 </fieldset>
 
@@ -135,32 +127,21 @@ Let's add another recension:
 <fieldset id="recensions">
   <div class="recensions">
       ...
-        <dd class="authors">Frank Schwanitz</dd>
+        <span class="authors">Frank Schwanitz</span>
+        <span class="title">Der Schwarm</span>
+        <span class="location">Koeln</span>
+        <span class="publisher">Kiepenheuer &amp; Witsch</span>
+        <span class="year">2004</span>
+        <span class="pages">999</span>
         ...
-        <dd class="title">Der Schwarm</dd>
+        <span class="price">24.90</span>
         ...
-        <dd class="location">Koeln</dd>
+        <span class="authors">Theodor W. Adorno</span>
+        <span class="title">Minima Moralia</span>
+        <span class="location">Zuerich</span>
+        <span class="publisher">Suhrkamp</span>
+        <span class="year">2001</span>
+        <span class="pages">123</span>
         ...
-        <dd class="publisher">Kiepenheuer &amp; Witsch</dd>
-        ...
-        <dd class="year">2004</dd>
-        <dt>Pages</dt>
-        <dd class="pages">999</dd>
-        <dt>Price</dt>
-        <dd class="price">24.90</dd>
-        ...
-        <dt>Authors</dt>
-        <dd class="authors">Theodor W. Adorno</dd>
-        ...
-        <dd class="title">Minima Moralia</dd>
-        ...
-        <dd class="location">Zuerich</dd>
-        ...
-        <dd class="publisher">Suhrkamp</dd>
-        ...
-        <dd class="year">2001</dd>
-        <dt>Pages</dt>
-        <dd class="pages">123</dd>
-        <dt>Price</dt>
-        <dd class="price">13.80</dd>
+        <span class="price">13.80</span>
     ...

@@ -1,115 +1,78 @@
 .recension {
-   margin: 1.5em 0;
+   margin: 0 0 1em;
    border: 1px solid #CCC;
    border-radius: 5px;
    padding: 0px;
 }
 
-.recension dl {
-   margin: 0.5em 0;
-}
-
-.recension  ul#recensionheader {
+.recension div.recensionheader {
   margin: 0px;
-  -moz-padding-start: 0px;
   background: #F8F9FD;
   height: 25px; 
   line-height: 25px;
   border-radius: 5px 5px 0px 0px;
-  padding: 0px 10px 0px 10px;
+  padding-left: 1em;
 }
 
-.recension ul#recensionheader > li {
-  display: block;
-  float: left;
-  width: 49%;
-  height: 25px;
+.recension div.recensionheader span {
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #4C4C4C;
 }
 
-.recension ul#recensionheader > li span {
-  color: #90b0c3;
-  padding-left: 20px;
-}
-
-.recension ul#recensionheader li#recensionactions {
-  display: block; 
-  float: left;
-}
-
-.recension ul#recensionheader li#recensionactions li {
-  list-style: none;
-  position: absolute;
-  right: 0px;
+.recension div.recensionheader span.recensionaction {
+  float: right;
   border-left: 1px solid #CCC;
+  overflow: hidden;
+  width: 50px;
   height: 25px;
 }
 
-.recension ul#recensionheader li#recensionactions li:first-child {
-  right: 60px;
-}
-
-#recensionactions li a[rel="edit"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 18px 2px transparent; 
+.recension div.recensionheader span.recensionaction a {
   width: 30px;
   overflow: hidden;
   color: transparent;
 }
 
-#recensionactions li a[rel="remove"] {
+.recension div.recensionheader span.recensionaction a[rel="edit"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 18px 2px transparent;  
+}
+
+.recension div.recensionheader span.recensionaction a[rel="remove"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 18px -418px transparent; 
-  width: 30px;
-  overflow: hidden;
-  color: transparent;
 }
 
-.recension .rensionlist dt {
-  display: none;
+.recension div.recensionbody {
+   padding: 0.5em 1em;
 }
 
-.recension dd {
-  display: block;
-  float: left;
-  -moz-margin-start: 5px;
-}
-
-.recension dd.authors,
-.recension dd.pages,
-.recension dd.location {
-  -moz-margin-start: 10px;  
-}
-
-.recension dd.authors:after,
-.recension dd.location:after {
+.recension div.recensionbody span.authors:after,
+.recension div.recensionbody span.location:after {
   content:":";
 }
 
-.recension dd.publisher:after {
+.recension div.recensionbody span.publisher:after {
   content:",";
 }
 
-.recension dd.pages:after {
+.recension div.recensionbody span.pageslabel:after {
   content:";";
 }
 
-.recension dd.title {
+.recension div.recensionbody span.title {
   font-size: 100%;
   font-weight: normal;
   font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
   font-style: italic;
 }
 
-.recension dd.location, .recension dd.pages {
-  clear: both;
+.recension div.recensionbody span.title:after,
+.recension div.recensionbody span.year:after {
+  content: "\A";
+  white-space: pre;
 }
 
-.recension dt {
-   font-weight: 
-   float: left;
-   margin-right: 1em;
+.recension div.recensionbody span.price:after {
+  content: " €";
 }
 
-.recension hr.dummy {
-  display: block;
-  visibility: hidden;
-  clear: both;
-}
