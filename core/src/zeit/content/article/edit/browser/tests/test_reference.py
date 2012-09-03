@@ -57,6 +57,29 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(text)
         s.assertValue(text, 'A custom caption')
 
+    def add_to_clipboard(self, obj, name):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction() as principal:
+                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+                clipboard.addClip('Clip')
+                clip = clipboard['Clip']
+                clipboard.addContent(clip, obj, name, insert=True)
+        transaction.commit()
+
+    def test_image_is_droppable_in_article_text(self):
+        s = self.selenium
+        self.add_to_clipboard(
+            self.repository['2006']['DSC00109_2.JPG'], 'my_image')
+        self.add_article()
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+        # Article always has one image block already
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_image"]', 'css=.action-content-droppable')
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
+
 
 class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
 
