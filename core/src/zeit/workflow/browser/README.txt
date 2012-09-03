@@ -145,26 +145,24 @@ Reload the workflow page.
         <label for="form.last_modified_by">
           <span>Last modified by</span>
         </label>
-        <div class="hint"></div>
+        ...
         <div class="widget">User</div>
         ...
-      <div class="field fieldname-date_last_modified">
         <label for="form.date_last_modified">
           <span>Date last modified</span>
         </label>
-        <div class="hint"></div>
+        ...
         <div class="widget"><span class="dateTime">2008 3 7  12:47:16 </span></div>
         ...
         ...<input class="checkboxType" checked="checked"...
         <label for="form.published">
           <span>Published</span>
         </label>
-        <div class="hint"></div>
         ...
         <label for="form.date_first_released">
           <span>Date first released</span>
         </label>
-        <div class="hint"></div>
+        ...
         <div class="widget"><span class="dateTime">2008 2 12  07:41:20 </span></div>
         ...
 
