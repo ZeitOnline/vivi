@@ -80,6 +80,23 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             '//li[@uniqueid="Clip/my_image"]', 'css=.action-content-droppable')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
 
+    def test_imagegroup_is_droppable_in_article_text(self):
+        s = self.selenium
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = zeit.content.image.tests.create_image_group()
+        self.add_to_clipboard(group, 'my_group')
+        self.add_article()
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+        # Article always has one image block already
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_group"]', 'css=.action-content-droppable')
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
+        # ensure object-details are displayed
+        s.waitForElementPresent('css=div.teaser_title:contains(image-group)')
+
 
 class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
 

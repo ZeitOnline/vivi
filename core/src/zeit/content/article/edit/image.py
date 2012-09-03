@@ -32,7 +32,9 @@ class Image(zeit.edit.block.SimpleElement):
 
     @property
     def references(self):
-        unique_id = self.xml.get('src')
+        # the IXMLReference of type 'image' could be for both,
+        # IImage (src attribute) or IImageGroup (base-id attribute)
+        unique_id = self.xml.get('src') or self.xml.get('base-id')
         return zeit.cms.interfaces.ICMSContent(unique_id, None)
 
     @references.setter
@@ -74,6 +76,15 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 def factor_image_block_from_image(body, image):
     block = Factory(body)()
     block.references = image
+    return block
+
+
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+                            zeit.content.image.interfaces.IImageGroup)
+@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+def factor_image_block_from_imagegroup(body, group):
+    block = Factory(body)()
+    block.references = group
     return block
 
 
