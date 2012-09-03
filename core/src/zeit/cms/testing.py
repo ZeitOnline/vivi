@@ -61,6 +61,7 @@ def ZCMLLayer(
 
     def tearDown(cls):
         cls.setup.tearDownCompletely()
+        zc.resourcelibrary.resourcelibrary.library_info.clear()
         zc.resourcelibrary.resourcelibrary.library_info.update(
             cls.setup.resourcelibraries)
         if not allow_teardown:
