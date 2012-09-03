@@ -13,7 +13,7 @@ class WorkingcopyTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia/')
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         transaction.commit()
-        self.open(self.selenium.getLocation())
+        self.selenium.open(self.selenium.getLocation())
         self.selenium.waitForElementPresent('id=checkin')
 
     def test_article_should_be_checked_in(self):
