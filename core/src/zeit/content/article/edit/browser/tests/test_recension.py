@@ -32,33 +32,33 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
     def test_recensions_should_be_listed(self):
         self.create_recension()
         s = self.selenium
-        s.assertText('css=dd.authors', 'William Shakespeare')
-        s.assertText('css=dd.title', 'Hamlet')
-        s.assertText('css=dd.publisher', 'Suhrkamp')
-        s.assertText('css=dd.location', 'Berlin')
+        s.assertText('css=span.authors', 'William Shakespeare')
+        s.assertText('css=span.title', 'Hamlet')
+        s.assertText('css=span.publisher', 'Suhrkamp')
+        s.assertText('css=span.location', 'Berlin')
 
     def test_edit_recension_should_happen_in_lightbox(self):
         self.create_recension()
         s = self.selenium
-        s.click('css=#recensionactions a[rel="edit"]')
+        s.click('css=span.recensionaction a[rel="edit"]')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.year', '2001')
         s.click('css=#lightbox\.form #form\.actions\.apply')
         s.waitForElementNotPresent('id=lightbox.form')
-        s.waitForElementPresent('css=dd.year')
-        s.waitForText('css=dd.year', '2001')
+        s.waitForElementPresent('css=span.year')
+        s.waitForText('css=span.year', '2001')
 
     def test_submitting_for_list_widget_should_work(self):
         self.create_recension()
         s = self.selenium
-        s.click('css=#recensionactions a[rel="edit"]')
+        s.click('css=span.recensionaction a[rel="edit"]')
         s.waitForElementPresent('id=lightbox.form')
         s.click('name=form.authors.add')
         s.waitForElementPresent('form.authors.1.')
         s.type('form.authors.1.', 'Lord Byron')
         s.click('css=#lightbox\.form #form\.actions\.apply')
         s.waitForElementNotPresent('id=lightbox.form')
-        s.waitForText('css=dd.authors', '*Byron*')
+        s.waitForText('css=span.authors', '*Byron*')
 
     def test_add_recension_should_happen_in_lightbox(self):
         s = self.selenium
@@ -72,5 +72,5 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.select('form.category', 'Belletristik')
         s.click('name=form.actions.add')
         s.waitForElementNotPresent('id=lightbox.form')
-        s.waitForElementPresent('css=dd.title')
-        s.assertText('css=dd.title', 'Poems')
+        s.waitForElementPresent('css=span.title')
+        s.assertText('css=span.title', 'Poems')
