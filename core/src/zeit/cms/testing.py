@@ -482,7 +482,7 @@ class BrowserTestCase(FunctionalTestCaseCommon, BrowserAssertions):
 
 class JSLintTestCase(gocept.jslint.TestCase):
 
-    jshint_command = os.environ['JSHINT_COMMAND']
+    jshint_command = os.environ.get('JSHINT_COMMAND')
 
     options = (gocept.jslint.TestCase.options +
                ('evil',
