@@ -387,6 +387,10 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
 
     form_fields['teaserTitle'].custom_widget = SimpleInputWidget
 
+    def setUpWidgets(self, *args, **kw):
+        super(TeaserTitle, self).setUpWidgets(*args, **kw)
+        self.widgets['teaserTitle'].extra = 'cms:maxlength="%s"' % (
+            self.widgets['teaserTitle'].context.max_length)
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
 
