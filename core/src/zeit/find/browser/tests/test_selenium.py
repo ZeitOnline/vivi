@@ -2,11 +2,8 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import mock
-import pkg_resources
 import zeit.cms.testing
 import zeit.find.tests
-import zope.component
 
 
 class TestTabs(zeit.cms.testing.SeleniumTestCase):
@@ -15,7 +12,6 @@ class TestTabs(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super(TestTabs, self).setUp()
-        self.open('/')
         self.open('/find')
         self.selenium.waitForElementPresent('id=fulltext')
         self.selenium.waitForVisible('id=fulltext')
@@ -40,10 +36,8 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
     skin = 'vivi'
 
     def setUp(self):
-        import zeit.solr.interfaces
         super(TestSearch, self).setUp()
         self.set_result('defaultqueryresult.json')
-        self.open('/')
         self.open('/find')
         self.selenium.waitForElementPresent('css=div.teaser_title')
         self.selenium.waitForVisible('css=div.teaser_title')
