@@ -20,7 +20,7 @@ product_config = """
 <product-config zeit.content.article>
     cds-import-valid-path $$ressort/$$year/$$volume
     cds-import-invalid-path cds/invalid/$$year/$$volume
-    source-book-recession-categories file://%s
+    book-recension-categories file://%s
 </product-config>
 """ % pkg_resources.resource_filename(
     __name__, '/tests/recension_categories.xml')

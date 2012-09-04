@@ -106,7 +106,7 @@ class IBookRecension(zope.interface.Interface):
 
     category = zope.schema.Choice(
         title=_('ZEIT category'),
-        source=zeit.content.article.source.BookRecessionCategories())
+        source=zeit.content.article.source.BookRecensionCategories())
 
     age_limit = zope.schema.Int(
         title=_('Agelimit'),

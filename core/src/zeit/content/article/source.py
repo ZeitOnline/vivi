@@ -4,7 +4,7 @@
 import zeit.cms.content.sources
 
 
-class BookRecessionCategories(zeit.cms.content.sources.SimpleXMLSource):
+class BookRecensionCategories(zeit.cms.content.sources.SimpleXMLSource):
 
     product_configuration = 'zeit.content.article'
-    config_url = 'source-book-recession-categories'
+    config_url = 'book-recension-categories'
