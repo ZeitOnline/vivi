@@ -143,6 +143,22 @@ Check the development preview:
 HTTP Error 303: See Other
 http://localhost/development-preview-prefix/online/2007/01/Somalia
 
+Query arguments are passed to the server:
+
+>>> import urllib2
+>>> browser.mech_browser.set_handle_redirect(False)
+>>> try:
+...     browser.open(
+...         'http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@show_preview?foo=bar')
+... except urllib2.HTTPError, e:
+...     print e
+...     print e.hdrs.get('location')
+... finally:
+...    browser.mech_browser.set_handle_redirect(True)
+HTTP Error 303: See Other
+http://localhost/preview-prefix/online/2007/01/Somalia?foo=bar
+
+
 When an adapter to IPreviewObject is registered the preview url may change.
 Register an adapter for IUnknownResource redirecting to the container:
 

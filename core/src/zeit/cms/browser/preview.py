@@ -53,6 +53,9 @@ class PreviewBase(zeit.cms.browser.view.Base):
         preview_url = zope.component.getMultiAdapter(
             (preview_object, self.preview_type),
             zeit.cms.browser.interfaces.IPreviewURL)
+        query_string = self.request.environment['QUERY_STRING']
+        if query_string:
+            preview_url += '?%s' % query_string
         return self.redirect(preview_url, trusted=True)
 
 
