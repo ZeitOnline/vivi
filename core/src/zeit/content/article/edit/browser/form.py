@@ -112,12 +112,10 @@ class FilenameFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Filename')
 
-    @property
-    def weight(self):
-        if IAutomaticallyRenameable(self.context).renameable:
-            return 57
-        else:
-            return 5
+    def render(self):
+        if not IAutomaticallyRenameable(self.context).renameable:
+            return ''
+        return super(FilenameFormGroup, self).render()
 
 
 class NewFilename(zeit.edit.browser.form.InlineForm):

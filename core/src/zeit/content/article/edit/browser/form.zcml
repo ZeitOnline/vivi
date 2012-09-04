@@ -35,6 +35,7 @@
     name="filename"
     class=".form.FilenameFormGroup"
     permission="zope.View"
+    weight="57"
     />
 
   <browser:viewlet

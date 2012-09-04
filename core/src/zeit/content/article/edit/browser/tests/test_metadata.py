@@ -145,8 +145,7 @@ class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
         self.assert_widget_text("options-b.year", '2007')
         self.assert_widget_text("metadata-a.ressort", 'International')
 
-    def test_navigation_should_readonly_visible(self):
-        self.assert_widget_text("new-filename.__name__", 'Somalia')
+    def test_navigation_should_be_readonly_visible(self):
         self.assert_widget_text("metadata-b.copyrights", 'ZEIT online')
         s = self.selenium
         s.waitForElementPresent(

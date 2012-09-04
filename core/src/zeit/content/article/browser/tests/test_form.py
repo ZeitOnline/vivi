@@ -90,9 +90,7 @@ class TestAdding(unittest.TestCase,
         self.browser.open('Somalia/@@checkout')
         self.get_article()
         self.browser.open('@@edit.form.new-filename?show_form=yes')
-        with self.assertRaises(LookupError):
-            self.browser.getControl('New file name')
-        self.assert_ellipsis('...<div class="widget">Somalia</div>...')
+        self.assertEqual('', self.browser.contents)
 
     def test_default_values_from_interface_should_be_set(self):
         from zeit.content.article.interfaces import ICDSWorkflow
