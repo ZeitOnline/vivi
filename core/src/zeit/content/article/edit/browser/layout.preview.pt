@@ -1,4 +1,24 @@
-<iframe
-    class="preview"
-    tal:attributes="src string:${context/@@absolute_url}/@@show_preview">
-</iframe>
+<div id="preview-tabs">
+  <ul>
+  </ul>
+  <div id="preview-full">
+    <iframe
+       class="preview"
+       tal:attributes="src string:${context/@@absolute_url}/@@show_preview">
+    </iframe>
+  </div>
+  <div id="preview-tablet">
+    <iframe
+       class="preview"
+       tal:attributes="src string:${context/@@absolute_url}/@@show_preview?showtablett=on">
+  </iframe>
+  </div>
+</div>
+
+<script language="javascript">
+  (function($) {
+    var tabs = $('#preview-tabs').tabs();
+    tabs.tabs('add', '#preview-tablet', 'iPad');
+    tabs.tabs('add', '#preview-full', 'Desktop');
+  })(jQuery);
+</script>
