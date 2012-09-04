@@ -411,7 +411,8 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit options')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.interfaces.IArticle).select(
+        zeit.content.article.interfaces.IArticle,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
         'serie', 'breaking_news', 'has_recensions')
 
 
@@ -434,7 +435,8 @@ class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit options')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).select(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'cap_title', 'banner_id', 'vg_wort_id')
 
 
@@ -445,7 +447,8 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit misc product management')
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).select(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'minimal_header', 'in_rankings', 'is_content',
             'banner', 'countings')
 
