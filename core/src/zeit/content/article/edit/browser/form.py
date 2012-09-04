@@ -68,6 +68,12 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'supertitle', 'title', 'subtitle')
 
+    def setUpWidgets(self, *args, **kw):
+        super(ArticleContentHead, self).setUpWidgets(*args, **kw)
+        self.widgets['title'].extra = 'cms:maxlength="%s"' % (
+            self.widgets['title'].context.max_length)
+        self.widgets['subtitle'].extra = 'cms:maxlength="%s"' % (
+            self.widgets['subtitle'].context.max_length)
 
 class ArticleContentBody(zeit.edit.browser.form.InlineForm):
 

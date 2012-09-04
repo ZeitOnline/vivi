@@ -49,18 +49,19 @@
 #editor-forms-title,
 #editor-forms-actions {
   background-color: white;
+  color: #000;
 }
 
 #editor-forms #editor-forms-title .supertitle {
-  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
-  font-weight: 100;
+  font-family: Arial, Verdana, Sans-Serif;
+  font-weight: 200;
   font-size: 0.9em;
 }
 
 #editor-forms #editor-forms-title .title {
-  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
-  font-weight: 600;
-  font-size: 1.2em;
+  font-family: Arial, Verdana, Sans-Serif;
+  font-weight: 800;
+  font-size: 1.25em;
   padding: 0.2em 0 0.4em;
 }
 
