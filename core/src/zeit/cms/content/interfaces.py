@@ -127,7 +127,8 @@ class ICommonMetadata(zope.interface.Interface):
 
     teaserTitle = zope.schema.TextLine(
         title=_("Teaser title"),
-        required=False)
+        required=False,
+        max_length=70)
 
     teaserText = zope.schema.Text(
         title=_("Teaser text"),
