@@ -2,6 +2,7 @@
   <a class="button"
      tal:attributes="href string:${context/@@absolute_url}/@@checkout"
      tal:condition="view/can_checkout"
+     cms:cp-module="follow-link"
      i18n:translate="">Edit</a>
 
   <a class="button"
