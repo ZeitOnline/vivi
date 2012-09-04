@@ -177,6 +177,7 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
         zeit.content.image.interfaces.IImages,
         zeit.content.gallery.interfaces.IGalleryReference,
         zeit.content.video.interfaces.IVideoAsset,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
         )
 
     def __call__(self):
@@ -204,6 +205,7 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.related.interfaces.IRelatedContent,
         zeit.content.article.interfaces.IAggregatedComments,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
         )
 
     def __call__(self):
@@ -469,9 +471,11 @@ class OptionsLayout(zeit.edit.browser.form.InlineForm):
         return super(OptionsLayout, self).__call__()
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).select(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'color_scheme') + zope.formlib.form.FormFields(
-        zeit.content.article.interfaces.IArticleMetadata).select(
+        zeit.content.article.interfaces.IArticleMetadata,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'layout')
 
     def setUpWidgets(self, *args, **kw):
