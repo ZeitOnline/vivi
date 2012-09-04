@@ -9,7 +9,7 @@
   <iframe
      id="preview-tablet"
      class="preview"
-     tal:attributes="src string:${context/@@absolute_url}/@@show_preview?showtablett=on">
+     tal:attributes="src string:${context/@@absolute_url}/@@show_preview?showtablet=on">
   </iframe>
 </div>
 
