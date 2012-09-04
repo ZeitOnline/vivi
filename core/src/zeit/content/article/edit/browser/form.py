@@ -385,8 +385,6 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'teaserTitle')
 
-    form_fields['teaserTitle'].custom_widget = SimpleInputWidget
-
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
 
