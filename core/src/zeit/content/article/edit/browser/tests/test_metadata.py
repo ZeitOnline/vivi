@@ -83,13 +83,15 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/eta-zapatero')
         s.dragAndDropToObject(
             'css=#breadcrumbs li:last-child a',
-            'css=#ClipboardPanel li[uniqueId="Favoriten"]')
-        s.waitForElementPresent('css=#ClipboardPanel ul > li > ul > li')
+            'css=#ClipboardPanel li[uniqueId="Favoriten"] a')
+        s.waitForElementPresent(
+            'css=#ClipboardPanel li[uniqueId="Favoriten"] > ul > li')
         self.open('/repository/online/2007/01/Saarland')
         s.dragAndDropToObject(
             'css=#breadcrumbs li:last-child a',
             'css=#ClipboardPanel li[uniqueid="Favoriten"] a')
-        s.waitForElementPresent('css=#ClipboardPanel ul > li > ul > li + li')
+        s.waitForElementPresent(
+            'css=#ClipboardPanel li[uniqueId="Favoriten"] > ul > li + li')
 
         # Open editor again
         s.clickAndWait('css=#WorkingcopyPanel td a')
