@@ -9,7 +9,7 @@ zeit.edit.FoldBlock = gocept.Class.extend({
         var self = this;
         var id = context.getAttribute('href');
         MochiKit.DOM.toggleElementClass('folded', id);
-        sessionStorage['folding.' + id] =
+        window.sessionStorage['folding.' + id] =
             MochiKit.DOM.hasElementClass(id, 'folded') ? 'yes' : '';
     },
 
@@ -19,7 +19,7 @@ zeit.edit.FoldBlock = gocept.Class.extend({
             $$('a[cms:cp-module="zeit.edit.FoldBlock"]'),
             function(action) {
                 var id = action.getAttribute('href');
-                if (sessionStorage['folding.' + id]) {
+                if (window.sessionStorage['folding.' + id]) {
                     log("Restore folding=on for", id);
                     MochiKit.DOM.addElementClass(id, 'folded');
                 } else {
