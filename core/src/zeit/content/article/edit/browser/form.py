@@ -48,7 +48,7 @@ class Memo(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit memo')
     form_fields = FormFields(zeit.cms.content.interfaces.IMemo).select('memo')
     form_fields['memo'].custom_widget = RestructuredTextWidget
-
+    css_class = 'memo'
 
 class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article content forms."""
