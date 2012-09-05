@@ -4,6 +4,7 @@
 from mock import Mock
 import zeit.cms.testing
 import zeit.edit.browser.form
+import zeit.edit.testing
 import zope.formlib.form
 import zope.interface
 import zope.publisher.browser
@@ -50,3 +51,50 @@ class InlineForm(zeit.cms.testing.FunctionalTestCase):
         self.assertEllipsis("""\
 ...<div class="field fieldname-foo required fieldtype-text">
 <div class="label">...""", self.render_form(ExampleForm))
+
+
+class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
+
+    def render(self, in_workingcopy,
+               folded_workingcopy=None, folded_repository=None):
+        class ExampleForm(zeit.edit.browser.form.FoldableFormGroup):
+            title = 'Example'
+
+        if folded_workingcopy is not None:
+            ExampleForm.folded_workingcopy = folded_workingcopy
+        if folded_repository is not None:
+            ExampleForm.folded_repository = folded_repository
+
+        context = Mock()
+        if in_workingcopy:
+            zope.interface.alsoProvides(
+                context, zeit.cms.checkout.interfaces.ILocalContent)
+        request = zope.publisher.browser.TestRequest()
+        zope.interface.alsoProvides(
+            request, zeit.cms.browser.interfaces.ICMSLayer)
+        form = ExampleForm(context, request, Mock(), Mock())
+        return form()
+
+    def test_default_for_workingcopy_is_not_folded(self):
+        self.assertNotEllipsis(
+            '...folded...', self.render(in_workingcopy=True))
+
+    def test_default_for_repository_is_not_folded(self):
+        self.assertNotEllipsis(
+            '...folded...', self.render(in_workingcopy=False))
+
+    def test_setting_folded_workingcopy_renders_css_class(self):
+        self.assertEllipsis(
+            '...folded...', self.render(in_workingcopy=True,
+            folded_workingcopy=True))
+        self.assertNotEllipsis(
+            '...folded...', self.render(in_workingcopy=False,
+            folded_workingcopy=True))
+
+    def test_setting_folded_repository_renders_css_class(self):
+        self.assertEllipsis(
+            '...folded...', self.render(in_workingcopy=False,
+            folded_repository=True))
+        self.assertNotEllipsis(
+            '...folded...', self.render(in_workingcopy=True,
+            folded_repository=True))
