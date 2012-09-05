@@ -351,6 +351,10 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit teaser title')
     form_fields = FormFields(ICommonMetadata).select('teaserTitle')
 
+    def setUpWidgets(self, *args, **kw):
+        super(TeaserTitle, self).setUpWidgets(*args, **kw)
+        self.widgets['teaserTitle'].extra = 'cms:maxlength="%s"' % (
+            self.widgets['teaserTitle'].context.max_length)
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
 
