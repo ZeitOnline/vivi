@@ -134,42 +134,26 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.assertElementNotPresent('css=#edit-form-metadata.folded')
 
 
-class ReadonlyTest(zeit.content.article.testing.SeleniumTestCase):
+class ReadonlyTest(zeit.cms.testing.BrowserTestCase):
+    """Sample test to make sure the view of a checked-in article displays
+    widgets in read-only mode.
+
+    """
+
+    layer = zeit.content.article.testing.TestBrowserLayer
 
     def setUp(self):
         super(ReadonlyTest, self).setUp()
-        self.open('/repository/online/2007/01/Somalia/')
-        self.open('/repository/online/2007/01/Somalia/@@edit.html')
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@edit-forms')
 
-    def test_head_should_be_readonly_visible(self):
-        self.assert_widget_text("options-b.year", '2007')
-        self.assert_widget_text("metadata-a.ressort", 'International')
+    def test_text_is_displayed(self):
+        self.assertEllipsis(
+            '...<div class="widget">2007</div>...', self.browser.contents)
 
-    def test_navigation_should_be_readonly_visible(self):
-        self.assert_widget_text("metadata-b.copyrights", 'ZEIT online')
-        s = self.selenium
-        s.waitForElementPresent(
-            'xpath=//input[@id="metadata-nl.dailyNewsletter"]')
-        s.assertAttribute(
-            'xpath=//input[@id="metadata-nl.dailyNewsletter"]@disabled',
-            'regexp:disabled|true')
-        s.assertNotChecked('xpath=//input[@id="metadata-nl.dailyNewsletter"]')
-
-    def test_relateds_should_be_readonly_visible(self):
-        from zeit.cms.checkout.helper import checked_out
-        from zeit.cms.related.interfaces import IRelatedContent
-        import zeit.cms.interfaces
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                content = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')
-                with checked_out(content) as co:
-                    IRelatedContent(co).related = (
-                        zeit.cms.interfaces.ICMSContent(
-                            'http://xml.zeit.de/testcontent'),)
-        s = self.selenium
-        s.open(s.getLocation())
-        self.wait_for_widget_text('internallinks.related', '*testcontent*')
+    def test_text_is_not_editable(self):
+        with self.assertRaises(LookupError):
+             self.browser.getControl('Year')
 
 
 class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
