@@ -35,6 +35,9 @@
   padding-left: 5px;
   padding-right: 5px;
   width: 98%;
+  border:1px solid #DDD !important;
+  background: url('bginput.png') repeat-x;
+  border-top:1px solid #999 !important;
 }
 
 
@@ -1043,7 +1046,10 @@ div.objectlog div {
 }
 
 .fieldname-memo .rst-widget {
-  border: 1px inset #999999;
+  background: url("bginput.png") repeat-x scroll 0 0 transparent;
+  border: 1px solid #BBB;
+  border-top: 1px solid #999;
+  padding-top:2px;
   overflow: hidden;
 }
 
