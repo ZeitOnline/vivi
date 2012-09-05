@@ -3,7 +3,7 @@
 zeit.cms.declare_namespace('zeit.edit');
 
 
-zeit.edit.FoldBlock = function(context) {
+zeit.edit.fold = function(context) {
     var id = context.getAttribute('href');
     zeit.edit.toggle_folded(id);
 };
@@ -15,7 +15,7 @@ zeit.edit.toggle_folded = function(id) {
 };
 
 zeit.edit.restore_folding = function() {
-    $('a[cms\\:cp-module="zeit.edit.FoldBlock"]').each(
+    $('a[cms\\:cp-module="zeit.edit.fold"]').each(
         function(index, action) {
             var id = action.getAttribute('href');
             var state = window.sessionStorage.getItem('folding.' + id);

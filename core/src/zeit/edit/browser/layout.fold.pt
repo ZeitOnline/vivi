@@ -1,7 +1,7 @@
 <tal:block i18n:domain="zeit.cms">
   <a class="fold-link" title="Fold"
      tal:attributes="href string:${context/__name__}"
-     cms:cp-module="zeit.edit.FoldBlock"
+     cms:cp-module="zeit.edit.fold"
      i18n:attributes="title">
     <span class="action-title"
           i18n:translate="">Fold</span>

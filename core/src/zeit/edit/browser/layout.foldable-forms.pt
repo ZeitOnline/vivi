@@ -6,7 +6,7 @@
     <div class="edit-bar">
       <a class="fold-link"
          title="Fold"
-         cms:cp-module="zeit.edit.FoldBlock"
+         cms:cp-module="zeit.edit.fold"
          tal:attributes="href block_id"
          tal:content="view/title"
          i18n:attributes="title">
