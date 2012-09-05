@@ -702,11 +702,46 @@ input#form\.confirmed_duplicate,
 
 
 form[action$="asset-badges"] div.value {
-  margin-top:5px;
+  margin-top:-5px;
 }
 
 form[action$="asset-badges"] label {
   position:relative;
+}
+
+form[action$="asset-badges"] .value label {
+  position:relative;
+  color: transparent;
+  display: block;
+  float: left;
+  height: 21px;
+  overflow: hidden !important;
+  position: relative;
+  width: 42px;
+}
+
+form[action$="asset-badges"] .value label[for="asset-badges\.badges\.0"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -649px transparent;
+}
+
+form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -709px transparent;
+}
+
+form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -769px transparent;
+}
+
+form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -829px transparent;
+}
+
+form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -889px transparent;
+}
+
+form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -949px transparent;
 }
 
 label[for^="asset-badges"] .checkboxType {
