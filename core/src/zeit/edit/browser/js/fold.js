@@ -3,6 +3,23 @@
 zeit.cms.declare_namespace('zeit.edit');
 
 
+var SESSION_KEY = 'zeit.edit.fold';
+
+function get_state(){
+    var state = window.sessionStorage.getItem(SESSION_KEY);
+    if (state === null) {
+        state = {};
+    } else {
+        state = JSON.parse(state);
+    }
+    return state;
+}
+
+function set_state(state) {
+    window.sessionStorage.setItem(SESSION_KEY, JSON.stringify(state));
+}
+
+
 zeit.edit.fold = function(context) {
     var id = context.getAttribute('href');
     zeit.edit.toggle_folded(id);
@@ -10,20 +27,21 @@ zeit.edit.fold = function(context) {
 
 zeit.edit.toggle_folded = function(id) {
     $('#'+id).toggleClass('folded');
-    window.sessionStorage.setItem(
-        'folding.' + id, JSON.stringify($('#'+id).hasClass('folded')));
+    var state = get_state();
+    state[id] = $('#'+id).hasClass('folded');
+    set_state(state);
 };
 
 zeit.edit.restore_folding = function() {
+    var state = get_state();
     $('a[cms\\:cp-module="zeit.edit.fold"]').each(
         function(index, action) {
             var id = action.getAttribute('href');
-            var state = window.sessionStorage.getItem('folding.' + id);
-            if (state === null) {
+            var folded = state[id];
+            if (folded === undefined) {
                 return;
             }
-            state = JSON.parse(state);
-            if (state) {
+            if (folded) {
                 log("Restore folding=on for", id);
                 $('#'+id).addClass('folded');
             } else {
