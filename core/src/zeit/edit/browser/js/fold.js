@@ -1,4 +1,4 @@
-(function(){
+(function($){
 
 zeit.cms.declare_namespace('zeit.edit');
 
@@ -9,16 +9,14 @@ zeit.edit.FoldBlock = function(context) {
 };
 
 zeit.edit.toggle_folded = function(id) {
-    MochiKit.DOM.toggleElementClass('folded', id);
+    $('#'+id).toggleClass('folded');
     window.sessionStorage.setItem(
-        'folding.' + id,
-        JSON.stringify(MochiKit.DOM.hasElementClass(id, 'folded')));
+        'folding.' + id, JSON.stringify($('#'+id).hasClass('folded')));
 };
 
 zeit.edit.restore_folding = function() {
-    forEach(
-        $$('a[cms:cp-module="zeit.edit.FoldBlock"]'),
-        function(action) {
+    $('a[cms\\:cp-module="zeit.edit.FoldBlock"]').each(
+        function(index, action) {
             var id = action.getAttribute('href');
             var state = window.sessionStorage.getItem('folding.' + id);
             if (state === null) {
@@ -27,10 +25,10 @@ zeit.edit.restore_folding = function() {
             state = JSON.parse(state);
             if (state) {
                 log("Restore folding=on for", id);
-                MochiKit.DOM.addElementClass(id, 'folded');
+                $('#'+id).addClass('folded');
             } else {
                 log("Restore folding=off for", id);
-                MochiKit.DOM.removeElementClass(id, 'folded');
+                $('#'+id).removeClass('folded');
             }
     });
 };
@@ -42,4 +40,4 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     });
 });
 
-})();
+})(jQuery);
