@@ -1029,6 +1029,10 @@ div.objectlog div {
   color: #999999;
 }
 
+form[action$="edit.form.new-filename"] {
+  background-color: #FFF;
+}
+
 .inline-form .fieldname-memo,
 .fieldname-memo .widget {
   padding: 0px;
@@ -1040,7 +1044,10 @@ div.objectlog div {
 }
 
 .fieldname-memo .rst-widget {
-  border: 1px inset #999999;
+  background: url("bginput.png") repeat-x scroll 0 0 transparent;
+  border: 1px solid #BBB;
+  border-top: 1px solid #999;
+  padding-top:2px;
   overflow: hidden;
 }
 
