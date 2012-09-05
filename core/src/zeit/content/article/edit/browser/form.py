@@ -3,18 +3,27 @@
 
 from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
+from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+from zeit.content.article.interfaces import IArticle
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
 import zeit.cms.browser.interfaces
 import zeit.cms.related.interfaces
-import zeit.content.article.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.video.interfaces
 import zope.formlib.form
 import zope.formlib.interfaces
+
+
+class FormFields(zope.formlib.form.FormFields):
+
+    def __init__(self, *args, **kw):
+        kw.setdefault(
+            'render_context', zope.formlib.interfaces.DISPLAY_UNWRITEABLE)
+        super(FormFields, self).__init__(*args, **kw)
 
 
 class Heading(object):
@@ -36,12 +45,7 @@ class Memo(zeit.edit.browser.form.InlineForm):
     legend = u''
     prefix = 'memo'
     undo_description = _('edit memo')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.IMemo,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'memo')
-
+    form_fields = FormFields(zeit.cms.content.interfaces.IMemo).select('memo')
     form_fields['memo'].custom_widget = RestructuredTextWidget
 
 
@@ -61,11 +65,8 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'article-content-head'
     undo_description = _('edit article content head')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'supertitle', 'title', 'subtitle')
+    form_fields = FormFields(ICommonMetadata).select(
+        'supertitle', 'title', 'subtitle')
 
     def setUpWidgets(self, *args, **kw):
         super(ArticleContentHead, self).setUpWidgets(*args, **kw)
@@ -98,11 +99,7 @@ class KeywordsNew(zeit.edit.browser.form.InlineForm):
     prefix = 'keywords'
     undo_description = _('edit keywords')
     css_class = 'keywords'
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'keywords')
+    form_fields = FormFields(ICommonMetadata).select('keywords')
 
     def render(self):
         if not IAutomaticallyRenameable(self.context).renameable:
@@ -133,7 +130,7 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
 
     @property
     def form_fields(self):
-        form_fields = zope.formlib.form.FormFields(
+        form_fields = FormFields(
             zeit.cms.interfaces.ICMSContent,
             zeit.cms.repository.interfaces.IAutomaticallyRenameable,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
@@ -156,11 +153,8 @@ class AssetBadges(zeit.edit.browser.form.InlineForm):
     legend = _('Badges')
     prefix = 'asset-badges'
     undo_description = _('edit asset badges')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.asset.interfaces.IBadges,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'badges')
+    form_fields = FormFields(
+        zeit.cms.asset.interfaces.IBadges).select('badges')
 
     def setUpWidgets(self, *args, **kw):
         super(AssetBadges, self).setUpWidgets(*args, **kw)
@@ -172,13 +166,11 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'leadteaser'
     undo_description = _('edit lead teaser')
-
-    form_fields = zope.formlib.form.FormFields(
+    form_fields = FormFields(
         zeit.content.image.interfaces.IImages,
         zeit.content.gallery.interfaces.IGalleryReference,
         zeit.content.video.interfaces.IVideoAsset,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
-        )
+    )
 
     def __call__(self):
         zope.interface.alsoProvides(
@@ -201,12 +193,10 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'internallinks'
     undo_description = _('edit internal links')
-
-    form_fields = zope.formlib.form.FormFields(
+    form_fields = FormFields(
         zeit.cms.related.interfaces.IRelatedContent,
         zeit.content.article.interfaces.IAggregatedComments,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE,
-        )
+    )
 
     def __call__(self):
         zope.interface.alsoProvides(
@@ -222,10 +212,9 @@ class StatusForms(zeit.edit.browser.form.FoldableFormGroup):
 class WorkflowStatusDisplay(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
-    form_fields = zope.formlib.form.FormFields(
-        zeit.workflow.interfaces.IContentWorkflow,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE
-        ).select('edited', 'corrected')
+    form_fields = FormFields(
+        zeit.workflow.interfaces.IContentWorkflow).select(
+        'edited', 'corrected')
     form_fields['edited'].custom_widget = CheckboxDisplayWidget
     form_fields['corrected'].custom_widget = CheckboxDisplayWidget
 
@@ -257,11 +246,7 @@ class Keywords(zeit.edit.browser.form.InlineForm):
     prefix = 'keywords'
     undo_description = _('edit keywords')
     css_class = 'keywords'
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'keywords')
+    form_fields = FormFields(ICommonMetadata).select('keywords')
 
     def __call__(self):
         if IAutomaticallyRenameable(self.context).renameable:
@@ -275,10 +260,7 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-a'
     undo_description = _('edit metadata')
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'ressort', 'sub_ressort')
+    form_fields = FormFields(ICommonMetadata).select('ressort', 'sub_ressort')
 
     def render(self):
         result = super(MetadataA, self).render()
@@ -296,10 +278,7 @@ class MetadataB(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-b'
     undo_description = _('edit metadata')
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'product', 'copyrights')
+    form_fields = FormFields(ICommonMetadata).select('product', 'copyrights')
 
 
 # This will be renamed properly as soon as the fields are finally decided.
@@ -308,11 +287,7 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-c'
     undo_description = _('edit metadata')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'author_references')
+    form_fields = FormFields(ICommonMetadata).select('author_references')
 
     def setUpWidgets(self, *args, **kw):
         super(MetadataC, self).setUpWidgets(*args, **kw)
@@ -326,11 +301,7 @@ class MetadataNL(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-nl'
     undo_description = _('edit metadata')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'dailyNewsletter')
+    form_fields = FormFields(ICommonMetadata).select('dailyNewsletter')
 
 
 class MetadataComments(zeit.edit.browser.form.InlineForm):
@@ -338,11 +309,8 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-comments'
     undo_description = _('edit metadata')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'commentSectionEnable', 'commentsAllowed')
+    form_fields = FormFields(ICommonMetadata).select(
+        'commentSectionEnable', 'commentsAllowed')
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -357,12 +325,8 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
     prefix = 'teaser-image'
     undo_description = _('edit teaser image')
     css_class = 'teaser-image'
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.content.image.interfaces.IImages,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'images')
+    form_fields = FormFields(
+        zeit.content.image.interfaces.IImages).select('images')
 
     def __call__(self):
         zope.interface.alsoProvides(
@@ -380,12 +344,7 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'teaser-title'
     undo_description = _('edit teaser title')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        zeit.content.image.interfaces.IImages,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'teaserTitle')
+    form_fields = FormFields(ICommonMetadata).select('teaserTitle')
 
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
@@ -393,11 +352,7 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'teaser-text'
     undo_description = _('edit teaser text')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'teaserText')
+    form_fields = FormFields(ICommonMetadata).select('teaserText')
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserText, self).setUpWidgets(*args, **kw)
@@ -415,10 +370,7 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'options-a'
     undo_description = _('edit options')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.interfaces.IArticle,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+    form_fields = FormFields(IArticle).select(
         'serie', 'breaking_news', 'has_recensions')
 
 
@@ -427,11 +379,8 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'options-b'
     undo_description = _('edit options')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'year', 'volume', 'page', 'printRessort')
+    form_fields = FormFields(ICommonMetadata).select(
+        'year', 'volume', 'page', 'printRessort')
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
@@ -439,11 +388,8 @@ class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
     legend = _('Product management')
     prefix = 'options-productmanagement'
     undo_description = _('edit options')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'cap_title', 'banner_id', 'vg_wort_id')
+    form_fields = FormFields(ICommonMetadata).select(
+        'cap_title', 'banner_id', 'vg_wort_id')
 
 
 class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
@@ -451,12 +397,9 @@ class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'misc-product-management-b'
     undo_description = _('edit misc product management')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'minimal_header', 'in_rankings', 'is_content',
-            'banner', 'countings')
+    form_fields = FormFields(ICommonMetadata).select(
+        'minimal_header', 'in_rankings', 'is_content',
+        'banner', 'countings')
 
 
 class OptionsLayout(zeit.edit.browser.form.InlineForm):
@@ -464,19 +407,14 @@ class OptionsLayout(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'options-layout'
     undo_description = _('edit options')
+    form_fields = (
+        FormFields(ICommonMetadata).select('color_scheme')
+        + FormFields(IArticle).select('layout'))
 
     def __call__(self):
         zope.interface.alsoProvides(
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super(OptionsLayout, self).__call__()
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'color_scheme') + zope.formlib.form.FormFields(
-        zeit.content.article.interfaces.IArticleMetadata,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'layout')
 
     def setUpWidgets(self, *args, **kw):
         super(OptionsLayout, self).setUpWidgets(*args, **kw)
