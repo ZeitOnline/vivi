@@ -11,6 +11,7 @@ from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
 import zeit.cms.browser.interfaces
+import zeit.cms.checkout.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.video.interfaces
@@ -189,6 +190,12 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
 class InternalLinksForms(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Internal links')
+
+    def render(self):
+        if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(
+            self.context):
+            return ''
+        return super(InternalLinksForms, self).render()
 
 
 class InternalLinks(zeit.edit.browser.form.InlineForm):

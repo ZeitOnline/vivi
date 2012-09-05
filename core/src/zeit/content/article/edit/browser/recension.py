@@ -3,8 +3,10 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import zeit.cms.checkout.interfaces
 import zeit.content.article.interfaces
 import zeit.content.article.recension
+import zeit.edit.browser.form
 import zope.cachedescriptors.property
 import zope.component
 
@@ -14,6 +16,12 @@ class RecensionForms(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Recensions')
     folded_workingcopy = True
+
+    def render(self):
+        if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(
+            self.context):
+            return ''
+        return super(RecensionForms, self).render()
 
 
 class Overview(zeit.cms.browser.view.Base):
