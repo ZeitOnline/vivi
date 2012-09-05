@@ -8,7 +8,6 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
-from zope.app.form.browser.widget import SimpleInputWidget
 import zeit.cms.browser.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.article.interfaces
@@ -74,6 +73,7 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
             self.widgets['title'].context.max_length)
         self.widgets['subtitle'].extra = 'cms:maxlength="%s"' % (
             self.widgets['subtitle'].context.max_length)
+
 
 class ArticleContentBody(zeit.edit.browser.form.InlineForm):
 
