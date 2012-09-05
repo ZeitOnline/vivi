@@ -13,6 +13,7 @@ class RecensionForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article recension forms."""
 
     title = _('Recensions')
+    folded_workingcopy = True
 
 
 class Overview(zeit.cms.browser.view.Base):
