@@ -708,7 +708,7 @@ zeit.imp.Zoomer = gocept.Class.extend({
 
 });
 
-(function() {
+(function($) {
 
     if (! $('imp-image-area')) {
         return;
@@ -729,4 +729,4 @@ zeit.imp.Zoomer = gocept.Class.extend({
         document.imp_color_filter = new zeit.imp.ImageFilter('color');
         new zeit.imp.Zoomer();
     });
-})();
+})(jQuery);
