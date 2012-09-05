@@ -12,6 +12,9 @@ function get_state(){
     } else {
         state = JSON.parse(state);
     }
+    if (state[window.context_url] === undefined) {
+        state[window.context_url] = {};
+    }
     return state;
 }
 
@@ -28,12 +31,12 @@ zeit.edit.fold = function(context) {
 zeit.edit.toggle_folded = function(id) {
     $('#'+id).toggleClass('folded');
     var state = get_state();
-    state[id] = $('#'+id).hasClass('folded');
+    state[window.context_url][id] = $('#'+id).hasClass('folded');
     set_state(state);
 };
 
 zeit.edit.restore_folding = function() {
-    var state = get_state();
+    var state = get_state()[window.context_url];
     $('a[cms\\:cp-module="zeit.edit.fold"]').each(
         function(index, action) {
             var id = action.getAttribute('href');

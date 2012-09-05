@@ -19,3 +19,12 @@ class RestoreFolding(zeit.edit.testing.SeleniumTestCase):
         s = self.selenium
         s.assertElementPresent('css=#foo.folded')
         s.assertElementNotPresent('css=#bar.folded')
+
+    def test_folding_state_is_stored_per_context_url(self):
+        self.open('/@@/zeit.edit.browser.tests.fixtures/fold.html')
+        self.eval('zeit.edit.toggle_folded("foo");')
+        self.open('/@@/zeit.edit.browser.tests.fixtures/fold.html')
+        self.eval('window.context_url = "changed";')
+        self.eval('zeit.edit.restore_folding();')
+        s = self.selenium
+        s.assertElementNotPresent('css=#foo.folded')
