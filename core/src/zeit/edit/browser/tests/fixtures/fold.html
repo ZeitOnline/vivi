@@ -1,0 +1,17 @@
+<html>
+  <head>
+    <script type="text/javascript">
+        application_url = '/';
+        context_url = '.';
+    </script>
+    <tal:block replace="resource_library:zeit.edit"/>
+  </head>
+  <body>
+    <div>
+      <a cms:cp-module="zeit.edit.FoldBlock" href="foo">fold foo</a>
+      <a cms:cp-module="zeit.edit.FoldBlock" href="bar">fold bar</a>
+    </div>
+    <div id="foo">foo</div>
+    <div id="bar" class="folded">bar</div>
+  </body>
+</html>

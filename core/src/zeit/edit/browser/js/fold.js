@@ -3,40 +3,43 @@
 zeit.cms.declare_namespace('zeit.edit');
 
 
-zeit.edit.FoldBlock = gocept.Class.extend({
+zeit.edit.FoldBlock = function(context) {
+    var id = context.getAttribute('href');
+    zeit.edit.toggle_folded(id);
+};
 
-    construct: function(context) {
-        var self = this;
-        var id = context.getAttribute('href');
-        MochiKit.DOM.toggleElementClass('folded', id);
-        window.sessionStorage['folding.' + id] =
-            MochiKit.DOM.hasElementClass(id, 'folded') ? 'yes' : '';
-    },
+zeit.edit.toggle_folded = function(id) {
+    MochiKit.DOM.toggleElementClass('folded', id);
+    window.sessionStorage.setItem(
+        'folding.' + id,
+        JSON.stringify(MochiKit.DOM.hasElementClass(id, 'folded')));
+};
 
-    // @staticmethod
-    restore_folding: function() {
-        forEach(
-            $$('a[cms:cp-module="zeit.edit.FoldBlock"]'),
-            function(action) {
-                var id = action.getAttribute('href');
-                if (window.sessionStorage['folding.' + id]) {
-                    log("Restore folding=on for", id);
-                    MochiKit.DOM.addElementClass(id, 'folded');
-                } else {
-                    log("Restore folding=off for", id);
-                    MochiKit.DOM.removeElementClass(id, 'folded');
-                }
-        });
-    }
-
-});
+zeit.edit.restore_folding = function() {
+    forEach(
+        $$('a[cms:cp-module="zeit.edit.FoldBlock"]'),
+        function(action) {
+            var id = action.getAttribute('href');
+            var state = window.sessionStorage.getItem('folding.' + id);
+            if (state === null) {
+                return;
+            }
+            state = JSON.parse(state);
+            if (state) {
+                log("Restore folding=on for", id);
+                MochiKit.DOM.addElementClass(id, 'folded');
+            } else {
+                log("Restore folding=off for", id);
+                MochiKit.DOM.removeElementClass(id, 'folded');
+            }
+    });
+};
 
 
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     MochiKit.Signal.connect(zeit.edit.editor, 'after-reload', function() {
-        zeit.edit.FoldBlock.prototype.restore_folding();
+        zeit.edit.restore_folding();
     });
 });
-
 
 })();
