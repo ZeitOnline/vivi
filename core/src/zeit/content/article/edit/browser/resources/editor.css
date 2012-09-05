@@ -45,6 +45,13 @@
   border:1px solid #DDD !important;
   background: url('bginput.png') repeat-x;
   border-top:1px solid #999 !important;
+  margin-top: 3px;
+}
+
+#article-editor-text:before {
+  content: "Artikeltext";
+  font-size: 10px;
+  margin-left: 10px;
 }
 
 /* editor heading */
@@ -204,7 +211,8 @@
 
 .article-editor-inner .edit-bar a,
 .article-editor-inner .block-inner .label span,
-.article-editor-inner .block-inner legend {
+.article-editor-inner .block-inner legend,
+#article-editor-text:before {
   text-transform: uppercase;
   font-weight: bold;
   color: #4C4C4C;
