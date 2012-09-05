@@ -1026,6 +1026,12 @@ div.objectlog div {
   color: #999999;
 }
 
+.inline-form fieldset.memo {
+  margin: 0px;
+  padding: 10px;
+  background: #ffffff;
+}
+
 .inline-form .fieldname-memo,
 .fieldname-memo .widget {
   padding: 0px;
