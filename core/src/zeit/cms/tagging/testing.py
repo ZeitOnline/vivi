@@ -2,14 +2,14 @@
 # See also LICENSE.txt
 
 import mock
+import zeit.cms.tagging.tag
 
 
 class TaggingHelper(object):
     """Mixin for tests which need some tagging infrastrucutre."""
 
     def get_tag(self, code):
-        tag = mock.Mock()
-        tag.code = tag.label = code
+        tag = zeit.cms.tagging.tag.Tag(code, code)
         tag.disabled = False
         return tag
 
