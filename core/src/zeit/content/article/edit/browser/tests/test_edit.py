@@ -612,7 +612,11 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(TestDummyAd, self).setUp()
-        self.add_article()
+        from zeit.cms.checkout.helper import checked_out
+        from zeit.content.article.article import Article
+        from zeit.content.article.edit.interfaces import IEditableBody
+        from zeit.content.article.interfaces import IArticle
+        from zeit.edit.interfaces import IElementFactory
         from zope.testbrowser.testing import Browser
         import json
         browser = Browser()
@@ -621,8 +625,34 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
             'http://localhost:8080/++skin++vivi/@@banner-rules')
         self.rules = json.loads(browser.contents)
 
-    @unittest2.skip("no typeKeys 'til webdriver")
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['article'] = Article()
+                with checked_out(self.repository['article']) as co:
+                    zeit.cms.browser.form.apply_default_values(
+                        co, IArticle)
+                    co.year = 2010
+                    co.ressort = u'International'
+                    co.title = 'foo'
+                    body = IEditableBody(co)
+                    p_factory = zope.component.getAdapter(
+                        body, IElementFactory, 'p')
+                    paragraph = p_factory()
+                    paragraph.text = 'foo'
+                    paragraph = p_factory()
+                    paragraph.text = 'bar'
+        self.open('/repository/article/@@checkout')
+
+
     def test_dummy_ad_should_be_rendered_on_banner_rules(self):
+        s = self.selenium
+        s.waitForElementPresent('css=#content_editable_hacks')
+        s.assertText('css=#content_editable_hacks',
+            'regex:.type-p:nth-child\(4\).*background:.*dummy-ad')
+
+
+    @unittest2.skip("no typeKeys 'til webdriver")
+    def test_dummy_ad_should_be_updated_by_changing_paragraphs(self):
         style = ''
         for r in self.rules:
             style += 'p:nth-child\(' + str(r) + '\).*background:.*dummy-ad'
