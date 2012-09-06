@@ -709,21 +709,23 @@ zeit.imp.Zoomer = gocept.Class.extend({
 });
 
 (function($) {
-    $(document).ready(function() {
-        if (! $('#imp-image-area').length) {
-            return;
-        }
-        document.imp = new zeit.imp.Imp();
-        document.imp_zoom_slider = new zeit.imp.ZoomSlider(document.imp);
-        document.imp_data = new zeit.imp.ImageData();
-        new zeit.imp.DynamicMask(document.imp);
-        new zeit.imp.ImageBar();
-        new zeit.imp.AlreadyCroppedIndicator();
-        // Filters
-        new zeit.imp.ImageFilter('brightness');
-        new zeit.imp.ImageFilter('contrast');
-        new zeit.imp.ImageFilter('sharpness');
-        document.imp_color_filter = new zeit.imp.ImageFilter('color');
-        new zeit.imp.Zoomer();
-    });
+
+$(document).ready(function() {
+    if (! $('#imp-image-area').length) {
+        return;
+    }
+    document.imp = new zeit.imp.Imp();
+    document.imp_zoom_slider = new zeit.imp.ZoomSlider(document.imp);
+    document.imp_data = new zeit.imp.ImageData();
+    new zeit.imp.DynamicMask(document.imp);
+    new zeit.imp.ImageBar();
+    new zeit.imp.AlreadyCroppedIndicator();
+    // Filters
+    new zeit.imp.ImageFilter('brightness');
+    new zeit.imp.ImageFilter('contrast');
+    new zeit.imp.ImageFilter('sharpness');
+    document.imp_color_filter = new zeit.imp.ImageFilter('color');
+    new zeit.imp.Zoomer();
+});
+
 })(jQuery);
