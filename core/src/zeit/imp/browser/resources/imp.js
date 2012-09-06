@@ -709,13 +709,10 @@ zeit.imp.Zoomer = gocept.Class.extend({
 });
 
 (function($) {
-
-    if (! $('imp-image-area')) {
-        return;
-    }
-
-    var ident = MochiKit.Signal.connect(window, 'onload', function() {
-        MochiKit.Signal.disconnect(ident);
+    $(document).ready(function() {
+        if (! $('#imp-image-area').length) {
+            return;
+        }
         document.imp = new zeit.imp.Imp();
         document.imp_zoom_slider = new zeit.imp.ZoomSlider(document.imp);
         document.imp_data = new zeit.imp.ImageData();
