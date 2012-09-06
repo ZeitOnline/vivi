@@ -11,7 +11,9 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.tagging.interfaces
 import zope.formlib.interfaces
+import zope.formlib.itemswidgets
 import zope.formlib.source
+import zope.formlib.widget
 import zope.schema.interfaces
 
 
@@ -86,3 +88,47 @@ class UpdateTags(zeit.cms.browser.view.JSON):
             dict(code=tag.code,
                  label=tag.label)
             for tag in tagger.values()])
+
+
+class DisplayWidget(grokcore.component.MultiAdapter,
+                    zope.formlib.itemswidgets.ListDisplayWidget):
+
+    grokcore.component.adapts(
+        zope.schema.interfaces.ITuple,
+        zeit.cms.tagging.interfaces.ITagsForContent,
+        zeit.cms.browser.interfaces.ICMSLayer)
+    grokcore.component.provides(
+        zope.formlib.interfaces.IDisplayWidget)
+
+    def __init__(self, field, source, request):
+        super(DisplayWidget, self).__init__(
+            field,
+            zope.formlib.source.IterableSourceVocabulary(source, request),
+            request)
+
+    def __call__(self):
+        return zope.formlib.widget.renderElement(
+            'div',
+            cssClass='keyword-widget',
+            contents=super(DisplayWidget, self).__call__(),
+            id=self.name)
+
+    def renderItems(self, value):
+        """Render items of sequence."""
+        # XXX blame formlib for having to copy this method
+        items = []
+        cssClass = self.cssClass or ''
+        if cssClass:
+            cssClass += "-item"
+        tag = self.itemTag
+        for index, item in enumerate(value):
+            term = self.vocabulary.getTerm(item)
+            if index < KEYWORD_CONFIGURATION.keywords_shown:
+                css_class = cssClass + ' shown'
+            else:
+                css_class = cssClass + ' not-shown'
+            items.append(zope.formlib.widget.renderElement(
+                tag,
+                cssClass=css_class,
+                contents=xml.sax.saxutils.escape(self.textForValue(term))))
+        return items

@@ -8,8 +8,26 @@ import zeit.cms.tagging.testing
 import zeit.cms.testing
 
 
-class TestWidget(zeit.cms.testing.SeleniumTestCase,
-                 zeit.cms.tagging.testing.TaggingHelper):
+class DisplayWidget(zeit.cms.testing.BrowserTestCase,
+                    zeit.cms.tagging.testing.TaggingHelper):
+
+    def test_customised_widget_renders_a_list_with_shown_items(self):
+        self.setup_tags('t1', 't2', 't3')
+        with mock.patch(
+            'zeit.cms.tagging.interfaces.KeywordConfiguration.keywords_shown',
+            gocept.testing.mock.Property()) as keywords_shown:
+            keywords_shown.return_value = 2
+            self.browser.handleErrors = False
+            self.browser.open(
+                'http://localhost/++skin++vivi/repository/testcontent')
+            self.assertEllipsis(
+                '...<li class=" shown">...'
+                '<li class=" shown">...<li class=" not-shown">...',
+                self.browser.contents)
+
+
+class InputWidget(zeit.cms.testing.SeleniumTestCase,
+                  zeit.cms.tagging.testing.TaggingHelper):
 
     def open_content(self):
         self.open('/repository/testcontent/@@checkout')
