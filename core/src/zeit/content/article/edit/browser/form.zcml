@@ -513,6 +513,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.options-b"
     class=".form.OptionsB"
+    template="options-b.pt"
     permission="zope.View"
     />
 

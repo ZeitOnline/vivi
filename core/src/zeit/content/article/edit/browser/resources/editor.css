@@ -453,7 +453,11 @@
 .create-paragraph p:empty:before,
 .editable p:empty:before,
 .editable h3:empty:before {
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 0 -28px transparent;
+  color: black;
   content: "Geben Sie hier Text ein.";
+  font-weight: bold;
+  padding-left: 18px;
 }
 
 .editable ul:empty:before,
