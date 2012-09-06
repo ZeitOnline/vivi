@@ -241,7 +241,7 @@ class LastPublished(object):
 
     @property
     def time(self):
-        return self.publishinfo.date_last_published.strftime('%M:%H')
+        return self.publishinfo.date_last_published.strftime('%H:%M')
 
 
 class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
