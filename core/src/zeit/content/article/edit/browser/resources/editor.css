@@ -468,6 +468,7 @@
 
 .editing .editable *:empty:before {
   content: "";
+  background: none;
 }
 
 /* Gallery block layouts*/
