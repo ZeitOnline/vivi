@@ -503,6 +503,7 @@
     view=".form.MiscForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.options-b"
+    template="options-b.pt"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"
     weight="2"
