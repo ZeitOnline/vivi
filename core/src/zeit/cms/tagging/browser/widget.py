@@ -120,15 +120,14 @@ class DisplayWidget(grokcore.component.MultiAdapter,
         cssClass = self.cssClass or ''
         if cssClass:
             cssClass += "-item"
+        cssClass += ' shown'
         tag = self.itemTag
         for index, item in enumerate(value):
+            if index >= KEYWORD_CONFIGURATION.keywords_shown:
+                continue
             term = self.vocabulary.getTerm(item)
-            if index < KEYWORD_CONFIGURATION.keywords_shown:
-                css_class = cssClass + ' shown'
-            else:
-                css_class = cssClass + ' not-shown'
             items.append(zope.formlib.widget.renderElement(
                 tag,
-                cssClass=css_class,
+                cssClass=cssClass,
                 contents=xml.sax.saxutils.escape(self.textForValue(term))))
         return items

@@ -22,8 +22,9 @@ class DisplayWidget(zeit.cms.testing.BrowserTestCase,
                 'http://localhost/++skin++vivi/repository/testcontent')
             self.assertEllipsis(
                 '...<li class=" shown">...'
-                '<li class=" shown">...<li class=" not-shown">...',
+                '<li class=" shown">...',
                 self.browser.contents)
+            self.assertNotEllipsis('t3', self.browser.contents)
 
 
 class InputWidget(zeit.cms.testing.SeleniumTestCase,
