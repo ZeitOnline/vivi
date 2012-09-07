@@ -8,6 +8,10 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
         return;
     }
 
+    // XXX it's not neccessary for update-ad-places and update-ads to be event
+    // handlers on body, they could simply be plain functions. We might want to
+    // rewrite that at some point to avoid confusion.
+
     $('body').bind('update-ad-places', function() {
         $.getJSON(application_url + '/@@banner-rules', function(p) {
             ad_places = p;
