@@ -1182,3 +1182,8 @@ iframe.preview {
     height: 500px;
     border: none;
 }
+
+#body .ui-menu-item {
+  background-color: #fafafa;
+  border: 1px solid #eee;
+}
