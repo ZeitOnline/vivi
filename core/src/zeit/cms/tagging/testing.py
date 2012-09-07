@@ -10,7 +10,6 @@ class TaggingHelper(object):
 
     def get_tag(self, code):
         tag = zeit.cms.tagging.tag.Tag(code, code)
-        tag.disabled = False
         return tag
 
     def setup_tags(self, *codes):
