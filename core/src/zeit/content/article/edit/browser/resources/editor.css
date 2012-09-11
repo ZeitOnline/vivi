@@ -994,6 +994,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   width: 9em;
 }
 
+#edit-form-teaser .fieldname-badges {
+  margin-left: 173px;
+}
+
 
 /* Assets-Stuff */
 
