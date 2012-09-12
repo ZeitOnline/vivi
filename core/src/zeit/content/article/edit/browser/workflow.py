@@ -115,11 +115,3 @@ class Checkin(zeit.cms.browser.view.Base):
             zope.interface.Interface,
             name='checkin')
         return checkin(semantic_change=(semantic_change == 'true'))
-
-
-class Foo(object):
-
-    @cachedproperty
-    def can_checkout(self):
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
-        return manager.canCheckout
