@@ -23,7 +23,7 @@ def with_checked_out(content, function, events=True):
 
 
 @contextlib.contextmanager
-def checked_out(content, events=True, semantic_change=False,
+def checked_out(content, events=True, semantic_change=None,
                 ignore_conflicts=False, temporary=True):
     __traceback_info__ = (content.uniqueId,)
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)

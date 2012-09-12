@@ -114,7 +114,7 @@ class CheckoutManager(object):
             return False
         return True
 
-    def checkin(self, event=True, semantic_change=False,
+    def checkin(self, event=True, semantic_change=None,
                 ignore_conflicts=False, publishing=False):
         if not self.canCheckin:
             reason = self.last_validation_error
@@ -123,11 +123,13 @@ class CheckoutManager(object):
             raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
                 self.context.uniqueId, 'Cannot checkin: %s' % reason)
         workingcopy = self.context.__parent__
+        sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
+        if semantic_change is None:
+            semantic_change = sc.has_semantic_change
         if semantic_change:
             dc = zope.dublincore.interfaces.IDCTimes(self.context)
-            lsc = zope.security.proxy.removeSecurityProxy(
-                zeit.cms.content.interfaces.ISemanticChange(self.context))
-            lsc.last_semantic_change = dc.modified
+            sc = zope.security.proxy.removeSecurityProxy(sc)
+            sc.last_semantic_change = dc.modified
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(

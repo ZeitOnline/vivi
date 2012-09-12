@@ -430,6 +430,11 @@ class ISemanticChange(zope.interface.Interface):
         readonly=True,
         default=None)
 
+    has_semantic_change = zope.schema.Bool(
+        title=_('Update last semantic change'),
+        required=False,
+        default=False)
+
 
 class IUUID(zope.interface.Interface):
     """Accessing the uuid of a content object."""

@@ -41,19 +41,21 @@ class ICheckinManager(zope.interface.Interface):
         Note that you need to "call" canCheckin before this is filled in.
         """)
 
-    def checkin(event=True, semantic_change=False, ignore_conflicts=False):
-        """Checkin the managed object and return the checked in object.
+    def checkin(event=True, semantic_change=None, ignore_conflicts=False):
+        """Check in the managed object and return the checked-in object.
 
-        Checking in effeectively removes the object from the working copy.
+        Checking in effectively removes the object from the working copy.
 
         - Issues CheckInEvent if ``event`` is True.
 
-        - If the object's contents was changed in a semantic manner,
-          ``semantic_change`` must be True. The ``last_semantic_change``
-          property will be updated then.
+        - If the context object's contents was changed in a semantic manner,
+          this may be signalled by the ``semantic_change`` parameter. The
+          ``last_semantic_change`` property will be updated in that case.
+          Alternatively, if ``semantic_change`` is None,
+          ``ISemanticChange(context).has_semantic_change`` is inspected.
 
-        - If ``ignore_conflicts`` is True no conflict detection will take
-        place.
+        - If ``ignore_conflicts`` is True, no conflict detection will take
+          place.
 
         """
 
