@@ -272,45 +272,6 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckinEvent object at 0x...>
 <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
 
 
-Semantic changes
-================
-
-When an object is changed semantiacally (i.e. a user changed the text in
-contrast to the system updating references) the ``semantic_change`` argument
-must be True.
-
-Initially there is no semantic change:
-
->>> import zeit.cms.content.interfaces
->>> sc = zeit.cms.content.interfaces.ISemanticChange(content)
->>> sc.last_semantic_change is None
-True
-
-After checking in with an semantic change the date is set:
-
->>> manager = ICheckoutManager(content)
->>> checked_out = manager.checkout()
-Event:...
->>> manager = ICheckinManager(checked_out)
->>> manager.checkin(semantic_change=True)
-Event...
->>> last_semantic_change = sc.last_semantic_change
->>> last_semantic_change
-datetime.datetime(...)
-
-Checking in without having ``semantic_change`` set to True will not change this
-date:
-
->>> manager = ICheckoutManager(content)
->>> checked_out = manager.checkout()
-Event:...
->>> manager = ICheckinManager(checked_out)
->>> manager.checkin()
-Event...
->>> last_semantic_change == sc.last_semantic_change
-True
-
-
 Locking race condition
 ======================
 

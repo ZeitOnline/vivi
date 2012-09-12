@@ -2,8 +2,10 @@
 # See also LICENSE.txt
 
 from zeit.cms.checkout.interfaces import CheckinCheckoutError
-from zeit.cms.checkout.interfaces import IValidateCheckinEvent
 from zeit.cms.checkout.interfaces import ICheckinManager, ICheckoutManager
+from zeit.cms.checkout.interfaces import IValidateCheckinEvent
+import datetime
+import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
@@ -55,3 +57,26 @@ class ValidateCheckinTest(zeit.cms.testing.FunctionalTestCase):
         lsc = zeit.cms.content.interfaces.ISemanticChange(
             self.repository['testcontent'])
         self.assertEqual(changed, lsc.last_semantic_change)
+
+
+class SemanticChangeTest(zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(SemanticChangeTest, self).setUp()
+        self.content = self.repository['testcontent']
+        self.sc = zeit.cms.content.interfaces.ISemanticChange(self.content)
+
+    def test_content_has_no_semantic_change_by_default(self):
+        self.assertIsNone(self.sc.last_semantic_change)
+
+    def test_checkin_with_semantic_change_sets_lsc_date(self):
+        with zeit.cms.checkout.helper.checked_out(
+            self.content, semantic_change=True):
+            pass
+        self.assertIsInstance(self.sc.last_semantic_change, datetime.datetime)
+
+    def test_checkin_without_semantic_change_does_not_change_lsc_date(self):
+        old = self.sc.last_semantic_change
+        with zeit.cms.checkout.helper.checked_out(self.content):
+            pass
+        self.assertEqual(old, self.sc.last_semantic_change)
