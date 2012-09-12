@@ -8,6 +8,7 @@ import zope.app.appsetup.product
 class Source(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
+        super(Source, self).setUp()
         self.product_config = \
             zope.app.appsetup.product.getProductConfiguration('zeit.cms')
 
