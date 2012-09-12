@@ -305,8 +305,8 @@ zeit.content.article.Editable = gocept.Class.extend({
             y = selection.top - offset.top;
         } else {
             document.execCommand('insertHTML',false,'<span id="_find_cursor_position" style="visibility:hidden">|</span>');
-            tmp_el =  $('#_find_cursor_position');
-            pos = tmp_el.position();
+            var tmp_el =  $('#_find_cursor_position');
+            var pos = tmp_el.position();
             y = pos.top;
             tmp_el.remove();
         }
