@@ -111,11 +111,3 @@ class Checkin(zeit.cms.browser.view.Base,
             return self.perform_checkin()
         else:
             return super(Checkin, self).__call__()
-
-
-class Foo(object):
-
-    @cachedproperty
-    def can_checkout(self):
-        manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
-        return manager.canCheckout
