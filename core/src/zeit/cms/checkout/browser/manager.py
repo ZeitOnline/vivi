@@ -66,14 +66,14 @@ class Checkout(zeit.cms.browser.view.Base):
         return zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
 
 
-class Checkin(zeit.cms.browser.view.Base):
+class CheckinAndRedirect(object):
 
-    def __call__(self, semantic_change=True, event=True,
-                 ignore_conflicts=False):
+    def perform_checkin(self, semantic_change=None, event=True,
+                        ignore_conflicts=False):
         try:
             checked_in = self.manager.checkin(
-                semantic_change=bool(semantic_change), event=bool(event),
-                ignore_conflicts=bool(ignore_conflicts))
+                semantic_change=semantic_change, event=event,
+                ignore_conflicts=ignore_conflicts)
         except zeit.cms.repository.interfaces.ConflictError:
             return self._handle_conflict()
         else:
@@ -117,6 +117,14 @@ class Checkin(zeit.cms.browser.view.Base):
     @zope.cachedescriptors.property.Lazy
     def manager(self):
         return zeit.cms.checkout.interfaces.ICheckinManager(self.context)
+
+
+class Checkin(zeit.cms.browser.view.Base, CheckinAndRedirect):
+
+    def __call__(self, semantic_change=True, event=True,
+                 ignore_conflicts=False):
+        return self.perform_checkin(
+            bool(semantic_change), bool(event), bool(ignore_conflicts))
 
 
 class CheckinConflictError(zeit.cms.browser.view.Base):
