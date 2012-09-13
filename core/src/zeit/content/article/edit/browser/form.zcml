@@ -725,4 +725,12 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.semantic-change"
+    class=".workflow.SemanticChange"
+    permission="zope.View"
+    />
+
 </configure>

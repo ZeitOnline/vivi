@@ -8,17 +8,18 @@
     </tal:x>
   </dl>
 
-  <form tal:attributes="action view/@@absolute_url" method="POST">
     <p>
       <tal:translate i18n:translate="">Current timestamp:</tal:translate>
       <span class="timer" />
     </p>
-    <p>
-      <input type="checkbox" name="semantic_change" id="semantic_change"
-             value="true" />
-      <label for="semantic_change" i18n:translate="">
-        Set last semantic change</label>
-    </p>
+
+  <form
+    class="inline-form"
+    tal:attributes="action string:${context/@@absolute_url}/@@edit.form.semantic-change"
+    tal:content="structure context/@@edit.form.semantic-change">
+  </form>
+
+  <form tal:attributes="action view/@@absolute_url" method="POST">
     <p>
       <a class="button warning"
          id="delete_workingcopy"
@@ -28,7 +29,7 @@
       <input
          type="submit" name="checkin" id="checkin" value="Save"
          class="button"
-         tal:attributes="disabled python:None if view.can_checkin else 'disabled'"
+         tal:attributes="disabled python:None if view.canCheckin else 'disabled'"
          i18n:attributes="value" />
     </p>
   </form>

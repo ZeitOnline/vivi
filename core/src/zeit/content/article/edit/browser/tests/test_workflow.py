@@ -21,32 +21,10 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
                 self.repository['article'] = Article()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
+        b.handleErrors = False
         b.open('@@edit.form.checkin')
         self.assert_ellipsis('...Title:...Required input is missing...')
         self.assertTrue(b.getControl('Save').disabled)
-
-    def test_checkin_does_not_set_last_semantic_change_by_default(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@checkout')
-        with mock.patch(
-            'zeit.cms.checkout.browser.manager.Checkin.__call__') as checkin:
-            checkin.return_value = None
-            b.open('@@edit.form.checkin')
-            b.getControl('Save').click()
-            checkin.assert_called_with(semantic_change=False)
-
-    def test_checkin_sets_last_semantic_change_if_checked(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@checkout')
-        with mock.patch(
-            'zeit.cms.checkout.browser.manager.Checkin.__call__') as checkin:
-            checkin.return_value = None
-            b.open('@@edit.form.checkin')
-            b.getControl(name='semantic_change').controls[0].selected = True
-            b.getControl('Save').click()
-            checkin.assert_called_with(semantic_change=True)
 
 
 class CheckinSelenium(
@@ -76,6 +54,44 @@ class CheckinSelenium(
             'document.getElementById("%s").value = "mytitle"' % input_title)
         s.fireEvent(input_title, 'blur')
         s.waitForElementNotPresent(title_error)
+
+    def test_checkin_does_not_set_last_semantic_change_by_default(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            sc = zeit.cms.content.interfaces.ISemanticChange(
+                self.repository['online']['2007']['01']['Somalia'])
+        before = sc.last_semantic_change
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s = self.selenium
+        s.waitForElementPresent('id=checkin')
+        s.clickAndWait('id=checkin')
+        self.assertIn('repository', s.getLocation())
+        self.assertEqual(before, sc.last_semantic_change)
+
+    def test_checkin_sets_last_semantic_change_if_checked(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            sc = zeit.cms.content.interfaces.ISemanticChange(
+                self.repository['online']['2007']['01']['Somalia'])
+        before = sc.last_semantic_change
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s = self.selenium
+        s.waitForElementPresent('id=checkin')
+        s.click('id=semantic-change.has_semantic_change')
+        s.waitForElementNotPresent('css=.field.dirty')
+        s.assertValue('id=semantic-change.has_semantic_change', 'on')
+        s.clickAndWait('id=checkin')
+        self.assertIn('repository', s.getLocation())
+        self.assertNotEqual(before, sc.last_semantic_change)
+
+    def test_semantic_change_checkbox_is_saved(self):
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s = self.selenium
+        s.waitForElementPresent('id=checkin')
+        s.click('id=semantic-change.has_semantic_change')
+        s.waitForElementNotPresent('css=.field.dirty')
+        # click something else to trigger a reload of the checkin form
+        s.click('id=publish.urgent')
+        s.waitForElementNotPresent('css=.field.dirty')
+        s.assertValue('id=semantic-change.has_semantic_change', 'on')
 
 
 class WorkflowEndToEnd(

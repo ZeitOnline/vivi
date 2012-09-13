@@ -6,6 +6,7 @@ from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.workflow.interfaces import IReview
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.view
+import zeit.cms.checkout.browser.manager
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.workflow.interfaces
@@ -21,7 +22,7 @@ class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
 
 
 class Publish(zeit.edit.browser.form.InlineForm,
-             zeit.workflow.browser.form.WorkflowActions):
+              zeit.workflow.browser.form.WorkflowActions):
 
     legend = _('')
     prefix = 'publish'
@@ -58,27 +59,29 @@ class ExportCDS(zeit.edit.browser.form.InlineForm,
             zeit.content.article.interfaces.ICDSWorkflow))
 
 
-class Checkin(zeit.cms.browser.view.Base):
+class SemanticChange(zeit.edit.browser.form.InlineForm):
 
-    @cachedproperty
-    def checkin_manager(self):
-        return zeit.cms.checkout.interfaces.ICheckinManager(self.context)
+    legend = _('')
+    prefix = 'semantic-change'
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ISemanticChange).select(
+        'has_semantic_change')
 
-    @cachedproperty
-    def can_checkin(self):
-        return self.checkin_manager.canCheckin
+
+class Checkin(zeit.cms.browser.view.Base,
+              zeit.cms.checkout.browser.manager.CheckinAndRedirect):
 
     @cachedproperty
     def checkin_errors(self):
-        self.can_checkin  # cause last_validation_error to be populated
-        if (not self.checkin_manager.last_validation_error
+        self.canCheckin  # cause last_validation_error to be populated
+        if (not self.manager.last_validation_error
             # XXX stopgap so it doesn't break, see #10851
             or not isinstance(
-                self.checkin_manager.last_validation_error, list)):
+                self.manager.last_validation_error, list)):
             return []
 
         result = []
-        for name, error in self.checkin_manager.last_validation_error:
+        for name, error in self.manager.last_validation_error:
             # adapted from zope.formlib.form.FormBase.error_views
             view = zope.component.getMultiAdapter(
                 (error, self.request),
@@ -88,10 +91,6 @@ class Checkin(zeit.cms.browser.view.Base):
                 title = zope.i18n.translate(title, context=self.request)
             result.append(dict(name=title, snippet=view.snippet()))
         return result
-
-    @property
-    def checkin_url(self):
-        return self.url(name='@@checkin')
 
     @cachedproperty
     def can_checkout(self):
@@ -107,14 +106,11 @@ class Checkin(zeit.cms.browser.view.Base):
     def is_new(self):
         return IAutomaticallyRenameable(self.context).renameable
 
-    def __call__(self, semantic_change=False):
-        if self.request.method != 'POST':
+    def __call__(self):
+        if self.request.method == 'POST':
+            return self.perform_checkin()
+        else:
             return super(Checkin, self).__call__()
-        checkin = zope.component.getMultiAdapter(
-            (self.context, self.request),
-            zope.interface.Interface,
-            name='checkin')
-        return checkin(semantic_change=(semantic_change == 'true'))
 
 
 class Foo(object):
