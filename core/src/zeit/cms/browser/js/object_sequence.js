@@ -96,7 +96,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             li.innerHTML = result;
             li.insertBefore(
                 // XXX proper i18n
-                A({href: index, rel: "remove", title: "Entfernen"}),
+                A({href: index, rel: "remove", title: "Entfernen", text: 'löschen'}),
                 li.firstChild);
             jQuery(li).trigger_fragment_ready();
             return result;
