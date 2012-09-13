@@ -22,5 +22,6 @@ def test_suite():
         'copyright.txt',
         'imagefolder.txt',
         'master-image.txt',
+        package='zeit.content.image.browser',
         checker=checker,
         layer=zeit.content.image.tests.ImageLayer)
