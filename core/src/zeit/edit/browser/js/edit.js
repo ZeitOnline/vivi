@@ -172,6 +172,7 @@ zeit.edit.Editor = gocept.Class.extend({
 });
 
 
+}());
 
 
 (function() {
@@ -251,32 +252,33 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
         });
 }());
 
+(function($) {
+
 // XXX refactor the following two functions to use, e.g., an element attribute
 // that specifies the factory, instead of doing two similar loops (#11016)
 
-var setup_views = function() {
-    forEach($$('.inline-view'), function(container) {
-        if (MochiKit.DOM.hasElementClass(container, 'setup-done')) {
+var setup_views = function(parent) {
+    $('.inline-view', parent).each(function(i, container) {
+        if ($(container).hasClass('setup-done')) {
             return;
         }
+        $(container).addClass('setup-done');
         var url = container.getAttribute('cms:href');
         container.view = new zeit.cms.View(url, container);
         container.view.render();
-        MochiKit.DOM.addElementClass(container, 'setup-done');
     });
 };
 
 
-var wire_forms = function() {
-    forEach($$('.inline-form'), function(container) {
-        if (MochiKit.DOM.hasElementClass(container, 'wired')) {
+var wire_forms = function(parent) {
+    $('.inline-form', parent).each(function(i, container) {
+        if ($(container).hasClass('wired')) {
             return;
         }
-        //XXX need to make it context aware
+        $(container).addClass('wired');
         var url = container.getAttribute('action');
         container.form = new zeit.cms.SubPageForm(
             url, container, {save_on_change: true, load_immediately: false});
-        MochiKit.DOM.addElementClass(container, 'wired');
     });
 };
 
@@ -286,8 +288,13 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     wire_forms();
 });
 
+$(document).bind('fragment-ready', function(event) {
+    var parent = event.__target;
+    setup_views(parent);
+    wire_forms(parent);
+});
 
-}());
+}(jQuery));
 
 
 zeit.edit.LoadAndReload = gocept.Class.extend({
