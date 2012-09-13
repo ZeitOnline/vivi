@@ -1,11 +1,8 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zope.testing import doctest
 import datetime
-import os
 import re
-import unittest
 import zeit.cms.testing
 import zeit.content.image.tests
 import zope.testing.renormalizing
@@ -20,12 +17,10 @@ checker = zope.testing.renormalizing.RENormalizing([
 
 
 def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
+    return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
         'copyright.txt',
         'imagefolder.txt',
         'master-image.txt',
         checker=checker,
-        layer=zeit.content.image.tests.ImageLayer))
-    return suite
+        layer=zeit.content.image.tests.ImageLayer)
