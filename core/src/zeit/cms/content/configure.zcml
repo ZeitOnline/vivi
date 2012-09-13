@@ -149,6 +149,14 @@
     <require interface=".interfaces.ISemanticChange"
              permission="zope.View" />
   </class>
+  <class class=".semanticchange.SemanticChangeLocal">
+    <require
+      interface=".interfaces.ISemanticChange"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.ISemanticChange"
+      permission="zope.View" />
+  </class>
   <subscriber handler=".semanticchange.set_semantic_change_on_create" />
 
   <!-- memo -->
