@@ -6,12 +6,13 @@
 
   <adapter factory=".image.imagefolder_browse_location" />
   <adapter factory=".image.imageadapter_browse_location" />
-  <resourceLibrary name="zeit.content.image">
-    <directory source="resources" />
-  </resourceLibrary>
 
-  <resourceLibrary name="zeit.content.image.drag-images" require="zeit.cms">
-    <directory source="resources" include="drag-images.js" />
+  <resourceLibrary name="zeit.content.image" require="zeit.cms">
+    <directory
+      source="resources"
+      include="drag-images.js
+               details.js"
+      />
   </resourceLibrary>
 
   <browser:page

@@ -1,6 +1,6 @@
 <metal:use-macro use-macro="context/@@standard_macros/page">
   <metal:data fill-slot="body">
-    <tal:replace replace="resource_library:zeit.content.image.drag-images" />
+    <tal:replace replace="resource_library:zeit.content.image" />
     <div id="edit-form" class="image-list">
       <div class="image"
         tal:repeat="item view/images">

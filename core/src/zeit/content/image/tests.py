@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
+import gocept.selenium.ztk
 import pkg_resources
 import unittest
 import zeit.cms.interfaces
@@ -15,6 +16,8 @@ import zope.component
 ImageLayer = zeit.cms.testing.ZCMLLayer(
     pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
     __name__, 'ImageLayer', allow_teardown=True)
+
+selenium_layer = gocept.selenium.ztk.Layer(ImageLayer)
 
 
 class TestImageMetadataAcquisition(zeit.cms.testing.FunctionalTestCase):
