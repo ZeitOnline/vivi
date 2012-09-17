@@ -3,6 +3,8 @@
   <div class="overlay-anchor">
     <img tal:replace="structure context/@@preview/tag" />
     <div class="overlay"><div class="overlay-position">
+      <a class="button remove-button" href="#" rel="remove"
+         title="Entfernen" text="löschen">löschen</a>
       <a class="button edit-button" i18n:translate="" target="_blank"
          tal:attributes="href string:${context/@@absolute_url}/@@edit.html">edit</a>
     </div></div>
