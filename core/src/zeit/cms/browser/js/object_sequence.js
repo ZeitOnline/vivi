@@ -330,7 +330,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             d.addCallback(function(result) {
                 self.details.innerHTML = result;
                 self.details.insertBefore(
-                    A({href: '#', rel: "remove", title: "Entfernen"}),
+                    A({href: '#', rel: "remove", title: "Entfernen", text: 'löschen'}),
                     self.details.firstChild);
                 jQuery(self.details).trigger_fragment_ready();
                 return result;
