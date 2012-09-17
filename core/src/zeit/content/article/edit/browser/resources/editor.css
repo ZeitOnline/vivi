@@ -525,6 +525,19 @@
 	top: 5px;
 }
 
+.object-details .image_details a[rel="remove"] {
+  float: right;
+  margin-bottom: 12px;
+  margin-right: 12px;
+  margin-top: 0;
+  position: relative;
+}
+
+.object-details .image_details a.edit-button {
+  float: left;
+  margin-left: 12px;
+}
+
 /* following two rules should be replaced, once sprite is ready*/
 
 .object-details .gallery_details .gallery_details_controls .gallery_details_prev {
@@ -996,6 +1009,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #edit-form-teaser .fieldname-badges {
   margin-left: 173px;
+}
+
+#edit-form-teaser .objectsequencewidget li a[rel="remove"] {
+  margin-top: 28px;
 }
 
 
