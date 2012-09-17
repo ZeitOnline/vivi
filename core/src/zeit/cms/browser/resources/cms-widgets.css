@@ -497,16 +497,16 @@ table.properties textarea {
 
 .objectsequencewidget li a[rel="remove"],
 .drop-object-widget .object-reference a[rel="remove"] {
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 1px -416px #FFFFFF;
-  border: 1px solid #000000;
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 1px -416px #000;
   border-radius: 5px 5px 5px 5px;
-  color: #000000;
+  border: 1px solid #000000;
+  color: #fff;
   cursor: pointer;
-  display: block;
+  display: none;
   height: 16px;
-  margin-right: 1.5em;
-  margin-top: 2.5em;
-  opacity: 0.7;
+  margin-right: 18px;
+  margin-top: 48px;
+  opacity: 0.8;
   padding-left: 2em;
   padding-right: 1em;
   padding-top: 0.3em;
@@ -515,8 +515,13 @@ table.properties textarea {
   top: 0;
 }
 
+/*
+ * TODO: add "display: block" for other object references as well.
+ *.object-reference:hover a[rel="remove"],
+ */
 .objectsequencewidget li:hover a[rel="remove"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -446px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -446px #000;
+  display: block;
 }
 
 .object-widget.droppable-active  a[rel="remove"] {

@@ -144,13 +144,13 @@
 .overlay-anchor:hover .overlay {
     display: inline-block;
     position: absolute;
-    top: 5%;
-    left: 10%;
+    top: 12px;
+    left: 0;
+    width: 100%;
 }
 
 .overlay-anchor:hover .overlay .overlay-position {
-    top: -50%;
-    left: -50%;
+    width: 100%;
 }
 
 .editable-area .overlay-position .edit-button {
@@ -159,4 +159,8 @@
     opacity: 0.8;
     padding-left: 2em;
     padding-right: 2em;
+}
+
+.editable-area .overlay-position a[rel="remove"] {
+    display: block;
 }
