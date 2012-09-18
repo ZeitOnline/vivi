@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.view
 import zeit.edit.browser.view
 import zeit.edit.interfaces
 import zope.component
@@ -14,7 +15,7 @@ class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
     def __init__(self, context, request, view):
         super(BlockViewletManager, self).__init__(context, request, view)
         self.validation_class, self.validation_messages = (
-          zeit.edit.browser.view.validate(self.context))
+            zeit.edit.browser.view.validate(self.context))
 
     @property
     def css_class(self):
@@ -55,3 +56,16 @@ class Delete(zeit.edit.browser.view.Action):
         self.signal(
             None, 'reload', self.context.__name__, self.url(self.context,
                                                             '@@contents'))
+
+
+class View(zeit.cms.browser.view.Base):
+
+    @property
+    def factory(self):
+        return zope.component.getAdapter(
+            zeit.edit.interfaces.IArea(self.context),
+            zeit.edit.interfaces.IElementFactory,
+            name=self.context.type)
+
+    def title(self):
+        return self.factory.title

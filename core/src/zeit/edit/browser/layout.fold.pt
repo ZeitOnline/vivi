@@ -4,6 +4,9 @@
      cms:cp-module="zeit.edit.fold"
      i18n:attributes="title">
     <span class="action-title"
-          i18n:translate="">Fold</span>
+      i18n:translate="">Fold</span>
   </a>
+  <span
+    tal:attributes="class string:module-icon module-icon-${context/type}"
+    tal:content="view/title" />
 </tal:block>
