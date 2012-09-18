@@ -726,14 +726,22 @@ form[action$="asset-badges"] .value label {
   width: 42px;
 }
 
+.module-icon {
+  vertical-align: middle;
+  padding-left: 60px;
+}
+
+.module-icon-video,
 form[action$="asset-badges"] .value label[for="asset-badges\.badges\.0"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -649px transparent;
 }
 
+.module-icon-image,
 form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -709px transparent;
 }
 
+.module-icon-audio,
 form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -769px transparent;
 }
