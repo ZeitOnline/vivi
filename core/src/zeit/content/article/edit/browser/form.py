@@ -400,6 +400,9 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(ICommonMetadata).select(
         'year', 'volume', 'page', 'printRessort')
 
+    def setUpWidgets(self, *args, **kw):
+        super(OptionsB, self).setUpWidgets(*args, **kw)
+        self.widgets['page'].setRenderedValue('n/a')
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
 
