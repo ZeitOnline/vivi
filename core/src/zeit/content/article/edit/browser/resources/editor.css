@@ -971,6 +971,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #edit-form-teaser .inline-form .fieldname-images {
   margin: 5px 5px 5px 0;
+  min-height: 220px;
 }
 
 #edit-form-teaser .inline-form .object-details {
@@ -1000,10 +1001,6 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #teaser-image\.images\.url {
   width: 9em;
-}
-
-#edit-form-teaser .fieldname-badges {
-  margin-left: 173px;
 }
 
 
