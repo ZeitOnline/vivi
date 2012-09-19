@@ -136,12 +136,12 @@
 }
 
 .overlay-anchor,
-.overlay-anchor:hover .overlay .overlay-position {
+.object-reference:hover .overlay .overlay-position {
     display: inline-block;
     position: relative;
 }
 
-.overlay-anchor:hover .overlay {
+.object-reference:hover .overlay {
     display: inline-block;
     position: absolute;
     top: 12px;
@@ -159,8 +159,4 @@
     opacity: 0.8;
     padding-left: 2em;
     padding-right: 2em;
-}
-
-.editable-area .overlay-position a[rel="remove"] {
-    display: block;
 }
