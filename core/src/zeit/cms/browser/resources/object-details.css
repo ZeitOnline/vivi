@@ -136,21 +136,21 @@
 }
 
 .overlay-anchor,
-.overlay-anchor:hover .overlay .overlay-position {
+.object-reference:hover .overlay .overlay-position {
     display: inline-block;
     position: relative;
 }
 
-.overlay-anchor:hover .overlay {
+.object-reference:hover .overlay {
     display: inline-block;
     position: absolute;
-    top: 5%;
-    left: 10%;
+    top: 12px;
+    left: 0;
+    width: 100%;
 }
 
 .overlay-anchor:hover .overlay .overlay-position {
-    top: -50%;
-    left: -50%;
+    width: 100%;
 }
 
 .editable-area .overlay-position .edit-button {
