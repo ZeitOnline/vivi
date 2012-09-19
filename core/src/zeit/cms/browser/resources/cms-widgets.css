@@ -498,7 +498,7 @@ table.properties textarea {
 .objectsequencewidget li a[rel="remove"],
 .drop-object-widget .object-reference a[rel="remove"] {
   background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll right -422px;
-  background-color
+  background-color: rgba(0,0,0,0.6);
   border-radius: 5px 5px 5px 5px;
   border: 1px solid #000000;
   color: #fff;
@@ -507,7 +507,6 @@ table.properties textarea {
   height: 18px;
   margin-right: 18px;
   margin-top: 49px;
-  opacity: 0.8;
   padding-left: 1em;
   padding-right: 2.5em;
   padding-top: 0.4em;
@@ -518,14 +517,12 @@ table.properties textarea {
 
 .object-reference:hover a[rel="remove"],
 .objectsequencewidget li:hover a[rel="remove"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll right -422px #000;
   display: block;
 }
 
 .object-reference a[rel="remove"]:hover,
 .objectsequencewidget li a[rel="remove"]:hover,
 .drop-object-widget .object-reference a[rel="remove"].button:hover {
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll right -422px #000;
   border: 1px solid #fff;
 }
 
