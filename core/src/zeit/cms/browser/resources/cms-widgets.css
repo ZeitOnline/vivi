@@ -564,7 +564,7 @@ table.properties textarea {
 .object-widget a.button[rel="configure_search"]:before {
   content: "";
   display: inline-block;
-  width: 1em;
+  width: 2em;
 }
 
 .object-widget a[rel="configure_search"]:hover {
