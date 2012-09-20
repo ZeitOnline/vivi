@@ -1,0 +1,4 @@
+    <p>
+      <tal:translate i18n:translate="">Current timestamp:</tal:translate>
+      <span class="timer" />
+    </p>

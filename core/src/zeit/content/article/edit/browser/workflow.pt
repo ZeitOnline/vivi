@@ -1,17 +1,8 @@
 <fieldset i18n:domain="zeit.cms">
   <tal:block condition="not: view/can_checkout">
-  <div tal:condition="view/checkin_errors" i18n:translate="">The following errors need to be corrected before checkin:</div>
-  <dl class="errors">
-    <tal:x repeat="error view/checkin_errors">
-      <dt tal:condition="error/name" tal:content="string:${error/name}: " />
-      <dd tal:content="structure error/snippet" />
-    </tal:x>
-  </dl>
 
-    <p>
-      <tal:translate i18n:translate="">Current timestamp:</tal:translate>
-      <span class="timer" />
-    </p>
+  <tal:block replace="structure context/@@edit.form.checkin-errors" />
+  <tal:block replace="structure context/@@edit.form.timestamp" />
 
   <form
     class="inline-form"

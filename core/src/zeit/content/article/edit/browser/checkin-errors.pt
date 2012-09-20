@@ -1,0 +1,10 @@
+<tal:block define="checkin_errors view/checkin_errors"
+           condition="checkin_errors">
+  <div i18n:translate="">The following errors need to be corrected before checkin:</div>
+  <dl class="errors">
+    <tal:x repeat="error checkin_errors">
+      <dt tal:condition="error/name" tal:content="string:${error/name}: " />
+      <dd tal:content="structure error/snippet" />
+    </tal:x>
+  </dl>
+</tal:block>
