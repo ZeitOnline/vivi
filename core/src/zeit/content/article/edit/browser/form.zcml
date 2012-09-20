@@ -709,7 +709,7 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.checkin-errors"
-    class=".workflow.Checkin"
+    class=".workflow.CheckinErrors"
     template="checkin-errors.pt"
     permission="zope.View"
     />

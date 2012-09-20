@@ -68,13 +68,13 @@ class SemanticChange(zeit.edit.browser.form.InlineForm):
         'has_semantic_change')
 
 
-class Checkin(zeit.cms.browser.view.Base,
-              zeit.cms.checkout.browser.manager.CheckinAndRedirect):
+class CheckinErrors(object):
 
     @cachedproperty
     def checkin_errors(self):
-        self.canCheckin  # cause last_validation_error to be populated
-        errors = self.manager.last_validation_error
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
+        manager.canCheckin  # cause last_validation_error to be populated
+        errors = manager.last_validation_error
         if (not errors
             # XXX stopgap so it doesn't break, see #10851
             or not isinstance(errors, list)):
@@ -91,6 +91,10 @@ class Checkin(zeit.cms.browser.view.Base,
                 title = zope.i18n.translate(title, context=self.request)
             result.append(dict(name=title, snippet=view.snippet()))
         return result
+
+
+class Checkin(zeit.cms.browser.view.Base,
+              zeit.cms.checkout.browser.manager.CheckinAndRedirect):
 
     @cachedproperty
     def can_checkout(self):
