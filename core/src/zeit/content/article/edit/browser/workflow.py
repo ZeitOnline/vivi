@@ -74,14 +74,14 @@ class Checkin(zeit.cms.browser.view.Base,
     @cachedproperty
     def checkin_errors(self):
         self.canCheckin  # cause last_validation_error to be populated
-        if (not self.manager.last_validation_error
+        errors = self.manager.last_validation_error
+        if (not errors
             # XXX stopgap so it doesn't break, see #10851
-            or not isinstance(
-                self.manager.last_validation_error, list)):
+            or not isinstance(errors, list)):
             return []
 
         result = []
-        for name, error in self.manager.last_validation_error:
+        for name, error in errors:
             # adapted from zope.formlib.form.FormBase.error_views
             view = zope.component.getMultiAdapter(
                 (error, self.request),
