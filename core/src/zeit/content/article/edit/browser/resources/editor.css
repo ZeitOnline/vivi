@@ -633,8 +633,21 @@ fieldset.table .label {
   width: 20em;
 }
 
-#edit-form-filename fieldset.table .label {
-  width: 10em;
+#edit-form-filename fieldset.table .fieldname-rename_to.error .label {
+  border: 1px solid red;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 2px red;
+  margin-top: 23px;
+  padding: 8px;
+}
+
+.fieldname-rename_to.error div.empty {
+  background: url("bgerrortriangle.png") no-repeat scroll 0 0 transparent;
+  height: 10px;
+  left: 12px;
+  position: absolute;
+  top: 20px;
+  width: 14px;
 }
 
 fieldset.table label {
