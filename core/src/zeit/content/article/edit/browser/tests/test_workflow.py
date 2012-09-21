@@ -75,9 +75,9 @@ class CheckinSelenium(
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
-        s.click('id=semantic-change.has_semantic_change')
+        s.click('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.field.dirty')
-        s.assertValue('id=semantic-change.has_semantic_change', 'on')
+        s.assertValue('id=publish.has_semantic_change', 'on')
         s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
         self.assertNotEqual(before, sc.last_semantic_change)
@@ -86,12 +86,12 @@ class CheckinSelenium(
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
-        s.click('id=semantic-change.has_semantic_change')
+        s.click('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.field.dirty')
         # click something else to trigger a reload of the checkin form
         s.click('id=publish.urgent')
         s.waitForElementNotPresent('css=.field.dirty')
-        s.assertValue('id=semantic-change.has_semantic_change', 'on')
+        s.assertValue('id=publish.has_semantic_change', 'on')
 
 
 class WorkflowEndToEnd(
