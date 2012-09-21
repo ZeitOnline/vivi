@@ -18,7 +18,7 @@
     <div class="widget"
          tal:condition="widget/reversed|nothing"
          tal:content="structure widget"/>
-      <div class="label">
+      <div class="label" tal:condition="widget/label>
         <label tal:attributes="
                cms:tooltip widget/hint;
                for widget/name">
