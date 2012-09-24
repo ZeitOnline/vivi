@@ -629,16 +629,22 @@ fieldset.table .field {
   clear: both;
 }
 
-fieldset.table .label {
-  width: 20em;
+#edit-form-filename fieldset.table .fieldname-rename_to.error .label span.error {
+  border: 1px solid #990000;
+  border-radius: 3px 3px 3px 3px;
+  box-shadow: 1px 1px 2px #aaa;
+  margin-top: 23px;
+  padding: 8px;
+  display: block;
+  color: #990000;
 }
 
 #edit-form-filename fieldset.table .fieldname-rename_to.error .label {
-  border: 1px solid red;
-  border-radius: 3px 3px 3px 3px;
-  box-shadow: 1px 1px 2px red;
-  margin-top: 23px;
-  padding: 8px;
+  overflow: visible;
+}
+
+#edit-form-filename fieldset.table .fieldname-rename_to.error .label label {
+  display: none;
 }
 
 .fieldname-rename_to.error div.empty {
@@ -881,10 +887,6 @@ form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
 
 .inline-form.wired legend {
   padding-left:0px;
-}
-
-#edit-form-filename .field .label {
-  width:12em !important;
 }
 
 div[id^="assets"] {
