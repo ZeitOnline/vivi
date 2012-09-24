@@ -15,7 +15,7 @@
 
     <div tal:repeat="widget view/widgets"
          tal:attributes="class widget/field_css_class">
-    <div class="widget"
+      <div class="widget"
          tal:condition="widget/reversed|nothing"
          tal:content="structure widget"/>
       <div class="label">
