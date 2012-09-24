@@ -29,7 +29,7 @@
              tal:content="structure widget/error">
           error
         </div>
-        <div class="empty" />
+        <div class="empty"></div>
       </div>
       <div class="widget"
            tal:condition="not:widget/reversed|nothing"
