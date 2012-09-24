@@ -62,3 +62,28 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
         b.open('@@contents')
         self.assertEllipsis(
             '...zuletzt veröffentlicht am...von...zope.user...', b.contents)
+
+
+class PageNumberDisplay(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.ArticleLayer
+
+    def test_no_page_displays_as_not_applicable(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.options-b')
+        self.assertEllipsis('...Page...n/a...', b.contents)
+
+    def test_existing_page_number_is_displayed(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                article = zeit.cms.interfaces.ICMSContent(
+                    'http://xml.zeit.de/online/2007/01/Somalia')
+                with zeit.cms.checkout.helper.checked_out(article) as co:
+                    co.page = '4711'
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/online/2007/01/Somalia/@@checkout')
+        b.open('@@edit.form.options-b')
+        self.assertEllipsis('...Page...4711...', b.contents)
