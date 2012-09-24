@@ -21,10 +21,8 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
                 self.repository['article'] = Article()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
-        b.handleErrors = False
-        b.open('@@edit.form.checkin')
+        b.open('@@edit.form.checkin-errors')
         self.assert_ellipsis('...Title:...Required input is missing...')
-        self.assertTrue(b.getControl('Save').disabled)
 
 
 class CheckinSelenium(
