@@ -303,12 +303,6 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (selection) {
             var offset = $(".rte-toolbar").parent().offset();
             y = selection.top - offset.top;
-        } else {
-            document.execCommand('insertHTML',false,'<span id="_find_cursor_position" style="visibility:hidden">|</span>');
-            var tmp_el =  $('#_find_cursor_position');
-            var pos = tmp_el.position();
-            y = pos.top;
-            tmp_el.remove();
         }
         var move = {
             duration: 0.5,
