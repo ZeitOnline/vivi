@@ -1,10 +1,32 @@
-//
-// Define context managers
-//
+/**
+ * A Context associates lifecycle events with a listener.
+ *
+ * Listeners need to implement methods ``connect`` and ``disconnect``, and can
+ * then instantiate a Context, passing themselves to it.
+ * The Context then calls listener.connect/disconnect at the appropriate times.
+ *
+ * XXX The naming of activate/deactivate which call connect/disconnect is
+ * confusing.
+ *
+ * XXX This reminds me of listeners in Java AWT, whose API is much cleaner:
+ * my_window.addListener(foo) means, my_window will call methods like
+ * onMaximize, onClose on foo at appropriate times.
+ * I realize that determining the source object is half the purpose here (e.g.
+ * in the lightbox context case), but I feel this whole business here has too
+ * much, overly complicated mechanics.
+ */
 
 zeit.cms.declare_namespace('zeit.edit.context');
 
 
+/**
+ * The Context's API consist of
+ *
+ * - init(): register additional event handlers
+ * - activate(): call listener.connect
+ * - deactivate(): call listener.deconnect
+ * - destroy(): tear down our event handlers
+ */
 zeit.edit.context.Base = gocept.Class.extend({
 
     __name__: 'zeit.edit.context.Base',
@@ -27,6 +49,10 @@ zeit.edit.context.Base = gocept.Class.extend({
         self.events.push(MochiKit.Signal.connect(
             zeit.edit.editor, 'single-context-end',
             self, self.activate));
+    },
+
+    init: function() {
+        // may be defined in subclass
     },
 
     destroy: function() {
@@ -71,8 +97,8 @@ zeit.edit.context.Editor = zeit.edit.context.Base.extend({
 
 
 zeit.edit.context.Lightbox = zeit.edit.context.Base.extend({
-    // Context for a component running *in* a lightbox.
-    // The component needs to declare "parent".
+    // Context for a listener running *in* a lightbox.
+    // The listener needs to declare "parent".
 
     __name__: 'zeit.edit.context.Lightbox',
 
@@ -96,6 +122,10 @@ zeit.edit.context.Lightbox = zeit.edit.context.Base.extend({
 });
 
 
+/**
+ * Helper class that instantiates a context automatically, from the
+ * class name given in self.context.
+ */
 zeit.edit.context.ContentActionBase = gocept.Class.extend({
 
     __name__: 'zeit.edit.ContentActionBase',
@@ -111,6 +141,10 @@ zeit.edit.context.ContentActionBase = gocept.Class.extend({
         } else {
             new self.context(self);
         }
+    },
+
+    connect: function() {
+        // define in subclass
     },
 
     disconnect: function() {
