@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.interfaces import ICMSContent
-import mock
+import gocept.testing.mock
 import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -41,17 +41,19 @@ class TestConflicts(zeit.cms.testing.FunctionalTestCase):
 
 class UniqueIdToContent(unittest.TestCase):
 
-    @mock.patch('zeit.cms.interfaces.ICMSContent')
-    def test_first_www_is_replaced(self, ICMSContent):
+    def setUp(self):
+        self.patches = gocept.testing.mock.Patches()
+        self.cmscontent = self.patches.add('zeit.cms.interfaces.ICMSContent')
+
+    def test_first_www_is_replaced(self):
         from zeit.cms.repository.repository import live_url_to_content
         live_url_to_content('http://www.foo.bar/test')
-        ICMSContent.assert_called_with('http://xml.foo.bar/test')
+        self.cmscontent.assert_called_with('http://xml.foo.bar/test')
 
-    @mock.patch('zeit.cms.interfaces.ICMSContent')
-    def test_another_www_is_not_replaced(self, ICMSContent):
+    def test_another_www_is_not_replaced(self):
         from zeit.cms.repository.repository import live_url_to_content
         live_url_to_content('http://www.foo.bar/www/test')
-        ICMSContent.assert_called_with('http://xml.foo.bar/www/test')
+        self.cmscontent.assert_called_with('http://xml.foo.bar/www/test')
 
 
 class UniqueIdToContentIntegration(zeit.cms.testing.FunctionalTestCase):
