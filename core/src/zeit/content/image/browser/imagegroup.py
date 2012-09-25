@@ -152,31 +152,36 @@ class Metadata(object):
                 yield obj
 
 
-def deliver_thumbnail(obj, type):
-    if not obj.context.keys():
-         raise zope.publisher.interfaces.NotFound(
-             obj.context, obj.__name__, obj.request)
-    for name in obj.context.keys():
-        if obj.first_choice.match(name):
-            break
-    else:
-        name = obj.context.keys()[0]
-    view = zope.component.getMultiAdapter(
-        (obj.context[name], obj.request), name=type)
-    return view()
-
-
 class Thumbnail(object):
 
     first_choice = re.compile(r'.*-\d+x\d+')
+    view_name = 'thumbnail'
 
     def __call__(self):
-        return deliver_thumbnail(self, 'thumbnail')
+        return self.image_view()
+
+    def tag(self):
+        return self.image_view.tag()
+
+    @property
+    def image_view(self):
+        view = zope.component.getMultiAdapter(
+            (self._find_image(), self.request), name=self.view_name)
+        return view
+
+    def _find_image(self):
+        if not self.context.keys():
+            raise zope.publisher.interfaces.NotFound(
+                self.context, self.__name__, self.request)
+        for name in self.context.keys():
+            if self.first_choice.match(name):
+                break
+        else:
+            name = self.context.keys()[0]
+        return self.context[name]
 
 
-class ThumbnailLarge(object):
+class ThumbnailLarge(Thumbnail):
 
     first_choice = re.compile(r'.*-[5-9][0-9]+x\d+')
-    
-    def __call__(self):
-        return deliver_thumbnail(self, 'preview')
+    view_name = 'preview'

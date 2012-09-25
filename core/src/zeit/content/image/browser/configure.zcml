@@ -239,6 +239,13 @@
     />
 
   <browser:page
+    name="preview"
+    for="zeit.content.image.interfaces.IImageGroup"
+    permission="zope.View"
+    class=".imagegroup.ThumbnailLarge"
+    /> 
+
+  <browser:page
     name="drag-pane.html"
     for="..interfaces.IImageGroup"
     class=".image.ImageView"
@@ -288,6 +295,15 @@
 
   <browser:page
     for="zeit.content.image.interfaces.IImage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-body"
+    class=".image.ImageView"
+    template="image-details.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.image.interfaces.IImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="object-details-body"
     class=".image.ImageView"
