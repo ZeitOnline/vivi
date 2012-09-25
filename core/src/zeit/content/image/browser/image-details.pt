@@ -4,7 +4,7 @@
     <img tal:replace="structure context/@@preview/tag" />
     <div class="overlay"><div class="overlay-position">
       <a class="button edit-button" i18n:translate="" target="_blank"
-         tal:attributes="href string:${context/@@absolute_url}/@@edit.html">edit</a>
+         tal:attributes="href string:${context/@@absolute_url}">edit</a>
     </div></div>
   </div>
 
