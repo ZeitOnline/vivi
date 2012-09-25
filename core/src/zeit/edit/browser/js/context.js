@@ -9,14 +9,14 @@ zeit.edit.context.Base = gocept.Class.extend({
 
     __name__: 'zeit.edit.context.Base',
 
-    construct: function(context_aware) {
+    construct: function(listener) {
         var self = this;
-        log("Creating " + self.__name__ + " for " + context_aware.__name__);
-        self.context_aware = context_aware;
-        if (!isUndefinedOrNull(context_aware.__context__)) {
+        log("Creating " + self.__name__ + " for " + listener.__name__);
+        self.listener = listener;
+        if (!isUndefinedOrNull(listener.__context__)) {
             throw new Error("Trying to add new context.");
         }
-        context_aware.__context__ = self;
+        listener.__context__ = self;
         self.events = [];
 
         self.init();
@@ -34,20 +34,20 @@ zeit.edit.context.Base = gocept.Class.extend({
         while(self.events.length) {
           MochiKit.Signal.disconnect(self.events.pop());
         }
-        self.context_aware.__context__ = null;
-        self.context_aware = null;
+        self.listener.__context__ = null;
+        self.listener = null;
     },
 
     activate: function() {
         var self = this;
-        log('Activating ' + self.context_aware.__name__);
-        self.context_aware.connect.call(self.context_aware);
+        log('Activating ' + self.listener.__name__);
+        self.listener.connect.call(self.listener);
     },
 
     deactivate: function() {
         var self = this;
-        log('Deactivating ' + self.context_aware.__name__);
-        self.context_aware.disconnect.call(self.context_aware);
+        log('Deactivating ' + self.listener.__name__);
+        self.listener.disconnect.call(self.listener);
     }
 });
 
@@ -81,10 +81,10 @@ zeit.edit.context.Lightbox = zeit.edit.context.Base.extend({
         MochiKit.Signal.signal(zeit.edit.editor, 'single-context-start');
         self.activate();
         self.events.push(MochiKit.Signal.connect(
-            self.context_aware.parent, 'before-close',
+            self.listener.parent, 'before-close',
             self, self.deactivate));
         self.events.push(MochiKit.Signal.connect(
-            self.context_aware.parent, 'before-reload',
+            self.listener.parent, 'before-reload',
             self, self.deactivate));
     },
 
