@@ -315,8 +315,8 @@ def invalidate_uncontained_content(event):
         repository.uncontained_content.pop(event.id, None)
 
 
-@grokcore.component.adapter(basestring,
-                            name=zeit.cms.interfaces.ID_NAMESPACE)
+@grokcore.component.adapter(
+    basestring, name=zeit.cms.interfaces.ID_NAMESPACE)
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def unique_id_to_content(uniqueId):
     repository = zope.component.queryUtility(
@@ -331,8 +331,8 @@ def unique_id_to_content(uniqueId):
 IGNORED_LIVE_PAGE_SUFFIXES = re.compile(r'/((seite-\d+)|(komplettansicht))/?$')
 
 
-@grokcore.component.adapter(basestring,
-                            name='http://www.zeit.de/')
+@grokcore.component.adapter(
+    basestring, name='http://www.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def live_url_to_content(uniqueId):
     uniqueId = uniqueId.replace('www', 'xml', 1)
@@ -340,8 +340,8 @@ def live_url_to_content(uniqueId):
     return zeit.cms.interfaces.ICMSContent(uniqueId)
 
 
-@grokcore.component.adapter(basestring,
-                            name='http://vivi.zeit.de/')
+@grokcore.component.adapter(
+    basestring, name='http://vivi.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def vivi_url_to_content(uniqueId):
     prefix = 'http://vivi.zeit.de/repository/'
