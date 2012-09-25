@@ -25,7 +25,7 @@ zeit.cms.GalleryDetails = gocept.Class.extend({
         img.attr('src', url);
 
         var copy = self.entries[self.pos].copyrights;
-        var copyright = $('.gallery_details_display p', self.element);
+        var copyright = $('.gallery_details_copyright', self.element);
         copyright.children().remove();
         copy = $(copy).each(function(i, val){
             var html = $('<span></span>');

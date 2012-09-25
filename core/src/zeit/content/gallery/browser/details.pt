@@ -1,14 +1,25 @@
 <div class="gallery_details" i18n:domain="zeit.cms"
      tal:attributes="cms:data view/entries">
   <div class="gallery_details_display">
-    <img src="" />
-    <p></p>
+    <div class="overlay-anchor">
+      <img src="" />
+
+      <div class="overlay"><div class="overlay-position">
+        <a class="button edit-button" i18n:translate="" target="_blank"
+           tal:attributes="href string:${context/@@absolute_url}/@@edit.html">edit</a>
+      </div></div>
+    </div>
   </div>
-  <div class="gallery_details_controls">
-    <a class="gallery_details_prev button" i18n:translate=""></a>
-        <span class="gallery_details_pos"></span>
-        <span>von</span>
-        <span class="gallery_details_max"></span>
-    <a class="gallery_details_next button" i18n:translate=""></a>
+
+  <div>
+    <p class="gallery_details_copyright"></p>
+
+    <div class="gallery_details_controls">
+      <a class="gallery_details_prev button" i18n:translate=""></a>
+          <span class="gallery_details_pos"></span>
+          <span>von</span>
+          <span class="gallery_details_max"></span>
+      <a class="gallery_details_next button" i18n:translate=""></a>
+    </div>
   </div>
 </div>
