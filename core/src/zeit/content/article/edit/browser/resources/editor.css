@@ -494,7 +494,7 @@
 	height: 320px;
 }
 
-.object-details .gallery_details .gallery_details_display p {
+.object-details .gallery_details .gallery_details_copyright {
 	max-width: 400px;
 	margin: 10px 0;
 	overflow: hidden;
