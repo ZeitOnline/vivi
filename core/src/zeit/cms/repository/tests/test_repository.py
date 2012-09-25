@@ -1,6 +1,7 @@
 # Copyright (c) 2009-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.interfaces import ICMSContent
 import mock
 import unittest
 import zeit.cms.repository.interfaces
@@ -38,18 +39,7 @@ class TestConflicts(zeit.cms.testing.FunctionalTestCase):
                           self.repository['online']['conflicting'].data)
 
 
-class FTestLiveUrlToContent(zeit.cms.testing.FunctionalTestCase):
-
-    def test_get_content_from_www_is_equal_as_from_xml(self):
-        import zeit.cms.interfaces
-        www_content = zeit.cms.interfaces.ICMSContent(
-            'http://www.zeit.de/testcontent')
-        xml_content = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/testcontent')
-        self.assertEqual(www_content, xml_content)
-
-
-class TestLiveUrlToContent(unittest.TestCase):
+class UniqueIdToContent(unittest.TestCase):
 
     @mock.patch('zeit.cms.interfaces.ICMSContent')
     def test_first_www_is_replaced(self, ICMSContent):
@@ -63,3 +53,14 @@ class TestLiveUrlToContent(unittest.TestCase):
         live_url_to_content('http://www.foo.bar/www/test')
         ICMSContent.assert_called_with('http://xml.foo.bar/www/test')
 
+
+class UniqueIdToContentIntegration(zeit.cms.testing.FunctionalTestCase):
+
+    def test_xml_zeit_de_is_translated_to_content_object(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        self.assertIsInstance(
+            ICMSContent('http://xml.zeit.de/testcontent'), TestContentType)
+
+    def test_www_zeit_de_is_wired_up_and_delegates_to_xml_zeit_de(self):
+        self.assertEqual(ICMSContent('http://xml.zeit.de/testcontent'),
+                         ICMSContent('http://www.zeit.de/testcontent'))
