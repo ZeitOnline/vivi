@@ -3,10 +3,10 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import gocept.cache.property
-import zope.lifecycleevent
 import grokcore.component
 import logging
 import persistent
+import re
 import transaction
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -14,12 +14,13 @@ import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zope.annotation.interfaces
 import zope.app.appsetup.product
-import zope.container.contained
-import zope.container.interfaces
 import zope.cachedescriptors.method
 import zope.component
 import zope.component.interfaces
+import zope.container.contained
+import zope.container.interfaces
 import zope.interface
+import zope.lifecycleevent
 import zope.securitypolicy.interfaces
 
 
@@ -326,11 +327,16 @@ def unique_id_to_content(uniqueId):
         return None
 
 
+# XXX kludgy heuristics, these URLs are defined in XSLT somewhere
+IGNORED_LIVE_PAGE_SUFFIXES = re.compile(r'/((seite-\d+)|(komplettansicht))/?$')
+
+
 @grokcore.component.adapter(basestring,
                             name='http://www.zeit.de/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def live_url_to_content(uniqueId):
     uniqueId = uniqueId.replace('www', 'xml', 1)
+    uniqueId = IGNORED_LIVE_PAGE_SUFFIXES.sub('', uniqueId)
     return zeit.cms.interfaces.ICMSContent(uniqueId)
 
 

@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.interfaces import ICMSContent
+from zeit.cms.repository.repository import live_url_to_content
 import gocept.testing.mock
 import unittest
 import zeit.cms.repository.interfaces
@@ -45,15 +46,25 @@ class UniqueIdToContent(unittest.TestCase):
         self.patches = gocept.testing.mock.Patches()
         self.cmscontent = self.patches.add('zeit.cms.interfaces.ICMSContent')
 
-    def test_first_www_is_replaced(self):
-        from zeit.cms.repository.repository import live_url_to_content
+    def test_www_host_is_replaced_by_xml_host(self):
         live_url_to_content('http://www.foo.bar/test')
         self.cmscontent.assert_called_with('http://xml.foo.bar/test')
 
-    def test_another_www_is_not_replaced(self):
-        from zeit.cms.repository.repository import live_url_to_content
+    def test_www_in_path_is_left_alone(self):
         live_url_to_content('http://www.foo.bar/www/test')
         self.cmscontent.assert_called_with('http://xml.foo.bar/www/test')
+
+    def test_page_marker_is_chopped_off(self):
+        live_url_to_content(
+            'http://www.zeit.de/online/2007/01/Somalia/seite-5')
+        self.cmscontent.assert_called_with(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+
+    def test_komplettansicht_is_chopped_off(self):
+        live_url_to_content(
+            'http://www.zeit.de/online/2007/01/Somalia/komplettansicht')
+        self.cmscontent.assert_called_with(
+            'http://xml.zeit.de/online/2007/01/Somalia')
 
 
 class UniqueIdToContentIntegration(zeit.cms.testing.FunctionalTestCase):
