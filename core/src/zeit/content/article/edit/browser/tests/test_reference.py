@@ -80,6 +80,8 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/my_image"]', 'css=.action-content-droppable')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
+        # ensure object-details are displayed
+        s.waitForElementPresent('css=.block.type-image .image_details')
 
     def test_imagegroup_is_droppable_in_article_text(self):
         s = self.selenium
@@ -96,7 +98,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             '//li[@uniqueid="Clip/my_group"]', 'css=.action-content-droppable')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
         # ensure object-details are displayed
-        s.waitForElementPresent('css=div.teaser_title:contains(image-group)')
+        s.waitForElementPresent('css=.block.type-image .image_details')
 
 
 class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
