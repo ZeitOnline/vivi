@@ -12,7 +12,6 @@ import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
 import zope.formlib.form
-import zope.interface
 import zope.publisher.interfaces
 
 
@@ -137,7 +136,7 @@ class AddImage(zeit.content.image.browser.form.AddForm):
 
 
 class Metadata(object):
-   
+
     @zope.cachedescriptors.property.Lazy
     def metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(self.context)
