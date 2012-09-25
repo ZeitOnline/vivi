@@ -326,6 +326,14 @@ def unique_id_to_content(uniqueId):
         return None
 
 
+@grokcore.component.adapter(basestring,
+                            name='http://www.zeit.de/')
+@grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
+def live_url_to_content(uniqueId):
+    uniqueId = uniqueId.replace('www', 'xml', 1)
+    return zeit.cms.interfaces.ICMSContent(uniqueId)
+
+
 @grokcore.component.adapter(basestring, name='<no-scheme>://<no-netloc>/')
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def no_scheme_unique_id_to_cms_content(unique_id):
