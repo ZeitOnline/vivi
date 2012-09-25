@@ -47,6 +47,9 @@ class LiveURLToContent(unittest.TestCase):
         self.patches = gocept.testing.mock.Patches()
         self.cmscontent = self.patches.add('zeit.cms.interfaces.ICMSContent')
 
+    def tearDown(self):
+        self.patches.reset()
+
     def test_www_host_is_replaced_by_xml_host(self):
         live_url_to_content('http://www.foo.bar/test')
         self.cmscontent.assert_called_with('http://xml.foo.bar/test')
@@ -73,6 +76,9 @@ class ViviURLToContent(unittest.TestCase):
     def setUp(self):
         self.patches = gocept.testing.mock.Patches()
         self.cmscontent = self.patches.add('zeit.cms.interfaces.ICMSContent')
+
+    def tearDown(self):
+        self.patches.reset()
 
     def test_vivi_url_is_replaced_by_xml_url(self):
         vivi_url_to_content('http://vivi.zeit.de/repository/2007/politik')
