@@ -3,8 +3,9 @@
 
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.repository.repository import live_url_to_content
+from zeit.cms.repository.repository import vivi_url_to_content
 import gocept.testing.mock
-import unittest
+import unittest2 as unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
@@ -40,7 +41,7 @@ class TestConflicts(zeit.cms.testing.FunctionalTestCase):
                           self.repository['online']['conflicting'].data)
 
 
-class UniqueIdToContent(unittest.TestCase):
+class LiveURLToContent(unittest.TestCase):
 
     def setUp(self):
         self.patches = gocept.testing.mock.Patches()
@@ -67,6 +68,24 @@ class UniqueIdToContent(unittest.TestCase):
             'http://xml.zeit.de/online/2007/01/Somalia')
 
 
+class ViviURLToContent(unittest.TestCase):
+
+    def setUp(self):
+        self.patches = gocept.testing.mock.Patches()
+        self.cmscontent = self.patches.add('zeit.cms.interfaces.ICMSContent')
+
+    def test_vivi_url_is_replaced_by_xml_url(self):
+        vivi_url_to_content('http://vivi.zeit.de/repository/2007/politik')
+        self.cmscontent.assert_called_with(
+            'http://xml.zeit.de/2007/politik')
+
+    def test_url_not_in_repository_returns_none(self):
+        self.assertIsNone(
+            vivi_url_to_content(
+                'http://vivi.zeit.de/workingcopy/user/Somalia'))
+        self.assertFalse(self.cmscontent.called)
+
+
 class UniqueIdToContentIntegration(zeit.cms.testing.FunctionalTestCase):
 
     def test_xml_zeit_de_is_translated_to_content_object(self):
@@ -75,5 +94,11 @@ class UniqueIdToContentIntegration(zeit.cms.testing.FunctionalTestCase):
             ICMSContent('http://xml.zeit.de/testcontent'), TestContentType)
 
     def test_www_zeit_de_is_wired_up_and_delegates_to_xml_zeit_de(self):
-        self.assertEqual(ICMSContent('http://xml.zeit.de/testcontent'),
-                         ICMSContent('http://www.zeit.de/testcontent'))
+        self.assertEqual(
+            ICMSContent('http://xml.zeit.de/testcontent'),
+            ICMSContent('http://www.zeit.de/testcontent'))
+
+    def test_vivi_zeit_de_is_wired_up_and_delegates_to_xml_zeit_de(self):
+        self.assertEqual(
+            ICMSContent('http://xml.zeit.de/testcontent'),
+            ICMSContent('http://vivi.zeit.de/repository/testcontent'))
