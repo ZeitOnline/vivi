@@ -134,28 +134,6 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.assertElementNotPresent('css=#edit-form-metadata.folded')
 
 
-class ReadonlyTest(zeit.cms.testing.BrowserTestCase):
-    """Sample test to make sure the view of a checked-in article displays
-    widgets in read-only mode.
-
-    """
-
-    layer = zeit.content.article.testing.TestBrowserLayer
-
-    def setUp(self):
-        super(ReadonlyTest, self).setUp()
-        self.browser.open(
-            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/@@edit-forms')
-
-    def test_text_is_displayed(self):
-        self.assertEllipsis(
-            '...<div class="widget">2007</div>...', self.browser.contents)
-
-    def test_text_is_not_editable(self):
-        with self.assertRaises(LookupError):
-             self.browser.getControl('Year')
-
-
 class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
 
