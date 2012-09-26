@@ -2,9 +2,9 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zope.app.container.interfaces
@@ -176,9 +176,9 @@ class CheckoutManager(object):
         return principal
 
 
-@zope.component.adapter(
+@grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
-    zope.app.container.interfaces.IObjectRemovedEvent)
+    zope.lifecycleevent.IObjectRemovedEvent)
 def unlockOnWorkingcopyDelete(context, event):
     """When the user deletes content from the working copy we see if this user
     has it locked. If so unlock it.

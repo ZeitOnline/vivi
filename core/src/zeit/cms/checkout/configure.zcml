@@ -16,6 +16,4 @@
       permission="zeit.Checkin" />
   </class>
 
-  <subscriber handler=".manager.unlockOnWorkingcopyDelete" />
-
 </configure>
