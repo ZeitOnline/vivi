@@ -1,13 +1,11 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest2 as unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 
 
-class TestAdding(unittest.TestCase,
-                 zeit.cms.testing.BrowserAssertions):
+class TestAdding(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.article.testing.TestBrowserLayer
 
