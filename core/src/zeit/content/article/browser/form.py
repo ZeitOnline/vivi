@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.checkout.interfaces import ILocalContent
 from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.content.article.i18n import MessageFactory as _
 import gocept.form.grouped
@@ -114,7 +115,21 @@ class WYSIWYGEdit(zeit.cms.browser.form.EditForm):
             css_class='full-width wide-widgets'),)
 
 
-@zope.component.adapter(zeit.content.article.interfaces.IArticle)
-@zope.interface.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
-def articleDisplayViewName(context):
-    return 'edit.html'
+class DispatchToViewOrEdit(zeit.cms.browser.view.Base):
+
+    def __call__(self):
+        in_repository = not ILocalContent.providedBy(self.context)
+        existing_checkout = self._find_checked_out()
+        if in_repository and existing_checkout:
+            self.redirect(self.url(existing_checkout))
+        else:
+            view = zope.component.getMultiAdapter(
+                (self.context, self.request), name='edit.html')
+            return view()
+
+    def _find_checked_out(self):
+        for item in zeit.cms.checkout.interfaces.IWorkingcopy(None).values():
+            if not zeit.cms.interfaces.ICMSContent.providedBy(item):
+                continue
+            if item.uniqueId == self.context.uniqueId:
+                return item
