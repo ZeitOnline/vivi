@@ -21,7 +21,7 @@ We also subscribe a testing handler to the CheckoutEvent:
 >>> import zope.component
 >>> from zeit.cms.interfaces import ICMSContent
 >>> from zeit.cms.checkout.interfaces import ICheckinCheckoutEvent
->>> site_manager = zope.component.getSiteManager()
+>>> site_manager = zope.component.getGlobalSiteManager()
 >>> site_manager.registerHandler(
 ...     checkoutEvent,
 ...     (ICMSContent, ICheckinCheckoutEvent))
@@ -287,7 +287,9 @@ We provide a special LockStorage to simulate the behaviour:
 ...         raise zope.app.locking.interfaces.LockingError(object.uniqueId)
 ...
 >>> lock_storage = LockStorage()
->>> site_manager.registerUtility(
+>>> import gocept.zcapatch
+>>> zcapatch = gocept.zcapatch.Patches()
+>>> ignored = zcapatch.patch_utility(
 ...     lock_storage, zope.app.locking.interfaces.ILockStorage)
 
 Now try to checkout:
@@ -302,9 +304,7 @@ CheckinCheckoutError
 
 Remove the utility registration:
 
->>> site_manager.unregisterUtility(
-...     lock_storage, zope.app.locking.interfaces.ILockStorage)
-True
+>>> zcapatch.reset()
 
 
 Remove the event printer:

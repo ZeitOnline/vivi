@@ -322,7 +322,7 @@ Footnotes
     >>> import zope.component
     >>> from zeit.cms.interfaces import ICMSContent
     >>> from zeit.cms.syndication.interfaces import IContentSyndicatedEvent
-    >>> site_manager = zope.component.getSiteManager()
+    >>> site_manager = zope.component.getGlobalSiteManager()
     >>> site_manager.registerHandler(
     ...     eventHandler,
     ...     (ICMSContent, IContentSyndicatedEvent))

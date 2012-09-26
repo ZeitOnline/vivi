@@ -7,6 +7,7 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.workingcopy.workingcopy
+import zeit.objectlog.interfaces
 import zope.app.container.interfaces
 import zope.app.locking.interfaces
 import zope.cachedescriptors.property
@@ -192,3 +193,10 @@ def unlockOnWorkingcopyDelete(context, event):
     lockable = zope.app.locking.interfaces.ILockable(content, None)
     if lockable is not None and lockable.ownLock():
         lockable.unlock()
+
+
+@grok.subscribe(zeit.cms.checkout.interfaces.IAfterCheckinEvent)
+def log_checkin(event):
+    if event.publishing:
+        return
+    zeit.objectlog.interfaces.ILog(event.object).log(_('Checked in'))
