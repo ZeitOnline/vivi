@@ -129,5 +129,7 @@ class DispatchToViewOrEdit(zeit.cms.browser.view.Base):
 
     def _find_checked_out(self):
         for item in zeit.cms.checkout.interfaces.IWorkingcopy(None).values():
+            if not zeit.cms.interfaces.ICMSContent.providedBy(item):
+                continue
             if item.uniqueId == self.context.uniqueId:
                 return item

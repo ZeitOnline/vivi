@@ -122,6 +122,16 @@ class DefaultView(zeit.cms.testing.BrowserTestCase):
             'http://localhost/++skin++vivi/repository/online/2007/01/Somalia')
         self.assertIn('workingcopy', b.url)
 
+    def test_in_repository_with_ghost_just_shows_edit_view(self):
+        # XXX tests don't load zeit.ghost, so this test doesn't really test
+        # anything
+        b = self.browser
+        b.open(
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
+            '/@@checkout')
+        b.open('@@checkin')
+        self.assertEllipsis('...<div id="cp-content">...', b.contents)
+
     def test_in_workingcopy_shows_edit_view(self):
         b = self.browser
         b.open(
