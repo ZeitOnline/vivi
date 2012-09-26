@@ -119,9 +119,9 @@ class DispatchToViewOrEdit(zeit.cms.browser.view.Base):
 
     def __call__(self):
         in_repository = not ILocalContent.providedBy(self.context)
-        existing_checkoug = self._find_checked_out()
-        if in_repository and existing_checkoug:
-            self.redirect(self.url(existing_checkoug))
+        existing_checkout = self._find_checked_out()
+        if in_repository and existing_checkout:
+            self.redirect(self.url(existing_checkout))
         else:
             view = zope.component.getMultiAdapter(
                 (self.context, self.request), name='edit.html')
