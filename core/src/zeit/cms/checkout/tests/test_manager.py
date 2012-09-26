@@ -4,12 +4,90 @@
 from zeit.cms.checkout.interfaces import CheckinCheckoutError
 from zeit.cms.checkout.interfaces import ICheckinManager, ICheckoutManager
 from zeit.cms.checkout.interfaces import IValidateCheckinEvent
+import copy
 import datetime
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
 import zope.component
+
+
+class IContent(zeit.cms.interfaces.ICMSContent):
+    pass
+
+
+class Content(object):
+
+    zope.interface.implements(
+        IContent, zope.annotation.interfaces.IAttributeAnnotatable)
+    uniqueId = u'testcontent://'
+    __name__ = u'karlheinz'
+
+
+@zope.component.adapter(IContent)
+@zope.interface.implementer(zeit.cms.checkout.interfaces.ILocalContent)
+def local_content(context):
+    local = copy.copy(context)
+    local.are_you_local = True
+    zope.interface.alsoProvides(
+        local, zeit.cms.checkout.interfaces.ILocalContent)
+    return local
+
+
+@zope.component.adapter(IContent)
+@zope.interface.implementer(zeit.cms.checkout.interfaces.IRepositoryContent)
+def repository_content(context):
+    content = copy.copy(context)
+    content.are_you_local = False
+    zope.interface.noLongerProvides(
+        content, zeit.cms.checkout.interfaces.ILocalContent)
+    return content
+
+
+class ManagerTest(zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(ManagerTest, self).setUp()
+        self.content = Content()
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.registerAdapter(local_content)
+        gsm.registerAdapter(repository_content)
+
+    def tearDown(self):
+        self._tear_down_adapters()
+        super(ManagerTest, self).tearDown()
+
+    def _tear_down_adapters(self):
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.unregisterAdapter(local_content)
+        gsm.unregisterAdapter(repository_content)
+
+    def test_checkout_without_ILocalContent_adapter_should_raise(self):
+        self._tear_down_adapters()
+        manager = ICheckoutManager(self.content)
+        self.assertFalse(manager.canCheckout)
+        self.assertRaises(CheckinCheckoutError, manager.checkout)
+
+    def test_checkout_needs_adapter_to_ILocalContent(self):
+        manager = ICheckoutManager(self.content)
+        checked_out = manager.checkout()
+        self.assertTrue(checked_out.are_you_local)
+
+    def test_checkin_without_IRepositoryContent_adapter_should_raise(self):
+        manager = ICheckoutManager(self.content)
+        checked_out = manager.checkout()
+        self._tear_down_adapters()
+        manager = ICheckinManager(checked_out)
+        self.assertTrue(manager.canCheckin)
+        self.assertRaises(LookupError, manager.checkin)
+
+    def test_checkin_needs_adapter_to_IRepositoryContent(self):
+        manager = ICheckoutManager(self.content)
+        checked_out = manager.checkout()
+        manager = ICheckinManager(checked_out)
+        checked_in = manager.checkin()
+        self.assertFalse(checked_in.are_you_local)
 
 
 class ValidateCheckinTest(zeit.cms.testing.FunctionalTestCase):

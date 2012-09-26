@@ -8,5 +8,4 @@ import zeit.cms.testing
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        'manager.txt',
         package=zeit.cms.checkout)
