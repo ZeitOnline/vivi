@@ -99,3 +99,32 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         self.assertEqual(True, article.dailyNewsletter)
         self.assertEqual(True, ICDSWorkflow(article).export_cds)
+
+
+class DefaultView(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.TestBrowserLayer
+
+    def test_in_repository_shows_edit_view_readonly(self):
+        b = self.browser
+        b.open(
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia')
+        # we can't really check whether it's readonly since the editor comes in
+        # via Javascript, so we content ourselves with a smoke check.
+        self.assertEllipsis('...<div id="cp-content">...', b.contents)
+
+    def test_in_repository_but_already_checked_out_redirects_to_wc(self):
+        b = self.browser
+        b.open(
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
+            '/@@checkout')
+        b.open(
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia')
+        self.assertIn('workingcopy', b.url)
+
+    def test_in_workingcopy_shows_edit_view(self):
+        b = self.browser
+        b.open(
+            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia'
+            '/@@checkout')
+        self.assertEllipsis('...<div id="cp-content">...', b.contents)

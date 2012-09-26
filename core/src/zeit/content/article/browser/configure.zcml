@@ -6,12 +6,18 @@
 
   <adapter factory=".comment.comment_browse_location" />
 
-  <gocept:pagelet
+  <browser:page
     name="view.html"
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class="zeit.edit.browser.editor.Editor"
+    class=".form.DispatchToViewOrEdit"
     permission="zope.View"
+    />
+
+  <browser:defaultView
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
     />
 
   <browser:viewlet
@@ -31,12 +37,6 @@
       manager="zeit.cms.browser.interfaces.IContextViews"
       permission="zope.View"
    />
-
-  <browser:defaultView
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.html"
-    />
 
   <browser:icon
     for="zeit.content.article.interfaces.IArticle"
@@ -96,5 +96,4 @@
     factory=".workflow.ArticleWorkflowForm"
     provides="zeit.workflow.browser.interfaces.IWorkflowForm"
     />
-  <adapter factory=".form.articleDisplayViewName" name="edit.html" />
 </configure>
