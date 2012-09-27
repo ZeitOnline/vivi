@@ -1,12 +1,3 @@
-/*jslint undef: true */
-// jslint's parser is too stupid and requires functions to appear textually
-// before they are used, which is precisely backwards to a sensible reading
-// order. So at least for this file: thanks, but no thanks.
-
-
-// XXX this file has problems with spurious "unused variable" errors, so jslint
-// is disabled for now
-
 (function() {
 
 zeit.cms.declare_namespace('zeit.content.article.html');
