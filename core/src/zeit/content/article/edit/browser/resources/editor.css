@@ -485,6 +485,31 @@
 	top: 1em;
 }
 
+/* Image block layouts */
+
+.object-details .image_details span.copyright {
+  display: block;
+  position: absolute;
+  top: 6px;
+  right: 0px;
+}
+
+.object-details .toggle_infos {
+  margin-top: 10px;
+  background-position: 15px 8px !important;
+  padding: 2px 0px !important;
+}
+
+.object-details .image_details img {
+  display: block;
+  height: 320px;
+  max-width: 480px;
+}
+
+.object-details .image_details .picture_information {
+  margin-top: 10px;
+}
+
 /* Video block layouts */
 
 .block.type-video .video-image {
