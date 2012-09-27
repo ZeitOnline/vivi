@@ -335,7 +335,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var cloned_range = range.cloneRange();
         cloned_range.collapse(true);
         var cloned_collapsed_rect = cloned_range.getClientRects()[0];
-        
+
         if (cloned_collapsed_rect) {
             var offset = $(".rte-toolbar").parent().offset();
             pos.y = cloned_collapsed_rect.top - offset.top;
@@ -354,7 +354,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             tmp_el.remove();
             if (par.children().length==0){
                 document.execCommand('insertHTML', false,'<br type="_moz" />');
-            }    
+            }
         } else {
             return null;
         }
