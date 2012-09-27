@@ -41,7 +41,9 @@ zeit.content.article.PreviewTabs = gocept.Class.extend({
 
 
 MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
-    new zeit.content.article.PreviewTabs('#preview-tabs');
+    if ($('#preview-tabs').length) {
+        new zeit.content.article.PreviewTabs('#preview-tabs');
+    }
 });
 
 })(jQuery);
