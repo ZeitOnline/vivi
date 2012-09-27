@@ -339,12 +339,10 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (cloned_collapsed_rect) {
             var offset = $(".rte-toolbar").parent().offset();
             pos.y = cloned_collapsed_rect.top - offset.top;
-            pos.x = cloned_collapsed_rect.left
+            pos.x = cloned_collapsed_rect.left;
         } else if (range.startContainer.tagName == "P" &&
                  range.getClientRects().length==0){
-
-            console.debug();
-            var html = '<span id="_find_cursor_position">&nbsp;</span>'
+            var html = '<span id="_find_cursor_position">&nbsp;</span>';
             document.execCommand('insertHTML', false, html);
             var tmp_el =  $('#_find_cursor_position');
             var tmp_pos = tmp_el.position();
