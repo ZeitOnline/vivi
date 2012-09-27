@@ -401,12 +401,14 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 /* fold */
 
 .cp-content-inner .edit-bar > .fold-link,
-.cp-content-inner .object-details .fold-link {
+.cp-content-inner .object-details .fold-link,
+.cp-content-inner .object-details .toggle_infos {
   background-image: url('arrow_down.png');
   background-position: 0 8px;
 }
 
-.cp-content-inner .folded .edit-bar > .fold-link {
+.cp-content-inner .folded .edit-bar > .fold-link,
+.cp-content-inner .toggle_infos.folded {
   background-image: url('arrow_right.png');
   background-position: 0 8px;
 }
