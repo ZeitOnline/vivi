@@ -1,5 +1,13 @@
 <div class="image_details" i18n:domain="zeit.cms">
 
+  <span class="copyright" tal:repeat="copyright view/copyrights">
+    <span tal:replace="copyright/copyright">ZEIT</span>
+    (<a tal:attributes="href copyright/url"
+      tal:content="copyright/url">
+      http://...
+    </a>)
+  </span>
+
   <div class="overlay-anchor">
     <img tal:replace="structure context/@@preview/tag" />
     <div class="overlay"><div class="overlay-position">
@@ -8,10 +16,9 @@
     </div></div>
   </div>
 
-  <button class="toggle_infos" style="display:block">
+  <button class="toggle_infos folded" style="display:block">
   Picture information</button>
-  <p tal:content="view/metadata/caption" class="picture_information"
-     style="display:none"/>
+  <p style="display:none" class="picture_information"><span tal:content="structure view/metadata/caption" />
 
 </div>
 
@@ -22,7 +29,7 @@
 <hr />
 <hr />
 
-
+<img tal:replace="structure context/@@preview/tag" />
 
 <strong>--- WERTE ---</strong><br><br>
 Tag: <strong tal:content="view/tag" /><br>
@@ -41,5 +48,4 @@ Copyrights: <strong tal:content="view/copyrights" /><br><br>
 <strong tal:content="view/metadata/alignment" /><br>
 <strong tal:content="view/metadata/acquire_metadata" /><br>
 <strong tal:content="view/metadata/title" /><br>
-
 -->
