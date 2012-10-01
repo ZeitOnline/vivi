@@ -50,11 +50,11 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
         s.waitForCssCount('css=.block.type-p', existing + 1)
         if contents:
             code = (
-                "this.browserbot.findElement("
-                "    '//*[contains(@class, \"block\") and"
-                "         contains(@class, \"type-p\")][{0}]"
-                "     //*[contains(@class, \"editable\")]').innerHTML = '{1}'"
-                ).format(existing + 1, contents.replace("'", "\\'"))
+                u"this.browserbot.findElement("
+                u"    '//*[contains(@class, \"block\") and"
+                u"         contains(@class, \"type-p\")][{0}]"
+                u"     //*[contains(@class, \"editable\")]').innerHTML = '{1}'"
+                ).format(existing + 1, contents.replace(u"'", u"\\'"))
             s.getEval(code)
 
     def save(self, locator='css=.block.type-p .editable'):

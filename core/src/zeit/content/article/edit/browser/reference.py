@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.gallery.interfaces import IGallery
+from zeit.content.image.interfaces import IImageGroup
 import zeit.content.article.edit.interfaces
 import zeit.edit.browser.form
 import zope.formlib.form
@@ -35,11 +37,19 @@ class EditImage(EditBase):
     fields = ('references', 'layout', 'custom_caption')
     undo_description = _('edit image block')
 
+    def setUpWidgets(self, *args, **kw):
+        super(EditImage, self).setUpWidgets(*args, **kw)
+        self.widgets['references'].add_type = IImageGroup
+
 
 class EditGallery(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IGallery
     undo_description = _('edit gallery block')
+
+    def setUpWidgets(self, *args, **kw):
+        super(EditGallery, self).setUpWidgets(*args, **kw)
+        self.widgets['references'].add_type = IGallery
 
 
 class EditPortraitbox(EditBase):

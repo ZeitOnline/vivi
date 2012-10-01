@@ -12,11 +12,3 @@
      tal:attributes="src string:${context/@@absolute_url}/@@show_preview?showtablet=on">
   </iframe>
 </div>
-
-<script language="javascript">
-  (function($) {
-    var tabs = $('#preview-tabs').tabs();
-    tabs.tabs('add', '#preview-tablet', 'iPad');
-    tabs.tabs('add', '#preview-full', 'Desktop');
-  })(jQuery);
-</script>

@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -94,3 +95,9 @@ class HTMLConvertTest(
         s.assertElementPresent('css=.editable p > strong:contains(had)')
         s.assertElementNotPresent('css=.editable p:contains(foo Mary)')
         s.assertElementNotPresent('css=.editable p:contains(lamb. bar)')
+
+    def test_quotation_marks_are_normalized(self):
+        s = self.selenium
+        self.create(u'<p>“up” and „down‟')
+        self.convert()
+        s.assertText('css=.editable p', '"up" and "down"')

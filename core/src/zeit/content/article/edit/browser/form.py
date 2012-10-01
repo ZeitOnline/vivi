@@ -50,6 +50,7 @@ class Memo(zeit.edit.browser.form.InlineForm):
     form_fields['memo'].custom_widget = RestructuredTextWidget
     css_class = 'memo'
 
+
 class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article content forms."""
 
@@ -402,7 +403,10 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(OptionsB, self).setUpWidgets(*args, **kw)
-        self.widgets['page'].setRenderedValue('n/a')
+        # the 'page' field is an Int, so we can't use default='n/a'
+        if not self.context.page:
+            self.widgets['page'].setRenderedValue('n/a')
+
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
 

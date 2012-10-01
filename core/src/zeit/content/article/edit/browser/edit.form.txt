@@ -23,16 +23,10 @@ Those forms are loaded via javascript:
 
 >>> browser.open('@@edit.form.metadata-a')
 >>> print browser.contents
-<fieldset>
-<div class="field fieldname-ressort required fieldtype-text">
-  <div class="label">
-    <label cms:tooltip="" for="metadata-a.ressort">
-    <span>Ressort</span>
-    </label>
-  </div>
-...
+<...
+<div class="field fieldname-ressort required fieldtype-text">...
+<label cms:tooltip="" for="metadata-a.ressort">...
 <div class="field fieldname-sub_ressort fieldtype-text">...
-...
 
 
 >>> browser.open('@@edit.form.metadata-b')

@@ -50,7 +50,7 @@ Check that there were no errors during publishing:
 ...     zeit.objectlog.interfaces.IObjectLog)
 >>> import zope.i18n
 >>> [zope.i18n.translate(x.message) for x in log.get_log(article)]
-[u'Urgent: yes', u'Publication scheduled', u'Published']
+[u'Checked in', u'Urgent: yes', u'Publication scheduled', u'Published']
 >>> published_cp = IPublishInfo(cp).date_last_published
 >>> published_article = IPublishInfo(article).date_last_published
 >>> published_article

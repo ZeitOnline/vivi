@@ -211,6 +211,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 paragraph, ['.editable > *']), function(p) {
                 editable.appendChild(p);
             });
+            jQuery(paragraph).next('.landing-zone').remove();
             MochiKit.DOM.removeElement(paragraph);
         });
         // Clear out all non element nodes
@@ -299,17 +300,11 @@ zeit.content.article.Editable = gocept.Class.extend({
     relocate_toolbar: function(fast) {
         var self = this;
         var y = MochiKit.Style.getStyle(self.toolbar, 'top');
-        var selection = self._get_selection_rect();
-        if (selection) {
-            var offset = $(".rte-toolbar").parent().offset();
-            y = selection.top - offset.top;
-        } else {
-            document.execCommand('insertHTML',false,'<span id="_find_cursor_position" style="visibility:hidden">|</span>');
-            var tmp_el =  $('#_find_cursor_position');
-            var pos = tmp_el.position();
-            y = pos.top;
-            tmp_el.remove();
+        var cursor_pos = self._get_cursor_position();
+        if (cursor_pos && cursor_pos.y>0){
+            y = cursor_pos.y;
         }
+
         var move = {
             duration: 0.5,
             mode: 'absolute',
@@ -329,15 +324,39 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
      },
 
-    _get_selection_rect: function() {
+    _get_cursor_position: function() {
         var self = this;
+        var pos = {x:0,y:0};
         var selection = window.getSelection();
         if (! selection.rangeCount) {
             return null;
         }
-        var range = selection.getRangeAt(0).cloneRange();
-        range.collapse(true);
-        return range.getClientRects()[0];
+        var range = selection.getRangeAt(0);
+        var cloned_range = range.cloneRange();
+        cloned_range.collapse(true);
+        var cloned_collapsed_rect = cloned_range.getClientRects()[0];
+
+        if (cloned_collapsed_rect) {
+            var offset = $(".rte-toolbar").parent().offset();
+            pos.y = cloned_collapsed_rect.top - offset.top;
+            pos.x = cloned_collapsed_rect.left;
+        } else if (range.startContainer.tagName == "P" &&
+                 range.getClientRects().length==0){
+            var html = '<span id="_find_cursor_position">&nbsp;</span>';
+            document.execCommand('insertHTML', false, html);
+            var tmp_el =  $('#_find_cursor_position');
+            var tmp_pos = tmp_el.position();
+            var par = tmp_el.parent();
+            pos.y = tmp_pos.top;
+            pos.x = tmp_pos.left;
+            tmp_el.remove();
+            if (par.children().length==0){
+                document.execCommand('insertHTML', false,'<br type="_moz" />');
+            }
+        } else {
+            return null;
+        }
+        return pos;
     },
 
     handle_click: function(event) {

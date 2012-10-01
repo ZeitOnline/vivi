@@ -1,12 +1,3 @@
-/*jslint undef: true */
-// jslint's parser is too stupid and requires functions to appear textually
-// before they are used, which is precisely backwards to a sensible reading
-// order. So at least for this file: thanks, but no thanks.
-
-
-// XXX this file has problems with spurious "unused variable" errors, so jslint
-// is disabled for now
-
 (function() {
 
 zeit.cms.declare_namespace('zeit.content.article.html');
@@ -18,7 +9,8 @@ zeit.content.article.html.to_xml = function(tree) {
         translate_tags,
         kill_empty_p,
         replace_double_br_with_p,
-        escape_missing_href
+        escape_missing_href,
+        normalize_quotation_marks
     ];
 
     // XXX dropping unknown tags but keeping their text is still implemented on
@@ -129,6 +121,20 @@ function wrap_toplevel_children_in_p(tree) {
     if (collect.length) {
         tree.appendChild(wrap_in_p(collect));
     }
+}
+
+
+DOUBLE_QUOTE_CHARACTERS = new RegExp(
+    '[\u201c\u201d\u201e\u201f]', 'g');
+
+function normalize_quotation_marks(tree) {
+    forEach(tree.childNodes, function(el) {
+        if (el.nodeType == el.TEXT_NODE) {
+            el.nodeValue = el.nodeValue.replace(DOUBLE_QUOTE_CHARACTERS, '"');
+        } else {
+            normalize_quotation_marks(el);
+        }
+    });
 }
 
 

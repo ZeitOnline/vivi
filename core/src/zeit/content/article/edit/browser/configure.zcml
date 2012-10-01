@@ -34,6 +34,7 @@
         html.js
         strftime.js
         timer.js
+        preview.js
         editor.css
         "/>
   </resourceLibrary>
