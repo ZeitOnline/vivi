@@ -1,22 +1,44 @@
-//
-// Define context managers
-//
+/**
+ * A Context associates lifecycle events with a listener.
+ *
+ * Listeners need to implement methods ``connect`` and ``disconnect``, and can
+ * then instantiate a Context, passing themselves to it.
+ * The Context then calls listener.connect/disconnect at the appropriate times.
+ *
+ * XXX The naming of activate/deactivate which call connect/disconnect is
+ * confusing.
+ *
+ * XXX This reminds me of listeners in Java AWT, whose API is much cleaner:
+ * my_window.addListener(foo) means, my_window will call methods like
+ * onMaximize, onClose on foo at appropriate times.
+ * I realize that determining the source object is half the purpose here (e.g.
+ * in the lightbox context case), but I feel this whole business here has too
+ * much, overly complicated mechanics.
+ */
 
 zeit.cms.declare_namespace('zeit.edit.context');
 
 
+/**
+ * The Context's API consist of
+ *
+ * - init(): register additional event handlers
+ * - activate(): call listener.connect
+ * - deactivate(): call listener.deconnect
+ * - destroy(): tear down our event handlers
+ */
 zeit.edit.context.Base = gocept.Class.extend({
 
     __name__: 'zeit.edit.context.Base',
 
-    construct: function(context_aware) {
+    construct: function(listener) {
         var self = this;
-        log("Creating " + self.__name__ + " for " + context_aware.__name__);
-        self.context_aware = context_aware;
-        if (!isUndefinedOrNull(context_aware.__context__)) {
+        log("Creating " + self.__name__ + " for " + listener.__name__);
+        self.listener = listener;
+        if (!isUndefinedOrNull(listener.__context__)) {
             throw new Error("Trying to add new context.");
         }
-        context_aware.__context__ = self;
+        listener.__context__ = self;
         self.events = [];
 
         self.init();
@@ -29,25 +51,29 @@ zeit.edit.context.Base = gocept.Class.extend({
             self, self.activate));
     },
 
+    init: function() {
+        // may be defined in subclass
+    },
+
     destroy: function() {
         var self = this;
         while(self.events.length) {
           MochiKit.Signal.disconnect(self.events.pop());
         }
-        self.context_aware.__context__ = null;
-        self.context_aware = null;
+        self.listener.__context__ = null;
+        self.listener = null;
     },
 
     activate: function() {
         var self = this;
-        log('Activating ' + self.context_aware.__name__);
-        self.context_aware.connect.call(self.context_aware);
+        log('Activating ' + self.listener.__name__);
+        self.listener.connect.call(self.listener);
     },
 
     deactivate: function() {
         var self = this;
-        log('Deactivating ' + self.context_aware.__name__);
-        self.context_aware.disconnect.call(self.context_aware);
+        log('Deactivating ' + self.listener.__name__);
+        self.listener.disconnect.call(self.listener);
     }
 });
 
@@ -71,8 +97,8 @@ zeit.edit.context.Editor = zeit.edit.context.Base.extend({
 
 
 zeit.edit.context.Lightbox = zeit.edit.context.Base.extend({
-    // Context for a component running *in* a lightbox.
-    // The component needs to declare "parent".
+    // Context for a listener running *in* a lightbox.
+    // The listener needs to declare "parent".
 
     __name__: 'zeit.edit.context.Lightbox',
 
@@ -81,10 +107,10 @@ zeit.edit.context.Lightbox = zeit.edit.context.Base.extend({
         MochiKit.Signal.signal(zeit.edit.editor, 'single-context-start');
         self.activate();
         self.events.push(MochiKit.Signal.connect(
-            self.context_aware.parent, 'before-close',
+            self.listener.parent, 'before-close',
             self, self.deactivate));
         self.events.push(MochiKit.Signal.connect(
-            self.context_aware.parent, 'before-reload',
+            self.listener.parent, 'before-reload',
             self, self.deactivate));
     },
 
@@ -96,6 +122,10 @@ zeit.edit.context.Lightbox = zeit.edit.context.Base.extend({
 });
 
 
+/**
+ * Helper class that instantiates a context automatically, from the
+ * class name given in self.context.
+ */
 zeit.edit.context.ContentActionBase = gocept.Class.extend({
 
     __name__: 'zeit.edit.ContentActionBase',
@@ -111,6 +141,10 @@ zeit.edit.context.ContentActionBase = gocept.Class.extend({
         } else {
             new self.context(self);
         }
+    },
+
+    connect: function() {
+        // define in subclass
     },
 
     disconnect: function() {
