@@ -2,6 +2,8 @@
 # See also LICENSE.txt
 
 import transaction
+import zeit.cms.clipboard.interfaces
+import zeit.cms.testing
 import zeit.content.article.testing
 
 
@@ -75,3 +77,19 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
             s.waitForElementPresent(
                 'css={0} form.inline-form.wired'.format(block_sel))
         return s.getAttribute('css={0}@id'.format(block_sel))
+
+    def add_testcontent_to_clipboard(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction() as principal:
+                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+                clipboard.addClip('Clip')
+                clip = clipboard['Clip']
+                clipboard.addContent(
+                    clip, self.repository['testcontent'],
+                    'testcontent', insert=True)
+        transaction.commit()
+
+        s = self.selenium
+        s.refresh()
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')

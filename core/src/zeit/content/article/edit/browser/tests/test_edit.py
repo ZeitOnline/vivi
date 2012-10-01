@@ -221,6 +221,7 @@ class TestTextEditing(
         s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
 
     def test_editing_should_end_on_content_drag(self):
+        self.add_testcontent_to_clipboard()
         s = self.selenium
         self.create('<p>foo</p><p>bar</p>')
         self.save()
@@ -231,7 +232,7 @@ class TestTextEditing(
         s.waitForElementPresent('css=.block.type-p.editing')
         time.sleep(0.25)
         # start dragging
-        s.dragAndDrop('css=#breadcrumbs li:last a', '+100,+0')
+        s.dragAndDrop('//li[@uniqueid="Clip/testcontent"]', '+100,+0')
         time.sleep(0.25)
         # Saved, no longer ediable
         s.waitForElementNotPresent('css=.block.type-p.editing')
@@ -447,6 +448,7 @@ class TestLinkEditing(
         s.waitForElementNotPresent('css=.editable a')
 
     def test_dialog_should_accept_content_drop(self):
+        self.add_testcontent_to_clipboard()
         s = self.selenium
         self.select_text()
         s.click('xpath=//a[@href="insert_link"]')
@@ -454,15 +456,16 @@ class TestLinkEditing(
         # get confused:
         self.eval("document.getElementById('cp-content-inner').scrollTop = 0;")
         s.dragAndDropToObject(
-            'css=#breadcrumbs li:last a', 'css=.link_input')
-        s.assertValue(
-            'css=.link_input input[name=href]', 'http://www.zeit.de/*.tmp')
+            '//li[@uniqueid="Clip/testcontent"]', 'css=.link_input')
+        s.assertValue('css=.link_input input[name=href]',
+                      'http://www.zeit.de/testcontent')
 
     def test_drag_while_dialog_open_should_not_end_edit(self):
+        self.add_testcontent_to_clipboard()
         s = self.selenium
         self.select_text()
         s.click('xpath=//a[@href="insert_link"]')
-        s.dragAndDrop('css=#breadcrumbs li:last a', '+100,+0')
+        s.dragAndDrop('//li[@uniqueid="Clip/testcontent"]', '+100,+0')
         time.sleep(0.25)
         # Element still there
         s.assertElementPresent('css=.block.type-p.editing')
