@@ -9,6 +9,8 @@ import time
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
 import zeit.cms.browser.interfaces
+import zeit.cms.content.add
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zope.app.form.browser
