@@ -617,8 +617,7 @@ Copying from clipboard
 
 Content can be copied from the clipbard. Go to a folder in the repository:
 
->>> browser.open('http://localhost/++skin++cms/')
->>> browser.getLink('online').click()
+>>> browser.open('http://localhost/++skin++cms/repository/online')
 >>> browser.getLink('Copy from clipboard')
 <Link text='[IMG] Copy from clipboard' url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/@@insert_from_clipboard.lightbox')">
 

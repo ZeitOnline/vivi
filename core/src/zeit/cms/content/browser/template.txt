@@ -79,6 +79,7 @@ manager:
 Let's have a look at those templates:
 
 >>> browser.getLink('My content templates').click()
+>>> a_template_manager = browser.url
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...
@@ -234,7 +235,7 @@ Let's make sure we can still edit body and text:
 
 Let's have a look at the list of templates:
 
->>> browser.getLink('a-template-manager').click()
+>>> browser.open(a_template_manager)
 >>> print browser.contents
 <?xml ...
 <!DOCTYPE ...

@@ -75,7 +75,7 @@ Check the file out. The edit view also contains the metadata:
 We can also download the file here:
 
 >>> bookmark = browser.url
->>> browser.getLink('DSC00109_2').click()
+>>> browser.getLink('DSC00109_2.JPG', index=1).click()
 >>> print browser.headers
 Status: 200 Ok
 Content-Disposition: attachment; filename="DSC00109_2.JPG"
@@ -226,7 +226,7 @@ After adding we're at the edit form:
 We can download the file:
 
 >>> bookmark = browser.url
->>> browser.getLink('ogre.txt').click()
+>>> browser.getLink('ogre.txt', index=1).click()
 >>> print browser.headers
 Status: 200 Ok
 Content-Disposition: attachment; filename="ogre.txt"

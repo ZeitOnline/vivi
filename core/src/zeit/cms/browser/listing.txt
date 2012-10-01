@@ -25,21 +25,6 @@ We expect a normal file listing:
 11
 
 
-Breadcrums
-==========
-
-Similar to the filelisting, we expect that breadcrumbs are displayed at
-the header bar:
-
->>> bc = browser.etree.xpath('//ul[@id="breadcrumbs"]/li/a')
->>> bc
-[<Element a ...>, <Element a ...>]
->>> bc[0].text
-'repository'
->>> bc[1].text
-'2007'
-
-
 Hit counter
 ===========
 
