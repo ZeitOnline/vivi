@@ -585,7 +585,7 @@ False
 Open "New clip", we have a delete link there:
 
 >>> browser.open(browser.url + '/New%20Clip')
->>> link = browser.getLink('Delete', index=4)
+>>> link = browser.getLink('Delete')
 >>> link
 <Link text='[IMG] Delete' 
     url='http://localhost/++skin++cms/workingcopy/zope.user/zeit.cms.clipboard.clipboard.Clipboard/New%20Clip/@@delete-clip'>

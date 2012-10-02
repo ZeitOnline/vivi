@@ -65,6 +65,12 @@
 
             <div class="GlobalInformation" 
                  tal:content="structure provider:zeit.cms.GlobalInformation" />
+
+            <div class="header-actions">
+              <ul>
+                <tal:replace replace="structure provider:zeit.cms.context-actions" />
+              </ul>
+            </div>
         </div>
 
         <div id="sidebar" 
@@ -96,8 +102,14 @@
           <div id="visualContentWrapper"
             tal:attributes="class sidebar_css">
 
-            <metal:actions
-              use-macro="context/@@standard_macros/context-views-and-actions" />
+            <div class="contextViewsAndActions">
+              <div class="context-views"
+                   tal:define="context_url context/@@absolute_url">
+                <ul>
+                  <tal:replace replace="structure provider:zeit.cms.context-views" />
+                </ul>
+              </div>
+            </div>
 
             <div id="content">
               <metal:contentslot define-slot="body">
@@ -105,23 +117,19 @@
               </metal:contentslot>
             </div>
           </div>
-
-
       </body>
     </html>
   </metal:macro>
   
-  
-  <metal:macro define-macro="context-views-and-actions">
-
+  <metal:macro define-macro="metadata-preview">
     <div class="contextViewsAndActions">
       <div class="context-views"
           tal:define="context_url context/@@absolute_url">
         <ul>
           <tal:replace replace="structure provider:zeit.cms.context-views" />
         </ul>
-
       </div>
+
       <div class="context-actions"
         tal:define="context_url context/@@absolute_url">
         <ul>
@@ -129,10 +137,7 @@
         </ul>
       </div>
     </div>
-  </metal:macro>
 
-  <metal:macro define-macro="metadata-preview">
-    <metal:actions use-macro="context/@@standard_macros/context-views-and-actions" />
     <div id="metadata_preview">
       <metal:data define-slot="preview"></metal:data>
     </div>
