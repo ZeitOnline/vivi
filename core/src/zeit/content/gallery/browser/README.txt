@@ -37,7 +37,7 @@ Adding gallery
 
 To add the gallery we go back to 2007/01:
 
->>> browser.getLink('01').click()
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Gallery']
 >>> browser.open(menu.value[0])
