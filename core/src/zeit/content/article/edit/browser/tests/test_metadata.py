@@ -4,12 +4,10 @@
 
 from unittest2 import skip
 import zeit.cms.tagging.testing
-import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
-import zeit.content.article.testing
 
 
-class HeadTest(zeit.content.article.testing.SeleniumTestCase):
+class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def setUp(self):
         super(HeadTest, self).setUp()
@@ -70,44 +68,14 @@ class HeadTest(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementPresent('css=.inline-form div.error')
 
     def test_relateds_should_be_addable(self):
+        self.add_testcontent_to_clipboard()
         s = self.selenium
-        # Prepare clipboard
-        s.click('id=clip-add-folder-link')
-        s.type('id=clip-add-folder-title', 'Favoriten')
-        s.click('id=clip-add-folder-submit')
-        s.waitForElementPresent('css=#ClipboardPanel li[uniqueId="Favoriten"]')
-        s.click('css=#ClipboardPanel li[uniqueId="Favoriten"]')
-        s.waitForElementPresent('css=#ClipboardPanel li[action=collapse]')
-
-        # Clip two elements
-        self.open('/repository/online/2007/01/eta-zapatero')
+        s.waitForElementPresent('id=internallinks.related')
         s.dragAndDropToObject(
-            'css=#breadcrumbs li:last-child a',
-            'css=#ClipboardPanel li[uniqueId="Favoriten"] a')
-        s.waitForElementPresent(
-            'css=#ClipboardPanel li[uniqueId="Favoriten"] > ul > li')
-        self.open('/repository/online/2007/01/Saarland')
-        s.dragAndDropToObject(
-            'css=#breadcrumbs li:last-child a',
-            'css=#ClipboardPanel li[uniqueid="Favoriten"] a')
-        s.waitForElementPresent(
-            'css=#ClipboardPanel li[uniqueId="Favoriten"] > ul > li + li')
-
-        # Open editor again
-        s.clickAndWait('css=#WorkingcopyPanel td a')
-        self.selenium.waitForElementPresent('id=internallinks.related')
-
-        # Add elements to widget
-        s.dragAndDropToObject(
-            'css=#ClipboardPanel ul > li > ul > li > ul > li:first-child',
+            '//li[@uniqueid="Clip/testcontent"]',
             'xpath=//*[@id="internallinks.related"]//ul')
         s.waitForElementPresent(
             'xpath=//*[@id="internallinks.related"]//li[1]')
-        s.dragAndDropToObject(
-            'css=#ClipboardPanel ul > li > ul > li ul > li:nth-child(2)',
-            'xpath=//*[@id="internallinks.related"]//ul')
-        s.waitForElementPresent(
-            'xpath=//*[@id="internallinks.related"]//li[2]')
 
     def test_galleries_should_use_drop_widget(self):
         s = self.selenium
