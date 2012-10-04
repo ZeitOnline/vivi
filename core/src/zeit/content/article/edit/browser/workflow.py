@@ -59,12 +59,6 @@ class Publish(zeit.edit.browser.form.InlineForm,
                 items.insert(-1, (None, widget))
             self.widgets = zope.formlib.form.Widgets(items, prefix=self.prefix)
 
-    @zope.formlib.form.action(_('Save & Publish'), name='publish')
-    def handle_publish(self, action, data):
-        # "super" call to apply changes
-        self.handle_edit_action.success_handler(self, action, data)
-        self.do_publish()
-
     @cachedproperty
     def can_checkout(self):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)

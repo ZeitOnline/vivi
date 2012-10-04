@@ -143,17 +143,6 @@ class Publish(zeit.cms.testing.BrowserTestCase):
                     'http://xml.zeit.de/online/2007/01/Somalia')
                 IReview(content).urgent = urgent
 
-    def test_smoke_publish_button_publishes_article(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@checkout')
-        b.open('@@edit.form.publish?show_form=1')
-        b.getControl('Urgent').selected = True
-        with mock.patch('zeit.cms.workflow.interfaces.IPublish') as publish:
-            b.handleErrors = False
-            b.getControl('Save & Publish').click()
-            self.assertTrue(publish().publish.called)
-
     def test_urgent_denies_marking_edited_and_corrected(self):
         self.prepare_content(urgent=True)
         b = self.browser
