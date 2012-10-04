@@ -716,49 +716,6 @@ legend {
   text-transform: none;
 }
 
-
-/* Misc */
-
-
-/* Render links as buttons */
-
-.article-editor-inner a.button,
-.article-editor-inner button,
-.article-editor-inner input[type=button],
-.editable-area input.button {
-  white-space: inherit;
-  text-indent: 0;
-  cursor: pointer;
-  text-decoration:none;
-  border: 1px solid #c1c1c1;
-  padding: 2px 6px;
-  padding-left: 30px;
-  color:rgb(0, 0, 0);
-  font-size:14px;
-  font-family:arial, serif;
-  text-shadow: 0px 0px 5px rgb(255, 255, 255);
-  font-size: 14px;
-  border-radius:5px 5px 5px 5px;
-  -moz-border-radius:3px;
-  box-shadow:0px 0px 0px rgb(0, 0, 0);
-  -moz-box-shadow:0px 0px 0px rgb(0, 0, 0);
-  background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat 0 100px scroll, -moz-linear-gradient(top,  #f1f4f9 50%, #dee1e6 94%) repeat scroll 0 0 transparent;
-  background-size: auto, 100% auto;
-}
-
-.article-editor-inner a.button:hover,
-.article-editor-inner button:hover,
-.article-editor-inner input[type=button] {
-  background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll, -moz-linear-gradient(top, #f1f4f9 50%, #d2d4d9 94%) repeat scroll 0 0 transparent;
-  border-color: #a6a6a6;
-}
-
-.article-editor-inner a.button.disabled,
-.article-editor-inner a.button[disabled] {
-  color: #999999;
-}
-
-
 /* In article-editor  */
 
 #editor-forms #checkin,
