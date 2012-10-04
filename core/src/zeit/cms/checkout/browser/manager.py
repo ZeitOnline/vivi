@@ -181,7 +181,7 @@ class CheckinConflictErrorInformation(zope.formlib.form.SubPageDisplayForm):
             zeit.cms.content.interfaces.ISemanticChange)
 
 
-class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
+class MenuItemBase(object):
 
     sort = -1
 
@@ -192,8 +192,12 @@ class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
     def render(self):
         if self.is_visible():
-            return super(MenuItem, self).render()
+            return super(MenuItemBase, self).render()
         return ''
+
+
+class MenuItem(MenuItemBase, zeit.cms.browser.menu.ActionMenuItem):
+    pass
 
 
 class CheckoutMenuItem(MenuItem):
@@ -229,3 +233,23 @@ class NonSemanticChangeCheckinMenuItem(CheckinMenuItem):
     def action(self):
         action = super(NonSemanticChangeCheckinMenuItem, self).action
         return action+'&semantic_change='
+
+
+class CheckinAction(MenuItemBase):
+
+    title = _('Checkin')
+    base_action = 'checkin'
+
+    def is_visible(self):
+        manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
+        return manager.canCheckin
+
+
+class CheckoutAction(MenuItemBase):
+
+    title = _('Checkout')
+    base_action = 'checkout'
+
+    def is_visible(self):
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
+        return manager.canCheckout

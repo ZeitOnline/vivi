@@ -68,6 +68,16 @@
     permission="zeit.DeleteContent"
     />
 
+  <browser:viewlet
+    manager="zeit.cms.browser.interfaces.IHeaderActions"
+    for="zeit.cms.workingcopy.interfaces.ILocalContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="delete"
+    template="header-delete.pt"
+    permission="zeit.DeleteContent"
+    weight="70"
+    />
+
   <!-- object browser -->
   <adapter factory=".workingcopy.localcontent_default_browsing_location" />
 
@@ -78,7 +88,6 @@
     for="zeit.cms.workingcopy.interfaces.ILocalContent"
     permission="zope.View"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-actions-external" title="Preview"
     />
 
   <browser:viewlet
@@ -86,7 +95,7 @@
     for="zeit.cms.workingcopy.interfaces.ILocalContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".workingcopy.ShowOriginal"
-    manager="zeit.cms.browser.interfaces.IContextActions"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zope.View"
     icon="/@@/zeit.cms/icons/show-original.png"
     />

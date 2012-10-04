@@ -10,7 +10,6 @@ displayed after checkout/checkin[#prepare-testcontent]_
 >>> browser = Browser()
 >>> browser.addHeader('Authorization', 'Basic user:userpw')
 >>> browser.open('http://localhost/++skin++cms/repository/testcontent')
->>> browser.handleErrors = False
 >>> browser.getLink('Assets').click()
 >>> print browser.title.strip()
 testcontent – Assets

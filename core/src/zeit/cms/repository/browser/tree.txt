@@ -18,6 +18,7 @@ Tree Rendering
 The tree is rendered  in the sidebar all the time. But it is loaded
 asynchronously:
 
+>>> browser.handleErrors = False
 >>> browser.open('http://localhost/++skin++cms/')
 >>> navtree = browser.etree.xpath("//html:div[@id='NavtreePanel']",
 ...                               namespaces=ns_map)[0]

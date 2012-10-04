@@ -1,0 +1,10 @@
+<a title="more"
+   class="button"
+   tal:attributes="href string:javascript:zeit.cms.menu.toggle('${view/menu_id}')"
+   i18n:attributes="title"
+   i18n:translate="">more</a>
+
+<ul class="secondary-context-actions hidden"
+    tal:attributes="id view/menu_id"
+    tal:content="structure view/items">
+</ul>

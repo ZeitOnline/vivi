@@ -103,19 +103,13 @@ Make sure the menu entries are there and the targets are _blank:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
 >>> print browser.contents
 <?xml ...
-    <li class="preview ">
-     <a href=".../online/2007/01/Somalia/@@show_preview" target="_blank"
-        title="Preview">...
-   </li>
-   <li class="live ">
-     <a href=".../online/2007/01/Somalia/@@show_live" target="_blank"
-        title="Live">...
-   </li>
-   <li class="development ">
-     <a href=".../online/2007/01/Somalia/@@show_development-preview"
-        target="_blank" title="Development">...
-   </li>
-   ...
+     <a class="button" title="Preview" target="_blank"
+        href=".../online/2007/01/Somalia/@@show_preview">...
+     <a class="button" title="Live" target="_blank"
+        href=".../online/2007/01/Somalia/@@show_live">...
+     <a title="Development"
+        href=".../online/2007/01/Somalia/@@show_development-preview"
+        id="..." target="_blank">...
 
 
 Check the preview:

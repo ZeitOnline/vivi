@@ -1,0 +1,8 @@
+<a
+ tal:define="context_url context/@@absolute_url"
+ tal:attributes="href string:${context_url}/${view/action};
+                 title view/title;"
+ tal:content="view/title"
+ class="button"
+ i18n:attributes="title"
+/>

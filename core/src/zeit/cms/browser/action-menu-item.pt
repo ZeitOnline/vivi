@@ -3,6 +3,7 @@
     tal:attributes="
     id view/item_id;
     href view/get_url;
+    target view/target;
     accesskey view/accesskey | nothing;
     title view/title"
     i18n:attributes="title">
