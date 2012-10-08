@@ -16,36 +16,8 @@
     </div></div>
   </div>
 
-  <button class="toggle_infos folded" style="display:block">
+  <button tal:condition="view/metadata/caption" class="toggle_infos folded" style="display:block">
   Picture information</button>
-  <p style="display:none" class="picture_information"><span tal:content="structure view/metadata/caption" />
+  <p style="display:none" class="picture_information"><span tal:content="structure view/metadata/caption"></span></p>
 
 </div>
-
-<!-- Here all available data for further development...
-
-<hr />
-<hr />
-<hr />
-<hr />
-
-<img tal:replace="structure context/@@preview/tag" />
-
-<strong>--- WERTE ---</strong><br><br>
-Tag: <strong tal:content="view/tag" /><br>
-Width: <strong tal:content="view/width" /><br>
-Height: <strong tal:content="view/height" /><br>
-Copyrights: <strong tal:content="view/copyrights" /><br><br>
---- META ---<br><br>
-<strong tal:content="view/metadata/title" /><br>
-<strong tal:content="view/metadata/year" /><br>
-<strong tal:content="view/metadata/volume" /><br>
-<strong tal:content="view/metadata/copyrights" /><br>
-<strong tal:content="view/metadata/alt" /><br>
-<strong tal:content="view/metadata/caption" /><br>
-<strong tal:content="view/metadata/alignment" /><br>
-<strong tal:content="view/metadata/links_to" /><br>
-<strong tal:content="view/metadata/alignment" /><br>
-<strong tal:content="view/metadata/acquire_metadata" /><br>
-<strong tal:content="view/metadata/title" /><br>
--->
