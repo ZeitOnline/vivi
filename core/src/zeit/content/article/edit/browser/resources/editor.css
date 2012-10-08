@@ -591,18 +591,36 @@ fieldset.table .field {
   clear: both;
 }
 
-#edit-form-filename fieldset.table .fieldname-rename_to.error .label span.error {
+
+
+/* Error styling in general and for different places */
+
+.error .label span.error {
   border: 1px solid #990000;
   border-radius: 3px 3px 3px 3px;
   box-shadow: 1px 1px 2px #aaa;
-  margin-top: 23px;
   padding: 8px;
   display: block;
   color: #990000;
 }
 
-#edit-form-filename fieldset.table .fieldname-rename_to.error .label {
-  overflow: visible;
+.error div.empty {
+  background: url("bgerrortriangle.png") no-repeat scroll 0 0 transparent;
+  height: 10px;
+  left: 12px;
+  position: absolute;
+  width: 14px;
+}
+
+/* Positioning for different places */
+
+.fieldname-teaserText.error .label div.error {
+  position: absolute;
+  top: 95px;
+}
+
+#edit-form-filename fieldset.table .fieldname-rename_to.error .label span.error {
+  margin-top: 23px;
 }
 
 #edit-form-filename fieldset.table .fieldname-rename_to.error .label label {
@@ -610,12 +628,11 @@ fieldset.table .field {
 }
 
 .fieldname-rename_to.error div.empty {
-  background: url("bgerrortriangle.png") no-repeat scroll 0 0 transparent;
-  height: 10px;
-  left: 12px;
-  position: absolute;
   top: 20px;
-  width: 14px;
+}
+
+.fieldname-teaserText.error div.empty {
+  top: 86px;
 }
 
 fieldset.table label {
