@@ -289,6 +289,14 @@ zeit.content.article.Editable = gocept.Class.extend({
                 'a', null, self.toolbar), function(action) {
                 if (action.innerHTML == element.nodeName) {
                     MochiKit.DOM.addElementClass(action, 'active');
+                    if (element.nodeName == 'H3' && action.innerHTML == 'H3') {
+                      MochiKit.DOM.updateNodeAttributes(action, {'href': 'formatBlock/p'});
+                      action.innerHTML = 'P';
+                    }
+                    if (element.nodeName != 'H3' && getNodeAttribute(action, 'href') == 'formatBlock/p') {
+                      MochiKit.DOM.updateNodeAttributes(action, {'href': 'formatBlock/h3'});
+                      action.innerHTML = 'H3';
+                    }
                 }
             });
             element = element.parentNode;

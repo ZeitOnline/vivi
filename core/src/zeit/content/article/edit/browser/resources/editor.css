@@ -401,13 +401,13 @@
 }
 
 .rte-toolbar > a[href='formatBlock/p'] {
-  background-position: -4px -2183px;
+  background-position: -2px -1106px;
   color: transparent;
 }
 
 .rte-toolbar > a[href='formatBlock/p']:hover,
 .rte-toolbar > a.active[href='formatBlock/p'] {
-  background-position: -4px -2213px;
+  background-position: -2px -1106px;
 }
 
 .rte-toolbar > a[href='insert_link'] {
