@@ -260,8 +260,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.toolbar.innerHTML = "\
             <a rel='command' href='bold'>B</a>\
             <a rel='command' href='italic'>I</a>\
-            <a rel='command' href='formatBlock/h3'>T</a>\
-            <a rel='command' href='formatBlock/p'>P</a>\
+            <a rel='command' href='formatBlock/h3'>H3</a>\
             <a rel='method' href='insert_link'>A</a>\
             <a rel='command' href='unlink'>A</a>\
             <a rel='command' href='insertunorderedlist'>UL</a>\
@@ -290,6 +289,14 @@ zeit.content.article.Editable = gocept.Class.extend({
                 'a', null, self.toolbar), function(action) {
                 if (action.innerHTML == element.nodeName) {
                     MochiKit.DOM.addElementClass(action, 'active');
+                    if (element.nodeName == 'H3' && action.innerHTML == 'H3') {
+                      MochiKit.DOM.updateNodeAttributes(action, {'href': 'formatBlock/p'});
+                      action.innerHTML = 'P';
+                    }
+                    if (element.nodeName != 'H3' && MochiKit.DOM.getNodeAttribute(action, 'href') == 'formatBlock/p') {
+                      MochiKit.DOM.updateNodeAttributes(action, {'href': 'formatBlock/h3'});
+                      action.innerHTML = 'H3';
+                    }
                 }
             });
             element = element.parentNode;
