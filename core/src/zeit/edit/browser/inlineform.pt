@@ -36,7 +36,8 @@
            tal:content="structure widget"/>
     </div>
 
-    <div class="form-controls" tal:condition="view/availableActions">
+    <div tal:attributes="class view/actions_css_class"
+         tal:condition="view/availableActions">
       <input
         tal:repeat="action view/actions"
         tal:replace="structure action/render" />

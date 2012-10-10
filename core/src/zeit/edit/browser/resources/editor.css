@@ -602,6 +602,11 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   display: none;
 }
 
+.inline-form .form-controls.actions-visible {
+  display: block;
+  clear: both;
+}
+
 .field span.required {
   background-color: #a00;
   border-radius: 5px 5px 5px 5px;
