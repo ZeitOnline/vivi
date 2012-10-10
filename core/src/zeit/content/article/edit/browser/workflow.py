@@ -30,6 +30,7 @@ class Publish(zeit.edit.browser.form.InlineForm,
     legend = _('')
     prefix = 'publish'
     undo_description = _('edit workflow status')
+    actions_visible = True
 
     @property
     def form_fields(self):
@@ -58,6 +59,10 @@ class Publish(zeit.edit.browser.form.InlineForm,
                 widget.setPrefix(self.prefix)
                 items.insert(-1, (None, widget))
             self.widgets = zope.formlib.form.Widgets(items, prefix=self.prefix)
+
+    @zeit.cms.browser.form.action(_('Save'), name='save')
+    def handle_save(self, action, data):
+        self.perform_checkin()
 
     @cachedproperty
     def can_checkout(self):
@@ -106,12 +111,6 @@ class Checkin(zeit.cms.browser.view.Base,
     @property
     def is_new(self):
         return IAutomaticallyRenameable(self.context).renameable
-
-    def __call__(self):
-        if self.request.method == 'POST':
-            return self.perform_checkin()
-        else:
-            return super(Checkin, self).__call__()
 
 
 class ViewWidget(zope.formlib.widget.BrowserWidget):

@@ -8,11 +8,6 @@
          cms:cp-module='zeit.edit.LightBoxForm'
          tal:attributes="href string:${context/@@absolute_url}/@@delete.html"
          i18n:translate="">Cancel</a>
-      <input
-         type="submit" name="checkin" id="checkin" value="Save"
-         class="button"
-         tal:attributes="disabled python:None if view.canCheckin else 'disabled'"
-         i18n:attributes="value" />
     </p>
   </form>
   </tal:block>
