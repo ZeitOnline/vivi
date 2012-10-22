@@ -125,7 +125,7 @@ function wrap_toplevel_children_in_p(tree) {
 
 
 var DOUBLE_QUOTE_CHARACTERS = new RegExp(
-    '[\u201c\u201d\u201e\u201f]', 'g');
+    '[\u201c\u201d\u201e\u201f\u00ab\u00bb]', 'g');
 
 function normalize_quotation_marks(tree) {
     forEach(tree.childNodes, function(el) {
