@@ -518,10 +518,6 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   padding-top: 5px;
 }
 
-.inline-form .label div.error {
-  display: inline;
-}
-
 .inline-form .widget {
   clear: left;
   padding: 0px 0 0;
