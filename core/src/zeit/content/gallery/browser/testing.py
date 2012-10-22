@@ -13,6 +13,7 @@ def add_folder(browser, name):
 
 
 def add_image(browser, name):
+    gallery_url = browser.url
     menu = browser.getControl(name='add_menu')
     menu.displayValue = ['Image (single)']
     browser.open(menu.value[0])
@@ -28,5 +29,5 @@ def add_image(browser, name):
     browser.getControl(name='form.actions.add').click()
     browser.getLink('Checkin').click()
     url = browser.url
-    browser.getLink('gallery').click()
+    browser.open(gallery_url)
     return url
