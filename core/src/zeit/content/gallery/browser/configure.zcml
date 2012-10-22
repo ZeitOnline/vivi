@@ -114,15 +114,15 @@
     permission="zeit.EditContent"
     />
 
-  <browser:menuItem
+  <browser:viewlet
+    name="synchronise-with-image-folder"
     for="..interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    action="@@synchronise-with-image-folder"
+    class=".overview.SynchroniseMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.EditContent"
-    menu="zeit-context-actions"
-    title="Synchronise with image folder"
-    icon='reload'
     />
+
 
   <!-- upload -->
 
@@ -130,11 +130,11 @@
     name="Upload"
     for="zeit.content.gallery.interfaces.IGallery"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".overview.Overview"
     template="upload.pt"
-    manager="zeit.cms.browser.interfaces.IContextActions"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.EditContent"
-    sort="-20"
+    sort="0"
+    selected="0"
     />
 
   <browser:page

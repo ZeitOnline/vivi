@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.content.gallery.interfaces
@@ -92,3 +93,10 @@ class UploadImage(zeit.cms.browser.view.JSON):
         else:
             self.request.response.setStatus(201)  # Created
         return result
+
+
+class SynchroniseMenuItem(zeit.cms.browser.menu.ActionMenuItem):
+
+    title = _('Synchronise with image folder')
+    action = '@@synchronise-with-image-folder'
+    icon = 'reload'
