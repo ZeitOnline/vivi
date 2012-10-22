@@ -99,7 +99,7 @@ There is a delete link to remove object from the workingcopy again:
 >>> browser.getLink('Somalia').click()
 >>> browser.getLink('Cancel')
 <Link text='Cancel'
-    url='http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@delete.html'>
+    url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@delete.html')">
 
 Let's open the delete form:
 
