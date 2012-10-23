@@ -90,7 +90,9 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
     renderElement: function(index, uniqueId) {
         var self = this;
         var li_id = self.widget_id + '_sort_li_' + index;
-        var li = LI({'class': 'element busy', 'index': index, 'id': li_id});
+        var li = LI({
+            'class': 'object-reference element busy',
+            'index': index, 'id': li_id});
         var d = zeit.cms.load_object_details(uniqueId, self.detail_view_name);
         d.addCallback(function(result) {
             li.innerHTML = result;
