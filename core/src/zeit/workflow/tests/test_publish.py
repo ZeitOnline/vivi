@@ -114,6 +114,7 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
         # but we lack the mechanics to easily substitute adapter instances
         sem = self.patches.add('zeit.cms.content.interfaces.ISemanticChange')
         sem().last_semantic_change = DAY1
+        sem().has_semantic_change = False
         for item in self.related:
             info = IPublishInfo(item)
             info.published = True
