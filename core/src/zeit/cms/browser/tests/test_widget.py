@@ -5,6 +5,7 @@
 from zeit.cms.browser.widget import \
     ObjectSequenceWidget, ObjectSequenceDisplayWidget
 import contextlib
+import gocept.testing.mock
 import mock
 import unittest2
 import zeit.cms.browser.interfaces
@@ -341,10 +342,12 @@ class ObjectWidgetDetailViews(
 
     def setUp(self):
         super(ObjectWidgetDetailViews, self).setUp()
+        self.patches = gocept.testing.mock.Patches()
         setup_mydetails()
 
     def tearDown(self):
         teardown_mydetails()
+        self.patches.reset()
         super(ObjectWidgetDetailViews, self).tearDown()
 
     def test_object_sequence_widgets_use_their_configured_views(self):
@@ -374,6 +377,19 @@ class ObjectWidgetDetailViews(
         self.eval(
             "zeit.cms.test_widget2.set('http://xml.zeit.de/testcontent');")
         s.waitForElementPresent('css=div.mydetails')
+
+    def test_remove_button_is_shown_even_upon_error_when_loading_details(self):
+        details = self.patches.add(
+            'zeit.cms.browser.tests.test_widget.ObjectWidgetMyDetails')
+        details.side_effect = RuntimeError('provoked')
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/'
+            'dropobjectwidget-detail-views.html')
+        s = self.selenium
+        self.eval(
+            "zeit.cms.test_widget.set('http://xml.zeit.de/testcontent');")
+        s.waitForElementPresent('css=.object-reference.error')
+        s.assertElementPresent('css=a[rel=remove]')
 
 
 class TestObjectSequenceWidgetAutocompleteJavascript(

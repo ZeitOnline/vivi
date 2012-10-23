@@ -96,10 +96,6 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         var d = zeit.cms.load_object_details(uniqueId, self.detail_view_name);
         d.addCallback(function(result) {
             li.innerHTML = result;
-            li.insertBefore(
-                // XXX proper i18n
-                A({href: index, rel: "remove", title: "Entfernen", text: 'löschen'}),
-                li.firstChild);
             jQuery(li).trigger_fragment_ready();
             return result;
         });
@@ -109,6 +105,10 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             return error;
         });
         d.addBoth(function(result) {
+            // XXX proper i18n
+            li.insertBefore(A({href: index, rel: "remove",
+                               title: "Entfernen", text: 'löschen'}),
+                            li.firstChild);
             MochiKit.DOM.removeElementClass(li, 'busy');
             return result;
         });
@@ -331,18 +331,20 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
                 self.input.value, self.detail_view_name);
             d.addCallback(function(result) {
                 self.details.innerHTML = result;
-                self.details.insertBefore(
-                    A({href: '#', rel: "remove", title: "Entfernen", text: 'löschen'}),
-                    self.details.firstChild);
                 jQuery(self.details).trigger_fragment_ready();
                 return result;
             });
             d.addErrback(function(error) {
                 zeit.cms.log_error(error);
+                MochiKit.DOM.addElementClass(self.details, 'error');
                 self.details.innerHTML = 'Fehler beim Laden';
                 return error;
             });
             d.addBoth(function(result) {
+                self.details.insertBefore(
+                    A({href: '#', rel: "remove", title: "Entfernen",
+                       text: 'löschen'}),
+                    self.details.firstChild);
                 MochiKit.DOM.removeElementClass(self.element, 'busy');
                 MochiKit.DOM.removeElementClass(landing_zone, 'landing-zone');
                 MochiKit.DOM.removeElementClass(landing_zone, 'visible');
