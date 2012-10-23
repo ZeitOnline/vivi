@@ -353,7 +353,8 @@ The workflow logs various changes in an objectlog. Verify this:
 
 >>> print browser.contents
 <?xml...
-        <div class="widget"><FORMATTED DATE>  [User]: Retracted<br />...
+        <div class="widget">...
+<FORMATTED DATE>  [User]: Retracted<br />...
 <FORMATTED DATE>  [User]: Urgent: yes<br />
 <FORMATTED DATE>  [User]: status-images-added: no<br />
 <FORMATTED DATE>  [User]: status-refined: no<br />
@@ -383,7 +384,7 @@ still accessible[#needs-repository]_:
 >>> import zeit.objectlog.interfaces
 >>> log = zeit.objectlog.interfaces.ILog(content)
 >>> len(list(log.get_log()))
-65
+67
 >>> len(log.logs)
 20
 
