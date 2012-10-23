@@ -339,7 +339,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             });
             d.addErrback(function(error) {
                 zeit.cms.log_error(error);
-                self.details.innerHTML = 'Fehler';
+                self.details.innerHTML = 'Fehler beim Laden';
                 return error;
             });
             d.addBoth(function(result) {
