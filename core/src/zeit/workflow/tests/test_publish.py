@@ -134,9 +134,9 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
         BEFORE_PUBLISH = datetime.now(pytz.UTC)
         self.publish(content)
 
-        self.assertEqual(2, len(
-                [x for x in self.related
-                 if IPublishInfo(x).date_last_published > BEFORE_PUBLISH]))
+        self.assertEqual(
+            2, len([x for x in self.related
+                    if IPublishInfo(x).date_last_published > BEFORE_PUBLISH]))
 
     def test_should_not_publish_more_dependencies_than_the_limit_depth(self):
         content = [self.repository['testcontent']] + self.related
@@ -147,6 +147,6 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
         BEFORE_PUBLISH = datetime.now(pytz.UTC)
         self.publish(content[0])
 
-        self.assertEqual(2, len(
-                [x for x in self.related
-                 if IPublishInfo(x).date_last_published > BEFORE_PUBLISH]))
+        self.assertEqual(
+            2, len([x for x in self.related
+                    if IPublishInfo(x).date_last_published > BEFORE_PUBLISH]))
