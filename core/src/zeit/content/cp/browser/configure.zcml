@@ -139,6 +139,15 @@
     permission="zeit.Checkout"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IFeed"
+    name="checkout"
+    class=".feed.CheckoutMenuItem"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.cms.browser.interfaces.IHeaderActions"
+    permission="zeit.Checkout"
+    />
+
   <!-- Module library -->
 
   <browser:view
