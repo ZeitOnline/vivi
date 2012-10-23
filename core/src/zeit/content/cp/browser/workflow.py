@@ -42,7 +42,8 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
             zeit.workflow.interfaces.ITimeBasedPublishing,
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
-            zeit.cms.content.interfaces.ISemanticChange) +
+            zeit.cms.content.interfaces.ISemanticChange).omit(
+            'has_semantic_change') +
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))
