@@ -327,6 +327,7 @@ def setup_mydetails():
 </configure>
 """)
 
+
 def teardown_mydetails():
     zope.component.getSiteManager().unregisterAdapter(
         required=(zeit.cms.interfaces.ICMSContent,
