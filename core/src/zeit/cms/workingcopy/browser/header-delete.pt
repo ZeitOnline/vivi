@@ -1,0 +1,8 @@
+<a
+ tal:define="context_url context/@@absolute_url"
+ tal:attributes="href string:javascript:zeit.cms.lightbox_form('${context_url}/@@delete.html');"
+ class="button"
+ i18n:attributes="title"
+ title="Cancel"
+ i18n:translate=""
+>Cancel</a>

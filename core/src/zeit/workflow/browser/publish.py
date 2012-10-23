@@ -38,10 +38,7 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
             self.send_message(error, type='error')
 
 
-class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
-
-    sort = -1
-    lightbox = '@@retract.html'
+class RetractMenuItemBase(object):
 
     @property
     def visible(self):
@@ -51,6 +48,13 @@ class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     def render(self):
         if self.visible:
             zc.resourcelibrary.need('zeit.workflow.publish')
-            return super(RetractMenuItem, self).render()
+            return super(RetractMenuItemBase, self).render()
         else:
             return ''
+
+
+class RetractMenuItem(RetractMenuItemBase,
+                      zeit.cms.browser.menu.LightboxActionMenuItem):
+
+    sort = -1
+    lightbox = '@@retract.html'

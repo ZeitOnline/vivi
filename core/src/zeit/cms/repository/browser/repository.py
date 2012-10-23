@@ -24,8 +24,18 @@ class Repository(object):
             zeit.cms.repository.interfaces.IRepository)
 
 
+class PreferencesHelper(object):
+
+    @zope.cachedescriptors.property.Lazy
+    def preferences(self):
+        return zeit.cms.repository.interfaces.IUserPreferences(
+            zeit.cms.workingcopy.interfaces.IWorkingcopy(
+                self.request.principal))
+
+
 class HTMLTree(zope.viewlet.viewlet.ViewletBase,
-               zeit.cms.browser.view.Base):
+               zeit.cms.browser.view.Base,
+               PreferencesHelper):
     """view class for navtree"""
 
     def render(self):
@@ -38,11 +48,8 @@ class HTMLTree(zope.viewlet.viewlet.ViewletBase,
 
     @property
     def tree_url(self):
-        preferences = zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(
-                self.request.principal))
         hash_ = hashlib.md5()
-        for container in preferences.get_hidden_containers():
+        for container in self.preferences.get_hidden_containers():
             hash_.update(container)
         hash_.update('TREE')
         for container in sorted(self.tree_view.treeState):
@@ -57,7 +64,7 @@ class HTMLTree(zope.viewlet.viewlet.ViewletBase,
             zeit.cms.repository.interfaces.IRepository)
 
 
-class Tree(zeit.cms.browser.tree.Tree):
+class Tree(zeit.cms.browser.tree.Tree, PreferencesHelper):
     """Repository Tree"""
 
     root_name = 'Repository'
@@ -110,12 +117,6 @@ class Tree(zeit.cms.browser.tree.Tree):
 
         return view_path[:len(path)] == path
 
-    @zope.cachedescriptors.property.Lazy
-    def preferences(self):
-        return zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(
-                self.request.principal))
-
     def expanded(self, obj):
         if self.request.form.get('autoexpand-tree'):
             url = self.getUrl(obj)
@@ -124,7 +125,7 @@ class Tree(zeit.cms.browser.tree.Tree):
         return super(Tree, self).expanded(obj)
 
 
-class HiddenCollections(zeit.cms.browser.view.Base):
+class HiddenCollections(zeit.cms.browser.view.Base, PreferencesHelper):
 
     def hide_collection(self):
         self.add_to_preference()
@@ -153,11 +154,33 @@ class HiddenCollections(zeit.cms.browser.view.Base):
     def hidden(self):
         return self.preferences.is_hidden(self.context)
 
-    @zope.cachedescriptors.property.Lazy
-    def preferences(self):
-        return zeit.cms.repository.interfaces.IUserPreferences(
-            zeit.cms.workingcopy.interfaces.IWorkingcopy(
-                self.request.principal))
+
+class MenuItem(zeit.cms.browser.menu.ActionMenuItem, PreferencesHelper):
+    pass
+
+
+class HideMenuItem(MenuItem):
+
+    title = _('Hide')
+    action = '@@hide-from-tree.html'
+    icon = 'hide'
+
+    def render(self):
+        if not self.preferences.is_hidden(self.context):
+            return super(MenuItem, self).render()
+        return ''
+
+
+class ShowMenuItem(MenuItem):
+
+    title = _('Show')
+    action = '@@show-in-tree.html'
+    icon = 'show'
+
+    def render(self):
+        if self.preferences.is_hidden(self.context):
+            return super(MenuItem, self).render()
+        return ''
 
 
 class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):

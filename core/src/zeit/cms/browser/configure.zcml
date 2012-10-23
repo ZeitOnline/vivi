@@ -20,12 +20,6 @@
     title="context sensitive actions"
     />
 
-  <browser:menu
-    id="zeit-context-actions-external"
-    title="context sensitive actions"
-    class=".menu.ExternalActionsMenu"
-    />
-
   <browser:viewlet
     name="internal"
     for="*"
@@ -36,18 +30,6 @@
     permission="zope.View"
     menu="zeit-context-actions"
     />
-
-  <browser:viewlet
-    name="external"
-    for="*"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    manager=".interfaces.IContextActions"
-    class=".menu.MenuViewlet"
-    template="menu-context-actions.pt"
-    permission="zope.View"
-    menu="zeit-context-actions-external"
-    />
-  
 
   <browser:viewletManager
     name="zeit.cms.context-views"
@@ -77,6 +59,14 @@
   <browser:menu
     id="folder-actions"
     title="folder specific actions"
+    />
+
+  <browser:viewletManager
+    name="zeit.cms.header-actions"
+    provides=".interfaces.IHeaderActions"
+    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    layer=".interfaces.ICMSLayer"
+    permission="zope.View"
     />
 
   <browser:viewletManager
@@ -152,6 +142,18 @@
     template="secondary_context_actions.pt"
     permission="zope.View"
     items_provider="zeit.cms.secondary-context-actions"
+    />
+
+  <browser:viewlet
+    for="*"
+    layer=".interfaces.ICMSLayer"
+    name="secondary-actions"
+    manager=".interfaces.IHeaderActions"
+    class=".menu.SecondaryActions"
+    template="header-secondary.pt"
+    permission="zope.View"
+    items_provider="zeit.cms.secondary-context-actions"
+    weight="1000"
     />
 
   <browser:viewlet
@@ -374,7 +376,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     permission="zope.View"
     layer=".interfaces.ICMSLayer"
-    menu="zeit-context-actions-external" title="Preview"
+    menu="zeit-context-actions" title="Preview"
     />
 
   <browser:page
@@ -383,7 +385,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     permission="zope.View"
     layer=".interfaces.ICMSLayer"
-    menu="zeit-context-actions-external" title="Live"
+    menu="zeit-context-actions" title="Live"
     />
 
   <browser:page
@@ -393,7 +395,16 @@
     name="show_development-preview"
     class=".preview.DevelopmentPreview"
     permission="zope.View"
-    menu="zeit-context-actions-external" title="Development"
+    />
+
+  <browser:viewlet
+    zcml:condition="have zeit.cms.browser.development-preview"
+    name="development-preview"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".preview.DevelopmentMenuItem"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    permission="zope.View"
     />
 
   <adapter factory=".preview.preview_url" />
@@ -401,6 +412,26 @@
 
   <adapter
     factory=".listing.listRepresentation_to_Lockable"
+    />
+
+  <browser:viewlet
+    manager="zeit.cms.browser.interfaces.IHeaderActions"
+    for="zeit.cms.interfaces.ICMSContent"
+    name="checkin"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    template="header-preview.pt"
+    permission="zeit.Checkin"
+    weight="20"
+    />
+
+  <browser:viewlet
+    manager="zeit.cms.browser.interfaces.IHeaderActions"
+    for="zeit.cms.interfaces.ICMSContent"
+    name="live"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    template="header-live.pt"
+    permission="zeit.Checkin"
+    weight="200"
     />
 
   <!-- dnd support -->
