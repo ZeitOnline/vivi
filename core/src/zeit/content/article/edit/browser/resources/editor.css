@@ -1001,9 +1001,17 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   width: 8em;
 }
 
-#edit-form-teaser .inline-form .large_graphical_preview img {
+#edit-form-teaser .inline-form .image_details img {
   width: 148px;
   height: 84px;
+}
+
+#edit-form-teaser .inline-form .image_details .copyright {
+  display: none;
+}
+
+#edit-form-teaser .inline-form .image_details .toggle_infos {
+  display: none;
 }
 
 #teaser-image\.images\.url {
