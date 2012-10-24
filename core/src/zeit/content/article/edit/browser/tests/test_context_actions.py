@@ -14,12 +14,12 @@ class WorkingcopyTest(zeit.content.article.testing.SeleniumTestCase):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         transaction.commit()
         self.selenium.open(self.selenium.getLocation())
-        self.selenium.waitForElementPresent('id=checkin')
+        self.selenium.waitForElementPresent('id=publish.actions.save')
 
     def test_article_should_be_checked_in(self):
         s = self.selenium
-        s.clickAndWait('id=checkin')
-        s.assertElementNotPresent('id=checkin')
+        s.clickAndWait('id=publish.actions.save')
+        s.assertElementNotPresent('id=publish.actions.save')
 
     def test_workingcopy_should_be_removable(self):
         s = self.selenium
