@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.article.interfaces import IBookRecensionContainer
+import transaction
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.article.recension
@@ -24,6 +25,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
                     recension.category = 'Belletristik'
                     container = IBookRecensionContainer(co)
                     container.append(recension)
+                    transaction.commit()
 
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia/@@checkout')
