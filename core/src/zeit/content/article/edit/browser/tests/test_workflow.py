@@ -5,7 +5,6 @@
 from zeit.content.article.article import Article
 from zeit.workflow.interfaces import IReview
 import datetime
-import mock
 import unittest2 as unittest
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -60,8 +59,8 @@ class CheckinSelenium(
         before = sc.last_semantic_change
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
-        s.waitForElementPresent('id=checkin')
-        s.clickAndWait('id=checkin')
+        s.waitForElementPresent('id=publish.actions.save')
+        s.clickAndWait('id=publish.actions.save')
         self.assertIn('repository', s.getLocation())
         self.assertEqual(before, sc.last_semantic_change)
 
@@ -124,7 +123,7 @@ class WorkflowEndToEnd(
 
     def test_delete_shows_lightbox(self):
         s = self.selenium
-        self.open('/') # XXX
+        self.open('/')  # XXX
         self.open('/repository/online/2007/01/Somalia/')
         s.waitForElementPresent('id=delete_from_repository')
         s.click('id=delete_from_repository')
