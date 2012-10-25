@@ -1,0 +1,22 @@
+<div i18n:domain="zeit.cms"> <!-- lightbox -->
+<h1 i18n:translate="">Publish</h1>
+
+<tal:block condition="view/can_publish">
+<ol id="worklist">
+  <li action="checkin_auto_lsc" i18n:translate="">Checking in</li>
+  <li action="publish" i18n:translate="">Publishing</li>
+  <li action="reload" i18n:translate="">Reloading</li>
+</ol>
+
+<script type="text/javascript">
+  new zeit.workflow.publish.Publisher('worklist');
+</script>
+</tal:block>
+
+<div id="publish.errors">
+  <tal:block tal:condition="not: view/can_publish">
+    <p i18n:translate="">Cannot publish since validation rules are violated.</p>
+  </tal:block>
+</div>
+</div>
+

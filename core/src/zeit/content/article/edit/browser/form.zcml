@@ -686,25 +686,6 @@
     permission="zope.View"
     />
 
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".workflow.WorkflowContainer"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.export-cds"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="25"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.export-cds"
-    class=".workflow.ExportCDS"
-    permission="zope.View"
-    />
-
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -737,16 +718,8 @@
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.checkin"
-    class=".workflow.Checkin"
+    class=".workflow.WorkflowButtons"
     template="workflow.pt"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.semantic-change"
-    class=".workflow.SemanticChange"
     permission="zope.View"
     />
 

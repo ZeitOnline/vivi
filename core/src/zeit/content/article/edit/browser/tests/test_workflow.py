@@ -5,7 +5,6 @@
 from zeit.content.article.article import Article
 from zeit.workflow.interfaces import IReview
 import datetime
-import mock
 import unittest2 as unittest
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -21,10 +20,8 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
                 self.repository['article'] = Article()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
-        b.handleErrors = False
-        b.open('@@edit.form.checkin')
+        b.open('@@edit.form.checkin-errors')
         self.assert_ellipsis('...Title:...Required input is missing...')
-        self.assertTrue(b.getControl('Save').disabled)
 
 
 class CheckinSelenium(
@@ -75,9 +72,9 @@ class CheckinSelenium(
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
-        s.click('id=semantic-change.has_semantic_change')
+        s.click('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.field.dirty')
-        s.assertValue('id=semantic-change.has_semantic_change', 'on')
+        s.assertValue('id=publish.has_semantic_change', 'on')
         s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
         self.assertNotEqual(before, sc.last_semantic_change)
@@ -86,12 +83,12 @@ class CheckinSelenium(
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
-        s.click('id=semantic-change.has_semantic_change')
+        s.click('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.field.dirty')
         # click something else to trigger a reload of the checkin form
         s.click('id=publish.urgent')
         s.waitForElementNotPresent('css=.field.dirty')
-        s.assertValue('id=semantic-change.has_semantic_change', 'on')
+        s.assertValue('id=publish.has_semantic_change', 'on')
 
 
 class WorkflowEndToEnd(
@@ -100,9 +97,9 @@ class WorkflowEndToEnd(
     def test_checkin_redirects_to_repository(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        s.waitForElementPresent('name=checkin')
+        s.waitForElementPresent('id=checkin')
         self.assertNotIn('repository', s.getLocation())
-        s.clickAndWait('name=checkin')
+        s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
 
     def test_checkout_redirects_to_working_copy(self):
@@ -124,9 +121,17 @@ class WorkflowEndToEnd(
         # lightbox content is covered by zeit.workflow, see there for detailed
         # tests
 
+    def test_save_and_publish_shows_lightbox(self):
+        s = self.selenium
+        self.open('/')  # XXX else the next open() fails as Unauthenticated
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s.waitForElementPresent('id=checkin-publish')
+        s.click('id=checkin-publish')
+        s.waitForElementPresent('css=.lightbox')
+
     def test_delete_shows_lightbox(self):
         s = self.selenium
-        self.open('/') # XXX
+        self.open('/')  # XXX
         self.open('/repository/online/2007/01/Somalia/')
         s.waitForElementPresent('id=delete_from_repository')
         s.click('id=delete_from_repository')
@@ -144,17 +149,6 @@ class Publish(zeit.cms.testing.BrowserTestCase):
                 content = zeit.cms.interfaces.ICMSContent(
                     'http://xml.zeit.de/online/2007/01/Somalia')
                 IReview(content).urgent = urgent
-
-    def test_smoke_publish_button_publishes_article(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@checkout')
-        b.open('@@edit.form.publish?show_form=1')
-        b.getControl('Urgent').selected = True
-        with mock.patch('zeit.cms.workflow.interfaces.IPublish') as publish:
-            b.handleErrors = False
-            b.getControl('Save & Publish').click()
-            self.assertTrue(publish().publish.called)
 
     def test_urgent_denies_marking_edited_and_corrected(self):
         self.prepare_content(urgent=True)

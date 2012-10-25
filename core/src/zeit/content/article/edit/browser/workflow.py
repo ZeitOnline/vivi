@@ -5,13 +5,16 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.workflow.interfaces import IReview
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import mock
 import zeit.cms.browser.view
 import zeit.cms.checkout.browser.manager
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.workflow.interfaces
+import zope.component
 import zope.formlib.form
 import zope.formlib.interfaces
+import zope.formlib.widget
 import zope.i18n
 
 
@@ -21,16 +24,22 @@ class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Workflow')
 
 
-class Publish(zeit.edit.browser.form.InlineForm,
-              zeit.workflow.browser.form.WorkflowActions):
+class Publish(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'publish'
     undo_description = _('edit workflow status')
 
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.workflow.interfaces.IReview))
+    @property
+    def form_fields(self):
+        fields = zope.formlib.form.FormFields(
+            zeit.workflow.interfaces.IReview,
+            zeit.content.article.interfaces.ICDSWorkflow)
+        if not self.can_checkout:
+            fields += zope.formlib.form.FormFields(
+                zeit.cms.content.interfaces.ISemanticChange).select(
+                'has_semantic_change')
+        return fields
 
     def setUpWidgets(self, *args, **kw):
         super(Publish, self).setUpWidgets(*args, **kw)
@@ -39,33 +48,20 @@ class Publish(zeit.edit.browser.form.InlineForm,
             for name in ('corrected', 'edited'):
                 self.widgets[name].extra = 'disabled="disabled"'
                 self.widgets[name].vivi_css_class = 'disabled'
+        self.widgets['export_cds'].vivi_css_class = 'visual-clear'
 
-    @zope.formlib.form.action(_('Save & Publish'), name='publish')
-    def handle_publish(self, action, data):
-        # "super" call to apply changes
-        self.handle_edit_action.success_handler(self, action, data)
-        self.do_publish()
+        if not self.can_checkout:
+            items = list(self.widgets.__Widgets_widgets_items__)
+            for name in ('edit.form.checkin-errors', 'edit.form.timestamp'):
+                widget = ViewWidget(self.context, self.request, name)
+                widget.setPrefix(self.prefix)
+                items.insert(-1, (None, widget))
+            self.widgets = zope.formlib.form.Widgets(items, prefix=self.prefix)
 
-
-class ExportCDS(zeit.edit.browser.form.InlineForm,
-                zeit.workflow.browser.form.WorkflowActions):
-
-    legend = _('')
-    prefix = 'export-cds'
-    undo_description = _('edit export cds')
-
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.article.interfaces.ICDSWorkflow))
-
-
-class SemanticChange(zeit.edit.browser.form.InlineForm):
-
-    legend = _('')
-    prefix = 'semantic-change'
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ISemanticChange).select(
-        'has_semantic_change')
+    @cachedproperty
+    def can_checkout(self):
+        manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
+        return manager.canCheckout
 
 
 class CheckinErrors(object):
@@ -93,13 +89,17 @@ class CheckinErrors(object):
         return result
 
 
-class Checkin(zeit.cms.browser.view.Base,
-              zeit.cms.checkout.browser.manager.CheckinAndRedirect):
+class WorkflowButtons(object):
 
     @cachedproperty
     def can_checkout(self):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
         return manager.canCheckout
+
+    @cachedproperty
+    def can_checkin(self):
+        manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
+        return manager.canCheckin
 
     @cachedproperty
     def published(self):
@@ -110,8 +110,21 @@ class Checkin(zeit.cms.browser.view.Base,
     def is_new(self):
         return IAutomaticallyRenameable(self.context).renameable
 
+
+class ViewWidget(zope.formlib.widget.BrowserWidget):
+
+    field_css_class = ''
+
+    def __init__(self, context, request, view):
+        field = mock.Mock()
+        field.__name__ = 'htmlcontent.%s' % id(self)
+        super(ViewWidget, self).__init__(field, request)
+        self.context = context
+        self.request = request
+        self.view = view
+        self.label = None
+
     def __call__(self):
-        if self.request.method == 'POST':
-            return self.perform_checkin()
-        else:
-            return super(Checkin, self).__call__()
+        view = zope.component.getMultiAdapter(
+            (self.context, self.request), name=self.view)
+        return view()

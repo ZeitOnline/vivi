@@ -91,7 +91,7 @@
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="actions"
-    class=".workflow.Checkin"
+    class=".workflow.WorkflowButtons"
     template="layout.actions.pt"
     permission="zope.View"
     weight="2"
@@ -363,6 +363,15 @@
     name="edit-division"
     class=".edit.EditDivision"
     permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="save-and-publish.html"
+    class="zeit.workflow.browser.publish.Publish"
+    template="save-and-publish.pt"
+    permission="zeit.EditContent"
     />
 
 

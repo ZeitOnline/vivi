@@ -23,6 +23,7 @@ class WorkingcopyTest(zeit.content.article.testing.SeleniumTestCase):
 
     def test_workingcopy_should_be_removable(self):
         s = self.selenium
+        s.waitForElementPresent('id=delete_workingcopy')
         s.click('id=delete_workingcopy')
         s.waitForElementPresent('xpath=//input[@value="Delete"]')
         s.assertTextPresent('Do you really want to delete your workingcopy?')
