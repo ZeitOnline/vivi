@@ -571,13 +571,14 @@ pre {
 .secondary-context-actions {
   display: block;
   opacity: 1;
-  position: absolute;
+  position: relative;
   z-index: 1;
   background-color: #f1f4f9;
   border: 1px solid #c7c7c7;
   top: 1em;
   padding: 0.4em;
-  left: 52em;
+  float: left;
+  margin-left: -6em;
 }
 
 .secondary-context-actions > li {
@@ -757,3 +758,10 @@ a.button[disabled] {
 #header-actions {
     margin-left: 22em;
 }
+
+#header-actions .button {
+  float: left;
+  margin-right: 4px;
+  margin-top: -3px;
+}
+
