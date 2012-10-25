@@ -43,14 +43,6 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
     template = zope.app.pagetemplate.ViewPageTemplateFile('inlineform.pt')
 
     css_class = None
-    actions_visible = False
-
-    @property
-    def actions_css_class(self):
-        css_class = 'form-controls'
-        if self.actions_visible:
-            css_class += ' actions-visible'
-        return css_class
 
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
