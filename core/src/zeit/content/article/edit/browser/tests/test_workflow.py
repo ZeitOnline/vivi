@@ -5,6 +5,7 @@
 from zeit.content.article.article import Article
 from zeit.workflow.interfaces import IReview
 import datetime
+import transaction
 import unittest2 as unittest
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -186,7 +187,6 @@ class Delete(zeit.cms.testing.BrowserTestCase):
         self.assertNotIn('Cancel', b.contents)
 
 
-@unittest.skip('FF shows an HTTP auth dialog for no reason')
 class Objectlog(
     zeit.content.article.edit.browser.testing.EditorTestCase):
 
@@ -197,6 +197,7 @@ class Objectlog(
                 article = zeit.cms.interfaces.ICMSContent(
                     'http://xml.zeit.de/online/2007/01/Somalia')
                 zeit.objectlog.interfaces.ILog(article).log('example message')
+                transaction.commit()
         self.open(
             'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/')
         s = self.selenium
