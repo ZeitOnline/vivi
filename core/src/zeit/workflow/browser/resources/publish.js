@@ -56,7 +56,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             }
             return MochiKit.Async.callLater(
                 1, function() {
-                    return self.poll_until_complete(job)
+                    return self.poll_until_complete(job);
                 });
             },
             function(err) {
@@ -82,7 +82,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             return MochiKit.Async.callLater(
                 1, bind(self.poll_until_complete, self), job);
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
+        d.addErrback(function(err) { zeit.cms.log_error(err); return err; });
         return d;
     },
 
@@ -90,7 +90,7 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
             application_url + '/@@flash-job-errors', {'job': job});
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err});
+        d.addErrback(function(err) { zeit.cms.log_error(err); return err; });
         return d;
     },
 
@@ -140,6 +140,6 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
     error: function(step) {
         MochiKit.DOM.removeElementClass(element, 'busy');
         MochiKit.DOM.addElementClass(element, 'error');
-    },
+    }
 });
 
