@@ -25,13 +25,22 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
             });
     },
 
-    checkin: function(context) {
+    checkin: function(context, params) {
         var self = this;
+        if (isUndefinedOrNull(params)) {
+            params = '';
+        }
         if (isUndefinedOrNull(context)) {
             context = window.context_url;
         }
         return self._redirect_step(
-            context + '/@@checkin?redirect=False&event:boolean=');
+            context + '/@@checkin?redirect=False&event:boolean=' + params);
+    },
+
+    // XXX kludgy. Generalize with arguments declared on the <li>?
+    checkin_auto_lsc: function(context) {
+        var self = this;
+        return self.checkin(context, '&semantic_change=None');
     },
 
     publish: function(context) {
