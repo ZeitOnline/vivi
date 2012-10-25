@@ -340,6 +340,29 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         self.original_height = self.selenium.getEval('window.outerHeight')
         self.set_window_size(self.window_width, self.window_height)
 
+        self._prefill_http_auth_cache()
+
+    def _prefill_http_auth_cache(self):
+        # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
+        # issue with HTTP auth and AJAX calls: if you open a page that requires
+        # auth and has AJAX calls to further pages that require the same auth,
+        # sometimes those AJAX calls come back as 401 (nothing to do with
+        # Selenium, we've seen this against the actual server).
+        #
+        # It seems that opening a page and then giving it a little time
+        # to settle in is enough to work around this issue.
+
+        if getattr(self.layer, 'http_auth_cache', False):
+            # While doing this in the layer's setUp would be conceptually
+            # cleaner, it would be much dirtier to implement (e.g.
+            # self.layer.selenium is only instantiated in testSetUp)
+            return
+        self.layer.http_auth_cache = True
+        self.open('/@@test-setup-auth')
+        # We don't really know how much time the browser needs until it's
+        # satisfied, or how we could determine this.
+        self.selenium.pause(1000)
+
     def tearDown(self):
         super(SeleniumTestCase, self).tearDown()
         if self.log_errors:

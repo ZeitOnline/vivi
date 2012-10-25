@@ -461,4 +461,12 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="test-setup-auth"
+    template="test-setup-auth.pt"
+    permission="zope.View"
+  />
+
 </configure>
