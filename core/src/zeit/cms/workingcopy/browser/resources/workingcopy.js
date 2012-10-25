@@ -4,6 +4,9 @@
 
     var make_draggable = function() {
         MochiKit.Signal.disconnect(ident);
+        if (! $('workingcopycontents')) {
+            return;
+        }
         ident = MochiKit.Signal.connect(
             'workingcopycontents', 'onmouseover', function(event) {
                 var trs = $$('#workingcopycontents tbody > tr');
