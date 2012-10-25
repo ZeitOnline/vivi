@@ -365,6 +365,15 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="save-and-publish.html"
+    class="zeit.workflow.browser.publish.Publish"
+    template="save-and-publish.pt"
+    permission="zeit.EditContent"
+    />
+
 
   <class class="..reference.Reference">
     <implements interface="zeit.edit.interfaces.IFoldable" />

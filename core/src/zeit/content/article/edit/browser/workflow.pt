@@ -16,6 +16,15 @@
                         if view.can_checkin else None;"
          i18n:translate="">Save</a>
 
+      <a class="button"
+         id="checkin-publish"
+         tal:attributes="href string:${context/@@absolute_url}/@@save-and-publish.html;
+                     class python:'button' + (
+                     ' disabled' if not view.can_checkin else '');
+                     cms:cp-module python:'zeit.edit.LightBoxForm'
+                        if view.can_checkin else None;"
+         i18n:translate="">Save and publish</a>
+
   </tal:block>
 
   <a id="delete_from_repository"
