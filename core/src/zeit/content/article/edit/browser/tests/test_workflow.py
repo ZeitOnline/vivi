@@ -113,7 +113,6 @@ class WorkflowEndToEnd(
 
     def test_publish_shows_lightbox(self):
         s = self.selenium
-        self.open('/')  # XXX else the next open() fails as Unauthenticated
         self.open('/repository/online/2007/01/Somalia/')
         s.waitForElementPresent('id=publish')
         s.click('id=publish')
@@ -123,7 +122,6 @@ class WorkflowEndToEnd(
 
     def test_save_and_publish_shows_lightbox(self):
         s = self.selenium
-        self.open('/')  # XXX else the next open() fails as Unauthenticated
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s.waitForElementPresent('id=checkin-publish')
         s.click('id=checkin-publish')
@@ -131,7 +129,6 @@ class WorkflowEndToEnd(
 
     def test_delete_shows_lightbox(self):
         s = self.selenium
-        self.open('/')  # XXX
         self.open('/repository/online/2007/01/Somalia/')
         s.waitForElementPresent('id=delete_from_repository')
         s.click('id=delete_from_repository')
