@@ -575,9 +575,9 @@ pre {
   z-index: 1;
   background-color: #f1f4f9;
   border: 1px solid #c7c7c7;
-  top: 2em;
+  top: 1em;
   padding: 0.4em;
-  right: 1.5em;
+  left: 52em;
 }
 
 .secondary-context-actions > li {
