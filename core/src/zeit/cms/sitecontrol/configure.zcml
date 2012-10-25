@@ -3,7 +3,8 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   >
 
-  <resourceLibrary name="zeit.cms.sidecontrol">
+  <resourceLibrary name="zeit.cms.sidecontrol"
+                   require="zeit.cms.javascript.base">
     <directory source="resources" include="sidebar.js" />
   </resourceLibrary>
 
