@@ -1,4 +1,4 @@
-zeit.cms.sitecontrol = {}
+zeit.cms.sitecontrol = {};
 
 zeit.cms.sitecontrol.Sidebar = gocept.Class.extend({
 
@@ -14,7 +14,7 @@ zeit.cms.sitecontrol.Sidebar = gocept.Class.extend({
         MochiKit.DOM.addElementClass(self.container, 'busy');
         var d = MochiKit.Async.doSimpleXMLHttpRequest(self.view_url);
         d.addCallback(function(result) {
-            self.replace(result.responseText);   
+            self.replace(result.responseText);
         });
     },
 
