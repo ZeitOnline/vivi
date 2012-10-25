@@ -123,8 +123,12 @@ class Checkin(zeit.cms.browser.view.Base, CheckinAndRedirect):
 
     def __call__(self, semantic_change=True, event=True,
                  ignore_conflicts=False):
+        if semantic_change == 'None':
+            semantic_change = None
+        else:
+            semantic_change = bool(semantic_change)
         return self.perform_checkin(
-            bool(semantic_change), bool(event), bool(ignore_conflicts))
+            semantic_change, bool(event), bool(ignore_conflicts))
 
 
 class CheckinConflictError(zeit.cms.browser.view.Base):
