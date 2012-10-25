@@ -91,7 +91,7 @@
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="actions"
-    class=".workflow.Checkin"
+    class=".workflow.WorkflowButtons"
     template="layout.actions.pt"
     permission="zope.View"
     weight="2"

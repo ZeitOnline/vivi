@@ -24,13 +24,11 @@ class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Workflow')
 
 
-class Publish(zeit.edit.browser.form.InlineForm,
-              zeit.workflow.browser.form.WorkflowActions):
+class Publish(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
     prefix = 'publish'
     undo_description = _('edit workflow status')
-    actions_visible = True
 
     @property
     def form_fields(self):
@@ -59,10 +57,6 @@ class Publish(zeit.edit.browser.form.InlineForm,
                 widget.setPrefix(self.prefix)
                 items.insert(-1, (None, widget))
             self.widgets = zope.formlib.form.Widgets(items, prefix=self.prefix)
-
-    @zeit.cms.browser.form.action(_('Save'), name='save')
-    def handle_save(self, action, data):
-        self.perform_checkin()
 
     @cachedproperty
     def can_checkout(self):
@@ -95,13 +89,17 @@ class CheckinErrors(object):
         return result
 
 
-class Checkin(zeit.cms.browser.view.Base,
-              zeit.cms.checkout.browser.manager.CheckinAndRedirect):
+class WorkflowButtons(object):
 
     @cachedproperty
     def can_checkout(self):
         manager = zeit.cms.checkout.interfaces.ICheckoutManager(self.context)
         return manager.canCheckout
+
+    @cachedproperty
+    def can_checkin(self):
+        manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
+        return manager.canCheckin
 
     @cachedproperty
     def published(self):

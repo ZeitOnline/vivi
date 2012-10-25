@@ -1,15 +1,21 @@
 <fieldset i18n:domain="zeit.cms">
   <tal:block condition="not: view/can_checkout">
 
-  <form tal:attributes="action view/@@absolute_url" method="POST">
-    <p>
       <a class="button warning"
          id="delete_workingcopy"
          cms:cp-module='zeit.edit.LightBoxForm'
          tal:attributes="href string:${context/@@absolute_url}/@@delete.html"
          i18n:translate="">Cancel</a>
-    </p>
-  </form>
+
+      <a class="button"
+         id="checkin"
+         tal:attributes="href string:${context/@@absolute_url}/@@checkin?semantic_change=None;
+                     class python:'button' + (
+                     ' disabled' if not view.can_checkin else '');
+                     cms:cp-module python:'follow-link'
+                        if view.can_checkin else None;"
+         i18n:translate="">Save</a>
+
   </tal:block>
 
   <a id="delete_from_repository"

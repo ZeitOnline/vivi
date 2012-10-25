@@ -59,8 +59,8 @@ class CheckinSelenium(
         before = sc.last_semantic_change
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
-        s.waitForElementPresent('id=publish.actions.save')
-        s.clickAndWait('id=publish.actions.save')
+        s.waitForElementPresent('id=checkin')
+        s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
         self.assertEqual(before, sc.last_semantic_change)
 
@@ -71,18 +71,18 @@ class CheckinSelenium(
         before = sc.last_semantic_change
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
-        s.waitForElementPresent('id=publish.actions.save')
+        s.waitForElementPresent('id=checkin')
         s.click('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.field.dirty')
         s.assertValue('id=publish.has_semantic_change', 'on')
-        s.clickAndWait('id=publish.actions.save')
+        s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
         self.assertNotEqual(before, sc.last_semantic_change)
 
     def test_semantic_change_checkbox_is_saved(self):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
-        s.waitForElementPresent('id=publish.actions.save')
+        s.waitForElementPresent('id=checkin')
         s.click('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.field.dirty')
         # click something else to trigger a reload of the checkin form
@@ -97,9 +97,9 @@ class WorkflowEndToEnd(
     def test_checkin_redirects_to_repository(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        s.waitForElementPresent('id=publish.actions.save')
+        s.waitForElementPresent('id=checkin')
         self.assertNotIn('repository', s.getLocation())
-        s.clickAndWait('id=publish.actions.save')
+        s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
 
     def test_checkout_redirects_to_working_copy(self):
