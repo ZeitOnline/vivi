@@ -14,11 +14,10 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Oct 25 14:39:02 2012\n"
-"PO-Revision-Date: 2012-10-25 15:07+0100\n"
+"POT-Creation-Date: Wed Oct 24 13:51:11 2012\n"
+"PO-Revision-Date: 2012-10-26 10:04+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -572,27 +571,27 @@ msgstr "Konflikt"
 msgid "There was an error while checking in your version of ${name}."
 msgstr "Es gab einen Fehler beim Einchecken Ihrer Arbeitskopie von ${name}."
 
-#: zeit/cms/checkout/browser/manager.py:144
+#: zeit/cms/checkout/browser/manager.py:140
 msgid "The object was removed from the repository."
 msgstr "Das Objekt wurde aus der Dateiverwaltung gelöscht."
 
-#: zeit/cms/checkout/browser/manager.py:210
+#: zeit/cms/checkout/browser/manager.py:206
 msgid "Checkout ^O"
 msgstr "Auschecken ^O"
 
-#: zeit/cms/checkout/browser/manager.py:222
+#: zeit/cms/checkout/browser/manager.py:218
 msgid "Checkin ^I"
 msgstr "Einchecken ^I"
 
-#: zeit/cms/checkout/browser/manager.py:233
+#: zeit/cms/checkout/browser/manager.py:229
 msgid "Checkin (correction)"
 msgstr "Einchecken (Korrektur)"
 
-#: zeit/cms/checkout/browser/manager.py:244
+#: zeit/cms/checkout/browser/manager.py:240
 msgid "Checkin"
 msgstr "Einchecken"
 
-#: zeit/cms/checkout/browser/manager.py:254
+#: zeit/cms/checkout/browser/manager.py:250
 #: zeit/imp/browser/no-master-image-error.pt:8
 msgid "Checkout"
 msgstr "auschecken"
@@ -850,7 +849,7 @@ msgstr "Kommentare erlaubt"
 
 #: zeit/cms/content/interfaces.py:155
 msgid "Show commentthread"
-msgstr ""
+msgstr "Kommentare anzeigen"
 
 #: zeit/cms/content/interfaces.py:160
 msgid "Banner"
@@ -1913,7 +1912,7 @@ msgstr "Löschdatum"
 
 #: zeit/content/article/edit/interfaces.py:220
 msgid "Attribution"
-msgstr "Zuordnung"
+msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:223
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:24
@@ -1942,7 +1941,7 @@ msgstr "Absatztext"
 
 #: zeit/content/article/edit/interfaces.py:59
 msgid "Page teaser"
-msgstr "Seiten-Teaser"
+msgstr "Seiten-Überschrift"
 
 #: zeit/content/article/edit/interfaces.py:74
 #: zeit/content/article/edit/interfaces.py:110
@@ -2003,7 +2002,7 @@ msgstr "Layout"
 #: zeit/content/rawxml/browser/form.py:18
 #: zeit/content/rawxml/browser/configure.zcml:6
 msgid "Raw XML"
-msgstr "Rohes XML"
+msgstr "Embed Code"
 
 #: zeit/content/article/interfaces.py:100
 msgid "Info"
@@ -2115,7 +2114,7 @@ msgstr "VG-Wort-Code"
 
 #: zeit/content/author/interfaces.py:34
 msgid "Display name"
-msgstr "Name zur Anzeige"
+msgstr "Pseudonym"
 
 #: zeit/content/author/interfaces.py:36
 msgid "Default: 'Firstname Lastname'"
