@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Oct 24 13:51:11 2012\n"
-"PO-Revision-Date: 2012-10-26 10:04+0100\n"
+"PO-Revision-Date: 2012-10-29 11:03+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -3265,12 +3265,12 @@ msgstr "✐ redigiert"
 #. Default: "Corrected"
 #: zeit/workflow/interfaces.py:65
 msgid "status-corrected"
-msgstr "✔ Korrigiert"
+msgstr "✔ korrigiert"
 
 #. Default: "Refined"
 #: zeit/workflow/interfaces.py:70
 msgid "status-refined"
-msgstr "☆ Veredelt"
+msgstr "☆ veredelt"
 
 #. Default: "Images added"
 #: zeit/workflow/interfaces.py:75
