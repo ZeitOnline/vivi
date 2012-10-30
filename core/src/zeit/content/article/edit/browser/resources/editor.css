@@ -245,7 +245,7 @@
   border-radius: 0px 0px 5px 5px;
   font-size: 12px;
   margin: 0 10px;
-  padding: 5px 10px;
+  padding: 5px 15px;
   position: relative;
   overflow: hidden;
 }
@@ -676,10 +676,6 @@ button.log-expander {
 
 /* METADATA AREA */
 
-#edit-form-metadata #metadata-b\.copyrights {
-  width:172px;
-}
-
 #edit-form-metadata .inline-form div.widget > div > div > select {
   padding-left:0px;
 }
@@ -878,6 +874,7 @@ div[id^="assets"] {
 
 .inline-form div.widget > input {
   margin-left:0px;
+  width: 202px;
 }
 
 form[action$="edit-division"] div.widget input {
@@ -937,15 +934,6 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 #edit-form-misc form[action$="edit.form.options-productmanagement"] legend {
   border-top: 1px solid #EDEDED !important;
   padding-top: 15px;
-}
-
-#edit-form-misc form[action$="edit.form.options-productmanagement"] input {
-  width: 200px;
-}
-
-#edit-form-misc #options-a\.serie,
-#edit-form-misc #options-layout\.color_scheme {
-  width: 210px;
 }
 
 #edit-form-misc form[action$="edit.form.options-b"] .widget input.textType {
@@ -1016,6 +1004,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #teaser-image\.images\.url {
   width: 9em;
+}
+
+#teaser-image\.images a[rel="remove"] {
+  margin-top: 26px;
 }
 
 
