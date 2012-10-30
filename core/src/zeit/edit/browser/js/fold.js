@@ -30,6 +30,7 @@ zeit.edit.fold = function(context) {
 
 zeit.edit.toggle_folded = function(id) {
     $('#'+id).toggleClass('folded');
+    $('#'+id).trigger('fold',$('#'+id).hasClass('folded'));
     var state = get_state();
     state[window.context_url][id] = $('#'+id).hasClass('folded');
     set_state(state);
