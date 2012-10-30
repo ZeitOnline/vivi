@@ -437,7 +437,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 /* forms */
 
 .inline-form .field {
-  margin: 5px 20px 5px 0;
+  margin: 5px 25px 5px 0;
   position: relative;
 }
 
@@ -465,7 +465,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 .inline-form .fieldname-author_references a.button {
-	float: right;
+	margin-left: 25px;
 }
 
 .inline-form .fieldname-author_references div.widget {
@@ -477,7 +477,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 .inline-form .field input.autocomplete {
-  width: 231px;
+  width: 202px;
 }
 
 #edit-form-assets .inline-form .field {
@@ -591,7 +591,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 .field select {
-  width: 180px;
+  width: 211px;
 }
 
 .field button {
