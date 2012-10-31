@@ -325,6 +325,15 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
         'commentSectionEnable', 'commentsAllowed')
 
 
+class MetadataRecensions(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'metadata-recensions'
+    undo_description = _('edit metadata')
+    form_fields = FormFields(IArticle).select(
+        'has_recensions')
+
+
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     """Teaser workflow forms."""
 
@@ -389,7 +398,7 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     prefix = 'options-a'
     undo_description = _('edit options')
     form_fields = FormFields(IArticle).select(
-        'serie', 'breaking_news', 'has_recensions')
+        'serie', 'breaking_news')
 
 
 class OptionsB(zeit.edit.browser.form.InlineForm):
