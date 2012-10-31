@@ -6,6 +6,7 @@
 
 #cp-content > .cp-content-inner {
   border: 1px solid #E4E4E4;
+  border-top: 25px solid #83a1ba;
 }
 
 #cp-content .editable-area {
@@ -60,6 +61,15 @@
 #editor-forms-title,
 #editor-forms-actions {
   padding: 5px 1em;
+}
+
+#editor-forms-heading > div {
+  margin-top: -27px;
+  position: fixed;
+}
+
+#editor-forms-heading ul.metadata {
+  color: #fff;
 }
 
 #editor-forms-title,
@@ -1170,7 +1180,8 @@ label[for="memo.memo"] {
 
 #edit-form-filename .inline-form .fieldtype-checkbox .widget,
 #edit-form-misc .inline-form .fieldtype-checkbox .widget,
-#edit-form-metadata .inline-form .fieldtype-checkbox .widget {
+#edit-form-metadata .inline-form .fieldtype-checkbox .widget,
+#edit-form-workflow .inline-form .fieldtype-checkbox .widget {
   margin-left: 0.2em;
 }
 
