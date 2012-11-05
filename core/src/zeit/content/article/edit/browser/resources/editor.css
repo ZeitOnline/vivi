@@ -760,19 +760,19 @@ form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
 
 .module-icon-audio,
 form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -769px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -770px transparent;
 }
 
 form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -829px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -830px transparent;
 }
 
 form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -889px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -890px transparent;
 }
 
 form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -949px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -950px transparent;
 }
 
 label[for^="asset-badges"] .checkboxType {
