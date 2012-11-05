@@ -155,7 +155,7 @@
 }
 
 .editable-area .overlay-position .edit-button {
-    background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 0 0 #fff;
+    background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 10px 5px #fff;
     border: 1px solid #000;
     opacity: 0.8;
     padding-left: 2em;
