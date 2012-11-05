@@ -371,43 +371,43 @@
 }
 
 .rte-toolbar > a[href='bold'] {
-  background-position: -2px -357px;
+  background-position: 3px -357px;
   color: transparent;
 }
 
 .rte-toolbar > a[href='bold']:hover,
 .rte-toolbar > a.active[href='bold'] {
-  background-position: -2px -387px;
+  background-position: 3px -387px;
 }
 
 .rte-toolbar > a[href='italic'] {
-  background-position: -0px -1016px;
+  background-position: 4px -1016px;
   color: transparent;
 }
 
 .rte-toolbar > a[href='italic']:hover,
 .rte-toolbar > a.active[href='italic'] {
-  background-position: -0px -1046px;
+  background-position: 4px -1046px;
 }
 
 .rte-toolbar > a[href='insertunorderedlist'] {
-  background-position: -3px -1136px;
+  background-position: 3px -1136px;
   color: transparent;
 }
 
 .rte-toolbar > a[href='insertunorderedlist']:hover,
 .rte-toolbar > a.active[href='insertunorderedlist'] {
-  background-position: -3px -1166px;
+  background-position: 3px -1166px;
 }
 
 .rte-toolbar > a[href='formatBlock/h3'] {
-  background-position: -2px -1076px;
+  background-position: 2px -1076px;
   color: transparent;
 }
 
 .rte-toolbar > a[href='formatBlock/h3']:hover,
 .rte-toolbar > a.active[href='formatBlock/h3'] {
-  background-position: -2px -1106px;
+  background-position: 2px -1106px;
 }
 
 .rte-toolbar > a[href='formatBlock/p'] {
@@ -417,27 +417,27 @@
 
 .rte-toolbar > a[href='formatBlock/p']:hover,
 .rte-toolbar > a.active[href='formatBlock/p'] {
-  background-position: -2px -1106px;
+  background-position: 2px -1106px;
 }
 
 .rte-toolbar > a[href='insert_link'] {
-  background-position: -3px -1194px;
+  background-position: 3px -1194px;
   color: transparent;
 }
 
 .rte-toolbar > a[href='insert_link']:hover,
 .rte-toolbar > a.active[href='insert_link'] {
-  background-position: -3px -1224px;
+  background-position: 3px -1224px;
 }
 
 .rte-toolbar > a[href='unlink'] {
-  background-position: -3px -1255px;
+  background-position: 3px -1255px;
   color: transparent;
 }
 
 .rte-toolbar > a[href='unlink']:hover,
 .rte-toolbar > a.active[href='unlink'] {
-  background-position: -3px -1285px;
+  background-position: 3px -1285px;
 }
 
 .link_input {
