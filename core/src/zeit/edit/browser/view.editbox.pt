@@ -2,7 +2,9 @@
 
   <form id="lightbox.form" action="#"
         tal:condition="not: view/close"
-        tal:attributes="action request/URL"
+        tal:attributes="
+        action request/URL;
+        class string:${context/__name__};"
         tal:content="structure view/form"/>
 
   <script language="javascript"
