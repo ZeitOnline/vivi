@@ -556,7 +556,7 @@ table.properties textarea {
 .object-widget a.button[rel="configure_search"] {
   padding-left: 2px;
   padding-right: 2px;
-  background-position: -2px -55px, 0 0;
+  background-position: 9px -55px, 0 0;
 }
 
 .object-widget a.button[rel="configure_search"]:before {
@@ -566,7 +566,7 @@ table.properties textarea {
 }
 
 .object-widget a[rel="configure_search"]:hover {
-  background-position: -2px -85px, 0 0 !important;
+  background-position: 9px -85px, 0 0 !important;
 }
 
 .object-widget {
