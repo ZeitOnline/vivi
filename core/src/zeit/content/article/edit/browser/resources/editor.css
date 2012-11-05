@@ -615,11 +615,11 @@ fieldset.table .field {
 }
 
 .error div.empty {
-  background: url("bgerrortriangle.png") no-repeat scroll 0 0 transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 0px -2253px transparent;
   height: 10px;
   left: 12px;
   position: absolute;
-  width: 14px;
+  width: 25px;
 }
 
 /* Positioning for different places */
