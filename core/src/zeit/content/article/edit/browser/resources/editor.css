@@ -884,6 +884,9 @@ div[id^="assets"] {
 
 .inline-form div.widget > input {
   margin-left:0px;
+}
+
+.inline-form div.widget > input.textType {
   width: 202px;
 }
 
