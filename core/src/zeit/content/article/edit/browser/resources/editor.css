@@ -931,6 +931,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   padding-top: 25px;
 }
 
+#options-layout\.layout {
+  width: 432px;
+}
+
 #options-layout\.layout .landing-zone.visible {
   margin-top: 0px;
   padding-bottom: 2px;
