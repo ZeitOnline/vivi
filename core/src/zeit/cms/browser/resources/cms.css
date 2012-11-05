@@ -762,6 +762,6 @@ a.button[disabled] {
 #header-actions .button {
   float: left;
   margin-right: 4px;
-  margin-top: -3px;
+  margin-top: 5px;
 }
 
