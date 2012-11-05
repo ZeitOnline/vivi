@@ -497,7 +497,7 @@ table.properties textarea {
 
 .objectsequencewidget li a[rel="remove"],
 .drop-object-widget .object-reference a[rel="remove"] {
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll right -422px;
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 62px -416px;
   background-color: rgba(0,0,0,0.6);
   border-radius: 5px 5px 5px 5px;
   border: 1px solid #000000;
