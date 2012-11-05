@@ -14,14 +14,6 @@ import zope.component
 import zope.security
 
 
-class EditorContents(object):
-
-    @property
-    def body(self):
-        return zeit.content.article.edit.interfaces.IEditableBody(
-            self.context)
-
-
 class Empty(object):
 
     def render(self):
