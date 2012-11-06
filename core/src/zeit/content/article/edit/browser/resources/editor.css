@@ -2,11 +2,11 @@
 
 #cp-content {
   background: none repeat scroll 0 0 #F1F4F9;
+  background-image: -moz-linear-gradient(center top , #83A1BA 25px, #F1F4F9 0px);
 }
 
 #cp-content > .cp-content-inner {
   border: 1px solid #E4E4E4;
-  border-top: 25px solid #83a1ba;
 }
 
 #cp-content .editable-area {
