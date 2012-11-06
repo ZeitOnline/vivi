@@ -16,7 +16,7 @@
   overflow: auto;
   position: absolute;
   right: 0;
-  top: 0;
+  top: 25px;
 }
 
 #cp-content .editable-area {
