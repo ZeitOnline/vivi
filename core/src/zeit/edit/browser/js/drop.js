@@ -29,6 +29,19 @@ zeit.edit.drop.registerHandler = function(options) {
 };
 
 
+zeit.edit.drop.registerContentHandler = function(options) {
+    options.url_attribute = options.url_attribute || 'cms:drop-url';
+    options.query_arguments = options.query_arguments || function(draggable) {
+        // the draggables are provided by zeit.cms.browser:js/dnd.js,
+        // see there for their structure
+        var query = {'uniqueId': draggable.uniqueId};
+        MochiKit.Base.update(query, draggable.drop_query_args);
+        return query;
+    };
+    return zeit.edit.drop.registerHandler(options);
+};
+
+
 zeit.edit.drop.Droppable = gocept.Class.extend({
     // Handle dropping of content objects.
 
@@ -135,16 +148,9 @@ MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
 });
 
 
-zeit.edit.drop.content_drop_handler =
-    zeit.edit.drop.registerHandler({
-        accept: ['uniqueId', 'content-drag-pane'],
-        activated_by: 'action-content-droppable',
-        url_attribute: 'cms:drop-url',
-        query_arguments: function(draggable) {
-            var query = {'uniqueId': draggable.uniqueId};
-            MochiKit.Base.update(query, draggable.drop_query_args);
-            return query;
-        }
+zeit.edit.drop.content_drop_handler = zeit.edit.drop.registerContentHandler({
+    accept: ['uniqueId', 'content-drag-pane'],
+    activated_by: 'action-content-droppable'
 });
 
 }());

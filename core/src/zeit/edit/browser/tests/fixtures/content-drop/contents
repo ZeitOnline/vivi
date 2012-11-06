@@ -1,0 +1,27 @@
+<div xmlns:cms="http://namespaces.gocept.com/zeit-cms"
+      id="cp-content-inner"
+      class="cp-content-inner article-editor-inner"
+      i18n:domain="zeit.cms">
+<div class="landing-zone foo-droppable">
+</div>
+
+<div id="drag-foo" class="type-foo">
+  <span class="uniqueId"
+    style="display: none">http://xml.zeit.de/testcontent</span>
+  Drag foo
+</div>
+<div id="drag-bar" class="type-bar">
+  <span class="uniqueId"
+    style="display: none">http://xml.zeit.de/2007</span>
+  Drag bar
+</div>
+<script type="text/javascript">
+  zeit.cms.createDraggableContentObject('drag-foo');
+  zeit.cms.createDraggableContentObject('drag-bar');
+  zeit.edit.drop.registerContentHandler({
+      accept: ['type-foo'],
+      activated_by: 'foo-droppable'
+  });
+</script>
+
+</div>
