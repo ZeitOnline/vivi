@@ -123,7 +123,7 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
 
     file_dialog_start: function() {
         var self = this;
-        self.lightbox = new gocept.Lightbox($('body'));
+        self.lightbox = new gocept.Lightbox(jQuery('body')[0]);
         self.lightbox.content_box.appendChild(
             H1({}, "Uploading images …"));
         return true;
