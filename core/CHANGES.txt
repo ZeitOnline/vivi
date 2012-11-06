@@ -1,8 +1,8 @@
 zeit.content.article changes
 ============================
 
-2.9.2 (unreleased)
-------------------
+editor-ng branch (unreleased)
+-----------------------------
 
 - Accomodated article to cope for the changed videos: videos are now full CMS
   objects and moved to zeit.content.video (for #8996)
@@ -12,6 +12,39 @@ zeit.content.article changes
   and renamed to the name given during editing the checked out article (#8080).
 
 - Enable UI for author references (#7441, #7333).
+
+
+2.9.6 (unreleased)
+------------------
+
+- Cleaned up dependencies on zope.app packages.
+
+
+2.9.5 (2012-03-06)
+------------------
+
+- Update to new ConversionStep API. (#10251)
+
+
+2.9.4 (2011-12-01)
+------------------
+
+- Update to use etree instead of objectify for HTML conversion/wysiwyg
+  (via #10027).
+
+
+2.9.3 (2011-11-24)
+------------------
+
+- Fix ordering issue with images: let the PageBreakStep before the
+  XMLImageStructureStep because XMLImageStructureStep does not expect an extra
+  level of tags (that is it gets confused by `<division><p><image>`).
+
+
+2.9.2 (2011-06-20)
+------------------
+
+- Fix the usage of the product id (for #9033)
 
 - Remove <p>, <intertitle> etc. from the module library (#9923).
 
