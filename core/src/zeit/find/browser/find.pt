@@ -7,7 +7,7 @@
             var context_url = application_url;
     "></script>
   </head>
-  <body id="body">
+  <body>
     <div id="cp-search" class="zeit-find-search">
     </div>
     <script language="javascript">
