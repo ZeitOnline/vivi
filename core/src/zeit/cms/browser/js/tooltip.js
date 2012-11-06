@@ -2,7 +2,7 @@
 // See also LICENSE.txt
 
 zeit.cms.showToolTip = function(context, text, where) {
-    var body = $('body');
+    var body = jQuery('body')[0];
     var div = $('tooltip');
     if (!isNull(div)) {
         zeit.cms.hideToolTip(div.signals);

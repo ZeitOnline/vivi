@@ -50,7 +50,7 @@
         <tal:replace replace="context/@@standard_macros/resource_libraries"/>
 
       </head>
-      <body id="body"
+      <body
         tal:define="
         site_url request/getApplicationURL;
         sidebar_css context/@@sidebar_handlers/css_class">

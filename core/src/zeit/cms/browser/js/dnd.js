@@ -67,7 +67,7 @@ MochiKit.Signal.connect(
 
     draggable.element = div;
     draggable.offset = [-10, -10];
-    $('body').appendChild(div);
+    jQuery('body').append(div);
 
     var dim = null;
     if (source_element.nodeName != 'TR') {

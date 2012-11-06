@@ -381,7 +381,7 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
     construct: function(url, container) {
         var self = this;
         if (isUndefinedOrNull(container)) {
-            container = $('body');
+            container = jQuery('body')[0];
         }
         self.lightbox = self.create_lightbox(container);
         arguments.callee.$.construct.call(self, url, self.lightbox.content_box);

@@ -104,7 +104,7 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
             MochiKit.Style.makePositioned(element);
             var pos = MochiKit.Style.getElementPosition(element);
             var cloned_element = element.cloneNode(true);
-            $('body').appendChild(cloned_element);
+            jQuery('body').append(cloned_element);
             MochiKit.Style.setcloned_elementPosition(cloned_element, pos);
             MochiKit.Style.makeClipping(cloned_element);
             self.lightbox.close();
@@ -140,7 +140,7 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
         }
         url += '?' + MochiKit.Base.queryString(
             {type_filter: this.type_filter});
-        self.lightbox = new zeit.cms.LightboxForm(url, $('body'));
+        self.lightbox = new zeit.cms.LightboxForm(url, jQuery('body')[0]);
         self.lightbox.events.push(MochiKit.Signal.connect(
             self.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
             self, self.handleObjectSelected));
@@ -150,7 +150,7 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
     addObject: function(event) {
         var self = this;
         var url = self.default_browsing_url + '/@@' + self.add_view;
-        self.lightbox = new zeit.cms.ObjectAddForm(url, $('body'));
+        self.lightbox = new zeit.cms.ObjectAddForm(url, jQuery('body')[0]);
         self.lightbox.events.push(MochiKit.Signal.connect(
             self.lightbox, 'zeit.cms.ObjectReferenceWidget.selected',
             self, self.handleObjectSelected));
