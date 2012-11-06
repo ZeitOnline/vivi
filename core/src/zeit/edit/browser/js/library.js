@@ -64,7 +64,7 @@ MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'start',
         MochiKit.DOM.addElementClass(
             draggable.element, 'module-drag-pane');
         draggable.offset = [-10, -10];
-        $('body').appendChild(draggable.element);
+        jQuery('body').append(draggable.element);
 });
 
 MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'end',
