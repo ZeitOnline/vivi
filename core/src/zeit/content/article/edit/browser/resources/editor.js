@@ -44,6 +44,13 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
             return {'block_type': draggable.getAttribute('cms:block_type')};
         }
     });
+
+    zeit.edit.drop.registerContentHandler({
+        accept: ['type-image', 'type-image-group',
+                 'type-gallery', 'type-video'],
+        activated_by: 'action-article-body-content-droppable'
+    });
+
 });
 
 
