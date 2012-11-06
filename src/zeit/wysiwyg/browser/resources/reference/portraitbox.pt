@@ -13,7 +13,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     </script>
     <link href="dialog.css" type="text/css" rel="stylesheet" />
   </head>
-  <body id="body">
+  <body>
     <div id="select-item">
       <label for="href" i18n:translate="">URL</label>
       <input id="href" type="text" class="object-reference"
