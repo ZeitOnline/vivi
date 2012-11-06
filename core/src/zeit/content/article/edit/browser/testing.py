@@ -71,7 +71,7 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
         block_sel = '.block.type-{0}'.format(block)
         s.dragAndDropToObject(
             'css=#article-modules .module[cms\\:block_type={0}]'.format(block),
-            'css=#article-editor-text .landing-zone')
+            'css=#editable-body > .landing-zone')
         s.waitForElementPresent('css={0}'.format(block_sel))
         if wait_for_inline:
             s.waitForElementPresent(

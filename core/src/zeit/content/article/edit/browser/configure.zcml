@@ -113,17 +113,6 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="landing-zone"
-    template="edit.body.landing.pt"
-    permission="zeit.EditContent"
-    weight="-10"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IEditableBody"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
     name="landing-zone-bottom"
     template="edit.body.create-paragraph.pt"
     permission="zeit.EditContent"

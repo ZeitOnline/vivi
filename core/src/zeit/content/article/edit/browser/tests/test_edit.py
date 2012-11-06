@@ -540,7 +540,7 @@ class TestDivision(
             'css=#article-modules .module[cms\\:block_type=division]')
         s.dragAndDropToObject(
             'css=#article-modules .module[cms\\:block_type=division]',
-            'css=#article-editor-text .landing-zone')
+            'css=#editable-body > .landing-zone')
         s.waitForElementPresent('css=.block.type-division')
 
     def test_division_should_have_editable_teaser(self):
@@ -646,13 +646,11 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
                     paragraph.text = 'bar'
         self.open('/repository/article/@@checkout')
 
-
     def test_dummy_ad_should_be_rendered_on_banner_rules(self):
         s = self.selenium
         s.waitForElementPresent('css=#content_editable_hacks')
         s.assertText('css=#content_editable_hacks',
-            'regex:.type-p:nth-child\(4\).*background:.*dummy-ad')
-
+            'regex:.type-p:nth-child\(3\).*background:.*dummy-ad')
 
     @unittest2.skip("no typeKeys 'til webdriver")
     def test_dummy_ad_should_be_updated_by_changing_paragraphs(self):

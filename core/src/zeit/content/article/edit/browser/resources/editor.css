@@ -481,6 +481,11 @@
   background: none;
 }
 
+#editable-body .block.type-image:first-child .edit-bar .dragger,
+#editable-body .block.type-image:first-child .edit-bar .delete-link {
+    display: none;
+}
+
 /* Gallery block layouts*/
 
 #leadteaser\.gallery .object-details {
