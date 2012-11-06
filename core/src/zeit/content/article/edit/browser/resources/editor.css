@@ -2,7 +2,6 @@
 
 #cp-content {
   background: none repeat scroll 0 0 #F1F4F9;
-  background-image: -moz-linear-gradient(center top , #83A1BA 25px, #F1F4F9 0px);
 }
 
 #cp-content > .cp-content-inner {
@@ -61,15 +60,6 @@
 #editor-forms-title,
 #editor-forms-actions {
   padding: 5px 1em;
-}
-
-#editor-forms-heading > div {
-  margin-top: -27px;
-  position: fixed;
-}
-
-#editor-forms-heading ul.metadata {
-  color: #fff;
 }
 
 #editor-forms-title,
