@@ -358,6 +358,8 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
             # self.layer.selenium is only instantiated in testSetUp)
             return
         self.layer.http_auth_cache = True
+        # XXX it seems something is not ready immediately?!??
+        self.selenium.pause(1000)
         self.open('/@@test-setup-auth')
         # We don't really know how much time the browser needs until it's
         # satisfied, or how we could determine this.
