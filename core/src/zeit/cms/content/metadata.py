@@ -76,6 +76,9 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     teaserText = zeit.cms.content.property.ObjectPathProperty(
         '.teaser.text',
         zeit.cms.content.interfaces.ICommonMetadata['teaserText'])
+    teaserSupertitle = zeit.cms.content.property.ObjectPathProperty(
+        '.teaser.supertitle',
+        zeit.cms.content.interfaces.ICommonMetadata['teaserSupertitle'])
 
     printRessort = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['printRessort'],

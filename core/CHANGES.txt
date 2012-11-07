@@ -50,6 +50,8 @@ editor-ng branch changes
 - Fold IContentAdder and IAddLocation into zeit.cms from zeit.addcentral
   (for #10692).
 
+- Added a teaser kicker field to the common metadata (#11460).
+
 
 1.53.4 (2012-03-15)
 -------------------

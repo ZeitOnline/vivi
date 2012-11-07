@@ -135,6 +135,11 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         max_length=170)
 
+    teaserSupertitle = zope.schema.TextLine(
+        title=_(u'Teaser kicker'),
+        description=_(u'Please take care of capitalisation.'),
+        required=False)
+
     vg_wort_id = zope.schema.TextLine(
         title=_('VG Wort Id'),
         required=False)
