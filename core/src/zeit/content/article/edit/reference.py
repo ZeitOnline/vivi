@@ -50,6 +50,14 @@ class Reference(zeit.edit.block.SimpleElement):
         field.validate(value)
 
 
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IReference)
+@grokcore.component.implementer(zeit.cms.content.interfaces.ICommonMetadata)
+def find_commonmetadata(context):
+    body = context.__parent__
+    article = body.__parent__
+    return article
+
+
 class Gallery(Reference):
 
     grokcore.component.implements(

@@ -57,6 +57,16 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(text)
         s.assertValue(text, 'A custom caption')
 
+    def test_widget_shows_add_button(self):
+        # this ensures that the widget can find the Article (to determine
+        # ressort etc.), which means that an IReference block is adaptable to
+        # ICommonMetadata.
+        s = self.selenium
+        self.add_article()
+        # Article always has one image block already
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
+        s.assertElementPresent('css=.block.type-image .add_view.button')
+
     def add_to_clipboard(self, obj, name):
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction() as principal:
