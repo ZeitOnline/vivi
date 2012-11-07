@@ -690,6 +690,9 @@ button.log-expander {
 }
 
 #edit-form-metadata .inline-form fieldset.keywords {
+  margin: 0;
+  padding-left: 2em;
+  border-left: 1px solid #E4E4E4;
   float: right;
   width: 30em;
 }
@@ -949,7 +952,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #edit-form-misc form[action$="edit.form.options-b"] .widget input.textType {
-  width: 44px;
+  width: 87px;
 }
 
 /* LEAD TEASER AREA */
