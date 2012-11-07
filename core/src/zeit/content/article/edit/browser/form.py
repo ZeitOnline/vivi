@@ -360,6 +360,19 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         self.widgets['images'].add_type = IImageGroup
 
 
+class TeaserSupertitle(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'teaser-supertitle'
+    undo_description = _('edit teaser supertitle')
+    form_fields = FormFields(ICommonMetadata).select('teaserSupertitle')
+
+    def setUpWidgets(self, *args, **kw):
+        super(TeaserSupertitle, self).setUpWidgets(*args, **kw)
+        self.widgets['teaserSupertitle'].extra = 'cms:maxlength="%s"' % (
+            self.widgets['teaserSupertitle'].context.max_length)
+
+
 class TeaserTitle(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
@@ -371,6 +384,7 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
         super(TeaserTitle, self).setUpWidgets(*args, **kw)
         self.widgets['teaserTitle'].extra = 'cms:maxlength="%s"' % (
             self.widgets['teaserTitle'].context.max_length)
+
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
 
