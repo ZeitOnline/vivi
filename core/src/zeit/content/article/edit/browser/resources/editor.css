@@ -952,7 +952,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #edit-form-misc form[action$="edit.form.options-b"] .widget input.textType {
-  width: 44px;
+  width: 87px;
 }
 
 /* LEAD TEASER AREA */
