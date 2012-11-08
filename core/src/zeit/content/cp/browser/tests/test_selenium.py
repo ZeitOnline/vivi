@@ -4,6 +4,7 @@
 
 from unittest2 import skip
 import lovely.remotetask.interfaces
+import time
 import lxml.cssselect
 import zeit.cms.repository.interfaces
 import zeit.content.quiz.quiz
@@ -537,6 +538,7 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
             for name, task in zope.component.getUtilitiesFor(
                 lovely.remotetask.interfaces.ITaskService):
                 task.stopProcessing()
+        time.sleep(1.25)
         super(TestOneClickPublish, self).tearDown()
 
     def _fill_lead(self):
