@@ -454,11 +454,11 @@
 .create-paragraph p:empty:before,
 .editable p:empty:before,
 .editable h3:empty:before {
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll -4px -26px transparent;
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 5px -27px transparent;
   color: black;
   content: "Geben Sie hier Text ein.";
   font-weight: bold;
-  padding-left: 18px;
+  padding-left: 24px;
 }
 
 .editable ul:empty:before,
@@ -690,6 +690,9 @@ button.log-expander {
 }
 
 #edit-form-metadata .inline-form fieldset.keywords {
+  margin: 0;
+  padding-left: 2em;
+  border-left: 1px solid #E4E4E4;
   float: right;
   width: 30em;
 }
@@ -949,7 +952,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #edit-form-misc form[action$="edit.form.options-b"] .widget input.textType {
-  width: 44px;
+  width: 87px;
 }
 
 /* LEAD TEASER AREA */
@@ -1216,4 +1219,14 @@ iframe.preview {
 #body .ui-menu-item {
   background-color: #fafafa;
   border: 1px solid #eee;
+}
+
+
+
+
+.viewbackground div.widget {
+  background: #f1f4f9;
+  border-top: 1px solid #f7f7f7;
+  padding: 3px;
+  min-height: 15px;
 }
