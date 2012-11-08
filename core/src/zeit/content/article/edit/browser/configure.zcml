@@ -35,6 +35,7 @@
         strftime.js
         timer.js
         preview.js
+        sync.js
         editor.css
         "/>
   </resourceLibrary>
