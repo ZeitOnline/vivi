@@ -4,7 +4,9 @@
 
 zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
-    construct: function(widget_id, accept, detail_view_name) {
+    DEFAULT_HINT: 'Ziehen Sie Inhalte hierher um sie zu verknüpfen.',
+
+    construct: function(widget_id, accept, detail_view_name, description) {
         var self = this;
         self.widget_id = widget_id;
         self.accept = accept;
@@ -14,6 +16,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         self.url_input = $(self.widget_id + '.url');
 
         self.detail_view_name = detail_view_name;
+        self.description = description || self.DEFAULT_HINT;
 
         self.initialize_autocomplete();
         self.initialize();
@@ -77,8 +80,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             '*', 'landing-zone-candidate', self.element);
         if (i == 0 && isNull(self.autocomplete)) {
             self.ul_element.appendChild(LI(
-                {'class': 'new'},
-                'Ziehen Sie Inhalte hierher um sie zu verknüpfen.'));
+                {'class': 'new'}, self.description));
             MochiKit.DOM.addElementClass(landing_zone, 'landing-zone');
             MochiKit.DOM.addElementClass(landing_zone, 'visible');
         } else {
@@ -263,11 +265,13 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
 zeit.cms.DropObjectWidget = gocept.Class.extend({
 
-    construct: function(element, accept, detail_view_name) {
+    construct: function(element, accept, detail_view_name, description) {
         var self = this;
         self.element = element;
         self.detail_view_name = detail_view_name;
         self.accept = accept;
+        self.description =
+            description || zeit.cms.ObjectSequenceWidget.prototype.DEFAULT_HINT;
 
         self.input = MochiKit.DOM.getFirstElementByTagAndClassName(
             'input', null, self.element);
@@ -350,8 +354,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
                 MochiKit.DOM.removeElementClass(landing_zone, 'visible');
                 });
         } else {
-            self.details.innerHTML =
-                'Ziehen Sie Inhalte hierher um sie zu verknüpfen.';
+            self.details.innerHTML = self.description;
             MochiKit.DOM.addElementClass(landing_zone, 'landing-zone');
             MochiKit.DOM.addElementClass(landing_zone, 'visible');
         }

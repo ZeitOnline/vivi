@@ -21,6 +21,7 @@
 </div>
 <script tal:content="string:
 new zeit.cms.DropObjectWidget(
-    '${view/name}', ${view/accept_classes}, '${view/detail_view_name}');
+    '${view/name}', ${view/accept_classes}, '${view/detail_view_name}',
+    '${context/description}');
 ">
 </script>
