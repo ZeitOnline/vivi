@@ -424,6 +424,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 #editor-forms div.editable-area > div.edit-bar > a {
+  color: #fff;
   height: 2em;
   padding-left: 15px;
   width: 98%;
