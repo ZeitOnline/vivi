@@ -274,11 +274,6 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit metadata')
     form_fields = FormFields(ICommonMetadata).select('ressort', 'sub_ressort')
 
-    def setUpWidgets(self, *args, **kw):
-        super(MetadataA, self).setUpWidgets(*args, **kw)
-        self.widgets['ressort'].vivi_css_class = 'viewbackground'
-        self.widgets['sub_ressort'].vivi_css_class = 'viewbackground'
-
     def render(self):
         result = super(MetadataA, self).render()
         if result:
@@ -296,11 +291,6 @@ class MetadataB(zeit.edit.browser.form.InlineForm):
     prefix = 'metadata-b'
     undo_description = _('edit metadata')
     form_fields = FormFields(ICommonMetadata).select('product', 'copyrights')
-
-    def setUpWidgets(self, *args, **kw):
-        super(MetadataB, self).setUpWidgets(*args, **kw)
-        self.widgets['product'].vivi_css_class = 'viewbackground'
-        self.widgets['copyrights'].vivi_css_class = 'viewbackground'
 
 
 # This will be renamed properly as soon as the fields are finally decided.
@@ -381,7 +371,6 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
         super(TeaserTitle, self).setUpWidgets(*args, **kw)
         self.widgets['teaserTitle'].extra = 'cms:maxlength="%s"' % (
             self.widgets['teaserTitle'].context.max_length)
-        self.widgets['teaserTitle'].vivi_css_class = 'viewbackground'
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
 
@@ -394,7 +383,6 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
         super(TeaserText, self).setUpWidgets(*args, **kw)
         self.widgets['teaserText'].extra = 'cms:maxlength="%s"' % (
             self.widgets['teaserText'].context.max_length)
-        self.widgets['teaserText'].vivi_css_class = 'viewbackground'
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -412,10 +400,6 @@ class OptionsA(zeit.edit.browser.form.InlineForm):
     form_fields = FormFields(IArticle).select(
         'serie', 'breaking_news')
 
-    def setUpWidgets(self, *args, **kw):
-        super(OptionsA, self).setUpWidgets(*args, **kw)
-        self.widgets['serie'].vivi_css_class = 'viewbackground'
-
 
 class OptionsB(zeit.edit.browser.form.InlineForm):
 
@@ -427,14 +411,9 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(OptionsB, self).setUpWidgets(*args, **kw)
-        self.widgets['page'].vivi_css_class = 'viewbackground'
-        self.widgets['year'].vivi_css_class = 'viewbackground'
-        self.widgets['volume'].vivi_css_class = 'viewbackground'
-        self.widgets['printRessort'].vivi_css_class = 'viewbackground'
         # the 'page' field is an Int, so we can't use default='n/a'
         if not self.context.page:
             self.widgets['page'].setRenderedValue('n/a')
-
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
@@ -444,12 +423,6 @@ class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit options')
     form_fields = FormFields(ICommonMetadata).select(
         'cap_title', 'banner_id', 'vg_wort_id')
-
-    def setUpWidgets(self, *args, **kw):
-        super(OptionsProductManagement, self).setUpWidgets(*args, **kw)
-        self.widgets['cap_title'].vivi_css_class = 'viewbackground'
-        self.widgets['banner_id'].vivi_css_class = 'viewbackground'
-        self.widgets['vg_wort_id'].vivi_css_class = 'viewbackground'
 
 
 class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):
@@ -480,4 +453,3 @@ class OptionsLayout(zeit.edit.browser.form.InlineForm):
         super(OptionsLayout, self).setUpWidgets(*args, **kw)
         self.widgets['layout'].display_search_button = False
         self.widgets['layout'].display_url_field = False
-        self.widgets['color_scheme'].vivi_css_class = 'viewbackground'
