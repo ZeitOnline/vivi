@@ -1226,3 +1226,10 @@ iframe.preview {
   background-color: #fafafa;
   border: 1px solid #eee;
 }
+
+.widget.display {
+  background: #f1f4f9;
+  border-top: 1px solid #f7f7f7;
+  padding: 3px;
+  min-height: 15px;
+}
