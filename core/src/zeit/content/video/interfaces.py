@@ -87,10 +87,12 @@ class IVideoAsset(zope.interface.Interface):
 
     video = zope.schema.Choice(
         title=_('Video'),
+        description=_("Drag a video here"),
         required=False,
         source=videoOrPlaylistSource)
 
     video_2 = zope.schema.Choice(
         title=_('Video 2'),
+        description=_("Drag a video here"),
         required=False,
         source=videoOrPlaylistSource)
