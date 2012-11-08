@@ -77,10 +77,13 @@ class Base(UserDict.DictMixin,
             if name in self:
                 raise zope.container.interfaces.DuplicateIDError(name)
         else:
-            name = str(uuid.uuid4())
+            name = self._generate_block_id()
         item.__name__ = name
         self.xml.append(zope.proxy.removeAllProxies(item.xml))
         return name
+
+    def _generate_block_id(self):
+        return str(uuid.uuid4())
 
     def updateOrder(self, order):
         __traceback_info__ = (order,)
