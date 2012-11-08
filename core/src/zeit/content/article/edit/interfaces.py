@@ -82,11 +82,13 @@ class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
 
     video = zope.schema.Choice(
         title=_('Video'),
+        description=_("Drag a video here"),
         required=False,
         source=zeit.content.video.interfaces.videoOrPlaylistSource)
 
     video_2 = zope.schema.Choice(
         title=_('Video 2'),
+        description=_("Drag a video here"),
         required=False,
         source=zeit.content.video.interfaces.videoOrPlaylistSource)
 
@@ -118,6 +120,7 @@ class IImage(IReference, ILayoutable):
 
     references = zope.schema.Choice(
         title=_("Image"),
+        description=_("Drag an image here"),
         source=zeit.content.image.interfaces.ImageSource(),
         required=False)
 
@@ -137,6 +140,7 @@ class IGallery(IReference):
 
     references = zope.schema.Choice(
         title=_('Gallery'),
+        description=_("Drag an image gallery here"),
         source=zeit.content.gallery.interfaces.gallerySource,
         required=False)
 
@@ -146,6 +150,7 @@ class IInfobox(IReference):
 
     references = zope.schema.Choice(
         title=_('Infobox'),
+        description=_("Drag an infobox here"),
         source=zeit.content.infobox.interfaces.infoboxSource,
         required=False)
 
@@ -163,6 +168,7 @@ class IPortraitbox(IReference, ILayoutable):
 
     references = zope.schema.Choice(
         title=_('Portraitbox'),
+        description=_("Drag a portraitbox here"),
         source=zeit.content.portraitbox.interfaces.portraitboxSource,
         required=False)
 
