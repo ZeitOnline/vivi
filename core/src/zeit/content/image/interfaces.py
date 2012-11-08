@@ -178,6 +178,7 @@ class IImages(zope.interface.Interface):
 
     images = zope.schema.Tuple(
         title=_('Images'),
+        description=_("Drag an image or image group here"),
         required=False,
         default=(),
         value_type=zope.schema.Choice(
