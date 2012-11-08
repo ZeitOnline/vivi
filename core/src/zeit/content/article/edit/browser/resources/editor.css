@@ -803,8 +803,13 @@ form[action$="misc-product-management-b"] {
 #metadata-c\.author_references > ul > li.busy {
 	background: none !important;
 }
+
 #metadata-c\.author_references .object-details {
     border-style: none;
+}
+
+#metadata-c\.author_references {
+    margin-bottom: 0;
 }
 
 #metadata-c\.author_references .add_view {
@@ -931,6 +936,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #options-layout\.layout {
   width: 432px;
+  margin-bottom: 0;
 }
 
 #options-layout\.layout .landing-zone.visible {
