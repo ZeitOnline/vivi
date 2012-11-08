@@ -48,10 +48,7 @@ zeit.edit.library.create = function(library_id, url, title) {
 
 // Internal functions
 
-MochiKit.Signal.connect(window, 'onload', function() {
-    if (! $('cp-library')) {
-        return;
-    }
+MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     tabs = new zeit.cms.Tabs('cp-library');
 });
 

@@ -1,6 +1,9 @@
 (function() {
 
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
+    if (! $('cp-undo')) {
+        return;
+    }
     var view = new zeit.cms.JSONView(
         context_url + '/undo-history', 'cp-undo');
 

@@ -184,6 +184,7 @@ zeit.edit.Editor = gocept.Class.extend({
         // There is only one instance per page. Put it under a well known
         // location
         zeit.edit.editor = new zeit.edit.Editor();
+        zeit.edit.create_tabs();
         MochiKit.Signal.signal(window, 'cp-editor-initialized');
         zeit.edit.editor.busy_until_reload_of(
             zeit.edit.editor, 0);
@@ -194,6 +195,20 @@ zeit.edit.Editor = gocept.Class.extend({
         });
     });
 }());
+
+
+zeit.edit.create_tabs = function() {
+    var tabs = new zeit.cms.Tabs('cp-forms');
+    tabs.add(new zeit.cms.Tab('cp-search', 'Inhalte'));
+    tabs.add(new zeit.cms.Tab('cp-library', 'Module'));
+    tabs.add(new zeit.cms.Tab('cp-undo', 'Undo'));
+};
+
+
+MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
+    MochiKit.DOM.addElementClass('cp-search', 'zeit-find-search');
+    zeit.find.init_full_search();
+});
 
 
 zeit.edit.BusyIndicator = gocept.Class.extend({
