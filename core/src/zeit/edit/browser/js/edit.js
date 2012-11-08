@@ -201,7 +201,10 @@ zeit.edit.create_tabs = function() {
     var tabs = new zeit.cms.Tabs('cp-forms');
     tabs.add(new zeit.cms.Tab('cp-search', 'Inhalte'));
     tabs.add(new zeit.cms.Tab('cp-library', 'Module'));
-    tabs.add(new zeit.cms.Tab('cp-undo', 'Undo'));
+    // XXX missing concept how JS knows about repository/workingcopy
+    if (window.location.href.indexOf('/repository/') == -1) {
+        tabs.add(new zeit.cms.Tab('cp-undo', 'Undo'));
+    }
 };
 
 
