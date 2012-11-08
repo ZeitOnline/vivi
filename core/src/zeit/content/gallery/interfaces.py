@@ -127,6 +127,7 @@ class IGalleryReference(zope.interface.Interface):
 
     gallery = zope.schema.Choice(
         title=_('Image gallery'),
+        description=_("Drag a gallery here"),
         required=False,
         source=gallerySource)
 
