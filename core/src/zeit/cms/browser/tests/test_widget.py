@@ -53,6 +53,13 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
         self.assert_ellipsis(
             '...class="publish-state"...Not published...')
 
+    def test_should_contain_type_identifier(self):
+        # TestContentType doesn't have a TypeDeclaration, so it shows as
+        # 'unknown'
+        self.browser.open('@@object-details')
+        self.assert_ellipsis(
+            '...class="object-details type-unknown"...')
+
 
 class TestObjectSequenceWidget(unittest2.TestCase):
 

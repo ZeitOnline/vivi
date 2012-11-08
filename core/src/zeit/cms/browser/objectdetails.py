@@ -103,3 +103,9 @@ class Details(zeit.cms.browser.view.Base):
             self.author,
             self.hits,
         ])
+
+    @property
+    def type_declaration(self):
+        no_type = type(
+            'NoTypeDeclaration', (object,), dict(type_identifier='unknown'))
+        return zeit.cms.interfaces.ITypeDeclaration(self.context, no_type)

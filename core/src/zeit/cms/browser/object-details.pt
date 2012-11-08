@@ -1,4 +1,5 @@
-<div class="object-details">
+<div tal:attributes="
+   class string:object-details type-${view/type_declaration/type_identifier};">
   <div class="object-details-heading"
        tal:content="structure context/@@object-details-heading" />
   <div class="object-details-body"

@@ -110,6 +110,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     layer=".interfaces.ICMSLayer"
     name="object-details"
+    class=".objectdetails.Details"
     template="object-details.pt"
     permission="zope.View"
     />
