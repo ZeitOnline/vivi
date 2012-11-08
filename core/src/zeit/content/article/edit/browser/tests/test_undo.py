@@ -48,3 +48,10 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('id=metadata-b.copyrights')
         s.assertValue('id=metadata-b.copyrights', '')
         s.assertElementNotPresent('css=.editable p')
+
+    def test_undo_tab_is_not_shown_in_repository(self):
+        # since undo only applies in the workingcopy
+        s = self.selenium
+        self.open('/repository/online/2007/01/Somalia')
+        s.waitForElementPresent('id=cp-library')
+        s.assertElementNotPresent('id=cp-undo')
