@@ -4,7 +4,6 @@
 import gocept.lxml.interfaces
 import grokcore.component
 import lxml.objectify
-import uuid
 import z3c.traverser.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
@@ -37,9 +36,8 @@ class EditableBody(zeit.edit.container.Base,
     def _set_default_key(self, xml_node):
         key = xml_node.get('{http://namespaces.zeit.de/CMS/cp}__name__')
         if not key:
-            key = str(uuid.uuid4())
-            xml_node.set('{http://namespaces.zeit.de/CMS/cp}__name__',
-                         key)
+            key = self._generate_block_id()
+            xml_node.set('{http://namespaces.zeit.de/CMS/cp}__name__', key)
             self._p_changed = True
         return key
 
@@ -67,7 +65,7 @@ class EditableBody(zeit.edit.container.Base,
             if name in self:
                 raise zope.container.interfaces.DuplicateIDError(name)
         else:
-            name = str(uuid.uuid4())
+            name = self._generate_block_id()
             # may migrate so it is guaranteed that there is a division tag:
             self.keys()
         item.__name__ = name

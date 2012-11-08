@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.testing.mock
 import mock
 import unittest2
 import zeit.content.article.testing
@@ -11,13 +12,14 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def setUp(self):
         super(EditableBodyTest, self).setUp()
-        import uuid
-        self.uuid4 = uuid.uuid4
-        uuid.uuid4 = mock.Mock(side_effect=lambda: uuid.uuid4.call_count)
+        self.patches = gocept.testing.mock.Patches()
+        fake_uuid = mock.Mock()
+        fake_uuid.side_effect = lambda: str(fake_uuid.call_count)
+        self.patches.add(
+            'zeit.edit.container.Base._generate_block_id', fake_uuid)
 
     def tearDown(self):
-        import uuid
-        uuid.uuid4 = self.uuid4
+        self.patches.reset()
         super(EditableBodyTest, self).tearDown()
 
     def get_body(self, body=None):

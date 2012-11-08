@@ -23,9 +23,10 @@ class TextViewHelper(object):
     def setUp(self):
         super(TextViewHelper, self).setUp()
         self.patches = gocept.testing.mock.Patches()
-        self.uuid = mock.Mock()
-        self.uuid.side_effect = lambda: self.uuid.call_count
-        self.patches.add('uuid.uuid4', self.uuid)
+        fake_uuid = mock.Mock()
+        fake_uuid.side_effect = lambda: str(fake_uuid.call_count)
+        self.patches.add(
+            'zeit.edit.container.Base._generate_block_id', fake_uuid)
 
     def tearDown(self):
         self.patches.reset()

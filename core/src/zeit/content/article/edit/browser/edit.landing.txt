@@ -3,10 +3,11 @@ Landing zones
 
 Mock UUID to generate known Ids.
 
+>>> import gocept.testing.mock
 >>> import mock
->>> import uuid
->>> uuid4 = uuid.uuid4
->>> uuid.uuid4 = mock.Mock(side_effect=lambda: uuid.uuid4.call_count)
+>>> patches = gocept.testing.mock.Patches()
+>>> fake_uuid = mock.Mock(side_effect=lambda: str(fake_uuid.call_count))
+>>> _ = patches.add('zeit.edit.container.Base._generate_block_id', fake_uuid)
 
 
 Module landing zones
@@ -106,4 +107,4 @@ Could not create block for "http://xml.zeit.de/testcontent", because I don't kno
 
 Clean up:
 
->>> uuid.uuid4 = uuid4
+>>> patches.reset()
