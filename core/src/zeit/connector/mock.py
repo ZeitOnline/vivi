@@ -6,6 +6,7 @@ from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
 import datetime
 import httplib
+import logging
 import lxml.etree
 import os
 import os.path
@@ -25,6 +26,7 @@ import zope.interface
 ID_NAMESPACE = u'http://xml.zeit.de/'
 
 repository_path = os.path.join(os.path.dirname(__file__), 'testcontent')
+log = logging.getLogger(__name__)
 
 
 class Connector(object):
@@ -244,7 +246,7 @@ class Connector(object):
         return self._locked.get(id, (None, None, False))
 
     def search(self, attributes, expression):
-        print  "Searching: ", expression._render()
+        log.debug("Searching: %s", expression._render())
 
         unique_ids = [
             u'http://xml.zeit.de/online/2007/01/Somalia',

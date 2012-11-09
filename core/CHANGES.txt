@@ -5,6 +5,7 @@ CHANGES
 -------------------
 
 - Include new required properties in the test content fixture.
+- Silence the mock connector 'searching...' messages.
 
 
 1.25.1 (2012-03-06)

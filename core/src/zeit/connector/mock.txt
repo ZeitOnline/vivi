@@ -418,6 +418,10 @@ variables:
 Do a search, note that the mock always returns the same but does print out the
 query:
 
+>>> import logging, sys
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> logging.root.addHandler(handler)
+>>> logging.root.setLevel(logging.DEBUG)
 >>> list(connector.search(
 ...     [author, volume, ressort],
 ...     (year == '2007') & (volume == '07') & (author == 'pm')))
@@ -437,6 +441,7 @@ Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "year" "2007")
  (u'http://xml.zeit.de/online/2007/01/Saarland', 'pm', '07', None, None),
  (u'http://xml.zeit.de/2006/52/Stimmts', 'pm', '07', None, None)]
 
+>>> logging.root.removeHandler(handler)
 
 Resetting the mock
 ==================
