@@ -15,7 +15,8 @@
 
     <div tal:repeat="widget view/widgets"
          tal:attributes="class widget/field_css_class">
-      <div class="widget"
+      <div
+         tal:attributes="class python:'widget' + (' display' if view.is_basic_display_widget(widget) else '');"
          tal:condition="widget/reversed|nothing"
          tal:content="structure widget"/>
       <div class="label" tal:condition="widget/label">
@@ -31,7 +32,8 @@
         </div>
         <div class="empty"></div>
       </div>
-      <div class="widget"
+      <div
+          tal:attributes="class python:'widget' + (' display' if view.is_basic_display_widget(widget) else '')"
            tal:condition="not:widget/reversed|nothing"
            tal:content="structure widget"/>
     </div>
