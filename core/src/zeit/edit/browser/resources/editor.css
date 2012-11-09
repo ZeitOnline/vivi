@@ -462,7 +462,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 .inline-form .fieldname-author_references input.autocomplete,
 .inline-form .fieldname-author_references a.button {
-	margin: 7px 0 21px;
+	margin: 0px 0 21px;
 }
 
 .inline-form .fieldname-author_references a.button {
