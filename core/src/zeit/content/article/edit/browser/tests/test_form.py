@@ -4,6 +4,7 @@
 
 from zeit.cms.workflow.interfaces import IPublish
 from zeit.content.article.article import Article
+from zeit.content.article.interfaces import ICDSWorkflow
 from zeit.workflow.interfaces import IContentWorkflow
 import zeit.cms.interfaces
 import zeit.cms.testing
@@ -78,6 +79,8 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
                 article = zeit.cms.interfaces.ICMSContent(
                     'http://xml.zeit.de/online/2007/01/Somalia')
                 IContentWorkflow(article).urgent = True
+                # silence annoying error message
+                ICDSWorkflow(article).export_cds = False
                 IPublish(article).publish()
                 zeit.workflow.testing.run_publish()
         b = self.browser
