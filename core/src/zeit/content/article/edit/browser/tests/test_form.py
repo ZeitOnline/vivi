@@ -46,7 +46,8 @@ class ReadonlyTest(zeit.cms.testing.BrowserTestCase):
 
     def test_text_is_displayed(self):
         self.assertEllipsis(
-            '...<div class="widget">2007</div>...', self.browser.contents)
+            '...<div class="widget display">2007</div>...',
+            self.browser.contents)
 
     def test_text_is_not_editable(self):
         with self.assertRaises(LookupError):
