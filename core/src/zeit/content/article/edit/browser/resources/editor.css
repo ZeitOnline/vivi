@@ -1091,10 +1091,6 @@ form[action$="zeit.content.author.add_contextfree"] .summary {
 
 /* misc */
 
-#edit-form-filename form[action$="edit.form.new-filename"] fieldset {
-  margin-left:4px
-}
-
 div.objectlog {
   padding: 20px;
   margin-top: 20px;
