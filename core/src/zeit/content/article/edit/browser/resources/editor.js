@@ -54,6 +54,22 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 });
 
 
+(function() {
+var ident = MochiKit.Signal.connect(
+    window, 'script-loading-finished', function() {
+        MochiKit.Signal.disconnect(ident);
+        if (! zeit.cms.in_article_editor()) {
+            return;
+        }
+
+        forEach($$('#cp-content .action-block-sorter'), function(element) {
+            element.body_sorter =
+                new zeit.edit.sortable.BlockSorter(element.id);
+        });
+});
+}());
+
+
 zeit.content.article.Editable = gocept.Class.extend({
     // Inline editing module
 
