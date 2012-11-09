@@ -5,7 +5,13 @@
     inside a form. In a real browser this snipped is injected in form-tag so
     there must not be an extra form element.
   </tal:comment>
-  <fieldset tal:attributes="class view/css_class" i18n:domain="zeit.cms">
+  <fieldset tal:attributes="class view/css_class;
+                            id string:form-${view/prefix}"
+            i18n:domain="zeit.cms">
+    <tal:comment condition="nothing">
+      The id on the fieldset is used by the signal handler for
+      reload_inline_form to find the form.
+    </tal:comment>
 
     <legend tal:content="view/legend"
             tal:condition="view/legend"
@@ -44,5 +50,6 @@
         tal:replace="structure action/render" />
     </div>
 
+    <span class="signals hidden" tal:content="view/signals"/>
   </fieldset>
 </form>

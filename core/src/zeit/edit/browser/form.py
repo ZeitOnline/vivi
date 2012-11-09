@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import json
 import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
@@ -46,6 +47,17 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
     template = zope.app.pagetemplate.ViewPageTemplateFile('inlineform.pt')
 
     css_class = None
+
+    def __init__(self, *args, **kw):
+        super(InlineForm, self).__init__(*args, **kw)
+        self._signals = []
+
+    def signal(self, name, *args):
+        self._signals.append(dict(name=name, args=args))
+
+    @property
+    def signals(self):
+        return json.dumps(self._signals)
 
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):

@@ -300,10 +300,34 @@ var wire_forms = function(parent) {
     });
 };
 
+var evaluate_form_signals = function(event) {
+    // we don't get the usual MochiKit behaviour that additional arguments to
+    // signal() are passed along, since window is a DOM object and thus handles
+    // signals differently.
+    var form = event.event();
+    if (isUndefined(form)) {
+        return;
+    }
+    var signals = $.parseJSON($(form.container).find('span.signals').text());
+    $.each(signals, function(i, signal) {
+        MochiKit.Signal.signal.apply(
+            this, extend([zeit.edit.editor, signal.name], signal.args));
+    });
+};
+
+var reload_inline_form = function(selector) {
+    // views can send this signal to reload an inline form, by giving its
+    // `prefix` as the signal parameter.
+    var element = $('#form-' + selector).closest('form')[0];
+    element.form.reload();
+};
 
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     setup_views();
     wire_forms();
+    MochiKit.Signal.connect(window, 'changed', evaluate_form_signals);
+    MochiKit.Signal.connect(
+        zeit.edit.editor, 'reload-inline-form', reload_inline_form);
 });
 
 $(document).bind('fragment-ready', function(event) {
