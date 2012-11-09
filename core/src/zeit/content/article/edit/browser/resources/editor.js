@@ -17,7 +17,7 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
         'article-modules', context_url + '/editable-body', 'Artikel');
 
     // Update error messages and checkin button disabled status
-    MochiKit.Signal.connect(window, 'changed', function(form) {
+    MochiKit.Signal.connect(window, 'changed', function() {
         var workflow_area = $('form[action$="edit.form.publish"]')[0];
         MochiKit.Async.callLater(0.25, function() {
             workflow_area.form.reload(); });
