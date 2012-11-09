@@ -18,7 +18,7 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 
     // Update error messages and checkin button disabled status
     MochiKit.Signal.connect(window, 'changed', function(form) {
-        var workflow_area = $('[action$="edit.form.publish"]')[0];
+        var workflow_area = $('form[action$="edit.form.publish"]')[0];
         MochiKit.Async.callLater(0.25, function() {
             workflow_area.form.reload(); });
 
