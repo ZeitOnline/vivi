@@ -534,11 +534,16 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         self.create_content_and_fill_clipboard()
 
     def tearDown(self):
+        import threading
         with zeit.cms.testing.site(self.getRootFolder()):
             for name, task in zope.component.getUtilitiesFor(
                 lovely.remotetask.interfaces.ITaskService):
+                thread_name = task._threadName()
                 task.stopProcessing()
-        time.sleep(1.25)
+                for thread in threading.enumerate():
+                    if thread.getName() == thread_name:
+                        thread.join()
+                        break
         super(TestOneClickPublish, self).tearDown()
 
     def _fill_lead(self):
