@@ -165,16 +165,3 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
         return d;
     }
 });
-
-
-(function() {
-var ident = MochiKit.Signal.connect(
-    window, 'script-loading-finished', function() {
-        MochiKit.Signal.disconnect(ident);
-
-        forEach($$('#cp-content .action-block-sorter'), function(element) {
-            zeit.content.article.body_sorter =
-                new zeit.edit.sortable.BlockSorter(element.id);
-        });
-});
-}());
