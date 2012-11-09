@@ -1,4 +1,4 @@
-<div class="object-details" i18n:domain="zeit.cms">
+<div class="object-details type-author" i18n:domain="zeit.cms">
 <strong tal:content="context/display_name" />
 <a tal:condition="context/community_profile" tal:attributes=" href context/community_profile" target="_blank" class="communitylink">Profilseite Community</a>
 <a tal:attributes="href context/@@absolute_url" target="_blank" class="goto-object object-link"><span class="actionX-title"> CMS </span></a>
