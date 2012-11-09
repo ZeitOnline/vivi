@@ -76,15 +76,18 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
                 clipboard.addContent(clip, obj, name, insert=True)
         transaction.commit()
 
-    def test_image_is_droppable_in_article_text(self):
-        s = self.selenium
+    def add_image_to_clipboard(self):
         with zeit.cms.testing.site(self.getRootFolder()):
             self.add_to_clipboard(
                 self.repository['2006']['DSC00109_2.JPG'], 'my_image')
         self.add_article()
+        s = self.selenium
         s.click('//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
+    def test_image_is_droppable_in_article_text(self):
+        self.add_image_to_clipboard()
+        s = self.selenium
         # Article always has one image block already
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
         s.dragAndDropToObject(
@@ -109,6 +112,27 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
         # ensure object-details are displayed
         s.waitForElementPresent('css=.block.type-image .image_details')
+
+    def test_changing_image_in_teaser_updates_lead_teaser(self):
+        self.add_image_to_clipboard()
+
+        s = self.selenium
+        landing_zone = 'css=#form-teaser-image .fieldname-images .landing-zone'
+        s.waitForElementPresent(landing_zone)
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
+        s.waitForElementPresent('css=#form-teaser-image .image_details')
+        s.waitForElementPresent('css=#form-leadteaser .image_details')
+
+    def test_changing_image_in_leadteaser_updates_teaser(self):
+        self.add_image_to_clipboard()
+
+        s = self.selenium
+        landing_zone = 'css=#form-leadteaser .fieldname-images .landing-zone'
+        s.waitForElementPresent(landing_zone)
+        s.click('css=#edit-form-leadteaser .fold-link')
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
+        s.waitForElementPresent('css=#form-leadteaser .image_details')
+        s.waitForElementPresent('css=#form-teaser-image .image_details')
 
 
 class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):

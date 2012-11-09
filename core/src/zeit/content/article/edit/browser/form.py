@@ -187,6 +187,11 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
         self.widgets['images'].add_type = IImageGroup
         self.widgets['gallery'].add_type = IGallery
 
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.signal('reload-inline-form', 'teaser-image')
+        return super(LeadTeaser, self).handle_edit_action.success(data)
+
 
 class InternalLinksForms(zeit.edit.browser.form.FoldableFormGroup):
 
@@ -358,6 +363,11 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
     def setUpWidgets(self, *args, **kw):
         super(TeaserImage, self).setUpWidgets(*args, **kw)
         self.widgets['images'].add_type = IImageGroup
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.signal('reload-inline-form', 'leadteaser')
+        return super(TeaserImage, self).handle_edit_action.success(data)
 
 
 class TeaserSupertitle(zeit.edit.browser.form.InlineForm):
