@@ -6,6 +6,7 @@ from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.content.interfaces import ICommonMetadata
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
+from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.content.article.interfaces import IArticle
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
@@ -190,6 +191,8 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
         self.signal('reload-inline-form', 'teaser-image')
+        body = IEditableBody(self.context)
+        self.signal('reload', 'editable-body', self.url(body, 'contents'))
         return super(LeadTeaser, self).handle_edit_action.success(data)
 
 
@@ -367,6 +370,10 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
         self.signal('reload-inline-form', 'leadteaser')
+        body = IEditableBody(self.context)
+        # XXX it would be nicer if we didn't need to know the reload URL here
+        # (e.g. write it onto the DOM element)
+        self.signal('reload', 'editable-body', self.url(body, 'contents'))
         return super(TeaserImage, self).handle_edit_action.success(data)
 
 
