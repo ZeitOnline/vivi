@@ -101,8 +101,14 @@ The UUID can be adapted to IUUID to get an object which represents the UUID:
 
 This object can be adapted then:
 
+>>> import logging, sys
+>>> handler = logging.StreamHandler(sys.stdout)
+>>> logging.root.addHandler(handler)
+>>> logging.root.setLevel(logging.DEBUG)
 >>> content = zeit.cms.interfaces.ICMSContent(uuid_obj)
-Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "uuid" "{urn:uuid:8e6a97ba-131d-4cd0-90b2-f52feecaabb0}")
+Searching:  (:eq "http://namespaces.zeit.de/CMS/document" "uuid" "{urn:uuid:8e6a97ba-131d-4cd0-90b2-f52feecaabb0}")...
+>>> logging.root.removeHandler(handler)
+
 
 >>> print content.uniqueId
 http://xml.zeit.de/online/2007/01/Somalia
