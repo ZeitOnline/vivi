@@ -90,6 +90,36 @@ def factor_image_block_from_imagegroup(body, group):
 
 @grokcore.component.subscribe(
     zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def copy_image_to_body(context, event):
+    for description in event.descriptions:
+        if (description.interface is zeit.content.image.interfaces.IImages
+            and 'images' in description.attributes):
+            break
+    else:
+        return
+
+    try:
+        image = zeit.content.image.interfaces.IImages(context).images[0]
+    except IndexError:
+        return
+
+    body = zeit.content.article.edit.interfaces.IEditableBody(context)
+
+    try:
+        image_block = body.values()[0]
+    except IndexError:
+        return
+    if not zeit.content.article.edit.interfaces.IImage.providedBy(image_block):
+        return
+    if image_block.references is not None:
+        return
+
+    image_block.references = image
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def migrate_image_nodes_inside_p(article, event):
     while True:

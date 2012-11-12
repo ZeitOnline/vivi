@@ -133,6 +133,71 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             u'http://xml.zeit.de/2006/ÄÖÜ.JPG',
             article.xml.body.division.image.get('src'))
 
+    def test_image_referenced_via_IImages_is_copied_to_first_body_block(self):
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        from zeit.content.article.edit.interfaces import IEditableBody
+        from zeit.content.image.interfaces import IImages
+        import zeit.cms.browser.form
+        import zeit.cms.interfaces
+        import zope.lifecycleevent
+
+        article = Article()
+        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        article.year = 2011
+        article.title = u'title'
+        article.ressort = u'Deutschland'
+        self.repository['article'] = article
+
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['article']) as co:
+            body = IEditableBody(co)
+            factory = zope.component.getAdapter(
+                body, zeit.edit.interfaces.IElementFactory, 'image')
+            image_block = factory()
+
+            image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            IImages(co).images = [zeit.cms.interfaces.ICMSContent(image_id)]
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(IImages, 'images'))
+
+            image_block = body.values()[0]
+            self.assertEqual(image_block.references.uniqueId, image_id)
+
+    def test_IImages_is_not_copied_to_body_if_first_block_has_an_image(self):
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        from zeit.content.article.edit.interfaces import IEditableBody
+        from zeit.content.image.interfaces import IImages
+        import zeit.cms.browser.form
+        import zeit.cms.interfaces
+        import zeit.content.image.tests
+        import zope.lifecycleevent
+
+        image_group = zeit.content.image.tests.create_image_group()
+        article = Article()
+        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        article.year = 2011
+        article.title = u'title'
+        article.ressort = u'Deutschland'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['article']) as co:
+            body = IEditableBody(co)
+            factory = zope.component.getAdapter(
+                body, zeit.edit.interfaces.IElementFactory, 'image')
+            image_block = factory()
+            image_block.references = image_group
+
+            image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            IImages(co).images = [zeit.cms.interfaces.ICMSContent(image_id)]
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(IImages, 'images'))
+
+            image_block = body.values()[0]
+            self.assertEqual(
+                image_block.references.uniqueId, image_group.uniqueId)
+
     @contextlib.contextmanager
     def image(self):
         from zeit.cms.interfaces import ICMSContent
