@@ -122,7 +122,7 @@ class ICheckinCheckoutEvent(zope.component.interfaces.IObjectEvent):
 
 
 class IBeforeCheckoutEvent(ICheckinCheckoutEvent):
-    """Generated when a content object was checked out."""
+    """Generated just before a content object is checked out."""
 
 
 class IAfterCheckoutEvent(ICheckinCheckoutEvent):
@@ -146,7 +146,7 @@ class IValidateCheckinEvent(ICheckinCheckoutEvent):
 
 
 class IBeforeCheckinEvent(ICheckinCheckoutEvent):
-    """Generated when a content object was checked in."""
+    """Generated just before a content object is checked in."""
 
 
 class IAfterCheckinEvent(ICheckinCheckoutEvent):
@@ -163,13 +163,11 @@ class EventBase(zope.component.interfaces.ObjectEvent):
 
 
 class BeforeCheckoutEvent(EventBase):
-    """Generated before a content object is checked out."""
 
     zope.interface.implements(IBeforeCheckoutEvent)
 
 
 class AfterCheckoutEvent(EventBase):
-    """Generated after a content object was checked out."""
 
     zope.interface.implements(IAfterCheckoutEvent)
 
@@ -189,12 +187,10 @@ class ValidateCheckinEvent(EventBase):
 
 
 class BeforeCheckinEvent(EventBase):
-    """Generated before a content object is checked in."""
 
     zope.interface.implements(IBeforeCheckinEvent)
 
 
 class AfterCheckinEvent(EventBase):
-    """Generated after a content object was checked in."""
 
     zope.interface.implements(IAfterCheckinEvent)
