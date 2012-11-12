@@ -25,9 +25,12 @@ class DeleteContent(zeit.cms.browser.view.Base):
 
     def delete(self):
         next_url = self.next_url()
+        self._delete()
+        return '<span class="nextURL">%s</span>' % next_url
+
+    def _delete(self):
         folder = self.context.__parent__
         del folder[self.context.__name__]
-        return '<span class="nextURL">%s</span>' % next_url
 
     @zope.cachedescriptors.property.Lazy
     def container_title(self):

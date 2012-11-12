@@ -6,6 +6,7 @@ from zeit.cms.checkout.interfaces import ICheckinManager, ICheckoutManager
 from zeit.cms.checkout.interfaces import IValidateCheckinEvent
 import copy
 import datetime
+import mock
 import zeit.cms.checkout.helper
 import zeit.cms.content.interfaces
 import zeit.cms.testing
@@ -88,6 +89,24 @@ class ManagerTest(zeit.cms.testing.FunctionalTestCase):
         manager = ICheckinManager(checked_out)
         checked_in = manager.checkin()
         self.assertFalse(checked_in.are_you_local)
+
+    def test_delete_issues_events_and_deletes_context(self):
+        manager = ICheckoutManager(self.content)
+        checked_out = manager.checkout()
+        parent = checked_out.__parent__
+        name = checked_out.__name__
+        manager = ICheckinManager(checked_out)
+        with mock.patch('zope.event.notify', mock.Mock()) as notify:
+            manager.delete()
+            self.assertNotIn(name, parent.keys())
+            self.assertEqual(2, len(notify.call_args_list))
+            before, after = notify.call_args_list
+            self.assertTrue(
+                zeit.cms.checkout.interfaces.IBeforeDeleteEvent.providedBy(
+                    before[0][0]))
+            self.assertTrue(
+                zeit.cms.checkout.interfaces.IAfterDeleteEvent.providedBy(
+                    after[0][0]))
 
 
 class ValidateCheckinTest(zeit.cms.testing.FunctionalTestCase):

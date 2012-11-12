@@ -59,6 +59,14 @@ class ICheckinManager(zope.interface.Interface):
 
         """
 
+    def delete():
+        """Delete the managed object from the working copy.
+
+        Announces working-copy deletion issuing IBeforeDeleteEvent and
+        IAfterDeleteEvent.
+
+        """
+
 
 class IWorkingcopy(zope.container.interfaces.IContainer):
     """The working copy is the area of the CMS where users edit content.
@@ -153,6 +161,14 @@ class IAfterCheckinEvent(ICheckinCheckoutEvent):
     """Generated when a content object was checked in."""
 
 
+class IBeforeDeleteEvent(ICheckinCheckoutEvent):
+    """Generated just before a content object is deleted."""
+
+
+class IAfterDeleteEvent(ICheckinCheckoutEvent):
+    """Generated when a content object was deleted."""
+
+
 class EventBase(zope.component.interfaces.ObjectEvent):
 
     def __init__(self, object, workingcopy, principal, publishing=False):
@@ -194,3 +210,13 @@ class BeforeCheckinEvent(EventBase):
 class AfterCheckinEvent(EventBase):
 
     zope.interface.implements(IAfterCheckinEvent)
+
+
+class BeforeDeleteEvent(EventBase):
+
+    zope.interface.implements(IBeforeDeleteEvent)
+
+
+class AfterDeleteEvent(EventBase):
+
+    zope.interface.implements(IAfterDeleteEvent)

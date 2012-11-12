@@ -8,6 +8,7 @@ import zc.table.table
 import zeit.cms.browser.column
 import zeit.cms.browser.listing
 import zeit.cms.browser.menu
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.browser.delete
@@ -134,6 +135,9 @@ class DeleteFromWorkingcopy(zeit.cms.repository.browser.delete.DeleteContent):
         if target is None:
             target = self.context.__parent__
         return self.url(target)
+
+    def _delete(self):
+        zeit.cms.checkout.interfaces.ICheckinManager(self.context).delete()
 
 
 class DeleteMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):

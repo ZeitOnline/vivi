@@ -157,6 +157,16 @@ class CheckoutManager(object):
                 pass
         return added
 
+    def delete(self):
+        workingcopy = self.context.__parent__
+        zope.event.notify(
+            zeit.cms.checkout.interfaces.BeforeDeleteEvent(
+                self.context, workingcopy, self.principal))
+        del workingcopy[self.context.__name__]
+        zope.event.notify(
+            zeit.cms.checkout.interfaces.AfterDeleteEvent(
+                self.context, workingcopy, self.principal))
+
     @zope.cachedescriptors.property.Lazy
     def workingcopy(self):
         return zeit.cms.checkout.interfaces.IWorkingcopy(None)
