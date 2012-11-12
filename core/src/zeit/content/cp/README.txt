@@ -426,7 +426,6 @@ Topic page
 ...     zeit.cms.sitecontrol.interfaces.ISitesProvider, name='topicpage')
 >>> import pprint
 >>> pprint.pprint(list(topic_provider))
-Searching:  (:eq "http://namespaces.zeit.de/CMS/zeit.content.cp" "type" "topicpage")
 [<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a4a2f0>,
  <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a4adf0>,
  <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a5f4b0>]
