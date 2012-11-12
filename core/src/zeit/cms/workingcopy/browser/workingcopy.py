@@ -124,7 +124,7 @@ class ShowOriginal(zeit.cms.browser.menu.ActionMenuItem):
 
 class DeleteFromWorkingcopy(zeit.cms.repository.browser.delete.DeleteContent):
 
-    def next_url(self):
+    def next_url(self, folder):
         unique_id = self.context.uniqueId
         target = None
         while target is None:
@@ -133,7 +133,7 @@ class DeleteFromWorkingcopy(zeit.cms.repository.browser.delete.DeleteContent):
             if unique_id + '/' == zeit.cms.interfaces.ID_NAMESPACE:
                 break
         if target is None:
-            target = self.context.__parent__
+            target = folder
         return self.url(target)
 
     def _delete(self):

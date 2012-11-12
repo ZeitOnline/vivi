@@ -20,12 +20,13 @@ class DeleteContent(zeit.cms.browser.view.Base):
             return self.delete()
         return super(DeleteContent, self).__call__(*args, **kwargs)
 
-    def next_url(self):
-        return self.url(self.context.__parent__)
+    def next_url(self, folder):
+        return self.url(folder)
 
     def delete(self):
-        next_url = self.next_url()
+        folder = self.context.__parent__
         self._delete()
+        next_url = self.next_url(folder)
         return '<span class="nextURL">%s</span>' % next_url
 
     def _delete(self):

@@ -141,6 +141,37 @@ Let's delete it:
       </div>
       ...
 
+Let's try this again, this time marking an article as renameable, which should
+be a property of articles just created. Such articles are to be removed from
+the repository when they are deleted explicitly from the working copy:
+
+We need some setup:
+
+>>> import zeit.cms.testing
+>>> zeit.cms.testing.set_site()
+
+>>> import zope.component
+>>> import zeit.cms.workingcopy.interfaces
+>>> import zeit.cms.browser.interfaces
+>>> workingcopy_location = zope.component.getUtility(
+...     zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+>>> workingcopy = workingcopy_location['zope.user']
+
+>>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Querdax')
+>>> browser.getLink('Checkout').click()
+>>> co = workingcopy.values().next()
+>>> import zeit.cms.repository.interfaces
+>>> zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+...     co).renameable = True
+>>> browser.open(
+...     'http://localhost/++skin++cms/workingcopy/zope.user/Querdax/@@delete.html')
+>>> browser.getControl('Delete').click()
+>>> print browser.url
+http://localhost/++skin++cms/workingcopy/zope.user/Querdax/delete.html?form.actions.delete=Delete
+>>> print browser.contents
+<span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01</span>
+
+
 Sorting
 =======
 
@@ -190,18 +221,6 @@ Object browser
 
 When the objectbrowser asks for the default location of a content object in the 
 working copy, the answer is relayed to the object in the repository.
-
-We need some setup:
-
->>> import zeit.cms.testing
->>> zeit.cms.testing.set_site()
-
->>> import zope.component
->>> import zeit.cms.workingcopy.interfaces
->>> import zeit.cms.browser.interfaces
->>> workingcopy_location = zope.component.getUtility(
-...     zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
->>> workingcopy = workingcopy_location['zope.user']
 
 There is no default location for the working copy itself:
 

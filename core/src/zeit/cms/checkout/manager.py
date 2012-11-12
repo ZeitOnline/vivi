@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.workingcopy.interfaces
 import zeit.cms.workingcopy.workingcopy
 import zeit.objectlog.interfaces
@@ -203,6 +204,23 @@ def unlockOnWorkingcopyDelete(context, event):
     lockable = zope.app.locking.interfaces.ILockable(content, None)
     if lockable is not None and lockable.ownLock():
         lockable.unlock()
+
+
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.checkout.interfaces.IAfterDeleteEvent)
+def deleteNewContentFromRepositoryOnWorkingcopyDelete(context, event):
+    """When the user deletes content from the working copy which has never
+    been checked in, we delete the empty object from the repository as well.
+
+    """
+    renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            context, None)
+    if renameable is None or not renameable.renameable:
+        return
+    content = zeit.cms.interfaces.ICMSContent(context.uniqueId, None)
+    if content is not None:
+        del content.__parent__[content.__name__]
 
 
 @grok.subscribe(zeit.cms.checkout.interfaces.IAfterCheckinEvent)

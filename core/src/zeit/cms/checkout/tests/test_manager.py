@@ -8,7 +8,10 @@ import copy
 import datetime
 import mock
 import zeit.cms.checkout.helper
+import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
 import zope.component
@@ -185,3 +188,28 @@ class SemanticChangeTest(zeit.cms.testing.FunctionalTestCase):
             sc = zeit.cms.content.interfaces.ISemanticChange(co)
             sc.has_semantic_change = True
         self.assertIsInstance(self.sc.last_semantic_change, datetime.datetime)
+
+
+class DeleteWorkingCopy(zeit.cms.testing.FunctionalTestCase):
+
+    def test_new_content_is_deleted_in_repo_when_wc_is_deleted(self):
+        content = self.repository['testcontent']
+        co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
+        co = co_manager.checkout()
+        zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            co).renameable = True
+        ci_manager = zeit.cms.checkout.interfaces.ICheckinManager(co)
+        ci_manager.delete()
+        with self.assertRaises(TypeError):
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+
+    def test_checked_out_content_is_left_in_repo_when_wc_is_deleted(self):
+        content = self.repository['testcontent']
+        co_manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
+        co = co_manager.checkout()
+        zeit.cms.repository.interfaces.IAutomaticallyRenameable(
+            co).renameable = False
+        ci_manager = zeit.cms.checkout.interfaces.ICheckinManager(co)
+        ci_manager.delete()
+        with self.assertNothingRaised():
+            zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
