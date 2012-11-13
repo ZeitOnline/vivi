@@ -119,6 +119,13 @@ zeit.edit.Editor = gocept.Class.extend({
                         MochiKit.DOM.removeElement(link);
                     }
                 });
+            var head = document.getElementsByTagName('head')[0];
+            MochiKit.Iter.forEach(
+                MochiKit.DOM.getElementsByTagAndClassName(
+                    'STYLE', null, result),
+                function(style) {
+                    head.appendChild(style);
+                });
             var dl = new MochiKit.Async.DeferredList(loading);
             return dl;
         });
