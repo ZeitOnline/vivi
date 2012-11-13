@@ -116,7 +116,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_changing_image_in_teaser_updates_lead_teaser(self):
         self.add_image_to_clipboard()
         s = self.selenium
-        landing_zone = 'css=#form-teaser-image .fieldname-images .landing-zone'
+        landing_zone = 'css=#form-teaser-image .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
         s.waitForElementPresent('css=#form-teaser-image .image_details')
@@ -125,7 +125,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_changing_image_in_leadteaser_updates_teaser(self):
         self.add_image_to_clipboard()
         s = self.selenium
-        landing_zone = 'css=#form-leadteaser .fieldname-images .landing-zone'
+        landing_zone = 'css=#form-leadteaser .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
         s.click('css=#edit-form-leadteaser .fold-link')
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
@@ -135,7 +135,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_changing_image_in_teaser_updates_body(self):
         self.add_image_to_clipboard()
         s = self.selenium
-        landing_zone = 'css=#form-teaser-image .fieldname-images .landing-zone'
+        landing_zone = 'css=#form-teaser-image .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
         s.waitForElementPresent('css=#form-teaser-image .image_details')
@@ -144,7 +144,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_changing_image_in_leadteaser_updates_body(self):
         self.add_image_to_clipboard()
         s = self.selenium
-        landing_zone = 'css=#form-leadteaser .fieldname-images .landing-zone'
+        landing_zone = 'css=#form-leadteaser .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
         s.click('css=#edit-form-leadteaser .fold-link')
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)

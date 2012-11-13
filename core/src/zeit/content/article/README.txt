@@ -262,8 +262,8 @@ Initally there are no images attached to an article:
 >>> article = Article()
 >>> import zeit.content.image.interfaces
 >>> images = zeit.content.image.interfaces.IImages(article)
->>> images.images
-()
+>>> print images.image
+None
 
 Get an image from the repository and attach it[#needsinteraction]_:
 
@@ -282,12 +282,12 @@ Get an image from the repository and attach it[#needsinteraction]_:
 >>> image_metadata.expires = datetime.datetime(2007, 4, 1)
 >>> checked_in = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
->>> images.images = (checked_in, )
+>>> images.image = checked_in
 
 It's now stored on the article:
 
->>> images.images
-(<zeit.content.image.image.RepositoryImage object at 0x...>,)
+>>> images.image
+<zeit.content.image.image.RepositoryImage object at 0x...>
 
 And the image is referenced in the XML structure:
 

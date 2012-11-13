@@ -94,14 +94,13 @@ def factor_image_block_from_imagegroup(body, group):
 def copy_image_to_body(context, event):
     for description in event.descriptions:
         if (description.interface is zeit.content.image.interfaces.IImages
-            and 'images' in description.attributes):
+            and 'image' in description.attributes):
             break
     else:
         return
 
-    try:
-        image = zeit.content.image.interfaces.IImages(context).images[0]
-    except IndexError:
+    image = zeit.content.image.interfaces.IImages(context).image
+    if image is None:
         return
 
     body = zeit.content.article.edit.interfaces.IEditableBody(context)

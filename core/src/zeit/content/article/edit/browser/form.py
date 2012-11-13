@@ -185,7 +185,7 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(LeadTeaser, self).setUpWidgets(*args, **kw)
-        self.widgets['images'].add_type = IImageGroup
+        self.widgets['image'].add_type = IImageGroup
         self.widgets['gallery'].add_type = IGallery
 
     @zope.formlib.form.action(_('Apply'))
@@ -356,7 +356,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit teaser image')
     css_class = 'teaser-image'
     form_fields = FormFields(
-        zeit.content.image.interfaces.IImages).select('images')
+        zeit.content.image.interfaces.IImages).select('image')
 
     def __call__(self):
         zope.interface.alsoProvides(
@@ -365,7 +365,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserImage, self).setUpWidgets(*args, **kw)
-        self.widgets['images'].add_type = IImageGroup
+        self.widgets['image'].add_type = IImageGroup
 
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):

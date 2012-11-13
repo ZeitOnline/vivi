@@ -157,9 +157,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             image_block = factory()
 
             image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
-            IImages(co).images = [zeit.cms.interfaces.ICMSContent(image_id)]
+            IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(IImages, 'images'))
+                co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
             image_block = body.values()[0]
             self.assertEqual(image_block.references.uniqueId, image_id)
@@ -190,9 +190,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             image_block.references = image_group
 
             image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
-            IImages(co).images = [zeit.cms.interfaces.ICMSContent(image_id)]
+            IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
             zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(IImages, 'images'))
+                co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
             image_block = body.values()[0]
             self.assertEqual(
