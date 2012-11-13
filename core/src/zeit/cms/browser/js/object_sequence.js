@@ -54,7 +54,8 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
                 self.add(ui.item.value);
                 jQuery(self.autocomplete).val('');
                 return false;
-            }
+            },
+            appendTo: self.element
         });
     },
 
