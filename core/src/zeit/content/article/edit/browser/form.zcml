@@ -741,21 +741,10 @@
     permission="zope.View"
     />
 
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".workflow.WorkflowContainer"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.checkin"
-    class="zeit.edit.browser.view.ViewLoader"
-    permission="zope.View"
-    weight="30"
-    />
-
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.checkin"
+    name="edit.form.checkin-buttons"
     class=".workflow.WorkflowButtons"
     template="workflow.pt"
     permission="zope.View"

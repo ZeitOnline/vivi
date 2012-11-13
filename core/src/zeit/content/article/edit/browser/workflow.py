@@ -50,13 +50,18 @@ class Publish(zeit.edit.browser.form.InlineForm):
                 self.widgets[name].vivi_css_class = 'disabled'
         self.widgets['export_cds'].vivi_css_class = 'visual-clear'
 
+        items = list(self.widgets.__Widgets_widgets_items__)
+        items.append(self._make_view_widget('edit.form.checkin-buttons'))
         if not self.can_checkout:
-            items = list(self.widgets.__Widgets_widgets_items__)
-            for name in ('edit.form.checkin-errors', 'edit.form.timestamp'):
-                widget = ViewWidget(self.context, self.request, name)
-                widget.setPrefix(self.prefix)
-                items.insert(-1, (None, widget))
-            self.widgets = zope.formlib.form.Widgets(items, prefix=self.prefix)
+            items.insert(
+                -1, self._make_view_widget('edit.form.checkin-errors'))
+            items.insert(-1, self._make_view_widget('edit.form.timestamp'))
+        self.widgets = zope.formlib.form.Widgets(items, prefix=self.prefix)
+
+    def _make_view_widget(self, name):
+        widget = ViewWidget(self.context, self.request, name)
+        widget.setPrefix(self.prefix)
+        return (None, widget)
 
     @cachedproperty
     def can_checkout(self):

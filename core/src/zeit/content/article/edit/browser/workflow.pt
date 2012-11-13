@@ -1,4 +1,3 @@
-<fieldset i18n:domain="zeit.cms">
   <tal:block condition="not: view/can_checkout">
 
       <a class="button warning"
@@ -49,5 +48,3 @@
      tal:condition="python:view.published and view.can_checkout
                     and not view.is_new"
      i18n:translate="">Retract</a>
-
-</fieldset>

@@ -45,13 +45,36 @@ class CheckinSelenium(
         self.add_article()
         s = self.selenium
         title_error = 'css=#edit-form-workflow .errors dt:contains(Title)'
+        disabled_checkin_button = 'css=a#checkin.button.disabled'
         s.waitForElementPresent(title_error)
+        s.assertElementPresent(disabled_checkin_button)
         input_title = 'article-content-head.title'
         # XXX type() doesn't work with selenium-1 and FF>7
         self.eval(
             'document.getElementById("%s").value = "mytitle"' % input_title)
         s.fireEvent(input_title, 'blur')
         s.waitForElementNotPresent(title_error)
+        s.assertElementNotPresent(disabled_checkin_button)
+
+    def test_checkin_button_is_disabled_while_validation_errors_present(self):
+        self.add_article()
+        s = self.selenium
+        error_message = 'css=#edit-form-workflow .errors dt'
+        disabled_checkin_button = 'css=a#checkin.button.disabled'
+        s.waitForElementPresent(error_message)
+        s.assertElementPresent(disabled_checkin_button)
+
+        input_title = 'article-content-head.title'
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval(
+            'document.getElementById("%s").value = "mytitle"' % input_title)
+        s.fireEvent(input_title, 'blur')
+        input_ressort = 'metadata-a.ressort'
+        s.select(input_ressort, 'label=International')
+        s.fireEvent(input_ressort, 'blur')
+
+        s.waitForElementNotPresent(error_message)
+        s.assertElementNotPresent(disabled_checkin_button)
 
     def test_checkin_does_not_set_last_semantic_change_by_default(self):
         with zeit.cms.testing.site(self.getRootFolder()):
@@ -175,14 +198,14 @@ class Delete(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/'
                'online/2007/01/Somalia/@@checkout')
-        b.open('@@edit.form.checkin?show_form=1')
+        b.open('@@edit.form.checkin-buttons?show_form=1')
         self.assertNothingRaised(b.getLink, 'Cancel')
         self.assertNotIn('Delete', b.contents)
 
     def test_checked_in_article_has_delete_but_no_cancel(self):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@edit.form.checkin?show_form=1')
+               'online/2007/01/Somalia/@@edit.form.checkin-buttons?show_form=1')
         self.assertNothingRaised(b.getLink, 'Delete')
         self.assertNotIn('Cancel', b.contents)
 
