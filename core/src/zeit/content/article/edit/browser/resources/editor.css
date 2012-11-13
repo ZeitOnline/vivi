@@ -13,6 +13,12 @@
   padding: 0;
 }
 
+#editor-forms-heading > div {
+  margin-top: -27px;
+  position: fixed;
+}
+
+
 
 /* Textareas not inline */
 

@@ -5,4 +5,20 @@
   <div id="editor-forms"
        tal:content="structure context/@@edit-forms">
   </div>
+
+  <tal:comment condition="nothing">
+    XXX 1. Visually, the margin (to make room for the heading) would work on
+    #cp-content-inner, but doing it like that breaks Selenium DnD.
+    Thus, we need to put the margin on #cp-content.
+    2. As long as the heading is only present for Articles, we only
+    want the extra margin on #cp-content in the Article editor.
+    But, CSS does not have a "parent" selector, so we can't express
+        $('.article-editor-inner').parent('#cp-content')
+    so we put the rule inline in here.
+  </tal:comment>
+  <style type="text/css">
+  #cp-content {
+    margin-top: 25px;
+  }
+  </style>
 </div>
