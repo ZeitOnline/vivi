@@ -105,10 +105,16 @@ class Display(zeit.cms.browser.view.Base):
                 # XXX warn? Actually such a content shouldn't be here in the
                 # first place. We'll see.
                 continue
+
             texts = []
-            for name in ('supertitle', 'teaserTitle', 'teaserText'):
-                texts.append(dict(css_class=name,
-                                  content=getattr(metadata, name)))
+            supertitle_property = (
+                'teaserSupertitle' if metadata.teaserSupertitle
+                else 'supertitle')
+            texts.append(self._make_text_entry(
+                metadata, 'supertitle', supertitle_property))
+            for name in ('teaserTitle', 'teaserText'):
+                texts.append(self._make_text_entry(metadata, name))
+
             teasers.append(dict(
                 texts=texts,
                 uniqueId=content.uniqueId))
@@ -121,6 +127,11 @@ class Display(zeit.cms.browser.view.Base):
         for amount in columns:
             self.columns.append(teasers[idx:idx+amount])
             idx += amount
+
+    def _make_text_entry(self, metadata, css_class, name=None):
+        if name is None:
+            name = css_class
+        return dict(css_class=css_class, content=getattr(metadata, name))
 
     def get_image(self, content):
         layout = self.context.layout

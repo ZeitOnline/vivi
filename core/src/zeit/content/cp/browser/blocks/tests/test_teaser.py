@@ -52,3 +52,43 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         b.open(form_url)
         self.assertEqual('foo', b.getControl('Publisher', index=0).value)
+
+
+class TestTeaserSupertitle(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.cp.testing.layer
+
+    def test_no_teaser_supertitle_present_shows_supertitle_instead(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                with zeit.cms.checkout.helper.checked_out(
+                    self.repository['testcontent']) as co:
+                    co.supertitle = 'bar'
+
+        b = self.browser
+        zeit.content.cp.browser.testing.create_cp(b)
+        b.open('contents')
+        contents_url = b.url
+        b.open(
+            'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
+        b.open(contents_url)
+        self.assertEllipsis(
+            '...<div class="supertitle">bar</div>...', b.contents)
+
+    def test_if_teaser_supertitle_present_it_takes_precedence_over_supertitle(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                with zeit.cms.checkout.helper.checked_out(
+                    self.repository['testcontent']) as co:
+                    co.teaserSupertitle = 'foo'
+                    co.supertitle = 'bar'
+
+        b = self.browser
+        zeit.content.cp.browser.testing.create_cp(b)
+        b.open('contents')
+        contents_url = b.url
+        b.open(
+            'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
+        b.open(contents_url)
+        self.assertEllipsis(
+            '...<div class="supertitle">foo</div>...', b.contents)
