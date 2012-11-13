@@ -244,7 +244,7 @@ to the test-content:
 ...         'http://xml.zeit.de/testcontent')
 ...     with zeit.cms.testing.interaction('zope.user'):
 ...         with zeit.cms.checkout.helper.checked_out(test_content) as co:
-...             zeit.content.image.interfaces.IImages(co).images = (group,)
+...             zeit.content.image.interfaces.IImages(co).image = group
 
 
 The 450x200 image is used now:
@@ -280,8 +280,8 @@ When the image is not an image group, it will be just used:
 >>> with zeit.cms.testing.site(getRootFolder()):
 ...     with zeit.cms.testing.interaction('zope.user'):
 ...         with zeit.cms.checkout.helper.checked_out(test_content) as co:
-...             zeit.content.image.interfaces.IImages(co).images = (
-...                 group['obama-clinton-120x120.jpg'],)
+...             zeit.content.image.interfaces.IImages(co).image = (
+...                 group['obama-clinton-120x120.jpg'])
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('Großer Teaser').click()

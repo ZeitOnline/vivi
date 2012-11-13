@@ -17,7 +17,7 @@ manually.
 >>> teaser = Teaser()
 >>> teaser.original_content = content
 
-When retrieving the images for a teaser, we want to get the images of the
+When retrieving the images for a teaser, we want to get the image of the
 referenced article.
 
 Create an article with images:
@@ -29,12 +29,12 @@ Create an article with images:
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
 >>> images = zeit.content.image.interfaces.IImages(checked_out)
->>> images.images = (group, )
+>>> images.image = group
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
 
-Create a teaser object from the article and look at its images:
+Create a teaser object from the article and look at its image:
 
 >>> images = zeit.content.image.interfaces.IImages(teaser)
->>> images.images
-(<zeit.content.image.imagegroup.ImageGroup object at 0x...>,)
+>>> images.image
+<zeit.content.image.imagegroup.ImageGroup object at 0x...>

@@ -144,7 +144,7 @@ have the latter contain an image that corresponds to our selected layout:
 >>> group = zeit.content.image.tests.create_image_group()
 >>> with zeit.cms.testing.interaction():
 ...     with zeit.cms.checkout.helper.checked_out(quiz) as co:
-...         zeit.content.image.interfaces.IImages(co).images += (group,)
+...         zeit.content.image.interfaces.IImages(co).image = group
 ...         co.teaserTitle = u'Teaser title'
 >>> group['image-group-148x84.jpg'] = zeit.content.image.image.LocalImage()
 

@@ -58,15 +58,15 @@ class TestXMLTeaser(XMLTeaserBase):
              'http://xml.zeit.de/testcontent'],
             sorted(x.uniqueId for x in references))
 
-    def test_iimages_should_contain_referenced_objects_images(self):
+    def test_iimages_should_contain_referenced_objects_image(self):
         from zeit.content.image.interfaces import IImages
         from zeit.cms.checkout.helper import checked_out
         import zeit.content.image.tests
         self.teaser.free_teaser = True
         group = zeit.content.image.tests.create_image_group()
         with checked_out(self.repository['testcontent']) as co:
-            IImages(co).images = (group,)
-        self.assertEqual((group,), IImages(self.teaser).images)
+            IImages(co).image = group
+        self.assertEqual(group, IImages(self.teaser).image)
 
     def test_graphical_preview_should_be_provieded_if_original_does(self):
         import zeit.cms.browser.interfaces

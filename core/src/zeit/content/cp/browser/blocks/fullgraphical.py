@@ -15,11 +15,9 @@ class Display(object):
         if self.context.image:
             image = self.context.image
         else:
-            images = zeit.content.image.interfaces.IImages(
-                self.context.referenced_object).images
-            if images:
-                image = images[0]
-            else:
+            image = zeit.content.image.interfaces.IImages(
+                self.context.referenced_object).image
+            if image is None:
                 return
 
         if not zeit.content.image.interfaces.IImageGroup.providedBy(image):

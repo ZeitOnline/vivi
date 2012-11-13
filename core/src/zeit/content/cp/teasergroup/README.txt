@@ -90,8 +90,8 @@ Images "redirect" to the first teaser.
 
 >>> import zeit.content.image.interfaces
 >>> images = zeit.content.image.interfaces.IImages(teasergroup)
->>> images.images
-()
+>>> print images.image
+None
 
 >>> import zeit.cms.checkout.helper
 >>> content = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
@@ -99,11 +99,11 @@ Images "redirect" to the first teaser.
 ...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> with zeit.cms.testing.interaction():
 ...     with zeit.cms.checkout.helper.checked_out(content) as co:
-...         zeit.content.image.interfaces.IImages(co).images = (image,)
+...         zeit.content.image.interfaces.IImages(co).image = image
 
 >>> images = zeit.content.image.interfaces.IImages(teasergroup)
->>> images.images
-(<zeit.content.image.image.RepositoryImage object at 0x431c410>,)
+>>> images.image
+<zeit.content.image.image.RepositoryImage object at 0x431c410>
 
 
 Search
