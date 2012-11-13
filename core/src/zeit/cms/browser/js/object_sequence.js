@@ -108,7 +108,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         });
         d.addBoth(function(result) {
             // XXX proper i18n
-            li.insertBefore(A({href: index, rel: "remove",
+            li.appendChild(A({href: index, rel: "remove",
                                title: "Entfernen", text: 'löschen'}),
                             li.firstChild);
             MochiKit.DOM.removeElementClass(li, 'busy');
@@ -345,7 +345,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
                 return error;
             });
             d.addBoth(function(result) {
-                self.details.insertBefore(
+                self.details.appendChild(
                     A({href: '#', rel: "remove", title: "Entfernen",
                        text: 'löschen'}),
                     self.details.firstChild);
