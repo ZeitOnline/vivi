@@ -27,16 +27,13 @@ After assigning an image group it contained images are returned:
 ...     content = zeit.cms.interfaces.ICMSContent(
 ...         'http://xml.zeit.de/testcontent')
 ...     image_group = zeit.content.image.tests.create_image_group()
-...     image = zeit.cms.interfaces.ICMSContent(
-...         'http://xml.zeit.de/2006/DSC00109_2.JPG')
 ...     with zeit.cms.testing.interaction():
 ...         with zeit.cms.checkout.helper.checked_out(content) as co:
-...             zeit.content.image.interfaces.IImages(co).images = (
-...                 image, image_group)
+...             zeit.content.image.interfaces.IImages(co).image = image_group
+
 >>> browser.handleErrors = False
 >>> browser.reload()
 >>> pprint.pprint(json.loads(browser.contents))
-{u'images': [u'http://xml.zeit.de/2006/DSC00109_2.JPG',
-            u'http://xml.zeit.de/image-group/new-hampshire-450x....jpg',
-            u'http://xml.zeit.de/image-group/new-hampshire-artikel.jpg',
-            u'http://xml.zeit.de/image-group/obama-clinton-120x....jpg']}
+{u'images': [u'http://xml.zeit.de/image-group/new-hampshire-450x....jpg',
+             u'http://xml.zeit.de/image-group/new-hampshire-artikel.jpg',
+             u'http://xml.zeit.de/image-group/obama-clinton-120x....jpg']}
