@@ -53,7 +53,7 @@ Reference the image group[#needsinteraction]_:
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
 >>> images = zeit.content.image.interfaces.IImages(checked_out)
->>> images.images = (group, )
+>>> images.image = group
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
 
@@ -75,42 +75,13 @@ Update the metadata of the feed. The image is now referenced:
   <object_limit py:pytype="int">50</object_limit>
 </channel>
 
-When more than one image is referenced, only the first one will be in the feed:
-
->>> import zope.component
->>> import zeit.cms.repository.interfaces
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
->>> images.images = (group, repository['2006']['DSC00109_2.JPG'],)
->>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
-...     content).checkout()
->>> images = zeit.content.image.interfaces.IImages(checked_out)
->>> images.images = (group, )
->>> content = zeit.cms.checkout.interfaces.ICheckinManager(
-...     checked_out).checkin()
->>> feed.updateMetadata(content)
->>> print feed.xml_source
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title/>
-  <container>
-    <block href="http://xml.zeit.de/testcontent"...>
-      ...
-      <image base-id="http://xml.zeit.de/image-group" type="jpg"...>
-        <bu xsi:nil="true"/>
-        <copyright py:pytype="str">&#169;</copyright>
-      </image>
-    </block>
-  </container>
-  <object_limit py:pytype="int">50</object_limit>
-</channel>
-
 
 When we have no image referenced it is also removed from the channel:
 
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
 >>> images = zeit.content.image.interfaces.IImages(checked_out)
->>> images.images = ()
+>>> images.image = None
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
 >>> feed.updateMetadata(content)
@@ -134,7 +105,7 @@ Before:
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
 >>> images = zeit.content.image.interfaces.IImages(checked_out)
->>> images.images = (group, )
+>>> images.image = group
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
 >>> import lxml.etree

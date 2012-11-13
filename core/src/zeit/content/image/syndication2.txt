@@ -24,7 +24,7 @@ appears on the image as well:
 ...     content).checkout()
 >>> images = zeit.content.image.interfaces.IImages(checked_out)
 >>> first = group[group.keys()[0]]
->>> images.images = (first,)
+>>> images.image = first
 >>> content = zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out).checkin()
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)

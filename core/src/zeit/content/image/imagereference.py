@@ -25,11 +25,18 @@ class ImagesAdapter(zeit.cms.related.related.RelatedBase):
     xml_reference_name = 'image'
 
     @rwproperty.getproperty
-    def images(self):
-        return self._get_related()
+    def image(self):
+        related = self._get_related()
+        if not related:
+            return
+        return related[0]
 
     @rwproperty.setproperty
-    def images(self, value):
+    def image(self, value):
+        if value is None:
+            value = ()
+        else:
+            value = (value, )
         self._set_related(value)
 
     def _get_unique_id(self, element):
@@ -51,9 +58,9 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     target_iface = zeit.content.image.interfaces.IImages
 
     def update_with_context(self, entry, images):
-        if images.images:
+        if images.image is not None:
             # only add first image
-            image = images.images[0]
+            image = images.image
             image_node = zope.component.queryAdapter(
                 image, zeit.cms.content.interfaces.IXMLReference, name='image')
             if image_node is None:
@@ -78,9 +85,9 @@ def update_image_reference_on_checkin(context, event):
     images = zeit.content.image.interfaces.IImages(context, None)
     if images is None:
         return
-    image_list = images.images
-    if image_list:
-        images.images = image_list
+    image = images.image
+    if image:
+        images.image = image
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
@@ -89,7 +96,10 @@ def image_references(context):
     images = zeit.content.image.interfaces.IImages(context, None)
     if images is None:
         return
-    return images.images
+    image = images.image
+    if image is None:
+        return ()
+    return (image, )
 
 
 class References(object):

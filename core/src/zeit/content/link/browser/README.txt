@@ -40,8 +40,7 @@ False
 Adding related objects is done on the asset page:
 
 >>> browser.getLink('Edit assets').click()
->>> browser.getControl('Add Images').click()
->>> browser.getControl(name="form.images.0.").value = (
+>>> browser.getControl(name="form.image").value = (
 ...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> browser.getControl('Add Related').click()
 >>> browser.getControl(name="form.related.0.").value = (

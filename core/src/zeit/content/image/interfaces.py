@@ -176,13 +176,11 @@ imageSource = ImageSource()
 class IImages(zope.interface.Interface):
     """An object which references images."""
 
-    images = zope.schema.Tuple(
-        title=_('Images'),
+    image = zope.schema.Choice(
+        title=_('Image'),
         description=_("Drag an image or image group here"),
         required=False,
-        default=(),
-        value_type=zope.schema.Choice(
-            source=imageSource))
+        source=imageSource)
 
 
 class IReferences(zope.interface.Interface):
