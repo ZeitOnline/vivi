@@ -43,7 +43,7 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata).select(
-            'supertitle', 'teaserTitle', 'teaserText')
+            'supertitle', 'teaserSupertitle', 'teaserTitle', 'teaserText')
     close = False
 
     def __call__(self, *args, **kw):
