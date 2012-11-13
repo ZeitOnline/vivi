@@ -10,7 +10,8 @@ class Images(zeit.cms.browser.view.JSON):
     def json(self):
         images = zeit.content.image.interfaces.IImages(self.context)
         result = []
-        for image in images.images:
+        image = images.image
+        if image:
             if zeit.content.image.interfaces.IImageGroup.providedBy(image):
                 for i in image.values():
                     result.append(i)
