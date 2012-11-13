@@ -45,16 +45,13 @@ class CheckinSelenium(
         self.add_article()
         s = self.selenium
         title_error = 'css=#edit-form-workflow .errors dt:contains(Title)'
-        disabled_checkin_button = 'css=a#checkin.button.disabled'
         s.waitForElementPresent(title_error)
-        s.assertElementPresent(disabled_checkin_button)
         input_title = 'article-content-head.title'
         # XXX type() doesn't work with selenium-1 and FF>7
         self.eval(
             'document.getElementById("%s").value = "mytitle"' % input_title)
         s.fireEvent(input_title, 'blur')
         s.waitForElementNotPresent(title_error)
-        s.assertElementNotPresent(disabled_checkin_button)
 
     def test_checkin_button_is_disabled_while_validation_errors_present(self):
         self.add_article()
