@@ -56,9 +56,9 @@ class Teaser(zeit.cms.browser.view.Base):
             if preview:
                 return self.url(preview)
             return
-        if not images.images:
+        if not images.image:
             return
-        image = images.images[0]
+        image = images.image
         if zeit.content.image.interfaces.IImageGroup.providedBy(image):
             img = image.get('184x84')
             if img:
