@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import gocept.lxml.interfaces
 import grokcore.component
 import lxml.objectify
@@ -10,6 +11,7 @@ import zeit.content.article.interfaces
 import zeit.edit.container
 import zeit.edit.rule
 import zope.publisher.interfaces
+import zope.schema.interfaces
 import zope.security.proxy
 
 
@@ -172,6 +174,17 @@ def validate_article(context, event):
     # doesn't work with security proxies
     context = zope.security.proxy.removeSecurityProxy(context)
     errors = zope.schema.getValidationErrors(
-        zeit.content.article.interfaces.IArticle, context)
+        zeit.content.article.interfaces.IArticle, context) or []
+    if errors:
+        errors = [
+            (zeit.content.article.interfaces.IArticle[name], error)
+            for name, error in errors]
+    # XXX using a separate event handler would be cleaner, but we only support
+    # retrieving a single error (last_validation_error), so this doesn't work.
+    if (IAutomaticallyRenameable(context).renameable
+        and not IAutomaticallyRenameable(context).rename_to):
+        errors.append(
+            (IAutomaticallyRenameable['rename_to'],
+             zope.schema.interfaces.RequiredMissing('rename_to')))
     if errors:
         event.veto(errors)

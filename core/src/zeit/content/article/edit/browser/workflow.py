@@ -82,12 +82,12 @@ class CheckinErrors(object):
             return []
 
         result = []
-        for name, error in errors:
+        for field, error in errors:
             # adapted from zope.formlib.form.FormBase.error_views
             view = zope.component.getMultiAdapter(
                 (error, self.request),
                 zope.formlib.interfaces.IWidgetInputErrorView)
-            title = zeit.content.article.interfaces.IArticle[name].title
+            title = field.title
             if isinstance(title, zope.i18n.Message):
                 title = zope.i18n.translate(title, context=self.request)
             result.append(dict(name=title, snippet=view.snippet()))

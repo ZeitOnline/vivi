@@ -103,12 +103,14 @@ Checking in requires the article to be valid:
 
 >>> import zeit.cms.testing
 >>> import zeit.cms.workingcopy.interfaces
+>>> from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 >>> with zeit.cms.testing.site(getRootFolder()):
 ...     with zeit.cms.testing.interaction():
 ...         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
 ...         article = list(wc.values())[0]
 ...         article.title = u'Title'
 ...         article.ressort = u'Deutschland'
+...         IAutomaticallyRenameable(article).rename_to = 'asdf'
 
 We check in the document. We look at the document in the repository then:
 
@@ -116,28 +118,28 @@ We check in the document. We look at the document in the repository then:
 >>> browser.getLink('Checkin').click()
 >>> article_url = browser.url
 >>> article_url
-'http://localhost/++skin++cms/repository/.../...tmp/@@xml_source_view.html'
+'http://localhost/++skin++cms/repository/.../asdf/@@xml_source_view.html'
 
 A checked in article has a link that offers a basic view:
 
 >>> browser.getLink('View')
-<Link...'http://localhost/++skin++cms/repository/.../...tmp/@@edit.html'>
+<Link...'http://localhost/++skin++cms/repository/.../asdf/@@edit.html'>
 
 It will have a menu for the source
 >>> browser.getLink('View source')
-<Link...http://localhost/++skin++cms/repository/.../...tmp/@@xml_source_view.html'>
+<Link...http://localhost/++skin++cms/repository/.../asdf/@@xml_source_view.html'>
 
 
 It will have a menu for references
 >>> browser.getLink('References')
-<Link...http://localhost/++skin++cms/repository/.../...tmp/@@references.html'>
+<Link...http://localhost/++skin++cms/repository/.../asdf/@@references.html'>
 
 When we checkout the article we will get the following
 >>> browser.getLink('View').click()
 >>> browser.getLink('Checkout').click()
 >>> article_url = browser.url
 >>> article_url
-'http://localhost/++skin++cms/workingcopy/.../...tmp/@@edit.html'
+'http://localhost/++skin++cms/workingcopy/.../asdf/@@edit.html'
 
 The edit source link...
 >>> browser.getLink('Source')

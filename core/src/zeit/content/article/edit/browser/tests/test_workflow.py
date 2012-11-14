@@ -6,7 +6,6 @@ from zeit.content.article.article import Article
 from zeit.workflow.interfaces import IReview
 import datetime
 import transaction
-import unittest2 as unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 
@@ -16,13 +15,15 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.article.testing.ArticleLayer
 
     def test_validation_errors_should_be_displayed_at_checkin_button(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/article/@@checkout')
+        b.open('http://localhost/++skin++vivi/repository/'
+               '@@zeit.content.article.Add')
         b.open('@@edit.form.checkin-errors')
-        self.assert_ellipsis('...Title:...Required input is missing...')
+        self.assert_ellipsis("""
+            ...Title:...Required input is missing...
+            ...Ressort:...Required input is missing...
+            ...New file name:...Required input is missing...
+            ...""")
 
 
 class CheckinSelenium(
@@ -56,10 +57,8 @@ class CheckinSelenium(
     def test_checkin_button_is_disabled_while_validation_errors_present(self):
         self.add_article()
         s = self.selenium
-        error_message = 'css=#edit-form-workflow .errors dt'
         disabled_checkin_button = 'css=a#checkin.button.disabled'
-        s.waitForElementPresent(error_message)
-        s.assertElementPresent(disabled_checkin_button)
+        s.waitForElementPresent(disabled_checkin_button)
 
         input_title = 'article-content-head.title'
         # XXX type() doesn't work with selenium-1 and FF>7
@@ -69,9 +68,12 @@ class CheckinSelenium(
         input_ressort = 'metadata-a.ressort'
         s.select(input_ressort, 'label=International')
         s.fireEvent(input_ressort, 'blur')
+        input_filename = 'new-filename.rename_to'
+        self.eval(
+            'document.getElementById("%s").value = "asdf"' % input_filename)
+        s.fireEvent(input_filename, 'blur')
 
-        s.waitForElementNotPresent(error_message)
-        s.assertElementNotPresent(disabled_checkin_button)
+        s.waitForElementNotPresent(disabled_checkin_button)
 
     def test_checkin_does_not_set_last_semantic_change_by_default(self):
         with zeit.cms.testing.site(self.getRootFolder()):
