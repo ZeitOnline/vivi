@@ -95,6 +95,14 @@ def updateTextLengthOnChange(object, event):
         pass
 
 
+@zope.component.adapter(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def disallowCommentsIfCommentsAreNotShown(object, event):
+    if not object.commentSectionEnable:
+        object.commentsAllowed = False
+
+
 class LayoutDependency(object):
 
     zope.component.adapts(zeit.content.article.interfaces.IArticle)

@@ -131,3 +131,32 @@ class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
         s = self.selenium
         s.waitForElementPresent('id=keywords.keywords')
         s.assertNotTextPresent('Only the first 6 keywords are shown')
+
+
+class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(MetadataTest, self).setUp()
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.selenium.waitForElementPresent('id=options-b.year')
+
+    def test_comments_allowed_toggled_when_comments_section_is_toggled(self):
+        s = self.selenium
+        s.waitForElementNotPresent('metadata-comments.commentsAllowed')
+        s.click('metadata-comments.commentSectionEnable')
+        s.waitForElementPresent('metadata-comments.commentsAllowed')
+        s.click('metadata-comments.commentSectionEnable')
+        s.waitForElementNotPresent('metadata-comments.commentsAllowed')
+
+    def test_disallow_comments_if_comments_section_is_disabled(self):
+        s = self.selenium
+        s.waitForElementNotPresent('metadata-comments.commentsAllowed')
+        s.click('metadata-comments.commentSectionEnable')
+        s.waitForElementPresent('metadata-comments.commentsAllowed')
+        s.click('metadata-comments.commentsAllowed')
+        s.waitForChecked('metadata-comments.commentsAllowed')
+        s.click('metadata-comments.commentSectionEnable')
+        s.waitForElementNotPresent('metadata-comments.commentsAllowed')
+        s.click('metadata-comments.commentSectionEnable')
+        s.waitForElementPresent('metadata-comments.commentsAllowed')
+        s.waitForNotChecked('metadata-comments.commentsAllowed')

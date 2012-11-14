@@ -344,8 +344,13 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-comments'
     undo_description = _('edit metadata')
-    form_fields = FormFields(ICommonMetadata).select(
-        'commentSectionEnable', 'commentsAllowed')
+
+    @property
+    def form_fields(self):
+        fields = ('commentSectionEnable',)
+        if self.context.commentSectionEnable:
+            fields += ('commentsAllowed',)
+        return FormFields(ICommonMetadata).select(*fields)
 
 
 class MetadataRecensions(zeit.edit.browser.form.InlineForm):

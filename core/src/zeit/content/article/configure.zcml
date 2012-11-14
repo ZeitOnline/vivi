@@ -31,6 +31,7 @@
   <adapter factory=".article.LayoutDependency" name="layout"/>
 
   <subscriber handler=".article.updateTextLengthOnChange" />
+  <subscriber handler=".article.disallowCommentsIfCommentsAreNotShown" />
 
   <class class=".article.ArticleWorkflow">
     <require like_class="zeit.workflow.publishinfo.PublishInfo" />
