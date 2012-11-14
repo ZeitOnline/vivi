@@ -24,6 +24,8 @@
       include="
       context.js
       edit.js
+      inlineform.js
+      lightbox.js
       fold.js
       sortable.js
       drop.js
