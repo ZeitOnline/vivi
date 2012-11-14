@@ -84,19 +84,6 @@
     permission="zope.View"
     weight="-1"
     />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zeit.edit.browser.form.Forms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="actions"
-    class=".workflow.WorkflowButtons"
-    template="layout.actions.pt"
-    permission="zope.View"
-    weight="2"
-    />
-
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IEditableBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
