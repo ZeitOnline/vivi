@@ -78,6 +78,11 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
         self.widgets['subtitle'].extra = 'cms:maxlength="%s"' % (
             self.widgets['subtitle'].context.max_length)
 
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.signal('reload-inline-view', 'edit.heading')
+        return super(ArticleContentHead, self).handle_edit_action.success(data)
+
 
 class ArticleContentBody(zeit.edit.browser.form.InlineForm):
 
@@ -291,6 +296,11 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
                 '</script>') % (self.prefix,)
         return result
 
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.signal('reload-inline-view', 'edit.heading')
+        return super(MetadataA, self).handle_edit_action.success(data)
+
 
 # This will be renamed properly as soon as the fields are finally decided.
 class MetadataB(zeit.edit.browser.form.InlineForm):
@@ -314,6 +324,11 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         self.widgets['author_references'].detail_view_name = '@@author-details'
         self.widgets['author_references'].add_type = IAuthor
         self.widgets['author_references'].display_list_below_buttons = True
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.signal('reload-inline-view', 'edit.heading')
+        return super(MetadataC, self).handle_edit_action.success(data)
 
 
 class MetadataNL(zeit.edit.browser.form.InlineForm):
@@ -445,6 +460,11 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
         # the 'page' field is an Int, so we can't use default='n/a'
         if not self.context.page:
             self.widgets['page'].setRenderedValue('n/a')
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.signal('reload-inline-view', 'edit.heading')
+        return super(OptionsB, self).handle_edit_action.success(data)
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):

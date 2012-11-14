@@ -78,12 +78,21 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zeit.edit.browser.form.Forms"
     manager="zeit.edit.interfaces.IContentViewletManager"
-    name="heading"
-    class=".form.Heading"
-    template="layout.heading.pt"
+    name="edit.heading"
+    class="zeit.edit.browser.view.ViewLoader"
     permission="zope.View"
     weight="-1"
     />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.heading"
+    class=".form.Heading"
+    template="layout.heading.pt"
+    permission="zope.View"
+    />
+
   <browser:viewlet
     for="zeit.content.article.edit.interfaces.IEditableBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

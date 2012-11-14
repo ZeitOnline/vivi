@@ -114,3 +114,23 @@ class PageNumberDisplay(zeit.cms.testing.BrowserTestCase):
                '/online/2007/01/Somalia/@@checkout')
         b.open('@@edit.form.options-b')
         self.assertEllipsis('...Page...4711...', b.contents)
+
+
+class HeaderSync(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(HeaderSync, self).setUp()
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        self.selenium.waitForElementPresent('id=options-b.year')
+
+    def test_header_is_reloaded_after_change_to_ressort(self):
+        s = self.selenium
+        s.assertSelectedLabel('id=metadata-a.ressort', 'International')
+        s.assertText('id=editor-forms-heading', '*International*')
+        s.select('id=metadata-a.ressort', 'Deutschland')
+        s.fireEvent('id=metadata-a.ressort', 'blur')
+        s.waitForElementNotPresent('css=.field.dirty')
+        s.assertText('id=editor-forms-heading', '*Deutschland*')
+
+    # XXX there are several more inline forms that trigger a reload of the
+    # header. Should we write tests for all of them?
