@@ -50,12 +50,22 @@ var reload_inline_form = function(selector) {
     element.form.reload();
 };
 
+var reload_inline_view = function(selector) {
+    // views can send this signal to reload an inline form, by giving its
+    // `prefix` as the signal parameter.
+    var element = $('.inline-view[cms\\:href$="' + selector + '"]')[0];
+    element.view.render();
+};
+
+
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     setup_views();
     wire_forms();
     MochiKit.Signal.connect(window, 'changed', evaluate_form_signals);
     MochiKit.Signal.connect(
         zeit.edit.editor, 'reload-inline-form', reload_inline_form);
+    MochiKit.Signal.connect(
+        zeit.edit.editor, 'reload-inline-view', reload_inline_view);
 });
 
 $(document).bind('fragment-ready', function(event) {
