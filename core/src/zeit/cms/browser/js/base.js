@@ -219,9 +219,9 @@ zeit.cms.evaluate_js_and_css = function(element, eval_function) {
             loading.push(zeit.cms.import(src));
             script.remove();
         } else {
-            if (script.attr('cms\\:evaluated') !== 'true') {
+            if (script.attr('cms:evaluated') !== 'true') {
                 eval_function(script.text());
-                script.attr('cms\\:evaluated', 'true');
+                script.attr('cms:evaluated', 'true');
             }
         }
     });
