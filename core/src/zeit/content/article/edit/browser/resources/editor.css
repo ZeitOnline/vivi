@@ -1202,6 +1202,7 @@ label[for="memo.memo"] {
 /* label */
 
 #edit-form-filename .inline-form .fieldtype-label,
+#edit-form-misc .inline-form .fieldtype-label,
 #edit-form-metadata .inline-form .fieldtype-label {
   float: left;
   min-width: 15em;
