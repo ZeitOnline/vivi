@@ -98,36 +98,7 @@ zeit.edit.Editor = gocept.Class.extend({
         });
         d.addCallback(function(result) {
             // Result: replaced element
-            var loading = [];
-            MochiKit.Iter.forEach(
-                MochiKit.DOM.getElementsByTagAndClassName(
-                    'SCRIPT', null, result),
-                function(script) {
-                    if (script.src !== '') {
-                        loading.push(zeit.cms.import(script.src));
-                        MochiKit.DOM.removeElement(script);
-                    } else {
-                        jQuery.globalEval(jQuery(script).text());
-                    }
-                });
-            MochiKit.Iter.forEach(
-                MochiKit.DOM.getElementsByTagAndClassName(
-                    'LINK', null, result),
-                function(link) {
-                    if (link.rel == 'stylesheet') {
-                        loading.push(zeit.cms.import(link.href));
-                        MochiKit.DOM.removeElement(link);
-                    }
-                });
-            var head = document.getElementsByTagName('head')[0];
-            MochiKit.Iter.forEach(
-                MochiKit.DOM.getElementsByTagAndClassName(
-                    'STYLE', null, result),
-                function(style) {
-                    head.appendChild(style);
-                });
-            var dl = new MochiKit.Async.DeferredList(loading);
-            return dl;
+            return zeit.cms.evaluate_js_and_css(result);
         });
         d.addCallback(function(result) {
             MochiKit.Signal.signal(window, 'script-loading-finished', self);
