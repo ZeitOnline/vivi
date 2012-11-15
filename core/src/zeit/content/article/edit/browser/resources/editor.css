@@ -964,7 +964,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #edit-form-misc form[action$="edit.form.options-b"] .widget input.textType {
-  width: 87px;
+  width: 85px;
 }
 
 /* LEAD TEASER AREA */
