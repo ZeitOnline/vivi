@@ -346,7 +346,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 'form', null, self.container);
         }
         self.rewire_submit_buttons();
-        self.eval_javascript_tags();
+        zeit.cms.evaluate_js_and_css(self.container);
     },
 
     rewire_submit_buttons: function() {
@@ -361,16 +361,6 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                     button.type = 'button';
                     MochiKit.DOM.addElementClass(button, 'submit');
                 }
-            });
-    },
-
-    eval_javascript_tags: function() {
-        var self = this;
-        forEach(
-            MochiKit.DOM.getElementsByTagAndClassName(
-            'SCRIPT', null, self.container),
-            function(script) {
-                eval(script.text);
             });
     }
 });

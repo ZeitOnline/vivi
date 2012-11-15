@@ -200,6 +200,40 @@ zeit.cms.import = function(src) {
     return d;
 };
 
+
+zeit.cms.evaluate_js_and_css = function(element) {
+    var loading = [];
+    MochiKit.Iter.forEach(
+        MochiKit.DOM.getElementsByTagAndClassName('SCRIPT', null, element),
+        function(script) {
+            if (script.src !== '') {
+                loading.push(zeit.cms.import(script.src));
+                MochiKit.DOM.removeElement(script);
+            } else {
+                if (script.getAttribute('cms:evaluated') !== 'true') {
+                    jQuery.globalEval(jQuery(script).text());
+                    script.setAttribute('cms:evaluated', 'true');
+                }
+            }
+        });
+    MochiKit.Iter.forEach(
+        MochiKit.DOM.getElementsByTagAndClassName('LINK', null, element),
+        function(link) {
+            if (link.rel == 'stylesheet') {
+                loading.push(zeit.cms.import(link.href));
+                MochiKit.DOM.removeElement(link);
+            }
+        });
+    var head = document.getElementsByTagName('HEAD')[0];
+    MochiKit.Iter.forEach(
+        MochiKit.DOM.getElementsByTagAndClassName('STYLE', null, element),
+        function(style) {
+            head.appendChild(style);
+        });
+    return new MochiKit.Async.DeferredList(loading);
+};
+
+
 zeit.cms.get_application_url = function() {
     var current = window;
     var application_url = current.application_url;
