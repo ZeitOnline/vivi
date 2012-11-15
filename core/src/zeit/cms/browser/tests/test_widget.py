@@ -86,12 +86,12 @@ class TestObjectSequenceWidget(unittest2.TestCase):
         result = widget._toFormValue([mock.sentinel.foo, content])
         self.assertEqual([{'uniqueId': content.uniqueId}], result)
 
-    def test_to_field_value_ignores_non_cms_content(self):
+    def test_invalid_unique_id_fails_validation(self):
         context = mock.Mock()
         context.__name__ = 'name'
         widget = ObjectSequenceWidget(context, mock.Mock(), mock.Mock())
-        self.assertEqual(
-            (), widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar]))
+        with self.assertRaises(zope.formlib.interfaces.ConversionError):
+            widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar])
 
     def test_to_form_value_copes_with_none(self):
         context = mock.Mock()
