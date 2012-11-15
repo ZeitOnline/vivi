@@ -99,6 +99,8 @@ def updateTextLengthOnChange(object, event):
     zeit.content.article.interfaces.IArticle,
     zope.lifecycleevent.IObjectModifiedEvent)
 def disallowCommentsIfCommentsAreNotShown(object, event):
+    if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(object):
+        return
     if not object.commentSectionEnable:
         object.commentsAllowed = False
 
