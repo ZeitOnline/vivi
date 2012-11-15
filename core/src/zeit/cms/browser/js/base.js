@@ -201,7 +201,16 @@ zeit.cms.import = function(src) {
 };
 
 
-zeit.cms.evaluate_js_and_css = function(element) {
+zeit.cms.evaluate_js_and_css = function(element, eval_function) {
+    // XXX this is needed to support SubPageForm evaluating script tags
+    // in the context of themselves. Unfortunately, `eval` does not behave
+    // like normal JS functions, i.e. you can't change `this` via
+    // eval.call(other_context), thus we need to use a closure for that
+    // purpose. *sigh*
+    if (isUndefined(eval_function)) {
+        eval_function = jQuery.globalEval;
+    }
+
     var loading = [];
     MochiKit.Iter.forEach(
         MochiKit.DOM.getElementsByTagAndClassName('SCRIPT', null, element),
@@ -211,7 +220,8 @@ zeit.cms.evaluate_js_and_css = function(element) {
                 MochiKit.DOM.removeElement(script);
             } else {
                 if (script.getAttribute('cms:evaluated') !== 'true') {
-                    jQuery.globalEval(jQuery(script).text());
+                    var code = jQuery(script).text();
+                    eval_function(code);
                     script.setAttribute('cms:evaluated', 'true');
                 }
             }

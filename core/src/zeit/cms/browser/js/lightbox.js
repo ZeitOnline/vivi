@@ -346,7 +346,8 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 'form', null, self.container);
         }
         self.rewire_submit_buttons();
-        zeit.cms.evaluate_js_and_css(self.container);
+        zeit.cms.evaluate_js_and_css(
+            self.container, function(code) { eval(code); });
     },
 
     rewire_submit_buttons: function() {
