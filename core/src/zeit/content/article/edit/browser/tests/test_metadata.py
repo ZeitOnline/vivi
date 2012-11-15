@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 from unittest2 import skip
+import transaction
 import zeit.cms.tagging.testing
 import zeit.content.article.edit.browser.testing
 
@@ -160,3 +161,27 @@ class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('metadata-comments.commentSectionEnable')
         s.waitForElementPresent('metadata-comments.commentsAllowed')
         s.waitForNotChecked('metadata-comments.commentsAllowed')
+
+
+@skip('Drag&Drop does not work, the icon is never dropped on the clipboard')
+class HeaderTest(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def test_icon_in_header_is_draggable_to_clipboard(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction() as principal:
+                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+                clipboard.addClip('Clip')
+                transaction.commit()
+
+        self.open('/repository/online/2007/01/Somalia')
+        s = self.selenium
+        clipboard = '//li[@uniqueid="Clip"]'
+        s.click(clipboard)
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+        icon = 'css=#editor-forms-heading .content-icon'
+        s.waitForElementPresent(icon)
+        s.dragAndDropToObject(icon, clipboard)
+        s.waitForElementPresent(
+            clipboard + '//span[contains(@class, "uniqueId") and '
+            'contains(text(), "Somalia")]')
