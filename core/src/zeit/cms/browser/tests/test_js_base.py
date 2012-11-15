@@ -12,7 +12,7 @@ class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
 
     def write_html(self, text):
         text = text.replace('\n', ' ')
-        self.eval("window.jQuery('#foo').html('%s')" % text)
+        self.eval("document.getElementById('foo').innerHTML = '%s'" % text)
 
     def evaluate_js_and_css(self):
         self.eval(
@@ -29,6 +29,7 @@ class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
         <script type="text/javascript">
           zeit.cms.test_inline_loaded = (zeit.cms.test_inline_loaded || 0) + 1;
         </script>""")
+        self.assertEqual('null', self.eval('zeit.cms.test_inline_loaded'))
         self.evaluate_js_and_css()
         self.assertEqual('1', self.eval('zeit.cms.test_inline_loaded'))
         self.evaluate_js_and_css()
