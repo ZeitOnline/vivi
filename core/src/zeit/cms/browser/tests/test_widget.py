@@ -61,6 +61,18 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
             '...class="object-details type-unknown"...')
 
 
+class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
+
+    def test_icon_is_draggable_as_content_object(self):
+        self.open(
+            '/@@/zeit.cms.javascript.base/tests/contenticondrag.html')
+        s = self.selenium
+        s.waitForElementPresent('css=#result .content-icon')
+        s.dragAndDropToObject('css=#result .content-icon', 'id=testwidget')
+        s.waitForValue('name=testwidget',
+                       'http://xml.zeit.de/testcontent')
+
+
 class TestObjectSequenceWidget(unittest2.TestCase):
 
     def test_to_form_value_ignores_non_cms_content(self):

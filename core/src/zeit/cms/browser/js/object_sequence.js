@@ -411,3 +411,14 @@ zeit.cms.load_object_details = function(uniqueId, detail_view_name) {
     }
     return d;
 };
+
+
+(function($) {
+
+$(document).bind('fragment-ready', function(event) {
+    $('.content-icon', event.__target).each(function(i, element) {
+       zeit.cms.createDraggableContentObject(element);
+    });
+});
+
+}(jQuery));
