@@ -200,7 +200,7 @@ zeit.cms.import = function(src) {
     return d;
 };
 
-
+(function($) {
 zeit.cms.evaluate_js_and_css = function(element, eval_function) {
     // XXX this is needed to support SubPageForm evaluating script tags
     // in the context of themselves. Unfortunately, `eval` does not behave
@@ -208,40 +208,39 @@ zeit.cms.evaluate_js_and_css = function(element, eval_function) {
     // eval.call(other_context), thus we need to use a closure for that
     // purpose. *sigh*
     if (isUndefined(eval_function)) {
-        eval_function = jQuery.globalEval;
+        eval_function = $.globalEval;
     }
 
     var loading = [];
-    MochiKit.Iter.forEach(
-        MochiKit.DOM.getElementsByTagAndClassName('SCRIPT', null, element),
-        function(script) {
-            if (script.src !== '') {
-                loading.push(zeit.cms.import(script.src));
-                MochiKit.DOM.removeElement(script);
-            } else {
-                if (script.getAttribute('cms:evaluated') !== 'true') {
-                    var code = jQuery(script).text();
-                    eval_function(code);
-                    script.setAttribute('cms:evaluated', 'true');
-                }
+    $('script', element).each(function(i, script) {
+        script = $(script);
+        var src = script.attr('src');
+        if (src) {
+            loading.push(zeit.cms.import(src));
+            script.remove();
+        } else {
+            if (script.attr('cms\\:evaluated') !== 'true') {
+                eval_function(script.text());
+                script.attr('cms\\:evaluated', 'true');
             }
-        });
-    MochiKit.Iter.forEach(
-        MochiKit.DOM.getElementsByTagAndClassName('LINK', null, element),
-        function(link) {
-            if (link.rel == 'stylesheet') {
-                loading.push(zeit.cms.import(link.href));
-                MochiKit.DOM.removeElement(link);
-            }
-        });
-    var head = document.getElementsByTagName('HEAD')[0];
-    MochiKit.Iter.forEach(
-        MochiKit.DOM.getElementsByTagAndClassName('STYLE', null, element),
-        function(style) {
-            head.appendChild(style);
-        });
+        }
+    });
+
+    $('link', element).each(function(i, link) {
+        link = $(link);
+        if (link.attr('rel') === 'stylesheet') {
+            loading.push(zeit.cms.import(link.attr('href')));
+            link.remove();
+        }
+    });
+
+    $('style', element).each(function(i, style) {
+        $('head').append(style);
+    });
+
     return new MochiKit.Async.DeferredList(loading);
 };
+}(jQuery));
 
 
 zeit.cms.get_application_url = function() {
