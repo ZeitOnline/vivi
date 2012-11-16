@@ -6,6 +6,7 @@ import zc.resourcelibrary
 import zc.resourcelibrary.resourcelibrary
 import zeit.cms.browser
 import zeit.cms.browser.interfaces
+import zeit.cms.checkout.interfaces
 import zope.app.basicskin.standardmacros
 import zope.component
 import zope.location.interfaces
@@ -49,3 +50,19 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
             if library in EXCLUDE_LIBRARIES:
                 continue
             zc.resourcelibrary.need(library)
+
+    @property
+    def type_declaration(self):
+        no_type = type(
+            'NoTypeDeclaration', (object,), dict(type_identifier='unknown'))
+        return zeit.cms.interfaces.ITypeDeclaration(self.context, no_type)
+
+    @property
+    def context_location(self):
+        if zeit.cms.checkout.interfaces.ILocalContent.providedBy(self.context):
+            return 'workingcopy'
+        elif zeit.cms.checkout.interfaces.IRepositoryContent.providedBy(
+            self.context):
+            return 'repository'
+        else:
+            return 'unknown'
