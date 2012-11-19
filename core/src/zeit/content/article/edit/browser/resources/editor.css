@@ -1,6 +1,43 @@
 /* cp-content only concerning article editor */
 
-#cp-content {
+.type-article #content {
+  background: linear-gradient(to bottom, #83a1ba 25px,#83a1ba 25px,#f1f4f9 25px,#f1f4f9 100%);
+  left:.5em; 
+}
+
+.type-article #cp-content {
+  left:0;
+  right:34%;
+  bottom:0;
+  margin-top:25px;
+}
+
+.type-article #cp-forms {
+  bottom:0;
+}
+
+.type-article #visualContentWrapper {
+  right:0
+}
+
+.type-article #busy-indicator {
+  right:34%
+}
+
+.type-article #editor-forms-heading ul {
+  color:white
+}
+
+#cp-content > .cp-content-inner {
+  border: 1px solid #E4E4E4;
+}
+
+.type-article #cp-content .editable-area {
+  margin: 1em 0 0;
+  padding: 0;
+}
+
+.type-article #cp-content {
   background: none repeat scroll 0 0 #F1F4F9;
 }
 
