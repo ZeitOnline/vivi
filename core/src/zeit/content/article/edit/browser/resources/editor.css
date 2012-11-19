@@ -963,7 +963,21 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   padding-top: 15px;
 }
 
-#edit-form-misc form[action$="edit.form.options-b"] .widget input.textType {
+#edit-form-misc .fieldname-volume .display,
+#edit-form-misc .fieldname-year .display {
+  width: 85px;
+}
+
+#edit-form-misc .fieldname-page .display {
+  width: 30px;
+}
+
+#edit-form-misc .fieldname-printRessort .display {
+  width: 134px;
+}
+
+#options-b\.year,
+#options-b\.volume {
   width: 85px;
 }
 
@@ -1205,7 +1219,6 @@ label[for="memo.memo"] {
 #edit-form-misc .inline-form .fieldtype-label,
 #edit-form-metadata .inline-form .fieldtype-label {
   float: left;
-  min-width: 15em;
 }
 
 #edit-form-filename .inline-form .fieldtype-label .widget,
@@ -1213,6 +1226,10 @@ label[for="memo.memo"] {
 #edit-form-metadata .inline-form .fieldtype-label .widget {
   margin-left: 0.2em;
   margin-top: 0.2em;
+}
+
+.fieldtype-label .display {
+  width: 200px;
 }
 
 
