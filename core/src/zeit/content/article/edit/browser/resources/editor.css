@@ -1265,6 +1265,7 @@ label[for="memo.memo"] {
   margin-top: 0.2em;
 }
 
+.fieldname-color_scheme .display,
 .fieldtype-label .display {
   width: 200px;
 }
