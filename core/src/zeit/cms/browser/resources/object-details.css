@@ -73,8 +73,17 @@
 }
 
 #internallinks\.related li a[rel="remove"] {
-  margin-top: 0px;
   display: inline;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-indent: -1000px;
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 23px -417px transparent;
+  margin: 0px !important;
+  min-height: 10px;
+  border: 0px solid #FFF;
+  top: 2px;
+  right: 3px;
 }
 
 .object-details-heading li:before {
