@@ -108,16 +108,21 @@ class Details(zeit.cms.browser.view.Base):
             return
         return (vol and '%s/%s' % (vol, year)) or '%s' % (year)
 
+    @property
     def display_metadata(self):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
-        return filter(None, [
-            self.teaser_title,
-            dc.created and dc.created.strftime('%d.%m.%Y'),
-            self.volume,
-            self.common_metadata.ressort,
-            self.author,
-            self.hits,
-        ])
+        entries = dict(
+            teaser_title=self.teaser_title,
+            created=dc.created and dc.created.strftime('%d.%m.%Y'),
+            volume=self.volume,
+            ressort=self.common_metadata.ressort,
+            author=self.author,
+            hits=self.hits,
+        )
+        for key, value in entries.items():
+            if not value:
+                del entries[key]
+        return entries
 
     def display_metadata_short(self):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)

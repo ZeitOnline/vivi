@@ -255,8 +255,10 @@ class ObjectSequenceWidget(
         try:
             input_value = self._getCurrentValueHelper()
         except zope.app.form.interfaces.InputErrors:
-            form_value = self._toFormValue(
-                self._toFieldValue(self._getFormInput(self._missing)))
+            items = []
+            for entry in self._getFormInput(self._missing):
+                items.append({'uniqueId': entry})
+            form_value = items
         else:
             form_value = self._toFormValue(input_value)
         return form_value
@@ -272,9 +274,16 @@ class ObjectSequenceWidget(
         return result
 
     def _toFieldValue(self, value):
-        field_value = tuple(zeit.cms.interfaces.ICMSContent(unique_id, None)
-                            for unique_id in value)
-        return tuple(value for value in field_value if value is not None)
+        result = []
+        for unique_id in value:
+            try:
+                result.append(zeit.cms.interfaces.ICMSContent(unique_id))
+            except TypeError:
+                msg = _("The object '${id}' could not be found.",
+                        mapping=dict(id=unique_id))
+                msg = zope.i18n.translate(msg, context=self.request)
+                raise zope.formlib.interfaces.ConversionError(msg)
+        return tuple(result)
 
     @property
     def marker(self):
