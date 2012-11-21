@@ -44,10 +44,25 @@ class Details(zeit.cms.browser.view.Base):
             return self.list_repr.title
 
     @property
+    def teaser_text(self):
+        if self.common_metadata is not NO_METADATA:
+            return self.common_metadata.teaserText
+
+    @property
     def preview_url(self):
         return zope.component.queryMultiAdapter(
             (self.context, 'preview'),
             zeit.cms.browser.interfaces.IPreviewURL)
+
+    @property
+    def live_url(self):
+        return zope.component.queryMultiAdapter(
+            (self.context, 'live'),
+            zeit.cms.browser.interfaces.IPreviewURL)
+
+    @property
+    def resources_filename(self):
+        return "resources_filename"
 
     @zope.cachedescriptors.property.Lazy
     def graphical_preview_url(self):
@@ -97,6 +112,16 @@ class Details(zeit.cms.browser.view.Base):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
         return filter(None, [
             self.teaser_title,
+            dc.created and dc.created.strftime('%d.%m.%Y'),
+            self.volume,
+            self.common_metadata.ressort,
+            self.author,
+            self.hits,
+        ])
+
+    def display_metadata_short(self):
+        dc = zope.dublincore.interfaces.IDCTimes(self.context)
+        return filter(None, [
             dc.created and dc.created.strftime('%d.%m.%Y'),
             self.volume,
             self.common_metadata.ressort,

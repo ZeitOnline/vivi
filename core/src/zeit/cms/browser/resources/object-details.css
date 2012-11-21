@@ -67,8 +67,14 @@
 }
 
 .object-details-heading ul,
+.object-details-heading div,
 .object-details-heading li {
     display: inline;
+}
+
+#internallinks\.related li a[rel="remove"] {
+  margin-top: 0px;
+  display: inline;
 }
 
 .object-details-heading li:before {
