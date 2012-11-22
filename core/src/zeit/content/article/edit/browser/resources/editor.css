@@ -1313,7 +1313,7 @@ iframe.preview {
 
 .widget.display {
   background: #f1f4f9;
-  border-top: 1px solid #f7f7f7;
+  border-top: 1px solid #DDDDDD;
   padding: 3px;
   min-height: 15px;
 }
