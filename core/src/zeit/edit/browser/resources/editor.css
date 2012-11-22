@@ -634,6 +634,8 @@ span.charcount,
   font-weight: 700;
   margin-right: 1em;
   padding: 2px;
+  font-size: 10px;
+  color: #7f7f7f;
 }
 
 .article-editor-inner .folded > .block-inner {
@@ -680,7 +682,7 @@ fieldset {
   background: none 0;
   border: medium none;
   overflow: hidden;
-  margin: 0 10px;
+  margin: 0 0 0 10px;
   padding: 0;
 }
 
