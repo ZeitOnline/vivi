@@ -177,6 +177,10 @@
   font-weight: bold;
 }
 
+#edit-form-article-content.editable-area #article-content-head\.title:-moz-placeholder {
+  color: #FF0000;
+}
+
 #edit-form-article-content #article-content-head.title,
 #edit-form-article-content #article-content-head.subtitle {
   font-size: 16px;
