@@ -157,6 +157,26 @@
   border-bottom: 0;
 }
 
+#edit-form-article-content.editable-area .label {
+  display: none;
+}
+
+#edit-form-article-content.editable-area #article-content-head\.supertitle {
+  font-size: 10px;
+  font-family: arial;
+  color: #990000;
+}
+
+#edit-form-article-content.editable-area #article-content-head\.subtitle {
+  font-size: 22px;
+}
+
+#edit-form-article-content.editable-area #article-content-head\.title {
+  font-size: 30px;
+  font-family: arial;
+  font-weight: bold;
+}
+
 #edit-form-article-content #article-content-head.title,
 #edit-form-article-content #article-content-head.subtitle {
   font-size: 16px;
@@ -168,6 +188,8 @@
 
 #edit-form-article-content > .block-inner {
   padding-bottom: 100px;
+  padding-left: 17px;
+  padding-right: 25px;
 }
 
 #edit-form-filename .field,
@@ -389,7 +411,7 @@
 .rte-toolbar {
   background-color: #f0f0ee;
   border : 1px solid #cccccc;
-  left: -22px;
+  left: -35px;
   position: absolute;
   z-index: 1000;
 }

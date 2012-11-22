@@ -77,6 +77,14 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
             self.widgets['title'].context.max_length)
         self.widgets['subtitle'].extra = 'cms:maxlength="%s"' % (
             self.widgets['subtitle'].context.max_length)
+        for widget in self.widgets:
+            placeholder = widget.label or ''
+            field = widget.context
+            if zope.interface.interfaces.IElement.providedBy(field):
+                placeholder = field.queryTaggedValue(
+                    'placeholder', default=placeholder)
+            widget.extra = ((widget.extra + ' ' if widget.extra else '') +
+                            'placeholder="%s"' % placeholder)
 
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
