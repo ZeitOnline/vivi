@@ -205,7 +205,7 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
             'class': 'hidden',
             'id': 'busy-indicator'},
             DIV({'class': 'shade'}),
-            IMG({'src': application_url + '/@@/zeit.imp/loading.gif'})
+            IMG({'src': application_url + '/@@/zeit.cms/loading.gif'})
             );
         $('content').appendChild(self.indicator);
     },
