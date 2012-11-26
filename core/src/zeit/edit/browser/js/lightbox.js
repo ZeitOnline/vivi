@@ -98,7 +98,8 @@ zeit.edit.TabbedLightBoxForm = zeit.edit.LightBoxForm.extend({
                         self.rewire_submit_buttons();
                     }
                     $(tab_view.target_id).__handler__ = self;
-                    self.eval_javascript_tags();
+                    zeit.cms.evaluate_js_and_css(
+                        self.container, function(code) { eval(code); });
                     MochiKit.Signal.signal(self, 'after-reload');
             }));
             if (self.context_element == tab_definition) {
