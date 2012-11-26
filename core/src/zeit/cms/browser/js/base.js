@@ -267,4 +267,4 @@ zeit.cms.get_datetime_close = function(id) {
 
 zeit.cms.in_array = function(needle, haystack) {
     return MochiKit.Base.findValue(haystack, needle) != -1;
-};
+}
