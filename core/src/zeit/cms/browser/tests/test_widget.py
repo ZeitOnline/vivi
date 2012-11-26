@@ -479,8 +479,8 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForNotValue('name=testwidget', '')
-        s.waitForElementPresent('css=#testwidget a')
-        s.click('css=#testwidget a')
+        s.waitForElementPresent('css=#testwidget a[rel=remove]')
+        s.click('css=#testwidget a[rel=remove]')
         s.waitForValue('name=testwidget', '')
 
     def test_configure_search_calls_activate_objectbrowser_with_types(self):
