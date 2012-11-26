@@ -12,7 +12,7 @@
   </div>
 
   <div id="imp-loading-image">
-    <img tal:attributes="src context/++resource++zeit.imp/loading.gif" />
+    <img tal:attributes="src context/++resource++zeit.cms/loading.gif" />
   </div>
 
   <div id="imp-metadata">
