@@ -733,18 +733,18 @@ legend {
   width: auto;
 }
 
-.location-unknown .inline-form .fieldtype-checkbox .widget {
+.inline-form .fieldtype-checkbox .widget.checkboxdisabled {
   background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -1407px transparent;
   display: block;
   width: 10px;
   height: 15px;
 }
 
-.location-unknown .inline-form .fieldtype-checkbox .widget.checkboxchecked {
+.inline-form .fieldtype-checkbox .widget.checkboxchecked {
   background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -1380px transparent;
 }
 
-.location-unknown .inline-form .fieldtype-checkbox .widget input.checkboxType {
+.inline-form .fieldtype-checkbox .widget input.checkboxType[disabled="disabled"] {
   display:none
 }
 
