@@ -271,8 +271,7 @@ zeit.cms.in_array = function(needle, haystack) {
 
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 (function($) {
-  $(document).ready(function () {
-    $('form input:checked').parent().addClass('checkboxchecked');
-  });
+  $('form input.checkboxType[disabled="disabled"]').parent().addClass('checkboxdisabled');
+  $('form input:checked.checkboxType[disabled="disabled"]').parent().addClass('checkboxchecked');
 }(jQuery));
 });
