@@ -1090,7 +1090,6 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 8em;
 }
 
 #edit-form-teaser .inline-form .image_details img {
@@ -1112,6 +1111,30 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #teaser-image\.images a[rel="remove"] {
   margin-top: 26px;
+}
+
+/* Teaser image */
+#teaser-image\.image .object-details-heading {
+  padding-right: 0;
+}
+
+#teaser-image\.image ul.metadata {
+  display: block;
+}
+
+#teaser-image\.image ul.metadata li {
+  display: none;
+}
+
+#teaser-image\.image ul.metadata li:before {
+  content: none;
+}
+
+#teaser-image\.image ul.metadata li.teaser_title {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 
