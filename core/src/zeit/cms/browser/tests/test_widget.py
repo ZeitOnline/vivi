@@ -47,7 +47,7 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
         self.browser.handleErrors = False
         self.browser.open('@@object-details')
         self.assert_ellipsis("""...<ul class="metadata">
-        ...<li class="ressort">International</li>...</ul>...""")
+        ...<li class="ressort" title="International">International</li>...</ul>...""")
 
     def test_should_contain_workflow_information(self):
         self.browser.open('@@object-details')
@@ -479,8 +479,8 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForNotValue('name=testwidget', '')
-        s.waitForElementPresent('css=#testwidget a')
-        s.click('css=#testwidget a')
+        s.waitForElementPresent('css=#testwidget a[rel=remove]')
+        s.click('css=#testwidget a[rel=remove]')
         s.waitForValue('name=testwidget', '')
 
     def test_configure_search_calls_activate_objectbrowser_with_types(self):
