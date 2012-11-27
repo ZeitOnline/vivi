@@ -706,6 +706,17 @@ fieldset .hlink a:active {
   color: #FF6600;
 }
 
+/* divs */
+
+#edit-form-status .block-inner > div {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+#edit-form-status .block-inner > div.totop {
+  padding: 0px;
+  padding-bottom: 5px !important;
+}
 
 /* Legend */
 
