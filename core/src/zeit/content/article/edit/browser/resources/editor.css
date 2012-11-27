@@ -1175,7 +1175,7 @@ form[action$="zeit.content.author.add_contextfree"] .summary {
 /* misc */
 
 div.objectlog {
-  padding: 20px;
+  padding: 20px 0px;
   margin-top: 20px;
   border-top: 1px solid #cccccc;
 }
