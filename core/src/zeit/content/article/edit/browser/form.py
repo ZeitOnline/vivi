@@ -361,15 +361,6 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
         return FormFields(ICommonMetadata).select(*fields)
 
 
-class MetadataRecensions(zeit.edit.browser.form.InlineForm):
-
-    legend = _('')
-    prefix = 'metadata-recensions'
-    undo_description = _('edit metadata')
-    form_fields = FormFields(IArticle).select(
-        'has_recensions')
-
-
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     """Teaser workflow forms."""
 
