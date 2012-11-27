@@ -28,6 +28,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
                     transaction.commit()
 
         s = self.selenium
+        s.selenium.set_timeout(3600000)
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s.waitForElementPresent('css=.recension')
 
@@ -40,7 +41,11 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.assertText('css=span.location', 'Berlin')
 
     def test_edit_recension_should_happen_in_lightbox(self):
-        self.create_recension()
+        try:
+            self.create_recension()
+        except:
+            self.flush()
+            raise
         s = self.selenium
         s.click('css=span.recensionaction a[rel="edit"]')
         s.waitForElementPresent('id=lightbox.form')
