@@ -47,7 +47,7 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
         self.browser.handleErrors = False
         self.browser.open('@@object-details')
         self.assert_ellipsis("""...<ul class="metadata">
-        ...<li class="ressort">International</li>...</ul>...""")
+        ...<li class="ressort" title="International">International</li>...</ul>...""")
 
     def test_should_contain_workflow_information(self):
         self.browser.open('@@object-details')
