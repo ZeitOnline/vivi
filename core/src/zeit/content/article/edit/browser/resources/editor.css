@@ -1131,6 +1131,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #teaser-image\.image ul.metadata li.teaser_title {
+  color: #000;
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
