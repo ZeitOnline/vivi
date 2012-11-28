@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Mon Nov 26 10:40:07 2012\n"
-"PO-Revision-Date: 2012-11-28 14:02+0100\n"
+"PO-Revision-Date: 2012-11-28 18:10+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -585,24 +585,24 @@ msgstr "Das Objekt wurde aus der Dateiverwaltung gelöscht."
 
 #: zeit/cms/checkout/browser/manager.py:210
 msgid "Checkout ^O"
-msgstr "bearbeiten ^O"
+msgstr "Bearbeiten ^O"
 
 #: zeit/cms/checkout/browser/manager.py:222
 msgid "Checkin ^I"
-msgstr "speichern ^I"
+msgstr "Speichern ^I"
 
 #: zeit/cms/checkout/browser/manager.py:233
 msgid "Checkin (correction)"
-msgstr "speichern (Korrektur)"
+msgstr "Speichern (Korrektur)"
 
 #: zeit/cms/checkout/browser/manager.py:244
 msgid "Checkin"
-msgstr "speichern"
+msgstr "Speichern"
 
 #: zeit/cms/checkout/browser/manager.py:254
 #: zeit/imp/browser/no-master-image-error.pt:8
 msgid "Checkout"
-msgstr "bearbeiten"
+msgstr "Bearbeiten"
 
 #. Default: ""
 #: zeit/cms/checkout/browser/manager.py:26
