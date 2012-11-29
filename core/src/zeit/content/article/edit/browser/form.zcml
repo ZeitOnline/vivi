@@ -244,25 +244,6 @@
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.metadata-recensions"
-    class=".form.MetadataRecensions"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view=".form.MetadataForms"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.metadata-recensions"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="60"
-    />
-
-  <browser:page
-    for="zeit.content.article.interfaces.IArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.metadata-comments"
     class=".form.MetadataComments"
     permission="zope.View"
@@ -500,6 +481,24 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.internallinks"
     class=".form.InternalLinks"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-body"
+    class="zeit.cms.browser.objectdetails.Details"
+    template="object-details-body.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-heading"
+    class="zeit.cms.browser.objectdetails.Details"
+    template="object-details-heading.pt"
     permission="zope.View"
     />
 
