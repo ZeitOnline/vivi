@@ -76,3 +76,54 @@
   content: " €";
 }
 
+/* rudimentary styling for lightbox, until form is implemented inline */
+
+form.recensions td {
+  padding: 0;
+  margin: 0;
+  border-collapse: collapse;
+}
+
+form.recensions td.label {
+  width: 130px;
+}
+
+form.recensions td.field {
+  width: 250px;
+}
+
+form.recensions td.field input.textType, 
+form.recensions td.field #form\.year {
+  width: 200px;
+}
+
+form.recensions tr:first-child td.field {
+  width: 634px;
+}
+
+form.recensions tr:first-child td.field td {
+  height: 0;
+  padding: 0;
+}
+
+form.recensions td.field textarea#form\.info {
+  height: 14px;
+  width: 198px;
+  padding: 1px;
+  border-width: 3px;
+  margin: 4px 0 0;
+  -moz-appearance: none;
+}
+
+form.recensions td.field div.value select {
+  width: 206px;
+}
+
+form.recensions tr {
+  display: inline;
+}
+
+form.recensions table.form-fields {
+  table-layout: fixed;
+  border-spacing: 0px;
+}
