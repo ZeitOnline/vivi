@@ -21,4 +21,4 @@ class Memo(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementPresent('link=*blub*')
         s.click('link=*blub*')
         s.selectWindow(s.getAllWindowNames()[-1])
-        s.assertLocation('*blub')
+        s.waitForLocation('*blub')
