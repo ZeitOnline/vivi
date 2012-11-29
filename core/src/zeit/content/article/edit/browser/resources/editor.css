@@ -157,7 +157,8 @@
   border-bottom: 0;
 }
 
-#edit-form-article-content.editable-area .label {
+#edit-form-article-content.editable-area .label,
+#edit-form-teaser.editable-area .label {
   display: none;
 }
 

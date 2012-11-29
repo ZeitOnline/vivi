@@ -408,6 +408,18 @@ class TeaserSupertitle(zeit.edit.browser.form.InlineForm):
         self.widgets['teaserSupertitle'].extra = 'cms:maxlength="%s"' % (
             self.widgets['teaserSupertitle'].context.max_length)
 
+        widget = self.widgets['teaserSupertitle'];
+        placeholder = widget.label or ''
+        field = widget.context
+        if zope.interface.interfaces.IElement.providedBy(field):
+            placeholder = field.queryTaggedValue(
+                'placeholder', default=placeholder)
+        self.widgets['teaserSupertitle'].extra = 'cms:tooltip="%s"' % (
+            self.widgets['teaserSupertitle'].context.description)
+        widget.extra = ((widget.extra + ' ' if widget.extra else '') +
+                        'placeholder="%s"' % placeholder)
+
+
 
 class TeaserTitle(zeit.edit.browser.form.InlineForm):
 
@@ -421,6 +433,15 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
         self.widgets['teaserTitle'].extra = 'cms:maxlength="%s"' % (
             self.widgets['teaserTitle'].context.max_length)
 
+        widget = self.widgets['teaserTitle'];
+        placeholder = widget.label or ''
+        field = widget.context
+        if zope.interface.interfaces.IElement.providedBy(field):
+            placeholder = field.queryTaggedValue(
+                'placeholder', default=placeholder)
+        widget.extra = ((widget.extra + ' ' if widget.extra else '') +
+                        'placeholder="%s"' % placeholder)
+
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
 
@@ -433,6 +454,15 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
         super(TeaserText, self).setUpWidgets(*args, **kw)
         self.widgets['teaserText'].extra = 'cms:maxlength="%s"' % (
             self.widgets['teaserText'].context.max_length)
+
+        widget = self.widgets['teaserText'];
+        placeholder = widget.label or ''
+        field = widget.context
+        if zope.interface.interfaces.IElement.providedBy(field):
+            placeholder = field.queryTaggedValue(
+                'placeholder', default=placeholder)
+        widget.extra = ((widget.extra + ' ' if widget.extra else '') +
+                        'placeholder="%s"' % placeholder)
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
