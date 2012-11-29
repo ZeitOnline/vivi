@@ -1,6 +1,5 @@
 <div i18n:domain="zeit.cms">
   <span tal:attributes="class string:content-icon type-${view/type_declaration/type_identifier}">
-  <img tal:replace="structure context/@@zmi_icon|nothing"/>
   <span class="uniqueId" tal:content="context/uniqueId" />
   </span>
 

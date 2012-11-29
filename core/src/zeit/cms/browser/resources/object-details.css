@@ -56,6 +56,29 @@
     vertical-align: middle;
 }
 
+.object-details-heading span.publish-state {
+    padding-top:5px;
+    padding-left:20px;
+    background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 15px -1581px;
+}
+
+.object-details-heading span.publish-state.published {
+    background-position: 7px -1581px;
+}
+
+.object-details-heading span.publish-state.not-published {
+    background-position: 7px -1670px;
+}
+
+.object-details-heading span.publish-state.published-with-changes {
+    background-position: 7px -1611px;
+}
+
+
+
+
+
+
 .object-details-heading ul {
     font-family: "Lucida Grande",Verdana,Lucida,Helvetica,Arial,sans-serif;
     font-size: 11px;
