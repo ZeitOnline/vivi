@@ -101,9 +101,10 @@ form.recensions tr:first-child td.field {
   width: 634px;
 }
 
-form.recensions tr:first-child td.field td {
-  height: 0;
-  padding: 0;
+form.recensions tr:first-child td.field td input.submit {
+  /*height: 0;
+  padding: 0;*/
+  margin-left: 40px;
 }
 
 form.recensions td.field textarea#form\.info {
