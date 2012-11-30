@@ -1136,6 +1136,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #teaser-image\.image ul.metadata {
   display: block;
+  background-color: #f1f4f9;
 }
 
 #teaser-image\.image ul.metadata li {
