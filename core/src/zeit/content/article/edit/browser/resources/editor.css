@@ -157,15 +157,30 @@
   border-bottom: 0;
 }
 
+/* Teaser: Knopf und Artikel */
+
 #edit-form-article-content.editable-area .label,
 #edit-form-teaser.editable-area .label {
   display: none;
 }
 
-#edit-form-article-content.editable-area #article-content-head\.supertitle {
+#edit-form-article-content.editable-area #article-content-head\.supertitle,
+#edit-form-teaser #teaser-supertitle\.teaserSupertitle {
   font-size: 10px;
   font-family: arial;
   color: #990000;
+}
+
+#edit-form-teaser #teaser-title\.teaserTitle {
+  font-family: arial;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#edit-form-teaser #teaser-text\.teaserText {
+  font-family: georgia;
+  font-size: 14px;
+  font-weight: normal;
 }
 
 #edit-form-article-content.editable-area #article-content-head\.subtitle {
