@@ -169,6 +169,17 @@ table.gallery a.show-image {
   margin-left: 12px;
 }
 
+/* Some exception for teaser section */
+
+#edit-form-teaser .overlay-position {
+  float: right;
+}
+
+#edit-form-teaser .object-details .image_details a.edit-button {
+  margin-right: 20px;
+}
+
+
 /* following two rules should be replaced, once sprite is ready*/
 
 .object-details .gallery_details .gallery_details_controls .gallery_details_prev {
