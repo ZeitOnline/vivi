@@ -165,12 +165,8 @@
 .object-reference:hover .overlay {
     display: inline-block;
     position: absolute;
-    top: 12px;
-    left: 0;
-    width: 100%;
-}
-
-.overlay-anchor:hover .overlay .overlay-position {
+    bottom: 3px;
+    right: 0;
     width: 100%;
 }
 
