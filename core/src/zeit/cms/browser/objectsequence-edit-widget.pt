@@ -1,4 +1,5 @@
 <div class="object-widget objectsequencewidget"
+  i18n:domain="zeit.cms"
   tal:attributes="id view/name">
   <tal:data tal:repeat="item view/_getFormValue">
       <input type="hidden" class="uniqueId"

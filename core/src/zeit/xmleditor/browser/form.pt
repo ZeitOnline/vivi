@@ -1,4 +1,4 @@
-<tal:block>
+<tal:block i18n:domain="zeit.cms">
     <h1 tal:condition="view/label" tal:content="view/label"/>
     
     <form action="."

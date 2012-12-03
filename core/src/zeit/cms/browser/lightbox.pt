@@ -1,4 +1,4 @@
-<div tal:attributes="id view/form_id | nothing">
+<div i18n:domain="zeit.cms" tal:attributes="id view/form_id | nothing">
   <tal:replace replace="resource_library:zeit.cms" />
   <h1 i18n:translate=""
     tal:content="view/title">

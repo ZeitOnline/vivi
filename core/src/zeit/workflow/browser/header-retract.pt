@@ -1,4 +1,5 @@
 <a
+ i18n:domain="zeit.cms"
  tal:define="context_url context/@@absolute_url"
  tal:attributes="href string:javascript:zeit.cms.lightbox_form('${context_url}/@@retract.html');"
  class="button"

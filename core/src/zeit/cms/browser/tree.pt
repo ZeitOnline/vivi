@@ -1,4 +1,4 @@
-<tal:block define="tree options/sub_data|view/getTreeData;">
+<tal:block i18n:domain="zeit.cms" define="tree options/sub_data|view/getTreeData;">
 
   <ul>
     <tal:repeat repeat="item tree">

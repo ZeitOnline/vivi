@@ -1,4 +1,4 @@
-<metal:macro use-macro="context/@@standard_macros/metadata-preview">
+<metal:macro i18n:domain="zeit.cms" use-macro="context/@@standard_macros/metadata-preview">
   <metal:data fill-slot="preview">
     <div class="folder-length" i18n:translate="">
       <span tal:replace="python:len(context)" i18n:name="amount"/> Entries

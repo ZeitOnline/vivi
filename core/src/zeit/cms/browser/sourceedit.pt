@@ -1,4 +1,4 @@
-<html metal:use-macro="context/@@standard_macros/view">
+<html i18n:domain="zeit.cms" metal:use-macro="context/@@standard_macros/view">
 
   <div id="source-editor" metal:fill-slot="body">
 

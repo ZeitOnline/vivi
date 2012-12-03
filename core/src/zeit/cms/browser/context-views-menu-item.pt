@@ -1,4 +1,5 @@
 <li class=""
+  i18n:domain="zeit.cms"
   tal:attributes="class view/css">
   <a tal:attributes="href view/url;">
     <span tal:content="view/title" i18n:translate="">Menu item</span>
