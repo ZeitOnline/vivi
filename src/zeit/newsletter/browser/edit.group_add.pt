@@ -1,4 +1,4 @@
-<div class="edit">
+<div i18n:domain="zeit.cms" class="edit">
   <a tal:attributes="href string:${context/@@absolute_url}/add?type=group"
      i18n:translate=""
      cms:cp-module="zeit.edit.LoadAndReload">
