@@ -5,6 +5,9 @@
 
   <span tal:replace ="structure context/@@published-icon" />
   <ul class="metadata">
-    <li tal:repeat="item view/display_metadata" tal:content="item" />
+    <li tal:repeat="item python:view.display_metadata.items()"
+        tal:attributes="class python:item[0];
+                        title python:item[1]"
+        tal:content="python:item[1]" />
   </ul>
 </div>

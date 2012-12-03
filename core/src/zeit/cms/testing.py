@@ -378,6 +378,8 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         self.selenium.selectWindow()
 
         self.set_window_size(self.original_width, self.original_height)
+        # open a neutral page to stop all pending AJAX requests
+        self.open('/@@test-setup-auth')
 
     def set_window_size(self, width, height):
         s = self.selenium

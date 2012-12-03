@@ -90,8 +90,28 @@
 }
 
 .object-details-heading ul,
+.object-details-heading div,
 .object-details-heading li {
     display: inline;
+}
+
+#internallinks\.related li a[rel="remove"],
+#metadata-c\.author_references li a[rel="remove"] {
+  display: inline;
+  text-indent: 100%;
+  white-space: nowrap;
+  overflow: hidden; 
+  text-indent: -1000px;
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 23px -417px transparent;
+  margin: 0px !important;
+  min-height: 10px;
+  border: 0px solid #FFF;
+  top: 2px;
+  right: 3px;
+}
+
+#metadata-c\.author_references li a[rel="remove"] {
+  top: 7px;
 }
 
 .object-details-heading li:before {
@@ -168,12 +188,8 @@
 .object-reference:hover .overlay {
     display: inline-block;
     position: absolute;
-    top: 12px;
-    left: 0;
-    width: 100%;
-}
-
-.overlay-anchor:hover .overlay .overlay-position {
+    bottom: 3px;
+    right: 0;
     width: 100%;
 }
 

@@ -9,6 +9,15 @@ table.objectlog th {
     font-weight: bold;
 }
 
+table.objectlog td {
+    padding-bottom: 8px;
+    vertical-align: top;
+}
+
+table.objectlog td.principal {
+    white-space: nowrap;
+}
+
 table.objectlog td.principal:before {
     content: " von ";
     color: #999999;

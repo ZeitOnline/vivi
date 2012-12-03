@@ -268,3 +268,10 @@ zeit.cms.get_datetime_close = function(id) {
 zeit.cms.in_array = function(needle, haystack) {
     return MochiKit.Base.findValue(haystack, needle) != -1;
 };
+
+MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+(function($) {
+  $('form input.checkboxType[disabled="disabled"]').parent().addClass('checkboxdisabled');
+  $('form input:checked.checkboxType[disabled="disabled"]').parent().addClass('checkboxchecked');
+}(jQuery));
+});
