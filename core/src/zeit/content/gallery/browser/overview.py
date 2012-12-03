@@ -99,4 +99,4 @@ class SynchroniseMenuItem(zeit.cms.browser.menu.ActionMenuItem):
 
     title = _('Synchronise with image folder')
     action = '@@synchronise-with-image-folder'
-    icon = 'reload'
+    icon = '/@@/zeit.cms/icons/reload.png'
