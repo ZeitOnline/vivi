@@ -1,4 +1,4 @@
-<a class="delete-link" title="Delete"
+<a i18n:domain="zeit.cms" class="delete-link" title="Delete"
    tal:attributes="href string:${context/__parent__/@@absolute_url}/@@delete?key=${context/__name__}"
    i18n:attributes="title"
    cms:cp-module="zeit.edit.LoadAndReload">
