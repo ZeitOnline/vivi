@@ -1,4 +1,4 @@
-<tal:block repeat="item context/values">
+<tal:block i18n:domain="zeit.cms" repeat="item context/values">
   <tal:block replace="structure item/@@contents"/>
 
   <div class="landing-zone action-informatives-module-droppable"

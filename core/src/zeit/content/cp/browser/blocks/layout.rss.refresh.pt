@@ -1,4 +1,4 @@
-<a class="rss-refresh-link" title="Refresh RSS feed"
+<a i18n:domain="zeit.cms" class="rss-refresh-link" title="Refresh RSS feed"
    tal:attributes="href string:${context/@@absolute_url}/rss.refresh"
    i18n:attributes="title"
    cms:cp-module="zeit.edit.LoadAndReload">

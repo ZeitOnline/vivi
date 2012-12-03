@@ -1,4 +1,4 @@
-<div>
+<div i18n:domain="zeit.cms">
   <form id="lightbox.form" action="#" tal:attributes="action request/URL">
 
     <div class="form-status" tal:define="status view/status" tal:condition="status">
