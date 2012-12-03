@@ -188,9 +188,14 @@
 .object-reference:hover .overlay {
     display: inline-block;
     position: absolute;
-    bottom: 3px;
-    right: 0;
+    top: 12px;
+    left: 0;
     width: 100%;
+}
+
+#edit-form-teaser .object-reference:hover .overlay {
+    top: 30px;
+    right: 0;
 }
 
 .editable-area .overlay-position .edit-button {
