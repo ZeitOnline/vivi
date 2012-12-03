@@ -302,6 +302,11 @@ class ObjectSequenceWidget(
     def accept_classes(self):
         return js_escape_check_types(self.source)
 
+    @property
+    def description(self):
+        return zope.i18n.translate(
+            self.context.description, context=self.request)
+
 
 class ObjectSequenceDisplayWidget(
     zope.app.form.browser.widget.DisplayWidget):
@@ -374,6 +379,11 @@ class DropObjectWidget(
     @property
     def accept_classes(self):
         return js_escape_check_types(self.source)
+
+    @property
+    def description(self):
+        return zope.i18n.translate(
+            self.context.description, context=self.request)
 
 
 DATETIME_WIDGET_ADDITIONAL = """\
