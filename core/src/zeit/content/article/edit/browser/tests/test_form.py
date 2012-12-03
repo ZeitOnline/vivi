@@ -134,3 +134,25 @@ class HeaderSync(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     # XXX there are several more inline forms that trigger a reload of the
     # header. Should we write tests for all of them?
+
+
+class CharLimit(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(CharLimit, self).setUp()
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+
+    def test_teaser_supertitle_has_character_limit(self):
+        s = self.selenium
+        s.waitForElementPresent('css=.fieldname-teaserSupertitle')
+        s.assertElementPresent('css=.fieldname-teaserSupertitle .charlimit')
+
+    def test_teaser_title_has_character_limit(self):
+        s = self.selenium
+        s.waitForElementPresent('css=.fieldname-teaserTitle')
+        s.assertElementPresent('css=.fieldname-teaserTitle .charlimit')
+
+    def test_teaser_text_has_character_limit(self):
+        s = self.selenium
+        s.waitForElementPresent('css=.fieldname-teaserText')
+        s.assertElementPresent('css=.fieldname-teaserText .charlimit')
