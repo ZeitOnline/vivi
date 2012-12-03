@@ -4,7 +4,6 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.workflow.interfaces
-import zope.component
 import zope.i18n
 import zope.viewlet.viewlet
 
@@ -30,8 +29,6 @@ class Published(object):
             return u''
         title = self.messages[status]
         title = zope.i18n.translate(title, context=self.request)
-        cms_resources = zope.component.getAdapter(
-            self.request, name='zeit.cms')
         return (u'<span class="publish-state %s" title="%s" '
                 '/>' % (status, title))
 
