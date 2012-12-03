@@ -1,5 +1,7 @@
-<tal:block define="checkin_errors view/checkin_errors"
-           condition="checkin_errors">
+<tal:block
+    i18n:domain="zeit.cms"
+    define="checkin_errors view/checkin_errors"
+    condition="checkin_errors">
   <div i18n:translate="">The following errors need to be corrected before checkin:</div>
   <dl class="errors">
     <tal:x repeat="error checkin_errors">

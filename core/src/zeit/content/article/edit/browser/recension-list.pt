@@ -1,5 +1,5 @@
 <fieldset i18n:domain="zeit.cms" id="recensions">
-  <div class="recensions" i18n:domain="zeit.cms"
+  <div class="recensions"
     tal:define="can_edit python:request.interaction.checkPermission(
       'zeit.EditContent', context)">
     <link
@@ -18,7 +18,7 @@
 			<span i18n:translate="" class="recensionaction">
 			  <a href="#" rel="remove" title="Entfernen">[remove]</a>
 			</span>	
-			<span i18n:translate="" class="recensionaction">
+			<span class="recensionaction">
 			  <a href="#" rel="edit" title="Edit"
 				tal:attributes="
 				href string:${recension/url}/@@edit.html;

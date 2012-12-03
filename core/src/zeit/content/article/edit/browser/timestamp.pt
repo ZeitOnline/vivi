@@ -1,4 +1,4 @@
-    <p>
+    <p i18n:domain="zeit.cms">
       <tal:translate i18n:translate="">Current timestamp:</tal:translate>
       <span class="timer" />
     </p>
