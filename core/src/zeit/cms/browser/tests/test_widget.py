@@ -52,7 +52,7 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
     def test_should_contain_workflow_information(self):
         self.browser.open('@@object-details')
         self.assert_ellipsis(
-            '...class="publish-state"...Not published...')
+            '...class="publish-state not-published"...')
 
     def test_should_contain_type_identifier(self):
         # TestContentType doesn't have a TypeDeclaration, so it shows as

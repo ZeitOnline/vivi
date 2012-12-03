@@ -95,7 +95,7 @@ Returning location for <Content object at 0x...>
     type="button" name="showReferencedObject" value="→" />
   <input title="Add object" class="add-object" type="button"
     name="addObject" value="+" />
-  <img class="publish-state" src="http://127.0.0.1/@@/zeit.cms/icons/not-published.png" title="Not published" />
+  <span class="publish-state not-published" title="Not published" />
 </div>
 <script>
   new zeit.cms.ObjectReferenceWidget(
@@ -206,7 +206,7 @@ link title. The workflow status is shown as well:
 >>> widget.setRenderedValue(Content())
 >>> print widget()
 <a href="http://127.0.0.1/repo/content" id="...">http://xml.zeit.de/content</a>
-<img class="publish-state" src="http://127.0.0.1/@@/zeit.cms/icons/not-published.png" title="Not published" />
+<span class="publish-state not-published" title="Not published" />
 <script language="javascript">
     new zeit.cms.LinkToolTip("...")
 </script>
