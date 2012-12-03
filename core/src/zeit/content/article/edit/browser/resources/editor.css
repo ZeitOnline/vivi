@@ -1,5 +1,7 @@
 /* cp-content only concerning article editor */
 
+
+
 .type-article #content {
   background: linear-gradient(to bottom, #83a1ba 25px,#83a1ba 25px,#f1f4f9 25px,#f1f4f9 100%);
   left:.5em; 
@@ -26,6 +28,25 @@
 
 .type-article #editor-forms-heading ul {
   color:white
+}
+
+.type-article .object-details-heading span.publish-state {
+  padding-left:35px;
+  background-position: 15px auto;
+}
+
+.type-article .content-icon.type-article {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 12px -1735px;
+  border-right:1px solid white;
+  background-color:#cdd9e3;
+  display: block;
+  float:left;
+  height: 25px;
+  text-align: center;
+  width: 34px;
+  margin-top:0.5px;
+  margin-left:-1px;
+  color: transparent;
 }
 
 #cp-content > .cp-content-inner {
@@ -55,6 +76,10 @@
   position: fixed;
 }
 
+.type-article #editor-forms-heading {
+   padding:0
+
+}
 
 
 /* Textareas not inline */
@@ -99,7 +124,6 @@
 
 /* editor heading */
 
-#editor-forms-heading,
 #editor-forms-title,
 #editor-forms-actions {
   padding: 5px 1em;
