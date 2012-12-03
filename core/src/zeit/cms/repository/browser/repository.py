@@ -163,7 +163,7 @@ class HideMenuItem(MenuItem):
 
     title = _('Hide')
     action = '@@hide-from-tree.html'
-    icon = 'hide'
+    icon = '/@@/zeit.cms/icons/hide.png'
 
     def render(self):
         if not self.preferences.is_hidden(self.context):
@@ -175,7 +175,7 @@ class ShowMenuItem(MenuItem):
 
     title = _('Show')
     action = '@@show-in-tree.html'
-    icon = 'show'
+    icon = '/@@/zeit.cms/icons/show.png'
 
     def render(self):
         if self.preferences.is_hidden(self.context):
