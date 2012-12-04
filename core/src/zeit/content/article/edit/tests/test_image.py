@@ -264,6 +264,20 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(
             u'foo', self.repository['article'].xml.body.division.image.bu)
 
+    def test_setting_custom_caption_to_empty_restores_bu_from_image(self):
+        from zeit.cms.interfaces import ICMSContent
+        from zeit.content.image.interfaces import IImageMetadata
+        with zeit.cms.checkout.helper.checked_out(ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')) as co:
+            IImageMetadata(co).caption = u'foo'
+
+        with self.image() as image:
+            image.references = ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')
+            image.custom_caption = u''
+        self.assertEqual(
+            u'foo', self.repository['article'].xml.body.division.image.bu)
+
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
 

@@ -51,8 +51,7 @@ class Image(zeit.edit.block.SimpleElement):
         # Restore saved attributes
         self.__name__ = name
         self.layout = layout
-        if custom_caption:
-            self.custom_caption = custom_caption
+        self.custom_caption = custom_caption
         self._p_changed = True
 
     @property
@@ -63,6 +62,10 @@ class Image(zeit.edit.block.SimpleElement):
     def custom_caption(self, value):
         self._custom_caption = value
         self.xml['bu'] = value
+        if not value:
+            metadata = zeit.content.image.interfaces.IImageMetadata(
+                self.references, None)
+            self.xml['bu'] = getattr(metadata, 'caption', value)
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
