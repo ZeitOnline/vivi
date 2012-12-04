@@ -824,6 +824,26 @@ If no expires date is entered, it is taken from the content object instead:
   </body>
 </article>
 
+If no format is entered, the attribute stays empty:
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>No bo po co to.</p>
+...     <div class="inline-element video">
+...       <div class="videoId">http://video.zeit.de/video/1</div>
+...       <div class="format"></div>
+...     </div>
+...     <p>Foo bar</p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article ...>
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <video href2="" href="http://video.zeit.de/video/1"
+        expires="2010-01-01T00:00:00+00:00" format=""/>
+    <p>Foo bar</p>
+  </body>
+</article>
+
 
 Double video
 ~~~~~~~~~~~~
