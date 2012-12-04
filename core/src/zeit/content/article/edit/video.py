@@ -21,7 +21,7 @@ class Video(zeit.edit.block.SimpleElement):
     type = 'video'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'format', zope.schema.TextLine())
+        '.', 'format', zeit.content.article.edit.interfaces.IVideo['layout'])
 
     @property
     def video(self):
