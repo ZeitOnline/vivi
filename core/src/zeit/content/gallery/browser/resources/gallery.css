@@ -164,7 +164,8 @@ table.gallery a.show-image {
   position: relative;
 }
 
-.object-details .image_details a.edit-button {
+.object-details .image_details a.edit-button,
+.object-details .gallery_details a.edit-button {
   float: left;
   margin-left: 12px;
 }
