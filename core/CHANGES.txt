@@ -4,7 +4,8 @@ zeit.wysiwyg changes
 1.41.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix bug in video conversion step: empty format could not be converted from
+  HTML to XML (seen in #11695).
 
 
 1.41.0 (2012-03-06)

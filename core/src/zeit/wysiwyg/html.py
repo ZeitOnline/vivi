@@ -606,7 +606,7 @@ class VideoStep(ConversionStep):
 
         nodes = node.xpath('div[@class="format"]')
         if nodes:
-            format = nodes[0].text
+            format = nodes[0].text or ''
         new_node = lxml.builder.E.video(
             href=id1 or '', href2=id2 or '',
             expires=expires, format=format)
