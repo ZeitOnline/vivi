@@ -270,7 +270,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 var parser = new DOMParser();
                 var doc = parser.parseFromString(
                     error.req.responseText, "text/xml");
-                document.firstChild.nextSibling.innerHTML = doc.firstChild.nextSibling.innerHTML;
+                document.firstChild.nextSibling.nextSibling.innerHTML = doc.firstChild.nextSibling.innerHTML;
             });
         d.addCallback(MochiKit.Base.bind(self.process_post_result, self));
         d.addCallback(function(result) {
