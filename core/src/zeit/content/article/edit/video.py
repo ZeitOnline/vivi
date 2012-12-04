@@ -70,7 +70,20 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
                             zeit.content.video.interfaces.IVideoContent)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def factor_image_block_from_image(body, context):
+def create_video_block_from_video(body, context):
     block = Factory(body)()
     block.video = context
     return block
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_video_metadata(article, event):
+    body = zeit.content.article.edit.interfaces.IEditableBody(article)
+    for block in body.values():
+        video = zeit.content.article.edit.interfaces.IVideo(block, None)
+        if video is not None:
+            # Re-assigning the old value updates xml metadata
+            video.video = video.video
+            video.video_2 = video.video_2
