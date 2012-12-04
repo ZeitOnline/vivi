@@ -251,6 +251,19 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.repository['article'].xml.body.division.image.get(
                 'custom-caption'))
 
+    def test_no_custom_caption_keeps_bu_from_image(self):
+        from zeit.cms.interfaces import ICMSContent
+        from zeit.content.image.interfaces import IImageMetadata
+        with zeit.cms.checkout.helper.checked_out(ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')) as co:
+            IImageMetadata(co).caption = u'foo'
+
+        with self.image() as image:
+            image.references = ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        self.assertEqual(
+            u'foo', self.repository['article'].xml.body.division.image.bu)
+
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
 

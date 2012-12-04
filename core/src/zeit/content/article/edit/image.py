@@ -51,7 +51,8 @@ class Image(zeit.edit.block.SimpleElement):
         # Restore saved attributes
         self.__name__ = name
         self.layout = layout
-        self.custom_caption = custom_caption
+        if custom_caption:
+            self.custom_caption = custom_caption
         self._p_changed = True
 
     @property
