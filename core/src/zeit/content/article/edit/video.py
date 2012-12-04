@@ -21,7 +21,13 @@ class Video(zeit.edit.block.SimpleElement):
     type = 'video'
 
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'format', zeit.content.article.edit.interfaces.IVideo['layout'])
+        # refers to zeit.content.article.edit.interfaces.IVideo['layout'],
+        # but we can't use that here, since legacy data might have all
+        # sorts of values for layout, so the field's source would be
+        # too restrictive.
+        '.', 'format', zope.schema.TextLine(required=False))
+
+    badge = 'video'
 
     @property
     def video(self):
