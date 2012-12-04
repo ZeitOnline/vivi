@@ -1,7 +1,10 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from datetime import datetime
+import contextlib
 import mock
+import pytz
 import unittest
 import zeit.content.article.testing
 
@@ -138,3 +141,44 @@ class TestFactory(zeit.content.article.testing.FunctionalTestCase):
         self.assertTrue(
             zeit.content.article.edit.interfaces.IVideo.providedBy(div))
         self.assertEqual('video', div.xml.tag)
+
+
+class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
+
+    @contextlib.contextmanager
+    def video_block(self):
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        import zeit.cms.browser.form
+        import zeit.cms.checkout.helper
+        import zeit.content.article.edit.body
+        import zeit.edit.interfaces
+        import zope.component
+        article = Article()
+        zeit.cms.browser.form.apply_default_values(article, IArticle)
+        article.year = 2011
+        article.title = u'title'
+        article.ressort = u'Deutschland'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['article']) as article:
+            body = zeit.content.article.edit.body.EditableBody(
+                article, article.xml.body)
+            factory = zope.component.getAdapter(
+                body, zeit.edit.interfaces.IElementFactory, 'video')
+            video = factory()
+            yield video
+
+    def test_expires_is_updated_on_checkin(self):
+        from zeit.content.video.video import Video
+        self.repository['video'] = Video()
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['video']) as co:
+            co.expires = datetime(2012, 1, 1, tzinfo=pytz.UTC)
+
+        with self.video_block() as block:
+            block.video = self.repository['video']
+        article = self.repository['article']
+        self.assertEqual(
+            '2012-01-01T00:00:00+00:00',
+            article.xml.body.division.video.get('expires'))
