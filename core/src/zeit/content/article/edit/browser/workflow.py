@@ -3,11 +3,9 @@
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
-from zeit.workflow.interfaces import IReview
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import mock
-import zeit.cms.browser.view
-import zeit.cms.checkout.browser.manager
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.workflow.interfaces
@@ -33,17 +31,21 @@ class Publish(zeit.edit.browser.form.InlineForm):
     @property
     def form_fields(self):
         fields = zope.formlib.form.FormFields(
-            zeit.workflow.interfaces.IReview,
-            zeit.content.article.interfaces.ICDSWorkflow)
+            zeit.workflow.interfaces.IContentWorkflow,
+            zeit.content.article.interfaces.ICDSWorkflow).select(
+            'edited', 'corrected', 'urgent', 'export_cds')
         if not self.can_checkout:
             fields += zope.formlib.form.FormFields(
                 zeit.cms.content.interfaces.ISemanticChange).select(
                 'has_semantic_change')
+
+        for name in ['edited', 'corrected']:
+            fields[name].custom_widget = zeit.cms.browser.widget.CheckboxWidget
         return fields
 
     def setUpWidgets(self, *args, **kw):
         super(Publish, self).setUpWidgets(*args, **kw)
-        if IReview(self.context).urgent:
+        if IPublishInfo(self.context).urgent:
             # XXX This needs a better mechanism.
             for name in ('corrected', 'edited'):
                 self.widgets[name].extra = 'disabled="disabled"'

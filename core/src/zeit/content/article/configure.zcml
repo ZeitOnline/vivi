@@ -34,7 +34,7 @@
   <subscriber handler=".article.disallowCommentsIfCommentsAreNotShown" />
 
   <class class=".article.ArticleWorkflow">
-    <require like_class="zeit.workflow.publishinfo.PublishInfo" />
+    <require like_class="zeit.workflow.workflow.ContentWorkflow" />
   </class>
 
   <adapter

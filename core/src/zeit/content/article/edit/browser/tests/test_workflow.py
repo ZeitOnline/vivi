@@ -3,7 +3,7 @@
 # See also LICENSE.txt
 
 from zeit.content.article.article import Article
-from zeit.workflow.interfaces import IReview
+from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import transaction
 import zeit.cms.testing
@@ -168,7 +168,7 @@ class Publish(zeit.cms.testing.BrowserTestCase):
             with zeit.cms.testing.interaction():
                 content = zeit.cms.interfaces.ICMSContent(
                     'http://xml.zeit.de/online/2007/01/Somalia')
-                IReview(content).urgent = urgent
+                IContentWorkflow(content).urgent = urgent
 
     def test_urgent_denies_marking_edited_and_corrected(self):
         self.prepare_content(urgent=True)

@@ -6,7 +6,6 @@ import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.testing
 import zeit.edit.rule
-import zeit.workflow.interfaces
 import zope.component
 
 
@@ -17,7 +16,6 @@ class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
         self.article = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/online/2007/01/Somalia')
         self.info = zeit.cms.workflow.interfaces.IPublishInfo(self.article)
-        self.review = zeit.workflow.interfaces.IReview(self.article)
 
         sm = zope.component.getSiteManager()
         self.orig_validator = sm.adapters.lookup(
@@ -41,18 +39,18 @@ class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
         super(WorkflowTest, self).tearDown()
 
     def test_not_urgent_cannot_publish(self):
-        self.assertFalse(self.review.urgent)
+        self.assertFalse(self.info.urgent)
         self.assertFalse(self.info.can_publish())
         self.assertFalse(self.validator.called)
 
     def test_validation_passes_can_publish(self):
-        self.review.urgent = True
+        self.info.urgent = True
         self.validator().status = None
         self.assertTrue(self.info.can_publish())
         self.validator.assert_called_with(self.article)
 
     def test_validation_fails_cannot_publish(self):
-        self.review.urgent = True
+        self.info.urgent = True
         self.validator().status = zeit.edit.rule.ERROR
         self.assertFalse(self.info.can_publish())
         self.validator.assert_called_with(self.article)
