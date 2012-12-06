@@ -111,7 +111,6 @@ class ImageLayoutSource(LayoutSourceBase):
     values = stabledict.StableDict([
         ('small', _('small')),
         ('large', _('large')),
-        ('infobox', _('Infobox')),
         ('upright', _('Hochkant')),
         ])
 
