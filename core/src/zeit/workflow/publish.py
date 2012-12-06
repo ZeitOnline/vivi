@@ -90,7 +90,7 @@ class TaskDescription(object):
 class Publish(object):
 
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublish)
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
+    zope.component.adapts(zeit.cms.repository.interfaces.IRepositoryContent)
 
     def __init__(self, context):
         self.context = context
