@@ -19,7 +19,6 @@
     name="timebased-workflow"
     />
   <subscriber handler=".workflow.log_workflow_changes" />
-  <subscriber handler=".workflow.log_review_changes" />
 
   <adapter factory=".source.fromNotNecessary" />
 
@@ -62,22 +61,6 @@
       set_schema=".interfaces.IAssetWorkflow"
       />
   </class>
-
-  <class class=".workflow.Review">
-    <require
-      permission="zope.View"
-      interface=".interfaces.IReview"
-      />
-    <require
-      permission="zeit.workflow.Publish"
-      set_schema=".interfaces.IReview"
-      />
-  </class>
-
-  <adapter factory=".workflow.Review" />
-  <adapter
-    for=".interfaces.IReview"
-    factory=".publishinfo.workflowProperties" />
 
   <!-- Publish -->
   <adapter factory=".publish.Publish" />

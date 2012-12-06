@@ -1,7 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.content.interfaces import WRITEABLE_LIVE, WRITEABLE_ALWAYS
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component
 import logging
@@ -38,12 +38,12 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
         zeit.workflow.interfaces.IContentWorkflow,
         WORKFLOW_NS,
         ('edited', 'corrected', 'refined', 'images_added', 'urgent'),
-        writeable=WRITEABLE_LIVE)
+        writeable=WRITEABLE_ALWAYS)
 
     def can_publish(self):
         if self.urgent:
             return True
-        if all([self.edited, self.corrected, self.refined, self.images_added]):
+        if self.edited and self.corrected:
             return True
         return False
 
@@ -63,51 +63,6 @@ def log_workflow_changes(workflow, event):
                              old_value=event.old_value,
                              new_value=event.new_value))
 
-    log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
-    log.log(content, message)
-
-
-class Review(object):
-    """
-    This is almost the same as ContentWorkflow, with some subtle differences:
-
-    * The properties can also be written while checked out
-    * It only uses three properties (refined, images_added are not needed)
-    * It uses Bool instead of TriState.
-    * It's not a PublishInfo, but only implements rules.
-      The actual PublishInfo (e.g. ArticleWorkflow) is expected to delegate to
-      this.
-    """
-
-    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
-    zope.interface.implements(zeit.workflow.interfaces.IReview)
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.workflow.interfaces.IReview,
-        WORKFLOW_NS,
-        ('edited', 'corrected', 'urgent'),
-        writeable=WRITEABLE_ALWAYS)
-
-    def __init__(self, context):
-        self.context = context
-
-    def can_publish(self):
-        if self.urgent:
-            return True
-        if self.edited and self.corrected:
-            return True
-        return False
-
-
-@zope.component.adapter(
-    zeit.workflow.interfaces.IReview,
-    zeit.cms.content.interfaces.IDAVPropertyChangedEvent)
-def log_review_changes(workflow, event):
-    content = workflow.context
-    message = _('${name}: ${new_value}',
-                mapping=dict(name=event.field.title,
-                             old_value=event.old_value,
-                             new_value=event.new_value))
     log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)
     log.log(content, message)
 

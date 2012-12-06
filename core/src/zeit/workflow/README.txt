@@ -57,12 +57,6 @@ publish[#needsinteraction]_:
 False
 >>> workflow.corrected = True
 >>> workflow.can_publish()
-False
->>> workflow.refined = True
->>> workflow.can_publish()
-False
->>> workflow.images_added = True
->>> workflow.can_publish()
 True
 
 Let's try this with not necessary, too:
@@ -173,10 +167,6 @@ http://xml.zeit.de/online/2007/01/Somalia
      status-edited: yes
 http://xml.zeit.de/online/2007/01/Somalia
      status-corrected: yes
-http://xml.zeit.de/online/2007/01/Somalia
-     status-refined: yes
-http://xml.zeit.de/online/2007/01/Somalia
-     status-images-added: yes
 http://xml.zeit.de/online/2007/01/Somalia
      status-edited: notnecessary
 http://xml.zeit.de/online/2007/01/Somalia
