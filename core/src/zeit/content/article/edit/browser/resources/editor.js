@@ -253,7 +253,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             DIV({'class': 'link_input hidden'},
                 INPUT({type: 'text', name: 'href', value: ''}),
                 SELECT({name: 'target'},
-                    OPTION({value: ''}, ''),
+                    OPTION({value: ''}, 'Gleiches Fenster'),
                     OPTION({value: '_blank'}, 'Neues Fenster')),
                 BUTTON({name: 'insert_link_ok',
                         value: 'method'}, 'Setzen'),
