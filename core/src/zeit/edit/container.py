@@ -86,7 +86,7 @@ class Base(UserDict.DictMixin,
         return str(uuid.uuid4())
 
     def updateOrder(self, order):
-        __traceback_info__ = (order,)
+        __traceback_info__ = (order, self.keys())
         if not isinstance(order, (tuple, list)):
             raise TypeError('order must be tuple or list, got %s.' %
                             type(order))
