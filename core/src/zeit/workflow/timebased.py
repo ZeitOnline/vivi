@@ -1,7 +1,7 @@
 # Copyright (c) 2008-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.content.interfaces import WRITEABLE_LIVE
+from zeit.cms.content.interfaces import WRITEABLE_LIVE, WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import lovely.remotetask.interfaces
@@ -27,11 +27,11 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.ITimeBasedPublishing[
             'release_period'].fields[0],
-        WORKFLOW_NS, 'released_from', writeable=WRITEABLE_LIVE)
+        WORKFLOW_NS, 'released_from', writeable=WRITEABLE_ALWAYS)
     zeit.cms.content.dav.mapProperty(
         zeit.workflow.interfaces.ITimeBasedPublishing[
             'release_period'].fields[1],
-        WORKFLOW_NS, 'released_to', writeable=WRITEABLE_LIVE)
+        WORKFLOW_NS, 'released_to', writeable=WRITEABLE_ALWAYS)
 
     publish_job_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.Int(), WORKFLOW_NS, 'publish_job_id',
