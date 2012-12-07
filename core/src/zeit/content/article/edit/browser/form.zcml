@@ -357,6 +357,25 @@
     permission="zope.View"
     />
 
+  <adapter
+    for="zope.schema.interfaces.IFrozenSet
+         zeit.cms.asset.interfaces.FactoredBadgeSource
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.ISimpleInputWidget"
+    factory=".widget.BadgeInputWidget"
+    permission="zope.Public"
+    />
+
+   <adapter
+     for="zope.schema.interfaces.IFrozenSet
+          zeit.cms.asset.interfaces.FactoredBadgeSource
+          zeit.cms.browser.interfaces.ICMSLayer"
+     provides="zope.formlib.interfaces.IDisplayWidget"
+     factory=".widget.BadgeDisplayWidget"
+     permission="zope.Public"
+     />
+
+
   <!-- article content -->
 
   <browser:viewlet
