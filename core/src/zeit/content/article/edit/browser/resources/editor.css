@@ -212,6 +212,7 @@
   font-size: 30px;
   font-family: arial;
   font-weight: bold;
+  height: 2em;
 }
 
 #edit-form-article-content.editable-area #article-content-head\.title:-moz-placeholder {
