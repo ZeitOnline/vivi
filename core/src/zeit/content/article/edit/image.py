@@ -39,6 +39,10 @@ class Image(zeit.edit.block.SimpleElement):
 
     @references.setter
     def references(self, value):
+        if value is None:
+            self.xml.attrib.pop('src', None)
+            self.xml.attrib.pop('base-id', None)
+            return
         node = zope.component.getAdapter(
             value, zeit.cms.content.interfaces.IXMLReference,
             name='image')

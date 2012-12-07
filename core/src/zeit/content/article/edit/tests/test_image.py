@@ -28,6 +28,16 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(u'myname', image.__name__)
         self.assertEqual(u'small', image.layout)
 
+    def test_setting_image_to_none_removes_href(self):
+        from zeit.content.article.edit.image import Image
+        import lxml.objectify
+        tree = lxml.objectify.E.tree(
+            lxml.objectify.E.image())
+        image = Image(None, tree.image)
+        image.xml.set('src', 'testid')
+        image.references = None
+        self.assertNotIn('href', image.xml.attrib)
+
     def get_image_article(self, content):
         from zeit.connector.resource import Resource
         import StringIO
