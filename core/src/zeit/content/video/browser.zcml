@@ -83,5 +83,12 @@
    factory=".browser.ThumbnailURL"
    />
 
+  <browser:page
+    for=".interfaces.IVideo"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-body"
+    class=".browser.Details"
+    permission="zope.View"
+    />
 
 </configure>

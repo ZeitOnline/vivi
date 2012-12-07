@@ -2,8 +2,10 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zope.browserpage import ViewPageTemplateFile
 import gocept.form.grouped
 import grokcore.component as grok
+import pkg_resources
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
@@ -101,3 +103,16 @@ class PlaylistDisplayForm(zeit.cms.browser.form.DisplayForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.video.interfaces.IPlaylist)
+
+
+class Details(zeit.cms.browser.objectdetails.Details):
+
+    index = ViewPageTemplateFile(pkg_resources.resource_filename(
+        'zeit.cms.browser', 'object-details-body.pt'))
+
+    def __call__(self):
+        return self.index()
+
+    @property
+    def graphical_preview_url(self):
+        return self.context.video_still
