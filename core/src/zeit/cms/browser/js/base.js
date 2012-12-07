@@ -269,9 +269,15 @@ zeit.cms.in_array = function(needle, haystack) {
     return MochiKit.Base.findValue(haystack, needle) != -1;
 };
 
-MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+
 (function($) {
-  $('form input.checkboxType[disabled="disabled"]').parent().addClass('checkboxdisabled');
-  $('form input:checked.checkboxType[disabled="disabled"]').parent().addClass('checkboxchecked');
-}(jQuery));
+
+$(document).bind('fragment-ready', function(event) {
+
+    $('input.checkboxType[disabled="disabled"]',
+      event.__target).parent().addClass('checkboxdisabled');
+    $('input:checked.checkboxType[disabled="disabled"]',
+     event.__target).parent().addClass('checkboxchecked');
 });
+
+}(jQuery));
