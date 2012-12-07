@@ -4,13 +4,12 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import grokcore.component as grok
-import zeit.cms.content.browser.form
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
-import zope.component.hooks
 import zope.dublincore.interfaces
 import zope.formlib.form
+
 
 class Edit(zeit.cms.browser.form.EditForm):
 
@@ -23,14 +22,14 @@ class Edit(zeit.cms.browser.form.EditForm):
         zope.dublincore.interfaces.IDCTimes,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE
     ).select(
-            'supertitle', 'title', 'subtitle', 'teaserText',
-            'product', 'ressort', 'keywords', 'serie',
-            'dailyNewsletter', 'banner', 'banner_id',
-            'breaking_news', 'has_recensions', 'commentsAllowed',
-            'related',
-            # remaining:
-            '__name__',
-            'created', 'date_first_released', 'modified', 'expires',
+        'supertitle', 'title', 'subtitle', 'teaserText',
+        'product', 'ressort', 'keywords', 'serie',
+        'dailyNewsletter', 'banner', 'banner_id',
+        'breaking_news', 'has_recensions', 'commentsAllowed',
+        'related',
+        # remaining:
+        '__name__',
+        'created', 'date_first_released', 'modified', 'expires',
         'thumbnail', 'video_still', 'flv_url')
 
     field_groups = (
@@ -52,7 +51,6 @@ class Edit(zeit.cms.browser.form.EditForm):
             ('related',),
             'wide-widgets full-width'),
     )
-
 
 
 @grok.adapter(zeit.content.video.interfaces.IVideo, name='edit.html')
