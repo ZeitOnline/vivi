@@ -41,6 +41,17 @@ class EditImage(EditBase):
         super(EditImage, self).setUpWidgets(*args, **kw)
         self.widgets['references'].add_type = IImageGroup
 
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        result = super(EditImage, self).handle_edit_action.success(data)
+        # needs to happen afterwards, since setting self.context.references
+        # might replace the XML node, thus taking the attribute away
+        if self.context.references is not None:
+            self.context.set_manually = True
+        else:
+            self.context.set_manually = False
+        return result
+
 
 class EditGallery(EditBase):
 

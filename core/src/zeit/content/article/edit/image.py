@@ -30,6 +30,12 @@ class Image(zeit.edit.block.SimpleElement):
         '.', 'custom-caption',
         zeit.content.article.edit.interfaces.IImage['custom_caption'])
 
+    # XXX this is a stopgap to fix #11730. The proper solution involves
+    # a real Reference object, see #10686.
+    set_manually = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'set-manually',
+        zeit.content.article.edit.interfaces.IImage['set_manually'])
+
     @property
     def references(self):
         # the IXMLReference of type 'image' could be for both,
@@ -108,18 +114,15 @@ def copy_image_to_body(context, event):
         return
 
     image = zeit.content.image.interfaces.IImages(context).image
-    if image is None:
-        return
 
     body = zeit.content.article.edit.interfaces.IEditableBody(context)
-
     try:
         image_block = body.values()[0]
     except IndexError:
         return
     if not zeit.content.article.edit.interfaces.IImage.providedBy(image_block):
         return
-    if image_block.references is not None:
+    if image_block.set_manually:
         return
 
     image_block.references = image

@@ -123,6 +123,11 @@ class IImage(IReference, ILayoutable):
         source=zeit.content.image.interfaces.ImageSource(),
         required=False)
 
+    set_manually = zope.schema.Bool(
+        title=_("Edited"),
+        required=False,
+        default=False)
+
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=ImageLayoutSource(),

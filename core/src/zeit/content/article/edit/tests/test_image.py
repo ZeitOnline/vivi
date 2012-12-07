@@ -172,9 +172,14 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
             image_block = body.values()[0]
-            self.assertEqual(image_block.references.uniqueId, image_id)
+            self.assertEqual(image_id, image_block.references.uniqueId)
 
-    def test_IImages_is_not_copied_to_body_if_first_block_has_an_image(self):
+            IImages(co).image = None
+            zope.lifecycleevent.modified(
+                co, zope.lifecycleevent.Attributes(IImages, 'image'))
+            self.assertEqual(None, image_block.references)
+
+    def test_IImages_is_not_copied_to_body_if_block_was_edited_manually(self):
         from zeit.content.article.article import Article
         from zeit.content.article.interfaces import IArticle
         from zeit.content.article.edit.interfaces import IEditableBody
@@ -198,6 +203,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 body, zeit.edit.interfaces.IElementFactory, 'image')
             image_block = factory()
             image_block.references = image_group
+            image_block.set_manually = True
 
             image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
             IImages(co).image = zeit.cms.interfaces.ICMSContent(image_id)
@@ -206,7 +212,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
             image_block = body.values()[0]
             self.assertEqual(
-                image_block.references.uniqueId, image_group.uniqueId)
+                image_group.uniqueId, image_block.references.uniqueId)
 
     @contextlib.contextmanager
     def image(self):

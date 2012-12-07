@@ -1,7 +1,9 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.article.edit.interfaces import IEditableBody
 import transaction
+import zeit.cms.checkout.interfaces
 import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
 
@@ -19,6 +21,35 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.open('@@edit-image?show_form=1')  # XXX
         self.assertEqual(
             'foo bar', b.getControl('Custom image sub text').value)
+
+    def test_setting_image_reference_also_sets_manual_flag(self):
+        # so that the copying mechanism from IImages knows to leave the block
+        # alone
+        self.get_article(with_empty_block=True)
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-image?show_form=1')
+        image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        b.getControl(name='EditImage.blockname.references').value = image_id
+        b.getControl('Apply').click()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+                article = list(wc.values())[0]
+                image_block = IEditableBody(article)['blockname']
+                self.assertTrue(image_block.set_manually)
+
+    def test_removing_image_reference_removes_manual_flag(self):
+        self.get_article(with_empty_block=True)
+        b = self.browser
+        b.open('editable-body/blockname/@@edit-image?show_form=1')
+        b.getControl(name='EditImage.blockname.references').value = ''
+        b.getControl('Apply').click()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+                article = list(wc.values())[0]
+                image_block = IEditableBody(article)['blockname']
+                self.assertFalse(image_block.set_manually)
 
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
