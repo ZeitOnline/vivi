@@ -72,6 +72,16 @@
     permission="zope.Public"
     />
 
+  <adapter
+    for="
+    zope.schema.interfaces.IChoice
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.DropObjectDisplayWidget"
+    permission="zope.Public"
+    />
+
   <!-- ObjectSequenceWidget -->
 
   <adapter

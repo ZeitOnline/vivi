@@ -336,6 +336,19 @@ class ObjectSequenceDisplayWidget(
         return result
 
 
+class DropObjectDisplayWidget(ObjectSequenceDisplayWidget):
+
+    def get_values(self):
+        if self._renderedValueSet():
+            value = self._data
+        else:
+            value = self.context.default
+        if value is not None:
+            return [value]
+        else:
+            return []
+
+
 def js_escape_check_types(source):
     # convert unicode, JS needs 'foo', not u'foo'
     return json.dumps([u'type-' + x for x in source.get_check_types()])

@@ -727,6 +727,65 @@ class TestObjectSequenceDisplayWidgetIntegration(
                 '...<div...id="field."...mydetails...', widget())
 
 
+class TestDropObjectDisplayWidgetIntegration(
+    zeit.cms.testing.FunctionalTestCase,
+    zeit.cms.testing.BrowserAssertions):
+
+    def setUp(self):
+        import zope.security.management
+        super(TestDropObjectDisplayWidgetIntegration, self).setUp()
+        zope.security.management.endInteraction()
+        setup_mydetails()
+
+    def tearDown(self):
+        teardown_mydetails()
+        super(TestDropObjectDisplayWidgetIntegration, self).tearDown()
+
+    def get_field(self):
+        import zeit.cms.content.contentsource
+        import zope.schema
+        return zope.schema.Choice(
+            source=zeit.cms.content.contentsource.cmsContentSource)
+
+    def get_widget(self):
+        import zeit.cms.browser.interfaces
+        import zope.formlib.interfaces
+        import zope.interface
+        import zope.publisher.browser
+        field = self.get_field()
+        request = zope.publisher.browser.TestRequest()
+        zope.interface.alsoProvides(
+            request, zeit.cms.browser.interfaces.ICMSLayer)
+        widget = zope.component.getMultiAdapter(
+            (field, request),
+            zope.formlib.interfaces.IDisplayWidget)
+        return widget
+
+    def get_content(self):
+        import zeit.cms.interfaces
+        return zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/testcontent')
+
+    def test_should_render_details_for_referenced_item(self):
+        widget = self.get_widget()
+        zeit.cms.testing.set_site(self.getRootFolder())
+        content = self.get_content()
+        widget._data = content
+        with zeit.cms.testing.interaction():
+            self.assert_ellipsis(
+                '...<div class="object-details...teaser_title...', widget())
+
+    def test_should_use_configured_detail_views(self):
+        widget = self.get_widget()
+        widget.detail_view_name = '@@mydetails'
+        zeit.cms.testing.set_site(self.getRootFolder())
+        content = self.get_content()
+        widget._data = content
+        with zeit.cms.testing.interaction():
+            self.assert_ellipsis(
+                '...<div...id="field."...mydetails...', widget())
+
+
 class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
