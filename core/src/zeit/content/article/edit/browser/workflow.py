@@ -19,6 +19,8 @@ import zope.i18n
 class WorkflowTimeContainer(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Workflow time')
+    folded_workingcopy = True
+    folded_repository = True
 
 
 class Timebased(zeit.edit.browser.form.InlineForm):
