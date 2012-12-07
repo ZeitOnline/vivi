@@ -692,6 +692,39 @@
     permission="zope.View"
     />
 
+  <!-- timebased -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="workflow-time"
+    class=".workflow.WorkflowTimeContainer"
+    permission="zope.View"
+    weight="70"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".workflow.WorkflowTimeContainer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.timebased"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.timebased"
+    class=".workflow.Timebased"
+    permission="zope.View"
+    />
+
+
   <!-- workflow -->
 
   <browser:viewlet
@@ -702,7 +735,7 @@
     name="workflow"
     class=".workflow.WorkflowContainer"
     permission="zope.View"
-    weight="70"
+    weight="80"
     />
 
   <browser:viewlet

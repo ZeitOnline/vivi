@@ -16,6 +16,20 @@ import zope.formlib.widget
 import zope.i18n
 
 
+class WorkflowTimeContainer(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Workflow time')
+
+
+class Timebased(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'timebased'
+    undo_description = _('edit workflow time')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.workflow.interfaces.IContentWorkflow).select('release_period')
+
+
 class WorkflowContainer(zeit.edit.browser.form.FoldableFormGroup):
     """Article workflow forms."""
 
