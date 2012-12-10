@@ -73,6 +73,8 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(ArticleContentHead, self).setUpWidgets(*args, **kw)
+        self.widgets['supertitle'].extra = 'cms:maxlength="%s"' % (
+            self.widgets['supertitle'].context.max_length)
         self.widgets['title'].extra = 'cms:maxlength="%s"' % (
             self.widgets['title'].context.max_length)
         self.widgets['subtitle'].extra = 'cms:maxlength="%s"' % (

@@ -156,3 +156,8 @@ class CharLimit(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.waitForElementPresent('css=.fieldname-teaserText')
         s.assertElementPresent('css=.fieldname-teaserText .charlimit')
+
+    def test_supertitle_has_character_limit(self):
+        s = self.selenium
+        s.waitForElementPresent('css=.fieldname-supertitle')
+        s.assertElementPresent('css=.fieldname-supertitle .charlimit')
