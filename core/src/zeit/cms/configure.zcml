@@ -68,6 +68,7 @@
       attributes="
       __setslice__
       append
+      attrib
       insert
       makeelement
       replace
