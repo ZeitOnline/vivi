@@ -78,11 +78,12 @@ function replace_double_br_with_p(tree) {
         }
 
         var p = MochiKit.DOM.createDOM('p');
-        if (tag(sibling.nextSibling) == el.TEXT_NODE) {
+        MochiKit.DOM.insertSiblingNodesAfter(tree, p);
+        while (sibling.nextSibling) {
             p.appendChild(sibling.nextSibling);
         }
         MochiKit.DOM.removeElement(el);
-        MochiKit.DOM.swapDOM(sibling, p);
+        MochiKit.DOM.removeElement(sibling);
     });
 }
 
