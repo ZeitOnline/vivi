@@ -67,9 +67,13 @@ function kill_empty_p(tree) {
 
 function replace_double_br_with_p(tree) {
     forEach(tree.childNodes, function(el) {
-        var sibling = nextSiblingElement(el);
-        if (! (tag(el) == 'br' && tag(sibling) == 'br')) {
+        if (tag(el) != 'br') {
             replace_double_br_with_p(el);
+            return;
+        }
+
+        var sibling = nextSiblingElementIgnoringWhitespace(el);
+        if (tag(sibling) != 'br') {
             return;
         }
 
@@ -151,11 +155,19 @@ function tag(element) {
 }
 
 
-function nextSiblingElement(element) {
+function is_whitespace(text) {
+    return (/^\s*$/).test(text);
+}
+
+
+function nextSiblingElementIgnoringWhitespace(element) {
     var el = element.nextSibling;
     while (el) {
         if (el.nodeType == el.ELEMENT_NODE) {
             return el;
+        }
+        if (el.nodeType == el.TEXT_NODE && ! is_whitespace(el.nodeValue)) {
+            return null;
         }
         el = el.nextSibling;
     }

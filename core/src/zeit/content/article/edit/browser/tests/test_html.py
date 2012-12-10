@@ -55,6 +55,20 @@ class HTMLConvertTest(
         s.assertElementPresent('css=.editable p p:contains(bar)')
         s.assertXpathCount('//*[@class="editable"]//br', 0)
 
+    def test_single_br_is_conserved(self):
+        s = self.selenium
+        self.create('<p>foo<br>bar</p>')
+        self.convert()
+        s.assertXpathCount('//*[@class="editable"]//p', 1)
+        s.assertXpathCount('//*[@class="editable"]//br', 1)
+
+    def test_separate_single_brs_are_conserved(self):
+        s = self.selenium
+        self.create('<p>foo<br>bar<br>baz</p>')
+        self.convert()
+        s.assertXpathCount('//*[@class="editable"]//p', 1)
+        s.assertXpathCount('//*[@class="editable"]//br', 2)
+
     def test_a_witout_href_should_be_escaped(self):
         s = self.selenium
         self.create('<p>A stupid <a>link</a>.</p>')
