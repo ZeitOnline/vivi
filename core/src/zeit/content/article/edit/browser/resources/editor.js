@@ -285,9 +285,9 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a title='fett' rel='command' href='bold'>B</a>\
             <a title='kursiv' rel='command' href='italic'>I</a>\
             <a title='Zwischenüberschrift' rel='command' href='formatBlock/h3'>H3</a>\
-            <a title='Link einfügen' rel='method' href='insert_link'>A</a>\
+            <a title='Link' rel='method' href='insert_link'>A</a>\
             <a title='Link entfernen' rel='command' href='unlink'>A</a>\
-            <a title='Aufzählungsliste' rel='command' href='insertunorderedlist'>UL</a>\
+            <a title='Liste' rel='command' href='insertunorderedlist'>UL</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
