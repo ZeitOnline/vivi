@@ -1,5 +1,6 @@
 <a title="more"
    class="button"
+   tal:condition="view/items"
    i18n:domain="zeit.cms"
    tal:attributes="href string:javascript:zeit.cms.menu.toggle('${view/menu_id}')"
    i18n:attributes="title"
