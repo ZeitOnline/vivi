@@ -129,6 +129,17 @@ zeit.edit.drop.EditorDroppers =
                 new zeit.edit.drop.Droppable(
                     droppable_element, element, zeit.edit.editor));
         });
+
+        self.resume_drag_in_progress();
+    },
+
+    resume_drag_in_progress: function () {
+        var drag_pane = $('drag-pane');
+        if (!drag_pane ||
+            MochiKit.DOM.hasElementClass(drag_pane, 'finished')) {
+            return;
+        }
+        MochiKit.DragAndDrop.Droppables.prepare(drag_pane);
     },
 
     get_droppable_element_for: function(element) {
