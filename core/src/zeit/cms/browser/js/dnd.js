@@ -90,12 +90,18 @@ MochiKit.Signal.connect(
 // remove drag-pane and restore draggable.element
 MochiKit.Signal.connect(
     MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
-    var drag_pane = draggable.element;
-    if (isUndefinedOrNull(drag_pane.source_element)) {
-        return;
+        var drag_pane = draggable.element;
+        if (isUndefinedOrNull(drag_pane.source_element)) {
+            return;
+        }
+        draggable.element = drag_pane.source_element;
+        MochiKit.DOM.addElementClass(drag_pane, 'finished');
+        MochiKit.Visual.fade(drag_pane, {
+            afterFinish: function() {
+                MochiKit.DOM.removeElement(drag_pane);
+            }
+        });
     }
-    draggable.element = drag_pane.source_element;
-    MochiKit.Visual.fade(drag_pane);
-});
+);
 
 }());
