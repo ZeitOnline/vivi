@@ -45,7 +45,7 @@ Now create the widget:
 >>> widget
 <zeit.cms.content.browser.widget.XMLTreeWidget object at 0x...>
 >>> widget.setRenderedValue(content.xml)
->>> widget._getFormValue()[0]
+>>> widget._getFormValue()
 u'<art/>\r\n<?foo?>\r\n'
 
 
@@ -58,7 +58,7 @@ is not a full tree but a node in a tree.
 >>> content.whole_tree = lxml.objectify.XML('<a><b/><editme><c/></editme></a>')
 >>> content.xml = content.whole_tree.editme
 >>> widget.setRenderedValue(content.xml)
->>> widget._getFormValue()[0]
+>>> widget._getFormValue()
 u'<editme>\r\n    <c/>\r\n</editme>\r\n'
 
 

@@ -3,11 +3,8 @@
 
 import SilverCity.XML
 import StringIO
-import copy
 import json
 import lxml.etree
-import urllib
-import urlparse
 import zc.form.browser.combinationwidget
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -17,82 +14,30 @@ import zope.app.form.browser.widget
 import zope.app.form.interfaces
 import zope.app.pagetemplate
 import zope.component
-import zope.formlib.interfaces
-import zope.formlib.textwidgets
-import zope.formlib.widget
 import zope.interface
 
 
-class XMLTreeWidget(zope.formlib.textwidgets.TextAreaWidget):
-
-    @property
-    def attributes_name(self):
-        return self.name + '.attributes'
+class XMLTreeWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
 
     def _toFieldValue(self, input):
         try:
-            element = self.context.fromUnicode(input)
+            return self.context.fromUnicode(input)
         except zope.schema.ValidationError, e:
             raise zope.app.form.interfaces.ConversionError(e)
-        for name, value in urlparse.parse_qs(self.request.get(
-                self.attributes_name, '')).items():
-            element.attrib[name] = value[0]
-        return element
-
-    def _getFormValue(self):
-        try:
-            input_value = self._getCurrentValueHelper()
-        except zope.formlib.interfaces.InputErrors:
-            form_value = (self.request.form.get(self.name, self._missing),
-                          self.request.form.get(self.attributes_name, ''))
-        else:
-            form_value = self._toFormValue(input_value)
-        return form_value
 
     def _toFormValue(self, value):
         if value == self.context.missing_value:
-            return (self._missing, '')
+            return self._missing
         else:
             # Etree very explicitly checks for the type and doesn't like a
             # proxied object
             value = zope.proxy.removeAllProxies(value)
-            attributes = urllib.urlencode(value.attrib.items())
             if value.getparent() is None:
                 # When we're editing the whole tree we want to serialize the
                 # root tree to get processing instructions.
-                serialize = copy.copy(value.getroottree())
-                value = serialize.getroot()
-                self.remove_all_attributes(value)
-            else:
-                serialize = self.remove_all_attributes(copy.copy(value))
-            return (lxml.etree.tounicode(serialize, pretty_print=True).replace(
-                '\n', '\r\n'), attributes)
-
-    @staticmethod
-    def remove_all_attributes(element):
-        for name in element.attrib:
-            del element.attrib[name]
-        return element
-
-    def __call__(self):
-        value = self._getFormValue()
-        textarea = zope.formlib.widget.renderElement(
-            "textarea",
-            name=self.name,
-            id=self.name,
-            cssClass=self.cssClass,
-            rows=self.height,
-            cols=self.width,
-            style=self.style,
-            contents=zope.formlib.textwidgets.escape(value[0]),
-            extra=self.extra)
-        attributes = zope.formlib.widget.renderElement(
-            "input",
-            type='hidden',
-            value=value[1],
-            name=self.attributes_name,
-            id=self.attributes_name)
-        return textarea + attributes
+                value = value.getroottree()
+            return lxml.etree.tounicode(value, pretty_print=True).replace(
+                '\n', '\r\n')
 
 
 class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
