@@ -147,15 +147,4 @@
       />
   </class>
 
-  <class class=".block.Relateds">
-    <require
-      interface=".interfaces.IRelateds"
-      permission="zope.View" 
-      />
-    <require
-      set_schema=".interfaces.IRelateds"
-      permission="zeit.EditContent" 
-      />
-  </class>
-
 </configure>

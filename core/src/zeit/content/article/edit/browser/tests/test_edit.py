@@ -506,9 +506,6 @@ class TestFolding(
     def test_portraitbox_should_be_foldable(self):
         self.assert_foldable('portraitbox')
 
-    def test_relateds_should_be_foldable(self):
-        self.assert_foldable('relateds')
-
     def test_raw_should_be_foldable(self):
         self.assert_foldable('raw')
 

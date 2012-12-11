@@ -181,15 +181,6 @@ class EditCitation(zeit.edit.browser.form.InlineForm):
         return 'citation.{0}'.format(self.context.__name__)
 
 
-class ViewRelateds(object):
-
-    @property
-    def relateds(self):
-        article = zeit.content.article.interfaces.IArticle(self.context)
-        content = zeit.cms.related.interfaces.IRelatedContent(article)
-        return content.related
-
-
 class EditDivision(zeit.edit.browser.form.InlineForm):
 
     legend = None

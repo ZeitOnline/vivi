@@ -317,19 +317,6 @@
     permission="zope.View"
     />
 
-  <!-- relateds -->
-
-  <browser:viewlet
-    for="zeit.content.article.edit.interfaces.IRelateds"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="contents"
-    class=".edit.ViewRelateds"
-    template="edit.relateds.pt"
-    permission="zope.View"
-    />
-
   <!-- division -->
 
   <browser:viewlet
@@ -381,10 +368,6 @@
   </class>
 
   <class class="..citation.Citation">
-    <implements interface="zeit.edit.interfaces.IFoldable" />
-  </class>
-
-  <class class="..block.Relateds">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
