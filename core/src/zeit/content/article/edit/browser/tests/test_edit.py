@@ -164,6 +164,19 @@ class TestTextEditing(
         s.click('css=.create-paragraph')
         s.waitForElementPresent('css=.block.type-p')
 
+    def test_clicking_empty_paragraph_twice_is_not_possible(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=.block.type-p')
+        s.waitForElementPresent('css=.create-paragraph')
+        s.click('css=.create-paragraph')
+        try:
+            s.click('css=.create-paragraph')
+        except Exception, e:
+            self.assertEqual(
+                'ERROR: Element css=.create-paragraph not found', str(e))
+        else:
+            self.fail('second click should have raised')
+
     @unittest2.skip("no typeKeys 'til webdriver")
     def test_typed_text_should_be_saved(self):
         s = self.selenium

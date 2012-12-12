@@ -744,12 +744,12 @@ zeit.content.article.AppendParagraph = zeit.edit.LoadAndReload.extend({
 
     construct: function(context_element) {
         var self = this;
+        $('.create-paragraph').first().remove();
         var ident = MochiKit.Signal.connect(
             zeit.edit.editor, 'after-reload', function() {
                 MochiKit.Signal.disconnect(ident);
                 var new_p = $('#editable-body .block.type-p').last()[0];
                 new zeit.content.article.Editable(new_p.firstChild, true);
-                $('.create-paragraph').first().remove();
             });
         arguments.callee.$.construct.call(self, context_element);
     }
