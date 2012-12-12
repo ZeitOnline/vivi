@@ -23,10 +23,11 @@ After assigning an image group it contained images are returned:
 >>> import zeit.cms.interfaces
 >>> import zeit.cms.testing
 >>> import zeit.content.image.interfaces
+>>> import zeit.content.image.testing
 >>> with zeit.cms.testing.site(getRootFolder()):
 ...     content = zeit.cms.interfaces.ICMSContent(
 ...         'http://xml.zeit.de/testcontent')
-...     image_group = zeit.content.image.tests.create_image_group()
+...     image_group = zeit.content.image.testing.create_image_group()
 ...     with zeit.cms.testing.interaction():
 ...         with zeit.cms.checkout.helper.checked_out(content) as co:
 ...             zeit.content.image.interfaces.IImages(co).image = image_group
