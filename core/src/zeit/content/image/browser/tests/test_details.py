@@ -5,12 +5,12 @@ import zeit.cms.checkout.helper
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.image.interfaces
-import zeit.content.image.tests
+import zeit.content.image.testing
 
 
 class ImageDetails(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.content.image.tests.selenium_layer
+    layer = zeit.content.image.testing.selenium_layer
 
     def test_clicking_button_shows_details_pane(self):
         with zeit.cms.testing.site(self.getRootFolder()):

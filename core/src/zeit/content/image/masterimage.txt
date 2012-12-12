@@ -5,8 +5,8 @@ An image group can have a master image[#functional]_. The image group can be
 adapted to IMasterImage to get the master image:
 
 >>> import zeit.content.image.interfaces
->>> import zeit.content.image.tests
->>> group = zeit.content.image.tests.create_image_group_with_master_image()
+>>> import zeit.content.image.testing
+>>> group = zeit.content.image.testing.create_image_group_with_master_image()
 >>> image = zeit.content.image.interfaces.IMasterImage(group)
 >>> image
 <zeit.content.image.image.RepositoryImage object at 0x...>
@@ -15,7 +15,7 @@ True
 
 An image group w/o master image obiously cannot be adapted to IMasterImage:
 
->>> group = zeit.content.image.tests.create_image_group()
+>>> group = zeit.content.image.testing.create_image_group()
 >>> zeit.content.image.interfaces.IMasterImage(group)
 Traceback (most recent call last):
     ...

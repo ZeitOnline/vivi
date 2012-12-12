@@ -4,7 +4,7 @@
 import datetime
 import re
 import zeit.cms.testing
-import zeit.content.image.tests
+import zeit.content.image.testing
 import zope.testing.renormalizing
 
 
@@ -24,4 +24,4 @@ def test_suite():
         'master-image.txt',
         package='zeit.content.image.browser',
         checker=checker,
-        layer=zeit.content.image.tests.ImageLayer)
+        layer=zeit.content.image.testing.ImageLayer)

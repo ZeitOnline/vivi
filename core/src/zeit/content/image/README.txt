@@ -104,8 +104,8 @@ XML reference
 Create an image group first:
 
 >>> import zeit.cms.checkout.interfaces
->>> import zeit.content.image.tests
->>> group = zeit.content.image.tests.create_image_group()
+>>> import zeit.content.image.testing
+>>> group = zeit.content.image.testing.create_image_group()
 
 Reference the image via XML:
 

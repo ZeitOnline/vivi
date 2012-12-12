@@ -128,5 +128,5 @@ It is possible to select the master image of an image group:
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()
     >>> principal = zeit.cms.testing.create_interaction()
-    >>> import zeit.content.image.tests
-    >>> group = zeit.content.image.tests.create_image_group()
+    >>> import zeit.content.image.testing
+    >>> group = zeit.content.image.testing.create_image_group()

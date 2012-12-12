@@ -42,8 +42,8 @@ We have not added any image, so no image is referenced:
 
 We will mostly want to reference image groups, so create one first:
 
->>> import zeit.content.image.tests
->>> group = zeit.content.image.tests.create_image_group()
+>>> import zeit.content.image.testing
+>>> group = zeit.content.image.testing.create_image_group()
 
 Reference the image group[#needsinteraction]_:
 

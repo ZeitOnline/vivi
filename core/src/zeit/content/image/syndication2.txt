@@ -6,7 +6,7 @@ appears on the image as well:
 >>> import pytz
 >>> import zeit.cms.repository.interfaces
 >>> import zeit.cms.testing
->>> import zeit.content.image.tests
+>>> import zeit.content.image.testing
 >>> import zope.component
 
 >>> zeit.cms.testing.set_site()
@@ -15,7 +15,7 @@ appears on the image as well:
 >>> repository = zope.component.getUtility(
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> content = repository['testcontent']
->>> group = zeit.content.image.tests.create_image_group()
+>>> group = zeit.content.image.testing.create_image_group()
 
 >>> workflow = zeit.workflow.interfaces.ITimeBasedPublishing(group)
 >>> workflow.release_period = (datetime.datetime(2008, 1, 6, tzinfo=pytz.UTC),
