@@ -116,6 +116,15 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
+    def add_group_to_clipboard(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            group = zeit.content.image.testing.create_image_group()
+        self.add_to_clipboard(group, 'my_group')
+        self.add_article()
+        s = self.selenium
+        s.click('//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
     def test_image_is_droppable_in_article_text(self):
         self.add_image_to_clipboard()
         s = self.selenium
@@ -128,10 +137,8 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('css=.block.type-image .image_details')
 
     def test_imagegroup_is_droppable_in_article_text(self):
+        self.add_group_to_clipboard()
         s = self.selenium
-        with zeit.cms.testing.site(self.getRootFolder()):
-            group = zeit.content.image.testing.create_image_group()
-        self.add_to_clipboard(group, 'my_group')
         self.add_article()
         s.click('//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
@@ -145,40 +152,40 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent('css=.block.type-image .image_details')
 
     def test_changing_image_in_teaser_updates_lead_teaser(self):
-        self.add_image_to_clipboard()
+        self.add_group_to_clipboard()
         s = self.selenium
         landing_zone = 'css=#form-teaser-image .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
-        s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-teaser-image .image_details')
         s.waitForElementPresent('css=#form-leadteaser .image_details')
 
     def test_changing_image_in_leadteaser_updates_teaser(self):
-        self.add_image_to_clipboard()
+        self.add_group_to_clipboard()
         s = self.selenium
         landing_zone = 'css=#form-leadteaser .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
         s.click('css=#edit-form-leadteaser .fold-link')
-        s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-leadteaser .image_details')
         s.waitForElementPresent('css=#form-teaser-image .image_details')
 
     def test_changing_image_in_teaser_updates_body(self):
-        self.add_image_to_clipboard()
+        self.add_group_to_clipboard()
         s = self.selenium
         landing_zone = 'css=#form-teaser-image .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
-        s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-teaser-image .image_details')
         s.waitForElementPresent('css=#editable-body .image_details')
 
     def test_changing_image_in_leadteaser_updates_body(self):
-        self.add_image_to_clipboard()
+        self.add_group_to_clipboard()
         s = self.selenium
         landing_zone = 'css=#form-leadteaser .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
         s.click('css=#edit-form-leadteaser .fold-link')
-        s.dragAndDropToObject('//li[@uniqueid="Clip/my_image"]', landing_zone)
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-leadteaser .image_details')
         s.waitForElementPresent('css=#editable-body .image_details')
 
