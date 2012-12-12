@@ -499,7 +499,7 @@ class IFullGraphicalBlock(IBlock):
 
     image = zope.schema.Choice(
         title=_("Image"),
-        source=zeit.content.image.interfaces.ImageSource(),
+        source=zeit.content.image.interfaces.imageSource,
         required=False)
 
     layout = zope.schema.Choice(
