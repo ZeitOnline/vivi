@@ -186,10 +186,10 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         from zeit.content.image.interfaces import IImages
         import zeit.cms.browser.form
         import zeit.cms.interfaces
-        import zeit.content.image.tests
+        import zeit.content.image.testing
         import zope.lifecycleevent
 
-        image_group = zeit.content.image.tests.create_image_group()
+        image_group = zeit.content.image.testing.create_image_group()
         article = Article()
         zeit.cms.browser.form.apply_default_values(article, IArticle)
         article.year = 2011

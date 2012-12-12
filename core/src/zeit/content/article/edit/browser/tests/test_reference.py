@@ -130,7 +130,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_imagegroup_is_droppable_in_article_text(self):
         s = self.selenium
         with zeit.cms.testing.site(self.getRootFolder()):
-            group = zeit.content.image.tests.create_image_group()
+            group = zeit.content.image.testing.create_image_group()
         self.add_to_clipboard(group, 'my_group')
         self.add_article()
         s.click('//li[@uniqueid="Clip"]')
