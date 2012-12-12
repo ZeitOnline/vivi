@@ -20,7 +20,7 @@
 
   <browser:viewlet
       name="Workflow"
-      for="zeit.cms.repository.interfaces.IRepositoryContent"
+      for="zeit.cms.interfaces.ICMSContent"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       class=".menu.WorkflowMenuItem"
       manager="zeit.cms.browser.interfaces.IContextViews"
