@@ -2,7 +2,7 @@
 # Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.content.image.tests
+import zeit.content.image.testing
 import zeit.cms.testing
 import gocept.selenium.ztk
 import zeit.imp.tests
@@ -24,7 +24,7 @@ class Selenium(zeit.cms.testing.SeleniumTestCase):
 
     def create_group(self):
         with zeit.cms.testing.site(self.getRootFolder()):
-            zeit.content.image.tests.create_image_group_with_master_image()
+            zeit.content.image.testing.create_image_group_with_master_image()
 
     def open_imp(self):
         self.open('/repository/group/@@imp.html')

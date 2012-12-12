@@ -10,7 +10,7 @@ import urllib
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
-import zeit.content.image.tests
+import zeit.content.image.testing
 import zeit.imp.tests
 import zope.app.file.image
 import zope.component
@@ -25,7 +25,7 @@ class TestBase(zeit.cms.testing.BrowserTestCase):
     def setUp(self):
         super(TestBase, self).setUp()
         zope.component.hooks.setSite(self.getRootFolder())
-        zeit.content.image.tests.create_image_group_with_master_image()
+        zeit.content.image.testing.create_image_group_with_master_image()
 
 
 class ImageBarTest(TestBase):

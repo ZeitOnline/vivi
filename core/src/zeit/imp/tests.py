@@ -6,7 +6,7 @@ import PIL.Image
 import pkg_resources
 import unittest
 import zeit.cms.testing
-import zeit.content.image.tests
+import zeit.content.image.testing
 import zeit.imp.interfaces
 import zeit.imp.mask
 import zeit.imp.source
@@ -136,7 +136,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
     def setUp(self):
         super(TestCrop, self).setUp()
         self.group = (
-            zeit.content.image.tests.create_image_group_with_master_image())
+            zeit.content.image.testing.create_image_group_with_master_image())
         self.crop = zeit.imp.interfaces.ICropper(self.group)
 
     def get_histogram(self, image):
@@ -223,7 +223,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
 
     def test_border_on_grayscale_image(self):
         self.group = (
-            zeit.content.image.tests.create_image_group_with_master_image(
+            zeit.content.image.testing.create_image_group_with_master_image(
                 pkg_resources.resource_filename(
                     __name__, 'testdata/grayscale.jpg')))
         crop = zeit.imp.interfaces.ICropper(self.group)
@@ -233,7 +233,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
 
     def test_cmyk_converted_to_rgb(self):
         self.group = (
-            zeit.content.image.tests.create_image_group_with_master_image(
+            zeit.content.image.testing.create_image_group_with_master_image(
                 pkg_resources.resource_filename(
                     __name__, 'testdata/cmyk.jpg')))
         crop = zeit.imp.interfaces.ICropper(self.group)
@@ -243,7 +243,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
 
     def test_palette_converted_to_rgb(self):
         self.group = (
-            zeit.content.image.tests.create_image_group_with_master_image(
+            zeit.content.image.testing.create_image_group_with_master_image(
                 pkg_resources.resource_filename(
                     __name__, 'testdata/palette.gif')))
         crop = zeit.imp.interfaces.ICropper(self.group)

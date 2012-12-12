@@ -115,7 +115,7 @@ It is possible to check out the group from here directly:
     >>> import zope.app.component.hooks
     >>> old_site = zope.app.component.hooks.getSite()
     >>> zope.app.component.hooks.setSite(getRootFolder())
-    >>> import zeit.content.image.tests
-    >>> grp = zeit.content.image.tests.create_image_group_with_master_image()
-    >>> grp = zeit.content.image.tests.create_image_group()
+    >>> import zeit.content.image.testing
+    >>> grp = zeit.content.image.testing.create_image_group_with_master_image()
+    >>> grp = zeit.content.image.testing.create_image_group()
     >>> zope.app.component.hooks.setSite(old_site)
