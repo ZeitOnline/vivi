@@ -140,8 +140,8 @@ have the latter contain an image that corresponds to our selected layout:
 >>> import zeit.cms.checkout.helper
 >>> import zeit.cms.testing
 >>> import zeit.content.image.interfaces
->>> import zeit.content.image.tests
->>> group = zeit.content.image.tests.create_image_group()
+>>> import zeit.content.image.testing
+>>> group = zeit.content.image.testing.create_image_group()
 >>> with zeit.cms.testing.interaction():
 ...     with zeit.cms.checkout.helper.checked_out(quiz) as co:
 ...         zeit.content.image.interfaces.IImages(co).image = group

@@ -125,9 +125,9 @@ RSS blocks may have a separate teaser image:
 The teaser image may also be a teaser group:
 
 >>> import zeit.cms.testing
->>> import zeit.content.image.tests
+>>> import zeit.content.image.testing
 >>> with zeit.cms.testing.site(getRootFolder()):
-...     group = zeit.content.image.tests.create_image_group()
+...     group = zeit.content.image.testing.create_image_group()
 >>> browser.getLink('Edit').click()
 >>> print browser.getControl('Teaser image').value 
 http://xml.zeit.de/2006/DSC00109_2.JPG

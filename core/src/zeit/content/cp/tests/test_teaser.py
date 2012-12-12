@@ -61,9 +61,9 @@ class TestXMLTeaser(XMLTeaserBase):
     def test_iimages_should_contain_referenced_objects_image(self):
         from zeit.content.image.interfaces import IImages
         from zeit.cms.checkout.helper import checked_out
-        import zeit.content.image.tests
+        import zeit.content.image.testing
         self.teaser.free_teaser = True
-        group = zeit.content.image.tests.create_image_group()
+        group = zeit.content.image.testing.create_image_group()
         with checked_out(self.repository['testcontent']) as co:
             IImages(co).image = group
         self.assertEqual(group, IImages(self.teaser).image)

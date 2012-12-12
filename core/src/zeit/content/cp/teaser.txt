@@ -23,9 +23,9 @@ referenced article.
 Create an article with images:
 
 >>> import zeit.content.image.interfaces
->>> import zeit.content.image.tests
+>>> import zeit.content.image.testing
 >>> import zeit.cms.checkout.interfaces
->>> group = zeit.content.image.tests.create_image_group()
+>>> group = zeit.content.image.testing.create_image_group()
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     content).checkout()
 >>> images = zeit.content.image.interfaces.IImages(checked_out)
