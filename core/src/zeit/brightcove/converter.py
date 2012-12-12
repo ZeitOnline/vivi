@@ -228,6 +228,7 @@ class Video(Converter):
     product_id = mapped('customFields', 'produkt-id')
     ressort = mapped('customFields', 'ressort')
     serie = mapped('customFields', 'serie')
+    ignore_for_update = mapped_bool('customFields', 'ignore_for_update')
     subtitle = mapped('longDescription')
     supertitle = mapped('customFields', 'supertitle')
     video_still = mapped('videoStillURL')
@@ -244,6 +245,7 @@ class Video(Converter):
         'economics',
         'endDate',
         'id',
+        'ignore_for_update',
         'itemState',
         'lastModifiedDate',
         'length',

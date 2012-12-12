@@ -83,6 +83,10 @@ class IVideo(IBrightcoveContent,
         title=_("Comments allowed"),
         default=True)
 
+    ignore_for_update = zope.schema.Bool(
+        title=_("Ignore for update"),
+        default=False)
+
     dailyNewsletter = zope.schema.Bool(
         title=_("Daily newsletter"),
         default=False)

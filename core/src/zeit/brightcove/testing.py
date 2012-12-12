@@ -24,6 +24,7 @@ VIDEO_1234 = {
         'cmskeywords': 'Politik;koalition',
         'banner': '1',
         'banner-id': '99887',
+        'ignore_for_update': '0',
     },
     'economics': 'AD_SUPPORTED',
     'id': 1234,

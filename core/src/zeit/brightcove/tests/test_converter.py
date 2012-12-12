@@ -207,10 +207,15 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         video.data['customFields'].clear()
         self.assertTrue(video.banner)
 
-    def test_breaking_new_should_default_to_false(self):
+    def test_breaking_news_should_default_to_false(self):
         video = Video.find_by_id('1234')
         video.data['customFields'].clear()
         self.assertFalse(video.breaking_news)
+
+    def test_ignore_for_update_should_default_to_false(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertFalse(video.ignore_for_update)
 
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):

@@ -284,6 +284,26 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertRaises(
             urllib2.URLError, lambda: update_from_brightcove())
 
+    def test_ignore_for_update_should_not_update_repository(self):
+        VIDEO_1234['customFields']['ignore_for_update'] = '1'
+        soon = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = soon
+        VIDEO_1234['name'] = 'test title'
+        update_from_brightcove()
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        self.assertEquals('Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',video.title)
+
+    def test_no_ignore_for_update_should_update_repository(self):
+        VIDEO_1234['customFields']['ignore_for_update'] = '0'
+        soon = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = soon
+        VIDEO_1234['name'] = 'test title'
+        update_from_brightcove()
+        video = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/video/2010-03/1234')
+        self.assertEquals('test title',video.title)
+
 
 class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 

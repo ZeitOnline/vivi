@@ -158,7 +158,9 @@ class VideoUpdater(BaseUpdater):
             self.cmsobj).last_semantic_change
         new_mtime = zeit.cms.content.interfaces.ISemanticChange(
             new).last_semantic_change
-        if (current_mtime and new_mtime and current_mtime >= new_mtime and
+        if self.bc_obj.ignore_for_update:
+            changed = False
+        elif (current_mtime and new_mtime and current_mtime >= new_mtime and
             self.cmsobj.video_still == new.video_still):
             changed = False
         if changed:
