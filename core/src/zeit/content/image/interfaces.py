@@ -173,14 +173,31 @@ class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
 imageSource = ImageSource()
 
 
+class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    zope.interface.implements(IImageSource)
+    check_interfaces = (IImageGroup,)
+    name = 'image-groups'
+
+    def __contains__(self, value):
+        # backwards compatibility: IImages used to contain both IImage and
+        # IImageGroup, so there might still be content with IImage around
+        # which needs to be accessible.
+        if IImage.providedBy(value):
+            return True
+        return super(ImageGroupSource, self).__contains__(value)
+
+imageGroupSource = ImageGroupSource()
+
+
 class IImages(zope.interface.Interface):
     """An object which references images."""
 
     image = zope.schema.Choice(
         title=_('Image'),
-        description=_("Drag an image or image group here"),
+        description=_("Drag an image group here"),
         required=False,
-        source=imageSource)
+        source=imageGroupSource)
 
 
 class IReferences(zope.interface.Interface):

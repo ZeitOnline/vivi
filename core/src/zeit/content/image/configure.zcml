@@ -108,6 +108,12 @@
     name="images"
     />
 
+  <utility
+    provides="zeit.cms.content.interfaces.ICMSContentSource"
+    component=".interfaces.imageGroupSource"
+    name="image-groups"
+    />
+
 
   <!-- image references -->
   <adapter
