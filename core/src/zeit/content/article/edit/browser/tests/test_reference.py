@@ -139,9 +139,6 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_imagegroup_is_droppable_in_article_text(self):
         self.add_group_to_clipboard()
         s = self.selenium
-        self.add_article()
-        s.click('//li[@uniqueid="Clip"]')
-        s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
         # Article always has one image block already
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
