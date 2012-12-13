@@ -22,7 +22,7 @@ class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
         self.write_html(
             '<script type="text/javascript" src="external.js"></script>')
         self.evaluate_js_and_css()
-        self.assertEqual('true', self.eval('zeit.cms.test_external_loaded'))
+        self.wait_for_condition('zeit.cms.test_external_loaded')
 
     def test_evaluates_inline_scripts_once(self):
         self.write_html("""
