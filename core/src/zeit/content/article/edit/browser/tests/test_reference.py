@@ -3,6 +3,7 @@
 
 from zeit.content.article.edit.interfaces import IEditableBody
 import transaction
+import unittest2 as unittest
 import zeit.cms.checkout.interfaces
 import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
