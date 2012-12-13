@@ -301,7 +301,7 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
     log_errors_ignore = ()
     level = 2
 
-    TIMEOUT = 10
+    TIMEOUT = int(os.environ.get('ZEIT_SELENIUM_TIMEOUT', 10))
 
     window_width = 1100
     window_height = 600
