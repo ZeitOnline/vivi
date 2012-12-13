@@ -94,13 +94,6 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
         return super(ArticleContentHead, self).handle_edit_action.success(data)
 
 
-class ArticleContentBody(zeit.edit.browser.form.InlineForm):
-
-    legend = _('')
-    prefix = 'article-content-body'
-    undo_description = _('edit article content body')
-
-
 class KeywordsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Keywords')
