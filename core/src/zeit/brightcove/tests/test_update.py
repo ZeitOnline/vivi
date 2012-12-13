@@ -278,9 +278,11 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             zeit.brightcove.interfaces.IAPIConnection)
         timeout = connection.timeout
         connection.timeout = 0.5
+
         def reset():
             connection.timeout = timeout
         self.addCleanup(reset)
+
         self.assertRaises(
             urllib2.URLError, lambda: update_from_brightcove())
 
@@ -292,7 +294,9 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         update_from_brightcove()
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234')
-        self.assertEquals('Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',video.title)
+        self.assertEquals(
+            'Starrummel auf dem Roten Teppich zur 82. Oscar-Verleihung',
+            video.title)
 
 
 class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
