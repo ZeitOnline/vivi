@@ -94,6 +94,29 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
         return super(ArticleContentHead, self).handle_edit_action.success(data)
 
 
+class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'article-content-main-image'
+    undo_description = _('edit article content main image')
+    form_fields = FormFields(IArticle).select('main_image')
+
+    def __call__(self):
+        zope.interface.alsoProvides(
+            self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
+        return super(ArticleContentMainImage, self).__call__()
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        # even though the image is not displayed in the body area,
+        # the body still needs to be updated so it knows the (possibly) new
+        # UUID of the image block
+        body = IEditableBody(self.context)
+        self.signal('reload', 'editable-body', self.url(body, 'contents'))
+        return super(
+            ArticleContentMainImage, self).handle_edit_action.success(data)
+
+
 class KeywordsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Keywords')
@@ -199,6 +222,7 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
         self.signal('reload-inline-form', 'teaser-image')
+        self.signal('reload-inline-form', 'article-content-main-image')
         body = IEditableBody(self.context)
         self.signal('reload', 'editable-body', self.url(body, 'contents'))
         return super(LeadTeaser, self).handle_edit_action.success(data)
@@ -388,6 +412,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
         self.signal('reload-inline-form', 'leadteaser')
+        self.signal('reload-inline-form', 'article-content-main-image')
         body = IEditableBody(self.context)
         # XXX it would be nicer if we didn't need to know the reload URL here
         # (e.g. write it onto the DOM element)

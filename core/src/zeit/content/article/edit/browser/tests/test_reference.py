@@ -174,7 +174,8 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(landing_zone)
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-teaser-image .image_details')
-        s.waitForElementPresent('css=#editable-body .image_details')
+        s.waitForElementPresent(
+            'css=#form-article-content-main-image .image_details')
 
     def test_changing_image_in_leadteaser_updates_body(self):
         self.add_group_to_clipboard()
@@ -184,7 +185,21 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.click('css=#edit-form-leadteaser .fold-link')
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-leadteaser .image_details')
-        s.waitForElementPresent('css=#editable-body .image_details')
+        s.waitForElementPresent(
+            'css=#form-article-content-main-image .image_details')
+
+    @unittest.skip("Drag'n'drop doesn't work now.")
+    def test_changing_main_image_updates_body(self):
+        self.add_group_to_clipboard()
+        s = self.selenium
+        landing_zone = ('css=#form-article-content-main-image'
+                        ' .fieldname-main_image .landing-zone')
+        s.waitForElementPresent(landing_zone)
+        s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
+        s.waitForElementPresent(
+            'css=#form-article-content-main-image .image_details')
+        s.waitForElementPresent(
+            'css=#editable-body .image_details')
 
 
 class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):

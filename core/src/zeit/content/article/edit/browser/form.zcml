@@ -413,11 +413,30 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.ArticleContentForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.article-content-main-image"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="20"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.article-content-main-image"
+    class=".form.ArticleContentMainImage"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.cms.checkout.interfaces.ILocalContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleContentForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.article-content-body"
     class=".form.ArticleContentForms"
     template="edit.article-text.pt"
     permission="zope.View"
-    weight="10"
+    weight="30"
     />
 
   <browser:viewlet
