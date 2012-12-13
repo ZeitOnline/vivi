@@ -247,6 +247,7 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         super(VideoEditTest, self).setUp()
         self.create_content_and_fill_clipboard()
 
+    @unittest.skip('Drag-n-drop does not work reliably with Selenium atm.')
     def test_videos_should_be_editable(self):
         s = self.selenium
         self.add_article()
@@ -270,6 +271,7 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(
             video_2 + ' div.supertitle:contains("MyVideo_3")')
 
+    @unittest.skip('Drag-n-drop does not work reliably with Selenium atm.')
     def test_videos_should_be_removeable(self):
         s = self.selenium
         self.add_article()
