@@ -113,19 +113,11 @@ def copy_image_to_body(context, event):
     else:
         return
 
-    image = zeit.content.image.interfaces.IImages(context).image
-
-    body = zeit.content.article.edit.interfaces.IEditableBody(context)
-    try:
-        image_block = body.values()[0]
-    except IndexError:
-        return
-    if not zeit.content.article.edit.interfaces.IImage.providedBy(image_block):
-        return
-    if image_block.set_manually:
+    block = context.main_image_block
+    if block is None or block.set_manually:
         return
 
-    image_block.references = image
+    block.references = zeit.content.image.interfaces.IImages(context).image
 
 
 @grokcore.component.subscribe(

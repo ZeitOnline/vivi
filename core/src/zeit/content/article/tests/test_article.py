@@ -4,6 +4,7 @@
 import mock
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.edit.rule
 import zope.component
@@ -98,3 +99,47 @@ class DivisionTest(zeit.content.article.testing.FunctionalTestCase):
             pass
         self.assertEqual(
             2, len(self.repository['article'].xml.body.findall('division')))
+
+
+class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_main_image_is_none_if_first_body_is_empty(self):
+        article = self.get_article()
+        self.assertIsNone(article.main_image)
+
+    def test_main_image_is_none_if_first_block_is_not_an_image(self):
+        article = self.get_article()
+        self.get_factory(article, 'p')()
+        self.assertIsNone(article.main_image)
+
+    def test_main_image_is_none_if_first_block_is_an_empty_image(self):
+        article = self.get_article()
+        self.get_factory(article, 'image')()
+        self.assertIsNone(article.main_image)
+
+    def test_main_image_is_returned_if_first_block_contains_one(self):
+        article = self.get_article()
+        block = self.get_factory(article, 'image')()
+        image = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        block.references = image
+        self.assertEqual(image, article.main_image)
+
+    def test_setting_main_image_is_reflected_inside_body(self):
+        article = self.get_article()
+        block = self.get_factory(article, 'image')()
+        image = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        article.main_image = image
+        body = zeit.content.article.edit.interfaces.IEditableBody(article)
+        block = body.values()[0]
+        self.assertEqual(image, block.references)
+
+    def test_setting_main_image_works_if_body_does_not_start_with_image(self):
+        article = self.get_article()
+        image = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        article.main_image = image
+        body = zeit.content.article.edit.interfaces.IEditableBody(article)
+        block = body.values()[0]
+        self.assertEqual(image, block.references)

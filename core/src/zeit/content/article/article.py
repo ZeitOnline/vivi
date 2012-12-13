@@ -14,6 +14,7 @@ import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.edit.interfaces
 import zeit.edit.rule
 import zeit.workflow.interfaces
 import zeit.workflow.workflow
@@ -61,6 +62,41 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             value = el.text
             if value:
                 properties[(name, ns)] = value
+
+    @property
+    def main_image_block(self):
+        body = zeit.content.article.edit.interfaces.IEditableBody(self)
+        try:
+            image_block = body.values()[0]
+        except IndexError:
+            return None
+        if not zeit.content.article.edit.interfaces.IImage.providedBy(
+            image_block):
+            return None
+        return image_block
+
+    @property
+    def main_image(self):
+        image_block = self.main_image_block
+        if image_block is None:
+            return None
+        return image_block.references
+
+    @main_image.setter
+    def main_image(self, value):
+        image_block = self.main_image_block
+        if image_block is None:
+            image_block = self._create_image_block_in_front()
+        image_block.references = value
+
+    def _create_image_block_in_front(self):
+        body = zeit.content.article.edit.interfaces.IEditableBody(self)
+        image_block = zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory, 'image')()
+        ids = body.keys()
+        ids.insert(0, ids.pop())  # XXX ElementFactory should do this
+        body.updateOrder(ids)
+        return image_block
 
 
 class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
