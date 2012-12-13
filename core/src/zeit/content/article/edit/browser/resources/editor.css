@@ -669,6 +669,8 @@
 
 .object-details .image_details .picture_information {
   margin-top: 10px;
+  padding: 5px;
+  background-color: #f1f4f9;
 }
 
 /* Video block layouts */
