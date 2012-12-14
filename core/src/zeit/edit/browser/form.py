@@ -24,8 +24,8 @@ FormGroup = zope.viewlet.viewlet.SimpleViewletClass('layout.forms.pt')
 class FoldableFormGroup(zope.viewlet.viewlet.SimpleViewletClass(
         'layout.foldable-forms.pt')):
 
-    folded_workingcopy = False
-    folded_repository = False
+    folded_workingcopy = True
+    folded_repository = True
 
     @property
     def folded(self):

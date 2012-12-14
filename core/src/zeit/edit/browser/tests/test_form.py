@@ -75,12 +75,12 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
         form = ExampleForm(context, request, Mock(), Mock())
         return form()
 
-    def test_default_for_workingcopy_is_not_folded(self):
-        self.assertNotEllipsis(
+    def test_default_for_workingcopy_is_folded(self):
+        self.assertEllipsis(
             '...folded...', self.render(in_workingcopy=True))
 
-    def test_default_for_repository_is_not_folded(self):
-        self.assertNotEllipsis(
+    def test_default_for_repository_is_folded(self):
+        self.assertEllipsis(
             '...folded...', self.render(in_workingcopy=False))
 
     def test_setting_folded_workingcopy_renders_css_class(self):
