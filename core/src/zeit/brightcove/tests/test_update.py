@@ -5,6 +5,7 @@ from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
 from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.update import update_from_brightcove
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
+import copy
 import datetime
 import mock
 import time
@@ -19,8 +20,8 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def setUp(self):
         super(UpdateVideoTest, self).setUp()
-        self.old_video = VIDEO_1234.copy()
-        self.old_playlist = PLAYLIST_2345.copy()
+        self.old_video = copy.deepcopy(VIDEO_1234)
+        self.old_playlist = copy.deepcopy(PLAYLIST_2345)
 
     def tearDown(self):
         VIDEO_1234.update(self.old_video)
