@@ -730,9 +730,3 @@ li.busy {
     height: 3px;
     background-image: url("layout/pupil.png");
 }
-
-/* header actions */
-
-#header-actions {
-    margin-left: 21em;
-}
