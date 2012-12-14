@@ -97,6 +97,13 @@ class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
         source=VideoLayoutSource(),
         required=False)
 
+    # XXX it would be nice if could somehow express that IVideo actually
+    # is a kind of IReference (only it has video/video_2 instead of references)
+    is_empty = zope.schema.Bool(
+        title=_('true if this block has no reference; benefits XSLT'),
+        required=False,
+        default=True)
+
 
 class IReference(zeit.edit.interfaces.IBlock):
     """A block which references another object."""
@@ -104,6 +111,11 @@ class IReference(zeit.edit.interfaces.IBlock):
     references = zope.schema.Field(
         title=_('Referenced object.'),
         required=False)
+
+    is_empty = zope.schema.Bool(
+        title=_('true if this block has no reference; benefits XSLT'),
+        required=False,
+        default=True)
 
 
 class ImageLayoutSource(LayoutSourceBase):

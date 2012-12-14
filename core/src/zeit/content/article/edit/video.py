@@ -29,6 +29,14 @@ class Video(zeit.edit.block.SimpleElement):
 
     badge = 'video'
 
+    is_empty = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'is_empty',
+        zeit.content.article.edit.interfaces.IReference['is_empty'])
+
+    def __init__(self, *args, **kw):
+        super(Video, self).__init__(*args, **kw)
+        self.is_empty = True
+
     @property
     def video(self):
         return zeit.cms.interfaces.ICMSContent(self.xml.get('href'), None)
@@ -74,6 +82,13 @@ def create_video_block_from_video(body, context):
     block = Factory(body)()
     block.video = context
     return block
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.edit.interfaces.IVideo,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def update_empty(context, event):
+    context.is_empty = context.video is None and context.video_2 is None
 
 
 @grokcore.component.subscribe(

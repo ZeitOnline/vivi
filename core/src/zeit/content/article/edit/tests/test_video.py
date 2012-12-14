@@ -7,6 +7,7 @@ import mock
 import pytz
 import unittest
 import zeit.content.article.testing
+import zope.lifecycleevent
 
 
 class VideoTest(unittest.TestCase):
@@ -182,3 +183,29 @@ class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(
             '2012-01-01T00:00:00+00:00',
             article.xml.body.division.video.get('expires'))
+
+
+class VideoEmptyMarker(
+    zeit.content.article.testing.FunctionalTestCase,
+    zeit.content.article.edit.tests.test_reference.EmptyMarkerTest):
+
+    block_type = 'video'
+
+    def create_reference(self):
+        from zeit.content.video.video import Video
+        self.repository['video'] = Video()
+        return self.repository['video']
+
+    def test_block_is_not_empty_after_setting_reference(self):
+        block = self.create_block()
+        block.video = self.create_reference()
+        zope.lifecycleevent.modified(block)
+        self.assertFalse(block.is_empty)
+
+    def test_block_is_empty_after_removing_reference(self):
+        block = self.create_block()
+        block.video = self.create_reference()
+        zope.lifecycleevent.modified(block)
+        block.video = None
+        zope.lifecycleevent.modified(block)
+        self.assertTrue(block.is_empty)

@@ -22,6 +22,14 @@ class Reference(zeit.edit.block.SimpleElement):
     area = zeit.content.article.edit.interfaces.IEditableBody
     grokcore.component.baseclass()
 
+    is_empty = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'is_empty',
+        zeit.content.article.edit.interfaces.IReference['is_empty'])
+
+    def __init__(self, *args, **kw):
+        super(Reference, self).__init__(*args, **kw)
+        self.is_empty = True
+
     @property
     def references(self):
         return zeit.cms.interfaces.ICMSContent(self.xml.get('href'), None)
@@ -56,6 +64,13 @@ def find_commonmetadata(context):
     body = context.__parent__
     article = body.__parent__
     return article
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.edit.interfaces.IReference,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def update_empty(context, event):
+    context.is_empty = context.references is None
 
 
 class Gallery(Reference):

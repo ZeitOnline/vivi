@@ -4,6 +4,7 @@
 import mock
 import unittest
 import zeit.content.article.testing
+import zope.lifecycleevent
 
 
 class ReferenceTest(unittest.TestCase):
@@ -182,3 +183,74 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
 
     def test_image_metadata_should_be_updated(self):
         self.assert_updated(self.repository['2006']['DSC00109_2.JPG'], 'image')
+
+
+class EmptyMarkerTest(object):
+
+    block_type = NotImplemented
+
+    def create_block(self):
+        return self.get_factory(self.get_article(), self.block_type)()
+
+    def create_reference(self):
+        raise NotImplementedError()
+
+    def test_block_is_empty_after_creation(self):
+        block = self.create_block()
+        self.assertTrue(block.is_empty)
+
+    def test_block_is_not_empty_after_setting_reference(self):
+        block = self.create_block()
+        block.references = self.create_reference()
+        zope.lifecycleevent.modified(block)
+        self.assertFalse(block.is_empty)
+
+    def test_block_is_empty_after_removing_reference(self):
+        block = self.create_block()
+        block.references = self.create_reference()
+        zope.lifecycleevent.modified(block)
+        block.references = None
+        zope.lifecycleevent.modified(block)
+        self.assertTrue(block.is_empty)
+
+
+class ImageEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
+                       EmptyMarkerTest):
+
+    block_type = 'image'
+
+    def create_reference(self):
+        return self.repository['2006']['DSC00109_2.JPG']
+
+
+class GalleryEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
+                         EmptyMarkerTest):
+
+    block_type = 'gallery'
+
+    def create_reference(self):
+        from zeit.content.gallery.gallery import Gallery
+        self.repository['gallery'] = Gallery()
+        return self.repository['gallery']
+
+
+class PortraitboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
+                             EmptyMarkerTest):
+
+    block_type = 'portraitbox'
+
+    def create_reference(self):
+        from zeit.content.portraitbox.portraitbox import Portraitbox
+        self.repository['portraitbox'] = Portraitbox()
+        return self.repository['portraitbox']
+
+
+class InfoboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
+                         EmptyMarkerTest):
+
+    block_type = 'infobox'
+
+    def create_reference(self):
+        from zeit.content.infobox.infobox import Infobox
+        self.repository['infobox'] = Infobox()
+        return self.repository['infobox']
