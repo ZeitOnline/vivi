@@ -7,14 +7,10 @@ import zeit.content.article.edit.interfaces
 import zope.interface
 
 
-@glob(zeit.content.article.interfaces.IArticle)
-def article(context):
-    return True
-
-
 @glob(zope.interface.Interface)
 def article(context):
-    return False
+    article = zeit.content.article.interfaces.IArticle(context, None)
+    return article is not None
 
 
 @glob(zeit.content.article.edit.interfaces.IVideo)
