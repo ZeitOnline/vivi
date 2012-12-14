@@ -180,7 +180,7 @@
 
 /* Teaser: Knopf und Artikel */
 
-#edit-form-article-content.editable-area .label,
+#edit-form-article-content.editable-area > .block-inner > .inline-form .label,
 #edit-form-teaser.editable-area .label {
   display: none;
 }
