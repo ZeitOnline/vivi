@@ -105,7 +105,14 @@ zeit.find.Search = zeit.find.BaseView.extend({
         var self = this;
         forEach($('zeit-find-search-form').elements, function(element) {
             if (element.nodeName == 'SELECT') {
-                element.selectedIndex = 0;
+                var default_value = element.getAttribute('default');
+                var index = 0;
+                if (default_value) {
+                    var default_option = jQuery(
+                        'option[value="' + default_value + '"]', element);
+                    index = default_option.index();
+                }
+                element.selectedIndex = index;
             } else if (element.nodeName == 'INPUT') {
                 if (element.type == 'checkbox') {
                     element.checked = false;
