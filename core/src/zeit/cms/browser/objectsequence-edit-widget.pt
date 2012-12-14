@@ -23,7 +23,7 @@
             view.display_url_field and not view.query_view"
          tal:attributes="id string:${view/name}.url;
                          name string:${view/name}.url" />
-  <a rel="configure_search" class="button"
+  <a rel="configure_search" class="button configure_search"
      tal:condition="python:
         view.display_search_button and not view.query_view"></a>
 

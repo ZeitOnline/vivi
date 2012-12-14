@@ -553,19 +553,20 @@ table.properties textarea {
     width: 10em;
 }
 
-.object-widget a.button[rel="configure_search"] {
+.object-widget a.button.configure_search {
   padding-left: 2px;
   padding-right: 2px;
   background-position: 9px -55px, 0 0;
+  margin-right: 25px;
 }
 
-.object-widget a.button[rel="configure_search"]:before {
+.object-widget a.button.configure_search:before {
   content: "";
   display: inline-block;
   width: 2em;
 }
 
-.object-widget a[rel="configure_search"]:hover {
+.object-widget a.configure_search:hover {
   background-position: 9px -85px, 0 0 !important;
 }
 
