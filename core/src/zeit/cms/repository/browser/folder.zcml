@@ -52,13 +52,14 @@
     allowed_attributes="hidden"
     />
 
-  <browser:viewlet
-    name="hide_in_tree"
+  <browser:menuItem
+    menu="zeit-context-actions"
+    title="Hide"
+    action="@@hide-from-tree.html"
     for="zeit.cms.repository.interfaces.ICollection"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".repository.HideMenuItem"
-    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.cms.repository.ViewNavigationTree"
+    filter="not: context/@@hide-from-tree.html/hidden"
+    icon="hide"
     />
 
   <browser:page
@@ -70,13 +71,14 @@
     allowed_attributes="hidden"
     />
 
-  <browser:viewlet
-    name="show_in_tree"
+  <browser:menuItem
+    menu="zeit-context-actions"
+    title="Show"
+    action="@@show-in-tree.html"
     for="zeit.cms.repository.interfaces.ICollection"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".repository.ShowMenuItem"
-    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.cms.repository.ViewNavigationTree"
+    filter="context/@@show-in-tree.html/hidden"
+    icon="show"
     />
 
   <browser:icon

@@ -7,15 +7,24 @@ import time
 import xml.sax.saxutils
 import z3c.menu.simple.menu
 import zope.app.pagetemplate
+import zope.app.publisher.browser.menu
 import zope.app.publisher.interfaces.browser
 import zope.viewlet.interfaces
 import zope.viewlet.viewlet
 
 
+class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
+
+    def getMenuItems(self, object, request):
+        result = super(ExternalActionsMenu, self).getMenuItems(object, request)
+        for item in result:
+            item['target'] = "_blank"
+        return result
+
+
 class MenuItemBase(zope.viewlet.viewlet.ViewletBase):
 
     sort = 0
-    target = None
 
     def __cmp__(self, other):
         __traceback_info__ = (self, other)

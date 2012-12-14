@@ -83,8 +83,10 @@
             <div class="GlobalInformation" 
                  tal:content="structure provider:zeit.cms.GlobalInformation" />
 
-            <div id="header-actions">
-              <tal:replace replace="structure provider:zeit.cms.header-actions" />
+            <div class="header-actions">
+              <ul>
+                <tal:replace replace="structure provider:zeit.cms.context-actions" />
+              </ul>
             </div>
         </div>
 

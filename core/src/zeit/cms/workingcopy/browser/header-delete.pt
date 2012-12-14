@@ -1,9 +1,0 @@
-<a
- i18n:domain="zeit.cms"
- tal:define="context_url context/@@absolute_url"
- tal:attributes="href string:${context_url}/@@delete.html;"
- class="button"
- i18n:attributes="title"
- title="Cancel"
- i18n:translate=""
->Cancel</a>

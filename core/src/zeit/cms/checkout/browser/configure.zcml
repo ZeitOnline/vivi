@@ -74,26 +74,4 @@
     icon="/@@/zeit.cms/icons/checkin_correction.png"
     />
 
-  <browser:viewlet
-    manager="zeit.cms.browser.interfaces.IHeaderActions"
-    for="zeit.cms.interfaces.ICMSContent"
-    name="checkout"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".manager.CheckoutAction"
-    template="header-checkout.pt"
-    permission="zeit.Checkout"
-    weight="10"
-    />
-
-  <browser:viewlet
-    manager="zeit.cms.browser.interfaces.IHeaderActions"
-    for="zeit.cms.interfaces.ICMSContent"
-    name="preview"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".manager.CheckinAction"
-    template="header-checkout.pt"
-    permission="zeit.Checkin"
-    weight="50"
-    />
-
 </configure>

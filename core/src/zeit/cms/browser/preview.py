@@ -1,7 +1,6 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.i18n import MessageFactory as _
 import urlparse
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
@@ -73,11 +72,3 @@ class Live(PreviewBase):
 class DevelopmentPreview(PreviewBase):
 
     preview_type = 'development-preview'
-
-
-class DevelopmentMenuItem(zeit.cms.browser.menu.ActionMenuItem):
-
-    title = _('Development')
-    action = '@@show_development-preview'
-    icon = ''
-    target = '_blank'
