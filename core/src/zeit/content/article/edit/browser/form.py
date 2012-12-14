@@ -56,6 +56,7 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article content forms."""
 
     title = _('Article')
+    folded_workingcopy = False
 
     @property
     def body(self):
