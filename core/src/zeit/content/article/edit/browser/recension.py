@@ -15,7 +15,6 @@ class RecensionForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article recension forms."""
 
     title = _('Recensions')
-    folded_workingcopy = True
 
     def render(self):
         if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(
