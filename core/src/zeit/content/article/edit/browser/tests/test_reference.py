@@ -154,6 +154,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         landing_zone = 'css=#form-teaser-image .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
+        s.click('css=#edit-form-teaser .fold-link')
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-teaser-image .image_details')
         s.waitForElementPresent('css=#form-leadteaser .image_details')
@@ -173,6 +174,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         landing_zone = 'css=#form-teaser-image .fieldname-image .landing-zone'
         s.waitForElementPresent(landing_zone)
+        s.click('css=#edit-form-teaser .fold-link')
         s.dragAndDropToObject('//li[@uniqueid="Clip/my_group"]', landing_zone)
         s.waitForElementPresent('css=#form-teaser-image .image_details')
         s.waitForElementPresent(

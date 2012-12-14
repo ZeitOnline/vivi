@@ -56,6 +56,7 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
     """Article content forms."""
 
     title = _('Article')
+    folded_workingcopy = False
 
     @property
     def body(self):
@@ -180,8 +181,6 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
 class LeadTeaserForms(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Lead teaser')
-    folded_workingcopy = True
-    folded_repository = True
 
 
 class AssetBadges(zeit.edit.browser.form.InlineForm):
@@ -202,7 +201,6 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'leadteaser'
     undo_description = _('edit lead teaser')
-    folded_workingcopy = True
     form_fields = FormFields(
         zeit.content.image.interfaces.IImages,
         zeit.content.gallery.interfaces.IGalleryReference,
@@ -293,7 +291,6 @@ class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):
     """Metadata forms view."""
 
     title = _('Metadata')
-    folded_repository = True
 
 
 class Keywords(zeit.edit.browser.form.InlineForm):
@@ -388,7 +385,6 @@ class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
     """Teaser workflow forms."""
 
     title = _('Teaser')
-    folded_repository = True
 
 
 class TeaserImage(zeit.edit.browser.form.InlineForm):
@@ -481,8 +477,6 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Options')
-    folded_workingcopy = True
-    folded_repository = True
 
 
 class OptionsA(zeit.edit.browser.form.InlineForm):
