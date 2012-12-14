@@ -85,16 +85,14 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_metadata_should_be_foldable_and_unfoldable(self):
         s = self.selenium
-        s.waitForElementNotPresent('css=#edit-form-metadata.folded')
-        s.click('css=#edit-form-metadata .edit-bar .fold-link')
         s.waitForElementPresent('css=#edit-form-metadata.folded')
         s.click('css=#edit-form-metadata .edit-bar .fold-link')
         s.waitForElementNotPresent('css=#edit-form-metadata.folded')
+        s.click('css=#edit-form-metadata .edit-bar .fold-link')
+        s.waitForElementPresent('css=#edit-form-metadata.folded')
 
     def test_unfold_should_be_stored(self):
         s = self.selenium
-        s.waitForElementNotPresent('css=#edit-form-metadata.folded')
-        s.click('css=#edit-form-metadata .edit-bar .fold-link')
         s.waitForElementPresent('css=#edit-form-metadata.folded')
         s.click('css=#edit-form-metadata .edit-bar .fold-link')
         s.waitForElementNotPresent('css=#edit-form-metadata.folded')
