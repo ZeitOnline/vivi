@@ -60,6 +60,22 @@
           </div>
           <div id="header"
               tal:attributes="class sidebar_css">
+          <ul id="breadcrumbs">
+            <li tal:repeat="item context/@@breadcrumbs/get_breadcrumbs">
+              <a tal:attributes="title  item/title;
+                href   item/url;"
+                tal:content="item/title">
+                Directory foo
+              </a>
+              <span class="uniqueId"
+                    tal:condition="item/uniqueId"
+                    tal:content="item/uniqueId" />
+              <span class="breadcrumb-separator"
+                    tal:condition="not:repeat/item/end">
+                →
+              </span> 
+            </li>
+          </ul>
           <ul id="main-navigation"
               tal:content="structure provider:zeit.cms.GlobalViews">
             </ul>

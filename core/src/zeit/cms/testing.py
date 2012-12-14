@@ -190,6 +190,7 @@ cms_product_config = string.Template("""\
   suggest-keyword-real-name Dr. No
   whitelist-url file://${base}/tagging/tests/whitelist.xml
   keyword-configuration file://${base}/tagging/tests/keywords_config.xml
+  breadcrumbs-use-common-metadata true
 </product-config>
 """).substitute(
     base=pkg_resources.resource_filename(__name__, ''))

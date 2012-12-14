@@ -104,4 +104,21 @@ MochiKit.Signal.connect(
     }
 );
 
+
+// set up draggables for breadcrumbs
+MochiKit.Signal.connect(window, 'onload', function(event) {
+    var breadcrumbs = $('breadcrumbs');
+    if (breadcrumbs === null) {
+        return;
+    }
+    var lis = breadcrumbs.getElementsByTagName('li');
+    forEach(lis, function(li) {
+        if (!isUndefinedOrNull(MochiKit.DOM.getFirstElementByTagAndClassName(
+            'span', 'uniqueId', li))) {
+            zeit.cms.createDraggableContentObject(li);
+        }
+    });
+
+});
+
 }());
