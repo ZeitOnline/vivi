@@ -18,14 +18,14 @@
 
   <div>
   <tal:x condition="view/query_view" replace="structure view/query_view"/>
-  <a rel="configure_search" class="button"
-     tal:condition="python:
-        view.display_search_button and not view.query_view"></a>
   <input type="text" placeholder="Link einfügen"
          tal:condition="python:
             view.display_url_field and not view.query_view"
          tal:attributes="id string:${view/name}.url;
                          name string:${view/name}.url" />
+  <a rel="configure_search" class="button"
+     tal:condition="python:
+        view.display_search_button and not view.query_view"></a>
 
   <a target="_blank" class="add_view button"
      tal:attributes="href view/add_view"

@@ -6,12 +6,12 @@
            value view/_getFormValue" />
     <div class="object-reference landing-zone-candidate"></div>
   <div>
-    <a tal:condition="view/display_search_button"
-       rel="configure_search" class="button"></a>
     <input tal:condition="view/display_url_field"
         type="text" placeholder="Link einfügen" tal:attributes="
            id string:${view/name}.url;
            name string:${view/name}.url;" />
+    <a tal:condition="view/display_search_button"
+       rel="configure_search" class="button"></a>
 
     <a target="_blank" class="add_view button"
        tal:condition="view/add_view"
