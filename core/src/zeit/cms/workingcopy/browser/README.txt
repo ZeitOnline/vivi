@@ -71,7 +71,7 @@ There is a link to get to the original document:
 There link will not be rendered when the original document was deleted:
 
 >>> browser.getLink('Show original').click()
->>> browser.getLink('Delete').url
+>>> browser.getLink('Delete', index=1).url
 "javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@delete.html')"
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@delete.html')
 >>> browser.getControl('Delete').click()
@@ -98,7 +98,7 @@ There is a delete link to remove object from the workingcopy again:
 
 >>> browser.getLink('Somalia').click()
 >>> browser.getLink('Cancel')
-<Link text='Cancel'
+<Link text='[IMG] Cancel'
     url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@delete.html')">
 
 Let's open the delete form:

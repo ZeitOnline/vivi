@@ -29,7 +29,7 @@
     for="zeit.cms.repository.interfaces.IRepositoryContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".lock.MenuItem"
-    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
+    manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.Lock"
     lightbox="@@locks.html"
     sort="80"

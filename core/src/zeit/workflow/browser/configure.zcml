@@ -119,15 +119,6 @@
     icon="/@@/zeit.cms/icons/page_white_lightning.png"
     />
 
-  <browser:viewlet
-    name="Publish"
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    template="header-publish.pt"
-    manager="zeit.cms.browser.interfaces.IHeaderActions"
-    permission="zeit.workflow.Publish"
-    />
-
   <browser:page
     for="zeit.cms.repository.interfaces.IRepositoryContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -154,16 +145,6 @@
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.workflow.Publish"
     icon="/@@/zeit.cms/icons/missing.gif"
-    />
-
-  <browser:viewlet
-    name="Retract"
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".publish.RetractMenuItemBase"
-    template="header-retract.pt"
-    manager="zeit.cms.browser.interfaces.IHeaderActions"
-    permission="zeit.workflow.Publish"
     />
 
   <browser:page
