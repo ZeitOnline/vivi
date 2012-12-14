@@ -56,7 +56,7 @@ class InlineForm(zeit.cms.testing.FunctionalTestCase):
 class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
 
     def render(self, in_workingcopy,
-               folded_workingcopy=None, folded_repository=None):
+               folded_workingcopy=False, folded_repository=False):
         class ExampleForm(zeit.edit.browser.form.FoldableFormGroup):
             title = 'Example'
 
@@ -75,21 +75,13 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
         form = ExampleForm(context, request, Mock(), Mock())
         return form()
 
-    def test_default_for_workingcopy_is_folded(self):
-        self.assertEllipsis(
-            '...folded...', self.render(in_workingcopy=True))
-
-    def test_default_for_repository_is_folded(self):
-        self.assertEllipsis(
-            '...folded...', self.render(in_workingcopy=False))
-
     def test_setting_folded_workingcopy_renders_css_class(self):
         self.assertEllipsis(
             '...folded...', self.render(in_workingcopy=True,
             folded_workingcopy=True))
         self.assertNotEllipsis(
             '...folded...', self.render(in_workingcopy=False,
-            folded_workingcopy=True))
+            folded_workingcopy=True, folded_repository=False))
 
     def test_setting_folded_repository_renders_css_class(self):
         self.assertEllipsis(
@@ -98,3 +90,13 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
         self.assertNotEllipsis(
             '...folded...', self.render(in_workingcopy=True,
             folded_repository=True))
+
+    def test_default_for_workingcopy_is_folded(self):
+        self.assertEllipsis(
+            '...folded...', self.render(in_workingcopy=True,
+            folded_workingcopy=None, folded_repository=None))
+
+    def test_default_for_repository_is_folded(self):
+        self.assertEllipsis(
+            '...folded...', self.render(in_workingcopy=False,
+            folded_workingcopy=None, folded_repository=None))
