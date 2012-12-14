@@ -170,17 +170,6 @@
     icon="/@@/zeit.cms/icons/page_white_lightning.png"
     />
 
-  <browser:viewlet
-    name="Publish"
-    for="zeit.content.cp.interfaces.ICenterPage"
-    view="zeit.edit.browser.editor.Editor"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".publish.MenuItemBase"
-    template="header-publish.pt"
-    manager="zeit.cms.browser.interfaces.IHeaderActions"
-    permission="zeit.EditContent"
-    />
-
   <browser:page
     for="zeit.content.cp.interfaces.ICenterPage"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

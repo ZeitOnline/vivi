@@ -9,7 +9,11 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.workflow.interfaces
 import zope.component
 
-class MenuItemBase(object):
+
+class MenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
+
+    sort = -1
+    lightbox = '@@publish.html'
 
     def is_visible(self):
         manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
@@ -19,14 +23,8 @@ class MenuItemBase(object):
     def render(self):
         if self.is_visible():
             zc.resourcelibrary.need('zeit.workflow.publish')
-            return super(MenuItemBase, self).render()
+            return super(MenuItem, self).render()
         return ''
-
-
-class MenuItem(MenuItemBase, zeit.cms.browser.menu.LightboxActionMenuItem):
-
-    sort = -1
-    lightbox = '@@publish.html'
 
 
 class Publish(object):
