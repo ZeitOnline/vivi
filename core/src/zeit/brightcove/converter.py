@@ -245,7 +245,6 @@ class Video(Converter):
         'economics',
         'endDate',
         'id',
-        'ignore_for_update',
         'itemState',
         'lastModifiedDate',
         'length',
@@ -353,7 +352,8 @@ class Video(Converter):
         data = dict(self.data)
         if 'customFields' in data:
             data['customFields'] = dict(data['customFields'])
-        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate']
+        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate',
+                     'ignore_for_update']
         for field in READ_ONLY:
             data.pop(field, None)
         self.get_connection().post('update_video', video=data)
