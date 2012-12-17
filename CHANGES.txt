@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-1.41.1 (unreleased)
+1.41.1 (2012-12-17)
 -------------------
 
 - Fix bug in video conversion step: empty format could not be converted from
