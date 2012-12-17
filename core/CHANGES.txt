@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-1.25.2 (unreleased)
+1.26.0 (2012-12-17)
 -------------------
 
 - Include new required properties in the test content fixture.
