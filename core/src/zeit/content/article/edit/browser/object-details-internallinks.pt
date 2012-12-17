@@ -1,0 +1,8 @@
+<div tal:attributes="
+   class string:object-details type-${view/type_declaration/type_identifier};">
+  <div class="object-details-heading"
+       tal:content="structure context/@@object-details-internallinks-heading" />
+  <div class="object-details-body"
+       tal:content="structure context/@@object-details-internallinks-body" />
+  <div style="clear:both"></div>
+</div>

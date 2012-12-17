@@ -1,0 +1,20 @@
+<div i18n:domain="zeit.cms">
+  <span tal:attributes="class string:content-icon type-${view/type_declaration/type_identifier}">
+  <img tal:replace="structure context/@@zmi_icon|nothing"/>
+  <span class="uniqueId" tal:content="context/uniqueId" />
+  </span>
+  <span tal:replace ="structure context/@@published-icon" />
+  <div class="filename"
+       tal:content="view/resources_filename">
+  </div>
+  <ul class="metadata">
+    <li tal:repeat="item view/display_metadata_short" tal:content="item" />
+  </ul>
+  <div class="preview object-link">
+    <a tal:attributes="href view/live_url" i18n:translate=""
+       target="_blank">
+      Live
+    </a>
+  </div>
+</div>
+
