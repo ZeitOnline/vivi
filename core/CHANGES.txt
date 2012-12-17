@@ -4,7 +4,8 @@ zeit.brightcove changes
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Evaluate ignore_for_update customField, which results in not updating
+  anything, if set to true (#11782)
 
 
 2.4.0 (2012-06-07)
