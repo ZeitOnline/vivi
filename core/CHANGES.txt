@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove ignore_for_update from BC-URL (#11805)
 
 
 2.5.0 (2012-12-17)
