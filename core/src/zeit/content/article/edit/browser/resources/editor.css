@@ -1125,6 +1125,14 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   margin: 5px 0 5px 0;
 }
 
+#edit-form-leadteaser .field .widget {
+  border-bottom: 1px solid #e4e4e4;
+}
+
+#edit-form-leadteaser .field .label {
+  margin-top: 10px;
+}
+
 
 /* TEASER AREA */
 
@@ -1238,8 +1246,8 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin:1em !important;
 }
 
-.fieldname-audio_id .widget {
-  margin-bottom: 2.5em;
+.fieldname-audio_id .textType {
+  margin-bottom: 1.5em;
 }
 
 
