@@ -62,7 +62,10 @@ class Details(zeit.cms.browser.view.Base):
 
     @property
     def resources_filename(self):
-        return "resources_filename"
+        urlstring = zope.component.queryMultiAdapter(
+            (self.context, 'live'),
+            zeit.cms.browser.interfaces.IPreviewURL)
+        return urlstring.split('/')[-1]
 
     @zope.cachedescriptors.property.Lazy
     def graphical_preview_url(self):
