@@ -514,6 +514,34 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    name="related-details"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    template="object-details-internallinks.pt"
+    class="zeit.cms.browser.objectdetails.Details"
+    permission="zope.View"
+   />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-internallinks-heading"
+    class="zeit.cms.browser.objectdetails.Details"
+    template="object-details-internallinks-heading.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-internallinks-body"
+    class="zeit.cms.browser.objectdetails.Details"
+    template="object-details-internallinks-body.pt"
+    permission="zope.View"
+    />
+
+
   <!-- miscellaneous -->
 
   <browser:viewlet

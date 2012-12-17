@@ -249,7 +249,7 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
     
     def setUpWidgets(self, *args, **kw):
         super(InternalLinks, self).setUpWidgets(*args, **kw)
-        # self.widgets['related'].detail_view_name = '@@related-details'
+        self.widgets['related'].detail_view_name = '@@related-details'
 
     def __call__(self):
         zope.interface.alsoProvides(
