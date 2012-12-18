@@ -20,6 +20,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.old_video = VIDEO_1234.copy()
 
     def tearDown(self):
+        zeit.brightcove.testing.RequestHandler.sleep = 0
         VIDEO_1234.update(self.old_video)
         super(UpdateVideoTest, self).tearDown()
 
