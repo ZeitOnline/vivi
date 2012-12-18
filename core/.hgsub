@@ -1,1 +1,1 @@
-versions = [svn]https://code.gocept.com/svn/gocept-int/zeit.cms/zeit.buildout/trunk/versions
+versions = [hg] https://bitbucket.org/gocept/zeit.versions
