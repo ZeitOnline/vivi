@@ -63,6 +63,7 @@ setup(
         'zc.table',
         'zdaemon',
         'zeit.connector>=1.24.0dev',
+        'zeit.find',
         'zeit.objectlog>=0.6',
         'zope.app.apidoc',
         'zope.app.catalog',
