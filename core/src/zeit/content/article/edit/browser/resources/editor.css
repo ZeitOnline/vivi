@@ -28,7 +28,7 @@
 }
 
 .type-article .object-details-heading span.publish-state {
-  padding-left:35px;
+  padding-left:25px;
   background-position: 15px auto;
 }
 
@@ -1234,6 +1234,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 9em;
 }
 
 
