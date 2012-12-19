@@ -47,9 +47,7 @@
 
 .object-details-heading {
     background: none repeat scroll 0 0 #FFF;
-    padding-top: 5px;
     padding-right: 30px;
-    padding-left: 10px;
 }
 
 .object-details-heading img {
@@ -129,8 +127,9 @@
 }
 
 .object-details-body {
-    padding: 1em;
     clear: both;
+    padding-bottom: 1em;
+    padding-right: 1em;
 }
 
 .object-details .supertitle {
