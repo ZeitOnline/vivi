@@ -1194,15 +1194,23 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   display: none;
 }
 
-#teaser-image\.images\.url {
-  width: 9em;
+/* Teaser image */
+#teaser-image\.image {
+  margin-top: -0.6em;
 }
 
-#teaser-image\.images a[rel="remove"] {
+#teaser-image\.image\.url {
+  width: 8em;
+}
+
+#teaser-image\.image .edit-button {
   margin-top: 26px;
 }
 
-/* Teaser image */
+#teaser-image\.image a[rel="remove"] {
+  margin-top: 32px;
+}
+
 #teaser-image\.image .object-details-heading {
   padding-right: 0;
 }
