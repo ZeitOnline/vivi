@@ -15,7 +15,6 @@
 
   <include package="zeit.cms.testcontenttype" />
 
-  <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
   <include package="zeit.cms" file="principals-testing.zcml" />
 
   <include package="zeit.cms.testcontenttype" />

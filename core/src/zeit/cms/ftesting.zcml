@@ -16,8 +16,6 @@
   <include package="zeit.connector" file="mock-connector.zcml" />
   <include package="zeit.cms.testcontenttype" />
 
-  <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
-
   <include package="zeit.cms.workflow" file="mock.zcml" />
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
