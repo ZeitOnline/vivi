@@ -296,6 +296,7 @@
 
 #article-editor-text #editable-body .block-inner .object-details{
   border: 0px solid white;
+  margin-top: 2px;
 }
 
 #article-editor-text #editable-body .block-inner .edit-bar {
@@ -649,9 +650,10 @@
 /* Image block layouts */
 
 .object-details .image_details span.copyright {
-  float: right;
-  padding-bottom: 5px;
-  padding-top: 5px
+  font-size: 11px;
+  position: absolute;
+  right: 0;
+  top: 22px;
 }
 
 .object-details .toggle_infos {
@@ -723,6 +725,7 @@
 
 .fieldname-references {
   margin: 0;
+  padding: 0;
 }
 
 #edit-form-article-content .block.type-raw .field.fieldname-xml .label,
