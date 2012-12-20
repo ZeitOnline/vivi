@@ -178,6 +178,11 @@
   border-bottom: 0;
 }
 
+/* Article content main image */
+#edit-form-article-content .inline-form.wired .fieldname-main_image {
+  width: auto;
+}
+
 /* Teaser: Knopf und Artikel */
 
 #edit-form-article-content.editable-area > .block-inner > .inline-form .label,
@@ -1148,12 +1153,14 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #edit-form-leadteaser .object-details-body,
-#edit-form-leadteaser .object-details-heading {
+#edit-form-leadteaser .object-details-heading,
+#article-content-main-image\.main_image .object-details-body {
   padding-left: 1em;
   padding-right: 2em;
 }
 
 #edit-form-leadteaser .object-details-body,
+#article-content-main-image\.main_image .object-details-body,
 #edit-form-article-content .object-details-body {
   width: 540px;
 }
@@ -1502,6 +1509,7 @@ iframe.preview {
 /* Object Detail Modules */
 
 #form-leadteaser,
+#form-article-content-main-image,
 #editable-body fieldset {
   width: 540px;
 }
