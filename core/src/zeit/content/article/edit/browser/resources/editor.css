@@ -717,6 +717,11 @@
   -moz-appearance: none;
 }
 
+#article-editor-text .object-details.type-video .graphical_preview,
+#edit-form-leadteaser .object-details.type-video .graphical_preview {
+  float: none;
+}
+
 /* display landing zones of the two videos side by side */
 
 #edit-form-article-content .block.type-video .field.fieldname-layout {
