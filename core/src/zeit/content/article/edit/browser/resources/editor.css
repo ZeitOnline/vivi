@@ -652,7 +652,7 @@
 .object-details .image_details span.copyright {
   font-size: 11px;
   position: absolute;
-  right: 12px;
+  right: 25px;
   top: 22px;
 }
 
@@ -1150,6 +1150,12 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 #edit-form-leadteaser .object-details-body,
 #edit-form-leadteaser .object-details-heading {
   padding-left: 1em;
+  padding-right: 2em;
+}
+
+#edit-form-leadteaser .object-details-body,
+#edit-form-article-content .object-details-body {
+  width: 540px;
 }
 
 
