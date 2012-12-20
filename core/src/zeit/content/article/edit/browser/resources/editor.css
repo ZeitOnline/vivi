@@ -1098,6 +1098,11 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   padding-top: 2px;
 }
 
+#options-layout\.layout .object-details {
+  padding-left: 1em;
+  padding-bottom: 1em;
+}
+
 #edit-form-status .fieldtype-checkbox,
 #edit-form-metadata .fieldtype-checkbox,
 #edit-form-misc .fieldtype-checkbox,
