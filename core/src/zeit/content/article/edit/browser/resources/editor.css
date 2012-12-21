@@ -28,7 +28,7 @@
 }
 
 .type-article .object-details-heading span.publish-state {
-  padding-left:35px;
+  padding-left:25px;
   background-position: 15px auto;
 }
 
@@ -178,6 +178,11 @@
   border-bottom: 0;
 }
 
+/* Article content main image */
+#edit-form-article-content .inline-form.wired .fieldname-main_image {
+  width: auto;
+}
+
 /* Teaser: Knopf und Artikel */
 
 #edit-form-article-content.editable-area > .block-inner > .inline-form .label,
@@ -296,6 +301,7 @@
 
 #article-editor-text #editable-body .block-inner .object-details{
   border: 0px solid white;
+  margin-top: 2px;
 }
 
 #article-editor-text #editable-body .block-inner .edit-bar {
@@ -649,10 +655,10 @@
 /* Image block layouts */
 
 .object-details .image_details span.copyright {
-  display: block;
+  font-size: 11px;
   position: absolute;
-  top: 6px;
-  right: 0px;
+  right: 25px;
+  top: 22px;
 }
 
 .object-details .toggle_infos {
@@ -663,8 +669,6 @@
 
 .object-details .image_details img {
   display: block;
-  height: 320px;
-  max-width: 480px;
 }
 
 .object-details .image_details .picture_information {
@@ -718,10 +722,20 @@
   -moz-appearance: none;
 }
 
+#article-editor-text .object-details.type-video .graphical_preview,
+#edit-form-leadteaser .object-details.type-video .graphical_preview {
+  float: none;
+}
+
 /* display landing zones of the two videos side by side */
 
 #edit-form-article-content .block.type-video .field.fieldname-layout {
   clear:both;
+}
+
+.fieldname-references {
+  margin: 0;
+  padding: 0;
 }
 
 #edit-form-article-content .block.type-raw .field.fieldname-xml .label,
@@ -1089,6 +1103,11 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   padding-top: 2px;
 }
 
+#options-layout\.layout .object-details {
+  padding-left: 1em;
+  padding-bottom: 1em;
+}
+
 #edit-form-status .fieldtype-checkbox,
 #edit-form-metadata .fieldtype-checkbox,
 #edit-form-misc .fieldtype-checkbox,
@@ -1123,6 +1142,27 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #edit-form-leadteaser .inline-form .field {
   margin: 5px 0 5px 0;
+}
+
+#edit-form-leadteaser .field .widget {
+  border-bottom: 1px solid #e4e4e4;
+}
+
+#edit-form-leadteaser .field .label {
+  margin-top: 10px;
+}
+
+#edit-form-leadteaser .object-details-body,
+#edit-form-leadteaser .object-details-heading,
+#article-content-main-image\.main_image .object-details-body {
+  padding-left: 1em;
+  padding-right: 2em;
+}
+
+#edit-form-leadteaser .object-details-body,
+#article-content-main-image\.main_image .object-details-body,
+#edit-form-article-content .object-details-body {
+  width: 540px;
 }
 
 
@@ -1180,15 +1220,23 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   display: none;
 }
 
-#teaser-image\.images\.url {
-  width: 9em;
+/* Teaser image */
+#teaser-image\.image {
+  margin-top: -0.6em;
 }
 
-#teaser-image\.images a[rel="remove"] {
+#teaser-image\.image\.url {
+  width: 8em;
+}
+
+#teaser-image\.image .edit-button {
   margin-top: 26px;
 }
 
-/* Teaser image */
+#teaser-image\.image a[rel="remove"] {
+  right: 0;
+}
+
 #teaser-image\.image .object-details-heading {
   padding-right: 0;
 }
@@ -1212,6 +1260,7 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  width: 9em;
 }
 
 
@@ -1238,8 +1287,8 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin:1em !important;
 }
 
-.fieldname-audio_id .widget {
-  margin-bottom: 2.5em;
+.fieldname-audio_id .textType {
+  margin-bottom: 1.5em;
 }
 
 
@@ -1454,4 +1503,19 @@ iframe.preview {
 .article-editor-inner a.button.disabled,
 .article-editor-inner a.button[disabled] {
   color: #999999;
+}
+
+
+/* Object Detail Modules */
+
+#form-leadteaser,
+#form-article-content-main-image,
+#editable-body fieldset {
+  width: 540px;
+}
+
+#editable-body fieldset {
+  border-right: 1px solid #e4e4e4;
+  padding-left: 5px;
+  padding-right: 5px;
 }
