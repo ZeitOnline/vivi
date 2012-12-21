@@ -118,7 +118,6 @@ table.gallery a.show-image {
 
 .object-details .gallery_details {
 	cursor: default;
-	margin: 0 0 0 -1em;
 }
 
 .object-details .gallery_details .gallery_details_display {
@@ -164,7 +163,8 @@ table.gallery a.show-image {
   position: relative;
 }
 
-.object-details .image_details a.edit-button {
+.object-details .image_details a.edit-button,
+.object-details .gallery_details a.edit-button {
   float: left;
   margin-left: 12px;
 }
@@ -176,7 +176,7 @@ table.gallery a.show-image {
 }
 
 #edit-form-teaser .object-details .image_details a.edit-button {
-  margin-right: 20px;
+  margin-right: 8px;
 }
 
 
