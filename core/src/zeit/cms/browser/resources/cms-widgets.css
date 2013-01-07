@@ -581,6 +581,14 @@ table.properties textarea {
   border: 1px solid transparent;
 }
 
+.object-widget ul {
+  padding-left: 0;
+}
+
+.object-widget li {
+  list-style: none;
+}
+
 .drop-object-widget.landing-zone {
   visibility: visible;
   border: transparent;
