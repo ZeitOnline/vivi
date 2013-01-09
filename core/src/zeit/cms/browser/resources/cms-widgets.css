@@ -499,7 +499,7 @@ table.properties textarea {
 .drop-object-widget .object-reference a[rel="remove"] {
   background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 68px -417px;
   background-color: rgba(0,0,0,0.6);
-  border-radius: 5px 5px 5px 5px;
+  border-radius: 2px 2px 2px 2px;
   border: 1px solid #000000;
   color: #fff;
   cursor: pointer;
