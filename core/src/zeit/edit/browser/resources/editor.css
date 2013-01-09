@@ -736,6 +736,10 @@ legend {
   font-size: 14px;
 }
 
+#editor-forms a.add_view {
+  background-position: 7px -114px, 0 0;
+}
+
 /* Checkboxes */
 
 .inline-form .fieldtype-checkbox .widget {
