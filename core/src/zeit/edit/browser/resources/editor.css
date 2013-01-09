@@ -506,7 +506,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .inline-form .label {
   display: block;
   float: left;
-  font-size: 10px;
+  font-size: 9px;
   margin-bottom: 2px;
   overflow: hidden;
 }
