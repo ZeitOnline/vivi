@@ -602,6 +602,7 @@
   padding: 1em;
   position: absolute;
   width: 80%;
+  z-index: 1000;
 }
 
 .link_input input[name=href] {
