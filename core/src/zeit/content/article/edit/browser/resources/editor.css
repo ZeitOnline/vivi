@@ -642,15 +642,11 @@
 /* Gallery block layouts*/
 
 #leadteaser\.gallery .object-details {
-	margin: 1em 0;
+	margin-bottom: 1em;
 }
 
 #leadteaser\.gallery .object-details .gallery_details {
 	margin: 0;
-}
-
-#leadteaser\.gallery .object-reference a[rel="remove"] {
-	top: 9px;
 }
 
 #leadteaser\.image .object-reference a[rel="remove"],
