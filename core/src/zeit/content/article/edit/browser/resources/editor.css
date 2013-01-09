@@ -1179,7 +1179,6 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   display: block;
   margin-top: 0.7em;
   width: 9em;
-  background-position: 7px -113px, 0 0;
 }
 
 #edit-form-teaser fieldset.teaser-image {
