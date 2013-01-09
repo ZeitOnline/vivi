@@ -641,6 +641,7 @@
 
 /* Gallery block layouts*/
 
+#leadteaser\.image .object-details,
 #leadteaser\.gallery .object-details {
 	margin-bottom: 1em;
 }
