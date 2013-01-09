@@ -649,16 +649,21 @@
 }
 
 #leadteaser\.gallery .object-reference a[rel="remove"] {
-	top: 1em;
+	top: 9px;
+}
+
+#leadteaser\.image .object-reference a[rel="remove"],
+#edit-form-article-content .type-image ~ a[rel="remove"],
+#edit-form-article-content .type-image-group ~ a[rel="remove"] {
+  top: 15px;
 }
 
 /* Image block layouts */
 
 .object-details .image_details span.copyright {
   font-size: 11px;
-  position: absolute;
-  right: 25px;
-  top: 22px;
+  float: right;
+  margin-bottom: 6px;
 }
 
 .object-details .toggle_infos {
