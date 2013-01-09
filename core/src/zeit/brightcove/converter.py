@@ -352,8 +352,7 @@ class Video(Converter):
         data = dict(self.data)
         if 'customFields' in data:
             data['customFields'] = dict(data['customFields'])
-        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate',
-                     'ignore_for_update']
+        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate']
         for field in READ_ONLY:
             data.pop(field, None)
         self.get_connection().post('update_video', video=data)
