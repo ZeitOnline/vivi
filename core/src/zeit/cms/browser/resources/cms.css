@@ -719,10 +719,17 @@ li.busy {
 
 .object-link.preview {
   background-image: url(icons/preview.png);
+  height: 25px;
+  background-position: 1.25em 2px;
 }
 
 .object-link > a {
   color: #4c4c4c;
+}
+
+#edit-form-internallinks .object-link.preview a {
+  display: block;
+  padding-top: 4px;
 }
 
 #pupil-left, #pupil-right {
