@@ -132,7 +132,7 @@ class IImage(IReference, ILayoutable):
     references = zope.schema.Choice(
         title=_("Image"),
         description=_("Drag an image here"),
-        source=zeit.content.image.interfaces.ImageSource(),
+        source=zeit.content.image.interfaces.bareImageSource,
         required=False)
 
     set_manually = zope.schema.Bool(

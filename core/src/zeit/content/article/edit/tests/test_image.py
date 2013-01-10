@@ -189,6 +189,10 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zeit.content.image.testing
         import zope.lifecycleevent
 
+        # XXX This test shouldn't be using image groups since they cannot be
+        # referenced by image blocks anymore according to the IImage interface
+        # spec. Leaving it as it was for the moment, though, as it still works
+        # for proving the point of this test.
         image_group = zeit.content.image.testing.create_image_group()
         article = Article()
         zeit.cms.browser.form.apply_default_values(article, IArticle)
