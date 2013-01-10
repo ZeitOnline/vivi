@@ -137,17 +137,15 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         # ensure object-details are displayed
         s.waitForElementPresent('css=.block.type-image .image_details')
 
-    def test_imagegroup_is_droppable_in_article_text(self):
+    def test_imagegroup_is_not_droppable_in_article_text(self):
         self.add_group_to_clipboard()
         s = self.selenium
 
-        # Article always has one image block already
+        # Article always has one image block already (albeit invisible)
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/my_group"]', 'css=.action-article-body-content-droppable')
-        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
-        # ensure object-details are displayed
-        s.waitForElementPresent('css=.block.type-image .image_details')
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
 
     def test_changing_image_in_teaser_updates_lead_teaser(self):
         self.add_group_to_clipboard()
