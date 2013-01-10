@@ -18,7 +18,7 @@ ImageLayer = zeit.cms.testing.ZCMLLayer(
 selenium_layer = gocept.selenium.ztk.Layer(ImageLayer)
 
 
-def create_image_group(file_name=None):
+def create_image_group():
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
     group = zeit.content.image.imagegroup.ImageGroup()
@@ -30,9 +30,8 @@ def create_image_group(file_name=None):
         image = zeit.content.image.image.LocalImage()
         image.mimeType = 'image/jpeg'
         fh = image.open('w')
-        if file_name is None:
-            file_name = pkg_resources.resource_filename(
-                __name__, 'browser/testdata/%s' % filename)
+        file_name = pkg_resources.resource_filename(
+            __name__, 'browser/testdata/%s' % filename)
         fh.write(open(file_name, 'rb').read())
         fh.close()
         group[filename] = image
