@@ -173,6 +173,15 @@ class ImageSource(zeit.cms.content.contentsource.CMSContentSource):
 imageSource = ImageSource()
 
 
+class BareImageSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    zope.interface.implements(IImageSource)
+    check_interfaces = (IImage,)
+    name = 'bare-images'
+
+bareImageSource = BareImageSource()
+
+
 class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
 
     zope.interface.implements(IImageSource)
