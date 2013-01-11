@@ -32,10 +32,13 @@
   background-position: 15px auto;
 }
 
+.type-article .content-icon.type-article img {
+  display: none;
+}
+
 .type-article .content-icon.type-article {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 12px -1735px;
   border-right:1px solid white;
-  background-color:#cdd9e3;
   display: block;
   float:left;
   height: 25px;
