@@ -56,8 +56,9 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
     def _create_recension(self, index, node):
         recension = BookRecension()
         recension.xml = node
+        recension_classes = '%s %s' % (self.__name__, unicode(index))
         recension = zope.location.location.located(
-            recension, self, unicode(index))
+            recension, self, recension_classes)
         # located() sets __parent__ first, so it has triggered a false write
         recension._p_changed = False
         return recension
@@ -117,7 +118,7 @@ class RecensionContainerTraverser(object):
         recensions = (
             zeit.content.article.interfaces.IBookRecensionContainer(
                 self.context))
-        if name == recensions.__name__:
+        if name in recensions.__name__:
             return recensions
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
@@ -132,7 +133,7 @@ class RecensionTraverser(object):
 
     def publishTraverse(self, request, name):
         try:
-            index = int(name)
+            index = int(name.split(' ')[1])
         except ValueError:
             pass
         else:
