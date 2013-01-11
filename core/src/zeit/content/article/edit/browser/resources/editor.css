@@ -652,7 +652,7 @@
 #leadteaser\.image .object-reference a[rel="remove"],
 #edit-form-article-content .type-image ~ a[rel="remove"],
 #edit-form-article-content .type-image-group ~ a[rel="remove"] {
-  top: 15px;
+  top: 16px;
 }
 
 /* Image block layouts */
