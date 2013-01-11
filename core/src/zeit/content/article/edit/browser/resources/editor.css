@@ -933,6 +933,27 @@ form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -950px transparent;
 }
 
+#article-editor-text .module-icon-image {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1769px transparent;
+}
+
+#article-editor-text .module-icon-video {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1800px transparent;
+}
+
+#article-editor-text .module-icon-infobox {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
+}
+
+#article-editor-text .module-icon-portraitbox {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -2040px transparent;
+}
+
+#article-editor-text .module-icon-gallery {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1800px transparent;
+}
+
+
 label[for^="asset-badges"] .checkboxType {
   margin-left:3px;
 }
