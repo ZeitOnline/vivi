@@ -36,7 +36,7 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
             getter=lambda i, f: i.context,
             cell_formatter=lambda v, i, f: i.title or i.__name__,
             css_class=lambda v, i, f: i.type,
-            view='edit.html'),
+            view='@@edit.html'),
         zeit.cms.browser.listing.MetadataColumn(searchable_text=False),
         )
 

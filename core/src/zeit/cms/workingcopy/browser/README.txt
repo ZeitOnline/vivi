@@ -51,7 +51,7 @@ The sidebar lists the document now:
       <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
     </td>
     <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/edit.html">Somalia</a>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@edit.html">Somalia</a>
     </td>
     <td>
       <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/Somalia</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</span>
@@ -194,7 +194,7 @@ the first. Checkout two documents:
       <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
     </td>
     <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/studiVZ/edit.html">studiVZ</a>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/studiVZ/@@edit.html">studiVZ</a>
     </td>
     <td>
       <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/studiVZ</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/studiVZ</span>
@@ -205,7 +205,7 @@ the first. Checkout two documents:
       <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
     </td>
     <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/edit.html">Somalia</a>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@edit.html">Somalia</a>
     </td>
     <td>
       <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/Somalia</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</span>
