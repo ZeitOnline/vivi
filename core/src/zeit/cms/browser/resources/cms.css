@@ -716,6 +716,13 @@ li.busy {
   background-image: url(icons/show-original.png);
 }
 
+.object-details.type-author .object-link.goto-object {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 12px -537px;
+}
+
+.object-details.type-author .object-link.goto-object:hover {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 12px -567px;
+}
 
 .object-link.preview {
   background-image: url(icons/preview.png);
