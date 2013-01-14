@@ -1867,7 +1867,7 @@ msgstr "Zurückgezogen"
 
 #: zeit/content/article/edit/browser/workflow.py:21
 msgid "Workflow time"
-msgstr "Veröffentlichnungszeit"
+msgstr "Veröffentlichungszeit"
 
 #: zeit/content/article/edit/browser/workflow.py:28
 #, fuzzy
