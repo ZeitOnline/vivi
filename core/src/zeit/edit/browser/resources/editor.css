@@ -740,6 +740,15 @@ legend {
   background-position: 7px -114px, 0 0;
 }
 
+#editor-forms select {
+  height: 22px;
+  padding: 0;
+}
+
+#editor-forms select option {
+  padding: 3px;
+}
+
 /* Checkboxes */
 
 .inline-form .fieldtype-checkbox .widget {
