@@ -653,14 +653,17 @@
 }
 
 #leadteaser\.image .object-reference a[rel="remove"],
+#leadteaser\.gallery .object-reference a[rel="remove"],
 #edit-form-article-content .type-image ~ a[rel="remove"],
-#edit-form-article-content .type-image-group ~ a[rel="remove"] {
+#edit-form-article-content .type-image-group ~ a[rel="remove"],
+#edit-form-article-content .type-gallery ~ a[rel="remove"] {
   top: 16px;
 }
 
 /* Image block layouts */
 
-.object-details .image_details span.copyright {
+.object-details .image_details span.copyright,
+.object-details .gallery_details_copyright {
   font-size: 11px;
   float: right;
   margin-bottom: 6px;
