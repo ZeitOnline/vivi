@@ -124,15 +124,6 @@ table.gallery a.show-image {
 	height: 320px;
 }
 
-.object-details .gallery_details .gallery_details_copyright {
-	max-width: 400px;
-	margin: 10px 0;
-	overflow: hidden;
-	float: left;
-	padding: 0;
-	height: 1em;
-}
-
 .object-details .gallery_details .gallery_details_display img {
 	max-width: 480px;
 	height: 320px;
@@ -141,8 +132,10 @@ table.gallery a.show-image {
 }
 
 .object-details .gallery_details .gallery_details_controls {
-	display: inline;
-	float: right;
+  display: inline;
+  float: right;
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .object-details .gallery_details .gallery_details_controls .button {

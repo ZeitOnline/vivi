@@ -1,5 +1,6 @@
 <div class="gallery_details" i18n:domain="zeit.cms"
      tal:attributes="cms:data view/entries">
+  <p class="gallery_details_copyright"></p>
   <div class="gallery_details_display">
     <div class="overlay-anchor">
       <img src="" />
@@ -12,8 +13,6 @@
   </div>
 
   <div>
-    <p class="gallery_details_copyright"></p>
-
     <div class="gallery_details_controls">
       <a class="gallery_details_prev button" i18n:translate=""></a>
           <span class="gallery_details_pos"></span>
