@@ -222,6 +222,12 @@
   margin-bottom: 1em;
 }
 
+#editor-forms .landing-zone.visible {
+  text-align: center;
+  padding-top: 3px;
+  padding-bottom: 3px;
+}
+
 #cp-content .zeit-edit-interfaces-IFoldable .landing-zone.visible {
   margin-right:12px;
 }
