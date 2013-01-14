@@ -519,7 +519,7 @@ table.properties textarea {
 
 .field.error .objectsequencewidget li a[rel="remove"],
 .field.error .drop-object-widget .object-reference a[rel="remove"] {
-  margin-top: 1em;
+  margin-top: 0;
 }
 
 .drop-object-widget .object-reference .type-infobox ~ a[rel="remove"],
