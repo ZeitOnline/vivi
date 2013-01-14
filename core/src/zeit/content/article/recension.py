@@ -118,7 +118,7 @@ class RecensionContainerTraverser(object):
         recensions = (
             zeit.content.article.interfaces.IBookRecensionContainer(
                 self.context))
-        if name in recensions.__name__:
+        if name in recensions.__name__:  # XXX Is 'in' really what's meant?
             return recensions
         raise zope.publisher.interfaces.NotFound(self.context, name, request)
 
