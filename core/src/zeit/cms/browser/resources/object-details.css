@@ -101,12 +101,16 @@
   white-space: nowrap;
   overflow: hidden; 
   text-indent: -1000px;
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 23px -417px transparent;
+  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 23px -420px transparent;
   margin: 0px !important;
   min-height: 10px;
   border: 0px solid #FFF;
   top: 2px;
   right: 3px;
+}
+
+#internallinks\.related li a[rel="remove"] {
+  background-position: 23px -417px;
 }
 
 #metadata-c\.author_references li a[rel="remove"] {
