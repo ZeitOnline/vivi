@@ -81,3 +81,11 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.waitForElementNotPresent('id=lightbox.form')
         s.waitForElementPresent('css=span.title')
         s.assertText('css=span.title', 'Poems')
+
+    def test_removing_recension_should_reload_editor(self):
+        self.create_recension()
+        s = self.selenium
+        s.click('css=span.recensionaction a[rel="remove"]')
+        self.wait_for_condition('!zeit.edit.editor.busy')
+        s.waitForElementPresent('css=fieldset#recensions')
+        s.waitForElementNotPresent('css=fieldset#recensions div.recension')

@@ -7,6 +7,7 @@ import zeit.cms.checkout.interfaces
 import zeit.content.article.interfaces
 import zeit.content.article.recension
 import zeit.edit.browser.form
+import zeit.edit.browser.view
 import zope.cachedescriptors.property
 import zope.component
 
@@ -82,6 +83,14 @@ class Edit(FormBase, zeit.edit.browser.view.EditBox):
             _('Raw data'),
             css_class='fullWidth'),)
     undo_description = _('edit recension')
+
+
+class Remove(zeit.edit.browser.view.Action):
+
+    def update(self):
+        # reload editor to prevent attempt at reloading deleted recension
+        self.signal(None, 'reload-editor')
+        self.context.__parent__.remove(self.context.__name__)
 
 
 class Add(FormBase, zeit.edit.browser.view.AddBox):

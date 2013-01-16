@@ -43,6 +43,17 @@ class BookRecensionContainer(zeit.cms.content.xmlsupport.Persistent):
         zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(
             recension, self, recension.__name__))
 
+    def remove(self, name):
+        prefix, count = name.split()
+        if prefix != self.__name__:
+            raise KeyError('Invalid name: %r' % name)
+        count = int(count)
+        recension = self.entries[count]
+        self.xml['body'].remove(recension)
+        self._p_changed = True
+        zope.event.notify(zope.lifecycleevent.ObjectRemovedEvent(
+            recension, self, name))
+
     @property
     def entries(self):
         return lxml.objectify.ObjectPath(

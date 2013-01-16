@@ -87,6 +87,9 @@ class IBookRecensionWriteContainer(zope.interface.Interface):
     def append(item):
         """Append item to container."""
 
+    def remove(name):
+        """Remove recension with given name from container."""
+
 
 class IBookRecensionContainer(IBookRecensionReadContainer,
                               IBookRecensionWriteContainer):

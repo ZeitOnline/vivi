@@ -705,6 +705,14 @@
     />
 
   <browser:page
+    for="zeit.content.article.interfaces.IBookRecension"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".recension.Remove"
+    name="remove"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
     for="zeit.content.article.interfaces.IBookRecensionContainer"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".recension.Add"
