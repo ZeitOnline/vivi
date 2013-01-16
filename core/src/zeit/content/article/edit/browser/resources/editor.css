@@ -126,7 +126,7 @@
 
 #editor-forms-title,
 #editor-forms-actions {
-  padding: 5px 1em;
+  padding: 5px 1em 0;
 }
 
 #editor-forms-title,
@@ -145,7 +145,7 @@
   font-family: Arial, Verdana, Sans-Serif;
   font-weight: 800;
   font-size: 1.25em;
-  padding: 0.2em 0 0.4em;
+  padding: 0.2em 0 0;
 }
 
 /* editor blocks */
@@ -1377,9 +1377,9 @@ div.objectlog div {
 }
 
 .inline-form fieldset.memo {
-  margin: 0px;
-  padding: 10px;
   background: #ffffff;
+  margin: 0px;
+  padding: 0 10px 13px;
 }
 
 .inline-form .fieldname-memo,
