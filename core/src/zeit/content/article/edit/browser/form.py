@@ -230,12 +230,6 @@ class InternalLinksForms(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Internal links')
 
-    def render(self):
-        if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(
-            self.context):
-            return ''
-        return super(InternalLinksForms, self).render()
-
 
 class InternalLinks(zeit.edit.browser.form.InlineForm):
 
