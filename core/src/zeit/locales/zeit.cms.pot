@@ -1766,7 +1766,7 @@ msgid "Bibliography"
 msgstr ""
 
 #: zeit/content/article/edit/browser/recension-list.pt:18
-msgid "<a href=\"#\" rel=\"remove\" title=\"Entfernen\">[remove]</a>"
+msgid "[remove]"
 msgstr ""
 
 #: zeit/content/article/edit/browser/recension-list.pt:22
