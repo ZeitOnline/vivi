@@ -443,7 +443,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 /* forms */
 
 .inline-form .field {
-  margin: 5px 25px 5px 0;
+  margin: 1px 25px 5px 0;
   position: relative;
 }
 
@@ -533,7 +533,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 .inline-form .fieldtype-text .widget {
-  margin-top: 0.2em;
+  margin-top: 2px;
 }
 
 #edit-form-assets .inline-form .field,
