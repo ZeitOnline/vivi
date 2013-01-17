@@ -237,10 +237,49 @@
   padding: 5px 0;
 }
 
+#edit-form-status > .block-inner,
+#edit-form-teaser > .block-inner {
+  padding-top: 9px;
+}
+
+#edit-form-teaser > .block-inner {
+  padding-bottom: 15px;
+}
+
+#edit-form-metadata > .block-inner,
+#edit-form-misc > .block-inner,
+#edit-form-article-content > .block-inner,
+#edit-form-recensions > .block-inner,
+#edit-form-keywords-new > .block-inner,
+#edit-form-workflow > .block-inner {
+  padding-bottom: 19px;
+  padding-top: 10px;
+}
+
 #edit-form-article-content > .block-inner {
-  padding-bottom: 100px;
+  padding-bottom: 8px;
   padding-left: 17px;
   padding-right: 25px;
+}
+
+#edit-form-filename > .block-inner {
+  padding-bottom: 19px;
+  padding-top: 22px;
+}
+
+#edit-form-internallinks > .block-inner {
+  padding-bottom: 1px;
+  padding-top: 6px;
+}
+
+#edit-form-workflow-time > .block-inner {
+  padding-bottom: 6px;
+  padding-top: 10px;
+}
+
+#edit-form-workflow > .block-inner {
+  padding-bottom: 22px;
+  padding-top: 10px;
 }
 
 #edit-form-filename .field,
@@ -660,7 +699,7 @@
 #edit-form-article-content .type-image ~ a[rel="remove"],
 #edit-form-article-content .type-image-group ~ a[rel="remove"],
 #edit-form-article-content .type-gallery ~ a[rel="remove"] {
-  top: 16px;
+  top: -7px;
 }
 
 /* Image block layouts */
@@ -874,6 +913,10 @@ button.log-expander {
   width: 30em !important;
 }
 
+#keywords\.keywords\.update {
+  margin-bottom: 15px;
+}
+
 .fieldname-keywords .update {
   margin-top: 0.5em;
 }
@@ -967,6 +1010,20 @@ label[for^="asset-badges"] .checkboxType {
   margin-left:3px;
 }
 
+#form-asset-badges .field {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+#form-asset-badges .widget {
+  margin-top: 1px;
+  margin-left: -4px;
+}
+
+#form-asset-badges .value label {
+  padding-top: 0;
+}
+
 /* Decrease distance between two product-management-formas a and b  */
 form[action$="misc-product-management-a"],
 form[action$="misc-product-management-a"] .field {
@@ -980,6 +1037,15 @@ form[action$="misc-product-management-a"] fieldset {
 form[action$="misc-product-management-b"] {
   margin-top:0px;
   margin-bottom:30px;
+}
+
+#form-misc-product-management-b {
+  margin-left: 7px;
+}
+
+#form-misc-product-management-b .field {
+  margin-top: 0;
+  padding-top: 0;
 }
 
 #metadata-c\.author_references > ul > li {
@@ -1128,7 +1194,8 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #options-layout\.layout .landing-zone.visible {
-  margin-top: 0px;
+  margin-bottom: 0;
+  margin-top: 0;
   padding-bottom: 2px;
   padding-top: 2px;
 }
@@ -1143,6 +1210,8 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 #edit-form-misc .fieldtype-checkbox,
 #edit-form-workflow .fieldtype-checkbox {
   float: left;
+  padding-bottom: 0;
+  margin-bottom: 3px;
 }
 
 #edit-form-misc form[action$="edit.form.options-productmanagement"] legend {
@@ -1168,14 +1237,24 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   width: 85px;
 }
 
+#form-options-layout .field {
+  margin-bottom: 1px;
+}
+
+
 /* LEAD TEASER AREA */
 
 #edit-form-leadteaser .inline-form .field {
-  margin: 5px 0 5px 0;
+  padding-top: 1px;
 }
 
 #edit-form-leadteaser .field .widget {
   border-bottom: 1px solid #e4e4e4;
+}
+
+#edit-form-leadteaser .fieldname-video_2 .widget {
+  border-bottom: 0 none;
+  margin-bottom: 1px;
 }
 
 #edit-form-leadteaser .field .label {
@@ -1199,13 +1278,13 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 /* TEASER AREA */
 
 #edit-form-teaser .inline-form .object-widget {
-  width: 13em;
+  width: 148px;
 }
 
 #edit-form-teaser a.add_view {
   display: block;
-  margin-top: 0.7em;
-  width: 9em;
+  margin-top: 10px;
+  width: 108px;
 }
 
 #edit-form-teaser fieldset.teaser-image {
@@ -1230,8 +1309,8 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 
 #edit-form-teaser .inline-form .object-details span {
   float: left;
-  margin-top: 1px;
   overflow: hidden;
+  padding-top: 0;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -1250,12 +1329,16 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 /* Teaser image */
+#form-teaser-image .widget {
+  margin-bottom: 0;
+}
+
 #teaser-image\.image {
-  margin-top: -0.6em;
+  margin-bottom: 0;
 }
 
 #teaser-image\.image\.url {
-  width: 8em;
+  width: 108px;
 }
 
 #teaser-image\.image .edit-button {
@@ -1263,11 +1346,17 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #teaser-image\.image a[rel="remove"] {
-  right: 0;
+  right: -8px;
+  top: -15px;
 }
 
 #teaser-image\.image .object-details-heading {
   padding-right: 0;
+}
+
+#teaser-image\.image ul {
+  margin-top: 1px;
+  margin-bottom: 0;
 }
 
 #teaser-image\.image ul.metadata {
@@ -1292,6 +1381,20 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   width: 9em;
 }
 
+#form-teaser-supertitle .widget,
+#form-teaser-title .widget,
+#form-teaser-text .widget {
+  margin-bottom: 1px;
+}
+
+#form-teaser-supertitle .widget {
+  margin-top: 3px;
+}
+
+#form-teaser-title .widget,
+#form-teaser-text .widget {
+  margin-top: 0;
+}
 
 /* Assets-Stuff */
 
@@ -1342,6 +1445,15 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 form[action$="edit.form.context-action"] a:after,
 form[action$="edit.form.context-action"] a:before {
   content:'\00A0\00A0';
+}
+
+#recensions .recensions {
+  margin-bottom: 9px;
+  margin-top: 7px;
+}
+
+#recensions .recensions > p:first-child {
+  margin-bottom: 15px;
 }
 
 /* Add author lightbox */
@@ -1455,6 +1567,10 @@ label[for="memo.memo"] {
 #edit-form-metadata .inline-form .fieldtype-checkbox .widget,
 #edit-form-workflow .inline-form .fieldtype-checkbox .widget {
   margin-left: 0.2em;
+}
+
+#edit-form-workflow .fieldname-export_cds {
+  padding-bottom: 12px;
 }
 
 
