@@ -702,7 +702,7 @@
 #edit-form-article-content .type-image ~ a[rel="remove"],
 #edit-form-article-content .type-image-group ~ a[rel="remove"],
 #edit-form-article-content .type-gallery ~ a[rel="remove"] {
-  top: -7px;
+  top: 13px;
 }
 
 /* Image block layouts */
