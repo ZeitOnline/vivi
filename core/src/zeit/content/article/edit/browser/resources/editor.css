@@ -1196,6 +1196,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   margin-bottom: 0;
 }
 
+#options-layout\.layout > ul {
+  margin-top: 0
+}
+
 #options-layout\.layout .landing-zone.visible {
   margin-bottom: 0;
   margin-top: 0;
