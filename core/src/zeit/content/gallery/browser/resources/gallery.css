@@ -125,7 +125,7 @@ table.gallery a.show-image {
 }
 
 .object-details .gallery_details .gallery_details_display img {
-	max-width: 480px;
+	max-width: 540px;
 	height: 320px;
 	display: block;
 	margin: auto;
