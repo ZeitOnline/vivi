@@ -652,8 +652,12 @@
 }
 
 .link_input input[name=href] {
-  margin-bottom: 0.5em;
+  margin-bottom: 10px;
   width: 100%;
+}
+
+.link_input select[name=target] {
+  margin-right: 25px;
 }
 
 .create-paragraph p:empty:before,
