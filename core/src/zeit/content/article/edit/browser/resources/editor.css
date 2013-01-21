@@ -5,10 +5,10 @@
 }
 
 .type-article #cp-content {
-  left:0;
-  right:34%;
   bottom:0;
+  left:0;
   margin-top:25px;
+  right:34%;
 }
 
 .type-article #cp-forms {
@@ -28,8 +28,8 @@
 }
 
 .type-article .object-details-heading span.publish-state {
-  padding-left:25px;
   background-position: 15px auto;
+  padding-left:25px;
 }
 
 .type-article .content-icon.type-article img {
@@ -713,14 +713,14 @@
 
 .object-details .image_details span.copyright,
 .object-details .gallery_details_copyright {
-  font-size: 11px;
   float: right;
+  font-size: 11px;
   margin-bottom: 6px;
 }
 
 .object-details .toggle_infos {
-  margin-top: 10px;
   background-position: 15px 8px !important;
+  margin-top: 10px;
   padding: 2px 0px !important;
 }
 
@@ -729,16 +729,16 @@
 }
 
 .object-details .image_details .picture_information {
+  background-color: #f1f4f9;
   margin-top: 10px;
   padding: 5px;
-  background-color: #f1f4f9;
 }
 
 /* Video block layouts */
 
 .block.type-video .video-image {
-  width: 25%;
   float: left;
+  width: 25%;
 }
 
 .block.type-video .video-title {
@@ -767,12 +767,12 @@
 }
 
 .zeit-content-article-edit-interfaces-IVideo .object-details .object-link {
-  float:none;
-  padding:0px;
   background-position: -4px center;
-  padding-left: 2em;
   display:block;
   float:none;
+  float:none;
+  padding-left: 2em;
+  padding:0px;
 }
 
 #article-editor-text .zeit-content-article-edit-interfaces-IVideo .object-details .object-link a {
@@ -816,12 +816,12 @@ fieldset.table .field {
 /* Error styling in general and for different places */
 
 .error .label span.error {
-  border: 1px solid #990000;
   border-radius: 3px 3px 3px 3px;
+  border: 1px solid #990000;
   box-shadow: 1px 1px 2px #aaa;
-  padding: 8px;
-  display: block;
   color: #990000;
+  display: block;
+  padding: 8px;
 }
 
 .error div.empty {
@@ -865,8 +865,8 @@ fieldset.table .widget {
 }
 
 dl.errors dt {
-  float: left;
   clear: left;
+  float: left;
   margin-right: 0.5em;
 }
 
@@ -883,14 +883,14 @@ button.log-expander {
 
 .zeit-content-article-edit-interfaces-IDivision .block-inner fieldset,
 .zeit-content-article-edit-interfaces-IDivision .block-inner .field {
-  margin-right: 0px;
   margin-left: 0px;
+  margin-right: 0px;
 }
 
 .zeit-content-article-edit-interfaces-IDivision .block-inner input,
 .zeit-content-article-edit-interfaces-IDivision .block-inner label {
-  width: 95% !important;
   margin-left: 12px;
+  width: 95% !important;
 }
 
 
@@ -905,10 +905,10 @@ button.log-expander {
 }
 
 #edit-form-metadata .inline-form fieldset.keywords {
-  margin: 0;
-  padding-left: 2em;
   border-left: 1px solid #E4E4E4;
   float: right;
+  margin: 0;
+  padding-left: 2em;
   width: 30em;
 }
 
@@ -950,19 +950,19 @@ form[action$="asset-badges"] label {
 }
 
 form[action$="asset-badges"] .value label {
-  position:relative;
   color: transparent;
   display: block;
   float: left;
   height: 21px;
   overflow: hidden !important;
   position: relative;
+  position:relative;
   width: 42px;
 }
 
 .module-icon {
-  vertical-align: middle;
   padding-left: 60px;
+  vertical-align: middle;
 }
 
 .module-icon-video,
@@ -1018,13 +1018,13 @@ label[for^="asset-badges"] .checkboxType {
 }
 
 #form-asset-badges .field {
-  margin-top: 0;
   margin-bottom: 0;
+  margin-top: 0;
 }
 
 #form-asset-badges .widget {
-  margin-top: 1px;
   margin-left: -4px;
+  margin-top: 1px;
 }
 
 #form-asset-badges .value label {
@@ -1042,8 +1042,8 @@ form[action$="misc-product-management-a"] fieldset {
 }
 
 form[action$="misc-product-management-b"] {
-  margin-top:0px;
   margin-bottom:30px;
+  margin-top:0px;
 }
 
 #form-misc-product-management-b {
@@ -1056,8 +1056,8 @@ form[action$="misc-product-management-b"] {
 }
 
 #metadata-c\.author_references > ul > li {
-  border-style: solid;
   border-color: #e4e4e4;
+  border-style: solid;
   border-width: 1px 0px;
 }
 
@@ -1090,8 +1090,8 @@ form[action$="workflow-publication-period"] table.combinationFieldWidget {
 
 form[action$="workflow-publication-period"] table.combinationFieldWidget td {
   height:12px;
-  padding:0px;
   margin-bottom:12px !important;
+  padding:0px;
 }
 
 form[action$="workflow-publication-period"] table.combinationFieldWidget td.label {
@@ -1099,8 +1099,8 @@ form[action$="workflow-publication-period"] table.combinationFieldWidget td.labe
 }
 
 form[action$="workflow-publication-period"] label {
-  padding:0px;
   font-weight:bold;
+  padding:0px;
 }
 
 /* workflow log area  */
@@ -1180,8 +1180,8 @@ form[action$="edit.form.misc-layout"] div#misc-layout\.layout {
 }
 
 label[for^="workflow-quality-assurance"] ~ span.required {
-  position:absolute;
   left: 430px;
+  position:absolute;
   top: 3px;
 }
 
@@ -1196,8 +1196,8 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #options-layout\.layout {
-  width: 432px;
   margin-bottom: 0;
+  width: 432px;
 }
 
 #options-layout\.layout > ul {
@@ -1221,8 +1221,8 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 #edit-form-misc .fieldtype-checkbox,
 #edit-form-workflow .fieldtype-checkbox {
   float: left;
-  padding-bottom: 0;
   margin-bottom: 3px;
+  padding-bottom: 0;
 }
 
 #edit-form-misc form[action$="edit.form.options-productmanagement"] legend {
@@ -1308,10 +1308,10 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #edit-form-teaser .inline-form .object-details {
-  width: 148px;
-  min-width: 0;
-  border: 0;
   border-radius: 0;
+  border: 0;
+  min-width: 0;
+  width: 148px;
 }
 
 #edit-form-teaser .inline-form .object-details img {
@@ -1366,13 +1366,13 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #teaser-image\.image ul {
-  margin-top: 1px;
   margin-bottom: 0;
+  margin-top: 1px;
 }
 
 #teaser-image\.image ul.metadata {
-  display: block;
   background-color: #f1f4f9;
+  display: block;
 }
 
 #teaser-image\.image ul.metadata li {
@@ -1422,8 +1422,8 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 .object-widget.landing-zone.visible {
-  padding:0px !important;
   margin:0px !important;
+  padding:0px !important;
 }
 
 .drop-object-widget.landing-zone.visible .object-reference {
@@ -1469,16 +1469,16 @@ form[action$="edit.form.context-action"] a:before {
 
 /* Add author lightbox */
 form[action$="zeit.content.author.add_contextfree"] .summary {
-  padding-left:19px;
   font-weight:bold;
+  padding-left:19px;
 }
 
 /* misc */
 
 div.objectlog {
-  padding: 20px 0px;
-  margin-top: 20px;
   border-top: 1px solid #cccccc;
+  margin-top: 20px;
+  padding: 20px 0px;
 }
 
 div.objectlog th {
@@ -1490,9 +1490,9 @@ div.objectlog legend {
 }
 
 div.objectlog div {
+  border: 1px solid #999999;
   height: 15em;
   overflow-y: scroll;
-  border: 1px solid #999999;
 }
 
 .disabled label {
@@ -1517,15 +1517,15 @@ div.objectlog div {
 
 .fieldname-memo .rst-widget {
   background: url("bginput.png") repeat-x scroll 0 0 transparent;
-  border: 1px solid #BBB;
   border-top: 1px solid #999;
-  padding-top:2px;
+  border: 1px solid #BBB;
   overflow: hidden;
+  padding-top:2px;
 }
 
 .fieldname-memo #memo\.memo {
-  resize: vertical;
   border: none;
+  resize: vertical;
   width: 99%;
 }
 
@@ -1536,11 +1536,11 @@ div.objectlog div {
 
 .fieldname-memo #memo\.memo\.preview p,
 .fieldname-memo textarea#memo\.memo {
-  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
   color: #4C4C4C;
+  font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
   font-size: 12px;
-  padding: 5px;
   margin: 0;
+  padding: 5px;
 }
 
 .fieldname-memo #memo\.memo\.preview p {
@@ -1608,11 +1608,11 @@ label[for="memo.memo"] {
 
 iframe.preview {
   /* XXX why does zeit.cms:forms.css use important? I suspect FCKeditor. */
+  border: none;
+  height: 500px;
+  overflow-y: hidden;
   position: inherit !important;
   width: 100%;
-  height: 500px;
-  border: none;
-  overflow-y: hidden;
 }
 
 #body .ui-menu-item {
@@ -1623,8 +1623,8 @@ iframe.preview {
 .widget.display {
   background: #f1f4f9;
   border-top: 1px solid #DDDDDD;
-  padding: 3px;
   min-height: 15px;
+  padding: 3px;
 }
 
 /* Render links as buttons */
@@ -1633,22 +1633,22 @@ iframe.preview {
 .article-editor-inner button,
 .article-editor-inner input[type=button],
 .editable-area input.button {
-  white-space: inherit;
-  text-indent: 0;
-  cursor: pointer;
-  text-decoration:none;
-  border: 1px solid #c1c1c1;
-  padding: 3px 8px 2px 30px;
-  color:rgb(0, 0, 0);
-  font-family:arial, serif;
-  text-shadow: 0px 0px 5px rgb(255, 255, 255);
-  font-size: 12px;
-  border-radius:2px 2px 2px 2px;
   -moz-border-radius:3px;
-  box-shadow:0px 0px 0px rgb(0, 0, 0);
   -moz-box-shadow:0px 0px 0px rgb(0, 0, 0);
-  background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px , -moz-linear-gradient(top,  #f1f4f9 50%, #dee1e6 94%) repeat scroll 0 0 transparent;
   background-size: auto, 100% auto;
+  background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px , -moz-linear-gradient(top,  #f1f4f9 50%, #dee1e6 94%) repeat scroll 0 0 transparent;
+  border-radius:2px 2px 2px 2px;
+  border: 1px solid #c1c1c1;
+  box-shadow:0px 0px 0px rgb(0, 0, 0);
+  color:rgb(0, 0, 0);
+  cursor: pointer;
+  font-family:arial, serif;
+  font-size: 12px;
+  padding: 3px 8px 2px 30px;
+  text-decoration:none;
+  text-indent: 0;
+  text-shadow: 0px 0px 5px rgb(255, 255, 255);
+  white-space: inherit;
 }
 
 .article-editor-inner a.button:hover,
