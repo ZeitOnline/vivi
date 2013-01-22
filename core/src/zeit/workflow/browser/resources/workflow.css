@@ -1,27 +1,27 @@
 table.objectlog {
     border-collapse: collapse;
-    width: 100%;
 }
 
 table.objectlog th {
-    border-top: 1px solid #999999;
     background-color: #f8f9fd;
     color: #9bbbd3;
     font-weight: bold;
+    padding-bottom:1em;
 }
 
 table.objectlog td {
     padding-bottom: 8px;
     vertical-align: top;
+    height:auto;
+    white-space: nowrap;
 }
 
 table.objectlog tr td:nth-child(1) {
-    width: 70%;
+    padding-right: 10em;
 }
 
-table.objectlog td.principal, table.objectlog td:nth-child(2) {
-    white-space: nowrap;
-    text-align: right;
+table.objectlog tr td:nth-child(2) {
+    padding-right: 2em;
 }
 
 table.objectlog td.principal:before {
