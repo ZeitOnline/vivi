@@ -140,6 +140,9 @@
   z-index: -1;
 }
 
+#edit-form-article-content .dragger {
+  margin: -15px 10px;
+}
 
 .dragger > .center {
   height: 20px;
