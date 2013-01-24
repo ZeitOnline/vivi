@@ -281,3 +281,20 @@ $(document).bind('fragment-ready', function(event) {
 });
 
 }(jQuery));
+
+(function($) {
+
+$(document).bind('fragment-ready', function(event) {
+  $("#editor-forms-heading .content-icon.type-article").attr("cms:tooltip","Diesen Artikel ins Clipboard ziehen");
+  $(".editable-area .edit-bar a.fold-link").attr("cms:tooltip","einklappen");
+  $(".editable-area.folded .edit-bar a.fold-link").attr("cms:tooltip","ausklappen");
+  $(".editable-area .folded .edit-bar a.fold-link").attr("cms:tooltip","ausklappen"); /* for sections in editable area */
+  $("#metadata-c\\.author_references a.add_view.button").attr("cms:tooltip","Neues Autorenobjekt anlegen");
+  $("#edit-form-teaser #teaser-image\\.image a.add_view.button").attr("cms:tooltip","Neue Bildergruppe im Vivi anlegen");
+  $("#edit-form-leadteaser #leadteaser\\.image a.add_view.button").attr("cms:tooltip","Neue Bildergruppe im Vivi anlegen");
+  $("#edit-form-leadteaser #leadteaser\\.gallery a.add_view.button").attr("cms:tooltip","Neue Bildergalerie im Vivi anlegen");
+  $("#edit-form-keywords-new #keywords\\.keywords\\.update a.button").attr("cms:tooltip","Schlagworte für diesen Artikel generieren");
+  $("#edit-form-recensions #recensions a.button").attr("cms:tooltip","Neue Rezensionsinformation hinterlegen");
+});
+
+}(jQuery));
