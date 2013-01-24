@@ -517,6 +517,7 @@ table.properties textarea {
   top: 0;
 }
 
+.object-reference.error a[rel="remove"],
 .field.error .objectsequencewidget li a[rel="remove"],
 .field.error .drop-object-widget .object-reference a[rel="remove"] {
   margin-top: 0;
