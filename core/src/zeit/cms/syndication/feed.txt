@@ -369,6 +369,7 @@ included. Setup an article with ICommonMetadata:
 
 >>> art2 = Article('art2')
 >>> art2.supertitle = u'Frankreich'
+>>> art2.teaserSupertitle = u'Frankreich'
 >>> art2.teaserTitle = u'Keine Sieger'
 >>> art2.teaserText = u'In Frankreich wird massiv gestreikt. Doch den'
 >>> art2.byline = u'Von Alain-Xavier Wurst'
@@ -408,10 +409,10 @@ changes:
 
 >>> art2.teaserTitle = 'New Title'
 >>> art2.supertitle = 'Fronkroisch'
+>>> art2.teaserSupertitle = 'Fronkroisch'
 >>> feed.updateMetadata(art2)
 >>> print feed.xml_source
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"...>
   <title py:pytype="str">Politik</title>
   <container>
     <block href="art2" year="2007" issue="4"...>
@@ -527,6 +528,7 @@ node in the HTML:
   <title py:pytype="str">Politik</title>
   <container>
     <block href="tct"...>
+
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
