@@ -408,12 +408,20 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .cp-content-inner .edit-bar > .fold-link,
 .cp-content-inner .object-details .fold-link,
 .cp-content-inner .object-details .toggle_infos {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 1px -2510px;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 0px -2511px;
 }
 
 .cp-content-inner .folded .edit-bar > .fold-link,
 .cp-content-inner .toggle_infos.folded {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 1px -2540px;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 0px -2541px;
+}
+
+#article-editor-text .fold-link {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 8px -2605px;
+}
+
+#article-editor-text .folded .fold-link {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 8px -2635px;
 }
 
 .cp-content-inner .folded > .block-inner > * {
