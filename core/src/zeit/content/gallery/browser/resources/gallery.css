@@ -120,13 +120,9 @@ table.gallery a.show-image {
 	cursor: default;
 }
 
-.object-details .gallery_details .gallery_details_display {
-	height: 320px;
-}
-
 .object-details .gallery_details .gallery_details_display img {
-	max-width: 540px;
-	height: 320px;
+	width: 540px;
+	height: auto;
 	display: block;
 	margin: auto;
 }
