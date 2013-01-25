@@ -781,40 +781,40 @@
   -moz-appearance: none;
 }
 
-#article-editor-text .object-details.type-video .graphical_preview,
-#edit-form-leadteaser .object-details.type-video .graphical_preview {
+.type-article #article-editor-text .object-details.type-video .graphical_preview,
+.type-article #edit-form-leadteaser .object-details.type-video .graphical_preview {
   float: none;
 }
 
-#article-editor-text .object-details.type-video .graphical_preview > img,
-#edit-form-leadteaser .object-details.type-video .graphical_preview > img {
+.type-article #article-editor-text .object-details.type-video .graphical_preview > img,
+.type-article #edit-form-leadteaser .object-details.type-video .graphical_preview > img {
   width: 540px;
 }
 
 /* display landing zones of the two videos side by side */
 
-#edit-form-article-content .block.type-video .field.fieldname-layout {
+.type-article #edit-form-article-content .block.type-video .field.fieldname-layout {
   clear:both;
 }
 
-.fieldname-references {
+.type-article .fieldname-references {
   margin: 0;
   padding: 0;
 }
 
-#edit-form-article-content .block.type-raw .field.fieldname-xml .label,
-#edit-form-article-content .block.type-image .field.fieldname-references .label,
-#edit-form-article-content .block.type-gallery .field.fieldname-references .label,
-#edit-form-article-content .block.type-portraitbox .field.fieldname-references .label,
-#edit-form-article-content .block.type-infobox .field.fieldname-references .label,
-#edit-form-article-content .block.type-video .field.fieldname-video .label,
-#edit-form-article-content .block.type-video .field.fieldname-video_2 .label {
+.type-article #edit-form-article-content .block.type-raw .field.fieldname-xml .label,
+.type-article #edit-form-article-content .block.type-image .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-gallery .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-portraitbox .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-infobox .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-video .field.fieldname-video .label,
+.type-article #edit-form-article-content .block.type-video .field.fieldname-video_2 .label {
   display:none;
 }
 
 /* imitate table design */
 
-fieldset.table .field {
+.type-article fieldset.table .field {
   clear: both;
 }
 
@@ -822,7 +822,7 @@ fieldset.table .field {
 
 /* Error styling in general and for different places */
 
-.error .label span.error {
+.type-article .error .label span.error {
   border-radius: 3px 3px 3px 3px;
   border: 1px solid #990000;
   box-shadow: 1px 1px 2px #aaa;
@@ -831,7 +831,7 @@ fieldset.table .field {
   padding: 8px;
 }
 
-.error div.empty {
+.type-article .error div.empty {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 0px -2253px transparent;
   height: 10px;
   left: 12px;
@@ -841,37 +841,37 @@ fieldset.table .field {
 
 /* Positioning for different places */
 
-.fieldname-teaserText.error .label div.error {
+.type-article .fieldname-teaserText.error .label div.error {
   position: absolute;
   top: 95px;
 }
 
-#edit-form-filename fieldset.table .fieldname-rename_to.error .label span.error {
+.type-article #edit-form-filename fieldset.table .fieldname-rename_to.error .label span.error {
   margin-top: 23px;
 }
 
-#edit-form-filename fieldset.table .fieldname-rename_to.error .label label {
+.type-article #edit-form-filename fieldset.table .fieldname-rename_to.error .label label {
   display: none;
 }
 
-.fieldname-rename_to.error div.empty {
+.type-article .fieldname-rename_to.error div.empty {
   top: 20px;
 }
 
-.fieldname-teaserText.error div.empty {
+.type-article .fieldname-teaserText.error div.empty {
   top: 86px;
 }
 
-fieldset.table label {
+.type-article fieldset.table label {
   font-weight: bold;
 }
 
-fieldset.table .widget {
+.type-article fieldset.table .widget {
   clear: none;
   margin: 0;
 }
 
-dl.errors dt {
+.type-article dl.errors dt {
   clear: left;
   float: left;
   margin-right: 0.5em;
@@ -880,7 +880,7 @@ dl.errors dt {
 
 /* Log Expander */
 
-button.log-expander {
+.type-article button.log-expander {
   clear: both;
   float: left;
 }
@@ -888,14 +888,14 @@ button.log-expander {
 
 /* Pageteaser division in article */
 
-.zeit-content-article-edit-interfaces-IDivision .block-inner fieldset,
-.zeit-content-article-edit-interfaces-IDivision .block-inner .field {
+.type-article .zeit-content-article-edit-interfaces-IDivision .block-inner fieldset,
+.type-article .zeit-content-article-edit-interfaces-IDivision .block-inner .field {
   margin-left: 0px;
   margin-right: 0px;
 }
 
-.zeit-content-article-edit-interfaces-IDivision .block-inner input,
-.zeit-content-article-edit-interfaces-IDivision .block-inner label {
+.type-article .zeit-content-article-edit-interfaces-IDivision .block-inner input,
+.type-article .zeit-content-article-edit-interfaces-IDivision .block-inner label {
   margin-left: 12px;
   width: 95% !important;
 }
@@ -903,15 +903,15 @@ button.log-expander {
 
 /* METADATA AREA */
 
-#edit-form-metadata .inline-form div.widget > div > div > select {
+.type-article #edit-form-metadata .inline-form div.widget > div > div > select {
   padding-left:0px;
 }
 
-#edit-form-metadata #metadata-b\.copyrights {
+.type-article #edit-form-metadata #metadata-b\.copyrights {
   padding-left:1px;
 }
 
-#edit-form-metadata .inline-form fieldset.keywords {
+.type-article #edit-form-metadata .inline-form fieldset.keywords {
   border-left: 1px solid #E4E4E4;
   float: right;
   margin: 0;
@@ -919,44 +919,44 @@ button.log-expander {
   width: 30em;
 }
 
-#edit-form-metadata .inline-form fieldset.keywords .fieldname-keywords {
+.type-article #edit-form-metadata .inline-form fieldset.keywords .fieldname-keywords {
   width: 30em;
 }
 
-#keywords\.keywords\.list {
+.type-article #keywords\.keywords\.list {
   width: 30em !important;
 }
 
-#keywords\.keywords\.update {
+.type-article #keywords\.keywords\.update {
   margin-bottom: 15px;
 }
 
-.fieldname-keywords .update {
+.type-article .fieldname-keywords .update {
   margin-top: 0.5em;
 }
 
 /* Until the legend-markup is not removed... */
-form[action$="asset-badges"] fieldset legend {
+.type-article form[action$="asset-badges"] fieldset legend {
   display:none;
 }
 
 /*...except of some special checkboxes....*/
-input#form\.confirmed_duplicate,
+.type-article input#form\.confirmed_duplicate,
 .fieldname-keywords .checkboxType {
   position:relative;
   top: 0px;
 }
 
 
-form[action$="asset-badges"] div.value {
+.type-article form[action$="asset-badges"] div.value {
   margin-top:-5px;
 }
 
-form[action$="asset-badges"] label {
+.type-article form[action$="asset-badges"] label {
   position:relative;
 }
 
-form[action$="asset-badges"] .value label {
+.type-article form[action$="asset-badges"] .value label {
   color: transparent;
   display: block;
   float: left;
@@ -967,145 +967,145 @@ form[action$="asset-badges"] .value label {
   width: 42px;
 }
 
-.module-icon {
+.type-article .module-icon {
   padding-left: 60px;
   vertical-align: middle;
 }
 
-.module-icon-video,
-form[action$="asset-badges"] .value label[for="asset-badges\.badges\.0"] {
+.type-article .module-icon-video,
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.0"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -649px transparent;
 }
 
-.module-icon-image,
-form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
+.type-article .module-icon-image,
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -709px transparent;
 }
 
-.module-icon-audio,
-form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
+.type-article .module-icon-audio,
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -770px transparent;
 }
 
-form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -830px transparent;
 }
 
-form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -890px transparent;
 }
 
-form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
+.type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -950px transparent;
 }
 
-#article-editor-text .module-icon-image {
+.type-article #article-editor-text .module-icon-image {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1769px transparent;
 }
 
-#article-editor-text .module-icon-video {
+.type-article #article-editor-text .module-icon-video {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -2189px transparent;
 }
 
-#article-editor-text .module-icon-infobox {
+.type-article #article-editor-text .module-icon-infobox {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
 }
 
-#article-editor-text .module-icon-portraitbox {
+.type-article #article-editor-text .module-icon-portraitbox {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -2040px transparent;
 }
 
-#article-editor-text .module-icon-gallery {
+.type-article #article-editor-text .module-icon-gallery {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1800px transparent;
 }
 
 
-label[for^="asset-badges"] .checkboxType {
+.type-article label[for^="asset-badges"] .checkboxType {
   margin-left:3px;
 }
 
-#form-asset-badges .field {
+.type-article #form-asset-badges .field {
   margin-bottom: 0;
   margin-top: 0;
 }
 
-#form-asset-badges .widget {
+.type-article #form-asset-badges .widget {
   margin-left: -4px;
   margin-top: 1px;
 }
 
-#form-asset-badges .value label {
+.type-article #form-asset-badges .value label {
   padding-top: 0;
 }
 
 /* Decrease distance between two product-management-formas a and b  */
-form[action$="misc-product-management-a"],
-form[action$="misc-product-management-a"] .field {
+.type-article form[action$="misc-product-management-a"],
+.type-article form[action$="misc-product-management-a"] .field {
   margin-bottom:0px;
 }
 
-form[action$="misc-product-management-a"] fieldset {
+.type-article form[action$="misc-product-management-a"] fieldset {
   margin-top:30px;
 }
 
-form[action$="misc-product-management-b"] {
+.type-article form[action$="misc-product-management-b"] {
   margin-bottom:30px;
   margin-top:0px;
 }
 
-#form-misc-product-management-b {
+.type-article #form-misc-product-management-b {
   margin-left: 7px;
 }
 
-#form-misc-product-management-b .field {
+.type-article #form-misc-product-management-b .field {
   margin-top: 0;
   padding-top: 0;
 }
 
-#metadata-c\.author_references > ul > li {
+.type-article #metadata-c\.author_references > ul > li {
   border-color: #e4e4e4;
   border-style: solid;
   border-width: 1px 0px;
 }
 
-#metadata-c\.author_references > ul > li.busy {
+.type-article #metadata-c\.author_references > ul > li.busy {
 	background: none !important;
 }
 
-#metadata-c\.author_references .object-details {
+.type-article #metadata-c\.author_references .object-details {
   border-style: none;
 }
 
-#metadata-c\.author_references {
+.type-article #metadata-c\.author_references {
   margin-bottom: 0;
 }
 
-#metadata-c\.author_references .add_view {
+.type-article #metadata-c\.author_references .add_view {
   background-position: 10px -113px, 0% 0%;
 }
 
 /* worflow publication period area */
 
 /* until it's not removed from markup  */
-label[for="workflow-publication-period.release_period"] {
+.type-article label[for="workflow-publication-period.release_period"] {
   display:none;
 }
 
-form[action$="workflow-publication-period"] table.combinationFieldWidget {
+.type-article form[action$="workflow-publication-period"] table.combinationFieldWidget {
   border-collapse: collapse;
 }
 
-form[action$="workflow-publication-period"] table.combinationFieldWidget td {
+.type-article form[action$="workflow-publication-period"] table.combinationFieldWidget td {
   height:12px;
   margin-bottom:12px !important;
   padding:0px;
 }
 
-form[action$="workflow-publication-period"] table.combinationFieldWidget td.label {
+.type-article form[action$="workflow-publication-period"] table.combinationFieldWidget td.label {
   width:20em;
 }
 
-form[action$="workflow-publication-period"] label {
+.type-article form[action$="workflow-publication-period"] label {
   font-weight:bold;
   padding:0px;
 }
@@ -1113,21 +1113,21 @@ form[action$="workflow-publication-period"] label {
 /* workflow log area  */
 
 /* until it's not removed from markup  */
-form[action$="edit.form.workflow-log"] div.label {
+.type-article form[action$="edit.form.workflow-log"] div.label {
   display:none;
 }
 
-form[action$="edit.form.workflow-log"] div.widget {
+.type-article form[action$="edit.form.workflow-log"] div.widget {
   padding-left:3px !important;
 }
 
 /* no left-padding for some labels... */
-.article-editor-inner .inline-form label {
+.type-article .article-editor-inner .inline-form label {
   padding-left:0px;
 }
 
 /* ...and exceptions for the others respectively related elements */
-form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
+.type-article form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
   margin-left:0px;
 }
 
@@ -1141,197 +1141,197 @@ form[action$="edit.form.metadata-b"] #metadata-b\.dailyNewsletter {
 
 /* MISC / OPTIONS STUFF */
 
-.inline-form.wired legend {
+.type-article .inline-form.wired legend {
   padding-left:0px;
 }
 
-div[id^="assets"] {
+.type-article div[id^="assets"] {
   width:97% !important;
 }
 
-.object-details {
+.type-article .object-details {
   margin:auto 0px;
 }
 
-.inline-form div.widget > input {
+.type-article .inline-form div.widget > input {
   margin-left:0px;
 }
 
-.inline-form div.widget > input.textType {
+.type-article .inline-form div.widget > input.textType {
   width: 202px;
 }
 
-form[action$="edit-division"] div.widget input {
+.type-article form[action$="edit-division"] div.widget input {
   margin-left:12px;
 }
 
-.inline-form div.widget > input#new-filename\.rename_to {
+.type-article .inline-form div.widget > input#new-filename\.rename_to {
   position:absolute;
   top:-3px;
 }
 
-form[action$="edit.form.workflow-status"] {
+.type-article form[action$="edit.form.workflow-status"] {
   margin-bottom:30px;
 }
 
-#urgent\.urgent {
+.type-article #urgent\.urgent {
   margin-left:0px;
 }
 
-form[action$="edit.form.misc-layout"] div.label {
+.type-article form[action$="edit.form.misc-layout"] div.label {
   margin-bottom:3px;
 }
 
-form[action$="edit.form.misc-layout"] div#misc-layout\.layout {
+.type-article form[action$="edit.form.misc-layout"] div#misc-layout\.layout {
   padding:0em;
 }
 
-label[for^="workflow-quality-assurance"] ~ span.required {
+.type-article label[for^="workflow-quality-assurance"] ~ span.required {
   left: 430px;
   position:absolute;
   top: 3px;
 }
 
-#edit-form-misc .inline-form .fieldtype-label {
+.type-article #edit-form-misc .inline-form .fieldtype-label {
   float:left;
   min-width: none;
 }
 
-#edit-form-misc form[action$="edit.form.options-a"] .fieldtype-checkbox {
+.type-article #edit-form-misc form[action$="edit.form.options-a"] .fieldtype-checkbox {
   float: left;
   padding-top: 25px;
 }
 
-#options-layout\.layout {
+.type-article #options-layout\.layout {
   margin-bottom: 0;
   width: 432px;
 }
 
-#options-layout\.layout > ul {
+.type-article #options-layout\.layout > ul {
   margin-top: 0
 }
 
-#options-layout\.layout .landing-zone.visible {
+.type-article #options-layout\.layout .landing-zone.visible {
   margin-bottom: 0;
   margin-top: 0;
   padding-bottom: 2px;
   padding-top: 2px;
 }
 
-#options-layout\.layout .object-details {
+.type-article #options-layout\.layout .object-details {
   padding-bottom: 1em;
   padding-left: 1em;
   padding-right: 1em;
 }
 
-#options-layout\.layout a[rel="remove"] {
+.type-article #options-layout\.layout a[rel="remove"] {
   right: 0;
   top: -10px;
 }
 
-#edit-form-status .fieldtype-checkbox,
-#edit-form-metadata .fieldtype-checkbox,
-#edit-form-misc .fieldtype-checkbox,
-#edit-form-workflow .fieldtype-checkbox {
+.type-article #edit-form-status .fieldtype-checkbox,
+.type-article #edit-form-metadata .fieldtype-checkbox,
+.type-article #edit-form-misc .fieldtype-checkbox,
+.type-article #edit-form-workflow .fieldtype-checkbox {
   float: left;
   margin-bottom: 3px;
   padding-bottom: 0;
 }
 
-#edit-form-misc form[action$="edit.form.options-productmanagement"] legend {
+.type-article #edit-form-misc form[action$="edit.form.options-productmanagement"] legend {
   border-top: 1px solid #EDEDED !important;
   padding-top: 15px;
 }
 
-#edit-form-misc .fieldname-volume .display,
-#edit-form-misc .fieldname-year .display {
+.type-article #edit-form-misc .fieldname-volume .display,
+.type-article #edit-form-misc .fieldname-year .display {
   width: 85px;
 }
 
-#edit-form-misc .fieldname-page .display {
+.type-article #edit-form-misc .fieldname-page .display {
   width: 30px;
 }
 
-#edit-form-misc .fieldname-printRessort .display {
+.type-article #edit-form-misc .fieldname-printRessort .display {
   width: 134px;
 }
 
-#options-b\.year,
-#options-b\.volume {
+.type-article #options-b\.year,
+.type-article #options-b\.volume {
   width: 85px;
 }
 
-#form-options-layout .field {
+.type-article #form-options-layout .field {
   margin-bottom: 1px;
 }
 
 
 /* LEAD TEASER AREA */
 
-#edit-form-leadteaser .inline-form .field {
+.type-article #edit-form-leadteaser .inline-form .field {
   padding-top: 1px;
 }
 
-#edit-form-leadteaser .field .widget {
+.type-article #edit-form-leadteaser .field .widget {
   border-bottom: 1px solid #e4e4e4;
 }
 
-#edit-form-leadteaser .fieldname-video_2 .widget {
+.type-article #edit-form-leadteaser .fieldname-video_2 .widget {
   border-bottom: 0 none;
   margin-bottom: 1px;
 }
 
-#edit-form-leadteaser .field .label {
+.type-article #edit-form-leadteaser .field .label {
   margin-top: 10px;
 }
 
-#edit-form-leadteaser .object-details-body,
-#edit-form-leadteaser .object-details-heading,
-#article-content-main-image\.main_image .object-details-body {
+.type-article #edit-form-leadteaser .object-details-body,
+.type-article #edit-form-leadteaser .object-details-heading,
+.type-article #article-content-main-image\.main_image .object-details-body {
   padding-left: 1em;
   padding-right: 2em;
 }
 
-#edit-form-leadteaser .object-details-body,
-#article-content-main-image\.main_image .object-details-body,
-#edit-form-article-content .object-details-body {
+.type-article #edit-form-leadteaser .object-details-body,
+.type-article #article-content-main-image\.main_image .object-details-body,
+.type-article #edit-form-article-content .object-details-body {
   width: 540px;
 }
 
 
 /* TEASER AREA */
 
-#edit-form-teaser .inline-form .object-widget {
+.type-article #edit-form-teaser .inline-form .object-widget {
   width: 148px;
 }
 
-#edit-form-teaser a.add_view {
+.type-article #edit-form-teaser a.add_view {
   display: block;
   margin-top: 10px;
   width: 108px;
 }
 
-#edit-form-teaser fieldset.teaser-image {
+.type-article #edit-form-teaser fieldset.teaser-image {
   float: left;
 }
 
-#edit-form-teaser .inline-form .fieldname-images {
+.type-article #edit-form-teaser .inline-form .fieldname-images {
   margin: 5px 5px 5px 0;
   min-height: 220px;
 }
 
-#edit-form-teaser .inline-form .object-details {
+.type-article #edit-form-teaser .inline-form .object-details {
   border-radius: 0;
   border: 0;
   min-width: 0;
   width: 148px;
 }
 
-#edit-form-teaser .inline-form .object-details img {
+.type-article #edit-form-teaser .inline-form .object-details img {
   float: left;
 }
 
-#edit-form-teaser .inline-form .object-details span {
+.type-article #edit-form-teaser .inline-form .object-details span {
   float: left;
   overflow: hidden;
   padding-top: 0;
@@ -1339,64 +1339,64 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   white-space: nowrap;
 }
 
-#edit-form-teaser .inline-form .image_details img {
+.type-article #edit-form-teaser .inline-form .image_details img {
   width: 148px;
   height: 84px;
 }
 
-#edit-form-teaser .inline-form .image_details .copyright {
+.type-article #edit-form-teaser .inline-form .image_details .copyright {
   display: none;
 }
 
-#edit-form-teaser .inline-form .image_details .toggle_infos {
+.type-article #edit-form-teaser .inline-form .image_details .toggle_infos {
   display: none;
 }
 
 /* Teaser image */
-#form-teaser-image .widget {
+.type-article #form-teaser-image .widget {
   margin-bottom: 0;
 }
 
-#teaser-image\.image {
+.type-article #teaser-image\.image {
   margin-bottom: 0;
 }
 
-#teaser-image\.image\.url {
+.type-article #teaser-image\.image\.url {
   width: 108px;
 }
 
-#teaser-image\.image .edit-button {
+.type-article #teaser-image\.image .edit-button {
   margin-top: 26px;
 }
 
-#teaser-image\.image a[rel="remove"] {
+.type-article #teaser-image\.image a[rel="remove"] {
   right: -8px;
   top: -15px;
 }
 
-#teaser-image\.image .object-details-heading {
+.type-article #teaser-image\.image .object-details-heading {
   padding-right: 0;
 }
 
-#teaser-image\.image ul {
+.type-article #teaser-image\.image ul {
   margin-bottom: 0;
   margin-top: 1px;
 }
 
-#teaser-image\.image ul.metadata {
+.type-article #teaser-image\.image ul.metadata {
   background-color: #f1f4f9;
   display: block;
 }
 
-#teaser-image\.image ul.metadata li {
+.type-article #teaser-image\.image ul.metadata li {
   display: none;
 }
 
-#teaser-image\.image ul.metadata li:before {
+.type-article #teaser-image\.image ul.metadata li:before {
   content: none;
 }
 
-#teaser-image\.image ul.metadata li.teaser_title {
+.type-article #teaser-image\.image ul.metadata li.teaser_title {
   color: #000;
   display: block;
   overflow: hidden;
@@ -1405,69 +1405,69 @@ label[for^="workflow-quality-assurance"] ~ span.required {
   width: 9em;
 }
 
-#form-teaser-supertitle .widget,
-#form-teaser-title .widget,
-#form-teaser-text .widget {
+.type-article #form-teaser-supertitle .widget,
+.type-article #form-teaser-title .widget,
+.type-article #form-teaser-text .widget {
   margin-bottom: 1px;
 }
 
-#form-teaser-supertitle .widget {
+.type-article #form-teaser-supertitle .widget {
   margin-top: 3px;
 }
 
-#form-teaser-title .widget,
-#form-teaser-text .widget {
+.type-article #form-teaser-title .widget,
+.type-article #form-teaser-text .widget {
   margin-top: 0;
 }
 
 /* Assets-Stuff */
 
-#edit-form-assets .inline-form .field {
+.type-article #edit-form-assets .inline-form .field {
   margin: 5px 0 5px 0;
 }
 
-#edit-form-assets .inline-form .field .widget {
+.type-article #edit-form-assets .inline-form .field .widget {
   padding-left:10px;
 }
 
-form[action$="edit.form.assets"] .objectsequencewidget ul {
+.type-article form[action$="edit.form.assets"] .objectsequencewidget ul {
   margin: 10px 0px 10px 0;
 }
 
-.object-widget.landing-zone.visible {
+.type-article .object-widget.landing-zone.visible {
   margin:0px !important;
   padding:0px !important;
 }
 
-.drop-object-widget.landing-zone.visible .object-reference {
+.type-article .drop-object-widget.landing-zone.visible .object-reference {
   margin:1em !important;
 }
 
-.fieldname-audio_id .textType {
+.type-article .fieldname-audio_id .textType {
   margin-bottom: 1.5em;
 }
 
 
 /* INTERNAL LINKS */
 
-#edit-form-internallinks .inline-form .field {
+.type-article #edit-form-internallinks .inline-form .field {
   margin: 5px 0 5px 0;
 }
 
 
 /* moz-appearence:button can't handle with padding... */
-#metadata-a\.keywords\.update a:before,
-#metadata-a\.keywords\.update a:after,
-#editable-body .action-editable-body-module-droppable span a:before,
-#editable-body .action-editable-body-module-droppable span a:after,
-#metadata-c\.author_references a[href="zeit.content.author.add_contextfree"]:after,
-#metadata-c\.author_references a[href="zeit.content.author.add_contextfree"]:before,
-#recensions a:after,
-#recensions a:before,
-#checkin a:before,
-#checkin a:after,
-form[action$="edit.form.context-action"] a:after,
-form[action$="edit.form.context-action"] a:before {
+.type-article #metadata-a\.keywords\.update a:before,
+.type-article #metadata-a\.keywords\.update a:after,
+.type-article #editable-body .action-editable-body-module-droppable span a:before,
+.type-article #editable-body .action-editable-body-module-droppable span a:after,
+.type-article #metadata-c\.author_references a[href="zeit.content.author.add_contextfree"]:after,
+.type-article #metadata-c\.author_references a[href="zeit.content.author.add_contextfree"]:before,
+.type-article #recensions a:after,
+.type-article #recensions a:before,
+.type-article #checkin a:before,
+.type-article #checkin a:after,
+.type-article form[action$="edit.form.context-action"] a:after,
+.type-article form[action$="edit.form.context-action"] a:before {
   content:'\00A0\00A0';
 }
 
