@@ -726,6 +726,8 @@
 
 .object-details .image_details img {
   display: block;
+  width: 540px;
+  height: auto;
 }
 
 .object-details .image_details .picture_information {
