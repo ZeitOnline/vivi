@@ -1471,64 +1471,64 @@
   content:'\00A0\00A0';
 }
 
-#recensions .recensions {
+.type-article #recensions .recensions {
   margin-bottom: 9px;
   margin-top: 7px;
 }
 
-#recensions .recensions > p:first-child {
+.type-article #recensions .recensions > p:first-child {
   margin-bottom: 15px;
 }
 
 /* Add author lightbox */
-form[action$="zeit.content.author.add_contextfree"] .summary {
+.type-article form[action$="zeit.content.author.add_contextfree"] .summary {
   font-weight:bold;
   padding-left:19px;
 }
 
 /* misc */
 
-div.objectlog {
+.type-article div.objectlog {
   border-top: 1px solid #cccccc;
   margin-top: 20px;
   padding: 20px 0px;
 }
 
-div.objectlog th {
+.type-article div.objectlog th {
   font-size: 11px;
 }
 
-div.objectlog legend {
+.type-article div.objectlog legend {
   border: none;
 }
 
-div.objectlog div {
+.type-article div.objectlog div {
   border: 1px solid #999999;
   height: 15em;
   overflow-y: scroll;
 }
 
-.disabled label {
+.type-article .disabled label {
   color: #999999;
 }
 
-.inline-form fieldset.memo {
+.type-article .inline-form fieldset.memo {
   background: #ffffff;
   margin: 0px;
   padding: 0 10px 13px;
 }
 
-.inline-form .fieldname-memo,
-.fieldname-memo .widget {
+.type-article .inline-form .fieldname-memo,
+.type-article .fieldname-memo .widget {
   padding: 0px;
   margin: 0px;
 }
 
-.fieldname-memo .rst-widget #memo\.memo\.preview.empty {
+.type-article .fieldname-memo .rst-widget #memo\.memo\.preview.empty {
   padding: 5px;
 }
 
-.fieldname-memo .rst-widget {
+.type-article .fieldname-memo .rst-widget {
   background: url("bginput.png") repeat-x scroll 0 0 transparent;
   border-top: 1px solid #999;
   border: 1px solid #BBB;
@@ -1536,19 +1536,19 @@ div.objectlog div {
   padding-top:2px;
 }
 
-.fieldname-memo #memo\.memo {
+.type-article .fieldname-memo #memo\.memo {
   border: none;
   resize: vertical;
   width: 99%;
 }
 
-.fieldname-memo #memo\.memo,
-.fieldname-memo #memo\.memo\.preview {
+.type-article .fieldname-memo #memo\.memo,
+.type-article .fieldname-memo #memo\.memo\.preview {
   background-color: #fff79a;
 }
 
-.fieldname-memo #memo\.memo\.preview p,
-.fieldname-memo textarea#memo\.memo {
+.type-article .fieldname-memo #memo\.memo\.preview p,
+.type-article .fieldname-memo textarea#memo\.memo {
   color: #4C4C4C;
   font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
   font-size: 12px;
@@ -1556,19 +1556,19 @@ div.objectlog div {
   padding: 5px;
 }
 
-.fieldname-memo #memo\.memo\.preview p {
+.type-article .fieldname-memo #memo\.memo\.preview p {
   color: #333333;
 }
 
-.fieldname-memo #memo\.memo\.preview.empty {
+.type-article .fieldname-memo #memo\.memo\.preview.empty {
   background-color: #ffffff;
 }
 
-.fieldname-memo #memo\.memo\.preview.empty:before {
+.type-article .fieldname-memo #memo\.memo\.preview.empty:before {
   content: "Memo";
 }
 
-label[for="memo.memo"] {
+.type-article label[for="memo.memo"] {
   display: none;
 }
 
@@ -1577,49 +1577,49 @@ label[for="memo.memo"] {
 
 /* text */
 
-#edit-form-filename .inline-form .fieldtype-text,
-#edit-form-misc .inline-form .fieldtype-text,
-#edit-form-metadata .inline-form .fieldtype-text {
+.type-article #edit-form-filename .inline-form .fieldtype-text,
+.type-article #edit-form-misc .inline-form .fieldtype-text,
+.type-article #edit-form-metadata .inline-form .fieldtype-text {
   float: left;
 }
 
 
 /* checkbox */
 
-#edit-form-filename .inline-form .fieldtype-checkbox .widget,
-#edit-form-misc .inline-form .fieldtype-checkbox .widget,
-#edit-form-metadata .inline-form .fieldtype-checkbox .widget,
-#edit-form-workflow .inline-form .fieldtype-checkbox .widget {
+.type-article #edit-form-filename .inline-form .fieldtype-checkbox .widget,
+.type-article #edit-form-misc .inline-form .fieldtype-checkbox .widget,
+.type-article #edit-form-metadata .inline-form .fieldtype-checkbox .widget,
+.type-article #edit-form-workflow .inline-form .fieldtype-checkbox .widget {
   margin-left: 0.2em;
 }
 
-#edit-form-workflow .fieldname-export_cds {
+.type-article #edit-form-workflow .fieldname-export_cds {
   padding-bottom: 12px;
 }
 
 
 /* label */
 
-#edit-form-filename .inline-form .fieldtype-label,
-#edit-form-misc .inline-form .fieldtype-label,
-#edit-form-metadata .inline-form .fieldtype-label {
+.type-article #edit-form-filename .inline-form .fieldtype-label,
+.type-article #edit-form-misc .inline-form .fieldtype-label,
+.type-article #edit-form-metadata .inline-form .fieldtype-label {
   float: left;
 }
 
-#edit-form-filename .inline-form .fieldtype-label .widget,
-#edit-form-misc .inline-form .fieldtype-label .widget,
-#edit-form-metadata .inline-form .fieldtype-label .widget {
+.type-article #edit-form-filename .inline-form .fieldtype-label .widget,
+.type-article #edit-form-misc .inline-form .fieldtype-label .widget,
+.type-article #edit-form-metadata .inline-form .fieldtype-label .widget {
   margin-left: 0.2em;
   margin-top: 0.2em;
 }
 
-.fieldname-color_scheme .display,
-.fieldtype-label .display {
+.type-article .fieldname-color_scheme .display,
+.type-article .fieldtype-label .display {
   width: 200px;
 }
 
 
-iframe.preview {
+.type-article iframe.preview {
   /* XXX why does zeit.cms:forms.css use important? I suspect FCKeditor. */
   border: none;
   height: 500px;
@@ -1628,12 +1628,12 @@ iframe.preview {
   width: 100%;
 }
 
-#body .ui-menu-item {
+.type-article #body .ui-menu-item {
   background-color: #fafafa;
   border: 1px solid #eee;
 }
 
-.widget.display {
+.type-article .widget.display {
   background: #f1f4f9;
   border-top: 1px solid #DDDDDD;
   min-height: 15px;
@@ -1642,10 +1642,10 @@ iframe.preview {
 
 /* Render links as buttons */
 
-.article-editor-inner a.button,
-.article-editor-inner button,
-.article-editor-inner input[type=button],
-.editable-area input.button {
+.type-article .article-editor-inner a.button,
+.type-article .article-editor-inner button,
+.type-article .article-editor-inner input[type=button],
+.type-article .editable-area input.button {
   -moz-border-radius:3px;
   -moz-box-shadow:0px 0px 0px rgb(0, 0, 0);
   background-size: auto, 100% auto;
@@ -1664,28 +1664,28 @@ iframe.preview {
   white-space: inherit;
 }
 
-.article-editor-inner a.button:hover,
-.article-editor-inner button:hover,
-.article-editor-inner input[type=button]:hover {
+.type-article .article-editor-inner a.button:hover,
+.type-article .article-editor-inner button:hover,
+.type-article .article-editor-inner input[type=button]:hover {
   background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px, -moz-linear-gradient(top, #f1f4f9 50%, #d2d4d9 94%) repeat scroll 0 0 transparent;
   border-color: #a6a6a6;
 }
 
-.article-editor-inner a.button.disabled,
-.article-editor-inner a.button[disabled] {
+.type-article .article-editor-inner a.button.disabled,
+.type-article .article-editor-inner a.button[disabled] {
   color: #999999;
 }
 
 
 /* Object Detail Modules */
 
-#form-leadteaser,
-#form-article-content-main-image,
-#editable-body fieldset {
+.type-article #form-leadteaser,
+.type-article #form-article-content-main-image,
+.type-article #editable-body fieldset {
   width: 540px;
 }
 
-#editable-body fieldset {
+.type-article #editable-body fieldset {
   border-right: 1px solid #e4e4e4;
   padding-left: 5px;
   padding-right: 5px;
