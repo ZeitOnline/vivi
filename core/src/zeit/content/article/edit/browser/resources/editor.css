@@ -49,7 +49,7 @@
   color: transparent;
 }
 
-#cp-content > .cp-content-inner {
+.type-article #cp-content > .cp-content-inner {
   border: 1px solid #E4E4E4;
 }
 
@@ -62,16 +62,16 @@
   background: none repeat scroll 0 0 #F1F4F9;
 }
 
-#cp-content > .cp-content-inner {
+.type-article #cp-content > .cp-content-inner {
   border: 1px solid #E4E4E4;
 }
 
-#cp-content .editable-area {
+.type-article #cp-content .editable-area {
   margin: 1em 0 0;
   padding: 0;
 }
 
-#editor-forms-heading > div {
+.type-article #editor-forms-heading > div {
   margin-top: -27px;
   position: fixed;
 }
@@ -84,22 +84,22 @@
 
 /* Textareas not inline */
 
-#edit-form-article-content .field {
+.type-article #edit-form-article-content .field {
   display: block;
   clear: both;
 }
 
-#edit-form-teaser .inline-form.wired .field,
-#edit-form-teaser .inline-form.wired .widget,
-#edit-form-article-content .inline-form.wired .field,
-#edit-form-article-content .inline-form.wired .widget {
+.type-article #edit-form-teaser .inline-form.wired .field,
+.type-article #edit-form-teaser .inline-form.wired .widget,
+.type-article #edit-form-article-content .inline-form.wired .field,
+.type-article #edit-form-article-content .inline-form.wired .widget {
   width: 100%;
 }
 
-#edit-form-teaser .inline-form.wired textarea,
-#edit-form-teaser .inline-form.wired input.textType,
-#edit-form-article-content .inline-form.wired textarea,
-#edit-form-article-content .inline-form.wired input.textType {
+.type-article #edit-form-teaser .inline-form.wired textarea,
+.type-article #edit-form-teaser .inline-form.wired input.textType,
+.type-article #edit-form-article-content .inline-form.wired textarea,
+.type-article #edit-form-article-content .inline-form.wired input.textType {
   padding-left: 5px;
   padding-right: 5px;
   width: 98%;
@@ -108,7 +108,7 @@
   border-top:1px solid #999 !important;
 }
 
-#article-editor-text #editable-body {
+.type-article #article-editor-text #editable-body {
   margin-left:8px;
   border:1px solid #DDD !important;
   background: url('bginput.png') repeat-x;
@@ -116,7 +116,7 @@
   margin-top: 3px;
 }
 
-#article-editor-text:before {
+.type-article #article-editor-text:before {
   content: "Artikeltext";
   font-size: 10px;
   margin-left: 10px;
@@ -124,24 +124,24 @@
 
 /* editor heading */
 
-#editor-forms-title,
-#editor-forms-actions {
+.type-article #editor-forms-title,
+.type-article #editor-forms-actions {
   padding: 5px 1em 0;
 }
 
-#editor-forms-title,
-#editor-forms-actions {
+.type-article #editor-forms-title,
+.type-article #editor-forms-actions {
   background-color: white;
   color: #000;
 }
 
-#editor-forms #editor-forms-title .supertitle {
+.type-article #editor-forms #editor-forms-title .supertitle {
   font-family: Arial, Verdana, Sans-Serif;
   font-weight: 200;
   font-size: 0.9em;
 }
 
-#editor-forms #editor-forms-title .title {
+.type-article #editor-forms #editor-forms-title .title {
   font-family: Arial, Verdana, Sans-Serif;
   font-weight: 800;
   font-size: 1.25em;
@@ -150,14 +150,14 @@
 
 /* editor blocks */
 
-#editable-body .editable {
+.type-article #editable-body .editable {
   color: #222;
   font-family: Georgia,Palatino,Palatino Linotype,FreeSerif,serif;
   font-size: 16px;
   line-height: 1.5em;
 }
 
-#editor-forms div.editable-area > div.edit-bar {
+.type-article #editor-forms div.editable-area > div.edit-bar {
   background: none repeat scroll 0 0 #83a1ba;
   border-radius: 5px 5px 0px 0px;
   font-size: 12px;
@@ -169,97 +169,97 @@
   line-height: 26px;
 }
 
-#editor-forms div.editable-area > div.edit-bar:hover {
+.type-article #editor-forms div.editable-area > div.edit-bar:hover {
   background: -moz-linear-gradient(top, #83a1ba, #658298);
 }
 
-#editor-forms div div.edit-bar > .edit-link {
+.type-article #editor-forms div div.edit-bar > .edit-link {
   background-size: 80%;
   position:absolute;
   right:20px;
 }
 
-#article-form-workflow.folded,
-#article-form-assets.folded,
-#article-form-metadata.folded {
+.type-article #article-form-workflow.folded,
+.type-article #article-form-assets.folded,
+.type-article #article-form-metadata.folded {
   border-bottom: 0;
 }
 
 /* Article content main image */
-#edit-form-article-content .inline-form.wired .fieldname-main_image {
+.type-article #edit-form-article-content .inline-form.wired .fieldname-main_image {
   width: auto;
 }
 
 /* Teaser: Knopf und Artikel */
 
-#edit-form-article-content.editable-area > .block-inner > .inline-form .label,
-#edit-form-teaser.editable-area .label {
+.type-article #edit-form-article-content.editable-area > .block-inner > .inline-form .label,
+.type-article #edit-form-teaser.editable-area .label {
   display: none;
 }
 
-#edit-form-article-content.editable-area #article-content-head\.supertitle,
-#edit-form-teaser #teaser-supertitle\.teaserSupertitle {
+.type-article #edit-form-article-content.editable-area #article-content-head\.supertitle,
+.type-article #edit-form-teaser #teaser-supertitle\.teaserSupertitle {
   font-size: 11px;
   font-family: arial;
   color: #990000;
 }
 
-#edit-form-teaser #teaser-title\.teaserTitle {
+.type-article #edit-form-teaser #teaser-title\.teaserTitle {
   font-family: arial;
   font-size: 16px;
   font-weight: bold;
 }
 
-#edit-form-teaser #teaser-text\.teaserText {
+.type-article #edit-form-teaser #teaser-text\.teaserText {
   font-family: georgia;
   font-size: 14px;
   font-weight: normal;
 }
 
-#edit-form-article-content.editable-area #article-content-head\.subtitle {
+.type-article #edit-form-article-content.editable-area #article-content-head\.subtitle {
   font-size: 22px;
 }
 
-#edit-form-article-content.editable-area #article-content-head\.title {
+.type-article #edit-form-article-content.editable-area #article-content-head\.title {
   font-size: 30px;
   font-family: arial;
   font-weight: bold;
   height: 2em;
 }
 
-#edit-form-article-content.editable-area #article-content-head\.title:-moz-placeholder {
+.type-article #edit-form-article-content.editable-area #article-content-head\.title:-moz-placeholder {
   color: #FF0000;
 }
 
-#edit-form-article-content #article-content-head.title,
-#edit-form-article-content #article-content-head.subtitle {
+.type-article #edit-form-article-content #article-content-head.title,
+.type-article #edit-form-article-content #article-content-head.subtitle {
   font-size: 16px;
 }
 
-.block > .block-inner {
+.type-article .block > .block-inner {
   padding: 5px 0;
 }
 
-#edit-form-status > .block-inner,
-#edit-form-teaser > .block-inner {
+.type-article #edit-form-status > .block-inner,
+.type-article #edit-form-teaser > .block-inner {
   padding-top: 9px;
 }
 
-#edit-form-teaser > .block-inner {
+.type-article #edit-form-teaser > .block-inner {
   padding-bottom: 15px;
 }
 
-#edit-form-metadata > .block-inner,
-#edit-form-misc > .block-inner,
-#edit-form-article-content > .block-inner,
-#edit-form-recensions > .block-inner,
-#edit-form-keywords-new > .block-inner,
-#edit-form-workflow > .block-inner {
+.type-article #edit-form-metadata > .block-inner,
+.type-article #edit-form-misc > .block-inner,
+.type-article #edit-form-article-content > .block-inner,
+.type-article #edit-form-recensions > .block-inner,
+.type-article #edit-form-keywords-new > .block-inner,
+.type-article #edit-form-workflow > .block-inner {
   padding-bottom: 19px;
   padding-top: 10px;
 }
 
-#edit-form-article-content > .block-inner {
+.type-article #edit-form-article-content > .block-inner {
   padding-bottom: 8px;
   padding-left: 17px;
   padding-right: 25px;
