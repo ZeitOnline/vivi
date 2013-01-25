@@ -786,6 +786,11 @@
   float: none;
 }
 
+#article-editor-text .object-details.type-video .graphical_preview > img,
+#edit-form-leadteaser .object-details.type-video .graphical_preview > img {
+  width: 540px;
+}
+
 /* display landing zones of the two videos side by side */
 
 #edit-form-article-content .block.type-video .field.fieldname-layout {
@@ -1214,8 +1219,9 @@ label[for^="workflow-quality-assurance"] ~ span.required {
 }
 
 #options-layout\.layout .object-details {
-  padding-left: 1em;
   padding-bottom: 1em;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 #edit-form-status .fieldtype-checkbox,
