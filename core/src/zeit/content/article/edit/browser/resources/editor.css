@@ -706,7 +706,7 @@
 #edit-form-article-content .type-image ~ a[rel="remove"],
 #edit-form-article-content .type-image-group ~ a[rel="remove"],
 #edit-form-article-content .type-gallery ~ a[rel="remove"] {
-  top: 13px;
+  top: 11px;
 }
 
 /* Image block layouts */
