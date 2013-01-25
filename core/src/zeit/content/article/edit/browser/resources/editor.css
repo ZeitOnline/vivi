@@ -192,8 +192,8 @@
 
 /* Teaser: Knopf und Artikel */
 
-.type-article #edit-form-article-content.editable-area > .block-inner > .inline-form .label,
-.type-article #edit-form-teaser.editable-area .label {
+.type-article #edit-form-article-content.editable-area > .block-inner > .inline-form .label label,
+.type-article #edit-form-teaser.editable-area .label label {
   display: none;
 }
 
@@ -832,7 +832,7 @@
 }
 
 .type-article .error div.empty {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 0px -2253px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 0px -2221px transparent;
   height: 10px;
   left: 12px;
   position: absolute;
