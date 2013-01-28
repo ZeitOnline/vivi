@@ -122,10 +122,12 @@ class Details(zeit.cms.browser.view.Base):
             volume=self.volume,
             hits=self.hits,
         )
-        for key, value in entries.items():
-            if not value:
-                del entries[key]
-        return entries
+        sorted_entries = []
+        for key in ['teaser_title', 'created', 'ressort', 'author',
+                    'volume', 'hits']:
+            if entries[key]:
+                sorted_entries.append([key, entries[key]])
+        return sorted_entries
 
     def display_metadata_short(self):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
