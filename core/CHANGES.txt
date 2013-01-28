@@ -1,10 +1,12 @@
 zeit.content.video changes
 ==========================
 
-2.1.2 (unreleased)
-------------------
+editor-ng (unreleased)
+----------------------
 
-- Nothing changed yet.
+- Video uses autocomplete/whitelist keywords.
+- UI improvements: specialized description for landing zone, use large image
+  for object details (#11568, 11709).
 
 
 2.1.1 (2012-01-18)
