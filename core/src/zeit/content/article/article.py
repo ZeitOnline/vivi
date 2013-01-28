@@ -26,10 +26,17 @@ import zope.security.proxy
 
 
 ARTICLE_NS = zeit.content.article.interfaces.ARTICLE_NS
+# supertitle+title+subtitle are here since their order is important for XSLT,
+# and the XML-properties will reuse existing nodes, so the order will be as we
+# want it.
 ARTICLE_TEMPLATE = """\
 <article xmlns:py="http://codespeak.net/lxml/objectify/pytype">
     <head/>
-    <body/>
+    <body>
+        <supertitle/>
+        <title/>
+        <subtitle/>
+    </body>
 </article>"""
 
 

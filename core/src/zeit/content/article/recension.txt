@@ -119,6 +119,7 @@ The recension is now already part of the article:
         name="has_recensions">yes</attribute>
   </head>
   <body>
+    ...
     <entry xmlns="http://namespaces.zeit.de/bibinfo">
       <auth-info>
         <author py:pytype="str">Klaus</author>
