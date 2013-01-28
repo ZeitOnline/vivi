@@ -434,6 +434,9 @@ pre {
 #main-navigation > li > a > img {
   border: none;
   vertical-align: bottom;
+  position:absolute;
+  left:15.5em;
+  top:0.3em;
 }
 
 #main-navigation > li.secondary > ul {
