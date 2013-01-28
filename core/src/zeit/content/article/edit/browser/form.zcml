@@ -515,7 +515,7 @@
     />
 
   <browser:page
-    for="zeit.content.article.interfaces.IArticle"
+    for="zeit.cms.interfaces.ICMSContent"
     name="related-details"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     template="object-details-internallinks.pt"
