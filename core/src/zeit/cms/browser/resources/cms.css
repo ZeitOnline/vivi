@@ -510,6 +510,10 @@ pre {
   position: absolute
 }
 
+.context-actions > ul {
+  margin-top: 10px;
+}
+
 .context-actions > ul > li,
 .context-views > ul > li {
   display: inline;
