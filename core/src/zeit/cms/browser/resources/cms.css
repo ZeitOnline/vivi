@@ -513,6 +513,10 @@ pre {
   position: absolute
 }
 
+.context-actions > ul {
+  margin-top: 10px;
+}
+
 .context-actions > ul > li,
 .context-views > ul > li {
   display: inline;
@@ -593,18 +597,25 @@ pre {
   opacity: 1;
   position: absolute;
   z-index: 1;
-  background-color: #f1f4f9;
+  background-color: #FFF;
   border: 1px solid #c7c7c7;
   top: 2.8em;
   padding: 0.4em;
   right: 0.4em;
+  box-shadow: 0 0 6px #AAAAAA;
 }
 
 .secondary-context-actions > li {
   display: block;
   margin: 0.5em 0;
+  border-bottom: 1px solid #C1C1C1;
+  margin: 0px 5px;
+  padding: 6px 0px;
 }
 
+.secondary-context-actions > li:last-child {
+  border-bottom: 0px solid black;
+}
 .secondary-context-actions > li > a > * {
   vertical-align: middle;
   padding-right: 0.5em;

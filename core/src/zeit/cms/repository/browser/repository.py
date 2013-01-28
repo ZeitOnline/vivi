@@ -167,6 +167,7 @@ class RedirectToObjectWithUniqueId(zeit.cms.browser.view.Base):
         if obj is None:
             msg = _("The object '${id}' could not be found.",
                     mapping=dict(id=unique_id))
-            return zope.i18n.translate(msg, context=self.request)
+            return '<div class="error">%s</div>' % zope.i18n.translate(
+                msg, context=self.request)
         self.redirect(self.url(obj, view), status=301)
         return u''

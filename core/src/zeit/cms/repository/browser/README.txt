@@ -303,7 +303,7 @@ returned:
 ...     'http://localhost/++skin++cms/@@redirect_to'
 ...     '?unique_id=blafasel')
 >>> print browser.contents
-The object 'blafasel' could not be found.
+<div class="error">The object 'blafasel' could not be found.</div>
 
 
 Invalidating the cache
