@@ -117,9 +117,9 @@ class Details(zeit.cms.browser.view.Base):
         entries = dict(
             teaser_title=self.teaser_title,
             created=dc.created and dc.created.strftime('%d.%m.%Y'),
-            volume=self.volume,
             ressort=self.common_metadata.ressort,
             author=self.author,
+            volume=self.volume,
             hits=self.hits,
         )
         for key, value in entries.items():
@@ -131,9 +131,9 @@ class Details(zeit.cms.browser.view.Base):
         dc = zope.dublincore.interfaces.IDCTimes(self.context)
         return filter(None, [
             dc.created and dc.created.strftime('%d.%m.%Y'),
-            self.volume,
             self.common_metadata.ressort,
             self.author,
+            self.volume,
             self.hits,
         ])
 
