@@ -1,9 +1,9 @@
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import json
 import mock
-import pkg_resources
 import time
 import transaction
 import urlparse
@@ -25,6 +25,7 @@ VIDEO_1234 = {
         'cmskeywords': 'Politik;koalition',
         'banner': '1',
         'banner-id': '99887',
+        'ignore_for_update': '0',
     },
     'economics': 'AD_SUPPORTED',
     'id': 1234,
@@ -195,14 +196,12 @@ product_config = """\
     write-token writetnk
     read-url http://localhost:%s/
     write-url http://localhost:%s/
-    source-serie file://%s
     timeout 300
     video-folder video
     playlist-folder video/playlist
 </product-config>
 """ % (httpd_port,
-       httpd_port,
-       pkg_resources.resource_filename(__name__, 'tests/serie.xml'))
+       httpd_port)
 
 
 BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
@@ -264,7 +263,7 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase,
         self.setup_tags()
         update_repository(self.getRootFolder())
         transaction.commit()
-        zeit.workflow.testing.run_publish()
+        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         # clear changes made by the checkout/checkin-cycle during publishing
         RequestHandler.posts_received[:] = []
 

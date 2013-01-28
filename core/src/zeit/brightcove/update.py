@@ -3,6 +3,8 @@
 
 import datetime
 import gocept.runner
+import grokcore.component as grok
+import itertools
 import logging
 import pytz
 import zeit.cms.content.interfaces
@@ -10,19 +12,20 @@ import zeit.brightcove.converter
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
-import zeit.content.video.interfaces
 import zope.component
 
 
 log = logging.getLogger(__name__)
 
 
+@gocept.runner.transaction_per_item
 def update_from_brightcove():
     # getting the playlists seems to be much more likely to fail, and since
     # we want to take what we can get, we do it *after* we have processed
     # the videos (instead of combining both steps)
-    VideoUpdater.update_all()
-    PlaylistUpdater.update_all()
+    return itertools.chain(
+        VideoUpdater.update_all(),
+        PlaylistUpdater.update_all())
 
 
 @gocept.runner.appmain(ticks=120, principal=gocept.runner.from_config(
@@ -33,10 +36,16 @@ def _update_from_brightcove():
     log.info('Update run finished')
 
 
-class BaseUpdater(object):
+class BaseUpdater(grok.Adapter):
+
+    grok.baseclass()
+    grok.implements(zeit.brightcove.interfaces.IUpdate)
+
+    publish_priority = zeit.cms.workflow.interfaces.PRIORITY_DEFAULT
 
     def __init__(self, context):
         log.debug('%r(%s)', self, context.uniqueId)
+        self.publish_job_id = None
         self.bcobj = context
         self.cmsobj = zeit.cms.interfaces.ICMSContent(
             self.bcobj.uniqueId, None)
@@ -45,7 +54,7 @@ class BaseUpdater(object):
     def __call__(self):
         success = self.delete() or self.add() or self.update()
         if not success:
-            log.warning('Object %s not processes.', self.bcobj.uniqueId)
+            log.warning('Object %s not processed.', self.bcobj.uniqueId)
 
     @classmethod
     def repository(self):
@@ -55,7 +64,8 @@ class BaseUpdater(object):
     @classmethod
     def update_all(cls):
         for x in cls.get_objects():
-            cls(x)()
+            cls.publish_priority = zeit.cms.workflow.interfaces.PRIORITY_LOW
+            yield cls(x)
 
     @classmethod
     def get_objects(cls):
@@ -68,9 +78,10 @@ class BaseUpdater(object):
             folder = zeit.cms.content.interfaces.IAddLocation(self.bcobj)
             log.debug('Adding ...')
             folder[str(self.bcobj.id)] = self.bcobj.to_cms()
-            cmsobj = folder[str(self.bcobj.id)]
+            self.cmsobj = folder[str(self.bcobj.id)]
             log.debug('Create publish job')
-            zeit.cms.workflow.interfaces.IPublish(cmsobj).publish()
+            self._publish_if_allowed()
+            self.changed = True
             return True
 
     def delete(self):
@@ -79,8 +90,31 @@ class BaseUpdater(object):
     def update(self):
         pass
 
+    def _update_cmsobj(self):
+        log.info('Updating %s', self.bcobj)
+        with zeit.cms.checkout.helper.checked_out(
+            self.cmsobj, semantic_change=True, events=False) as co:
+            # We don't need to send events here as a full checkout/checkin
+            # cycle is done during publication anyway, below.
+            if co is None:
+                log.warning('Could not update %s' % self.cmsobj)
+            else:
+                self.bcobj.to_cms(co)
+        self._publish_if_allowed()
+
+    def _publish_cmsobj(self):
+        info = zeit.cms.workflow.interfaces.IPublicationStatus(self.cmsobj)
+        if info.published in ('not-published', 'published-with-changes'):
+            self._publish_if_allowed()
+
+    def _publish_if_allowed(self):
+        self.publish_job_id = zeit.cms.workflow.interfaces.IPublish(
+            self.cmsobj).publish(self.publish_priority)
+
 
 class VideoUpdater(BaseUpdater):
+
+    grok.context(zeit.brightcove.converter.Video)
 
     @classmethod
     def get_objects(cls):
@@ -91,10 +125,21 @@ class VideoUpdater(BaseUpdater):
             from_date=from_date)
 
     def delete(self):
-        if self.bcobj.item_state != 'ACTIVE':
-            if self.cmsobj is None:
-                # Deleted in BC and no CMS object. We're done.
-                return True
+        if self.bcobj.item_state == 'ACTIVE':
+            # Handled elsewhere
+            return False
+        if self.bcobj.item_state == 'DELETED' and self.cmsobj is None:
+            # Deleted in BC and no CMS object. We're done.
+            return True
+        if self.bcobj.item_state == 'INACTIVE' and self.cmsobj is None:
+            # The item needs to be imported (but must not be published)
+            return False
+        if zeit.cms.workflow.interfaces.IPublishInfo(
+                self.cmsobj).published:
+            log.info('Retracting %s', self.bcobj)
+            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract(
+                zeit.cms.workflow.interfaces.PRIORITY_LOW)
+        elif self.bcobj.item_state == 'DELETED':
             log.info('Deleting %s', self.bcobj)
             if zeit.cms.workflow.interfaces.IPublishInfo(
                     self.cmsobj).published:
@@ -106,7 +151,7 @@ class VideoUpdater(BaseUpdater):
     def update(self):
         # Update video in CMS iff the BC version is newer.
         new = self.bcobj.to_cms()
-        update = True
+        changed = True
 
         # A bug in Brightcove may cause the last-modified date to remain
         # unchanged even when the video-still URL is actually changed.
@@ -117,36 +162,25 @@ class VideoUpdater(BaseUpdater):
             self.cmsobj).last_semantic_change
         new_mtime = zeit.cms.content.interfaces.ISemanticChange(
             new).last_semantic_change
-        if (current_mtime and new_mtime and current_mtime >= new_mtime and
+        if self.bcobj.ignore_for_update:
+            changed = False
+        elif (current_mtime and new_mtime and current_mtime >= new_mtime and
             self.cmsobj.video_still == new.video_still):
-            update = False
-        else:
-            # Only modify the object in DAV if it really changed in BC.
-            for name in zeit.content.video.interfaces.IVideo:
-                if getattr(self.cmsobj, name, None) != getattr(new, name, None):
-                    break
-            else:
-                update = False
-
-        if update:
-            log.info('Updating %s', self.bcobj)
-            with zeit.cms.checkout.helper.checked_out(
-                self.cmsobj, semantic_change=True, events=False) as co:
-                # We don't need to send events here as a full checkout/checkin
-                # cycle is done duing publication anyway.
-                if co is None:
-                    log.warning('Could not update video')
-                else:
-                    self.bcobj.to_cms(co)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.cmsobj)
-        if update or not info.published:
-            # If updated, publish in anycase; otherwise re-publish if not
-            # published
-            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
+            changed = False
+        if changed:
+            self._update_cmsobj()
+        self._publish_cmsobj()
+        self.changed = changed
         return True
+
+    def _publish_if_allowed(self):
+        if self.bcobj.item_state == 'ACTIVE':
+            super(VideoUpdater, self)._publish_if_allowed()
 
 
 class PlaylistUpdater(BaseUpdater):
+
+    grok.context(zeit.brightcove.converter.Playlist)
 
     @classmethod
     def get_objects(cls):
@@ -156,28 +190,27 @@ class PlaylistUpdater(BaseUpdater):
     def update_all(cls):
         objects = cls.get_objects()
         for x in objects:
-            cls(x)()
-        cls.delete_remaining_except(objects)
+            cls.publish_priority = zeit.cms.workflow.interfaces.PRIORITY_LOW
+            yield cls(x)
+        yield lambda: cls.delete_remaining_except(objects)
 
     def update(self):
         current = self.bcobj.from_cms(self.cmsobj)
-        update = True
+        changed = False
 
-        curdata = dict(name=current.data['name'])
-        newdata = dict(name=self.bcobj.data['name'])
-        if curdata == newdata:
-            update = False
+        curdata = current.data
+        newdata = self.bcobj.data
+        for key in self.bcobj.fields.split(','):
+            if key == 'id':
+                continue
+            if curdata.get(key) != newdata.get(key):
+                changed = True
+                break
 
-        if update:
-            log.info('Updating %s', self.bcobj)
-            with zeit.cms.checkout.helper.checked_out(self.cmsobj) as co:
-                if co is None:
-                    log.warning('Could not update playlist')
-                else:
-                    self.bcobj.to_cms(co)
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.cmsobj)
-        if update or not info.published:
-            zeit.cms.workflow.interfaces.IPublish(self.cmsobj).publish()
+        if changed:
+            self._update_cmsobj()
+        self._publish_cmsobj()
+        self.changed = changed
         return True
 
     @classmethod
@@ -192,5 +225,7 @@ class PlaylistUpdater(BaseUpdater):
             log.info('Deleting <Playlist id=%s>', name)
             cmsobj = folder[name]
             if zeit.cms.workflow.interfaces.IPublishInfo(cmsobj).published:
-                zeit.cms.workflow.interfaces.IPublish(cmsobj).retract()
-            del folder[name]
+                zeit.cms.workflow.interfaces.IPublish(cmsobj).retract(
+                    zeit.cms.workflow.interfaces.PRIORITY_LOW)
+            else:
+                del folder[name]

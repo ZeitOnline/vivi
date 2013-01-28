@@ -1,8 +1,97 @@
 zeit.brightcove changes
 =======================
 
-0.10.1 (unreleased)
--------------------
+2.5.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+2.5.1 (2013-01-09)
+------------------
+
+- Remove ignore_for_update from BC-URL (#11805)
+
+
+2.5.0 (2012-12-17)
+------------------
+
+- Evaluate ignore_for_update customField, which results in not updating
+  anything, if set to true (#11782)
+
+
+2.4.0 (2012-06-07)
+------------------
+
+- Fixed removal of restricted characters from Brightcove JSON response in
+  conjunction with UTF-8 encoding. (#10600)
+- Add view for manually updating Brightcove objects (#10934).
+
+
+2.3.0 (2012-03-06)
+------------------
+
+- Log a warning if multiple video objects with the same id are found (#10254).
+
+- Filter xml restricted characters from brightcove's json responses in
+  addition to json invalid characters. (#9705)
+
+
+2.2.0 (2012-01-17)
+------------------
+
+- Convert renditions to cms-renditions.
+
+
+2.1.2 (2011-12-08)
+------------------
+
+- Update the metadata of playlists when a video changes (#10042).
+
+
+2.1.1 (2011-12-01)
+------------------
+
+- Commit after each BC object (#10024).
+
+
+2.1.0 (2011-12-01)
+------------------
+
+- Use separate Remotetask service for publishing BC objects (#10024).
+
+- When importing from BC, also publish videos/playlists when they already are
+  published but have been changed in DAV (#10023).
+
+- When updating from BC, delete playlists in two phases in order to play nice
+  with asynchronous publication (retraction) (#10022).
+
+
+2.0.1 (2011-11-23)
+------------------
+
+- Import and export references (#9831).
+
+- Fix change detection of playlists (#9976)
+
+- Remove bits and pieces which try to save playlists back to brightcove:
+  playlists are not changed in the CMS so there is no need to actually update
+  brightcove.
+
+- Map brightcove release date correcly to date first released.
+
+- Default Daily Newsletter to false for videos.
+
+- Move serie source to zeit.content.video.
+
+- BC-Deleted videos are now retracted in one pass and deleted in a second
+  pass. This means that they are actually being retracted.
+
+- BC-Inactive videos are now kept in the CMS as unpublished objects.
+
+
+2.0.0 (2011-11-13)
+------------------
 
 - Impport videos and playlists into the DAV servers (#8996).
 

@@ -1,8 +1,9 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.brightcove.converter import Video, Playlist
 import datetime
+import logging
 import mock
 import pytz
 import transaction
@@ -131,7 +132,7 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(
             Video.find_by_id('1234').to_cms())
         date = datetime.datetime(2010, 3, 8, 12, 59, 57, tzinfo=pytz.UTC)
-        self.assertEqual(date, info.date_last_published)
+        self.assertEqual(date, info.date_first_released)
 
     def test_publish_date_is_not_transferred_from_cms(self):
         bcobj = Video.find_by_id('1234')
@@ -155,6 +156,66 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         video.teaserText = too_long
         cms = video.to_cms()
         self.assertEqual(too_long, cms.teaserText)
+
+    def test_relateds_should_be_converted_to_brightcove(self):
+        from zeit.cms.related.interfaces import IRelatedContent
+        cmsobj = zeit.content.video.video.Video()
+        related = IRelatedContent(cmsobj)
+        related.related = (
+            zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/online/2007/01/eta-zapatero'),)
+        self.assertEqual(
+            'http://xml.zeit.de/online/2007/01/eta-zapatero',
+            Video.from_cms(cmsobj).data['customFields']['ref_link1'])
+
+    def test_relateds_should_be_converted_to_cms(self):
+        from zeit.cms.related.interfaces import IRelatedContent
+        video = Video.find_by_id('1234')
+        video.data['customFields']['ref_link1'] = (
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        cmsobj = video.to_cms()
+        related = IRelatedContent(cmsobj)
+        self.assertEqual(
+            ['http://xml.zeit.de/online/2007/01/Somalia'],
+            [x.uniqueId for x in related.related])
+
+    def test_renditions_should_be_converted_to_cms(self):
+        video = Video.find_by_id('1234')
+        video.data['renditions'] = [{"url": "http:example.org/my_rendition",
+                      "frameWidth": 400}]
+        cmsobj = video.to_cms()
+        self.assertEqual(
+           "http:example.org/my_rendition",
+           cmsobj.renditions[0].url)
+
+        self.assertEqual(
+           400,
+           cmsobj.renditions[0].frame_width)
+
+    def test_comments_should_default_to_true(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertTrue(video.commentsAllowed)
+
+    def test_dailynl_should_default_to_false(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertFalse(video.dailyNewsletter)
+
+    def test_banner_should_default_to_true(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertTrue(video.banner)
+
+    def test_breaking_news_should_default_to_false(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertFalse(video.breaking_news)
+
+    def test_ignore_for_update_should_default_to_false(self):
+        video = Video.find_by_id('1234')
+        video.data['customFields'].clear()
+        self.assertFalse(video.ignore_for_update)
 
 
 class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
@@ -189,7 +250,6 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         video.title = u'Foo & Bar'
         cms = video.to_cms()
         self.assertEqual(u'Foo &amp; Bar', cms.title)
-
 
 
 class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
@@ -240,16 +300,6 @@ class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertTrue(info.published)
         self.assertGreater(info.date_last_published, last_published)
 
-    def test_playlist_is_updated_on_checkin(self):
-        playlist = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/video/playlist/2345')
-        with zeit.cms.checkout.helper.checked_out(
-                playlist, semantic_change=True) as co:
-            co.title = u'local change'
-        transaction.commit()
-        self.assertEqual(
-            1, len(zeit.brightcove.testing.RequestHandler.posts_received))
-
     def test_changes_are_written_on_commit(self):
         video = Video.find_by_id('1234')
         video.subtitle = u'A new subtitle'
@@ -290,14 +340,19 @@ class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
                 LookupError,
                 zeit.brightcove.converter.resolve_video_id, '1234')
 
-    def test_should_raise_if_multiple_objects_are_found(self):
+    def test_should_raise_and_warn_if_multiple_objects_are_found(self):
+        log = logging.getLogger(zeit.brightcove.converter.__name__)
         with mock.patch('zeit.connector.mock.Connector.search') as search:
-            search.return_value = iter(
-                (('http://xml.zeit.de/video/2010-03/1234',),
-                 ('http://xml.zeit.de/video/2010-03/1234',),))
-            self.assertRaises(
-                LookupError,
-                zeit.brightcove.converter.resolve_video_id, '1234')
+            with mock.patch.object(log, 'warning') as log_warning:
+                search.return_value = iter(
+                    (('http://xml.zeit.de/video/2010-03/1234',),
+                     ('http://xml.zeit.de/video/2010-03/1234',),))
+                self.assertRaises(
+                    LookupError,
+                    zeit.brightcove.converter.resolve_video_id, '1234')
+                warning = log_warning.call_args
+                self.assertFalse(warning is None)
+                self.assertTrue('1234' in warning[0][0])
 
 
 class TestQueryVideoId(unittest.TestCase):
@@ -307,7 +362,6 @@ class TestQueryVideoId(unittest.TestCase):
         with mock.patch('zeit.brightcove.converter.resolve_video_id') as rvi:
             query_video_id(mock.sentinel.avalue)
         rvi.assert_called_with(mock.sentinel.avalue)
-
 
     def test_should_return_value(self):
         from zeit.brightcove.converter import query_video_id

@@ -20,11 +20,6 @@ class IBrightcoveObject(zope.interface.Interface):
     """A representation of an object as stored in Brightcove."""
 
 
-class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
-    config_url = 'source-serie'
-    product_configuration = 'zeit.brightcove'
-
-
 class IBrightcoveContent(zeit.cms.interfaces.ICMSContent):
 
     id = zope.schema.Int(
@@ -84,6 +79,27 @@ class IVideo(IBrightcoveContent,
         required=False,
         readonly=True)
 
+    commentsAllowed = zope.schema.Bool(
+        title=_("Comments allowed"),
+        default=True)
+
+    ignore_for_update = zope.schema.Bool(
+        title=_("Ignore for update"),
+        default=False)
+
+    dailyNewsletter = zope.schema.Bool(
+        title=_("Daily newsletter"),
+        default=False)
+
+    banner = zope.schema.Bool(
+        title=_("Banner"),
+        default=True)
+
+    breaking_news = zope.schema.Bool(
+        title=_('Breaking news'),
+        default=False)
+
+
 
 class IPlaylist(IBrightcoveContent):
     """A playlist."""
@@ -101,3 +117,7 @@ class IPlaylist(IBrightcoveContent):
 
 class IRepository(zope.interface.Interface):
     """legacy interface."""
+
+
+class IUpdate(zope.interface.Interface):
+    """Update a Brightcove object from Brightcove."""

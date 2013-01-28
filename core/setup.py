@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name = 'zeit.brightcove',
-    version='0.10.1dev',
+    version='2.5.2.dev0',
     author = 'Christian Zagrodnick',
     author_email = 'cz@gocept.com',
     description = '',
@@ -12,6 +12,7 @@ setup(
     zip_safe = False,
     namespace_packages = ['zeit'],
     install_requires = [
+        'gocept.runner>0.5.3',
         'grokcore.component',
         'grokcore.view',
         'lxml',

@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zope.cachedescriptors.property import Lazy as cachedproperty
@@ -14,6 +14,7 @@ import zeit.cms.content.add
 import zeit.cms.content.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.connector.search
@@ -119,7 +120,7 @@ class mapped_datetime(mapped):
         value = super(mapped_datetime, self).__get__(instance, class_)
         if not value:
             return None
-        date = datetime.datetime.utcfromtimestamp(int(value)/1000)
+        date = datetime.datetime.utcfromtimestamp(int(value) / 1000)
         return pytz.utc.localize(date)
 
     def __set__(self, instance, value):
@@ -210,27 +211,6 @@ class Converter(object):
         return zope.component.getUtility(
             zeit.brightcove.interfaces.IAPIConnection)
 
-    def save(self):
-        registered = getattr(self, '_v_save_hook_registered', False)
-        if not registered:
-            transaction.get().addBeforeCommitHook(self._save)
-            self._v_save_hook_registered = True
-
-    def _save(self):
-        try:
-            del self._v_save_hook_registered
-        except AttributeError:
-            pass
-        __traceback_info__ = (self.data,)
-
-        data = dict(self.data)
-        if 'customFields' in data:
-            data['customFields'] = dict(data['customFields'])
-        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate']
-        for field in READ_ONLY:
-            data.pop(field, None)
-        self.get_connection().post('update_video', video=data)
-
     def __str__(self):
         return '<%s id=%s>' % (self.__class__.__name__, self.id)
 
@@ -240,7 +220,7 @@ class Video(Converter):
     zope.interface.implements(zeit.brightcove.interfaces.IVideo)
 
     type = 'video'
-    id_prefix = 'vid' # for old-style asset IDs
+    id_prefix = 'vid'  # for old-style asset IDs
     commentsAllowed = mapped_bool('customFields', 'allow_comments')
     banner = mapped_bool('customFields', 'banner')
     banner_id = mapped('customFields', 'banner-id')
@@ -252,6 +232,7 @@ class Video(Converter):
     product_id = mapped('customFields', 'produkt-id')
     ressort = mapped('customFields', 'ressort')
     serie = mapped('customFields', 'serie')
+    ignore_for_update = mapped_bool('customFields', 'ignore_for_update')
     subtitle = mapped('longDescription')
     supertitle = mapped('customFields', 'supertitle')
     video_still = mapped('videoStillURL')
@@ -279,6 +260,7 @@ class Video(Converter):
         'playsTrailingWeek',
         'publisheddate',
         'referenceId',
+        'renditions',
         'shortDescription',
         'tags',
         'thumbnailURL',
@@ -302,6 +284,19 @@ class Video(Converter):
             video_fields=class_.fields,
             filter='PLAYABLE,DELETED,INACTIVE,UNSCHEDULED',
             sort_by='MODIFIED_DATE', sort_order='DESC')
+
+    @property
+    def renditions(self):
+        rs = []
+        data_renditions = self.data.get('renditions')
+        if data_renditions is None:
+            return ()
+        for rendition in data_renditions:
+            vr = zeit.content.video.video.VideoRendition()
+            vr.url = rendition["url"]
+            vr.frame_width = rendition["frameWidth"]
+            rs.append(vr)
+        return tuple(rs)
 
     @property
     def related(self):
@@ -328,10 +323,12 @@ class Video(Converter):
             custom['ref_title%i' % i] = ''
         for i, obj in enumerate(value, 1):
             metadata = zeit.cms.content.interfaces.ICommonMetadata(obj, None)
-            if metadata is None:
-                continue
+            if metadata and metadata.teaserTitle:
+                title = metadata.teaserTitle
+            else:
+                title = u'unknown'
             custom['ref_link%s' % i] = obj.uniqueId
-            custom['ref_title%s' % i] = metadata.teaserTitle
+            custom['ref_title%s' % i] = title
 
     @property
     def year(self):
@@ -339,9 +336,30 @@ class Video(Converter):
             modified = int(self.data.get('lastModifiedDate'))
         except (TypeError, ValueError):
             return None
-        return datetime.datetime.fromtimestamp(modified/1000).year
+        return datetime.datetime.fromtimestamp(modified / 1000).year
 
     # XXX year.setter is missing
+
+    def save(self):
+        registered = getattr(self, '_v_save_hook_registered', False)
+        if not registered:
+            transaction.get().addBeforeCommitHook(self._save)
+            self._v_save_hook_registered = True
+
+    def _save(self):
+        try:
+            del self._v_save_hook_registered
+        except AttributeError:
+            pass
+        __traceback_info__ = (self.data,)
+
+        data = dict(self.data)
+        if 'customFields' in data:
+            data['customFields'] = dict(data['customFields'])
+        READ_ONLY = ['lastModifiedDate', 'creationDate', 'publishedDate']
+        for field in READ_ONLY:
+            data.pop(field, None)
+        self.get_connection().post('update_video', video=data)
 
     def to_cms(self, video=None):
         log.debug('Converting video to cms object %s', self.uniqueId)
@@ -353,21 +371,26 @@ class Video(Converter):
             copy_field(
                 self, video, zeit.content.video.interfaces.IVideo, key)
         video.brightcove_id = str(self.id)
+        video.renditions = self.renditions
         sc = zeit.cms.content.interfaces.ISemanticChange(video)
         sc.last_semantic_change = self.date_last_modified
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
-        info.date_last_published = self.date_first_released
+        info.date_first_released = self.date_first_released
+        zeit.cms.related.interfaces.IRelatedContent(video).related = (
+            self.related)
         return video
 
     @classmethod
     def from_cms(cls, video):
-        instance = cls(data=dict(id='foo'))
+        instance = cls(data=dict(id=video.brightcove_id))
         instance.id = video.brightcove_id
         for key in zeit.content.video.interfaces.IVideo:
             try:
                 setattr(instance, key, getattr(video, key))
             except AttributeError:
                 pass
+        instance.related = zeit.cms.related.interfaces.IRelatedContent(
+            video).related
         date_last_modified = \
             zeit.cms.content.interfaces.ISemanticChange(
             video).last_semantic_change
@@ -377,7 +400,7 @@ class Video(Converter):
             bc_state = cls.find_by_id(instance.id)
             instance.date_first_released = bc_state.date_first_released
         except KeyError:
-            pass # avoid failures in test setup
+            pass  # avoid failures in test setup
         return instance
 
 
@@ -395,7 +418,7 @@ class Playlist(Converter):
 
     zope.interface.implements(zeit.brightcove.interfaces.IPlaylist)
     type = 'playlist'
-    id_prefix = 'pls' # for old-style asset IDs
+    id_prefix = 'pls'  # for old-style asset IDs
     item_state = 'ACTIVE'
     fields = ",".join((
         'id',
@@ -412,6 +435,10 @@ class Playlist(Converter):
                 zeit.cms.interfaces.ICMSContent(query_video_id(str(id)), None)
                 for id in self.data['videoIds'])
             if video is not None)
+
+    @videos.setter
+    def videos(self, value):
+        self.data['videoIds'] = [int(video.brightcove_id) for video in value]
 
     @classmethod
     def find_by_ids(class_, ids):
@@ -439,7 +466,7 @@ class Playlist(Converter):
 
     @classmethod
     def from_cms(cls, playlist):
-        instance = cls(data=dict(id='foo'))
+        instance = cls(data=dict(id=int(playlist.__name__)))
         for key in zeit.content.video.interfaces.IPlaylist:
             try:
                 setattr(instance, key, getattr(playlist, key))
@@ -469,8 +496,9 @@ def resolve_video_id(video_id):
     if not result:
         raise LookupError(video_id)
     if len(result) > 1:
-        raise LookupError(
-            'Found multiple CMS objects with video id %r.' % video_id)
+        msg = 'Found multiple CMS objects with video id %r.' % video_id
+        log.warning(msg)
+        raise LookupError(msg)
     result = result[0]
     unique_id = result[0]
     return unique_id
@@ -497,6 +525,9 @@ def adapt_old_video_id_to_new_object(old_id):
         return playlist_location(None).get(pls_id)
 
 
+@grok.subscribe(
+    zeit.content.video.interfaces.IVideo,
+    zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def update_brightcove(context, event):
     if not event.publishing:
         zeit.brightcove.interfaces.IBrightcoveObject(context).save()

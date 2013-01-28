@@ -5,6 +5,8 @@
 
   <grok:grok package="." />
 
+  <include package=".browser" />
+
   <permission
     id="zeit.brightcove.video.Edit"
     title="Edit brightcove videos"
@@ -20,16 +22,6 @@
     provides="zeit.brightcove.interfaces.IAPIConnection"
     factory=".connection.connection_factory"
     />
-
-  <subscriber
-    for="zeit.content.video.interfaces.IVideo
-         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".converter.update_brightcove" />
-
-  <subscriber
-    for="zeit.content.video.interfaces.IPlaylist
-         zeit.cms.checkout.interfaces.IAfterCheckinEvent"
-    handler=".converter.update_brightcove" />
 
   <subscriber
     for="zeit.content.video.interfaces.IVideo
