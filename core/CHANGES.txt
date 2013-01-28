@@ -1,10 +1,10 @@
 zeit.brightcove changes
 =======================
 
-2.5.2 (unreleased)
-------------------
+editor-ng (unreleased)
+----------------------
 
-- Nothing changed yet.
+- Use the new tagging infrastructure (#8623).
 
 
 2.5.1 (2013-01-09)
