@@ -1,7 +1,6 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest2 as unittest
 import zeit.content.video.testing
 
 

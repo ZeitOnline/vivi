@@ -1,5 +1,6 @@
 syntax: glob
-.hgsubstate
+*.pyc
+*.egg-info
 .installed.cfg
 bin
 develop-eggs

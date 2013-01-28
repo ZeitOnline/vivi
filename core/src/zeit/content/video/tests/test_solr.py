@@ -1,7 +1,6 @@
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest2 as unittest  # XXX
 import zeit.solr.interfaces
 import zope.component
 

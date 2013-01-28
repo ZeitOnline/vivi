@@ -20,6 +20,27 @@ class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
         required=False,
         readonly=True)
 
+    id_prefix = zope.schema.TextLine(
+        title=_('Id prefix'),
+        required=True,
+        readonly=True)
+
+
+class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
+
+    config_url = 'source-serie'
+    product_configuration = 'zeit.content.video'
+
+
+class IVideoRendition(zope.interface.interfaces.IInterface):
+    url = zope.schema.URI(
+        title=_('URI of the rendition'),
+        required=False,
+        readonly=True)
+
+    frame_width = zope.schema.Int(
+        title=_('Width of the Frame'))
+
 
 class IVideo(IVideoContent):
 
@@ -49,6 +70,22 @@ class IVideo(IVideoContent):
         default=None,
         value_type=zope.schema.Choice(
             source=zeit.cms.tagging.whitelist.WhitelistSource()))
+
+    renditions = zope.schema.Tuple(
+        title=_("Renditions of the Video"),
+        required=False,
+        readonly=True,
+        default=(),
+        unique=False,
+        value_type=zope.schema.Object(
+            schema=IVideoRendition
+        )
+    )
+
+    serie = zope.schema.Choice(
+        title=_("Serie"),
+        source=SerieSource(),
+        required=False)
 
 
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):

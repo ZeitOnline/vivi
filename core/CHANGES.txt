@@ -1,7 +1,56 @@
 zeit.content.video changes
 ==========================
 
-2.0 (unreleased)
+2.1.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
+2.1.1 (2012-01-18)
+------------------
+
+- Removed untested, non-working code which went accidentally into the last
+  release.
+
+
+2.1.0 (2012-01-17)
+------------------
+
+- Add IPublicationDependecies so that playlists are published when videos
+  contained in them are published (#10042).
+- Add renditions object and MultiBaseProperty to have different renditions for
+  a video
+
+
+2.0.4 (2011-12-01)
+------------------
+
+- Fix XMLReferenceUpdater so it doesn't grow lots of superfluous video-still
+  nodes (#10028).
+
+
+2.0.3 (2011-11-24)
+------------------
+
+- Fix access to `id_prefix` for videos and playlists (#10015)
+
+
+2.0.2 (2011-11-23)
+------------------
+
+- Fix 2.0.1 which misses serie.xml file
+
+
+2.0.1 (2011-11-23)
+------------------
+
+- Use special video series.
+
+- Hide the subtitle field.
+
+
+2.0 (2011-11-13)
 ----------------
 
 - Total rewrite. For earlier versions, see the subversion repository at
