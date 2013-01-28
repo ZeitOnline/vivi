@@ -31,6 +31,7 @@
         editor.js
         ads.js
         counter.js
+        blocks.js
         html.js
         strftime.js
         timer.js
