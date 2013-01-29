@@ -748,6 +748,32 @@ legend {
   font-size: 14px;
 }
 
+#checkin {
+  background: url("../zeit.cms/icons/wf_bb_einchecken.png") no-repeat 5px 2px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  font-size: 14px !important;
+  padding-left: 51px;
+  
+}
+
+#checkin-publish {
+  background: url("../zeit.cms/icons/wf_bb_speichern-und-veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  font-size: 14px !important;
+  padding-left: 77px;
+}
+
+#delete_workingcopy, #delete_from_repository {
+  background: url("../zeit.cms/icons/delete.png") no-repeat 3px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%)  !important;
+  font-size: 14px !important;
+  padding-left: 22px;
+}
+
+#publish {
+  background: url("../zeit.cms/icons/wf_bb_veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  font-size: 14px !important;
+  padding-left: 37px;
+}
+
+
 #editor-forms a.add_view {
   background-position: 7px -114px, 0 0;
 }
