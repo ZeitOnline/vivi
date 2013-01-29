@@ -23,6 +23,7 @@
       source="js"
       include="
       context.js
+      details.js
       edit.js
       inlineform.js
       lightbox.js
