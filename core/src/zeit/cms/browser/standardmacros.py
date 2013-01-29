@@ -7,6 +7,7 @@ import zc.resourcelibrary.resourcelibrary
 import zeit.cms.browser
 import zeit.cms.browser.interfaces
 import zeit.cms.checkout.interfaces
+import zeit.cms.repository.interfaces
 import zope.app.basicskin.standardmacros
 import zope.component
 import zope.location.interfaces
@@ -61,7 +62,7 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
     def context_location(self):
         if zeit.cms.checkout.interfaces.ILocalContent.providedBy(self.context):
             return 'workingcopy'
-        elif zeit.cms.checkout.interfaces.IRepositoryContent.providedBy(
+        elif zeit.cms.repository.interfaces.IRepositoryContent.providedBy(
             self.context):
             return 'repository'
         else:
