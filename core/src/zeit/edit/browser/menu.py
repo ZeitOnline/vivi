@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.interfaces import IRepositoryContent
 import zeit.cms.browser.menu
 
 
@@ -17,3 +18,8 @@ class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
     def selected(self):
         selected = self.request.getURL().endswith('@@edit.html')
         return selected
+
+    def render(self):
+        if IRepositoryContent.providedBy(self.context):
+            return ''
+        return super(EditContentsMenuItem, self).render()
