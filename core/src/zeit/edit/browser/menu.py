@@ -3,11 +3,9 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.menu
-import zeit.cms.checkout.interfaces
 
 
 class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
-    """The Workflow menu item which is active when no other item is active."""
 
     sort = -1
     viewURL = "@@edit.html"
@@ -20,6 +18,5 @@ class EditContentsMenuItem(zeit.cms.browser.menu.ContextViewsMenu):
 
     @property
     def selected(self):
-        """We are selected when no other item is selected."""
         selected = self.request.getURL().endswith('@@edit.html')
         return selected
