@@ -61,16 +61,15 @@ class _XMLBase(zope.schema.Field):
                                object.__class__.__module__,
                                object.__class__.__name__))
         current_value = self.query(object, DEFAULT_MARKER)
-        if (current_value is DEFAULT_MARKER
-            or current_value.getparent() is None):
-            setattr(object, self.__name__, value)
-        else:
+        if not (current_value is DEFAULT_MARKER
+                or current_value.getparent() is None):
             # Locate the XML object into the workingcopy so that edit
             # permissions can be found
             parent = located(current_value.getparent(), object, self.__name__)
             # Remove the security proxy cause lxml can't eat them
             parent.replace(
                 zope.security.proxy.removeSecurityProxy(current_value), value)
+        setattr(object, self.__name__, value)
 
 
 def located(obj, parent, name):
