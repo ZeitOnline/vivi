@@ -566,7 +566,7 @@ table.properties textarea {
     width: 10em;
 }
 
-.object-widget a.button.configure_search {
+.type-article .object-widget a.button.configure_search {
   padding-left: 2px;
   padding-right: 2px;
   background-position: 9px -55px, 0 0;
