@@ -10,8 +10,7 @@
   <resourceLibrary name="zeit.content.image" require="zeit.cms">
     <directory
       source="resources"
-      include="drag-images.js
-               details.js"
+      include="drag-images.js"
       />
   </resourceLibrary>
 
