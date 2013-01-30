@@ -948,6 +948,10 @@
 }
 
 
+.type-article form[action$="asset-badges"] {
+  padding-left: 177px;
+}
+
 .type-article form[action$="asset-badges"] div.value {
   margin-top:-5px;
 }
@@ -974,29 +978,29 @@
 
 .type-article .module-icon-video,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.0"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -649px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -654px transparent;
 }
 
 .type-article .module-icon-image,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -709px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -714px transparent;
 }
 
 .type-article .module-icon-audio,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -770px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -775px transparent;
 }
 
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -830px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -835px transparent;
 }
 
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -890px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -895px transparent;
 }
 
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -950px transparent;
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -955px transparent;
 }
 
 .type-article #article-editor-text .module-icon-image {
