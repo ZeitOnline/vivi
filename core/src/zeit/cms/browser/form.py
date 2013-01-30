@@ -137,11 +137,14 @@ class PlaceholderMixin(object):
         for widget in self.widgets:
             if not self._is_textwidget(widget):
                 continue
-            placeholder = widget.label or ''
+            placeholder = ''
             field = widget.context
             if zope.interface.interfaces.IElement.providedBy(field):
-                placeholder = field.queryTaggedValue(
-                    'placeholder', default=placeholder)
+                placeholder = field.queryTaggedValue('placeholder')
+            if not placeholder:
+                placeholder = widget.label or ''
+            placeholder = zope.i18n.translate(
+                placeholder, context=self.request)
             widget.extra = ((widget.extra + ' ' if widget.extra else '') +
                             'placeholder="%s"' % placeholder)
 
