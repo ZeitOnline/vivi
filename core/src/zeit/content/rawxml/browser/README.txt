@@ -39,7 +39,7 @@ In the edited documents panel we see the title of the object and its icon:
       <img src="http://localhost/++skin++cms/@@/zeit-content-rawxml-interfaces-IRawXML-zmi_icon.png" alt="RawXML" width="18" height="18" border="0" />
     </td>
     <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/rawxml/edit.html">This is raw feed foo</a>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/rawxml/...">This is raw feed foo</a>
     </td>
     <td>
       <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/rawxml</span><span class="uniqueId">http://xml.zeit.de/rawxml</span>
