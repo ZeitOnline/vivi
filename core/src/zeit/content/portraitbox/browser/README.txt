@@ -44,7 +44,7 @@ Make sure the box is listed in the workingcopy panel:
 >>> print browser.contents
 <?xml ...
     <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Wurst-Hans/edit.html">Hans Wurst</a>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Wurst-Hans/...">Hans Wurst</a>
     </td>
     ...
 
