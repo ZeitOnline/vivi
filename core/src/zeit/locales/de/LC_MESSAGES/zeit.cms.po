@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Jan 30 10:04:09 2013\n"
-"PO-Revision-Date: 2013-01-30 10:34+0100\n"
+"PO-Revision-Date: 2013-01-30 11:09+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1362,7 +1362,7 @@ msgstr "Inhalt des Channels"
 #: zeit/cms/content/browser/template-properties.pt:48
 #: zeit/content/article/edit/browser/workflow.pt:10
 msgid "Save"
-msgstr "Speichern"
+msgstr "Einchecken"
 
 #: zeit/cms/syndication/browser/form.py:17
 msgid "Add Channel"
@@ -1474,7 +1474,7 @@ msgstr "Name eingeben"
 
 #: zeit/cms/tagging/browser/widget.py:48
 msgid "Update tags"
-msgstr ""
+msgstr "Generieren"
 
 #. Default: ""
 #: zeit/cms/tagging/browser/widget.py:54
