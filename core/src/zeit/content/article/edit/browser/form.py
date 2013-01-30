@@ -28,6 +28,14 @@ class FormFields(zope.formlib.form.FormFields):
         super(FormFields, self).__init__(*args, **kw)
 
 
+class MaxLengthMixin(object):
+
+    def set_maxlength(self, field_name):
+        widget = self.widgets[field_name]
+        if hasattr(widget, 'extra'):
+            widget.extra += ' cms:maxlength="%s"' % widget.context.max_length
+
+
 class Heading(object):
 
     def render(self):
@@ -64,7 +72,8 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
             self.context)
 
 
-class ArticleContentHead(zeit.edit.browser.form.InlineForm):
+class ArticleContentHead(zeit.edit.browser.form.InlineForm,
+                         MaxLengthMixin):
 
     legend = _('')
     prefix = 'article-content-head'
@@ -74,12 +83,9 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(ArticleContentHead, self).setUpWidgets(*args, **kw)
-        self.widgets['supertitle'].extra += ' cms:maxlength="%s"' % (
-            self.widgets['supertitle'].context.max_length)
-        self.widgets['title'].extra += ' cms:maxlength="%s"' % (
-            self.widgets['title'].context.max_length)
-        self.widgets['subtitle'].extra += ' cms:maxlength="%s"' % (
-            self.widgets['subtitle'].context.max_length)
+        self.set_maxlength('supertitle')
+        self.set_maxlength('title')
+        self.set_maxlength('subtitle')
 
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
@@ -402,7 +408,8 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         return super(TeaserImage, self).handle_edit_action.success(data)
 
 
-class TeaserSupertitle(zeit.edit.browser.form.InlineForm):
+class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
+                       MaxLengthMixin):
 
     legend = _('')
     prefix = 'teaser-supertitle'
@@ -411,11 +418,11 @@ class TeaserSupertitle(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserSupertitle, self).setUpWidgets(*args, **kw)
-        widget = self.widgets['teaserSupertitle']
-        widget.extra += ' cms:maxlength="%s"' % widget.context.max_length
+        self.set_maxlength('teaserSupertitle')
 
 
-class TeaserTitle(zeit.edit.browser.form.InlineForm):
+class TeaserTitle(zeit.edit.browser.form.InlineForm,
+                  MaxLengthMixin):
 
     legend = _('')
     prefix = 'teaser-title'
@@ -424,11 +431,11 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserTitle, self).setUpWidgets(*args, **kw)
-        widget = self.widgets['teaserTitle']
-        widget.extra += ' cms:maxlength="%s"' % widget.context.max_length
+        self.set_maxlength('teaserTitle')
 
 
-class TeaserText(zeit.edit.browser.form.InlineForm):
+class TeaserText(zeit.edit.browser.form.InlineForm,
+                 MaxLengthMixin):
 
     legend = _('')
     prefix = 'teaser-text'
@@ -437,8 +444,7 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserText, self).setUpWidgets(*args, **kw)
-        widget = self.widgets['teaserText']
-        widget.extra += ' cms:maxlength="%s"' % widget.context.max_length
+        self.set_maxlength('teaserText')
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
