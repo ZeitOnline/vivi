@@ -31,7 +31,7 @@
      tal:attributes="href view/add_view"
      tal:condition="view/add_view"
      i18n:translate="">
-    Add new …
+    Add new...
   </a>
   </div>
 
