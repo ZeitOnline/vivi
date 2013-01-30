@@ -144,7 +144,7 @@
     class=".publish.RetractMenuItem"
     manager="zeit.cms.browser.interfaces.IContextActions"
     permission="zeit.workflow.Publish"
-    icon="/@@/zeit.cms/icons/missing.gif"
+    icon="/@@/zeit.cms/icons/retract.png"
     />
 
   <browser:page
