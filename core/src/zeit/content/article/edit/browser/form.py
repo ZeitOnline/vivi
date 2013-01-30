@@ -74,20 +74,12 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm):
 
     def setUpWidgets(self, *args, **kw):
         super(ArticleContentHead, self).setUpWidgets(*args, **kw)
-        self.widgets['supertitle'].extra = 'cms:maxlength="%s"' % (
+        self.widgets['supertitle'].extra += ' cms:maxlength="%s"' % (
             self.widgets['supertitle'].context.max_length)
-        self.widgets['title'].extra = 'cms:maxlength="%s"' % (
+        self.widgets['title'].extra += ' cms:maxlength="%s"' % (
             self.widgets['title'].context.max_length)
-        self.widgets['subtitle'].extra = 'cms:maxlength="%s"' % (
+        self.widgets['subtitle'].extra += ' cms:maxlength="%s"' % (
             self.widgets['subtitle'].context.max_length)
-        for widget in self.widgets:
-            placeholder = widget.label or ''
-            field = widget.context
-            if zope.interface.interfaces.IElement.providedBy(field):
-                placeholder = field.queryTaggedValue(
-                    'placeholder', default=placeholder)
-            widget.extra = ((widget.extra + ' ' if widget.extra else '') +
-                            'placeholder="%s"' % placeholder)
 
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
@@ -420,14 +412,7 @@ class TeaserSupertitle(zeit.edit.browser.form.InlineForm):
     def setUpWidgets(self, *args, **kw):
         super(TeaserSupertitle, self).setUpWidgets(*args, **kw)
         widget = self.widgets['teaserSupertitle']
-        placeholder = widget.label or ''
-        field = widget.context
-        if zope.interface.interfaces.IElement.providedBy(field):
-            placeholder = field.queryTaggedValue(
-                'placeholder', default=placeholder)
-        widget.extra = (
-            'cms:maxlength="%s" cms:tooltip="%s" placeholder="%s"' %
-            (field.max_length, field.description, placeholder))
+        widget.extra += ' cms:maxlength="%s"' % widget.context.max_length
 
 
 class TeaserTitle(zeit.edit.browser.form.InlineForm):
@@ -440,13 +425,7 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm):
     def setUpWidgets(self, *args, **kw):
         super(TeaserTitle, self).setUpWidgets(*args, **kw)
         widget = self.widgets['teaserTitle']
-        placeholder = widget.label or ''
-        field = widget.context
-        if zope.interface.interfaces.IElement.providedBy(field):
-            placeholder = field.queryTaggedValue(
-                'placeholder', default=placeholder)
-        widget.extra = 'cms:maxlength="%s" placeholder="%s"' % (
-            field.max_length, placeholder)
+        widget.extra += ' cms:maxlength="%s"' % widget.context.max_length
 
 
 class TeaserText(zeit.edit.browser.form.InlineForm):
@@ -459,13 +438,7 @@ class TeaserText(zeit.edit.browser.form.InlineForm):
     def setUpWidgets(self, *args, **kw):
         super(TeaserText, self).setUpWidgets(*args, **kw)
         widget = self.widgets['teaserText']
-        placeholder = widget.label or ''
-        field = widget.context
-        if zope.interface.interfaces.IElement.providedBy(field):
-            placeholder = field.queryTaggedValue(
-                'placeholder', default=placeholder)
-        widget.extra = 'cms:maxlength="%s" placeholder="%s"' % (
-            field.max_length, placeholder)
+        widget.extra += ' cms:maxlength="%s"' % widget.context.max_length
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
