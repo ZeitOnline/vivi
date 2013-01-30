@@ -43,7 +43,7 @@ Make sure the infobox is listed in the workingcopy panel:
 >>> print browser.contents
 <?xml ...
     <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/infobox/edit.html">Altersvorsorge</a>
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/infobox/...">Altersvorsorge</a>
     </td>
     ...
 
