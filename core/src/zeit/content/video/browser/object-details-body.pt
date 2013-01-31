@@ -1,7 +1,14 @@
 <div class="video_details" i18n:domain="zeit.cms">
   <div class="graphical_preview"
        tal:condition="view/graphical_preview_url">
-    <img tal:attributes="src view/graphical_preview_url"/>
+    <div class="overlay-anchor">
+      <img tal:attributes="src view/graphical_preview_url"/>
+
+      <div class="overlay"><div class="overlay-position">
+        <a class="button edit-button" i18n:translate="" target="_blank"
+           tal:attributes="href string:${context/@@absolute_url}/@@edit.html">edit</a>
+      </div></div>
+    </div>
   </div>
 
   <button class="toggle_infos folded">
