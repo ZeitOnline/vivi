@@ -41,7 +41,7 @@ class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
         self.write_html(
             '<link rel="stylesheet" type="text/css" href="style.css" />')
         self.evaluate_js_and_css()
-        s.assertNotVisible('css=h3')
+        s.waitForNotVisible('css=h3')
 
     def test_evaluates_inline_style_sheets(self):
         s = self.selenium
