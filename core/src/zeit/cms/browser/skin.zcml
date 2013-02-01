@@ -152,6 +152,7 @@
     <directory source="js" include="
       tooltip.js
       lightbox.js
+      details.js
       dnd.js
       object_reference.js
       object_sequence.js
