@@ -30,3 +30,17 @@ class BadgeWidget(zeit.cms.testing.BrowserTestCase):
                '/article/@@checkout')
         b.open('@@edit.form.asset-badges?show_form=1')
         self.assertEllipsis('...<label cms:tooltip="Video"...', b.contents)
+
+    def test_renders_selected_items(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['article'] = Article()
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/article/@@checkout')
+        b.open('@@edit.form.asset-badges?show_form=1')
+        b.getControl(name='asset-badges.badges').controls[0].selected = True
+        b.getControl('Apply').click()
+        b.open('@@edit.form.asset-badges?show_form=1')
+        self.assertTrue(
+            b.getControl(name='asset-badges.badges').controls[0].selected)
