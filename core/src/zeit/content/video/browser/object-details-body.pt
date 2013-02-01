@@ -8,7 +8,7 @@
         <a class="button edit-button" i18n:translate="" target="_blank"
            tal:attributes="href string:${context/@@absolute_url}/@@edit.html">edit</a>
         <a class="button preview-button" i18n:translate="" target="_blank"
-           tal:attributes="href view/preview_url">preview</a>
+           tal:attributes="href view/preview_url">Preview</a>
       </div></div>
     </div>
   </div>
