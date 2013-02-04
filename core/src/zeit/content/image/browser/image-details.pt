@@ -16,7 +16,7 @@
     </div></div>
   </div>
 
-  <button tal:condition="view/metadata/caption" class="toggle_infos folded">
+  <button i18n:translate="" tal:condition="view/metadata/caption" class="toggle_infos folded">
   Image sub text</button>
   <p style="display:none" class="folded_information picture_information"><span tal:content="structure view/metadata/caption"></span></p>
 
