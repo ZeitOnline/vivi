@@ -25,8 +25,9 @@ def get_img_tag(image, request):
     url = zope.component.getMultiAdapter(
         (image, request), name='absolute_url')
     width, height = image.getImageSize()
-    return '<img src="%s" alt="" height="%s" width="%s" border="0" />' % (
-        url, height, width)
+    return (
+        '<img src="%s" alt="" height="%s" width="%s" border="0" />' % (
+        url, height, width))
 
 
 class Image(zope.file.download.Display):
@@ -89,7 +90,7 @@ class Scaled(object):
             image = image.thumbnail(self.width, self.height, self.filter)
             image.__name__ = self.__name__
         image_view = zope.component.getMultiAdapter(
-            (image, self.request), name='index.html')
+            (image, self.request), name='raw')
         return image_view
 
 
