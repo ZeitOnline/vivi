@@ -198,6 +198,14 @@ class EmptyMarkerTest(object):
     def test_block_is_empty_after_creation(self):
         block = self.create_block()
         self.assertTrue(block.is_empty)
+        body = block.__parent__
+        self.assertTrue(body.values()[0].is_empty)
+
+    def test_setting_nonempty_is_persisted(self):
+        block = self.create_block()
+        block.is_empty = False
+        body = block.__parent__
+        self.assertFalse(body.values()[0].is_empty)
 
     def test_block_is_not_empty_after_setting_reference(self):
         block = self.create_block()

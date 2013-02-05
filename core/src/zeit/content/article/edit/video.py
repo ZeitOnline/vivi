@@ -33,10 +33,6 @@ class Video(zeit.edit.block.SimpleElement):
         '.', 'is_empty',
         zeit.content.article.edit.interfaces.IReference['is_empty'])
 
-    def __init__(self, *args, **kw):
-        super(Video, self).__init__(*args, **kw)
-        self.is_empty = True
-
     @property
     def video(self):
         return zeit.cms.interfaces.ICMSContent(self.xml.get('href'), None)
@@ -69,7 +65,7 @@ class Video(zeit.edit.block.SimpleElement):
             self).validate(value)
 
 
-class Factory(zeit.content.article.edit.block.BlockFactory):
+class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 
     produces = Video
     title = _('Video')

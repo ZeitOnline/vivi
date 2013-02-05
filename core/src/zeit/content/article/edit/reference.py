@@ -26,10 +26,6 @@ class Reference(zeit.edit.block.SimpleElement):
         '.', 'is_empty',
         zeit.content.article.edit.interfaces.IReference['is_empty'])
 
-    def __init__(self, *args, **kw):
-        super(Reference, self).__init__(*args, **kw)
-        self.is_empty = True
-
     @property
     def references(self):
         return zeit.cms.interfaces.ICMSContent(self.xml.get('href'), None)
@@ -73,6 +69,16 @@ def update_empty(context, event):
     context.is_empty = context.references is None
 
 
+class ReferenceFactory(zeit.content.article.edit.block.BlockFactory):
+
+    grokcore.component.baseclass()
+
+    def __call__(self):
+        block = super(ReferenceFactory, self).__call__()
+        block.is_empty = True
+        return block
+
+
 class Gallery(Reference):
 
     grokcore.component.implements(
@@ -80,7 +86,7 @@ class Gallery(Reference):
     type = 'gallery'
 
 
-class GalleryFactory(zeit.content.article.edit.block.BlockFactory):
+class GalleryFactory(ReferenceFactory):
 
     produces = Gallery
     title = _('Gallery')
@@ -102,7 +108,7 @@ class Infobox(Reference):
     type = 'infobox'
 
 
-class InfoboxFactory(zeit.content.article.edit.block.BlockFactory):
+class InfoboxFactory(ReferenceFactory):
 
     produces = Infobox
     title = _('Infobox')
@@ -132,7 +138,7 @@ class Portraitbox(Reference):
             'layout'].default
 
 
-class PortraitboxFactory(zeit.content.article.edit.block.BlockFactory):
+class PortraitboxFactory(ReferenceFactory):
 
     produces = Portraitbox
     title = _('Portraitbox')

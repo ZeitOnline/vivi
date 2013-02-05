@@ -77,7 +77,7 @@ class Image(zeit.content.article.edit.reference.Reference):
             self.xml['bu'] = getattr(metadata, 'caption', value)
 
 
-class Factory(zeit.content.article.edit.block.BlockFactory):
+class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 
     produces = Image
     title = _('Image')
