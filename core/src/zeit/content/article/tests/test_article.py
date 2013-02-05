@@ -134,6 +134,7 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
         body = zeit.content.article.edit.interfaces.IEditableBody(article)
         block = body.values()[0]
         self.assertEqual(image, block.references)
+        self.assertFalse(block.is_empty)
 
     def test_setting_main_image_works_if_body_does_not_start_with_image(self):
         article = self.get_article()
