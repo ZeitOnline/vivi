@@ -78,7 +78,7 @@ class CropTest(TestBase):
         path = self.browser.contents.replace('http://localhost', '', 1)
         self.assertEqual(
             '/++skin++cms/repository/group/group-400x200.jpg', path)
-        self.browser.open(path + '/@@index.html')
+        self.browser.open(path + '/@@raw')
         return self.browser.contents
 
     def test_crop_returns_image_url(self):
