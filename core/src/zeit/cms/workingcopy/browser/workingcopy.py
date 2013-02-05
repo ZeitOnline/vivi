@@ -102,26 +102,6 @@ def localcontent_default_browsing_location(context, schema):
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 
 
-class ShowOriginal(zeit.cms.browser.menu.ActionMenuItem):
-
-    title = _('Show original')
-    sort = -0.9
-
-    def get_url(self):
-        url = zope.component.getMultiAdapter(
-            (self.content, self.request), name='absolute_url')
-        return '%s/@@view.html' % (url, )
-
-    @zope.cachedescriptors.property.Lazy
-    def content(self):
-        return zeit.cms.interfaces.ICMSContent(self.context.uniqueId, None)
-
-    def render(self):
-        if self.content is None:
-            return ''
-        return super(ShowOriginal, self).render()
-
-
 class DeleteFromWorkingcopy(zeit.cms.repository.browser.delete.DeleteContent):
 
     def next_url(self, folder):
