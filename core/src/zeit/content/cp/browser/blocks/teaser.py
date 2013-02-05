@@ -152,9 +152,9 @@ class Display(zeit.cms.browser.view.Base):
         if zeit.content.image.interfaces.IImageGroup.providedBy(image):
             for name in image:
                 if layout.image_pattern in name:
-                    return self.url(image[name])
+                    return self.url(image[name], '@@raw')
         else:
-            return self.url(image)
+            return self.url(image, '@@raw')
 
 
 class AutoPilotDisplay(Display):
