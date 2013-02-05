@@ -44,6 +44,16 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             video.title)
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertTrue(info.published)
+    
+    def test_new_ignored_video_in_bc_should_not_be_added_to_repository(self):
+        # hack around test setup
+        del self.repository['video']['2010-03']['1234']
+        VIDEO_1234['customFields']['ignore_for_update'] = '1'
+
+        update_from_brightcove()
+        transaction.commit()
+        zeit.workflow.testing.run_publish(PRIORITY_LOW)
+        self.assertFalse('1234' in self.repository['video']['2010-03'])
 
     def test_update_should_not_overwrite_local_edits_with_old_bc_data(self):
         video = zeit.cms.interfaces.ICMSContent(

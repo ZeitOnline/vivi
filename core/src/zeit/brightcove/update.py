@@ -126,7 +126,7 @@ class VideoUpdater(BaseUpdater):
 
     def add(self):
         if not self.bcobj.ignore_for_update:
-            super(VideoUpdater, self).add()
+            return super(VideoUpdater, self).add()
 
     def delete(self):
         if self.bcobj.item_state == 'ACTIVE':
