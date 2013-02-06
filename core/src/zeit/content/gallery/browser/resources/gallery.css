@@ -144,6 +144,10 @@ table.gallery a.show-image {
 	top: 5px;
 }
 
+.object-details .gallery_details .gallery_details_controls .button:hover {
+	background-position: -1px -511px, 0 0;
+}
+
 .object-details .image_details a[rel="remove"] {
   float: right;
   margin-bottom: 12px;
