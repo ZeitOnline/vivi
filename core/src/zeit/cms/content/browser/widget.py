@@ -58,19 +58,6 @@ class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
         return io.getvalue().decode('UTF-8')
 
 
-class XMLSnippetWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
-
-    def _toFieldValue(self, input):
-        as_unicode = super(XMLSnippetWidget, self)._toFieldValue(input)
-        if as_unicode:
-            try:
-                return self.context.fromUnicode(as_unicode)
-            except zope.schema.ValidationError, error:
-                raise zope.app.form.interfaces.ConversionError(
-                    error.__doc__, error)
-        return as_unicode
-
-
 class CombinationWidget(
     zc.form.browser.combinationwidget.CombinationWidget):
     """Subclassed combination widget to change the template.

@@ -24,14 +24,6 @@
     permission="zope.Public"
     />
 
-  <adapter
-    for="zeit.cms.content.field.IXMLSnippet
-    zeit.cms.browser.interfaces.ICMSLayer"
-    provides=".interfaces.IXMLSnippetWidget"
-    factory=".widget.XMLSnippetWidget"
-    permission="zope.Public"
-    />
-
   <browser:page
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

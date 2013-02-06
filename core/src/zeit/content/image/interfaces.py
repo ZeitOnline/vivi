@@ -71,7 +71,7 @@ class IImageMetadata(zope.interface.Interface):
         default=u'',
         required=False)
 
-    caption = zeit.cms.content.field.XMLSnippet(
+    caption = zope.schema.Text(
         title=_("Image sub text"),
         default=u'',
         missing_value=u'',

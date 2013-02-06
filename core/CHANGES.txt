@@ -43,6 +43,8 @@ editor-ng branch changes
 - Introduce zeit.workflow.publishinfo.PublishInfo as base class for workflows
   instead of NotPublishablePublishInfo (#10739).
 
+- Remove XMLSnippet, its functionality is not used anymore.
+
 
 1.53.5 (unreleased)
 -------------------

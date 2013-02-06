@@ -22,7 +22,3 @@ class ITemplateWidgetSetup(zope.interface.Interface):
 
 class IXMLTreeWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
     """A widget for source editing xml trees."""
-
-
-class IXMLSnippetWidget(zope.app.form.browser.interfaces.ITextBrowserWidget):
-    """A widget for editing xml snippets."""
