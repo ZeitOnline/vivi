@@ -153,6 +153,7 @@ def remove_name_attributes(context, event):
     unwrapped = zope.security.proxy.removeSecurityProxy(context)
     for element in _find_name_attributes(unwrapped.xml):
         del element.attrib['{http://namespaces.zeit.de/CMS/cp}__name__']
+    lxml.etree.cleanup_namespaces(unwrapped.xml)
 
 
 class ArticleValidator(zeit.edit.rule.RecursiveValidator,

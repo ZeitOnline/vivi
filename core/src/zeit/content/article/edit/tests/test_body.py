@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import gocept.testing.mock
+import lxml.etree
 import mock
 import unittest2
 import zeit.content.article.testing
@@ -142,6 +143,14 @@ class TestCleaner(unittest2.TestCase):
         self.set_key(art.xml.body.division, 'divname')
         self.clean(art)
         self.assert_key(art.xml.body.division, None)
+
+    def test_should_remove_namespace(self):
+        art = self.get_article()
+        art.xml.body.division = ''
+        self.set_key(art.xml.body.division, 'divname')
+        self.clean(art)
+        self.assertNotIn(
+            'namespaces.zeit.de/CMS/cp', lxml.etree.tostring(art.xml))
 
 
 class ArticleValidatorTest(zeit.content.article.testing.FunctionalTestCase):
