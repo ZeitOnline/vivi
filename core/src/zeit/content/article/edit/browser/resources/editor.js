@@ -273,6 +273,13 @@ zeit.content.article.Editable = gocept.Class.extend({
                                 'http://www.zeit.de/'));
                 }
             });
+        self.events.push(MochiKit.Signal.connect(
+            self.link_input, 'onkeydown', function(event) {
+                if (event.key().string == 'KEY_ENTER') {
+                    self.insert_link_ok();
+                    event.stop();
+                }
+            }));
     },
 
     init_toolbar: function() {

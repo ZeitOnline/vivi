@@ -378,6 +378,15 @@ class TestLinkEditing(
         s.click('css=.link_input button[name=insert_link_ok]')
         s.waitForElementPresent('xpath=//a[@href="http://example.com/"]')
 
+    def test_pressing_enter_should_add_link(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.type('css=.link_input input[name=href]', 'http://example.com/')
+        s.keyDown('css=.link_input input[name=href]', '\\13')
+        s.waitForElementPresent('xpath=//a[@href="http://example.com/"]')
+
     def test_target_should_be_editable(self):
         s = self.selenium
         self.select_text()
