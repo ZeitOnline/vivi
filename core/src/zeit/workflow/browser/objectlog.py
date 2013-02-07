@@ -28,13 +28,14 @@ class ObjectLog(object):
         groups = {}
         for entry in entries:
             groups.setdefault(entry.time.date(), []).append(entry)
-        for date, entries in sorted(groups.items()):
+        for date, entries in reversed(sorted(groups.items())):
             yield dict(
                 display_date=date.strftime('%d.%m.%Y'),
                 entries=[dict(
                         display_time=entry.time.strftime('%H:%M'),
                         entry=entry,
-                        ) for entry in entries],
+                        ) for entry in reversed(sorted(
+                            entries, key=lambda x: x.time))],
                 )
 
     def __call__(self):
