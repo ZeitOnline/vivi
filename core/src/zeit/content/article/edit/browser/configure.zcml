@@ -372,4 +372,12 @@
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
+  <browser:page
+    for="*"
+    name="double-quote-characters"
+    class=".edit.DoubleQuotes"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zope.Public"
+    />
+
 </configure>

@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -144,3 +145,17 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
         body = zeit.content.article.edit.interfaces.IEditableBody(article)
         block = body.values()[0]
         self.assertEqual(image, block.references)
+
+
+class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
+
+    def test_main_image_is_none_if_first_body_is_empty(self):
+        article = self.get_article()
+        p = self.get_factory(article, 'p')()
+        p.text = '“up” and „down‟ and «around»'
+        self.repository['article'] = article
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['article']) as co:
+            body = zeit.content.article.edit.interfaces.IEditableBody(co)
+            block = body.values()[0]
+            self.assertEqual('"up" and "down" and "around"', block.text)

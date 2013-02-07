@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 
 zeit.cms.declare_namespace('zeit.content.article.html');
 
@@ -129,8 +129,7 @@ function wrap_toplevel_children_in_p(tree) {
 }
 
 
-var DOUBLE_QUOTE_CHARACTERS = new RegExp(
-    '[\u201c\u201d\u201e\u201f\u00ab\u00bb]', 'g');
+var DOUBLE_QUOTE_CHARACTERS = '';
 
 function normalize_quotation_marks(tree) {
     forEach(tree.childNodes, function(el) {
@@ -141,6 +140,15 @@ function normalize_quotation_marks(tree) {
         }
     });
 }
+
+MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+    if (! zeit.cms.in_article_editor()) {
+        return;
+    }
+    $.getJSON(application_url + '/@@double-quote-characters', function(response) {
+        DOUBLE_QUOTE_CHARACTERS = new RegExp(response, 'g');
+    });
+});
 
 
 // helper functions
@@ -183,4 +191,4 @@ function display(element) {
     return MochiKit.Style.getStyle(element, 'display');
 }
 
-}());
+}(jQuery));

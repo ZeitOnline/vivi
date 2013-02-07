@@ -4,6 +4,9 @@
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import grokcore.component
+import lxml.etree
+import lxml.objectify
+import re
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -219,3 +222,26 @@ def ensure_division_handler(context, event):
 def set_default_values(context, event):
     zeit.cms.browser.form.apply_default_values(
         context, zeit.content.article.interfaces.IArticle)
+
+
+DOUBLE_QUOTE_CHARACTERS = re.compile(u'[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def normalize_quotation_marks(context, event):
+    # XXX objectify has immutable text/tail. le sigh.
+    context.xml.body = lxml.objectify.fromstring(lxml.etree.tostring(
+        normalize_quotes(
+            lxml.etree.fromstring(lxml.etree.tostring(context.xml.body)))))
+
+
+def normalize_quotes(node):
+    if node.text:
+        node.text = DOUBLE_QUOTE_CHARACTERS.sub(u'"', node.text)
+    if node.tail:
+        node.tail = DOUBLE_QUOTE_CHARACTERS.sub(u'"', node.tail)
+    for child in node.iterchildren():
+        normalize_quotes(child)
+    return node

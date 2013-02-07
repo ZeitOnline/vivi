@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import json
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.article.edit.interfaces
@@ -192,3 +193,10 @@ class EditDivision(zeit.edit.browser.form.InlineForm):
     @property
     def prefix(self):
         return 'division.{0}'.format(self.context.__name__)
+
+
+class DoubleQuotes(object):
+
+    def __call__(self):
+        return json.dumps(
+            zeit.content.article.article.DOUBLE_QUOTE_CHARACTERS.pattern)
