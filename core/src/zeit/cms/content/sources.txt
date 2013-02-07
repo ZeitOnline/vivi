@@ -85,66 +85,6 @@ The serie source returns the possible "serie" values:
  u'logo-tvhs']
 
 
-
-Print ressorts
-++++++++++++++
-
->>> pr = zeit.cms.content.sources.PrintRessortSource()
->>> pprint(list(pr))
-[u'Politik',
- u'Dossier',
- u'Wirtschaft',
- u'Wissen',
- u'Feuilleton',
- u'Literatur',
- u'Leben',
- u'Reisen',
- u'Chancen',
- u'Zeitl\xe4ufte',
- u'Zeitlaeufte',
- u'-= === =-',
- u'Amt',
- u'Audio',
- u'Bildung & Beruf',
- u'Blogs',
- u'Chancenbeilage',
- u'Computer',
- u'Deutschland',
- u'Europa',
- u'Feuilletonbeilage',
- u'Fotogalerie',
- u'Fussball',
- u'Gesundheit',
- u'Heimat',
- u'Hochschule',
- u'Homepage',
- u'Inderzeit',
- u'International',
- u'Jobs',
- u'Kultur',
- u'Leserbriefe',
- u'Literatur',
- u'Literaturbeilage',
- u'Media',
- u'Mensch & Geschichte',
- u'Musik',
- u'Online',
- u'Reden',
- u'Reise',
- u'Reisebeilage',
- u'Sonstiges',
- u'Sport',
- u'Technik & Weltraum',
- u'Unbekannt',
- u'Verlagsaktion',
- u'ZEITReisen',
- u'-= ZEIT-Wissen =-',
- u'Leben',
- u'Technik',
- u'Gesundheit',
- u'Wissenschaft']
-
-
 Navigation
 ++++++++++
 

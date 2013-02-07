@@ -66,11 +66,11 @@ class ICommonMetadata(zope.interface.Interface):
         source=zeit.cms.content.sources.SubNavigationSource(),
         required=False)
 
-    printRessort = zope.schema.Choice(
+    printRessort = zope.schema.TextLine(
         title=_("Print ressort"),
-        source=zeit.cms.content.sources.PrintRessortSource(),
         readonly=True,
-        required=False)
+        required=False,
+        default=u'n/a')
 
     author_references = zope.schema.Tuple(
         title=_("Authors"),
