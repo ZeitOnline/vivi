@@ -10,6 +10,12 @@
   <ul class="metadata">
     <li tal:repeat="item view/display_metadata_short" tal:content="item" />
   </ul>
+  <div class="goto-object object-link">
+    <a tal:attributes="href context/@@absolute_url" i18n:translate=""
+       target="_blank">
+      CMS
+    </a>
+  </div>
   <div class="preview object-link">
     <a tal:attributes="href view/live_url" i18n:translate=""
        target="_blank">
