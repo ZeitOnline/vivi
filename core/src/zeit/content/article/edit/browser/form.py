@@ -12,7 +12,6 @@ from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
 import zeit.cms.browser.interfaces
-import zeit.cms.checkout.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.video.interfaces
@@ -238,7 +237,7 @@ class InternalLinks(zeit.edit.browser.form.InlineForm):
         zeit.cms.related.interfaces.IRelatedContent,
         zeit.content.article.interfaces.IAggregatedComments,
     )
-    
+
     def setUpWidgets(self, *args, **kw):
         super(InternalLinks, self).setUpWidgets(*args, **kw)
         self.widgets['related'].detail_view_name = '@@related-details'
