@@ -39,12 +39,6 @@ class Paragraph(zeit.edit.block.SimpleElement):
 
     allowed_tags = inline_tags
 
-    def __init__(self, *args, **kw):
-        self.filter_steps = [
-            self.keep_allowed_tags,
-        ]
-        super(Paragraph, self).__init__(*args, **kw)
-
     def keep_allowed_tags(self, tree):
         return keep_allowed_tags(tree, self.allowed_tags)
 
