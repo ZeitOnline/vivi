@@ -27,7 +27,7 @@ is False:
 >>> with zeit.cms.testing.interaction():
 ...     somalia = zeit.cms.checkout.interfaces.IWorkingcopy(None)['Somalia']
 ...     print somalia.has_recensions
-None
+False
 
 Let's add one:
 

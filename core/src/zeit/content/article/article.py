@@ -211,3 +211,11 @@ class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
 def ensure_division_handler(context, event):
     body = zeit.content.article.edit.interfaces.IEditableBody(context)
     body.ensure_division()
+
+
+@grokcore.component.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def set_default_values(context, event):
+    zeit.cms.browser.form.apply_default_values(
+        context, zeit.content.article.interfaces.IArticle)

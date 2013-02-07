@@ -59,8 +59,6 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         article.volume = settings.default_volume
         article.ressort = self.get_ressort()
         article.sub_ressort = self.get_sub_ressort(article)
-        zeit.cms.browser.form.apply_default_values(
-            article, zeit.content.article.interfaces.IArticle)
         image_factory = zope.component.getAdapter(
             IEditableBody(article), zeit.edit.interfaces.IElementFactory,
             name='image')
