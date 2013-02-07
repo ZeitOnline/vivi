@@ -74,6 +74,7 @@ def apply_default_values(context, interface):
             continue
         # if a value exists, don't overwrite it if it's valid (#10362)
         if current is not MARKER and current is not field.missing_value:
+            field = field.bind(context)
             try:
                 field.validate(current)
             except zope.schema.ValidationError:
