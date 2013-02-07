@@ -7,7 +7,7 @@
       <tr tal:repeat="entry group/entries">
         <td tal:content="entry/entry/message" />
         <td tal:content="entry/display_time" />
-        <td class="principal" tal:content="entry/entry/principal/title" />
+        <td class="principal" tal:content="entry/principal" />
       </tr>
     </tal:group>
   </tbody>
