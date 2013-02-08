@@ -19,8 +19,8 @@ class BadgeInputWidget(zope.formlib.source.SourceMultiCheckBoxWidget):
 
 class BadgeDisplayWidget(BadgeInputWidget):
 
-    INPUT = re.compile('<input.*?/>')
+    INPUT = re.compile('<input')
 
     def _renderItem(self, *args, **kw):
         result = super(BadgeDisplayWidget, self)._renderItem(*args, **kw)
-        return self.INPUT.sub('', result)
+        return self.INPUT.sub('<input disabled="disabled"', result)
