@@ -9,6 +9,7 @@ import zeit.cms.checkout.interfaces
 import zeit.edit.browser.view
 import zope.app.pagetemplate
 import zope.formlib.form
+import zope.formlib.interfaces
 import zope.formlib.itemswidgets
 import zope.formlib.source
 import zope.formlib.widget
@@ -59,10 +60,33 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
     def signals(self):
         return json.dumps(self._signals)
 
-    @zope.formlib.form.action(_('Apply'))
+    @zope.formlib.form.action(_('Apply'), failure='success_handler')
     def handle_edit_action(self, action, data):
+        return self.success_handler(action, data)
+
+    def success_handler(self, action, data, errors=None):
         self.mark_transaction_undoable()
+        self._success_handler()
         return super(InlineForm, self).handle_edit_action.success(data)
+
+    def _success_handler(self):
+        pass
+
+    def validate(self, action, data):
+        errors = super(InlineForm, self).validate(action, data)
+        self.get_all_input_even_if_invalid(data)
+        return errors
+
+    def get_all_input_even_if_invalid(self, data):
+        form_prefix = zope.formlib.form.expandPrefix(self.prefix)
+        for input, widget in self.widgets.__iter_input_and_widget__():
+            if input and zope.formlib.interfaces.IInputWidget.providedBy(
+                widget):
+                name = zope.formlib.form._widgetKey(widget, form_prefix)
+                try:
+                    data[name] = widget._toFieldValue(widget._getFormInput())
+                except zope.formlib.interfaces.ConversionError:
+                    pass
 
     def is_basic_display_widget(self, widget):
         # XXX kludgy. We want to express "is this a base widget out of
