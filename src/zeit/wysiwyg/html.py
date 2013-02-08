@@ -710,9 +710,8 @@ class RawXMLStep(ConversionStep):
 
 
 class ReferenceStep(ConversionStep):
-    """"""
 
-    content_type = None # override in subclass
+    content_type = None  # override in subclass
 
     def __init__(self, context, converter):
         super(ReferenceStep, self).__init__(context, converter)
