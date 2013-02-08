@@ -113,6 +113,17 @@ class CheckinSelenium(
         s.waitForElementNotPresent('css=.field.dirty')
         s.assertValue('id=publish.has_semantic_change', 'on')
 
+    def test_checkin_button_change_on_semantic_change(self):
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s = self.selenium
+        s.waitForElementPresent('id=checkin')
+        s.waitForElementNotPresent('css=.checkin-button.semantic-change')
+        s.click('id=publish.has_semantic_change')
+        s.assertValue('id=publish.has_semantic_change', 'on')
+        s.waitForElementPresent('css=.checkin-button.semantic-change')
+        s.click('id=publish.has_semantic_change')
+        s.assertValue('id=publish.has_semantic_change', 'off')
+        s.waitForElementNotPresent('css=.checkin-button.semantic-change')
 
 class WorkflowEndToEnd(
     zeit.content.article.edit.browser.testing.EditorTestCase):

@@ -133,6 +133,10 @@ class WorkflowButtons(object):
     def is_new(self):
         return IAutomaticallyRenameable(self.context).renameable
 
+    @property
+    def has_semantic_change(self):
+        return zeit.cms.content.interfaces.ISemanticChange(self.context).has_semantic_change
+
 
 class ViewWidget(zope.formlib.widget.BrowserWidget):
 
