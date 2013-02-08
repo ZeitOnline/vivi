@@ -86,10 +86,8 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm,
         self.set_maxlength('title')
         self.set_maxlength('subtitle')
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
+    def _success_handler(self):
         self.signal('reload-inline-view', 'edit.heading')
-        return super(ArticleContentHead, self).handle_edit_action.success(data)
 
 
 class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
@@ -104,15 +102,12 @@ class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
             self.request, zeit.cms.browser.interfaces.IGlobalSearchLayer)
         return super(ArticleContentMainImage, self).__call__()
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
+    def _success_handler(self):
         # even though the image is not displayed in the body area,
         # the body still needs to be updated so it knows the (possibly) new
         # UUID of the image block
         body = IEditableBody(self.context)
         self.signal('reload', 'editable-body', self.url(body, 'contents'))
-        return super(
-            ArticleContentMainImage, self).handle_edit_action.success(data)
 
 
 class KeywordsFormGroup(zeit.edit.browser.form.FoldableFormGroup):
@@ -214,13 +209,11 @@ class LeadTeaser(zeit.edit.browser.form.InlineForm):
         self.widgets['image'].add_type = IImageGroup
         self.widgets['gallery'].add_type = IGallery
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
+    def _success_handler(self):
         self.signal('reload-inline-form', 'teaser-image')
         self.signal('reload-inline-form', 'article-content-main-image')
         body = IEditableBody(self.context)
         self.signal('reload', 'editable-body', self.url(body, 'contents'))
-        return super(LeadTeaser, self).handle_edit_action.success(data)
 
 
 class InternalLinksForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -315,10 +308,8 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
                 '</script>') % (self.prefix,)
         return result
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
+    def _success_handler(self):
         self.signal('reload-inline-view', 'edit.heading')
-        return super(MetadataA, self).handle_edit_action.success(data)
 
 
 # This will be renamed properly as soon as the fields are finally decided.
@@ -344,10 +335,8 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         self.widgets['author_references'].add_type = IAuthor
         self.widgets['author_references'].display_list_below_buttons = True
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
+    def _success_handler(self):
         self.signal('reload-inline-view', 'edit.heading')
-        return super(MetadataC, self).handle_edit_action.success(data)
 
 
 class MetadataNL(zeit.edit.browser.form.InlineForm):
@@ -396,15 +385,13 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
         super(TeaserImage, self).setUpWidgets(*args, **kw)
         self.widgets['image'].add_type = IImageGroup
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
+    def _success_handler(self):
         self.signal('reload-inline-form', 'leadteaser')
         self.signal('reload-inline-form', 'article-content-main-image')
         body = IEditableBody(self.context)
         # XXX it would be nicer if we didn't need to know the reload URL here
         # (e.g. write it onto the DOM element)
         self.signal('reload', 'editable-body', self.url(body, 'contents'))
-        return super(TeaserImage, self).handle_edit_action.success(data)
 
 
 class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
@@ -474,10 +461,8 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
         if not self.context.page:
             self.widgets['page'].setRenderedValue('n/a')
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
+    def _success_handler(self):
         self.signal('reload-inline-view', 'edit.heading')
-        return super(OptionsB, self).handle_edit_action.success(data)
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
