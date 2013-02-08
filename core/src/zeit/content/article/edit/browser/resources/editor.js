@@ -675,8 +675,10 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.insert_link_node._just_created = true;
         }
         $(self.insert_link_node).addClass('link-edit');
-        $('*[name=href]', self.link_input).val(href);
-        $('*[name=target]', self.link_input).val(target);
+        if (!self.insert_link_node._just_created) {
+            $('*[name=href]', self.link_input).val(href);
+            $('*[name=target]', self.link_input).val(target);
+        }
         var line_height = parseInt(
             $(self.insert_link_node).css('line-height').replace('px', ''));
         var position = $(self.insert_link_node).position();
