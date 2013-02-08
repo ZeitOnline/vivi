@@ -1262,6 +1262,37 @@ Infobox
   </body>
 </article>
 
+Timeline
+-------
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <timeline href="http://xml.zeit.de/2006/ib"/>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<div class="inline-element timeline">
+  <div class="href">http://xml.zeit.de/2006/ib</div>
+</div>
+<p> </p>
+
+>>> converter.from_html(article.xml['body'], """\
+... <div class="inline-element timeline">
+...   <div class="href">http://xml.zeit.de/2006/ib</div>
+... </div>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <timeline href="http://xml.zeit.de/2006/ib".../>
+  </body>
+</article>
+
 Gallery
 -------
 

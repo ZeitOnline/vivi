@@ -54,6 +54,17 @@ zeit.wysiwyg.InfoboxDialog = zeit.wysiwyg.ReferenceDialog.extend({
 });
 
 
+zeit.wysiwyg.TimelineDialog = zeit.wysiwyg.ReferenceDialog.extend({
+    construct: function() {
+        var self = this;
+        self.container_class = 'timeline';
+        self.browse_filter = 'zeit.content.infobox';
+        arguments.callee.$.construct.call(self);
+        $('href').value = self.get_value('href');
+    },
+});
+
+
 zeit.wysiwyg.PortraitboxDialog = zeit.wysiwyg.ReferenceDialog.extend({
     construct: function() {
         var self = this;
