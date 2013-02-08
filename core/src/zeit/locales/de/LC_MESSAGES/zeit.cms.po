@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Feb  8 11:21:08 2013\n"
-"PO-Revision-Date: 2013-02-08 14:25+0100\n"
-"Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
+"POT-Creation-Date: Fri Feb  8 14:40:34 2013\n"
+"PO-Revision-Date: 2013-02-08 14:45+0100\n"
+"Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -126,21 +126,21 @@ msgstr "Termin wiederherstellen"
 msgid "Complete event"
 msgstr "Termin erledigen"
 
-#: zeit/calendar/browser/calendar_macros.pt:42 zeit/cms/browser/lightbox.pt:3
+#: zeit/calendar/browser/calendar_macros.pt:42
 #: zeit/cms/browser/action-menu-item-with-lightbox.pt:3
 #: zeit/cms/browser/action-menu-item-with-lightbox.pt:9
-#: zeit/cms/browser/sourceedit.pt:16 zeit/cms/browser/sourceedit.pt:39
-#: zeit/cms/browser/globalmenuitem.pt:5
-#: zeit/cms/browser/context-views-menu-item.pt:5
-#: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/cms/browser/action-menu-item.pt:2
 #: zeit/cms/browser/action-menu-item.pt:10
-#: zeit/cms/browser/menu-context-actions.pt:8
-#: zeit/cms/browser/menu-context-actions.pt:15
+#: zeit/cms/browser/context-views-menu-item.pt:5
+#: zeit/cms/browser/globalmenuitem.pt:5 zeit/cms/browser/lightbox.pt:3
 #: zeit/cms/browser/main_template.pt:43 zeit/cms/browser/main_template.pt:176
 #: zeit/cms/browser/main_template.pt:199 zeit/cms/browser/main_template.pt:217
-#: zeit/content/cp/browser/blocks/teaser.edit-properties.pt:16
+#: zeit/cms/browser/menu-context-actions.pt:8
+#: zeit/cms/browser/menu-context-actions.pt:15
+#: zeit/cms/browser/menu-context-views.pt:8 zeit/cms/browser/sourceedit.pt:16
+#: zeit/cms/browser/sourceedit.pt:39
 #: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
+#: zeit/content/cp/browser/blocks/teaser.edit-properties.pt:16
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
 #: zeit/edit/browser/inlineform.pt:16 zeit/edit/browser/inlineform.pt:32
@@ -603,6 +603,7 @@ msgid "Checkin ^I"
 msgstr "Einchecken ^I"
 
 #: zeit/cms/checkout/browser/manager.py:229
+#: zeit/content/article/edit/browser/workflow.pt:20
 msgid "Checkin (correction)"
 msgstr "Einchecken (Korrektur)"
 
@@ -740,6 +741,12 @@ msgstr "sonstiges"
 #: zeit/cms/content/browser/template-properties.pt:10
 msgid "Value"
 msgstr "Wert"
+
+#: zeit/cms/content/browser/template-properties.pt:48
+#: zeit/cms/syndication/browser/feed_sorting.pt:7
+#: zeit/content/article/edit/browser/workflow.pt:10
+msgid "Save"
+msgstr "Einchecken"
 
 #: zeit/cms/content/browser/template-properties.pt:8
 msgid "Namespace"
@@ -1197,9 +1204,9 @@ msgstr "Zeigen"
 
 #: zeit/cms/repository/browser/menu.py:17
 #: zeit/cms/content/browser/template.zcml:58
-#: zeit/cms/workingcopy/browser/delete.pt:23
 #: zeit/cms/repository/browser/delete.pt:29
-#: zeit/content/article/edit/browser/workflow.pt:30
+#: zeit/cms/workingcopy/browser/delete.pt:23
+#: zeit/content/article/edit/browser/workflow.pt:52
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:31
 #: zeit/content/quiz/browser/quiz.py:85
 #: zeit/edit/browser/layout.block.delete.pt:1
@@ -1357,12 +1364,6 @@ msgstr "Aus Syndizierungszielen entfernen"
 msgid "Feed contents"
 msgstr "Inhalt des Channels"
 
-#: zeit/cms/syndication/browser/feed_sorting.pt:7
-#: zeit/cms/content/browser/template-properties.pt:48
-#: zeit/content/article/edit/browser/workflow.pt:10
-msgid "Save"
-msgstr "Einchecken"
-
 #: zeit/cms/syndication/browser/form.py:17
 msgid "Add Channel"
 msgstr "Channel hinzufügen"
@@ -1386,8 +1387,8 @@ msgid "syndicate-wo-relateds"
 msgstr "Syndizieren (ohne Relateds)"
 
 #: zeit/cms/syndication/browser/manager.pt:22
-#: zeit/content/article/edit/browser/workflow.pt:39
 #: zeit/content/article/edit/browser/save-and-publish.pt:2
+#: zeit/content/article/edit/browser/workflow.pt:61
 #: zeit/content/cp/browser/publish.pt:2 zeit/workflow/browser/publish.pt:2
 msgid "Publish"
 msgstr "Veröffentlichen"
@@ -1808,8 +1809,8 @@ msgid "Publishing"
 msgstr "Veröffentlichen"
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
-#: zeit/content/cp/browser/publish.pt:9 zeit/workflow/browser/retract.pt:6
-#: zeit/workflow/browser/publish.pt:7
+#: zeit/content/cp/browser/publish.pt:9 zeit/workflow/browser/publish.pt:7
+#: zeit/workflow/browser/retract.pt:6
 msgid "Reloading"
 msgstr "lade neu"
 
@@ -1817,11 +1818,15 @@ msgstr "lade neu"
 msgid "Current timestamp:"
 msgstr "Aktueller Zeitstempel"
 
-#: zeit/content/article/edit/browser/workflow.pt:19
+#: zeit/content/article/edit/browser/workflow.pt:30
 msgid "Save and publish"
 msgstr "Einchecken & Veröffentlichen"
 
-#: zeit/content/article/edit/browser/workflow.pt:45
+#: zeit/content/article/edit/browser/workflow.pt:40
+msgid "Checkin (correction) and publish"
+msgstr "Einchecken (Korrektur) & Veröffentlichen"
+
+#: zeit/content/article/edit/browser/workflow.pt:67
 #: zeit/workflow/browser/retract.pt:2 zeit/workflow/browser/retract.pt:5
 msgid "Retract"
 msgstr "Depublizieren"
@@ -1963,9 +1968,9 @@ msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:257
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:24
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:18
-#: zeit/wysiwyg/browser/resources/reference/infobox.pt:18
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:18
+#: zeit/wysiwyg/browser/resources/reference/infobox.pt:18
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:18
 msgid "URL"
 msgstr "URL"
 
@@ -2259,6 +2264,11 @@ msgstr "In neuem Fenster öffnen"
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:46
 msgid "To add content drop it here."
 msgstr "Ziehen Sie Inhalte hierher um einen Teaser hinzuzufügen."
+
+#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:55
+#: zeit/content/cp/teasergroup/create.pt:3
+msgid "Save teasers as group"
+msgstr "Teaser als Teasergruppe speichern"
 
 #: zeit/content/cp/browser/blocks/teaser.py:231
 msgid "^ Left | Right v"
@@ -2564,11 +2574,6 @@ msgstr "Teasergruppe anlegen"
 #: zeit/content/cp/teasergroup/browser.py:42
 msgid "Display teaser group"
 msgstr "Teasergruppe anzeigen"
-
-#: zeit/content/cp/teasergroup/create.pt:3
-#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:55
-msgid "Save teasers as group"
-msgstr "Teaser als Teasergruppe speichern"
 
 #: zeit/content/cp/teasergroup/interfaces.py:15
 msgid "Name of teaser group"
@@ -3130,8 +3135,8 @@ msgstr "'${type}'-Block entfernen"
 msgid "change block order"
 msgstr "Module umordnen"
 
-#: zeit/edit/browser/layout.foldable-forms.pt:7
 #: zeit/edit/browser/layout.fold.pt:2 zeit/edit/browser/layout.fold.pt:6
+#: zeit/edit/browser/layout.foldable-forms.pt:7
 msgid "Fold"
 msgstr "Ausklappen"
 
