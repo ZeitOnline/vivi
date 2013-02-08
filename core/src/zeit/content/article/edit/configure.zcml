@@ -5,11 +5,11 @@
   <class class=".body.EditableBody">
     <require
       interface="zeit.edit.interfaces.IReadContainer"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       interface="zeit.edit.interfaces.IWriteContainer"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
@@ -23,35 +23,35 @@
   <class class=".paragraph.Paragraph">
     <require
       interface=".interfaces.IParagraph"
-      permission="zope.View" 
+      permission="zope.View"
       />
   </class>
 
   <class class=".paragraph.UnorderedList">
     <require
       interface=".interfaces.IUnorderedList"
-      permission="zope.View" 
+      permission="zope.View"
       />
   </class>
 
   <class class=".paragraph.OrderedList">
     <require
       interface=".interfaces.IOrderedList"
-      permission="zope.View" 
+      permission="zope.View"
       />
   </class>
 
   <class class=".paragraph.Intertitle">
     <require
       interface=".interfaces.IIntertitle"
-      permission="zope.View" 
+      permission="zope.View"
       />
   </class>
 
   <class class=".division.Division">
     <require
       interface=".interfaces.IDivision"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.IDivision"
@@ -62,99 +62,99 @@
   <class class=".image.Image">
     <require
       interface=".interfaces.IImage"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.IImage"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
   <class class=".video.Video">
     <require
       interface=".interfaces.IVideo"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.IVideo"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
   <class class=".reference.Gallery">
     <require
       interface=".interfaces.IGallery"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.IGallery"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
   <class class=".reference.Infobox">
     <require
       interface=".interfaces.IInfobox"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.IInfobox"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
   <class class=".reference.Timeline">
     <require
       interface=".interfaces.ITimeline"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.ITimeline"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
   <class class=".reference.Portraitbox">
     <require
       interface=".interfaces.IPortraitbox"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.IPortraitbox"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
   <class class=".rawxml.RawXML">
     <require
       interface=".interfaces.IRawXML"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.IRawXML"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
   <class class=".audio.Audio">
     <require
       interface=".interfaces.IAudio"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.IAudio"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
   <class class=".citation.Citation">
     <require
       interface=".interfaces.ICitation"
-      permission="zope.View" 
+      permission="zope.View"
       />
     <require
       set_schema=".interfaces.ICitation"
-      permission="zeit.EditContent" 
+      permission="zeit.EditContent"
       />
   </class>
 
