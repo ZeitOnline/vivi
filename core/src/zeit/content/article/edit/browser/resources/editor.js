@@ -538,6 +538,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         setTimeout(function() {
             self.fix_html();
             $(self.editable).children().has('style').remove();
+            $('a', self.editable).attr('target', '_blank');
         }, 0);
     },
 
