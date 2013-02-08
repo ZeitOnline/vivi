@@ -123,6 +123,28 @@ def factor_block_from_infobox(body, context):
     return block
 
 
+class Timeline(Reference):
+
+    grokcore.component.implements(
+        zeit.content.article.edit.interfaces.ITimeline)
+    type = 'timeline'
+
+
+class TimelineFactory(ReferenceFactory):
+
+    produces = Timeline
+    title = _('Timeline')
+
+
+@grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
+                            zeit.content.infobox.interfaces.IInfobox)
+@grokcore.component.implementer(zeit.edit.interfaces.IElement)
+def factor_block_from_timeline(body, context):
+    block = TimelineFactory(body)()
+    block.references = context
+    return block
+
+
 class Portraitbox(Reference):
 
     grokcore.component.implements(

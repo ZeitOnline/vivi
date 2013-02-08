@@ -833,6 +833,7 @@
 .type-article #edit-form-article-content .block.type-gallery .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-portraitbox .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-infobox .field.fieldname-references .label,
+.type-article #edit-form-article-content .block.type-timeline .field.fieldname-references .label,
 .type-article #edit-form-article-content .block.type-video .field.fieldname-video .label,
 .type-article #edit-form-article-content .block.type-video .field.fieldname-video_2 .label {
   display:none;
@@ -1038,6 +1039,10 @@
 }
 
 .type-article #article-editor-text .module-icon-infobox {
+  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
+}
+
+.type-article #article-editor-text .module-icon-timeline {
   background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
 }
 

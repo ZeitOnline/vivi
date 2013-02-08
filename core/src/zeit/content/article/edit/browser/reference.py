@@ -75,6 +75,12 @@ class EditInfobox(EditBase):
     undo_description = _('edit infobox block')
 
 
+class EditTimeline(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.ITimeline
+    undo_description = _('edit timeline block')
+
+
 class EditVideo(EditBase):
 
     interface = zeit.content.article.edit.interfaces.IVideo

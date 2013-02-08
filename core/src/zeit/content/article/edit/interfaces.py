@@ -171,6 +171,18 @@ class IInfobox(IReference):
         required=False)
 
 
+class ITimeline(IReference):
+    """block for <timeline/> tags."""
+
+    references = zope.schema.Choice(
+        title=_('Infobox'),
+        description=_("Drag an infobox here"),
+        # XXX having a timeline content-type would be cleaner,
+        # but this is a rather exotic use case, so there isn't one.
+        source=zeit.content.infobox.interfaces.infoboxSource,
+        required=False)
+
+
 class PortraitboxLayoutSource(LayoutSourceBase):
 
     values = stabledict.StableDict([

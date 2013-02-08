@@ -241,6 +241,23 @@
     />
 
   <browser:page
+    for="zeit.content.article.edit.interfaces.ITimeline"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-timeline"
+    class=".reference.EditTimeline"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ITimeline"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-timeline"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
+  <browser:page
     for="zeit.content.article.edit.interfaces.IVideo"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-video"
