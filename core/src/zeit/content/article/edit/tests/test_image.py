@@ -173,6 +173,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
             image_block = body.values()[0]
             self.assertEqual(image_id, image_block.references.uniqueId)
+            self.assertFalse(image_block.is_empty)
 
             IImages(co).image = None
             zope.lifecycleevent.modified(
