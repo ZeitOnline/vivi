@@ -767,6 +767,11 @@ class InfoboxStep(ReferenceStep):
     content_type = 'infobox'
 
 
+class TimelineStep(ReferenceStep):
+
+    content_type = 'timeline'
+
+
 class GalleryStep(ReferenceStep):
 
     content_type = 'gallery'

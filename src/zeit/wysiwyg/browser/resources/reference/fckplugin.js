@@ -38,6 +38,17 @@ FCKToolbarItems.RegisterItem('Zeit_Infobox', button);
 
 
 FCKCommands.RegisterCommand(
+    'Zeit_Timeline' ,
+    new FCKDialogCommand(
+        'Timeline', 'ZEIT: Zeitstrahl',
+        FCKConfig.PageConfig.ZeitResources + '/reference/timeline.pt',
+        800, 600));
+var button = new FCKToolbarButton('Zeit_Timeline', 'Zeitstrahl');
+button.IconPath = FCKConfig.PageConfig.ZeitResources + '/reference/timeline.png'
+FCKToolbarItems.RegisterItem('Zeit_Timeline', button);
+
+
+FCKCommands.RegisterCommand(
     'Zeit_Portraitbox' ,
     new FCKDialogCommand(
         'Portraitbox', 'ZEIT: Porträtbox',
