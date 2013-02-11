@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zope.interface.common.idatetime import ITZInfo
 import zc.resourcelibrary
 import zeit.objectlog.interfaces
 import zope.authentication.interfaces
@@ -25,6 +26,7 @@ class ProcessForDisplay(object):
 class ObjectLog(object):
 
     def groups(self):
+        request_timezone = ITZInfo(self.request)
         auth = zope.component.getUtility(
             zope.authentication.interfaces.IAuthentication)
         entries = zeit.objectlog.interfaces.ILog(self.context).get_log()
@@ -39,7 +41,8 @@ class ObjectLog(object):
                 except zope.authentication.interfaces.PrincipalLookupError:
                     principal = None
                 items.append(dict(
-                    display_time=entry.time.strftime('%H:%M'),
+                    display_time=entry.time.astimezone(
+                        request_timezone).strftime('%H:%M'),
                     entry=entry,
                     principal=principal.title if principal else ''))
             yield dict(entries=items, display_date=date.strftime('%d.%m.%Y'))
