@@ -9,7 +9,7 @@ zeit.cms.showToolTip = function(context, text, where) {
     }
     div = DIV({'id': 'tooltip'});
     div.innerHTML = text;
-    where.x += 10;
+    where.x += 20;
     where.y += 10;
     MochiKit.Style.setElementPosition(div, where);
     body.appendChild(div);
