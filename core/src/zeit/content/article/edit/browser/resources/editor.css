@@ -406,11 +406,9 @@
   margin: 0 10px;
   padding: 5px 15px;
   position: relative;
-  overflow: hidden;
 }
 
 .type-article .block-inner .totop {
-  background: none repeat scroll 0 0 #CCCCCC;
   border-radius: 0 0 5px 0;
   bottom: 0;
   color: #FFFFFF;
@@ -419,14 +417,22 @@
   font-weight: 700;
   height: 15px;
   line-height: 20px;
-  position: absolute;
   right: 0;
-  text-align: center;
-  width: 20px;
+  width: 100%;
+  background: -moz-linear-gradient(center top , #CCC 0%, #CCC 94%) no-repeat scroll 0 0 transparent;
+  background-position: right;
+  background-size: 20px 20px;
+  text-align: right;
+  position: relative;
+  clear: both;
+  display: block;
+  padding-right: 5px;
 }
 
 .type-article .block-inner .totop:hover {
-  background: none repeat scroll 0 0 #666666;
+  background: -moz-linear-gradient(center top , #666 0%, #666 94%) no-repeat scroll 0 0 transparent;
+  background-position: right;
+  background-size: 20px 20px;
 }
 
 .type-article #preview-tabs {
