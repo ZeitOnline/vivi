@@ -54,8 +54,10 @@ class Video(zeit.edit.block.SimpleElement):
     def _set_video(self, attribute, video):
         if video is None:
             self.xml.attrib.pop(attribute, None)
+            self.is_empty = True
         else:
             self.xml.set(attribute, video.uniqueId)
+            self.is_empty = False
         self.xml.set(
             'expires', zeit.content.video.asset.get_expires(self.video,
                                                             self.video_2))

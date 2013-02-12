@@ -47,6 +47,7 @@ class Image(zeit.content.article.edit.reference.Reference):
         if value is None:
             self.xml.attrib.pop('src', None)
             self.xml.attrib.pop('base-id', None)
+            self.is_empty = True
             return
         node = zope.component.getAdapter(
             value, zeit.cms.content.interfaces.IXMLReference,
@@ -55,14 +56,13 @@ class Image(zeit.content.article.edit.reference.Reference):
         name = self.__name__
         layout = self.layout
         custom_caption = self.custom_caption
-        is_empty = self.is_empty
         self.xml.getparent().replace(self.xml, node)
         self.xml = node
         # Restore saved attributes
         self.__name__ = name
         self.layout = layout
         self.custom_caption = custom_caption
-        self.is_empty = is_empty
+        self.is_empty = False
         self._p_changed = True
 
     @property

@@ -37,11 +37,13 @@ class Reference(zeit.edit.block.SimpleElement):
             # informationn when another object is set later
             name = self.__name__
             self.xml.attrib.clear()
+            self.is_empty = True
             self.__name__ = name
             for child in self.xml.getchildren():
                 self.xml.remove(child)
         else:
             self._validate(value)
+            self.is_empty = False
             self.xml.set('href', value.uniqueId)
             updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
                 value, None)
@@ -60,13 +62,6 @@ def find_commonmetadata(context):
     body = context.__parent__
     article = body.__parent__
     return article
-
-
-@grokcore.component.subscribe(
-    zeit.content.article.edit.interfaces.IReference,
-    zope.lifecycleevent.IObjectModifiedEvent)
-def update_empty(context, event):
-    context.is_empty = context.references is None
 
 
 class ReferenceFactory(zeit.content.article.edit.block.BlockFactory):

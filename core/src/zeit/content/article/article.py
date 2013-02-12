@@ -98,7 +98,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         if image_block is None:
             image_block = self._create_image_block_in_front()
         image_block.references = value
-        zope.lifecycleevent.modified(image_block)
 
     def _create_image_block_in_front(self):
         body = zeit.content.article.edit.interfaces.IEditableBody(self)

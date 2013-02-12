@@ -229,6 +229,14 @@ class EmptyMarkerTest(object):
         zope.lifecycleevent.modified(block)
         self.assertTrue(block.is_empty)
 
+    def test_block_is_not_empty_when_created_from_reference(self):
+        article = self.get_article()
+        body = zeit.content.article.edit.body.EditableBody(
+            article, article.xml.body)
+        block = zope.component.getMultiAdapter(
+            (body, self.create_reference()), zeit.edit.interfaces.IElement)
+        self.assertFalse(block.is_empty)
+
 
 class ImageEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
                        EmptyMarkerTest):
