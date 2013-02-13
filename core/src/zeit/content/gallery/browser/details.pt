@@ -21,4 +21,9 @@
       <a class="gallery_details_next button" i18n:translate=""></a>
     </div>
   </div>
+  <button i18n:translate="" class="toggle_infos folded">
+  Image sub text</button>
+  <div class="folded_information" style="display:none">
+      <p class="gallery_details_caption"></p>
+  </div>
 </div>

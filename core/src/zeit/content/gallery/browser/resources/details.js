@@ -24,6 +24,15 @@ zeit.cms.GalleryDetails = gocept.Class.extend({
         var img = $('img', self.element);
         img.attr('src', url);
 
+        self.update_copyrights();
+        self.update_caption();
+
+        $('.gallery_details_pos', self.element).text(self.pos+1);
+        $('.gallery_details_max', self.element).text(self.entries.length);
+    },
+
+    update_copyrights: function() {
+        var self = this;
         var copy = self.entries[self.pos].copyrights;
         var copyright = $('.gallery_details_copyright', self.element);
         copyright.children().remove();
@@ -36,9 +45,18 @@ zeit.cms.GalleryDetails = gocept.Class.extend({
             html.append(val[0]);
             copyright.append(html);
         });
+    },
 
-        $('.gallery_details_pos', self.element).text(self.pos+1);
-        $('.gallery_details_max', self.element).text(self.entries.length);
+    update_caption: function() {
+        var self = this;
+        var caption = $('.gallery_details_caption', self.element);
+        var copy = self.entries[self.pos].caption;
+        var caption_html = $('<span></span>');
+        caption.children().remove();
+        if (caption != null) {
+            caption_html.text(copy);
+        }
+        caption.append(caption_html);
     },
 
     handle_click: function(event) {
