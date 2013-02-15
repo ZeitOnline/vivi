@@ -54,7 +54,6 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 
 });
 
-
 (function() {
 var ident = MochiKit.Signal.connect(
     window, 'script-loading-finished', function() {
@@ -764,6 +763,25 @@ zeit.content.article.AppendParagraph = zeit.edit.LoadAndReload.extend({
         arguments.callee.$.construct.call(self, context_element);
     }
 
+});
+
+MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+    $("#editable-body").keydown(function(e) {
+      console.log(e);
+      if (e.ctrlKey || e.metaKey) {
+          if (e.which == 66) {
+              e.preventDefault();
+              document.execCommand("bold");
+          } else if (e.which == 73) {
+              e.preventDefault();
+              document.execCommand("italic");
+          } /*else if (e.which == 76) {
+              e.preventDefault();
+              //init_linkbar();
+              alert("LINK");
+          }*/
+      }
+  });
 });
 
 }(jQuery));
