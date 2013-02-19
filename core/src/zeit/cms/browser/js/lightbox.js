@@ -222,7 +222,8 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
         self.focus_node = null;
         MochiKit.Async.callLater(self.SUBMIT_DELAY_FOR_FOCUS, function() {
-            // Save iff nothing is focused after the timeout.
+            // If a field of our form has the focus now, we don't want to
+            // interrupt the user by saving.
             if (self.focus_node === null) {
                 self.handle_submit();
             }
