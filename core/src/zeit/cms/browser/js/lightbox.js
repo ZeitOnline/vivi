@@ -88,6 +88,7 @@ gocept.Lightbox = gocept.Class.extend({
 
 zeit.cms.SubPageForm = gocept.Class.extend({
 
+    SUBMIT_DELAY_FOR_FOCUS: 0.01,
 
     construct: function(url, container, options) {
         var self = this;
@@ -220,7 +221,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         }
 
         self.focus_node = null;
-        MochiKit.Async.callLater(0.25, function() {
+        MochiKit.Async.callLater(self.SUBMIT_DELAY_FOR_FOCUS, function() {
             // Save iff nothing is focused after the timeout.
             if (self.focus_node === null) {
                 self.handle_submit();
