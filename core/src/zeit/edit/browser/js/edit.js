@@ -65,17 +65,16 @@ zeit.edit.Editor = gocept.Class.extend({
             }
             target = target.parentNode;
         }
+        if (!module_name && event.target().nodeName == 'A'
+            && event.target().target) {
+            return;
+        }
+
         if (module_name) {
-            if (module_name == 'follow-link') {
-                // Follow links if called explicitly.
-                return;
-            }
             log("Loading module " + module_name);
             event.stop();
             var module = zeit.cms.resolveDottedName(module_name);
             new module(target);
-        } else if (event.target().nodeName == 'A' && event.target().target) {
-            self = 'pass';
         } else if (event.target().nodeName == 'A') {
             event.preventDefault();
         }
@@ -249,6 +248,8 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
 }());
 
 
+// cms:cp-module handlers
+
 zeit.edit.LoadAndReload = gocept.Class.extend({
 
     construct: function(context_element) {
@@ -259,3 +260,15 @@ zeit.edit.LoadAndReload = gocept.Class.extend({
     }
 
 });
+
+
+zeit.edit.follow_link = function(element) {
+    MochiKit.Async.callLater(
+        zeit.cms.SubPageForm.SUBMIT_DELAY_FOR_FOCUS + 0.1,
+        function() {
+            zeit.edit.with_lock(function(url) {
+                console.log('zeit.edit.follow_link ', url);
+                window.location.href = url;
+        }, element.href);
+    });
+};
