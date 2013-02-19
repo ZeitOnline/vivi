@@ -4,6 +4,11 @@
   left:.5em; 
 }
 
+.location-repository.type-article #content {
+  background: linear-gradient(to bottom, #8e8d85 25px,#8e8d85 25px,#f1f4f9 25px,#f1f4f9 100%);
+  left:.5em; 
+}
+
 .type-article #cp-content {
   bottom:0;
   left:0;
@@ -169,8 +174,16 @@
   line-height: 26px;
 }
 
+.location-repository.type-article #editor-forms div.editable-area > div.edit-bar {
+  background: none repeat scroll 0 0 #8e8d85;
+}
+
 .type-article #editor-forms div.editable-area > div.edit-bar:hover {
   background: -moz-linear-gradient(top, #83a1ba, #658298);
+}
+
+.location-repository.type-article #editor-forms div.editable-area > div.edit-bar:hover {
+  background: -moz-linear-gradient(top, #8e8d85, #6e6d67);
 }
 
 .type-article #editor-forms div div.edit-bar > .edit-link {
