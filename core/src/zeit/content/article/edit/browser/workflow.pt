@@ -13,7 +13,7 @@
          tal:attributes="href string:${context/@@absolute_url}/@@checkin?semantic_change=None;
                      class python:'button checkin-button semantic-change' + (
                      ' disabled' if not view.can_checkin else '');
-                     cms:cp-module python:'zeit.edit.follow_link'
+                     cms:cp-module python:'zeit.cms.follow_with_lock'
                         if view.can_checkin else None;"
          i18n:translate="">Save</a>
 
@@ -23,7 +23,7 @@
          tal:attributes="href string:${context/@@absolute_url}/@@checkin?semantic_change=None;
                      class python:'button checkin-button' + (
                      ' disabled' if not view.can_checkin else '');
-                     cms:cp-module python:'zeit.edit.follow_link'
+                     cms:cp-module python:'zeit.cms.follow_with_lock'
                         if view.can_checkin else None;"
          i18n:translate="">Checkin (correction)</a>
 
