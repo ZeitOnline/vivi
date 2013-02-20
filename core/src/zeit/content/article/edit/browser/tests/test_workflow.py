@@ -2,7 +2,6 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.content.article.article import Article
 from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import transaction
@@ -124,6 +123,7 @@ class CheckinSelenium(
         s.click('id=publish.has_semantic_change')
         s.assertValue('id=publish.has_semantic_change', 'off')
         s.waitForElementNotPresent('css=.checkin-button.semantic-change')
+
 
 class WorkflowEndToEnd(
     zeit.content.article.edit.browser.testing.EditorTestCase):
