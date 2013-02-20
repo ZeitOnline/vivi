@@ -5,7 +5,7 @@ zeit.wysiwyg.ReferenceDialog = zeit.wysiwyg.Dialog.extend({
         arguments.callee.$.construct.call(self);
 
         var browse_url = oPage.context_url + '/@@default-browsing-location';
-        new ObjectReferenceWidget(
+        new zeit.cms.ObjectReferenceWidget(
             'select-item', browse_url, self.browse_filter, false);
     },
 
