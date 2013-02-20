@@ -270,6 +270,23 @@ zeit.cms.in_array = function(needle, haystack) {
 };
 
 
+zeit.cms.request_lock = new MochiKit.Async.DeferredLock();
+
+zeit.cms.with_lock = function(callable) {
+    var d = zeit.cms.request_lock.acquire();
+    var pfunc = MochiKit.Base.partial.apply(
+        MochiKit.Base, MochiKit.Base.extend(null, arguments));
+    d.addCallback(function(result) {
+        return pfunc();
+    });
+    d.addBoth(function(result_or_error) {
+        zeit.cms.request_lock.release();
+        return result_or_error;
+    });
+    return d;
+};
+
+
 (function($) {
 
 $(document).bind('fragment-ready', function(event) {
