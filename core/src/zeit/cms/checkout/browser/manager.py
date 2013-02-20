@@ -218,6 +218,7 @@ class CheckinMenuItem(MenuItem):
     title = _('Checkin ^I')
     base_action = 'checkin'
     accesskey = 'i'
+    rel = 'zeit.cms.follow_with_lock'
 
     def is_visible(self):
         manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
@@ -228,6 +229,7 @@ class NonSemanticChangeCheckinMenuItem(CheckinMenuItem):
 
     title = _('Checkin (correction)')
     accesskey = None
+    rel = 'zeit.cms.follow_with_lock'
 
     @property
     def action(self):
