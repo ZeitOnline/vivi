@@ -258,7 +258,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         // clear box with loading message
         self.loading();
 
-        var d = MochiKit.Async.doXHR(submit_to, {
+        var d = zeit.cms.locked_xhr(submit_to, {
             'method': 'POST',
             'headers': {
                 'Content-Type': 'application/x-www-form-urlencoded'},
