@@ -5,6 +5,7 @@
 from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import transaction
+import unittest2 as unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 
@@ -123,6 +124,26 @@ class CheckinSelenium(
         s.click('id=publish.has_semantic_change')
         s.assertValue('id=publish.has_semantic_change', 'off')
         s.waitForElementNotPresent('css=.checkin-button.semantic-change')
+
+    @unittest.skip('Cannot make the focus/blur-trigger work'
+                   ' to get the inlineform to submit. Maybe with Webdriver?')
+    def test_clicking_checkin_button_triggers_inlineform_save_beforehand(self):
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s = self.selenium
+        s.waitForElementPresent('id=checkin')
+        self.eval("""\
+zeit.cms.with_lock_calls = [];
+zeit.cms.with_lock = function(callable) {
+    zeit.cms.with_lock_calls.push(callable);
+};""")
+
+        s.click('id=article-content-head.title')
+        s.click('id=checkin')
+        self.assertEqual('2', self.eval('zeit.cms.with_lock_calls.length'))
+        self.assertEqual(
+            'MochiKit.Async.doXHR',
+            self.eval('zeit.cms.with_lock_calls[0].NAME'))
+        self.assertEqual('null', self.eval('zeit.cms.with_lock_calls[1].NAME'))
 
 
 class WorkflowEndToEnd(
