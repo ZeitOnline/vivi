@@ -581,7 +581,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var data = {paragraphs: self.edited_paragraphs,
                     text: self.get_text_list()};
         data = MochiKit.Base.serializeJSON(data);
-        zeit.edit.with_lock(function() {
+        zeit.cms.with_lock(function() {
             var d = MochiKit.Async.doXHR(
                 url, {method: 'POST', sendContent: data});
             d.addCallback(function(result) {
@@ -614,7 +614,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     text: self.get_text_list()};
         if (no_reload) {
             data = MochiKit.Base.serializeJSON(data);
-            zeit.edit.with_lock(
+            zeit.cms.with_lock(
                 MochiKit.Async.doXHR,
                 url, {method: 'POST', sendContent: data});
         } else {
