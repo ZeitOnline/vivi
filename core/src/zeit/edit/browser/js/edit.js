@@ -240,15 +240,3 @@ zeit.edit.LoadAndReload = gocept.Class.extend({
     }
 
 });
-
-
-zeit.edit.follow_link = function(element) {
-    MochiKit.Async.callLater(
-        zeit.cms.SubPageForm.SUBMIT_DELAY_FOR_FOCUS + 0.1,
-        function() {
-            zeit.cms.with_lock(function(url) {
-                console.log('zeit.edit.follow_link ', url);
-                window.location.href = url;
-        }, element.href);
-    });
-};
