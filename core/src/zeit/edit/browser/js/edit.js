@@ -71,8 +71,7 @@ zeit.edit.Editor = gocept.Class.extend({
         log("Reloading", element_id, url);
         var element = $(element_id);
         MochiKit.Signal.signal(self, 'before-reload');
-        var d = zeit.cms.with_lock(
-            MochiKit.Async.doSimpleXMLHttpRequest, url);
+        var d = zeit.cms.locked_xhr(url);
         d.addCallback(function(result) {
             return self.replace_element(element, result);
         });
