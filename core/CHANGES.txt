@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.5.2 (unreleased)
+2.5.2 (2013-02-20)
 ------------------
 
 - Apply ignore_for_update also while adding and publishing (#11990)
