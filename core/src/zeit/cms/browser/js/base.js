@@ -293,6 +293,33 @@ zeit.cms.locked_xhr = function(url, options) {
 
 (function($) {
 
+$(document).ready(function() {
+    // generic click handler
+    $('body').bind('click', function(event) {
+        // Handle mouse clicks: only clicks on <a> tags having a `rel`
+        // atttribute are recognized.  The `rel` attribute has to
+        // contain the dotted name of the event handler. The event
+        // handler must accept two arguments: a URL and the dom element
+        // of the search result.
+        var target = $(event.target).closest('a');
+        if (!target.length) {
+            // No A in parent chain
+            return;
+        }
+        var action = target.attr('rel');
+        if (!action) {
+            return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        if (target.hasClass('disabled')) {
+            return;
+        }
+        zeit.cms.resolveDottedName(action)(target[0]);
+    });
+});
+
+
 $(document).bind('fragment-ready', function(event) {
 
     $('input.checkboxType[disabled="disabled"]',
@@ -301,9 +328,6 @@ $(document).bind('fragment-ready', function(event) {
      event.__target).parent().addClass('checkboxchecked');
 });
 
-}(jQuery));
-
-(function($) {
 
 $(document).bind('fragment-ready', function(event) {
   $("#editor-forms-heading .content-icon.type-article").attr("cms:tooltip","Diesen Artikel ins Clipboard ziehen");
