@@ -18,9 +18,9 @@ zeit.wysiwyg.VideoDialog = zeit.wysiwyg.Dialog.extend({
         if (self.container_class == 'video') {
             var browse_url = 
                 oPage.context_url + '/@@default-browsing-location';
-            new ObjectReferenceWidget(
+            new zeit.cms.ObjectReferenceWidget(
                 'video1', browse_url, self.browse_filter, false);
-            new ObjectReferenceWidget(
+            new zeit.cms.ObjectReferenceWidget(
                 'video2', browse_url, self.browse_filter, false);
         }
 
