@@ -2,23 +2,6 @@
 
 zeit.cms.declare_namespace('zeit.edit');
 
-// Lock to hold for asynchronous tasks.
-zeit.edit.json_request_lock = new MochiKit.Async.DeferredLock();
-
-zeit.edit.with_lock = function(callable) {
-    var d = zeit.edit.json_request_lock.acquire();
-    var pfunc = MochiKit.Base.partial.apply(
-        MochiKit.Base, MochiKit.Base.extend(null, arguments));
-    d.addCallback(function(result) {
-        return pfunc();
-    });
-    d.addBoth(function(result_or_error) {
-        zeit.edit.json_request_lock.release();
-        return result_or_error;
-    });
-    return d;
-};
-
 zeit.edit.getParentComponent = function(context_element) {
     var parent = null;
     var parent_element = context_element.parentNode;
@@ -28,8 +11,6 @@ zeit.edit.getParentComponent = function(context_element) {
     }
     return parent;
 };
-
-
 
 
 zeit.edit.Editor = gocept.Class.extend({
@@ -90,7 +71,7 @@ zeit.edit.Editor = gocept.Class.extend({
         log("Reloading", element_id, url);
         var element = $(element_id);
         MochiKit.Signal.signal(self, 'before-reload');
-        var d = zeit.edit.with_lock(
+        var d = zeit.cms.with_lock(
             MochiKit.Async.doSimpleXMLHttpRequest, url);
         d.addCallback(function(result) {
             return self.replace_element(element, result);
@@ -266,7 +247,7 @@ zeit.edit.follow_link = function(element) {
     MochiKit.Async.callLater(
         zeit.cms.SubPageForm.SUBMIT_DELAY_FOR_FOCUS + 0.1,
         function() {
-            zeit.edit.with_lock(function(url) {
+            zeit.cms.with_lock(function(url) {
                 console.log('zeit.edit.follow_link ', url);
                 window.location.href = url;
         }, element.href);
