@@ -286,6 +286,10 @@ zeit.cms.with_lock = function(callable) {
     return d;
 };
 
+zeit.cms.locked_xhr = function(url, options) {
+    return zeit.cms.with_lock(MochiKit.Async.doXHR, url, options);
+};
+
 
 (function($) {
 
