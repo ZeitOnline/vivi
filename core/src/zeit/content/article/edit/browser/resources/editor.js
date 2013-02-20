@@ -770,11 +770,10 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
           } else if (e.which == 73) {
               e.preventDefault();
               document.execCommand("italic");
-          } /*else if (e.which == 76) {
+          } else if (e.which == 72) {
               e.preventDefault();
-              //init_linkbar();
-              alert("LINK");
-          }*/
+              document.execCommand('formatBlock', false, '<h3>');
+          }
       }
   });
 });
