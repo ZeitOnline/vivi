@@ -687,7 +687,7 @@
 .type-article .editable p:empty:before,
 .type-article .editable h3:empty:before {
   color: #999;
-  content: "Geben Sie hier Text ein.";
+  content: "Geben Sie hier Text ein. (CMD/Strg+Shift+V formatfrei einfügen)";
   font-size: 16px;
   font-weight: bold;
   line-height: 24px;
