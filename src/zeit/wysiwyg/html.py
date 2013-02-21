@@ -440,7 +440,7 @@ class ImageStep(ConversionStep):
             except KeyError:
                 pass
             else:
-                url = self.url(image)
+                url = self.url(image) + '/@@raw'
 
         img = lxml.builder.E.img()
         if url:
@@ -461,7 +461,8 @@ class ImageStep(ConversionStep):
         new_node = None
         if url and url.startswith(repository_url):
             unique_id = url.replace(
-                repository_url, zeit.cms.interfaces.ID_NAMESPACE)
+                repository_url, zeit.cms.interfaces.ID_NAMESPACE, 1).replace(
+                    '/@@raw', '')
             try:
                 image = self.repository.getContent(unique_id)
             except KeyError:

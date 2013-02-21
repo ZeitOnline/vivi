@@ -417,7 +417,7 @@ transferred to the title attribute:
 <p>Aus winzigen embryonalen ...</p>
 <p>Fuer menschliche</p>
 <p>
-  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="infobox"/>
+  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="infobox"/>
 </p>
 <p>Zellen ist das toll.</p>
 <p>Selbst wenn </p>
@@ -427,7 +427,7 @@ the image is put into the xml:
 
 >>> converter.from_html(article.xml['body'], '''\
 ... <p>Fuer menschliche</p>
-... <p><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="large"/></p>
+... <p><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="large"/></p>
 ... <p>Zellen ist das toll.</p>
 ... <p>Aus winzigen embryonalen ...</p>
 ... <p>Selbst wenn </p>''')
@@ -438,7 +438,7 @@ the image is put into the xml:
     <title>Title</title>
     <p>Fuer menschliche</p>
     <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
-      <bu>Cap cap cap</bu>
+      <bu py:pytype="str">Cap cap cap</bu>
       <copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright>
      </image>
     <p>Zellen ist das toll.</p>
@@ -473,7 +473,7 @@ extracted and put before the <p>.
 >>> print converter.to_html(article.xml['body'])
 <p>Aus winzigen embryonalen ...</p>
 <p>
-  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="infobox"/>
+  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="infobox"/>
 </p>
 <p>Fuer menschliche Zellen ist <a href="#">das</a> toll.</p>
 <p>Selbst wenn </p>
@@ -483,7 +483,7 @@ Converting html to xml also splits up paragraphs as necessary:
 >>> converter.from_html(article.xml['body'], '''\
 ... <p>Aus winzigen embryonalen ...</p>
 ... <p>Fuer menschliche
-...     <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="large"/>
+...     <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="large"/>
 ...     Zellen ist <a href="#">das</a> toll.</p>
 ... <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
@@ -493,7 +493,7 @@ Converting html to xml also splits up paragraphs as necessary:
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
     <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large">
-        <bu>Cap cap cap</bu>
+        <bu py:pytype="str">Cap cap cap</bu>
         <copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright>
     </image>
     <p>Fuer menschliche Zellen ist <a href="#">das</a> toll.</p>
@@ -528,14 +528,14 @@ support it.)
 >>> print converter.to_html(article.xml['body'])
 <p>Aus winzigen embryonalen ...</p>
 <p>Fuer menschliche
-<a href="#"><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="infobox"/></a>
+<a href="#"><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="infobox"/></a>
 Zellen ist <a href="#">das</a> toll.</p>
 <p>Selbst wenn </p>
 
 >>> converter.from_html(article.xml['body'], '''\
 ... <p>Aus winzigen embryonalen ...</p>
 ... <p>Fuer menschliche
-...     <a href="#"><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG" title="large"/></a>
+...     <a href="#"><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw" title="large"/></a>
 ...     Zellen ist <a href="#">das</a> toll.</p>
 ... <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
@@ -545,7 +545,7 @@ Zellen ist <a href="#">das</a> toll.</p>
     <title>Title</title>
     <p>Aus winzigen embryonalen ...</p>
     <p>Fuer menschliche
-    <a href="#"><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large"><bu>Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image></a>
+    <a href="#"><image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...layout="large"><bu py:pytype="str">Cap cap cap</bu><copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright></image></a>
     Zellen ist <a href="#">das</a> toll.</p>
     <p>Selbst wenn </p>
   </body>
@@ -573,7 +573,7 @@ We are greedy against old paths in the XML:
 >>> print converter.to_html(article.xml['body'])
 <p>Fuer menschliche</p>
 <p>
-  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw"/>
 </p>
 <p>Selbst wenn </p>
 
@@ -685,7 +685,7 @@ Regression: Check that ``<p><strong><img`` correctly finds the image, even
 though it's nested.
 
 >>> converter.from_html(article.xml['body'], '''\
-...     <p><strong><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+...     <p><strong><img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw"/>
 ...            Hurz</strong> foobar </p>
 ...     <p>Selbst wenn </p>''')
 >>> print lxml.etree.tostring(article.xml, pretty_print=True)
@@ -693,7 +693,7 @@ though it's nested.
   <head/>
   <body>
     <image src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" ...>
-        <bu>Cap cap cap</bu>
+        <bu py:pytype="str">Cap cap cap</bu>
         <copyright py:pytype="str" link="http://zeit.de">ZEIT ONLINE</copyright>
     </image>
     <p><strong> Hurz</strong> foobar </p>
@@ -706,7 +706,7 @@ Recheck the conversion to HTML:
 
 >>> print converter.to_html(article.xml['body'])
 <p>
-  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG"/>
+  <img src="http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw"/>
 </p>
 <p><strong> Hurz</strong> foobar </p>
 <p>Selbst wenn </p>

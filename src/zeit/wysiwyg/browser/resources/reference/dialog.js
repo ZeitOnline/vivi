@@ -124,13 +124,13 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
     id_to_url: function(unique_id) {
         return unique_id.replace(
             'http://xml.zeit.de',
-            zeit.cms.get_application_url() + '/repository');
+            zeit.cms.get_application_url() + '/repository') + '/@@raw';
     },
 
     url_to_id: function(url) {
         return url.replace(
             zeit.cms.get_application_url() + '/repository',
-            'http://xml.zeit.de');
+            'http://xml.zeit.de').replace('/@@raw', '');
     },
 
     get_container: function() {
