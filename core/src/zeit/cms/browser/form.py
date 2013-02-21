@@ -60,11 +60,11 @@ MARKER = object()
 
 def apply_default_values(context, interface):
     """Apply default values from ``interface`` to ``context``."""
-    for name, value in zope.schema.getFields(interface).items():
-        if value.readonly:
+    for name, field in zope.schema.getFields(interface).items():
+        if field.readonly:
             continue
         __traceback_info__ = (name,)
-        default = getattr(value, 'default')
+        default = getattr(field, 'default')
         # don't set None values (#9406)
         if default is None:
             continue
@@ -73,9 +73,10 @@ def apply_default_values(context, interface):
         if current == default:
             continue
         # if a value exists, don't overwrite it if it's valid (#10362)
-        if current is not MARKER and current is not value.missing_value:
+        if current is not MARKER and current is not field.missing_value:
+            field = field.bind(context)
             try:
-                value.validate(current)
+                field.validate(current)
             except zope.schema.ValidationError:
                 pass
             else:

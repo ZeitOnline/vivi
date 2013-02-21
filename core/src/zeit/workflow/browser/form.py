@@ -153,7 +153,8 @@ class AssetWorkflow(WorkflowForm):
             zeit.workflow.interfaces.IAssetWorkflow,
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
-            zeit.cms.content.interfaces.ISemanticChange))
+            zeit.cms.content.interfaces.ISemanticChange).omit(
+            'has_semantic_change'))
 
 
 class NoWorkflow(zeit.cms.browser.form.EditForm):

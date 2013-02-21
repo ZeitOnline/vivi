@@ -19,6 +19,7 @@ class ExternalActionsMenu(zope.app.publisher.browser.menu.BrowserMenu):
         result = super(ExternalActionsMenu, self).getMenuItems(object, request)
         for item in result:
             item['target'] = "_blank"
+            item['rel'] = 'zeit.cms.follow_with_lock'
         return result
 
 
@@ -36,6 +37,7 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'action-menu-item.pt')
+    rel = None
 
     def update(self):
         super(ActionMenuItem, self).update()

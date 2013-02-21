@@ -8,6 +8,7 @@
     <a
       tal:attributes="href string:$context_url/${menu_item/action};
       title menu_item/title;
+      rel menu_item/rel | nothing;
       target menu_item/target | nothing"
       i18n:attributes="title">
       <img src="" alt="actionmenuicon"

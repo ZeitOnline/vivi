@@ -88,6 +88,7 @@ gocept.Lightbox = gocept.Class.extend({
 
 zeit.cms.SubPageForm = gocept.Class.extend({
 
+    SUBMIT_DELAY_FOR_FOCUS: 0.01,
 
     construct: function(url, container, options) {
         var self = this;
@@ -172,12 +173,10 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         if (self.save_on_change
             && target.nodeName == 'INPUT' && target.type == 'checkbox') {
             self.focus_node = target;
-            MochiKit.Async.callLater(0.25, function() {
-                // simulate blur
-                if (self.focus_node == target) {
-                    self.handle_submit();
-                }
-            });
+            // simulate blur
+            if (self.focus_node == target) {
+                self.handle_submit();
+            }
         }
     },
 
@@ -222,8 +221,9 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         }
 
         self.focus_node = null;
-        MochiKit.Async.callLater(0.25, function() {
-            // Save iff nothing is focused after the timeout.
+        MochiKit.Async.callLater(self.SUBMIT_DELAY_FOR_FOCUS, function() {
+            // If a field of our form has the focus now, we don't want to
+            // interrupt the user by saving.
             if (self.focus_node === null) {
                 self.handle_submit();
             }
@@ -258,7 +258,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         // clear box with loading message
         self.loading();
 
-        var d = MochiKit.Async.doXHR(submit_to, {
+        var d = zeit.cms.locked_xhr(submit_to, {
             'method': 'POST',
             'headers': {
                 'Content-Type': 'application/x-www-form-urlencoded'},

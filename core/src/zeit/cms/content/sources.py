@@ -99,11 +99,6 @@ class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
         return self.titles.get(value, value)
 
 
-class PrintRessortSource(SimpleXMLSource):
-
-    config_url = 'source-print-ressort'
-
-
 class NavigationSource(SimpleXMLSource):
 
     config_url = 'source-navigation'

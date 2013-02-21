@@ -61,7 +61,7 @@
   <!-- Image data to the browser -->
 
   <browser:page
-    name="index.html"
+    name="raw"
     for="zeit.content.image.interfaces.IImage"
     permission="zope.View"
     class=".image.Image"

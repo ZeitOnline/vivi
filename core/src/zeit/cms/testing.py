@@ -176,7 +176,6 @@ cms_product_config = string.Template("""\
 <product-config zeit.cms>
   source-serie file://${base}/content/serie.xml
   source-navigation file://${base}/content/navigation.xml
-  source-print-ressort file://${base}/content/print-ressort.xml
   source-keyword file://${base}/content/zeit-ontologie-prism.xml
   source-products file://${base}/content/products.xml
   source-badges file://${base}/asset/badges.xml

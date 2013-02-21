@@ -66,11 +66,11 @@ class ICommonMetadata(zope.interface.Interface):
         source=zeit.cms.content.sources.SubNavigationSource(),
         required=False)
 
-    printRessort = zope.schema.Choice(
+    printRessort = zope.schema.TextLine(
         title=_("Print ressort"),
-        source=zeit.cms.content.sources.PrintRessortSource(),
         readonly=True,
-        required=False)
+        required=False,
+        default=u'n/a')
 
     author_references = zope.schema.Tuple(
         title=_("Authors"),
@@ -115,16 +115,15 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("By line"),
         required=False)
 
-    title = zeit.cms.content.field.XMLSnippet(
+    title = zope.schema.Text(
         title=_("Title"),
         missing_value=u'',
         max_length=70)
 
-    subtitle = zeit.cms.content.field.XMLSnippet(
+    subtitle = zope.schema.Text(
         title=_("Subtitle"),
         missing_value=u'',
-        required=False,
-        max_length=170)
+        required=False)
 
     teaserTitle = zope.schema.TextLine(
         title=_("Teaser title"),

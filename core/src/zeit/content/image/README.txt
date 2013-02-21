@@ -128,7 +128,7 @@ Set metadata:
 ...     ('Zeit online', None),
 ...     ('Agentur XY', 'http://xyz.de'))
 >>> metadata.alignment = u'right'
->>> metadata.caption = u'Cap>tion<br/><a href="#">foo</a>'
+>>> metadata.caption = u'Caption'
 >>> group = zeit.cms.checkout.interfaces.ICheckinManager(group).checkin()
 >>> ref = zope.component.getAdapter(
 ...     group,
@@ -136,7 +136,7 @@ Set metadata:
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...align="right"
        base-id="http://xml.zeit.de/image-group" type="jpg"...>
-  <bu>Cap&gt;tion<br/><a href="#">foo</a></bu>
+  <bu py:pytype="str">Caption</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
@@ -159,7 +159,7 @@ Make sure we don't die when there is an invalid XML snippet stored:
 >>> print lxml.etree.tostring(ref, pretty_print=True)
 <image ...align="right"
        base-id="http://xml.zeit.de/image-group" type="jpg"...>
-  <bu>5 &lt; 7</bu>
+  <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
@@ -177,7 +177,7 @@ Set the link:
 <image ...align="right"
        href="http://www.asdf.com"
        base-id="http://xml.zeit.de/image-group" type="jpg"...>
-  <bu>5 &lt; 7</bu>
+  <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
@@ -203,7 +203,7 @@ in x140 is used:
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group"
     type="gif"...>
-  <bu>5 &lt; 7</bu>
+  <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
@@ -224,7 +224,7 @@ one is used:
 <image ... align="right"
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group" type="jpg"...>
-  <bu>5 &lt; 7</bu>
+  <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
@@ -245,7 +245,7 @@ Images whose names have no extension at all will be ignored:
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group"
     type="jpg"...>
-  <bu>5 &lt; 7</bu>
+  <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>
@@ -263,7 +263,7 @@ If there is no image in the image group the ``type`` will be an empty string:
     href="http://www.asdf.com"
     base-id="http://xml.zeit.de/image-group"
     type=""...>
-  <bu>5 &lt; 7</bu>
+  <bu py:pytype="str">5 &lt; 7</bu>
   <copyright py:pytype="str">Zeit online</copyright>
   <copyright py:pytype="str" link="http://xyz.de">Agentur XY</copyright>
 </image>

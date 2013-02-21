@@ -62,27 +62,13 @@ The sidebar lists the document now:
 ...
 
 
-There is a link to get to the original document:
+The functionality to show the original of a workingcopy was deleted. But it
+should still be possible to checkin a workingcopy from an deleted original
 
 >>> bookmark = browser.url
->>> browser.getLink('Show original')
-<Link text='[IMG] Show original' url='http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@view.html'>
-
-There link will not be rendered when the original document was deleted:
-
->>> browser.getLink('Show original').click()
->>> browser.getLink('Delete', index=1).url
-"javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@delete.html')"
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01/Somalia/@@delete.html')
 >>> browser.getControl('Delete').click()
 >>> browser.open(bookmark)
->>> browser.getLink('Show original')
-Traceback (most recent call last):
-    ...
-LinkNotFoundError
-
-But we can check in the object of couse:
-
 >>> browser.getLink('Checkin').click()
 
 Looking at our working copy also shows the `Somalia` article:

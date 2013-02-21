@@ -80,16 +80,5 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-actions-external" title="Preview"
     />
-
-  <browser:viewlet
-    name="show-original"
-    for="zeit.cms.workingcopy.interfaces.ILocalContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".workingcopy.ShowOriginal"
-    manager="zeit.cms.browser.interfaces.IContextActions"
-    permission="zope.View"
-    icon="/@@/zeit.cms/icons/show-original_topmenu.png"
-    />
-
 </configure>
 

@@ -270,7 +270,70 @@ zeit.cms.in_array = function(needle, haystack) {
 };
 
 
+zeit.cms.request_lock = new MochiKit.Async.DeferredLock();
+
+zeit.cms.with_lock = function(callable) {
+    var d = zeit.cms.request_lock.acquire();
+    var pfunc = MochiKit.Base.partial.apply(
+        MochiKit.Base, MochiKit.Base.extend(null, arguments));
+    d.addCallback(function(result) {
+        return pfunc();
+    });
+    d.addBoth(function(result_or_error) {
+        zeit.cms.request_lock.release();
+        return result_or_error;
+    });
+    return d;
+};
+
+zeit.cms.locked_xhr = function(url, options) {
+    return zeit.cms.with_lock(MochiKit.Async.doXHR, url, options);
+};
+
+
+zeit.cms.follow_with_lock = function(element) {
+    MochiKit.Async.callLater(
+        zeit.cms.SubPageForm.SUBMIT_DELAY_FOR_FOCUS + 0.1,
+        function() {
+            zeit.cms.with_lock(function(url, new_window) {
+                console.log('zeit.cms.follow_with_lock ', url);
+                if (new_window) {
+                    window.open(url, new_window);
+                } else {
+                    window.location.href = url;
+                }
+        }, element.href, element.target);
+    });
+};
+
 (function($) {
+
+$(document).ready(function() {
+    // generic click handler
+    $('body').bind('click', function(event) {
+        // Handle mouse clicks: only clicks on <a> tags having a `rel`
+        // atttribute are recognized.  The `rel` attribute has to
+        // contain the dotted name of the event handler. The event
+        // handler must accept two arguments: a URL and the dom element
+        // of the search result.
+        var target = $(event.target).closest('a');
+        if (!target.length) {
+            // No A in parent chain
+            return;
+        }
+        var action = target.attr('rel');
+        if (!action) {
+            return;
+        }
+        event.preventDefault();
+        event.stopPropagation();
+        if (target.hasClass('disabled')) {
+            return;
+        }
+        zeit.cms.resolveDottedName(action)(target[0]);
+    });
+});
+
 
 $(document).bind('fragment-ready', function(event) {
 
@@ -280,9 +343,6 @@ $(document).bind('fragment-ready', function(event) {
      event.__target).parent().addClass('checkboxchecked');
 });
 
-}(jQuery));
-
-(function($) {
 
 $(document).bind('fragment-ready', function(event) {
   $("#editor-forms-heading .content-icon.type-article").attr("cms:tooltip","Diesen Artikel ins Clipboard ziehen");
