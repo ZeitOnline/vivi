@@ -105,12 +105,12 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
             var pos = MochiKit.Style.getElementPosition(element);
             var cloned_element = element.cloneNode(true);
             jQuery('body').append(cloned_element);
-            MochiKit.Style.setcloned_elementPosition(cloned_element, pos);
+            MochiKit.Style.setElementPosition(cloned_element, pos);
             MochiKit.Style.makeClipping(cloned_element);
             self.lightbox.close();
             self.lightbox = null;
             // Visual candy
-            pos = MochiKit.Style.getcloned_elementPosition(self.input);
+            pos = MochiKit.Style.getElementPosition(self.input);
             var move = new MochiKit.Visual.Move(cloned_element, {
                 mode: 'absolute',
                 sync: true,

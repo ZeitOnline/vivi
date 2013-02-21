@@ -4,6 +4,8 @@ zeit.cms changes
 editor-ng branch changes
 ------------------------
 
+- Fix selecting of objects in reference dialog (#12102)
+
 - Publish is not allowed in ILocalContent via the security machinery now (for
   #8413).
 
