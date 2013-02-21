@@ -73,7 +73,7 @@ Now the changes are propagated to the article:
 >>> gocept.async.tests.process('events')
 >>> article = repository['test']
 >>> print lxml.etree.tostring(article.xml['body'], pretty_print=True)
-<...<image...<bu>Cap cap cap</bu>...
+<...<image...<bu...>Cap cap cap</bu>...
 
 Here we check that each type of possible references is found:
 
