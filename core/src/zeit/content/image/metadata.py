@@ -98,10 +98,7 @@ def MetadataXMLReference(context):
     set_if_not_empty('href', context.links_to)
     set_if_not_empty('align', context.alignment)
 
-    if context.caption:
-        caption = lxml.objectify.fromstring('<bu>%s</bu>' % (context.caption,))
-    else:
-        caption = lxml.objectify.E.bu(None)
+    caption = lxml.objectify.E.bu(context.caption or None)
 
     image = lxml.objectify.E.image(
         caption,
