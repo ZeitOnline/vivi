@@ -24,8 +24,8 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 
     });
 
-    $('.editable-area > .block-inner').append('<div class="totop">↑</div>');
-    $('.totop').live("click", function() {
+    $('.editable-area > .block-inner').append('<div class="totop"><span class="totopclick">↑</span></div>');
+    $('.totopclick').live("click", function() {
         $('#cp-content-inner').animate({scrollTop: 0}, 300);
     });
 

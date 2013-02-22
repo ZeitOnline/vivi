@@ -424,7 +424,6 @@
   border-radius: 0 0 5px 0;
   bottom: 0;
   color: #FFFFFF;
-  cursor: pointer;
   font-size: 12px;
   font-weight: 700;
   height: 15px;
@@ -439,6 +438,10 @@
   clear: both;
   display: block;
   padding-right: 5px;
+}
+
+.type-article .block-inner .totop .totopclick {
+  cursor: pointer;
 }
 
 .type-article .block-inner .totop:hover {
