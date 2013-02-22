@@ -9,7 +9,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     <script type="text/javascript">setSkinCSS();</script>
     <script src="dialog.js" type="text/javascript"></script>
     <script type="text/javascript">
-        zeit.wysiwyg.dialog_class = zeit.wysiwyg.PortraitboxDialog;
+        zeit.wysiwyg.dialog_class = zeit.wysiwyg.TimelineDialog;
     </script>
     <link href="dialog.css" type="text/css" rel="stylesheet" />
   </head>
@@ -19,17 +19,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
       <input id="href" type="text" class="object-reference"
         style="width: 60em" />
       <input name="browseObjects" type="button" value="…" />
-    </div>
-
-    <div class="widget">
-      <label for="layout" i18n:translate="">Layout</label>
-      <select id="layout">
-        <option value=""
-          i18n:domain="zope"
-          i18n:translate="vocabulary-missing-single-value-for-edit">(no value)</option>
-        <option value="short" i18n:translate="">short</option>
-        <option value="wide" i18n:translate="">wide</option>
-      </select>
     </div>
   </body>
 </html>

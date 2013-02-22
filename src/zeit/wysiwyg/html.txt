@@ -824,6 +824,26 @@ If no expires date is entered, it is taken from the content object instead:
   </body>
 </article>
 
+If no format is entered, the attribute stays empty:
+
+>>> converter.from_html(article.xml['body'], '''\
+...     <p>No bo po co to.</p>
+...     <div class="inline-element video">
+...       <div class="videoId">http://video.zeit.de/video/1</div>
+...       <div class="format"></div>
+...     </div>
+...     <p>Foo bar</p>''')
+>>> print lxml.etree.tostring(article.xml, pretty_print=True),
+<article ...>
+  <head/>
+  <body>
+    <p>No bo po co to.</p>
+    <video href2="" href="http://video.zeit.de/video/1"
+        expires="2010-01-01T00:00:00+00:00" format=""/>
+    <p>Foo bar</p>
+  </body>
+</article>
+
 
 Double video
 ~~~~~~~~~~~~
@@ -1242,6 +1262,37 @@ Infobox
   </body>
 </article>
 
+Timeline
+-------
+
+>>> source = u'''\
+... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+...   <head/>
+...   <body>
+...     <timeline href="http://xml.zeit.de/2006/ib"/>
+...   </body>
+... </article>'''
+>>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
+...     xml_source=StringIO.StringIO(source))
+>>> converter = zeit.wysiwyg.html.HTMLConverter(article)
+>>> print converter.to_html(article.xml['body'])
+<div class="inline-element timeline">
+  <div class="href">http://xml.zeit.de/2006/ib</div>
+</div>
+<p> </p>
+
+>>> converter.from_html(article.xml['body'], """\
+... <div class="inline-element timeline">
+...   <div class="href">http://xml.zeit.de/2006/ib</div>
+... </div>""")
+>>> print lxml.etree.tostring(article.xml, pretty_print=True)
+<article...>
+  <head/>
+  <body>
+    <timeline href="http://xml.zeit.de/2006/ib".../>
+  </body>
+</article>
+
 Gallery
 -------
 
@@ -1383,35 +1434,6 @@ Empty citation should not break:
   </body>
 </article>
 
-
-List of relateds
-----------------
-
->>> source = u'''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-...   <head/>
-...   <body>
-...     <relateds/>
-...   </body>
-... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
-...     xml_source=StringIO.StringIO(source))
->>> converter = zeit.wysiwyg.html.HTMLConverter(article)
->>> print converter.to_html(article.xml['body'])
-<div class="inline-element related">
-</div>
-<p> </p>
-
->>> converter.from_html(article.xml['body'], """\
-... <div class="inline-element related">
-... </div>""")
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article...>
-  <head/>
-  <body>
-    <relateds/>
-  </body>
-</article>
 
 Un-editable elements
 --------------------

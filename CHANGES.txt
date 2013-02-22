@@ -8,6 +8,27 @@ editor-ng
 
 - Fix call to ObjectReferenceWidget (#12102)
 
+- Remove obsolete "relateds" feature (#12077).
+
+
+1.42.1 (unreleased)
+-------------------
+
+- Remove obsolete "relateds" feature (#12077).
+
+
+1.42.0 (2013-02-20)
+-------------------
+
+- Add timeline module (#12022).
+
+
+1.41.1 (2012-12-17)
+-------------------
+
+- Fix bug in video conversion step: empty format could not be converted from
+  HTML to XML (seen in #11695).
+
 
 1.41.0 (2012-03-06)
 -------------------
