@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Feb  8 14:40:34 2013\n"
-"PO-Revision-Date: 2013-02-20 14:48+0100\n"
+"PO-Revision-Date: 2013-02-22 15:01+0100\n"
 "Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1826,7 +1826,7 @@ msgstr "Einchecken & Veröffentlichen"
 
 #: zeit/content/article/edit/browser/workflow.pt:40
 msgid "Checkin (correction) and publish"
-msgstr "Einchecken (Korrektur) & Veröffentlichen"
+msgstr "Einchecken (Korrektur) & sofort Veröffentlichen"
 
 #: zeit/content/article/edit/browser/workflow.pt:67
 #: zeit/workflow/browser/retract.pt:2 zeit/workflow/browser/retract.pt:5
@@ -3347,7 +3347,8 @@ msgid "workflow-publication-period-description"
 msgstr ""
 "Leer für keine Einschränkung. Der Veröffentlichungszeitraum gibt an, wann "
 "das Objekt automatisch veröffentlicht und wieder zurückgezogen wird. In "
-"diesem Fall muss nur Status gespeichert werden. "
+"diesem Fall muss nur Status gespeichert, bzw. Einchecken oder Einchecken "
+"(korrektur) werden.  "
 
 #. Default: "Edited"
 #: zeit/workflow/interfaces.py:60
