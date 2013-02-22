@@ -37,10 +37,11 @@ var evaluate_form_signals = function(event) {
         return;
     }
     var signals = $.parseJSON($(form.container).find('span.signals').text());
-    $.each(signals, function(i, signal) {
-        MochiKit.Signal.signal.apply(
-            this, extend([zeit.edit.editor, signal.name], signal.args));
-    });
+    if (signals) {
+        $.each(signals, function(i, signal) {
+            MochiKit.Signal.signal.apply(
+                this, extend([zeit.edit.editor, signal.name], signal.args));
+        });
 };
 
 var reload_inline_form = function(selector) {
