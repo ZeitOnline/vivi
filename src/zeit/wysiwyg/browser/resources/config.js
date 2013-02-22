@@ -9,7 +9,7 @@ FCKConfig.ToolbarSets["Zeit"] = [
         ['Zeit_Image', 'Zeit_Add_Video', 'Zeit_Add_Audio',
          'Zeit_RAW', 'Zeit_Pagebreak',
          'Zeit_Infobox', 'Zeit_Portraitbox', 'Zeit_Gallery', 'Zeit_Citation',
-         'Zeit_Related', 'Zeit_Timeline'],
+         'Zeit_Timeline'],
 ];
 
 FCKConfig.SkinPath = FCKConfig.BasePath + 'skins/office2003/' ;
@@ -34,7 +34,6 @@ var plugins = [
     'pagebreak',
     'raw',
     'reference',
-    'related',
     'video',
 ];
 

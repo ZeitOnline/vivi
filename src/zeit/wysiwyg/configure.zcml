@@ -24,7 +24,6 @@
   <adapter factory=".html.URLStep" name="URLStep" />
   <adapter factory=".html.AudioStep" name="AudioStep" />
   <adapter factory=".html.VideoStep" name="VideoStep" />
-  <adapter factory=".html.RelatedsStep" name="RelatedsStep" />
   <adapter factory=".html.HTMLImageStructureStep" name="HTMLImageStructureStep" />
   <adapter factory=".html.XMLImageStructureStep" name="XMLImageStructureStep" />
 

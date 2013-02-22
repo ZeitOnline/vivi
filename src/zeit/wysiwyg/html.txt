@@ -1435,35 +1435,6 @@ Empty citation should not break:
 </article>
 
 
-List of relateds
-----------------
-
->>> source = u'''\
-... <article xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-...   <head/>
-...   <body>
-...     <relateds/>
-...   </body>
-... </article>'''
->>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
-...     xml_source=StringIO.StringIO(source))
->>> converter = zeit.wysiwyg.html.HTMLConverter(article)
->>> print converter.to_html(article.xml['body'])
-<div class="inline-element related">
-</div>
-<p> </p>
-
->>> converter.from_html(article.xml['body'], """\
-... <div class="inline-element related">
-... </div>""")
->>> print lxml.etree.tostring(article.xml, pretty_print=True)
-<article...>
-  <head/>
-  <body>
-    <relateds/>
-  </body>
-</article>
-
 Un-editable elements
 --------------------
 
