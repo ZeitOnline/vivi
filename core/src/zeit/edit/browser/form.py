@@ -84,7 +84,12 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
                 widget):
                 name = zope.formlib.form._widgetKey(widget, form_prefix)
                 try:
-                    data[name] = widget._toFieldValue(widget._getFormInput())
+                    try:
+                        # combination widget has a helper for us.
+                        data[name] = widget.loadValueFromRequest()
+                    except AttributeError:
+                        data[name] = widget._toFieldValue(
+                            widget._getFormInput())
                 except zope.formlib.interfaces.ConversionError:
                     pass
 
