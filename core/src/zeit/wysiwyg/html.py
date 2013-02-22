@@ -806,22 +806,6 @@ class CitationStep(ConversionStep):
         return new_node
 
 
-class RelatedsStep(ConversionStep):
-
-    xpath_xml = './/relateds'
-    xpath_html = './/*[contains(@class, "related")]'
-    order_to_html = 1.5
-    order_to_xml = -1.5
-
-    def to_html(self, node):
-        new_node = lxml.builder.E.div(
-            ' ', **{'class': 'inline-element related'})
-        return new_node
-
-    def to_xml(self, node):
-        return lxml.builder.E.relateds(keep='yes')
-
-
 class InlineElementAppendParagraph(ConversionStep):
     """Add an empty paragraph after each inline element.
 
