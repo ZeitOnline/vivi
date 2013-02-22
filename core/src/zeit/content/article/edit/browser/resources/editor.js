@@ -86,7 +86,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         d.addCallback(function() {
             log('Lock acquired', self.block_id);
             var block = $('#' + self.block_id)[0];
-            if (block === null) {
+            if (typeof block === "undefined") {
                 // block vanished while waiting for lock.
                 self.editor_active_lock.release();
                 log('block vanished', self.block_id);
