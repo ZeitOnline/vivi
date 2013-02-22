@@ -4,6 +4,7 @@ zeit.find changes
 0.23.1 (unreleased)
 -------------------
 
+- Less flaky autocomplete source (#12082)
 - Moved reusable styles to zeit.cms.
 - Add 'type' field to search result (for #9390).
 - Lowercase autocomplete query and use right truncation to improve search
