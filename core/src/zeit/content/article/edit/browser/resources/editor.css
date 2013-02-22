@@ -660,6 +660,16 @@
   background-position: 3px -1285px;
 }
 
+.type-article .rte-toolbar > a[href='removeFormat'] {
+  background-position: 3px -178px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='removeFormat']:hover,
+.rte-toolbar > a.active[href='unlink'] {
+  background-position: 3px -208px;
+}
+
 .type-article .link_input {
   background-color: #fff;
   border-radius: 5px;

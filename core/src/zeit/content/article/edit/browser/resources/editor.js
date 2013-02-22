@@ -295,6 +295,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a title='Link [Cmd/Strg+l]' rel='method' href='insert_link'>A</a>\
             <a title='Link entfernen [Cmd/Strg+u]' rel='command' href='unlink'>A</a>\
             <a title='Liste' rel='command' href='insertunorderedlist'>UL</a>\
+            <a title='Formatierungen entfernen [Cmd/Strg+r]' rel='command' href='removeFormat'>PL</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
@@ -762,6 +763,9 @@ zeit.content.article.Editable = gocept.Class.extend({
             } else if (e.which == 85) {
                 e.preventDefault();
                 self.command('unlink');
+            } else if (e.which == 82) {
+                e.preventDefault();
+                self.command('removeFormat');
             }
         }
     });
