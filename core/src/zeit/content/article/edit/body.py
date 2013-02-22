@@ -84,7 +84,7 @@ class EditableBody(zeit.edit.container.Base,
         assert item is not None
         if zeit.content.article.edit.interfaces.IDivision.providedBy(item):
             # Move contained elements to previous devision
-            prev = item.xml.getprevious()
+            prev = item.xml.xpath('preceding-sibling::division[1]')[0]
             for child in item.xml.iterchildren():
                 prev.append(child)
         item.xml.getparent().remove(item.xml)
