@@ -56,7 +56,9 @@ class IIntertitle(IParagraph):
 class IDivision(zeit.edit.interfaces.IBlock):
     """<division/> element"""
 
-    teaser = zope.schema.TextLine(title=_('Page teaser'))
+    teaser = zope.schema.TextLine(
+        title=_('Page teaser'),
+        required=False)
 
 
 class LayoutSourceBase(zc.sourcefactory.basic.BasicSourceFactory):
