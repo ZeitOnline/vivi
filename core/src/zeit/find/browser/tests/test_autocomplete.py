@@ -106,3 +106,10 @@ class TestSimpleFind(unittest2.TestCase,
         self.search.return_value = [dict(uniqueId='A', title='Title')]
         self.browser.open('@@simple_find?term=search-term')
         self.assert_json([{'label': 'Title', 'value': 'A'}])
+
+    def test_given_term_should_be_stripped(self):
+        self.search.return_value = []
+        self.browser.open('@@simple_find?term=Dietmar%20')
+        self.search.assert_called_with(
+            u'(text:(dietmar*) AND NOT ressort:(News) AND NOT product_text:(News))')
+
