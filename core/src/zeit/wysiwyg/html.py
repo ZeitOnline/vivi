@@ -607,7 +607,7 @@ class VideoStep(ConversionStep):
 
         nodes = node.xpath('div[@class="format"]')
         if nodes:
-            format = nodes[0].text
+            format = nodes[0].text or ''
         new_node = lxml.builder.E.video(
             href=id1 or '', href2=id2 or '',
             expires=expires, format=format)
@@ -711,9 +711,8 @@ class RawXMLStep(ConversionStep):
 
 
 class ReferenceStep(ConversionStep):
-    """"""
 
-    content_type = None # override in subclass
+    content_type = None  # override in subclass
 
     def __init__(self, context, converter):
         super(ReferenceStep, self).__init__(context, converter)
@@ -769,6 +768,11 @@ class InfoboxStep(ReferenceStep):
     content_type = 'infobox'
 
 
+class TimelineStep(ReferenceStep):
+
+    content_type = 'timeline'
+
+
 class GalleryStep(ReferenceStep):
 
     content_type = 'gallery'
@@ -801,22 +805,6 @@ class CitationStep(ConversionStep):
                 values[name] = value.strip()
         new_node = lxml.builder.E.citation(**values)
         return new_node
-
-
-class RelatedsStep(ConversionStep):
-
-    xpath_xml = './/relateds'
-    xpath_html = './/*[contains(@class, "related")]'
-    order_to_html = 1.5
-    order_to_xml = -1.5
-
-    def to_html(self, node):
-        new_node = lxml.builder.E.div(
-            ' ', **{'class': 'inline-element related'})
-        return new_node
-
-    def to_xml(self, node):
-        return lxml.builder.E.relateds(keep='yes')
 
 
 class InlineElementAppendParagraph(ConversionStep):

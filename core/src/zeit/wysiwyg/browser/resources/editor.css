@@ -112,6 +112,10 @@ intertitle {
     content: "Infobox";
 }
 
+.timeline:after {
+    content: "Zeitstrahl";
+}
+
 .portraitbox:after {
     content: "Porträtbox";
 }
@@ -157,6 +161,7 @@ intertitle {
 }
 
 .infobox > .href:before,
+.timeline > .href:before,
 .portraitbox > .href:before,
 .gallery > .href:before {
     content: "URL:";
