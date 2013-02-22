@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Feb  8 14:40:34 2013\n"
-"PO-Revision-Date: 2013-02-22 15:12+0100\n"
-"Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
+"PO-Revision-Date: 2013-02-22 16:59+0100\n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1797,8 +1797,10 @@ msgstr "Videoblock bearbeiten"
 #: zeit/content/cp/browser/publish.pt:19
 msgid "Cannot publish since validation rules are violated."
 msgstr ""
-"Die CenterPage kann nicht veröffentlicht werden, weil die Validierungsregeln "
-"verletzt sind (rote Bereiche)."
+"Es kann nicht veröffentlicht werden, weil die Bedingungen für die "
+"Veröffentlichung nicht erfüllt sind. Prüfen Sie die Status-Felder, das "
+"»Eilig«-Feld und ob Validierungsregeln verletzt sind (rote Bereiche bei "
+"CenterPage)."
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:6
 #: zeit/content/cp/browser/publish.pt:6
