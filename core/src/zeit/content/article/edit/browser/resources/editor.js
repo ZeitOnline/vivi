@@ -156,6 +156,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.editable.focus();
             self.init_linkbar();
             self.init_toolbar();
+            self.shortcuts();
             self.relocate_toolbar(true);
             self.events.push(MochiKit.Signal.connect(
                 window, 'before-content-drag', function() {
@@ -288,11 +289,11 @@ zeit.content.article.Editable = gocept.Class.extend({
                  'style': 'display: block; opacity: 0'}),
             self.editable);
         self.toolbar.innerHTML = "\
-            <a title='fett' rel='command' href='bold'>B</a>\
-            <a title='kursiv' rel='command' href='italic'>I</a>\
-            <a title='Zwischenüberschrift' rel='command' href='formatBlock/h3'>H3</a>\
-            <a title='Link' rel='method' href='insert_link'>A</a>\
-            <a title='Link entfernen' rel='command' href='unlink'>A</a>\
+            <a title='fett [Cmd/Strg+b]' rel='command' href='bold'>B</a>\
+            <a title='kursiv [Cmd/Strg+i]' rel='command' href='italic'>I</a>\
+            <a title='Zwischenüberschrift [Cmd/Strg+h]' rel='command' href='formatBlock/h3'>H3</a>\
+            <a title='Link [Cmd/Strg+l]' rel='method' href='insert_link'>A</a>\
+            <a title='Link entfernen [Cmd/Strg+u]' rel='command' href='unlink'>A</a>\
             <a title='Liste' rel='command' href='insertunorderedlist'>UL</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
@@ -739,8 +740,32 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.editable.focus();
         }
 		self.update_toolbar();
-    }
+    },
 
+    shortcuts: function() {
+      var self = this;
+      $("#editable-body").keydown(function(e) {
+        console.log(e);
+        if (e.ctrlKey || e.metaKey) {
+            if (e.which == 66) {
+                e.preventDefault();
+                self.command('bold');
+            } else if (e.which == 73) {
+                e.preventDefault();
+                self.command('italic');
+            } else if (e.which == 72) {
+                e.preventDefault();
+                self.command('formatBlock', '<h3>');
+            } else if (e.which == 76) {
+                e.preventDefault();
+                self['insert_link']();
+            } else if (e.which == 85) {
+                e.preventDefault();
+                self.command('unlink');
+            }
+        }
+    });
+  }
 });
 
 
@@ -759,23 +784,4 @@ zeit.content.article.AppendParagraph = zeit.edit.LoadAndReload.extend({
     }
 
 });
-
-MochiKit.Signal.connect(window, 'script-loading-finished', function() {
-    $("#editable-body").keydown(function(e) {
-      console.log(e);
-      if (e.ctrlKey || e.metaKey) {
-          if (e.which == 66) {
-              e.preventDefault();
-              document.execCommand("bold");
-          } else if (e.which == 73) {
-              e.preventDefault();
-              document.execCommand("italic");
-          } else if (e.which == 72) {
-              e.preventDefault();
-              document.execCommand('formatBlock', false, '<h3>');
-          }
-      }
-  });
-});
-
 }(jQuery));
