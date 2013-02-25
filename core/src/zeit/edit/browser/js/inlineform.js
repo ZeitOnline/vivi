@@ -42,6 +42,7 @@ var evaluate_form_signals = function(event) {
             MochiKit.Signal.signal.apply(
                 this, extend([zeit.edit.editor, signal.name], signal.args));
         });
+    }
 };
 
 var reload_inline_form = function(selector) {
