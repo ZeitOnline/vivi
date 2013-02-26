@@ -12,9 +12,6 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
-  <include package="zeit.xmleditor" />
-  <include package="zeit.xmleditor.browser" />
-  
   <include package="zeit.content.link" />
   <include package="zeit.content.link.browser" />
 
