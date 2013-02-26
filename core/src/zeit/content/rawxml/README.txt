@@ -77,7 +77,7 @@ a channel:
       <a xmlns:ns0="http://namespaces.zeit.de/CMS/RawXML" ns0:isSyndicatedRawXML="true"/>
     </block>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 
@@ -97,7 +97,7 @@ Let's add some more  xml:
       </a>
     </block>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 
