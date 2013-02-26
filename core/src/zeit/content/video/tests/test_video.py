@@ -14,8 +14,9 @@ class TestVideo(zeit.content.video.testing.TestCase):
         video = factory.next()
         video.subtitle = None  # set explicitly
         video = factory.next()  # in repository
-        self.assertEqual(
-            u'', video.xml['body']['subtitle'])
+        self.assertIn(
+            'subtitle',
+            [x.tag for x in video.xml.body.getchildren()])
 
     def test_security_should_allow_access_to_id_prefix(self):
         import zeit.cms.testing
