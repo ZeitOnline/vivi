@@ -22,11 +22,11 @@ Authors
 >>> shakespeare = repository['shakespeare']
 >>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
 <author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Sir</title>
-  <firstname py:pytype="str">William</firstname>
-  <lastname py:pytype="str">Shakespeare</lastname>
-  <vgwortid py:pytype="int">12345</vgwortid>
-  <display_name py:pytype="str">William Shakespeare</display_name>
+  <title>Sir</title>
+  <firstname>William</firstname>
+  <lastname>Shakespeare</lastname>
+  <vgwortid>12345</vgwortid>
+  <display_name>William Shakespeare</display_name>
 </author>
 
 The default display name is 'Firstname Lastname', but any user-entered value
@@ -37,12 +37,12 @@ takes precedence:
 >>> shakespeare = repository['shakespeare']
 >>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
 <author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Sir</title>
-  <firstname py:pytype="str">William</firstname>
-  <lastname py:pytype="str">Shakespeare</lastname>
-  <vgwortid py:pytype="int">12345</vgwortid>
-  <display_name py:pytype="str">Flub</display_name>
-  <entered_display_name py:pytype="str">Flub</entered_display_name>
+  <title>Sir</title>
+  <firstname>William</firstname>
+  <lastname>Shakespeare</lastname>
+  <vgwortid>12345</vgwortid>
+  <display_name>Flub</display_name>
+  <entered_display_name>Flub</entered_display_name>
 </author>
 
 >>> shakespeare.entered_display_name = None
@@ -50,11 +50,11 @@ takes precedence:
 >>> shakespeare = repository['shakespeare']
 >>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
 <author xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Sir</title>
-  <firstname py:pytype="str">William</firstname>
-  <lastname py:pytype="str">Shakespeare</lastname>
-  <vgwortid py:pytype="int">12345</vgwortid>
-  <display_name py:pytype="str">William Shakespeare</display_name>
+  <title>Sir</title>
+  <firstname>William</firstname>
+  <lastname>Shakespeare</lastname>
+  <vgwortid>12345</vgwortid>
+  <display_name>William Shakespeare</display_name>
   <entered_display_name xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:nil="true"/>
 </author>
