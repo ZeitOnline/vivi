@@ -73,15 +73,15 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
     def test_suggest(self):
         import zeit.find.search
         self.layer.set_result(__name__, 'testdata/obama.json')
-        q = zeit.find.search.suggest_query('Diet','title','author')
+        q = zeit.find.search.suggest_query('Diet','title',['author'])
         self.assertEqual(
-            u'(type:(author) AND (title:(diet*) OR title:(diet)))',
+            u'((title:(diet*) OR title:(diet)) AND (type:(author)))',
             q)        
         zeit.find.search.search(q, sort_order='title')
         req = self.layer.solr._send_request
         query = req.call_args[0][1]
         self.assertTrue(query.startswith(
-            '/select/?q=%28type%3A%28author%29+AND+'+
-            '%28title%3A%28diet%2A%29+OR+title%3A%28'+
-            'diet%29%29%29&sort=title+asc'),
+            '/select/?q=%28%28title%3A%28diet%2A%29+'+
+            'OR+title%3A%28diet%29%29+AND+%28type%3A%28'+
+            'author%29%29%29&sort=title+asc'),
             query)

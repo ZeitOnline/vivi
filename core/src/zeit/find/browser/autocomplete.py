@@ -47,8 +47,7 @@ class SimpleFind(zeit.cms.browser.view.JSON):
         if term:
             term = term.lower().strip()
             results = zeit.find.search.search(
-                zeit.find.search.query(fulltext=term + '*',
-                                       types=types))
+                zeit.find.search.suggest_query(term,'title',types))
         else:
             results = []
         return [

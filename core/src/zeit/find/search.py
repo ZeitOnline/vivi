@@ -157,11 +157,7 @@ def query(fulltext=None,
         terms.append(lq.multi_field('raw-tags', raw_tags))
     if published is not None:
         terms.append(lq.field('published', published))
-    type_terms = []
-    for type in types:
-        type_terms.append(lq.field('type', type))
-    if type_terms:
-        terms.append(lq.or_(*type_terms))
+    terms = _set_type_terms(types, terms=terms)
     if product_id is not None:
         terms.append(lq.field('product_id', product_id))
     if serie is not None:
@@ -175,14 +171,23 @@ def query(fulltext=None,
         return lq.and_(*terms)
     return lq.any_value()
 
-def suggest_query(query, field, type):
+def _set_type_terms(types, terms=None):
+    terms = terms or []
+    type_terms = []
+    for type in types:
+        type_terms.append(lq.field('type', type))
+    if type_terms:
+        terms.append(lq.or_(*type_terms))
+    return terms
+
+def suggest_query(query, field, types):
     query = query.lower().strip()
     terms = []
-    terms.append(lq.field_raw(field,query+"*"))
-    terms.append(lq.field_raw(field,query))
-    query = lq.or_(*terms)
-    return lq.and_(lq.field('type',type),query)            
-                 
+    terms.append(lq.field_raw(field, query+'*'))
+    terms.append(lq.field_raw(field, query))
+    terms = [lq.or_(*terms)]
+    terms = _set_type_terms(types, terms=terms)
+    return lq.and_(*terms)            
 
 def grouper(n, iterable, padvalue=None):
     return itertools.izip(
