@@ -179,7 +179,7 @@ Check the source of the feed first:
       <byline xsi:nil="true"/>...
     </block>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 
@@ -209,7 +209,7 @@ Now, the channel metadata has changed:
       <byline xsi:nil="true"/>...
     </block>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 When the feed is locked, it cannot be updated. Check out the feed so it is
@@ -243,7 +243,7 @@ The feed was not updated:
       <byline xsi:nil="true"/>...
     </block>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 Check the feed back in:
@@ -279,7 +279,7 @@ The feed has not changed this time:
       <byline xsi:nil="true"/>...
     </block>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 

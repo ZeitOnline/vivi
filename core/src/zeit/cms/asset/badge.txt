@@ -47,8 +47,8 @@ frozenset([])
 <testtype>
   <head>
     <badges>
-      <badge xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">gallery</badge>
-      <badge xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">video</badge>
+      <badge xmlns:py="http://codespeak.net/lxml/objectify/pytype">gallery</badge>
+      <badge xmlns:py="http://codespeak.net/lxml/objectify/pytype">video</badge>
     </badges>...
 
 

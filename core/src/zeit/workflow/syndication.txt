@@ -43,7 +43,7 @@ any:
   <container>
     <block href="content1" ...publication-date="" expires=""/>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
@@ -62,7 +62,7 @@ reflected:
   <container>
     <block href="content1" ...publication-date="2008-01-05T16:00:00+00:00" expires="2008-01-06T00:00:00+00:00"/>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 

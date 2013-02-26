@@ -36,7 +36,7 @@ We have not added any image, so no image is referenced:
       <byline xsi:nil="true"/>...
     </block>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
@@ -72,7 +72,7 @@ Update the metadata of the feed. The image is now referenced:
       </image>
     </block>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
@@ -93,7 +93,7 @@ When we have no image referenced it is also removed from the channel:
       ...
     </block>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 

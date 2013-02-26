@@ -67,10 +67,10 @@ Have a look at the source:
   </head>
   <body>
     <title>gocept homepage</title>
-    <url py:pytype="str">http://gocept.com</url>
+    <url>http://gocept.com</url>
   </body>
   <teaser>
-    <title py:pytype="str">gocept teaser</title>
+    <title>gocept teaser</title>
   </teaser>
 </link>
 
@@ -141,7 +141,7 @@ Verify the source of the feed:
       </image>
     </block>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 Check the feed back in to clean up:

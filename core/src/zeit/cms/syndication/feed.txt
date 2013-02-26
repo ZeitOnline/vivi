@@ -356,11 +356,11 @@ in it:
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Politik</title>
+  <title>Politik</title>
   <container>
     <block href="art1".../>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
@@ -389,7 +389,7 @@ Insert the article to the feed:
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Politik</title>
+  <title>Politik</title>
   <container>
     <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Frankreich</supertitle>
@@ -400,7 +400,7 @@ Insert the article to the feed:
     </block>
     <block href="art1".../>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
@@ -413,7 +413,7 @@ changes:
 >>> feed.updateMetadata(art2)
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"...>
-  <title py:pytype="str">Politik</title>
+  <title>Politik</title>
   <container>
     <block href="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
@@ -424,7 +424,7 @@ changes:
     </block>
     <block href="art1".../>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 When an object has related content, this information is part of the metadata,
@@ -440,7 +440,7 @@ too:
 >>> feed.insert(0, content)
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Politik</title>
+  <title>Politik</title>
   <container>
     <block href="tct"...>
       <supertitle xsi:nil="true"/>
@@ -458,7 +458,7 @@ too:
     </block>
     <block href="art1".../>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 When we change the order this is reflected:
@@ -469,7 +469,7 @@ When we change the order this is reflected:
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Politik</title>
+  <title>Politik</title>
   <container>
     <block href="tct"...>
       <supertitle xsi:nil="true"/>
@@ -487,7 +487,7 @@ When we change the order this is reflected:
     </block>
     <block href="art1".../>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 We can also remove all relateds:
@@ -497,7 +497,7 @@ We can also remove all relateds:
 >>> feed.updateMetadata(content)
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Politik</title>
+  <title>Politik</title>
   <container>
     <block href="tct"...>
       <supertitle xsi:nil="true"/>
@@ -515,7 +515,7 @@ We can also remove all relateds:
     </block>
     <block href="art1".../>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
@@ -525,10 +525,9 @@ node in the HTML:
 >>> feed.updateMetadata(art2)
 >>> print feed.xml_source
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title py:pytype="str">Politik</title>
+  <title>Politik</title>
   <container>
     <block href="tct"...>
-
       <supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
@@ -544,7 +543,7 @@ node in the HTML:
     </block>
     <block href="art1".../>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 An edge case are entries that do not point to actual CMS content, they are

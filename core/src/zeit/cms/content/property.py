@@ -58,10 +58,14 @@ class ObjectPathProperty(object):
             parent = node.getparent()
             new_node = lxml.objectify.E.root(
                 getattr(lxml.objectify.E, node.tag)(value))[node.tag]
+            lxml.objectify.deannotate(new_node)
             parent.replace(node, new_node)
             instance.xml = new_node
         else:
             self.path.setattr(instance.xml, value)
+            node = self.getNode(instance)
+            if node is not None:
+                lxml.objectify.deannotate(node)
 
     def getNode(self, instance):
         if self.path is None:
@@ -178,6 +182,9 @@ class MultiPropertyBase(object):
         value = self.sorted(value)
         self.path.setattr(tree, [self._node_factory(entry, tree)
                                  for entry in value])
+        if value:
+            lxml.objectify.deannotate(
+                self.path.find(instance.xml).getparent())
 
     def _element_factory(self, node, tree):
         raise NotImplementedError("Implemented in sub classes.")

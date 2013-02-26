@@ -42,7 +42,7 @@ Let's assign some values to b. Integer:
 5
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
-    <b lxml:pytype="int">5</b>
+    <b>5</b>
 </a>
 >>> content._p_changed
 True
@@ -55,7 +55,7 @@ Float:
 47.25
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
-    <b lxml:pytype="float">47.25</b>
+    <b>47.25</b>
 </a>
 
 >>> content.b = 47.0
@@ -63,7 +63,7 @@ Float:
 47.0
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
-    <b lxml:pytype="float">47.0</b>
+    <b>47.0</b>
 </a>
 
 String. Note that strings are always unicode:
@@ -73,7 +73,7 @@ String. Note that strings are always unicode:
 u'Foo'
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <a xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
-    <b lxml:pytype="str">Foo</b>
+    <b>Foo</b>
 </a>
 
 
@@ -128,7 +128,7 @@ Let's assign some values to b. Integer:
 <a>
     <b/>
     <c/>
-    <b xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">4253890</b>
+    <b>4253890</b>
     <b/>
 </a>
 >>> content._p_changed
@@ -311,7 +311,7 @@ Let's have a look how the resource has been referenced:
 
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <foo>
-  <res xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">http://xml.zeit.de/refed</res>
+  <res xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/refed</res>
 </foo>
 
 
@@ -444,9 +444,9 @@ Set authors:
 <foo xmlns:lxml="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <authors>
-    <author lxml:pytype="str">Hans</author>
-    <author lxml:pytype="str">Klaus</author>
-    <author lxml:pytype="str">Siegfried</author>
+    <author>Hans</author>
+    <author>Klaus</author>
+    <author>Siegfried</author>
   </authors>
 </foo>
 

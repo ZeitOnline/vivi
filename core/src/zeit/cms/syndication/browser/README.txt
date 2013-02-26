@@ -519,7 +519,7 @@ Let's have a look at the source now:
            hp_hide="true"
            pinned="true"/>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 
@@ -550,7 +550,7 @@ Its also indicated in the source:
            pinned="true"
            layout="big"/>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 Hidden relateds
@@ -580,7 +580,7 @@ Its also indicated in the source:
            pinned="true"
            layout="big"/>
   </container>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 Removing items from channels
@@ -599,7 +599,7 @@ Let's have a look at the source now:
 <channel> 
   <title>Politik</title>
   <container/>
-  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+  <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 </channel>
 
 
@@ -680,7 +680,7 @@ we can see it in the UI:
 ...         </related>
 ...     </block>
 ...   </container>
-...   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+...   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 ... </channel>'''
 
 >>> browser.getControl('Apply').click()
@@ -760,7 +760,7 @@ is now way to remove the title w/o editing the source:
 ...       </teaser>
 ...     </block>
 ...   </container>
-...   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="int">50</object_limit>
+...   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
 ... </channel>'''
 >>> browser.getControl('Apply').click()
 >>> browser.getLink('Checkin').click()

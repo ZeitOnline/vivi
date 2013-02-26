@@ -41,8 +41,8 @@ Now that was pretty boring. Add title, URL and target:
   <head/>
   <body>
     <title>gocept</title>
-    <url py:pytype="str">http://gocept.com</url>
-    <target py:pytype="str">_blank</target>
+    <url>http://gocept.com</url>
+    <target>_blank</target>
   </body>
 </link>
 
@@ -76,7 +76,7 @@ Create a channel and insert the link[#functional]_:
       <byline xsi:nil="true"/>...
     </block>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 When the target is removed from the link, the attribute is removed from the
@@ -100,7 +100,7 @@ channel:
       <byline xsi:nil="true"/>
     </block>
   </container>
-  <object_limit py:pytype="int">50</object_limit>
+  <object_limit>50</object_limit>
 </channel>
 
 
