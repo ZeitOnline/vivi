@@ -27,6 +27,8 @@ def search(q, sort_order=None):
         sort_order = 'score desc'
     elif sort_order == 'date':
         sort_order = 'last-semantic-change desc'
+    elif sort_order == 'title':
+        sort_order = 'title asc'
 
     result_fields = [
         'authors',
@@ -173,6 +175,14 @@ def query(fulltext=None,
         return lq.and_(*terms)
     return lq.any_value()
 
+def suggest_query(query, field, type):
+    query = query.lower().strip()
+    terms = []
+    terms.append(lq.field_raw(field,query+"*"))
+    terms.append(lq.field_raw(field,query))
+    query = lq.or_(*terms)
+    return lq.and_(lq.field('type',type),query)            
+                 
 
 def grouper(n, iterable, padvalue=None):
     return itertools.izip(

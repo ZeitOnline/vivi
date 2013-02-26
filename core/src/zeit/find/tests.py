@@ -69,3 +69,19 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
             '/select/?q=%28text%3A%28Obama%29+AND+NOT+ressort%3A%28News'))
         self.assertTrue('range' in query)
         self.assertTrue('range_details' in query)
+
+    def test_suggest(self):
+        import zeit.find.search
+        self.layer.set_result(__name__, 'testdata/obama.json')
+        q = zeit.find.search.suggest_query('Diet','title','author')
+        self.assertEqual(
+            u'(type:(author) AND (title:(diet*) OR title:(diet)))',
+            q)        
+        zeit.find.search.search(q, sort_order='title')
+        req = self.layer.solr._send_request
+        query = req.call_args[0][1]
+        self.assertTrue(query.startswith(
+            '/select/?q=%28type%3A%28author%29+AND+'+
+            '%28title%3A%28diet%2A%29+OR+title%3A%28'+
+            'diet%29%29%29&sort=title+asc'),
+            query)
