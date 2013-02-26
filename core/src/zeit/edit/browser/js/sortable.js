@@ -60,7 +60,10 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
 
     on_start: function(element, draggable) {
         var self = this;
-        self.options().lastValue = self.serialize();
+        self.options().lastValue = null;
+        zeit.cms.request_lock.acquire().addCallback(function() {
+            self.options().lastValue = self.serialize();
+        });
     },
 
     on_end: function(element, draggable) {
@@ -70,6 +73,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
                                       self.serialize())) {
             self.on_update(element);
         }
+        zeit.cms.request_lock.release();
         element.style.zIndex = null;  // see #4999
     },
 
@@ -83,6 +87,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
             url = $(self.container).getAttribute(
                 'cms:url') + '/@@updateOrder';
         }
+        // We already hold the request lock, see on_start()
         var d = MochiKit.Async.doXHR(url, {
             method: 'POST',
             sendContent: data});
