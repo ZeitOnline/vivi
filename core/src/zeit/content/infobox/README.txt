@@ -42,7 +42,7 @@ The title of an infobox is a supertitle:
 >>> ib.supertitle = u'Altersvorsorge'
 >>> print lxml.etree.tostring(ib.xml, pretty_print=True)
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
-  <supertitle>Altersvorsorge</supertitle>
+  <supertitle...>Altersvorsorge</supertitle>
 </container>
 
 Add a contents element:
@@ -52,7 +52,7 @@ Add a contents element:
 >>> ib.supertitle = u'Altersvorsorge'
 >>> print lxml.etree.tostring(ib.xml, pretty_print=True)
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
-  <supertitle>Altersvorsorge</supertitle>
+  <supertitle...>Altersvorsorge</supertitle>
   <block>
     <title py:pytype="str">Renteninformation</title>
     <text>
@@ -70,7 +70,7 @@ Add a contents element:
 >>> ib.supertitle = u'Altersvorsorge'
 >>> print lxml.etree.tostring(ib.xml, pretty_print=True)
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="artbox" label="info">
-  <supertitle>Altersvorsorge</supertitle>
+  <supertitle...>Altersvorsorge</supertitle>
   <block>
     <title py:pytype="str">Informationen</title>
     <text>
