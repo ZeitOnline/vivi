@@ -75,7 +75,7 @@ def add_image(folder, filename, name=None):
 
     metadata = zeit.content.image.interfaces.IImageMetadata(image)
     metadata.copyrights = ((u'ZEIT online', u'http://www.zeit.de'), )
-    metadata.caption = u'Nice <em>01</em> image'
+    metadata.caption = u'Nice image'
 
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)

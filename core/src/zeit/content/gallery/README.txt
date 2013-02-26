@@ -111,13 +111,13 @@ The change is reflected in the xml:
         </block>
         <block name="01.jpg">
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <caption>Nice <em>01</em> image</caption>
+          <caption>Nice image</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </image>
           <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
@@ -147,7 +147,7 @@ None
 The caption is pre-filled with the caption of the image:
 
 >>> entry.caption
-u'Nice <em>01</em> image'
+u'Nice image'
 
 When we change the entry text, the change will **not** as such reflected in the
 xml:
@@ -177,13 +177,13 @@ xml:
         </block>
         <block name="01.jpg">
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <caption>Nice <em>01</em> image</caption>
+          <caption>Nice image</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </image>
           <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
@@ -222,11 +222,11 @@ When we assign the entry the change will be reflected:
           </text>
           <caption>Gallery &amp; <br/>caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </image>
           <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
@@ -270,11 +270,11 @@ well:
           </text>
           <caption>Gallery &amp; <br/>caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </image>
           <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
@@ -340,11 +340,11 @@ True
           </text>
           <caption>Gallery &amp; <br/>caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </image>
           <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
@@ -388,11 +388,11 @@ u'image-only'
           </text>
           <caption>Gallery &amp; <br/>caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </image>
           <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
@@ -475,11 +475,11 @@ This is of course reflected int he XML:
           </text>
           <caption>Gallery &amp; <br/>caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </image>
           <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
@@ -604,11 +604,11 @@ Note that his has *not* changed the xml so far:
           </text>
           <caption>Gallery &amp; <br/>caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </image>
           <thumbnail ...src="http://xml.zeit.de/2006/thumbnails/01.jpg" type="jpg"...>
-            <bu>Nice <em>01</em> image</bu>
+            <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
@@ -734,9 +734,9 @@ The keys also correct(ed) and the names are set:
         </block>
         <block name="01.jpg">
           <text.../>
-          <caption>Nice <em>01</em> image</caption>
+          <caption>Nice image</caption>
           <image ... src="http://xml.zeit.de/2006/01.jpg"...
-             <bu>Nice <em>01</em> image</bu>
+             <bu ...>Nice image</bu>
              <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>
            </image>
            <thumbnail...
