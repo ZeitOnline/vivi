@@ -50,23 +50,23 @@ Set values and verify the xml:
 >>> print lxml.etree.tostring(rec.xml, pretty_print=True)
 <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <auth-info>
-    <author py:pytype="str">Klaus</author>
-    <author py:pytype="str">Hans</author>
+    <author>Klaus</author>
+    <author>Hans</author>
   </auth-info>
-  <title py:pytype="str">Fremdschlaefer</title>
-  <genre py:pytype="str">Schocker</genre>
-  <info py:pytype="str">Info</info>
-  <category py:pytype="str">Beletristik</category>
-  <agelimit py:pytype="int">4</agelimit>
-  <original_language py:pytype="str">English</original_language>
-  <translator py:pytype="str">Mr. T</translator>
+  <title>Fremdschlaefer</title>
+  <genre>Schocker</genre>
+  <info>Info</info>
+  <category>Beletristik</category>
+  <agelimit>4</agelimit>
+  <original_language>English</original_language>
+  <translator>Mr. T</translator>
   <edition>
-    <publisher py:pytype="str">gocept</publisher>
-    <location py:pytype="str">Halle</location>
-    <year py:pytype="int">2002</year>
-    <mediatype py:pytype="str">Buch</mediatype>
-    <pages py:pytype="int">124</pages>
-    <price py:pytype="str">25,99</price>
+    <publisher>gocept</publisher>
+    <location>Halle</location>
+    <year>2002</year>
+    <mediatype>Buch</mediatype>
+    <pages>124</pages>
+    <price>25,99</price>
   </edition>
 </entry>
 
@@ -122,23 +122,23 @@ The recension is now already part of the article:
     ...
     <entry xmlns="http://namespaces.zeit.de/bibinfo">
       <auth-info>
-        <author py:pytype="str">Klaus</author>
-        <author py:pytype="str">Hans</author>
+        <author>Klaus</author>
+        <author>Hans</author>
       </auth-info>
-      <title py:pytype="str">Fremdschlaefer</title>
-      <genre py:pytype="str">Schocker</genre>
-      <info py:pytype="str">Info</info>
-      <category py:pytype="str">Beletristik</category>
-      <agelimit py:pytype="int">4</agelimit>
-      <original_language py:pytype="str">English</original_language>
-      <translator py:pytype="str">Mr. T</translator>
+      <title>Fremdschlaefer</title>
+      <genre>Schocker</genre>
+      <info>Info</info>
+      <category>Beletristik</category>
+      <agelimit>4</agelimit>
+      <original_language>English</original_language>
+      <translator>Mr. T</translator>
       <edition>
-        <publisher py:pytype="str">gocept</publisher>
-        <location py:pytype="str">Halle</location>
-        <year py:pytype="int">2002</year>
-        <mediatype py:pytype="str">Buch</mediatype>
-        <pages py:pytype="int">124</pages>
-        <price py:pytype="str">25,99</price>
+        <publisher>gocept</publisher>
+        <location>Halle</location>
+        <year>2002</year>
+        <mediatype>Buch</mediatype>
+        <pages>124</pages>
+        <price>25,99</price>
       </edition>
     </entry>
   </body>

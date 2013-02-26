@@ -109,7 +109,8 @@ class BookRecension(zeit.cms.content.xmlsupport.XMLRepresentationBase,
     pages = zeit.cms.content.property.ObjectPathProperty(
         '.edition.pages')
     price = zeit.cms.content.property.ObjectPathProperty(
-        '.edition.price')
+        '.edition.price',
+        zeit.content.article.interfaces.IBookRecension['price'])
 
     raw_data = u'Wird noch nicht eingelesen.'  # XXX
 

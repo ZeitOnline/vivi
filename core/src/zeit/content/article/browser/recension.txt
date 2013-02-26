@@ -93,16 +93,16 @@ Let's have a look at the source code:
   <body ...
     <entry xmlns="http://namespaces.zeit.de/bibinfo" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
       <auth-info>
-        <author py:pytype="str">Frank Schwanitz</author>
+        <author>Frank Schwanitz</author>
       </auth-info>
-      <title py:pytype="str">Der Schwarm</title>
-      <category py:pytype="str">Belletristik</category>
+      <title>Der Schwarm</title>
+      <category>Belletristik</category>
       <edition>
-        <publisher py:pytype="str">Kiepenheuer &amp; Witsch</publisher>
-        <location py:pytype="str">Koeln</location>
-        <year py:pytype="int">2004</year>
-        <pages py:pytype="int">999</pages>
-        <price py:pytype="str">24.90</price>
+        <publisher>Kiepenheuer &amp; Witsch</publisher>
+        <location>Koeln</location>
+        <year>2004</year>
+        <pages>999</pages>
+        <price>24.90</price>
       </edition>
     </entry>
   </body>...
