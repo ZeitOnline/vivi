@@ -45,7 +45,7 @@ The gallery is also noted in the xml structure:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -92,7 +92,7 @@ The change is reflected in the xml:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -158,7 +158,7 @@ xml:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -199,7 +199,7 @@ When we assign the entry the change will be reflected:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -246,7 +246,7 @@ well:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -316,7 +316,7 @@ True
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -364,7 +364,7 @@ u'image-only'
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -462,7 +462,7 @@ This is of course reflected int he XML:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -580,7 +580,7 @@ Note that his has *not* changed the xml so far:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -624,7 +624,7 @@ When calling `reload_image_folder` the entry is removed from the xml:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
-    <image-folder py:pytype="str">http://xml.zeit.de/2006</image-folder>
+    <image-folder>http://xml.zeit.de/2006</image-folder>
   </head>
   <body>
     <column layout="left"/>
@@ -717,7 +717,7 @@ The keys also correct(ed) and the names are set:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery>
   <head>
-      <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">http://xml.zeit.de/2006</image-folder></head>
+      <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/2006</image-folder></head>
   <body>
     <column layout="left"/>
     <column layout="right">
@@ -812,7 +812,7 @@ The keys also correct(ed) and the names are set:
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery>
   <head>
-      <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str">http://xml.zeit.de/2006</image-folder></head>
+      <image-folder xmlns:py="http://codespeak.net/lxml/objectify/pytype">http://xml.zeit.de/2006</image-folder></head>
   <body>
     <column layout="left"/>
     <column layout="right">
