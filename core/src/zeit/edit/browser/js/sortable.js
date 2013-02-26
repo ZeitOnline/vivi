@@ -101,6 +101,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
         var ids = [];
         forEach(self.get_sortable_nodes(), function(e) {
             if (e.block_ids) {
+                // Support merged blocks.
                 ids.push.apply(ids, e.block_ids);
             } else {
                 ids.push(e.id);
