@@ -28,7 +28,10 @@ class ObjectPathProperty(object):
     def __get__(self, instance, class_):
         node = self.getNode(instance)
         if node is None:
-            return None
+            if self.field:
+                return self.field.missing_value
+            else:
+                return None
         if zope.schema.interfaces.IFromUnicode.providedBy(self.field):
             try:
                 return self.field.fromUnicode(unicode(node))
