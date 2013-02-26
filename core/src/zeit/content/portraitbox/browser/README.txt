@@ -55,7 +55,7 @@ Verify the source:
 >>> print browser.getControl('Source').value
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
   <block>
-    <title py:pytype="str">Hans Wurst</title>
+    <title>Hans Wurst</title>
     <image ...src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG"...>
       <bu xsi:nil="true"/>
       <copyright...

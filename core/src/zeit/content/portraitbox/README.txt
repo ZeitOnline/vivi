@@ -42,7 +42,7 @@ Set data:
 >>> print lxml.etree.tostring(pb.xml, pretty_print=True)
 <container xmlns:py="http://codespeak.net/lxml/objectify/pytype" layout="artbox" label="portrait">
   <block>
-    <title py:pytype="str">Hans Wurst</title>
+    <title>Hans Wurst</title>
     <text>
       <p><strong>Hans Wurst</strong> wursted hansig.</p>
     </text>
