@@ -57,10 +57,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.content.interfaces.ICommonMetadata['commentSectionEnable'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread')
 
-    title = zeit.cms.content.property.Structure(
+    title = zeit.cms.content.property.ObjectPathProperty(
         '.body.title',
         zeit.cms.content.interfaces.ICommonMetadata['title'])
-    subtitle = zeit.cms.content.property.Structure(
+    subtitle = zeit.cms.content.property.ObjectPathProperty(
         '.body.subtitle',
         zeit.cms.content.interfaces.ICommonMetadata['subtitle'])
     supertitle = zeit.cms.content.property.ObjectPathProperty(
