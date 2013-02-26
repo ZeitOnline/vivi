@@ -12,7 +12,6 @@ import transaction
 import zeit.brightcove.interfaces
 import zeit.cms.content.add
 import zeit.cms.content.interfaces
-import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
