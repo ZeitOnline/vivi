@@ -117,12 +117,12 @@ class ICommonMetadata(zope.interface.Interface):
 
     title = zope.schema.Text(
         title=_("Title"),
-        missing_value=u'',
+        default=u'',
         max_length=70)
 
     subtitle = zope.schema.Text(
         title=_("Subtitle"),
-        missing_value=u'',
+        default=u'',
         required=False)
 
     teaserTitle = zope.schema.TextLine(
