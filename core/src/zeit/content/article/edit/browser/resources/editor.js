@@ -580,7 +580,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         if (zeit.cms.request_lock.locked) {
             log('Skipping autosave due to running other request');
-            return
+            return;
         }
         log('Autosaving', self.block_id);
         var url = $('#editable-body').attr('cms:url') + '/@@autosave_text';
