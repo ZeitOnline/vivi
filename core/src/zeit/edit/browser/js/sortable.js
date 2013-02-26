@@ -60,20 +60,28 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
 
     on_start: function(element, draggable) {
         var self = this;
-        self.options().lastValue = null;
+        if (self.get_sortable_nodes().indexOf(draggable.element) == -1) {
+            // Not dragging one of our elements? Ignore!
+            return;
+        }
         zeit.cms.request_lock.acquire().addCallback(function() {
+            self.locked = true;
             self.options().lastValue = self.serialize();
         });
     },
 
     on_end: function(element, draggable) {
         var self = this;
+        if (!self.locked) {
+            return;
+        }
         MochiKit.Sortable.unmark();
         if (!MochiKit.Base.arrayEqual(self.options().lastValue,
                                       self.serialize())) {
             self.on_update(element);
         }
         zeit.cms.request_lock.release();
+        self.locked = false;
         element.style.zIndex = null;  // see #4999
     },
 
