@@ -84,8 +84,8 @@ But its XML representation only contains an xi:include to the referenced page:
 
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...>
-  <referenced_cp ...>http://xml.zeit.de/cp2</referenced_cp>
-  <autopilot ...>true</autopilot>
+  <referenced_cp>http://xml.zeit.de/cp2</referenced_cp>
+  <autopilot>true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude"
     parse="xml"
     xpointer="xpointer(/centerpage/body/cluster[@area='feature']/region[@area='lead']/container/block[1])"
@@ -110,8 +110,8 @@ teasers are copied into it:
 <container ...>
   <block href="http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang"...
   <block...
-  <referenced_cp ...>http://xml.zeit.de/cp2</referenced_cp>
-  <autopilot ...>false</autopilot>
+  <referenced_cp>http://xml.zeit.de/cp2</referenced_cp>
+  <autopilot>false</autopilot>
 </container>
 >>> len(teasers)
 6
@@ -159,7 +159,7 @@ This excerpt is used for the xi:include when possible:
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...>
   <referenced_cp...>http://xml.zeit.de/cp2</referenced_cp>
-  <autopilot...>true</autopilot>
+  <autopilot>true</autopilot>
   <xi:include ...xpointer="xpointer(/channel/container/block)"
         href="/var/cms/work/cp2.lead">
     <xi:fallback>Ziel http://xml.zeit.de/cp2.lead nicht erreichbar.</xi:fallback>
@@ -191,8 +191,8 @@ The xi:include is set accordingly:
 
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
 <container ...>
-  <referenced_cp py:pytype="str">http://xml.zeit.de/wirtschaft.feed</referenced_cp>
-  <autopilot py:pytype="bool">true</autopilot>
+  <referenced_cp>http://xml.zeit.de/wirtschaft.feed</referenced_cp>
+  <autopilot>true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/work/wirtschaft.feed">
     <xi:fallback>Ziel http://xml.zeit.de/wirtschaft.feed nicht erreichbar.</xi:fallback>
   </xi:include>
@@ -204,8 +204,8 @@ The xi:include is also updated when the channel is updated:
 >>> teasers.referenced_cp = repository['politik.feed']
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True),
 <container ...>
-  <referenced_cp py:pytype="str">http://xml.zeit.de/politik.feed</referenced_cp>
-  <autopilot py:pytype="bool">true</autopilot>
+  <referenced_cp>http://xml.zeit.de/politik.feed</referenced_cp>
+  <autopilot>true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/work/politik.feed">
     <xi:fallback>Ziel http://xml.zeit.de/politik.feed nicht erreichbar.</xi:fallback>
   </xi:include>

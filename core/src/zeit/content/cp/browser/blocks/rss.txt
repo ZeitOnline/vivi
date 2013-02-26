@@ -213,11 +213,11 @@ XML of a RSS block
   </xi:include>
   <teaser_image base-id="http://xml.zeit.de/image-group" type="jpg" publication-date="" expires="">
     <bu xsi:nil="true"/>
-    <copyright py:pytype="str">©</copyright>
+    <copyright>©</copyright>
   </teaser_image>
   <feed_icon src="http://xml.zeit.de/2006/DSC00109_2.JPG" type="JPG" publication-date="" expires="">
     <bu xsi:nil="true"/>
-    <copyright py:pytype="str">©</copyright>
+    <copyright>©</copyright>
   </feed_icon>
 </container>...
 
