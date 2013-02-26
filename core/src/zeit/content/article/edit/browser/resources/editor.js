@@ -591,6 +591,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         d.addCallback(function(result) {
             result = MochiKit.Async.evalJSONRequest(result);
             self.edited_paragraphs = result['data']['new_ids'];
+            self.block.block_ids = self.edited_paragraphs;
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
