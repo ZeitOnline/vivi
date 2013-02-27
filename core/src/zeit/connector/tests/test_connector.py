@@ -12,7 +12,7 @@ import zeit.connector.testing
 class TestUnicode(zeit.connector.testing.ConnectorTest):
 
     def test_access(self):
-        r = self.connector[
+        self.connector[
             u'http://xml.zeit.de/online/2007/09/laktose-milchzucker-gewöhnung']
 
     def test_create_and_list(self):
@@ -133,6 +133,56 @@ class TestConflictDetectionMock(
     TestConflictDetectionBase,
     zeit.connector.testing.MockTest):
     pass
+
+
+class TestMoveConflictDetectionBase(object):
+
+    def test_move_with_same_body_should_remove_original(self):
+        source = self.get_resource('source', 'source-body')
+        self.connector.add(source)
+        target = self.get_resource('target', 'source-body')
+        self.connector.add(target)
+        self.connector.move(source.id, target.id)
+        self.assertEqual(
+            ['target'],
+            [name for name, unique_id in
+             self.connector.listCollection('http://xml.zeit.de/testing')
+             if name])
+
+    def test_move_with_different_data_should_fail(self):
+        source = self.get_resource('source', 'source-body')
+        self.connector.add(source)
+        target = self.get_resource('target', 'target-body')
+        self.connector.add(target)
+        with self.assertRaises(zeit.connector.interfaces.MoveError):
+            self.connector.move(source.id, target.id)
+        self.assertEqual(
+            ['source', 'target'],
+            [name for name, unique_id in
+             self.connector.listCollection('http://xml.zeit.de/testing')
+             if name])
+
+    def test_move_should_fail_if_target_is_existing_directory(self):
+        source = self.get_resource('source', '',
+                                   contentType='httpd/unix-directory')
+        self.connector.add(source)
+        target = self.get_resource('target', '',
+                                   contentType='httpd/unix-directory')
+        self.connector.add(target)
+        with self.assertRaises(zeit.connector.interfaces.MoveError):
+            self.connector.move(source.id, target.id)
+
+
+class TestMoveConflictDetectionReal(
+    TestMoveConflictDetectionBase,
+    zeit.connector.testing.ConnectorTest):
+    """Test move conflict with real connector and real DAV."""
+
+
+class TestMoveConflictDetectionMock(
+    TestMoveConflictDetectionBase,
+    zeit.connector.testing.MockTest):
+    """Test move conflict with mock connector."""
 
 
 class TestResource(zeit.connector.testing.ConnectorTest):
