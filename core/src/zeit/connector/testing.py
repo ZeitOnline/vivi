@@ -8,6 +8,7 @@ import inspect
 import os
 import pkg_resources
 import re
+import unittest2 as unittest
 import urlparse
 import zc.queue.tests
 import zeit.connector.connector
@@ -88,7 +89,8 @@ optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
              doctest.ELLIPSIS + doctest.INTERPRET_FOOTNOTES)
 
 
-class TestCase(zope.app.testing.functional.FunctionalTestCase):
+class TestCase(unittest.TestCase,
+               zope.app.testing.functional.FunctionalTestCase):
 
     def get_resource(self, name, body, properties={},
                      contentType='text/plain'):
