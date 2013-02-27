@@ -10,7 +10,7 @@ zeit.find changes
 - Lowercase autocomplete query and use right truncation to improve search
   results.
 - Provide JS-API to filter searches for types (for #10698).
-
+- new suggest method in search model
 
 0.23.0 (2011-08-12)
 -------------------
