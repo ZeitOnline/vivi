@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -11,7 +12,7 @@ import zeit.cms.content.interfaces
 import zeit.find.browser.find
 import zope.formlib.interfaces
 import zope.i18n
-
+import re
 
 class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
                               zeit.cms.browser.view.Base):
@@ -39,6 +40,11 @@ class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
                                         context=self.request)))
 
 
+query_d = {u'ä':'a',u'ö':'o',u'ü':'u',u'ß':'s'}
+pattern = re.compile('|'.join(query_d.keys()))
+def query_parse(q):
+    return pattern.sub(lambda x: query_d[x.group()], q)
+
 class SimpleFind(zeit.cms.browser.view.JSON):
 
     def json(self):
@@ -46,6 +52,7 @@ class SimpleFind(zeit.cms.browser.view.JSON):
         types = self.request.form.get('types', ())
         if term:
             term = term.lower().strip()
+            term = query_parse(term)
             results = zeit.find.search.search(
                 zeit.find.search.suggest_query(term,'title',types))
         else:
