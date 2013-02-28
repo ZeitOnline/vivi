@@ -283,10 +283,15 @@ class DAVBase(object):
     def _request(self, method, url, body=None, extra_hdrs=None):
         "Internal method for sending a request."
         if DEBUG_REQUEST:
+            if extra_hdrs:
+                debug_header_items = [
+                    "%s: %s" % (k, v) for k, v in extra_hdrs.items()]
+            else:
+                debug_header_items = []
             print >>sys.stderr, (
                 "### REQUEST:  ###\n  %s %s\n  %s\n\n  %s\n############\n" % (
                     method, url,
-                    "\n  ".join(["%s: %s" % (k, v) for k, v in extra_hdrs.items()]),
+                    "\n  ".join(debug_header_items),
                     body))
 
         self.request(method, url, body, extra_hdrs) # that's HTTPxxxAuthCon.request, called via DAVConnection
