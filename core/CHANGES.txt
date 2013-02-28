@@ -4,7 +4,7 @@ CHANGES
 1.26.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Added automagic conflict resolution for MOVE (#12139)
 
 
 1.26.0 (2012-12-17)
