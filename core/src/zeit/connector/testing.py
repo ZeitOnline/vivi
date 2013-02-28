@@ -123,6 +123,8 @@ class MockTest(ConnectorTest):
     def setUp(self):
         super(MockTest, self).setUp()
         self.connector._reset()
+        # I don't really get what this is here for, but removing it breaks
+        # tests:
         self.connector.add(self.get_resource(
             '', '', contentType='httpd/x-unix-directory'))
 

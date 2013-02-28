@@ -110,9 +110,15 @@ class Connector(object):
             name = path[-1]
         else:
             name = ''
+        content_type = self._content_types.get(id)
+        if content_type is None:
+            if type == 'collection':
+                content_type = 'httpd/unix-directory'
+            else:
+                content_type = 'application/octet-stream'
         return zeit.connector.resource.Resource(
             id, name, type, data, properties,
-            contentType=self._content_types.get(id, ''))
+            contentType=content_type)
 
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
@@ -208,10 +214,15 @@ class Connector(object):
 
     def move(self, old_id, new_id):
         if new_id in self:
-            raise zeit.connector.interfaces.MoveError(
-                old_id,
-                "Could not move %s to %s, because target alread exists." % (
-                    old_id, new_id))
+            # The target already exists. It's possible that there was a
+            # conflict. Verify body.
+            if ('httpd/unix-directory' in (self[old_id].contentType,
+                                           self[new_id].contentType) or
+                self[old_id].data.read() != self[new_id].data.read()):
+                raise zeit.connector.interfaces.MoveError(
+                    old_id,
+                    "Could not move %s to %s, because target alread exists." % (
+                        old_id, new_id))
         self._ignore_uuid_checks = True
         r = self[old_id]
         r.id = new_id
