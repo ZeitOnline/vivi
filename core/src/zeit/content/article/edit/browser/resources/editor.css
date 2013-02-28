@@ -63,6 +63,14 @@
   padding: 0;
 }
 
+.type-article .editable {
+  color: #444 !important;
+}
+
+.type-article .editable[contenteditable='true'] {
+  color: #000 !important;
+}
+
 .type-article #cp-content {
   background: none repeat scroll 0 0 #F1F4F9;
 }
