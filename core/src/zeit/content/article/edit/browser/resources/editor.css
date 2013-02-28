@@ -665,8 +665,7 @@
   color: transparent;
 }
 
-.type-article .rte-toolbar > a[href='removeFormat']:hover,
-.rte-toolbar > a.active[href='unlink'] {
+.type-article .rte-toolbar > a[href='removeFormat']:hover {
   background-position: 3px -208px;
 }
 
