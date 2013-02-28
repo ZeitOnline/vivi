@@ -110,9 +110,15 @@ class Connector(object):
             name = path[-1]
         else:
             name = ''
+        content_type = self._content_types.get(id)
+        if content_type is None:
+            if type == 'collection':
+                content_type = 'httpd/unix-directory'
+            else:
+                content_type = 'application/octet-stream'
         return zeit.connector.resource.Resource(
             id, name, type, data, properties,
-            contentType=self._content_types.get(id, ''))
+            contentType=content_type)
 
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
