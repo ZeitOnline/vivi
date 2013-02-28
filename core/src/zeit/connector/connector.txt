@@ -410,7 +410,7 @@ We cannot move an object onto another:
 >>> res = Resource('http://xml.zeit.de/testing/move-test-2',
 ...                'conn1',
 ...                'text',
-...                StringIO.StringIO('Pop goes the weasel!'),
+...                StringIO.StringIO('Pop goes the fox!'),
 ...                contentType = 'text/plain')
 >>> connector.add(res)
 >>> connector.move('http://xml.zeit.de/testing/move-test-2',
