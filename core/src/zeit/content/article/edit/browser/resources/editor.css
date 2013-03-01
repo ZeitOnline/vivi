@@ -248,7 +248,7 @@
   height: 2em;
 }
 
-.type-article #edit-form-article-content.editable-area #article-content-head\.title:-moz-placeholder {
+.type-article #edit-form-article-content.editable-area #article-content-head\.title::-moz-placeholder {
   color: #FF0000;
 }
 
