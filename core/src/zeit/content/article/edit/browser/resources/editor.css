@@ -895,7 +895,7 @@
 
 /* Error styling in general and for different places */
 
-.type-article .error .label span.error {
+.type-article .error span.error {
   border-radius: 3px 3px 3px 3px;
   border: 1px solid #990000;
   box-shadow: 1px 1px 2px #aaa;
