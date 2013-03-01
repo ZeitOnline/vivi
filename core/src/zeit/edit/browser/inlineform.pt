@@ -25,18 +25,18 @@
          tal:attributes="class python:'widget' + (' display' if view.is_basic_display_widget(widget) else '');"
          tal:condition="widget/reversed|nothing"
          tal:content="structure widget"/>
+      <div class="error"
+           tal:condition="widget/error"
+           tal:content="structure widget/error">
+        error
+      </div>
+      <div class="empty"></div>
       <div class="label" tal:condition="widget/label">
         <label tal:attributes="
                cms:tooltip widget/hint;
                for widget/name">
           <span i18n:translate="" tal:content="widget/label">label</span>
         </label>
-        <div class="error"
-             tal:condition="widget/error"
-             tal:content="structure widget/error">
-          error
-        </div>
-        <div class="empty"></div>
       </div>
       <div
           tal:attributes="class python:'widget' + (' display' if view.is_basic_display_widget(widget) else '')"
