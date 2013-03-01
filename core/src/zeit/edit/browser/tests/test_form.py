@@ -41,6 +41,7 @@ class WidgetCSSMixin(zeit.cms.testing.FunctionalTestCase):
 
         self.assertEllipsis("""\
 ...<div class="field fieldname-foo required fieldtype-text barbaz qux">
+...
 <div class="label">...""", self.render_form(ExampleForm))
 
     def test_widget_without_css_class_does_not_break(self):
@@ -50,6 +51,7 @@ class WidgetCSSMixin(zeit.cms.testing.FunctionalTestCase):
 
         self.assertEllipsis("""\
 ...<div class="field fieldname-foo required fieldtype-text">
+...
 <div class="label">...""", self.render_form(ExampleForm))
 
 
