@@ -101,6 +101,7 @@ pre {
 .error {
   color: red;
   font-weight: normal;
+  display: inline-block;
 }
 
 .feedsorting {
