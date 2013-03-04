@@ -583,17 +583,22 @@ zeit.content.article.Editable = gocept.Class.extend({
             return;
         }
         log('Autosaving', self.block_id);
-        var url = $('#editable-body').attr('cms:url') + '/@@autosave_text';
-        var data = {paragraphs: self.edited_paragraphs,
-                    text: self.get_text_list()};
-        data = MochiKit.Base.serializeJSON(data);
-        var d = zeit.cms.locked_xhr(url, {method: 'POST', sendContent: data});
-        d.addCallback(function(result) {
-            result = MochiKit.Async.evalJSONRequest(result);
-            self.edited_paragraphs = result['data']['new_ids'];
-            self.block.block_ids = self.edited_paragraphs;
+        zeit.cms.with_lock(function() {
+            var url = $('#editable-body').attr('cms:url') +
+                '/@@autosave_text';
+            var data = {paragraphs: self.edited_paragraphs,
+                        text: self.get_text_list()};
+            data = MochiKit.Base.serializeJSON(data);
+            var d = MochiKit.Async.doXHR(url, {
+                method: 'POST',
+                sendContent: data});
+            d.addCallback(function(result) {
+                result = MochiKit.Async.evalJSONRequest(result);
+                self.edited_paragraphs = result['data']['new_ids'];
+                self.block.block_ids = self.edited_paragraphs;
+            });
+            d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
     save: function(no_reload) {
@@ -601,27 +606,31 @@ zeit.content.article.Editable = gocept.Class.extend({
         log('Saving', self.block_id);
         MochiKit.DOM.addElementClass(self.block, 'busy');
         window.clearInterval(self.autosave_timer);
-        while (self.events.length) {
-            MochiKit.Signal.disconnect(self.events.pop());
-        }
-        self.link_input.dropable.destroy();
-        log('disconnected event handlers');
-        var ident = MochiKit.Signal.connect(
-            zeit.edit.editor, 'after-reload', function() {
-            MochiKit.Signal.disconnect(ident);
-            log('Release lock', self.block_id);
-            self.editor_active_lock.release();
+        zeit.cms.with_lock(function() {
+            while (self.events.length) {
+                MochiKit.Signal.disconnect(self.events.pop());
+            }
+            self.link_input.dropable.destroy();
+            log('disconnected event handlers');
+            var ident = MochiKit.Signal.connect(
+                zeit.edit.editor, 'after-reload', function() {
+                MochiKit.Signal.disconnect(ident);
+                log('Release lock', self.block_id);
+                self.editor_active_lock.release();
+            });
+            // until now, the editor can only be contained in an editable-body.
+            var url = $('#editable-body').attr('cms:url') + '/@@save_text';
+            var data = {paragraphs: self.edited_paragraphs,
+                        text: self.get_text_list()};
+            if (no_reload) {
+                data = MochiKit.Base.serializeJSON(data);
+                MochiKit.Async.doXHR(url, {
+                    method: 'POST',
+                    sendContent: data});
+            } else {
+                zeit.edit._locked_makeJSONRequest(url, data);
+            }
         });
-        // until now, the editor can only be contained in an editable-body.
-        var url = $('#editable-body').attr('cms:url') + '/@@save_text';
-        var data = {paragraphs: self.edited_paragraphs,
-                    text: self.get_text_list()};
-        if (no_reload) {
-            data = MochiKit.Base.serializeJSON(data);
-            zeit.cms.locked_xhr(url, {method: 'POST', sendContent: data});
-        } else {
-            zeit.edit.makeJSONRequest(url, data);
-        }
     },
 
     get_selected_container: function() {
