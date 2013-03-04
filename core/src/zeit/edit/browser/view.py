@@ -116,7 +116,7 @@ class Action(zeit.cms.browser.view.Base, UndoableMixin):
             # their errors handled appropriately would be nicer, but it's not
             # clear how that view would determine whether it's a json request
             # or a normal browser request.
-            log.warning('Error in action', exc_info=True)
+            log.warning('Error in action %s', self.request.URL, exc_info=True)
             transaction.doom()
             message = None
             if e.args:
