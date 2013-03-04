@@ -132,7 +132,7 @@ class TimelineFactory(ReferenceFactory):
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.content.infobox.interfaces.IInfobox)
+                            zeit.content.article.edit.interfaces.ITimeline)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
 def factor_block_from_timeline(body, context):
     block = TimelineFactory(body)()
