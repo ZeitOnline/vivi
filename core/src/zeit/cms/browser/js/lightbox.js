@@ -89,6 +89,7 @@ gocept.Lightbox = gocept.Class.extend({
 zeit.cms.SubPageForm = gocept.Class.extend({
 
     SUBMIT_DELAY_FOR_FOCUS: 0.01,
+    focus_node: null,
     mouse_down: false,
 
     construct: function(url, container, options) {
