@@ -180,11 +180,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
         if (self.save_on_change
             && target.nodeName == 'INPUT' && target.type == 'checkbox') {
-            self.focus_node = target;
-            // simulate blur
-            if (self.focus_node == target) {
-                self.handle_submit();
-            }
+            self.handle_submit();
         }
     },
 
