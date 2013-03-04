@@ -172,14 +172,16 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         var self = this;
         var target = event.target;
 
-        if (target.nodeName == 'INPUT' && target.type == 'button'
-            && MochiKit.DOM.hasElementClass(target, 'submit')) {
+        if (target.nodeName == 'INPUT' &&
+            target.type == 'button' &&
+            MochiKit.DOM.hasElementClass(target, 'submit')) {
             self.handle_submit(target.name);
             event.stopPropagation();
         }
 
-        if (self.save_on_change
-            && target.nodeName == 'INPUT' && target.type == 'checkbox') {
+        if (self.save_on_change &&
+            target.nodeName == 'INPUT' &&
+            target.type == 'checkbox') {
             self.handle_submit();
         }
     },
