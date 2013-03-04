@@ -13,6 +13,11 @@ def article(context):
     return article is not None
 
 
+@glob(zope.interface.Interface)
+def content(context):
+    return []
+
+
 @glob(zeit.content.article.edit.interfaces.IVideo)
 def content(context):
     return filter(None, [context.video, context.video_2])
