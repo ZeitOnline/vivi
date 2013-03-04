@@ -164,15 +164,14 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         var self = this;
         var target = event.target;
 
-        if (target.nodeName == 'INPUT' && target.type == 'button'
-            && MochiKit.DOM.hasElementClass(target, 'submit')) {
+        if (target.nodeName == 'INPUT' &&
+            target.type == 'button' &&
+            MochiKit.DOM.hasElementClass(target, 'submit')) {
             self.handle_submit(target.name);
             event.stopPropagation();
-        }
-
-        if (self.save_on_change
-            && target.nodeName == 'INPUT' && target.type == 'checkbox') {
-            self.focus_node = target;
+        } else if (self.save_on_change &&
+            target.nodeName == 'INPUT' &&
+            zeit.cms.in_array(target.type, ['checkbox'])) {
             // simulate blur
             if (self.focus_node == target) {
                 self.handle_submit();
