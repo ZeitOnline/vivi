@@ -694,6 +694,10 @@
   width: 100%;
 }
 
+.type-article fieldset {
+   margin: 0 10px 0 10px;
+}
+
 .type-article .link_input select[name=target] {
   margin-right: 25px;
 }
@@ -754,11 +758,33 @@
 
 /* Image block layouts */
 
-.type-article .object-details .image_details span.copyright,
 .type-article .object-details .gallery_details_copyright {
-  float: right;
   font-size: 11px;
   margin-bottom: 6px;
+}
+
+.type-article .object-details .image_details span.copyright{
+   display:block;
+   font-size:11px;
+   margin-bottom:2px;
+   text-align:right;
+}
+
+.type-article .image_details .overlay-anchor {
+   display:block;
+   text-align:center;
+   background-color:#8E8D85;
+   line-height:0;
+}
+
+.type-article .object-reference:hover .image_details .overlay{
+   text-align:left;
+}
+
+.type-article .object-reference:hover .image_details .overlay .button{
+   line-height:1.4em;
+   margin-top:3px;
+   margin-left:22px;
 }
 
 .type-article .object-details .toggle_infos {
@@ -775,11 +801,6 @@
   padding: 2px 0px !important;
 }
 
-.type-article .object-details .image_details img {
-  display: block;
-  width: 540px;
-  height: auto;
-}
 
 .type-article .object-details .folded_information {
   background-color: #f1f4f9;
@@ -858,10 +879,6 @@
   float: none;
 }
 
-.type-article #article-editor-text .object-details.type-video .graphical_preview img,
-.type-article #edit-form-leadteaser .object-details.type-video .graphical_preview img {
-  width: 540px;
-}
 
 /* display landing zones of the two videos side by side */
 
@@ -1373,11 +1390,6 @@
   padding-right: 2em;
 }
 
-.type-article #edit-form-leadteaser .object-details-body,
-.type-article #article-content-main-image\.main_image .object-details-body,
-.type-article #edit-form-article-content .object-details-body {
-  width: 540px;
-}
 
 
 /* TEASER AREA */
@@ -1760,14 +1772,8 @@
 
 /* Object Detail Modules */
 
-.type-article #form-leadteaser,
-.type-article #form-article-content-main-image,
-.type-article #editable-body fieldset {
-  width: 540px;
-}
 
 .type-article #editable-body fieldset {
-  border-right: 1px solid #e4e4e4;
   padding-left: 5px;
   padding-right: 5px;
 }
