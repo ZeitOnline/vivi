@@ -89,6 +89,8 @@ gocept.Lightbox = gocept.Class.extend({
 zeit.cms.SubPageForm = gocept.Class.extend({
 
     SUBMIT_DELAY_FOR_FOCUS: 0.01,
+    focus_node: null,
+    mouse_down: false,
 
     construct: function(url, container, options) {
         var self = this;
@@ -105,6 +107,12 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.bind(self.container, 'change', self.mark_dirty);
             self.bind(self.container, 'focusin', self.store_focus);
             self.bind(self.container, 'focusout', self.fire_submit);
+            self.bind(self.container, 'mousedown', function() {
+                self.mouse_down = true;
+            });
+            self.bind(self.container, 'mouseup', function() {
+                self.mouse_down = false;
+            });
         }
         self.bind(self.container, 'submit', self.prevent_submit);
         if (self.load_immediately) {
@@ -164,19 +172,17 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         var self = this;
         var target = event.target;
 
-        if (target.nodeName == 'INPUT' && target.type == 'button'
-            && MochiKit.DOM.hasElementClass(target, 'submit')) {
+        if (target.nodeName == 'INPUT' &&
+            target.type == 'button' &&
+            MochiKit.DOM.hasElementClass(target, 'submit')) {
             self.handle_submit(target.name);
             event.stopPropagation();
         }
 
-        if (self.save_on_change
-            && target.nodeName == 'INPUT' && target.type == 'checkbox') {
-            self.focus_node = target;
-            // simulate blur
-            if (self.focus_node == target) {
-                self.handle_submit();
-            }
+        if (self.save_on_change &&
+            target.nodeName == 'INPUT' &&
+            target.type == 'checkbox') {
+            self.handle_submit();
         }
     },
 
@@ -215,8 +221,9 @@ zeit.cms.SubPageForm = gocept.Class.extend({
     fire_submit: function(event) {
         var self = this;
         var target = event.target;
-        if (! zeit.cms.in_array(
-            target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT'])) {
+        if (!zeit.cms.in_array(
+                target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT']) ||
+             self.mouse_down) {
             return;
         }
 
