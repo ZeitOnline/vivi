@@ -12,6 +12,7 @@ editor-ng branch (unreleased)
   and renamed to the name given during editing the checked out article (#8080).
 
 - Enable UI for author references (#7441, #7333).
+- New Image layout and selectable layout for main_image(#12029)
 
 
 2.9.6 (unreleased)
