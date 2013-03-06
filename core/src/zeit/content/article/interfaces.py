@@ -45,6 +45,11 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         description=_("Drag an image here"),
         source=zeit.content.image.interfaces.imageSource,
         required=False)
+    
+    main_image_layout = zope.schema.Choice(
+        title=_("Layout"),
+        source=zeit.content.article.edit.interfaces.ImageLayoutSource(),
+        required=False)
 
     main_image_block = zope.interface.Attribute(
         u'First block of the body if it is present and is an image block')
