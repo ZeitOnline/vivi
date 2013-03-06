@@ -47,6 +47,7 @@ editor-ng branch changes
 
 - Remove XMLSnippet, its functionality is not used anymore.
 
+- We need to use @@raw view to get the actual URL of images (#12159)  
 
 1.53.5 (unreleased)
 -------------------

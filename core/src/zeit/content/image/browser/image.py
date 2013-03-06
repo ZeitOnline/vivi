@@ -26,7 +26,7 @@ def get_img_tag(image, request):
         (image, request), name='absolute_url')
     width, height = image.getImageSize()
     return (
-        '<img src="%s" alt="" height="%s" width="%s" border="0" />' % (
+        '<img src="%s/@@raw" alt="" height="%s" width="%s" border="0" />' % (
         url, height, width))
 
 

@@ -28,7 +28,7 @@ Now we get the metadata preview:
     <div class="context-views">
       ...
       <div class="image-metadata">
-        <img src=".../2006/DSC00109_2.JPG/metadata-preview" alt=""
+        <img src=".../2006/DSC00109_2.JPG/metadata-preview/@@raw" alt=""
                height="90" width="120" border="0" />
         <div>image/jpeg</div>
       <div>
@@ -136,7 +136,7 @@ We have uploaded a new image now. Let's have a look at the metadata screen:
  <div class="contextViewsAndActions">
     <div class="context-views">...
     <div class="image-metadata">
-      <img src=".../2006/DSC00109_2.JPG/metadata-preview" alt=""
+      <img src=".../2006/DSC00109_2.JPG/metadata-preview/@@raw" alt=""
             height="90" width="66" border="0" />
       <div>image/jpeg</div>
       <div>
@@ -214,7 +214,7 @@ Try the drag pane:
 >>> browser.open('http://localhost/++skin++cms/repository/2006/'
 ...              'DSC00109_2.JPG/@@drag-pane.html')
 >>> print browser.contents
-  <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail" alt="" height="100" width="74" border="0" />
+  <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail/@@raw" alt="" height="100" width="74" border="0" />
   <div class="Text">Opernball</div>
   <div class="UniqueId">http://xml.zeit.de/2006/DSC00109_2.JPG</div>
 
@@ -292,7 +292,7 @@ The zeit.content.image package provides an image browser for IFolder:
         <div class="image-data">
           <a href="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@view.html"
              title="Opernball">
-            <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail" alt="" height="100" width="74" border="0" />
+            <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/thumbnail/@@raw" alt="" height="100" width="74" border="0" />
           </a>
           <span class="URL">http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG</span>
         </div>
@@ -306,7 +306,7 @@ The zeit.content.image package provides an image browser for IFolder:
       <div class="image">
         <div class="image-data">
           <a href="http://localhost/++skin++cms/repository/2006/opernball.jpg/@@view.html">
-            <img src="http://localhost/++skin++cms/repository/2006/opernball.jpg/thumbnail" alt="" height="100" width="74" border="0" />
+            <img src="http://localhost/++skin++cms/repository/2006/opernball.jpg/thumbnail/@@raw" alt="" height="100" width="74" border="0" />
           </a>
           <span class="URL">http://localhost/++skin++cms/repository/2006/opernball.jpg</span>
         </div>
@@ -431,7 +431,7 @@ Let's have a look at the index:
       450x200
     </td>
     <td>
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/preview" alt="" height="200" width="450" border="0" />
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/preview/@@raw" alt="" height="200" width="450" border="0" />
     </td>
     <td>
       <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/new-hampshire-450x200.jpg</span>
@@ -446,7 +446,7 @@ Let's have a look at the index:
       410x244
     </td>
     <td>
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/preview" alt="" height="244" width="410" border="0" />
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/preview/@@raw" alt="" height="244" width="410" border="0" />
     </td>
     <td>
       <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/new-hampshire-artikel.jpg</span>
@@ -461,7 +461,7 @@ Let's have a look at the index:
       120x120
     </td>
     <td>
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/preview" alt="" height="120" width="120" border="0" />
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/preview/@@raw" alt="" height="120" width="120" border="0" />
     </td>
     <td>
       <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/obama-clinton-120x120.jpg</span>
@@ -544,13 +544,13 @@ Make sure we have a metadata preview for repository image groups:
     ...
     <div>New Hampshire</div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail/@@raw" alt="" height="44" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail/@@raw" alt="" height="59" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail/@@raw" alt="" height="100" width="100" border="0" />
     </div>
     ...
 
@@ -594,9 +594,9 @@ The image group has a special drag pane which shows all the images:
 ...     'http://localhost/++skin++cms/'
 ...     'repository/2006/new-hampshire/@@drag-pane.html')
 >>> print browser.contents
-  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
-  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
-  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail/@@raw" alt="" height="44" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail/@@raw" alt="" height="59" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail/@@raw" alt="" height="100" width="100" border="0" />
   <div class="Text">New Hampshire</div>
   <div class="UniqueId">http://xml.zeit.de/2006/new-hampshire</div>
 
