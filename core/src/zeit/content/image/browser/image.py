@@ -20,14 +20,18 @@ import zope.file.download
 import zope.publisher.interfaces
 
 
-def get_img_tag(image, request):
+def get_img_tag(image, request, view=None):
     """Render <img.../>-tag."""
     url = zope.component.getMultiAdapter(
         (image, request), name='absolute_url')
     width, height = image.getImageSize()
+    if view:
+        view = '/' + view
+    else:
+        view = ''
     return (
-        '<img src="%s/@@raw" alt="" height="%s" width="%s" border="0" />' % (
-        url, height, width))
+        '<img src="%s%s" alt="" height="%s" width="%s" border="0" />' % (
+        url, view, height, width))
 
 
 class Image(zope.file.download.Display):
@@ -50,7 +54,7 @@ class ImageView(zeit.cms.browser.view.Base):
         return zeit.content.image.interfaces.IImageMetadata(self.context)
 
     def tag(self):
-        return get_img_tag(self.context, self.request)
+        return get_img_tag(self.context, self.request, view='@@raw')
 
     @property
     def width(self):
