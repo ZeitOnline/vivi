@@ -317,16 +317,16 @@ There is also a metdata preview showing the images:
 >>> print browser.contents
 <div ...
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/02.jpg/thumbnail/@@raw" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/02.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/thumbnail/@@raw" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/01.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/thumbnail/@@raw" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/04.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     <div class="image-group-image-preview">
-      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/05.jpg/thumbnail/@@raw" alt="" height="100" width="100" border="0" />
+      <img src="http://localhost/++skin++cms/repository/online/2007/01/gallery/05.jpg/thumbnail" alt="" height="100" width="100" border="0" />
     </div>
     ...
 
