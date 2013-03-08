@@ -788,21 +788,24 @@ zeit.content.article.Editable = gocept.Class.extend({
                 e.preventDefault();
                 self.command('removeFormat');
             } else if (e.which == 65) {
-                e.preventDefault();
-                self.selectall();
+                if (self.get_selected_container().nodeName != 'INPUT') {
+                  e.preventDefault();
+                  self.selectall();
+                }
             }
         }
     });
   },
 
   selectall: function() {
+    var self = this;
     $('#editable-body .block.type-p p, #editable-body .block.type-p li, #editable-body .block.type-p h3, #editable-body .block.type-intertitle h3, #editable-body .block.type-ul li' ).each(function(index, value) {
       var content = $(this).text();
       if(content !='') {
-      var range = document.createRange();
-      range.selectNodeContents(this);
-      var sel = window.getSelection();
-      sel.addRange(range);
+        var range = document.createRange();
+        range.selectNodeContents(this);
+        var sel = window.getSelection();
+        sel.addRange(range);
       }
     });
   }
