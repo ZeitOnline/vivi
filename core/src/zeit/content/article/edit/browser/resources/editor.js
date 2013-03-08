@@ -109,9 +109,9 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.command('styleWithCSS', false, false);
             MochiKit.DOM.addElementClass(self.block, 'editing');
 
-            // This catches the blur-signal in the capturing-phase!
+            // Catche the blur-signal in the capturing-phase!
             // In case you use the toolbar, the editing-mode won't be stopped.
-            self.editable.parentNode.addEventListener("blur", function(e) {
+            var handle_blur = function(e) {
                 var clicked_on_block =
                     MochiKit.DOM.getFirstParentByTagAndClassName(
                        e.explicitOriginalTarget, 'div', 'block');
@@ -120,9 +120,13 @@ zeit.content.article.Editable = gocept.Class.extend({
                 if (is_in_block || self.locked) {
                     e.stopPropagation();
                 } else {
+                    self.editable.parentNode.removeEventListener(
+                        "blur", handle_blur, /*use_capture=*/true);
                     self.save();
                 }
-            }, true);
+            };
+            self.editable.parentNode.addEventListener(
+                "blur", handle_blur, /*useCapture=*/true);
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeydown', self, self.handle_keydown));
             self.events.push(MochiKit.Signal.connect(
