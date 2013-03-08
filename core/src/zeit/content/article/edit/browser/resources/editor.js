@@ -668,6 +668,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     },
 
     insert_link: function() {
+        $(".link_input input").val('');
         var self = this;
         if (self.locked) {
             return;
