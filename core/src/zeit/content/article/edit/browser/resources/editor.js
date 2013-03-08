@@ -607,6 +607,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         MochiKit.DOM.addElementClass(self.block, 'busy');
         window.clearInterval(self.autosave_timer);
         zeit.cms.with_lock(function() {
+            var d;
             while (self.events.length) {
                 MochiKit.Signal.disconnect(self.events.pop());
             }
@@ -624,12 +625,13 @@ zeit.content.article.Editable = gocept.Class.extend({
                         text: self.get_text_list()};
             if (no_reload) {
                 data = MochiKit.Base.serializeJSON(data);
-                MochiKit.Async.doXHR(url, {
+                d = MochiKit.Async.doXHR(url, {
                     method: 'POST',
                     sendContent: data});
             } else {
-                zeit.edit._locked_makeJSONRequest(url, data);
+                d = zeit.edit._locked_makeJSONRequest(url, data);
             }
+            return d;
         });
     },
 
