@@ -347,7 +347,8 @@ def apply_layout(context, event):
     for elem in content[1:]:
         if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(elem):
             continue
-        elem.layout = buttons
+        if elem.layout is None:
+            elem.layout = buttons
 
 
 def make_path_for_unique_id(uniqueId):
