@@ -30,7 +30,7 @@
            tal:content="structure widget/error">
         error
       </div>
-      <div class="empty"></div>
+      <div tal:condition="widget/error" class="empty"></div>
       <div class="label" tal:condition="widget/label">
         <label tal:attributes="
                cms:tooltip widget/hint;
