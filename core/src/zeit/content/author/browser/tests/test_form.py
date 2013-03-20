@@ -40,6 +40,13 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
         b.getControl(name='form.actions.add').click()
 
+    def add_joerg(self):
+        b = self.browser
+        b.getControl('Firstname').value = 'Jörg'
+        b.getControl('Lastname').value = 'Müßig, von'
+        b.getControl('Redaktionszugehörigkeit').displayValue = ['Print']
+        b.getControl(name='form.actions.add').click()
+
     def test_add_form(self):
         b = self.browser
         self.open('/repository/online/2007/01')
@@ -84,6 +91,15 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
             <label for="form.vgwortid">...
             <div class="widget">12345</div>...
             """, b.contents)
+
+    def test_folder_name_validation(self):
+        b = self.browser
+        self.open('/@@zeit.content.author.add_contextfree')
+        self.assertNotIn('File name', b.contents)
+        self.add_joerg()
+        self.assertEqual(
+            'http://localhost/++skin++vivi/repository/foo/bar/authors/M/'
+            'Joerg_Muessig-von/index/@@view.html', b.url)
 
     def test_adding_name_twice_warns_then_creates_different_author(self):
         b = self.browser

@@ -1,7 +1,9 @@
+# coding: utf-8
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import re
 import transaction
 import zeit.cms.browser.form
 import zeit.content.author.author
@@ -72,6 +74,23 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 
     need_confirmation_checkbox = False
 
+    def _validate_folder_name(self, folder_name):
+        # Get rid of umlauts
+        folder_name = folder_name.replace(u'Ä', 'Ae')
+        folder_name = folder_name.replace(u'ä', 'ae')
+        folder_name = folder_name.replace(u'Ü', 'Ue')
+        folder_name = folder_name.replace(u'ü', 'ue')
+        folder_name = folder_name.replace(u'Ö', 'Oe')
+        folder_name = folder_name.replace(u'ö', 'oe')
+
+        # Get rid of other annoying characters
+        folder_name = folder_name.replace(u'ß', 'ss')
+        folder_name = folder_name.replace(u' ', '-')
+        r = re.compile('[^a-z-_]', re.IGNORECASE)
+        folder_name = r.sub('', folder_name)
+
+        return folder_name
+
     def create(self, data):
         self.confirmed_duplicate = data.pop('confirmed_duplicate', None)
         new_object = self.factory()
@@ -112,6 +131,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 
         author_folder = zeit.cms.repository.folder.Folder()
         folder_name = u'%s_%s' % (object.firstname, object.lastname)
+        folder_name = self._validate_folder_name(folder_name)
         chooser = zope.app.container.interfaces.INameChooser(folder)
         name = chooser.chooseName(folder_name, author_folder)
         folder[name] = author_folder
