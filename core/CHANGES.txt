@@ -4,6 +4,9 @@ zeit.cms changes
 editor-ng branch changes
 ------------------------
 
+- Fix autosaving of forms when user clicks on a DOM node inside the form
+  container (#12211).
+
 - Fix selecting of objects in reference dialog (#12102)
 
 - Publish is not allowed in ILocalContent via the security machinery now (for

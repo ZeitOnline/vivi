@@ -106,12 +106,22 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         if (self.save_on_change) {
             self.bind(self.container, 'change', self.mark_dirty);
             self.bind(self.container, 'focusin', self.store_focus);
-            self.bind(self.container, 'focusout', self.fire_submit);
-            self.bind(self.container, 'mousedown', function() {
+            self.bind(self.container, 'focusout', function(event) {
+                self.release_focus(event);
+                if (self.is_input(event.target.nodeName) &&
+                        !self.mouse_down) {
+                    self.fire_submit();
+                }
+
+            });
+            self.bind(self.container, 'mousedown', function(event) {
                 self.mouse_down = true;
             });
-            self.bind(self.container, 'mouseup', function() {
+            self.bind(self.container, 'mouseup', function(event) {
                 self.mouse_down = false;
+                if (!self.is_input(event.target)) {
+                    self.fire_submit();
+                }
             });
         }
         self.bind(self.container, 'submit', self.prevent_submit);
@@ -125,6 +135,11 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             jQuery(self.container).trigger_fragment_ready();
             MochiKit.Signal.signal(self, 'after-reload');
         }
+    },
+
+    is_input: function(node) {
+        return zeit.cms.in_array(
+            node.nodeName, ['INPUT', 'TEXTAREA', 'SELECT']);
     },
 
     bind: function(target, event, handler) {
@@ -211,23 +226,18 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     store_focus: function(event) {
         var self = this;
-        var target = event.target;
-        if (zeit.cms.in_array(
-            target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT'])) {
-            self.focus_node = target;
+        if (self.is_input(event.target)) {
+            self.focus_node = event.target;
         }
     },
 
-    fire_submit: function(event) {
+    release_focus: function(event) {
         var self = this;
-        var target = event.target;
-        if (!zeit.cms.in_array(
-                target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT']) ||
-             self.mouse_down) {
-            return;
-        }
-
         self.focus_node = null;
+    },
+
+    fire_submit: function() {
+        var self = this;
         MochiKit.Async.callLater(self.SUBMIT_DELAY_FOR_FOCUS, function() {
             // If a field of our form has the focus now, we don't want to
             // interrupt the user by saving.
