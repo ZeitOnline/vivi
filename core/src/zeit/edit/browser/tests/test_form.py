@@ -50,8 +50,7 @@ class WidgetCSSMixin(zeit.cms.testing.FunctionalTestCase):
 
         self.assertEllipsis("""\
 ...<div class="field fieldname-foo required fieldtype-text">
-...
-<div class="label">...""", self.render_form(ExampleForm))
+...<div class="label">...""", self.render_form(ExampleForm))
 
 
 class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
