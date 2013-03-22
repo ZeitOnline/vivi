@@ -597,7 +597,7 @@ pre {
   display: block;
   opacity: 1;
   position: absolute;
-  z-index: 1;
+  z-index: 1000;
   background-color: #FFF;
   border: 1px solid #c7c7c7;
   top: 2.8em;
