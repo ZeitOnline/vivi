@@ -30,7 +30,7 @@ class FormLoader(zeit.content.article.edit.browser.testing.EditorTestCase):
 
 class AudioEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
-    def test_layout_should_be_editable(self):
+    def test_audio_id_should_be_editable(self):
         s = self.selenium
         self.add_article()
         self.create_block('audio')
