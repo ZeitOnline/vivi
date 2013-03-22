@@ -108,7 +108,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.bind(self.container, 'focusin', self.store_focus);
             self.bind(self.container, 'focusout', function(event) {
                 self.release_focus(event);
-                if (self.is_input(event.target.nodeName) &&
+                if (self.is_input(event.target) &&
                         !self.mouse_down) {
                     self.fire_submit();
                 }
