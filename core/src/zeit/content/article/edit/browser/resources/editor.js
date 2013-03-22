@@ -799,13 +799,15 @@ zeit.content.article.Editable = gocept.Class.extend({
 
   selectall: function() {
     var self = this;
-    $('#editable-body .block.type-p p, #editable-body .block.type-p li, #editable-body .block.type-p h3, #editable-body .block.type-intertitle h3, #editable-body .block.type-ul li' ).each(function(index, value) {
+    $('#editable-body .block.type-p p, #editable-body .block.type-ul p, #editable-body .block.type-p li, #editable-body .block.type-p h3, #editable-body .block.type-intertitle h3, #editable-body .block.type-ul li, #editable-body .fieldname-custom_caption textarea, #form-article-content-head textarea').each(function(index, value) {
       var content = $(this).text();
       if(content !='') {
         var range = document.createRange();
         range.selectNodeContents(this);
         var sel = window.getSelection();
         sel.addRange(range);
+        $('#editable-body textarea').css({'background':'#b4d5ff'});
+        $('#form-article-content-head textarea').css({'background':'#b4d5ff'});
       }
     });
   }
