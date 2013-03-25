@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Feb  8 14:40:34 2013\n"
-"PO-Revision-Date: 2013-03-25 10:46+0100\n"
+"PO-Revision-Date: 2013-03-25 16:28+0100\n"
 "Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1818,7 +1818,7 @@ msgstr "lade neu"
 
 #: zeit/content/article/edit/browser/timestamp.pt:2
 msgid "Current timestamp:"
-msgstr "Aktueller Zeitstempel"
+msgstr "Sichtbares Datum des Artikels:  "
 
 #: zeit/content/article/edit/browser/workflow.pt:30
 msgid "Save and publish"
