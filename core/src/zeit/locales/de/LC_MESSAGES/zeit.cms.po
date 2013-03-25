@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Feb  8 14:40:34 2013\n"
-"PO-Revision-Date: 2013-02-22 16:59+0100\n"
-"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
+"PO-Revision-Date: 2013-03-25 10:46+0100\n"
+"Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1797,10 +1797,8 @@ msgstr "Videoblock bearbeiten"
 #: zeit/content/cp/browser/publish.pt:19
 msgid "Cannot publish since validation rules are violated."
 msgstr ""
-"Es kann nicht veröffentlicht werden, weil die Bedingungen für die "
-"Veröffentlichung nicht erfüllt sind. Prüfen Sie die Status-Felder, das "
-"»Eilig«-Feld und ob Validierungsregeln verletzt sind (rote Bereiche bei "
-"CenterPage)."
+"Die CenterPage kann nicht veröffentlicht werden, weil die Validierungsregeln "
+"verletzt sind (rote Bereiche)."
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:6
 #: zeit/content/cp/browser/publish.pt:6
@@ -1884,7 +1882,7 @@ msgstr "Referenziertes Objekt"
 #: zeit/content/article/edit/interfaces.py:126
 #: zeit/wysiwyg/browser/resources/reference/image.pt:35
 msgid "Hochkant"
-msgstr "Hochkant"
+msgstr "hochkant"
 
 #: zeit/content/article/edit/interfaces.py:134
 #: zeit/content/article/interfaces.py:45
@@ -2004,7 +2002,7 @@ msgstr "Seiten-Überschrift"
 #: zeit/wysiwyg/browser/resources/reference/image.pt:32
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "small"
-msgstr "klein"
+msgstr "schmal"
 
 #: zeit/content/article/edit/interfaces.py:75
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:54
@@ -2016,14 +2014,14 @@ msgstr "mit Info"
 #: zeit/wysiwyg/browser/resources/reference/image.pt:33
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:55
 msgid "large"
-msgstr "groß"
+msgstr "vollbreit"
 
 #: zeit/content/article/edit/interfaces.py:77
 #: zeit/content/article/edit/interfaces.py:244
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:47
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:56
 msgid "double"
-msgstr "Doppelt"
+msgstr "doppelt"
 
 #: zeit/content/article/edit/interfaces.py:84
 #: zeit/content/article/edit/video.py:71 zeit/content/video/browser.py:18
