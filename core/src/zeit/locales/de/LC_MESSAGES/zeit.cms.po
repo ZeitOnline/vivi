@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Mar 26 10:32:46 2013\n"
-"PO-Revision-Date: 2013-03-25 16:28+0100\n"
-"Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
+"PO-Revision-Date: 2013-03-26 10:48+0100\n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1567,14 +1567,13 @@ msgstr "Folgende Fehler müssen vor dem Einchecken korrigiert werden:"
 
 #. Default: "not published"
 #: zeit/content/article/edit/browser/edit.lastpublished.pt:10
-#, fuzzy
 msgid "not-published"
 msgstr "Nicht veröffentlicht"
 
 #. Default: "last published at ${date} on ${time} by ${by}"
 #: zeit/content/article/edit/browser/edit.lastpublished.pt:7
 msgid "last-publish-information"
-msgstr ""
+msgstr "zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 
 #. Default: ""
 #: zeit/content/article/edit/browser/edit.py:107
