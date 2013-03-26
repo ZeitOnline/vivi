@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Mar 26 10:32:46 2013\n"
-"PO-Revision-Date: 2013-03-26 14:22+0100\n"
+"PO-Revision-Date: 2013-03-26 14:26+0100\n"
 "Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -1085,7 +1085,7 @@ msgstr "Syndizieren"
 
 #: zeit/cms/permissions.zcml:66
 msgid "Publish objects"
-msgstr "Veröffentlichen"
+msgstr "Sofort veröffentlichen"
 
 #: zeit/cms/permissions.zcml:71
 msgid "Lock and unlock objects"
@@ -1817,7 +1817,7 @@ msgstr "Einchecken"
 #: zeit/content/article/edit/browser/save-and-publish.pt:7
 #: zeit/content/cp/browser/publish.pt:7 zeit/workflow/browser/publish.pt:6
 msgid "Publishing"
-msgstr "sofort veröffentlichen"
+msgstr "Veröffentlichen"
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
 #: zeit/content/cp/browser/publish.pt:9 zeit/workflow/browser/publish.pt:7
