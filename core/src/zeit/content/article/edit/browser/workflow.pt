@@ -68,7 +68,7 @@
      cms:cp-module='zeit.edit.LightBoxForm'
      tal:attributes="href string:${context/@@absolute_url}/@@publish.html"
      tal:condition="view/can_checkout"
-     i18n:translate="">Publish</a>
+     i18n:translate="publish-now">Publish</a>
   <a class="button"
      id="retract"
      cms:cp-module='zeit.edit.LightBoxForm'
