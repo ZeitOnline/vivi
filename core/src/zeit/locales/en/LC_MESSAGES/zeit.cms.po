@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: zeit.cms\n"
-"POT-Creation-Date: Tue Mar 26 10:32:46 2013\n"
+"POT-Creation-Date: Tue Mar 26 14:46:54 2013\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
@@ -1386,7 +1386,6 @@ msgstr ""
 
 #: zeit/cms/syndication/browser/manager.pt:22
 #: zeit/content/article/edit/browser/save-and-publish.pt:2
-#: zeit/content/article/edit/browser/workflow.pt:61
 #: zeit/content/cp/browser/publish.pt:2 zeit/workflow/browser/publish.pt:2
 msgid "Publish"
 msgstr ""
@@ -1866,7 +1865,18 @@ msgstr "Published"
 msgid "Checkin (correction) and publish"
 msgstr ""
 
-#: zeit/content/article/edit/browser/workflow.pt:67
+#: zeit/content/article/edit/browser/workflow.pt:61
+#, fuzzy
+msgid "Save state"
+msgstr "Save state only"
+
+#. Default: "Publish"
+#: zeit/content/article/edit/browser/workflow.pt:66
+#, fuzzy
+msgid "publish-now"
+msgstr "Published"
+
+#: zeit/content/article/edit/browser/workflow.pt:72
 #: zeit/workflow/browser/retract.pt:2 zeit/workflow/browser/retract.pt:5
 #, fuzzy
 msgid "Retract"

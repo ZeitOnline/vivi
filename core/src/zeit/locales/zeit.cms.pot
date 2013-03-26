@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 26 10:32:46 2013\n"
+"POT-Creation-Date: Tue Mar 26 14:46:54 2013\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -1444,7 +1444,6 @@ msgstr ""
 
 #: zeit/cms/syndication/browser/manager.pt:22
 #: zeit/content/article/edit/browser/save-and-publish.pt:2
-#: zeit/content/article/edit/browser/workflow.pt:61
 #: zeit/content/cp/browser/publish.pt:2
 #: zeit/workflow/browser/publish.pt:2
 msgid "Publish"
@@ -1889,7 +1888,16 @@ msgstr ""
 msgid "Checkin (correction) and publish"
 msgstr ""
 
-#: zeit/content/article/edit/browser/workflow.pt:67
+#: zeit/content/article/edit/browser/workflow.pt:61
+msgid "Save state"
+msgstr ""
+
+#: zeit/content/article/edit/browser/workflow.pt:66
+#. Default: "Publish"
+msgid "publish-now"
+msgstr ""
+
+#: zeit/content/article/edit/browser/workflow.pt:72
 #: zeit/workflow/browser/retract.pt:2
 #: zeit/workflow/browser/retract.pt:5
 msgid "Retract"

@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 26 10:32:46 2013\n"
-"PO-Revision-Date: 2013-03-26 14:39+0100\n"
-"Last-Translator: Ron Drongowski <ron.drongowski@zeit.de>\n"
+"POT-Creation-Date: Tue Mar 26 14:46:54 2013\n"
+"PO-Revision-Date: 2013-03-26 14:51+0100\n"
+"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -376,7 +376,7 @@ msgstr "Assets"
 
 #: zeit/cms/browser/breadcrumbs.py:104
 msgid "(new)"
-msgstr ""
+msgstr "(neu)"
 
 #: zeit/cms/browser/configure.zcml:18 zeit/cms/browser/configure.zcml:23
 msgid "context sensitive actions"
@@ -1387,7 +1387,6 @@ msgstr "Syndizieren (ohne Relateds)"
 
 #: zeit/cms/syndication/browser/manager.pt:22
 #: zeit/content/article/edit/browser/save-and-publish.pt:2
-#: zeit/content/article/edit/browser/workflow.pt:61
 #: zeit/content/cp/browser/publish.pt:2 zeit/workflow/browser/publish.pt:2
 msgid "Publish"
 msgstr "Veröffentlichen"
@@ -1837,7 +1836,16 @@ msgstr "Einchecken & sofort Veröffentlichen"
 msgid "Checkin (correction) and publish"
 msgstr "Einchecken (Korrektur) & sofort Veröffentlichen"
 
-#: zeit/content/article/edit/browser/workflow.pt:67
+#: zeit/content/article/edit/browser/workflow.pt:61
+msgid "Save state"
+msgstr "Status speichern"
+
+#. Default: "Publish"
+#: zeit/content/article/edit/browser/workflow.pt:66
+msgid "publish-now"
+msgstr "Jetzt veröffentlichen"
+
+#: zeit/content/article/edit/browser/workflow.pt:72
 #: zeit/workflow/browser/retract.pt:2 zeit/workflow/browser/retract.pt:5
 msgid "Retract"
 msgstr "Depublizieren"
