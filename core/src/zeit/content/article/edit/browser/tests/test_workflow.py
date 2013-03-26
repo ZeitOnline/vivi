@@ -145,6 +145,16 @@ zeit.cms.with_lock = function(callable) {
             self.eval('zeit.cms.with_lock_calls[0].NAME'))
         self.assertEqual('null', self.eval('zeit.cms.with_lock_calls[1].NAME'))
 
+    def test_save_state_button_should_load_page(self):
+        self.open('/repository/online/2007/01/Somalia')
+        s = self.selenium
+        s.waitForElementPresent('css=#edit-form-workflow a.save')
+        s.clickAndWait('css=#edit-form-workflow a.save')
+        # Yeah, not much to assert here. Mainly checkin that the button is
+        # there :/
+        s.waitForElementPresent('css=#edit-form-workflow a.save')
+
+
 
 class WorkflowEndToEnd(
     zeit.content.article.edit.browser.testing.EditorTestCase):
