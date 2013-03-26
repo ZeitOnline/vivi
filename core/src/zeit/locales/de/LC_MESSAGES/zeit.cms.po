@@ -105,7 +105,7 @@ msgstr "Kommentare erlaubt"
 
 #: zeit/brightcove/interfaces.py:87
 msgid "Ignore for update"
-msgstr ""
+msgstr "Nicht aktualisieren"
 
 #: zeit/brightcove/interfaces.py:91 zeit/cms/content/interfaces.py:149
 msgid "Daily newsletter"
@@ -250,7 +250,7 @@ msgstr "Termin gelöscht."
 
 #: zeit/calendar/configure.zcml:5
 msgid "Create and modify calendar entries"
-msgstr ""
+msgstr "Erstellen und Bearbeiten von Einträgen im Kalender"
 
 #: zeit/calendar/interfaces.py:24
 msgid "The event ends before it starts."
@@ -377,7 +377,7 @@ msgstr "Assets"
 
 #: zeit/cms/browser/breadcrumbs.py:104
 msgid "(new)"
-msgstr ""
+msgstr "(neu)"
 
 #: zeit/cms/browser/configure.zcml:18 zeit/cms/browser/configure.zcml:23
 msgid "context sensitive actions"
@@ -1722,6 +1722,8 @@ msgid ""
 "<a href=\"${DYNAMIC_CONTENT}\" rel=\"remove\" title=\"x\" cms:cp-module="
 "\"zeit.edit.LoadAndReload\">x</a>"
 msgstr ""
+"<a href=\"${DYNAMIC_CONTENT}\" rel=\"remove\" title=\"x\" cms:cp-module="
+"\"zeit.edit.LoadAndReload\">x</a>"
 
 #: zeit/content/article/edit/browser/recension-list.pt:19
 msgid "[remove]"
