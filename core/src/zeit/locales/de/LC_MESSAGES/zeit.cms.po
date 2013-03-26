@@ -14,10 +14,11 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 26 14:46:54 2013\n"
+"POT-Creation-Date: Tue Mar 26 14:56:03 2013\n"
 "PO-Revision-Date: 2013-03-26 14:51+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -26,7 +27,7 @@ msgstr ""
 
 #: zeit/addcentral/sidebar.py:28 zeit/addcentral/sidebar.pt:12
 #: zeit/cms/browser/form.py:214 zeit/cms/application.zcml:44
-#: zeit/content/article/edit/browser/recension-list.pt:92
+#: zeit/content/article/edit/browser/recension-list.pt:93
 #: zeit/edit/browser/view.py:182
 msgid "Add"
 msgstr "Inhalte hinzufügen…"
@@ -423,7 +424,7 @@ msgstr "Abbrechen"
 
 #: zeit/cms/browser/form.py:269 zeit/cms/repository/browser/file.zcml:34
 #: zeit/cms/content/browser/template.zcml:41
-#: zeit/content/article/edit/browser/recension-list.pt:28
+#: zeit/content/article/edit/browser/recension-list.pt:29
 #: zeit/content/cp/browser/blocks/layout.block.edit-properties.pt:1
 #: zeit/content/gallery/browser/configure.zcml:150
 #: zeit/content/quiz/browser/configure.zcml:96
@@ -1716,26 +1717,20 @@ msgid "Bibliography"
 msgstr "Bibliografie"
 
 #: zeit/content/article/edit/browser/recension-list.pt:19
-msgid ""
-"<a href=\"${DYNAMIC_CONTENT}\" rel=\"remove\" title=\"x\" cms:cp-module="
-"\"zeit.edit.LoadAndReload\">x</a>"
-msgstr ""
-
-#: zeit/content/article/edit/browser/recension-list.pt:19
 msgid "[remove]"
 msgstr "[entfernen]"
 
-#: zeit/content/article/edit/browser/recension-list.pt:28
+#: zeit/content/article/edit/browser/recension-list.pt:29
 msgid "[edit]"
 msgstr "[bearbeiten]"
 
 #. Default: "There are no book information items, yet."
-#: zeit/content/article/edit/browser/recension-list.pt:88
+#: zeit/content/article/edit/browser/recension-list.pt:89
 msgid "recension-no-items"
 msgstr "Keine Buchinformationen"
 
 #. Default: "Add new..."
-#: zeit/content/article/edit/browser/recension-list.pt:92
+#: zeit/content/article/edit/browser/recension-list.pt:93
 msgid "add-new-recension"
 msgstr "Rezension hinzufügen"
 
@@ -2117,7 +2112,7 @@ msgid "Media type"
 msgstr "Medientyp"
 
 #: zeit/content/article/interfaces.py:157
-#: zeit/content/article/edit/browser/recension-list.pt:77
+#: zeit/content/article/edit/browser/recension-list.pt:78
 msgid "Pages"
 msgstr "Seiten"
 
