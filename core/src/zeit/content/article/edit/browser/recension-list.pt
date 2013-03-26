@@ -15,15 +15,16 @@
         <span i18n:translate="">Bibliography</span>
         <span tal:content="repeat/recension/number">0</span>
         <tal:con condition="can_edit">
-	  <span i18n:translate="" class="recensionaction">
-	    <a href="#" rel="remove" title="Remove"
-               tal:attributes="href string:${recension/url}/@@remove"
-               cms:cp-module="zeit.edit.LoadAndReload"
-	       i18n:attributes="title"
-	       i18n:translate="">
-              [remove]
-            </a>
-	  </span>
+	  <span class="recensionaction">
+        <a rel="remove"
+           title="Remove"
+           tal:attributes="href string:${recension/url}/@@remove"
+           cms:cp-module="zeit.edit.LoadAndReload"
+           i18n:attributes="title"
+           i18n:translate="">
+          [remove]
+        </a>
+      </span>
 			<span class="recensionaction">
 			  <a href="#" rel="edit" title="Edit"
 				tal:attributes="
