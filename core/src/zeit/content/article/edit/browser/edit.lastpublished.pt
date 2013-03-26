@@ -1,8 +1,14 @@
-<div id="lastpublished" tal:condition="view/publishinfo/published">
-zuletzt veröffentlicht am <span tal:content="view/date"/>
-um <span tal:content="view/time"/>
-von <span tal:content="view/publishinfo/last_published_by"/>
-</div>
-<div tal:condition="not:view/publishinfo/published">
-noch nie veröffentlicht
-</div>
+<tal:block i18n:domain="zeit.cms">
+  <div id="lastpublished"
+       tal:condition="view/publishinfo/published"
+       i18n:translate="last-publish-information">
+    last published at <span tal:content="view/date" i18n:name="date" />
+    on <span tal:content="view/time" i18n:name="time"/>
+    by <span tal:content="view/publishinfo/last_published_by"
+      i18n:name="by"/>
+  </div>
+  <div tal:condition="not:view/publishinfo/published"
+       i18n:translate="not-published">
+    not published
+  </div>
+</tal:block>

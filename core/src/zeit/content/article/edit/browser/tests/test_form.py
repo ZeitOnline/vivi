@@ -88,7 +88,7 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
                '/online/2007/01/Somalia/@@checkout')
         b.open('@@contents')
         self.assertEllipsis(
-            '...zuletzt veröffentlicht am...von...zope.user...', b.contents)
+            '...last published at...on...by...zope.user...', b.contents)
 
 
 class PageNumberDisplay(zeit.cms.testing.BrowserTestCase):
