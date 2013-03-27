@@ -46,7 +46,7 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         # we're back to the 'before' state
         s.waitForElementPresent('id=metadata-b.copyrights')
-        s.assertValue('id=metadata-b.copyrights', '')
+        s.waitForValue('id=metadata-b.copyrights', '')
         s.assertElementNotPresent('css=.editable p')
 
     def test_undo_tab_is_not_shown_in_repository(self):
