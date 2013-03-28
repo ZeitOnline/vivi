@@ -38,7 +38,6 @@ class EntryListRepresentation(object):
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     __name__ = None
-    type = 'reference'
 
     def __init__(self, context, list_repr, name):
         self.context = context

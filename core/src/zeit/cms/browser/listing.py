@@ -24,8 +24,6 @@ logger = logging.getLogger('zeit.cms.browser.listing')
 
 class BaseListRepresentation(object):
 
-    type = None
-
     def __init__(self, context, request):
         self.context = context
         self.request = request
@@ -64,6 +62,11 @@ class BaseListRepresentation(object):
             return None
         return getattr(times, attribute)
 
+    @property
+    def type(self):
+        type_decl = zeit.cms.interfaces.ITypeDeclaration(self.context, None)
+        if type_decl:
+            return type_decl.type_identifier
 
 class CommonListRepresentation(BaseListRepresentation):
     """Common properties of list representations."""
