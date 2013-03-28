@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import persistent
-import rwproperty
 import zeit.cms.clipboard.interfaces
 import zeit.cms.interfaces
 import zope.app.container.contained
@@ -20,11 +19,11 @@ class Entry(zope.app.container.contained.Contained,
     def __init__(self, references):
         self.references = references
 
-    @rwproperty.getproperty
+    @property
     def references(self):
         return zeit.cms.interfaces.ICMSContent(self._value, None)
 
-    @rwproperty.setproperty
+    @references.setter
     def references(self, references):
         if not zeit.cms.interfaces.ICMSContent.providedBy(references):
             raise TypeError("Referenced object must provide ICMSContent.")
