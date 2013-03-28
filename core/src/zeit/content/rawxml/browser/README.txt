@@ -33,19 +33,10 @@ We're now at the edit page:
 In the edited documents panel we see the title of the object and its icon:
 
 >>> print browser.contents
-<?xml ...
-  <tr>
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-content-rawxml-interfaces-IRawXML-zmi_icon.png" alt="RawXML" width="18" height="18" border="0" />
-    </td>
-    <td>
-      <a href="http://localhost/++skin++cms/workingcopy/zope.user/rawxml/...">This is raw feed foo</a>
-    </td>
-    <td>
-      <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/rawxml</span><span class="uniqueId">http://xml.zeit.de/rawxml</span>
-    </td>
-  </tr>
-  ...
+<...
+    <li class="draggable-content type-rawxml">
+      <img src="...IRawXML-zmi_icon.png"...
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/rawxml/...">This is raw feed foo</a>...
 
 The xml is pretty printed:
 
