@@ -2,7 +2,11 @@
 Infobox
 =======
 
-Lets create an infobox[#browser]_:
+>>> from zope.testbrowser.testing import Browser
+>>> browser = Browser()
+>>> browser.addHeader('Authorization', 'Basic user:userpw')
+
+Lets create an infobox:
 
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> menu = browser.getControl(name='add_menu')
@@ -101,10 +105,3 @@ Make sure an infobox has a default view:
 <?xml ...
     <title> Altersvorsorge – View infobox </title>
     ...
-
-
-.. [#browser] Create a testbrowser first:
-
-    >>> from zope.testbrowser.testing import Browser
-    >>> browser = Browser()
-    >>> browser.addHeader('Authorization', 'Basic user:userpw')
