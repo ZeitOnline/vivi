@@ -84,7 +84,7 @@ class IListRepresentation(zope.interface.Interface):
 
     __name__ = zope.interface.Attribute("File name")
     uniqueId = zope.interface.Attribute("Unique ID in repository.")
-    url = zope.schema.URI(title=u"URL to the object in the CMs.")
+    url = zope.schema.URI(title=u"URL to the object in the CMS.")
     context = zope.interface.Attribute("Represended object.")
     type = zope.interface.Attribute(u"Resource type (if known).")
 
