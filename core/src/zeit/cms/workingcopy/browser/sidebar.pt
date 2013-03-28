@@ -1,18 +1,15 @@
 <div xmlns:panel="http://namespaces.gocept.com/panel"
-  tal:define="panel_id string:WorkingcopyPanel;
-              panel_handlers nocall:context/@@panel_handlers;
-              documents view/table;
-              workingcopy view/workingcopy;
-              workingcopy_url workingcopy/@@absolute_url"
-  tal:attributes="class python:panel_handlers.css_class(panel_id);
-                  id panel_id"
+     tal:define="panel_id string:WorkingcopyPanel;
+                 panel_handlers nocall:context/@@panel_handlers"
+     tal:attributes="class python:panel_handlers.css_class(panel_id);
+                     id panel_id"
   i18n:domain="zeit.cms"
   panel:flex="1">
 
   <h1>
     <a href="#"
-      tal:attributes="href workingcopy_url"
-      i18n:translate="">
+       tal:attributes="href view/workingcopy/@@absolute_url"
+       i18n:translate="">
       Edited documents
     </a>
   </h1>
@@ -26,7 +23,19 @@
         No edited documents.
       </div>
 
-      <div tal:condition="view/content" tal:content="structure view/table" />
+      <ul class="contentListing"
+          tal:condition="view/content">
+        <li tal:repeat="content view/content"
+            tal:attributes="
+              class string:draggable-content ${content/css_class}">
+          <img tal:replace="structure content/obj/@@zmi_icon|nothing"/>
+          <a tal:attributes="href string:${content/url}/@@edit.html"
+             tal:content="content/title">
+            Title
+          </a>
+          <span class="uniqueId" tal:content="content/uniqueId"/>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

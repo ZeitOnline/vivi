@@ -23,39 +23,15 @@ import zope.viewlet.viewlet
 log = logging.getLogger(__name__)
 
 
-class Sidebar(zope.viewlet.viewlet.ViewletBase,
-              zeit.cms.browser.listing.Listing):
+class Sidebar(zope.viewlet.viewlet.ViewletBase):
     """view class for navtree"""
-
-    css_class = 'hasMetadata'
-
-    columns = (
-        zeit.cms.browser.listing.TypeColumn(u''),
-        zeit.cms.browser.column.LinkColumn(
-            title=_('Title'),
-            getter=lambda i, f: i.context,
-            cell_formatter=lambda v, i, f: i.title or i.__name__,
-            css_class=lambda v, i, f: i.type,
-            view='@@edit.html'),
-        zeit.cms.browser.listing.MetadataColumn(searchable_text=False),
-        )
-
-    def render(self):
-        return self.index()
-
-    @property
-    def table(self):
-        formatter = zc.table.table.Formatter(
-            self.context, self.request, self.content, columns=self.columns)
-        formatter.cssClasses['table'] = self.css_class
-        return formatter
 
     @property
     def workingcopy(self):
         return zeit.cms.workingcopy.interfaces.IWorkingcopy(
             self.request.principal)
 
-    @property
+    @zope.cachedescriptors.property.Lazy
     def content(self):
         result = []
         for obj in self.workingcopy.values():
@@ -64,9 +40,21 @@ class Sidebar(zope.viewlet.viewlet.ViewletBase,
                 zeit.cms.browser.interfaces.IListRepresentation)
             if list_repr is None:
                 log.warning("Could not adapt %r to IListRepresentation",
-                               (obj, ))
-            else:
-                result.append(list_repr)
+                            (obj, ))
+                continue
+            css_class = []
+            if list_repr.type:
+                css_class.append('type-' + list_repr.type)
+            if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(
+                obj):
+                css_class.append('reference')
+            result.append(dict(
+                css_class=' '.join(css_class),
+                obj=obj,
+                title=list_repr.title or list_repr.__name__,
+                uniqueId=list_repr.uniqueId,
+                url=list_repr.url,
+            ))
         return result
 
 

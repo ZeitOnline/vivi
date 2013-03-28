@@ -43,23 +43,14 @@ Checking out redirected us to the document *in* the working copy:
 The sidebar lists the document now:
 
 >>> print browser.contents
-<?xml ...
-<!DOCTYPE html ...
-  <tbody>
-  <tr>
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-      <a class="unknown" href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@edit.html">Somalia</a>
-    </td>
-    <td>
-      <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/Somalia</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</span>
-    </td>
-  </tr>
-  </tbody>
-</table>
-...
+<...
+<div...id="WorkingcopyPanel"...
+  <ul class="contentListing">
+    <li class="draggable-content type-unknown">
+      <img src="...zmi_icon.png"...
+      <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@edit.html">Somalia</a>
+      <span class="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</span>
+      ...
 
 
 The functionality to show the original of a workingcopy was deleted. But it
@@ -172,34 +163,9 @@ the first. Checkout two documents:
 >>> browser.getLink('Checkout').click()
 
 >>> print browser.contents
-<?xml ...
-<!DOCTYPE html ...
-  <tbody>
-  <tr>
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-      <a class="unknown" href="http://localhost/++skin++cms/workingcopy/zope.user/studiVZ/@@edit.html">studiVZ</a>
-    </td>
-    <td>
-      <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/studiVZ</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/studiVZ</span>
-    </td>
-  </tr>
-  <tr>
-    <td>
-      <img src="http://localhost/++skin++cms/@@/zeit-cms-repository-interfaces-IUnknownResource-zmi_icon.png" alt="UnknownResource" width="20" height="20" border="0" />
-    </td>
-    <td>
-      <a class="unknown" href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@edit.html">Somalia</a>
-    </td>
-    <td>
-      <span class="URL">http://localhost/++skin++cms/workingcopy/zope.user/Somalia</span><span class="uniqueId">http://xml.zeit.de/online/2007/01/Somalia</span>
-    </td>
-  </tr>
-  </tbody>
-</table>
-...
+<...
+  <a href="http://localhost/++skin++cms/workingcopy/zope.user/studiVZ/@@edit.html">studiVZ</a>...
+  <a href="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@edit.html">Somalia</a>...
 
 
 Object browser

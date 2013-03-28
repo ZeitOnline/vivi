@@ -23,6 +23,27 @@
   font-size: 0.8em;
 }
 
+
+ul.contentListing {
+  cursor: default;
+  list-style: none;
+  padding: 0;
+}
+
+ul.contentListing > li {
+  clear: both;
+  margin-bottom: 1em;
+}
+
+ul.contentListing > li > a {
+  display: block;
+  margin-left: 28px;
+}
+
+ul.contentListing > li > img {
+  float: left;
+}
+
 /* don't display the filter column */
 .hasMetadata > thead > tr > th:last-child,
 .hasMetadata > tbody > tr > td:last-child {
@@ -109,15 +130,8 @@ table.properties textarea {
 
 
 /* Checked out documents panel */
-#WorkingcopyPanel table {
-  width: 100%;
-  border: none;
-}
-#WorkingcopyPanel table > thead {
-    display: none;
-}
 
-#WorkingcopyPanel a.reference {
+#WorkingcopyPanel .reference a {
   color: #888;
 }
 
