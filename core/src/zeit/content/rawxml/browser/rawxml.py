@@ -17,6 +17,7 @@ class ListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     author = ressort = page = volume = year = None
+    type = 'rawxml'
 
     @property
     def title(self):
