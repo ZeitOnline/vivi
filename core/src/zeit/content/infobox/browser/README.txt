@@ -11,7 +11,6 @@ Lets create an infobox:
 >>> browser.open('http://localhost/++skin++cms/repository/online/2007/01')
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Infobox']
->>> browser.handleErrors = False
 >>> browser.open(menu.value[0])
 
 We are now at the add form. Set the filename:
