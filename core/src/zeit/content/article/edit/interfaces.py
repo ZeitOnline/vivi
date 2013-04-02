@@ -97,6 +97,7 @@ class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=VideoLayoutSource(),
+        default=u'large',
         required=False)
 
     # XXX it would be nice if could somehow express that IVideo actually

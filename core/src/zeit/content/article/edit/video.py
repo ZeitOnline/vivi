@@ -33,6 +33,12 @@ class Video(zeit.edit.block.SimpleElement):
         '.', 'is_empty',
         zeit.content.article.edit.interfaces.IReference['is_empty'])
 
+    def __init__(self, *args, **kw):
+        super(Video, self).__init__(*args, **kw)
+        if self.layout is None:
+            self.layout = zeit.content.article.edit.interfaces.IVideo[
+                'layout'].default
+
     @property
     def video(self):
         return zeit.cms.interfaces.ICMSContent(self.xml.get('href'), None)
