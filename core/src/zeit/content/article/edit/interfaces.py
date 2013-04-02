@@ -146,6 +146,7 @@ class IImage(IReference, ILayoutable):
     layout = zope.schema.Choice(
         title=_('Layout'),
         source=ImageLayoutSource(),
+        default=u'large',
         required=False)
 
     custom_caption = zope.schema.Text(
