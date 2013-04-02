@@ -35,6 +35,12 @@ class Image(zeit.content.article.edit.reference.Reference):
         '.', 'set-manually',
         zeit.content.article.edit.interfaces.IImage['set_manually'])
 
+    def __init__(self, *args, **kw):
+        super(Image, self).__init__(*args, **kw)
+        if self.layout is None:
+            self.layout = zeit.content.article.edit.interfaces.IImage[
+                'layout'].default
+
     @property
     def references(self):
         # the IXMLReference of type 'image' could be for both,
