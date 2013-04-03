@@ -639,7 +639,6 @@ class Connector(object):
             self.changeProperties(id, properties, locktoken=locktoken)
         finally:
             if autolock and locktoken:  # This was _our_ lock. Cleanup:
-
                 self.unlock(id, locktoken=locktoken)
             else:
                 self._invalidate_cache(id)
