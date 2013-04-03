@@ -4,6 +4,9 @@ CHANGES
 1.26.1 (unreleased)
 -------------------
 
+- Added clean-up for MOVE on abort: A MOVE is un-done by the reverse MOVE
+  operation on transaction abort. (#12252)
+
 - Added automagic conflict resolution for MOVE (#12139)
 
 

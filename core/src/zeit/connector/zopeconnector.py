@@ -63,6 +63,12 @@ class ZopeConnector(zeit.connector.connector.Connector):
                                               False)
         return locktoken
 
+    def move(self, old_id, new_id):
+        super(ZopeConnector, self).move(old_id, new_id)
+        # Only register clean up if move didn't fail:
+        self.get_datamanager().add_cleanup(
+            super(ZopeConnector, self).move, new_id, old_id)
+
     @property
     def body_cache(self):
         return zope.component.getUtility(
