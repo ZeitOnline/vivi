@@ -190,6 +190,6 @@ def invalidate_cache(event):
     try:
         connector.invalidate_cache(event.id)
     except ValueError:
-        # The connector isn't responsible for the id, or die id  is just plain
+        # The connector isn't responsible for the id, or the id is just plain
         # invalid. There is nothing to invalidate then anyway.
         pass

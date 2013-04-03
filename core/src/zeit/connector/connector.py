@@ -1,62 +1,4 @@
-# connector.py implementation of connector.py, based on
-# gocept's functional sketch (connector.py)
-# 2007-03-16 tomas
 """Connect to the CMS backend."""
-#      RESOLVED: the id gets the standard prefix "http://xml.zeit.de/"
-
-# NOTES, QUESTIONS
-# [1]  Connector's __init__ has a named parameter <root> pointing to
-#      the repository root URL (class-wide default provided for
-#      compatibility to the stub, but I think parameter should be
-#      mandatory).
-# [2]  Exception for DAVNoCollectionError? Other exceptions?
-# [3]  What is _make_id() supposed to do? Can we use url as id?
-#      Is (given a connector's context) path and url interchangeable?
-#      [RESOLVED] See [8]
-# [3a] Even more so here. If we take the URL as id as seems to be the
-#      current consensus (ugh!), what would mean to put a resource with
-#      an id of "http://north.zeit.de/cms/foo/bar" into a repos rooted
-#      at "http://south.zeit.de/cms2/"?
-# [4]  See "Performance notes"
-# [5]  Having a set of assorted strings as possible resource types
-#      ('collection', 'article', 'centerpage', 'feed'...) looks horribly
-#      naive.
-# [6]  Check whether we need this. I don't quite understand
-# [7]  Hrrgrr. davresource.py has create_file and create_collection methods.
-#      We'll have to extend them to take attributes (transaction safety!)
-# [7a] Where are the props on IResource?
-# [8]  The id of a resource is its path counted from the repository's root.
-#      For now, we assume it to be the same as the connector's root, which
-#      is WRONG and should be fixed at some point.
-#      RESOLVED: the id gets the standard prefix "http://xml.zeit.de/"
-#      which may be overridden at Connector creation time.
-# [9]  WebDAV can lock "non-existing" resources. To be more precise, it
-#      locks URLs. This does make sense when trying to avoid race conditions
-#      at resource creation.
-#      But then we'll have to enhance davresource.py
-#      [RESOLVED] Well. Partially. To wit:
-#                 * "file" resources support, as of current mod_dav lock-null.
-#                    We do use that in the case of file resources.
-#                 * mod_dav behaves bizarrely with lock-null then mkcol.
-#                    We do live with a "locking gap" when creating collections.
-#                 Note that lock-null seems to be on its way to deprecation
-#                 anyway. For me that means: avoid WebDAV for future projects.
-# [10] we'll have to enhance it anyway because it doesn't support setting
-#      lock expiry.
-#      [RESOLVED]
-# [11] Interface note: This implementation returns a lock token. The davclient
-#      implementation keeps a cache of "the" lock token for "this" DAV resource,
-#      but I fear our interface won't allow us to make use of that.
-#      Maybe if we stick a davresource to each resource object... but then many
-#      of the Connector methods would have to migrate to Resource anyway.
-# [13] LockingError: we have many variants of that. List them, refine?
-# [14] Here we try to decide whether to do a DAVCollection() or a DAVFile().
-#      We should rather fix pydavclient's DAVResource() to return the
-#      appropriate type (i.e. be an "abstract base class").
-#      Or something equivalent, like doing away with the Collection/File difference
-#      (which in my view would be more along WebDAV semantics)
-# [16] which content-type?
-# [17] Try to pass resource content around as IO object
 
 import cStringIO
 import datetime
@@ -79,10 +21,27 @@ import zope.cachedescriptors.property
 import zope.interface
 
 
+# IMPLEMENTATION NOTES:
+#
+# - Due to the way we implement IDs, we can "deduct" the ID of a
+#   resource's parent given the resource's ID (just chop off the
+#   last path's element).
+# 
+# - Resource ids all have a common prefix (default: http://xml.zeit.de/)
+#   Given the "correct" environment they might be interpreted as URL.
+#
+# - Double slashes whithin the path part are treated as single ones (analog
+#   to POSIX).
+# 
+# - Collection resources SHOULD end in slash, non-collections SHOULD NOT
+#   (not sure whether we should enforce it, but we comply with it).
+
+
 logger = logging.getLogger(__name__)
 
 # The property holding the "resource type".
 RESOURCE_TYPE_PROPERTY = zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY
+
 
 # Highest possible datetime value. We use datetime-with-timezone everywhere.
 # The MAXYEAR-1 is there to protect us from passing this bound when
@@ -92,22 +51,11 @@ TIME_ETERNITY = datetime.datetime(
 
 
 class DAVUnexpectedResultError(zeit.connector.dav.interfaces.DAVError):
-    """Exception raised on unexpected HTTP return code.
-    """
-    pass
+    """Exception raised on unexpected HTTP return code."""
 
-# id utilities
-# IMPLEMENTATION NOTE
-# Due to the way we implement IDs, we can "deduct" the ID of a
-# resource's parent given the resource's ID (just chop off the
-# last path's element). Some notes:
-# - Resource ids all have a common prefix (default: http://xml.zeit.de/
-#   Given the "correct" environment they might be interpreted as URL
-# - Double slashes whithin the path part are treated as single ones (analog to POSIX).
-# - Collection resources SHOULD end in slash, non-collections SHOULD NOT
-#   (not sure whether we should enforce it, but we comply with it).
 
 _max_timeout_days = ((sys.maxint-1) / 86400) - 1
+
 
 def _abs2timeout(time):
     # Convert timedelta to int (seconds). Return None when (near) overflow
@@ -138,7 +86,8 @@ class Connector(object):
 
     def __init__(self, roots={}, prefix=u'http://xml.zeit.de/'):
         # NOTE: roots['default'] should be defined
-        self._roots = roots # "extra" roots, a dict. ATM only xroots['search']
+        # "extra" roots, a dict. ATM only xroots['search']
+        self._roots = roots
         self._prefix = prefix
         self.connections = threading.local()
 
@@ -156,14 +105,13 @@ class Connector(object):
         logger.debug('New connection')
         url = self._roots[root]
         (scheme, netloc) = urlparse.urlsplit(url)[0:2]
-        snetloc = "%s://%s" % (scheme, netloc)
         try: # grmblmmblpython
             host, port = netloc.split(':', 1)
             port = int(port)
         except ValueError:
             host, port = netloc, None
-        # FIXME: Argh. DAVConnection should take schema as well!!!
-
+        # FIXME: DAVConnection should take schema as well. There is no HTTPS
+        # supported like this:
         return zeit.connector.dav.davconnection.DAVConnection(host, port)
 
     def disconnect(self):
@@ -563,9 +511,6 @@ class Connector(object):
         if not id.startswith(self._prefix):
             raise ValueError("Bad id %r (prefix is %r)" % (id, self._prefix))
         path = id[len(self._prefix):]
-        #if isinstance(path, unicode):
-        #    path = path.encode('utf8')
-        #path = urllib.quote(path)
         return self._roots['default'] + path
 
     def _loc2id(self, loc):
@@ -577,14 +522,13 @@ class Connector(object):
         if not loc.startswith(root):
             raise ValueError("Bad location %r (root is %r)" % (loc, root))
         path = loc[len(root):]
-        #path = unicode(urllib.unquote(path), 'utf8')
         return self._prefix + path
 
     def _internal_add(self, id, resource, verify_etag=True):
         """The grunt work of __setitem__() and add()
         """
         self._invalidate_cache(id)
-        locktoken = self._get_my_locktoken(id) #  FIXME [7] [16]
+        locktoken = self._get_my_locktoken(id)
         autolock = (locktoken is None)
         iscoll = (resource.type == 'collection'
                   or resource.contentType == 'httpd/unix-directory')
@@ -662,7 +606,7 @@ class Connector(object):
         hresp = zeit.connector.dav.davresource.DAVResource(
             url, conn=self.get_connection()).head()
         if not hresp:
-            return None # FIXME throw exception?
+            return None  # FIXME throw exception?
         hresp.read()
         st = int(hresp.status)
         if  st== httplib.OK:
@@ -676,13 +620,12 @@ class Connector(object):
     def _get_dav_resource(self, id, ensure=None):
         """returns resource corresponding to <id>, which see [8],
         <ensure> may be 'file' or 'collection'"""
-        # FIXME [14] Make DAVResource() return appropriate sub-type
         url = self._id2loc(id)
-        # FIXME here, we tacitly assume that URIs ending with '/' MUST
-        # be collections. This ain't strictly right
+        # NOTE: We tacitly assume that URIs ending with '/' MUST
+        # be collections. This ain't strictly right, but is sufficient.
         wantcoll = (ensure == 'collection' or url.endswith('/'))
         if wantcoll:
-            klass = res = zeit.connector.dav.davresource.DAVCollection
+            klass = zeit.connector.dav.davresource.DAVCollection
         elif ensure == 'file':
             klass = zeit.connector.dav.davresource.DAVFile
         else:
