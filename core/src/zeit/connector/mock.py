@@ -218,8 +218,8 @@ class Connector(object):
                 self[old_id].data.read() != self[new_id].data.read()):
                 raise zeit.connector.interfaces.MoveError(
                     old_id,
-                    "Could not move %s to %s, because target alread exists." % (
-                        old_id, new_id))
+                    "Could not move %s to %s, because target alread exists." %
+                    (old_id, new_id))
         self._ignore_uuid_checks = True
         r = self[old_id]
         r.id = new_id
@@ -232,7 +232,6 @@ class Connector(object):
         for name, uid in self.listCollection(old_id):
             self.move(uid, urlparse.urljoin(new_id, name))
         del self[old_id]
-
 
     def changeProperties(self, id, properties):
         properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
