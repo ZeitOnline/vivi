@@ -4,6 +4,8 @@ zeit.cms changes
 editor-ng branch changes
 ------------------------
 
+- Fix genratting of tags (#12254)
+
 - Fix autosaving of forms when user clicks on a DOM node inside the form
   container (#12211).
 

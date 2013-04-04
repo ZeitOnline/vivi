@@ -91,7 +91,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.open_content()
         s = self.selenium
         tags['t1'] = self.get_tag('t1')
-        s.click('css=a[href="#update_tags"]')
+        s.click('name=update_tags')
         s.waitForTextPresent('t1')
         self.assertTrue(self.tagger().update.called)
 
@@ -99,7 +99,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click('css=a[href="#update_tags"]')
+        s.click('update_tags')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
         s.assertChecked('id=form.keywords.0')
@@ -113,6 +113,6 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
             self.setup_tags('t1', 't2', 't3')
             self.open_content()
             s = self.selenium
-            s.click('css=a[href="#update_tags"]')
+            s.click('update_tags')
             s.waitForCssCount('css=.fieldname-keywords li.not-shown', 1)
             s.waitForCssCount('css=.fieldname-keywords li.shown', 2)

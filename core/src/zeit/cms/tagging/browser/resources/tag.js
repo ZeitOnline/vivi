@@ -32,8 +32,8 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
 
     handle_click: function(event) {
         var self = this;
-        if (event.target().nodeName == 'A' &&
-            event.target().hash == '#update_tags') {
+        if (event.target().nodeName === 'INPUT' &&
+            event.target().name === 'update_tags') {
             event.stop();
             self.update_tags();
         }

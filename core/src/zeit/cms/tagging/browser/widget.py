@@ -52,8 +52,8 @@ class Widget(grokcore.component.MultiAdapter,
 
         contents.append(self._div('value', self.renderValue(value)))
         contents.append(self._div(
-            'update', '<a class="button" href="#update_tags">%s</a>'
-            % xml.sax.saxutils.escape(self.translate(_('Update tags'))),
+            'update', '<input type="button" name="update_tags" value=%s />'
+            % xml.sax.saxutils.quoteattr(self.translate(_('Update tags'))),
             id="%s.update" % self.name))
         contents.append(self._emptyMarker())
         if self.show_helptext:
