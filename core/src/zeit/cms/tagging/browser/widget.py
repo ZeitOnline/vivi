@@ -17,6 +17,14 @@ import zope.formlib.widget
 import zope.schema.interfaces
 
 
+get_init_widget_js = """\
+<script type="text/javascript">
+ var widget = new zeit.cms.tagging.Widget(
+ "{name}", {keywords_shown}, {tags});
+</script>
+""".format
+
+
 class Widget(grokcore.component.MultiAdapter,
              zope.formlib.source.SourceMultiCheckBoxWidget):
     """Widget to edit tags on context.
@@ -63,16 +71,10 @@ class Widget(grokcore.component.MultiAdapter,
         zc.resourcelibrary.need('zeit.cms.tagger')
         list_container = u'<ol id={0}></ol>'.format(
             xml.sax.saxutils.quoteattr(self.name + ".list"))
-        javascript = """\
-<script type="text/javascript">
- var widget = new zeit.cms.tagging.Widget(
- "{name}", {keywords_shown}, {tags});
-</script>
-""".format(
-name=self.name,
-keywords_shown=KEYWORD_CONFIGURATION.keywords_shown,
-tags=json.dumps(self.renderItems(value)),
-        )
+        javascript = get_init_widget_js(
+            name=self.name,
+            keywords_shown=KEYWORD_CONFIGURATION.keywords_shown,
+            tags=json.dumps(self.renderItems(value)))
         return list_container + javascript
 
     def _renderItem(self, index, text, value, name, cssClass, checked=False):
