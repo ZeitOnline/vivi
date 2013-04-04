@@ -600,6 +600,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.block.block_ids = self.edited_paragraphs;
             });
             d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
+            return d;
         });
     },
 
