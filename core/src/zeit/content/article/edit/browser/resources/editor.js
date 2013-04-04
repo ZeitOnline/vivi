@@ -311,7 +311,6 @@ zeit.content.article.Editable = gocept.Class.extend({
     update_toolbar: function() {
         var self = this;
         var element = self.get_selected_container();
-        log('got', element.nodeName);
 		if (element.nodeType == element.TEXT_NODE) {
             element = element.parentNode;
         }
@@ -320,7 +319,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             MochiKit.DOM.removeElementClass(action, 'active');
         });
         while(!isNull(element) && element != self.editable) {
-            log('checking', element.nodeName);
             forEach(MochiKit.DOM.getElementsByTagAndClassName(
                 'a', null, self.toolbar), function(action) {
                 if (action.innerHTML == element.nodeName) {
@@ -767,7 +765,6 @@ zeit.content.article.Editable = gocept.Class.extend({
     shortcuts: function() {
       var self = this;
       $("#editable-body").keydown(function(e) {
-        console.log(e);
         if (e.ctrlKey || e.metaKey) {
             if (e.which == 66) {
                 e.preventDefault();
