@@ -1,4 +1,5 @@
 (function() {
+"use strict";
 
 var nbsp = ' ';
 
@@ -41,6 +42,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
     populate_keywords: function(tags) {
         var self = this;
         var id;
+        var tag;
         self.list.innerHTML = '';
         for(var i=0; i<tags.length; i++) {
             id = self.id + "." + i;
