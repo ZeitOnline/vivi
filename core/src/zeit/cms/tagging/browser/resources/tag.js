@@ -50,6 +50,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             var input_attrs = {
                 name: self.id,
                 id: id,
+                'class': 'hidden',
                 type: 'checkbox',
                 value: tag.code};
            if (!tag.disabled) {
