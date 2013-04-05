@@ -91,6 +91,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
     SUBMIT_DELAY_FOR_FOCUS: 0.01,
     focus_node: null,
     mouse_down: false,
+    delay_submit: false,
 
     construct: function(url, container, options) {
         var self = this;
@@ -111,15 +112,17 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 if (self.is_input(event.target) &&
                         !self.mouse_down) {
                     self.fire_submit();
+                } else {
+                    self.delay_submit = true;  // delay until mouse up.
                 }
-
             });
             self.bind(self.container, 'mousedown', function(event) {
                 self.mouse_down = true;
             });
             self.bind(self.container, 'mouseup', function(event) {
                 self.mouse_down = false;
-                if (!self.is_input(event.target)) {
+                if (!self.is_input(event.target) &&
+                    self.delay_submit) {
                     self.fire_submit();
                 }
             });
@@ -238,6 +241,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     fire_submit: function() {
         var self = this;
+        self.delay_submit = false;
         MochiKit.Async.callLater(self.SUBMIT_DELAY_FOR_FOCUS, function() {
             // If a field of our form has the focus now, we don't want to
             // interrupt the user by saving.
