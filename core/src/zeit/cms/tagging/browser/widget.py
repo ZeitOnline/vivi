@@ -14,6 +14,7 @@ import zope.formlib.interfaces
 import zope.formlib.itemswidgets
 import zope.formlib.source
 import zope.formlib.widget
+import zope.lifecycleevent
 import zope.schema.interfaces
 
 
@@ -87,6 +88,7 @@ class UpdateTags(zeit.cms.browser.view.JSON):
     def json(self):
         tagger = zeit.cms.tagging.interfaces.ITagger(self.context)
         tagger.update()
+        zope.lifecycleevent.modified(self.context)
         return dict(tags=[
             dict(code=tag.code,
                  label=tag.label)
