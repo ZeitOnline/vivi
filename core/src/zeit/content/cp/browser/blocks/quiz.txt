@@ -45,7 +45,7 @@ The source of a quiz block:
 >>> print browser.getControl('XML Source').value
 <...
 <container cp:type="quiz" module="quiz" cp:__name__="03299ac7-949a-42ee-ae9c-9defe891fff1">
-  <block type="intern" href="http://xml.zeit.de/my_quiz"...>
+  <block type="intern" href="http://xml.zeit.de/my_quiz" contenttype="quiz"...>
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
     <text xsi:nil="true"/>
