@@ -295,15 +295,22 @@ zeit.cms.follow_with_lock = function(element) {
     MochiKit.Async.callLater(
         zeit.cms.SubPageForm.SUBMIT_DELAY_FOR_FOCUS + 0.1,
         function() {
-            zeit.cms.with_lock(function(url, new_window) {
-                console.log('zeit.cms.follow_with_lock ', url);
-                if (new_window) {
-                    window.open(url, new_window);
+            var d = zeit.cms.request_lock.acquire();
+            d.addCallback(function() {
+                console.log('zeit.cms.follow_with_lock ', element.href);
+                if (element.target) {
+                    window.open(element.href, element.target);
+                    zeit.cms.request_lock.release();
                 } else {
-                    window.location.href = url;
+                    window.location.href = element.href;
+                    // Don't release the lock when replacing the current
+                    // window. Opening the new page will implicitly reset
+                    // everything. In fact it is necessary to keep the lock to
+                    // prevent other requests to start until dispossing is
+                    // properly finished.
                 }
-        }, element.href, element.target);
-    });
+            });
+        });
 };
 
 (function($) {
