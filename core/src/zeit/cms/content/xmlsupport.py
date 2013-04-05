@@ -280,3 +280,9 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
             entry.set('issue', unicode(metadata.volume))
         if metadata.ressort:
             entry.set('ressort', unicode(metadata.ressort))
+        try:
+            type_decl = zeit.cms.interfaces.ITypeDeclaration(self.context)
+        except TypeError:
+            return
+        if type_decl.type_identifier:
+            entry.set('contenttype', unicode(type_decl.type_identifier))
