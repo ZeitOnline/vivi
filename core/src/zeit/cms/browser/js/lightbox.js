@@ -105,6 +105,19 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         self.events = [];
         self.bind(self.container, 'click', self.handle_click);
         if (self.save_on_change) {
+            // In general fields are saved, when they loose focus. But there
+            // are various exceptions from the rule:
+            //
+            // - When the user switches from one field to the other: This is
+            //   the obvious case.
+            // - When the mouse is still down: The old field looses focus after
+            //   mouse-down, but there are widgets containing buttons. The
+            //   button actions are evaluated on click (that is after
+            //   mouse-up). So special care must be taken to not submit while
+            //   the mouse is down.
+            // - Since we prevent saving while the mouse is down, chances are
+            //   that we need to save on mouse up, when a field lost focus
+            //   before.
             self.bind(self.container, 'change', self.mark_dirty);
             self.bind(self.container, 'focusin', self.store_focus);
             self.bind(self.container, 'focusout', function(event) {
