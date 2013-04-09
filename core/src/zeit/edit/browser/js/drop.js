@@ -59,7 +59,7 @@ zeit.edit.drop.Droppable = gocept.Class.extend({
                 MochiKit.Base.extend(accept, handler.accept);
             }
         });
-        self.droppable = new MochiKit.DragAndDrop.Droppable(droppable_element, {
+        self.droppable = new zeit.cms.ContentDroppable(droppable_element, {
             accept: accept,
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',

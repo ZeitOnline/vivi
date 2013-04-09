@@ -42,3 +42,10 @@ class DragIntegration(zeit.edit.testing.SeleniumTestCase):
         self.eval('zeit.edit.editor.reload("cp-content-inner", "contents");')
         self.wait_for_condition('!zeit.edit.editor.busy')
         s.waitForElementPresent('css=.landing-zone.droppable-active')
+
+    def test_landing_zones_not_activated_by_dragging_typed_non_content(self):
+        s = self.selenium
+        draggable = 'css=#drag-baz'
+        s.mouseDown(draggable)
+        s.mouseMoveAt(draggable, '10,10')
+        s.assertElementNotPresent('css=.landing-zone.droppable-active')

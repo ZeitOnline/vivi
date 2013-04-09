@@ -15,9 +15,15 @@
     style="display: none">http://xml.zeit.de/2007</span>
   Drag bar
 </div>
+<div id="drag-baz" class="type-foo">
+  <span class="uniqueId"
+    style="display: none">http://xml.zeit.de/testcontent</span>
+  Drag foo
+</div>
 <script type="text/javascript">
   zeit.cms.createDraggableContentObject('drag-foo');
   zeit.cms.createDraggableContentObject('drag-bar');
+  MochiKit.DragAndDrop.Draggable('drag-baz');
   zeit.edit.drop.registerContentHandler({
       accept: ['type-foo'],
       activated_by: 'foo-droppable'
