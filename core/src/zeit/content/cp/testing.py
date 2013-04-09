@@ -132,7 +132,8 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         self.selenium.windowMaximize()
 
     def get_module(self, area, text):
-        return ('xpath=//div[@class="module %s-module"]'
+        return ('xpath=//div'
+                '[@class="module represents-content-object %s-module"]'
                 '[contains(string(.), "%s")]' % (area, text))
 
     def open_centerpage(self):

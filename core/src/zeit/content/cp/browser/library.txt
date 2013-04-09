@@ -10,7 +10,7 @@ are transmitted in JSON[#setup]_:
 >>> browser.handleErrors = False
 >>> browser.open('informatives/@@block-factories.json')
 >>> pprint.pprint(json.loads(browser.contents))
-{u'factories': [{u'css': u'module informatives-module',
+{u'factories': [{u'css': u'module represents-content-object informatives-module',
                 u'image': u'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
                 u'title': u'Audioblock',
                 u'type': u'audio'},
@@ -37,7 +37,7 @@ After creating a teaser bar, blocks are offered:
 >>> browser.open(cp_url)
 >>> browser.open('teaser-mosaic/@@block-factories.json')
 >>> pprint.pprint(json.loads(browser.contents))
-{u'factories': [{u'css': u'module teaser-mosaic-module',
+{u'factories': [{u'css': u'module represents-content-object teaser-mosaic-module',
                 u'image': u'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
                 u'title': u'Audioblock',
                 u'type': u'audio'},
@@ -50,7 +50,7 @@ One can also ask for blocks which can be added on the CP in general:
 >>> browser.open(cp_url)
 >>> browser.open('@@block-factories.json')
 >>> pprint.pprint(json.loads(browser.contents))
-{u'factories': [{u'css': u'module informatives-module teaser-mosaic-module',
+{u'factories': [{u'css': u'module represents-content-object informatives-module teaser-mosaic-module',
                 u'image': u'http://localhost/++skin++cms/@@/zeit.content.cp/module-audio.png',
                 u'title': u'Audioblock',
                 u'type': u'audio'},
