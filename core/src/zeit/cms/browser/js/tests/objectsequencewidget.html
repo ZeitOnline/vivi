@@ -26,9 +26,15 @@
         style="display: none">http://xml.zeit.de/2007</span>
       Drag-2
     </div>
+    <div id="drag3" class="type-foo">
+      <span class="uniqueId"
+        style="display: none">http://xml.zeit.de/2007</span>
+      Drag-3
+    </div>
     <script type="text/javascript">
       zeit.cms.createDraggableContentObject('drag');
       zeit.cms.createDraggableContentObject('drag2');
+      new MochiKit.DragAndDrop.Draggable(Mochikit.DOM.getElement('drag3'));
     </script>
   </body>
 </html>

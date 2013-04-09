@@ -23,7 +23,7 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
         self.changed = false;
         self.parent_component = parent_component;
 
-        self.droppable = new MochiKit.DragAndDrop.Droppable(self.element, {
+        self.droppable = new zeit.cms.ContentDroppable(self.element, {
             accept: ['content-drag-pane', 'uniqueId'],
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',
@@ -216,7 +216,7 @@ zeit.cms.ObjectReferenceSequenceWidget = gocept.Class.extend({
         var droppable_element = MochiKit.Selector.findChildElements(
             self.element,
             ['> table.sequencewidget > tbody > tr:last-child'])[0];
-        self.droppable = new MochiKit.DragAndDrop.Droppable(droppable_element, {
+        self.droppable = new zeit.cms.ContentDroppable(droppable_element, {
             accept: ['content-drag-pane', 'uniqueId'],
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',

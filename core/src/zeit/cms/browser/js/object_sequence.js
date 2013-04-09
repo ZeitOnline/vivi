@@ -27,7 +27,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
             MochiKit.Signal.connect(
                 self.url_input, 'onchange', self, self.handleUrlChange);
         }
-        new MochiKit.DragAndDrop.Droppable(self.element, {
+        new zeit.cms.ContentDroppable(self.element, {
             accept: accept,
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',
@@ -280,7 +280,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
             'div', 'object-reference', self.element);
         self.url_input = $(self.element + '.url');
 
-        new MochiKit.DragAndDrop.Droppable(self.element, {
+        new zeit.cms.ContentDroppable(self.element, {
             accept: self.accept,
             activeclass: 'droppable-active',
             hoverclass: 'hover-content',

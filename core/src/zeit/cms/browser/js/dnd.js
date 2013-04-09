@@ -18,8 +18,36 @@ zeit.cms.createDraggableContentObject = function(element, options) {
     element.drop_query_args = drop_query_args;
     // mark so draggable event handlers (below) can recognize it
     element.is_content_object = true;
+    MochiKit.DOM.addElementClass(element, 'represents-content-object');
     return new MochiKit.DragAndDrop.Draggable(element, default_options);
 };
+
+
+zeit.cms.ContentDroppable = function(element, options) {
+    // XXX Code copied from MochiKit.DragAndDrop.
+    var cls = arguments.callee;
+    if (!(this instanceof cls)) {
+        return new cls(element, options);
+    }
+    this.__init__(element, options);
+};
+
+zeit.cms.ContentDroppable.prototype = {};
+MochiKit.Base.update(zeit.cms.ContentDroppable.prototype,
+                     MochiKit.DragAndDrop.Droppable.prototype);
+MochiKit.Base.update(zeit.cms.ContentDroppable.prototype, {
+    isAccepted: function(element) {
+        if (!(MochiKit.DOM.hasElementClass(element, 'represents-content-object') ||
+              MochiKit.DOM.hasElementClass(element, 'content-drag-pane'))
+             ) {
+            return false;
+        }
+        return ((!this.options.accept) || MochiKit.Iter.some(
+            this.options.accept, function (c) {
+                return MochiKit.DOM.hasElementClass(element, c);
+            }));
+    }
+});
 
 
 /**

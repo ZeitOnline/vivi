@@ -233,6 +233,13 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
         s.waitForElementPresent('css=li.element[index=1]')
 
+    def test_widget_should_not_insert_dropped_non_object_draggables(self):
+        s = self.selenium
+        s.assertElementNotPresent('css=li.element')
+        s.dragAndDropToObject('id=drag3', 'id=testwidget')
+        s.pause(1)
+        s.assertElementNotPresent('css=li.element')
+
     def test_drop_should_create_hidden_field_with_unique_id(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
