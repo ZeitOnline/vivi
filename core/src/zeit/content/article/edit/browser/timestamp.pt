@@ -1,4 +1,6 @@
     <p i18n:domain="zeit.cms">
       <tal:translate i18n:translate="">Current timestamp:</tal:translate>
-      <span class="timer" />
+      <span tal:condition="not:view/show_semantic_change" class="timer" />
+      <span tal:condition="view/show_semantic_change"
+            tal:content="view/last_semantic_change" class="timestamp" />
     </p>

@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import json
 import mock
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
@@ -137,6 +138,20 @@ class WorkflowButtons(object):
     def has_semantic_change(self):
         return zeit.cms.content.interfaces.ISemanticChange(
             self.context).has_semantic_change
+
+
+class Timestamp(object):
+
+    def show_semantic_change(self):
+        sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
+        return ((not sc.has_semantic_change) and
+                (sc.last_semantic_change is not None))
+
+    def last_semantic_change(self):
+        sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
+        if not sc.last_semantic_change:
+            return ''
+        return sc.last_semantic_change.strftime('%d.%m.%Y %H:%Mh')
 
 
 class ViewWidget(zope.formlib.widget.BrowserWidget):

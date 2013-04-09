@@ -816,6 +816,7 @@
   <browser:page
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".workflow.Timestamp"
     name="edit.form.timestamp"
     template="timestamp.pt"
     permission="zope.View"

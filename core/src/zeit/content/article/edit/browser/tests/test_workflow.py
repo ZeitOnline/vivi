@@ -29,7 +29,31 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
 class CheckinSelenium(
     zeit.content.article.edit.browser.testing.EditorTestCase):
 
-    def test_checkin_form_shows_current_timestamp(self):
+    def test_form_with_semantic_change_shows_current_timestamp(self):
+        s = self.selenium
+        self.open('/repository/online/2007/01/Somalia-Grill/@@checkout')
+        s.waitForElementPresent('id=publish.has_semantic_change')
+        s.click('id=publish.has_semantic_change')
+        s.waitForElementPresent('css=.timer')
+        s.waitForNotText('css=.timer', '')
+        date_format = '%d.%m.%Y %H:%Mh'
+        timestamp = datetime.datetime.now().strftime(date_format)
+        if s.getText('css=.timer') != timestamp:
+            # the minute has just changed, so we repeat with an updated
+            # timestamp but don't expect this to happen again anytime soon
+            timestamp = datetime.datetime.now().strftime(date_format)
+            s.assertText('css=.timer', timestamp)
+
+    def test_form_without_new_semantic_change_shows_last_timestamp(self):
+        s = self.selenium
+        self.open('/repository/online/2007/01/Somalia-Grill/@@checkout')
+        s.waitForElementPresent('css=.timestamp')
+        s.waitForNotText('css=.timestamp', '')
+        date_format = '%d.%m.%Y %H:%Mh'
+        timestamp = datetime.datetime(2007, 1, 1, 8, 53).strftime(date_format)
+        s.assertText('css=.timestamp', timestamp)
+
+    def test_form_without_last_semantic_change_shows_current_timestamp(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s.waitForElementPresent('css=.timer')
