@@ -24,7 +24,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
                     image = self.resources['module-default-image.png']
                 image = image()
                 types[name] = dict(
-                    css=['module'],
+                    css=['module', 'represents-content-object'],
                     image=image,
                     title=zope.i18n.translate(adapter.title,
                                               context=self.request),
