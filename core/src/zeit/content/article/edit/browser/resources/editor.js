@@ -185,6 +185,13 @@ zeit.content.article.Editable = gocept.Class.extend({
 
         var text_node = element;
         while (text_node[direction] !== null) {
+            // We need to avoid placing the cursor inside a br element since
+            // it is not possible to type in there and trying to do so leads
+            // to funny effects (#12266). The br element is put in this place
+            // in an effort to keep empty paragraphs editable while editing.
+            if (text_node[direction].nodeName === 'BR') {
+                break;
+            }
             text_node = text_node[direction];
         }
         var offset = 0;
@@ -392,6 +399,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             pos.x = tmp_pos.left;
             tmp_el.remove();
             if (par.children().length==0){
+                // allow empty paragraphs while editing
                 document.execCommand('insertHTML', false,'<br type="_moz" />');
             }
         } else {
