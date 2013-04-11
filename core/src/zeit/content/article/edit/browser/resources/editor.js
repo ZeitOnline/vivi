@@ -260,12 +260,30 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     init_linkbar: function() {
         var self = this;
+        self.href_input = INPUT(
+            {type: 'text', name: 'href', value: '',
+             placeholder: 'Verweisziel'});
+        self.mailto_input = INPUT(
+            {type: 'text', name: 'mailto', value: '',
+             placeholder: 'Empfängeradresse'});
+        self.subject_input = INPUT(
+            {type: 'text', name: 'subject', value: '',
+             placeholder: 'Betreff'});
+        self.service_select = SELECT(
+            {name: 'service'},
+            OPTION({value: 'web'}, 'Web'),
+            OPTION({value: 'mail'}, 'E-Mail'));
+        self.target_select = SELECT(
+            {name: 'target'},
+            OPTION({value: '_blank'}, 'Neues Fenster'),
+            OPTION({value: ''}, 'Gleiches Fenster'));
         self.link_input = self.editable.parentNode.insertBefore(
             DIV({'class': 'link_input hidden'},
-                INPUT({type: 'text', name: 'href', value: ''}),
-                SELECT({name: 'target'},
-                       OPTION({value: '_blank'}, 'Neues Fenster'),
-                       OPTION({value: ''}, 'Gleiches Fenster')),
+                self.href_input,
+                self.mailto_input,
+                self.subject_input,
+                self.service_select,
+                self.target_select,
                 BUTTON({name: 'insert_link_ok',
                         value: 'method'}, 'Setzen'),
                 BUTTON({name: 'insert_link_cancel',
@@ -284,13 +302,38 @@ zeit.content.article.Editable = gocept.Class.extend({
                                 'http://www.zeit.de/'));
                 }
             });
-        self.events.push(MochiKit.Signal.connect(
+        self.events.push(
+            MochiKit.Signal.connect(
+                self.service_select, 'onchange', function(event) {
+                    self.linkbar_switch_service($(self.service_select).val());
+                }),
+            MochiKit.Signal.connect(
             self.link_input, 'onkeydown', function(event) {
                 if (event.key().string == 'KEY_ENTER') {
                     self.insert_link_ok();
                     event.stop();
                 }
             }));
+    },
+
+    linkbar_switch_service: function(service) {
+        var self = this;
+        $(self.service_select).val(service);
+        $(self.href_input).hide();
+        $(self.mailto_input).hide();
+        $(self.subject_input).hide();
+        $(self.target_select).hide();
+        if (service === 'web') {
+            $(self.href_input).show();
+            $(self.target_select).show();
+            self.href_input.focus();
+        } else if (service === 'mail') {
+            $(self.mailto_input).show();
+            $(self.subject_input).show();
+            self.mailto_input.focus();
+        } else {
+            throw 'Not a valid service to link to: ' + service;
+        }
     },
 
     init_toolbar: function() {
@@ -688,11 +731,30 @@ zeit.content.article.Editable = gocept.Class.extend({
                 MochiKit.DOM.getFirstParentByTagAndClassName(
                     container, 'a', null);
         }
+        var service = 'web';
         var href = '';
         var target = '';
+        var mailto = '';
+        var subject = '';
         if (self.insert_link_node) {
             href = self.insert_link_node.getAttribute('href') || '';
             target = self.insert_link_node.getAttribute('target') || '';
+            var prefix = 'mailto:';
+            if (href.slice(0, prefix.length) === prefix) {
+                service = 'mail';
+                var q_index = href.indexOf('?');
+                if (q_index == -1) {
+                    mailto = href.slice(prefix.length);
+                } else {
+                    mailto = href.slice(prefix.length, q_index);
+                    var q = '?subject=';
+                    q_index = href.indexOf(q);
+                    if (q_index != -1) {
+                        subject = decodeURI(href.slice(q_index + q.length));
+                    }
+                }
+                href = '';
+            }
         } else {
             self.command('createLink', '#article-editor-create-link');
             self.insert_link_node = $(
@@ -701,8 +763,10 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
         $(self.insert_link_node).addClass('link-edit');
         if (!self.insert_link_node._just_created) {
-            $('*[name=href]', self.link_input).val(href);
-            $('*[name=target]', self.link_input).val(target);
+            $(self.href_input).val(href);
+            $(self.target_select).val(target);
+            $(self.mailto_input).val(mailto);
+            $(self.subject_input).val(subject);
         }
         var line_height = parseInt(
             $(self.insert_link_node).css('line-height').replace('px', ''));
@@ -710,14 +774,26 @@ zeit.content.article.Editable = gocept.Class.extend({
         $(self.link_input).css('top',
             (parseInt(position.top) + line_height) + 'px');
         $(self.link_input).removeClass('hidden');
-        $('*[name=href]', self.link_input).focus();
+        self.linkbar_switch_service(service);
         self.locked = true;
     },
 
     insert_link_ok: function() {
         var self = this;
-        var href = $('*[name=href]', self.link_input).val();
-        var target = $('*[name=target]', self.link_input).val();
+        var service = self.service_select.value;
+        var href = '';
+        var target = null;
+        if (service === 'web') {
+            href = $(self.href_input).val();
+            target = $(self.target_select).val();
+        } else {
+            var mailto = $(self.mailto_input).val();
+            var subject = $(self.subject_input).val();
+            href = 'mailto:' + mailto;
+            if (subject) {
+                href = href + '?subject=' + encodeURI(subject);
+            }
+        }
         self.insert_link_node.href = href;
         if (target) {
             self.insert_link_node.target = target;

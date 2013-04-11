@@ -689,7 +689,7 @@
   z-index: 1000;
 }
 
-.type-article .link_input input[name=href] {
+.type-article .link_input input {
   margin-bottom: 10px;
   width: 100%;
 }
@@ -698,8 +698,8 @@
    margin: 0 10px 0 10px;
 }
 
-.type-article .link_input select[name=target] {
-  margin-right: 25px;
+.type-article .link_input button[name=insert_link_ok] {
+  margin-left: 25px;
 }
 
 .type-article .create-paragraph p:empty:before,

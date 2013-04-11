@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -356,18 +357,18 @@ class TestLinkEditing(
         })(this);""")
         s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
 
-    def select_link(self, additional=''):
+    def select_link(self, additional='', href='http://example.com/'):
         s = self.selenium
         self.create(
-            ('<p>I want to <a href="http://example.com/" {0}>link</a> '
-             'something</p>').format(additional))
+            '<p>I want to <a href="{1}" {0}>link</a> something</p>'.format(
+                additional, href))
         s.getEval("""(function(s) {
             var p = s.browserbot.findElement('css=.block.type-p .editable p');
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p, 1);
             range.setEnd(p, 2);
         })(this);""")
-        s.assertElementPresent('xpath=//a[@href="http://example.com/"]')
+        s.assertElementPresent('xpath=//a[@href="{0}"]'.format(href))
 
     def test_links_should_be_addable(self):
         s = self.selenium
@@ -492,6 +493,77 @@ class TestLinkEditing(
         time.sleep(0.25)
         # Element still there
         s.assertElementPresent('css=.block.type-p.editing')
+
+    def test_selecting_mail_hides_web_inputs_and_shows_mail_inputs(self):
+        self.add_testcontent_to_clipboard()
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input select[name=service]')
+        s.select('css=.link_input select[name=service]', 'label=E-Mail')
+        s.waitForVisible('css=.link_input input[name=mailto]')
+        s.waitForVisible('css=.link_input input[name=subject]')
+        s.assertNotVisible('css=.link_input input[name=href]')
+        s.assertNotVisible('css=.link_input select[name=target]')
+
+    def test_selecting_web_hides_mail_inputs_and_shows_web_inputs(self):
+        self.add_testcontent_to_clipboard()
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input select[name=service]')
+        s.select('css=.link_input select[name=service]', 'label=E-Mail')
+        s.select('css=.link_input select[name=service]', 'label=Web')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.waitForVisible('css=.link_input select[name=target]')
+        s.assertNotVisible('css=.link_input input[name=mailto]')
+        s.assertNotVisible('css=.link_input input[name=subject]')
+
+    def test_selecting_mail_link_opens_linkbar_in_mail_mode(self):
+        self.add_testcontent_to_clipboard()
+        s = self.selenium
+        self.select_link(href='mailto:foo@example.com')
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input select[name=service]')
+        s.assertSelectedLabel(
+            'css=.link_input select[name=service]', 'E-Mail')
+        s.assertValue('css=.link_input input[name=mailto]', 'foo@example.com')
+        s.assertValue('css=.link_input input[name=subject]', u'')
+
+    def test_selecting_mail_link_with_subject_opens_linkbar_in_mail_mode(self):
+        self.add_testcontent_to_clipboard()
+        s = self.selenium
+        self.select_link(href='mailto:foo@example.com?subject=b%C3%A4r')
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input select[name=service]')
+        s.assertSelectedLabel(
+            'css=.link_input select[name=service]', 'E-Mail')
+        s.assertValue('css=.link_input input[name=mailto]', 'foo@example.com')
+        s.assertValue('css=.link_input input[name=subject]', u'bär')
+
+    def test_pressing_enter_in_mail_mode_adds_mailto_link(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.select('css=.link_input select[name=service]', 'label=E-Mail')
+        s.waitForVisible('css=.link_input input[name=mailto]')
+        s.type('css=.link_input input[name=mailto]', 'foo@example.com')
+        s.keyDown('css=.link_input input[name=href]', '\\13')
+        s.waitForElementPresent('xpath=//a[@href="mailto:foo@example.com"]')
+
+    def test_pressing_enter_in_mail_mode_with_subject_adds_mailto_link(self):
+        s = self.selenium
+        self.select_text()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.select('css=.link_input select[name=service]', 'label=E-Mail')
+        s.waitForVisible('css=.link_input input[name=mailto]')
+        s.type('css=.link_input input[name=mailto]', 'foo@example.com')
+        s.type('css=.link_input input[name=subject]', u'bär')
+        s.keyDown('css=.link_input input[name=href]', '\\13')
+        s.waitForElementPresent(
+            'xpath=//a[@href="mailto:foo@example.com?subject=b%C3%A4r"]')
 
 
 class TestFolding(
