@@ -4,6 +4,9 @@ zeit.cms changes
 editor-ng branch changes
 ------------------------
 
+- When parsing html to xml, ``objectify_soup_fromstring`` fixes  HTML5 boolean
+  attributes and HTML entities so they are XML compatible (#12267).
+
 - Fix genratting of tags (#12254)
 
 - Fix autosaving of forms when user clicks on a DOM node inside the form
