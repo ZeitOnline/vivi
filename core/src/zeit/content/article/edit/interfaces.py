@@ -227,6 +227,7 @@ class IRawXML(zeit.edit.interfaces.IBlock):
 
     xml = zeit.cms.content.field.XMLTree(
         title=_('XML source'),
+        tidy_input=True,
         constraint=validate_rawxml)
 
 
