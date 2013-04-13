@@ -606,9 +606,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                 element.removeAttribute('class');
                 element.removeAttribute('style');
                 // Yeah, I luv it!
-                if (element.nodeName == 'EM') {
+                if (element.nodeName === 'EM') {
                     zeit.content.article.html.change_tag(element, 'I');
-                } else if (element.nodeName == 'STRONG') {
+                } else if (element.nodeName === 'STRONG') {
                     zeit.content.article.html.change_tag(element, 'B');
                 }
         });
