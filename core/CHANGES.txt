@@ -4,6 +4,8 @@ zeit.content.article changes
 editor-ng branch (unreleased)
 -----------------------------
 
+- Support colorbox links (#11981)
+
 - RAW-Block uses HTML parser and converts given HTML to XML now (#12267).
 
 - Accomodated article to cope for the changed videos: videos are now full CMS

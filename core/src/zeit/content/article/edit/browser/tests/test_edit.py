@@ -415,6 +415,25 @@ class TestLinkEditing(
         s.assertSelectedLabel(
             'css=.link_input select[name=target]', 'Neues Fenster')
 
+    def test_target_colorbox_should_set_class_attribute(self):
+        s = self.selenium
+        self.select_link(additional='target="_blank"')
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.select('css=.link_input select[name=target]', 'label=Colorbox')
+        s.type('css=.link_input input[name=href]', 'http://example.com/')
+        s.click('css=.link_input button[name=insert_link_ok]')
+        s.waitForElementPresent(
+            'xpath=//a[@href="http://example.com/" and @class="colorbox"]')
+
+    def test_edit_link_on_colorbox_should_set_target(self):
+        s = self.selenium
+        self.select_link(additional='class="colorbox"')
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.assertSelectedLabel(
+            'css=.link_input select[name=target]', 'Colorbox')
+
     def test_edit_should_highlight_link_being_edited(self):
         s = self.selenium
         self.select_text()

@@ -276,7 +276,8 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.target_select = SELECT(
             {name: 'target'},
             OPTION({value: '_blank'}, 'Neues Fenster'),
-            OPTION({value: ''}, 'Gleiches Fenster'));
+            OPTION({value: ''}, 'Gleiches Fenster'),
+            OPTION({value: 'colorbox'}, 'Colorbox'));
         self.link_input = self.editable.parentNode.insertBefore(
             DIV({'class': 'link_input hidden'},
                 self.href_input,
@@ -603,7 +604,10 @@ zeit.content.article.Editable = gocept.Class.extend({
             MochiKit.DOM.getElementsByTagAndClassName(
                 null, null, self.editable),
             function(element) {
-                element.removeAttribute('class');
+                if (! (element.nodeName === 'A') &&
+                    ! ($(element).hasClass('colorbox'))) {
+                    element.removeAttribute('class');
+                }
                 element.removeAttribute('style');
                 // Yeah, I luv it!
                 if (element.nodeName === 'EM') {
@@ -738,7 +742,6 @@ zeit.content.article.Editable = gocept.Class.extend({
         var subject = '';
         if (self.insert_link_node) {
             href = self.insert_link_node.getAttribute('href') || '';
-            target = self.insert_link_node.getAttribute('target') || '';
             var prefix = 'mailto:';
             if (href.slice(0, prefix.length) === prefix) {
                 service = 'mail';
@@ -754,6 +757,12 @@ zeit.content.article.Editable = gocept.Class.extend({
                     }
                 }
                 href = '';
+            }
+            if (MochiKit.DOM.hasElementClass(
+                self.insert_link_node, 'colorbox')) {
+                target = 'colorbox';
+            } else {
+                target = self.insert_link_node.getAttribute('target') || '';
             }
         } else {
             self.command('createLink', '#article-editor-create-link');
@@ -795,10 +804,16 @@ zeit.content.article.Editable = gocept.Class.extend({
             }
         }
         self.insert_link_node.href = href;
-        if (target) {
-            self.insert_link_node.target = target;
-        } else {
+        if (target === 'colorbox') {
             self.insert_link_node.removeAttribute('target');
+            jQuery(self.insert_link_node).addClass('colorbox');
+        } else {
+            jQuery(self.insert_link_node).removeClass('colorbox');
+            if (target) {
+                self.insert_link_node.target = target;
+            } else {
+                self.insert_link_node.removeAttribute('target');
+            }
         }
         self.select_container(self.insert_link_node);
         self._insert_link_finish();
