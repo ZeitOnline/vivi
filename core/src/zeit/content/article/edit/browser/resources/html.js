@@ -145,8 +145,10 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     if (! zeit.cms.in_article_editor()) {
         return;
     }
-    $.getJSON(application_url + '/@@double-quote-characters', function(response) {
-        DOUBLE_QUOTE_CHARACTERS = new RegExp(response, 'g');
+    $.getJSON(
+        application_url + '/@@double-quote-characters',
+        function(response) {
+            DOUBLE_QUOTE_CHARACTERS = new RegExp(response, 'g');
     });
 });
 
