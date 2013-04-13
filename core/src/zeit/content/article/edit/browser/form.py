@@ -453,7 +453,7 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
     prefix = 'options-b'
     undo_description = _('edit options')
     form_fields = FormFields(ICommonMetadata).select(
-        'year', 'volume', 'page', 'printRessort')
+        'year', 'volume', 'page', 'printRessort', 'byline')
 
     def setUpWidgets(self, *args, **kw):
         super(OptionsB, self).setUpWidgets(*args, **kw)
