@@ -4,7 +4,6 @@
 
 from unittest2 import skip
 import lovely.remotetask.interfaces
-import time
 import lxml.cssselect
 import zeit.cms.repository.interfaces
 import zeit.content.quiz.quiz
