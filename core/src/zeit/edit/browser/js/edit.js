@@ -68,6 +68,9 @@ zeit.edit.Editor = gocept.Class.extend({
 
     reload: function(element_id, url) {
         var self = this;
+        if (isUndefinedOrNull(element_id)) {
+            return self.load_editor();
+        }
         log("Reloading", element_id, url);
         var element = $(element_id);
         MochiKit.Signal.signal(self, 'before-reload');
