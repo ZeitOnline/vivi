@@ -4,10 +4,12 @@ zeit.cms changes
 editor-ng branch changes
 ------------------------
 
+- Add type identifier to blocks in centerpage xml. (#12269)
+
 - When parsing html to xml, ``objectify_soup_fromstring`` fixes  HTML5 boolean
   attributes and HTML entities so they are XML compatible (#12267).
 
-- Fix genratting of tags (#12254)
+- Fix generating of tags (#12254)
 
 - Fix autosaving of forms when user clicks on a DOM node inside the form
   container (#12211).
@@ -57,7 +59,20 @@ editor-ng branch changes
 
 - We need to use @@raw view to get the actual URL of images (#12159)  
 
-1.53.5 (unreleased)
+
+1.55.0 (2012-12-17)
+-------------------
+
+- Don't consider ``refined`` and ``images_added`` as a precondition for
+  publishing (#11717).
+
+- Fix image group type to ignore master image (#11116).
+
+- Added a teaser kicker field to the common metadata.
+
+
+
+1.54.0 (2012-07-13)
 -------------------
 
 - Fold IContentAdder and IAddLocation into zeit.cms from zeit.addcentral
