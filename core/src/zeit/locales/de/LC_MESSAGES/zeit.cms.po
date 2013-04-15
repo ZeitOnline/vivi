@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Mar 26 14:56:03 2013\n"
-"PO-Revision-Date: 2013-03-26 14:56+0100\n"
+"PO-Revision-Date: 2013-04-15 16:56+0100\n"
 "Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1572,7 +1572,7 @@ msgstr "nicht veröffentlicht"
 #. Default: "last published at ${date} on ${time} by ${by}"
 #: zeit/content/article/edit/browser/edit.lastpublished.pt:7
 msgid "last-publish-information"
-msgstr ""
+msgstr "Zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 
 #. Default: ""
 #: zeit/content/article/edit/browser/edit.py:107
@@ -2327,7 +2327,7 @@ msgstr "Metadaten"
 
 #: zeit/content/cp/browser/layout.cluster.edit.pt:2
 msgid "+ Add teaser bar"
-msgstr "Antwort hinzufügen"
+msgstr "+ Teaserleiste hinzufügen"
 
 #: zeit/content/cp/browser/layout.informatives.edit.pt:3
 msgid "+ Add block"
