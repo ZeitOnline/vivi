@@ -22,7 +22,8 @@ class TeaserBar(zeit.edit.container.TypeOnAttributeContainer):
 
     @property
     def layout(self):
-        for layout in zeit.content.cp.interfaces.ITeaserBar['layout'].source(self):
+        for layout in zeit.content.cp.interfaces.ITeaserBar[
+                'layout'].source(self):
             if layout.id == self.xml.get('module'):
                 return layout
         return zeit.content.cp.interfaces.IReadTeaserBar['layout'].default
