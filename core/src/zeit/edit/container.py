@@ -83,7 +83,7 @@ class Base(UserDict.DictMixin,
         return name
 
     def _generate_block_id(self):
-        return str(uuid.uuid4())
+        return 'id-' + str(uuid.uuid4())
 
     def updateOrder(self, order):
         __traceback_info__ = (order, self.keys())
