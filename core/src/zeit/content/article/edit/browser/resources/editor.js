@@ -604,8 +604,8 @@ zeit.content.article.Editable = gocept.Class.extend({
             MochiKit.DOM.getElementsByTagAndClassName(
                 null, null, self.editable),
             function(element) {
-                if (! (element.nodeName === 'A') &&
-                    ! ($(element).hasClass('colorbox'))) {
+                if ((element.nodeName !== 'A') &&
+                    !$(element).hasClass('colorbox')) {
                     element.removeAttribute('class');
                 }
                 element.removeAttribute('style');
