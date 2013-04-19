@@ -84,7 +84,7 @@ are __name__ attributes:
 >>> import lxml.etree
 >>> print lxml.etree.tostring(article.xml, pretty_print=True),
 <article>...
-     <division ... ns0:__name__="b5c8832c-85d1-44f4-8ef3-d5e108c80c20">
+     <division ... ns0:__name__="id-b5c8832c-85d1-44f4-8ef3-d5e108c80c20">
      ...
 
 
