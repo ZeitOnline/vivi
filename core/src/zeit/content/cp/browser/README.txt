@@ -130,8 +130,8 @@ teaser bar:
 ...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-teaser-bar")]')
 >>> bar_ids = original_ids = [bar.get('id') for bar in bar_divs]
 >>> bar_ids
-['92ae9ac4-0bd2-4e64-9eeb-40bb10f32f4c',
- 'cc243e0c-5814-4180-a336-744ca140c3da']
+['id-92ae9ac4-0bd2-4e64-9eeb-40bb10f32f4c',
+ 'id-cc243e0c-5814-4180-a336-744ca140c3da']
 
 Reverse the bars:
 
@@ -176,7 +176,7 @@ Blocks and teaser bars can be removed using the delete link:
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 2
 >>> browser.getLink('Delete').url
-'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@delete?key=<GUID>'
+'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@delete?key=id-<GUID>'
 >>> browser.getLink('Delete').click()
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))

@@ -20,7 +20,7 @@ Set up test data:
 >>> import json
 >>> import pprint
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
-[{u'args': [u'd05c75bb-39b9-44b6-8fc0-e319c47c51e7'],
+[{u'args': [u'id-d05c75bb-39b9-44b6-8fc0-e319c47c51e7'],
   u'name': u'added',
   u'when': u'after-reload'},
  {u'args': [u'informatives',
@@ -90,7 +90,7 @@ The source of a fullgraphical block does contain the layout decision:
 >>> print browser.getControl('XML Source').value
 <...
 <container cp:type="fullgraphical" module="fullgraphical"
-           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca"
+           cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca"
            layout="148x84" title="Block title">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
     <supertitle xsi:nil="true"/>
@@ -123,7 +123,7 @@ the fullgraphical block breaking:
 >>> print browser.getControl('XML Source').value
 <...
 <container cp:type="fullgraphical" module="fullgraphical"
-           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
+           cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
@@ -180,7 +180,7 @@ object in order to catch its metadata updates:
 >>> print browser.getControl('XML Source').value
 <...
 <container cp:type="fullgraphical" module="fullgraphical"
-           cp:__name__="f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
+           cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...> 
     <supertitle xsi:nil="true"/>
     <title py:pytype="str">Teaser title</title>

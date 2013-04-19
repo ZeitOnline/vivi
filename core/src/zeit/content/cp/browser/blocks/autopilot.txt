@@ -85,8 +85,8 @@ We can now switch it of again:
 >>> import json
 >>> import pprint
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
-[{u'args': [u'c8d4c0eb-368c-427c-9a47-d63d9559b78b',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/14978ec2-a9a5-4c03-8d53-7f8c98480ed4/c8d4c0eb-368c-427c-9a47-d63d9559b78b/@@contents'],
+[{u'args': [u'id-c8d4c0eb-368c-427c-9a47-d63d9559b78b',
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/id-14978ec2-a9a5-4c03-8d53-7f8c98480ed4/id-c8d4c0eb-368c-427c-9a47-d63d9559b78b/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> browser.open(contents_url)

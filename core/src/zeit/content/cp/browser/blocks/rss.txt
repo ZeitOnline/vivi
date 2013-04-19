@@ -202,7 +202,7 @@ XML of a RSS block
     max_items="2"
     show_supertitle="False"
     time_format="time"
-    cp:__name__="0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
+    cp:__name__="id-0691a3c8-5379-495d-b65b-c9a9b5eabaf6"
     url=".../heise.xml">
   <xi:include
       xmlns:xi="http://www.w3.org/2003/XInclude"

@@ -156,7 +156,7 @@ It is not possible to add the block again:
 >>> informatives.add(block)
 Traceback (most recent call last):
     ...
-DuplicateIDError: '6ec3b591-6415-47bc-b521-d40b16c5df89'
+DuplicateIDError: 'id-6ec3b591-6415-47bc-b521-d40b16c5df89'
 
 
 Teaser block
@@ -279,10 +279,10 @@ The xml of the teaser bar is actually a region:
 
 >>> print lxml.etree.tostring(bar.xml, pretty_print=True),
 <region ...>
-  <container cp:type="placeholder" module="placeholder" cp:__name__="<GUID>"/>
-  <container cp:type="placeholder" module="placeholder" cp:__name__="<GUID>"/>
-  <container cp:type="placeholder" module="placeholder" cp:__name__="<GUID>"/>
-  <container cp:type="placeholder" module="placeholder" cp:__name__="<GUID>"/>
+  <container cp:type="placeholder" module="placeholder" cp:__name__="id-<GUID>"/>
+  <container cp:type="placeholder" module="placeholder" cp:__name__="id-<GUID>"/>
+  <container cp:type="placeholder" module="placeholder" cp:__name__="id-<GUID>"/>
+  <container cp:type="placeholder" module="placeholder" cp:__name__="id-<GUID>"/>
 </region>
 
 

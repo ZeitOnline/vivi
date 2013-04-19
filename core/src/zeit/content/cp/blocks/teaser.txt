@@ -24,7 +24,7 @@ The teaser block contains a list of teasers[#functional]_.
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...
     cp:type="teaser" module="leader"
-    cp:__name__="fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
+    cp:__name__="id-fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
   <block href="http://xml.zeit.de/testcontent"...>
     <supertitle xsi:nil="true"/>
     <title xsi:nil="true"/>
