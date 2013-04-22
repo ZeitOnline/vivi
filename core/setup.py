@@ -36,7 +36,6 @@ setup(
         'zope.interface',
         'zope.location>=3.4b2',
         'zope.testing',
-        'zope.thread',
         ],
     entry_points = """
         [console_scripts]
