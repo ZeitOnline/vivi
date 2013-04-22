@@ -9,7 +9,6 @@ import zeit.content.article.source
 import zeit.content.cp.interfaces
 import zope.schema
 
-
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 
 
@@ -46,7 +45,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         description=_("Drag an image here"),
         source=zeit.content.image.interfaces.imageSource,
         required=False)
-    
+
     main_image_layout = zope.schema.Choice(
         title=_("Layout"),
         source=zeit.content.article.edit.interfaces.ImageLayoutSource(),
