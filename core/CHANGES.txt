@@ -9,8 +9,24 @@ Changes specific to branch
   causes nothing but trouble, since it doesn't belong there (#9914).
 
 
-0.51.1 (unreleased)
+0.53.0 (2013-03-13)
 -------------------
+
+- Don't change lead teaser block layout to button when moving blocks around
+  (#12199)
+
+- Prefer teaserSuperTitle over superTitle (#11610).
+
+
+0.52.0 (2012-05-10)
+-------------------
+
+- Applied a non-numerical prefix to generated ids that may be used as html ids
+  for standards conformance and forward compatibility with webdriver.
+
+- Fixed and re-enabled some tests (#10340, #10364).
+
+- Maximize selenium test window on test start
 
 - Cleaned up dependencies on zope.app packages.
 
