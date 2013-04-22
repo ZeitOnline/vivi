@@ -124,6 +124,10 @@ class VideoUpdater(BaseUpdater):
         return zeit.brightcove.converter.Video.find_modified(
             from_date=from_date)
 
+    def add(self):
+        if not self.bcobj.ignore_for_update:
+            return super(VideoUpdater, self).add()
+
     def delete(self):
         if self.bcobj.item_state == 'ACTIVE':
             # Handled elsewhere
@@ -158,13 +162,13 @@ class VideoUpdater(BaseUpdater):
         # (Also note that Brightcove has the misfeature of sometimes returning
         # old data for several minutes even directly after we POSTed to update
         # something.)
+        if self.bcobj.ignore_for_update:
+            return True
         current_mtime = zeit.cms.content.interfaces.ISemanticChange(
             self.cmsobj).last_semantic_change
         new_mtime = zeit.cms.content.interfaces.ISemanticChange(
             new).last_semantic_change
-        if self.bcobj.ignore_for_update:
-            changed = False
-        elif (current_mtime and new_mtime and current_mtime >= new_mtime and
+        if (current_mtime and new_mtime and current_mtime >= new_mtime and
             self.cmsobj.video_still == new.video_still):
             changed = False
         if changed:
