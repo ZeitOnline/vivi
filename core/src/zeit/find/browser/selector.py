@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 """Object selector."""
 
-import cjson
+import json
 import zope.component
 import zeit.cms.content.interfaces
 
@@ -18,4 +18,4 @@ class Selector(object):
                 zeit.cms.content.interfaces.ICMSContentSource,
                 name=source_name)
             result['types:list'] = source.get_check_types()
-        return cjson.encode(result)
+        return json.dumps(result)
