@@ -4,8 +4,14 @@ zeit.content.gallery changes
 2.4.3 (unreleased)
 ------------------
 
-- Introduced gallery types (standalone, inline) (#10761).
 - Remove XMLSnippet, its functionality is not used anymore.
+
+
+2.5.0 (2012-07-02)
+------------------
+
+- Introduced gallery types (standalone, inline) (#10761).
+
 
 
 2.4.2 (2012-03-06)
