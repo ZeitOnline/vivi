@@ -1,8 +1,8 @@
 zeit.content.article changes
 ============================
 
-editor-ng branch (unreleased)
------------------------------
+3.0 (2013-04-23)
+----------------
 
 - Support advertorial hack and print byline (#11973, #12246)
 
