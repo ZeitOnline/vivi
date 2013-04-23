@@ -1,7 +1,7 @@
 zeit.wysiwyg changes
 ====================
 
-2.0 (unreleased)
+2.0 (2013-04-23)
 ----------------
 
 - Use the new `@@raw` to display images (#12102)
