@@ -2,8 +2,8 @@ zeit.securitypolicy changes
 ===========================
 
 
-Changes on editor-ng branch
----------------------------
+2.0 (unreleased)
+----------------
 
 - Removed test for article asset view as it does not exist any more (#10428)
 
