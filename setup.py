@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.securitypolicy',
-    version='2.0',
+    version='2.0.1.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://code.gocept.com/hg/public/zeit.securitypolicy',
