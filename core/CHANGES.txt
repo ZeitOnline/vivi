@@ -1,8 +1,8 @@
 Changes
 =======
 
-0.1 (unreleased)
+2.0 (unreleased)
 ----------------
 
-- Nothing changed, yet.
+- Initial release.
 
