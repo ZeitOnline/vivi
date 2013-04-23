@@ -1,8 +1,8 @@
 zeit.wysiwyg changes
 ====================
 
-editor-ng
----------
+2.0 (unreleased)
+----------------
 
 - Use the new `@@raw` to display images (#12102)
 
