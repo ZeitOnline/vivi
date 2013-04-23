@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.4.3 (unreleased)
+2.6.0 (2013-04-23)
 ------------------
 
 - Remove XMLSnippet, its functionality is not used anymore.
