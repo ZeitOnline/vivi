@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-editor-ng branch changes
-------------------------
+2.0 (unreleased)
+----------------
 
 - Add type identifier to blocks in centerpage xml. (#12269)
 
