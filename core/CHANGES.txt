@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.0 (unreleased)
+2.0 (2013-04-23)
 ----------------
 
 - Add type identifier to blocks in centerpage xml. (#12269)
