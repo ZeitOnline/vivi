@@ -17,7 +17,6 @@ setup(
     install_requires=[
         'gocept.selenium',
         'grokcore.component',
-        'python-cjson',
         'setuptools',
         'unittest2',
         'zc.iso8601',

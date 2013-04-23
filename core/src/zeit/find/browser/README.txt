@@ -71,15 +71,15 @@ data for dropdowns/selects:
 >>> browser.open('http://localhost:8080/++skin++cms/search_form')
 >>> browser.headers['Content-Type']
 'text/json'
->>> import cjson
+>>> import json
 >>> import pprint
->>> pprint.pprint(cjson.decode(browser.contents))
-{'products': [{'product_id': 'ZEI', 'product_name': 'Die Zeit'},...
- 'ressorts': [{'ressort': 'Deutschland', 'ressort_name': 'Deutschland'},...
- 'series': [{'serie': '-', 'serie_title': '-'},...
- 'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont',
- 'types': [{'title': 'File', 'type': 'file'},
-           {'title': 'Folder', 'type': 'collection'}...
+>>> pprint.pprint(json.loads(browser.contents))
+{u'products': [{u'product_id': u'ZEI', u'product_name': u'Die Zeit'},...
+ u'ressorts': [{u'ressort': u'Deutschland', u'ressort_name': u'Deutschland'},...
+ u'series': [{u'serie': u'-', u'serie_title': u'-'},...
+ u'template_url': u'http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont',
+ u'types': [{u'title': u'File', u'type': u'file'},
+           {u'title': u'Folder', u'type': u'collection'}...
 
 
 
@@ -111,8 +111,8 @@ Adding a content object as a favorite requires the call of the
 
 It returns the css class for the favorite star:
 
->>> pprint.pprint(cjson.decode(browser.contents))
-{'favorited_css_class': 'toggle_favorited favorited',...
+>>> pprint.pprint(json.loads(browser.contents))
+{u'favorited_css_class': u'toggle_favorited favorited',...
 
 The clipboard now has a clip "Favoriten" with one entry:
 
@@ -122,16 +122,16 @@ The clipboard now has a clip "Favoriten" with one entry:
 The favorites tab now lists the favorited object:
 
 >>> browser.open('http://localhost:8080/++skin++cms/favorites')
->>> pprint.pprint(cjson.decode(browser.contents))
-{'results': [{...
-    'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
-    'favorited': True,
-    'favorited_css_class': 'toggle_favorited favorited',
-    'graphical_preview_url': None,
+>>> pprint.pprint(json.loads(browser.contents))
+{u'results': [{...
+    u'favorite_url': u'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+    u'favorited': True,
+    u'favorited_css_class': u'toggle_favorited favorited',
+    u'graphical_preview_url': None,
     ...
-    'graphical_preview_url': 'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
+    u'graphical_preview_url': u'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
     ...
- 'template_url': 'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
+ u'template_url': u'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
 
 
 The view does not break when there is a clip in the favorites. The clip isn't
@@ -140,7 +140,7 @@ shown though:
 >>> import zeit.cms.clipboard.entry
 >>> clipboard['Favoriten']['Clip'] = zeit.cms.clipboard.entry.Clip('Clip')
 >>> browser.open('http://localhost:8080/++skin++cms/favorites')
->>> result = cjson.decode(browser.contents)
+>>> result = json.loads(browser.contents)
 >>> len(result['results'])
 2
 >>> del clipboard['Favoriten']['Clip']
@@ -155,8 +155,8 @@ Calling the toggle view again removes the object from the favorites:
 >>> browser.open(
 ...     'http://localhost:8080/++skin++cms/toggle_favorited?'
 ...     'uniqueId=http://xml.zeit.de/2006/DSC00109_2.JPG')
->>> pprint.pprint(cjson.decode(browser.contents))
-{'favorited_css_class': 'toggle_favorited not_favorited',...
+>>> pprint.pprint(json.loads(browser.contents))
+{u'favorited_css_class': u'toggle_favorited not_favorited',...
 
 The clip persists, but is now empty:
 
@@ -172,59 +172,59 @@ The search view returns all data for rendering the result:
 >>> import zeit.find.tests
 >>> zeit.find.tests.SearchLayer.set_result('zeit.find', 'testdata/obama.json')
 >>> browser.open('/++skin++cms/search_result?fulltext=Obama')
->>> result = cjson.decode(browser.contents)
+>>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
-{'results': [{'application_url': 'http://localhost:8080/++skin++cms',
+{u'results': [{u'application_url': u'http://localhost:8080/++skin++cms',
               ...
-              'graphical_preview_url': 'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
+              u'graphical_preview_url': u'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
              ...
- 'template_url': 'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/@@/zeit.find/search_result.jsont'}
+ u'template_url': u'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/@@/zeit.find/search_result.jsont'}
 
 Favorites are marked in the search result as well:
 
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
- 'favorited': False,
- 'favorited_css_class': 'toggle_favorited not_favorited',
+ u'favorite_url': u'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ u'favorited': False,
+ u'favorited_css_class': u'toggle_favorited not_favorited',
  ...
 
 Toggle favorite and search again:
 
 >>> browser.open(first_result['favorite_url'])
 >>> browser.open('/++skin++cms/search_result?fulltext=Obama')
->>> result = cjson.decode(browser.contents)
+>>> result = json.loads(browser.contents)
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
- 'favorited': True,
- 'favorited_css_class': 'toggle_favorited favorited',
+ u'favorite_url': u'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ u'favorited': True,
+ u'favorited_css_class': u'toggle_favorited favorited',
  ...
 
 This also works if there is a Clip in the favorites:
 
 >>> clipboard['Favoriten']['Clip'] = zeit.cms.clipboard.entry.Clip('Clip')
 >>> browser.open('/++skin++cms/search_result?fulltext=Obama')
->>> result = cjson.decode(browser.contents)
+>>> result = json.loads(browser.contents)
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'favorite_url': 'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
- 'favorited': True,
- 'favorited_css_class': 'toggle_favorited favorited',
+ u'favorite_url': u'http://localhost:8080/++skin++cms/toggle_favorited?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ u'favorited': True,
+ u'favorited_css_class': u'toggle_favorited favorited',
  ...
 
 The last query parameters are available:
 
 >>> browser.open('/++skin++cms/zeit.find.last-query')
->>> result = cjson.decode(browser.contents)
+>>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
 {...
- 'fulltext': 'Obama',
+ u'fulltext': u'Obama',
  ...
- 'types:list': [],
+ u'types:list': [],
  ...
 
 
@@ -234,11 +234,11 @@ Relateds
 The URL to get the relateds of a search result is included in the result:
 
 >>> browser.open('/++skin++cms/search_result?fulltext=Obama')
->>> result = cjson.decode(browser.contents)
+>>> result = json.loads(browser.contents)
 >>> first_result = result['results'][0]
 >>> pprint.pprint(first_result)
 {...
- 'related_url': 'http://localhost:8080/++skin++cms/expanded_search_result?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
+ u'related_url': u'http://localhost:8080/++skin++cms/expanded_search_result?uniqueId=http://xml.zeit.de/online/2007/01/Somalia',
  ...
 
 >>> browser.open(first_result['related_url'])
@@ -269,12 +269,12 @@ Add content to testcontent
 >>> browser.open(
 ...     'http://localhost:8080/++skin++cms/expanded_search_result?uniqueId='
 ...     'http://xml.zeit.de/testcontent')
->>> result = cjson.decode(browser.contents)
+>>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
-{'results': [{'date': '',
-              'publication_status': '',
-              'supertitle': '',
-              'teaser_text': '',
-              'teaser_title': 'Related title',
-              'uniqueId': 'http://xml.zeit.de/related'}],
- 'template_url': 'http://localhost:8080/++skin++cms/++noop++94b533aa204ba84e5cd044c4f71cae06/@@/zeit.find/expanded_search_result.jsont'}
+{u'results': [{u'date': u'',
+              u'publication_status': u'',
+              u'supertitle': u'',
+              u'teaser_text': u'',
+              u'teaser_title': u'Related title',
+              u'uniqueId': u'http://xml.zeit.de/related'}],
+ u'template_url': u'http://localhost:8080/++skin++cms/++noop++94b533aa204ba84e5cd044c4f71cae06/@@/zeit.find/expanded_search_result.jsont'}
