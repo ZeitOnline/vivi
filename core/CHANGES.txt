@@ -4,7 +4,7 @@ zeit.find changes
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Replaced python-cjson with standard library equivalent.
 
 
 2.0 (2013-04-23)
