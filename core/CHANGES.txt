@@ -2,8 +2,8 @@ zeit.content.cp changes
 =======================
 
 
-Changes specific to branch
---------------------------
+2.0 (unreleased)
+----------------
 
 - Register TeaserBlock only for CenterPages, when it shows up in an Article it
   causes nothing but trouble, since it doesn't belong there (#9914).
