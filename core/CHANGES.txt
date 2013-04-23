@@ -1,8 +1,8 @@
 CHANGES
 =======
 
-1.26.1 (unreleased)
--------------------
+2.0 (2013-04-23)
+----------------
 
 - Added clean-up for MOVE on abort: A MOVE is un-done by the reverse MOVE
   operation on transaction abort. (#12252)
