@@ -1,8 +1,8 @@
 zeit.vgwort changes
 ===================
 
-0.4.5 (unreleased)
-------------------
+2.0 (2013-04-24)
+----------------
 
 - Copatibility with zeit.cms 2.0
 
