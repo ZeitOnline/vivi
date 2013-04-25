@@ -46,7 +46,7 @@ Videos can be edited:
 Videos use a special serie:
 
 >>> browser.getControl('Serie').displayOptions
-['(no value)', 'VIDEO', 'erde/energie', 'erde/klima', 'erde/nachhaltigkeit', 'erde/technologie', 'erde/umwelt']
+['(nothing selected)', 'VIDEO', 'erde/energie', 'erde/klima', 'erde/nachhaltigkeit', 'erde/technologie', 'erde/umwelt']
 
 There is no subtitle:
 
