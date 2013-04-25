@@ -99,14 +99,14 @@ Make sure we have a default view:
 'http://localhost/++skin++cms/repository/testcontent/@@view.html'
 
 
-After checking out we can edit. The ressort has a "(no value)" entry which is
-invalid though:
+After checking out we can edit. The ressort has a "(nothing selected)" entry
+which is invalid though:
 
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl('Ressort').displayValue
-['(no value)']
+['(nothing selected)']
 >>> browser.getControl('Ressort').displayOptions
-['(no value)', 'Deutschland', ...]
+['(nothing selected)', 'Deutschland', ...]
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <?xml ...
