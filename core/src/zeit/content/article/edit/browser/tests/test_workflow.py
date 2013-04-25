@@ -275,8 +275,7 @@ class Delete(zeit.cms.testing.BrowserTestCase):
         self.assertNotIn('Cancel', b.contents)
 
 
-class Objectlog(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+class Objectlog(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_objectlog_is_wrapped(self):
         # this is a sanity check that the views are wired up correctly
@@ -287,7 +286,7 @@ class Objectlog(
                 zeit.objectlog.interfaces.ILog(article).log('example message')
                 transaction.commit()
         self.open(
-            'http://localhost/++skin++vivi/repository/online/2007/01/Somalia/')
+            '/++skin++vivi/repository/online/2007/01/Somalia/')
         s = self.selenium
         s.waitForElementPresent('css=div.objectlog table.objectlog')
         s.assertText('css=div.objectlog table.objectlog', '*example message*')
