@@ -18,6 +18,7 @@ import os
 import pkg_resources
 import random
 import re
+import socket
 import string
 import sys
 import threading
@@ -122,7 +123,7 @@ class HTTPServer(BaseHTTPServer.HTTPServer):
             urllib2.urlopen(
                 'http://%s:%s/die' % (self.server_name, self.server_port),
                 timeout=1)
-        except urllib2.URLError:
+        except (socket.timeout, urllib2.URLError):
             # If the server is already shut down, we receive a socket error,
             # which we ignore.
             pass
