@@ -8,6 +8,7 @@ from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import copy
 import datetime
 import mock
+import socket
 import time
 import transaction
 import zeit.brightcove.testing
@@ -296,7 +297,8 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.addCleanup(reset)
 
         self.assertRaises(
-            urllib2.URLError, lambda: update_from_brightcove())
+            (socket.timeout, urllib2.URLError),
+            lambda: update_from_brightcove())
 
     def test_ignore_for_update_should_not_update_repository(self):
         VIDEO_1234['customFields']['ignore_for_update'] = '1'
