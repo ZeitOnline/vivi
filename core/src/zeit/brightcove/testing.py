@@ -215,7 +215,7 @@ BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
 
 def update_repository(root):
     with zeit.cms.testing.site(root):
-        with transaction:
+        with transaction.manager:
             zeit.brightcove.update.update_from_brightcove()
 
 
