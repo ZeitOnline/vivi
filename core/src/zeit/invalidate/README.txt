@@ -50,10 +50,15 @@ Traceback (most recent call last):
 Fault: <Fault 100: "`resource_id` must be string type, got <type 'int'>">
 
 
-We made one invalidation request which is in the log file:
+We made one invalidation request which is in the log file. The error is logged
+as well:
 
 >>> print log.getvalue()
 zope.invalidate invalidated http://xml.zeit.de/index.
+http://localhost/@@invalidate
+Traceback (most recent call last):
+...
+Fault: <Fault 100: "`resource_id` must be string type, got <type 'int'>">
 
 
 We can also invalidate may objects at once using the `invalidate_many` method:
@@ -89,6 +94,7 @@ zope.invalidate invalidated index.
 zope.invalidate invalidated foo.
 zope.invalidate invalidated bar.
 zope.invalidate invalidated baz.
+...
 
 
 Clean up:
