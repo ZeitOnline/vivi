@@ -117,7 +117,7 @@ Each entry can be edited on the overview page:
 >>> browser.getLink('Edit image').click()
 >>> browser.getControl('Title').value = 'The man man'
 >>> browser.getControl('Layout').displayOptions
-['(no value)', 'Hidden', 'Image only']
+['(nothing selected)', 'Hidden', 'Image only']
 >>> browser.getControl('Layout').displayValue = ['Image only']
 >>> browser.getControl('Image caption').value = "Mann/Stein"
 >>> browser.getControl('Apply').click()
