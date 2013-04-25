@@ -25,7 +25,6 @@ class Invalidate(zope.app.publisher.xmlrpc.XMLRPCView):
         self._do_invalidate(resource_id)
         return True
 
-
     def invalidate_many(self, resource_list):
         if not isinstance(resource_list, (list, tuple)):
             raise xmlrpclib.Fault(
