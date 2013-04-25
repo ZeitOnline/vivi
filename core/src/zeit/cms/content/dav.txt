@@ -69,7 +69,7 @@ Floats are also supported:
 >>> converter.fromProperty('text')
 Traceback (most recent call last):
     ...
-ValueError: invalid literal for float(): text
+ValueError: could not convert string to float: text
 
 Convert float to property. Doesn't fail for integers of course:
 
