@@ -117,8 +117,7 @@ class ICommonMetadata(zope.interface.Interface):
 
     title = zope.schema.Text(
         title=_("Title"),
-        missing_value=u'',
-        max_length=70)
+        missing_value=u'')
 
     subtitle = zope.schema.Text(
         title=_("Subtitle"),
