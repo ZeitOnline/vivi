@@ -135,7 +135,7 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         #   Teaser (c1)
         # group
 
-        second_teaser = ' .type-teaser + * + .type-teaser'
+        second_teaser = ' .type-teaser + .type-teaser'
         s.waitForElementPresent(group1 + second_teaser)
         s.assertText(group1 + ' .block.type-teaser', '*c2*')
         s.assertText(group1 + second_teaser, '*c1*')
