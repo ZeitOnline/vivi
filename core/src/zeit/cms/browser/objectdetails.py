@@ -113,10 +113,11 @@ class Details(zeit.cms.browser.view.Base):
 
     @property
     def display_metadata(self):
-        dc = zope.dublincore.interfaces.IDCTimes(self.context)
+        lsc = zeit.cms.content.interfaces.ISemanticChange(
+            self.context).last_semantic_change
         entries = dict(
             teaser_title=self.teaser_title,
-            created=dc.created and dc.created.strftime('%d.%m.%Y'),
+            created=lsc and lsc.strftime('%d.%m.%Y'),
             ressort=self.common_metadata.ressort,
             author=self.author,
             volume=self.volume,
@@ -130,9 +131,10 @@ class Details(zeit.cms.browser.view.Base):
         return sorted_entries
 
     def display_metadata_short(self):
-        dc = zope.dublincore.interfaces.IDCTimes(self.context)
+        lsc = zeit.cms.content.interfaces.ISemanticChange(
+            self.context).last_semantic_change
         return filter(None, [
-            dc.created and dc.created.strftime('%d.%m.%Y'),
+            lsc and lsc.strftime('%d.%m.%Y'),
             self.common_metadata.ressort,
             self.author,
             self.volume,

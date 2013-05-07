@@ -4,7 +4,8 @@ zeit.cms changes
 2.2 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- Display last semantic change in object details heading, not an artificial
+  "created date" (#12368).
 
 
 2.1 (2013-04-23)
