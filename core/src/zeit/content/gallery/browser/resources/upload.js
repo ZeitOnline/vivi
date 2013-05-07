@@ -38,8 +38,10 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
             button_placeholder_id: 'image-upload',
             prevent_swf_caching: false,
             button_cursor : SWFUpload.CURSOR.HAND,
-            button_width: 17,
+            button_width: 200,
             button_height: 18,
+	    button_text: 'Bilder hochladen',
+	    button_text_left_padding: 40,
             button_image_url: self.options.resource_base_url + 
                 '/upload-icon.png',
             button_window_mode : SWFUpload.WINDOW_MODE.TRANSPARENT,
