@@ -7,7 +7,6 @@ import grokcore.component as grok
 import zeit.cms.browser.interfaces
 import zeit.newsletter.interfaces
 import zeit.workflow.browser.form
-import zope.component
 import zope.formlib.form
 
 
@@ -55,7 +54,7 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
 
     @adapters.setter
     def adapters(self, value):
-        pass # ignored, see above
+        pass  # ignored, see above
 
     def setUpWidgets(self, ignore_request=False):
         # determining the test recipient doesn't actually have to do anything
