@@ -24,7 +24,7 @@ zeit.cms.declare_namespace('zeit.edit.context');
  *
  * - init(): register additional event handlers
  * - activate(): call listener.connect
- * - deactivate(): call listener.deconnect
+ * - deactivate(): call listener.disconnect
  * - destroy(): tear down our event handlers
  */
 zeit.edit.context.Base = gocept.Class.extend({
