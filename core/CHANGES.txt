@@ -4,7 +4,8 @@ zeit.content.article changes
 3.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove obsolete content-editable workaround. This prevents text from being
+  deleted accidentally after pasting (#12385).
 
 
 3.0 (2013-04-23)
