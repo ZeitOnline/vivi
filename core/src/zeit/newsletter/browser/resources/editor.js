@@ -3,6 +3,11 @@
 zeit.cms.declare_namespace('zeit.newsletter');
 
 
+zeit.cms.in_newsletter_editor = function() {
+    return Boolean($('.newsletter-editor-inner').length);
+};
+
+
 zeit.newsletter.TeaserSorter = gocept.Class.extend({
 
     __name__: 'zeit.newsletter.TeaserSorter',
@@ -106,10 +111,15 @@ zeit.newsletter.TeaserSorter = gocept.Class.extend({
 });
 
 
-MochiKit.Signal.connect(window, 'script-loading-finished', function() {
-    zeit.newsletter.group_sorter = new zeit.edit.sortable.BlockSorter(
-        'newsletter_body');
-    zeit.newsletter.teaser_sorter = new zeit.newsletter.TeaserSorter();
+var ident = MochiKit.Signal.connect(
+    window, 'script-loading-finished', function() {
+        MochiKit.Signal.disconnect(ident);
+        if (! zeit.cms.in_newsletter_editor()) {
+            return;
+        }
+        zeit.newsletter.group_sorter = new zeit.edit.sortable.BlockSorter(
+            'newsletter_body');
+        zeit.newsletter.teaser_sorter = new zeit.newsletter.TeaserSorter();
 });
 
 })(jQuery);
