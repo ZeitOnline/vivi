@@ -97,7 +97,7 @@ class BaseUpdater(grok.Adapter):
             # We don't need to send events here as a full checkout/checkin
             # cycle is done during publication anyway, below.
             if co is None:
-                log.warning('Could not update %s' % self.cmsobj)
+                log.warning('Could not update %s', self.cmsobj)
             else:
                 self.bcobj.to_cms(co)
         self._publish_if_allowed()
