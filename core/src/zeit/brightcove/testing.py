@@ -263,7 +263,14 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase,
         self.setup_tags()
         update_repository(self.getRootFolder())
         transaction.commit()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
+        # Avoid future shift here. Tests run faster than the real import.
+        # Without the very low shift and a wait we at times don't see the
+        # published-with-changes state, because last-publish and modification
+        # fall into the same second (only one second resolution).
+        with mock.patch('zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT',
+                        new=0.1):
+            zeit.workflow.testing.run_publish(PRIORITY_LOW)
+        time.sleep(1)
         # clear changes made by the checkout/checkin-cycle during publishing
         RequestHandler.posts_received[:] = []
 

@@ -150,6 +150,17 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertTrue(info.published)
         self.assertGreater(info.date_last_published, last_published)
 
+    def test_videos_should_only_be_published_once_per_run(self):
+        VIDEO_1234['name'] = u'upstream change'
+        soon = str(int((time.time() + 10) * 1000))
+        VIDEO_1234['lastModifiedDate'] = soon
+        with mock.patch(
+            'zeit.cms.workflow.interfaces.IPublish') as publish:
+            update_from_brightcove()
+        self.assertEqual(u'http://xml.zeit.de/video/2010-03/1234',
+                         publish.call_args[0][0].uniqueId)  # Safety belt
+        self.assertEqual(1, publish().publish.call_count)
+
     def test_unpublished_videos_should_be_published(self):
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234')

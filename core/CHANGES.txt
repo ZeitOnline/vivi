@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix double publish of videos and playlist (#12411)
 
 
 2.6 (2013-04-23)

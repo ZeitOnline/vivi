@@ -100,7 +100,6 @@ class BaseUpdater(grok.Adapter):
                 log.warning('Could not update %s', self.cmsobj)
             else:
                 self.bcobj.to_cms(co)
-        self._publish_if_allowed()
 
     def _publish_cmsobj(self):
         info = zeit.cms.workflow.interfaces.IPublicationStatus(self.cmsobj)
