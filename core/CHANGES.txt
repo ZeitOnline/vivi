@@ -1,8 +1,8 @@
 zeit.cms changes
 ================
 
-2.2 (unreleased)
-----------------
+2.1.1 (2013-05-16)
+------------------
 
 - Display last semantic change in object details heading, not an artificial
   "created date" (#12368).
