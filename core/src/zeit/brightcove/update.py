@@ -171,6 +171,7 @@ class VideoUpdater(BaseUpdater):
         if (current_mtime and new_mtime and current_mtime >= new_mtime and
             self.cmsobj.video_still == new.video_still):
             changed = False
+
         if changed:
             self._update_cmsobj()
         self._publish_cmsobj()

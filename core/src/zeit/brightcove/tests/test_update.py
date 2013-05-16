@@ -45,7 +45,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
             video.title)
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertTrue(info.published)
-    
+
     def test_new_ignored_video_in_bc_should_not_be_added_to_repository(self):
         # hack around test setup
         del self.repository['video']['2010-03']['1234']
