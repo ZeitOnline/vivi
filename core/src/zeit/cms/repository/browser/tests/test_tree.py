@@ -12,7 +12,7 @@ class TestTree(zeit.cms.testing.SeleniumTestCase):
         # Delete the tree state cookie to have a defined starting point
         s.deleteCookie('zeit.cms.repository.treeState', '/')
         self.open('/', auth='zmgr:mgrpw')
-        s.waitForTextPresent('online')
+        s.waitForElementPresent('//li[@uniqueid="http://xml.zeit.de/online"]')
 
         # Open `online`
         s.click('//li[@uniqueid="http://xml.zeit.de/online"]')
