@@ -170,7 +170,8 @@ zeit.edit.create_tabs = function() {
 
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     MochiKit.DOM.addElementClass('cp-search', 'zeit-find-search');
-    zeit.find.init_full_search();
+    zeit.find.init_full_search(
+        /*submit_on_pageload=*/jQuery('body').hasClass('location-workingcopy'));
 });
 
 
