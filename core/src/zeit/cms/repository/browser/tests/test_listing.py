@@ -1,10 +1,12 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import unittest2 as unittest
 import xml.sax.saxutils
 import zeit.cms.testing
 
 
+@unittest.skip('No typeKeys until WebDriver')
 class TestListing(zeit.cms.testing.SeleniumTestCase):
 
     def test_tablelisting_filter(self):
