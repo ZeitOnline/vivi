@@ -18,7 +18,7 @@ zeit.find.BaseView = gocept.Class.extend({
 
 zeit.find.Search = zeit.find.BaseView.extend({
 
-    construct: function() {
+    construct: function(submit_on_pageload) {
         var self = this;
         var base_url = zeit.cms.get_application_url() + '/@@';
         // Initialize views
@@ -30,6 +30,8 @@ zeit.find.Search = zeit.find.BaseView.extend({
         self.result_filters = new zeit.cms.JSONView(
             base_url + 'result_filters', 'result_filters',
             MochiKit.Base.bind(self.search_form_parameters, self));
+
+        self.submit_on_pageload = submit_on_pageload;
 
         // Connect handlers
         zeit.find.init_search_results(self.search_result);
@@ -162,7 +164,9 @@ zeit.find.Search = zeit.find.BaseView.extend({
                 element.value = value;
             }
         }
-        self.update_search_result();
+        if (self.submit_on_pageload) {
+            self.update_search_result();
+        }
     },
 
     update_search_result: function() {
@@ -296,9 +300,12 @@ zeit.find.Favorites = zeit.find.BaseView.extend({
     },
 });
 
-zeit.find.init_full_search = function() {
+zeit.find.init_full_search = function(submit_on_pageload) {
+    if (isUndefined(submit_on_pageload)) {
+        submit_on_pageload = true;
+    }
 
-    zeit.find._search = new zeit.find.Search();
+    zeit.find._search = new zeit.find.Search(submit_on_pageload);
 
     zeit.find.tabs = new zeit.cms.Tabs('cp-search');
     zeit.find.tabs.add(new zeit.cms.ViewTab(
