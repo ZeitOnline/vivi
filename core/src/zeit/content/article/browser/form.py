@@ -14,7 +14,9 @@ import zeit.content.article.interfaces
 import zeit.edit.interfaces
 import zeit.wysiwyg.interfaces
 import zope.browser.interfaces
+import zope.event
 import zope.formlib.form
+import zope.lifecycleevent
 
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
@@ -63,6 +65,7 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
             IEditableBody(article), zeit.edit.interfaces.IElementFactory,
             name='image')
         image_factory()
+        zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(article))
         return article
 
     def get_ressort(self):

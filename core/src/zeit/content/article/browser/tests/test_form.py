@@ -95,6 +95,15 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(True, article.dailyNewsletter)
         self.assertEqual(True, ICDSWorkflow(article).export_cds)
 
+    def test_new_article_should_have_last_semantic_change(self):
+        from zeit.cms.content.interfaces import ISemanticChange
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Article']
+        url = menu.value[0]
+        self.browser.open(url)
+        article = self.get_article()
+        self.assertTrue(ISemanticChange(article).last_semantic_change)
+
 
 class DefaultView(zeit.cms.testing.BrowserTestCase):
 
