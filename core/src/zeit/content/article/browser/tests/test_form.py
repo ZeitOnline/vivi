@@ -56,7 +56,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         menu = self.browser.getControl(name='add_menu')
         menu.displayValue = ['Article']
         url = menu.value[0]
-        self.browser.handleErrors = False
         self.browser.open(url)
         article = self.get_article()
         self.assertEqual('ZEDE', article.product.id)
@@ -76,7 +75,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.browser.open('Somalia/@@checkout')
         article = self.get_article()
         IAutomaticallyRenameable(article).renameable = True
-        self.browser.handleErrors = False
         self.browser.open('@@edit.form.new-filename?show_form=yes')
         ctrl = self.browser.getControl('New file name')
         self.assertEqual('', ctrl.value)
