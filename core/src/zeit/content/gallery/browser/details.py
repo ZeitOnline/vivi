@@ -13,7 +13,7 @@ class Details(zeit.cms.browser.view.Base):
             copyrights = metadata.copyrights
             caption = entry.caption
             entries.append(dict(
-                url=self.url(entry.image)+"/preview",
+                url=self.url(entry.image, '/preview'),
                 copyrights=copyrights,
                 caption=caption))
         return json.dumps(entries)
