@@ -10,11 +10,9 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
     layer = zeit.content.article.testing.TestBrowserLayer
 
     def setUp(self):
-        from zope.testbrowser.testing import Browser
-        self.browser = browser = Browser()
-        browser.addHeader('Authorization', 'Basic user:userpw')
-        browser.open('http://localhost:8080/++skin++vivi/repository/online'
-                     '/2007/01/')
+        super(TestAdding, self).setUp()
+        self.browser.open(
+            'http://localhost:8080/++skin++vivi/repository/online/2007/01/')
 
     def get_article(self):
         import zeit.cms.workingcopy.interfaces
