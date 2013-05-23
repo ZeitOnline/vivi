@@ -82,7 +82,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
     def test_filename_should_not_be_editable_when_article_is_not_renameable(
             self):
         self.browser.open('Somalia/@@checkout')
-        self.get_article()
         self.browser.open('@@edit-forms')
         self.assertNotIn('filename', self.browser.contents)
 
