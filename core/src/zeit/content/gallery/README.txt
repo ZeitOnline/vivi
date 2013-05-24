@@ -111,7 +111,7 @@ The change is reflected in the xml:
         </block>
         <block name="01.jpg">
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <caption>Nice image</caption>
+          <caption...>Nice image</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
             <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
@@ -154,7 +154,7 @@ xml:
 
 >>> entry.text = lxml.objectify.E.text(
 ...     lxml.objectify.E.p(u'Seit zwei Uhr in der Früh'))
->>> entry.caption = u'Gallery &amp; <br/>caption'
+>>> entry.caption = u'Gallery & caption'
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>
@@ -177,7 +177,7 @@ xml:
         </block>
         <block name="01.jpg">
           <text xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:nil="true"/>
-          <caption>Nice image</caption>
+          <caption...>Nice image</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
             <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
@@ -220,7 +220,7 @@ When we assign the entry the change will be reflected:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery &amp; <br/>caption</caption>
+          <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
             <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
@@ -268,7 +268,7 @@ well:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery &amp; <br/>caption</caption>
+          <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
             <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
@@ -294,7 +294,7 @@ u'Der Wecker klingelt'
 >>> entry.text['p']
 u'Seit zwei Uhr in der Fr\xc3\xbch'
 >>> entry.caption
-u'Gallery &amp; <br/>caption'
+u'Gallery & caption'
 
 
 Entry layout
@@ -338,7 +338,7 @@ True
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery &amp; <br/>caption</caption>
+          <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
             <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
@@ -386,7 +386,7 @@ u'image-only'
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery &amp; <br/>caption</caption>
+          <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
             <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
@@ -473,7 +473,7 @@ This is of course reflected int he XML:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery &amp; <br/>caption</caption>
+          <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
             <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
@@ -602,7 +602,7 @@ Note that his has *not* changed the xml so far:
           <text xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
             <p py:pytype="str">Seit zwei Uhr in der Fr&#195;&#188;h</p>
           </text>
-          <caption>Gallery &amp; <br/>caption</caption>
+          <caption...>Gallery &amp; caption</caption>
           <image ...src="http://xml.zeit.de/2006/01.jpg" type="jpg"...>
             <bu ...>Nice image</bu>
             <copyright ...>...</copyright>
@@ -734,7 +734,7 @@ The keys also correct(ed) and the names are set:
         </block>
         <block name="01.jpg">
           <text.../>
-          <caption>Nice image</caption>
+          <caption...>Nice image</caption>
           <image ... src="http://xml.zeit.de/2006/01.jpg"...
              <bu ...>Nice image</bu>
              <copyright py:pytype="str" link="http://www.zeit.de">ZEIT online</copyright>

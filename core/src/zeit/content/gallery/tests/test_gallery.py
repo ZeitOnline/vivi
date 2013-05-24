@@ -3,6 +3,7 @@
 
 import unittest
 
+
 class TestHTMLContent(unittest.TestCase):
 
     def test_get_tree_should_append_text(self):

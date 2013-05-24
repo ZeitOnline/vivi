@@ -129,12 +129,7 @@ class Gallery(zeit.cms.content.metadata.CommonMetadata):
 
         gallery_caption = node.find('caption')
         if gallery_caption is not None:
-            text = gallery_caption.text
-            if text is None:
-                text = ''
-            entry.caption = xml.sax.saxutils.escape(text) + u''.join(
-                lxml.etree.tostring(copy.copy(node), encoding=unicode)
-                for node in gallery_caption.iterchildren())
+            entry.caption = unicode(gallery_caption)
 
         # XXX need location information on the entry itself for crops(),
         # but just returning entry here breaks tests, so we do both for now.
@@ -326,8 +321,7 @@ class EntryXMLRepresentation(object):
             self.context.text)
 
         if self.context.caption:
-            node.append(lxml.objectify.fromstring(
-                '<caption>%s</caption>' % (self.context.caption,)))
+            node.append(lxml.objectify.E.caption(self.context.caption))
         if self.context.is_crop_of:
             node.set('is_crop_of', self.context.is_crop_of)
 
