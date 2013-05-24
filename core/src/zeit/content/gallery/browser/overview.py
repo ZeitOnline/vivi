@@ -60,7 +60,6 @@ class Overview(zeit.cms.browser.view.Base):
             zope.app.form.browser.interfaces.ITerms)
 
 
-
 class Synchronise(zeit.cms.browser.view.Base):
 
     def __call__(self, redirect=''):
