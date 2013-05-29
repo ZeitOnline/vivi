@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.0.2 (unreleased)
+3.0.2 (2013-05-29)
 ------------------
 
 - Newly created articles now have a last_semantic_change value set (#12398).
