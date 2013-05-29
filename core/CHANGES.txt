@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.6.1 (unreleased)
+2.6.1 (2013-05-29)
 ------------------
 
 - Fix handling of GalleryEntry.caption after removal of XMLSnippet (#12425).
