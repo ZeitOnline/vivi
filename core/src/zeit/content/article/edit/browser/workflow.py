@@ -151,7 +151,9 @@ class Timestamp(object):
         sc = zeit.cms.content.interfaces.ISemanticChange(self.context)
         if not sc.last_semantic_change:
             return ''
-        return sc.last_semantic_change.strftime('%d.%m.%Y %H:%Mh')
+        tz = zope.interface.common.idatetime.ITZInfo(self.request)
+        return sc.last_semantic_change.astimezone(tz).strftime(
+            '%d.%m.%Y %H:%Mh')
 
 
 class ViewWidget(zope.formlib.widget.BrowserWidget):

@@ -50,7 +50,7 @@ class CheckinSelenium(
         s.waitForElementPresent('css=.timestamp')
         s.waitForNotText('css=.timestamp', '')
         date_format = '%d.%m.%Y %H:%Mh'
-        timestamp = datetime.datetime(2007, 1, 1, 8, 53).strftime(date_format)
+        timestamp = datetime.datetime(2007, 1, 1, 9, 53).strftime(date_format)
         s.assertText('css=.timestamp', timestamp)
 
     def test_form_without_last_semantic_change_shows_current_timestamp(self):
