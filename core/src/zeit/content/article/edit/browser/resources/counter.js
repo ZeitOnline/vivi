@@ -4,7 +4,7 @@ $.fn.limitedInput = function() {
     return this.each(function() {
         var area = $(this);
         var container = area.closest('.widget');
-        var limit = area.attr('cms:maxlength');
+        var limit = area.attr('cms:charlimit');
         var count = area.val().length || 0;
         var suffix = '/' + limit;
         var label = count + suffix;
@@ -44,7 +44,7 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 });
 
 $(document).bind('fragment-ready', function(event) {
-    $('[cms\\:maxlength]', event.__target).limitedInput();
+    $('[cms\\:charlimit]', event.__target).limitedInput();
 });
 
 }(jQuery));

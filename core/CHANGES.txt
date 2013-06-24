@@ -6,6 +6,9 @@ zeit.content.article changes
 
 - Display last_semantic_change with the user's timezone (#12396).
 
+- Decouple character limit during entry of text from validation during
+  check-in of article (#12462).
+
 
 3.0.2 (2013-05-29)
 ------------------

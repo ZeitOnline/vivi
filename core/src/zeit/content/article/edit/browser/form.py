@@ -15,6 +15,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.related.interfaces
 import zeit.content.gallery.interfaces
 import zeit.content.video.interfaces
+import zeit.edit.browser.form
 import zope.formlib.form
 import zope.formlib.interfaces
 
@@ -27,12 +28,15 @@ class FormFields(zope.formlib.form.FormFields):
         super(FormFields, self).__init__(*args, **kw)
 
 
-class MaxLengthMixin(object):
+class CharlimitMixin(object):
 
-    def set_maxlength(self, field_name):
+    def set_charlimit(self, field_name):
         widget = self.widgets[field_name]
+        field = widget.context
+        limit = field.queryTaggedValue('zeit.cms.charlimit', field.max_length)
         if hasattr(widget, 'extra'):
-            widget.extra += ' cms:maxlength="%s"' % widget.context.max_length
+            # i.e. we're not in read-only mode
+            widget.extra += ' cms:charlimit="%s"' % limit
 
 
 class Heading(object):
@@ -72,7 +76,7 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
 
 
 class ArticleContentHead(zeit.edit.browser.form.InlineForm,
-                         MaxLengthMixin):
+                         CharlimitMixin):
 
     legend = _('')
     prefix = 'article-content-head'
@@ -82,9 +86,9 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm,
 
     def setUpWidgets(self, *args, **kw):
         super(ArticleContentHead, self).setUpWidgets(*args, **kw)
-        self.set_maxlength('supertitle')
-        self.set_maxlength('title')
-        self.set_maxlength('subtitle')
+        self.set_charlimit('supertitle')
+        self.set_charlimit('title')
+        self.set_charlimit('subtitle')
 
     def _success_handler(self):
         self.signal('reload-inline-view', 'edit.heading')
@@ -395,7 +399,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
 
 
 class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
-                       MaxLengthMixin):
+                       CharlimitMixin):
 
     legend = _('')
     prefix = 'teaser-supertitle'
@@ -404,11 +408,11 @@ class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserSupertitle, self).setUpWidgets(*args, **kw)
-        self.set_maxlength('teaserSupertitle')
+        self.set_charlimit('teaserSupertitle')
 
 
 class TeaserTitle(zeit.edit.browser.form.InlineForm,
-                  MaxLengthMixin):
+                  CharlimitMixin):
 
     legend = _('')
     prefix = 'teaser-title'
@@ -417,11 +421,11 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm,
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserTitle, self).setUpWidgets(*args, **kw)
-        self.set_maxlength('teaserTitle')
+        self.set_charlimit('teaserTitle')
 
 
 class TeaserText(zeit.edit.browser.form.InlineForm,
-                 MaxLengthMixin):
+                 CharlimitMixin):
 
     legend = _('')
     prefix = 'teaser-text'
@@ -430,7 +434,7 @@ class TeaserText(zeit.edit.browser.form.InlineForm,
 
     def setUpWidgets(self, *args, **kw):
         super(TeaserText, self).setUpWidgets(*args, **kw)
-        self.set_maxlength('teaserText')
+        self.set_charlimit('teaserText')
 
 
 class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
