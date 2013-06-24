@@ -119,10 +119,14 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("Title"),
         missing_value=u'')
 
+    title.setTaggedValue('zeit.cms.charlimit', 70)
+
     subtitle = zope.schema.Text(
         title=_("Subtitle"),
         missing_value=u'',
         required=False)
+
+    subtitle.setTaggedValue('zeit.cms.charlimit', 170)
 
     teaserTitle = zope.schema.TextLine(
         title=_("Teaser title"),
