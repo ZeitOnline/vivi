@@ -1,23 +1,25 @@
 (function($){
 
+var check_char_limit = function(target, span, limit) {
+    var count = $(target).val().length;
+    var label = count + '/' + limit;
+    if ((limit - count) < 0) {
+        span.css("color", "#900").html(label);
+    } else {
+        span.css("color", "#000").html(label);
+    }
+};
+
 $.fn.limitedInput = function() {
     return this.each(function() {
         var area = $(this);
-        var container = area.closest('.widget');
         var limit = area.attr('cms:charlimit');
-        var count = area.val().length || 0;
-        var suffix = '/' + limit;
-        var label = count + suffix;
-        var span = $('<span />').addClass('charlimit').html(label);
+        var container = area.closest('.widget');
+        var span = $('<span />').addClass('charlimit');
         container.append(span);
-        area.bind("keyup focus blur onload", function (e) {
-            var count = $(e.target).val().length;
-            var label = count + suffix;
-            if ((limit - count) < 0) {
-                span.css("color", "#900").html(label);
-            } else {
-                span.css("color", "#000").html(label);
-            }
+        check_char_limit(area, span, limit);
+        area.bind("keyup focus blur", function(event) {
+            check_char_limit(event.target, span, limit);
         });
     });
 };
