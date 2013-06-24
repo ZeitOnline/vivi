@@ -11,11 +11,16 @@ from zeit.content.article.interfaces import IArticle
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
+import zeit.cms.asset.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.related.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.content.article.interfaces
 import zeit.content.gallery.interfaces
+import zeit.content.image.interfaces
 import zeit.content.video.interfaces
 import zeit.edit.browser.form
+import zeit.workflow.interfaces
 import zope.formlib.form
 import zope.formlib.interfaces
 
