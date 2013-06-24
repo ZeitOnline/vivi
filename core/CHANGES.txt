@@ -9,6 +9,8 @@ zeit.content.article changes
 - Decouple character limit during entry of text from validation during
   check-in of article (#12462).
 
+- Prevent accidental back button events when pressing backspace (#12461).
+
 
 3.0.2 (2013-05-29)
 ------------------

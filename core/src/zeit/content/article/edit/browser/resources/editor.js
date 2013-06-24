@@ -24,6 +24,24 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 
     });
 
+    // prevent accidental "back button" events
+    $(document).on('keydown', function(event) {
+        if (event.which !== 8) {  // BACKSPACE
+            return;
+        }
+        if ($(event.target).closest('#editable-body .editing').length) {
+            return;
+        }
+        var tag = event.target.nodeName.toLowerCase();
+        if ((tag === 'input' && event.target.type === 'text')
+            || tag === 'textarea') {
+            return;
+        }
+        log('preventing back button');
+        event.preventDefault();
+    });
+
+    // set up "to top" links
     $('.editable-area > .block-inner').append('<div class="totop"><span class="totopclick">↑</span></div>');
     $('.totopclick').live("click", function() {
         $('#cp-content-inner').animate({scrollTop: 0}, 300);

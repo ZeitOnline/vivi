@@ -802,3 +802,17 @@ class AutoSaveIntegration(
         self.assert_paragraphs('foo', 'bar')
         self.save()
         self.assert_paragraphs('foo', 'bar')
+
+
+@unittest2.skip("no typeKeys 'til webdriver")
+class BackButtonPreventionTest(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def test_backspace_somewhere_does_not_cause_back_button(self):
+        pass
+
+    def test_backspace_in_textinput_and_textarea_still_works(self):
+        pass
+
+    def test_backspace_in_edit_mode_still_works(self):
+        pass
