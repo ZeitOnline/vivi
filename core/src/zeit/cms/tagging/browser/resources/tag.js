@@ -25,7 +25,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             axis: 'y',
             scroll: false,
             update: function(event, ui) {
-                $(self.data).val(JSON.stringify(self.to_json()));
+                self._sync_json_widget_value();
                 $(self.data).trigger('change');
             }
         });
@@ -57,7 +57,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
     delete: function(event) {
         var self = this;
         $(event.target()).closest('li').remove();
-        $(self.data).val(JSON.stringify(self.to_json()));
+        self._sync_json_widget_value();
         $(self.data).trigger('change');
     },
 
@@ -93,6 +93,11 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         d.addBoth(function(result_or_error) {
             MochiKit.DOM.removeElementClass(self.list, 'busy');
         });
+    },
+
+    _sync_json_widget_value: function() {
+        var self = this;
+        $(self.data).val(JSON.stringify(self.to_json()));
     }
 
 });
