@@ -1,4 +1,4 @@
-(function() {
+(function($) {
 "use strict";
 
 var nbsp = ' ';
@@ -7,66 +7,77 @@ zeit.cms.declare_namespace('zeit.cms.tagging');
 
 zeit.cms.tagging.Widget = gocept.Class.extend({
 
-    construct: function(id, keywords_shown, tags) {
+    construct: function(id, keywords_shown) {
         var self = this;
         self.id = id;
         self.keywords_shown = keywords_shown;
-        self.list = $(id + ".list");
-        self.empty_marker = jQuery(
-            'input[name="' + id + '-empty-marker"]')[0];
-        self.populate_keywords(tags);
-        MochiKit.Signal.connect(id, 'onclick', self, self.handle_click);
+        self.list = document.getElementById(id + '.list');
+        self.data = document.getElementById(id);
+        self.populate_keywords($.parseJSON($(self.data).val()));
+        MochiKit.Signal.connect(
+            id + '.wrapper', 'onclick', self, self.handle_click);
     },
 
     _sortable: function() {
         var self = this;
-        jQuery(self.list).sortable({
+        $(self.list).sortable({
             items: '> li',
             axis: 'y',
             scroll: false,
             update: function(event, ui) {
-                jQuery(self.empty_marker).trigger('change');
+                $(self.data).val(JSON.stringify(self.to_json()));
+                $(self.data).trigger('change');
             }
         });
     },
 
     handle_click: function(event) {
         var self = this;
-        if (event.target().nodeName === 'INPUT' &&
-            event.target().name === 'update_tags') {
-            event.stop();
-            self.update_tags();
+        var method = event.target().getAttribute('cms:call');
+        if (isNull(method)) {
+            return;
         }
+
+        method = self[method];
+        method.call(self, event);
+        event.stop();
+    },
+
+    to_json: function() {
+        var self = this;
+        var result = [];
+        $('> li', self.list).each(function(i, el) {
+            el = $(el);
+            result.push({code: el.attr('cms:uniqueId'),
+                         label: el.text()});
+        });
+        return result;
+    },
+
+    delete: function(event) {
+        var self = this;
+        $(event.target()).closest('li').remove();
+        $(self.data).val(JSON.stringify(self.to_json()));
+        $(self.data).trigger('change');
     },
 
     populate_keywords: function(tags) {
         var self = this;
-        var id;
         var tag;
         self.list.innerHTML = '';
         for(var i=0; i<tags.length; i++) {
-            id = self.id + "." + i;
             tag = tags[i];
-            var input_attrs = {
-                name: self.id,
-                id: id,
-                'class': 'hidden',
-                type: 'checkbox',
-                value: tag.code};
-           if (!tag.disabled) {
-                input_attrs['checked'] = 'checked';
-            }
-            var attrs = {};
+            var attrs = {'cms:uniqueId': tag.code};
             if (i < self.keywords_shown) {
                 attrs['class'] = 'shown';
             } else {
                 attrs['class'] = 'not-shown';
             }
             self.list.appendChild(LI(
-                attrs, LABEL({'class': 'icon'}, INPUT(input_attrs)),
+                attrs, LABEL({'class': 'icon', 'cms:call': 'delete'}),
                 tag.label));
         }
-        jQuery(self.list).css('width', jQuery(self.list).width() + 'px');
+        $(self.list).css('width', $(self.list).width() + 'px');
         self._sortable();
     },
 
@@ -86,4 +97,4 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
 
 });
 
-})();
+})(jQuery);

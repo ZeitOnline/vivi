@@ -102,7 +102,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         s.click('update_tags')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
-        s.assertChecked('id=form.keywords.0')
+        s.waitForTextPresent('t1')
 
     def test_configured_number_of_items_is_marked(self):
         with mock.patch(

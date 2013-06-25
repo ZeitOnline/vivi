@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.tagging.interfaces import KEYWORD_CONFIGURATION
+from zeit.cms.tagging.tag import Tag
 import grokcore.component
 import json
 import xml.sax.saxutils
@@ -10,7 +11,7 @@ import zc.resourcelibrary
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.tagging.interfaces
-import zope.formlib.interfaces
+import zope.app.pagetemplate
 import zope.formlib.itemswidgets
 import zope.formlib.source
 import zope.formlib.widget
@@ -18,16 +19,8 @@ import zope.lifecycleevent
 import zope.schema.interfaces
 
 
-get_init_widget_js = """\
-<script type="text/javascript">
- var widget = new zeit.cms.tagging.Widget(
- "{name}", {keywords_shown}, {tags});
-</script>
-""".format
-
-
 class Widget(grokcore.component.MultiAdapter,
-             zope.formlib.source.SourceMultiCheckBoxWidget):
+             zope.formlib.widget.SimpleInputWidget):
     """Widget to edit tags on context.
 
     - "Update" link uses an tagging mechanism to add tags to content
@@ -42,45 +35,28 @@ class Widget(grokcore.component.MultiAdapter,
     grokcore.component.provides(
         zope.formlib.interfaces.IInputWidget)
 
+    template = zope.app.pagetemplate.ViewPageTemplateFile('widget.pt')
+
     show_helptext = False
 
+    def __init__(self, context, source, request):
+        super(Widget, self).__init__(context, request)
+        self.source = source
+
     def __call__(self):
-        # adapted from zope.formlib.itemswidgets.ItemsEditWidgetBase to
-        # - Add update button
-        # - Add id and extra css class to our outer div
-        value = self._getFormValue()
-        contents = []
-
-        contents.append(self._div('value', self.renderValue(value)))
-        contents.append(self._div(
-            'update', '<input type="button" name="update_tags" value=%s />'
-            % xml.sax.saxutils.quoteattr(self.translate(_('Update tags'))),
-            id="%s.update" % self.name))
-        contents.append(self._emptyMarker())
-        if self.show_helptext:
-            contents.append(self._div(
-                'help', self.translate(
-                _('Only the first ${keywords_shown} keywords'
-                  ' are shown with the article.', mapping=dict(
-                keywords_shown=KEYWORD_CONFIGURATION.keywords_shown)))))
-
-        return self._div(
-            self.cssClass + ' keyword-widget',
-            "\n".join(contents), id=self.name)
-
-    def renderValue(self, value):
         zc.resourcelibrary.need('zeit.cms.tagger')
-        list_container = u'<ol id={0}></ol>'.format(
-            xml.sax.saxutils.quoteattr(self.name + ".list"))
-        javascript = get_init_widget_js(
-            name=self.name,
-            keywords_shown=KEYWORD_CONFIGURATION.keywords_shown,
-            tags=json.dumps(self.renderItems(value)))
-        return list_container + javascript
+        return self.template()
 
-    def _renderItem(self, index, text, value, name, cssClass, checked=False):
-        """Render an item of the list."""
-        return dict(code=value, label=text)
+    @property
+    def keywords_shown(self):
+        return KEYWORD_CONFIGURATION.keywords_shown
+
+    def _toFormValue(self, value):
+        return json.dumps([{'code': x.code, 'label': x.label} for x in value])
+
+    def _toFieldValue(self, value):
+        tags = json.loads(value)
+        return tuple(Tag(x['code'], x['label']) for x in tags)
 
 
 class UpdateTags(zeit.cms.browser.view.JSON):

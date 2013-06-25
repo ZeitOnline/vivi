@@ -1,0 +1,30 @@
+<div class="keyword-widget"
+  i18n:domain="zeit.cms"
+  tal:attributes="id string:${view/name}.wrapper">
+
+<input
+  type="hidden"
+  tal:attributes="name string:${view/name};
+                  id string:${view/name};
+                  value view/_getFormValue;"
+  />
+
+<ol tal:attributes="id string:${view/name}.list">
+  <!-- data will be inserted here by javascript -->
+</ol>
+
+<input
+  type="button" name="update_tags" value="Update tags"
+  cms:call="update_tags"
+  i18n:translate="value" />
+
+<div tal:condition="view/show_helptext" class="help" i18n:translate="">
+Only the first <span tal:replace="view/keywords_shown"/>
+keywords are shown with the article.
+</div>
+
+</div>
+<script tal:content="string:
+  new zeit.cms.tagging.Widget('${view/name}', ${view/keywords_shown});
+">
+</script>
