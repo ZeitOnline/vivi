@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import UserDict
@@ -30,12 +30,9 @@ class Whitelist(UserDict.UserDict,
     def data(self):
         return self._load()
 
-    def search(self, prefix):
-        result = []
-        for tag in self.values():
-            if tag.label.lower().startswith(prefix.lower()):
-                result.append(tag)
-        return result
+    def search(self, term):
+        term = term.lower()
+        return [tag for tag in self.values() if term in tag.label.lower()]
 
     def _get_url(self):
         cms_config = zope.app.appsetup.product.getProductConfiguration(

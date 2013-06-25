@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -68,8 +68,8 @@ class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
 class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):
 
-    def search(prefix):
-        """Returns a list of tags whose lables start with the given prefix."""
+    def search(term):
+        """Returns a list of tags whose labels contain the given term."""
 
 
 class IWhitelist(IReadWhitelist, zope.interface.common.mapping.IWriteMapping):
