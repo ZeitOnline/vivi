@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import zeit.cms.testing
@@ -30,8 +30,8 @@ class KeywordTest(zeit.cms.testing.SeleniumTestCase):
         self.open('/repository/video/@@checkout')
         s = self.selenium
         s.waitForElementPresent('css=input.autocomplete')
-        s.type('css=input.autocomplete', 't')
-        s.typeKeys('css=input.autocomplete', 't')
+        s.type('css=input.autocomplete', 'est')
+        s.typeKeys('css=input.autocomplete', 'est')
         s.waitForVisible('css=.ui-autocomplete')
         s.assertText('css=.ui-autocomplete a', 'test1')
         #s.click('css=.ui-autocomplete a:contains(test1)')
