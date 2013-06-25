@@ -77,6 +77,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
                 attrs, LABEL({'class': 'icon', 'cms:call': 'delete'}),
                 tag.label));
         }
+        self._sync_json_widget_value();
         $(self.list).css('width', $(self.list).width() + 'px');
         self._sortable();
     },

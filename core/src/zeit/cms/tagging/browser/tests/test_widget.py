@@ -95,10 +95,11 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         s.waitForTextPresent('t1')
         self.assertTrue(self.tagger().update.called)
 
-    def test_save_should_work_after_update(self):
+    def test_save_should_work_after_update_regardless_of_prior_state(self):
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
+        s.click("xpath=//li[contains(., 't1')]/label")
         s.click('update_tags')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
