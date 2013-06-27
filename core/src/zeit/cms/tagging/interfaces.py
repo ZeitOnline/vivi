@@ -44,28 +44,6 @@ class ITag(zope.interface.Interface):
         title=u'User visible text of tag')
 
 
-class ITagsForContent(zope.schema.interfaces.IIterableSource):
-    pass
-
-
-class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        zope.interface.implements(ITagsForContent)
-
-    def getValues(self, context):
-        tagger = ITagger(context, None)
-        if tagger is None:
-            return []
-        return (tagger[code] for code in tagger)
-
-    def getTitle(self, context, value):
-        return value.label
-
-    def getToken(self, context, value):
-        return value.code
-
-
 class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):
 
     def search(term):

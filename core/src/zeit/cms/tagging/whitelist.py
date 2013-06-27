@@ -7,7 +7,9 @@ import gocept.lxml.objectify
 import grokcore.component as grok
 import logging
 import urllib2
-import zeit.cms.content.interfaces
+import zc.sourcefactory.contextual
+import zc.sourcefactory.source
+import zeit.cms.content.contentsource
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zope.interface
@@ -57,26 +59,34 @@ class Whitelist(UserDict.UserDict,
         return tags
 
 
-class WhitelistSource(object):
+class WhitelistSource(
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
 
     # this should be in .interfaces, but that leads to a circular import
     # between zeit.cms.content.interfaces and .interfaces
 
-    zope.interface.implements(
-        zeit.cms.tagging.interfaces.IWhitelistSource,
-        zeit.cms.content.interfaces.IAutocompleteSource)
+    # this is only contextual so we can customize the source_class
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        zope.interface.implements(
+            zeit.cms.tagging.interfaces.IWhitelistSource,
+            zeit.cms.content.contentsource.IAutocompleteSource)
+
+        def get_check_types(self):
+            """IAutocompleteSource"""
+            return ['tag']
 
     @property
     def whitelist(self):
         return zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
 
-    def __contains__(self, item):
-        return item.code in self.whitelist
+    def getValues(self, context):
+        return self.whitelist.values()
 
-    def __iter__(self):
-        return iter(self.whitelist.values())
+    def getTitle(self, context, value):
+        return value.label
 
-    def get_check_types(self):
-        """IAutocompleteSource"""
-        return ['tag']
+    def getToken(self, context, value):
+        return value.code

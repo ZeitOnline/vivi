@@ -7,6 +7,7 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
+import zeit.cms.tagging.whitelist
 import zope.component.interfaces
 import zope.i18nmessageid
 import zope.interface
@@ -93,7 +94,7 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=(),
         value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.interfaces.TagsForContent()))
+            source=zeit.cms.tagging.whitelist.WhitelistSource()))
 
     serie = zope.schema.Choice(
         title=_("Serie"),
