@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
+# Copyright (c) 2010-2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.browser.widget import CheckboxDisplayWidget
@@ -164,19 +164,18 @@ class NewFilename(zeit.edit.browser.form.InlineForm):
     undo_description = _('edit new filename')
     css_class = 'table'
 
-    @property
-    def form_fields(self):
+    def __init__(self, *args, **kw):
+        super(NewFilename, self).__init__(*args, **kw)
         form_fields = FormFields(
             zeit.cms.interfaces.ICMSContent,
             zeit.cms.repository.interfaces.IAutomaticallyRenameable,
             render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
                 '__name__', 'rename_to')
         if zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            self.context).renameable:
-            form_fields = form_fields.omit('__name__')
+                self.context).renameable:
+            self.form_fields = form_fields.omit('__name__')
         else:
-            form_fields = form_fields.omit('rename_to')
-        return form_fields
+            self.form_fields = form_fields.omit('rename_to')
 
 
 class LeadTeaserForms(zeit.edit.browser.form.FoldableFormGroup):
@@ -362,12 +361,12 @@ class MetadataComments(zeit.edit.browser.form.InlineForm):
     prefix = 'metadata-comments'
     undo_description = _('edit metadata')
 
-    @property
-    def form_fields(self):
+    def __init__(self, *args, **kw):
+        super(MetadataComments, self).__init__(*args, **kw)
         fields = ('commentSectionEnable',)
         if self.context.commentSectionEnable:
             fields += ('commentsAllowed',)
-        return FormFields(ICommonMetadata).select(*fields)
+        self.form_fields = FormFields(ICommonMetadata).select(*fields)
 
 
 class TeaserForms(zeit.edit.browser.form.FoldableFormGroup):
