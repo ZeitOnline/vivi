@@ -6,9 +6,7 @@ import grokcore.component
 import xml.sax.saxutils
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
-import zeit.cms.content.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.find.browser.find
 import zope.formlib.interfaces
 import zope.i18n
 
