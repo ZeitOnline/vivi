@@ -4,7 +4,8 @@ zeit.content.video changes
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't use special declaration for keywords, this has become unnecessary since
+  articles can get tags from the whitelist now, too (#11421).
 
 
 2.2 (2013-04-23)

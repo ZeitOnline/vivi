@@ -64,13 +64,6 @@ class IVideo(IVideoContent):
         required=False,
         readonly=True)
 
-    keywords = zope.schema.Tuple(
-        title=_("Keywords"),
-        required=False,
-        default=None,
-        value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.whitelist.WhitelistSource()))
-
     renditions = zope.schema.Tuple(
         title=_("Renditions of the Video"),
         required=False,
