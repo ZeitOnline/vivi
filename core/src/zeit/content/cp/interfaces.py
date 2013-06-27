@@ -1,4 +1,4 @@
-# Copyright (c) 2009-2012 gocept gmbh & co. kg
+# Copyright (c) 2009-2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
@@ -9,6 +9,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
+import zeit.cms.tagging.interfaces
 import zeit.content.cp.blocks.avsource
 import zeit.content.cp.layout
 import zeit.content.cp.source
@@ -89,6 +90,9 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
        title=_('Image'),
         required=False)
 
+    keywords = zeit.cms.tagging.interfaces.Keywords(
+        required=False,
+        default=())
 
     def __getitem__(area_key):
         """Return IArea for given key.
