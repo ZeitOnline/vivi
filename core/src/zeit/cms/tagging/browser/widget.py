@@ -60,7 +60,7 @@ class Widget(grokcore.component.MultiAdapter,
     def _toFormValue(self, value):
         return json.dumps([{
             'code': zeit.cms.tagging.interfaces.ID_NAMESPACE + x.code,
-            'label': x.label} for x in value])
+            'label': x.label} for x in value or ()])
 
     def _toFieldValue(self, value):
         tags = json.loads(value)
