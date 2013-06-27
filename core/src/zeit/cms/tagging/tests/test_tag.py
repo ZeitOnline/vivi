@@ -2,14 +2,15 @@
 # See also LICENSE.txt
 
 import mock
-import unittest
+import unittest2 as unittest
 import zeit.cms.testing
 import zope.component
 import zope.security.management
 import zope.testbrowser.testing
 
 
-class TestTags(unittest.TestCase):
+class TestTags(unittest.TestCase,
+               zeit.cms.tagging.testing.TaggingHelper):
 
     def get_content(self):
         from zeit.cms.tagging.tag import Tags
@@ -37,19 +38,19 @@ class TestTags(unittest.TestCase):
         self.assertEqual((t1, t2), result)
         tagger().values.assert_called_with()
 
-    def test_set_should_remove_remaining_values_from_tagger(self):
-        class FakeTagger(dict):
-            def updateOrder(self, keys):
-                pass
+    def test_set_should_add_new_values_to_tagger(self):
+        tags = self.setup_tags('t1', 't2')
+        t1 = tags['t1']
+        t2 = tags['t2']
+        del tags['t2']
+        self.get_content().tags = [t1, t2]
+        result = self.get_content().tags
+        self.assertEqual(['t1', 't2'], [x.code for x in result])
 
-        t1 = mock.Mock()
-        t1.code = 't1'
-        t2 = mock.Mock()
-        t2.code = 't2'
-        with mock.patch('zeit.cms.tagging.interfaces.ITagger') as tagger:
-            tagger.return_value = FakeTagger(t1=t1, t2=t2)
-            self.get_content().tags = [t1]
-            result = self.get_content().tags
+    def test_set_should_remove_remaining_values_from_tagger(self):
+        tags = self.setup_tags('t1', 't2')
+        self.get_content().tags = [tags['t1']]
+        result = self.get_content().tags
         self.assertEqual(['t1'], [x.code for x in result])
 
 

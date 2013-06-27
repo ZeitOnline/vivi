@@ -16,7 +16,9 @@ class TaggingHelper(object):
         import stabledict
 
         class Tags(stabledict.StableDict):
-            pass
+            def __contains__(self, key):
+                return key in list(self)
+
         tags = Tags()
         for code in codes:
             tags[code] = self.get_tag(code)

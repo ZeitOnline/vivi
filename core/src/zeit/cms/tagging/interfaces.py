@@ -15,7 +15,7 @@ class IReadTagger(zope.interface.common.mapping.IEnumerableMapping):
     """Tagger."""
 
 
-class IWriteTagger(zope.interface.Interface):
+class IWriteTagger(zope.interface.common.mapping.IWriteMapping):
 
     def update():
         """Update tags of context.
