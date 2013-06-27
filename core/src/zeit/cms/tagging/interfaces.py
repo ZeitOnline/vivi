@@ -2,10 +2,12 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.tagging.source import IWhitelistSource
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zc.sourcefactory.source
 import zeit.cms.content.sources
+import zeit.cms.tagging.source
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema
@@ -16,7 +18,7 @@ class IReadTagger(zope.interface.common.mapping.IEnumerableMapping):
     """Tagger."""
 
 
-class IWriteTagger(zope.interface.Interface):
+class IWriteTagger(zope.interface.common.mapping.IWriteMapping):
 
     def update():
         """Update tags of context.
@@ -45,28 +47,6 @@ class ITag(zope.interface.Interface):
         title=u'User visible text of tag')
 
 
-class ITagsForContent(zope.schema.interfaces.IIterableSource):
-    pass
-
-
-class TagsForContent(zc.sourcefactory.contextual.BasicContextualSourceFactory):
-
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-        zope.interface.implements(ITagsForContent)
-
-    def getValues(self, context):
-        tagger = ITagger(context, None)
-        if tagger is None:
-            return []
-        return (tagger[code] for code in tagger)
-
-    def getTitle(self, context, value):
-        return value.label
-
-    def getToken(self, context, value):
-        return value.code
-
-
 class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):
 
     def search(term):
@@ -79,10 +59,6 @@ class IWhitelist(IReadWhitelist, zope.interface.common.mapping.IWriteMapping):
     The whitelist contains all selectable tags.
 
     """
-
-
-class IWhitelistSource(zope.schema.interfaces.IIterableSource):
-    """Tag whitelist"""
 
 
 ID_NAMESPACE = 'tag://'
@@ -117,7 +93,7 @@ class Keywords(zope.schema.Tuple):
     def __init__(self, **kw):
         kw.setdefault('title', _('Keywords'))
         kw.setdefault('value_type', zope.schema.Choice(
-            source=TagsForContent()))
+            source=zeit.cms.tagging.source.WhitelistSource()))
         super(Keywords, self).__init__(**kw)
 
     def _validate(self, value):

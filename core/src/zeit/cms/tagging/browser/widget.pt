@@ -13,10 +13,21 @@
   <!-- data will be inserted here by javascript -->
 </ol>
 
+<div>
+<input
+ type="text" name="add_tag" placeholder="Type to find entries ..."
+ i18n:attributes="placeholder"
+ tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
+                 id string:${view/name}.add"
+ />
+</div>
+
+<div>
 <input
   type="button" name="update_tags" value="Update tags"
   cms:call="update_tags"
-  i18n:translate="value" />
+  i18n:attributes="value" />
+</div>
 
 <div tal:condition="view/show_helptext" class="help" i18n:translate="">
 Only the first <span tal:replace="view/keywords_shown"/>

@@ -27,6 +27,9 @@ class Tags(object):
 
     def __set__(self, instance, value):
         tagger = zeit.cms.tagging.interfaces.ITagger(instance)
+        for tag in value:
+            if tag not in tagger.values():
+                tagger[tag.code] = tag
         for tag in list(tagger.values()):
             if tag not in value:
                 del tagger[tag.code]

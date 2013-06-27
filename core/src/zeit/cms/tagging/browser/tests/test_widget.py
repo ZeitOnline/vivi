@@ -117,3 +117,17 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
             s.click('update_tags')
             s.waitForCssCount('css=.fieldname-keywords li.not-shown', 1)
             s.waitForCssCount('css=.fieldname-keywords li.shown', 2)
+
+    def test_can_add_tags_via_autocomplete_field(self):
+        self.setup_tags()
+        self.open_content()
+        s = self.selenium
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval(
+            'document.getElementById("form.keywords.add").value = "Kohle"')
+        s.fireEvent('id=form.keywords.add', 'keydown')
+        autocomplete_item = 'css=.ui-menu-item a'
+        s.waitForElementPresent(autocomplete_item)
+        s.click(autocomplete_item)
+        s.clickAndWait('name=form.actions.apply')
+        s.waitForTextPresent('Kohle')

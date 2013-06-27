@@ -7,7 +7,6 @@ import gocept.lxml.objectify
 import grokcore.component as grok
 import logging
 import urllib2
-import zeit.cms.content.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zope.interface
@@ -55,28 +54,3 @@ class Whitelist(UserDict.UserDict,
             tags[tag.code] = tag
         log.info('Keywords loaded.')
         return tags
-
-
-class WhitelistSource(object):
-
-    # this should be in .interfaces, but that leads to a circular import
-    # between zeit.cms.content.interfaces and .interfaces
-
-    zope.interface.implements(
-        zeit.cms.tagging.interfaces.IWhitelistSource,
-        zeit.cms.content.interfaces.IAutocompleteSource)
-
-    @property
-    def whitelist(self):
-        return zope.component.getUtility(
-            zeit.cms.tagging.interfaces.IWhitelist)
-
-    def __contains__(self, item):
-        return item.code in self.whitelist
-
-    def __iter__(self):
-        return iter(self.whitelist.values())
-
-    def get_check_types(self):
-        """IAutocompleteSource"""
-        return ['tag']

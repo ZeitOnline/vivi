@@ -4,6 +4,8 @@ zeit.cms changes
 2.1.2 (unreleased)
 ------------------
 
+- Support adding keywords from the whitelist with an autocomplete widget
+  (#11421).
 - Set character limit for title and subtitle metadata (instead of validating
   them on check-in) (#12462).
 

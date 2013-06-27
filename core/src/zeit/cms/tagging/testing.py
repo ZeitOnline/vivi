@@ -2,7 +2,9 @@
 # See also LICENSE.txt
 
 import mock
+import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
+import zope.component
 
 
 class TaggingHelper(object):
@@ -16,7 +18,9 @@ class TaggingHelper(object):
         import stabledict
 
         class Tags(stabledict.StableDict):
-            pass
+            def __contains__(self, key):
+                return key in list(self)
+
         tags = Tags()
         for code in codes:
             tags[code] = self.get_tag(code)
@@ -26,4 +30,16 @@ class TaggingHelper(object):
         self.tagger.return_value = tags
         tags.updateOrder = mock.Mock()
         tags.update = mock.Mock()
+
+        whitelist = zope.component.queryUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        if whitelist is not None:  # only when ZCML is loaded
+            for tag in tags.values():
+                whitelist[tag.code] = tag
+
+            def remove_tags_from_whitelist():
+                for code in tags:
+                    del whitelist[code]
+            self.addCleanup(remove_tags_from_whitelist)
+
         return tags
