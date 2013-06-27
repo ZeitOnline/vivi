@@ -95,3 +95,44 @@ class Placeholder(zeit.cms.testing.FunctionalTestCase):
         self.form.setUpWidgets()
         self.assertEqual(
             'placeholder="customised"', self.form.widgets['special'].extra)
+
+
+class TestEditFormSetUpWidgets(zeit.cms.testing.FunctionalTestCase):
+
+    def test_form_fields_get_updated_to_most_specific_schema_field(self):
+        class IA(zope.interface.Interface):
+            foo = zope.schema.Int()
+
+        class IB(IA):
+            foo = zope.schema.Int(required=False)
+
+        class Foo(object):
+            zope.interface.implements(IB)
+            foo = 0
+
+        class Form(zeit.cms.browser.form.EditForm):
+            form_fields = zope.formlib.form.FormFields(IA)
+
+        form = Form(Foo(), zope.publisher.browser.TestRequest())
+        form.setUpWidgets()
+        self.assertIs(IB, form.form_fields['foo'].interface)
+        self.assertIs(IB['foo'], form.form_fields['foo'].field)
+
+    def test_form_fields_dont_get_updated_with_unrelated_schema_field(self):
+        class IA(zope.interface.Interface):
+            foo = zope.schema.Int()
+
+        class IB(zope.interface.Interface):
+            foo = zope.schema.Int(required=False)
+
+        class Foo(object):
+            zope.interface.implements(IB, IA)
+            foo = 0
+
+        class Form(zeit.cms.browser.form.EditForm):
+            form_fields = zope.formlib.form.FormFields(IA)
+
+        form = Form(Foo(), zope.publisher.browser.TestRequest())
+        form.setUpWidgets()
+        self.assertIs(IA, form.form_fields['foo'].interface)
+        self.assertIs(IA['foo'], form.form_fields['foo'].field)
