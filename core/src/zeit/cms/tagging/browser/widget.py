@@ -1,17 +1,17 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.tagging.interfaces import KEYWORD_CONFIGURATION
-from zeit.cms.tagging.tag import Tag
 import grokcore.component
 import json
 import xml.sax.saxutils
 import zc.resourcelibrary
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
+import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zope.app.pagetemplate
+import zope.component.hooks
 import zope.formlib.itemswidgets
 import zope.formlib.source
 import zope.formlib.widget
@@ -20,7 +20,8 @@ import zope.schema.interfaces
 
 
 class Widget(grokcore.component.MultiAdapter,
-             zope.formlib.widget.SimpleInputWidget):
+             zope.formlib.widget.SimpleInputWidget,
+             zeit.cms.browser.view.Base):
     """Widget to edit tags on context.
 
     - "Update" link uses an tagging mechanism to add tags to content
@@ -51,12 +52,19 @@ class Widget(grokcore.component.MultiAdapter,
     def keywords_shown(self):
         return KEYWORD_CONFIGURATION.keywords_shown
 
+    @property
+    def autocomplete_source_url(self):
+        return self.url(
+            zope.component.hooks.getSite(), '@@zeit.cms.tagging.search')
+
     def _toFormValue(self, value):
-        return json.dumps([{'code': x.code, 'label': x.label} for x in value])
+        return json.dumps([{
+            'code': zeit.cms.tagging.interfaces.ID_NAMESPACE + x.code,
+            'label': x.label} for x in value])
 
     def _toFieldValue(self, value):
         tags = json.loads(value)
-        return tuple(Tag(x['code'], x['label']) for x in tags)
+        return tuple(zeit.cms.interfaces.ICMSContent(x['code']) for x in tags)
 
 
 class UpdateTags(zeit.cms.browser.view.JSON):
@@ -66,7 +74,7 @@ class UpdateTags(zeit.cms.browser.view.JSON):
         tagger.update()
         zope.lifecycleevent.modified(self.context)
         return dict(tags=[
-            dict(code=tag.code,
+            dict(code=zeit.cms.tagging.interfaces.ID_NAMESPACE + tag.code,
                  label=tag.label)
             for tag in tagger.values()])
 

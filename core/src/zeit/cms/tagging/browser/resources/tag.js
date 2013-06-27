@@ -13,12 +13,34 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         self.keywords_shown = keywords_shown;
         self.list = document.getElementById(id + '.list');
         self.data = document.getElementById(id);
+        self.autocomplete = document.getElementById(id + '.add');
         self.populate_keywords($.parseJSON($(self.data).val()));
         MochiKit.Signal.connect(
             id + '.wrapper', 'onclick', self, self.handle_click);
+        self._initialize_autocomplete();
+        self._initialize_sortable();
     },
 
-    _sortable: function() {
+
+    _initialize_autocomplete: function() {
+        var self = this;
+        $(self.autocomplete).autocomplete({
+            source: self.autocomplete.getAttribute('cms:autocomplete-source'),
+            minLength: 3,
+            focus: function(event, ui) {
+                $(self.autocomplete).val(ui.item.label);
+                return false;
+            },
+            select: function(event, ui) {
+                self.add(ui.item.value, ui.item.label);
+                $(self.autocomplete).val('');
+                return false;
+            },
+            appendTo: self.element
+        });
+    },
+
+    _initialize_sortable: function() {
         var self = this;
         $(self.list).sortable({
             items: '> li',
@@ -61,25 +83,32 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         $(self.data).trigger('change');
     },
 
+    add: function(code, label) {
+        var self = this;
+        self._add(code, label);
+        self._sync_json_widget_value();
+    },
+
+    _add: function(code, label) {
+        var self = this;
+        var item = LI(
+            {'cms:uniqueId': code},
+            LABEL({'class': 'icon', 'cms:call': 'delete'}),
+            label);
+        self.list.appendChild(item);
+        if ($(item).index() < self.keywords_shown) {
+            $(item).addClass('shown');
+        } else {
+            $(item).addClass('not-shown');
+        }
+    },
+
     populate_keywords: function(tags) {
         var self = this;
-        var tag;
-        self.list.innerHTML = '';
-        for(var i=0; i<tags.length; i++) {
-            tag = tags[i];
-            var attrs = {'cms:uniqueId': tag.code};
-            if (i < self.keywords_shown) {
-                attrs['class'] = 'shown';
-            } else {
-                attrs['class'] = 'not-shown';
-            }
-            self.list.appendChild(LI(
-                attrs, LABEL({'class': 'icon', 'cms:call': 'delete'}),
-                tag.label));
-        }
+        $.each(tags, function(i, tag) {
+            self._add(tag.code, tag.label);
+        });
         self._sync_json_widget_value();
-        $(self.list).css('width', $(self.list).width() + 'px');
-        self._sortable();
     },
 
     update_tags: function() {
@@ -88,7 +117,9 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         MochiKit.DOM.addElementClass(self.list, 'busy');
         d.addCallback(function(result) {
             var json = MochiKit.Async.evalJSONRequest(result);
+            self.list.innerHTML = '';
             self.populate_keywords(json.tags);
+            self._initialize_sortable();
             return result;
         });
         d.addBoth(function(result_or_error) {
@@ -99,6 +130,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
     _sync_json_widget_value: function() {
         var self = this;
         $(self.data).val(JSON.stringify(self.to_json()));
+        $(self.list).css('width', $(self.list).width() + 'px');
     }
 
 });
