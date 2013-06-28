@@ -31,7 +31,7 @@ def apply_changes_with_setattr(context, form_fields, data, adapters=None):
         field = form_field.field
 
         name = form_field.__name__
-        newvalue = data.get(name, form_field) # using form_field as marker
+        newvalue = data.get(name, form_field)  # using form_field as marker
         if newvalue is form_field:
             continue
 
@@ -173,7 +173,7 @@ class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
         if self.errors:
             for error in self.errors:
                 message = error.doc()
-                title = getattr(error, 'widget_title', None) # duck typing
+                title = getattr(error, 'widget_title', None)  # duck typing
                 translated = zope.i18n.translate(
                     message, context=self.request, default=message)
                 if title:
