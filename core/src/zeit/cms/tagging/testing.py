@@ -2,9 +2,24 @@
 # See also LICENSE.txt
 
 import mock
+import stabledict
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zope.component
+
+
+class FakeTags(stabledict.StableDict):
+
+    def __contains__(self, key):
+        return key in list(self)
+
+    def set_pinned(self, keys):
+        for tag in self.values():
+            tag.pinned = tag.code in keys
+
+    @property
+    def pinned(self):
+        return [x.code for x in self.values() if x.pinned]
 
 
 class TaggingHelper(object):
@@ -15,13 +30,7 @@ class TaggingHelper(object):
         return tag
 
     def setup_tags(self, *codes):
-        import stabledict
-
-        class Tags(stabledict.StableDict):
-            def __contains__(self, key):
-                return key in list(self)
-
-        tags = Tags()
+        tags = FakeTags()
         for code in codes:
             tags[code] = self.get_tag(code)
         patcher = mock.patch('zeit.cms.tagging.interfaces.ITagger')

@@ -77,7 +77,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click("xpath=//li[contains(., 't1')]/label")
+        s.click('css=li:contains(t1) .delete')
         s.clickAndWait('name=form.actions.apply')
         self.assertNotIn('t1', self.tagger())
         self.assertIn('t2', self.tagger())
@@ -99,7 +99,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click("xpath=//li[contains(., 't1')]/label")
+        s.click('css=li:contains(t1) .delete')
         s.click('update_tags')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
@@ -131,3 +131,12 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         s.click(autocomplete_item)
         s.clickAndWait('name=form.actions.apply')
         s.waitForTextPresent('Kohle')
+
+    def test_toggle_pinned_should_display_pinned_icon(self):
+        self.setup_tags('t1', 't2', 't3', 't4')
+        self.open_content()
+        s = self.selenium
+        s.click('css=li:contains(t1) .toggle-pin')
+        s.clickAndWait('name=form.actions.apply')
+        s.waitForElementPresent('css=li:contains(t1) .pinned')
+        s.assertNotTextPresent('Wrong contained type')

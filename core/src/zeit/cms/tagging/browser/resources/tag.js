@@ -32,7 +32,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
                 return false;
             },
             select: function(event, ui) {
-                self.add(ui.item.value, ui.item.label);
+                self.add(ui.item.value, ui.item.label, /*pinned=*/true);
                 $(self.autocomplete).val('');
                 return false;
             },
@@ -71,7 +71,8 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         $('> li', self.list).each(function(i, el) {
             el = $(el);
             result.push({code: el.attr('cms:uniqueId'),
-                         label: el.text()});
+                         label: el.text(),
+                         pinned: Boolean(el.find('.pinned').length)});
         });
         return result;
     },
@@ -83,17 +84,19 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         $(self.data).trigger('change');
     },
 
-    add: function(code, label) {
+    add: function(code, label, pinned) {
         var self = this;
-        self._add(code, label);
+        self._add(code, label, pinned);
         self._sync_json_widget_value();
     },
 
-    _add: function(code, label) {
+    _add: function(code, label, pinned) {
         var self = this;
+        var pinned = pinned ? 'pinned' : 'toggle-pin';
         var item = LI(
             {'cms:uniqueId': code},
-            LABEL({'class': 'icon', 'cms:call': 'delete'}),
+            SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
+            SPAN({'class': 'icon ' + pinned, 'cms:call': 'toggle_pinned'}),
             label);
         self.list.appendChild(item);
         if ($(item).index() < self.keywords_shown) {
@@ -103,10 +106,25 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         }
     },
 
+    toggle_pinned: function(event) {
+        var self = this;
+        var icon = $(event.target());
+        var currently_pinned = icon.hasClass('pinned');
+        if (currently_pinned) {
+            icon.removeClass('pinned');
+            icon.addClass('toggle-pin');
+        } else {
+            icon.removeClass('toggle-pin');
+            icon.addClass('pinned');
+        }
+        self._sync_json_widget_value();
+        $(self.data).trigger('change');
+    },
+
     populate_keywords: function(tags) {
         var self = this;
         $.each(tags, function(i, tag) {
-            self._add(tag.code, tag.label);
+            self._add(tag.code, tag.label, tag.pinned);
         });
         self._sync_json_widget_value();
     },

@@ -60,11 +60,17 @@ class Widget(grokcore.component.MultiAdapter,
     def _toFormValue(self, value):
         return json.dumps([{
             'code': zeit.cms.tagging.interfaces.ID_NAMESPACE + x.code,
-            'label': x.label} for x in value])
+            'label': x.label,
+            'pinned': x.pinned} for x in value])
 
     def _toFieldValue(self, value):
         tags = json.loads(value)
-        return tuple(zeit.cms.interfaces.ICMSContent(x['code']) for x in tags)
+        result = []
+        for item in tags:
+            tag = zeit.cms.interfaces.ICMSContent(item['code'])
+            tag.pinned = item['pinned']
+            result.append(tag)
+        return tuple(result)
 
 
 class UpdateTags(zeit.cms.browser.view.JSON):
@@ -75,7 +81,8 @@ class UpdateTags(zeit.cms.browser.view.JSON):
         zope.lifecycleevent.modified(self.context)
         return dict(tags=[
             dict(code=zeit.cms.tagging.interfaces.ID_NAMESPACE + tag.code,
-                 label=tag.label)
+                 label=tag.label,
+                 pinned=tag.pinned)
             for tag in tagger.values()])
 
 

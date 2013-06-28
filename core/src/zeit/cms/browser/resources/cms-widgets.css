@@ -734,7 +734,7 @@ table.properties textarea {
     height: 18px;
 }
 
-.keyword-widget label.icon {
+.keyword-widget .icon {
     display: block;
     float: right;
     width: 18px;
@@ -742,11 +742,23 @@ table.properties textarea {
     margin-left: 1em;
     padding-top: 0px;
     line-height: 18px;
-    background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 1px -418px transparent;
+    background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll transparent;
 }
 
-.keyword-widget label:hover {
+.keyword-widget .delete {
+    background-position: 1px -418px;
+}
+
+.keyword-widget .delete:hover {
     background-position: 1px -448px;
+}
+
+.keyword-widget .toggle-pin {
+    background-position: 1px -2695px;
+}
+
+.keyword-widget .toggle-pin:hover, .keyword-widget .pinned {
+    background-position: 1px -2665px;
 }
 
 .rst-preview {

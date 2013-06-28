@@ -27,14 +27,20 @@ class Tags(object):
         return tuple(tagger.values())
 
     def __set__(self, instance, value):
+        # this is a little convoluted since we want to leave tags that have
+        # already been set alone as much as possible (since they might have
+        # more metadata in their XML representation than the ones from the
+        # whitelist)
         tagger = zeit.cms.tagging.interfaces.ITagger(instance)
         for tag in value:
-            if tag not in tagger.values():
+            if tag.code not in tagger:
                 tagger[tag.code] = tag
-        for tag in list(tagger.values()):
-            if tag not in value:
-                del tagger[tag.code]
+        codes = [x.code for x in value]
+        for code in list(tagger):
+            if code not in codes:
+                del tagger[code]
         tagger.updateOrder((x.code for x in value))
+        tagger.set_pinned([x.code for x in value if x.pinned])
 
 
 class Tag(object):
@@ -42,14 +48,19 @@ class Tag(object):
     zope.interface.implements(zeit.cms.tagging.interfaces.ITag,
                               zeit.cms.interfaces.ICMSContent)
 
-    def __init__(self, code, label):
+    def __init__(self, code, label, pinned=False):
         self.code = code
         self.label = label
+        self.pinned = pinned
 
     def __eq__(self, other):
+        # XXX this is not a generic equality check. From a domain perspective,
+        # two tags are the same when their codes are the same. However, since
+        # we want to edit ``pinned``, and formlib compares the *list* of
+        # keywords, which uses == on the items, we need to include pinned here.
         if other is None:
             return False
-        return self.code == other.code
+        return self.code == other.code and self.pinned == other.pinned
 
     @property
     def uniqueId(self):

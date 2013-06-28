@@ -14,6 +14,8 @@ import zope.schema.interfaces
 class IReadTagger(zope.interface.common.mapping.IEnumerableMapping):
     """Tagger."""
 
+    pinned = zope.interface.Attribute('list of tag codes that are pinned.')
+
 
 class IWriteTagger(zope.interface.common.mapping.IWriteMapping):
 
@@ -23,6 +25,10 @@ class IWriteTagger(zope.interface.common.mapping.IWriteMapping):
         Ususally this means to send the text to a tagging service which returns
         the relevant tagging data.
 
+        """
+
+    def set_pinned(codes):
+        """Mark the tags with the given codes as pinned.
         """
 
 
@@ -42,6 +48,9 @@ class ITag(zope.interface.Interface):
 
     label = zope.schema.TextLine(
         title=u'User visible text of tag')
+
+    pinned = zope.schema.Bool(
+        title=u'Prevent this tag from being changed by automatic processes?')
 
 
 class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):

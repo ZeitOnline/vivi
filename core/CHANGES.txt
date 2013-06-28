@@ -6,6 +6,7 @@ zeit.cms changes
 
 - Support adding keywords from the whitelist with an autocomplete widget
   (#11421).
+- Support pinning keywords (#12521).
 - Set character limit for title and subtitle metadata (instead of validating
   them on check-in) (#12462).
 

@@ -77,6 +77,15 @@ class WhitelistSource(
             """IAutocompleteSource"""
             return ['tag']
 
+        def __contains__(self, value):
+            # XXX we need our own equality check here: we can't use Tag.__eq__,
+            # since that has a specific meaning only useful for formlib
+            if not hasattr(value, 'code'):
+                return False
+            for tag in self._get_filtered_values():
+                if tag.code == value.code:
+                    return True
+
     @property
     def whitelist(self):
         return zope.component.getUtility(
