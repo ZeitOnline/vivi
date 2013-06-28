@@ -61,7 +61,7 @@ class Widget(grokcore.component.MultiAdapter,
         return json.dumps([{
             'code': zeit.cms.tagging.interfaces.ID_NAMESPACE + x.code,
             'label': x.label,
-            'pinned': x.pinned} for x in value])
+            'pinned': x.pinned} for x in value or ()])
 
     def _toFieldValue(self, value):
         tags = json.loads(value)

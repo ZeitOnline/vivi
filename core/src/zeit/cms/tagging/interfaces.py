@@ -2,12 +2,15 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.tagging.source import IWhitelistSource
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zc.sourcefactory.source
 import zeit.cms.content.sources
+import zeit.cms.tagging.source
 import zope.interface
 import zope.interface.common.mapping
+import zope.schema
 import zope.schema.interfaces
 
 
@@ -67,10 +70,6 @@ class IWhitelist(IReadWhitelist, zope.interface.common.mapping.IWriteMapping):
     """
 
 
-class IWhitelistSource(zope.schema.interfaces.IIterableSource):
-    """Tag whitelist"""
-
-
 ID_NAMESPACE = 'tag://'
 
 
@@ -92,3 +91,22 @@ class KeywordConfiguration(object):
         return list(_KEYWORD_CONFIG_HELPER)[0]
 
 KEYWORD_CONFIGURATION = KeywordConfiguration()
+
+
+class TooFewKeywords(zope.schema.interfaces.TooShort):
+    __doc__ = _('Too few keywords given.')
+
+
+class Keywords(zope.schema.Tuple):
+
+    def __init__(self, **kw):
+        kw.setdefault('title', _('Keywords'))
+        kw.setdefault('value_type', zope.schema.Choice(
+            source=zeit.cms.tagging.source.WhitelistSource()))
+        super(Keywords, self).__init__(**kw)
+
+    def _validate(self, value):
+        try:
+            super(Keywords, self)._validate(value)
+        except zope.schema.interfaces.TooShort:
+            raise TooFewKeywords()

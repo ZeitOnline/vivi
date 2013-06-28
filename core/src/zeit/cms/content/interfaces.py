@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -7,7 +7,6 @@ import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
-import zeit.cms.tagging.whitelist
 import zope.component.interfaces
 import zope.i18nmessageid
 import zope.interface
@@ -89,12 +88,8 @@ class ICommonMetadata(zope.interface.Interface):
         default=(u'',),
         description=_(u'overwritten if any non-freetext authors are set'))
 
-    keywords = zope.schema.Tuple(
-        title=_("Keywords"),
-        required=False,
-        default=(),
-        value_type=zope.schema.Choice(
-            source=zeit.cms.tagging.whitelist.WhitelistSource()))
+    keywords = zeit.cms.tagging.interfaces.Keywords(
+        min_length=1)
 
     serie = zope.schema.Choice(
         title=_("Serie"),

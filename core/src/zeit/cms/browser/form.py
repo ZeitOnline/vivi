@@ -16,6 +16,7 @@ import zope.formlib.interfaces
 import zope.interface.common.idatetime
 import zope.interface.interfaces
 import zope.schema
+import zope.security.proxy
 
 
 REMAINING_FIELDS = object()
@@ -311,6 +312,18 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
         self.applyChanges(data)
+
+    def setUpWidgets(self, *args, **kw):
+        for field in self.form_fields:
+            for iface in zope.interface.providedBy(self.context):
+                if not iface.extends(field.interface):
+                    continue
+                if field.__name__ in iface:
+                    iface = zope.security.proxy.removeSecurityProxy(iface)
+                    field.interface = iface
+                    field.field = iface[field.__name__]
+                    break
+        super(FormBase, self).setUpWidgets(*args, **kw)
 
 
 class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):
