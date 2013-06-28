@@ -1,7 +1,9 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.author.interfaces import IAuthor
 import grokcore
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
@@ -24,24 +26,22 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
         u'</author>')
 
-    title = zeit.cms.content.property.ObjectPathProperty('.title')
-    firstname = zeit.cms.content.property.ObjectPathProperty('.firstname')
-    lastname = zeit.cms.content.property.ObjectPathProperty('.lastname')
-    email = zeit.cms.content.property.ObjectPathProperty('.email')
-    vgwortid = zeit.cms.content.property.ObjectPathProperty('.vgwortid')
-    vgwortcode = zeit.cms.content.property.ObjectPathProperty('.vgwortcode')
-
-    display_name = zeit.cms.content.property.ObjectPathProperty(
-        '.display_name')
-    entered_display_name = zeit.cms.content.property.ObjectPathProperty(
-        '.entered_display_name')
+    for name in [
+        'title',
+        'firstname',
+        'lastname',
+        'email',
+        'vgwortid',
+        'vgwortcode',
+        'display_name',
+        'entered_display_name',
+        'status',
+        'external',
+    ]:
+        locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
 
     community_profile = zeit.cms.content.property.ObjectPathProperty(
         '.communityprofile')
-
-    status = zeit.cms.content.property.ObjectPathProperty('.status')
-
-    external = zeit.cms.content.property.ObjectPathProperty('.external')
 
     @property
     def exists(self):
