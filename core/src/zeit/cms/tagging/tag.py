@@ -1,6 +1,7 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import copy
 import grokcore.component as grok
 import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
@@ -65,7 +66,10 @@ def unique_id_to_tag(unique_id):
         zeit.cms.tagging.interfaces.ID_NAMESPACE, '', 1)
     whitelist = zope.component.getUtility(
         zeit.cms.tagging.interfaces.IWhitelist)
-    return whitelist.get(token)
+    # return a copy so clients can manipulate the Tag object (e.g. set
+    # ``pinned`` on it). This is analogue to the way zeit.intrafind.Tagger
+    # works, it also returns fresh Tag objects on each read access.
+    return copy.copy(whitelist.get(token))
 
 
 class AbsoluteURL(zope.traversing.browser.absoluteurl.AbsoluteURL):

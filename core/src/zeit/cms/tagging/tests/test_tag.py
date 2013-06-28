@@ -73,3 +73,14 @@ class TestCMSContentWiring(zeit.cms.testing.BrowserTestCase):
         b.open(
             base + '@@redirect_to?unique_id=tag://foo&view=@@object-details')
         self.assertEqual('<h3>foo</h3>', b.contents)
+
+    def test_adapting_tag_url_to_cmscontent_yields_a_copy(self):
+        from zeit.cms.interfaces import ICMSContent
+        from zeit.cms.tagging.tag import Tag
+        whitelist = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        whitelist['foo'] = Tag('foo', 'foo')
+        t1 = ICMSContent('tag://foo')
+        t2 = ICMSContent('tag://foo')
+        t1.pinned = True
+        self.assertFalse(t2.pinned)
