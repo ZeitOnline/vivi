@@ -4,7 +4,7 @@ Changes
 2.2.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Include "to top" links for foldable form groups into the markup (#12255).
 
 
 2.1.0 (2013-05-29)
