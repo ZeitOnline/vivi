@@ -24,6 +24,7 @@
 
 <div>
 <input
+  tal:condition="view/display_update_button"
   type="button" name="update_tags" value="Update tags"
   cms:call="update_tags"
   i18n:attributes="value" />

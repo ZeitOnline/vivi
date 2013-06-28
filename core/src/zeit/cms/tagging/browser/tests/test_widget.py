@@ -30,6 +30,18 @@ class DisplayWidget(zeit.cms.testing.BrowserTestCase,
 class InputWidget(zeit.cms.testing.SeleniumTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
 
+    def setUp(self):
+        super(InputWidget, self).setUp()
+        self.patches = gocept.testing.mock.Patches()
+        display = self.patches.add(
+            'zeit.cms.tagging.browser.widget.Widget.display_update_button',
+            gocept.testing.mock.Property())
+        display.return_value = True
+
+    def tearDown(self):
+        self.patches.reset()
+        super(InputWidget, self).tearDown
+
     def open_content(self):
         self.open('/repository/testcontent/@@checkout')
         s = self.selenium

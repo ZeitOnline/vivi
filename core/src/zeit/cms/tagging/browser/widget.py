@@ -57,6 +57,10 @@ class Widget(grokcore.component.MultiAdapter,
         return self.url(
             zope.component.hooks.getSite(), '@@zeit.cms.tagging.search')
 
+    @property
+    def display_update_button(self):
+        return self.context.queryTaggedValue('zeit.cms.tagging.updateable')
+
     def _toFormValue(self, value):
         return json.dumps([{
             'code': zeit.cms.tagging.interfaces.ID_NAMESPACE + x.code,
