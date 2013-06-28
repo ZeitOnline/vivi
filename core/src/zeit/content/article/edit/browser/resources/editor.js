@@ -7,15 +7,6 @@ zeit.cms.in_article_editor = function() {
 };
 
 
-MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
-    // set up "to top" links
-    MochiKit.Signal.connect(zeit.edit.editor, 'after-reload', function() {
-        $('.editable-area > .block-inner').append(
-            '<div class="totop"><span class="totopclick">↑</span></div>');
-    });
-});
-
-
 MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     if (! zeit.cms.in_article_editor()) {
         return;

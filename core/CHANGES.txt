@@ -11,8 +11,6 @@ zeit.content.article changes
 
 - Prevent accidental back button events when pressing backspace (#12461).
 
-- Don't break to-top links when undoing a change (#12255).
-
 
 3.0.2 (2013-05-29)
 ------------------
