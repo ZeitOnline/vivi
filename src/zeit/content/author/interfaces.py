@@ -41,3 +41,6 @@ class IAuthor(zope.interface.Interface):
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
         source=StatusSource())
+
+    external = zope.schema.Bool(
+        title=_(u'External?'))

@@ -41,6 +41,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     status = zeit.cms.content.property.ObjectPathProperty('.status')
 
+    external = zeit.cms.content.property.ObjectPathProperty('.external')
+
     @property
     def exists(self):
         query = zeit.find.search.query(
