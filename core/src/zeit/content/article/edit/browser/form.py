@@ -135,7 +135,7 @@ class KeywordsNew(zeit.edit.browser.form.InlineForm):
     prefix = 'keywords'
     undo_description = _('edit keywords')
     css_class = 'keywords'
-    form_fields = FormFields(ICommonMetadata).select('keywords')
+    form_fields = FormFields(IArticle).select('keywords')
 
     def render(self):
         if not IAutomaticallyRenameable(self.context).renameable:
@@ -291,7 +291,10 @@ class Keywords(zeit.edit.browser.form.InlineForm):
     prefix = 'keywords'
     undo_description = _('edit keywords')
     css_class = 'keywords'
-    form_fields = FormFields(ICommonMetadata).select('keywords')
+    # XXX this should say ICommonMetadata, but InlineForm does not inherit from
+    # cms.browser.form.EditForm, so form_fields are not post-processed to get
+    # overriden fields
+    form_fields = FormFields(IArticle).select('keywords')
 
     def __call__(self):
         if IAutomaticallyRenameable(self.context).renameable:
