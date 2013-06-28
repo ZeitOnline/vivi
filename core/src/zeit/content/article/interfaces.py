@@ -15,6 +15,10 @@ ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
 class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
+    keywords = zeit.cms.tagging.interfaces.Keywords(
+        min_length=1)
+    keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
+
     paragraphs = zope.schema.Int(
         title=_("Paragraphsamount"),
         description=_("Amount of paragraphs in total."),
