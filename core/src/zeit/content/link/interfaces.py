@@ -30,3 +30,7 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
         title=_('Target'),
         required=False,
         source=TargetSource())
+
+    keywords = zeit.cms.tagging.interfaces.Keywords(
+        required=False,
+        default=())
