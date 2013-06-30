@@ -43,7 +43,19 @@
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">new</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="title">Titel hierher</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="last-modified-by">manthe</attribute>
-  
+<keywordset>
+	<keyword source="auto" intaxo="yes">Bevölkerung</keyword>
+	<keyword source="auto" intaxo="no">Nachkriegszeit</keyword>
+	<keyword source="auto" intaxo="no">Religionen</keyword>
+	<keyword source="auto" intaxo="yes">Religion</keyword>
+	<keyword source="auto" intaxo="no">Lebensbedingungen</keyword>
+	<keyword source="auto" intaxo="yes">Innenpolitik</keyword>
+	<keyword source="auto" intaxo="no">Schiiten</keyword>
+	<keyword source="auto" intaxo="yes">Opfer</keyword>
+	<keyword source="auto" intaxo="yes">Kriminalität</keyword>
+	<keyword source="auto" intaxo="no">Kriege</keyword>
+	<keyword source="auto" intaxo="no">III.</keyword>
+</keywordset>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="color_scheme">Redaktion</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="foldable">yes</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="countings">yes</attribute>
