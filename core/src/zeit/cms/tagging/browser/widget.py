@@ -62,10 +62,17 @@ class Widget(grokcore.component.MultiAdapter,
         return self.context.queryTaggedValue('zeit.cms.tagging.updateable')
 
     def _toFormValue(self, value):
+        # Re #12478: When iterating over keywords, fall back to an empty
+        # sequence since the value None may occur in spite of the schema
+        # either requiring at least one keyword or specifying a default of ().
+        # An example of this is when checking out existing content that
+        # doesn't have any keywords.
+        # XXX Maybe there's a better place to fix this inconsistency but right
+        # now I opt for a quick solution to a fair mess of failing tests.
         return json.dumps([{
             'code': zeit.cms.tagging.interfaces.ID_NAMESPACE + x.code,
             'label': x.label,
-            'pinned': x.pinned} for x in value])
+            'pinned': x.pinned} for x in value or ()])
 
     def _toFieldValue(self, value):
         tags = json.loads(value)
