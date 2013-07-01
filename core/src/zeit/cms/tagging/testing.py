@@ -3,12 +3,86 @@
 
 import mock
 import stabledict
+import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
 import zope.component
+import zope.interface
+
+
+NAMESPACE = "http://namespaces.zeit.de/CMS/tagging"
+KEYWORD_PROPERTY = ('testtags', NAMESPACE)
+
+
+class DummyTagger(object):
+
+    zope.component.adapts(zeit.cms.repository.interfaces.IDAVContent)
+    zope.interface.implements(zeit.cms.tagging.interfaces.ITagger)
+
+    def __init__(self, context):
+        self.context = context
+
+    @property
+    def whitelist(self):
+        return zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+
+    @property
+    def dav_properties(self):
+        return zeit.connector.interfaces.IWebDAVProperties(self.context)
+
+    def __iter__(self):
+        return iter(self.keys())
+
+    def __len__(self):
+        return len(self.keys())
+
+    def __contains__(self, key):
+        return key in self.keys()
+
+    def keys(self):
+        keys = self.dav_properties.get(KEYWORD_PROPERTY, '').split('|')
+        return tuple(keys) if keys != [''] else ()
+
+    def values(self):
+        return (self[x] for x in self.keys())
+
+    def __getitem__(self, key):
+        if key not in self.keys():
+            raise KeyError(key)
+        return self.whitelist[key]
+
+    def __setitem__(self, key, value):
+        keys = self.dav_properties.get(KEYWORD_PROPERTY, '').split('|') or []
+        if key not in keys:
+            keys.append(key)
+            self.dav_properties[KEYWORD_PROPERTY] = '|'.join(keys)
+
+    def __delitem__(self, key):
+        keys = self.dav_properties.get(KEYWORD_PROPERTY, '').split('|') or []
+        keys.remove(key)
+        self.dav_properties[KEYWORD_PROPERTY] = '|'.join(keys)
+
+    def updateOrder(self, order):
+        pass
+
+    def update(self):
+        pass
+
+    def set_pinned(self, keys):
+        pass
+
+    @property
+    def pinned(self):
+        pass
 
 
 class FakeTags(stabledict.StableDict):
+
+    def __init__(self):
+        super(FakeTags, self).__init__()
+        self.updateOrder = mock.Mock()
+        self.update = mock.Mock()
 
     def __contains__(self, key):
         return key in list(self)
@@ -37,8 +111,6 @@ class TaggingHelper(object):
         self.addCleanup(patcher.stop)
         self.tagger = patcher.start()
         self.tagger.return_value = tags
-        tags.updateOrder = mock.Mock()
-        tags.update = mock.Mock()
 
         whitelist = zope.component.queryUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
