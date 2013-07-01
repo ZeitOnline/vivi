@@ -25,7 +25,7 @@ setup(
         'lxml',
         'pytz',
         'setuptools',
-        'zeit.cms>=1.51.1dev',
+        'zeit.cms>=2.2.0.dev0',
         'zeit.connector',
         'zeit.solr',
         'zope.annotation',
