@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.1.2 (unreleased)
+2.2.0 (2013-07-01)
 ------------------
 
 - Support adding keywords from the whitelist with an autocomplete widget
