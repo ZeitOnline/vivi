@@ -780,7 +780,10 @@ zeit.content.article.Editable = gocept.Class.extend({
         var href = '';
         var target = null;
         if (service === 'web') {
-            href = $(self.href_input).val();
+            uri = new Uri($(self.href_input).val());
+            if (!uri.protocol() && uri.host())
+                uri.protocol('http');
+            href = uri.toString();
             target = $(self.target_select).val();
         } else {
             var mailto = $(self.mailto_input).val();

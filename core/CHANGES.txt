@@ -11,6 +11,8 @@ zeit.content.article changes
 
 - Prevent accidental back button events when pressing backspace (#12461).
 
+- Check if link in link editor has protocol, else add http. (#12557)
+
 
 3.0.2 (2013-05-29)
 ------------------

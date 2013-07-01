@@ -34,6 +34,7 @@
         blocks.js
         html.js
         strftime.js
+        jsuri-1.1.1.js
         timer.js
         preview.js
         sync.js
