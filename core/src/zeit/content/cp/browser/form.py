@@ -16,14 +16,15 @@ class FormBase(object):
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.cms.interfaces.ICMSContent,
-            zeit.cms.content.interfaces.ICommonMetadata)
+            zeit.cms.content.interfaces.ICommonMetadata).omit('keywords')
         + zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ICenterPage).select(
-            'type', 'header_image', 'snapshot', 'topiclink_title', 
+            'type', 'header_image', 'snapshot', 'topiclink_title',
             'topiclink_label_1', 'topiclink_url_1',
             'topiclink_label_2', 'topiclink_url_2',
             'topiclink_label_3', 'topiclink_url_3',
-            'og_title', 'og_description', 'og_image'))
+            'og_title', 'og_description', 'og_image',
+            'keywords'))
 
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
