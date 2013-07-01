@@ -33,7 +33,7 @@ setup(
         'unittest2',
         'zc.sourcefactory',
         'zeit.content.video',
-        'zeit.cms>1.44.0',
+        'zeit.cms>=2.2.0.dev0',
         'zeit.content.quiz>=0.4.2',
         'zeit.edit',
         'zeit.find >= 0.4',
