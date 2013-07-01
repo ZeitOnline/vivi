@@ -289,6 +289,8 @@ class TestEditingMultipleParagraphs(
         from zeit.content.article.edit.interfaces import IEditableBody
 
         with zeit.cms.testing.site(self.getRootFolder()):
+            whitelist = zope.component.getUtility(
+                zeit.cms.tagging.interfaces.IWhitelist)
             with zeit.cms.testing.interaction():
                 self.repository['article'] = Article()
                 with checked_out(self.repository['article']) as co:
@@ -297,6 +299,7 @@ class TestEditingMultipleParagraphs(
                     co.year = 2010
                     co.ressort = u'International'
                     co.title = 'foo'
+                    co.keywords = (whitelist['testtag'],)
                     body = IEditableBody(co)
                     p_factory = zope.component.getAdapter(
                         body, IElementFactory, 'p')
@@ -740,6 +743,8 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.rules = json.loads(browser.contents)
 
         with zeit.cms.testing.site(self.getRootFolder()):
+            whitelist = zope.component.getUtility(
+                zeit.cms.tagging.interfaces.IWhitelist)
             with zeit.cms.testing.interaction():
                 self.repository['article'] = Article()
                 with checked_out(self.repository['article']) as co:
@@ -748,6 +753,7 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
                     co.year = 2010
                     co.ressort = u'International'
                     co.title = 'foo'
+                    co.keywords = (whitelist['testtag'],)
                     body = IEditableBody(co)
                     p_factory = zope.component.getAdapter(
                         body, IElementFactory, 'p')

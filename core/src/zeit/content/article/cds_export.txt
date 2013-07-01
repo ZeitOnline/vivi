@@ -92,9 +92,13 @@ Only if the content object has the product_id 'ZEDE', the default is to export
 to the CDS:
 
 >>> content = repository['online']['2007']['01']['saddam-exekution']
+>>> import zeit.cms.tagging.interfaces
+>>> whitelist = zope.component.getUtility(
+...     zeit.cms.tagging.interfaces.IWhitelist)
 >>> with zeit.cms.checkout.helper.checked_out(content) as co:
 ...     co.product = zeit.cms.content.sources.Product(u'ZEI')
 ...     co.ressort = u'International'
+...     co.keywords = (whitelist['testtag'],)
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> print cdswf.export_cds
 None
@@ -112,6 +116,8 @@ export_cds flag set to true
 We will now set the ``export_cds`` flag to ``True``:
 
 >>> content = repository['online']['2007']['01']['elterngeld-schlieben']
+>>> with zeit.cms.checkout.helper.checked_out(content) as co:
+...     co.keywords = (whitelist['testtag'],)
 >>> cdswf = zeit.content.article.interfaces.ICDSWorkflow(content)
 >>> cdswf.export_cds = True
 

@@ -85,8 +85,12 @@ applied:
 
 >>> from zeit.content.article.interfaces import IArticle
 >>> import zeit.cms.browser.form
+>>> import zeit.cms.tagging.interfaces
+>>> whitelist = zope.component.getUtility(
+...     zeit.cms.tagging.interfaces.IWhitelist)
 >>> with zeit.cms.checkout.helper.checked_out(article) as co:
 ...     zeit.cms.browser.form.apply_default_values(co, IArticle)
+...     co.keywords = (whitelist['testtag'],)
 >>> article = container['art1']
 >>> zeit.content.article.interfaces.ITagesspiegelArticle.providedBy(article)
 True
@@ -179,6 +183,7 @@ When we change the imported article, it is not overwritten:
 >>> with zeit.cms.checkout.helper.checked_out(container['art-uuid']) as co:
 ...     zeit.cms.browser.form.apply_default_values(co, IArticle)
 ...     co.title = u'Tag der Ueberraschungen'
+...     co.keywords = (whitelist['testtag'],)
 >>> with fs.create('art-uuid-3') as f:
 ...     f.write(data.replace('Jahr', 'Stunde'))
 >>> fs.move('art-uuid-3', 'tmp', 'new')

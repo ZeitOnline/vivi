@@ -6,13 +6,17 @@ import pkg_resources
 import re
 import shutil
 import tempfile
+import transaction
 import zeit.brightcove.testing
+import zeit.cms.interfaces
+import zeit.cms.tagging.interfaces
 import zeit.cms.testing
 import zeit.content.author.testing
 import zeit.content.cp.testing
 import zeit.content.gallery.testing
 import zeit.solr.testing
 import zeit.workflow.testing
+import zope.component
 import zope.testing.renormalizing
 
 
@@ -32,7 +36,7 @@ checker = zope.testing.renormalizing.RENormalizing([
 checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
-ArticleLayer = zeit.cms.testing.ZCMLLayer(
+ArticleZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         product_config +
@@ -43,6 +47,29 @@ ArticleLayer = zeit.cms.testing.ZCMLLayer(
         zeit.solr.testing.product_config +
         zeit.content.author.testing.product_config +
         zeit.cms.testing.cms_product_config))
+
+
+class ArticleLayer(ArticleZCMLLayer):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        prop = connector._get_properties(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
+
+    @classmethod
+    def testTearDown(cls):
+        pass
 
 
 class TestBrowserLayer(ArticleLayer):
@@ -121,6 +148,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         article.year = 2011
         article.title = u'title'
         article.ressort = u'Deutschland'
+        whitelist = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        article.keywords = (whitelist['testtag'],)
         return article
 
     def get_factory(self, article, factory_name):

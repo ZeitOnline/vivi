@@ -148,19 +148,11 @@ class VideoUpdateTest(zeit.content.article.testing.FunctionalTestCase):
 
     @contextlib.contextmanager
     def video_block(self):
-        from zeit.content.article.article import Article
-        from zeit.content.article.interfaces import IArticle
-        import zeit.cms.browser.form
         import zeit.cms.checkout.helper
         import zeit.content.article.edit.body
         import zeit.edit.interfaces
         import zope.component
-        article = Article()
-        zeit.cms.browser.form.apply_default_values(article, IArticle)
-        article.year = 2011
-        article.title = u'title'
-        article.ressort = u'Deutschland'
-        self.repository['article'] = article
+        self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
             self.repository['article']) as article:
             body = zeit.content.article.edit.body.EditableBody(

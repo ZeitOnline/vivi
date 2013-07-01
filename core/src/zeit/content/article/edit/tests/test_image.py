@@ -137,6 +137,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         article.year = 2011
         article.title = u'title'
         article.ressort = u'Deutschland'
+        whitelist = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        article.keywords = (whitelist['testtag'],)
         article = zeit.cms.checkout.interfaces.ICheckinManager(
             article).checkin()
         self.assertEqual(
@@ -144,20 +147,13 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             article.xml.body.division.image.get('src'))
 
     def test_image_referenced_via_IImages_is_copied_to_first_body_block(self):
-        from zeit.content.article.article import Article
-        from zeit.content.article.interfaces import IArticle
         from zeit.content.article.edit.interfaces import IEditableBody
         from zeit.content.image.interfaces import IImages
         import zeit.cms.browser.form
         import zeit.cms.interfaces
         import zope.lifecycleevent
 
-        article = Article()
-        zeit.cms.browser.form.apply_default_values(article, IArticle)
-        article.year = 2011
-        article.title = u'title'
-        article.ressort = u'Deutschland'
-        self.repository['article'] = article
+        self.repository['article'] = self.get_article()
 
         with zeit.cms.checkout.helper.checked_out(
             self.repository['article']) as co:
@@ -181,8 +177,6 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(None, image_block.references)
 
     def test_IImages_is_not_copied_to_body_if_block_was_edited_manually(self):
-        from zeit.content.article.article import Article
-        from zeit.content.article.interfaces import IArticle
         from zeit.content.article.edit.interfaces import IEditableBody
         from zeit.content.image.interfaces import IImages
         import zeit.cms.browser.form
@@ -195,12 +189,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         # spec. Leaving it as it was for the moment, though, as it still works
         # for proving the point of this test.
         image_group = zeit.content.image.testing.create_image_group()
-        article = Article()
-        zeit.cms.browser.form.apply_default_values(article, IArticle)
-        article.year = 2011
-        article.title = u'title'
-        article.ressort = u'Deutschland'
-        self.repository['article'] = article
+        self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
             self.repository['article']) as co:
             body = IEditableBody(co)
@@ -229,12 +218,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         import zeit.content.article.edit.body
         import zeit.edit.interfaces
         import zope.component
-        article = Article()
-        zeit.cms.browser.form.apply_default_values(article, IArticle)
-        article.year = 2011
-        article.title = u'title'
-        article.ressort = u'Deutschland'
-        self.repository['article'] = article
+        self.repository['article'] = self.get_article()
         with zeit.cms.checkout.helper.checked_out(
             self.repository['article']) as article:
             body = zeit.content.article.edit.body.EditableBody(

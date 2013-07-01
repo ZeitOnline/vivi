@@ -96,6 +96,14 @@ class CheckinSelenium(
         self.eval(
             'document.getElementById("%s").value = "asdf"' % input_filename)
         s.fireEvent(input_filename, 'blur')
+        input_keywords = 'keywords.keywords.add'
+        self.eval(
+            'document.getElementById("%s").value = "testtag"' % input_keywords)
+        s.fireEvent(input_keywords, 'keydown')
+        autocomplete_item = 'css=.ui-menu-item a'
+        s.waitForElementPresent(autocomplete_item)
+        s.click(autocomplete_item)
+        s.fireEvent(input_keywords, 'blur')
 
         s.waitForElementNotPresent(disabled_checkin_button)
 
