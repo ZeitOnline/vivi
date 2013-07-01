@@ -58,7 +58,7 @@ class TestWhitelist(zope.testing.cleanup.CleanUp,
             __name__, 'whitelist.xml')
         with mock.patch('zeit.cms.tagging.tag.Tag') as Tag:
             wl._load()
-        self.assertEqual(52, Tag.call_count)
+        self.assertEqual(53, Tag.call_count)
         Tag.assert_called_with(
             'ae11024e-69e0-4434-b7d3-f66efddb0459', u'Polarkreis'),
 
@@ -67,7 +67,7 @@ class TestWhitelist(zope.testing.cleanup.CleanUp,
         wl._fetch = lambda: pkg_resources.resource_stream(
             __name__, 'whitelist.xml')
         wl._load()
-        self.assertEqual(52, len(wl))
+        self.assertEqual(53, len(wl))
 
     def test_accessing_data_attribute_should_trigger_load(self):
         wl = self.whitelist()

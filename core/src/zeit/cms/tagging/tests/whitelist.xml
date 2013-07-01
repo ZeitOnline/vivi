@@ -1,5 +1,8 @@
 <?xml version="1.0" ?>
 <tags>
+  <tag uuid="testtag">
+    Testtag
+  </tag>
   <tag uuid="221da83c-427a-417f-81e2-0d8b1c65b669">
     Arno Schmidt
   </tag>
