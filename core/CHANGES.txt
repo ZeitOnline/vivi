@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.2.1 (unreleased)
+2.2.1 (2013-07-01)
 ------------------
 
 - Don't use special declaration for keywords, this has become unnecessary since
