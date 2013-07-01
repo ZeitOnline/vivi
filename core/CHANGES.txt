@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.0.1 (unreleased)
+2.0.1 (2013-07-01)
 ------------------
 
 - New field: external author (#12460).
