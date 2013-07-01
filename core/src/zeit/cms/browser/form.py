@@ -313,18 +313,6 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
     def handle_edit_action(self, action, data):
         self.applyChanges(data)
 
-    def setUpWidgets(self, *args, **kw):
-        for field in self.form_fields:
-            for iface in zope.interface.providedBy(self.context):
-                if not iface.extends(field.interface):
-                    continue
-                if field.__name__ in iface:
-                    iface = zope.security.proxy.removeSecurityProxy(iface)
-                    field.interface = iface
-                    field.field = iface[field.__name__]
-                    break
-        super(FormBase, self).setUpWidgets(*args, **kw)
-
 
 class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):
     """Display form."""
