@@ -1,10 +1,11 @@
-# Copyright (c) 2010-2013 gocept gmbh & co. kg
+# Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import json
 import mock
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
@@ -44,20 +45,20 @@ class Publish(zeit.edit.browser.form.InlineForm):
     prefix = 'publish'
     undo_description = _('edit workflow status')
 
-    def __init__(self, *args, **kw):
-        super(Publish, self).__init__(*args, **kw)
+    @property
+    def form_fields(self):
         fields = zope.formlib.form.FormFields(
             zeit.workflow.interfaces.IContentWorkflow,
             zeit.content.article.interfaces.ICDSWorkflow).select(
-                'edited', 'corrected', 'urgent', 'export_cds')
+            'edited', 'corrected', 'urgent', 'export_cds')
         if not self.can_checkout:
             fields += zope.formlib.form.FormFields(
                 zeit.cms.content.interfaces.ISemanticChange).select(
-                    'has_semantic_change')
+                'has_semantic_change')
 
         for name in ['edited', 'corrected']:
             fields[name].custom_widget = zeit.cms.browser.widget.CheckboxWidget
-        self.form_fields = fields
+        return fields
 
     def setUpWidgets(self, *args, **kw):
         super(Publish, self).setUpWidgets(*args, **kw)

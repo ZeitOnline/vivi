@@ -1,4 +1,4 @@
-# Copyright (c) 2010-2013 gocept gmbh & co. kg
+# Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -16,9 +16,9 @@ class EditBase(zeit.edit.browser.form.InlineForm):
     fields = ('references',)
     legend = None
 
-    def __init__(self, *args, **kw):
-        super(EditBase, self).__init__(*args, **kw)
-        self.form_fields = zope.formlib.form.FormFields(
+    @property
+    def form_fields(self):
+        return zope.formlib.form.FormFields(
             self.interface).select(*self.fields)
 
     @property
