@@ -3,20 +3,10 @@
    xmlns:meta="http://namespaces.zope.org/meta"
    i18n_domain="zope">
 
-   <meta:provides feature="zeit.cms.decentral-syndication" />
-
-  <!-- This file is the equivalent of site.zcml and it is -->
-  <!-- used for functional testing setup -->
-
-  <include package="zeit.cms" />
-  <include package="zeit.connector" file="mock-connector.zcml" />
-  <include package="zeit.cms" file="securitypolicy.zcml" />
-  <include package="zeit.cms.browser" />
-
-  <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
+  <include package="zeit.cms" file="ftesting.zcml" />
 
   <include package="zeit.edit" />
-  <include package="zeit.workflow" />
+  <includeOverrides package="zeit.workflow" />
 
   <include package="zeit.content.article" />
   <include package="zeit.content.article.browser" />
