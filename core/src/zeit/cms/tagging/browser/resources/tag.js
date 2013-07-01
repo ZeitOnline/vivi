@@ -10,6 +10,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
     construct: function(id, keywords_shown) {
         var self = this;
         self.id = id;
+        self.element = document.getElementById(id + '.wrapper');
         self.keywords_shown = keywords_shown;
         self.list = document.getElementById(id + '.list');
         self.data = document.getElementById(id);
