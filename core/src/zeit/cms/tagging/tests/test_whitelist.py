@@ -60,7 +60,16 @@ class TestWhitelist(zope.testing.cleanup.CleanUp,
             wl._load()
         self.assertEqual(53, Tag.call_count)
         Tag.assert_called_with(
-            'ae11024e-69e0-4434-b7d3-f66efddb0459', u'Polarkreis'),
+            'ae11024e-69e0-4434-b7d3-f66efddb0459', u'Polarkreis',
+            entity_type=None),
+
+    def test_load_should_set_entity_type_if_present(self):
+        wl = self.whitelist()
+        wl._fetch = lambda: pkg_resources.resource_stream(
+            __name__, 'whitelist.xml')
+        wl._load()
+        self.assertEqual(
+            'Person', wl['221da83c-427a-417f-81e2-0d8b1c65b669'].entity_type)
 
     def test_load_should_add_tags_to_whitelist(self):
         wl = self.whitelist()

@@ -9,13 +9,15 @@ zeit.cms changes
 
 - Support pinning keywords (#12521).
 
+- Require at least one keyword to be entered as the default for any content
+  type, make this configurable by content type (#12478).
+
 - Set character limit for title and subtitle metadata (instead of validating
   them on check-in) (#12462).
 
 - Autocomplete keywords on any substring, not just on prefix (#12519).
 
-- Require at least one keyword to be entered as the default for any content
-  type, make this configurable by content type (#12478).
+- Support entity type in keyword whitelist (#12520).
 
 
 2.1.1 (2013-05-16)

@@ -55,6 +55,9 @@ class ITag(zope.interface.Interface):
     pinned = zope.schema.Bool(
         title=u'Prevent this tag from being changed by automatic processes?')
 
+    entity_type = zope.schema.TextLine(
+        title=u'Entity type (e.g. Person, Location), may be None.')
+
 
 class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):
 
