@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.0.1 (unreleased)
+2.0.1 (2013-07-01)
 ------------------
 
 - Mark keywords as non-required for CenterPages (#12478).
