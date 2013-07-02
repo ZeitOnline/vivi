@@ -25,6 +25,8 @@ IMP for Galleries
 >>> browser.getControl(name="form.image_folder").value = (
 ...     'http://xml.zeit.de/online/2007/01/gallery')
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
+>>> browser.getControl(name='form.keywords').value = (
+...     '[{"code": "tag://testtag", "pinned": false}]')
 >>> browser.getControl(name="form.actions.add").click()
 
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user/island/01.jpg')

@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix tests to deal with required keywords (#12478).
 
 
 2.6.1 (2013-05-29)
