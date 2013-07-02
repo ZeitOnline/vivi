@@ -780,7 +780,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var href = '';
         var target = null;
         if (service === 'web') {
-            uri = new Uri($(self.href_input).val());
+            var uri = new Uri($(self.href_input).val());
             if (!uri.protocol() && uri.host())
                 uri.protocol('http');
             href = uri.toString();
