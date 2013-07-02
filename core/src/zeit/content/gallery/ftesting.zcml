@@ -4,21 +4,11 @@
    i18n_domain="zope"
    >
 
-  <!-- This file is the equivalent of site.zcml and it is -->
-  <!-- used for functional testing setup -->
-
-  <include package="zeit.cms" />
-  <include package="zeit.connector" file="mock-connector.zcml" />
-  <include package="zeit.cms" file="securitypolicy.zcml" />
-  <include package="zeit.cms.browser" />
-
-  <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
-
-  <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
+  <include package="zeit.cms" file="ftesting.zcml" />
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
-  
+
   <include package="zeit.content.gallery" />
   <include package="zeit.content.gallery.browser" />
 
