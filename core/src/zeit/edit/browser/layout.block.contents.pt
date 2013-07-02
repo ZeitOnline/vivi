@@ -5,6 +5,6 @@
      cms:tooltip view/validation_messages;">
   <div class="block-inner">
     <tal:block tal:repeat="block options/viewlets"
-               tal:content="structure block/render" />
+               tal:content="structure python: view.render_viewlet(block)" />
   </div>
 </div>

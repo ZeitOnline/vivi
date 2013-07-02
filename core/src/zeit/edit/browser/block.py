@@ -10,7 +10,8 @@ import zope.interface
 import zope.viewlet.manager
 
 
-class BlockViewletManager(zope.viewlet.manager.WeightOrderedViewletManager):
+class BlockViewletManager(
+        zeit.edit.browser.view.ErrorPreventingViewletManager):
 
     def __init__(self, context, request, view):
         super(BlockViewletManager, self).__init__(context, request, view)

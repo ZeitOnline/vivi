@@ -74,7 +74,8 @@
     provides="..interfaces.IContentViewletManager"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    class="zope.viewlet.manager.WeightOrderedViewletManager"
+    class=".view.ErrorPreventingViewletManager"
+    template="layout.default.contents.pt"
     name="zeit.edit.contents"
     permission="zope.View"
     />

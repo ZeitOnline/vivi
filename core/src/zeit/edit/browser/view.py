@@ -7,11 +7,13 @@ import cgi
 import json
 import logging
 import transaction
+import xml.sax.saxutils
 import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zope.app.pagetemplate
 import zope.formlib.form
 import zope.i18n
+import zope.viewlet.manager
 import zope.viewlet.viewlet
 
 
@@ -209,3 +211,26 @@ class EditBoxAction(zope.viewlet.viewlet.ViewletBase):
 
 
 ViewLoader = zope.viewlet.viewlet.SimpleViewletClass('layout.view-loader.pt')
+
+
+class ErrorPreventingViewletManager(
+        zope.viewlet.manager.WeightOrderedViewletManager):
+    """Prevents rendering viewlets which raise an Exception in render."""
+
+    wrapper = '<div class="error">{error_msg}</div>'
+
+    def render_viewlet(self, viewlet):
+        "Renders viewlet. Returns error message if viewlet cannot be rendered."
+        try:
+            return viewlet.render()
+        except Exception, e:
+            mapping = dict(name=viewlet.__name__, exc_type=type(e).__name__,
+                           exc_msg=str(e))
+            error_msg = _(
+                "There was an error rendering ${name}: ${exc_type} ${exc_msg}",
+                mapping=mapping)
+            log.warn('There was an error rendering %s at %s' % (
+                mapping['name'], self.request.getURL()), exc_info=True)
+            return self.wrapper.format(
+                error_msg=xml.sax.saxutils.escape(zope.i18n.translate(
+                    error_msg, context=self.request)))
