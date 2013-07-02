@@ -6,6 +6,7 @@ import unittest
 import urllib
 import xlrd
 import zeit.brightcove.testing
+import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.connector.interfaces
 import zeit.imp.tests
@@ -14,12 +15,35 @@ import zope.component.hooks
 import zope.testbrowser.testing
 
 
-SecurityPolicyLayer = zeit.cms.testing.ZCMLLayer(
+SecurityPolicyZCMLLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         zeit.cms.testing.cms_product_config +
         zeit.imp.tests.product_config +
         zeit.brightcove.testing.product_config))
+
+
+class SecurityPolicyLayer(SecurityPolicyZCMLLayer):
+
+    @classmethod
+    def setUp(cls):
+        pass
+
+    @classmethod
+    def tearDown(cls):
+        pass
+
+    @classmethod
+    def testSetUp(cls):
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        prop = connector._get_properties(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
+
+    @classmethod
+    def testTearDown(cls):
+        pass
 
 
 class TestSecurityPolicyXLSSheet(zeit.cms.testing.FunctionalTestCaseCommon):
