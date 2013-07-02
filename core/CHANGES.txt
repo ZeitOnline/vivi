@@ -4,7 +4,7 @@ zeit.cms changes
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Support jsuri in tests. (#12557)
 
 
 2.2.1 (2013-07-02)

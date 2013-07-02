@@ -524,6 +524,7 @@ class JSLintTestCase(gocept.jslint.TestCase):
         'DIV', 'A', 'UL', 'LI', 'INPUT', 'IMG', 'SELECT', 'OPTION', 'BUTTON',
         'SPAN',
         'isNull', 'isUndefined', 'isUndefinedOrNull',
+        'Uri',
         )
 
     ignore = (
