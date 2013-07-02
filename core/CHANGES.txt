@@ -4,7 +4,7 @@ zeit.content.article changes
 3.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Include timezone when rendering last published date.
 
 
 3.0.3 (2013-07-01)

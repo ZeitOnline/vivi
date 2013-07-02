@@ -272,12 +272,17 @@ class LastPublished(object):
         return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
 
     @property
+    def last_published_date(self):
+        tz = zope.interface.common.idatetime.ITZInfo(self.request)
+        return self.publishinfo.date_last_published.astimezone(tz)
+
+    @property
     def date(self):
-        return self.publishinfo.date_last_published.strftime('%d.%m.%Y')
+        return self.last_published_date.strftime('%d.%m.%Y')
 
     @property
     def time(self):
-        return self.publishinfo.date_last_published.strftime('%H:%M')
+        return self.last_published_date.strftime('%H:%M')
 
 
 class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):

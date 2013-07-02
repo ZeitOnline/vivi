@@ -2,10 +2,12 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.workflow.interfaces import IPublish
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.article import Article
 from zeit.content.article.interfaces import ICDSWorkflow
 from zeit.workflow.interfaces import IContentWorkflow
+import datetime
+import pytz
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -83,12 +85,15 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
                 ICDSWorkflow(article).export_cds = False
                 IPublish(article).publish()
                 zeit.workflow.testing.run_publish()
+                IPublishInfo(article).date_last_published = datetime.datetime(
+                    2013, 7, 2, 9, 31, 24, tzinfo=pytz.utc)
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
                '/online/2007/01/Somalia/@@checkout')
         b.open('@@contents')
         self.assertEllipsis(
-            '...last published at...on...by...zope.user...', b.contents)
+            '...last published at...02.07.2013...on...11:31...by'
+            '...zope.user...', b.contents)
 
 
 class PageNumberDisplay(zeit.cms.testing.BrowserTestCase):
