@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.2.1 (unreleased)
+2.2.1 (2013-07-02)
 ------------------
 
 - Improve icons for pinned keywords.
