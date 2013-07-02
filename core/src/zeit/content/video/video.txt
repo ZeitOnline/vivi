@@ -11,7 +11,7 @@ Create video:
 ...     folder['video'] = Video()
 
 
-Videos hava a view:
+Videos have a view:
 
 >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
 >>> browser = ExtendedTestBrowser()
