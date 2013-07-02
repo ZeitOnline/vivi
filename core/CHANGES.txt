@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix tests to deal with required keywords (#12478).
 
 
 2.0 (2013-04-23)
