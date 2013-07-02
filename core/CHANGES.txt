@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Support jsuri in tests. (#12557)
 
+- `zeit.cms.view` renders error message if XHR request failed. (#12530)
+
 
 2.2.1 (2013-07-02)
 ------------------

@@ -32,16 +32,21 @@ zeit.cms.View = gocept.Class.extend({
     load: function(target_element, url) {
         var self = this;
         var d = MochiKit.Async.doSimpleXMLHttpRequest(url);
+        target_element = target_element || $(self.target_id);
         d.addCallback(function(result) {
             return self.do_render(result.responseText, target_element);
         });
-        d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
+        d.addErrback(function(err) {
+          zeit.cms.log_error(err);
+          target_element.innerHTML = '<div class="error">Error loading: '
+            + url + '</div>';
+          return err;
+        });
         return d;
     },
 
     do_render: function(html, target_element, data) {
         var self = this;
-        target_element = target_element || $(self.target_id);
         MochiKit.Signal.signal(self, 'before-load');
         target_element.innerHTML = html;
         log('template expanded successfully', self.target_id);
