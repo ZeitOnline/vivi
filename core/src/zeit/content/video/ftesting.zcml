@@ -3,24 +3,9 @@
    xmlns:meta="http://namespaces.zope.org/meta"
    i18n_domain="zope">
 
-   <meta:provides feature="zeit.cms.testing" />
+  <include package="zeit.cms" file="ftesting.zcml" />
 
-   <meta:provides feature="zeit.cms.browser.development-preview" />
-   <meta:provides feature="zeit.cms.decentral-syndication" />
-
-  <!-- This file is the equivalent of site.zcml and it is -->
-  <!-- used for functional testing setup -->
-
-  <include package="zeit.cms" />
-  <include package="zeit.cms.browser" />
-  <include package="zeit.connector" file="mock-connector.zcml" />
-  <include package="zeit.cms.testcontenttype" />
-
-  <include package="zope.app.zcmlfiles" file="ftesting.zcml" />
-
-  <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
-
-  <include package="zeit.workflow" />
+  <includeOverrides package="zeit.workflow" />
   <include package="zeit.solr" />
   <include package="zeit.content.video" />
 
