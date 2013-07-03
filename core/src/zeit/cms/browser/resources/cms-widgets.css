@@ -718,6 +718,10 @@ table.properties textarea {
     border-right: 3px solid #999999;
 }
 
+.keyword-widget input[name="add_tag"] {
+    margin-top: 1em;
+}
+
 .keyword-widget ol {
     list-style: none;
     padding-left: 0;

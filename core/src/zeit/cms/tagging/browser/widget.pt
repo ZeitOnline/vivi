@@ -15,20 +15,18 @@
 
 <div>
 <input
- type="text" name="add_tag" placeholder="Type to find keywords ..."
- i18n:attributes="placeholder"
- tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
-                 id string:${view/name}.add"
- />
-</div>
-
-<div>
-<input
   tal:condition="view/display_update_button"
   type="button" name="update_tags" value="Update tags"
   cms:call="update_tags"
   i18n:attributes="value" />
 </div>
+
+<input
+ type="text" name="add_tag" placeholder="Type to find keywords ..."
+ i18n:attributes="placeholder"
+ tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
+                 id string:${view/name}.add"
+ />
 
 <div tal:condition="view/show_helptext" class="help" i18n:translate="">
 Only the first <span tal:replace="view/keywords_shown"/>
