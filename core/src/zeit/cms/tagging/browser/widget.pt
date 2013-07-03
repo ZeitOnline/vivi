@@ -15,7 +15,7 @@
 
 <div>
 <input
- type="text" name="add_tag" placeholder="Type to find entries ..."
+ type="text" name="add_tag" placeholder="Type to find keywords ..."
  i18n:attributes="placeholder"
  tal:attributes="cms:autocomplete-source view/autocomplete_source_url;
                  id string:${view/name}.add"
