@@ -14,21 +14,21 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jun 28 13:40:34 2013\n"
-"PO-Revision-Date: 2013-06-28 13:58+0100\n"
-"Last-Translator: Christian Zagrodnick <cz@gocept.com>\n"
+"POT-Creation-Date: Wed Jul  3 09:05:58 2013\n"
+"PO-Revision-Date: 2013-07-03 09:07+0100\n"
+"Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.5.5\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: zeit/addcentral/sidebar.py:28 zeit/addcentral/sidebar.pt:12
 #: zeit/cms/browser/form.py:215 zeit/cms/application.zcml:44
 #: zeit/content/article/edit/browser/recension-list.pt:93
-#: zeit/edit/browser/view.py:182
+#: zeit/edit/browser/view.py:184
 msgid "Add"
 msgstr "Inhalte hinzufügen…"
 
@@ -231,7 +231,7 @@ msgstr "Termin bearbeiten"
 #: zeit/content/quiz/browser/answer.py:44
 #: zeit/content/quiz/browser/question.py:42
 #: zeit/content/quiz/browser/quiz.py:80 zeit/edit/browser/form.py:63
-#: zeit/edit/browser/view.py:159
+#: zeit/edit/browser/view.py:161
 msgid "Apply"
 msgstr "Speichern"
 
@@ -357,7 +357,7 @@ msgstr ""
 "constraints"
 
 #: zeit/cms/asset/browser/form.py:19 zeit/cms/asset/interfaces.py:29
-#: zeit/content/article/edit/browser/form.py:188
+#: zeit/content/article/edit/browser/form.py:189
 msgid "Badges"
 msgstr " "
 
@@ -439,7 +439,7 @@ msgstr "Bearbeiten"
 msgid "No changes"
 msgstr "Keine Änderungen"
 
-#: zeit/cms/browser/form.py:332 zeit/cms/repository/browser/unknown.zcml:34
+#: zeit/cms/browser/form.py:320 zeit/cms/repository/browser/unknown.zcml:34
 #: zeit/cms/repository/browser/folder.zcml:16
 #: zeit/cms/repository/browser/file.zcml:24
 #: zeit/content/article/browser/menu.py:28
@@ -711,7 +711,7 @@ msgstr "Navigation"
 msgid "Head"
 msgstr "Kopf"
 
-#: zeit/cms/content/browser/form.py:46 zeit/content/cp/browser/form.py:29
+#: zeit/cms/content/browser/form.py:46 zeit/content/cp/browser/form.py:30
 #: zeit/content/gallery/browser/form.py:27
 #: zeit/content/infobox/browser/form.py:27
 #: zeit/content/infobox/browser/form.py:82 zeit/content/video/browser.py:39
@@ -721,7 +721,7 @@ msgid "Texts"
 msgstr "Texte"
 
 #: zeit/cms/content/browser/form.py:51 zeit/content/article/browser/form.py:40
-#: zeit/content/article/edit/browser/form.py:449
+#: zeit/content/article/edit/browser/form.py:455
 #: zeit/content/video/browser.py:47 zeit/content/video/browser/video.py:45
 msgid "Options"
 msgstr "Optionen"
@@ -733,7 +733,7 @@ msgstr "Autoren"
 
 #: zeit/cms/content/browser/form.py:66 zeit/content/article/browser/form.py:37
 #: zeit/content/article/edit/browser/recension.py:67
-#: zeit/content/cp/browser/form.py:49 zeit/content/gallery/browser/form.py:37
+#: zeit/content/cp/browser/form.py:50 zeit/content/gallery/browser/form.py:37
 msgid "misc."
 msgstr "sonstiges"
 
@@ -1283,7 +1283,7 @@ msgid "Open"
 msgstr "Öffnen"
 
 #: zeit/cms/syndication/browser/configure.zcml:42
-#: zeit/content/article/edit/browser/form.py:285
+#: zeit/content/article/edit/browser/form.py:291
 msgid "Metadata"
 msgstr "Metadaten"
 
@@ -1461,9 +1461,13 @@ msgid "limit-amount-description"
 msgstr "limit-amount-description"
 
 #: zeit/cms/tagging/browser/autocomplete.py:37
-#: zeit/cms/tagging/browser/widget.pt:17 zeit/find/browser/autocomplete.py:39
+#: zeit/find/browser/autocomplete.py:39
 msgid "Type to find entries ..."
 msgstr "Name eingeben"
+
+#: zeit/cms/tagging/browser/widget.pt:17
+msgid "Type to find keywords ..."
+msgstr "Schlagworte manuell auswählen"
 
 #: zeit/cms/tagging/browser/widget.pt:26
 msgid "Update tags"
@@ -1471,16 +1475,16 @@ msgstr "Generieren"
 
 #: zeit/cms/tagging/browser/widget.pt:34
 msgid "Only the first ${DYNAMIC_CONTENT} keywords are shown with the article."
-msgstr "Nur die ersten ${keywords_shown} Schlagwörter werden angezeigt."
+msgstr "Nur die ersten ${DYNAMIC_CONTENT} Schlagwörter werden angezeigt."
 
-#: zeit/cms/tagging/interfaces.py:103
+#: zeit/cms/tagging/interfaces.py:100
+msgid "Too few keywords given."
+msgstr "Bitte mindestens 3 Schlagworte vergeben"
+
+#: zeit/cms/tagging/interfaces.py:106
 #: zeit/content/article/edit/browser/form.py:124
 msgid "Keywords"
 msgstr "Schlagworte"
-
-#: zeit/cms/tagging/interfaces.py:97
-msgid "Too few keywords given."
-msgstr "Bitte mindestens 3 Schlagworte vergeben"
 
 #: zeit/cms/workflow/browser/indicator.py:15
 #: zeit/cms/workflow/interfaces.py:35 zeit/workflow/publish.py:411
@@ -1623,7 +1627,7 @@ msgid "edit article content main image"
 msgstr "Artikelbild bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:136
-#: zeit/content/article/edit/browser/form.py:292
+#: zeit/content/article/edit/browser/form.py:298
 msgid "edit keywords"
 msgstr "Schlagworte bearbeiten"
 
@@ -1635,73 +1639,73 @@ msgstr "Dateiname"
 msgid "edit new filename"
 msgstr "Neuer Dateiname"
 
-#: zeit/content/article/edit/browser/form.py:183
+#: zeit/content/article/edit/browser/form.py:184
 msgid "Lead teaser"
 msgstr "Aufmacher (auf CP-Ebene)"
 
-#: zeit/content/article/edit/browser/form.py:190
+#: zeit/content/article/edit/browser/form.py:191
 msgid "edit asset badges"
 msgstr "Assets bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:203
+#: zeit/content/article/edit/browser/form.py:204
 msgid "edit lead teaser"
 msgstr "Teaser bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:229
+#: zeit/content/article/edit/browser/form.py:230
 msgid "Internal links"
 msgstr "Mehr zum Thema (Relateds)"
 
-#: zeit/content/article/edit/browser/form.py:236
+#: zeit/content/article/edit/browser/form.py:237
 msgid "edit internal links"
 msgstr "Relateds bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:254
+#: zeit/content/article/edit/browser/form.py:255
 #: zeit/content/cp/browser/workflow.py:28 zeit/workflow/browser/form.py:107
 #: zeit/workflow/browser/form.py:140 zeit/workflow/browser/form.py:170
 msgid "Status"
 msgstr "Status"
 
-#: zeit/content/article/edit/browser/form.py:310
-#: zeit/content/article/edit/browser/form.py:331
-#: zeit/content/article/edit/browser/form.py:340
-#: zeit/content/article/edit/browser/form.py:357
-#: zeit/content/article/edit/browser/form.py:365
+#: zeit/content/article/edit/browser/form.py:316
+#: zeit/content/article/edit/browser/form.py:337
+#: zeit/content/article/edit/browser/form.py:346
+#: zeit/content/article/edit/browser/form.py:363
+#: zeit/content/article/edit/browser/form.py:371
 msgid "edit metadata"
 msgstr "Metadaten bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:378
+#: zeit/content/article/edit/browser/form.py:384
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:15
 msgid "Teaser"
 msgstr "Teaser"
 
-#: zeit/content/article/edit/browser/form.py:385
+#: zeit/content/article/edit/browser/form.py:391
 msgid "edit teaser image"
 msgstr "Teaser-Bild bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:413
+#: zeit/content/article/edit/browser/form.py:419
 msgid "edit teaser supertitle"
 msgstr "Teaser-Spitzmarke bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:426
+#: zeit/content/article/edit/browser/form.py:432
 msgid "edit teaser title"
 msgstr "Teaser-Titel bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:439
+#: zeit/content/article/edit/browser/form.py:445
 msgid "edit teaser text"
 msgstr "Teaser-Text bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:456
-#: zeit/content/article/edit/browser/form.py:465
-#: zeit/content/article/edit/browser/form.py:483
-#: zeit/content/article/edit/browser/form.py:502
+#: zeit/content/article/edit/browser/form.py:462
+#: zeit/content/article/edit/browser/form.py:471
+#: zeit/content/article/edit/browser/form.py:489
+#: zeit/content/article/edit/browser/form.py:508
 msgid "edit options"
 msgstr "Optionen bearbeiten"
 
-#: zeit/content/article/edit/browser/form.py:481
+#: zeit/content/article/edit/browser/form.py:487
 msgid "Product management"
 msgstr "Produktmangement"
 
-#: zeit/content/article/edit/browser/form.py:492
+#: zeit/content/article/edit/browser/form.py:498
 msgid "edit misc product management"
 msgstr "Diverse Produktmanagement Angaben bearbeiten"
 
@@ -1846,20 +1850,20 @@ msgstr "Jetzt veröffentlichen"
 msgid "Retract"
 msgstr "Depublizieren"
 
-#: zeit/content/article/edit/browser/workflow.py:21
+#: zeit/content/article/edit/browser/workflow.py:22
 msgid "Workflow time"
 msgstr "Veröffentlichungszeit"
 
-#: zeit/content/article/edit/browser/workflow.py:28
+#: zeit/content/article/edit/browser/workflow.py:29
 msgid "edit workflow time"
 msgstr "Workflow-Daten bearbeiten"
 
-#: zeit/content/article/edit/browser/workflow.py:36
+#: zeit/content/article/edit/browser/workflow.py:37
 #: zeit/workflow/browser/form.py:74 zeit/workflow/browser/menu.py:13
 msgid "Workflow"
 msgstr "Workflowstatus"
 
-#: zeit/content/article/edit/browser/workflow.py:45
+#: zeit/content/article/edit/browser/workflow.py:46
 msgid "edit workflow status"
 msgstr "Workflow-Status bearbeiten"
 
@@ -2309,19 +2313,19 @@ msgstr "Metadaten bearbeiten"
 msgid "CenterPage"
 msgstr "Center-Page"
 
-#: zeit/content/cp/browser/editor.py:10 zeit/content/cp/browser/form.py:69
+#: zeit/content/cp/browser/editor.py:10 zeit/content/cp/browser/form.py:70
 msgid "Edit centerpage"
 msgstr "Centerpage bearbeiten"
 
-#: zeit/content/cp/browser/form.py:39
+#: zeit/content/cp/browser/form.py:40
 msgid "OG Metadata"
 msgstr "Metadaten"
 
-#: zeit/content/cp/browser/form.py:59
+#: zeit/content/cp/browser/form.py:60
 msgid "Add centerpage"
 msgstr "Centerpage hinzufügen"
 
-#: zeit/content/cp/browser/form.py:75
+#: zeit/content/cp/browser/form.py:76
 msgid "View centerpage metadata"
 msgstr "Metadaten"
 
@@ -3143,12 +3147,12 @@ msgid "Playlist"
 msgstr "Playlist"
 
 #. Default: ""
-#: zeit/edit/browser/block.py:36 zeit/edit/browser/landing.py:17
+#: zeit/edit/browser/block.py:37 zeit/edit/browser/landing.py:17
 msgid "add '${type}' block"
 msgstr "'${type}'-Block hinzufügen"
 
 #. Default: ""
-#: zeit/edit/browser/block.py:51
+#: zeit/edit/browser/block.py:52
 msgid "delete '${type}' block"
 msgstr "'${type}'-Block entfernen"
 
@@ -3165,6 +3169,11 @@ msgstr "Ausklappen"
 #: zeit/edit/browser/undo.py:42
 msgid "revert up to \"${action}\""
 msgstr "Rückgängig machen bis \"${action}\""
+
+#. Default: ""
+#: zeit/edit/browser/view.py:229
+msgid "There was an error rendering ${name}: ${exc_type} ${exc_msg}"
+msgstr "Fehler beim Laden von ${name}: ${exc_type} ${exc_msg}"
 
 #: zeit/edit/interfaces.py:19
 msgid "Block type"
