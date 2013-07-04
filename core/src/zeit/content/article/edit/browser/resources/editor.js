@@ -688,9 +688,10 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         // until now, the editor can only be contained in an
         // editable-body.
-        var url = $('#editable-body').attr('cms:url') + url;
+        url = $('#editable-body').attr('cms:url') + url;
         var data = {paragraphs: self.edited_paragraphs,
                     text: self.get_text_list()};
+        var d;
         if (supress_reload) {
             data = MochiKit.Base.serializeJSON(data);
             d = MochiKit.Async.doXHR(url, {
@@ -699,7 +700,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         } else {
             d = zeit.edit._locked_makeJSONRequest(url, data);
         }
-        return d
+        return d;
     },
 
     get_selected_container: function() {
