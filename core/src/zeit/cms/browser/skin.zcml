@@ -114,6 +114,25 @@
   </resourceLibrary>
 
   <resourceLibrary
+    zcml:condition="not-have unpack-js"
+    name="log4javascript"
+    layer=".interfaces.ICMSLayer">
+    <directory
+      source="js/lib"
+      include="log4javascript-1.4.6.min.js"
+      />
+  </resourceLibrary>
+  <resourceLibrary
+    zcml:condition="have unpack-js"
+    name="log4javascript"
+    layer=".interfaces.ICMSLayer">
+    <directory
+      source="js/lib"
+      include="log4javascript-1.4.6.js"
+      />
+  </resourceLibrary>
+
+  <resourceLibrary
     name="zeit.cms.javascript.base"
     layer=".interfaces.ICMSLayer"
     require="mochikit">
