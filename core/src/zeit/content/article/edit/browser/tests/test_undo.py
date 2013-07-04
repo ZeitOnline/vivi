@@ -33,6 +33,7 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.getEval("this.browserbot.findElement("
                   "  'css=.block.type-p .editable').innerHTML = "
                   "   '<p>Mary had a little</p>'")
+        self.mark_dirty()
         self.save()
         s.waitForElementPresent('css=.editable p:contains(Mary had)')
         s.waitForXpathCount('//*[@id="cp-undo"]//a', 3)
