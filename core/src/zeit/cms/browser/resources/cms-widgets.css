@@ -720,6 +720,8 @@ table.properties textarea {
 
 .keyword-widget input[name="add_tag"] {
     margin-top: 1em;
+    margin-bottom: 1em;
+    width: 360px;
 }
 
 .keyword-widget ol {
