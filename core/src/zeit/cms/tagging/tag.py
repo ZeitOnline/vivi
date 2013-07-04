@@ -3,6 +3,7 @@
 
 import copy
 import grokcore.component as grok
+import stabledict
 import zeit.cms.browser.interfaces
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
@@ -32,6 +33,7 @@ class Tags(object):
         # more metadata in their XML representation than the ones from the
         # whitelist)
         tagger = zeit.cms.tagging.interfaces.ITagger(instance)
+        value = self._remove_duplicates(value)
         for tag in value:
             if tag.code not in tagger:
                 tagger[tag.code] = tag
@@ -41,6 +43,13 @@ class Tags(object):
                 del tagger[code]
         tagger.updateOrder((x.code for x in value))
         tagger.set_pinned([x.code for x in value if x.pinned])
+
+    def _remove_duplicates(self, tags):
+        result = stabledict.StableDict()
+        for tag in tags:
+            if tag.code not in result:
+                result[tag.code] = tag
+        return result.values()
 
 
 class Tag(object):

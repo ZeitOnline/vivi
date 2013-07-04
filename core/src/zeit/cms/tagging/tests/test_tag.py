@@ -61,6 +61,13 @@ class TestTags(unittest.TestCase,
             self.get_content().tags = [t1, tags['t2']]
             set_pinned.assert_called_with(['t1'])
 
+    def test_set_should_add_duplicate_values_only_once(self):
+        tags = self.setup_tags('t1', 't2')
+        t1 = tags['t1']
+        self.get_content().tags = [t1, t1]
+        result = self.get_content().tags
+        self.assertEqual(['t1'], [x.code for x in result])
+
 
 class TestCMSContentWiring(zeit.cms.testing.BrowserTestCase):
 
