@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jul  3 09:05:58 2013\n"
-"PO-Revision-Date: 2013-07-03 09:07+0100\n"
+"POT-Creation-Date: Thu Jul  4 13:32:00 2013\n"
+"PO-Revision-Date: 2013-07-04 13:34+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1466,16 +1466,18 @@ msgid "Type to find entries ..."
 msgstr "Name eingeben"
 
 #: zeit/cms/tagging/browser/widget.pt:17
-msgid "Type to find keywords ..."
-msgstr "Schlagworte manuell auswählen"
-
-#: zeit/cms/tagging/browser/widget.pt:26
 msgid "Update tags"
 msgstr "Generieren"
 
-#: zeit/cms/tagging/browser/widget.pt:34
-msgid "Only the first ${DYNAMIC_CONTENT} keywords are shown with the article."
-msgstr "Nur die ersten ${DYNAMIC_CONTENT} Schlagwörter werden angezeigt."
+#: zeit/cms/tagging/browser/widget.pt:24
+msgid "Type to find keywords ..."
+msgstr "Schlagworte manuell auswählen"
+
+#: zeit/cms/tagging/browser/widget.pt:33
+msgid "Only the first ${keywords_shown} keywords are shown with the article."
+msgstr ""
+"Nur die ersten ${keywords_shown} Schlagwörter werden auf zeit.de beim "
+"Artikel angezeigt."
 
 #: zeit/cms/tagging/interfaces.py:100
 msgid "Too few keywords given."

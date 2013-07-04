@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jul  3 09:05:58 2013\n"
+"POT-Creation-Date: Thu Jul  4 13:32:00 2013\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope3-dev@zope.org>\n"
@@ -1516,15 +1516,15 @@ msgid "Type to find entries ..."
 msgstr ""
 
 #: zeit/cms/tagging/browser/widget.pt:17
-msgid "Type to find keywords ..."
-msgstr ""
-
-#: zeit/cms/tagging/browser/widget.pt:26
 msgid "Update tags"
 msgstr ""
 
-#: zeit/cms/tagging/browser/widget.pt:34
-msgid "Only the first ${DYNAMIC_CONTENT} keywords are shown with the article."
+#: zeit/cms/tagging/browser/widget.pt:24
+msgid "Type to find keywords ..."
+msgstr ""
+
+#: zeit/cms/tagging/browser/widget.pt:33
+msgid "Only the first ${keywords_shown} keywords are shown with the article."
 msgstr ""
 
 #: zeit/cms/tagging/interfaces.py:100
