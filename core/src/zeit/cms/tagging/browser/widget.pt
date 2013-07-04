@@ -29,7 +29,8 @@
  />
 
 <div tal:condition="view/show_helptext" class="help" i18n:translate="">
-Only the first <span tal:replace="view/keywords_shown"/>
+Only the first
+<span i18n:name="keywords_shown" tal:replace="view/keywords_shown"/>
 keywords are shown with the article.
 </div>
 
