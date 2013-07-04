@@ -495,7 +495,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
     },
 
-    ckeck_dirty: function(key) {
+    check_dirty: function(key) {
         var self = this;
         var movement_keys = ['KEY_ARROW_DOWN', 'KEY_ARROW_UP',
              'KEY_ARROW_LEFT', 'KEY_ARROW_RIGHT', 'KEY_CTRL', 'KEY_ALT',
