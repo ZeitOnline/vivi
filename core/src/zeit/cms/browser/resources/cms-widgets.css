@@ -730,7 +730,7 @@ table.properties textarea {
     border-top: 1px solid #dddddd;
 }
 
-.keyword-widget li {
+.keyword-widget ol li {
     clear: both;
     cursor: default;
     padding-top: 4px;
@@ -768,6 +768,13 @@ table.properties textarea {
 .keyword-widget .toggle-pin:hover, .keyword-widget .pinned {
     background-position: 1px -2665px;
 }
+
+.keyword-widget li.ui-menu-item {
+  border-color: #e4e4e4;
+  border-style: solid;
+  border-width: 1px 0px 0px 0px;
+}
+
 
 .rst-preview {
     white-space: pre-wrap;
