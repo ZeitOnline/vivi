@@ -6,6 +6,9 @@ zeit.content.article changes
 
 - Include timezone when rendering last published date.
 
+- Prevent editor from saving when nothing has changed to make UI more
+  responsive. (#12555)
+
 
 3.0.3 (2013-07-01)
 ------------------

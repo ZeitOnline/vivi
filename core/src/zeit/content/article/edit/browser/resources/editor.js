@@ -95,6 +95,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     construct: function(context_element, place_cursor_at_end) {
         var self = this;
+        self.dirty = false;
         self.block_id = MochiKit.DOM.getFirstParentByTagAndClassName(
             context_element, null, 'block').id;
         self.locked = false;
@@ -169,7 +170,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     // type="text">.
                     $('#fulltext').focus();
                     $('#fulltext').blur();
-                    self.save(/*no_reload=*/true);
+                    self.save(/*supress_reload=*/true);
                 }));
             self.fix_html();
             $('body').trigger('update-ads');
@@ -494,8 +495,20 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
     },
 
+    ckeck_dirty: function(key) {
+        var self = this;
+        var movement_keys = ['KEY_ARROW_DOWN', 'KEY_ARROW_UP',
+             'KEY_ARROW_LEFT', 'KEY_ARROW_RIGHT', 'KEY_CTRL', 'KEY_ALT',
+             'KEY_UNKNOWN', 'KEY_SHIFT', 'KEY_PRINT_SCREEN', 'KEY_END',
+             'KEY_HOME', 'KEY_PAGE_UP', 'KEY_PAGE_DOWN', 'KEY_WINDOWS_LEFT',
+             'KEY_WINDOWS_RIGHT'];
+        return !zeit.cms.in_array(key, movement_keys);
+    },
+
     handle_keydown: function(event) {
         var self = this;
+
+        self.dirty = self.check_dirty(event.key().string);
 
         var range = getSelection().getRangeAt(0);
         var container = range.commonAncestorContainer;
@@ -626,16 +639,13 @@ zeit.content.article.Editable = gocept.Class.extend({
             log('Skipping autosave due to running other request');
             return;
         }
+        if (!self.dirty) {
+            log('Skipping autosave: no changes');
+            return;
+        }
         log('Autosaving', self.block_id);
         zeit.cms.with_lock(function() {
-            var url = $('#editable-body').attr('cms:url') +
-                '/@@autosave_text';
-            var data = {paragraphs: self.edited_paragraphs,
-                        text: self.get_text_list()};
-            data = MochiKit.Base.serializeJSON(data);
-            var d = MochiKit.Async.doXHR(url, {
-                method: 'POST',
-                sendContent: data});
+            var d = self.persist('/@@autosave_text', /*supress_reload=*/true);
             d.addCallback(function(result) {
                 result = MochiKit.Async.evalJSONRequest(result);
                 self.edited_paragraphs = result['data']['new_ids'];
@@ -646,15 +656,14 @@ zeit.content.article.Editable = gocept.Class.extend({
         });
     },
 
-    save: function(no_reload) {
+    save: function(supress_reload) {
         var self = this;
         log('Saving', self.block_id);
-        MochiKit.DOM.addElementClass(self.block, 'busy');
         window.clearInterval(self.autosave_timer);
+        MochiKit.DOM.addElementClass(self.block, 'busy');
         zeit.cms.with_lock(function() {
-            var d;
             while (self.events.length) {
-                MochiKit.Signal.disconnect(self.events.pop());
+               MochiKit.Signal.disconnect(self.events.pop());
             }
             self.link_input.dropable.destroy();
             log('disconnected event handlers');
@@ -664,20 +673,33 @@ zeit.content.article.Editable = gocept.Class.extend({
                 log('Release lock', self.block_id);
                 self.editor_active_lock.release();
             });
-            // until now, the editor can only be contained in an editable-body.
-            var url = $('#editable-body').attr('cms:url') + '/@@save_text';
-            var data = {paragraphs: self.edited_paragraphs,
-                        text: self.get_text_list()};
-            if (no_reload) {
-                data = MochiKit.Base.serializeJSON(data);
-                d = MochiKit.Async.doXHR(url, {
-                    method: 'POST',
-                    sendContent: data});
+            if (self.dirty) {
+                return self.persist('/@@save_text', supress_reload);
             } else {
-                d = zeit.edit._locked_makeJSONRequest(url, data);
+                log('Skipping save: no changes');
+                MochiKit.Signal.signal(
+                    zeit.edit.editor, 'reload', 'editable-body',
+                    $('#editable-body').attr('cms:url') + '/@@contents');
             }
-            return d;
         });
+    },
+
+    persist: function(url, supress_reload) {
+        var self = this;
+        // until now, the editor can only be contained in an
+        // editable-body.
+        var url = $('#editable-body').attr('cms:url') + url;
+        var data = {paragraphs: self.edited_paragraphs,
+                    text: self.get_text_list()};
+        if (supress_reload) {
+            data = MochiKit.Base.serializeJSON(data);
+            d = MochiKit.Async.doXHR(url, {
+                method: 'POST',
+                sendContent: data});
+        } else {
+            d = zeit.edit._locked_makeJSONRequest(url, data);
+        }
+        return d
     },
 
     get_selected_container: function() {

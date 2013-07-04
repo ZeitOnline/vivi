@@ -810,6 +810,35 @@ class AutoSaveIntegration(
         self.assert_paragraphs('foo', 'bar')
 
 
+class DirtySaveVersusPersistTests(
+        zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(DirtySaveVersusPersistTests, self).setUp()
+        self.add_article()
+        self.wait_for_dotted_name("zeit.content.article.Editable")
+        self.eval(
+            "zeit.content.article.Editable.prototype.persist = function () { "
+            "  zeit.edit.persist_called = true; }")
+
+    def save(self):
+        # Override self.save() as the superclass expects that save is working
+        # properly but as we mocked persist it doesn't.
+        self.selenium.getEval('%s.save()' % self.get_js_editable())
+
+    def test_does_not_save_on_server_if_not_dirty(self):
+        self.create('<p>foo</p><p>bar</p>')
+        self.mark_dirty(status=False)
+        self.save()
+        self.assertEqual('null', self.eval("zeit.edit.persist_called"))
+
+    def test_save_on_server_if_dirty(self):
+        self.create('<p>foo</p><p>bar</p>')
+        self.mark_dirty(status=True)
+        self.save()
+        self.assertEqual('true', self.eval("zeit.edit.persist_called"))
+
+
 @unittest2.skip("no typeKeys 'til webdriver")
 class BackButtonPreventionTest(
     zeit.content.article.edit.browser.testing.EditorTestCase):

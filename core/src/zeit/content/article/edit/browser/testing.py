@@ -38,6 +38,8 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
 class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
 
+    editable_locator = 'css=.block.type-p .editable'
+
     def add_article(self):
         s = self.selenium
         self.open('/repository')
@@ -58,10 +60,22 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
                 u"     //*[contains(@class, \"editable\")]').innerHTML = '{1}'"
                 ).format(existing + 1, contents.replace(u"'", u"\\'"))
             s.getEval(code)
+            self.mark_dirty()
 
-    def save(self, locator='css=.block.type-p .editable'):
+    def get_js_editable(self, locator=None):
+        if locator is None:
+            locator = self.editable_locator
+        return "this.browserbot.findElement('{0}').editable".format(
+            locator)
+
+    def mark_dirty(self, locator=None, status=True):
+        editable = self.get_js_editable(locator)
         self.selenium.getEval(
-            "this.browserbot.findElement('{0}').editable.save()".format(locator))
+            editable + ".dirty = " + str(status).lower() + ";")
+
+    def save(self, locator=None):
+        editable = self.get_js_editable(locator)
+        self.selenium.getEval(editable + ".save()")
         self.selenium.waitForElementNotPresent('xpath=//*[@contenteditable]')
 
     def create_block(self, block, wait_for_inline=False):
