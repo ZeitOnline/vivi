@@ -858,6 +858,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     command: function(command, option, refocus) {
         var self = this;
+        self.dirty = true;
         if (self.locked) {
             return;
         }

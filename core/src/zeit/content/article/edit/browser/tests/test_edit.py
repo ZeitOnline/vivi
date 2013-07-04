@@ -838,6 +838,12 @@ class DirtySaveVersusPersistTests(
         self.save()
         self.assertEqual('true', self.eval("zeit.edit.persist_called"))
 
+    def test_toolbar_actions_mark_editor_as_dirty(self):
+        self.create('<p>foo</p><p>bar</p>')
+        self.mark_dirty(status=False)
+        self.selenium.click('link=H3')
+        self.assertEqual('true', self.eval(self.get_js_editable() + ".dirty"))
+
 
 @unittest2.skip("no typeKeys 'til webdriver")
 class BackButtonPreventionTest(
