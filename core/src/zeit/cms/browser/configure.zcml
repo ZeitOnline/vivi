@@ -98,6 +98,14 @@
 
   <browser:page
     for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="log.json"
+    class=".logger.JSONLog"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
     name="messages"
     template="messages.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

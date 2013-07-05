@@ -4,7 +4,7 @@ zeit.cms changes
 2.2.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Log JavaScript errors to the server error log. (#12417)
 
 
 2.2.4 (2013-07-05)
