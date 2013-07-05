@@ -40,8 +40,13 @@
             msg.timestamp.toJSON() + ": "  + msg.info);
     };
 
-    MochiKit.Logging.logger.addListener(
-        'xhr-listener', zeit.cms.logging.XHR_LEVEL, xhr_listener);
+    if (window.application_url) {
+        MochiKit.Logging.logger.addListener(
+            'xhr-listener', zeit.cms.logging.XHR_LEVEL, xhr_listener);
+    } else {
+        MochiKit.Logging.logger.logWarning(
+            'No application_url defined, XHR logging disabled');
+    }
     MochiKit.Logging.logger.addListener(
         'console-listener', zeit.cms.logging.CONSOLE_LEVEL, console_listener);
 
