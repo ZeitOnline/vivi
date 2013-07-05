@@ -844,6 +844,14 @@ class DirtySaveVersusPersistTests(
         self.selenium.click('link=H3')
         self.assertEqual('true', self.eval(self.get_js_editable() + ".dirty"))
 
+    def test_dirty_flag_persists_on_movement_keypress(self):
+        self.create('<p>foo</p><p>bar</p>')
+        self.mark_dirty(status=True)
+        self.selenium.keyPress(
+            'css=.block.type-p .editable p', '37')  # arrow left
+        self.save()
+        self.assertEqual('true', self.eval("zeit.edit.persist_called"))
+
 
 @unittest2.skip("no typeKeys 'til webdriver")
 class BackButtonPreventionTest(
