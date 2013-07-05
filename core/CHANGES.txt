@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.2.4 (unreleased)
+2.2.4 (2013-07-05)
 ------------------
 
 - Add keywords from whitelist to the start of the list, not the end.
