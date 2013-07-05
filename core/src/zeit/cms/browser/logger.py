@@ -21,5 +21,6 @@ class JSONLog(zeit.cms.browser.view.JSON):
             decoded['url'],
             username,
             '\n'.join(str(x) for x in decoded['message']))
+        # XXX should we populate Python's logmessage timestamp from json?
         log_func(message)
         return {}
