@@ -488,7 +488,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (mode == 'command') {
             event.stop();
             var action = argument.split('/');
-            self.command(action[0], action[1]);
+            self.toolbar_command(action[0], action[1]);
         } else if (mode == 'method') {
             var method = argument;
             self[method]();
@@ -778,7 +778,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 target = self.insert_link_node.getAttribute('target') || '';
             }
         } else {
-            self.command('createLink', '#article-editor-create-link');
+            self.toolbar_command('createLink', '#article-editor-create-link');
             self.insert_link_node = $(
                 'a[href="#article-editor-create-link"]', self.editable)[0];
             self.insert_link_node._just_created = true;
@@ -859,9 +859,14 @@ zeit.content.article.Editable = gocept.Class.extend({
         self.editable.focus();
     },
 
-    command: function(command, option, refocus) {
+    toolbar_command: function(command, option, refocus) {
         var self = this;
         self.dirty = true;
+        return self.command(command, option, refocus);
+    },
+
+    command: function(command, option, refocus) {
+        var self = this;
         if (self.locked) {
             return;
         }
@@ -885,22 +890,22 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (e.ctrlKey || e.metaKey) {
             if (e.which == 66) {
                 e.preventDefault();
-                self.command('bold');
+                self.toolbar_command('bold');
             } else if (e.which == 73) {
                 e.preventDefault();
-                self.command('italic');
+                self.toolbar_command('italic');
             } else if (e.which == 72) {
                 e.preventDefault();
-                self.command('formatBlock', '<h3>');
+                self.toolbar_command('formatBlock', '<h3>');
             } else if (e.which == 76) {
                 e.preventDefault();
                 self['insert_link']();
             } else if (e.which == 85) {
                 e.preventDefault();
-                self.command('unlink');
+                self.toolbar_command('unlink');
             } else if (e.which == 82) {
                 e.preventDefault();
-                self.command('removeFormat');
+                self.toolbar_command('removeFormat');
             } else if (e.which == 65) {
                 if (self.get_selected_container().nodeName != 'INPUT') {
                   e.preventDefault();
