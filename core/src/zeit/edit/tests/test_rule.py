@@ -13,9 +13,7 @@ class RuleTest(unittest.TestCase):
     def apply_rule(self, rule):
         from zeit.edit.rule import Rule
         r = Rule(rule)
-        with mock.patch('zeit.edit.interfaces.IRuleGlobs') as irg:
-            irg.return_value = {}
-            return r.apply(mock.Mock)
+        return r.apply(mock.Mock, {})
 
     def test_not_applicable_should_raise(self):
         s = self.apply_rule("""
@@ -82,13 +80,16 @@ class GlobTest(zeit.edit.testing.FunctionalTestCase):
         self.block.__name__ = 'bar'
         self.area['bar'] = self.block
 
+    def apply(self, rule, context):
+        return rule.apply(context, zeit.edit.interfaces.IRuleGlobs(context))
+
     def test_type(self):
         import zeit.edit.rule
         r = zeit.edit.rule.Rule("""
 warning_if(type == 'foo')
 error_if(True)
 """)
-        s = r.apply(self.block)
+        s = self.apply(r, self.block)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_is_block(self):
@@ -96,11 +97,11 @@ error_if(True)
         r = zeit.edit.rule.Rule("""
 error_if(is_block)
 """)
-        s = r.apply(self.block)
+        s = self.apply(r, self.block)
         self.assertEqual(None, s.status)
 
         zope.interface.alsoProvides(self.block, zeit.edit.interfaces.IBlock)
-        s = r.apply(self.block)
+        s = self.apply(r, self.block)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_is_area(self):
@@ -108,10 +109,10 @@ error_if(is_block)
         r = zeit.edit.rule.Rule("""
 error_if(is_area)
 """)
-        s = r.apply(self.block)
+        s = self.apply(r, self.block)
         self.assertEqual(None, s.status)
 
-        s = r.apply(self.area)
+        s = self.apply(r, self.area)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_area(self):
@@ -131,11 +132,11 @@ error_if(is_area)
 error_unless(is_published(context))
 """)
         tc = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
-        s = r.apply(tc)
+        s = self.apply(r, tc)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
         zeit.cms.workflow.interfaces.IPublishInfo(tc).published = True
         r.status = None
-        s = r.apply(tc)
+        s = self.apply(r, tc)
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
 
     def test_globs_should_never_return_none(self):
@@ -145,7 +146,7 @@ applicable(type != 'foo')
 error_if(True, type)
 """)
         del self.block.xml.attrib['{http://namespaces.zeit.de/CMS/cp}type']
-        s = r.apply(self.block)
+        s = self.apply(r, self.block)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
         self.assertEqual('__NONE__', s.message)
 

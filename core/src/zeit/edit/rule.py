@@ -39,10 +39,9 @@ class Rule(object):
         self.code = compile(code, '<string>', 'exec')
         self.line = line
 
-    def apply(self, context):
+    def apply(self, context, globs):
         status = Status()
 
-        globs = zeit.edit.interfaces.IRuleGlobs(context)
         globs.update(
             applicable=self.applicable,
             error_if=lambda *args: self.error_if(status, *args),
@@ -182,9 +181,10 @@ class Validator(grokcore.component.Adapter):
     def __init__(self, context):
         self.messages = []
         self.context = context
+        globs = zeit.edit.interfaces.IRuleGlobs(context)
         rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
         for rule in rm.rules:
-            status = rule.apply(context)
+            status = rule.apply(context, globs)
             if status.status and self.status != zeit.edit.rule.ERROR:
                 self.status = status.status
             if status.message:
