@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.1.2 (unreleased)
+2.1.2 (2013-07-05)
 ------------------
 
 - Catch errors in viewlet to prevent editor from breaking completely. (#12530)
