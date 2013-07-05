@@ -53,18 +53,23 @@ class DummyTagger(object):
         return self.whitelist[key]
 
     def __setitem__(self, key, value):
-        keys = self.dav_properties.get(KEYWORD_PROPERTY, '').split('|') or []
+        keys = list(self.keys())
         if key not in keys:
             keys.append(key)
             self.dav_properties[KEYWORD_PROPERTY] = '|'.join(keys)
 
     def __delitem__(self, key):
-        keys = self.dav_properties.get(KEYWORD_PROPERTY, '').split('|') or []
+        keys = list(self.keys())
         keys.remove(key)
         self.dav_properties[KEYWORD_PROPERTY] = '|'.join(keys)
 
     def updateOrder(self, order):
-        pass
+        order = list(order)  # people are fond of passing in generators
+        if set(order) != set(self.keys()):
+            raise ValueError(
+                'Must pass in the same keys already present %r, not %r'
+                % (self.keys(), order))
+        self.dav_properties[KEYWORD_PROPERTY] = '|'.join(order)
 
     def update(self):
         pass

@@ -33,7 +33,8 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
                 return false;
             },
             select: function(event, ui) {
-                self.add(ui.item.value, ui.item.label, /*pinned=*/true);
+                self.add(ui.item.value, ui.item.label, /*pinned=*/true,
+                         /*position=*/'start');
                 $(self.autocomplete).val('');
                 return false;
             },
@@ -85,25 +86,27 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
         $(self.data).trigger('change');
     },
 
-    add: function(code, label, pinned) {
+    add: function(code, label, pinned, position) {
         var self = this;
-        self._add(code, label, pinned);
+        self._add(code, label, pinned, position);
         self._sync_json_widget_value();
     },
 
-    _add: function(code, label, pinned) {
+    _add: function(code, label, pinned, position) {
         var self = this;
+        if (isUndefined(position)) {
+            position = 'end';
+        }
         var pinned = pinned ? 'pinned' : 'toggle-pin';
         var item = LI(
             {'cms:uniqueId': code},
             SPAN({'class': 'icon delete', 'cms:call': 'delete'}),
             SPAN({'class': 'icon ' + pinned, 'cms:call': 'toggle_pinned'}),
             label);
-        self.list.appendChild(item);
-        if ($(item).index() < self.keywords_shown) {
-            $(item).addClass('shown');
+        if (position === 'end') {
+            $(self.list).append(item);
         } else {
-            $(item).addClass('not-shown');
+            $(self.list).prepend(item);
         }
     },
 
@@ -148,6 +151,15 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
 
     _sync_json_widget_value: function() {
         var self = this;
+        $('li', self.list).each(function (i, item) {
+            if (i < self.keywords_shown) {
+                $(item).addClass('shown');
+                $(item).removeClass('not-shown');
+            } else {
+                $(item).removeClass('shown');
+                $(item).addClass('not-shown');
+            }
+        });
         $(self.data).val(JSON.stringify(self.to_json()));
         $(self.list).css('width', $(self.list).width() + 'px');
     }

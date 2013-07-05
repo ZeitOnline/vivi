@@ -134,15 +134,21 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags()
         self.open_content()
         s = self.selenium
+        self._add_by_autocomplete('Kohle')
+        s.clickAndWait('name=form.actions.apply')
+        s.waitForTextPresent('Kohle')
+
+    def _add_by_autocomplete(self, text):
         # XXX type() doesn't work with selenium-1 and FF>7
         self.eval(
-            'document.getElementById("form.keywords.add").value = "Kohle"')
+            'document.getElementById("form.keywords.add").value = "%s"' % text)
+        s = self.selenium
         s.fireEvent('id=form.keywords.add', 'keydown')
         autocomplete_item = 'css=.ui-menu-item a'
         s.waitForElementPresent(autocomplete_item)
+        s.waitForVisible(autocomplete_item)
         s.click(autocomplete_item)
-        s.clickAndWait('name=form.actions.apply')
-        s.waitForTextPresent('Kohle')
+        s.waitForNotVisible(autocomplete_item)
 
     def test_toggle_pinned_should_display_pinned_icon(self):
         self.setup_tags('t1', 't2', 't3', 't4')
@@ -152,3 +158,18 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         s.clickAndWait('name=form.actions.apply')
         s.waitForElementPresent('css=li:contains(t1) .pinned')
         s.assertNotTextPresent('Wrong contained type')
+
+    def test_after_autocomplete_add_shown_markings_are_updated(self):
+        with mock.patch(
+            'zeit.cms.tagging.interfaces.KeywordConfiguration.keywords_shown',
+            gocept.testing.mock.Property()) as keywords_shown:
+            keywords_shown.return_value = 1
+
+            self.open_content()
+            s = self.selenium
+            self._add_by_autocomplete('Polarkreis')
+            self._add_by_autocomplete('Kohle')
+            s.clickAndWait('name=form.actions.apply')
+            s.waitForElementPresent('css=li.shown:contains(Kohle)')
+            s.assertCssCount('css=.fieldname-keywords li.not-shown', 1)
+            s.assertCssCount('css=.fieldname-keywords li.shown', 1)

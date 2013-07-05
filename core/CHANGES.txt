@@ -4,13 +4,13 @@ zeit.cms changes
 2.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add keywords from whitelist to the start of the list, not the end.
 
 
 2.2.3 (2013-07-04)
 ------------------
 
-- Drop duplicate tags.
+- Drop duplicate keywords.
 
 
 2.2.2 (2013-07-03)
