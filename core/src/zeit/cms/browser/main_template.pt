@@ -37,6 +37,11 @@
           var application_url = '${request/getApplicationURL}';
           var context_url = '${context/@@absolute_url}';
         "/>
+        <tal:comment condition="nothing">
+          Make sure that application_url and context_url are available
+          before any script is loaded"
+        </tal:comment>
+        <!-- zc.resourcelibrary -->
         <title>
           <metal:title metal:define-slot="title">
             <span tal:replace="context_title" /> –

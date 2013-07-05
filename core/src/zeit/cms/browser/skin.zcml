@@ -117,7 +117,10 @@
     name="zeit.cms.javascript.base"
     layer=".interfaces.ICMSLayer"
     require="mochikit">
-    <directory source="js" include="base.js"/>
+    <directory source="js" include="
+      namespace.js
+      logging.js
+      base.js"/>
   </resourceLibrary>
 
   <resourceLibrary
