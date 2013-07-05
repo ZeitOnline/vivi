@@ -10,13 +10,13 @@
 
     /* XHR logger logging errors to server error log */
     var xhr_listener = function(msg) {
-        url = window.application_url + '/@@log.json';
-        data = MochiKit.Base.serializeJSON(
+        var url = window.application_url + '/@@log.json';
+        var data = MochiKit.Base.serializeJSON(
           {'level': msg.level,
            'timestamp': msg.timestamp.toJSON(),
            'url': window.location.href,
            'message': msg.info});
-        d = MochiKit.Async.doXHR(url, {
+        var d = MochiKit.Async.doXHR(url, {
             method: 'POST',
             sendContent: data});
         d.addErrback(function(e) {
@@ -27,12 +27,12 @@
         });
     };
 
-    FIREBUG_LOG_LEVELS = {
+    var FIREBUG_LOG_LEVELS = {
         'DEBUG': 'debug',
         'INFO': 'info',
         'ERROR': 'error',
         'FATAL': 'error',
-        'WARNING': 'warn'}
+        'WARNING': 'warn'};
 
     /* Console logger for debug purpose */
     var console_listener = function(msg) {
@@ -47,6 +47,6 @@
 
     window.onerror = function(err, url, line) {
       logError(url + " line " + line + ": " + err);
-    }
+    };
 
 }(jQuery));
