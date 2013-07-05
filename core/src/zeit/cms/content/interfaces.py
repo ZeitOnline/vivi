@@ -72,6 +72,8 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=u'n/a')
 
+    # not required since e.g. Agenturmeldungen don't have an author, only
+    # a copyright notice
     author_references = zope.schema.Tuple(
         title=_("Authors"),
         value_type=zope.schema.Choice(source=authorSource),
