@@ -142,6 +142,7 @@ zeit.cms.tagging.Widget = gocept.Class.extend({
             self.list.innerHTML = '';
             self.populate_keywords(json.tags);
             self._initialize_sortable();
+            $(self.data).trigger('change');
             return result;
         });
         d.addBoth(function(result_or_error) {
