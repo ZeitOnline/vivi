@@ -5,6 +5,7 @@ zeit.content.gallery changes
 ------------------
 
 - Fix tests to deal with required keywords (#12478).
+- Adapt Javascript so it can always be loaded (#11290).
 
 
 2.6.1 (2013-05-29)
