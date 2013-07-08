@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.2.2 (unreleased)
+2.2.2 (2013-07-08)
 ------------------
 
 - Fix tests to deal with required keywords (#12478).
