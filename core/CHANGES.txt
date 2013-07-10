@@ -4,7 +4,7 @@ zeit.cms changes
 2.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Stopgap: accept any tags, even when they are not in the whitelist (#12609).
 
 
 2.2.6 (2013-07-10)
