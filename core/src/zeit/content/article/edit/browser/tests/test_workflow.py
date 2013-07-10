@@ -6,6 +6,7 @@ from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import transaction
 import unittest2 as unittest
+import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing
 
@@ -27,7 +28,8 @@ class Checkin(zeit.cms.testing.BrowserTestCase):
 
 
 class CheckinSelenium(
-    zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorTestCase,
+        zeit.cms.tagging.testing.TaggingHelper):
 
     def test_form_with_semantic_change_shows_current_timestamp(self):
         s = self.selenium
@@ -96,14 +98,12 @@ class CheckinSelenium(
         self.eval(
             'document.getElementById("%s").value = "asdf"' % input_filename)
         s.fireEvent(input_filename, 'blur')
-        input_keywords = 'keywords.keywords.add'
-        self.eval(
-            'document.getElementById("%s").value = "testtag"' % input_keywords)
-        s.fireEvent(input_keywords, 'keydown')
-        autocomplete_item = 'css=.ui-menu-item a'
-        s.waitForElementPresent(autocomplete_item)
-        s.click(autocomplete_item)
-        s.fireEvent(input_keywords, 'blur')
+        s.click('css=#edit-form-keywords-new .edit-bar .fold-link')
+        s.waitForElementNotPresent('css=#edit-form-keywords-new.folded')
+        self.add_keyword_by_autocomplete('testtag', form_prefix='keywords')
+        self.add_keyword_by_autocomplete('testtag2', form_prefix='keywords')
+        self.add_keyword_by_autocomplete('testtag3', form_prefix='keywords')
+        s.fireEvent('keywords.keywords.add', 'blur')
 
         s.waitForElementNotPresent(disabled_checkin_button)
 

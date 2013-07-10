@@ -107,7 +107,7 @@ Checking in requires the article to be valid:
 >>> import zeit.cms.workingcopy.interfaces
 >>> import zope.component
 >>> from zeit.cms.repository.interfaces import IAutomaticallyRenameable
->>> whitelist = zope.component.getUtility(
+>>> wl = zope.component.getUtility(
 ...     zeit.cms.tagging.interfaces.IWhitelist)
 >>> with zeit.cms.testing.site(getRootFolder()):
 ...     with zeit.cms.testing.interaction():
@@ -115,7 +115,7 @@ Checking in requires the article to be valid:
 ...         article = list(wc.values())[0]
 ...         article.title = u'Title'
 ...         article.ressort = u'Deutschland'
-...         article.keywords = (whitelist['testtag'],)
+...         article.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
 ...         IAutomaticallyRenameable(article).rename_to = 'asdf'
 
 We check in the document. We look at the document in the repository then:

@@ -16,7 +16,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     """Metadata of an article."""
 
     keywords = zeit.cms.tagging.interfaces.Keywords(
-        min_length=1)
+        min_length=3)
     keywords.setTaggedValue('zeit.cms.tagging.updateable', True)
 
     paragraphs = zope.schema.Int(

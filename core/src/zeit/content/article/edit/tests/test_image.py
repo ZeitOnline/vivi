@@ -137,9 +137,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         article.year = 2011
         article.title = u'title'
         article.ressort = u'Deutschland'
-        whitelist = zope.component.getUtility(
+        wl = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
-        article.keywords = (whitelist['testtag'],)
+        article.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
         article = zeit.cms.checkout.interfaces.ICheckinManager(
             article).checkin()
         self.assertEqual(

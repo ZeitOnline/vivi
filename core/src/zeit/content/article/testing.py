@@ -65,7 +65,8 @@ class ArticleLayer(ArticleZCMLLayer):
             zeit.connector.interfaces.IConnector)
         prop = connector._get_properties(
             'http://xml.zeit.de/online/2007/01/Somalia')
-        prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
+        prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = (
+            'testtag|testtag2|testtag3')
 
     @classmethod
     def testTearDown(cls):
@@ -148,9 +149,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         article.year = 2011
         article.title = u'title'
         article.ressort = u'Deutschland'
-        whitelist = zope.component.getUtility(
+        wl = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
-        article.keywords = (whitelist['testtag'],)
+        article.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
         return article
 
     def get_factory(self, article, factory_name):
