@@ -351,7 +351,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             $(self.subject_input).show();
             self.mailto_input.focus();
         } else {
-            throw 'Not a valid service to link to: ' + service;
+            throw new Error('Not a valid service to link to: ' + service);
         }
     },
 
