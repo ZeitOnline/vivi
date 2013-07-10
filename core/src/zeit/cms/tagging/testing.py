@@ -129,3 +129,16 @@ class TaggingHelper(object):
             self.addCleanup(remove_tags_from_whitelist)
 
         return tags
+
+    def add_keyword_by_autocomplete(self, text, form_prefix='form'):
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval(
+            'document.getElementById("%s.keywords.add").value = "%s"' % (
+                form_prefix, text))
+        s = self.selenium
+        s.fireEvent('id=%s.keywords.add' % form_prefix, 'keydown')
+        autocomplete_item = 'css=.ui-menu-item a'
+        s.waitForElementPresent(autocomplete_item)
+        s.waitForVisible(autocomplete_item)
+        s.click(autocomplete_item)
+        s.waitForNotVisible(autocomplete_item)

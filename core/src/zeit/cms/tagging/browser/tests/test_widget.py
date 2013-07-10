@@ -134,21 +134,9 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags()
         self.open_content()
         s = self.selenium
-        self._add_by_autocomplete('Kohle')
+        self.add_keyword_by_autocomplete('Kohle')
         s.clickAndWait('name=form.actions.apply')
         s.waitForTextPresent('Kohle')
-
-    def _add_by_autocomplete(self, text):
-        # XXX type() doesn't work with selenium-1 and FF>7
-        self.eval(
-            'document.getElementById("form.keywords.add").value = "%s"' % text)
-        s = self.selenium
-        s.fireEvent('id=form.keywords.add', 'keydown')
-        autocomplete_item = 'css=.ui-menu-item a'
-        s.waitForElementPresent(autocomplete_item)
-        s.waitForVisible(autocomplete_item)
-        s.click(autocomplete_item)
-        s.waitForNotVisible(autocomplete_item)
 
     def test_toggle_pinned_should_display_pinned_icon(self):
         self.setup_tags('t1', 't2', 't3', 't4')
@@ -167,8 +155,8 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
 
             self.open_content()
             s = self.selenium
-            self._add_by_autocomplete('Polarkreis')
-            self._add_by_autocomplete('Kohle')
+            self.add_keyword_by_autocomplete('Polarkreis')
+            self.add_keyword_by_autocomplete('Kohle')
             s.clickAndWait('name=form.actions.apply')
             s.waitForElementPresent('css=li.shown:contains(Kohle)')
             s.assertCssCount('css=.fieldname-keywords li.not-shown', 1)

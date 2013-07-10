@@ -4,7 +4,7 @@ zeit.cms changes
 2.2.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Require at least three keywords, not just one.
 
 
 2.2.5 (2013-07-08)

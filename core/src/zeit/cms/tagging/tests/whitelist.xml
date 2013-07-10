@@ -3,6 +3,12 @@
   <tag uuid="testtag">
     Testtag
   </tag>
+  <tag uuid="testtag2">
+    Testtag2
+  </tag>
+  <tag uuid="testtag3">
+    Testtag3
+  </tag>
   <tag uuid="221da83c-427a-417f-81e2-0d8b1c65b669" entity_type="Person">
     Arno Schmidt
   </tag>
