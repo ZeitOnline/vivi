@@ -3,6 +3,7 @@
 
 from zeit.edit.rule import Rule
 import zeit.content.article.testing
+import zeit.edit.interfaces
 
 
 class RuleTest(zeit.content.article.testing.FunctionalTestCase):
@@ -13,5 +14,5 @@ class RuleTest(zeit.content.article.testing.FunctionalTestCase):
 applicable(article)
 error_if(True, u'foo')
 """)
-        s = r.apply(block)
+        s = r.apply(block, zeit.edit.interfaces.IRuleGlobs(block))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
