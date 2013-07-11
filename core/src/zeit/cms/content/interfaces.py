@@ -91,7 +91,8 @@ class ICommonMetadata(zope.interface.Interface):
         description=_(u'overwritten if any non-freetext authors are set'))
 
     keywords = zeit.cms.tagging.interfaces.Keywords(
-        min_length=3)
+        required=False,
+        default=())
 
     serie = zope.schema.Choice(
         title=_("Serie"),

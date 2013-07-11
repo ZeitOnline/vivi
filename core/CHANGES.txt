@@ -4,7 +4,7 @@ zeit.cms changes
 2.2.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make keywords optional for the time being.
 
 
 2.2.7 (2013-07-10)
