@@ -4,7 +4,7 @@ zeit.content.article changes
 3.0.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make keywords optional for the time being.
 
 
 3.0.5 (2013-07-10)
