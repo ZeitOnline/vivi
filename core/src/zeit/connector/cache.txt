@@ -74,13 +74,12 @@ True
 >>> list(cache._access_time_to_ids[last_access])
 ['some-id']
 
-
-When we now access getData the access time will not be update since less than
-1 second has passed:
+When we now access getData the access time will be updated by at most one
+count since less time than the update interval should have passed:
 
 >>> cache.getData('some-id', properties)
 <cStringIO.StringI object at 0x...>
->>> cache._last_access_time[get_storage_key('some-id')] == last_access
+>>> cache._last_access_time[get_storage_key('some-id')] <= last_access + 1
 True
 
 Let's wait 1 second:
