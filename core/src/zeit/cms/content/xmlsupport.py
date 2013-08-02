@@ -281,6 +281,12 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
         if metadata.ressort:
             entry.set('ressort', unicode(metadata.ressort))
         try:
+            # Check first element as well, since it may be an empty string.
+            if metadata.authors and metadata.authors[0]:
+                entry.set('author', unicode(";".join(metadata.authors)))
+        except AttributeError:
+            pass
+        try:
             type_decl = zeit.cms.interfaces.ITypeDeclaration(self.context)
         except TypeError:
             return

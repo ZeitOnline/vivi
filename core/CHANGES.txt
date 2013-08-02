@@ -4,7 +4,7 @@ zeit.cms changes
 2.2.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add authors to blocks in centerpage xml (#12695).
 
 
 2.2.8 (2013-07-11)
