@@ -3,10 +3,10 @@
 
 from __future__ import with_statement
 from zeit.edit.rule import Rule
+from zeit.edit.interfaces import IRuleGlobs
 import gocept.cache
 import pkg_resources
 import zeit.cms.interfaces
-import zeit.cms.workflow.interfaces
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -39,7 +39,7 @@ class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
 applicable(is_block and area == 'teaser-mosaic')
 error_if(True, u'Block in teasermosaic.')
 """)
-        s = r.apply(teaser)
+        s = r.apply(teaser, IRuleGlobs(teaser))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
 
     def test_is_region_in_teasermosaic_should_apply_to_teaserbar(self):
@@ -52,7 +52,7 @@ error_if(True, u'Block in teasermosaic.')
 applicable(is_region and area == 'teaser-mosaic' and position)
 error_if(True, u'Region in teasermosaic.')
 """)
-        s = r.apply(bar)
+        s = r.apply(bar, IRuleGlobs(bar))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
 
     def test_teaserbar_is_no_block(self):
@@ -65,7 +65,7 @@ error_if(True, u'Region in teasermosaic.')
 applicable(is_block and area == 'teaser-mosaic')
 error_if(True)
 """)
-        s = r.apply(bar)
+        s = r.apply(bar, IRuleGlobs(bar))
         self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
 
     def test_content_glob(self):
@@ -73,11 +73,11 @@ error_if(True)
 applicable(is_block and content)
 error_if(True)
 """)
-        s = r.apply(self.teaser)
+        s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
         self.teaser.insert(0, zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/testcontent'))
-        s = r.apply(self.teaser)
+        s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
 
     def test_content_glob_is_empty_for_non_content_blocks(self):
@@ -89,7 +89,8 @@ error_unless(content == [])
             self.cp['informatives'],
             zeit.edit.interfaces.IElementFactory,
             name='xml')
-        s = r.apply(factory())
+        area = factory()
+        s = r.apply(area, IRuleGlobs(area))
         self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
 
     def test_cp_type_glob(self):
@@ -97,10 +98,10 @@ error_unless(content == [])
 applicable(cp_type == 'homepage')
 error_if(True)
 """)
-        s = r.apply(self.teaser)
+        s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
         self.cp.type = u'homepage'
-        s = r.apply(self.teaser)
+        s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
 
 
