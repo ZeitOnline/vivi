@@ -7,6 +7,7 @@ import gocept.selenium.ztk
 import os
 import pkg_resources
 import re
+import time
 import transaction
 import zeit.cms.testing
 import zeit.workflow.testing
@@ -48,8 +49,10 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler,
 
     serve_from = pkg_resources.resource_filename(__name__, 'tests/feeds/')
     serve_favicon = False
+    delay_request_by = 0
 
     def send_head(self):
+        time.sleep(self.delay_request_by)
         if self.path == '/favicon.ico' and not self.serve_favicon:
             self.path = '/does-not-exist'
         return SimpleHTTPServer.SimpleHTTPRequestHandler.send_head(self)

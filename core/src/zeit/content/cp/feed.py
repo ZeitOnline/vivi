@@ -42,6 +42,9 @@ ITEM_MAPPING = {'id': 'guid', 'updated': 'pubDate', 'summary': 'description'}
 identity(ITEM_MAPPING, ['title', 'link', 'author'])
 
 
+DOWNLOAD_TIMEOUT = 20
+
+
 class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zope.interface.implements(zeit.content.cp.interfaces.IFeed)
@@ -70,7 +73,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             return
         exception = None
         try:
-            feed = requests.get(self.url)
+            feed = requests.get(self.url, timeout=DOWNLOAD_TIMEOUT)
         except requests.RequestException, exception:
             pass
         else:

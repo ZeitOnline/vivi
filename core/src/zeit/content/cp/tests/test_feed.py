@@ -1,8 +1,10 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
 import unittest
 import zeit.content.cp.interfaces
+import zeit.content.cp.testing
 import zope.schema.interfaces
 
 
@@ -21,5 +23,18 @@ class FeedTest(unittest.TestCase):
                           v, 'asdkjfa')
 
 
-def test_suite():
-    return unittest.makeSuite(FeedTest)
+class TestFeedDownload(zeit.content.cp.testing.FunctionalTestCase):
+
+
+    layer = zeit.content.cp.testing.FeedServer
+
+    def test_download_should_abort_after_timeout(self):
+        from ..feed import Feed
+        feed = Feed()
+        feed.url = 'http://localhost:%s/heise.xml' % (
+            zeit.content.cp.testing.httpd_port,)
+        with mock.patch('zeit.content.cp.feed.DOWNLOAD_TIMEOUT', new=1):
+            with mock.patch('zeit.content.cp.testing.RequestHandler.'
+                            'delay_request_by', new=2):
+                feed.fetch_and_convert()
+        self.assertIn('Timeout', feed.error)
