@@ -255,5 +255,5 @@ Displaying error messages
       <div class="block-item">
         An error occurred.
       </div>
-      <div>URLError: &lt;...&gt;</div>
+      <div>ConnectionError: ...</div>
       ...

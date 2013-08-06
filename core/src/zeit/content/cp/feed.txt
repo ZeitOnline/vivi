@@ -117,7 +117,7 @@ attribute:
 No or invaid URL.
 >>> feed = fm.get_feed('http://foo.testing')
 >>> print feed.error
- URLError: ...
+ ConnectionError: ...
 
 >>> nf_url = 'http://localhost:%s/nofeed.xml' % port
 >>> feed = fm.get_feed(nf_url)
@@ -152,7 +152,7 @@ existing errors:
 >>> zeit.workflow.testing.run_publish(PRIORITY_LOW)
 >>> feed = fm.get_feed('http://bar.testing')
 >>> print feed.error
-URLError: ...
+ConnectionError: ...
 >>> zeit.cms.workflow.interfaces.IPublishInfo(feed).published
 False
 

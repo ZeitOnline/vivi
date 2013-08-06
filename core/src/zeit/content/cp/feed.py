@@ -11,6 +11,7 @@ import hashlib
 import logging
 import lxml.etree
 import pytz
+import requests
 import urllib2
 import urlparse
 import zeit.cms.content.dav
@@ -67,19 +68,23 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         if not self.url:
             self.error = "No or invaid URL."
             return
-        url = self.url
         exception = None
         try:
-            parsed = feedparser.parse(url)
-        except (SystemExit, KeyboardInterrupt):
-            raise
-        except Exception, e:
-            # Bare except because the feedparser *may* raise almost any
-            # exception :/
-            exception = e
+            feed = requests.get(self.url)
+        except requests.RequestException, exception:
+            pass
         else:
-            if parsed.bozo:
-                exception = parsed.bozo_exception
+            try:
+                parsed = feedparser.parse(feed.content)
+            except (SystemExit, KeyboardInterrupt):
+                raise
+            except Exception, exception:
+                # Bare except because the feedparser *may* raise almost any
+                # exception :/
+                pass
+            else:
+                if parsed.bozo:
+                    exception = parsed.bozo_exception
         if exception is not None:
             self.error = '%s: %s' % (type(exception).__name__, str(exception))
             return
