@@ -1,7 +1,7 @@
 zeit.imp changes
 ================
 
-0.14.1 (unreleased)
+0.14.1 (2013-08-07)
 +++++++++++++++++++
 
 - Adapt Javascript so it can always be loaded (#11290).
