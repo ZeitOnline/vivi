@@ -151,10 +151,10 @@ class CheckinSelenium(
         s.waitForElementPresent('id=checkin')
         s.waitForElementNotPresent('css=.checkin-button.semantic-change')
         s.click('id=publish.has_semantic_change')
-        s.assertValue('id=publish.has_semantic_change', 'on')
+        s.waitForValue('id=publish.has_semantic_change', 'on')
         s.waitForElementPresent('css=.checkin-button.semantic-change')
         s.click('id=publish.has_semantic_change')
-        s.assertValue('id=publish.has_semantic_change', 'off')
+        s.waitForValue('id=publish.has_semantic_change', 'off')
         s.waitForElementNotPresent('css=.checkin-button.semantic-change')
 
     @unittest.skip('Cannot make the focus/blur-trigger work'
