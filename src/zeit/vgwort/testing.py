@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import mock
+import unittest2 as unittest
 import xmlrpclib
 import zeit.cms.content.interfaces
 import zeit.cms.testing
@@ -69,7 +70,8 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZCMLLayer
 
 
-class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase):
+class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
+                       unittest.TestCase):
 
     layer = SOAPLayer
     level = 2
