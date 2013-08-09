@@ -4,7 +4,9 @@ zeit.vgwort changes
 2.1 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- When a non common metadata objects should be reported to vgwort, this error
+  is being marked in the `reported_error` property now, instead of trying to
+  report again and again (#12640)
 
 
 2.0 (2013-04-24)

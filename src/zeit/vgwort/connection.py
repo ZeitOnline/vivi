@@ -126,7 +126,11 @@ class MessageService(VGWortWebService):
     namespace = 'http://vgwort.de/1.1/MessageService/xsd'
 
     def new_document(self, content):
-        content = zeit.cms.content.interfaces.ICommonMetadata(content)
+        content = zeit.cms.content.interfaces.ICommonMetadata(
+            content, None)
+        if content is None:
+            raise zeit.vgwort.interfaces.WebServiceError(
+                'Does not seem to be an article -- stale cache?')
         parties = self.create('Parties')
         parties.authors = self.create('Authors')
         if content.author_references:
