@@ -26,10 +26,6 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
 
-    def assertContains(self, needle, haystack):
-        if needle not in haystack:
-            self.fail(u"%r was not found in %r" % (needle, haystack))
-
     def add_token(self, content):
         ts = zope.component.getUtility(zeit.vgwort.interfaces.ITokens)
         ts.order(1)
@@ -72,7 +68,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         try:
             self.service.new_document(content)
         except zeit.vgwort.interfaces.WebServiceError, e:
-            self.assertContains('Shakespeare', unicode(e))
+            self.assertIn('Shakespeare', unicode(e))
         else:
             self.fail('WebServiceError should have been raised.')
 
