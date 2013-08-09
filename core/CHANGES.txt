@@ -4,7 +4,8 @@ zeit.cms changes
 2.4.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix styling for publish indicator so it's visible outside of object-details
+  again (#12691).
 
 
 2.3.0 (2013-08-05)

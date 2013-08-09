@@ -760,3 +760,21 @@ li.busy {
     height: 3px;
     background-image: url("layout/pupil.png");
 }
+
+.publish-state {
+    padding-top:15px;
+    padding-left:20px;
+    background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 15px -1581px;
+}
+
+.publish-state.published {
+    background-position: 7px -1581px;
+}
+
+.publish-state.not-published {
+    background-position: 7px -1670px;
+}
+
+.publish-state.published-with-changes {
+    background-position: 7px -1611px;
+}
