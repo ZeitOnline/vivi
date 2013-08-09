@@ -46,14 +46,11 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
             co.product = product
-        try:
+        with self.assertRaises(zeit.vgwort.interfaces.WebServiceError) as e:
             self.service.new_document(self.repository['testcontent'])
-        except TypeError, e:
-            self.assertContains(
-                "The value 'None' of attribute 'privateidentificationid'",
-                str(e))
-        else:
-            self.fail('TypeError should have been raised.')
+        self.assertIn(
+            "The value 'None' of attribute 'privateidentificationid'",
+            str(e.exception))
 
     def test_business_fault_should_raise_error_message(self):
         shakespeare = zeit.content.author.author.Author()
@@ -176,8 +173,11 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
         return self.repository['testcontent']
 
     def test_content_must_have_commonmetadata(self):
-        self.assertRaises(
-            TypeError, self.service.new_document, None)
+        with self.assertRaises(zeit.vgwort.interfaces.WebServiceError) as e:
+            self.service.new_document(mock.sentinel.notanarticle)
+        self.assertEqual(
+            e.exception.args,
+            ('Does not seem to be an article -- stale cache?',))
 
     def test_product_is_passed_as_additional_author_with_code(self):
         author = zeit.content.author.author.Author()

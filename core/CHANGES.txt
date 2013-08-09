@@ -8,6 +8,9 @@ zeit.vgwort changes
   is being marked in the `reported_error` property now, instead of trying to
   report again and again (#12640)
 
+- Remote (VGWort) validation errors are now being reported to the
+  `reported_error` property (#12640)
+
 
 2.0 (2013-04-24)
 ----------------

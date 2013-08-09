@@ -93,9 +93,7 @@ class VGWortWebService(object):
                 return result
             except suds.WebFault, e:
                 message = unicode(e.fault.detail[0])
-                if hasattr(e.fault.detail, 'ValidationError'):
-                    raise TypeError(message)
-                elif int(getattr(e.fault.detail[0], 'errorcode', 0)) >= 100:
+                if int(getattr(e.fault.detail[0], 'errorcode', 0)) >= 100:
                     raise zeit.vgwort.interfaces.TechnicalError(message)
                 else:
                     raise zeit.vgwort.interfaces.WebServiceError(message)
