@@ -4,6 +4,14 @@ zeit.vgwort changes
 2.1 (unreleased)
 ----------------
 
+- The report script reports synchronously now (#12640)
+
+- Make error reporting more stable agains unicode errors (#12640)
+
+- Strip short text for vgwort to 100 chars, as this is vgwort's limit (#12640)
+
+- Invalid author references are ignored (and logged) #12640
+
 - When a non common metadata objects should be reported to vgwort, this error
   is being marked in the `reported_error` property now, instead of trying to
   report again and again (#12640)

@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import suds
+import logging
 import suds.cache
 import suds.client
 import suds.plugin
@@ -11,6 +12,9 @@ import zeit.vgwort.interfaces
 import zope.app.appsetup.product
 import zope.cachedescriptors.property
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class CodeFixer(suds.plugin.MessagePlugin):
@@ -92,7 +96,10 @@ class VGWortWebService(object):
                     raise zeit.vgwort.interfaces.TechnicalError(result)
                 return result
             except suds.WebFault, e:
-                message = unicode(e.fault.detail[0])
+                try:
+                    message = unicode(e.fault.detail)
+                except UnicodeError:
+                    message = str(e.fault.detail[0]).decode('latin1')
                 if int(getattr(e.fault.detail[0], 'errorcode', 0)) >= 100:
                     raise zeit.vgwort.interfaces.TechnicalError(message)
                 else:
@@ -134,15 +141,19 @@ class MessageService(VGWortWebService):
         if content.author_references:
             for author in content.author_references:
                 involved = self.create('Involved')
-                if author.vgwortcode:
-                    involved.code = author.vgwortcode
-                    parties.authors.author.append(involved)
-                elif author.firstname and author.lastname:
-                    involved.firstName = author.firstname
-                    involved.surName = author.lastname
-                    if author.vgwortid:
-                        involved.cardNumber = author.vgwortid
-                    parties.authors.author.append(involved)
+                try:
+                    if author.vgwortcode:
+                        involved.code = author.vgwortcode
+                        parties.authors.author.append(involved)
+                    elif (author.firstname and author.lastname and
+                          author.firstname.strip() and author.lastname.strip()):
+                        involved.firstName = author.firstname
+                        involved.surName = author.lastname
+                        if author.vgwortid:
+                            involved.cardNumber = author.vgwortid
+                        parties.authors.author.append(involved)
+                except AttributeError:
+                    log.exception("Could not report")
         else:
             # Report the freetext authors if no structured authors are
             # available. VGWort will do some matching then.
@@ -168,7 +179,7 @@ class MessageService(VGWortWebService):
         text = self.create('MessageText')
         text.text = self.create('Text')
         text._lyric = False
-        text.shorttext = content.title
+        text.shorttext = content.title[:100]
         searchable = zope.index.text.interfaces.ISearchableText(content)
         text.text.plainText = u'\n'.join(
             searchable.getSearchableText()).encode('utf-8').encode('base64')
