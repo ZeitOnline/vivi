@@ -69,7 +69,7 @@ def report_new_documents():
     source = zope.component.getUtility(
         zeit.vgwort.interfaces.IReportableContentSource)
     for content in source:
-        async_report(content)
+        report(content)
 
 
 @gocept.async.function(u'events')

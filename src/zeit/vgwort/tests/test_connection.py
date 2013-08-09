@@ -107,6 +107,34 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
         self.service.new_document(content)
 
+    def test_non_author_doc_as_author_should_be_ignored(self):
+        import transaction
+        import zeit.connector.interfaces
+        author = zeit.content.author.author.Author()
+        author.firstname = 'Tina'
+        author.lastname = 'Groll'
+        self.repository['tina'] = author
+        author = self.repository['tina']
+
+        author2 = zeit.content.author.author.Author()
+        author2.firstname = 'Invalid'
+        author2.lastname = 'stuff'
+        self.repository['author2'] = author2
+        author2 = self.repository['author2']
+        content = self.repository['testcontent']
+        with zeit.cms.checkout.helper.checked_out(content) as co:
+            co.author_references = [author, author2]
+            co.title = 'Title'
+            co.teaserText = 'x' * 2000
+        content = self.repository['testcontent']
+        connector = zope.component.getUtility(
+            zeit.connector.interfaces.IConnector)
+        transaction.commit()
+        connector._properties[u'http://xml.zeit.de/author2'][
+            ('type', 'http://namespaces.zeit.de/CMS/meta')] = 'foo'
+        self.add_token(content)
+        self.service.new_document(content)
+
 
 class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
 
