@@ -81,6 +81,9 @@ class IWorkingcopy(zope.container.interfaces.IContainer):
 
     """
 
+    temporary = zope.interface.Attribute(
+        'True if this workingcopy does not belong to a principal')
+
 
 class ILocalContent(zope.interface.Interface):
     """Locally (workingcopy) stored content.

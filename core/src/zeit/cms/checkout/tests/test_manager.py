@@ -158,6 +158,19 @@ class ValidateCheckinTest(zeit.cms.testing.FunctionalTestCase):
             self.repository['testcontent'])
         self.assertEqual(changed, lsc.last_semantic_change)
 
+    def test_event_is_not_sent_for_temporary_workingcopy(self):
+        # thus, no validation is performed during publishing, for example
+        # XXX this needs to be conceptualized more clearly, see #12701
+
+        # undo setUp, since it doesn't apply for this test
+        manager = ICheckinManager(self.checked_out)
+        manager.delete()
+
+        manager = ICheckoutManager(self.repository['testcontent'])
+        checked_out = manager.checkout(temporary=True)
+        manager = ICheckinManager(checked_out)
+        self.assertTrue(manager.canCheckin)
+
 
 class SemanticChangeTest(zeit.cms.testing.FunctionalTestCase):
 

@@ -18,6 +18,11 @@ class Workingcopy(zope.app.container.btree.BTreeContainer):
 
     zope.interface.implements(zeit.cms.workingcopy.interfaces.IWorkingcopy)
     _order = ()
+    temporary = False  # avoid migration of existing objects
+
+    def __init__(self, temporary=False):
+        super(Workingcopy, self).__init__()
+        self.temporary = temporary
 
     def __iter__(self):
         for key in reversed(self._order):

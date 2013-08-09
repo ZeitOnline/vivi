@@ -4,6 +4,7 @@ zeit.cms changes
 2.4.0 (unreleased)
 ------------------
 
+- Disable checkin validation during publishing (#12690).
 - Fix styling for publish indicator so it's visible outside of object-details
   again (#12691).
 

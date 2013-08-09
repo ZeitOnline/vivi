@@ -76,7 +76,8 @@ class CheckoutManager(object):
                     *e.args)
 
         if temporary:
-            workingcopy = zeit.cms.workingcopy.workingcopy.Workingcopy()
+            workingcopy = zeit.cms.workingcopy.workingcopy.Workingcopy(
+                temporary=True)
         else:
             workingcopy = self.workingcopy
 
@@ -108,12 +109,13 @@ class CheckoutManager(object):
             self.last_validation_error = _('Cannot acquire lock')
             return False
         workingcopy = self.context.__parent__
-        event = zeit.cms.checkout.interfaces.ValidateCheckinEvent(
-            self.context, workingcopy, self.principal)
-        zope.event.notify(event)
-        self.last_validation_error = event.vetoed
-        if self.last_validation_error is not None:
-            return False
+        if not workingcopy.temporary:
+            event = zeit.cms.checkout.interfaces.ValidateCheckinEvent(
+                self.context, workingcopy, self.principal)
+            zope.event.notify(event)
+            self.last_validation_error = event.vetoed
+            if self.last_validation_error is not None:
+                return False
         return True
 
     def checkin(self, event=True, semantic_change=None,
