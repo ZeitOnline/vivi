@@ -1,8 +1,8 @@
 zeit.vgwort changes
 ===================
 
-2.1 (unreleased)
-----------------
+2.1.0 (2013-08-13)
+------------------
 
 - The report script reports synchronously now (#12640)
 
