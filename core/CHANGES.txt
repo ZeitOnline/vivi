@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.0.2 (unreleased)
+2.1.0 (2013-08-13)
 ------------------
 
 - Add timeout for RSS downloads (#9560).
