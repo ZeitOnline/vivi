@@ -1,6 +1,12 @@
 zeit.vgwort changes
 ===================
 
+2.2.0 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.1.0 (2013-08-13)
 ------------------
 
