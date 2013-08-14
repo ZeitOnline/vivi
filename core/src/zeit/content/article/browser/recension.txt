@@ -35,7 +35,7 @@ Let's add one:
 >>> browser.getControl('Title').value = 'Der Schwarm'
 >>> browser.getControl(name='form.authors.0.').value = 'Frank Schwanitz'
 >>> browser.getControl('ZEIT category').displayValue
-['(no value)']
+['(nothing selected)']
 >>> browser.getControl('ZEIT category').displayValue = ['Belletristik']
 >>> browser.getControl(name='form.actions.add').click()
 >>> browser.open(listing)
