@@ -4,7 +4,7 @@ zeit.content.video changes
 2.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to Python-2.7 and ZTK-1.1.5 (#11005).
 
 
 2.2.2 (2013-07-08)
