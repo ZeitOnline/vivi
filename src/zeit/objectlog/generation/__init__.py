@@ -1,8 +1,7 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
+# Copyright (c) 2008-2013 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.app.generations
+import zope.app.generations.generations
 
 minimum_generation = 1
 generation = 1
