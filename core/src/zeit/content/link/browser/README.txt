@@ -29,7 +29,7 @@ Now we're looking at the add form. Fill in some data:
 >>> browser.getControl('Link address').value = 'http://gocept.com'
 >>> browser.getControl(name='form.authors.0.').value = 'Hans Sachs'
 >>> browser.getControl('Target').displayOptions
-['(no value)', 'New window']
+['(nothing selected)', 'New window']
 >>> browser.getControl(name='form.actions.add').click()
 
 After adding the link is checked out.

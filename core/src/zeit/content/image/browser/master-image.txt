@@ -78,9 +78,9 @@ It is possible to select the master image of an image group:
 >>> browser.open('http://localhost/++skin++cms/repository/image-group')
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl('Master image').displayValue
-['(no value)']
+['(nothing selected)']
 >>> browser.getControl('Master image').displayOptions
-['(no value)',
+['(nothing selected)',
  'new-hampshire-450x200.jpg',
  'new-hampshire-artikel.jpg',
  'obama-clinton-120x120.jpg']

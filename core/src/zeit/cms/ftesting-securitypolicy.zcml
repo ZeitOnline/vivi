@@ -69,7 +69,7 @@
 
   <grant
     principal="zope.Authenticated"
-    permission="zope.app.dublincore.view"
+    permission="zope.dublincore.view"
     />
   <grant
     principal="zope.Authenticated"

@@ -350,7 +350,8 @@ Lets create an image group:
 Image groups are not checked out by default, because adding new images will be
 done directly in the repository:
 
->>> browser.url
+>>> hampshire_url = browser.url
+>>> hampshire_url
 'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
 >>> print browser.title.strip()
 New Hampshire – Image group
@@ -361,7 +362,7 @@ Image groups don't have a thumbnail when there are no images in it:
 Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 404: Not Found
->>> browser.goBack()
+>>> browser.open(hampshire_url)
 
 Create a few images in the group:
 
