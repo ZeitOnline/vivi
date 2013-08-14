@@ -31,6 +31,7 @@ setup(
         'zope.app.testing',
         'zope.app.zcmlfiles',
         'zope.authentication',
+        'zope.cachedescriptors',
         'zope.component',
         'zope.file',
         'zope.interface',
