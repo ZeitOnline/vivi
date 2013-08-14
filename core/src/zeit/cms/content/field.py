@@ -51,7 +51,12 @@ class _XMLBase(zope.schema.Field):
             return self.parse(text)
         except (lxml.etree.XMLSyntaxError, ValueError,
                 HTMLParser.HTMLParseError), e:
-            raise zope.schema.ValidationError(str(e))
+            message = str(e)
+            if message == 'None':
+                # XXX lxml used to be able to say things like "malformed start
+                # tag", but apparently, not anymore.
+                message = 'Not valid XML'
+            raise zope.schema.ValidationError(message)
 
     def set(self, object, value):
         if self.readonly:
