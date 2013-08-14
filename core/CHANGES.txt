@@ -4,7 +4,7 @@ CHANGES
 0.3.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to Python-2.7 and ZTK-1.1.5 (#11005).
 
 
 0.3.4 (2010-05-03)
