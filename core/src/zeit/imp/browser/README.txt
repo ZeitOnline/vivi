@@ -104,7 +104,7 @@ It is possible to check out the group from here directly:
 
 >>> browser.getLink('Checkout').click()
 >>> browser.getControl('Master image').displayValue
-['(no value)']
+['(nothing selected)']
 
 
 .. [#setup]
