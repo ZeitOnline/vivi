@@ -46,18 +46,18 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertSelectedLabel('id=metadata-a.ressort', 'International')
         s.pause(100)
         self.assertEqual(
-            [u'(no value)', u'Meinung', u'Nahost', u'US-Wahl'],
+            [u'(nothing selected)', u'Meinung', u'Nahost', u'US-Wahl'],
             s.getSelectOptions('id=metadata-a.sub_ressort'))
         s.select('id=metadata-a.ressort', 'Deutschland')
         s.pause(100)
         self.assertEqual(
-            [u'(no value)', u'Datenschutz', u'Integration',
+            [u'(nothing selected)', u'Datenschutz', u'Integration',
              u'Joschka Fisher', u'Meinung'],
             s.getSelectOptions('id=metadata-a.sub_ressort'))
         s.click('metadata-a.actions.apply')
         s.pause(250)
         self.assertEqual(
-            [u'(no value)', u'Datenschutz', u'Integration',
+            [u'(nothing selected)', u'Datenschutz', u'Integration',
              u'Joschka Fisher', u'Meinung'],
             s.getSelectOptions('id=metadata-a.sub_ressort'))
 

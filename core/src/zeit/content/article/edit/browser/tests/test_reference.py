@@ -62,7 +62,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         select = 'css=.block.type-image form.wired select'
         s.waitForElementPresent(select)
         self.assertEqual(
-            ['(no value)', 'small', 'large', 'Hochkant'],
+            ['(nothing selected)', 'small', 'large', 'Hochkant'],
             s.getSelectOptions(select))
         s.select(select, 'label=small')
         s.fireEvent(select, 'blur')
@@ -309,7 +309,7 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         select = 'css=.block.type-video form.wired select'
         s.waitForElementPresent(select)
         self.assertEqual(
-            ['(no value)', 'small', 'with info', 'large', 'double'],
+            ['(nothing selected)', 'small', 'with info', 'large', 'double'],
             s.getSelectOptions(select))
         s.select(select, 'label=large')
         s.fireEvent(select, 'blur')
