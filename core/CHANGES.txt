@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.0.7 (unreleased)
+3.0.7 (2013-08-14)
 ------------------
 
 - Update to Python-2.7 and ZTK-1.1.5 (#11005).
