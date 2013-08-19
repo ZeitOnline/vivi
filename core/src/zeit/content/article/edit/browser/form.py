@@ -356,6 +356,14 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-view', 'edit.heading')
 
 
+class MetadataGenre(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'metadata-genre'
+    undo_description = _('edit metadata')
+    form_fields = FormFields(IArticle).select('genre')
+
+
 class MetadataNL(zeit.edit.browser.form.InlineForm):
 
     legend = _('')

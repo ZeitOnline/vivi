@@ -58,7 +58,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     zeit.cms.content.dav.mapProperties(
         zeit.content.article.interfaces.IArticle,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('has_recensions', 'artbox_thema', 'layout'))
+        ('has_recensions', 'artbox_thema', 'layout', 'genre'))
 
     @property
     def paragraphs(self):

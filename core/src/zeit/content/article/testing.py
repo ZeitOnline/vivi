@@ -25,9 +25,14 @@ product_config = """
     cds-import-valid-path $$ressort/$$year/$$volume
     cds-import-invalid-path cds/invalid/$$year/$$volume
     book-recension-categories file://%s
+    genre-url file://%s
 </product-config>
-""" % pkg_resources.resource_filename(
-    __name__, '/tests/recension_categories.xml')
+""" % (
+    pkg_resources.resource_filename(
+        __name__, '/tests/recension_categories.xml'),
+    pkg_resources.resource_filename(
+    __name__, '/tests/article-genres.xml')
+)
 
 
 checker = zope.testing.renormalizing.RENormalizing([

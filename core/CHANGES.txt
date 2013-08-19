@@ -4,7 +4,7 @@ zeit.content.article changes
 3.0.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add "genre" field for articles (#12725).
 
 
 3.0.7 (2013-08-14)

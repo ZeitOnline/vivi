@@ -1,0 +1,12 @@
+<article-genres>
+<genre name="nachricht" display-frontend="false">Nachricht</genre>
+<genre name="bericht" display-frontend="false">Bericht</genre>
+<genre name="analyse" display-frontend="false">Analyse</genre>
+<genre name="reportage" display-frontend="false">Reportage</genre>
+<genre name="interview" display-frontend="false">Interview</genre>
+<genre name="portrait" display-frontend="false">Porträt</genre>
+<genre name="glosse" display-frontend="true">Glosse</genre>
+<genre name="kommentar" display-frontend="true">Kommentar</genre>
+<genre name="leserartikel" display-frontend="true">Leserartikel</genre>
+<genre name="gastbeitrag" display-frontend="true">Gastbeitrag</genre>
+</article-genres>
