@@ -2,14 +2,26 @@
 Connector
 =========
 
-Creating a connector[#loghandler]_:
+Creating a connector:
 
+    
 >>> import zeit.connector.interfaces
 >>> import zope.component
 >>> connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 >>> connector
 <zeit.connector.connector.Connector object at 0x...>
+
+Set up a log handler to pick up logging output:
+
+>>> import logging
+>>> import StringIO
+>>> logfile = StringIO.StringIO()
+>>> log_handler = logging.StreamHandler(logfile)
+>>> logging.root.addHandler(log_handler)
+>>> old_log_level = logging.root.level
+>>> logging.root.setLevel(logging.INFO)
+
 
 IConnector Interface
 ====================
@@ -327,8 +339,10 @@ Clean up:
 >>> del connector[u'http://xml.zeit.de/testing/copy-target']
 >>> del connector[u'http://xml.zeit.de/testing/copy-test']
 
-Now make sure we can copy folders[#create-folder-structure]_:
+Now make sure we can copy folders:
 
+>>> import zeit.connector.testing
+>>> zeit.connector.testing.create_folder_structure(connector)
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 [(u'testroot', u'http://xml.zeit.de/testing/testroot/')]
 >>> connector.copy('http://xml.zeit.de/testing/testroot',
@@ -340,7 +354,6 @@ Now make sure we can copy folders[#create-folder-structure]_:
 
 Verify the whole copied tree:
 
->>> import zeit.connector.testing
 >>> zeit.connector.testing.print_tree(
 ...     connector, 'http://xml.zeit.de/testing/copiedtree')
 http://xml.zeit.de/testing/copiedtree
@@ -427,8 +440,9 @@ Let's clean up:
 >>> del connector['http://xml.zeit.de/testing/move-test-moved']
 
 
-Make sure we can also move collections[#create-folder-structure]_:
+Make sure we can also move collections:
 
+>>> zeit.connector.testing.create_folder_structure(connector)
 >>> list(connector.listCollection('http://xml.zeit.de/testing/'))
 [(u'testroot', u'http://xml.zeit.de/testing/testroot/')]
 >>> connector.move('http://xml.zeit.de/testing/testroot',
@@ -501,70 +515,3 @@ Make sure the logfile is empty, as we don't expect anything to be logged in
 normal operation:
 
 >>> print logfile.getvalue(),
-
-
-.. [#create-folder-structure] Create a folder structure for copy/move
-
-    Create helpers for creating folders/files:
-
-    >>> def add_folder(id):
-    ...     id = u'http://xml.zeit.de/testing/' + id
-    ...     res = Resource(
-    ...         id, None, 'folder', StringIO.StringIO(''),
-    ...         contentType = 'httpd/unix-directory')
-    ...     connector.add(res)
-    >>> def add_file(id):
-    ...     id = u'http://xml.zeit.de/testing/' + id
-    ...     res = Resource(
-    ...         id, None, 'text', StringIO.StringIO('Pop.'),
-    ...         contentType = 'text/plain')
-    ...     connector.add(res)
-    
-    Create folders:
-
-    >>> add_folder('testroot')
-    >>> add_folder('testroot/a')
-    >>> add_folder('testroot/a/a')
-    >>> add_folder('testroot/a/b')
-    >>> add_folder('testroot/a/b/c')
-    >>> add_folder('testroot/b')
-    >>> add_folder('testroot/b/a')
-    >>> add_folder('testroot/b/b')
-    
-    Create files:
-
-    >>> add_file('testroot/f')
-    >>> add_file('testroot/g')
-    >>> add_file('testroot/h')
-    >>> add_file('testroot/a/f')
-    >>> add_file('testroot/a/b/c/foo')
-    >>> add_file('testroot/b/b/foo')
-
-    >>> import zeit.connector.tests
-    >>> zeit.connector.testing.print_tree(
-    ...     connector, 'http://xml.zeit.de/testing/testroot')
-    http://xml.zeit.de/testing/testroot
-    http://xml.zeit.de/testing/testroot/a/ folder
-    http://xml.zeit.de/testing/testroot/a/a/ folder
-    http://xml.zeit.de/testing/testroot/a/b/ folder
-    http://xml.zeit.de/testing/testroot/a/b/c/ folder
-    http://xml.zeit.de/testing/testroot/a/b/c/foo text
-    http://xml.zeit.de/testing/testroot/a/f text
-    http://xml.zeit.de/testing/testroot/b/ folder
-    http://xml.zeit.de/testing/testroot/b/a/ folder
-    http://xml.zeit.de/testing/testroot/b/b/ folder
-    http://xml.zeit.de/testing/testroot/b/b/foo text
-    http://xml.zeit.de/testing/testroot/f text
-    http://xml.zeit.de/testing/testroot/g text
-    http://xml.zeit.de/testing/testroot/h text
-    
-.. [#loghandler] We need a log handler
-
-    >>> import logging
-    >>> import StringIO
-    >>> logfile = StringIO.StringIO()
-    >>> log_handler = logging.StreamHandler(logfile)
-    >>> logging.root.addHandler(log_handler)
-    >>> old_log_level = logging.root.level
-    >>> logging.root.setLevel(logging.INFO)
-

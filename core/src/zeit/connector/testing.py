@@ -187,3 +187,55 @@ def list_tree(connector, base, level=0):
             result.extend(list_tree(connector, uid, level+1))
 
     return result
+
+
+def create_folder_structure(connector):
+    """Create a folder structure for copy/move"""
+
+    def add_folder(id):
+        id = u'http://xml.zeit.de/testing/' + id
+        res = zeit.connector.resource.Resource(
+            id, None, 'folder', StringIO.StringIO(''),
+            contentType = 'httpd/unix-directory')
+        connector.add(res)
+
+    def add_file(id):
+        id = u'http://xml.zeit.de/testing/' + id
+        res = zeit.connector.resource.Resource(
+            id, None, 'text', StringIO.StringIO('Pop.'),
+            contentType = 'text/plain')
+        connector.add(res)
+
+    add_folder('testroot')
+    add_folder('testroot/a')
+    add_folder('testroot/a/a')
+    add_folder('testroot/a/b')
+    add_folder('testroot/a/b/c')
+    add_folder('testroot/b')
+    add_folder('testroot/b/a')
+    add_folder('testroot/b/b')
+
+    add_file('testroot/f')
+    add_file('testroot/g')
+    add_file('testroot/h')
+    add_file('testroot/a/f')
+    add_file('testroot/a/b/c/foo')
+    add_file('testroot/b/b/foo')
+
+    expected_structure = [
+        'http://xml.zeit.de/testing/testroot',
+        'http://xml.zeit.de/testing/testroot/a/ folder',
+        'http://xml.zeit.de/testing/testroot/a/a/ folder',
+        'http://xml.zeit.de/testing/testroot/a/b/ folder',
+        'http://xml.zeit.de/testing/testroot/a/b/c/ folder',
+        'http://xml.zeit.de/testing/testroot/a/b/c/foo text',
+        'http://xml.zeit.de/testing/testroot/a/f text',
+        'http://xml.zeit.de/testing/testroot/b/ folder',
+        'http://xml.zeit.de/testing/testroot/b/a/ folder',
+        'http://xml.zeit.de/testing/testroot/b/b/ folder',
+        'http://xml.zeit.de/testing/testroot/b/b/foo text',
+        'http://xml.zeit.de/testing/testroot/f text',
+        'http://xml.zeit.de/testing/testroot/g text',
+        'http://xml.zeit.de/testing/testroot/h text']
+    assert expected_structure == list_tree(
+        connector, 'http://xml.zeit.de/testing/testroot')
