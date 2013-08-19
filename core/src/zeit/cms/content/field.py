@@ -53,8 +53,9 @@ class _XMLBase(zope.schema.Field):
                 HTMLParser.HTMLParseError), e:
             message = str(e)
             if message == 'None':
-                # XXX lxml used to be able to say things like "malformed start
-                # tag", but apparently, not anymore.
+                # BeautifulSoup using HTMLParser used to be able to say
+                # "malformed start tag" in some cases, but that behaviour has
+                # been removed in Python-2.7.4
                 message = 'Not valid XML'
             raise zope.schema.ValidationError(message)
 
