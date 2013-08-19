@@ -2,7 +2,22 @@ zeit.objectlog
 ==============
 
 The object log persistently stores information about import changes of an
-object[#functionaltest]_. The log can be accessed as utility:
+object.
+
+Setup
+-----
+
+>>> import zope.app.component.hooks
+>>> import zope.publisher.browser
+>>> import zope.security.management
+>>> import zope.security.testing
+>>> old_site = zope.app.component.hooks.getSite()
+>>> zope.app.component.hooks.setSite(getRootFolder())
+>>> request = zope.publisher.browser.TestRequest()
+>>> zope.security.management.newInteraction(request)
+
+
+The log can be accessed as utility:
 
 >>> import zope.component
 >>> import zeit.objectlog.interfaces
@@ -59,8 +74,9 @@ True
 
 
 When we log another text, we'll get two results. Also, when a principal is
-logged in[#login]_ he is logged:
+logged in, he is logged:
 
+>>> request.setPrincipal(zope.security.testing.Principal(u'test.hans'))
 >>> log.log(content, "bar")
 >>> result = list(log.get_log(content))
 >>> len(result)
@@ -101,7 +117,11 @@ When we log to another object, the log is obviously seperated:
 >>> result[0].message
 'change'
 
-[#no-keyref-yields-empty-log]_
+When an object is not adaptable to IKeyReference, it's log is always empty:
+
+>>> list(log.get_log(object()))
+[]
+
 
 Adapting objects to log
 -----------------------
@@ -266,28 +286,3 @@ True
 True
 >>> zope.security.management.endInteraction()
 >>> zope.app.component.hooks.setSite(old_site)
-
-.. [#functionaltest] Setup functional test
-
-    >>> import zope.app.component.hooks
-    >>> old_site = zope.app.component.hooks.getSite()
-    >>> zope.app.component.hooks.setSite(getRootFolder())
-    
-.. [#needs-interaction] 
-
-    >>> import zope.security.management
-    >>> import zope.security.testing
-    >>> import zope.publisher.browser
-    >>> request = zope.publisher.browser.TestRequest()
-    >>> zope.security.management.newInteraction(request)
-
-.. [#login]
-
-    >>> request.setPrincipal(zope.security.testing.Principal(u'test.hans'))
-
-
-.. [#no-keyref-yields-empty-log] When an object is not adaptable to
-    IKeyReference, it's log is always empty:
-
-    >>> list(log.get_log(object()))
-    []
