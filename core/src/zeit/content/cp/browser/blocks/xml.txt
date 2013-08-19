@@ -50,9 +50,9 @@ You can edit the XML content by clicking the Edit button:
 
 The XML is checked for validity:
 
->>> print update_xml('>', '')
+>>> print update_xml('<', '')
 <...
-<span class="error">Not valid XML</span>...
+<span class="error">Start tag expected, '&lt;' not found, line 1, column 1</span>...
 
 Furthermore, there are three contraints defined, which must match.
 
