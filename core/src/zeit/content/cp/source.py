@@ -8,24 +8,11 @@ import zeit.cms.content.sources
 import zope.dottedname.resolve
 
 
-class CPTypeSource(zeit.cms.content.sources.SimpleContextualXMLSource):
-    # we are contextual so we can set a default value, but have it not
-    # validated at import time, since we don't have our product config then,
-    # yet.
+class CPTypeSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'cp-types-url'
-
-    def getValues(self, context):
-        tree = self._get_tree()
-        return [unicode(item.get('name'))
-                for item in tree.iterchildren()]
-
-    def getTitle(self, context, value):
-        __traceback_info__ = (value, )
-        tree = self._get_tree()
-        return unicode(tree.xpath('/centerpage-types/type[@name = "%s"]' %
-                                  value)[0])
+    attribute = 'name'
 
 
 class CPExtraSource(zeit.cms.content.sources.XMLSource):
