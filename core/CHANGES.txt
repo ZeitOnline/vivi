@@ -1,7 +1,7 @@
 zeit.objectlog changes
 ======================
 
-0.12 (unreleased)
+0.12 (2013-08-19)
 -----------------
 
 - Update to Python-2.7 and ZTK-1.1.5 (#11005).
