@@ -5,4 +5,7 @@ syntax: glob
 .mr.developer.cfg
 bin
 develop-eggs
+include
+lib
+local
 parts
