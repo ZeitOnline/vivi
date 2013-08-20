@@ -11,7 +11,7 @@ class UpdateItem(object):
     classes = {
         'video_id': zeit.brightcove.converter.Video,
         'playlist_id': zeit.brightcove.converter.Playlist,
-        }
+    }
 
     def __call__(self):
         key, id = self.request.form.items()[0]
@@ -26,9 +26,9 @@ class UpdateItem(object):
             update = zeit.brightcove.interfaces.IUpdate(bc_object)
             update()
             return json.dumps(dict(
-                    error=None,
-                    changed=update.changed,
-                    publish_job=update.publish_job_id))
+                error=None,
+                changed=update.changed,
+                publish_job=update.publish_job_id))
         except Exception, e:
             return json.dumps(dict(
-                    error='%s: %s' % (type(e).__name__, str(e))))
+                error='%s: %s' % (type(e).__name__, str(e))))
