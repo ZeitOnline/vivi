@@ -19,7 +19,6 @@ class UpdateItem(zeit.cms.testing.BrowserTestCase,
         self.patches = gocept.testing.mock.Patches()
         self.publish = self.patches.add(
             'zeit.cms.workflow.interfaces.IPublish')
-        self.publish().publish.return_value = 9876
 
     def tearDown(self):
         self.patches.reset()
@@ -31,8 +30,7 @@ class UpdateItem(zeit.cms.testing.BrowserTestCase,
                '@@update-brightcove-item?playlist_id=2345')
         result = json.loads(b.contents)
         self.assertEqual(
-            dict(publish_job=9876, changed=True, error=None),
-            result)
+            dict(changed=True, error=None), result)
 
     def test_update_video(self):
         b = self.browser
@@ -40,8 +38,7 @@ class UpdateItem(zeit.cms.testing.BrowserTestCase,
                '@@update-brightcove-item?video_id=1234')
         result = json.loads(b.contents)
         self.assertEqual(
-            dict(publish_job=9876, changed=True, error=None),
-            result)
+            dict(changed=True, error=None), result)
 
     def test_exception_is_returned_as_error_message(self):
         b = self.browser

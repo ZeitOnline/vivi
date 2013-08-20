@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.6.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Publish videos/playlists synchronously (#12685).
 
 
 2.6.3 (2013-08-14)

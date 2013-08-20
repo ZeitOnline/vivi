@@ -41,8 +41,6 @@ class BaseUpdater(grok.Adapter):
     grok.baseclass()
     grok.implements(zeit.brightcove.interfaces.IUpdate)
 
-    publish_priority = zeit.cms.workflow.interfaces.PRIORITY_DEFAULT
-
     def __init__(self, context):
         log.debug('%r(%s)', self, context.uniqueId)
         self.publish_job_id = None
@@ -64,7 +62,6 @@ class BaseUpdater(grok.Adapter):
     @classmethod
     def update_all(cls):
         for x in cls.get_objects():
-            cls.publish_priority = zeit.cms.workflow.interfaces.PRIORITY_LOW
             yield cls(x)
 
     @classmethod
@@ -108,7 +105,7 @@ class BaseUpdater(grok.Adapter):
 
     def _publish_if_allowed(self):
         self.publish_job_id = zeit.cms.workflow.interfaces.IPublish(
-            self.cmsobj).publish(self.publish_priority)
+            self.cmsobj).publish(async=False)
 
 
 class VideoUpdater(BaseUpdater):
@@ -141,12 +138,13 @@ class VideoUpdater(BaseUpdater):
                 self.cmsobj).published:
             log.info('Retracting %s', self.bcobj)
             zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract(
-                zeit.cms.workflow.interfaces.PRIORITY_LOW)
+                async=False)
         elif self.bcobj.item_state == 'DELETED':
             log.info('Deleting %s', self.bcobj)
             if zeit.cms.workflow.interfaces.IPublishInfo(
                     self.cmsobj).published:
-                zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract()
+                zeit.cms.workflow.interfaces.IPublish(self.cmsobj).retract(
+                    async=False)
             folder = zeit.cms.content.interfaces.IAddLocation(self.bcobj)
             del folder[str(self.bcobj.id)]
             return True
@@ -194,7 +192,6 @@ class PlaylistUpdater(BaseUpdater):
     def update_all(cls):
         objects = cls.get_objects()
         for x in objects:
-            cls.publish_priority = zeit.cms.workflow.interfaces.PRIORITY_LOW
             yield cls(x)
         yield lambda: cls.delete_remaining_except(objects)
 
@@ -230,6 +227,6 @@ class PlaylistUpdater(BaseUpdater):
             cmsobj = folder[name]
             if zeit.cms.workflow.interfaces.IPublishInfo(cmsobj).published:
                 zeit.cms.workflow.interfaces.IPublish(cmsobj).retract(
-                    zeit.cms.workflow.interfaces.PRIORITY_LOW)
+                    async=False)
             else:
                 del folder[name]

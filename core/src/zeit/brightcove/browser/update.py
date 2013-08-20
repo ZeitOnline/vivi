@@ -27,8 +27,7 @@ class UpdateItem(object):
             update()
             return json.dumps(dict(
                 error=None,
-                changed=update.changed,
-                publish_job=update.publish_job_id))
+                changed=update.changed))
         except Exception, e:
             return json.dumps(dict(
                 error='%s: %s' % (type(e).__name__, str(e))))

@@ -4,17 +4,14 @@
 from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
 from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.update import update_from_brightcove
-from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import copy
 import datetime
 import mock
 import socket
 import time
-import transaction
 import zeit.brightcove.testing
 import zeit.cms.checkout.helper
 import zeit.cms.workflow.interfaces
-import zeit.workflow.testing
 
 
 class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
@@ -36,8 +33,6 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         del self.repository['video']['2010-03']['1234']
 
         update_from_brightcove()
-        transaction.commit()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
 
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234')
@@ -53,8 +48,6 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         VIDEO_1234['customFields']['ignore_for_update'] = '1'
 
         update_from_brightcove()
-        transaction.commit()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         self.assertFalse('1234' in self.repository['video']['2010-03'])
 
     def test_update_should_not_overwrite_local_edits_with_old_bc_data(self):
@@ -142,8 +135,6 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         soon = str(int((time.time() + 10) * 1000))
         VIDEO_1234['lastModifiedDate'] = soon
         update_from_brightcove()
-        transaction.commit()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
 
         video = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/2010-03/1234')
@@ -168,7 +159,6 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         info.published = False
         update_from_brightcove()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertTrue(info.published)
 
@@ -187,7 +177,6 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         last_published = info.date_last_published
 
         update_from_brightcove()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
         self.assertGreater(info.date_last_published, last_published)
 
@@ -244,7 +233,7 @@ class UpdateVideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         VIDEO_1234['lastModifiedDate'] = soon
         with mock.patch('zeit.workflow.publish.Publish.retract') as retract:
             update_from_brightcove()
-            retract.assert_called_with(PRIORITY_LOW)
+            self.assertTrue(retract.called)
 
     def test_inactive_and_not_published_video_should_not_be_retracted(self):
         video = zeit.cms.interfaces.ICMSContent(
@@ -341,8 +330,6 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         del self.repository['video']['playlist']['2345']
 
         update_from_brightcove()
-        transaction.commit()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
 
         playlist = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/playlist/2345')
@@ -388,8 +375,6 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
         PLAYLIST_2345['name'] = u'upstream change'
         update_from_brightcove()
-        transaction.commit()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
 
         playlist = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/video/playlist/2345')
@@ -403,7 +388,6 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         info = zeit.cms.workflow.interfaces.IPublishInfo(pls)
         info.published = False
         update_from_brightcove()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         info = zeit.cms.workflow.interfaces.IPublishInfo(pls)
         self.assertTrue(info.published)
 
@@ -417,7 +401,6 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         last_published = info.date_last_published
 
         update_from_brightcove()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         self.assertGreater(info.date_last_published, last_published)
 
@@ -440,7 +423,6 @@ class UpdatePlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
 
         del PLAYLIST_LIST_RESPONSE['items'][-1]
         update_from_brightcove()
-        zeit.workflow.testing.run_publish(PRIORITY_LOW)
         info = zeit.cms.workflow.interfaces.IPublishInfo(playlist)
         self.assertFalse(info.published)
 
