@@ -1,8 +1,10 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import lxml.objectify
 import mock
 import unittest2 as unittest
+import zeit.edit.testing
 import zope.interface
 
 
@@ -39,3 +41,18 @@ class TestContainer(unittest.TestCase):
         container = self.get_container()
         container.updateOrder([])
         self.assertTrue(container.__parent__._p_changed)
+
+
+class UnknownBlockTest(zeit.edit.testing.FunctionalTestCase):
+
+    def test_no_factory_for_node_returns_UnknownBlock(self):
+        xml = lxml.objectify.fromstring("""
+        <container xmlns:cp="http://namespaces.zeit.de/CMS/cp">
+          <block cp:type="block" cp:__name__="foo"/>
+          <something cp:__name__="bar"/>
+        </container>
+        """)
+        container = zeit.edit.testing.Container(mock.Mock(), xml)
+        self.assertTrue(zeit.edit.interfaces.IUnknownBlock.providedBy(
+            container['bar']))
+

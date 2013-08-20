@@ -46,14 +46,16 @@ class Base(UserDict.DictMixin,
             element = self._get_element_for_node(node)
             if element is None:
                 log.warning(
-                    'Could not resolve element for %s (tag=%s)',
-                    key, node.tag)
-                return None
+                    'Unknown element tag=%s, id=%s',
+                    node.tag, key)
+                element = self._get_element_for_node(
+                    node, zeit.edit.block.UnknownBlock.type)
             return zope.container.contained.contained(element, self, key)
         raise KeyError(key)
 
-    def _get_element_for_node(self, node):
-        element_type = self._get_element_type(node)
+    def _get_element_for_node(self, node, element_type=None):
+        if element_type is None:
+            element_type = self._get_element_type(node)
         return zope.component.queryMultiAdapter(
             (self, node),
             zeit.edit.interfaces.IElement,

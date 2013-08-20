@@ -117,3 +117,10 @@ def create_factory_class(element_type, adapts, name, module, title, cp_module,
     factory.__module__ = module
 
     return factory
+
+
+class UnknownBlock(SimpleElement):
+
+    zope.interface.implements(zeit.edit.interfaces.IUnknownBlock)
+    area = zeit.edit.interfaces.IArea
+    type = '__unknown__'

@@ -2,11 +2,13 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import lxml.etree
 import zeit.cms.browser.view
 import zeit.edit.browser.view
 import zeit.edit.interfaces
 import zope.component
 import zope.interface
+import zope.security.proxy
 import zope.viewlet.manager
 
 
@@ -70,3 +72,13 @@ class View(zeit.cms.browser.view.Base):
 
     def title(self):
         return self.factory.title
+
+
+class Unknown(zeit.cms.browser.view.Base):
+
+    title = _('Unknown block')
+
+    @property
+    def xml(self):
+        return lxml.etree.tostring(
+            zope.security.proxy.getObject(self.context.xml), pretty_print=True)

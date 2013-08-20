@@ -36,6 +36,12 @@ class IBlock(IElement, zope.container.interfaces.IContained):
     """
 
 
+class IUnknownBlock(IBlock):
+    """A block that is not supported by zeit.cms.
+    It is passed through the system opaquely.
+    """
+
+
 class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
                      zope.container.interfaces.IContained,
                      zope.container.interfaces.IReadContainer,

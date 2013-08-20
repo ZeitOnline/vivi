@@ -236,6 +236,29 @@
     weight="-10"
     />
 
+
+  <browser:viewlet
+    for="zeit.edit.interfaces.IUnknownBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="fold"
+    template="layout.fold.pt"
+    class=".block.Unknown"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
+  <browser:viewlet
+    for="zeit.edit.interfaces.IUnknownBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="display"
+    template="layout.block.unknown.pt"
+    class=".block.Unknown"
+    permission="zope.View"
+    />
+
   <!-- testing only -->
   <browser:resourceDirectory
     name="zeit.edit.browser.tests.fixtures"

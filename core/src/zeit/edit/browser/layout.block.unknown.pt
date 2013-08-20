@@ -1,0 +1,2 @@
+<pre tal:content="view/xml">
+</pre>
