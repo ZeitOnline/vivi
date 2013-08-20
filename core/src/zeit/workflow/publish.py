@@ -21,7 +21,6 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
-import zeit.cms.workingcopy.workingcopy
 import zeit.connector.interfaces
 import zeit.objectlog.interfaces
 import zope.app.appsetup.product
@@ -103,14 +102,14 @@ class Publish(object):
                 "Publish pre-conditions not satisifed.")
 
         self.log(self.context, _('Publication scheduled'))
-        return self.tasks(priority).add(u'zeit.workflow.publish',
-                       TaskDescription(self.context))
+        return self.tasks(priority).add(
+            u'zeit.workflow.publish', TaskDescription(self.context))
 
     def retract(self, priority=PRIORITY_DEFAULT):
         """Retract object."""
         self.log(self.context, _('Retracting scheduled'))
-        return self.tasks(priority).add(u'zeit.workflow.retract',
-                       TaskDescription(self.context))
+        return self.tasks(priority).add(
+            u'zeit.workflow.retract', TaskDescription(self.context))
 
     def tasks(self, priority):
         return zope.component.getUtility(
@@ -170,7 +169,7 @@ class PublishRetractTask(object):
                     logger.warning('Conflict while publishing', exc_info=True)
                     transaction.abort()
                     # Stagger retry:
-                    time.sleep(random.uniform(0, 2**(retries)))
+                    time.sleep(random.uniform(0, 2** retries))
                     continue
             except Exception, e:
                 transaction.abort()
