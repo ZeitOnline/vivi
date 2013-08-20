@@ -23,7 +23,7 @@ class MockPublish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=PRIORITY_DEFAULT):
+    def publish(self, priority=PRIORITY_DEFAULT, async=True):
         if not zeit.cms.workflow.interfaces.IPublishInfo(
             self.context).can_publish():
             raise zeit.cms.workflow.interfaces.PublishingError(
@@ -37,7 +37,7 @@ class MockPublish(object):
             zeit.cms.workflow.interfaces.PublishedEvent(self.context,
                                                         self.context))
 
-    def retract(self, priority=PRIORITY_DEFAULT):
+    def retract(self, priority=PRIORITY_DEFAULT, async=True):
         zope.event.notify(
             zeit.cms.workflow.interfaces.BeforeRetractEvent(self.context,
                                                             self.context))
