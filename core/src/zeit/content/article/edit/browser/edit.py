@@ -4,9 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import json
 import zeit.cms.interfaces
-import zeit.cms.related.interfaces
 import zeit.content.article.edit.interfaces
-import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
@@ -104,8 +102,8 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
         if content is None:
             raise ValueError(
-               _('The object "${name}" does not exist.', mapping=dict(
-                   name=self.uniqueId)))
+                _('The object "${name}" does not exist.', mapping=dict(
+                    name=self.uniqueId)))
         self.block = zope.component.queryMultiAdapter(
             (self.create_in, content),
             zeit.edit.interfaces.IElement)
@@ -113,7 +111,7 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
             raise ValueError(
                 _('Could not create block for "${name}", because I '
                   "don't know which one.", mapping=dict(
-                   name=self.uniqueId)))
+                      name=self.uniqueId)))
 
 
 class BodyLandingZone(LandingZoneBase):
@@ -186,8 +184,7 @@ class EditDivision(zeit.edit.browser.form.InlineForm):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IDivision).select(
-            'teaser')
+        zeit.content.article.edit.interfaces.IDivision).select('teaser')
     undo_description = _('edit page break')
 
     @property
