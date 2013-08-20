@@ -94,22 +94,34 @@ class Publish(object):
     def __init__(self, context):
         self.context = context
 
-    def publish(self, priority=PRIORITY_DEFAULT):
+    def publish(self, priority=PRIORITY_DEFAULT, async=True):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
         if not info.can_publish():
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Publish pre-conditions not satisifed.")
 
-        self.log(self.context, _('Publication scheduled'))
-        return self.tasks(priority).add(
-            u'zeit.workflow.publish', TaskDescription(self.context))
+        task = u'zeit.workflow.publish'
+        if async:
+            self.log(self.context, _('Publication scheduled'))
+            return self.tasks(priority).add(
+                task, TaskDescription(self.context))
+        else:
+            task = zope.component.getUtility(
+                lovely.remotetask.interfaces.ITask, name=task)
+            task.run_sync(self.context)
 
-    def retract(self, priority=PRIORITY_DEFAULT):
+    def retract(self, priority=PRIORITY_DEFAULT, async=True):
         """Retract object."""
-        self.log(self.context, _('Retracting scheduled'))
-        return self.tasks(priority).add(
-            u'zeit.workflow.retract', TaskDescription(self.context))
+        task = u'zeit.workflow.retract'
+        if async:
+            self.log(self.context, _('Retracting scheduled'))
+            return self.tasks(priority).add(
+                task, TaskDescription(self.context))
+        else:
+            task = zope.component.getUtility(
+                lovely.remotetask.interfaces.ITask, name=task)
+            task.run_sync(self.context)
 
     def tasks(self, priority):
         return zope.component.getUtility(
@@ -192,6 +204,15 @@ class PublishRetractTask(object):
         dummy, total, timer_message = timer.get_timings()[-1]
         logger.info('%s (%2.4fs)' % (timer_message, total))
         return message
+
+    def run_sync(self, obj):
+        timer.start(u'Synchronous %s started: %s' % (
+            type(self).__name__, obj.uniqueId))
+        info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
+        self.run(obj, info)
+        timer.mark('Done %s' % obj.uniqueId)
+        dummy, total, timer_message = timer.get_timings()[-1]
+        logger.info('%s (%2.4fs)' % (timer_message, total))
 
     def acquire_active_lock(self, uniqueId):
         with active_objects_lock:

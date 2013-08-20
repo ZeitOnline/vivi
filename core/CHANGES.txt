@@ -1,10 +1,11 @@
 zeit.cms changes
 ================
 
-2.5.1 (unreleased)
+2.6.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Introduce synchronous publish mode (``async`` parameter for
+  IPublish.publish() and retract) (#12685).
 
 
 2.5.0 (2013-08-14)

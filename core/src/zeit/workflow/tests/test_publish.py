@@ -3,6 +3,7 @@
 
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.interfaces import ICMSContent
 from zeit.cms.related.interfaces import IRelatedContent
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
@@ -151,3 +152,24 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             2, len([x for x in self.related
                     if IPublishInfo(x).date_last_published > BEFORE_PUBLISH]))
+
+
+class SynchronousPublishTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.workflow.testing.WorkflowLayer
+
+    def test_publish_and_retract_in_same_process(self):
+        article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')
+        info = IPublishInfo(article)
+        info.urgent = True
+        publish = IPublish(article)
+        self.assertFalse(info.published)
+        publish.publish(async=False)
+        self.assertTrue(info.published)
+        publish.retract(async=False)
+        self.assertFalse(info.published)
+
+        logs = reversed(zeit.objectlog.interfaces.ILog(article).logs)
+        self.assertEqual(
+            ['${name}: ${new_value}', 'Published', 'Retracted'],
+            [x.message for x in logs])
