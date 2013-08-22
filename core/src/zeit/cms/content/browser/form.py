@@ -8,14 +8,9 @@ import copy
 import gocept.form.grouped
 import zc.resourcelibrary
 import zeit.cms.browser.form
-import zeit.cms.browser.interfaces
-import zeit.cms.content.browser.interfaces
 import zeit.cms.content.interfaces
-import zeit.cms.related.interfaces
 import zeit.cms.settings.interfaces
-import zope.app.appsetup.interfaces
 import zope.app.form.browser.textwidgets
-import zope.testing.cleanup
 
 
 class ShowLimitInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
@@ -49,14 +44,15 @@ class CommonMetadataFormBase(object):
         css_class='wide-widgets column-left')
     option_fields = gocept.form.grouped.Fields(
         _("Options"),
-        ('dailyNewsletter', 'commentsAllowed', 'commentSectionEnable', 'foldable',
+        ('dailyNewsletter', 'commentsAllowed', 'commentSectionEnable',
+         'foldable',
          'minimal_header', 'countings', 'is_content', 'in_rankings',
          'banner', 'banner_id', 'breaking_news', 'mobile_alternative'),
         css_class='column-right checkboxes')
     author_fields = gocept.form.grouped.Fields(
         _("Authors"),
         ('author_references', 'authors'),
-         css_class='wide-widgets column-left')
+        css_class='wide-widgets column-left')
 
     field_groups = (
         navigation_fields,
@@ -67,7 +63,7 @@ class CommonMetadataFormBase(object):
             css_class='column-right'),
         author_fields,
         option_fields,
-        )
+    )
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata)
 
@@ -117,7 +113,7 @@ class CommonMetadataEditForm(CommonMetadataFormBase,
 
 
 class CommonMetadataDisplayForm(CommonMetadataFormBase,
-                             zeit.cms.browser.form.DisplayForm):
+                                zeit.cms.browser.form.DisplayForm):
     """Display form which contains the common metadata."""
 
     for_display = True  # omit custom widget w/ js-validation
