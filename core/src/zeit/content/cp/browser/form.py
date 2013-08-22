@@ -1,15 +1,16 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.cp.i18n import MessageFactory as _
 import gocept.form.grouped
 import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
 import zope.formlib.form
-from zeit.content.cp.i18n import MessageFactory as _
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
+
 
 class FormBase(object):
 
@@ -38,7 +39,7 @@ class FormBase(object):
 
     og_fields = gocept.form.grouped.Fields(
         _("OG Metadata"),
-         ('og_title','og_description','og_image',
+         ('og_title', 'og_description', 'og_image',
         ),
         css_class='wide-widgets column-right')
 
@@ -51,7 +52,7 @@ class FormBase(object):
             css_class='column-right'),
         base.option_fields,
         og_fields,
-        )
+    )
 
 
 class AddForm(FormBase,
