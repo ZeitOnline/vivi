@@ -165,12 +165,12 @@
 }
 
 .overlay-anchor,
-.object-reference:hover .overlay .overlay-position {
+.overlay-anchor:hover .overlay .overlay-position {
     display: inline-block;
     position: relative;
 }
 
-.object-reference:hover .overlay {
+.overlay-anchor:hover .overlay {
     display: inline-block;
     position: absolute;
     top: 12px;
@@ -178,7 +178,7 @@
     width: 100%;
 }
 
-#edit-form-teaser .object-reference:hover .overlay {
+#edit-form-teaser .overlay-anchor:hover .overlay {
     top: 30px;
     right: 0;
 }
