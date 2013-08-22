@@ -14,6 +14,8 @@ zeit.cms changes
 
 - Handle non-ASCII uniqueIds in the repository tree display.
 
+- Respect filename constraints when renaming (#12758).
+
 
 2.5.0 (2013-08-14)
 ------------------

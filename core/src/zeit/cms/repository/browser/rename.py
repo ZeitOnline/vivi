@@ -3,9 +3,9 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import inspect
-import z3c.flashmessage.interfaces
 import zeit.cms.browser.lightbox
 import zeit.cms.browser.menu
+import zeit.cms.interfaces
 import zope.copypastemove.interfaces
 import zope.formlib.form
 import zope.interface
@@ -19,6 +19,8 @@ class AlreadyExists(zope.schema.ValidationError):
 
 
 def valid_name(value):
+    if not zeit.cms.interfaces.valid_name(value):
+        return False
     field = inspect.stack()[2][0].f_locals['self']
     context = field.context
     container = context.__parent__
