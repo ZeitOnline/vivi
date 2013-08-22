@@ -12,6 +12,8 @@ zeit.cms changes
 
 - Add DAV property ``mobile_alternative`` to ICommonMetadata (#12749).
 
+- Handle non-ASCII uniqueIds in the repository tree display.
+
 
 2.5.0 (2013-08-14)
 ------------------

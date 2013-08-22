@@ -40,10 +40,10 @@ class HTMLTree(zope.viewlet.viewlet.ViewletBase,
                 self.request.principal))
         hash_ = hashlib.md5()
         for container in preferences.get_hidden_containers():
-            hash_.update(container)
+            hash_.update(container.encode('utf-8'))
         hash_.update('TREE')
         for container in sorted(self.tree_view.treeState):
-            hash_.update(container)
+            hash_.update(container.encode('utf-8'))
         return '%s/++noop++%s/@@tree.html' % (self.url(self.repository),
                                               hash_.hexdigest())
 
