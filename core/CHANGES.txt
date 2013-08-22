@@ -8,6 +8,8 @@ zeit.content.article changes
 
 - Display "Mobile URL" field (#12749).
 
+- Display overlay with edit button for images in repository mode, too (#12707).
+
 
 3.0.7 (2013-08-14)
 ------------------

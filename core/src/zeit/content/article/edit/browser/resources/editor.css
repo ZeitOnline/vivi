@@ -775,11 +775,11 @@
    line-height:0;
 }
 
-.type-article .object-reference:hover .image_details .overlay{
+.type-article .image_details .overlay-anchor:hover .overlay{
    text-align:left;
 }
 
-.type-article .object-reference:hover .image_details .overlay .button{
+.type-article .image_details .overlay-anchor:hover .overlay .button{
    line-height:1.4em;
    margin-top:3px;
    margin-left:22px;
