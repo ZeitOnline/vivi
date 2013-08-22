@@ -18,17 +18,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.content.interfaces.ICommonMetadata,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         (
-            'banner',
             'banner_id',
-            'breaking_news',
             'cap_title',
             'color_scheme',
             'copyrights',
-            'countings',
-            'foldable',
-            'in_rankings',
-            'is_content',
-            'minimal_header',
             'page',
             'ressort',
             'serie',
@@ -37,6 +30,19 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'volume',
             'year',
         ))
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.cms.content.interfaces.ICommonMetadata,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        (
+            'banner',
+            'breaking_news',
+            'countings',
+            'foldable',
+            'in_rankings',
+            'is_content',
+            'minimal_header',
+        ), use_default=True)
 
     authors = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['authors'],
@@ -47,15 +53,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     author_references = zeit.cms.content.property.MultiResource(
         '.head.author', xml_reference_name='author')
 
-    commentsAllowed = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
-
     keywords = zeit.cms.tagging.tag.Tags()
-
-    commentSectionEnable = zeit.cms.content.dav.DAVProperty(
-        zeit.cms.content.interfaces.ICommonMetadata['commentSectionEnable'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread')
 
     title = zeit.cms.content.property.ObjectPathProperty(
         '.body.title',
@@ -84,9 +82,20 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         zeit.cms.content.interfaces.ICommonMetadata['printRessort'],
         zeit.cms.interfaces.PRINT_NAMESPACE, 'ressort')
 
+    commentsAllowed = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments',
+        use_default=True)
+
+    commentSectionEnable = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.content.interfaces.ICommonMetadata['commentSectionEnable'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread',
+        use_default=True)
+
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['dailyNewsletter'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL')
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'DailyNL',
+        use_default=True)
 
     _product_id = zeit.cms.content.dav.DAVProperty(
         zope.schema.TextLine(),

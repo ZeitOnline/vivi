@@ -7,6 +7,9 @@ zeit.cms changes
 - Introduce synchronous publish mode (``async`` parameter for
   IPublish.publish() and retract) (#12685).
 
+- Use interface default values for most boolean properties of ICommonMetadata
+  when the content object has no values (#12556).
+
 
 2.5.0 (2013-08-14)
 ------------------
