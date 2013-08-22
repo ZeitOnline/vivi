@@ -10,6 +10,8 @@ zeit.cms changes
 - Use interface default values for most boolean properties of ICommonMetadata
   when the content object has no values (#12556).
 
+- Add DAV property ``mobile_alternative`` to ICommonMetadata (#12749).
+
 
 2.5.0 (2013-08-14)
 ------------------

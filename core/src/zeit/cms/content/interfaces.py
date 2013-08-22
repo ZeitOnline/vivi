@@ -152,7 +152,7 @@ class ICommonMetadata(zope.interface.Interface):
         description=_(
             "Should this article be listed in the daily newsletter?"),
         required=False,
-        default=True)
+        default=False)
 
     commentsAllowed = zope.schema.Bool(
         title=_("Comments allowed"),
@@ -222,6 +222,12 @@ class ICommonMetadata(zope.interface.Interface):
     cap_title = zope.schema.TextLine(
         title=_('CAP title'),
         required=False)
+
+    mobile_alternative = zope.schema.URI(
+        title=_('Mobile URL'),
+        required=False,
+        default=None)
+
 
 
 class IProduct(zope.interface.Interface):

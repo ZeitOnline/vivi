@@ -29,6 +29,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'vg_wort_id',
             'volume',
             'year',
+            'mobile_alternative',
         ))
 
     zeit.cms.content.dav.mapProperties(
