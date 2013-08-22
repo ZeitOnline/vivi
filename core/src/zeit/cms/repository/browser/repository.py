@@ -3,16 +3,13 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import hashlib
-import zeit.cms.browser.form
 import zeit.cms.browser.tree
 import zeit.cms.browser.view
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
-import zeit.cms.repository.repository
 import zeit.cms.workingcopy.interfaces
 import zope.cachedescriptors.property
 import zope.component
-import zope.formlib.form
 import zope.i18n
 import zope.viewlet.viewlet
 
