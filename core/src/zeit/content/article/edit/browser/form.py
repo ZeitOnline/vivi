@@ -490,6 +490,15 @@ class OptionsB(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-view', 'edit.heading')
 
 
+class OptionsC(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'options-c'
+    undo_description = _('edit options')
+    form_fields = FormFields(ICommonMetadata).select(
+        'mobile_alternative')
+
+
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
 
     legend = _('Product management')

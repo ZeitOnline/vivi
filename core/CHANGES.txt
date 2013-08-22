@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Add "genre" field for articles (#12725).
 
+- Display "Mobile URL" field (#12749).
+
 
 3.0.7 (2013-08-14)
 ------------------
