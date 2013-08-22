@@ -92,7 +92,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         url = menu.value[0]
         self.browser.open(url)
         article = self.get_article()
-        self.assertEqual(True, article.dailyNewsletter)
+        self.assertEqual(True, article.commentsAllowed)
         self.assertEqual(True, ICDSWorkflow(article).export_cds)
 
     def test_new_article_should_have_last_semantic_change(self):
