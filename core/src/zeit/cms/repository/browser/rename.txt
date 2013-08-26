@@ -63,7 +63,7 @@ Umlauts are not allowed in file names:
     ...
     <ul class="errors">
        <li>
-          New file name: <span class="error">Constraint not satisfied</span>
+          New file name: <span class="error">Name contains invalid characters</span>
        </li>
     </ul>
     ...

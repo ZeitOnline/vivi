@@ -26,13 +26,17 @@ class ICMSContentType(zope.interface.interfaces.IInterface):
     """Interface for content types."""
 
 
+class InvalidName(zope.schema.ValidationError):
+    __doc__ = _('Name contains invalid characters')
+
+
 valid_name_regex = re.compile(r'^[A-Za-z0-9\.\,\-_*()~]+$').match
 
 
 def valid_name(value):
-    if valid_name_regex(value):
-        return True
-    return False
+    if not valid_name_regex(value):
+        raise InvalidName(value)
+    return True
 
 
 class ICMSContent(zope.interface.Interface):

@@ -12,12 +12,12 @@ set of characters:
 >>> field.validate(u'bl:')
 Traceback (most recent call last):
     ...
-ConstraintNotSatisfied: bl:
+InvalidName: bl:
 >>> field.validate(u'bl\xfc')  #doctest: +IGNORE_EXCEPTION_DETAIL
 Traceback (most recent call last):
     ...
-ConstraintNotSatisfied: <unprintable instance object>
+InvalidName: <unprintable instance object>
 >>> field.validate(u'bl/')
 Traceback (most recent call last):
     ...
-ConstraintNotSatisfied: bl/
+InvalidName: bl/
