@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.6.0 (unreleased)
+2.6.0 (2013-08-27)
 ------------------
 
 - Introduce synchronous publish mode (``async`` parameter for
