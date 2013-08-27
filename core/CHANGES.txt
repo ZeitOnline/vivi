@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.1.4 (unreleased)
+2.1.4 (2013-08-27)
 ------------------
 
 - Register an UnknownBlock as a catch-all for any tags we don't have an
