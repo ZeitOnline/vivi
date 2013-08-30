@@ -119,7 +119,7 @@ class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):
     @property
     def input_field(self):
         # XXX not composeable with other extras
-        self.extra = 'placeholder="%s"' % self.url('http://mobile.zeit.de/')
+        self.extra = 'placeholder="%s"' % self.url('http://mobil.zeit.de/')
         return super(MobileAlternativeWidget, self).__call__()
 
     def __call__(self):

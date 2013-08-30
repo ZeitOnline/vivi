@@ -1,6 +1,6 @@
 <div class="mobile-alternative-widget">
 <a cms:call="set_url"
-   tal:attributes="href python: view.url('http://mobile.zeit.de/')">
+   tal:attributes="href python: view.url('http://mobil.zeit.de/')">
   mobile.zeit.de</a> |
 <a cms:call="set_url"
    tal:attributes="href python: view.url('http://www.zeit.de/')">
