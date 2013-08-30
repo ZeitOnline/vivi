@@ -12,6 +12,7 @@ import zope.i18nmessageid
 import zope.interface
 import zope.interface.interfaces
 import zope.schema
+import zope.schema.interfaces
 
 
 # XXX There is too much, too unordered in here, clean this up.
@@ -37,6 +38,11 @@ class AuthorSource(zeit.cms.content.contentsource.CMSContentSource):
 
 
 authorSource = AuthorSource()
+
+
+class IMobileAlternative(zope.schema.interfaces.IURI):
+    """Marker interface so we can register a specialized widget
+    for this field."""
 
 
 class ICommonMetadata(zope.interface.Interface):
@@ -227,6 +233,7 @@ class ICommonMetadata(zope.interface.Interface):
         title=_('Mobile URL'),
         required=False,
         default=None)
+    zope.interface.alsoProvides(mobile_alternative, IMobileAlternative)
 
 
 class IProduct(zope.interface.Interface):

@@ -4,7 +4,8 @@ zeit.cms changes
 2.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add specialized widget for ``mobile_alternative`` that offers easy access to
+  some default URLs (#12749).
 
 
 2.6.0 (2013-08-27)

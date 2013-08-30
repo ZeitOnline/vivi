@@ -1,0 +1,10 @@
+<div class="mobile-alternative-widget">
+<a cms:call="set_url"
+   tal:attributes="href python: view.url('http://mobile.zeit.de/')">
+  mobile.zeit.de</a> |
+<a cms:call="set_url"
+   tal:attributes="href python: view.url('http://www.zeit.de/')">
+  www.zeit.de</a>
+<br/>
+<input tal:replace="structure view/input_field"/>
+</div>

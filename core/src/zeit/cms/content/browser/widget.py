@@ -14,6 +14,7 @@ import zope.app.form.browser.widget
 import zope.app.form.interfaces
 import zope.app.pagetemplate
 import zope.component
+import zope.formlib.widgets
 import zope.interface
 
 
@@ -108,3 +109,23 @@ class SubNavigationUpdater(object):
         self.request.response.setHeader('Cache-Control', 'public;max-age=3600')
         self.request.response.setHeader('Content-Type', 'application/json')
         return json.dumps(sorted(result)).encode('utf8')
+
+
+class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'mobile_alternative.pt')
+
+    @property
+    def input_field(self):
+        # XXX not composeable with other extras
+        self.extra = 'placeholder="%s"' % self.url('http://mobile.zeit.de/')
+        return super(MobileAlternativeWidget, self).__call__()
+
+    def __call__(self):
+        zc.resourcelibrary.need('zeit.cms.content.mobile_alternative')
+        return self.template()
+
+    def url(self, prefix):
+        return self.context.context.uniqueId.replace(
+            zeit.cms.interfaces.ID_NAMESPACE, prefix)

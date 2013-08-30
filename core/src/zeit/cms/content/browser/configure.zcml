@@ -99,4 +99,17 @@
     permission="zope.View"
     />
 
+  <adapter
+      for="zeit.cms.content.interfaces.IMobileAlternative
+           zeit.cms.browser.interfaces.ICMSLayer"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
+      factory=".widget.MobileAlternativeWidget"
+      permission="zope.Public"
+      />
+
+  <resourceLibrary name="zeit.cms.content.mobile_alternative"
+    require="zeit.cms">
+    <directory source="resources" include="mobile_alternative.js" />
+  </resourceLibrary>
+
 </configure>
