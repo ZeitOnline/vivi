@@ -229,7 +229,6 @@ class ICommonMetadata(zope.interface.Interface):
         default=None)
 
 
-
 class IProduct(zope.interface.Interface):
     """A publication product"""
 
