@@ -4,6 +4,9 @@ zeit.cms changes
 2.6.1 (unreleased)
 ------------------
 
+- Revert ill-conceived ICommonMetadata default value change from 2.6.0: if a
+  document has no value for a property, we should not pretend it does (#12556).
+
 - Add specialized widget for ``mobile_alternative`` that offers easy access to
   some default URLs (#12749).
 
