@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.6.1 (unreleased)
+2.6.1 (2013-09-05)
 ------------------
 
 - Revert ill-conceived ICommonMetadata default value change from 2.6.0: if a
