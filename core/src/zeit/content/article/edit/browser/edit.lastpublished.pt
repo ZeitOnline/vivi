@@ -4,7 +4,7 @@
        i18n:translate="last-publish-information">
     last published at <span tal:content="view/date" i18n:name="date" />
     on <span tal:content="view/time" i18n:name="time"/>
-    by <span tal:content="view/publishinfo/last_published_by"
+    by <span tal:content="view/last_published_by"
       i18n:name="by"/>
   </div>
   <div tal:condition="not:view/publishinfo/published"

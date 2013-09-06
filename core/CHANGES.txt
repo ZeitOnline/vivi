@@ -4,7 +4,7 @@ zeit.content.article changes
 3.0.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Display proper name for "last published by" status.
 
 
 3.0.8 (2013-08-27)

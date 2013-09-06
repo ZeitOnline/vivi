@@ -11,6 +11,7 @@ from zeit.content.article.interfaces import IArticle
 from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
+from zeit.workflow.publishinfo import id_to_principal
 import zeit.cms.asset.interfaces
 import zeit.cms.browser.interfaces
 import zeit.cms.related.interfaces
@@ -283,6 +284,11 @@ class LastPublished(object):
     @property
     def time(self):
         return self.last_published_date.strftime('%H:%M')
+
+    @property
+    def last_published_by(self):
+        principal = id_to_principal(self.publishinfo.last_published_by)
+        return principal.title if principal else ''
 
 
 class MetadataForms(zeit.edit.browser.form.FoldableFormGroup):

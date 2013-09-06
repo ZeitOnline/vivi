@@ -44,7 +44,7 @@ setup(
         'zc.table',
         'zdaemon',
         'zeit.brightcove',
-        'zeit.cms>=2.6.0.dev0',
+        'zeit.cms>=2.7.0.dev0',
         'zeit.connector>1.14.1',
         'zeit.content.author',
         'zeit.content.cp>=0.33.0',
