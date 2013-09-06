@@ -158,7 +158,7 @@ class ICommonMetadata(zope.interface.Interface):
         description=_(
             "Should this article be listed in the daily newsletter?"),
         required=False,
-        default=False)
+        default=True)
 
     commentsAllowed = zope.schema.Bool(
         title=_("Comments allowed"),
