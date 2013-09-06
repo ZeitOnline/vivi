@@ -8,6 +8,7 @@ import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.workflow.interfaces
+import zope.authentication.interfaces
 import zope.component
 import zope.interface
 
@@ -55,3 +56,16 @@ class NotPublishablePublishInfo(PublishInfo):
 @zope.interface.implementer(zeit.connector.interfaces.IWebDAVProperties)
 def workflowProperties(context):
     return zeit.connector.interfaces.IWebDAVProperties(context.context, None)
+
+
+# XXX what's the proper place for this?
+# XXX return null object insted of None?
+def id_to_principal(principal_id):
+    if principal_id is None:
+        return None
+    auth = zope.component.getUtility(
+        zope.authentication.interfaces.IAuthentication)
+    try:
+        return auth.getPrincipal(principal_id)
+    except zope.authentication.interfaces.PrincipalLookupError:
+        return None

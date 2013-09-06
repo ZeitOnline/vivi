@@ -2,9 +2,9 @@
 # See also LICENSE.txt
 
 from zope.interface.common.idatetime import ITZInfo
+from zeit.workflow.publishinfo import id_to_principal
 import zc.resourcelibrary
 import zeit.objectlog.interfaces
-import zope.authentication.interfaces
 import zope.component
 import zope.interface
 
@@ -27,8 +27,6 @@ class ObjectLog(object):
 
     def groups(self):
         request_timezone = ITZInfo(self.request)
-        auth = zope.component.getUtility(
-            zope.authentication.interfaces.IAuthentication)
         entries = zeit.objectlog.interfaces.ILog(self.context).get_log()
         groups = {}
         for entry in entries:
@@ -36,10 +34,7 @@ class ObjectLog(object):
         for date, entries in reversed(sorted(groups.items())):
             items = []
             for entry in reversed(sorted(entries, key=lambda x: x.time)):
-                try:
-                    principal = auth.getPrincipal(entry.principal)
-                except zope.authentication.interfaces.PrincipalLookupError:
-                    principal = None
+                principal = id_to_principal(entry.principal)
                 items.append(dict(
                     display_time=entry.time.astimezone(
                         request_timezone).strftime('%H:%M'),
