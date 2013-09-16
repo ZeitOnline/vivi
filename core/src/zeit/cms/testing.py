@@ -204,7 +204,8 @@ checker = zope.testing.renormalizing.RENormalizing([
     (re.compile(r'\d{4} \d{1,2} \d{1,2}  \d\d:\d\d:\d\d'), '<FORMATTED DATE>'),
     (re.compile('0x[0-9a-f]+'), "0x..."),
     (re.compile(r'/\+\+noop\+\+[0-9a-f]+'), ''),
-    (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
+    (re.compile(
+        '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
      "<GUID>"),
 ])
 
@@ -311,8 +312,8 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         super(SeleniumTestCase, self).setUp()
         # XXX waiting for a version of gocept.selenium that handles timeouts
         # consistently (#10750)
-        self.layer.selenium.setTimeout(self.TIMEOUT*1000)
-        self.layer.selenium.selenium.set_timeout(self.TIMEOUT*1000)
+        self.layer.selenium.setTimeout(self.TIMEOUT * 1000)
+        self.layer.selenium.selenium.set_timeout(self.TIMEOUT * 1000)
 
         # XXX The following 5 lines are copied from
         # gocept.selenium.ztk.TestCase in order to avoid inheriting from
@@ -526,7 +527,7 @@ class JSLintTestCase(gocept.jslint.TestCase):
         'SPAN', 'LABEL',
         'isNull', 'isUndefined', 'isUndefinedOrNull',
         'Uri',
-        )
+    )
 
     ignore = (
         "Don't make functions within a loop",
@@ -535,4 +536,4 @@ class JSLintTestCase(gocept.jslint.TestCase):
         "Use '!==' to compare with",
         "Missing radix parameter",
         "Bad line breaking",
-        )
+    )
