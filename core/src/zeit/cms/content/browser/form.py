@@ -39,7 +39,7 @@ class CommonMetadataFormBase(object):
         css_class='widgets-float column-left')
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
-        ('supertitle', 'byline', 'title', 'subtitle',
+        ('supertitle', 'byline', 'title', 'breadcrumb_title', 'subtitle',
          'teaserTitle', 'teaserText', 'teaserSupertitle'),
         css_class='wide-widgets column-left')
     option_fields = gocept.form.grouped.Fields(

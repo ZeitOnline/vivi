@@ -235,6 +235,12 @@ class ICommonMetadata(zope.interface.Interface):
         default=None)
     zope.interface.alsoProvides(mobile_alternative, IMobileAlternative)
 
+    breadcrumb_title = zope.schema.TextLine(
+        title=_('Breadcrumb title'),
+        required=False,
+        max_length=55)
+    breadcrumb_title.setTaggedValue('zeit.cms.charlimit', 55)
+
 
 class IProduct(zope.interface.Interface):
     """A publication product"""
