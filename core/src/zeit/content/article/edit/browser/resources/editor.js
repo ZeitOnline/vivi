@@ -846,6 +846,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         } else {
             self.insert_link_node.removeAttribute('rel');
         }
+        self.dirty = true;
         self.select_container(self.insert_link_node);
         self._insert_link_finish();
     },
