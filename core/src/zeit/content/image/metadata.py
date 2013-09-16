@@ -5,7 +5,6 @@ import grokcore.component
 import lxml.objectify
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
-import zeit.cms.syndication.interfaces
 import zeit.content.image.interfaces
 import zope.component
 import zope.interface
@@ -24,11 +23,24 @@ class ImageMetadata(object):
         zeit.content.image.interfaces.IImageMetadata,
         'http://namespaces.zeit.de/CMS/document',
         ('title', 'year', 'volume'))
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.image.interfaces.IImageMetadata,
-        'http://namespaces.zeit.de/CMS/document',
-        ('copyrights',),
+
+    _copyrights = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImageMetadata['copyrights'],
+        'http://namespaces.zeit.de/CMS/document', 'copyrights',
         use_default=True)
+
+    @property
+    def copyrights(self):
+        # migration for nofollow (VIV-104)
+        result = list(self._copyrights)
+        for i, item in enumerate(result):
+            if len(item) == 2:
+                result[i] = item + (False,)
+        return tuple(result)
+
+    @copyrights.setter
+    def copyrights(self, value):
+        self._copyrights = value
 
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageMetadata,
@@ -87,10 +99,12 @@ def MetadataXMLReference(context):
             attributes[name] = value
 
     copyrights = []
-    for text, link in context.copyrights:
+    for text, link, nofollow in context.copyrights:
         node = lxml.objectify.E.copyright(text)
         if link:
             node.set('link', link)
+            if nofollow:
+                node.set('rel', 'nofollow')
         copyrights.append(node)
 
     set_if_not_empty('title', context.title)

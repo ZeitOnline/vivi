@@ -144,7 +144,7 @@ Set metadata:
 The interface default for the copyright is:
 
 >>> zeit.content.image.interfaces.IImageMetadata['copyrights'].default
-((u'\xa9', None),)
+((u'\xa9', None, False),)
 
 
 Make sure we don't die when there is an invalid XML snippet stored:

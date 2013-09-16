@@ -52,7 +52,7 @@ class IImageMetadata(zope.interface.Interface):
 
     copyrights = zope.schema.Tuple(
         title=_("Copyrights"),
-        default=((u'©', None),),
+        default=((u'©', None, False),),
         missing_value=(),
         required=False,
         value_type=zc.form.field.Combination(
@@ -63,7 +63,10 @@ class IImageMetadata(zope.interface.Interface):
             zope.schema.URI(
                 title=_('Link'),
                 description=_('Link to copyright holder'),
-                required=False))))
+                required=False),
+             zope.schema.Bool(
+                 title=_('set nofollow'),
+                 required=False))))
 
     alt = zope.schema.TextLine(
         title=_("Alternative text"),

@@ -36,7 +36,7 @@
       (<a tal:attributes="href copyright/url"
         tal:content="copyright/url">
         http://...
-      </a>)
+      </a><span tal:omit-tag="True" tal:condition="copyright/nofollow"> rel="nofollow"</span>)
     </li>
   </ol>
   <div i18n:translate="">

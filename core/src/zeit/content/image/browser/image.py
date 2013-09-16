@@ -67,10 +67,11 @@ class ImageView(zeit.cms.browser.view.Base):
     @property
     def copyrights(self):
         result = []
-        for copyright, url in self.metadata.copyrights:
+        for copyright, url, nofollow in self.metadata.copyrights:
             result.append(dict(
                 copyright=copyright,
-                url=url))
+                url=url,
+                nofollow=nofollow))
         return result
 
 
