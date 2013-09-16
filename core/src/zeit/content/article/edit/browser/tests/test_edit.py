@@ -588,6 +588,35 @@ class TestLinkEditing(
         s.waitForElementPresent(
             'xpath=//a[@href="mailto:foo@example.com?subject=b%C3%A4r"]')
 
+    def test_checking_nofollow_sets_rel_attribute(self):
+        s = self.selenium
+        self.select_link()
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.click('css=.link_input input[name=nofollow]')
+        s.type('css=.link_input input[name=href]', 'http://example.com/')
+        s.click('css=.link_input button[name=insert_link_ok]')
+        s.waitForElementPresent(
+            'xpath=//a[@href="http://example.com/" and @rel="nofollow"]')
+
+    def test_rel_nofollow_checks_checkbox(self):
+        s = self.selenium
+        self.select_link(additional='rel="nofollow"')
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.assertChecked('css=.link_input input[name=nofollow]')
+
+    def test_unchecking_nofollow_removes_rel_attribute(self):
+        s = self.selenium
+        self.select_link(additional='rel="nofollow"')
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.click('css=.link_input input[name=nofollow]')
+        s.type('css=.link_input input[name=href]', 'http://example.com/')
+        s.click('css=.link_input button[name=insert_link_ok]')
+        s.waitForElementPresent(
+            'xpath=//a[@href="http://example.com/" and not(@rel)]')
+
 
 class TestFolding(
     zeit.content.article.edit.browser.testing.EditorTestCase):

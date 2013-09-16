@@ -4,6 +4,8 @@ zeit.content.article changes
 3.0.9 (unreleased)
 ------------------
 
+- Support rel="nofollow" for links in the article body (VIV-104).
+
 - Display proper name for "last published by" status.
 
 

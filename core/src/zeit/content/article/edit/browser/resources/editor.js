@@ -296,6 +296,8 @@ zeit.content.article.Editable = gocept.Class.extend({
             OPTION({value: '_blank'}, 'Neues Fenster'),
             OPTION({value: ''}, 'Gleiches Fenster'),
             OPTION({value: 'colorbox'}, 'Colorbox'));
+        self.nofollow_checkbox = INPUT(
+            {type: 'checkbox', name: 'nofollow', value: 'nofollow'});
         self.link_input = self.editable.parentNode.insertBefore(
             DIV({'class': 'link_input hidden'},
                 self.href_input,
@@ -303,6 +305,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.subject_input,
                 self.service_select,
                 self.target_select,
+                LABEL('', self.nofollow_checkbox, 'rel="nofollow" setzen'),
                 BUTTON({name: 'insert_link_ok',
                         value: 'method'}, 'Setzen'),
                 BUTTON({name: 'insert_link_cancel',
@@ -342,9 +345,11 @@ zeit.content.article.Editable = gocept.Class.extend({
         $(self.mailto_input).hide();
         $(self.subject_input).hide();
         $(self.target_select).hide();
+        $(self.nofollow_checkbox).hide();
         if (service === 'web') {
             $(self.href_input).show();
             $(self.target_select).show();
+            $(self.nofollow_checkbox).show();
             self.href_input.focus();
         } else if (service === 'mail') {
             $(self.mailto_input).show();
@@ -751,6 +756,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var service = 'web';
         var href = '';
         var target = '';
+        var nofollow = false;
         var mailto = '';
         var subject = '';
         if (self.insert_link_node) {
@@ -777,6 +783,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             } else {
                 target = self.insert_link_node.getAttribute('target') || '';
             }
+            nofollow = self.insert_link_node.getAttribute('rel') == 'nofollow';
         } else {
             self.toolbar_command('createLink', '#article-editor-create-link');
             self.insert_link_node = $(
@@ -787,6 +794,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         if (!self.insert_link_node._just_created) {
             $(self.href_input).val(href);
             $(self.target_select).val(target);
+            $(self.nofollow_checkbox).prop('checked', nofollow);
             $(self.mailto_input).val(mailto);
             $(self.subject_input).val(subject);
         }
@@ -805,12 +813,14 @@ zeit.content.article.Editable = gocept.Class.extend({
         var service = self.service_select.value;
         var href = '';
         var target = null;
+        var nofollow = false;
         if (service === 'web') {
             var uri = new Uri($(self.href_input).val());
             if (!uri.protocol() && uri.host())
                 uri.protocol('http');
             href = uri.toString();
             target = $(self.target_select).val();
+            nofollow = $(self.nofollow_checkbox).prop('checked');
         } else {
             var mailto = $(self.mailto_input).val();
             var subject = $(self.subject_input).val();
@@ -830,6 +840,11 @@ zeit.content.article.Editable = gocept.Class.extend({
             } else {
                 self.insert_link_node.removeAttribute('target');
             }
+        }
+        if (nofollow) {
+            self.insert_link_node.rel = 'nofollow';
+        } else {
+            self.insert_link_node.removeAttribute('rel');
         }
         self.select_container(self.insert_link_node);
         self._insert_link_finish();
