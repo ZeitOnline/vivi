@@ -127,6 +127,20 @@ representation of that object's related content includes the target URL:
   </reference>
 </references>
 
+rel=nofollow support
+--------------------
+
+>>> link.nofollow = True
+>>> related.related = (link,)
+>>> print lxml.etree.tostring(related.xml, pretty_print=True)
+<references xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+  <reference ...xmlns:ns0="http://namespaces.zeit.de/CMS/link"
+             type="intern" href="http://xml.zeit.de/link"...
+             ns0:href="http://gocept.com" ns0:rel="nofollow">
+    ...
+  </reference>
+</references>
+
 
 .. [#functional] 
 

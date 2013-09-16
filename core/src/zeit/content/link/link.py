@@ -25,6 +25,7 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
 
     url = zeit.cms.content.property.ObjectPathProperty('.body.url')
     target = zeit.cms.content.property.ObjectPathProperty('.body.target')
+    nofollow = zeit.cms.content.property.ObjectPathProperty('.body.nofollow')
 
 
 class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -51,3 +52,9 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             entry.set(target_attribute, self.context.target)
         else:
             entry.attrib.pop(target_attribute, None)
+
+        rel_attribute = '{http://namespaces.zeit.de/CMS/link}rel'
+        if self.context.nofollow:
+            entry.set(rel_attribute, 'nofollow')
+        else:
+            entry.attrib.pop(rel_attribute, None)

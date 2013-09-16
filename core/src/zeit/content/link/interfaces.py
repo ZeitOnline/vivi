@@ -31,6 +31,11 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
         required=False,
         source=TargetSource())
 
+    nofollow = zope.schema.Bool(
+        title=_('set nofollow'),
+        required=False,
+        default=False)
+
     keywords = zeit.cms.tagging.interfaces.Keywords(
         required=False,
         default=())

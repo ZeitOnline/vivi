@@ -68,6 +68,7 @@ Have a look at the source:
   <body>
     <title>gocept homepage</title>
     <url>http://gocept.com</url>
+    <nofollow>false</nofollow>
   </body>
   <teaser>
     <title>gocept teaser</title>
