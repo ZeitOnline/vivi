@@ -1,21 +1,14 @@
-
+# Copyright (c) 2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import datetime
-
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-import zope.app.appsetup.interfaces
-import zope.formlib.form
-import zope.i18nmessageid
-
 import zeit.cms.browser.form
-import zeit.cms.content.browser.form
-import zeit.cms.interfaces
 import zeit.cms.repository.browser.file
 import zeit.content.image.browser.interfaces
 import zeit.content.image.image
 import zeit.content.image.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zope.formlib.form
 
 
 class ImageFormBase(zeit.cms.repository.browser.file.FormBase):
@@ -81,8 +74,8 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
         blob = form_fields.get('blob')
         if blob:
             form_fields = form_fields.omit('blob')
-        widgets = super(EditForm, self)._get_widgets(form_fields,
-                                                      ignore_request)
+        widgets = super(EditForm, self)._get_widgets(
+            form_fields, ignore_request)
         if blob:
             widgets += zope.formlib.form.setUpWidgets(
                 [blob], self.prefix, self.context, self.request,
