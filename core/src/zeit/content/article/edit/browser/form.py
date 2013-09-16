@@ -88,12 +88,13 @@ class ArticleContentHead(zeit.edit.browser.form.InlineForm,
     prefix = 'article-content-head'
     undo_description = _('edit article content head')
     form_fields = FormFields(ICommonMetadata).select(
-        'supertitle', 'title', 'subtitle')
+        'supertitle', 'title', 'breadcrumb_title', 'subtitle')
 
     def setUpWidgets(self, *args, **kw):
         super(ArticleContentHead, self).setUpWidgets(*args, **kw)
         self.set_charlimit('supertitle')
         self.set_charlimit('title')
+        self.set_charlimit('breadcrumb_title')
         self.set_charlimit('subtitle')
 
     def _success_handler(self):

@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Support rel="nofollow" for links in the article body (VIV-104).
 
+- Display ``breadcrumb_title`` field (VIV-105).
+
 - Display proper name for "last published by" status.
 
 
