@@ -523,7 +523,7 @@ class JSLintTestCase(gocept.jslint.TestCase):
         'MochiKit', '$$', 'forEach', 'filter', 'map', 'extend', 'bind',
         'log', 'repr', 'logger', 'logDebug', 'logError',  # XXX
         'DIV', 'A', 'UL', 'LI', 'INPUT', 'IMG', 'SELECT', 'OPTION', 'BUTTON',
-        'SPAN',
+        'SPAN', 'LABEL',
         'isNull', 'isUndefined', 'isUndefinedOrNull',
         'Uri',
         )
