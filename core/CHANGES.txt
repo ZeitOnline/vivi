@@ -17,6 +17,9 @@ zeit.cms changes
 
 - Reset workflow status for copied objects (#12554).
 
+- Use checkbox instead of prefix selection for mobile alternative widget
+  (VIV-103).
+
 
 2.6.2 (2013-09-06)
 ------------------

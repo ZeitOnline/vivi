@@ -6,29 +6,15 @@ zeit.cms.MobileAlternativeWidget = gocept.Class.extend({
 
     construct: function(element) {
         var self = this;
-        self.container = element;
-        $(self.container).on(
-            'click', MochiKit.Base.bind(self.handle_click, self));
-    },
-
-    handle_click: function(event) {
-        var self = this;
-        var method = $(event.target).attr('cms:call');
-        if (! method) {
-            return;
-        }
-        method = self[method];
-        method.call(self, event);
-        event.preventDefault();
-    },
-
-    set_url: function(event) {
-        var self = this;
-        var url = $(event.target).attr('href');
-        var input = $(self.container).find('input');
-        input.val(url);
-        input.trigger('change');
-        input.trigger('focusout');
+        self.container = $(element);
+        self.input = self.container.find('input[type="text"]');
+        self.checkbox = self.container.find('input[type="checkbox"]');
+        self.checkbox.on('click', function() {
+            self.input.val('');
+        });
+        self.input.on('keydown', function() {
+            self.checkbox.prop('checked', false);
+        });
     }
 
 });

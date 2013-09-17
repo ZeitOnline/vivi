@@ -1,10 +1,11 @@
-<div class="mobile-alternative-widget">
-<a cms:call="set_url"
-   tal:attributes="href python: view.url('http://mobil.zeit.de/')">
-  mobile.zeit.de</a> |
-<a cms:call="set_url"
-   tal:attributes="href python: view.url('http://www.zeit.de/')">
-  www.zeit.de</a>
-<br/>
+<div class="mobile-alternative-widget" i18n:domain="zeit.cms">
 <input tal:replace="structure view/input_field"/>
+<label>
+  <input
+      type="checkbox"
+      tal:attributes="
+        name string:${view/name}.desktop;
+        checked python:'checked' if view.is_desktop_url else None;"/>
+  <span tal:omit-tag="python:True" i18n:translate="">no mobile alternative</span>
+</label>
 </div>
