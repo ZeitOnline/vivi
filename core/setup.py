@@ -17,7 +17,7 @@ setup(
         'Pillow',
         'gocept.form',
         'setuptools',
-        'zeit.cms>=1.46dev',
+        'zeit.cms>=2.7.0.dev0',
         'zeit.imp>=0.12dev',
         'zeit.wysiwyg',
         'zope.app.appsetup',
