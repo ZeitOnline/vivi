@@ -12,6 +12,8 @@ zeit.content.article changes
 
 - Display proper name for "last published by" status.
 
+- Add genre to XML references (WEB-35)
+
 
 3.0.8 (2013-08-27)
 ------------------

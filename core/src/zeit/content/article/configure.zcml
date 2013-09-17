@@ -146,4 +146,8 @@
       />
   </class>
 
+  <adapter
+    factory=".article.ArticleMetadataUpdater"
+    name="zeit.content.article.interfaces.IArticleMetadata"/>
+
 </configure>

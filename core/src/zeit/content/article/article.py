@@ -256,3 +256,12 @@ def normalize_quotes(node):
     for child in node.iterchildren():
         normalize_quotes(child)
     return node
+
+
+class ArticleMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
+
+    target_iface = zeit.content.article.interfaces.IArticle
+
+    def update_with_context(self, node, context):
+        if context.genre:
+            node.set('genre', context.genre)

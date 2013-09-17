@@ -2,7 +2,10 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import lxml.etree
 import mock
+import zeit.cms.checkout.helper
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.edit.interfaces
@@ -159,3 +162,18 @@ class NormalizeQuotes(zeit.content.article.testing.FunctionalTestCase):
             body = zeit.content.article.edit.interfaces.IEditableBody(co)
             block = body.values()[0]
             self.assertEqual('"up" and "down" and "around"', block.text)
+
+
+class ArticleXMLReferenceUpdate(
+        zeit.content.article.testing.FunctionalTestCase):
+
+    def test_writes_genre_as_attribute(self):
+        self.repository['article'] = article = self.get_article()
+        with zeit.cms.checkout.helper.checked_out(article) as co:
+            co.genre = u'nachricht'
+
+        reference = zope.component.queryAdapter(
+            article, zeit.cms.content.interfaces.IXMLReference, name='related')
+        self.assertIn(
+            'genre="nachricht"',
+            lxml.etree.tostring(reference, pretty_print=True))
