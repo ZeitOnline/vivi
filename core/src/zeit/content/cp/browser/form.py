@@ -29,7 +29,7 @@ class FormBase(object):
 
     text_fields = gocept.form.grouped.Fields(
         _("Texts"),
-        ('supertitle', 'byline', 'title', 'subtitle',
+        ('supertitle', 'byline', 'title', 'breadcrumb_title', 'subtitle',
          'teaserTitle', 'teaserText', 'topiclink_title',
          'topiclink_label_1', 'topiclink_url_1',
          'topiclink_label_2', 'topiclink_url_2',
