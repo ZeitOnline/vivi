@@ -4,7 +4,6 @@
 import PIL
 import zeit.cms.testing
 import zeit.content.gallery.gallery
-import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.imp.interfaces
 import zope.component
@@ -50,7 +49,6 @@ class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
         thumbnail = self.gallery.image_folder['thumbnails']['01-10x10.jpg']
         new_thumbnail_data = thumbnail.open('r').read()
         self.assertNotEqual(new_thumbnail_data, thumbnail_data)
-
 
     def test_metadata_from_source_image_is_copied(self):
         entry = self.gallery['01.jpg']
