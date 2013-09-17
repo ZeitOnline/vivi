@@ -1,5 +1,5 @@
-/* 
- * forms 
+/*
+ * forms
  *
  * */
 
@@ -14,7 +14,7 @@ textarea{
     padding: 0.3em;
 }
 /*font:100% Monaco,"Courier New",Courier,monospace;*/
-    
+
 
 :-moz-placeholder {
   color: #999;
@@ -39,7 +39,7 @@ div.widget > div > div > select {
 }
 
 div.widget {
-  padding: 0.3em;  
+  padding: 0.3em;
 }
 
 .view div.widget {
@@ -107,7 +107,7 @@ legend {
 .show-input-limit {
   font-size: 9px;
   margin-left: 3px;
-} 
+}
 
 /* formlib widget styling */
 
@@ -288,7 +288,7 @@ form .column-right-small {
     height: 1.3em;
 }
 
-#form\.info, 
+#form\.info,
 #form\.subtitle,
 #form\.html_description {
     height: 6.5em;
@@ -423,8 +423,8 @@ span.h_other {
   float: right;
 }
 
-/* 
- * tablefilter 
+/*
+ * tablefilter
  *
  * */
 
@@ -504,7 +504,7 @@ iframe {
     position: inherit !important;
 }
 
-/* 
+/*
  * Sidebar Forms
  */
 
