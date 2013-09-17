@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Mon Sep 16 13:26:44 2013\n"
+"POT-Creation-Date: Tue Sep 17 09:40:52 2013\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -599,10 +599,16 @@ msgid "Remove"
 msgstr ""
 
 #: zeit/cms/browser/widget.py:282
-#: zeit/cms/browser/widget.py:382
+#: zeit/cms/browser/widget.py:389
 #: zeit/cms/repository/browser/repository.py:165
 #. Default: ""
 msgid "The object '${id}' could not be found."
+msgstr ""
+
+#: zeit/cms/browser/widget.py:287
+#: zeit/cms/browser/widget.py:394
+#. Default: ""
+msgid "'${id}' does not have an accepted type (${types})."
 msgstr ""
 
 #: zeit/cms/browser/widget.py:50

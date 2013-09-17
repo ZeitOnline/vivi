@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Sep 16 13:26:44 2013\n"
-"PO-Revision-Date: 2013-09-16 13:27+0100\n"
+"POT-Creation-Date: Tue Sep 17 09:40:52 2013\n"
+"PO-Revision-Date: 2013-09-17 09:41+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -560,10 +560,15 @@ msgid "Remove"
 msgstr "Entfernen"
 
 #. Default: ""
-#: zeit/cms/browser/widget.py:282 zeit/cms/browser/widget.py:382
+#: zeit/cms/browser/widget.py:282 zeit/cms/browser/widget.py:389
 #: zeit/cms/repository/browser/repository.py:165
 msgid "The object '${id}' could not be found."
 msgstr "Das Objekt »${id}« konnte nicht gefunden werden."
+
+#. Default: ""
+#: zeit/cms/browser/widget.py:287 zeit/cms/browser/widget.py:394
+msgid "'${id}' does not have an accepted type (${types})."
+msgstr "'${id}' hat keinen hier akzeptierten Typ (${types})."
 
 #: zeit/cms/browser/widget.py:50
 msgid "The object could not be found."
