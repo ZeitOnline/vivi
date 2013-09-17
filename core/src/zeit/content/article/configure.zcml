@@ -47,12 +47,12 @@
    <!-- recensions -->
 
   <adapter
-    factory=".recension.BookRecensionContainer" 
-    provides="zeit.content.article.interfaces.IBookRecensionContainer" 
+    factory=".recension.BookRecensionContainer"
+    provides="zeit.content.article.interfaces.IBookRecensionContainer"
     />
 
   <class class=".recension.BookRecensionContainer">
-    <require 
+    <require
       interface=".interfaces.IBookRecensionReadContainer"
       permission="zope.View"
       />
@@ -77,7 +77,7 @@
 
   <!-- generation -->
 
-  <utility 
+  <utility
     name="zeit.content.article"
     provides="zope.app.generations.interfaces.ISchemaManager"
     component=".generation.manager"
@@ -87,7 +87,7 @@
 
   <!-- traversing -->
 
-  <adapter 
+  <adapter
     factory="z3c.traverser.traverser.PluggableTraverser"
     for="zeit.content.article.interfaces.IArticle
     zeit.cms.browser.interfaces.ICMSLayer"
@@ -100,7 +100,7 @@
     />
 
 
-  <adapter 
+  <adapter
     factory="z3c.traverser.traverser.PluggableTraverser"
     for="zeit.content.article.interfaces.IBookRecensionContainer
     zeit.cms.browser.interfaces.ICMSLayer"
