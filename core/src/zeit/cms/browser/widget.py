@@ -277,12 +277,19 @@ class ObjectSequenceWidget(
         result = []
         for unique_id in value:
             try:
-                result.append(zeit.cms.interfaces.ICMSContent(unique_id))
+                obj = zeit.cms.interfaces.ICMSContent(unique_id)
             except TypeError:
                 msg = _("The object '${id}' could not be found.",
                         mapping=dict(id=unique_id))
                 msg = zope.i18n.translate(msg, context=self.request)
                 raise zope.formlib.interfaces.ConversionError(msg)
+            if obj not in self.source:
+                msg = _("'${id}' does not have an accepted type (${types}).",
+                        mapping=dict(id=input, types=', '.join(
+                            self.source.get_check_types())))
+                msg = zope.i18n.translate(msg, context=self.request)
+                raise zope.formlib.interfaces.ConversionError(msg)
+            result.append(obj)
         return tuple(result)
 
     @property
@@ -377,12 +384,19 @@ class DropObjectWidget(
         if input == self._missing:
             return self.context.missing_value
         try:
-            return zeit.cms.interfaces.ICMSContent(input)
+            obj = zeit.cms.interfaces.ICMSContent(input)
         except TypeError:
             msg = _("The object '${id}' could not be found.",
                     mapping=dict(id=input))
             msg = zope.i18n.translate(msg, context=self.request)
             raise zope.formlib.interfaces.ConversionError(msg)
+        if obj not in self.source:
+            msg = _("'${id}' does not have an accepted type (${types}).",
+                    mapping=dict(id=input, types=', '.join(
+                        self.source.get_check_types())))
+            msg = zope.i18n.translate(msg, context=self.request)
+            raise zope.formlib.interfaces.ConversionError(msg)
+        return obj
 
     def _toFormValue(self, value):
         if value == self.context.missing_value:

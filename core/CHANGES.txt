@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Add DAV property ``breadcrumb_title`` to ICommonMetadata (VIV-105).
 
+- Validate type of object when entering an URL to ObjectSequenceWidget (#12790).
+
 
 2.6.2 (2013-09-06)
 ------------------

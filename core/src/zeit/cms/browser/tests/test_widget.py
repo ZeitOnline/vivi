@@ -74,7 +74,7 @@ class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
                        'http://xml.zeit.de/testcontent')
 
 
-class TestObjectSequenceWidget(unittest2.TestCase):
+class TestObjectSequenceWidget(zeit.cms.testing.FunctionalTestCase):
 
     def test_to_form_value_ignores_non_cms_content(self):
         import zeit.cms.interfaces
@@ -99,6 +99,32 @@ class TestObjectSequenceWidget(unittest2.TestCase):
         context.__name__ = 'name'
         widget = ObjectSequenceWidget(context, mock.Mock(), mock.Mock())
         self.assertEqual([], widget._toFormValue(None))
+
+    def test_setting_valid_uniqueId_returns_content_object(self):
+        context = mock.Mock()
+        context.__name__ = 'foo'
+        source = [self.repository['testcontent']]
+        widget = ObjectSequenceWidget(
+            context, source, request=mock.Mock())
+        self.assertEqual(
+            (self.repository['testcontent'],),
+            widget._toFieldValue(['http://xml.zeit.de/testcontent']))
+
+    def test_uniqueId_not_in_source_should_raise(self):
+        class FakeSource(object):
+            def __contains__(self, value):
+                return False
+
+            def get_check_types(self):
+                return []
+        context = mock.Mock()
+        context.__name__ = 'foo'
+        source = FakeSource()
+        widget = zeit.cms.browser.widget.DropObjectWidget(
+            context, source, request=mock.Mock())
+        self.assertRaises(
+            zope.formlib.interfaces.ConversionError,
+            lambda: widget._toFieldValue(['http://xml.zeit.de/testcontent']))
 
 
 class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
@@ -633,11 +659,28 @@ class DropObjectWidget(zeit.cms.testing.FunctionalTestCase):
     def test_setting_valid_uniqueId_returns_content_object(self):
         context = mock.Mock()
         context.__name__ = 'foo'
+        source = [self.repository['testcontent']]
         widget = zeit.cms.browser.widget.DropObjectWidget(
-            context, mock.Mock(), mock.Mock())
+            context, source, request=mock.Mock())
         self.assertEqual(
             self.repository['testcontent'],
             widget._toFieldValue('http://xml.zeit.de/testcontent'))
+
+    def test_uniqueId_not_in_source_should_raise(self):
+        class FakeSource(object):
+            def __contains__(self, value):
+                return False
+
+            def get_check_types(self):
+                return []
+        context = mock.Mock()
+        context.__name__ = 'foo'
+        source = FakeSource()
+        widget = zeit.cms.browser.widget.DropObjectWidget(
+            context, source, request=mock.Mock())
+        self.assertRaises(
+            zope.formlib.interfaces.ConversionError,
+            lambda: widget._toFieldValue('http://xml.zeit.de/testcontent'))
 
 
 class TestObjectSequenceDisplayWidget(unittest2.TestCase):
