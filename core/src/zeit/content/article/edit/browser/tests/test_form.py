@@ -2,6 +2,7 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.article import Article
 from zeit.content.article.interfaces import ICDSWorkflow
@@ -167,3 +168,22 @@ class CharLimit(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.waitForElementPresent('css=.fieldname-supertitle')
         s.assertElementPresent('css=.fieldname-supertitle .charlimit')
+
+
+class FilenameTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.article.testing.ArticleLayer
+
+    def test_existing_filename_yields_error_message(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                article = Article()
+                IAutomaticallyRenameable(article).renameable = True
+                self.repository['online']['2007']['01']['article'] = article
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/online/2007/01/article/@@checkout')
+        b.open('@@edit.form.new-filename?show_form=1')
+        b.getControl('New file name').value = 'Somalia'
+        b.getControl('Apply').click()
+        self.assertEllipsis('..."Somalia" already exists...', b.contents)
