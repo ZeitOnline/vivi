@@ -760,6 +760,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var mailto = '';
         var subject = '';
         if (self.insert_link_node) {
+            self.created_link_node = false;
             href = self.insert_link_node.getAttribute('href') || '';
             var prefix = 'mailto:';
             if (href.slice(0, prefix.length) === prefix) {
@@ -786,12 +787,12 @@ zeit.content.article.Editable = gocept.Class.extend({
             nofollow = self.insert_link_node.getAttribute('rel') == 'nofollow';
         } else {
             self.toolbar_command('createLink', '#article-editor-create-link');
+            self.created_link_node = true;
             self.insert_link_node = $(
                 'a[href="#article-editor-create-link"]', self.editable)[0];
-            self.insert_link_node._just_created = true;
         }
         $(self.insert_link_node).addClass('link-edit');
-        if (!self.insert_link_node._just_created) {
+        if (!self.created_link_node) {
             $(self.href_input).val(href);
             $(self.target_select).val(target);
             $(self.nofollow_checkbox).prop('checked', nofollow);
@@ -854,7 +855,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     insert_link_cancel: function() {
         var self = this;
         self.select_container(self.insert_link_node);
-        if (self.insert_link_node._just_created) {
+        if (self.created_link_node) {
             while(!isNull(self.insert_link_node.firstChild)) {
                 self.insert_link_node.parentNode.insertBefore(
                     self.insert_link_node.firstChild,
@@ -869,7 +870,6 @@ zeit.content.article.Editable = gocept.Class.extend({
         var self = this;
         $(self.link_input).addClass('hidden');
         $(self.insert_link_node).removeClass('link-edit');
-        self.insert_link_node._just_created = false;
         self.insert_link_node = null;
         self.locked = false;
         self.editable.focus();
