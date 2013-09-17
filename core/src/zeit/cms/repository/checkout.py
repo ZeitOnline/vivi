@@ -87,3 +87,7 @@ class AutomaticallyRenameable(zeit.cms.content.dav.DAVPropertiesAdapter):
         zeit.cms.repository.interfaces.IAutomaticallyRenameable,
         'http//namespaces.zeit.de/CMS/meta',
         ('renameable', 'rename_to'))
+
+    @property
+    def uniqueId(self):
+        return self.context.uniqueId

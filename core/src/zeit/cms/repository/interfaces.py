@@ -2,11 +2,14 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import inspect
+import zeit.cms.interfaces
 import zeit.cms.interfaces
 import zope.component.interfaces
 import zope.file.interfaces
 import zope.interface
 import zope.lifecycleevent
+import zope.schema
 
 
 class IBeforeObjectAddEvent(zope.component.interfaces.IObjectEvent):
@@ -162,6 +165,27 @@ class IFile(IDAVContent,
     """A file like object in the CMS."""
 
 
+class AlreadyExists(zope.schema.ValidationError):
+
+    def doc(self):
+        return self.args[0]
+
+
+def valid_name(value):
+    # XXX this makes quite a few assumptions, e.g. that the field's context as
+    # an attribute uniqueId, so it's probably not generally applicable.
+    if not zeit.cms.interfaces.valid_name(value):
+        return False
+    field = inspect.stack()[2][0].f_locals['self']
+    context = field.context
+    context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
+    container = context.__parent__
+    if value in container:
+        raise AlreadyExists(
+            _('"${name}" already exists.', mapping=dict(name=value)))
+    return True
+
+
 class IAutomaticallyRenameable(zope.interface.Interface):
     """Indicate if an object can be renamed automatically.
 
@@ -180,4 +204,6 @@ class IAutomaticallyRenameable(zope.interface.Interface):
     rename_to = zope.schema.TextLine(
         title=_("New file name"),
         required=False,
-        constraint=zeit.cms.interfaces.valid_name)
+        constraint=valid_name)
+
+    uniqueId = zope.interface.Attribute('Current uniqueId')

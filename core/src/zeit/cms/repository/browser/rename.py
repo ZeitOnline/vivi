@@ -2,39 +2,20 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import inspect
 import zeit.cms.browser.lightbox
 import zeit.cms.browser.menu
-import zeit.cms.interfaces
+import zeit.cms.repository.interfaces
 import zope.copypastemove.interfaces
 import zope.formlib.form
 import zope.interface
 import zope.schema
 
 
-class AlreadyExists(zope.schema.ValidationError):
-
-    def doc(self):
-        return self.args[0]
-
-
-def valid_name(value):
-    if not zeit.cms.interfaces.valid_name(value):
-        return False
-    field = inspect.stack()[2][0].f_locals['self']
-    context = field.context
-    container = context.__parent__
-    if value in container:
-        raise AlreadyExists(
-            _('"${name}" already exists.', mapping=dict(name=value)))
-    return True
-
-
 class IRenameSchema(zope.interface.Interface):
 
     new_name = zope.schema.TextLine(
         title=_('New file name'),
-        constraint=valid_name)
+        constraint=zeit.cms.repository.interfaces.valid_name)
 
 
 class Rename(zeit.cms.browser.lightbox.Form):
