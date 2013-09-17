@@ -617,6 +617,24 @@ class TestLinkEditing(
         s.waitForElementPresent(
             'xpath=//a[@href="http://example.com/" and not(@rel)]')
 
+    def test_selecting_across_tags_inserts_multiple_link_tags(self):
+        s = self.selenium
+        self.create('<p>I want to link <b>some bold text</b></p>'
+                    '<p>And I need distance<p>'
+                    '<p>from the bottom landing zone<p>')
+        s.getEval("""(function(s) {
+            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+            var range = window.getSelection().getRangeAt(0);
+            range.setStart(p.firstChild, 10);
+            var b = s.browserbot.findElement('css=.block.type-p .editable b');
+            range.setEnd(b.firstChild, 9);
+        })(this);""")
+        s.click('xpath=//a[@href="insert_link"]')
+        s.waitForVisible('css=.link_input input[name=href]')
+        s.type('css=.link_input input[name=href]', 'http://example.com/')
+        s.click('css=.link_input button[name=insert_link_ok]')
+        s.waitForXpathCount('xpath=//a[@href="http://example.com/"]', 2)
+
 
 class TestFolding(
     zeit.content.article.edit.browser.testing.EditorTestCase):

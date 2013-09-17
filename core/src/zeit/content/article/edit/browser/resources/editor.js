@@ -747,11 +747,9 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
         var container = self.get_selected_container();
         if (container.nodeName == 'A') {
-            self.insert_link_node = container;
+            self.insert_link_node = $(container);
         } else {
-            self.insert_link_node =
-                MochiKit.DOM.getFirstParentByTagAndClassName(
-                    container, 'a', null);
+            self.insert_link_node = $(container).parents('a');
         }
         var service = 'web';
         var href = '';
@@ -759,9 +757,9 @@ zeit.content.article.Editable = gocept.Class.extend({
         var nofollow = false;
         var mailto = '';
         var subject = '';
-        if (self.insert_link_node) {
+        if (self.insert_link_node.length) {
             self.created_link_node = false;
-            href = self.insert_link_node.getAttribute('href') || '';
+            href = self.insert_link_node.attr('href') || '';
             var prefix = 'mailto:';
             if (href.slice(0, prefix.length) === prefix) {
                 service = 'mail';
@@ -778,18 +776,17 @@ zeit.content.article.Editable = gocept.Class.extend({
                 }
                 href = '';
             }
-            if (MochiKit.DOM.hasElementClass(
-                self.insert_link_node, 'colorbox')) {
+            if (self.insert_link_node.hasClass('colorbox')) {
                 target = 'colorbox';
             } else {
-                target = self.insert_link_node.getAttribute('target') || '';
+                target = self.insert_link_node.attr('target') || '';
             }
-            nofollow = self.insert_link_node.getAttribute('rel') == 'nofollow';
+            nofollow = self.insert_link_node.attr('rel') == 'nofollow';
         } else {
             self.toolbar_command('createLink', '#article-editor-create-link');
             self.created_link_node = true;
             self.insert_link_node = $(
-                'a[href="#article-editor-create-link"]', self.editable)[0];
+                'a[href="#article-editor-create-link"]', self.editable);
         }
         $(self.insert_link_node).addClass('link-edit');
         if (!self.created_link_node) {
@@ -800,8 +797,8 @@ zeit.content.article.Editable = gocept.Class.extend({
             $(self.subject_input).val(subject);
         }
         var line_height = parseInt(
-            $(self.insert_link_node).css('line-height').replace('px', ''));
-        var position = $(self.insert_link_node).position();
+            self.insert_link_node.css('line-height').replace('px', ''));
+        var position = self.insert_link_node.position();
         $(self.link_input).css('top',
             (parseInt(position.top) + line_height) + 'px');
         $(self.link_input).removeClass('hidden');
@@ -830,38 +827,38 @@ zeit.content.article.Editable = gocept.Class.extend({
                 href = href + '?subject=' + encodeURI(subject);
             }
         }
-        self.insert_link_node.href = href;
+        self.insert_link_node.attr('href', href);
         if (target === 'colorbox') {
-            self.insert_link_node.removeAttribute('target');
-            jQuery(self.insert_link_node).addClass('colorbox');
+            self.insert_link_node.attr('target', null);
+            self.insert_link_node.addClass('colorbox');
         } else {
-            jQuery(self.insert_link_node).removeClass('colorbox');
+            self.insert_link_node.removeClass('colorbox');
             if (target) {
-                self.insert_link_node.target = target;
+                self.insert_link_node.attr('target', target);
             } else {
-                self.insert_link_node.removeAttribute('target');
+                self.insert_link_node.attr('target', null);
             }
         }
         if (nofollow) {
-            self.insert_link_node.rel = 'nofollow';
+            self.insert_link_node.attr('rel', 'nofollow');
         } else {
-            self.insert_link_node.removeAttribute('rel');
+            self.insert_link_node.attr('rel', null);
         }
         self.dirty = true;
-        self.select_container(self.insert_link_node);
+        self.select_container(self.insert_link_node[0]);
+        self.insert_link_node.removeClass('link-edit');
         self._insert_link_finish();
     },
 
     insert_link_cancel: function() {
         var self = this;
-        self.select_container(self.insert_link_node);
+        self.select_container(self.insert_link_node[0]);
         if (self.created_link_node) {
-            while(!isNull(self.insert_link_node.firstChild)) {
-                self.insert_link_node.parentNode.insertBefore(
-                    self.insert_link_node.firstChild,
-                    self.insert_link_node);
-            }
-            $(self.insert_link_node).remove();
+            self.insert_link_node.each(function(i, element) {
+                element = $(element);
+                element.contents().insertBefore(element);
+                element.remove();
+            });
         }
         self._insert_link_finish();
     },
@@ -869,7 +866,6 @@ zeit.content.article.Editable = gocept.Class.extend({
     _insert_link_finish: function() {
         var self = this;
         $(self.link_input).addClass('hidden');
-        $(self.insert_link_node).removeClass('link-edit');
         self.insert_link_node = null;
         self.locked = false;
         self.editable.focus();

@@ -8,6 +8,8 @@ zeit.content.article changes
 
 - Display ``breadcrumb_title`` field (VIV-105).
 
+- Handle inserting links across tags (#12558).
+
 - Display proper name for "last published by" status.
 
 
