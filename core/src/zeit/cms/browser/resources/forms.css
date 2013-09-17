@@ -325,7 +325,6 @@ input#form\.copyrights[type=text] {
     right: 0;
     left: 0;
     bottom: 0;
-    overflow: auto;
     padding-bottom: 4em;
 }
 

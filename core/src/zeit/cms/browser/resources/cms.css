@@ -238,6 +238,7 @@ pre {
   bottom: 0;
   top: 3em;
   position: absolute;
+  overflow: auto;
 }
 
 #visualContentWrapper {

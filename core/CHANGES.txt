@@ -13,6 +13,8 @@ zeit.cms changes
 - Validate filename of new articles to prevent using an already existing name
   (#12759).
 
+- Fix CSS to avoid cutting off content that should scroll (VIV-108).
+
 
 2.6.2 (2013-09-06)
 ------------------
