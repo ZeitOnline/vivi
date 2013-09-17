@@ -98,7 +98,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         if image_block is None:
             image_block = self._create_image_block_in_front()
         image_block.references = value
-    
+
     @property
     def main_image_layout(self):
         image_block = self.main_image_block
