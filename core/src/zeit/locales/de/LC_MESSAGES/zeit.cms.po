@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Sep 17 09:40:52 2013\n"
-"PO-Revision-Date: 2013-09-17 09:41+0100\n"
+"POT-Creation-Date: Tue Sep 17 13:31:00 2013\n"
+"PO-Revision-Date: 2013-09-17 13:31+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -671,8 +671,8 @@ msgstr "Neuer Name des Clips"
 
 #: zeit/cms/clipboard/browser/clip.py:83 zeit/cms/clipboard/browser/clip.py:92
 #: zeit/cms/repository/browser/menu.py:11
+#: zeit/cms/repository/browser/rename.py:31
 #: zeit/cms/repository/browser/rename.py:50
-#: zeit/cms/repository/browser/rename.py:69
 msgid "Rename"
 msgstr "Umbenennen"
 
@@ -741,6 +741,10 @@ msgstr "Autoren"
 #: zeit/content/cp/browser/form.py:51 zeit/content/gallery/browser/form.py:37
 msgid "misc."
 msgstr "sonstiges"
+
+#: zeit/cms/content/browser/mobile_alternative.pt:5
+msgid "no mobile alternative"
+msgstr "Keine Mobilseite, zur Desktopseite weiterleiten"
 
 #: zeit/cms/content/browser/template-properties.pt:10
 msgid "Value"
@@ -1237,18 +1241,13 @@ msgstr ""
 "ungültig machen. Objekte sollten nur umbenannt werden, wenn sie noch nicht "
 "veröffentlicht verlinkt oder anderweitig referenziert sind."
 
-#. Default: ""
-#: zeit/cms/repository/browser/rename.py:29
-msgid "\"${name}\" already exists."
-msgstr "\"${name}\" ist bereits vorhanden."
-
-#: zeit/cms/repository/browser/rename.py:36
-#: zeit/cms/repository/interfaces.py:181
+#: zeit/cms/repository/browser/rename.py:17
+#: zeit/cms/repository/interfaces.py:205
 msgid "New file name"
 msgstr "Dateiname"
 
 #. Default: ""
-#: zeit/cms/repository/browser/rename.py:61
+#: zeit/cms/repository/browser/rename.py:42
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr "„${old_name}“ nach „${new_name}“ umbenannt."
 
@@ -1265,6 +1264,11 @@ msgstr "»${name}« wird jetzt im Navigationsbaum angezeigt."
 #: zeit/cms/repository/file.py:94 zeit/cms/repository/browser/file.zcml:81
 msgid "File"
 msgstr "Datei"
+
+#. Default: ""
+#: zeit/cms/repository/interfaces.py:185
+msgid "\"${name}\" already exists."
+msgstr "\"${name}\" ist bereits vorhanden."
 
 #. Default: ""
 #: zeit/cms/repository/repository.py:226

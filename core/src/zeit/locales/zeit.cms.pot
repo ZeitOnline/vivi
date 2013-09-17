@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Sep 17 09:40:52 2013\n"
+"POT-Creation-Date: Tue Sep 17 13:31:00 2013\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -713,8 +713,8 @@ msgstr ""
 #: zeit/cms/clipboard/browser/clip.py:83
 #: zeit/cms/clipboard/browser/clip.py:92
 #: zeit/cms/repository/browser/menu.py:11
+#: zeit/cms/repository/browser/rename.py:31
 #: zeit/cms/repository/browser/rename.py:50
-#: zeit/cms/repository/browser/rename.py:69
 msgid "Rename"
 msgstr ""
 
@@ -795,6 +795,10 @@ msgstr ""
 #: zeit/content/gallery/browser/form.py:37
 #: zeit/content/gallery/browser/form.py:37
 msgid "misc."
+msgstr ""
+
+#: zeit/cms/content/browser/mobile_alternative.pt:5
+msgid "no mobile alternative"
 msgstr ""
 
 #: zeit/cms/content/browser/template-properties.pt:10
@@ -1291,17 +1295,12 @@ msgstr ""
 msgid "rename-box-warning"
 msgstr ""
 
-#: zeit/cms/repository/browser/rename.py:29
-#. Default: ""
-msgid "\"${name}\" already exists."
-msgstr ""
-
-#: zeit/cms/repository/browser/rename.py:36
-#: zeit/cms/repository/interfaces.py:181
+#: zeit/cms/repository/browser/rename.py:17
+#: zeit/cms/repository/interfaces.py:205
 msgid "New file name"
 msgstr ""
 
-#: zeit/cms/repository/browser/rename.py:61
+#: zeit/cms/repository/browser/rename.py:42
 #. Default: ""
 msgid "Renamed \"${old_name}\" to \"${new_name}\""
 msgstr ""
@@ -1319,6 +1318,11 @@ msgstr ""
 #: zeit/cms/repository/file.py:94
 #: zeit/cms/repository/browser/file.zcml:81
 msgid "File"
+msgstr ""
+
+#: zeit/cms/repository/interfaces.py:185
+#. Default: ""
+msgid "\"${name}\" already exists."
 msgstr ""
 
 #: zeit/cms/repository/repository.py:226
