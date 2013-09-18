@@ -1,7 +1,11 @@
 # Copyright (c) 2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.content.interfaces import ICommonMetadata
+import mock
+import zeit.cms.content.browser.widget
 import zeit.cms.testing
+import zope.publisher.browser
 
 
 class MobileAlternativeWidgetTest(zeit.cms.testing.BrowserTestCase):
@@ -42,3 +46,13 @@ class MobileAlternativeWidgetTest(zeit.cms.testing.BrowserTestCase):
             'http://www.zeit.de/testcontent', content.mobile_alternative)
         self.assertEqual('', b.getControl('Mobile URL').value)
         self.assertEqual(True, b.getControl('no mobile alternative').selected)
+
+    def test_works_in_addform(self):
+        # where the context does not implement ICommonMetadata
+        context = mock.Mock(spec=[])
+        field = ICommonMetadata['mobile_alternative']
+        field = field.bind(context)
+        request = zope.publisher.browser.TestRequest()
+        widget = zeit.cms.content.browser.widget.MobileAlternativeWidget(
+            field, request)
+        self.assertNothingRaised(widget)

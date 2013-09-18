@@ -129,12 +129,19 @@ class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):
         return self._make_url('http://www.zeit.de/')
 
     def _make_url(self, prefix):
-        return self.context.context.uniqueId.replace(
+        context = self.context.context
+        if not zeit.cms.content.interfaces.ICommonMetadata.providedBy(context):
+            return None
+        return context.uniqueId.replace(
             zeit.cms.interfaces.ID_NAMESPACE, prefix)
 
     @property
     def is_desktop_url(self):
-        return self.context.get(self.context.context) == self.desktop_url
+        # add forms have the container as context
+        context = self.context.context
+        if not zeit.cms.content.interfaces.ICommonMetadata.providedBy(context):
+            return False
+        return self.context.get(context) == self.desktop_url
 
     def _toFieldValue(self, input):
         value = super(MobileAlternativeWidget, self)._toFieldValue(input)
