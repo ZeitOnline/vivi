@@ -68,5 +68,5 @@ zeit.cms.MessageView = zeit.cms.View.extend({
 
 MochiKit.Signal.connect(window, 'onload', function(event) {
     zeit.cms.messages = new zeit.cms.MessageView(
-        application_url + '/@@messages', 'messages_container');
+        window.application_url + '/@@messages', 'messages_container');
 });
