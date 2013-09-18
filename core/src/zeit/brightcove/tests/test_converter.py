@@ -7,7 +7,7 @@ import logging
 import mock
 import pytz
 import transaction
-import unittest2 as unittest  # XXX
+import unittest
 import zeit.brightcove.converter
 import zeit.brightcove.testing
 import zeit.cms.browser.interfaces
