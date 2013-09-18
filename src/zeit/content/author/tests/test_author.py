@@ -3,7 +3,7 @@
 
 import mock
 import pysolr
-import unittest2 as unittest
+import unittest
 import zeit.content.author.author
 
 
