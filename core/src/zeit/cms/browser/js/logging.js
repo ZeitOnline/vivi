@@ -20,7 +20,7 @@
             method: 'POST',
             sendContent: data});
         d.addErrback(function(e) {
-            alert(
+            MochiKit.Logging.logger.warning(
               'Logging failed because of ' + e +
               '\n\nOriginal error which was NOT logged:\n' +
                 msg.info);
@@ -44,7 +44,7 @@
         MochiKit.Logging.logger.addListener(
             'xhr-listener', zeit.cms.logging.XHR_LEVEL, xhr_listener);
     } else {
-        MochiKit.Logging.logger.logWarning(
+        MochiKit.Logging.logger.warning(
             'No application_url defined, XHR logging disabled');
     }
     MochiKit.Logging.logger.addListener(

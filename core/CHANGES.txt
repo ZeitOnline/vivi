@@ -20,6 +20,8 @@ zeit.cms changes
 - Use checkbox instead of prefix selection for mobile alternative widget
   (VIV-103).
 
+- Silence superfluous JS alert regarding logging (#12757).
+
 
 2.6.2 (2013-09-06)
 ------------------
