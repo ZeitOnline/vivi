@@ -17,7 +17,6 @@ setup(
     install_requires=[
         'gocept.selenium>=0.6',
         'setuptools',
-        'unittest2',
         'zeit.cms>=1.46dev',
     ],
 )
