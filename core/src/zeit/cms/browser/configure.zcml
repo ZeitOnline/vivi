@@ -446,4 +446,12 @@
     permission="zope.View"
   />
 
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="ping"
+    template="test-setup-auth.pt"
+    permission="zope.Public"
+  />
+
 </configure>

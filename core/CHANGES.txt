@@ -22,6 +22,8 @@ zeit.cms changes
 
 - Silence superfluous JS alert regarding logging (#12757).
 
+- Add public ``ping`` view that monitoring checks can use (#12851).
+
 
 2.6.2 (2013-09-06)
 ------------------
