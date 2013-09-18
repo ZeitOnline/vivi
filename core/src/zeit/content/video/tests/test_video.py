@@ -2,9 +2,9 @@
 # See also LICENSE.txt
 
 import lxml.objectify
+import unittest
 import zeit.cms.content.interfaces
 import zeit.content.video.testing
-import unittest2 as unittest
 
 
 class TestVideo(zeit.content.video.testing.TestCase):

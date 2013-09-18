@@ -4,7 +4,7 @@ zeit.content.video changes
 2.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove unittest2, we have 2.7 now
 
 
 2.2.3 (2013-08-14)
