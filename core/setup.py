@@ -31,7 +31,6 @@ setup(
         'requests',
         'setuptools',
         'stabledict',
-        'unittest2',
         'zc.sourcefactory',
         'zeit.cms>=2.7.0.dev0',
         'zeit.content.quiz>=0.4.2',
