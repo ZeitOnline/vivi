@@ -18,7 +18,6 @@ setup(
         'gocept.selenium',
         'grokcore.component',
         'setuptools',
-        'unittest2',
         'zc.iso8601',
         'zeit.cms>=2.0',
         'zeit.solr>=2.0',

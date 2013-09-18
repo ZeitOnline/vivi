@@ -4,7 +4,7 @@ zeit.find changes
 2.3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove unittest2, we have 2.7 now
 
 
 2.2.0 (2013-05-29)

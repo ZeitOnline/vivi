@@ -2,12 +2,12 @@
 # See also LICENSE.txt
 
 import mock
-import unittest2
+import unittest
 import zeit.cms.testing
 import zeit.find.tests
 
 
-class TestSourceQueryView(unittest2.TestCase):
+class TestSourceQueryView(unittest.TestCase):
 
     def test_view_should_render_input(self):
         from zeit.find.browser.autocomplete import AutocompleteSourceQuery
@@ -46,7 +46,7 @@ class TestSourceQueryViewIntegration(zeit.cms.testing.FunctionalTestCase):
             (source, request), zope.formlib.interfaces.ISourceQueryView)
 
 
-class TestSimpleFind(unittest2.TestCase,
+class TestSimpleFind(unittest.TestCase,
                      zeit.cms.testing.BrowserAssertions):
 
     layer = zeit.find.tests.SearchLayer
