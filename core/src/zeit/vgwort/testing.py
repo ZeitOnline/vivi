@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 import mock
-import unittest2 as unittest
+import unittest
 import xmlrpclib
 import zeit.cms.content.interfaces
 import zeit.cms.testing
