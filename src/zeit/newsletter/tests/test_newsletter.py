@@ -3,7 +3,7 @@
 
 import lxml.etree
 import mock
-import unittest2 as unittest
+import unittest
 import zeit.cms.testing
 import zeit.newsletter.testing
 import zope.component

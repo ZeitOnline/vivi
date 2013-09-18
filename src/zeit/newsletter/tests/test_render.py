@@ -4,7 +4,7 @@
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.newsletter.render import Renderer
 import time
-import unittest2 as unittest
+import unittest
 import urlparse
 import zeit.cms.testing
 
