@@ -1867,8 +1867,6 @@ UI.Draggable.DRAG_X = 1;
 UI.Draggable.DRAG_Y = 2;
 //Using Draggable and not Draggable.prototype, as this vars are
 //'class variables', not 'instace variables'
-UI.Draggable._oldonmousemove = document.onmousemove;
-UI.Draggable._oldonmouseup = document.onmouseup;
 UI.Draggable._draggable = null;
 
 /***
@@ -2010,27 +2008,22 @@ UI.Draggable.prototype = {
     }
 };
 
-document.onmousemove = function(e) {
-    var e = e || window.event;
+connect(document, 'onmousemove', function(event) {
+    var e = event.event();
     var x = e.screenX;
     var y = e.screenY;
 
     if (UI.Draggable._draggable) {
         UI.Draggable._draggable.move(x, y);
     }
-    if (UI.Draggable._oldonmousemove) {
-        _oldmousemove.apply(document, arguments);
-    }
-}
+});
 
-document.onmouseup = function(e) {
+connect(document, 'onmouseup', function(event) {
+    var e = event.event();
     if (UI.Draggable._draggable) {
         UI.Draggable._draggable.stop(e);
     }
-    if (UI.Draggable._oldonmouseup) {
-        _oldonmouseup.apply(document, arguments);
-    }
-}
+});
 
 /***
 
