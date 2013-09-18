@@ -24,7 +24,7 @@ import sys
 import threading
 import time
 import transaction
-import unittest2
+import unittest
 import urllib2
 import xml.sax.saxutils
 import zc.resourcelibrary.resourcelibrary
@@ -264,7 +264,7 @@ class RepositoryHelper(object):
 
 
 class FunctionalTestCaseCommon(
-    unittest2.TestCase,
+    unittest.TestCase,
     gocept.testing.assertion.Ellipsis,
     gocept.testing.assertion.Exceptions,
     RepositoryHelper):

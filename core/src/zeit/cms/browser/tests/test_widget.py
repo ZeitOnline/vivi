@@ -7,7 +7,7 @@ from zeit.cms.browser.widget import \
 import contextlib
 import gocept.testing.mock
 import mock
-import unittest2
+import unittest
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -683,7 +683,7 @@ class DropObjectWidget(zeit.cms.testing.FunctionalTestCase):
             lambda: widget._toFieldValue('http://xml.zeit.de/testcontent'))
 
 
-class TestObjectSequenceDisplayWidget(unittest2.TestCase):
+class TestObjectSequenceDisplayWidget(unittest.TestCase):
 
     def get_content(self):
         import zeit.cms.interfaces

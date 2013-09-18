@@ -2,11 +2,11 @@
 # See also LICENSE.txt
 
 import mock
-import unittest2
+import unittest
 import zeit.cms.testing
 
 
-class TestJSON(unittest2.TestCase):
+class TestJSON(unittest.TestCase):
 
     def test_dict_result_should_pop_template(self):
         from zeit.cms.browser.view import JSON

@@ -24,6 +24,8 @@ zeit.cms changes
 
 - Add public ``ping`` view that monitoring checks can use (#12851).
 
+- Remove unittest2, we have 2.7 now
+
 
 2.6.2 (2013-09-06)
 ------------------

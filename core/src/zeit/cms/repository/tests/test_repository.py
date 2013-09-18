@@ -5,7 +5,7 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.cms.repository.repository import live_url_to_content
 from zeit.cms.repository.repository import vivi_url_to_content
 import gocept.testing.mock
-import unittest2 as unittest
+import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces

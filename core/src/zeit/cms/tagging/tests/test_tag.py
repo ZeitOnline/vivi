@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 import mock
-import unittest2 as unittest
+import unittest
 import zeit.cms.testing
 import zope.component
 import zope.security.management

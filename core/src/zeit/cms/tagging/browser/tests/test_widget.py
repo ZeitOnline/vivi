@@ -3,7 +3,7 @@
 
 import gocept.testing.mock
 import mock
-import unittest2
+import unittest
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 
@@ -74,7 +74,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
             ['t2', 't3', 't1', 't4'],
             list(self.tagger().updateOrder.call_args[0][0]))
 
-    @unittest2.skip("Selenium doesn't do d'n'd on jqueryui sortable.")
+    @unittest.skip("Selenium doesn't do d'n'd on jqueryui sortable.")
     def test_change_event_is_triggered_on_sorting_tags(self):
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
