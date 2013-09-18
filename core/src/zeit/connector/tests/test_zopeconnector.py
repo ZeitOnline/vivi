@@ -1,4 +1,3 @@
-import unittest2 as unittest
 import zeit.connector.testing
 
 

@@ -21,7 +21,6 @@ setup(
         'gocept.runner>=0.2',
         'mock',
         'setuptools',
-        'unittest2',
         'zc.queue',
         'zc.set',
         'zope.annotation',

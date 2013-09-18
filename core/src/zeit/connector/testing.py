@@ -8,7 +8,7 @@ import inspect
 import os
 import pkg_resources
 import re
-import unittest2 as unittest
+import unittest
 import urlparse
 import zc.queue.tests
 import zeit.connector.connector
