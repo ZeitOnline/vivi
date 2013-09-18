@@ -3,7 +3,7 @@
 
 import lxml.objectify
 import mock
-import unittest2 as unittest
+import unittest
 import zeit.edit.testing
 import zope.interface
 

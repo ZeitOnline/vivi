@@ -4,7 +4,7 @@ Changes
 2.1.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove unittest2, we have 2.7 now
 
 
 2.1.4 (2013-08-27)
