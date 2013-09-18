@@ -2,8 +2,8 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from unittest2 import skip
 import transaction
+import unittest
 import zeit.cms.tagging.testing
 import zeit.content.article.edit.browser.testing
 
@@ -104,7 +104,7 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
 
-    @skip("no d'n'd 'til webdriver")
+    @unittest.skip("no d'n'd 'til webdriver")
     def test_sorting_should_trigger_write(self):
         s = self.selenium
         self.setup_tags('t1', 't2', 't3')
@@ -161,7 +161,8 @@ class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForNotChecked('metadata-comments.commentsAllowed')
 
 
-@skip('Drag&Drop does not work, the icon is never dropped on the clipboard')
+@unittest.skip(
+    'Drag&Drop does not work, the icon is never dropped on the clipboard')
 class HeaderTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_icon_in_header_is_draggable_to_clipboard(self):

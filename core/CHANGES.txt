@@ -14,6 +14,8 @@ zeit.content.article changes
 
 - Add genre to XML references (WEB-35)
 
+- Remove unittest2, we have 2.7 now
+
 
 3.0.8 (2013-08-27)
 ------------------

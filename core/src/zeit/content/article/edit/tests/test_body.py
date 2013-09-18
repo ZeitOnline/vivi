@@ -4,7 +4,7 @@
 import gocept.testing.mock
 import lxml.etree
 import mock
-import unittest2
+import unittest
 import zeit.content.article.testing
 import zope.schema
 
@@ -117,7 +117,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(2, len(body.xml.getchildren()))
 
 
-class TestCleaner(unittest2.TestCase):
+class TestCleaner(unittest.TestCase):
 
     def get_article(self):
         from zeit.content.article.article import Article

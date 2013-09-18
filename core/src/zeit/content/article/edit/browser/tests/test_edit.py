@@ -9,7 +9,7 @@ import lxml.objectify
 import mock
 import time
 import transaction
-import unittest2
+import unittest
 import zeit.content.article.article
 import zeit.content.article.edit.body
 import zeit.content.article.edit.browser.testing
@@ -178,7 +178,7 @@ class TestTextEditing(
         else:
             self.fail('second click should have raised')
 
-    @unittest2.skip("no typeKeys 'til webdriver")
+    @unittest.skip("no typeKeys 'til webdriver")
     def test_typed_text_should_be_saved(self):
         s = self.selenium
         self.create()
@@ -212,7 +212,7 @@ class TestTextEditing(
         s.assertCssCount('css=.block.type-p', 1)
         s.assertCssCount('css=.block.type-p .editable > *', 2)
 
-    @unittest2.skip("no typeKeys 'til webdriver")
+    @unittest.skip("no typeKeys 'til webdriver")
     def test_newline_should_create_paragraph(self):
         s = self.selenium
         self.create()
@@ -258,8 +258,8 @@ class TestTextEditing(
         s.click('css=.create-paragraph')
         s.waitForElementNotPresent('css=.create-paragraph')
 
-    @unittest2.skip('wait for gocept.selenium to implement element positions '
-                    'and for webdriver to allow clicking inside a paragraph')
+    @unittest.skip('wait for gocept.selenium to implement element positions '
+                   'and for webdriver to allow clicking inside a paragraph')
     def test_toolbar_moves_only_vertically(self):
         s = self.selenium
         self.create('<p>foo</p><p>bar</p>')
@@ -725,7 +725,7 @@ class TestLimitedInput(
         super(TestLimitedInput, self).setUp()
         self.add_article()
 
-    @unittest2.skip("no typeKeys 'til webdriver")
+    @unittest.skip("no typeKeys 'til webdriver")
     def test_limitation_should_decrease_on_input(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
@@ -749,7 +749,7 @@ class TestCountedInput(
         super(TestCountedInput, self).setUp()
         self.add_article()
 
-    @unittest2.skip("no typeKeys 'til webdriver")
+    @unittest.skip("no typeKeys 'til webdriver")
     def test_input_should_be_counted_on_input(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
@@ -759,7 +759,7 @@ class TestCountedInput(
         self.save()
         s.assertText('xpath=//span[@class="charcount"]', '23 Zeichen')
 
-    @unittest2.skip("no typeKeys 'til webdriver")
+    @unittest.skip("no typeKeys 'til webdriver")
     def test_deleting_paragraphs_should_update_counter(self):
         s = self.selenium
         s.waitForElementPresent('xpath=//span[@class="charlimit"]')
@@ -818,7 +818,7 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertText('css=#content_editable_hacks',
             'regex:.type-p:nth-child\(3\).*background:.*dummy-ad')
 
-    @unittest2.skip("no typeKeys 'til webdriver")
+    @unittest.skip("no typeKeys 'til webdriver")
     def test_dummy_ad_should_be_updated_by_changing_paragraphs(self):
         style = ''
         for r in self.rules:
@@ -902,7 +902,7 @@ class DirtySaveVersusPersistTests(
         self.assertEqual('true', self.eval("zeit.edit.persist_called"))
 
 
-@unittest2.skip("no typeKeys 'til webdriver")
+@unittest.skip("no typeKeys 'til webdriver")
 class BackButtonPreventionTest(
     zeit.content.article.edit.browser.testing.EditorTestCase):
 

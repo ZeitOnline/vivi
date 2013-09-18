@@ -5,7 +5,7 @@
 from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import transaction
-import unittest2 as unittest
+import unittest
 import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.content.article.testing

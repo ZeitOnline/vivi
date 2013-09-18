@@ -1,13 +1,12 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-
 import lxml.etree
-import unittest2
+import unittest
 import zeit.content.article.testing
 
 
-class RawXMLTest(unittest2.TestCase):
+class RawXMLTest(unittest.TestCase):
 
     def test_root_tag_must_be_raw(self):
         from zeit.content.article.edit.interfaces import IRawXML
