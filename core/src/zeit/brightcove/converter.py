@@ -370,7 +370,6 @@ class Video(Converter):
             copy_field(
                 self, video, zeit.content.video.interfaces.IVideo, key)
         video.brightcove_id = str(self.id)
-        video.renditions = self.renditions
         sc = zeit.cms.content.interfaces.ISemanticChange(video)
         sc.last_semantic_change = self.date_last_modified
         info = zeit.cms.workflow.interfaces.IPublishInfo(video)
