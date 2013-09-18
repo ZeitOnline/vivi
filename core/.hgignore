@@ -3,5 +3,8 @@ syntax: glob
 *.egg-info
 .installed.cfg
 bin
+include
 develop-eggs
+lib
+local
 parts
