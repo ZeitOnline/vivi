@@ -293,6 +293,8 @@ class Video(Converter):
         for rendition in data_renditions:
             vr = zeit.content.video.video.VideoRendition()
             vr.url = rendition["url"]
+            if not vr.url:
+                continue
             vr.frame_width = rendition["frameWidth"]
             rs.append(vr)
         return tuple(rs)
