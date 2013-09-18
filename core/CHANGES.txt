@@ -4,7 +4,7 @@ CHANGES
 2.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix quoting of entities (``&amp;``) in URLs (#8575).
 
 
 2.0.1 (unreleased)

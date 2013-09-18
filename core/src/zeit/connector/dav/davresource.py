@@ -330,9 +330,11 @@ class DAVResource(object):
         # extract server/port from url, needed for DAV
         self.url = url
         url_tuple = urlparse(url, 'http', 0)
-        self.scheme = url_tuple[0]
-        self.host = url_tuple[1]
-        self.path = url_tuple[2]
+        self.scheme = url_tuple.scheme
+        self.host = url_tuple.hostname
+        self.path = url_tuple.path
+        if url_tuple.params:
+            self.path += ';' + url_tuple.params
 
     def _make_url_for ( self, path ):
         t = (self.scheme, self.host, path) + ('','','')

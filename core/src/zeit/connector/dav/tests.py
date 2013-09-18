@@ -108,3 +108,10 @@ class TestDAVResponse(unittest.TestCase):
     def test_response_should_handle_unicode_urls_with_quoting(self):
         self.assertEqual(u'/foo bär', self.get_response('/foo%20bär').url)
 
+
+class TestDAVResource(unittest.TestCase):
+
+    def test_entities_in_url_may_be_part_of_the_path(self):
+        from zeit.connector.dav.davresource import DAVResource
+        res = DAVResource('http://example.com/parks_&amp;_recreation')
+        self.assertEqual('/parks_&amp;_recreation', res.path)
