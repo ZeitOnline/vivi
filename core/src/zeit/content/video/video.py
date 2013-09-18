@@ -30,7 +30,6 @@ class RenditionsProperty(zeit.cms.content.property.MultiPropertyBase):
         return node
 
 
-
 class Video(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.video.interfaces.IVideo,
