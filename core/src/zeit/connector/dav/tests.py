@@ -28,7 +28,7 @@ class TestPropfind(unittest.TestCase):
         result = StringIO.StringIO(self.response)
         result.status = 207
         result.reason = 'Multi Status'
-        result.getheader = lambda x,y=None: y
+        result.getheader = lambda x, y=None: y
         return result
 
     def test_propfind_retries_incomplete_results(self):
@@ -74,8 +74,6 @@ class TestURLEncode(unittest.TestCase):
     def test_query_and_fragment_quoted_to_path(self):
         self.assertQuote(u'http://foo.testing/bar?a=b&c=d#fragment',
                          'http://foo.testing/bar%3Fa%3Db%26c%3Dd%23fragment')
-
-
 
 
 class TestDAVResponse(unittest.TestCase):
