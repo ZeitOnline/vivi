@@ -66,6 +66,9 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 
         window.addEventListener("message", function(e){
             var id =  e.data.tablet ? "#preview-tablet" : "#preview-full";
+            if (! e.data.height_obj) {
+                return;
+            }
             var height = e.data.height_obj.offsetHeight;
             if (height >= 500){
                $(id).css('height',(height+20)+"px");
