@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from __future__ import print_function
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import ZODB.POSException
 import datetime
@@ -8,7 +9,11 @@ import gocept.async
 import gocept.runner
 import grokcore.component
 import logging
+import os.path
 import pytz
+import sys
+import tempfile
+import zc.lockfile
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -66,10 +71,20 @@ class ReportInfo(zeit.cms.content.dav.DAVPropertiesAdapter):
 @gocept.runner.once(principal=gocept.runner.from_config(
     'zeit.vgwort', 'token-principal'))
 def report_new_documents():
-    source = zope.component.getUtility(
-        zeit.vgwort.interfaces.IReportableContentSource)
-    for content in source:
-        report(content)
+    lock_file_name = os.path.join(tempfile.gettempdir(), 'vgwort-run-lock')
+    try:
+        lock = zc.lockfile.LockFile(lock_file_name)
+    except zc.lockfile.LockError:
+        print("VGWort report alredy running? Could not lock {}".format(
+              lock_file_name), file=sys.stderr)
+        sys.exit(1)
+    try:
+        source = zope.component.getUtility(
+            zeit.vgwort.interfaces.IReportableContentSource)
+        for content in source:
+            report(content)
+    finally:
+        lock.close()
 
 
 @gocept.async.function(u'events')
