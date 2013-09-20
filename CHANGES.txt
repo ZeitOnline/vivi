@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.2.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Lock vgwort report run to prevent parallel execution (VIV-1270)
 
 
 2.1.0 (2013-08-13)
