@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.0.2 (unreleased)
+2.0.2 (2013-09-24)
 ------------------
 
 - Remove unittest2, we have 2.7 now
