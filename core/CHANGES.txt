@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.6.3 (unreleased)
+2.7.0 (2013-09-24)
 ------------------
 
 - Support rel="nofollow" on Link and Image objects (VIV-104).
