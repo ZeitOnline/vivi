@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.0.9 (unreleased)
+3.0.9 (2013-09-24)
 ------------------
 
 - Support rel="nofollow" for links in the article body (VIV-104).
