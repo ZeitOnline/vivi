@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.1.0 (unreleased)
+2.0.2 (2013-09-24)
 ------------------
 
 - Fix quoting of entities (``&amp;``) in URLs (#8575).
