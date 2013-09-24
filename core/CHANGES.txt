@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.0.3 (unreleased)
+2.0.3 (2013-09-24)
 ------------------
 
 - Fix test setup after removal of unittest2.
