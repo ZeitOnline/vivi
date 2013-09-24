@@ -90,6 +90,12 @@ optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
 
 class TestCase(zope.app.testing.functional.FunctionalTestCase):
 
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
     def get_resource(self, name, body, properties={},
                      contentType='text/plain'):
         rid = 'http://xml.zeit.de/testing/' + name
