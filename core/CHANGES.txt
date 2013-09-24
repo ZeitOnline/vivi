@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.1.2 (unreleased)
+2.1.2 (2013-09-24)
 ------------------
 
 - Display ``breadcrumb_title`` field (VIV-105).
