@@ -11,6 +11,7 @@ product_config = """\
 <product-config zeit.solr>
     solr-url http://internal.invalid
     public-solr-url http://public.invalid
+    second-solr-url http://public.invalid
 </product-config>
 """
 
