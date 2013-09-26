@@ -689,7 +689,7 @@
   z-index: 1000;
 }
 
-.type-article .link_input input {
+.type-article .link_input input[type="text"] {
   margin-bottom: 10px;
   width: 100%;
 }
