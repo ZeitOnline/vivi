@@ -10,7 +10,7 @@ import zeit.content.image.testing
 
 class ImageDetails(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.content.image.testing.selenium_layer
+    layer = zeit.content.image.testing.SELENIUM_LAYER
 
     def test_clicking_button_shows_details_pane(self):
         with zeit.cms.testing.site(self.getRootFolder()):

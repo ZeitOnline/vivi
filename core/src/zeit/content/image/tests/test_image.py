@@ -10,7 +10,7 @@ import zeit.content.image.testing
 
 class TestImageMetadataAcquisition(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.content.image.testing.ImageLayer
+    layer = zeit.content.image.testing.ZCML_LAYER
 
     def setUp(self):
         super(TestImageMetadataAcquisition, self).setUp()

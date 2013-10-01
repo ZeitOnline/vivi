@@ -12,7 +12,7 @@ import zope.component
 
 class ImageMetadataTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.content.image.testing.ImageLayer
+    layer = zeit.content.image.testing.ZCML_LAYER
 
     def test_nofollow_is_written_to_rel_attribute(self):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')

@@ -13,4 +13,4 @@ def test_suite():
         'transform.txt',
         'masterimage.txt',
         package='zeit.content.image',
-        layer=zeit.content.image.testing.ImageLayer)
+        layer=zeit.content.image.testing.ZCML_LAYER)

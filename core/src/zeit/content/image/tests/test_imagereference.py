@@ -9,7 +9,7 @@ import zeit.content.image.testing
 
 class ImageAssetTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.content.image.testing.ImageLayer
+    layer = zeit.content.image.testing.ZCML_LAYER
 
     def test_IImages_accepts_IImage_for_backwards_compatibility(self):
         with self.assertNothingRaised():

@@ -24,4 +24,4 @@ def test_suite():
         'master-image.txt',
         package='zeit.content.image.browser',
         checker=checker,
-        layer=zeit.content.image.testing.ImageLayer)
+        layer=zeit.content.image.testing.ZCML_LAYER)

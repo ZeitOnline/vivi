@@ -2,7 +2,8 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
-import gocept.selenium.ztk
+import gocept.httpserverlayer.zopeapptesting
+import gocept.selenium
 import pkg_resources
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -11,11 +12,11 @@ import zeit.content.image.imagegroup
 import zope.component
 
 
-ImageLayer = zeit.cms.testing.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'ImageLayer', allow_teardown=True)
-
-selenium_layer = gocept.selenium.ztk.Layer(ImageLayer)
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
+    name='HTTPLayer', bases=(ZCML_LAYER,))
+SELENIUM_LAYER = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 
 def create_image_group():
