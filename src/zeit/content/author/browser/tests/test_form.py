@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 import mock
+import unittest
 import zeit.cms.testing
 import zeit.content.author.testing
 
@@ -148,15 +149,15 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
             </td>...
             """, b.contents)
 
+    @unittest.skip('needs to use Selenium to control ObjectSequenceWidget')
     def test_security_smoke_test(self):
         b = self.browser
         self.open('/repository/testcontent')
         b.getLink('Checkout').click()
         b.getControl('Add Authors', index=0).click()
 
-        #XXX disabled until the fields are available again.
-        # b.getControl(name='form.author_references.0.').value = (
-        #     'http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index')
+        b.getControl(name='form.author_references.0.').value = (
+            'http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index')
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
         self.assertEllipsis(
