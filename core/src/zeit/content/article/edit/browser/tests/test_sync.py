@@ -1,22 +1,21 @@
-import unittest
 import zeit.content.article.edit.browser.testing
 
 
 class Supertitle(zeit.content.article.edit.browser.testing.EditorTestCase):
 
-    st = 'article-content-head.supertitle'
-    tst = 'teaser-supertitle.teaserSupertitle'
+    supertitle = 'article-content-head.supertitle'
+    teaser_supertitle = 'teaser-supertitle.teaserSupertitle'
+
+    layer = zeit.content.article.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(Supertitle, self).setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        self.selenium.waitForElementPresent('id=%s' % self.tst)
+        self.selenium.waitForElementPresent('id=%s' % self.teaser_supertitle)
 
-    @unittest.skip('type() does not work, not even the work-around does')
-    def test_teaser_supertitle_is_synchronised_to_article_supertitle(self):
+    def test_teaser_supertitle_is_copied_to_article_supertitle_if_empty(self):
         s = self.selenium
-        # XXX type() doesn't work with selenium-1 and FF>7
-        self.eval('document.getElementById("%s").value = "super"' % self.tst)
-        s.fireEvent('id=%s' % self.tst, 'changed')
-        s.waitForElementPresent(
-            '//input[@id="%s" and @value="super"]' % self.st)
+        self.eval('document.getElementById("%s").value = ""' % self.supertitle)
+        s.click('//a[@href="edit-form-teaser"]')
+        s.type('id=%s' % self.teaser_supertitle, 'super\t')
+        s.assertValue('id=%s' % self.supertitle, 'super')
