@@ -232,7 +232,6 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
 class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
-    #@skip('Drag&drop hopefully will be better with WebDriver')
     def test_blocks_in_mosaic(self):
         self.open_centerpage()
         s = self.selenium
