@@ -33,8 +33,7 @@ class RemoteTaskHelper(object):
 class TestPublish(zeit.cms.testing.SeleniumTestCase,
                   RemoteTaskHelper):
 
-    layer = zeit.workflow.testing.selenium_layer
-    skin = 'vivi'
+    layer = zeit.workflow.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(TestPublish, self).setUp()
@@ -87,7 +86,7 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
             self.prepare_content()
             s = self.selenium
             s.click('link=Publish')
-            s.waitForPageToLoad()
+            s.waitForElementPresent('css=li.error')
             s.verifyText('css=li.error',
                          'Error during publish/retract: OSError*')
         finally:
@@ -97,8 +96,7 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
 class TestRetract(zeit.cms.testing.SeleniumTestCase,
                   RemoteTaskHelper):
 
-    layer = zeit.workflow.testing.selenium_layer
-    skin = 'vivi'
+    layer = zeit.workflow.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(TestRetract, self).setUp()

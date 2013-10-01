@@ -2,7 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
-import gocept.selenium.ztk
+import gocept.httpserverlayer.zopeapptesting
+import gocept.selenium
 import logging
 import lovely.remotetask.interfaces
 import os
@@ -88,7 +89,12 @@ class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
         pass
 
 
-selenium_layer = gocept.selenium.ztk.Layer(WorkflowLayer)
+HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
+    name='HTTPLayer', bases=(WorkflowLayer,))
+WD_LAYER = gocept.selenium.WebdriverLayer(
+    name='WebdriverLayer', bases=(HTTP_LAYER,))
+SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(
+    name='SeleniumLayer', bases=(WD_LAYER,))
 
 
 def run_publish(priorities=(PRIORITY_DEFAULT,)):
