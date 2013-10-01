@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import re
 import zeit.cms.content.sources
 import zope.interface
 import zope.schema
@@ -11,6 +12,19 @@ import zope.schema
 class StatusSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = (u'Print', u'Online', u'Reader')
+
+
+class InvalidCode(zope.schema.ValidationError):
+    __doc__ = _('Code contains invalid characters')
+
+
+valid_vgwortcode_regex = re.compile(r'^[A-Za-z]+$').match
+
+
+def valid_vgwortcode(value):
+    if not valid_vgwortcode_regex(value):
+        raise InvalidCode(value)
+    return True
 
 
 class IAuthor(zope.interface.Interface):
@@ -25,7 +39,9 @@ class IAuthor(zope.interface.Interface):
         # see messageService.wsdl:cardNumberType
         min=10, max=9999999)
 
-    vgwortcode = zope.schema.TextLine(title=_('VG-Wort Code'), required=False)
+    vgwortcode = zope.schema.TextLine(
+        title=_('VG-Wort Code'), required=False,
+        constraint=valid_vgwortcode)
 
     display_name = zope.interface.Attribute(
         'The computed display name. Default is "firstname lastname",'
