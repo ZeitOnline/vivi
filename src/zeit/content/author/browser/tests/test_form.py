@@ -162,3 +162,16 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         b.getLink('Checkin').click()
         self.assertEllipsis(
             '..."testcontent" has been checked in...', b.contents)
+
+    def test_invalid_vgwortcode_shows_error_message(self):
+        b = self.browser
+        self.open('/repository/online/2007/01')
+        menu = b.getControl(name='add_menu')
+        menu.displayValue = ['Author']
+        b.open(menu.value[0])
+        b.getControl('File name').value = 'william_shakespeare'
+        b.getControl('Email address').value = 'wil.i.am@shakespeare.name'
+        b.getControl('VG-Wort Code').value = '4711'
+        self.add_william()
+        self.assertEllipsis(
+            '...Code contains invalid characters...', b.contents)
