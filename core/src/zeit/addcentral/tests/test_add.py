@@ -7,8 +7,7 @@ import zeit.cms.testing
 
 class JavascriptTest(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.addcentral.testing.selenium_layer
-    skin = 'vivi'
+    layer = zeit.addcentral.testing.SELENIUM_LAYER
 
     def test_adding(self):
         s = self.selenium
