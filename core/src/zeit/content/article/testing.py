@@ -172,11 +172,17 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 selenium_layer = gocept.selenium.ztk.Layer(ArticleLayer)
 selenium_workflow_layer = gocept.selenium.ztk.Layer(CDSLayer)
 
+HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
+    name='HTTPLayer', bases=(ArticleLayer,))
+WD_LAYER = gocept.selenium.WebdriverLayer(
+    name='WebdriverLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
+    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
+
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
     layer = selenium_layer
-    skin = 'vivi'
 
     WIDGET_SELECTOR = 'xpath=//label[@for="%s"]/../../*[@class="widget"]'
 
