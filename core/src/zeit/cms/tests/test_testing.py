@@ -18,7 +18,7 @@ class TestProductConfigIsolation(zeit.cms.testing.FunctionalTestCase):
             'isolated', zope.app.appsetup.product._configs['zeit.cms'])
 
 
-class LayerWithProductConfig(zeit.cms.testing.cms_layer):
+class LayerWithProductConfig(zeit.cms.testing.ZCML_LAYER):
 
     @classmethod
     def testSetUp(cls):

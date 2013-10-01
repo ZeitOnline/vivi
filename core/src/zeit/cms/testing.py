@@ -6,9 +6,9 @@ import BaseHTTPServer
 import __future__
 import contextlib
 import copy
+import gocept.httpserverlayer.zopeapptesting
 import gocept.jslint
-import gocept.selenium.base
-import gocept.selenium.ztk
+import gocept.selenium
 import gocept.testing.assertion
 import gocept.zcapatch
 import inspect
@@ -196,8 +196,11 @@ cms_product_config = string.Template("""\
     base=pkg_resources.resource_filename(__name__, ''))
 
 
-cms_layer = ZCMLLayer('ftesting.zcml', product_config=True)
-selenium_layer = gocept.selenium.ztk.Layer(cms_layer)
+ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=True)
+HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
+    name='HTTPLayer', bases=(ZCML_LAYER,))
+SELENIUM_LAYER = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 
 checker = zope.testing.renormalizing.RENormalizing([
@@ -233,7 +236,7 @@ def FunctionalDocFileSuite(*paths, **kw):
         __traceback_info__ = (config,)
         setup_product_config(config)
 
-    layer = kw.pop('layer', cms_layer)
+    layer = kw.pop('layer', ZCML_LAYER)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     kw['setUp'] = setUp
     globs = kw.setdefault('globs', {})
@@ -269,7 +272,7 @@ class FunctionalTestCaseCommon(
     gocept.testing.assertion.Exceptions,
     RepositoryHelper):
 
-    layer = cms_layer
+    layer = ZCML_LAYER
     product_config = {}
 
     def getRootFolder(self):
@@ -294,10 +297,10 @@ class FunctionalTestCase(FunctionalTestCaseCommon):
         self.principal = create_interaction(u'zope.user')
 
 
-class SeleniumTestCase(gocept.selenium.base.TestCase,
+class SeleniumTestCase(gocept.selenium.RCTestCase,
                        FunctionalTestCaseCommon):
 
-    layer = selenium_layer
+    layer = SELENIUM_LAYER
     skin = 'cms'
     log_errors = False
     log_errors_ignore = ()
@@ -312,14 +315,14 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         super(SeleniumTestCase, self).setUp()
         # XXX waiting for a version of gocept.selenium that handles timeouts
         # consistently (#10750)
-        self.layer.selenium.setTimeout(self.TIMEOUT * 1000)
-        self.layer.selenium.selenium.set_timeout(self.TIMEOUT * 1000)
+        self.layer['selenium'].setTimeout(self.TIMEOUT * 1000)
+        self.layer['selenium'].selenium.set_timeout(self.TIMEOUT * 1000)
 
         # XXX The following 5 lines are copied from
-        # gocept.selenium.ztk.TestCase in order to avoid inheriting from
-        # zope.app.testing.functional.TestCase.
+        # gocept.httpserverlayer.zopeapptesting.TestCase in order to avoid
+        # inheriting from zope.app.testing.functional.TestCase.
         db = zope.app.testing.functional.FunctionalTestSetup().db
-        application = self.layer.http.application
+        application = self.layer['httpd'].application
         assert isinstance(application, zope.app.wsgi.WSGIPublisherApplication)
         factory = type(application.requestFactory)
         application.requestFactory = factory(db)
@@ -357,7 +360,7 @@ class SeleniumTestCase(gocept.selenium.base.TestCase,
         if getattr(self.layer, 'http_auth_cache', False):
             # While doing this in the layer's setUp would be conceptually
             # cleaner, it would be much dirtier to implement (e.g.
-            # self.layer.selenium is only instantiated in testSetUp)
+            # self.layer['selenium'] is only instantiated in testSetUp)
             return
         self.layer.http_auth_cache = True
         # XXX it seems something is not ready immediately?!??
