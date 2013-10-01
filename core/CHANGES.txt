@@ -4,7 +4,7 @@ zeit.content.article changes
 3.0.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make use of webdriver (#12573).
 
 
 3.0.10 (2013-10-01)
