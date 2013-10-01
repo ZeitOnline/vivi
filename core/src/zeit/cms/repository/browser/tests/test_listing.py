@@ -1,13 +1,13 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import unittest
 import xml.sax.saxutils
 import zeit.cms.testing
 
 
-@unittest.skip('No typeKeys until WebDriver')
 class TestListing(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def test_tablelisting_filter(self):
         s = self.selenium
@@ -19,7 +19,6 @@ class TestListing(zeit.cms.testing.SeleniumTestCase):
 
         # Type in a word to filter the table
         s.type('name=tableFilter', 'internat')
-        s.typeKeys('name=tableFilter', 'internat')
         self.verifyTextNotDisplayed('Somalia')
         self.verifyTextDisplayed('presseschau')
 
@@ -32,7 +31,7 @@ class TestListing(zeit.cms.testing.SeleniumTestCase):
         s.click('id=clip-add-folder-submit')
         s.waitForElementPresent('link=Clip')
         # Open clip
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '1,1')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
         # Drag the testcontent to the clipboard
