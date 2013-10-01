@@ -201,6 +201,10 @@ HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
     name='HTTPLayer', bases=(ZCML_LAYER,))
 SELENIUM_LAYER = gocept.selenium.RCLayer(
     name='SeleniumLayer', bases=(HTTP_LAYER,))
+WD_LAYER = gocept.selenium.WebdriverLayer(
+    name='WebdriverLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
+    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
 checker = zope.testing.renormalizing.RENormalizing([
@@ -297,7 +301,7 @@ class FunctionalTestCase(FunctionalTestCaseCommon):
         self.principal = create_interaction(u'zope.user')
 
 
-class SeleniumTestCase(gocept.selenium.RCTestCase,
+class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
                        FunctionalTestCaseCommon):
 
     layer = SELENIUM_LAYER
@@ -313,10 +317,11 @@ class SeleniumTestCase(gocept.selenium.RCTestCase,
 
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
-        # XXX waiting for a version of gocept.selenium that handles timeouts
-        # consistently (#10750)
         self.layer['selenium'].setTimeout(self.TIMEOUT * 1000)
-        self.layer['selenium'].selenium.set_timeout(self.TIMEOUT * 1000)
+        if hasattr(self.layer['selenium'].selenium, 'set_timeout'):
+            # XXX waiting for a version of gocept.selenium that handles
+            # timeouts consistently for SeleniumRC (#10750)
+            self.layer['selenium'].selenium.set_timeout(self.TIMEOUT * 1000)
 
         # XXX The following 5 lines are copied from
         # gocept.httpserverlayer.zopeapptesting.TestCase in order to avoid
@@ -340,10 +345,10 @@ class SeleniumTestCase(gocept.selenium.RCTestCase,
             transaction.commit()
         self.selenium.getEval('window.sessionStorage.clear()')
 
-        self.original_windows = set(self.selenium.getAllWindowNames())
+        self.original_windows = set(self.selenium.getAllWindowIds())
         self.original_width = self.selenium.getEval('window.outerWidth')
         self.original_height = self.selenium.getEval('window.outerHeight')
-        self.set_window_size(self.window_width, self.window_height)
+        self.selenium.setWindowSize(self.window_width, self.window_height)
 
         self._prefill_http_auth_cache()
 
@@ -376,21 +381,15 @@ class SeleniumTestCase(gocept.selenium.RCTestCase,
             logging.root.removeHandler(self.log_handler)
             logging.root.setLevel(self.old_log_level)
 
-        current_windows = set(self.selenium.getAllWindowNames())
+        current_windows = set(self.selenium.getAllWindowIds())
         for window in current_windows - self.original_windows:
             self.selenium.selectWindow(window)
             self.selenium.close()
         self.selenium.selectWindow()
 
-        self.set_window_size(self.original_width, self.original_height)
+        self.selenium.setWindowSize(self.original_width, self.original_height)
         # open a neutral page to stop all pending AJAX requests
         self.open('/@@test-setup-auth')
-
-    def set_window_size(self, width, height):
-        s = self.selenium
-        s.getEval('window.resizeTo(%s, %s)' % (width, height))
-        s.waitForEval('window.outerWidth', str(width))
-        s.waitForEval('window.outerHeight', str(height))
 
     def open(self, path, auth='user:userpw'):
         if auth:
@@ -403,17 +402,26 @@ class SeleniumTestCase(gocept.selenium.RCTestCase,
         self.selenium.click('//label[contains(string(.), %s)]' %
                             xml.sax.saxutils.quoteattr(label))
 
-    setup_globals = """\
-        var window = selenium.browserbot.getCurrentWindow();
+    webdriver_globals = """\
         var document = window.document;
         var zeit = window.zeit;
-        """
+    """
+    seleniumrc_globals = """\
+        var window = selenium.browserbot.getCurrentWindow();
+    """ + webdriver_globals
+
+    @property
+    def js_globals(self):
+        if isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
+            return self.webdriver_globals + 'return '
+        else:
+            return self.seleniumrc_globals
 
     def eval(self, text):
-        return self.selenium.getEval(self.setup_globals + text)
+        return self.selenium.getEval(self.js_globals + text)
 
     def wait_for_condition(self, text):
-        self.selenium.waitForCondition(self.setup_globals + """\
+        self.selenium.waitForCondition(self.js_globals + """\
         Boolean(%s);
         """ % text)
 

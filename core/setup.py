@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='2.7.1.dev0',
+    version='2.8.0.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
@@ -86,7 +86,7 @@ setup(
         'zope.testing>=3.8.0',
         'zope.xmlpickle',
         'gocept.httpserverlayer>=1.4.0.dev0',
-        'gocept.selenium>=2.0.0.dev0',
+        'gocept.selenium>=2.0.0b5.dev0',
         'gocept.jslint>=0.2',
     ],
     entry_points=dict(
