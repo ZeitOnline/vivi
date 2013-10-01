@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import doctest
-import gocept.selenium.ztk
 import pkg_resources
 import zeit.cms.testing
 import zeit.solr.testing
@@ -44,9 +43,6 @@ class Layer(ZCMLLayer,
     @classmethod
     def testTearDown(cls):
         pass
-
-
-selenium_layer = gocept.selenium.ztk.Layer(Layer)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
