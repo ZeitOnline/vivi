@@ -1,7 +1,7 @@
 zeit.addcentral changes
 =======================
 
-1.1.1 (unreleased)
+1.1.1 (2013-10-02)
 ------------------
 
 - Use webdriver (#12573).
