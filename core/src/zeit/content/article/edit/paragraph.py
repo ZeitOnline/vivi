@@ -4,7 +4,6 @@
 import copy
 import grokcore.component
 import lxml.etree
-import lxml.html.builder
 import lxml.html.clean
 import lxml.html.soupparser
 import lxml.objectify
@@ -20,11 +19,8 @@ def keep_allowed_tags(tree, allowed_tags):
     # lxml.html.clean is just so convenient.
     remove_tags = lxml.html.clean.Cleaner(
         allow_tags=set(allowed_tags), remove_unknown_tags=False)
-    # Cleaner requires the tree-root to have a parent, on which it assembles
-    # the remaining parts (without the dropped tags)
-    container = lxml.html.builder.E.body(tree)
     remove_tags(tree)
-    return container
+    return tree
 
 
 inline_tags = ['a', 'br', 'i', 'em', 'strong', 'b', 'u']
