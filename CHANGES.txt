@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to lxml-3.x (#11611).
 
 
 2.0 (2013-04-23)
