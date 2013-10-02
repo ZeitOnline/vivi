@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Make use of webdriver (#12573).
 
+- Update to lxml-3.x (#11611).
+
 
 3.0.10 (2013-10-01)
 -------------------

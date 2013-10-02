@@ -25,7 +25,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
     def get_article(self, with_empty_block=False):
         article = self.layer.setup.getRootFolder()[
             'workingcopy']['zope.user']['Somalia']
-        for p in article.xml.findall('//division/*'):
+        for p in article.xml.xpath('//division/*'):
             p.getparent().remove(p)
         if with_empty_block:
             article.xml.body.division[self.block_type] = ''
