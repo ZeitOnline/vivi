@@ -1,6 +1,12 @@
 zeit.addcentral changes
 =======================
 
+1.1.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.1.1 (2013-10-02)
 ------------------
 
