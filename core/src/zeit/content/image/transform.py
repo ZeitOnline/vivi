@@ -46,7 +46,6 @@ class ImageTransform(object):
         return self._construct_image(image)
 
     def _construct_image(self, pil_image):
-
         image = zeit.content.image.image.LocalImage()
         image.mimeType = self.context.mimeType
         pil_image.save(image.open('w'), self.image.format)
