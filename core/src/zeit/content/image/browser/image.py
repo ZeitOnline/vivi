@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
+import transaction
 import urlparse
 import z3c.conditionalviews
 import zeit.cms.browser.interfaces
@@ -94,6 +95,13 @@ class Scaled(object):
         else:
             image = image.thumbnail(self.width, self.height, self.filter)
             image.__name__ = self.__name__
+
+            def cleanup(commited, image):
+                # Releasing the last reference triggers the weakref cleanup of
+                # ZODB.blob.Blob, since this local_data Blob never was part of
+                # a ZODB connection, which will delete the temporary file.
+                image.local_data = None
+            transaction.get().addAfterCommitHook(cleanup, [image])
         image_view = zope.component.getMultiAdapter(
             (image, self.request), name='raw')
         return image_view

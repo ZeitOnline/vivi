@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Update to lxml-3.x (#11611).
 
+- Remove temporary thumbnail files directly after the request ends (#12879).
+
 
 2.7.0 (2013-09-24)
 ------------------
