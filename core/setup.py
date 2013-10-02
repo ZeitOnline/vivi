@@ -19,6 +19,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
+        'cssselect',
         'feedparser',
         'gocept.cache',
         'gocept.jslint>=0.2',
