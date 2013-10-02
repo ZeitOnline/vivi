@@ -52,7 +52,10 @@ class Paragraph(zeit.edit.block.SimpleElement):
         p = self.keep_allowed_tags(p)
         p.tag = self.type
         p.attrib.update(self.xml.attrib.items())
-        p = lxml.objectify.fromstring(lxml.etree.tostring(p))
+        # XXX do we want to set this as the default objectify parser in the
+        # whole system?
+        parser = lxml.objectify.makeparser(remove_blank_text=False)
+        p = lxml.objectify.fromstring(lxml.etree.tostring(p), parser=parser)
         self.xml.getparent().replace(self.xml, p)
         self.xml = p
 

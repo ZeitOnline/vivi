@@ -8,6 +8,9 @@ zeit.content.article changes
 
 - Update to lxml-3.x (#11611).
 
+- Fix bug with losing whitespace by properly configuring the lxml.objectify
+  parser (#12016).
+
 
 3.0.10 (2013-10-01)
 -------------------

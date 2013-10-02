@@ -87,6 +87,10 @@ class ParagraphTest(unittest.TestCase):
         self.compare(u'A <sub>subtext</sub> is filtered',
                      u'A subtext is filtered')
 
+    def test_leading_spaces_are_preserved(self):
+        self.compare(u'<em> <a>foo</a> bar</em>',
+                     u'<em> <a>foo</a> bar</em>')
+
 
 class UnorderedListTest(ParagraphTest):
 
