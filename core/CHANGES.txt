@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Support webdriver alongside seleniumrc for tests (#12573).
 
+- Update to lxml-3.x (#11611).
+
 
 2.7.0 (2013-09-24)
 ------------------

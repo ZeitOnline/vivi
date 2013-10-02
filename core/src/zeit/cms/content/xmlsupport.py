@@ -189,7 +189,7 @@ class PropertyToXMLAttribute(object):
         root = self.context.xml
         xpath = '//head/attribute[@ns="%s" and @name="%s"]' % (
             namespace, name)
-        for node in root.findall(xpath):
+        for node in root.xpath(xpath):
             parent = node.getparent()
             parent.remove(node)
 
