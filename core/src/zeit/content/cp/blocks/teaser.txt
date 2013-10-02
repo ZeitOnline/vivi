@@ -87,9 +87,9 @@ But its XML representation only contains an xi:include to the referenced page:
   <referenced_cp>http://xml.zeit.de/cp2</referenced_cp>
   <autopilot>true</autopilot>
   <xi:include xmlns:xi="http://www.w3.org/2003/XInclude"
+    href="/var/cms/work/cp2"
     parse="xml"
-    xpointer="xpointer(/centerpage/body/cluster[@area='feature']/region[@area='lead']/container/block[1])"
-    href="/var/cms/work/cp2">
+    xpointer="xpointer(/centerpage/body/cluster[@area='feature']/region[@area='lead']/container/block[1])">
     <xi:fallback>Ziel http://xml.zeit.de/cp2 nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>
@@ -160,8 +160,10 @@ This excerpt is used for the xi:include when possible:
 <container ...>
   <referenced_cp...>http://xml.zeit.de/cp2</referenced_cp>
   <autopilot>true</autopilot>
-  <xi:include ...xpointer="xpointer(/channel/container/block)"
-        href="/var/cms/work/cp2.lead">
+  <xi:include ...
+    href="/var/cms/work/cp2.lead"
+    parse="xml"
+    xpointer="xpointer(/channel/container/block)">
     <xi:fallback>Ziel http://xml.zeit.de/cp2.lead nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>
@@ -193,7 +195,7 @@ The xi:include is set accordingly:
 <container ...>
   <referenced_cp>http://xml.zeit.de/wirtschaft.feed</referenced_cp>
   <autopilot>true</autopilot>
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/work/wirtschaft.feed">
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="/var/cms/work/wirtschaft.feed" parse="xml" xpointer="xpointer(/channel/container/block)">
     <xi:fallback>Ziel http://xml.zeit.de/wirtschaft.feed nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>
@@ -206,7 +208,7 @@ The xi:include is also updated when the channel is updated:
 <container ...>
   <referenced_cp>http://xml.zeit.de/politik.feed</referenced_cp>
   <autopilot>true</autopilot>
-  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" parse="xml" xpointer="xpointer(/channel/container/block)" href="/var/cms/work/politik.feed">
+  <xi:include xmlns:xi="http://www.w3.org/2003/XInclude" href="/var/cms/work/politik.feed" parse="xml" xpointer="xpointer(/channel/container/block)">
     <xi:fallback>Ziel http://xml.zeit.de/politik.feed nicht erreichbar.</xi:fallback>
   </xi:include>
 </container>

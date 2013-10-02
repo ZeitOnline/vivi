@@ -206,9 +206,9 @@ XML of a RSS block
     url=".../heise.xml">
   <xi:include
       xmlns:xi="http://www.w3.org/2003/XInclude"
+      href="/var/cms/work/rss/<MD5>"
       parse="xml"
-      xpointer="xpointer(/feed/rss)"
-      href="/var/cms/work/rss/<MD5>">
+      xpointer="xpointer(/feed/rss)">
     <xi:fallback>Ziel http://xml.zeit.de/rss/<MD5> nicht erreichbar.</xi:fallback>
   </xi:include>
   <teaser_image base-id="http://xml.zeit.de/image-group" type="jpg" publication-date="" expires="">
