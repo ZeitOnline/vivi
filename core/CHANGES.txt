@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.8.0 (unreleased)
+2.8.0 (2013-10-02)
 ------------------
 
 - Support webdriver alongside seleniumrc for tests (#12573).
