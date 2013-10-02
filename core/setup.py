@@ -14,6 +14,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit', 'zeit.content'],
     install_requires=[
+        'cssselect',
         'Pillow',
         'gocept.form',
         'setuptools',

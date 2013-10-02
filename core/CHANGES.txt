@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.6.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to lxml-3.x (#11611).
 
 
 2.6.3 (2013-08-14)
