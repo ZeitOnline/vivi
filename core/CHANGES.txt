@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-2.0.6 (unreleased)
+2.0.6 (2013-10-11)
 ++++++++++++++++++
 
 - Fix topic link lable translations (instead of a single space character)
