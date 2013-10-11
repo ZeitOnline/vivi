@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.8.1 (unreleased)
+2.9.0 (2013-10-11)
 ------------------
 
 - Fix css field offsets to fix layout of topic links (VIV-153)
