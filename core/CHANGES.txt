@@ -4,7 +4,7 @@ zeit.cms changes
 2.10.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix bug that prevented renaming containers, e.g. ImageGroup, Folder (VIV-174).
 
 
 2.9.0 (2013-10-11)

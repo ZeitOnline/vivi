@@ -100,6 +100,7 @@ class Container(zope.container.contained.Contained):
             # As the object has a parent we assume that it should be moved.
             log.info("Moving %s to %s" % (object.uniqueId, new_id))
             self.connector.move(object.uniqueId, new_id)
+            object.uniqueId = new_id
             event = True
         else:
             # As the object has no parent we assume that it should be copied.

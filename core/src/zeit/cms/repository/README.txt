@@ -16,9 +16,8 @@ The repository contains objects representing collections in the WebDAV server:
 >>> import zope.component
 >>> from zeit.cms.repository.interfaces import IRepository
 >>> repository = zope.component.getUtility(IRepository)
->>> repository.keys()
-[u'online', u'2006', u'2007', u'politik.feed', u'testcontent',
- u'wirtschaft.feed']
+>>> 'online' in repository.keys()
+True
 
 >>> c_2007 = repository['online']['2007']
 >>> c_2007
@@ -228,17 +227,19 @@ ObjectMovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object a
     New: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_not_so_new_anymore
 u'i_am_not_so_new_anymore'
 
->>> list(repository)
-[u'online', u'2006', u'2007', u'i_am_not_so_new_anymore', u'politik.feed',
- u'testcontent', u'wirtschaft.feed']
+>>> 'i_am_new' in repository
+False
+>>> 'i_am_not_so_new_anymore' in repository
+True
 
 Rename it back:
 
 >>> renamer.renameItem('i_am_not_so_new_anymore', 'i_am_new')
 ObjectMovedEvent...
->>> list(repository)
-[u'online', u'2006', u'2007', u'i_am_new', u'politik.feed',
- u'testcontent', u'wirtschaft.feed']
+>>> 'i_am_new' in repository
+True
+>>> 'i_am_not_so_new_anymore' in repository
+False
 
 
 Deleting Content Object

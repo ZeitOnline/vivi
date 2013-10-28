@@ -38,16 +38,11 @@ There is a list of containers which are shown by default:
  'http://xml.zeit.de/repository/themen')
 
 
-From this list the default hidden_containers are derifed uppon instanciation.
-So everything which is not noted in the `default_shown_containers`:
+From this list the default hidden_containers are derived uppon instantiation.
+So everything which is not noted in the `default_shown_containers`, e.g.:
 
->>> pprint.pprint(sorted(preferences._hidden_containers))
-[u'http://xml.zeit.de/2006',
- u'http://xml.zeit.de/online/2005',
- u'http://xml.zeit.de/online/2006',
- u'http://xml.zeit.de/politik.feed',
- u'http://xml.zeit.de/testcontent',
- u'http://xml.zeit.de/wirtschaft.feed']
+>>> 'http://xml.zeit.de/testcontent' in preferences._hidden_containers
+True
 
 
 Let's see if is_hidden works:
@@ -60,16 +55,8 @@ Let's see if is_hidden works:
 True
 >>> preferences.is_hidden(repository['online']['2007'])
 False
->>> preferences.get_hidden_containers()
-<BTrees.OIBTree.OITreeSet object at 0x...>
->>> list(preferences.get_hidden_containers())
-[u'http://xml.zeit.de/2006',
- u'http://xml.zeit.de/online/2005',
- u'http://xml.zeit.de/online/2006',
- u'http://xml.zeit.de/politik.feed',
- u'http://xml.zeit.de/testcontent',
- u'http://xml.zeit.de/wirtschaft.feed']
-
+>>> 'http://xml.zeit.de/testcontent' in preferences.get_hidden_containers()
+True
 
 Let's show a container:
 
