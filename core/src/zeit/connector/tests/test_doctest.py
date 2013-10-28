@@ -3,10 +3,11 @@
 
 import doctest
 import unittest
+import zeit.connector.connector
+import zeit.connector.testing
 
 
 def test_suite():
-    import zeit.connector.testing
     suite = unittest.TestSuite()
 
     real = zeit.connector.testing.FunctionalDocFileSuite(
@@ -15,20 +16,20 @@ def test_suite():
         'resource.txt',
         'search-ft.txt',
         'uuid.txt',
-        )
+    )
     suite.addTest(real)
 
     mock = zeit.connector.testing.FunctionalDocFileSuite(
         'mock.txt',
         'uuid.txt',
         layer=zeit.connector.testing.mock_connector_layer,
-        )
+    )
     suite.addTest(mock)
 
     long_running = zeit.connector.testing.FunctionalDocFileSuite(
         'longrunning.txt',
         'stressing.txt',
-        )
+    )
     long_running.level = 3
     suite.addTest(long_running)
 
@@ -38,14 +39,13 @@ def test_suite():
         'invalidator.txt',
         'invalidation-events.txt',
         layer=zeit.connector.testing.zope_connector_layer,
-        )
+    )
     suite.addTest(functional)
 
-    import zeit.connector.connector
     suite.addTest(doctest.DocTestSuite(zeit.connector.connector))
     suite.addTest(doctest.DocFileSuite(
         'search.txt',
-        optionflags=doctest.ELLIPSIS, # doctest.NORMALIZE_WHITESPACE
+        optionflags=doctest.ELLIPSIS,
         package='zeit.connector'))
 
     return suite
