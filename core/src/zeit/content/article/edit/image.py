@@ -29,6 +29,14 @@ class Image(zeit.content.article.edit.reference.Reference):
         '.', 'custom-caption',
         zeit.content.article.edit.interfaces.IImage['custom_caption'])
 
+    title = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'title',
+        zeit.content.article.edit.interfaces.IImage['title'])
+
+    alt = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'alt',
+        zeit.content.article.edit.interfaces.IImage['alt'])
+
     # XXX this is a stopgap to fix #11730. The proper solution involves
     # a real Reference object, see #10686.
     set_manually = zeit.cms.content.property.ObjectPathAttributeProperty(

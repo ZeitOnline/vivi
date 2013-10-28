@@ -154,6 +154,16 @@ class IImage(IReference, ILayoutable):
         default=u'',
         required=False)
 
+    title = zope.schema.TextLine(
+        title=_('title attribute'),
+        default=u'',
+        required=False)
+
+    alt = zope.schema.TextLine(
+        title=_('alt attribute'),
+        default=u'',
+        required=False)
+
 
 class IGallery(IReference):
     """block for <gallery/> tags."""
