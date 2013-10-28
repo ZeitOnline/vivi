@@ -1,0 +1,25 @@
+# Copyright (c) 2013 gocept gmbh & co. kg
+# See also LICENSE.txt
+
+from zeit.connector.dav.interfaces import DAVNotFoundError
+import zeit.connector.testing
+
+
+# XXX most of connector.txt and mock.txt should be merged into here
+
+class ContractTest(object):
+
+    def test_listCollection_nonexistent_id_raises(self):
+        with self.assertRaises(DAVNotFoundError):
+            list(self.connector.listCollection(
+                'http://xml.zeit.de/nonexistent'))
+
+
+class ContractReal(ContractTest,
+                   zeit.connector.testing.ConnectorTest):
+    pass
+
+
+class ContractMock(ContractTest,
+                   zeit.connector.testing.MockTest):
+    pass

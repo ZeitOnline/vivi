@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 """Connect to the CMS backend."""
 
+from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
 import datetime
@@ -54,6 +55,12 @@ class Connector(object):
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path. """
+        try:
+            self[id]
+        except KeyError:
+            # XXX mimic the real behaviour -- real *should* probably raise
+            # KeyError, but doesn't at the moment.
+            raise DAVNotFoundError(404, 'Not Found', id, '')
         path = self._path(id)
         absolute_path = self._absolute_path(path)
         names = set()

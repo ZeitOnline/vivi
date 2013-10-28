@@ -4,7 +4,8 @@ CHANGES
 2.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``testing`` folder to mock connector data for uniformity with real
+  connector tests.
 
 
 2.0.3 (2013-09-24)
