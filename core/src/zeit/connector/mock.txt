@@ -29,13 +29,10 @@ Browsing
 The browsing interface basically allows listing collections:
 
 >>> from pprint import pprint
->>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
-[(u'2006', u'http://xml.zeit.de/2006'),
- (u'2007', u'http://xml.zeit.de/2007'),
- (u'online', u'http://xml.zeit.de/online'),
- (u'politik.feed', u'http://xml.zeit.de/politik.feed'),
- (u'testcontent', u'http://xml.zeit.de/testcontent'),
- (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+>>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
+[(u'2005', u'http://xml.zeit.de/online/2005'),
+ (u'2006', u'http://xml.zeit.de/online/2006'),
+ (u'2007', u'http://xml.zeit.de/online/2007')]
 
 >>> entry = list(connector.listCollection(
 ...     'http://xml.zeit.de/online/2007/01'))[0]
@@ -257,28 +254,20 @@ We can also add new collections to the collection:
 Removing Content From the Repository
 ====================================
 
-Removing words via the normal __delitem__ mechanismns. Let's look what we have
+Removing works via the normal __delitem__ mechanismns. Let's look what we have
 first:
 
->>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
-[(u'2006', u'http://xml.zeit.de/2006'),
- (u'2007', u'http://xml.zeit.de/2007'),
- (u'online', u'http://xml.zeit.de/online'),
- (u'politik.feed', u'http://xml.zeit.de/politik.feed'),
- (u'testcontent', u'http://xml.zeit.de/testcontent'),
- (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+>>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
+[(u'2005', u'http://xml.zeit.de/online/2005'),
+ (u'2006', u'http://xml.zeit.de/online/2006'),
+ (u'2007', u'http://xml.zeit.de/online/2007')]
 
-After remove the `politik.feed` it is also gone from the listing:
+>>> del connector['http://xml.zeit.de/online/2005']
+>>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
+[(u'2006', u'http://xml.zeit.de/online/2006'),
+ (u'2007', u'http://xml.zeit.de/online/2007')]
 
->>> del connector['http://xml.zeit.de/politik.feed']
->>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
-[(u'2006', u'http://xml.zeit.de/2006'),
- (u'2007', u'http://xml.zeit.de/2007'),
- (u'online', u'http://xml.zeit.de/online'),
- (u'testcontent', u'http://xml.zeit.de/testcontent'),
- (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
-
->>> connector['http://xml.zeit.de/politik.feed']
+>>> connector['http://xml.zeit.de/online/2005']
 Traceback (most recent call last):
 ...
 KeyError: ...
@@ -290,12 +279,6 @@ Moving content in the repository
 Content could be moved by removind/adding. This donesn't work nicely with
 folders though. So we implement a special method for moving:
 
->>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
-[(u'2006', u'http://xml.zeit.de/2006'),
- (u'2007', u'http://xml.zeit.de/2007'),
- (u'online', u'http://xml.zeit.de/online'),
- (u'testcontent', u'http://xml.zeit.de/testcontent'),
- (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
 >>> import zeit.connector.testing
 >>> zeit.connector.testing.print_tree(connector, 'http://xml.zeit.de/2006')
 http://xml.zeit.de/2006
@@ -304,12 +287,12 @@ http://xml.zeit.de/2006/52 collection
 http://xml.zeit.de/2006/DSC00109_2.JPG image
 
 >>> connector.move('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-27')
->>> pprint(list(connector.listCollection('http://xml.zeit.de/')))
-[(u'2006-27', u'http://xml.zeit.de/2006-27'),
- (u'2007', u'http://xml.zeit.de/2007'),
- (u'online', u'http://xml.zeit.de/online'),
- (u'testcontent', u'http://xml.zeit.de/testcontent'),
- (u'wirtschaft.feed', u'http://xml.zeit.de/wirtschaft.feed')]
+>>> ('2006-27', 'http://xml.zeit.de/2006-27') in connector.listCollection(
+...     'http://xml.zeit.de/')
+True
+>>> ('2006', 'http://xml.zeit.de/2006') in connector.listCollection(
+...     'http://xml.zeit.de/')
+False
 >>> zeit.connector.testing.print_tree(connector, 'http://xml.zeit.de/2006-27')
 http://xml.zeit.de/2006-27
 http://xml.zeit.de/2006-27/49 collection
