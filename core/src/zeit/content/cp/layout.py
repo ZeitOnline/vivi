@@ -57,8 +57,6 @@ class BlockLayout(object):
 # Aufmacher:Block:Großer Teaser mit Video statt Bild und Teaserliste
 
 
-
-
 class BarLayout(object):
 
     zope.interface.implements(ITeaserBarLayout)
@@ -67,7 +65,6 @@ class BarLayout(object):
         self.id = id
         self.title = title
         self.blocks = blocks
-
 
 
 MAX_TEASER_BAR_BLOCKS = 4
