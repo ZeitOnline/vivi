@@ -16,7 +16,6 @@ import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.quiz.source
 import zeit.edit.interfaces
-import zeit.workflow.interfaces
 import zope.container.interfaces
 import zope.interface
 
@@ -83,11 +82,11 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         required=False)
 
     og_description = zope.schema.TextLine(
-       title=_('Description'),
+        title=_('Description'),
         required=False)
 
     og_image = zope.schema.TextLine(
-       title=_('Image'),
+        title=_('Image'),
         required=False)
 
     keywords = zeit.cms.tagging.interfaces.Keywords(
@@ -362,7 +361,8 @@ class IFeed(zeit.cms.content.interfaces.IXMLContent,
     error = zope.schema.TextLine(
         required=False,
         readonly=True,
-        title=_("If parsing the feed fails, the error message is stored here."))
+        title=_("If parsing the feed fails, the error message is stored here.")
+    )
 
     entries = zope.schema.List(
         title=_("Titles of first 15 entries"),
