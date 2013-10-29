@@ -86,6 +86,10 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         zeit.content.cp.interfaces.ILead,
         gocept.lxml.interfaces.IObjectified)
 
+    display_amount = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'display-amount', zeit.content.cp.interfaces.ITeaserBlock[
+        'display_amount'])
+
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
         if self.xml.get('module') == 'teaser':

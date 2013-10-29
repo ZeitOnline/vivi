@@ -202,6 +202,10 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         title=_("Layout"),
         source=zeit.content.cp.layout.TeaserBlockLayoutSource())
 
+    display_amount = zope.schema.Int(
+        title=_('Amount of teasers to display'),
+        required=False, min=1, max=5)
+
 
 class AutopilotSource(zeit.cms.content.contentsource.CMSContentSource):
 

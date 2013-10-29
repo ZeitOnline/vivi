@@ -45,7 +45,8 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
 
-    form_fields = ()
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.cp.interfaces.ITeaserBlock).select('display_amount')
     close = False
 
     @property
@@ -80,9 +81,11 @@ class AutoPilotEditProperties(EditProperties):
 
     interface = zeit.content.cp.interfaces.IAutoPilotTeaserBlock
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.IAutoPilotTeaserBlock).select(
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.IAutoPilotTeaserBlock).select(
             'referenced_cp', 'autopilot', 'hide_dupes')
+        + EditProperties.form_fields)
 
 
 class Display(zeit.cms.browser.view.Base):
