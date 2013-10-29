@@ -107,7 +107,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
                 copier = zope.copypastemove.interfaces.IObjectCopier(content)
                 copied_name = copier.copyTo(content.__parent__)
                 content = content.__parent__[copied_name]
-            self._insert_content(index+i, content)
+            self._insert_content(index + i, content)
 
     def _insert_content(self, index, content):
         super(TeaserBlock, self).insert(index, content)
@@ -333,7 +333,8 @@ def apply_layout(context, event):
     The first one mustn't be small, all other have to be small.
     """
     cp_type = zeit.content.cp.interfaces.ICenterPage(context).type
-    if (cp_type == 'archive-print-volume') or (cp_type == 'archive-print-year'):
+    if (cp_type == 'archive-print-volume'
+        or cp_type == 'archive-print-year'):
         return
     # We are leaders!
     content = list(context.values())
@@ -392,7 +393,8 @@ class ExcerptDependency(object):
 
     def get_dependencies(self):
         cp_feed = zope.component.queryAdapter(
-            self.context, zeit.cms.syndication.interfaces.IFeed, name='excerpt')
+            self.context, zeit.cms.syndication.interfaces.IFeed,
+            name='excerpt')
         if cp_feed is None:
             return []
         return [cp_feed]
@@ -414,7 +416,6 @@ def cp_xi_include(context):
             context, ("/centerpage/body/cluster[@area='feature']"
                       "/region[@area='lead']/container/block[1]"))
     return include
-
 
 
 @zope.component.adapter(zeit.cms.syndication.feed.Feed)
