@@ -1,23 +1,25 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.cp.centerpage import CenterPage
+import zeit.cms.checkout.helper
 import zeit.content.cp.testing
+import zeit.edit.interfaces
+import zope.component
+import zope.component
 
 
 class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
         super(TestApplyLayout, self).setUp()
-        import zeit.content.cp.centerpage
-        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.cp = CenterPage()
         self.lead = self.cp['lead']
         self.teasers1 = self.factory()
         self.teasers2 = self.factory()
         self.teasers3 = self.factory()
 
     def factory(self, name='teaser'):
-        import zeit.edit.interfaces
-        import zope.component
         factory = zope.component.getAdapter(
             self.lead,
             zeit.edit.interfaces.IElementFactory, name=name)
@@ -56,3 +58,52 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
              self.teasers2.__name__,
              self.teasers3.__name__])
         self.assertFalse(hasattr(xml, 'layout'))
+
+
+class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(AutopilotTest, self).setUp()
+        self.repository['cp1'] = CenterPage()
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['cp1']) as cp:
+            cp.topiclink_title = 'title'
+            cp.topiclink_label_1 = 'label1'
+            cp.topiclink_url_1 = 'url1'
+        self.referenced_cp = self.repository['cp1']
+
+        self.repository['cp2'] = zeit.content.cp.centerpage.CenterPage()
+        self.cp = zeit.cms.checkout.interfaces.ICheckoutManager(
+            self.repository['cp2']).checkout()
+        self.teaser = zope.component.getAdapter(
+            self.cp['informatives'],
+            zeit.edit.interfaces.IElementFactory, name='teaser')()
+        self.teaser.referenced_cp = self.repository['cp1']
+
+    def test_includes_topiclinks_of_referenced_cp(self):
+        self.assertEqual(
+            self.referenced_cp.topiclink_title,
+            self.teaser.xml.topiclinks.title)
+        self.assertEqual(
+            self.referenced_cp.topiclink_url_1,
+            self.teaser.xml.topiclinks.topiclink.get('href'))
+        self.assertEqual(
+            self.referenced_cp.topiclink_label_1,
+            self.teaser.xml.topiclinks.topiclink)
+
+    def test_nothing_referenced_has_no_topiclinks_node(self):
+        self.teaser.referenced_cp = None
+        self.assertNotIn('topiclinks', self.teaser.xml)
+
+    def test_setting_reference_multiple_times_creates_only_one_topiclink_node(
+            self):
+        self.teaser.referenced_cp = self.repository['cp1']
+        self.assertEqual(1, len(self.teaser.xml.xpath('topiclinks')))
+
+    def test_topiclinks_are_updated_on_checkin(self):
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['cp1']) as cp:
+            cp.topiclink_label_1 = 'label2'
+        cp = zeit.cms.checkout.interfaces.ICheckinManager(self.cp).checkin()
+        self.assertEqual(
+            'label2', cp['informatives'].values()[-1].xml.topiclinks.topiclink)

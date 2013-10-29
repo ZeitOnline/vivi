@@ -5,7 +5,8 @@ zeit.content.cp changes
 2.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Write topiclinks of the referenced centerpage into the teaser block's
+  <container> (VIV-191).
 
 
 2.1.3 (2013-10-02)

@@ -221,6 +221,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
         self._p_changed = True
         self._referenced_cp = value
         self._update_autopilot(self.autopilot)
+        self._update_topiclinks()
 
     def clear(self):
         if not self.autopilot:
@@ -255,6 +256,36 @@ class AutoPilotTeaserBlock(TeaserBlock):
                     self.insert(position, content)
                     if position + 1 >= self.AUTOPILOT_ENTRIES:
                         break
+
+    def _update_topiclinks(self):
+        try:
+            self.xml.remove(self.xml.topiclinks)
+        except AttributeError:
+            pass
+
+        if (self.referenced_cp is None
+            or not zeit.content.cp.interfaces.ICenterPage.providedBy(
+                self.referenced_cp)):
+            return
+
+        self.xml.append(lxml.objectify.E.topiclinks())
+        if self.referenced_cp.topiclink_title:
+            self.xml.topiclinks.append(
+                lxml.objectify.E.title(self.referenced_cp.topiclink_title))
+        for i in [1, 2, 3]:
+            self._maybe_append_topiclink(
+                getattr(self.referenced_cp, 'topiclink_label_%s' % i),
+                getattr(self.referenced_cp, 'topiclink_url_%s' % i))
+
+        if not self.xml.topiclinks.getchildren():
+            self.xml.remove(self.xml.topiclinks)
+
+    def _maybe_append_topiclink(self, label, url):
+        if not url:
+            return
+        if not label:
+            label = url
+        self.xml.topiclinks.append(lxml.objectify.E.topiclink(label, href=url))
 
 
 zeit.edit.block.register_element_factory(
@@ -428,3 +459,18 @@ def feed_xi_include(context):
 
     """
     return create_xi_include(context, '/channel/container/block')
+
+
+@grokcore.component.subscribe(
+    zeit.content.cp.interfaces.ICenterPage,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def update_topiclinks_of_referenced_cps(context, event):
+    for area in context.values():
+        for block in area.values():
+            if not zeit.content.cp.interfaces.IAutoPilotTeaserBlock.providedBy(
+                    block):
+                continue
+            # XXX this method is somewhat private, but we can't re-set
+            # referenced_cp here (as we do with relateds for example), since
+            # that might result in different teasers being copied over
+            block._update_topiclinks()
