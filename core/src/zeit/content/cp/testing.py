@@ -29,13 +29,14 @@ product_config = """
 <product-config zeit.edit>
     rules-url file://%s
 </product-config>
-""" % (pkg_resources.resource_filename(__name__, 'layout.xml'),
+""" % (
+    pkg_resources.resource_filename(__name__, 'layout.xml'),
     pkg_resources.resource_filename(__name__, 'cpextra.xml'),
     pkg_resources.resource_filename(__name__, 'cp-types.xml'),
     pkg_resources.resource_filename(__name__, 'scales-fullgraphical.xml'),
-    pkg_resources.resource_filename('zeit.content.cp.tests.fixtures',
-                                    'example_rules.py'),
-       )
+    pkg_resources.resource_filename(
+        'zeit.content.cp.tests.fixtures', 'example_rules.py'),
+)
 
 
 layer = zeit.cms.testing.ZCMLLayer(
@@ -92,7 +93,6 @@ class FeedServer(HTTPLayer, layer):
         pass
 
 
-
 checker = zope.testing.renormalizing.RENormalizing([
     (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
      "<GUID>"),
@@ -145,7 +145,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
                 repository = zope.component.getUtility(
                     zeit.cms.repository.interfaces.IRepository)
                 repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-                cp = zeit.cms.checkout.interfaces.ICheckoutManager(
+                zeit.cms.checkout.interfaces.ICheckoutManager(
                     repository['cp']).checkout()
         transaction.commit()
 

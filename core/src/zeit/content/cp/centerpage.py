@@ -5,21 +5,17 @@ from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
 from zeit.connector.search import SearchVar
 import UserDict
-import gocept.async
 import grokcore.component
 import itertools
 import lxml.etree
 import lxml.objectify
 import pkg_resources
 import stabledict
-import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
-import zeit.cms.content.adapter
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.property
-import zeit.cms.related.interfaces
 import zeit.cms.related.related
 import zeit.cms.sitecontrol.interfaces
 import zeit.cms.type
@@ -41,11 +37,12 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
 
     default_template = pkg_resources.resource_string(__name__,
                                                      'cp-template.xml')
-    editable_areas = stabledict.StableDict(
-        [('lead', lxml.etree.XPath('cluster/region[@area="lead"]')),
-         ('informatives', lxml.etree.XPath('cluster/region[@area="informatives"]')),
-         ('teaser-mosaic', lxml.etree.XPath('cluster[@area="teaser-mosaic"]')),
-        ])
+    editable_areas = stabledict.StableDict([
+        ('lead', lxml.etree.XPath('cluster/region[@area="lead"]')),
+        ('informatives',
+         lxml.etree.XPath('cluster/region[@area="informatives"]')),
+        ('teaser-mosaic', lxml.etree.XPath('cluster[@area="teaser-mosaic"]')),
+    ])
 
     keys = editable_areas.keys
     __contains__ = editable_areas.__contains__
