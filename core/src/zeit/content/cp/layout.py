@@ -74,9 +74,9 @@ TEASER_BAR = [
     BarLayout('normal',
               u'Ressort Teaser mit Teaserliste', blocks=4),
     BarLayout('mr',
-              u'Ad-Medium Recangle', blocks=2),
+              u'Ad-Medium Rectangle', blocks=2),
     BarLayout('dmr',
-              u'Double Ad-Medium Recangle', blocks=1)
+              u'Double Ad-Medium Rectangle', blocks=1)
 ]
 
 
