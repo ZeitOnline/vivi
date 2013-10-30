@@ -4,6 +4,10 @@ CHANGES
 2.0.4 (unreleased)
 ------------------
 
+- Add a read-only filesystem connector that uses a directory tree of XML files
+  as its data storage. The mock connector now derives from the filesystem
+  connector.
+
 - Add ``testing`` folder to mock connector data for uniformity with real
   connector tests.
 

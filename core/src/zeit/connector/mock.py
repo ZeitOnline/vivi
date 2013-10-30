@@ -1,14 +1,12 @@
-# Copyright (c) 2007-2010 gocept gmbh & co. kg
+# Copyright (c) 2007-2013 gocept gmbh & co. kg
 # See also LICENSE.txt
-"""Connect to the CMS backend."""
+"""Filesystem connector configured for use in testing."""
 
-from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
 import datetime
 import httplib
 import logging
-import lxml.etree
 import os
 import os.path
 import pytz
@@ -17,11 +15,9 @@ import time
 import urlparse
 import uuid
 import zeit.connector.dav.interfaces
+import zeit.connector.filesystem
 import zeit.connector.interfaces
-import zeit.connector.resource
-import zope.app.file.image
 import zope.event
-import zope.interface
 
 
 ID_NAMESPACE = u'http://xml.zeit.de/'
@@ -30,7 +26,7 @@ repository_path = os.path.join(os.path.dirname(__file__), 'testcontent')
 log = logging.getLogger(__name__)
 
 
-class Connector(object):
+class Connector(zeit.connector.filesystem.Connector):
     """Connect to the CMS backend.
 
     The current implementation does *not* talk to the CMS backend but to
@@ -38,91 +34,33 @@ class Connector(object):
 
     """
 
-    zope.interface.implements(zeit.connector.interfaces.IConnector)
-
     _ignore_uuid_checks = False
 
     def __init__(self):
-        self._reset()
+        super(Connector, self).__init__(repository_path)
 
     def _reset(self):
+        super(Connector, self)._reset()
         self._locked = {}
         self._data = {}
         self._paths = {}
         self._deleted = set()
-        self._properties = {}
-        self._content_types = {}
 
     def listCollection(self, id):
         """List the filenames of a collection identified by path. """
-        try:
-            self[id]
-        except KeyError:
-            # XXX mimic the real behaviour -- real *should* probably raise
-            # KeyError, but doesn't at the moment.
-            raise DAVNotFoundError(404, 'Not Found', id, '')
-        path = self._path(id)
-        absolute_path = self._absolute_path(path)
-        names = set()
-        if os.path.isdir(absolute_path):
-            names = names | set(os.listdir(self._absolute_path(path)))
-        names = names | self._paths.get(path, set())
-        for name in sorted(names):
-            name = unicode(name)
-            if name.startswith('.'):
-                continue
-            id = self._make_id(path + (name, ))
-            if id in self._deleted:
-                continue
-            yield (name, id)
+        return ((name, _id)
+                for name, _id in super(Connector, self).listCollection(id)
+                if _id not in self._deleted)
 
     def getResourceType(self, id):
-        __traceback_info__ = id
-        path = self._absolute_path(self._path(id))
         if id in self._deleted:
             raise KeyError("The resource %r does not exist." % id)
-        if os.path.isdir(path):
-            return 'collection'
-        data = self._get_file(id).read(200)
-        if '<article>' in data:
-            # Ok, this is hardcore. But it's not production code, is it.
-            return 'article'
-        if '<channel>' in data:
-            return 'channel'
-        if '<centerpage>' in data:
-            return 'centerpage'
-        if '<testtype>' in data:
-            return 'testcontenttype'
-        content_type, width, height = zope.app.file.image.getImageInfo(data)
-        if content_type:
-            return 'image'
-        return 'unknown'
+        return super(Connector, self).getResourceType(id)
 
     def __getitem__(self, id):
         if id in self._deleted:
             raise KeyError(id)
-        properties = self._get_properties(id)
-        type = properties.get(
-            zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
-        if type is None:
-            type = self.getResourceType(id)
-            properties[
-                zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
-        if type == 'collection':
-            data = StringIO.StringIO()
-        else:
-            data = self._get_file(id)
-        path = self._path(id)
-        if path:
-            name = path[-1]
-        else:
-            name = ''
-        content_type = self._content_types.get(id, '')
-        if not content_type and type == 'collection':
-            content_type = 'httpd/unix-directory'
-        return zeit.connector.resource.Resource(
-            id, name, type, data, properties,
-            contentType=content_type)
+        return super(Connector, self).__getitem__(id)
 
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
@@ -192,13 +130,6 @@ class Connector(object):
         self._properties.pop(id, None)
         zope.event.notify(
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
-
-    def __contains__(self, id):
-        try:
-            resource = self[id]
-        except KeyError:
-            return False
-        return True
 
     def add(self, object, verify_etag=True):
         resource = zeit.connector.interfaces.IResource(object)
@@ -279,49 +210,15 @@ class Connector(object):
             return repository_path
         return os.path.join(repository_path, os.path.join(*path))
 
-    def _path(self, id):
-        if not id.startswith(ID_NAMESPACE):
-            raise ValueError("The id %r is invalid." % id)
-        id = id.replace(ID_NAMESPACE, '', 1)
-        if not id:
-            return ()
-        return tuple(id.split('/'))
-
     def _get_file(self, id):
         if id in self._data:
             return StringIO.StringIO(self._data[id])
-        filename = self._absolute_path(self._path(id))
-        __traceback_info__ = (id, filename)
-        try:
-            return file(filename, 'rb')
-        except IOError:
-            raise KeyError("The resource %r does not exist." % id)
-
-    def _make_id(self, path):
-        return urlparse.urljoin(ID_NAMESPACE, '/'.join(
-            element for element in path if element))
+        return super(Connector, self)._get_file(id)
 
     def _get_properties(self, id):
-        properties = self._properties.get(id)
-        if properties is not None:
-            return properties
-        properties = {}
-        # We have not properties for this type, try to read it from the file.
-        # This is sort of a hack, but we need it to get properties at all
-        if self.getResourceType(id) != 'collection':
-            data = self._get_file(id)
-            try:
-                xml = lxml.etree.parse(data)
-            except lxml.etree.LxmlError:
-                pass
-            else:
-                nodes = xml.xpath('//head/attribute')
-                for node in nodes:
-                    properties[node.get('name'), node.get('ns')] = (
-                        node.text)
+        properties = super(Connector, self)._get_properties(id)
         properties[('getlastmodified', 'DAV:')] = (
             u'Fri, 07 Mar 2008 12:47:16 GMT')
-        self._properties[id] = properties
         return properties
 
     def _set_properties(self, id, properties):
