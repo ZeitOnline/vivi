@@ -6,7 +6,6 @@ from zeit.content.cp.i18n import MessageFactory as _
 import gocept.lxml.interfaces
 import grokcore.component
 import lxml.objectify
-import rwproperty
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
@@ -126,7 +125,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         for entry in self:
             self.remove(entry)
 
-    @rwproperty.getproperty
+    @property
     def layout(self):
         default = None
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
@@ -137,7 +136,7 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
                 default = layout
         return default
 
-    @rwproperty.setproperty
+    @layout.setter
     def layout(self, layout):
         self._p_changed = True
         self.xml.set('module', layout.id)
@@ -202,11 +201,11 @@ class AutoPilotTeaserBlock(TeaserBlock):
             return getattr(super(AutoPilotTeaserBlock, self), method)(*args,
                                                                       **kw)
 
-    @rwproperty.getproperty
+    @property
     def autopilot(self):
         return self._autopilot
 
-    @rwproperty.setproperty
+    @autopilot.setter
     def autopilot(self, autopilot):
         self._p_changed = True
         if autopilot and self.referenced_cp is None:
@@ -216,11 +215,11 @@ class AutoPilotTeaserBlock(TeaserBlock):
             return
         self._update_autopilot(autopilot)
 
-    @rwproperty.getproperty
+    @property
     def referenced_cp(self):
         return self._referenced_cp
 
-    @rwproperty.setproperty
+    @referenced_cp.setter
     def referenced_cp(self, value):
         self._p_changed = True
         self._referenced_cp = value

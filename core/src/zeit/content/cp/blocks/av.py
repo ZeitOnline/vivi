@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
-import rwproperty
 import zc.iso8601.parse
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
@@ -20,23 +19,23 @@ class AVBlock(zeit.content.cp.blocks.block.Block):
     def first_child(self):
         return self.xml.getchildren()[0]
 
-    @rwproperty.getproperty
+    @property
     def format(self):
         return self.first_child.get('format')
 
-    @rwproperty.setproperty
+    @format.setter
     def format(self, value):
         self._p_changed = True
         return self.first_child.set('format', value)
 
     # XXX very abridged version of zeit.cms.content.dav.DatetimeProperty
-    @rwproperty.getproperty
+    @property
     def expires(self):
         value = self.first_child.get('expires')
         if value:
             return zc.iso8601.parse.datetimetz(value)
 
-    @rwproperty.setproperty
+    @expires.setter
     def expires(self, value):
         self._p_changed = True
         value = value.isoformat() if value else ''

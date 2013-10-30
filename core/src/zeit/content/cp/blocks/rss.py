@@ -6,7 +6,6 @@ import thread
 from zeit.content.cp.blocks.teaser import create_xi_include
 from zeit.content.cp.i18n import MessageFactory as _
 import lxml.objectify
-import rwproperty
 import zeit.cms.connector
 import zeit.cms.content.adapter
 import zeit.cms.content.xmlsupport
@@ -55,16 +54,16 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
                 setattr(self, field,
                         zeit.content.cp.interfaces.IRSSBlock[field].default)
 
-    @rwproperty.setproperty
+    @property
+    def url(self):
+        return self.xml.get('url')
+
+    @url.setter
     def url(self, url):
         self.xml.set('url', url)
         self._p_changed = True
         self.xml.replace(self.xml.getchildren()[0],
                          create_xi_include(self.feed, '/feed/rss'))
-
-    @rwproperty.getproperty
-    def url(self):
-        return self.xml.get('url')
 
     @property
     def feed(self):
