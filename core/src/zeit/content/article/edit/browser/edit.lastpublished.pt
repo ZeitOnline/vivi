@@ -1,14 +1,14 @@
 <tal:block i18n:domain="zeit.cms">
   <div id="lastpublished"
        tal:condition="view/publishinfo/published"
-       i18n:translate="last-publish-information">
+       i18n:translate="">
     last published at <span tal:content="view/date" i18n:name="date" />
     on <span tal:content="view/time" i18n:name="time"/>
     by <span tal:content="view/last_published_by"
       i18n:name="by"/>
   </div>
   <div tal:condition="not:view/publishinfo/published"
-       i18n:translate="not-published">
+       i18n:translate="">
     not published
   </div>
 </tal:block>
