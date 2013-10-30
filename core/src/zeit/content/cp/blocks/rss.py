@@ -2,22 +2,15 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import thread
 from zeit.content.cp.blocks.teaser import create_xi_include
 from zeit.content.cp.i18n import MessageFactory as _
 import lxml.objectify
-import zeit.cms.connector
-import zeit.cms.content.adapter
-import zeit.cms.content.xmlsupport
-import zeit.cms.repository.interfaces
+import zeit.cms.content.property
 import zeit.content.cp.blocks.block
-import zeit.content.cp.feed
 import zeit.content.cp.interfaces
-import zope.app.appsetup.product
 import zope.component
 import zope.container.interfaces
 import zope.interface
-import zeit.cms.content.property
 
 
 class RSSBlock(zeit.content.cp.blocks.block.Block):
@@ -73,4 +66,4 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
 
 zeit.edit.block.register_element_factory(
     [zeit.content.cp.interfaces.IInformatives,
-    zeit.content.cp.interfaces.ITeaserBar], 'rss', _('RSS block'))
+     zeit.content.cp.interfaces.ITeaserBar], 'rss', _('RSS block'))
