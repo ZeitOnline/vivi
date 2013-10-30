@@ -4,7 +4,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
-import zeit.cms.checkout.interfaces
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.edit.browser.block
@@ -128,7 +127,7 @@ class Display(zeit.cms.browser.view.Base):
         idx = 0
         self.columns = []
         for amount in columns:
-            self.columns.append(teasers[idx:idx+amount])
+            self.columns.append(teasers[idx:idx + amount])
             idx += amount
 
     def _make_text_entry(self, metadata, css_class, name=None):
@@ -201,7 +200,6 @@ class EditContents(zeit.cms.browser.view.Base):
         for content in self.context:
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
-            locking_indicator = None
             url = None
             if metadata is None:
                 editable = False
@@ -248,9 +246,8 @@ class ChangeLayout(zeit.edit.browser.view.Action):
 
     def update(self):
         layout = zope.component.getMultiAdapter(
-            (self.interface['layout'].source(self.context),
-             self.request), zope.browser.interfaces.ITerms).getValue(
-                 self.layout_id)
+            (self.interface['layout'].source(self.context), self.request),
+            zope.browser.interfaces.ITerms).getValue(self.layout_id)
         self.context.layout = layout
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
