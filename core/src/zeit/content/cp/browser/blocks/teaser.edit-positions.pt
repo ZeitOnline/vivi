@@ -1,0 +1,12 @@
+<div i18n:domain="zeit.cms" class="floating">
+
+  <form id="lightbox.form" class="teaser-block-positions-form"
+        tal:attributes="action request/URL"
+        tal:content="structure view/form"/>
+
+  <script language="javascript"
+          tal:condition="view/close">
+    self.close();
+  </script>
+
+</div>

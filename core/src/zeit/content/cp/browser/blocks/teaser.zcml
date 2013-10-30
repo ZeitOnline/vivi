@@ -149,4 +149,32 @@
     weight="150"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="edit-positions"
+    template="layout.teaser.edit-positions.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="teaser.edit-positions"
+    class=".teaser.EditPositions"
+    permission="zeit.EditContent"
+    />
+
+  <adapter
+      for=".teaser.IFixedList
+           zope.schema.interfaces.IField
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
+      factory=".teaser.FixedSequenceWidget"
+      permission="zope.Public"
+      />
+
 </configure>

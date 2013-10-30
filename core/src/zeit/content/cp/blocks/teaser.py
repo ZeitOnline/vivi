@@ -141,6 +141,17 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         self._p_changed = True
         self.xml.set('module', layout.id)
 
+    @property
+    def image_positions(self):
+        values = self.xml.get('image-positions', '').split(',')
+        return [int(x) for x in values]
+
+    @image_positions.setter
+    def image_positions(self, value):
+        if not value:
+            self.xml.attrib.pop('image-positions', None)
+        self.xml.set('image-positions', ','.join([str(x) for x in value]))
+
 
 class AutoPilotTeaserBlock(TeaserBlock):
 

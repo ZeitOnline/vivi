@@ -12,6 +12,8 @@ zeit.content.cp changes
 
 - Add field ``display_amount`` to teaser blocks (VIV-170/VIV-183).
 
+- Allow configuring which teaser positions should display an image (VIV-202).
+
 
 2.1.3 (2013-10-02)
 ------------------

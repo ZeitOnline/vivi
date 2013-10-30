@@ -2,14 +2,15 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
-import zeit.edit.browser.block
-import zeit.edit.browser.view
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
+import zeit.edit.browser.block
+import zeit.edit.browser.view
 import zope.app.pagetemplate
 import zope.cachedescriptors.property
 import zope.component
@@ -98,8 +99,8 @@ class Display(zeit.cms.browser.view.Base):
         return ' '.join(css)
 
     def update(self):
-        self.image = None
         teasers = []
+        self.first_image = None
         for i, content in enumerate(self.context):
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
@@ -117,11 +118,22 @@ class Display(zeit.cms.browser.view.Base):
             for name in ('teaserTitle', 'teaserText'):
                 texts.append(self._make_text_entry(metadata, name))
 
+            # XXX Users are not prevented from selecting the first position in
+            # image_positions, which probably doesn't matter for XSLT, but
+            # breaks our UI since we then display *two* images for the first
+            # teaser.
+            if i in self.context.image_positions:
+                # XXX hard-coded small image size, taken from 'buttons'-layout
+                image = self.get_image(content, '148x84')
+            else:
+                image = None
             teasers.append(dict(
                 texts=texts,
+                image=image,
                 uniqueId=content.uniqueId))
+
             if i == 0:
-                self.image = self.get_image(content)
+                self.first_image = self.get_image(content)
 
         columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
         idx = 0
@@ -135,12 +147,14 @@ class Display(zeit.cms.browser.view.Base):
             name = css_class
         return dict(css_class=css_class, content=getattr(metadata, name))
 
-    def get_image(self, content):
-        layout = self.context.layout
-        if layout is None:
-            return
-        if not layout.image_pattern:
-            return
+    def get_image(self, content, image_pattern=None):
+        if image_pattern is None:
+            layout = self.context.layout
+            if layout is None:
+                return
+            if not layout.image_pattern:
+                return
+            image_pattern = layout.image_pattern
         images = zeit.content.image.interfaces.IImages(content, None)
         if images is None:
             preview = zope.component.queryMultiAdapter(
@@ -153,7 +167,7 @@ class Display(zeit.cms.browser.view.Base):
         image = images.image
         if zeit.content.image.interfaces.IImageGroup.providedBy(image):
             for name in image:
-                if layout.image_pattern in name:
+                if image_pattern in name:
                     return self.url(image[name], '@@raw')
         else:
             return self.url(image, '@@raw')
@@ -342,3 +356,68 @@ class Countings(object):
                 return self.countings.detail_url
             except AttributeError:
                 pass
+
+
+class IFixedList(zope.interface.Interface):
+    pass
+
+
+class IPositions(zope.interface.Interface):
+
+    image_positions = zope.schema.List(
+        title=_('Display image at these positions'),
+        value_type=zope.schema.Bool(default=True),
+        required=False)
+    zope.interface.alsoProvides(image_positions, IFixedList)
+
+
+class FixedSequenceWidget(zope.formlib.sequencewidget.ListSequenceWidget):
+
+    def _update(self):
+        super(FixedSequenceWidget, self)._update()
+        self.need_add = False
+        self.need_delete = False
+
+
+class TeaserPositions(grok.Adapter):
+
+    grok.context(zeit.content.cp.interfaces.ITeaserBlock)
+    grok.implements(IPositions)
+
+    @property
+    def image_positions(self):
+        if self.context.display_amount:
+            amount = self.context.display_amount
+        else:
+            amount = len(self.context)
+
+        if not self.context.image_positions:
+            return [True] * amount
+        return [i in self.context.image_positions for i in range(amount)]
+
+    @image_positions.setter
+    def image_positions(self, value):
+        positions = []
+        for i, enabled in enumerate(value):
+            if not enabled:
+                continue
+            positions.append(i)
+        self.context.image_positions = positions
+
+
+class EditPositions(zope.formlib.form.SubPageEditForm):
+
+    form_fields = zope.formlib.form.FormFields(IPositions)
+    close = False
+
+    template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'teaser.edit-positions.pt')
+
+    @property
+    def form(self):
+        return super(EditPositions, self).template
+
+    @zope.formlib.form.action(_('Apply'))
+    def handle_edit_action(self, action, data):
+        self.close = True
+        return super(EditPositions, self).handle_edit_action.success(data)

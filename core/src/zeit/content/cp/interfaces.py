@@ -206,6 +206,11 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         title=_('Amount of teasers to display'),
         required=False, min=1, max=5)
 
+    image_positions = zope.schema.List(
+        title=_('Display image at these positions'),
+        value_type=zope.schema.Int(),
+        required=False)
+
 
 class AutopilotSource(zeit.cms.content.contentsource.CMSContentSource):
 
