@@ -235,7 +235,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
         self._p_changed = True
         self._referenced_cp = value
         self._update_autopilot(self.autopilot)
-        self._update_topiclinks()
+        self.update_topiclinks()
 
     def clear(self):
         if not self.autopilot:
@@ -271,7 +271,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
                     if position + 1 >= self.AUTOPILOT_ENTRIES:
                         break
 
-    def _update_topiclinks(self):
+    def update_topiclinks(self):
         try:
             self.xml.remove(self.xml.topiclinks)
         except AttributeError:
@@ -484,7 +484,7 @@ def update_topiclinks_of_referenced_cps(context, event):
             if not zeit.content.cp.interfaces.IAutoPilotTeaserBlock.providedBy(
                     block):
                 continue
-            # XXX this method is somewhat private, but we can't re-set
-            # referenced_cp here (as we do with relateds for example), since
-            # that might result in different teasers being copied over
-            block._update_topiclinks()
+            # Note that we can't simply re-set referenced_cp here (as we do
+            # with relateds for example), since that might result in different
+            # teasers being copied over
+            block.update_topiclinks()
