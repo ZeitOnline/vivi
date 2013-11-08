@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Oct 30 14:32:41 2013\n"
-"PO-Revision-Date: 2013-10-30 14:33+0100\n"
+"PO-Revision-Date: 2013-11-08 08:10+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2337,7 +2337,7 @@ msgstr "↑ Links | Rechts ↓"
 #: zeit/content/cp/browser/blocks/teaser.py:363
 #: zeit/content/cp/interfaces.py:210
 msgid "Display image at these positions"
-msgstr "An diesen Positionen Bild anzeigen"
+msgstr "Parkett: Bildpositionen"
 
 #: zeit/content/cp/browser/configure.zcml:24
 #: zeit/content/gallery/browser/configure.zcml:66
@@ -2454,7 +2454,7 @@ msgstr "»Weiterlesen«-URL"
 
 #: zeit/content/cp/interfaces.py:206
 msgid "Amount of teasers to display"
-msgstr "Anzahl anzuzeigender Teaser"
+msgstr "Parkett: Anzahl Teaser"
 
 #: zeit/content/cp/interfaces.py:229
 msgid "Get teasers from (autopilot)"
