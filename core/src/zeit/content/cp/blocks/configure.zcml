@@ -40,7 +40,7 @@
       set_schema="..interfaces.IAutoPilotReadTeaserBlock"
       permission="zeit.EditContent"/>
     <require
-      interface="..interfaces.IWriteTeaserBlock"
+      interface="..interfaces.IAutoPilotWriteTeaserBlock"
       permission="zeit.EditContent"/>
   </class>
 

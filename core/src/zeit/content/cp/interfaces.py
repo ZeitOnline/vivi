@@ -249,15 +249,20 @@ class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
     pass
 
 
+class IAutoPilotWriteTeaserBlock(IWriteTeaserBlock):
+
+    def update_topiclinks():
+        """Copy topiclinks of the referenced CP into our XML."""
+
+
 class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
     """A list of teasers."""
 
 
-class IAutoPilotTeaserBlock(IAutoPilotReadTeaserBlock, ITeaserBlock):
+class IAutoPilotTeaserBlock(
+        ITeaserBlock,
+        IAutoPilotReadTeaserBlock, IAutoPilotWriteTeaserBlock):
     """A list of teasers."""
-
-    def update_topiclinks():
-        """Copy topiclinks of the referenced CP into our XML."""
 
 
 class IReadTeaserBlockColumns(zope.interface.Interface):
