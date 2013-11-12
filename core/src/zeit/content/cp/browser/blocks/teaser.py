@@ -126,7 +126,7 @@ class Display(zeit.cms.browser.view.Base):
             if i == 0:
                 self.first_image = self.get_image(content)
 
-            if i in self.context.image_positions:
+            if i in self.context.suppress_image_positions:
                 image = None
             else:
                 # XXX hard-coded small image size, taken from 'buttons'-layout
@@ -401,9 +401,10 @@ class TeaserPositions(grok.Adapter):
         else:
             amount = len(self.context)
 
-        if not self.context.image_positions:
+        if not self.context.suppress_image_positions:
             return [True] * amount
-        return [i not in self.context.image_positions for i in range(amount)]
+        return [i not in self.context.suppress_image_positions
+                for i in range(amount)]
 
     @image_positions.setter
     def image_positions(self, value):
@@ -411,7 +412,7 @@ class TeaserPositions(grok.Adapter):
         for i, enabled in enumerate(value):
             if not enabled:
                 positions.append(i)
-        self.context.image_positions = positions
+        self.context.suppress_image_positions = positions
 
 
 class EditPositions(zope.formlib.form.SubPageEditForm):
