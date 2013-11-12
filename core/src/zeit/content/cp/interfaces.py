@@ -206,6 +206,8 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         title=_('Amount of teasers to display'),
         required=False, min=1, max=5)
 
+    # XXX: bad name, we store those positions where *no* image should be
+    # displayed
     image_positions = zope.schema.List(
         title=_('Display image at these positions'),
         value_type=zope.schema.Int(),

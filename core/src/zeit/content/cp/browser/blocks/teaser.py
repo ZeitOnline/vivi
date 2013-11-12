@@ -118,22 +118,19 @@ class Display(zeit.cms.browser.view.Base):
             for name in ('teaserTitle', 'teaserText'):
                 texts.append(self._make_text_entry(metadata, name))
 
-            # XXX Users are not prevented from selecting the first position in
-            # image_positions, which probably doesn't matter for XSLT, but
-            # breaks our UI since we then display *two* images for the first
-            # teaser.
+            if i == 0:
+                self.first_image = self.get_image(content)
+
             if i in self.context.image_positions:
+                image = None
+            else:
                 # XXX hard-coded small image size, taken from 'buttons'-layout
                 image = self.get_image(content, '148x84')
-            else:
-                image = None
+
             teasers.append(dict(
                 texts=texts,
                 image=image,
                 uniqueId=content.uniqueId))
-
-            if i == 0:
-                self.first_image = self.get_image(content)
 
         columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
         idx = 0
@@ -141,6 +138,14 @@ class Display(zeit.cms.browser.view.Base):
         for amount in columns:
             self.columns.append(teasers[idx:idx + amount])
             idx += amount
+
+        # XXX Users are not prevented from selecting the first position in
+        # image_positions, which probably doesn't matter for XSLT, but
+        # breaks our UI since we then display *two* images for the first
+        # teaser.
+        if self.first_image is not None:
+            for column in self.columns:
+                column[0]['image'] = None
 
     def _make_text_entry(self, metadata, css_class, name=None):
         if name is None:
@@ -393,15 +398,14 @@ class TeaserPositions(grok.Adapter):
 
         if not self.context.image_positions:
             return [True] * amount
-        return [i in self.context.image_positions for i in range(amount)]
+        return [i not in self.context.image_positions for i in range(amount)]
 
     @image_positions.setter
     def image_positions(self, value):
         positions = []
         for i, enabled in enumerate(value):
             if not enabled:
-                continue
-            positions.append(i)
+                positions.append(i)
         self.context.image_positions = positions
 
 
