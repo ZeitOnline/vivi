@@ -102,6 +102,11 @@ class Display(zeit.cms.browser.view.Base):
         teasers = []
         self.first_image = None
         for i, content in enumerate(self.context):
+
+            if (self.context.display_amount is not None
+                and i + 1 > self.context.display_amount):
+                break
+
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
             if metadata is None:
