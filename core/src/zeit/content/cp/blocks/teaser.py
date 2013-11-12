@@ -144,13 +144,14 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
     @property
     def image_positions(self):
         values = self.xml.get('image-positions', '').split(',')
-        return [int(x) for x in values if x]
+        return [int(x) - 1 for x in values if x]
 
     @image_positions.setter
     def image_positions(self, value):
         if not value:
             self.xml.attrib.pop('image-positions', None)
-        self.xml.set('image-positions', ','.join([str(x) for x in value]))
+            return
+        self.xml.set('image-positions', ','.join([str(x + 1) for x in value]))
 
 
 class AutoPilotTeaserBlock(TeaserBlock):

@@ -107,3 +107,27 @@ class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
         cp = zeit.cms.checkout.interfaces.ICheckinManager(self.cp).checkin()
         self.assertEqual(
             'label2', cp['informatives'].values()[-1].xml.topiclinks.topiclink)
+
+
+class ImagePositionsTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(ImagePositionsTest, self).setUp()
+        self.cp = CenterPage()
+        self.teaser = zope.component.getAdapter(
+            self.cp['lead'],
+            zeit.edit.interfaces.IElementFactory, name='teaser')()
+
+    def test_attribute_not_present_returns_empty_list(self):
+        self.assertEqual([], self.teaser.image_positions)
+
+    def test_setting_to_empty_value_removes_attribute(self):
+        self.teaser.image_positions = []
+        ABSENT = object()
+        self.assertEqual(
+            ABSENT, self.teaser.xml.get('image-positions', ABSENT))
+
+    def test_stores_list_comma_separated_with_index_starting_at_1(self):
+        self.teaser.image_positions = [3, 4]
+        self.assertEqual([3, 4], self.teaser.image_positions)
+        self.assertEqual('4,5', self.teaser.xml.get('image-positions'))
