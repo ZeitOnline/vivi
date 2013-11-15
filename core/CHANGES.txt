@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.1.4 (unreleased)
+2.2.0 (2013-11-15)
 ------------------
 
 - Add ``parquet`` layout for teaser bars (VIV-164).
