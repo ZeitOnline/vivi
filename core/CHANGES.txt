@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.0.12 (unreleased)
+3.0.12 (2013-11-15)
 -------------------
 
 - Allow setting ``title`` and ``alt`` attribute on image blocks (VIV-157).
