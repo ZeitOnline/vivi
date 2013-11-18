@@ -2,7 +2,9 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.cp.interfaces import IAutoPilotTeaserBlock
 import grokcore.component as grok
+import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
@@ -57,11 +59,8 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
         'teaser.edit-properties.pt')
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
+    form_fields = ()
 
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.cp.interfaces.ITeaserBlock).select('display_amount') +
-        zope.formlib.form.FormFields(IPositions))
     close = False
 
     @property
@@ -99,8 +98,8 @@ class AutoPilotEditProperties(EditProperties):
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.IAutoPilotTeaserBlock).select(
-            'referenced_cp', 'autopilot', 'hide_dupes')
-        + EditProperties.form_fields)
+            'referenced_cp', 'autopilot', 'hide_dupes', 'display_amount')
+        + zope.formlib.form.FormFields(IPositions))
 
 
 class FixedSequenceWidget(zope.formlib.sequencewidget.ListSequenceWidget):
@@ -152,7 +151,8 @@ class Display(zeit.cms.browser.view.Base):
         self.first_image = None
         for i, content in enumerate(self.context):
 
-            if (self.context.display_amount is not None
+            if (IAutoPilotTeaserBlock.providedBy(self.context)
+                and self.context.display_amount is not None
                 and i + 1 > self.context.display_amount):
                 break
 
@@ -175,7 +175,8 @@ class Display(zeit.cms.browser.view.Base):
             if i == 0:
                 self.first_image = self.get_image(content)
 
-            if i in self.context.suppress_image_positions:
+            if (IAutoPilotTeaserBlock.providedBy(self.context)
+                and i in self.context.suppress_image_positions):
                 image = None
             else:
                 # XXX hard-coded small image size, taken from 'buttons'-layout

@@ -85,10 +85,6 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         zeit.content.cp.interfaces.ILead,
         gocept.lxml.interfaces.IObjectified)
 
-    display_amount = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'display-amount', zeit.content.cp.interfaces.ITeaserBlock[
-        'display_amount'])
-
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
         if self.xml.get('module') == 'teaser':
@@ -141,19 +137,6 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         self._p_changed = True
         self.xml.set('module', layout.id)
 
-    @property
-    def suppress_image_positions(self):
-        values = self.xml.get('suppress-image-positions', '').split(',')
-        return [int(x) - 1 for x in values if x]
-
-    @suppress_image_positions.setter
-    def suppress_image_positions(self, value):
-        if not value:
-            self.xml.attrib.pop('suppress-image-positions', None)
-            return
-        self.xml.set('suppress-image-positions', ','.join([
-            str(x + 1) for x in value]))
-
 
 class AutoPilotTeaserBlock(TeaserBlock):
 
@@ -172,6 +155,10 @@ class AutoPilotTeaserBlock(TeaserBlock):
         '.', 'hide-dupes', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
         'hide_dupes'])
 
+    display_amount = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'display-amount',
+        zeit.content.cp.interfaces.IAutoPilotTeaserBlock['display_amount'])
+
     AUTOPILOT_ENTRIES = 6
 
     def __init__(self, *args, **kw):
@@ -179,6 +166,19 @@ class AutoPilotTeaserBlock(TeaserBlock):
         if 'hide-dupes' not in self.xml.attrib:
             self.hide_dupes = zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
                 'hide_dupes'].default
+
+    @property
+    def suppress_image_positions(self):
+        values = self.xml.get('suppress-image-positions', '').split(',')
+        return [int(x) - 1 for x in values if x]
+
+    @suppress_image_positions.setter
+    def suppress_image_positions(self, value):
+        if not value:
+            self.xml.attrib.pop('suppress-image-positions', None)
+            return
+        self.xml.set('suppress-image-positions', ','.join([
+            str(x + 1) for x in value]))
 
     def __iter__(self):
         if self.autopilot:

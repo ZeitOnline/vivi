@@ -115,7 +115,7 @@ class SuppressImagePositionsTest(zeit.content.cp.testing.FunctionalTestCase):
         super(SuppressImagePositionsTest, self).setUp()
         self.cp = CenterPage()
         self.teaser = zope.component.getAdapter(
-            self.cp['lead'],
+            self.cp['informatives'],
             zeit.edit.interfaces.IElementFactory, name='teaser')()
 
     def test_attribute_not_present_returns_empty_list(self):

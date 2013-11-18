@@ -202,15 +202,6 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         title=_("Layout"),
         source=zeit.content.cp.layout.TeaserBlockLayoutSource())
 
-    display_amount = zope.schema.Int(
-        title=_('Amount of teasers to display'),
-        required=False, min=1, max=5)
-
-    suppress_image_positions = zope.schema.List(
-        title=_('Display image at these positions'),
-        value_type=zope.schema.Int(),
-        required=False)
-
 
 class AutopilotSource(zeit.cms.content.contentsource.CMSContentSource):
 
@@ -236,6 +227,15 @@ class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
     hide_dupes = zope.schema.Bool(
         title=_('Hide duplicate teasers'),
         default=True)
+
+    display_amount = zope.schema.Int(
+        title=_('Amount of teasers to display'),
+        required=False, min=1, max=5)
+
+    suppress_image_positions = zope.schema.List(
+        title=_('Display image at these positions'),
+        value_type=zope.schema.Int(),
+        required=False)
 
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
