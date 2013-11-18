@@ -4,6 +4,7 @@
 from zeit.content.cp.i18n import MessageFactory as _
 from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
 import urlparse
+import zc.sourcefactory.basic
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -18,6 +19,7 @@ import zeit.content.quiz.source
 import zeit.edit.interfaces
 import zope.container.interfaces
 import zope.interface
+import zope.schema.vocabulary
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'
@@ -214,6 +216,19 @@ class AutopilotSource(zeit.cms.content.contentsource.CMSContentSource):
 autopilotSource = AutopilotSource()
 
 
+# ObjectPathAttributeProperty talks directly to the field,
+# so it has no access to the token machinery, thus no conversion
+# from/to string happens there -- so we need to do that explicitly.
+class IntChoice(zope.schema.Choice):
+
+    def fromUnicode(self, value):
+        try:
+            value = int(value)
+        except:
+            pass
+        return super(IntChoice, self).fromUnicode(value)
+
+
 class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
 
     referenced_cp = zope.schema.Choice(
@@ -228,9 +243,9 @@ class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
         title=_('Hide duplicate teasers'),
         default=True)
 
-    display_amount = zope.schema.Int(
+    display_amount = IntChoice(
         title=_('Amount of teasers to display'),
-        required=False, min=1, max=5)
+        required=False, values=range(1, 6))
 
     suppress_image_positions = zope.schema.List(
         title=_('Display image at these positions'),
