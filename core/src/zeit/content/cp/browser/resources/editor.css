@@ -143,6 +143,11 @@
   width: 74%;
 }
 
+.autopilot-title {
+  margin-left: 1em;
+  font-weight: bold;
+}
+
 /* dragger */
 
 .dragger {

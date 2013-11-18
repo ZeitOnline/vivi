@@ -1,0 +1,3 @@
+<span class="autopilot-title"
+    tal:condition="python: context.referenced_cp is not None"
+    tal:content="context/referenced_cp/title"/>

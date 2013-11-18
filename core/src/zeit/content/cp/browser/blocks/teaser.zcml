@@ -93,6 +93,17 @@
     permission="zeit.EditContent"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutoPilotTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="title"
+    template="layout.teaser.autopilot-title.pt"
+    permission="zeit.EditContent"
+    weight="15"
+    />
+
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
