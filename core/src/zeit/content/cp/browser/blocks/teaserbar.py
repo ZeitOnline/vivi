@@ -9,7 +9,7 @@ import zope.component
 class EditProperties(zeit.content.cp.browser.blocks.teaser.EditProperties):
 
     interface = zeit.content.cp.interfaces.ITeaserBar
-    layout_prefix  = 'teaserbar'
+    layout_prefix = 'teaserbar'
 
     form_fields = []
 
