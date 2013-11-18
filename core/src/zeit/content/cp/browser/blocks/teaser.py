@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.cp.interfaces import IAutoPilotTeaserBlock
+import gocept.form.grouped
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
@@ -91,7 +92,11 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
         return super(EditProperties, self).handle_edit_action.success(data)
 
 
-class AutoPilotEditProperties(EditProperties):
+# XXX this cobbles together just enough to combine SubPageForm and GroupedForm
+class AutoPilotEditProperties(
+        EditProperties,
+        zeit.cms.browser.form.WidgetCSSMixin,
+        gocept.form.grouped.EditForm):
 
     interface = zeit.content.cp.interfaces.IAutoPilotTeaserBlock
 
@@ -100,6 +105,19 @@ class AutoPilotEditProperties(EditProperties):
             zeit.content.cp.interfaces.IAutoPilotTeaserBlock).select(
             'referenced_cp', 'autopilot', 'hide_dupes', 'display_amount')
         + zope.formlib.form.FormFields(IPositions))
+
+    widget_groups = ()
+    field_groups = (
+        gocept.form.grouped.RemainingFields(
+            _('Autopilot'), css_class='column-left'),
+        gocept.form.grouped.Fields(
+            _('Parquet'), ('display_amount', 'image_positions'),
+            css_class='column-right'),
+    )
+
+    @property
+    def form(self):
+        return 'macro'  # we use the grouped-form macros instead
 
 
 class FixedSequenceWidget(zope.formlib.sequencewidget.ListSequenceWidget):

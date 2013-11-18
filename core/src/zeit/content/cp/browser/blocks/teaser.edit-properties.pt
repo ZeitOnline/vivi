@@ -1,13 +1,18 @@
 <div i18n:domain="zeit.cms" class="floating">
 
-  <form id="lightbox.form" class="teaser-block-properties-form" 
-        tal:attributes="action request/URL"
-        tal:content="structure view/form"/>
+  <form id="lightbox.form" class="teaser-block-properties-form"
+        tal:attributes="action request/URL">
+    <tal:form condition="python: view.form != 'macro'" content="structure view/form"/>
+    <tal:form condition="python: view.form == 'macro'">
+      <metal:block use-macro="context/@@form_macros/form_contents"/>
+    </tal:form>
+  </form>
 
-  <div tal:attributes="class string:layout-chooser ${view/layout_prefix}">
+  <div style="clear:both"
+      tal:attributes="class string:layout-chooser ${view/layout_prefix}">
     <div class="layout-inner"
          tal:repeat="layout view/layouts">
-      <a 
+      <a
         tal:attributes="href string:${context/@@absolute_url}/change-layout?id=${layout/token};
         class layout/css_class"
         cms:cp-module="zeit.edit.LoadAndReload">
