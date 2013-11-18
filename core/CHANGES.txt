@@ -5,7 +5,7 @@ zeit.content.cp changes
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``parquet-break`` layout for teaser bars (VIV-166/VIV-188).
 
 
 2.2.0 (2013-11-15)
@@ -16,7 +16,7 @@ zeit.content.cp changes
 - Write topiclinks of the referenced centerpage into the teaser block's
   <container> (VIV-163/VIV-191).
 
-- Add field ``display_amount`` to teaser blocks (VIV-170/VIV-183).
+- Add field ``display_amount`` to teaser blocks (VIV-164/VIV-183).
 
 - Allow configuring which teaser positions should display an image (VIV-202).
 

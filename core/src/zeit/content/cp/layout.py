@@ -79,6 +79,8 @@ TEASER_BAR = [
               u'Double Ad-Medium Rectangle', blocks=1),
     BarLayout('parquet',
               u'Parkett (Teaser untereinander)', blocks=4),
+    BarLayout('parquet-break',
+              u'Parkett-Unterbrecherleiste', blocks=0),
 ]
 
 
