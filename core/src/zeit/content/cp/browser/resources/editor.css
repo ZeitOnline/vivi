@@ -36,10 +36,6 @@
 }
 
 
-.edit-bar > .edit-positions-link {
-  display: none;
-}
-
 .edit-bar > .countings-link {
   float: right;
   font-size: 80%;

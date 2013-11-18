@@ -37,6 +37,19 @@ class TeaserBlockViewletManager(
         return '%s %s' % (classes, autopilot)
 
 
+class IFixedList(zope.interface.Interface):
+    pass
+
+
+class IPositions(zope.interface.Interface):
+
+    image_positions = zope.schema.List(
+        title=_('Display image at these positions'),
+        value_type=zope.schema.Bool(default=True),
+        required=False)
+    zope.interface.alsoProvides(image_positions, IFixedList)
+
+
 class EditProperties(zope.formlib.form.SubPageEditForm):
 
     layout_prefix = 'teaser'
@@ -45,8 +58,10 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.ITeaserBlock).select('display_amount')
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ITeaserBlock).select('display_amount') +
+        zope.formlib.form.FormFields(IPositions))
     close = False
 
     @property
@@ -86,6 +101,40 @@ class AutoPilotEditProperties(EditProperties):
             zeit.content.cp.interfaces.IAutoPilotTeaserBlock).select(
             'referenced_cp', 'autopilot', 'hide_dupes')
         + EditProperties.form_fields)
+
+
+class FixedSequenceWidget(zope.formlib.sequencewidget.ListSequenceWidget):
+
+    def _update(self):
+        super(FixedSequenceWidget, self)._update()
+        self.need_add = False
+        self.need_delete = False
+
+
+class TeaserPositions(grok.Adapter):
+
+    grok.context(zeit.content.cp.interfaces.ITeaserBlock)
+    grok.implements(IPositions)
+
+    @property
+    def image_positions(self):
+        if self.context.display_amount:
+            amount = self.context.display_amount
+        else:
+            amount = len(self.context)
+
+        if not self.context.suppress_image_positions:
+            return [True] * amount
+        return [i not in self.context.suppress_image_positions
+                for i in range(amount)]
+
+    @image_positions.setter
+    def image_positions(self, value):
+        positions = []
+        for i, enabled in enumerate(value):
+            if not enabled:
+                positions.append(i)
+        self.context.suppress_image_positions = positions
 
 
 class Display(zeit.cms.browser.view.Base):
@@ -366,68 +415,3 @@ class Countings(object):
                 return self.countings.detail_url
             except AttributeError:
                 pass
-
-
-class IFixedList(zope.interface.Interface):
-    pass
-
-
-class IPositions(zope.interface.Interface):
-
-    image_positions = zope.schema.List(
-        title=_('Display image at these positions'),
-        value_type=zope.schema.Bool(default=True),
-        required=False)
-    zope.interface.alsoProvides(image_positions, IFixedList)
-
-
-class FixedSequenceWidget(zope.formlib.sequencewidget.ListSequenceWidget):
-
-    def _update(self):
-        super(FixedSequenceWidget, self)._update()
-        self.need_add = False
-        self.need_delete = False
-
-
-class TeaserPositions(grok.Adapter):
-
-    grok.context(zeit.content.cp.interfaces.ITeaserBlock)
-    grok.implements(IPositions)
-
-    @property
-    def image_positions(self):
-        if self.context.display_amount:
-            amount = self.context.display_amount
-        else:
-            amount = len(self.context)
-
-        if not self.context.suppress_image_positions:
-            return [True] * amount
-        return [i not in self.context.suppress_image_positions
-                for i in range(amount)]
-
-    @image_positions.setter
-    def image_positions(self, value):
-        positions = []
-        for i, enabled in enumerate(value):
-            if not enabled:
-                positions.append(i)
-        self.context.suppress_image_positions = positions
-
-
-class EditPositions(zope.formlib.form.SubPageEditForm):
-
-    form_fields = zope.formlib.form.FormFields(IPositions)
-    close = False
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'teaser.edit-positions.pt')
-
-    @property
-    def form(self):
-        return super(EditPositions, self).template
-
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
-        self.close = True
-        return super(EditPositions, self).handle_edit_action.success(data)

@@ -318,7 +318,7 @@ We need to add a second teaser block:
 <Link text='[IMG] Kleiner Teaser mit kleinem Bild und Teaserliste' ...>
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=3).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
 <Link text='[IMG] Kleiner Teaser mit kleinem Bild und Teaserliste' ...>
