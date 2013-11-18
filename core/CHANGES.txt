@@ -7,6 +7,9 @@ zeit.content.cp changes
 
 - Add ``parquet-break`` layout for teaser bars (VIV-166/VIV-188).
 
+- Display blocks in parquet teaser bars below each other instead of in columns
+  (VIV-182)
+
 
 2.2.0 (2013-11-15)
 ------------------

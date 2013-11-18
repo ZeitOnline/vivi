@@ -1,5 +1,5 @@
 <div
-  tal:condition="python:context.layout.id not in ['normal', 'parquet-break']"
+  tal:condition="python:context.layout.id in ['mr', 'dmr']"
   tal:attributes="class string:block type-blocked ${context/layout/id}">
   <div class="block-inner">
     <div>Werbung</div>

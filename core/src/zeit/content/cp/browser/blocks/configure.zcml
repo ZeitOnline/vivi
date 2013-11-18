@@ -13,7 +13,7 @@
       for="zeit.content.cp.interfaces.ITeaserBar"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
-      class=".block.BlockViewletManager"
+      class="zeit.content.cp.browser.blocks.teaserbar.TeaserBarViewletManager"
       template="layout.block.contents.pt"
       name="zeit.edit.contents"
       permission="zope.View"

@@ -196,6 +196,9 @@ zeit.content.cp.makeBoxesEquallyHigh = function(container) {
         log('fixing box heights');
         forEach($$('#teaser-mosaic > .block.type-teaser-bar > .block-inner'),
             function(bar) {
+                if (MochiKit.DOM.hasElementClass(bar.parentNode, 'parquet')) {
+                    return;
+                }
                 log('fixing box heights for', bar.id);
                 try {
                     zeit.content.cp.makeBoxesEquallyHigh(bar);

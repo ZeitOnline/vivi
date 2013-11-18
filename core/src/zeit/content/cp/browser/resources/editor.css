@@ -97,6 +97,11 @@
   width: 25%;
 }
 
+.type-teaser-bar.parquet > .block-inner > .block {
+  float: none;
+  width: 100%;
+}
+
 .type-teaser-bar > .block-inner > .block > .block-inner {
   margin: 1.5em 0.5em;
   padding-bottom: 2em;

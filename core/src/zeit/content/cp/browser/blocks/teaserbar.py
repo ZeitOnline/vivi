@@ -6,6 +6,14 @@ import zeit.content.cp.interfaces
 import zope.component
 
 
+class TeaserBarViewletManager(zeit.edit.browser.block.BlockViewletManager):
+
+    @property
+    def css_class(self):
+        layout = ' ' + self.context.layout.id if self.context.layout else ''
+        return super(TeaserBarViewletManager, self).css_class + layout
+
+
 class EditProperties(zeit.content.cp.browser.blocks.teaser.EditProperties):
 
     interface = zeit.content.cp.interfaces.ITeaserBar
