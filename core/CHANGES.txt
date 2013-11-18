@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.10.1 (unreleased)
+2.11.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make grouped form macros available for SubPageForms.
 
 
 2.10.0 (2013-11-15)

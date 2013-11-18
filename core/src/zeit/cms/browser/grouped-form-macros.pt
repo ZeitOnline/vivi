@@ -8,6 +8,8 @@
       class="edit-form" enctype="multipart/form-data"
       id="zc.page.browser_form">
 
+      <metal:block define-macro="form_contents">
+
       <div id="actionsView">
         <span class="actionButtons"
           tal:condition="view/availableActions">
@@ -84,6 +86,8 @@
           </fieldset>
         </tal:group>
       </div>
+
+      </metal:block>
 
     </form>
   </div>
