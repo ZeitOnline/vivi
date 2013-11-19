@@ -147,7 +147,7 @@ unter "name.lead":
 The excerpt is part of the workflow dependencies of the CP:
 
 >>> import zeit.workflow.interfaces
->>> [x.uniqueId for x in 
+>>> [x.uniqueId for x in
 ...  zeit.workflow.interfaces.IPublicationDependencies(
 ...     repository['cp2']).get_dependencies()]
 [u'http://xml.zeit.de/cp2.lead']
@@ -268,10 +268,10 @@ other positions:
 ...     cp['lead'], zeit.edit.interfaces.IElementFactory, name='teaser')
 >>> teaser_1 = factory()
 >>> teaser_2 = factory()
->>> sorted(l.id for l in 
+>>> sorted(l.id for l in
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_1))
 ['archive-print-volume', 'archive-print-year', 'buttons', 'leader', 'leader-two-columns', 'leader-upright']
->>> sorted(l.id for l in 
+>>> sorted(l.id for l in
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_2))
 ['archive-print-volume', 'archive-print-year', 'buttons']
 
@@ -281,7 +281,7 @@ There are different layouts in the informatives:
 ...     cp['informatives'], zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')
 >>> teaser_i = factory()
->>> sorted(l.id for l in 
+>>> sorted(l.id for l in
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_i))
 ['date', 'large', 'short', 'two-side-by-side']
 
@@ -296,7 +296,7 @@ And yet other ones in the mosaic:
 ...     bar, zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')
 >>> teaser_m = factory()
->>> sorted(l.id for l in 
+>>> sorted(l.id for l in
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_m))
 ['date', 'parquet-large', 'parquet-regular', 'ressort', 'short']
 
