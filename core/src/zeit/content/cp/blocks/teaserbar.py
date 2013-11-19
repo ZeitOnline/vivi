@@ -2,7 +2,6 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.cp.layout
 import zeit.edit.container
@@ -55,7 +54,7 @@ class TeaserBarFactory(zeit.edit.block.TypeOnAttributeElementFactory):
     element_type = 'teaser-bar'
     title = None
     module = zeit.content.cp.interfaces.IReadTeaserBar[
-            'layout'].default.id
+        'layout'].default.id
 
     def get_xml(self):
         region = super(TeaserBarFactory, self).get_xml()

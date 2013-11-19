@@ -3,9 +3,7 @@
 
 from zeit.edit.rule import glob
 import itertools
-import zeit.cms.workflow.interfaces
 import zeit.content.cp.interfaces
-import zeit.workflow.timebased
 import zope.component
 import zope.interface
 
