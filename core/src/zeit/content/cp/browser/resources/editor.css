@@ -240,7 +240,7 @@
 
 .block.type-teaser .teaser {
   font-size: 0.8em;
-}  
+}
 
 .block.type-teaser .teaser-contents > img {
   display: block;
@@ -280,7 +280,7 @@
 .block.type-teaser .teaser-contents > img {
   cursor: move;
 }
-  
+
 .leader-two-columns > img,
 .leader > img,
 .ressort > img {
@@ -398,7 +398,7 @@ margin-top: 4px;
 }
 
 .block-title,
-.cpextra-title { 
+.cpextra-title {
   margin: 2em 2em 0.5em 2em;
   text-transform: uppercase;
 }
