@@ -16,6 +16,9 @@ class ITeaserBlockLayout(zope.interface.Interface):
     title = zope.schema.TextLine(title=u'Human readable title.')
     image_pattern = zope.schema.ASCIILine(
         title=u'A match for the image to use in this layout.')
+    image_positions = zope.schema.Bool(
+        title=u'Show image for each teaser, allow individual positions '
+        'to be suppressed')
     columns = zope.schema.Int(
         title=u'Columns',
         min=1,
@@ -40,10 +43,11 @@ class BlockLayout(object):
     zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
-                 areas=None, columns=1, default=False):
+                 areas=None, columns=1, default=False, image_positions=False):
         self.id = id
         self.title = title
         self.image_pattern = image_pattern
+        self.image_positions = image_positions
         self.areas = frozenset(areas)
         self.columns = columns
         self.default = default
@@ -109,9 +113,10 @@ class AllTeaserBlockLayoutSource(zeit.cms.content.sources.SimpleXMLSource):
             if columns:
                 columns = int(columns)
             default = g('default', '').lower() == 'true'
+            image_positions = g('image_positions', '').lower() == 'true'
             result.append(BlockLayout(
                 g('id'), g('title'), g('image_pattern'), areas, columns,
-                default))
+                default, image_positions))
         return result
 
 

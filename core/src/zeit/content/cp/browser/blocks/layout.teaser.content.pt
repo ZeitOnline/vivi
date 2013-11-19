@@ -3,8 +3,8 @@
   cms:drop-url string:${context/@@absolute_url}/drop;
   class view/css_class">
 
-  <img tal:condition="view/first_image"
-       tal:attributes="src view/first_image" />
+  <img tal:condition="view/header_image"
+       tal:attributes="src view/header_image" />
 
   <div class="teaser-list"
        tal:repeat="teasers view/columns">

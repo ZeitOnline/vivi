@@ -286,7 +286,7 @@ There are different layouts in the informatives:
 ['date', 'large', 'short', 'two-side-by-side']
 
 
-And yet other ones in the mosic:
+And yet other ones in the mosaic:
 
 >>> factory = zope.component.getAdapter(
 ...     cp['teaser-mosaic'], zeit.edit.interfaces.IElementFactory,
@@ -298,7 +298,7 @@ And yet other ones in the mosic:
 >>> teaser_m = factory()
 >>> sorted(l.id for l in 
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_m))
-['date', 'ressort', 'short']
+['date', 'parquet-large', 'parquet-regular', 'ressort', 'short']
 
 
 Archive centerpages should always keep the same module attribute:

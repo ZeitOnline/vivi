@@ -166,7 +166,7 @@ class Display(zeit.cms.browser.view.Base):
 
     def update(self):
         teasers = []
-        self.first_image = None
+        self.header_image = None
         for i, content in enumerate(self.context):
 
             if (IAutoPilotTeaserBlock.providedBy(self.context)
@@ -191,12 +191,11 @@ class Display(zeit.cms.browser.view.Base):
                 texts.append(self._make_text_entry(metadata, name))
 
             if i == 0:
-                self.first_image = self.get_image(content)
+                self.header_image = self.get_image(content)
 
-            if (IAutoPilotTeaserBlock.providedBy(self.context)
-                and i in self.context.suppress_image_positions):
-                image = None
-            else:
+            image = None
+            if (self.context.layout.image_positions
+                and i not in self.context.suppress_image_positions):
                 # XXX hard-coded small image size, taken from 'buttons'-layout
                 image = self.get_image(content, '148x84')
 
@@ -216,7 +215,7 @@ class Display(zeit.cms.browser.view.Base):
         # image_positions, which probably doesn't matter for XSLT, but
         # breaks our UI since we then display *two* images for the first
         # teaser.
-        if self.first_image is not None:
+        if self.header_image is not None:
             for column in self.columns:
                 column[0]['image'] = None
 

@@ -66,4 +66,17 @@
         title="Datumsteaser"
         areas="teaser-mosaic informatives"
         />
+    <layout
+        id="parquet-regular"
+        title="Parkett standard"
+        image_positions="true"
+        areas="teaser-mosaic"
+        />
+    <layout
+        id="parquet-large"
+        title="Parkett großer Aufmacher"
+        image_positions="true"
+        image_pattern="540x304"
+        areas="teaser-mosaic"
+        />
 </layouts>
