@@ -75,8 +75,11 @@ class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['cp2'] = zeit.content.cp.centerpage.CenterPage()
         self.cp = zeit.cms.checkout.interfaces.ICheckoutManager(
             self.repository['cp2']).checkout()
+        bar = zope.component.getAdapter(
+            self.cp['teaser-mosaic'],
+            zeit.edit.interfaces.IElementFactory, name='teaser-bar')()
         self.teaser = zope.component.getAdapter(
-            self.cp['informatives'],
+            bar,
             zeit.edit.interfaces.IElementFactory, name='teaser')()
         self.teaser.referenced_cp = self.repository['cp1']
 
@@ -105,8 +108,9 @@ class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
                 self.repository['cp1']) as cp:
             cp.topiclink_label_1 = 'label2'
         cp = zeit.cms.checkout.interfaces.ICheckinManager(self.cp).checkin()
+        block = cp['teaser-mosaic'].values()[0].values()[-1]
         self.assertEqual(
-            'label2', cp['informatives'].values()[-1].xml.topiclinks.topiclink)
+            'label2', block.xml.topiclinks.topiclink)
 
 
 class SuppressImagePositionsTest(zeit.content.cp.testing.FunctionalTestCase):

@@ -12,6 +12,8 @@ zeit.content.cp changes
 
 - Display title of referenced CP in teaser block (VIV-182).
 
+- Update topiclinks of referenced CPs on checkin of the referencing CP.
+
 
 2.2.0 (2013-11-15)
 ------------------

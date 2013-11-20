@@ -481,12 +481,18 @@ def feed_xi_include(context):
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_topiclinks_of_referenced_cps(context, event):
+    blocks = []
     for area in context.values():
-        for block in area.values():
-            if not zeit.content.cp.interfaces.IAutoPilotTeaserBlock.providedBy(
-                    block):
-                continue
-            # Note that we can't simply re-set referenced_cp here (as we do
-            # with relateds for example), since that might result in different
-            # teasers being copied over
-            block.update_topiclinks()
+        for item in area.values():
+            if zeit.content.cp.interfaces.ITeaserBar.providedBy(item):
+                blocks.extend(item.values())
+            else:
+                blocks.append(item)
+    for block in blocks:
+        if not zeit.content.cp.interfaces.IAutoPilotTeaserBlock.providedBy(
+                block):
+            continue
+        # Note that we can't simply re-set referenced_cp here (as we do
+        # with relateds for example), since that might result in different
+        # teasers being copied over
+        block.update_topiclinks()
