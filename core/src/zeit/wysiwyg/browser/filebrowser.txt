@@ -46,16 +46,13 @@ Descent to the repository:
                  url="http://localhost"/>
   <Folders>
     <Folder name="online" title="online"/>
-    <Folder name="2006" title="2006"/>
-    <Folder name="2007" title="2007"/>
+    ...
   </Folders>
   <Files>
-    <File size="0" url="http://localhost/repository/politik.feed"
-          name="politik.feed (Politik)"/>
+    ...
     <File size="0" url="http://localhost/repository/testcontent"
           name="testcontent (testcontent)"/>
-    <File size="0" url="http://localhost/repository/wirtschaft.feed"
-          name="wirtschaft.feed (Wirtschaft)"/>
+    ...
   </Files>
 </Connector>
 
