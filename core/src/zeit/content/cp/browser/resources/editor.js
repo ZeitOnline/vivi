@@ -66,10 +66,14 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
             }
             var url = bar.parentNode.getAttribute(
                 'cms:url');
+            var direction = 'horizontal';
+            if (MochiKit.DOM.hasElementClass(bar.parentNode, 'parquet')) {
+                direction = 'vertical';
+            }
             var sorter = new zeit.edit.sortable.BlockSorter(
                 bar.id, {
-                constraint: 'horizontal',
-                overlap: 'horizontal',
+                constraint: direction,
+                overlap: direction,
                 update_url: url + '/@@updateOrder',
                 reload_id: bar.parentNode.id,
                 reload_url: url + '/@@contents'
