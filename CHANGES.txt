@@ -1,7 +1,7 @@
 zeit.newsletter changes
 =======================
 
-0.1 (unreleased)
+0.1 (2013-11-22)
 ----------------
 
 - first release.
