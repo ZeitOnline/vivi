@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.2.2 (unreleased)
+2.2.2 (2013-11-28)
 ------------------
 
 - Fix bug in interaction of parquet image positions with lead multicolumn
