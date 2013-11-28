@@ -217,7 +217,8 @@ class Display(zeit.cms.browser.view.Base):
         # teaser.
         if self.header_image is not None:
             for column in self.columns:
-                column[0]['image'] = None
+                if column:
+                    column[0]['image'] = None
 
     def _make_text_entry(self, metadata, css_class, name=None):
         if name is None:

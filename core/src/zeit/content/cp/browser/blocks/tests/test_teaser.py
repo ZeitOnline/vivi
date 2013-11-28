@@ -109,15 +109,18 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSLayer)
 
-    def create_teaserblock(self, layout):
-        # Since the real layouts that support image positions are for the
-        # parquet, we've set up the test configurations for layouts the same
-        # way, but that means they only are allowed in teaser-mosaic.
-        bar = zope.component.getAdapter(
-            self.cp['teaser-mosaic'],
-            zeit.edit.interfaces.IElementFactory, name='teaser-bar')()
+    def create_teaserblock(self, layout, area='teaser-mosaic'):
+        if area == 'teaser-mosaic':
+            # Since the real layouts that support image positions are for the
+            # parquet, we've set up the test configurations for layouts the
+            # same way, but that means they only are allowed in teaser-mosaic.
+            container = zope.component.getAdapter(
+                self.cp['teaser-mosaic'],
+                zeit.edit.interfaces.IElementFactory, name='teaser-bar')()
+        else:
+            container = self.cp[area]
         block = zope.component.getAdapter(
-            bar, zeit.edit.interfaces.IElementFactory, name='teaser')()
+            container, zeit.edit.interfaces.IElementFactory, name='teaser')()
         block.layout = zeit.content.cp.layout.get_layout(layout)
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         for i in range(3):
@@ -174,3 +177,12 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(image, view.header_image)
         self.assertEqual(
             [None, image, image], [x['image'] for x in view.columns[0]])
+
+    def test_first_position_does_not_break_multicolumn_layouts(self):
+        block = self.create_teaserblock(
+            layout='leader-two-columns', area='lead')
+        block.remove(list(block)[0])
+        block.remove(list(block)[0])
+        view = self.view(block)
+        self.assertEqual(
+            [None], [x['image'] for x in view.columns[0]])
