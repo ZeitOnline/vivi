@@ -17,6 +17,7 @@ def test_suite():
         'search-ft.txt',
         'uuid.txt',
     )
+    real.level = 2
     suite.addTest(real)
 
     mock = zeit.connector.testing.FunctionalDocFileSuite(

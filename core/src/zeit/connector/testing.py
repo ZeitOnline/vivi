@@ -109,6 +109,7 @@ class TestCase(zope.app.testing.functional.FunctionalTestCase):
 class ConnectorTest(TestCase):
 
     layer = real_connector_layer
+    level = 2
 
     def setUp(self):
         super(ConnectorTest, self).setUp()
