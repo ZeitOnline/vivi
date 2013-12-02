@@ -4,12 +4,12 @@
 from zeit.content.article.i18n import MessageFactory as _
 import stabledict
 import zc.sourcefactory.basic
-import zeit.content.video.interfaces
 import zeit.cms.content.field
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces
 import zeit.content.infobox.interfaces
 import zeit.content.portraitbox.interfaces
+import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zope.schema
 
@@ -59,6 +59,9 @@ class IDivision(zeit.edit.interfaces.IBlock):
     teaser = zope.schema.TextLine(
         title=_('Page teaser'),
         required=False)
+
+    number = zope.interface.Attribute(
+        'The position of this division in the article body (1-based)')
 
 
 class LayoutSourceBase(zc.sourcefactory.basic.BasicSourceFactory):

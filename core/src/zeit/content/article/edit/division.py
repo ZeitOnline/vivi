@@ -17,7 +17,13 @@ class Division(zeit.edit.block.SimpleElement):
         zeit.content.article.edit.interfaces.IDivision)
 
     teaser = zeit.cms.content.property.ObjectPathAttributeProperty(
-      '.', 'teaser', zeit.content.article.edit.interfaces.IDivision['teaser'])
+        '.', 'teaser',
+        zeit.content.article.edit.interfaces.IDivision['teaser'])
+
+    @property
+    def number(self):
+        return self.xml.getparent().xpath('division[@type="page"]').index(
+            self.xml)
 
 
 class Factory(zeit.content.article.edit.block.BlockFactory):
