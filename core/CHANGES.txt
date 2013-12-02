@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.0.5 (unreleased)
+2.1.0 (unreleased)
 ------------------
 
 - Make repository path configurable on mock connector.
