@@ -5,12 +5,14 @@
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
+import ZConfig
 import datetime
 import httplib
 import logging
 import lxml.etree
 import os
 import os.path
+import pkg_resources
 import pytz
 import random
 import time
@@ -26,7 +28,6 @@ import zope.interface
 
 ID_NAMESPACE = u'http://xml.zeit.de/'
 
-repository_path = os.path.join(os.path.dirname(__file__), 'testcontent')
 log = logging.getLogger(__name__)
 
 
@@ -42,7 +43,8 @@ class Connector(object):
 
     _ignore_uuid_checks = False
 
-    def __init__(self):
+    def __init__(self, repository_path):
+        self.repository_path = repository_path
         self._reset()
 
     def _reset(self):
@@ -276,8 +278,8 @@ class Connector(object):
 
     def _absolute_path(self, path):
         if not path:
-            return repository_path
-        return os.path.join(repository_path, os.path.join(*path))
+            return self.repository_path
+        return os.path.join(self.repository_path, os.path.join(*path))
 
     def _path(self, id):
         if not id.startswith(ID_NAMESPACE):
@@ -334,3 +336,18 @@ class Connector(object):
             if value is zeit.connector.interfaces.DeleteProperty:
                 del stored_properties[(name, namespace)]
         self._properties[id] = stored_properties
+
+
+def mock_connector_factory():
+    return Connector(pkg_resources.resource_filename(
+        __name__, 'testcontent'))
+
+
+def filesystem_connector_factory():
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.connector')
+    repository_path = (config or {}).get('repository-path')
+    if not repository_path:
+        raise ZConfig.ConfigurationError(
+            "Filesystem connector not configured properly.")
+    return Connector(repository_path)

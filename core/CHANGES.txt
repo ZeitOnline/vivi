@@ -4,7 +4,7 @@ CHANGES
 2.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make repository path configurable on mock connector.
 
 
 2.0.4 (2013-11-17)
