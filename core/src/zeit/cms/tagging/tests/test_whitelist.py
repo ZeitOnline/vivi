@@ -18,7 +18,7 @@ class TestWhitelist(zope.testing.cleanup.CleanUp,
     def test_get_url_should_use_cms_product_config(self):
         wl = self.whitelist()
         with mock.patch(
-             'zope.app.appsetup.product.getProductConfiguration') as gpc:
+            'zope.app.appsetup.product.getProductConfiguration') as gpc:
             wl._get_url()
         gpc.assert_called_with('zeit.cms')
 
@@ -61,7 +61,7 @@ class TestWhitelist(zope.testing.cleanup.CleanUp,
         self.assertEqual(55, Tag.call_count)
         Tag.assert_called_with(
             'ae11024e-69e0-4434-b7d3-f66efddb0459', u'Polarkreis',
-            entity_type=None),
+            entity_type=None, url_value=None),
 
     def test_load_should_set_entity_type_if_present(self):
         wl = self.whitelist()

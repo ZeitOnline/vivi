@@ -58,6 +58,9 @@ class ITag(zope.interface.Interface):
     entity_type = zope.schema.TextLine(
         title=u'Entity type (e.g. Person, Location), may be None.')
 
+    url_value = zope.schema.ASCIILine(
+        title=u'Label encoded/normalized for use in an URL.')
+
 
 class IReadWhitelist(zope.interface.common.mapping.IEnumerableMapping):
 

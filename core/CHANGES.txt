@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.11.1 (unreleased)
+2.12.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add ``url_value`` to Tag objects (for zeit.frontend).
 
 
 2.11.0 (2013-11-25)
