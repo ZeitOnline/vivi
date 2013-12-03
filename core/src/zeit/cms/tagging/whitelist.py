@@ -21,7 +21,7 @@ class Whitelist(UserDict.UserDict,
     zope.interface.implements(zeit.cms.tagging.interfaces.IWhitelist)
 
     def __init__(self):
-        # Super __init__ set's data attribute. The data attribute is repalced
+        # Super __init__ set's data attribute. The data attribute is replaced
         # with a property here, breaking the super __init__.
         pass
 
