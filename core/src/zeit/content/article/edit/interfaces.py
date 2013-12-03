@@ -130,7 +130,9 @@ class ImageLayoutSource(LayoutSourceBase):
         ('small', _('small')),
         ('large', _('large')),
         ('upright', _('Hochkant')),
-        ])
+        ('zmo_header', _('foo')),
+        ('medium', _('foo')),
+    ])
 
 
 class IImage(IReference, ILayoutable):
