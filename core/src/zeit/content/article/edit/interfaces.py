@@ -124,15 +124,11 @@ class IReference(zeit.edit.interfaces.IBlock):
         default=True)
 
 
-class ImageLayoutSource(LayoutSourceBase):
+class ImageLayoutSource(zeit.cms.content.sources.XMLSource):
 
-    values = stabledict.StableDict([
-        ('small', _('small')),
-        ('large', _('large')),
-        ('upright', _('Hochkant')),
-        ('zmo_header', _('foo')),
-        ('medium', _('foo')),
-    ])
+    product_configuration = 'zeit.content.article'
+    config_url = 'image-layout-source'
+    attribute = 'id'
 
 
 class IImage(IReference, ILayoutable):

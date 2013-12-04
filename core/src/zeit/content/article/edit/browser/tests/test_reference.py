@@ -62,7 +62,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         select = 'css=.block.type-image form.wired select'
         s.waitForElementPresent(select)
         self.assertEqual(
-            ['(nothing selected)', 'small', 'large', 'Hochkant'],
+            ['(nothing selected)', 'small', 'large', 'upright'],
             s.getSelectOptions(select))
         s.select(select, 'label=small')
         s.fireEvent(select, 'blur')

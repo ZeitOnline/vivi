@@ -26,12 +26,15 @@ product_config = """
     cds-import-invalid-path cds/invalid/$$year/$$volume
     book-recension-categories file://%s
     genre-url file://%s
+    image-layout-source file://%s
 </product-config>
 """ % (
     pkg_resources.resource_filename(
         __name__, '/tests/recension_categories.xml'),
     pkg_resources.resource_filename(
-    __name__, '/tests/article-genres.xml')
+    __name__, '/tests/article-genres.xml'),
+    pkg_resources.resource_filename(
+    __name__, '/edit/tests/image-layouts.xml')
 )
 
 

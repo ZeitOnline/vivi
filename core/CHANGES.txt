@@ -4,7 +4,7 @@ zeit.content.article changes
 3.0.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Configure layouts for image blocks via external XML file (VIV-249).
 
 
 3.0.12 (2013-11-15)

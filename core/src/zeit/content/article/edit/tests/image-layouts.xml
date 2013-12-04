@@ -1,0 +1,6 @@
+<?xml version="1.0"?>
+<image-layouts>
+  <layout id="small">small</layout>
+  <layout id="large">large</layout>
+  <layout id="upright">upright</layout>
+</image-layouts>
