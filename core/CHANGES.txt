@@ -5,8 +5,8 @@ zeit.content.cp changes
 2.2.3 (unreleased)
 ------------------
 
-- Store preview images for teaser block layouts in DAV instead of in our
-  package (VIV-204).
+- Store preview images and CSS rules for teaser block layouts in DAV instead of
+  in our package (VIV-204).
 
 
 2.2.2 (2013-11-28)

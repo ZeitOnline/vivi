@@ -217,4 +217,10 @@
     file="resources/feed-icon.png"
     />
 
+  <browser:page
+    name="raw.css"
+    for="zeit.cms.repository.interfaces.IUnknownResource"
+    class=".layout.RawCSS"
+    permission="zope.View" />
+
 </configure>
