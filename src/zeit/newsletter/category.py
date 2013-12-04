@@ -77,8 +77,10 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
             return
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
+        now = datetime.datetime.now(pytz.UTC)
         result = connector.search(
-            [FIRST_RELEASED], (FIRST_RELEASED > timestamp.isoformat()))
+            [FIRST_RELEASED], (FIRST_RELEASED.between(
+                timestamp.isoformat(), now.isoformat())))
         for unique_id, released in result:
             obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
             if obj is not None:
