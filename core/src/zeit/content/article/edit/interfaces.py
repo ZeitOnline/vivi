@@ -73,14 +73,11 @@ class LayoutSourceBase(zc.sourcefactory.basic.BasicSourceFactory):
         return self.values[value]
 
 
-class VideoLayoutSource(LayoutSourceBase):
+class VideoLayoutSource(zeit.cms.content.sources.XMLSource):
 
-    values = stabledict.StableDict([
-        (u'small', _('small')),
-        (u'with-links', _('with info')),
-        (u'large', _('large')),
-        (u'double', _('double')),
-    ])
+    product_configuration = 'zeit.content.article'
+    config_url = 'video-layout-source'
+    attribute = 'id'
 
 
 class IVideo(zeit.edit.interfaces.IBlock, ILayoutable):
