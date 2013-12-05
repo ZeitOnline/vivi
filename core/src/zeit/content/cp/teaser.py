@@ -181,11 +181,13 @@ class Teaser(zeit.cms.content.metadata.CommonMetadata):
         </teaser>
     """
 
-teaserFactory = zeit.cms.content.adapter.xmlContentFactory(Teaser)
-resourceFactory = zeit.cms.connector.xmlContentToResourceAdapterFactory(
-    'teaser')
-resourceFactory = zope.component.adapter(
-    zeit.content.cp.interfaces.ITeaser)(resourceFactory)
+
+class TeaserType(zeit.cms.type.XMLContentTypeDeclaration):
+
+    factory = Teaser
+    interface = zeit.content.cp.interfaces.ITeaser
+    type = 'teaser'
+    register_as_type = False
 
 
 class TeaserLinkUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):

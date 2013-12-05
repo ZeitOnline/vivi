@@ -126,8 +126,6 @@
   </class>
 
 
-  <adapter factory=".teaser.resourceFactory" />
-  <adapter factory=".teaser.teaserFactory" name="teaser" />
   <adapter factory=".teaser.TeaserLinkUpdater" name="teaserlink" />
   <adapter factory=".teaser.images_for_teaser" />
   <adapter factory=".teaser.teaser_references" name="zeit.content.cp.teaser" />

@@ -8,6 +8,9 @@ zeit.content.cp changes
 - Store preview images and CSS rules for teaser block layouts in DAV instead of
   in our package (VIV-204).
 
+- Use TypeDeclaration for legacy Teaser objects instead of the old
+  two-separate-adapters API.
+
 
 2.2.2 (2013-11-28)
 ------------------
