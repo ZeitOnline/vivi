@@ -4,6 +4,9 @@ zeit.cms changes
 2.12.0 (unreleased)
 -------------------
 
+- XMLSource checks whether each value is available for the context via an
+  optional interface given in the ``available`` attribute (VIV-252).
+
 - Add ``url_value`` to Tag objects (for zeit.frontend).
 
 

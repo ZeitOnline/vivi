@@ -16,6 +16,7 @@ import zeit.cms.type
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
 import zope.component
+import zope.dottedname
 import zope.security.proxy
 import zope.testing.cleanup
 
@@ -57,7 +58,13 @@ class XMLSource(
     def getValues(self, context):
         tree = self._get_tree()
         return [unicode(node.get(self.attribute))
-                for node in tree.iterchildren()]
+                for node in tree.iterchildren()
+                if self.isAvailable(node, context)]
+
+    def isAvailable(self, node, context):
+        iface = node.get('available', 'zope.interface.Interface')
+        iface = zope.dottedname.resolve.resolve(iface)
+        return iface.providedBy(context)
 
     def getTitle(self, context, value):
         __traceback_info__ = (value, )
