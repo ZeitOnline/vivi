@@ -6,8 +6,6 @@ import pkg_resources
 import re
 import shutil
 import tempfile
-import transaction
-import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.testing
 import zeit.content.author.testing
@@ -41,8 +39,9 @@ product_config = """
 
 
 checker = zope.testing.renormalizing.RENormalizing([
-    (re.compile('[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
-     "<GUID>"),])
+    (re.compile(
+        '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}'),
+     "<GUID>")])
 checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
