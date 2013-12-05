@@ -24,7 +24,6 @@
 
   <include package="zeit.content.cp" />
   <include package="zeit.content.video" />
-  <include package="zeit.solr" />
 
   <include package="zeit.wysiwyg" />
   <include package="zeit.wysiwyg.browser" />
