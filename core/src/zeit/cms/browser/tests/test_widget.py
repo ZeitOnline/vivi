@@ -55,11 +55,9 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
             '...class="publish-state not-published"...')
 
     def test_should_contain_type_identifier(self):
-        # TestContentType doesn't have a TypeDeclaration, so it shows as
-        # 'unknown'
         self.browser.open('@@object-details')
         self.assert_ellipsis(
-            '...class="object-details type-unknown"...')
+            '...class="object-details type-testcontenttype"...')
 
 
 class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):

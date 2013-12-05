@@ -2,5 +2,4 @@
 # See also LICENSE.txt
 
 # Backward compatibility
-from zeit.cms.content.adapter import xmlContentToResourceAdapterFactory
 from zeit.connector.resource import Resource

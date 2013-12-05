@@ -2,13 +2,11 @@
 # See also LICENSE.txt
 """Implementation of the test content type."""
 
-import zope.component
-import zope.interface
-
-import zeit.cms.content.adapter
 import zeit.cms.content.metadata
 import zeit.cms.interfaces
 import zeit.cms.testcontenttype.interfaces
+import zeit.cms.type
+import zope.interface
 
 
 class TestContentType(zeit.cms.content.metadata.CommonMetadata):
@@ -23,13 +21,9 @@ class TestContentType(zeit.cms.content.metadata.CommonMetadata):
         '<head/><body/></testtype>')
 
 
-# TestContentType does not use a TypeDeclaration, since all of those are
-# always grokked, and we don't want it to show up in the production system
+class TestContentTypeType(zeit.cms.type.XMLContentTypeDeclaration):
 
-test_content_type_factory = zeit.cms.content.adapter.xmlContentFactory(
-    TestContentType)
-
-resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
-    'testcontenttype')
-resourceFactory = zope.component.adapter(
-    zeit.cms.testcontenttype.interfaces.ITestContentType)(resourceFactory)
+    factory = TestContentType
+    interface = zeit.cms.testcontenttype.interfaces.ITestContentType
+    type = 'testcontenttype'
+    register_as_type = False

@@ -9,6 +9,12 @@ zeit.cms changes
 
 - Add ``url_value`` to Tag objects (for zeit.frontend).
 
+internal:
+
+- Remove old mechanism for registering content types (content<-->resource
+  adapteres), only TypeDeclaration is supported now (set register_as_type=False
+  if a type should not show up in the UI).
+
 
 2.11.0 (2013-11-25)
 -------------------
