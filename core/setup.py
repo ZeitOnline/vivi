@@ -42,7 +42,6 @@ setup(
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
-        'zeit.brightcove',
         'zeit.cms>=2.7.0.dev0',
         'zeit.connector>1.14.1',
         'zeit.content.author',

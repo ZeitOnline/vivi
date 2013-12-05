@@ -7,7 +7,6 @@ import re
 import shutil
 import tempfile
 import transaction
-import zeit.brightcove.testing
 import zeit.cms.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.testing
@@ -54,7 +53,6 @@ ArticleZCMLLayer = zeit.cms.testing.ZCMLLayer(
         zeit.workflow.testing.product_config +
         zeit.content.cp.testing.product_config +
         zeit.content.gallery.testing.product_config +
-        zeit.brightcove.testing.product_config +
         zeit.solr.testing.product_config +
         zeit.content.author.testing.product_config +
         zeit.cms.testing.cms_product_config))
