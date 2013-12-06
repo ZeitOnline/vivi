@@ -1,5 +1,8 @@
 <configure
-  xmlns="http://namespaces.zope.org/zope">
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
 
   <class class=".rawxml.RawXML">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
@@ -12,9 +15,6 @@
       permission="zeit.EditContent"
       />
   </class>
-
-  <adapter factory=".rawxml.resourceFactory" />
-  <adapter factory=".rawxml.contentFactory" name="rawxml" />
 
   <adapter factory=".rawxml.RawXMLMetadataUpdater" name="rawxml" />
 

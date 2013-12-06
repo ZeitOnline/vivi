@@ -4,7 +4,8 @@ zeit.content.rawxml changes
 0.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use TypeDeclaration for RawXML objects instead of the old
+  two-separate-adapters API.
 
 
 0.4.0 (2011-06-20)

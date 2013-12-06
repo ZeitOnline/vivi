@@ -2,15 +2,13 @@
 # See also LICENSE.txt
 
 import copy
-
+import zeit.cms.content.dav
+import zeit.cms.content.xmlsupport
+import zeit.cms.interfaces
+import zeit.cms.type
+import zeit.content.rawxml.interfaces
 import zope.interface
 import zope.proxy
-
-import zeit.cms.content.xmlsupport
-import zeit.cms.content.dav
-import zeit.cms.interfaces
-
-import zeit.content.rawxml.interfaces
 
 
 class RawXML(zeit.cms.content.xmlsupport.XMLContentBase):
@@ -25,13 +23,12 @@ class RawXML(zeit.cms.content.xmlsupport.XMLContentBase):
         ('title',))
 
 
-resourceFactory = zeit.cms.content.adapter.xmlContentToResourceAdapterFactory(
-    'rawxml')
-resourceFactory = zope.component.adapter(
-        zeit.content.rawxml.interfaces.IRawXML)(resourceFactory)
+class RawXMLType(zeit.cms.type.XMLContentTypeDeclaration):
 
-
-contentFactory = zeit.cms.content.adapter.xmlContentFactory(RawXML)
+    factory = RawXML
+    interface = zeit.content.rawxml.interfaces.IRawXML
+    type = 'rawxml'
+    register_as_type = False
 
 
 class RawXMLMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
