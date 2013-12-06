@@ -4,6 +4,10 @@ zeit.cms changes
 2.12.0 (unreleased)
 -------------------
 
+- Introduce ISection, which means that all content objects below a folder are
+  marked with specific marker interfaces, so they can have their behaviour/UI
+  tailored specifically (VIV-252).
+
 - XMLSource checks whether each value is available for the context via an
   optional interface given in the ``available`` attribute (VIV-252).
 
