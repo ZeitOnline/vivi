@@ -16,6 +16,12 @@ def mark_section_content_on_add(context, event):
     apply_markers(context)
 
 
+@grok.subscribe(
+    ICMSContent, zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def mark_section_content_on_checkout(context, event):
+    apply_markers(context)
+
+
 def apply_markers(content):
     for iface in zope.interface.providedBy(content):
         if issubclass(ISectionMarker, iface):
@@ -45,7 +51,7 @@ def get_section_markers(section, content):
 
 @grok.adapter(ICMSContent)
 @grok.implementer(ISection)
-def find_section_for_repository_content(context):
+def find_section(context):
     candidate = parent_folder(context)
     while candidate is not None:
         if ISection.providedBy(candidate):
