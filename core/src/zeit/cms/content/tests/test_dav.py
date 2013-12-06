@@ -5,6 +5,7 @@ from __future__ import with_statement
 import grokcore.component
 import grokcore.component.testing
 import zeit.cms.checkout.helper
+import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.repository.unknown
@@ -139,9 +140,6 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
             'http://xml.zeit.de/testcontent')
 
     def test_adapter_grokking(self):
-
-        import zeit.cms.content.dav
-
         class Adapter(zeit.cms.content.dav.DAVPropertiesAdapter):
             grokcore.component.implements(ITestInterface)
 
@@ -168,10 +166,10 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
         # Make sure the previous test does not leak the adapter registration
         self.assertRaises(TypeError, ITestInterface, self.content)
 
-    def test_adatper_adaptable_to_properties(self):
+    def test_adapter_adaptable_to_properties(self):
         adapter = zeit.cms.content.dav.DAVPropertiesAdapter(self.content)
         zeit.connector.interfaces.IWebDAVProperties(adapter)
 
-    def test_adatper_should_set_parent(self):
+    def test_adapter_should_set_parent(self):
         adapter = zeit.cms.content.dav.DAVPropertiesAdapter(self.content)
         self.assertEqual(self.content, adapter.__parent__)
