@@ -30,8 +30,9 @@ stored in a webdav property:
 
 >>> import pprint
 >>> resource = zeit.connector.interfaces.IResource(content)
->>> pprint.pprint(dict(resource.properties))
-{('title', u'http://namespaces.zeit.de/CMS/document'): u'Roh'}
+>>> dict(resource.properties)[
+...     ('title', u'http://namespaces.zeit.de/CMS/document')]
+u'Roh'
 >>> resource.data.read()
 "<?xml version='1.0' encoding='UTF-8'?>\n<a/>\n"
 >>> resource.data.seek(0)
