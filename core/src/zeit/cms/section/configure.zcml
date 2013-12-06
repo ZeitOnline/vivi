@@ -1,0 +1,9 @@
+<configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter
+    factory=".interfaces.IZONContent"
+    for=".interfaces.IZONSection"
+    provides=".interfaces.ISectionMarker"
+    />
+
+</configure>

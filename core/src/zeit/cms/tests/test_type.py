@@ -1,6 +1,7 @@
 # Copyright (c) 2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import mock
 import zeit.cms.checkout.helper
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -22,8 +23,14 @@ class StoreProvidedInterfacesTest(zeit.cms.testing.FunctionalTestCase):
         super(StoreProvidedInterfacesTest, self).setUp()
         self.content = zeit.cms.repository.unknown.PersistentUnknownResource(
             u'data')
+        # avoid messing with interfaces (self.repository provides IZONSection,
+        # so it would apply section marker interfaces to all content)
+        self.section_patcher = mock.patch(
+            'zeit.cms.section.section.apply_markers')
+        self.section_patcher.start()
 
     def tearDown(self):
+        self.section_patcher.stop()
         super(StoreProvidedInterfacesTest, self).tearDown()
 
     def test_provides_stored_in_property(self):

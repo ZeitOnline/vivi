@@ -33,6 +33,7 @@
   <include package=".settings" />
   <include package=".sitecontrol" />
   <include package=".tagging" />
+  <include package=".section" />
 
 
   <!-- configuration -->

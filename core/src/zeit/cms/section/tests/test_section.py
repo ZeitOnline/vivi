@@ -51,20 +51,27 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
         obj = self.repository['folder']['test']
         self.assertFalse(
             zeit.cms.section.testing.IExampleContent.providedBy(obj))
+        self.assertTrue(
+            zeit.cms.section.interfaces.IZONContent.providedBy(obj))
+
         with zeit.cms.checkout.helper.checked_out(
                 self.repository['folder']['test']):
             pass
         obj = self.repository['folder']['test']
         self.assertTrue(
             zeit.cms.section.testing.IExampleContent.providedBy(obj))
+        self.assertFalse(
+            zeit.cms.section.interfaces.IZONContent.providedBy(obj))
 
 
 class FindSectionTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.cms.section.testing.SECTION_LAYER
 
-    def test_content_not_in_section_yields_none(self):
-        self.assertEqual(None, ISection(self.repository['testcontent'], None))
+    def test_content_not_in_section_yields_repository(self):
+        # since the repository provides IZONSection
+        self.assertEqual(
+            self.repository, ISection(self.repository['testcontent'], None))
 
     def test_content_inside_section_finds_that_folder(self):
         self.repository['example']['content'] = TestContentType()

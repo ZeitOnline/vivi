@@ -8,8 +8,10 @@ import logging
 import persistent
 import re
 import transaction
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.section.interfaces
 import zeit.connector.dav.interfaces
 import zeit.connector.interfaces
 import zope.annotation.interfaces
@@ -160,6 +162,7 @@ class Repository(persistent.Persistent, Container):
         zeit.cms.repository.interfaces.IRepository,
         zeit.cms.repository.interfaces.IFolder,
         zeit.cms.repository.interfaces.IRepositoryContent,
+        zeit.cms.section.interfaces.IZONSection,
         zope.annotation.interfaces.IAttributeAnnotatable)
 
     uniqueId = zeit.cms.interfaces.ID_NAMESPACE

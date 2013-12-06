@@ -113,6 +113,7 @@ INTERNAL namespace are *not* mapped:
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype"
         py:pytype="str" ns="http://namespaces.zeit.de/CMS/meta"
         name="type">testcontenttype</attribute>
+    ...
   </head>
   <body/>
 </testtype>

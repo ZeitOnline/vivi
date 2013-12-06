@@ -1,6 +1,7 @@
 # Copyright (c) 2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.interfaces
 import zope.interface
 
 
@@ -35,3 +36,11 @@ class ISectionMarker(zope.interface.Interface):
     to content objects inside an ISection, and to remove all section markers
     when a content object is moved to another folder.
     """
+
+
+class IZONSection(ISection):
+    """Marker for the ZEIT ONLINE section (which is 95% of all content ;-)"""
+
+
+class IZONContent(zeit.cms.interfaces.ICMSContent, ISectionMarker):
+    pass

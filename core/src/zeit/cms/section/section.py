@@ -23,8 +23,9 @@ def mark_section_content_on_checkout(context, event):
 
 
 def apply_markers(content):
+    content = zope.security.proxy.getObject(content)
     for iface in zope.interface.providedBy(content):
-        if issubclass(ISectionMarker, iface):
+        if issubclass(iface, ISectionMarker):
             zope.interface.noLongerProvides(content, iface)
     section = ISection(content, None)
     if section is None:
@@ -60,6 +61,8 @@ def find_section(context):
 
 
 def parent_folder(content):
+    if not content.uniqueId.startswith(zeit.cms.interfaces.ID_NAMESPACE):
+        return None
     id = content.uniqueId.replace(zeit.cms.interfaces.ID_NAMESPACE, '')
     if not id:
         return None
