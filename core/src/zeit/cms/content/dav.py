@@ -449,57 +449,6 @@ def mapProperty(field, namespace, name=None, vars=None, use_default=False,
                              writeable=writeable)
 
 
-_provides_dav_property = DAVProperty(
-    zope.schema.Object(zope.interface.Interface),
-    'http://namespaces.zeit.de/CMS/meta', 'provides', 'provides')
-
-
-@zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
-def store_provides_in_dav(obj, event):
-    # Remove all proxies to not get any implements from proxies and to avoid
-    # security
-    unwrapped = zope.proxy.removeAllProxies(obj)
-    # We don't want to store ILocalContent of course since we're about to add
-    # to the repository
-    try:
-        zope.interface.noLongerProvides(
-            unwrapped, zeit.cms.workingcopy.interfaces.ILocalContent)
-    except ValueError:
-        # Can only remove directly provided interfaces.
-        removed_local_content = False
-    else:
-        removed_local_content = True
-    provides = unwrapped.__provides__
-    if not list(zope.interface.directlyProvidedBy(obj)):
-        # In the case we don't have any direct provides just store nothing.
-        provides = None
-    try:
-        _provides_dav_property.__set__(unwrapped, provides)
-    except zope.security.interfaces.Forbidden:
-        # We probably stored an object providing IRepositoryContent. Thus we
-        # may not change anything.
-        pass
-    if removed_local_content:
-        zope.interface.alsoProvides(
-            unwrapped, zeit.cms.workingcopy.interfaces.ILocalContent)
-
-
-@zope.component.adapter(
-    zeit.cms.interfaces.ICMSContent,
-    zeit.cms.repository.interfaces.IAfterObjectConstructedEvent)
-def restore_provides_from_dav(obj, event):
-    properties = event.resource.properties
-    new_provides = _provides_dav_property.__get__(obj, obj.__class__,
-                                                  properties)
-    if (new_provides is not None and
-        new_provides != getattr(obj, '__provides__', None)):
-        obj.__provides__ = new_provides
-        # directly provide Interface to restore the _cls on __provides__
-        zope.interface.alsoProvides(obj, zope.interface.Interface)
-
-
 class DAVPropertiesAdapter(grokcore.component.Adapter):
 
     grokcore.component.context(zeit.cms.repository.interfaces.IDAVContent)

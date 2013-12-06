@@ -12,7 +12,6 @@ import xml.sax.saxutils
 import zc.sourcefactory.basic
 import zc.sourcefactory.contextual
 import zeit.cms.interfaces
-import zeit.cms.type
 import zope.app.appsetup.product
 import zope.app.publication.interfaces
 import zope.component
@@ -250,6 +249,7 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 class AddableCMSContentTypeSource(CMSContentTypeSource):
 
     def filterValue(self, value):
+        import zeit.cms.type  # break circular import
         return (value.queryTaggedValue('zeit.cms.addform') !=
                 zeit.cms.type.SKIP_ADD)
 
