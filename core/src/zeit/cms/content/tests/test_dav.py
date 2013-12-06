@@ -157,7 +157,7 @@ class TestPropertyBase(zeit.cms.testing.FunctionalTestCase):
         self.assertEquals(self.content, adapter.__parent__)
         # Unregister adapter so we don't leak it
         self.assertTrue(
-            zope.component.getGlobalSiteManager().unregisterAdapter(
+            zope.component.getSiteManager().unregisterAdapter(
                 Adapter, (zeit.cms.repository.interfaces.IDAVContent,),
                 ITestInterface))
         self.assertRaises(TypeError, ITestInterface, self.content)
