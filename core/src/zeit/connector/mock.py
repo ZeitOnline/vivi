@@ -319,8 +319,20 @@ class Connector(object):
             else:
                 nodes = xml.xpath('//head/attribute')
                 for node in nodes:
-                    properties[node.get('name'), node.get('ns')] = (
-                        node.text)
+                    properties[node.get('name'), node.get('ns')] = node.text
+
+                # XXX workaround for zeit.frontend, can probably go away
+                # once the filesystem connector is finished.
+                tags = xml.xpath('//head/rankedTags')
+                if tags:
+                    value = (
+                        '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
+                        '/CMS/tagging">')
+                    value += lxml.etree.tostring(tags[0])
+                    value += '</tag:rankedTags>'
+                    properties[(
+                        'rankedTags',
+                        'http://namespaces.zeit.de/CMS/tagging')] = value
         properties[('getlastmodified', 'DAV:')] = (
             u'Fri, 07 Mar 2008 12:47:16 GMT')
         self._properties[id] = properties

@@ -6,6 +6,8 @@ CHANGES
 
 - Make repository path configurable on mock connector.
 
+- Add workaround for rankedTags property to mock connector.
+
 
 2.0.4 (2013-11-17)
 ------------------
