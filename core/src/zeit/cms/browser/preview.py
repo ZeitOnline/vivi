@@ -45,7 +45,7 @@ def preview_url_for_unique_id(uniqueId, preview_type):
 class PreviewBase(zeit.cms.browser.view.Base):
     """Base class for preview."""
 
-    preview_type = None # override in subclass
+    preview_type = None  # override in subclass
 
     def __call__(self):
         preview_object = zeit.cms.browser.interfaces.IPreviewObject(
