@@ -11,8 +11,3 @@ import zeit.magazin.interfaces
 def preview_url(content, preview_type):
     return zeit.cms.browser.preview.prefixed_url(
         'zmo-%s-prefix' % preview_type, content.uniqueId)
-
-
-# XXX there also is a (basestring, basestring) variant of the adapter
-# which is used by zeit.find to caluclate preview-urls for search results
-# without looking up the content object first. What do we do about that?
