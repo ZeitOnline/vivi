@@ -43,7 +43,7 @@ class SimpleXMLSourceBase(object):
 
     def getValues(self):
         xml = self._get_tree()
-        return [unicode(serie).strip() for serie in xml.iterchildren()]
+        return [unicode(serie).strip() for serie in xml.iterchildren('*')]
 
 
 class XMLSource(
@@ -57,7 +57,7 @@ class XMLSource(
     def getValues(self, context):
         tree = self._get_tree()
         return [unicode(node.get(self.attribute))
-                for node in tree.iterchildren()
+                for node in tree.iterchildren('*')
                 if self.isAvailable(node, context)]
 
     def isAvailable(self, node, context):
@@ -112,7 +112,7 @@ class NavigationSource(SimpleXMLSource):
     def getValues(self):
         tree = self._get_tree()
         return [unicode(ressort.get('name'))
-                for ressort in tree.iterchildren()]
+                for ressort in tree.iterchildren('*')]
 
     def getTitle(self, value):
         __traceback_info__ = (value, )
@@ -213,7 +213,7 @@ class ProductSource(
         return [Product(unicode(node.get('id')),
                         unicode(node.text.strip()),
                         unicode_or_none(node.get('vgwortcode')))
-                for node in tree.iterchildren()]
+                for node in tree.iterchildren('*')]
 
     def getTitle(self, context, value):
         return value.title
