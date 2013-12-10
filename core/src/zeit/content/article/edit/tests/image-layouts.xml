@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <image-layouts>
-  <layout id="small">small</layout>
+  <layout id="small" available="zeit.cms.section.interfaces.IZONContent">small</layout>
+  <!-- default value must not use available -->
   <layout id="large">large</layout>
-  <layout id="upright">upright</layout>
+  <layout id="upright" available="zeit.cms.section.interfaces.IZONContent">upright</layout>
 </image-layouts>

@@ -16,7 +16,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             lxml.objectify.E.image())
         image = Image(None, tree.image)
         image.__name__ = u'myname'
-        image.layout = u'small'
+        image.layout = u'large'
         image.references = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
         self.assertEqual(
@@ -26,7 +26,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             'http://xml.zeit.de/2006/DSC00109_2.JPG',
             image.references.uniqueId)
         self.assertEqual(u'myname', image.__name__)
-        self.assertEqual(u'small', image.layout)
+        self.assertEqual(u'large', image.layout)
 
     def test_setting_image_to_none_removes_href(self):
         from zeit.content.article.edit.image import Image

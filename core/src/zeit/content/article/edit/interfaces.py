@@ -73,7 +73,21 @@ class LayoutSourceBase(zc.sourcefactory.basic.BasicSourceFactory):
         return self.values[value]
 
 
-class VideoLayoutSource(zeit.cms.content.sources.XMLSource):
+class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
+
+    def isAvailable(self, node, context):
+        if context is not None:
+            body = zeit.edit.interfaces.IArea(context, None)
+            if body is None:
+                # this should only happen in tests
+                context = None
+            else:
+                context = body.__parent__
+        return super(BodyAwareXMLSource, self).isAvailable(
+            node, context)
+
+
+class VideoLayoutSource(BodyAwareXMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'video-layout-source'
@@ -121,11 +135,15 @@ class IReference(zeit.edit.interfaces.IBlock):
         default=True)
 
 
-class ImageLayoutSource(zeit.cms.content.sources.XMLSource):
+class MainImageLayoutSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'image-layout-source'
     attribute = 'id'
+
+
+class ImageLayoutSource(BodyAwareXMLSource, MainImageLayoutSource):
+    pass
 
 
 class IImage(IReference, ILayoutable):
