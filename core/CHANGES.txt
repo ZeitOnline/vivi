@@ -4,7 +4,8 @@ zeit.find changes
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't calculate preview URL ourselves, simply redirect to the preview-view
+  (VIV-251).
 
 
 2.2.1 (2013-09-24)

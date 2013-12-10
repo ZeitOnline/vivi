@@ -103,7 +103,6 @@ class SearchResultBase(JSONView):
         'favorited_css_class',
         'graphical_preview_url',
         'icon',
-        'preview_url',
         'publication_status',
         'range_today',
         'range_total',
@@ -156,11 +155,6 @@ class SearchResultBase(JSONView):
 
     def get_favorited_css_class(self, result):
         return get_favorited_css_class(self.get_favorited(result))
-
-    def get_preview_url(self, result):
-        return zope.component.queryMultiAdapter(
-            (self.get_uniqueId(result), 'preview'),
-            zeit.cms.browser.interfaces.IPreviewURL)
 
     def get_publication_status(self, result):
         r = self.resources

@@ -49,11 +49,9 @@
       CMS
     </a>
   </div>
-  {.section preview_url}
-    <div class="preview object-link">
-      <a target="_blank" href="{@}">Vorschau</a>
-    </div>
-  {.end}
+  <div class="preview object-link">
+    <a target="_blank" href="{application_url}/@@redirect_to?unique_id={uniqueId}&view=show_preview">Vorschau</a>
+  </div>
   <div class="related_info"></div>
 </div>
 {.end}
