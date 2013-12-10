@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
-import stabledict
+import collections
 import zc.sourcefactory.basic
 import zeit.cms.content.sources
 import zope.dottedname.resolve
@@ -29,11 +29,11 @@ class CPExtraSource(zeit.cms.content.sources.XMLSource):
 
 class RSSTimeFormatSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    values = stabledict.StableDict([
-        ('none', _('None')), # default
+    values = collections.OrderedDict([
+        ('none', _('None')),  # default
         ('date', _('Date')),
         ('time', _('Time')),
-        ])
+    ])
 
     def getValues(self):
         return self.values.keys()

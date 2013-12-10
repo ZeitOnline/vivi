@@ -31,7 +31,6 @@ setup(
         'lxml',
         'requests',
         'setuptools',
-        'stabledict',
         'zc.sourcefactory',
         'zeit.cms>=2.12.0.dev0',
         'zeit.content.quiz>=0.4.2',

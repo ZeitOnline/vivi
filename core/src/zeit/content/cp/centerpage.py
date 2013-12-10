@@ -5,12 +5,12 @@ from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
 from zeit.connector.search import SearchVar
 import UserDict
+import collections
 import grokcore.component
 import itertools
 import lxml.etree
 import lxml.objectify
 import pkg_resources
-import stabledict
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -37,7 +37,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
 
     default_template = pkg_resources.resource_string(__name__,
                                                      'cp-template.xml')
-    editable_areas = stabledict.StableDict([
+    editable_areas = collections.OrderedDict([
         ('lead', lxml.etree.XPath('cluster/region[@area="lead"]')),
         ('informatives',
          lxml.etree.XPath('cluster/region[@area="informatives"]')),

@@ -1,7 +1,7 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import stabledict
+import collections
 import zc.sourcefactory.basic
 
 
@@ -19,7 +19,7 @@ class FormatSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 class PlayerSource(zc.sourcefactory.basic.BasicSourceFactory):
 
-    values = stabledict.StableDict((
+    values = collections.OrderedDict((
         (u'vid', u'Einzelvideo'),
         (u'pls', u'Playlist'),
     ))
