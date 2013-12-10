@@ -21,14 +21,10 @@ class CPExtraSource(zeit.cms.content.sources.XMLSource):
     config_url = 'cp-extra-url'
     attribute = 'id'
 
-    def getValues(self, context):
-        tree = self._get_tree()
-        result = []
-        for element in tree.iterchildren():
-            for_ = zope.dottedname.resolve.resolve(element.get('for'))
-            if for_.providedBy(context.__parent__):
-                result.append(unicode(element.get('id')))
-        return result
+    def isAvailable(self, node, context):
+        for_ = zope.dottedname.resolve.resolve(node.get('for'))
+        return (super(CPExtraSource, self).isAvailable(node, context)
+                and for_.providedBy(context.__parent__))
 
 
 class RSSTimeFormatSource(zc.sourcefactory.basic.BasicSourceFactory):
