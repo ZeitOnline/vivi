@@ -18,7 +18,7 @@ class ScaleSource(zeit.cms.content.sources.SimpleXMLSource):
 
     def getValues(self):
         xml = self._get_tree()
-        for scale_node in xml.iterchildren():
+        for scale_node in xml.iterchildren('*'):
             scale = PossibleScale()
             scale.width = scale_node.get('width')
             scale.height = scale_node.get('height')
@@ -39,7 +39,7 @@ class ColorSource(zeit.cms.content.sources.SimpleXMLSource):
 
     def getValues(self):
         xml = self._get_tree()
-        for node in xml.iterchildren():
+        for node in xml.iterchildren('*'):
             color = Color()
             color.title = node.get('title')
             color.color = node.get('color')
