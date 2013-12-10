@@ -61,6 +61,10 @@ class XMLSource(
                 if self.isAvailable(node, context)]
 
     def isAvailable(self, node, context):
+        # NOTE: the *default* value must not use ``available``, since e.g.
+        # newly created objects do not have their marker interfaces yet when
+        # they are assigned the default value, which would lead to
+        # ConstraintNotSatisfied errors.
         iface = node.get('available', 'zope.interface.Interface')
         iface = zope.dottedname.resolve.resolve(iface)
         return iface.providedBy(context)
