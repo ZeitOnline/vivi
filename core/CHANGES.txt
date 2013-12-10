@@ -4,7 +4,8 @@ zeit.content.gallery changes
 2.6.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use default XMLSource implementation so we get ``available`` behaviour
+  (VIV-247).
 
 
 2.6.4 (2013-10-02)
