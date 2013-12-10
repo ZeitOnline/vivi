@@ -33,15 +33,6 @@ def preview_url(content, preview_type):
         pass
 
 
-@zope.component.adapter(basestring, basestring)
-@zope.interface.implementer(zeit.cms.browser.interfaces.IPreviewURL)
-def preview_url_for_unique_id(uniqueId, preview_type):
-    try:
-        return prefixed_url(preview_type + '-prefix', uniqueId)
-    except ValueError:
-        pass
-
-
 class PreviewBase(zeit.cms.browser.view.Base):
     """Base class for preview."""
 

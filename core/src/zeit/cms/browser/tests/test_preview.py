@@ -10,21 +10,6 @@ class PreviewTest(zeit.cms.testing.FunctionalTestCase):
         from zeit.cms.browser.preview import prefixed_url
         self.assertRaises(ValueError, prefixed_url, 'aprefix', 'foo')
 
-    def test_adapting_invalid_unique_ids_fails_adaption(self):
-        from zeit.cms.browser.interfaces import IPreviewURL
-        import zope.component
-        self.assertRaises(
-            zope.component.ComponentLookupError,
-            zope.component.getMultiAdapter, ('foo', 'preview'), IPreviewURL)
-
-    def test_adapting_unique_id_should_return_preview_url(self):
-        from zeit.cms.browser.interfaces import IPreviewURL
-        import zope.component
-        self.assertEqual(
-            'http://localhost/preview-prefix/content',
-            zope.component.getMultiAdapter(
-                ('http://xml.zeit.de/content', 'preview'), IPreviewURL))
-
     def test_adapting_cmscontent_should_return_preview_url(self):
         from zeit.cms.browser.interfaces import IPreviewURL
         import zope.component

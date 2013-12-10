@@ -19,6 +19,9 @@ internal:
   adapteres), only TypeDeclaration is supported now (set register_as_type=False
   if a type should not show up in the UI).
 
+- Remove IPreviewURL adapter from uniqueId. This was only used by zeit.find and
+  we have a better solution there now: use the @@redirect_to view. (VIV-251)
+
 
 2.11.0 (2013-11-25)
 -------------------
