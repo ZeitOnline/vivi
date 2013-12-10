@@ -4,7 +4,7 @@ Changes
 2.1.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update tests to work with grokcore.component-2.5.
 
 
 2.1.5 (2013-09-24)

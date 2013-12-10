@@ -1,6 +1,7 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
    xmlns:meta="http://namespaces.zope.org/meta"
+   xmlns:grok="http://namespaces.zope.org/grok"
    i18n_domain="zope">
 
    <meta:provides feature="zeit.cms.testing" />
@@ -23,28 +24,29 @@
   <include package="zeit.cms.testcontenttype" />
   <include package="zeit.workflow" />
 
-  <class class="zeit.edit.testing.Container">
+  <class class="zeit.edit.tests.fixture.Container">
     <require
-      interface="zeit.edit.testing.IContainer"
+      interface="zeit.edit.tests.fixture.IContainer"
       permission="zope.View"
       />
     <require
-      set_schema="zeit.edit.testing.IContainer"
+      set_schema="zeit.edit.tests.fixture.IContainer"
       permission="zeit.EditContent"
       />
   </class>
 
-  <class class="zeit.edit.testing.Block">
+  <class class="zeit.edit.tests.fixture.Block">
     <require
-      interface="zeit.edit.testing.IBlock"
+      interface="zeit.edit.tests.fixture.IBlock"
       permission="zope.View"
       />
     <require
-      set_schema="zeit.edit.testing.IBlock"
+      set_schema="zeit.edit.tests.fixture.IBlock"
       permission="zeit.EditContent"
       />
   </class>
 
+  <grok:grok package="zeit.edit.tests.fixture" />
 
 </configure>
 

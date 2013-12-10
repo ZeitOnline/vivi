@@ -4,6 +4,7 @@
 import lxml.objectify
 import zeit.cms.workingcopy.interfaces
 import zeit.edit.testing
+import zeit.edit.tests.fixture
 import zope.component
 
 
@@ -11,7 +12,7 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
 
     def test_order_bottom_appends_at_bottom(self):
         wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
-        root = zeit.edit.testing.Container(
+        root = zeit.edit.tests.fixture.Container(
             wc, lxml.objectify.fromstring('<container/>'))
         root.__name__ = 'root'
         factory = zope.component.getAdapter(

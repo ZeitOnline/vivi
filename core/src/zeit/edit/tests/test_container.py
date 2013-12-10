@@ -5,6 +5,7 @@ import lxml.objectify
 import mock
 import unittest
 import zeit.edit.testing
+import zeit.edit.tests.fixture
 import zope.interface
 
 
@@ -52,7 +53,7 @@ class UnknownBlockTest(zeit.edit.testing.FunctionalTestCase):
           <something cp:__name__="bar"/>
         </container>
         """)
-        container = zeit.edit.testing.Container(mock.Mock(), xml)
+        container = zeit.edit.tests.fixture.Container(mock.Mock(), xml)
         self.assertTrue(zeit.edit.interfaces.IUnknownBlock.providedBy(
             container['bar']))
 
