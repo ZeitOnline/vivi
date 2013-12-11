@@ -237,13 +237,18 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             u'a custom caption',
             self.repository['article'].xml.body.division.image.bu)
 
-    def test_custom_caption_should_be_kept_on_checkin(self):
+    def test_custom_attributes_should_be_kept_on_checkin(self):
         with self.image() as image:
             image.custom_caption = u'a custom caption'
+            image.alt = u'alttext'
+            image.title = u'title'
+        image = self.repository['article'].xml.body.division.image
         self.assertEqual(
-            u'a custom caption',
-            self.repository['article'].xml.body.division.image.get(
-                'custom-caption'))
+            u'a custom caption', image.get('custom-caption'))
+        self.assertEqual(
+            u'alttext', image.get('alt'))
+        self.assertEqual(
+            u'title', image.get('title'))
 
     def test_setting_reference_should_not_remove_custom_caption(self):
         from zeit.cms.interfaces import ICMSContent

@@ -10,6 +10,9 @@ zeit.content.article changes
 - Add IZONArticle marker interface so we can show some settings only for
   non-ZMO articles (VIV-252).
 
+- Fix bug from 3.0.12: Have ``title`` and ``alt`` attributes survive checkin
+  (VIV-157).
+
 
 3.0.12 (2013-11-15)
 -------------------
