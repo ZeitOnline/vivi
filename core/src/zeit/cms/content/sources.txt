@@ -1,6 +1,9 @@
 Sources
 =======
 
+>>> import zeit.cms.testcontenttype.testcontenttype
+>>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+
 Serie
 +++++
 
@@ -9,6 +12,7 @@ The serie source returns the possible "serie" values:
 >>> from pprint import pprint
 >>> import zeit.cms.content.sources
 >>> serie = zeit.cms.content.sources.SerieSource()
+>>> serie = serie(content)
 >>> pprint(list(serie))
 [u'-',
  u'News',
@@ -159,8 +163,6 @@ The sub navigation is dependent on the navigation.
 There are different contexts: a content object, a container (add form) and an
 ajax something.
 
->>> import zeit.cms.testcontenttype.testcontenttype
->>> content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
 >>> sub_ressort = zeit.cms.content.sources.SubNavigationSource()
 >>> bound = sub_ressort(content)
 

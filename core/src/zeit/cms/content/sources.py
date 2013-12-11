@@ -128,11 +128,6 @@ class NavigationSource(SimpleXMLSource):
         return value
 
 
-class SerieSource(SimpleXMLSource):
-
-    config_url = 'source-serie'
-
-
 class SubNavigationSource(SimpleContextualXMLSource):
     """Source for the subnavigation."""
 
@@ -186,6 +181,11 @@ class SubNavigationSource(SimpleContextualXMLSource):
         if metadata is None:
             return None
         return metadata.ressort
+
+
+class SerieSource(SimpleContextualXMLSource):
+
+    config_url = 'source-serie'
 
 
 class Product(object):
