@@ -19,7 +19,7 @@ setup(
         'grokcore.component',
         'setuptools',
         'zc.iso8601',
-        'zeit.cms>=2.0',
+        'zeit.cms>=2.12.0.dev0',
         'zeit.solr>=2.0',
     ],
 )

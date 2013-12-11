@@ -48,6 +48,8 @@ class SearchForm(JSONView):
         )
 
     def get_source(self, source, value_name, title_name):
+        # XXX wrong if some of these sources should become context-dependent
+        source = source(None)
         result = []
         terms = zope.component.getMultiAdapter(
             (source, self.request), zope.browser.interfaces.ITerms)
@@ -61,7 +63,7 @@ class SearchForm(JSONView):
     @property
     def products(self):
         metadata_if = zeit.cms.content.interfaces.ICommonMetadata
-        result = self.get_source(metadata_if['product'].source(None),
+        result = self.get_source(metadata_if['product'].source,
                                  'product_id', 'product_name')
         for entry in result:
             entry['product_id'] = entry['product_id'].id
