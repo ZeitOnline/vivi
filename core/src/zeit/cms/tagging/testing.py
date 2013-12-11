@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 import mock
-import stabledict
+import collections
 import zeit.cms.repository.interfaces
 import zeit.cms.tagging.interfaces
 import zeit.cms.tagging.tag
@@ -82,7 +82,7 @@ class DummyTagger(object):
         pass
 
 
-class FakeTags(stabledict.StableDict):
+class FakeTags(collections.OrderedDict):
 
     def __init__(self):
         super(FakeTags, self).__init__()
