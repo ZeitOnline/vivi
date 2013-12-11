@@ -1,5 +1,5 @@
 zeit.cms.MasterSlaveDropDown = Class.extend({
-    
+
     construct: function(master, slave, update_url) {
         var self = this;
         self.master = master;
@@ -60,7 +60,7 @@ zeit.cms.configure_ressort_dropdown = function(prefix) {
     }
     var master = $(prefix + 'ressort');
     var slave = $(prefix + 'sub_ressort');
-    
+
     if (isNull(master) || isNull(slave)) {
         return
     }
@@ -70,7 +70,7 @@ zeit.cms.configure_ressort_dropdown = function(prefix) {
     var path = window.location.pathname.split('/').slice(0, -1);
     path.push('@@subnavigationupdater.json');
     path = path.join('/');
-    zeit.cms.master_slave_dropdown[prefix] = 
+    zeit.cms.master_slave_dropdown[prefix] =
         new zeit.cms.MasterSlaveDropDown(master, slave, path);
 };
 
