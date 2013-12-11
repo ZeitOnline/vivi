@@ -93,6 +93,7 @@ Navigation
 ++++++++++
 
 >>> navi = zeit.cms.content.sources.NavigationSource()
+>>> navi = navi(content)
 >>> pprint(list(navi))
 [u'Deutschland',
  u'International',

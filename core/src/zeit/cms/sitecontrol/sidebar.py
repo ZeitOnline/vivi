@@ -28,6 +28,7 @@ class SiteControl(zeit.cms.browser.view.Base):
     @property
     def sites(self):
         ressort = zeit.cms.content.interfaces.ICommonMetadata['ressort'].source
+        ressort = ressort(self.context)
         ressort_terms = zope.component.getMultiAdapter(
             (ressort, self.request), zope.browser.interfaces.ITerms)
         sub_ressort = zeit.cms.content.interfaces.ICommonMetadata[

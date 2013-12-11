@@ -79,6 +79,7 @@ class SubNavigationUpdater(object):
 
     def __init__(self, context, request):
         super(SubNavigationUpdater, self).__init__(context, request)
+        self.navigation_source = self.navigation_source(self.context)
         self.master_terms = zope.component.getMultiAdapter(
             (self.navigation_source, request),
             zope.app.form.browser.interfaces.ITerms)

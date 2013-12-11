@@ -53,6 +53,7 @@ class XMLSource(
     # using the source even while there is no product config.
 
     attribute = NotImplemented
+    title_xpath = '//*'
 
     def getValues(self, context):
         tree = self._get_tree()
@@ -72,12 +73,16 @@ class XMLSource(
     def getTitle(self, context, value):
         __traceback_info__ = (value, )
         tree = self._get_tree()
-        nodes = tree.xpath('//*[@%s= %s]' % (
+        nodes = tree.xpath('%s[@%s= %s]' % (
+                           self.title_xpath,
                            self.attribute,
                            xml.sax.saxutils.quoteattr(value)))
         if nodes:
-            return unicode(nodes[0].text).strip()
+            return unicode(self._get_title_for(nodes[0])).strip()
         return value
+
+    def _get_title_for(self, node):
+        return node.text
 
 
 class SimpleXMLSource(
@@ -109,23 +114,14 @@ class SimpleFixedValueSource(zc.sourcefactory.basic.BasicSourceFactory):
         return self.titles.get(value, value)
 
 
-class NavigationSource(SimpleXMLSource):
+class NavigationSource(XMLSource):
 
     config_url = 'source-navigation'
+    attribute = 'name'
+    title_xpath = '/ressorts/ressort'
 
-    def getValues(self):
-        tree = self._get_tree()
-        return [unicode(ressort.get('name'))
-                for ressort in tree.iterchildren('*')]
-
-    def getTitle(self, value):
-        __traceback_info__ = (value, )
-        tree = self._get_tree()
-        nodes = tree.xpath('/ressorts/ressort[@name = %s]' %
-                           xml.sax.saxutils.quoteattr(value))
-        if nodes:
-            return unicode(nodes[0]['title'])
-        return value
+    def _get_title_for(self, node):
+        return node['title']
 
 
 class SubNavigationSource(SimpleContextualXMLSource):
@@ -206,9 +202,7 @@ def unicode_or_none(value):
         return unicode(value)
 
 
-class ProductSource(
-    SimpleXMLSourceBase,
-    zc.sourcefactory.contextual.BasicContextualSourceFactory):
+class ProductSource(SimpleContextualXMLSource):
 
     config_url = 'source-products'
 
