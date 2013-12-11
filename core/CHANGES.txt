@@ -5,4 +5,6 @@ zeit.magazin changes
 0.1 (unreleased)
 ----------------
 
-- first release.
+- Set up section interfaces: IZMOSection, IZMOContent, IZMOArticle (VIV-252).
+
+- Add fields for template and header layouts for articles (VIV-241).

@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
+import zeit.magazin.sources
 import zope.interface
 import zope.schema
 
@@ -27,10 +28,12 @@ class IZMOArticle(
 
 class IArticleTemplateSettings(zope.interface.Interface):
 
-    template = zope.schema.TextLine(
+    template = zope.schema.Choice(
         title=_("Template"),
+        source=zeit.magazin.sources.ArticleTemplateSource(),
         required=False)
 
-    header_layout = zope.schema.TextLine(
+    header_layout = zope.schema.Choice(
         title=_("Header layout"),
+        source=zeit.magazin.sources.ArticleHeaderSource(),
         required=False)

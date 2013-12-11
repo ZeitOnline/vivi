@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.magazin.interfaces import IZMOSection
+import pkg_resources
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zope.component
@@ -11,7 +12,9 @@ import zope.interface
 product_config = zeit.cms.testing.cms_product_config.replace(
     '</product-config>', """\
   zmo-preview-prefix http://localhost/zmo-preview-prefix
-</product-config>""")
+    article-template-source file://{base}/tests/article-templates.xml
+</product-config>""".format(
+    base=pkg_resources.resource_filename(__name__, '')))
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
