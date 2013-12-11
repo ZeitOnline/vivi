@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Dec 11 09:07:02 2013\n"
+"POT-Creation-Date: Wed Dec 11 15:54:13 2013\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -755,6 +755,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:37
 #: zeit/content/infobox/browser/form.py:31
 #: zeit/content/portraitbox/browser/form.py:23
+#: zeit/magazin/browser/portraitbox.py:27
 #: zeit/content/infobox/browser/form.py:31
 #: zeit/content/portraitbox/browser/form.py:23
 msgid "Head"
@@ -823,7 +824,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/template.py:126
 #: zeit/cms/content/browser/template.zcml:33
-#: zeit/magazin/interfaces.py:31
+#: zeit/magazin/interfaces.py:46
 msgid "Template"
 msgstr ""
 
@@ -1773,7 +1774,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:504
 #: zeit/content/article/edit/browser/form.py:513
 #: zeit/content/article/edit/browser/form.py:532
-#: zeit/magazin/browser/article.py:13
+#: zeit/magazin/browser/article.py:14
 msgid "edit options"
 msgstr ""
 
@@ -2096,6 +2097,7 @@ msgstr ""
 #: zeit/content/article/edit/reference.py:161
 #: zeit/content/portraitbox/interfaces.py:38
 #: zeit/content/portraitbox/portraitbox.py:38
+#: zeit/magazin/browser/configure.zcml:37
 #: zeit/content/portraitbox/interfaces.py:38
 #: zeit/content/portraitbox/portraitbox.py:38
 msgid "Portraitbox"
@@ -2417,6 +2419,7 @@ msgstr ""
 #: zeit/content/cp/browser/configure.zcml:40
 #: zeit/content/gallery/browser/configure.zcml:49
 #: zeit/content/quiz/browser/configure.zcml:38
+#: zeit/magazin/browser/configure.zcml:46
 #: zeit/content/gallery/browser/configure.zcml:49
 #: zeit/content/image/browser/configure.zcml:224
 #: zeit/content/link/browser/configure.zcml:17
@@ -3104,21 +3107,25 @@ msgid "Target"
 msgstr ""
 
 #: zeit/content/portraitbox/browser/form.py:26
+#: zeit/magazin/browser/portraitbox.py:30
 #: zeit/content/portraitbox/browser/form.py:26
 msgid "Portrait"
 msgstr ""
 
 #: zeit/content/portraitbox/browser/form.py:35
+#: zeit/magazin/browser/portraitbox.py:39
 #: zeit/content/portraitbox/browser/form.py:35
 msgid "Add portraitbox"
 msgstr ""
 
 #: zeit/content/portraitbox/browser/form.py:40
+#: zeit/magazin/browser/portraitbox.py:44
 #: zeit/content/portraitbox/browser/form.py:40
 msgid "Edit portraitbox"
 msgstr ""
 
 #: zeit/content/portraitbox/browser/form.py:46
+#: zeit/magazin/browser/portraitbox.py:50
 #: zeit/content/portraitbox/browser/form.py:46
 msgid "View portraitbox"
 msgstr ""
@@ -3383,12 +3390,16 @@ msgstr ""
 msgid "Use IMP"
 msgstr ""
 
-#: zeit/magazin/browser/article.py:11
+#: zeit/magazin/browser/article.py:12
 msgid "ZEITmagazin ONLINE"
 msgstr ""
 
-#: zeit/magazin/interfaces.py:35
+#: zeit/magazin/interfaces.py:51
 msgid "Header layout"
+msgstr ""
+
+#: zeit/magazin/interfaces.py:59
+msgid "long text (ZMO)"
 msgstr ""
 
 #: zeit/securitypolicy/security.zcml:11
