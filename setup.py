@@ -18,6 +18,8 @@ setup(
         'grokcore.component',
         'setuptools',
         'zeit.cms>=2.12.0.dev',
+        'zeit.content.article>=3.1.0.dev0',
+        'zeit.edit',
         'zope.interface',
         'zope.component',
     ],

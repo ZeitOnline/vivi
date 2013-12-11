@@ -11,4 +11,22 @@
     provides="zeit.cms.section.interfaces.ISectionMarker"
     />
 
+  <adapter
+    factory=".interfaces.IZMOArticle"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="article"
+    />
+
+  <class class=".article.TemplateSettings">
+    <require
+      interface=".interfaces.IArticleTemplateSettings"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IArticleTemplateSettings"
+      permission="zeit.EditContent"
+      />
+  </class>
+
 </configure>
