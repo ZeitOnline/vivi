@@ -22,6 +22,8 @@ internal:
 - Remove IPreviewURL adapter from uniqueId. This was only used by zeit.find and
   we have a better solution there now: use the @@redirect_to view. (VIV-251)
 
+- Generalize MasterSlaveSource from SubNavigationSource (for VIV-241).
+
 
 2.11.0 (2013-11-25)
 -------------------

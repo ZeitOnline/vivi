@@ -78,11 +78,11 @@ class XMLSource(
                            self.attribute,
                            xml.sax.saxutils.quoteattr(value)))
         if nodes:
-            return unicode(self._get_title_for(nodes[0])).strip()
+            return self._get_title_for(nodes[0])
         return value
 
     def _get_title_for(self, node):
-        return node.text
+        return unicode(node.text).strip()
 
 
 class SimpleXMLSource(
@@ -121,62 +121,95 @@ class NavigationSource(XMLSource):
     title_xpath = '/ressorts/ressort'
 
     def _get_title_for(self, node):
-        return node['title']
+        return unicode(node['title'])
 
 
-class SubNavigationSource(SimpleContextualXMLSource):
-    """Source for the subnavigation."""
+class MasterSlaveSource(XMLSource):
 
-    config_url = 'source-navigation'
+    slave_tag = NotImplemented
+    master_node_xpath = NotImplemented
+    master_value_iface = NotImplemented
+    master_value_key = NotImplemented
 
     def getValues(self, context):
         __traceback_info__ = (context,)
-        ressort_nodes = self._get_ressort_nodes(context)
-        sub_navs = reduce(
-            operator.add, [ressort_node.findall('subnavigation')
-             for ressort_node in ressort_nodes])
-        result = set([unicode(sub.get('name'))
-                    for sub in sub_navs])
+        master_nodes = self._get_master_nodes(context)
+        slave_nodes = reduce(
+            operator.add, [
+                node.findall(self.slave_tag) for node in master_nodes])
+        result = set([unicode(node.get(self.attribute)) for node in slave_nodes
+                      if self.isAvailable(node, context)])
         return result
 
     def getTitle(self, context, value):
         tree = self._get_tree()
-        ressort = self._get_ressort(context)
-        if ressort is None:
+        master_value = self._get_master_value(context)
+        if master_value is None:
             nodes = tree.xpath(
-                '//subnavigation[@name = %s]' % (
+                '//%s[@%s = %s]' % (
+                    self.slave_tag, self.attribute,
                     xml.sax.saxutils.quoteattr(value)))
         else:
             nodes = tree.xpath(
-                '/ressorts/ressort[@name = %s]/subnavigation[@name = %s]' % (
-                    xml.sax.saxutils.quoteattr(ressort),
-                    xml.sax.saxutils.quoteattr(value)))
+                '{master_node_xpath}[@{attribute} = {master}]'
+                '/{slave_tag}[@{attribute} = {slave}]'.format(
+                    master_node_xpath=self.master_node_xpath,
+                    attribute=self.attribute,
+                    slave_tag=self.slave_tag,
+                    master=xml.sax.saxutils.quoteattr(master_value),
+                    slave=xml.sax.saxutils.quoteattr(value)))
         if nodes:
-            return unicode(nodes[0]['title'])
+            return unicode(self._get_title_for(nodes[0]))
         return value
 
-    def _get_ressort_nodes(self, context):
+    def _get_master_nodes(self, context):
         tree = self._get_tree()
-        all_ressorts = tree.ressort
-        ressort = self._get_ressort(context)
-        if not ressort:
-            return all_ressorts
+        all_nodes = tree.xpath(self.master_node_xpath)
+        master_value = self._get_master_value(context)
+        if not master_value:
+            return all_nodes
 
-        nodes = tree.xpath('/ressorts/ressort[@name = "%s"]' % ressort)
+        nodes = tree.xpath(
+            '{master_node_xpath}[@{attribute} = "{value}"]'.format(
+                master_node_xpath=self.master_node_xpath,
+                attribute=self.attribute,
+                # XXX not sure why we do manual quoting instead of quoteattr
+                # here, doesn't feel as it was thought through. There's a
+                # random doctest example about 'Bildung & Beruf' however that
+                # breaks if I change it.
+                value=master_value))
         if not nodes:
             return None
         assert len(nodes) == 1
         return nodes
 
-    def _get_ressort(self, context):
+    def _get_master_value(self, context):
         if isinstance(context, unicode):
             return context
         if zeit.cms.interfaces.ICMSContent.providedBy(context):
             return None
-        metadata = zeit.cms.content.interfaces.ICommonMetadata(context, None)
-        if metadata is None:
+        data = self.master_value_iface(context, None)
+        if data is None:
             return None
-        return metadata.ressort
+        return getattr(data, self.master_value_key)
+
+
+class SubNavigationSource(MasterSlaveSource):
+
+    config_url = 'source-navigation'
+    attribute = 'name'
+    slave_tag = 'subnavigation'
+    master_node_xpath = '/ressorts/ressort'
+    master_value_key = 'ressort'
+
+    @property
+    def master_value_iface(self):
+        # prevent circular import
+        import zeit.cms.content.interfaces
+        return zeit.cms.content.interfaces.ICommonMetadata
+
+    def _get_title_for(self, node):
+        return unicode(node['title'])
 
 
 class SerieSource(SimpleContextualXMLSource):
