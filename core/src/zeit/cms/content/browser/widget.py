@@ -72,16 +72,16 @@ class CombinationWidget(
         'combinationwidget.pt')
 
 
-class SubNavigationUpdater(object):
+class MasterSlaveDropdownUpdater(object):
 
-    navigation_source = zeit.cms.content.sources.NavigationSource()
-    subnavigation_source = zeit.cms.content.sources.SubNavigationSource()
+    master_source = NotImplemented
+    slave_source = NotImplemented
 
     def __init__(self, context, request):
-        super(SubNavigationUpdater, self).__init__(context, request)
-        self.navigation_source = self.navigation_source(self.context)
+        super(MasterSlaveDropdownUpdater, self).__init__(context, request)
+        self.master_source = self.master_source(self.context)
         self.master_terms = zope.component.getMultiAdapter(
-            (self.navigation_source, request),
+            (self.master_source, request),
             zope.app.form.browser.interfaces.ITerms)
 
     def get_result(self, master_token):
@@ -92,10 +92,11 @@ class SubNavigationUpdater(object):
 
         class Fake(object):
             zope.interface.implements(
-                zeit.cms.content.interfaces.ICommonMetadata)
-            ressort = master_value
+                self.slave_source.factory.master_value_iface)
+        fake = Fake()
+        setattr(fake, self.slave_source.factory.master_value_key, master_value)
 
-        source = self.subnavigation_source(Fake())
+        source = self.slave_source(fake)
         terms = zope.component.getMultiAdapter(
             (source, self.request), zope.app.form.browser.interfaces.ITerms)
         result = []
@@ -110,6 +111,12 @@ class SubNavigationUpdater(object):
         self.request.response.setHeader('Cache-Control', 'public;max-age=3600')
         self.request.response.setHeader('Content-Type', 'application/json')
         return json.dumps(sorted(result)).encode('utf8')
+
+
+class SubNavigationUpdater(MasterSlaveDropdownUpdater):
+
+    master_source = zeit.cms.content.sources.NavigationSource()
+    slave_source = zeit.cms.content.sources.SubNavigationSource()
 
 
 class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):

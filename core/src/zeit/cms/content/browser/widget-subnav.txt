@@ -16,7 +16,7 @@ Get the json view:
 ...     (getRootFolder(), request), name='subnavigationupdater.json')
 
 
->>> u'Deutschland' in updater.navigation_source
+>>> u'Deutschland' in updater.master_source
 True
 >>> dt_term = updater.master_terms.getTerm(u'Deutschland')
 >>> updater(master_token=dt_term.token)

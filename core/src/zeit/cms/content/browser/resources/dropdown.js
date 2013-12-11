@@ -54,12 +54,12 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
 
 zeit.cms.master_slave_dropdown = {}
 
-zeit.cms.configure_ressort_dropdown = function(prefix) {
+zeit.cms.configure_master_slave = function(prefix, master, slave, update_url) {
     if (isUndefinedOrNull(prefix)) {
         prefix = 'form.'
     }
-    var master = $(prefix + 'ressort');
-    var slave = $(prefix + 'sub_ressort');
+    var master = $(prefix + master);
+    var slave = $(prefix + slave);
 
     if (isNull(master) || isNull(slave)) {
         return
@@ -68,12 +68,17 @@ zeit.cms.configure_ressort_dropdown = function(prefix) {
         zeit.cms.master_slave_dropdown[prefix].destroy();
     }
     var path = window.location.pathname.split('/').slice(0, -1);
-    path.push('@@subnavigationupdater.json');
+    path.push(update_url);
     path = path.join('/');
     zeit.cms.master_slave_dropdown[prefix] =
         new zeit.cms.MasterSlaveDropDown(master, slave, path);
 };
 
+
+zeit.cms.configure_ressort_dropdown = function(prefix) {
+    zeit.cms.configure_master_slave(
+        prefix, 'ressort', 'sub_ressort', '@@subnavigationupdater.json');
+};
 
 /**
  * The item currently in display belongs to the <select>, not the <option>,
