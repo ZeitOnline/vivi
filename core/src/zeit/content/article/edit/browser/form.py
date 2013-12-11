@@ -465,7 +465,7 @@ class TeaserText(zeit.edit.browser.form.InlineForm,
         self.set_charlimit('teaserText')
 
 
-class MiscForms(zeit.edit.browser.form.FoldableFormGroup):
+class OptionFormGroup(zeit.edit.browser.form.FoldableFormGroup):
 
     title = _('Options')
 
