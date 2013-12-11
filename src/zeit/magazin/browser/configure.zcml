@@ -22,4 +22,12 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.magazin.update_articletemplate.json"
+    class=".article.TemplateUpdater"
+    permission="zope.View"
+    />
+
 </configure>
