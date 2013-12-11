@@ -46,11 +46,6 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.cp.interfaces.CenterPageSource(),
         required=False)
 
-    # XXX should be Choice with XML-file-backed source (see VIV-241)
-    template = zope.schema.TextLine(
-        title=_("Template"),
-        required=False)
-
     genre = zope.schema.Choice(
         title=_("Genre"),
         source=zeit.content.article.source.GenreSource(),
