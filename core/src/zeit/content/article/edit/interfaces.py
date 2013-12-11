@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.article.i18n import MessageFactory as _
-import stabledict
+import collections
 import zc.sourcefactory.basic
 import zeit.cms.content.field
 import zeit.content.gallery.interfaces
@@ -215,7 +215,7 @@ class ITimeline(IReference):
 
 class PortraitboxLayoutSource(LayoutSourceBase):
 
-    values = stabledict.StableDict([
+    values = collections.OrderedDict([
         (u'short', _('short')),
         (u'wide', _('wide')),
     ])
@@ -269,7 +269,7 @@ class IAudio(zeit.edit.interfaces.IBlock):
 
 class CitationLayoutSource(LayoutSourceBase):
 
-    values = stabledict.StableDict([
+    values = collections.OrderedDict([
         (u'short', _('short')),
         (u'wide', _('wide')),
         (u'double', _('double')),
