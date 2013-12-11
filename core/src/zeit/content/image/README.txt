@@ -58,10 +58,8 @@ When we make a resource from a LocalImage the contentType is set correctly:
 The properties contain the title:
 
 >>> import pprint
->>> pprint.pprint(dict(resource.properties))
-{('getlastmodified', 'DAV:'): u'Fri, 07 Mar 2008 12:47:16 GMT',
- ('title', 'http://namespaces.zeit.de/CMS/document'): u'my title',
- ('type', 'http://namespaces.zeit.de/CMS/meta'): 'image'}
+>>> resource.properties[('title', 'http://namespaces.zeit.de/CMS/document')]
+u'my title'
 
 Le's add the local image to the repository:
 
