@@ -31,10 +31,10 @@ class ImpBase(zeit.cms.browser.view.Base):
         return self.image.getImageSize()[1]
 
     def scales(self):
-        return zeit.imp.source.ScaleSource()
+        return zeit.imp.source.ScaleSource()(self.context)
 
     def colors(self):
-        return zeit.imp.source.ColorSource()
+        return zeit.imp.source.ColorSource()(self.context)
 
 
 class Imp(ImpBase):

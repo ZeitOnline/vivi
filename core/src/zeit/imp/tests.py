@@ -108,7 +108,7 @@ class TestSources(zeit.cms.testing.FunctionalTestCase):
     layer = imp_layer
 
     def test_scale_source(self):
-        source = zeit.imp.source.ScaleSource()
+        source = zeit.imp.source.ScaleSource()(None)
         scales = list(source)
         self.assertEquals(7, len(scales))
         scale = scales[0]
@@ -120,7 +120,7 @@ class TestSources(zeit.cms.testing.FunctionalTestCase):
         self.assertEquals(u'Aufmacher groß (450×200)', scale.title)
 
     def test_color_source(self):
-        source = zeit.imp.source.ColorSource()
+        source = zeit.imp.source.ColorSource()(None)
         values = list(source)
         self.assertEquals(3, len(values))
         value = values[1]

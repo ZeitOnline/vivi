@@ -11,12 +11,12 @@ class PossibleScale(object):
     zope.interface.implements(zeit.imp.interfaces.IPossibleScale)
 
 
-class ScaleSource(zeit.cms.content.sources.SimpleXMLSource):
+class ScaleSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.imp'
     config_url = 'scale-source'
 
-    def getValues(self):
+    def getValues(self, context):
         xml = self._get_tree()
         for scale_node in xml.iterchildren('*'):
             scale = PossibleScale()
@@ -24,7 +24,8 @@ class ScaleSource(zeit.cms.content.sources.SimpleXMLSource):
             scale.height = scale_node.get('height')
             scale.title = scale_node.get('title')
             scale.name = scale_node.get('name')
-            yield scale
+            if self.isAvailable(scale_node, context):
+                yield scale
 
 
 class Color(object):
@@ -32,15 +33,16 @@ class Color(object):
     zope.interface.implements(zeit.imp.interfaces.IColor)
 
 
-class ColorSource(zeit.cms.content.sources.SimpleXMLSource):
+class ColorSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.imp'
     config_url = 'color-source'
 
-    def getValues(self):
+    def getValues(self, context):
         xml = self._get_tree()
         for node in xml.iterchildren('*'):
             color = Color()
             color.title = node.get('title')
             color.color = node.get('color')
-            yield color
+            if self.isAvailable(node, context):
+                yield color
