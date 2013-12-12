@@ -2,23 +2,34 @@
 # See also LICENSE.txt
 
 from zeit.magazin.interfaces import IZMOSection, IZMOFolder
+import gocept.selenium
+import gocept.selenium.ztk
 import pkg_resources
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+import zeit.content.article.testing
 import zope.component
 import zope.interface
 
 
-product_config = zeit.cms.testing.cms_product_config.replace(
+# XXX appending to product config is not very well supported right now
+cms_product_config = zeit.cms.testing.cms_product_config.replace(
     '</product-config>', """\
   zmo-preview-prefix http://localhost/zmo-preview-prefix
-    article-template-source file://{base}/tests/article-templates.xml
-</product-config>""".format(
-    base=pkg_resources.resource_filename(__name__, '')))
+</product-config>""")
+
+product_config = """\
+<product-config zeit.magazin>
+  article-template-source file://{base}/tests/article-templates.xml
+</product-config>
+""".format(base=pkg_resources.resource_filename(__name__, ''))
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=product_config)
+    'ftesting.zcml', product_config=(
+        product_config
+        + cms_product_config
+        + zeit.content.article.testing.product_config))
 
 
 class LAYER(ZCML_LAYER):
@@ -44,3 +55,6 @@ class LAYER(ZCML_LAYER):
     @classmethod
     def testTearDown(cls):
         pass
+
+
+SELENIUM_LAYER = gocept.selenium.ztk.Layer(LAYER)
