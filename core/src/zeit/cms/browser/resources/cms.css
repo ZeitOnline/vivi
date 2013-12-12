@@ -420,6 +420,10 @@ pre {
   right: 0;
 }
 
+.section-IZMOSection #main-navigation > li:first-child > a {
+  background: transparent url("layout/logo_zmo.png") no-repeat left center;
+}
+
 #main-navigation > li:first-child > a > span {
   display: none;
 }

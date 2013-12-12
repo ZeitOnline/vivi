@@ -8,9 +8,11 @@ import zeit.cms.browser
 import zeit.cms.browser.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
+import zeit.cms.section.interfaces
 import zope.app.basicskin.standardmacros
 import zope.component
 import zope.location.interfaces
+import zope.security.proxy
 
 
 EXCLUDE_LIBRARIES = [
@@ -67,3 +69,12 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
             return 'repository'
         else:
             return 'unknown'
+
+    @property
+    def section(self):
+        section = zeit.cms.section.interfaces.ISection(self.context, None)
+        for iface in zope.interface.providedBy(section):
+            if issubclass(zope.security.proxy.getObject(iface),
+                          zeit.cms.section.interfaces.ISection):
+                return iface.__name__
+        return 'unknown'
