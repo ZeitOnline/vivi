@@ -40,9 +40,9 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
 
     editable_locator = 'css=.block.type-p .editable'
 
-    def add_article(self):
+    def add_article(self, add_location='/repository'):
         s = self.selenium
-        self.open('/repository')
+        self.open(add_location)
         s.select('id=add_menu', 'label=Article')
         s.waitForPageToLoad()
 
