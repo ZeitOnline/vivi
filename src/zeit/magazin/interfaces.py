@@ -64,6 +64,19 @@ class INextRead(zope.interface.Interface):
             source=zeit.cms.related.interfaces.relatableContentSource))
 
 
+class IRelatedLayout(zope.interface.Interface):
+
+    related_layout = zope.schema.Choice(
+        title=_("Related layout"),
+        source=zeit.magazin.sources.ArticleRelatedLayoutSource(),
+        required=False)
+
+    nextread_layout = zope.schema.Choice(
+        title=_("Next read layout"),
+        source=zeit.magazin.sources.ArticleRelatedLayoutSource(),
+        required=False)
+
+
 class IPortraitboxLongtext(zope.interface.Interface):
 
     longtext = zc.form.field.HTMLSnippet(

@@ -32,3 +32,13 @@ class NextRead(zeit.cms.related.related.RelatedBase):
     @nextread.setter
     def nextread(self, value):
         return self._set_related(value)
+
+
+class RelatedLayout(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    grok.implements(zeit.magazin.interfaces.IRelatedLayout)
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.magazin.interfaces.IRelatedLayout,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('related_layout', 'nextread_layout'))
