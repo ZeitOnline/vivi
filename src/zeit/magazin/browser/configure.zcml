@@ -1,7 +1,9 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
-  >
+  i18n_domain="zeit.cms">
+
+  <!-- article -->
 
   <browser:viewlet
     for="..interfaces.IZMOArticle"
@@ -27,6 +29,34 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="zeit.magazin.update_articletemplate.json"
     class=".article.TemplateUpdater"
+    permission="zope.View"
+    />
+
+  <!-- portraitbox -->
+
+  <browser:page
+    for="zeit.magazin.interfaces.IZMOFolder"
+    name="zeit.content.portraitbox.Add"
+    permission="zeit.AddContent"
+    class=".portraitbox.Add"
+    menu="zeit-add-menu" title="Portraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IZMOPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".portraitbox.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+  <browser:page
+    name="view.html"
+    for="..interfaces.IZMOPortraitbox"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".portraitbox.Display"
     permission="zope.View"
     />
 

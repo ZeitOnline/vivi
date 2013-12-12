@@ -1,7 +1,7 @@
 # Copyright (c) 2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.magazin.interfaces import IZMOSection
+from zeit.magazin.interfaces import IZMOSection, IZMOFolder
 import pkg_resources
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -38,6 +38,7 @@ class LAYER(ZCML_LAYER):
                 zeit.cms.repository.interfaces.IRepository)
             magazin = zeit.cms.repository.folder.Folder()
             zope.interface.alsoProvides(magazin, IZMOSection)
+            zope.interface.alsoProvides(magazin, IZMOFolder)
             repository['magazin'] = magazin
 
     @classmethod

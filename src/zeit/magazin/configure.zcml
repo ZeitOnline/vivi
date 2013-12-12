@@ -12,10 +12,24 @@
     />
 
   <adapter
+    factory=".interfaces.IZMOFolder"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="collection"
+    />
+
+  <adapter
     factory=".interfaces.IZMOArticle"
     for=".interfaces.IZMOSection"
     provides="zeit.cms.section.interfaces.ISectionMarker"
     name="article"
+    />
+
+  <adapter
+    factory=".interfaces.IZMOPortraitbox"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="portraitbox"
     />
 
   <class class=".article.TemplateSettings">
@@ -28,5 +42,10 @@
       permission="zeit.EditContent"
       />
   </class>
+
+  <adapter
+    factory=".portraitbox.PortraitboxLongtext"
+    provides=".interfaces.IPortraitboxLongtext"
+    />
 
 </configure>
