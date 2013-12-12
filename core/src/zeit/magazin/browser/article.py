@@ -42,7 +42,9 @@ class NextRead(zeit.edit.browser.form.InlineForm):
     legend = ''
     prefix = 'nextread'
     undo_description = _('edit internal links')
-    form_fields = FormFields(zeit.magazin.interfaces.INextRead)
+    form_fields = FormFields(
+        zeit.magazin.interfaces.INextRead,
+        zeit.magazin.interfaces.IRelatedLayout)
 
     def setUpWidgets(self, *args, **kw):
         super(NextRead, self).setUpWidgets(*args, **kw)

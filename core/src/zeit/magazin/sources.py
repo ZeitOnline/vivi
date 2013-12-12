@@ -32,3 +32,10 @@ class ArticleHeaderSource(zeit.cms.content.sources.MasterSlaveSource):
 
     def _get_title_for(self, node):
         return unicode(node['title'])
+
+
+class ArticleRelatedLayoutSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.magazin'
+    config_url = 'article-related-layout-source'
+    attribute = 'id'
