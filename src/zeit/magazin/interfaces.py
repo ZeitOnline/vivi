@@ -4,6 +4,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import zc.form.field
 import zeit.cms.interfaces
+import zeit.cms.related.interfaces
 import zeit.cms.section.interfaces
 import zeit.content.article.interfaces
 import zeit.content.portraitbox.interfaces
@@ -51,6 +52,16 @@ class IArticleTemplateSettings(zope.interface.Interface):
         title=_("Header layout"),
         source=zeit.magazin.sources.ArticleHeaderSource(),
         required=False)
+
+
+class INextRead(zope.interface.Interface):
+
+    nextread = zope.schema.Tuple(
+        title=_("Next read"),
+        default=(),
+        required=False,
+        value_type=zope.schema.Choice(
+            source=zeit.cms.related.interfaces.relatableContentSource))
 
 
 class IPortraitboxLongtext(zope.interface.Interface):
