@@ -90,7 +90,7 @@ class TypeDeclaration(object):
         else:
             removed_local_content = True
         provides = unwrapped.__provides__
-        if not list(zope.interface.directlyProvidedBy(obj)):
+        if not list(zope.interface.directlyProvidedBy(unwrapped)):
             # In the case we don't have any direct provides just store nothing.
             provides = None
         try:
