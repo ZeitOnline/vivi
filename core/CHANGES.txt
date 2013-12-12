@@ -10,4 +10,6 @@ zeit.magazin changes
 
 - Add fields for template and header layouts for ZMO articles (VIV-241).
 
+- Add field for focussed nextread for ZMO articles (VIV-253).
+
 - Add field longtext for ZMO portrait boxes (VIV-246).
