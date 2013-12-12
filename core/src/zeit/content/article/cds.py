@@ -144,7 +144,8 @@ def import_file(path):
     if container is None:
         site = zope.app.component.hooks.getSite()
         settings = zeit.cms.settings.interfaces.IGlobalSettings(site)
-        source = zeit.content.article.interfaces.IArticle['ressort'].source
+        source = zeit.content.article.interfaces.IArticle['ressort'].source(
+            article)
         prefix = (valid_path if article.ressort in source else invalid_path)
         container = settings.get_working_directory(prefix,
                                                    **get_replacements(article))
