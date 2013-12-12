@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Dec 11 15:54:13 2013\n"
+"POT-Creation-Date: Thu Dec 12 14:01:18 2013\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -824,7 +824,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/template.py:126
 #: zeit/cms/content/browser/template.zcml:33
-#: zeit/magazin/interfaces.py:46
+#: zeit/magazin/interfaces.py:47
 msgid "Template"
 msgstr ""
 
@@ -1727,6 +1727,7 @@ msgid "Internal links"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:239
+#: zeit/magazin/browser/article.py:44
 msgid "edit internal links"
 msgstr ""
 
@@ -1774,7 +1775,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:504
 #: zeit/content/article/edit/browser/form.py:513
 #: zeit/content/article/edit/browser/form.py:532
-#: zeit/magazin/browser/article.py:14
+#: zeit/magazin/browser/article.py:16
 msgid "edit options"
 msgstr ""
 
@@ -2097,7 +2098,7 @@ msgstr ""
 #: zeit/content/article/edit/reference.py:161
 #: zeit/content/portraitbox/interfaces.py:38
 #: zeit/content/portraitbox/portraitbox.py:38
-#: zeit/magazin/browser/configure.zcml:37
+#: zeit/magazin/browser/configure.zcml:56
 #: zeit/content/portraitbox/interfaces.py:38
 #: zeit/content/portraitbox/portraitbox.py:38
 msgid "Portraitbox"
@@ -2419,7 +2420,7 @@ msgstr ""
 #: zeit/content/cp/browser/configure.zcml:40
 #: zeit/content/gallery/browser/configure.zcml:49
 #: zeit/content/quiz/browser/configure.zcml:38
-#: zeit/magazin/browser/configure.zcml:46
+#: zeit/magazin/browser/configure.zcml:65
 #: zeit/content/gallery/browser/configure.zcml:49
 #: zeit/content/image/browser/configure.zcml:224
 #: zeit/content/link/browser/configure.zcml:17
@@ -3390,15 +3391,19 @@ msgstr ""
 msgid "Use IMP"
 msgstr ""
 
-#: zeit/magazin/browser/article.py:12
+#: zeit/magazin/browser/article.py:14
 msgid "ZEITmagazin ONLINE"
 msgstr ""
 
-#: zeit/magazin/interfaces.py:51
+#: zeit/magazin/interfaces.py:52
 msgid "Header layout"
 msgstr ""
 
-#: zeit/magazin/interfaces.py:59
+#: zeit/magazin/interfaces.py:60
+msgid "Next read"
+msgstr ""
+
+#: zeit/magazin/interfaces.py:70
 msgid "long text (ZMO)"
 msgstr ""
 
