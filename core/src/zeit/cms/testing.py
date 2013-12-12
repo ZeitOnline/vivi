@@ -341,7 +341,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             self.log_handler = logging.StreamHandler(sys.stdout)
             logging.root.addHandler(self.log_handler)
             self.old_log_level = logging.root.level
-            logging.root.setLevel(logging.ERROR)
+            logging.root.setLevel(logging.WARN)
             transaction.commit()
         self.selenium.getEval('window.sessionStorage.clear()')
 
