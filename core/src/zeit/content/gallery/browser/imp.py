@@ -21,7 +21,7 @@ class Imp(zeit.imp.browser.imp.ImpBase):
         return self.context.image
 
     def scales(self):
-        return zeit.content.gallery.interfaces.ScaleSource()
+        return zeit.content.gallery.interfaces.ScaleSource()(self.context)
 
     @property
     def previous(self):
