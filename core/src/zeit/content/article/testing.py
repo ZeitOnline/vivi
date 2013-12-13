@@ -24,16 +24,16 @@ product_config = """
     genre-url file://%s
     image-layout-source file://%s
     video-layout-source file://%s
+    htmlblock-layout-source file://%s
 </product-config>
 """ % (
     pkg_resources.resource_filename(
         __name__, '/tests/recension_categories.xml'),
+    pkg_resources.resource_filename(__name__, '/tests/article-genres.xml'),
+    pkg_resources.resource_filename(__name__, '/edit/tests/image-layouts.xml'),
+    pkg_resources.resource_filename(__name__, '/edit/tests/video-layouts.xml'),
     pkg_resources.resource_filename(
-    __name__, '/tests/article-genres.xml'),
-    pkg_resources.resource_filename(
-    __name__, '/edit/tests/image-layouts.xml'),
-    pkg_resources.resource_filename(
-    __name__, '/edit/tests/video-layouts.xml'),
+        __name__, '/edit/tests/htmlblock-layouts.xml'),
 )
 
 

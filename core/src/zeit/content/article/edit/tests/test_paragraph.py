@@ -164,3 +164,22 @@ class TestFactories(zeit.content.article.testing.FunctionalTestCase):
 
     def test_intertitle(self):
         self.assert_factory('intertitle')
+
+
+class HTMLBlockTest(zeit.content.article.testing.FunctionalTestCase):
+
+    def get_block(self):
+        from zeit.content.article.edit.paragraph import HTMLBlock
+        from zeit.content.article.edit.interfaces import HTMLBlockLayoutSource
+        body = lxml.objectify.E.body(lxml.objectify.XML(
+            '<htmlblock></htmlblock>'))
+        block = HTMLBlock(None, body.htmlblock)
+        block.layout = HTMLBlockLayoutSource().factory.getValues(block)[0]
+        return block
+
+    def test_stores_title_and_contents(self):
+        block = self.get_block()
+        block.title = 'title'
+        block.text = '<ul>text</ul>'
+        self.assertEqual('title', block.title)
+        self.assertEqual('<ul>text</ul>', block.text)

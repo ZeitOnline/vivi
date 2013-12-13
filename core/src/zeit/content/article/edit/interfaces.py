@@ -12,6 +12,7 @@ import zeit.content.portraitbox.interfaces
 import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zope.schema
+import zope.security.proxy
 
 
 class IEditableBody(zeit.edit.interfaces.IArea):
@@ -53,6 +54,72 @@ class IIntertitle(IParagraph):
     """<intertitle/> element."""
 
 
+class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
+
+    def isAvailable(self, node, context):
+        context = zeit.content.article.interfaces.IArticle(context, None)
+        return super(BodyAwareXMLSource, self).isAvailable(node, context)
+
+
+class IHTMLBlockLayout(zope.interface.Interface):
+
+    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
+    title = zope.schema.TextLine(title=u'Human readable title.')
+    allowed_tags = zope.schema.ASCIILine(
+        title=u"Space-separated list of tag names that are allowed"
+        u" in this block's body (in addition to inline tags)")
+
+
+class HTMLBlockLayout(object):
+
+    def __init__(self, id, title, allowed_tags=None):
+        self.id = id
+        self.title = title
+        self.allowed_tags = allowed_tags or []
+
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, HTMLBlockLayout) and self.id == other.id
+
+
+class HTMLBlockLayoutSource(BodyAwareXMLSource):
+
+    product_configuration = 'zeit.content.article'
+    config_url = 'htmlblock-layout-source'
+    attribute = 'id'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        result = []
+        for node in tree.iterchildren('*'):
+            if not self.isAvailable(node, context):
+                continue
+            g = node.get
+            result.append(HTMLBlockLayout(
+                g('id'), node.text, g('allowed_tags', '').split()))
+        return result
+
+    def getTitle(self, context, value):
+        return value.title
+
+    def getToken(self, context, value):
+        return value.id
+
+
+class IHTMLBlock(zeit.edit.interfaces.IBlock):
+    """Section with title and body"""
+
+    layout = zope.schema.Choice(
+        title=_('Layout'),
+        source=HTMLBlockLayoutSource())
+
+    title = zope.schema.TextLine(
+        title=_('Title'))
+
+    contents = zope.schema.Text(
+        title=_('Contents'))
+
+
 class IDivision(zeit.edit.interfaces.IBlock):
     """<division/> element"""
 
@@ -71,13 +138,6 @@ class LayoutSourceBase(zc.sourcefactory.basic.BasicSourceFactory):
 
     def getTitle(self, value):
         return self.values[value]
-
-
-class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
-
-    def isAvailable(self, node, context):
-        context = zeit.content.article.interfaces.IArticle(context, None)
-        return super(BodyAwareXMLSource, self).isAvailable(node, context)
 
 
 class VideoLayoutSource(BodyAwareXMLSource):

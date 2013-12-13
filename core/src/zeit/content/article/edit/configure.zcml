@@ -48,6 +48,23 @@
       />
   </class>
 
+  <class class=".paragraph.HTMLBlock">
+    <require
+      interface=".interfaces.IHTMLBlock"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IHTMLBlock"
+      permission="zope.View"
+      />
+  </class>
+
+  <class class=".interfaces.HTMLBlockLayout">
+    <require
+      interface=".interfaces.IHTMLBlockLayout"
+      permission="zope.View" />
+  </class>
+
   <class class=".division.Division">
     <require
       interface=".interfaces.IDivision"

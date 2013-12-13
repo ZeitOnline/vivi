@@ -365,6 +365,26 @@
     permission="zeit.EditContent"
     />
 
+  <!-- HTML block -->
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IHTMLBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-htmlblock"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IHTMLBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-htmlblock"
+    class=".edit.EditHTMLBlock"
+    permission="zope.View"
+    />
+
 
   <class class="..reference.Reference">
     <implements interface="zeit.edit.interfaces.IFoldable" />
@@ -387,6 +407,10 @@
   </class>
 
   <class class="..citation.Citation">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..paragraph.HTMLBlock">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

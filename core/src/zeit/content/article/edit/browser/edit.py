@@ -197,3 +197,16 @@ class DoubleQuotes(object):
     def __call__(self):
         return json.dumps(
             zeit.content.article.article.DOUBLE_QUOTE_CHARACTERS.pattern)
+
+
+class EditHTMLBlock(zeit.edit.browser.form.InlineForm):
+
+    legend = u''
+    undo_description = _('edit html block')
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IHTMLBlock).omit(
+        '__name__', 'xml')
+
+    @property
+    def prefix(self):
+        return 'htmlblock.{0}'.format(self.context.__name__)

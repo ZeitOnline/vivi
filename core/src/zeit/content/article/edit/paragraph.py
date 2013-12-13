@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import copy
 import grokcore.component as grok
 import lxml.etree
@@ -26,16 +27,32 @@ def keep_allowed_tags(tree, allowed_tags):
 inline_tags = ['a', 'br', 'i', 'em', 'strong', 'b', 'u']
 
 
-class Paragraph(zeit.edit.block.SimpleElement):
+class ParagraphBase(zeit.edit.block.SimpleElement):
+
+    grok.baseclass()
 
     area = zeit.content.article.edit.interfaces.IEditableBody
-    grok.implements(zeit.content.article.edit.interfaces.IParagraph)
-    type = 'p'
-
     allowed_tags = inline_tags
 
     def keep_allowed_tags(self, tree):
         return keep_allowed_tags(tree, self.allowed_tags)
+
+    def _to_xml(self, value):
+        p = lxml.html.soupparser.fromstring(value)
+        p = self.keep_allowed_tags(p)
+        p.tag = self.type
+        p.attrib.update(self.xml.attrib.items())
+        # XXX do we want to set this as the default objectify parser in the
+        # whole system?
+        parser = lxml.objectify.makeparser(remove_blank_text=False)
+        p = lxml.objectify.fromstring(lxml.etree.tostring(p), parser=parser)
+        return p
+
+
+class Paragraph(ParagraphBase):
+
+    grok.implements(zeit.content.article.edit.interfaces.IParagraph)
+    type = 'p'
 
     @property
     def text(self):
@@ -47,14 +64,7 @@ class Paragraph(zeit.edit.block.SimpleElement):
 
     @text.setter
     def text(self, value):
-        p = lxml.html.soupparser.fromstring(value)
-        p = self.keep_allowed_tags(p)
-        p.tag = self.type
-        p.attrib.update(self.xml.attrib.items())
-        # XXX do we want to set this as the default objectify parser in the
-        # whole system?
-        parser = lxml.objectify.makeparser(remove_blank_text=False)
-        p = lxml.objectify.fromstring(lxml.etree.tostring(p), parser=parser)
+        p = self._to_xml(value)
         self.xml.getparent().replace(self.xml, p)
         self.xml = p
 
@@ -96,3 +106,51 @@ class Intertitle(Paragraph):
 class IntertitleFactory(zeit.content.article.edit.block.BlockFactory):
 
     produces = Intertitle
+
+
+class HTMLBlock(ParagraphBase):
+
+    grok.implements(zeit.content.article.edit.interfaces.IHTMLBlock)
+    type = 'htmlblock'
+
+    title = zeit.cms.content.property.ObjectPathProperty('.title')
+
+    @property
+    def allowed_tags(self):
+        return inline_tags + self.layout.allowed_tags
+
+    @property
+    def layout(self):
+        for layout in (
+                zeit.content.article.edit.interfaces.IHTMLBlock[
+                    'layout'].source(self)):
+            if layout.id == self.xml.get('layout'):
+                return layout
+
+    @layout.setter
+    def layout(self, layout):
+        self.xml.set('layout', layout.id)
+
+    @property
+    def contents(self):
+        text = ''.join(
+            lxml.etree.tostring(copy.copy(x))
+            for x in self.xml.iterchildren() if x.tag != 'title')
+        return unicode(text)
+
+    @contents.setter
+    def contents(self, value):
+        for x in self.xml.iterchildren():
+            if x.tag == 'title':
+                continue
+            self.xml.remove(x)
+        if value:
+            value = self._to_xml(value)
+            for x in value.iterchildren():
+                self.xml.append(x)
+
+
+class HTMLBlockFactory(zeit.content.article.edit.block.BlockFactory):
+
+    produces = HTMLBlock
+    title = _('HTML block')
