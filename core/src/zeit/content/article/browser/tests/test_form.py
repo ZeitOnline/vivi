@@ -28,7 +28,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         import zope.publisher.browser
         request = zope.publisher.browser.TestRequest()
         terms = zope.component.getMultiAdapter(
-            (IArticle['ressort'].source, request), ITerms)
+            (IArticle['ressort'].source(object()), request), ITerms)
         ressort_token = terms.getTerm('Deutschland').token
         terms = zope.component.getMultiAdapter(
             (IArticle['sub_ressort'].source(object()), request), ITerms)

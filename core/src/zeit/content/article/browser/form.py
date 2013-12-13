@@ -59,8 +59,8 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
             self.context)
         article.year = settings.default_year
         article.volume = settings.default_volume
-        article.ressort = self.get_ressort()
-        article.sub_ressort = self.get_sub_ressort(article)
+        article.ressort = self._get_source_value(article, 'ressort')
+        article.sub_ressort = self._get_source_value(article, 'sub_ressort')
         image_factory = zope.component.getAdapter(
             IEditableBody(article), zeit.edit.interfaces.IElementFactory,
             name='image')
@@ -68,18 +68,10 @@ class AddAndCheckout(zeit.cms.browser.view.Base):
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(article))
         return article
 
-    def get_ressort(self):
-        token = self.request.form.get('form.ressort')
-        source = zeit.content.article.interfaces.IArticle['ressort'].source
-        return self._get_value(source, token)
-
-    def get_sub_ressort(self, article):
-        token = self.request.form.get('form.sub_ressort')
-        source = zeit.content.article.interfaces.IArticle['sub_ressort'].source
+    def _get_source_value(self, article, fieldname):
+        token = self.request.form.get('form.%s' % fieldname)
+        source = zeit.content.article.interfaces.IArticle[fieldname].source
         source = source(article)
-        return self._get_value(source, token)
-
-    def _get_value(self, source, token):
         if not token:
             return
         terms = zope.component.getMultiAdapter(
