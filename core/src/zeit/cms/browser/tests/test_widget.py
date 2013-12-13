@@ -7,6 +7,7 @@ from zeit.cms.browser.widget import \
 import contextlib
 import mock
 import os
+import os.path
 import unittest
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
@@ -913,6 +914,8 @@ class ConvertingRestructuredTextWidgetTest(
         self.assertEqual(
             '<p><strong>foo</strong></p>\n', self.widget.getInputValue())
 
+    @unittest.skipUnless(
+        os.path.exists('/usr/bin/pandoc'), 'pandoc not available')
     def test_converts_to_rst_for_rendering(self):
         self.widget.setRenderedValue('<strong>foo</strong>')
         self.assertEqual('**foo**\n', self.widget._getFormValue())
