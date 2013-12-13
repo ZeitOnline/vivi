@@ -76,15 +76,8 @@ class LayoutSourceBase(zc.sourcefactory.basic.BasicSourceFactory):
 class BodyAwareXMLSource(zeit.cms.content.sources.XMLSource):
 
     def isAvailable(self, node, context):
-        if context is not None:
-            body = zeit.edit.interfaces.IArea(context, None)
-            if body is None:
-                # this should only happen in tests
-                context = None
-            else:
-                context = body.__parent__
-        return super(BodyAwareXMLSource, self).isAvailable(
-            node, context)
+        context = zeit.content.article.interfaces.IArticle(context, None)
+        return super(BodyAwareXMLSource, self).isAvailable(node, context)
 
 
 class VideoLayoutSource(BodyAwareXMLSource):
