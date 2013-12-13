@@ -1,6 +1,7 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.browser.widget import ConvertingRestructuredTextWidget
 from zeit.cms.i18n import MessageFactory as _
 import json
 import zeit.cms.interfaces
@@ -206,6 +207,7 @@ class EditHTMLBlock(zeit.edit.browser.form.InlineForm):
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.edit.interfaces.IHTMLBlock).omit(
         '__name__', 'xml')
+    form_fields['contents'].custom_widget = ConvertingRestructuredTextWidget
 
     @property
     def prefix(self):

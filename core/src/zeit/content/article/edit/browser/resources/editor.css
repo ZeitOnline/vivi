@@ -1641,11 +1641,21 @@
   margin: 0px;
 }
 
-.type-article .fieldname-memo .rst-widget #memo\.memo\.preview.empty {
+.type-article .rst-preview.empty {
   padding: 5px;
 }
 
-.type-article .fieldname-memo .rst-widget {
+.type-article .rst-preview dt {
+  font-weight: bold;
+  clear: left;
+  float: left;
+}
+
+.type-article .rst-preview dd {
+  float: left;
+}
+
+.type-article .rst-widget {
   background: url("bginput.png") repeat-x scroll 0 0 transparent;
   border-top: 1px solid #999;
   border: 1px solid #BBB;
@@ -1653,35 +1663,40 @@
   padding-top:2px;
 }
 
-.type-article .fieldname-memo #memo\.memo {
-  border: none;
-  resize: vertical;
-  width: 99%;
+.type-article #edit-form-article-content .inline-form.wired .rst-widget textarea {
+    border-style: none !important;
 }
 
-.type-article .fieldname-memo #memo\.memo,
-.type-article .fieldname-memo #memo\.memo\.preview {
-  background-color: #fff79a;
+.type-article #edit-form-article-content .rst-preview {
+  white-space: inherit;
 }
 
-.type-article .fieldname-memo #memo\.memo\.preview p,
-.type-article .fieldname-memo textarea#memo\.memo {
+.type-article .rst-widget textarea {
   color: #4C4C4C;
   font-family: "Lucida Grande","Lucida Sans Unicode",sans-serif;
   font-size: 12px;
   margin: 0;
   padding: 5px;
+
+  border: none;
+  resize: vertical;
+  width: 99%;
 }
 
-.type-article .fieldname-memo #memo\.memo\.preview p {
+.type-article .fieldname-memo textarea,
+.type-article .fieldname-memo .rst-preview {
+  background-color: #fff79a;
+}
+
+.type-article .fieldname-memo .rst-preview p {
   color: #333333;
 }
 
-.type-article .fieldname-memo #memo\.memo\.preview.empty {
+.type-article .fieldname-memo .rst-preview.empty {
   background-color: #ffffff;
 }
 
-.type-article .fieldname-memo #memo\.memo\.preview.empty:before {
+.type-article .fieldname-memo .rst-preview.empty:before {
   content: "Memo";
 }
 
