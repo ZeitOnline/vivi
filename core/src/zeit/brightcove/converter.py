@@ -153,6 +153,7 @@ def copy_field(from_, to, interface, key):
     if (
         isinstance(value, unicode) and
         zope.schema.interfaces.IFromUnicode.providedBy(field)):
+        field = field.bind(to)
         try:
             value = field.fromUnicode(value)
         except zope.interface.Invalid:
