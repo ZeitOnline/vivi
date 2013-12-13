@@ -8,7 +8,7 @@ zeit.cms.RestructuredTextWidget = gocept.Class.extend({
 
     construct: function(widget_id) {
         var self = this;
-        widget_id = widget_id.replace('.', '\\.');
+        widget_id = widget_id.replace(/\./g, '\\.');
         self.textarea = $('#' + widget_id);
         self.preview = $('#' + widget_id + '\\.preview');
         self.textarea.hide();
