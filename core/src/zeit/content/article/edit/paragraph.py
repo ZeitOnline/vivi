@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 import copy
-import grokcore.component
+import grokcore.component as grok
 import lxml.etree
 import lxml.html.clean
 import lxml.html.soupparser
@@ -29,8 +29,7 @@ inline_tags = ['a', 'br', 'i', 'em', 'strong', 'b', 'u']
 class Paragraph(zeit.edit.block.SimpleElement):
 
     area = zeit.content.article.edit.interfaces.IEditableBody
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IParagraph)
+    grok.implements(zeit.content.article.edit.interfaces.IParagraph)
     type = 'p'
 
     allowed_tags = inline_tags
@@ -67,8 +66,7 @@ class ParagraphFactory(zeit.content.article.edit.block.BlockFactory):
 
 class UnorderedList(Paragraph):
 
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IUnorderedList)
+    grok.implements(zeit.content.article.edit.interfaces.IUnorderedList)
     type = 'ul'
     allowed_tags = inline_tags + ['li']
 
@@ -80,8 +78,7 @@ class UnorderedListFactory(zeit.content.article.edit.block.BlockFactory):
 
 class OrderedList(UnorderedList):
 
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IOrderedList)
+    grok.implements(zeit.content.article.edit.interfaces.IOrderedList)
     type = 'ol'
 
 
@@ -92,8 +89,7 @@ class OrderedListFactory(zeit.content.article.edit.block.BlockFactory):
 
 class Intertitle(Paragraph):
 
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IIntertitle)
+    grok.implements(zeit.content.article.edit.interfaces.IIntertitle)
     type = 'intertitle'
 
 
