@@ -19,7 +19,7 @@ setup(
         'gocept.form',
         'setuptools',
         'zeit.cms>=2.7.0.dev0',
-        'zeit.imp>=0.12dev',
+        'zeit.imp>=0.15.0.dev0',
         'zeit.wysiwyg',
         'zope.app.appsetup',
         'zope.app.testing',
