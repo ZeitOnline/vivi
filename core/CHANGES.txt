@@ -24,6 +24,8 @@ internal:
 
 - Generalize MasterSlaveSource from SubNavigationSource (for VIV-241).
 
+- Add ConvertingRestructuredTextWidget (for VIV-245).
+
 
 2.11.0 (2013-11-25)
 -------------------

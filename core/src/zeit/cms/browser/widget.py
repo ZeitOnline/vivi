@@ -5,6 +5,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import docutils.core
 import json
+import pypandoc
 import time
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
@@ -470,6 +471,19 @@ def CheckboxDisplayWidget(context, request):
     return widget
 
 
+def rst2html(text):
+    return docutils.core.publish_parts(
+        text, writer_name='html',
+        settings_overrides=dict(report_level=5))['fragment']
+
+
+def html2rst(text):
+    try:
+        return pypandoc.convert(text, to='rst', format='html')
+    except OSError:
+        return text
+
+
 class RestructuredTextWidget(zope.formlib.textwidgets.TextAreaWidget):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(
@@ -481,6 +495,17 @@ class RestructuredTextWidget(zope.formlib.textwidgets.TextAreaWidget):
 
     @property
     def rendered_content(self):
-        return docutils.core.publish_parts(
-            self._getFormValue(), writer_name='html',
-            settings_overrides=dict(report_level=5))['fragment']
+        return rst2html(self._getFormValue())
+
+
+class ConvertingRestructuredTextWidget(RestructuredTextWidget):
+
+    def _toFieldValue(self, value):
+        value = super(ConvertingRestructuredTextWidget, self)._toFieldValue(
+            value)
+        return rst2html(value)
+
+    def _toFormValue(self, value):
+        value = super(ConvertingRestructuredTextWidget, self)._toFormValue(
+            value)
+        return html2rst(value)

@@ -38,6 +38,7 @@ setup(
         'lxml>=2.0.2',
         'martian',
         'mock',
+        'pypandoc',
         'rwproperty>=1.0',
         'setuptools',
         'sprout',

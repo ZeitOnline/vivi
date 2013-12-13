@@ -5,8 +5,8 @@
 from zeit.cms.browser.widget import \
     ObjectSequenceWidget, ObjectSequenceDisplayWidget
 import contextlib
-import gocept.testing.mock
 import mock
+import os
 import unittest
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
@@ -894,3 +894,31 @@ class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
         s.click('css=.field')
         s.waitForVisible('id=testwidget')
         s.assertNotVisible('id=testwidget.preview')
+
+
+class ConvertingRestructuredTextWidgetTest(
+        zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(ConvertingRestructuredTextWidgetTest, self).setUp()
+        from zeit.cms.browser.widget import ConvertingRestructuredTextWidget
+        self.request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
+        field = zope.schema.Text()
+        field.__name__ = 'foo'
+        self.widget = ConvertingRestructuredTextWidget(field, self.request)
+
+    def test_converts_input_to_html(self):
+        self.request.form[self.widget.name] = '**foo**'
+        self.assertEqual(
+            '<p><strong>foo</strong></p>\n', self.widget.getInputValue())
+
+    def test_converts_to_rst_for_rendering(self):
+        self.widget.setRenderedValue('<strong>foo</strong>')
+        self.assertEqual('**foo**\n', self.widget._getFormValue())
+
+    def test_renders_html_when_pandoc_is_not_available(self):
+        self.widget.setRenderedValue('<strong>foo</strong>')
+        with mock.patch.dict(os.environ, {'PATH': ''}):
+            self.assertEqual(
+                '<strong>foo</strong>', self.widget._getFormValue())
