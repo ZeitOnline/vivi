@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-2.0.9 (unreleased)
+2.0.9 (2014-01-07)
 ++++++++++++++++++
 
 - Übersetzungen für zeit.magazin
