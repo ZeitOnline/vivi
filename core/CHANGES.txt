@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.6.5 (unreleased)
+2.6.5 (2014-01-07)
 ------------------
 
 - Use default XMLSource implementation so we get ``available`` behaviour
