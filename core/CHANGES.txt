@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.1.6 (unreleased)
+2.1.6 (2014-01-07)
 ------------------
 
 - Update tests to work with grokcore.component-2.5.
