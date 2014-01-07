@@ -7,7 +7,7 @@ zeit.content.article changes
 - Configure layouts for image and video blocks via external XML file (VIV-249,
   VIV-250).
 
-- Implement block with titel and (restricted) HTML contents (VIV-245).
+- Implement block with title and (restricted) HTML contents (VIV-245).
 
 - Add IZONArticle marker interface so we can show some settings only for
   non-ZMO articles (VIV-252).
