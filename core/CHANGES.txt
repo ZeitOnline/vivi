@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.1.1 (unreleased)
+2.1.1 (2014-01-07)
 ------------------
 
 - Update test setup to changes in zeit.content.article (VIV-249).
