@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-2.2.2 (unreleased)
+2.2.2 (2014-01-07)
 ------------------
 
 - Don't calculate preview URL ourselves, simply redirect to the preview-view
