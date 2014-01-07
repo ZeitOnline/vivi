@@ -2,7 +2,7 @@ zeit.magazin changes
 ====================
 
 
-0.1 (unreleased)
+1.0 (2014-01-07)
 ----------------
 
 - Set up section interfaces: IZMOSection, IZMOContent, IZMOArticle, IZMOFolder,
