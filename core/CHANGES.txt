@@ -1,7 +1,7 @@
 zeit.content.rawxml changes
 ===========================
 
-0.4.1 (unreleased)
+0.4.1 (2014-01-07)
 ------------------
 
 - Use TypeDeclaration for RawXML objects instead of the old
