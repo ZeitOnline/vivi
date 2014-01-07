@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.2.3 (unreleased)
+2.2.3 (2014-01-07)
 ------------------
 
 - Store preview images and CSS rules for teaser block layouts in DAV instead of
