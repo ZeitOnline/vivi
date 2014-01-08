@@ -162,9 +162,7 @@ function _ScopedContext(context, options) {
 
     _Undefined: function(name) {
       if (undefined_str === undefined) {
-        throw {
-          name: 'UndefinedVariable', message: name + ' is not defined'
-        };
+        throw new Error('UndefinedVariable: ' + name + ' is not defined');
       } else {
         return undefined_str;
       }
@@ -374,29 +372,23 @@ function _Compile(template_str, options) {
     var formatter = more_formatters(format_str) ||
                     DEFAULT_FORMATTERS[format_str];
     if (formatter === undefined) {
-      throw {
-        name: 'BadFormatter',
-        message: format_str + ' is not a valid formatter'
-      };
+      throw new Error(
+          'BadFormatter: ' + format_str + ' is not a valid formatter');
     }
     return formatter;
   }
 
   var format_char = options.format_char || '|';
   if (format_char != ':' && format_char != '|') {
-    throw {
-      name: 'ConfigurationError',
-      message: 'Only format characters : and | are accepted'
-    };
+    throw new Error(
+        'ConfigurationError: Only format characters : and | are accepted');
   }
 
   var meta = options.meta || '{}';
   var n = meta.length;
   if (n % 2 == 1) {
-    throw {
-      name: 'ConfigurationError',
-      message: meta + ' has an odd number of metacharacters'
-    };
+    throw new Error(
+        'ConfigurationError: ' + meta + ' has an odd number of metacharacters');
   }
   var meta_left = meta.substring(0, n/2);
   var meta_right = meta.substring(n/2, n);
@@ -490,10 +482,7 @@ function _Compile(template_str, options) {
         if (stack.length > 0) {
           current_block = stack[stack.length-1];
         } else {
-          throw {
-            name: 'TemplateSyntaxError',
-            message: 'Got too many {end} statements'
-          };
+          throw new Error('TemplateSyntaxError: Got too many {end} statements');
         }
         continue;
       }
@@ -505,10 +494,8 @@ function _Compile(template_str, options) {
     var name;
     if (parts.length == 1) {
       if (default_formatter === null) {
-          throw {
-            name: 'MissingFormatter',
-            message: 'This template requires explicit formatters.'
-          };
+          throw new Error(
+              'MissingFormatter: This template requires explicit formatters.');
       }
       // If no formatter is specified, the default is the 'str' formatter,
       // which the user can define however they desire.
@@ -532,10 +519,7 @@ function _Compile(template_str, options) {
   current_block.Append(template_str.slice(last_index));
 
   if (stack.length !== 1) {
-    throw {
-      name: 'TemplateSyntaxError',
-      message: 'Got too few {end} statements'
-    };
+    throw new Error('TemplateSyntaxError: Got too few {end} statements');
   }
   return current_block;
 }
