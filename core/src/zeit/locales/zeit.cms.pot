@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Jan  8 08:30:45 2014\n"
+"POT-Creation-Date: Wed Jan  8 08:33:32 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -964,6 +964,10 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:233
 msgid "Mobile URL"
+msgstr ""
+
+#: zeit/cms/content/interfaces.py:239
+msgid "Canonical URL"
 msgstr ""
 
 #: zeit/cms/content/interfaces.py:244

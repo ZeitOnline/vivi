@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jan  8 08:30:45 2014\n"
-"PO-Revision-Date: 2014-01-08 08:30+0100\n"
+"POT-Creation-Date: Wed Jan  8 08:33:32 2014\n"
+"PO-Revision-Date: 2014-01-08 08:35+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -909,6 +909,10 @@ msgstr "CAP-Titel"
 #: zeit/cms/content/interfaces.py:233
 msgid "Mobile URL"
 msgstr "Mobile-URL"
+
+#: zeit/cms/content/interfaces.py:239
+msgid "Canonical URL"
+msgstr "Kanonische URL"
 
 #: zeit/cms/content/interfaces.py:244
 msgid "Breadcrumb title"
@@ -3608,9 +3612,6 @@ msgstr "Zweites Video"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:54
 msgid "with info"
 msgstr "mit Info"
-
-#~ msgid "Canonical URL"
-#~ msgstr "Kanonische URL"
 
 #~ msgid "Edit image positions"
 #~ msgstr "Parkett: Bild bei"
