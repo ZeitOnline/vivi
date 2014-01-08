@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.2.5 (unreleased)
+2.2.5 (2014-01-08)
 ------------------
 
 - Fix missing imports.
