@@ -235,6 +235,11 @@ class ICommonMetadata(zope.interface.Interface):
         default=None)
     zope.interface.alsoProvides(mobile_alternative, IMobileAlternative)
 
+    canonical_url = zope.schema.URI(
+        title=_('Canonical URL'),
+        required=False,
+        default=None)
+
     breadcrumb_title = zope.schema.TextLine(
         title=_('Breadcrumb title'),
         required=False,

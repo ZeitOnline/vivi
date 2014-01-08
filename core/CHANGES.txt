@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.12.1 (unreleased)
+2.13.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add DAV property ``canonical_url`` to ICommonMetadata (VIV-270).
 
 
 2.12.0 (2014-01-07)
