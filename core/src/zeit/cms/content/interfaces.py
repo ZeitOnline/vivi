@@ -336,10 +336,14 @@ class IXMLRepresentation(zope.interface.Interface):
 class IXMLReference(zope.interface.Interface):
     """XML representation of an object reference.
 
-    Object references are dependent on the target object. For instance a feed
-    is referenced with <xi:include> while an image is referenced using <img>.
+    How the object references is serialized is dependent on both the target
+    object and the type of reference. For instance, a feed might usually
+    use an <xi:include> tag, while an image uses <img>, but then there
+    might be references inside the <head> that always use a <reference> tag.
+    (NOTE: These are just examples, not actual zeit.cms policy!)
 
     Adapting to IXMLReference yields an lxml.objectify tree
+
     """
 
 
