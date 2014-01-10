@@ -2,8 +2,8 @@
 # See also LICENSE.txt
 
 import grokcore.component as grok
-import lxml.objectify
 import zeit.cms.content.dav
+import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.magazin.interfaces
 import zope.interface
@@ -23,15 +23,8 @@ class NextRead(zeit.cms.related.related.RelatedBase):
 
     zope.interface.implements(zeit.magazin.interfaces.INextRead)
 
-    path = lxml.objectify.ObjectPath('.head.nextread.reference')
-
-    @property
-    def nextread(self):
-        return self._get_related()
-
-    @nextread.setter
-    def nextread(self, value):
-        return self._set_related(value)
+    nextread = zeit.cms.content.reference.MultiResource(
+        '.head.nextread.reference', 'related')
 
 
 class RelatedLayout(zeit.cms.content.dav.DAVPropertiesAdapter):
