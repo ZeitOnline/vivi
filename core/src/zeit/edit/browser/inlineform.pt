@@ -49,7 +49,7 @@
         tal:repeat="action view/actions"
         tal:replace="structure action/render" />
     </div>
-
-    <span class="signals hidden" tal:content="view/signals"/>
   </fieldset>
+
+  <span class="signals hidden" tal:content="view/signals"/>
 </form>

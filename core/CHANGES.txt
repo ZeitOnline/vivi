@@ -4,7 +4,7 @@ Changes
 2.1.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Support nesting of InlineForms.
 
 
 2.1.6 (2014-01-07)

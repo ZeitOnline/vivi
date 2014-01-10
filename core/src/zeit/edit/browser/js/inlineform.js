@@ -36,7 +36,7 @@ var evaluate_form_signals = function(event) {
     if (isUndefined(form)) {
         return;
     }
-    var signals = $.parseJSON($(form.container).find('span.signals').text());
+    var signals = $.parseJSON($(form.container).find('> .signals').text());
     if (signals) {
         $.each(signals, function(i, signal) {
             MochiKit.Signal.signal.apply(

@@ -5,7 +5,7 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
 import sys
-import zeit.cms.content.property
+import zeit.cms.content.xmlsupport
 import zeit.edit.interfaces
 import zope.component
 import zope.interface
