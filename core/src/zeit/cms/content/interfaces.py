@@ -10,6 +10,7 @@ import zeit.cms.tagging.interfaces
 import zope.component.interfaces
 import zope.i18nmessageid
 import zope.interface
+import zope.interface.common.sequence
 import zope.interface.interfaces
 import zope.schema
 import zope.schema.interfaces
@@ -43,6 +44,17 @@ authorSource = AuthorSource()
 class IMobileAlternative(zope.schema.interfaces.IURI):
     """Marker interface so we can register a specialized widget
     for this field."""
+
+
+class ReferenceField(zope.schema.Choice):
+
+    def _validate(self, value):
+        if self._init_field:
+            return
+        # skip immediate superclass, since that's what we want to change
+        super(zope.schema.Choice, self)._validate(value)
+        if value.target not in self.vocabulary:
+            raise zope.schema.interfaces.ConstraintNotSatisfied(value)
 
 
 class ICommonMetadata(zope.interface.Interface):
@@ -356,6 +368,43 @@ class IXMLReferenceUpdater(zope.interface.Interface):
         xml_node: lxml.objectify'ed element
 
         """
+
+
+class IReference(IXMLRepresentation,
+                 zeit.cms.interfaces.ICMSContent,
+                 zope.location.interfaces.ILocation):
+    """Reference to an ICMSContent object (optionally with properties of its
+    own)
+
+    This also serves the purpose of deserializng IXMLReferences, i.e. you can
+    adapt an XML node to IReference (using the same adapter name that was used
+    to create the IXMLReference).
+
+    """
+
+    target = zope.interface.Attribute('The referenced ICMSContent object')
+    target_unique_id = zope.interface.Attribute(
+        'uniqueId of the referenced ICMSContent object')
+    attribute = zope.interface.Attribute(
+        'Attribute name of reference property on source')
+
+    def update_metadata():
+        """Run XMLReferenceUpdater on our XML node."""
+
+
+class IReferences(zope.interface.common.sequence.IReadSequence):
+
+    def __iter__(self):
+        # XXX not declared by IReadSequence,
+        # dear zope.interface are you serious?!
+        pass
+
+    def create(target):
+        """Returns a new IReference to the given ICMSContent object."""
+
+    def get(target, default=None):
+        """Returns IReference to the given target (uniqueId or ICMSContent)
+        if one exists."""
 
 
 class IXMLSource(zope.interface.Interface):

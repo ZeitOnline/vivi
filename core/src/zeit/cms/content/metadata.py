@@ -3,9 +3,10 @@
 
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
-import zeit.cms.tagging.tag
 import zeit.cms.content.property
+import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
+import zeit.cms.tagging.tag
 import zope.interface
 
 
@@ -48,7 +49,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'author',
         use_default=True)
 
-    author_references = zeit.cms.content.property.MultiResource(
+    author_references = zeit.cms.content.reference.MultiResource(
         '.head.author', xml_reference_name='author')
 
     keywords = zeit.cms.tagging.tag.Tags()

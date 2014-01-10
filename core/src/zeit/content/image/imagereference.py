@@ -1,12 +1,9 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import gocept.async
-import lxml.etree
-import lxml.objectify
-import rwproperty
-import zeit.cms.checkout.helper
+import grokcore.component as grok
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.related.related
@@ -21,28 +18,33 @@ class ImagesAdapter(zeit.cms.related.related.RelatedBase):
     zope.component.adapts(zeit.cms.content.interfaces.IXMLContent)
     zope.interface.implements(zeit.content.image.interfaces.IImages)
 
-    path = lxml.objectify.ObjectPath('.head.image')
-    xml_reference_name = 'image'
+    _images = zeit.cms.content.reference.MultiResource(
+        '.head.image', 'image')
 
-    @rwproperty.getproperty
+    @property
     def image(self):
-        related = self._get_related()
-        if not related:
+        if not self._images:
             return
-        return related[0]
+        return self._images[0]
 
-    @rwproperty.setproperty
+    @image.setter
     def image(self, value):
         if value is None:
             value = ()
         else:
             value = (value, )
-        self._set_related(value)
+        self._images = value
 
-    def _get_unique_id(self, element):
-        unique_id = element.get('base-id')
+
+class ImageReference(zeit.cms.content.reference.Reference):
+
+    grok.name('image')
+
+    @property
+    def target_unique_id(self):
+        unique_id = self.xml.get('base-id')
         if unique_id is None:
-            unique_id = element.get('src')
+            unique_id = self.xml.get('src')
         return unique_id
 
 

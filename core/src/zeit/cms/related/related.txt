@@ -32,7 +32,6 @@ The source has not changed:
 >>> print lxml.etree.tostring(content.xml, pretty_print=True)
 <testtype xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head>...
-    <references/>
    </head>
   <body/>
 </testtype>
@@ -64,20 +63,6 @@ Let's have a look at the source:
   </head>
   <body/>
 </testtype>
-
-Also check the source of related:
-
->>> print lxml.etree.tostring(related.xml, pretty_print=True)
-<references xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <reference ...
-    type="intern" href="http://xml.zeit.de/related"...>
-    <supertitle xsi:nil="true"/>
-    <title xsi:nil="true"/>
-    <text xsi:nil="true"/>
-    <description xsi:nil="true"/>
-    <byline xsi:nil="true"/>
-  </reference>
-</references>
 
 >>> related.related
 (<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>,)
@@ -268,11 +253,11 @@ When we add an related which is not adaptable a useful error is raised:
 >>> related.related = (strange_thing,)
 Traceback (most recent call last):
     ...
-ValueError: Could not create xml reference 'related' for foo which is
-    referenced in http://xml.zeit.de/content.
+ValueError: Could not create XML reference type 'related' for foo
+    (referenced by http://xml.zeit.de/content).
 
 
-.. [#functionaltest] We need to set the site since we're a functional test: 
+.. [#functionaltest] We need to set the site since we're a functional test:
 
     >>> import zeit.cms.testing
     >>> zeit.cms.testing.set_site()

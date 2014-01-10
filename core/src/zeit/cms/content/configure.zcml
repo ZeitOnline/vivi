@@ -174,4 +174,42 @@
   <!-- LXML -->
   <subscriber handler=".lxmlpickle.clean_refs" />
 
+  <class class=".reference.References">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IReferences"
+      />
+  </class>
+
+  <class class=".reference.Reference">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IReference"
+      />
+  </class>
+
+  <!-- XXX AbsoluteURL can be accessed in two ways, and one doesn't delegate to
+       the other -->
+  <adapter
+      factory=".reference.AbsoluteURL"
+      provides="zope.traversing.browser.interfaces.IAbsoluteURL"
+      />
+  <adapter
+      factory=".reference.AbsoluteURL"
+      provides="zope.interface.Interface"
+      name="absolute_url"
+      />
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.cms.content.interfaces.IReferences
+    zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <subscriber
+    factory=".reference.Traverser"
+    for="zeit.cms.content.interfaces.IReferences
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
 </configure>
