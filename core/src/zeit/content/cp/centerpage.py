@@ -16,6 +16,7 @@ import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.metadata
 import zeit.cms.content.property
+import zeit.cms.content.reference
 import zeit.cms.related.related
 import zeit.cms.sitecontrol.interfaces
 import zeit.cms.type
@@ -216,12 +217,10 @@ class Feed(zeit.cms.related.related.RelatedBase):
     zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
     zope.interface.implements(zeit.content.cp.interfaces.ICPFeed)
 
-    path = lxml.objectify.ObjectPath('.feed.reference')
-
     # the feed items are ordered chronologically descending,
     # so the XSLT can just get the first n items to build the actual feed.
-    items = property(zeit.cms.related.related.RelatedBase._get_related,
-                     zeit.cms.related.related.RelatedBase._set_related)
+    items = zeit.cms.content.reference.MultiResource(
+        '.feed.reference', 'related')
 
 
 @zope.component.adapter(
