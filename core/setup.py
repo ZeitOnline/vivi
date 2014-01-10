@@ -20,7 +20,7 @@ setup(
         'grokcore.component',
         'setuptools',
         'zc.form',
-        'zeit.cms>=2.12.0.dev0',
+        'zeit.cms>=2.13.0.dev0',
         'zeit.content.article>=3.1.0.dev0',
         'zeit.content.portraitbox',
         'zeit.edit',
