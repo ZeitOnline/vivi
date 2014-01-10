@@ -227,7 +227,7 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         widget.detail_view_name = '@@mydetails'
         self.assert_ellipsis("""...
             new zeit.cms.ObjectSequenceWidget(
-                'field.', [...], '@@mydetails', '');...""", widget())
+                'field.', [...], '@@mydetails'...""", widget())
 
     def test_shows_description_if_present(self):
         field = self.get_field()
@@ -235,7 +235,7 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         widget = self.get_widget(field)
         self.assert_ellipsis("""...
             new zeit.cms.ObjectSequenceWidget(
-                'field.', [...], '@@object-details', 'foo');...""", widget())
+                'field.', [...], '@@object-details', 'foo'...""", widget())
 
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):

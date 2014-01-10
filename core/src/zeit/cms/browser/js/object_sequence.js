@@ -6,7 +6,8 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
     DEFAULT_HINT: 'Ziehen Sie Inhalte hierher um sie zu verknüpfen.',
 
-    construct: function(widget_id, accept, detail_view_name, description) {
+    construct: function(widget_id, accept, detail_view_name, description,
+                        cache_object_details) {
         var self = this;
         self.widget_id = widget_id;
         self.accept = accept;
@@ -17,6 +18,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
 
         self.detail_view_name = detail_view_name;
         self.description = description || self.DEFAULT_HINT;
+        self.cache_object_details = cache_object_details;
 
         self.initialize_autocomplete();
         self.initialize();
@@ -96,7 +98,8 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         var li = LI({
             'class': 'object-reference element busy',
             'index': index, 'id': li_id});
-        var d = zeit.cms.load_object_details(uniqueId, self.detail_view_name);
+        var d = zeit.cms.load_object_details(
+            uniqueId, self.detail_view_name, self.cache_object_details);
         d.addCallback(function(result) {
             li.innerHTML = result;
             jQuery(li).trigger_fragment_ready();
@@ -389,9 +392,14 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
 
 zeit.cms._load_object_details_cache = {};
 
-zeit.cms.load_object_details = function(uniqueId, detail_view_name) {
+zeit.cms.load_object_details = function(uniqueId, detail_view_name, use_cache) {
+    if (isUndefinedOrNull(use_cache)) {
+        use_cache = true;
+    }
     var cache_key = uniqueId + detail_view_name;
-    var content = zeit.cms._load_object_details_cache[cache_key];
+
+    var content = (
+        use_cache ? zeit.cms._load_object_details_cache[cache_key] : null);
     var d = new MochiKit.Async.Deferred();
     if (isUndefinedOrNull(content)) {
         d = MochiKit.Async.doSimpleXMLHttpRequest(
@@ -399,10 +407,12 @@ zeit.cms.load_object_details = function(uniqueId, detail_view_name) {
             unique_id: uniqueId,
             view: detail_view_name});
         d.addCallback(function(result) {
-            // Store the result for later use. This is just magnitudes
-            // faster than an HTTP request.
-            zeit.cms._load_object_details_cache[cache_key] =
-                result.responseText;
+            if (use_cache) {
+                // Store the result for later use. This is just magnitudes
+                // faster than an HTTP request.
+                zeit.cms._load_object_details_cache[cache_key] =
+                    result.responseText;
+            }
             return result.responseText;
         });
     } else {

@@ -30,6 +30,7 @@ import zope.traversing.browser.interfaces
 
 
 class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
+    """DEPRECATED, superceeded by DropObjectWidget"""
 
     _missing = u""
     template = zope.app.pagetemplate.ViewPageTemplateFile(
@@ -115,7 +116,7 @@ class ObjectReferenceWidget(zope.app.form.browser.widget.SimpleInputWidget):
 
 class ObjectReferenceSequenceWidget(
     zope.app.form.browser.sequencewidget.SequenceWidget):
-    """A specialised sequence widget which allows dropping objects."""
+    """DEPRECATED, superceeded by ObjectSequenceWidget"""
 
     def __call__(self):
         quoted_name = xml.sax.saxutils.quoteattr(self.name)
@@ -131,6 +132,7 @@ class ObjectReferenceSequenceWidget(
 
 class ObjectReferenceDisplayWidget(
     zope.app.form.browser.widget.DisplayWidget):
+    """DEPRECATED, superceeded by DropObjectDisplayWidget"""
 
     def __init__(self, context, source, request):
         super(ObjectReferenceDisplayWidget, self).__init__(context, request)
@@ -222,6 +224,7 @@ class ObjectSequenceWidget(
         'objectsequence-edit-widget.pt')
 
     detail_view_name = '@@object-details'
+    cache_object_details = 'true'
     add_type = None
     display_search_button = True
     display_url_field = True
