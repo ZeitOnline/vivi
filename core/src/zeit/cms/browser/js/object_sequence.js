@@ -104,7 +104,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         });
         d.addErrback(function(error) {
             zeit.cms.log_error(error);
-            li.innerHTML = "Fehler beim Laden";
+            li.innerHTML = "Fehler beim Laden: " + uniqueId;
             return error;
         });
         d.addBoth(function(result) {
