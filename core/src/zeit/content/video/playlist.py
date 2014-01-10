@@ -6,6 +6,7 @@ import grokcore.component as grok
 import pkg_resources
 import zeit.cms.content.dav
 import zeit.cms.content.metadata
+import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zeit.content.video.interfaces
@@ -25,7 +26,7 @@ class Playlist(zeit.cms.content.metadata.CommonMetadata):
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('thumbnail',))
 
-    videos = zeit.cms.content.property.MultiResource(
+    videos = zeit.cms.content.reference.MultiResource(
         '.body.videos.video', 'related')
 
     id_prefix = 'pls'
