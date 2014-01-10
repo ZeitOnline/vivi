@@ -8,6 +8,7 @@ import uuid
 import xml.sax.saxutils
 import z3c.flashmessage.interfaces
 import zeit.cms.browser.interfaces
+import zeit.cms.cmscontent
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
@@ -104,16 +105,9 @@ def resolve_teaser_unique_id(context):
     parsed = urlparse.urlparse(context)
     assert parsed.path.startswith('/')
     unique_id = parsed.path[1:]
-    # Have a look into the workingcopy first
-    wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
-    obj = None
-    for obj in wc.values():
-        if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
-            continue
-        if obj.uniqueId == unique_id:
-            break
-    else:
-        obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
+
+    obj = zeit.cms.cmscontent.resolve_wc_or_repository(unique_id)
+
     if not zeit.content.cp.interfaces.ICenterPage.providedBy(obj):
         return
     block = obj.xml.xpath('//block[@href=%s]' %
