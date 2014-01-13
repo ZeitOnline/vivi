@@ -134,6 +134,7 @@ ICommonMetadata some information is included in the XML:
 >>> related_content.volume = 19
 >>> related_content.teaserTitle = 'I relate the title'
 >>> related_content.teaserText = 'Dude.'
+>>> repository['related'] = related_content
 
 So far nothing has changed:
 
@@ -172,7 +173,8 @@ when we reassign the two objects the metadata will be reflected in the xml:
   <head>...
     <references>
       <reference ...
-        type="intern" href="http://xml.zeit.de/related" year="2006" issue="19"...>
+        type="intern" href="http://xml.zeit.de/related"
+        ... year="2006" issue="19"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">I relate the title</title>
         <text py:pytype="str">Dude.</text>
@@ -211,7 +213,8 @@ After sending the event the metadata is updated:
   <head>...
     <references>
       <reference ...
-        type="intern" href="http://xml.zeit.de/related" year="2007" issue="19"...>
+        type="intern" href="http://xml.zeit.de/related"
+        ... year="2007" issue="19"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">I relate the title</title>
         <text py:pytype="str">Dude.</text>

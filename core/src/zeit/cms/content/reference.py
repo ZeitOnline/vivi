@@ -81,6 +81,7 @@ class MultiResource(ReferenceProperty):
         references = self.references(instance)
         value = tuple(references.get(x) or references.create(x) for x in value)
         super(MultiResource, self).__set__(instance, value)
+        self.update_metadata(instance)
 
     def update_metadata(self, instance):
         for reference in self.references(instance):
