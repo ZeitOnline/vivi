@@ -15,3 +15,7 @@
     margin-top: -5px;
     margin-bottom: 0;
 }
+
+.object-details.type-author > strong {
+    width: 120px;
+}
