@@ -122,6 +122,13 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             self.bind(self.container, 'focusin', self.store_focus);
             self.bind(self.container, 'focusout', function(event) {
                 self.release_focus(event);
+
+                // Don't submit if the focus is inside a *nested* SubPageForm;
+                // the nested form *will* be submitted, which is enough.
+                if (jQuery(event.target).closest('form')[0] != self.container) {
+                    return;
+                }
+
                 if (self.is_input(event.target) &&
                         !self.mouse_down) {
                     self.fire_submit();
