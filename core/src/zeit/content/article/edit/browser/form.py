@@ -351,13 +351,12 @@ class MetadataC(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'metadata-c'
     undo_description = _('edit metadata')
-    form_fields = FormFields(ICommonMetadata).select('author_references')
+    form_fields = FormFields(ICommonMetadata).select('authorships')
 
     def setUpWidgets(self, *args, **kw):
         super(MetadataC, self).setUpWidgets(*args, **kw)
-        self.widgets['author_references'].detail_view_name = '@@author-details'
-        self.widgets['author_references'].add_type = IAuthor
-        self.widgets['author_references'].display_list_below_buttons = True
+        self.widgets['authorships'].add_type = IAuthor
+        self.widgets['authorships'].display_list_below_buttons = True
 
     def _success_handler(self):
         self.signal('reload-inline-view', 'edit.heading')

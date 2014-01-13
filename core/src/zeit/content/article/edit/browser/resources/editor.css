@@ -1194,25 +1194,25 @@
   width: 202px;
 }
 
-.type-article #metadata-c\.author_references > ul > li {
+.type-article #metadata-c\.authorships > ul > li {
   border-color: #e4e4e4;
   border-style: solid;
   border-width: 1px 0px;
 }
 
-.type-article #metadata-c\.author_references > ul > li.busy {
+.type-article #metadata-c\.authorships > ul > li.busy {
 	background: none !important;
 }
 
-.type-article #metadata-c\.author_references .object-details {
+.type-article #metadata-c\.authorships .object-details {
   border-style: none;
 }
 
-.type-article #metadata-c\.author_references {
+.type-article #metadata-c\.authorships {
   margin-bottom: 0;
 }
 
-.type-article #metadata-c\.author_references .add_view {
+.type-article #metadata-c\.authorships .add_view {
   background-position: 10px -113px, 0% 0%;
 }
 
@@ -1613,8 +1613,8 @@
 .type-article #metadata-a\.keywords\.update a:after,
 .type-article #editable-body .action-editable-body-module-droppable span a:before,
 .type-article #editable-body .action-editable-body-module-droppable span a:after,
-.type-article #metadata-c\.author_references a[href="zeit.content.author.add_contextfree"]:after,
-.type-article #metadata-c\.author_references a[href="zeit.content.author.add_contextfree"]:before,
+.type-article #metadata-c\.authorships a[href="zeit.content.author.add_contextfree"]:after,
+.type-article #metadata-c\.authorships a[href="zeit.content.author.add_contextfree"]:before,
 .type-article #recensions a:after,
 .type-article #recensions a:before,
 .type-article #checkin a:before,
