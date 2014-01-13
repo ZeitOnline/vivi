@@ -288,9 +288,9 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 return element.name + "=" + encodeURIComponent(element.value);
             }, elements);
         if (isUndefinedOrNull(action)) {
-            var button = MochiKit.Selector.findChildElements(
-                self.container, ['.form-controls input'])[0];
-            action = button.name;
+            var button = jQuery(self.container).find(
+                '> .form-controls input').first();
+            action = button.attr('name');
         }
         data.push(action + '=clicked');
         data = data.join('&');
