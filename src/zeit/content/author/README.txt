@@ -63,16 +63,16 @@ takes precedence:
 Using authors
 =============
 
-The field author_references on ICommonMetadata is used to store authors.
+The field authorships on ICommonMetadata is used to store authors.
 It takes precedence over the freetext authors:
 
 >>> import zope.lifecycleevent
 >>> from zeit.cms.content.interfaces import ICommonMetadata
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
-...     co.author_references = [shakespeare]
+...     co.authorships = [co.authorships.create(shakespeare)]
 ...     co.authors = ['Charles Dickens']
 ...     zope.lifecycleevent.modified(co, zope.lifecycleevent.Attributes(
-...         ICommonMetadata, 'author_references', 'authors'))
+...         ICommonMetadata, 'authorships', 'authors'))
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
@@ -86,7 +86,7 @@ It takes precedence over the freetext authors:
 </testtype>
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
-...     co.author_references = []
+...     co.authorships = []
 ...     co.authors = ['Charles Dickens']
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
@@ -100,7 +100,7 @@ It takes precedence over the freetext authors:
 Changes to author objects are propagated to content on checkin:
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
-...     co.author_references = [repository['shakespeare']]
+...     co.authorships = [co.authorships.create(repository['shakespeare'])]
 >>> with zeit.cms.checkout.helper.checked_out(repository['shakespeare']) as co:
 ...     co.lastname = 'Otherwise'
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']):
@@ -115,18 +115,16 @@ Publishing
 Authors are published along with the articles that reference them:
 
 >>> with zeit.cms.checkout.helper.checked_out(repository['testcontent']) as co:
-...     co.author_references = [repository['shakespeare']]
+...     co.authorships = [co.authorships.create(repository['shakespeare'])]
 
+>>> import transaction
+>>> import zeit.workflow.testing
 >>> zeit.cms.workflow.interfaces.IPublishInfo(
 ...     repository['testcontent']).urgent = True
->>> import transaction
 >>> transaction.commit()
->>> job_id = zeit.cms.workflow.interfaces.IPublish(
+>>> ignored = zeit.cms.workflow.interfaces.IPublish(
 ...     repository['testcontent']).publish()
->>> import lovely.remotetask.interfaces
->>> tasks = zope.component.getUtility(
-...     lovely.remotetask.interfaces.ITaskService, 'general')
->>> tasks.process()
+>>> zeit.workflow.testing.run_publish()
 
 >>> info = zeit.cms.workflow.interfaces.IPublishInfo(repository['shakespeare'])
 >>> info.published

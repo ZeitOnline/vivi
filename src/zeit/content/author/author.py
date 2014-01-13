@@ -82,8 +82,8 @@ def update_author_freetext(obj, event):
         for description in event.descriptions:
             if (description.interface ==
                 zeit.cms.content.interfaces.ICommonMetadata and
-                'author_references' in description.attributes):
-                ref_names = [x.display_name for x in obj.author_references]
+                'authorships' in description.attributes):
+                ref_names = [x.target.display_name for x in obj.authorships]
                 obj.authors = ref_names
 
 
@@ -99,7 +99,7 @@ class Dependencies(grokcore.component.Adapter):
         self.context = context
 
     def get_dependencies(self):
-        return self.context.author_references
+        return [x.target for x in self.context.authorships]
 
 
 @grokcore.component.adapter(
@@ -108,7 +108,7 @@ class Dependencies(grokcore.component.Adapter):
 @grokcore.component.implementer(
     zeit.cms.relation.interfaces.IReferenceProvider)
 def references(context):
-    return context.author_references
+    return [x.target for x in context.authorships]
 
 
 @grokcore.component.adapter(
