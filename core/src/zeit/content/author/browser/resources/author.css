@@ -1,0 +1,17 @@
+.object-details.type-author label {
+    display: none;
+}
+
+.object-details.type-author .goto-object.object-link {
+    float: left;
+}
+
+.object-details.type-author .field {
+    padding: 0 1em;
+    margin: 0;
+}
+
+.object-details.type-author .fieldtype-text .widget {
+    margin-top: -5px;
+    margin-bottom: 0;
+}
