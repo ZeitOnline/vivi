@@ -138,8 +138,11 @@ class MessageService(VGWortWebService):
                 'Does not seem to be an article -- stale cache?')
         parties = self.create('Parties')
         parties.authors = self.create('Authors')
-        if content.author_references:
-            for author in content.author_references:
+        if content.authorships:
+            for author in content.authorships:
+                author = author.target
+                if author is None:
+                    continue
                 involved = self.create('Involved')
                 try:
                     if author.vgwortcode:

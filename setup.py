@@ -18,7 +18,7 @@ setup(
         'grokcore.component',
         'setuptools',
         'suds',
-        'zeit.cms>=2.0',
+        'zeit.cms>=2.13.0.dev0',
         'zeit.connector',
         'zeit.content.author',
         'zope.app.generations',

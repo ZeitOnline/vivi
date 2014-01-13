@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- ICommonMetadata now uses author reference objects (VIV-273).
 
 
 2.2.0 (2013-09-27)
