@@ -3,6 +3,17 @@
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
 
+  <resourceLibrary
+    name="zeit.content.author"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    require="zeit.cms">
+    <directory
+        source="resources"
+        include="
+        author.css
+        "/>
+  </resourceLibrary>
+
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -63,10 +74,10 @@
     />
 
   <browser:page
-    for="zeit.content.author.interfaces.IAuthor"
-    name="author-details"
+    for="zeit.content.author.interfaces.IAuthorReference"
+    name="object-details"
+    class=".form.ReferenceDetails"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    template="details.pt"
     permission="zope.View"
     />
 

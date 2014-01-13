@@ -34,5 +34,15 @@
     factory=".reference.XMLReferenceUpdater"
     name="zeit.content.author"
     />
+
+  <class class=".reference.Reference">
+    <require
+      interface=".interfaces.IAuthorReference"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IAuthorReference"
+      permission="zeit.EditContent" />
+  </class>
+
 </configure>
 

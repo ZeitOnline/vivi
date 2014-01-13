@@ -8,6 +8,7 @@ import transaction
 import zeit.cms.browser.form
 import zeit.content.author.author
 import zeit.content.author.interfaces
+import zeit.edit.browser.form
 import zope.app.pagetemplate
 import zope.formlib.form
 import zope.formlib.interfaces
@@ -151,3 +152,26 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
         if not self.need_confirmation_checkbox:
             self.form_fields = self.form_fields.omit('confirmed_duplicate')
             self.setUpWidgets()
+
+
+class ReferenceDetails(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'reference-details'
+
+    custom_template = zope.app.pagetemplate.ViewPageTemplateFile(
+        'reference-details.pt')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.author.interfaces.IAuthorReference,
+        # support read-only mode, see
+        # zeit.content.article.edit.browser.form.FormFields
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+        'location')
+
+    @property
+    def form(self):
+        return super(ReferenceDetails, self).render()
+
+    def render(self):
+        return self.custom_template()

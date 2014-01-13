@@ -4,6 +4,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import re
+import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zope.interface
 import zope.schema
@@ -60,3 +61,9 @@ class IAuthor(zope.interface.Interface):
 
     external = zope.schema.Bool(
         title=_(u'External?'))
+
+
+class IAuthorReference(zeit.cms.content.interfaces.IReference):
+
+    location = zope.schema.TextLine(
+        title=_('Location'), required=False)

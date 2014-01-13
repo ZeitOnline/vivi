@@ -4,7 +4,7 @@ zeit.content.author changes
 2.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- References to authors can now carry location information (VIV-273).
 
 
 2.0.3 (2013-10-01)
