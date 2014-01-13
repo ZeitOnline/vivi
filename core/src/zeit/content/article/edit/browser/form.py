@@ -502,7 +502,7 @@ class OptionsC(zeit.edit.browser.form.InlineForm):
     prefix = 'options-c'
     undo_description = _('edit options')
     form_fields = FormFields(ICommonMetadata).select(
-        'mobile_alternative', 'canonical_url')
+        'mobile_alternative', 'deeplink_url')
 
 
 class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
