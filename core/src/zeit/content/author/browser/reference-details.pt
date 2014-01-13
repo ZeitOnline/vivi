@@ -5,8 +5,8 @@
 
 <form
   class="inline-form"
-  tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}"
-  tal:content="structure view/form">
+  tal:attributes="action string:${context/@@absolute_url}/@@edit.html"
+  tal:content="structure context/@@edit.html">
 </form>
 
 </div>
