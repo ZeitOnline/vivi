@@ -17,7 +17,7 @@ install_requires = [
     'lxml',
     'mock',
     'zc.resourcelibrary',
-    'zeit.cms>=1.53.0dev',
+    'zeit.cms>=2..13.0dev',
     'zeit.find>=2.2.dev.0',
     'zope.schema',
     'zope.interface',

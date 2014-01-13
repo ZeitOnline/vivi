@@ -43,13 +43,13 @@
            tal:condition="not:widget/reversed|nothing"
            tal:content="structure widget"/>
     </div>
-
-    <div class="form-controls" tal:condition="view/availableActions">
-      <input
-        tal:repeat="action view/actions"
-        tal:replace="structure action/render" />
-    </div>
   </fieldset>
+
+  <div class="form-controls" tal:condition="view/availableActions">
+    <input
+      tal:repeat="action view/actions"
+      tal:replace="structure action/render" />
+  </div>
 
   <span class="signals hidden" tal:content="view/signals"/>
 </form>
