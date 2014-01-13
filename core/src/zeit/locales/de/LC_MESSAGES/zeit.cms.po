@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Jan 13 10:48:39 2014\n"
-"PO-Revision-Date: 2014-01-13 10:50+0100\n"
+"POT-Creation-Date: Mon Jan 13 13:21:54 2014\n"
+"PO-Revision-Date: 2014-01-13 13:22+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2182,6 +2182,10 @@ msgstr "Genre"
 #: zeit/content/author/browser/form.py:108
 msgid "There were errors"
 msgstr "Fehler aufgetreten"
+
+#: zeit/content/author/browser/form.py:161
+msgid "edit author location"
+msgstr "Autor/Ort bearbeiten"
 
 #: zeit/content/author/browser/form.py:29
 #: zeit/content/author/browser/form.py:70
