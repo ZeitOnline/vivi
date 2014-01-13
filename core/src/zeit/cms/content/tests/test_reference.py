@@ -100,6 +100,12 @@ class ReferencePropertyTest(
         del self.repository['target']
         self.assertEqual((), content.references)
 
+    def test_only_creating_a_reference_does_not_set_p_changed_on_source(self):
+        content = self.repository['content']
+        content._p_jar = Mock()  # make _p_changed work
+        content.references.create(self.repository['target'])
+        self.assertFalse(content._p_changed)
+
     def test_properties_of_reference_object_are_stored_in_xml(self):
         content = self.repository['content']
         content._p_jar = Mock()  # make _p_changed work

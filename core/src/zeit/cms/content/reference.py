@@ -155,12 +155,20 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
     grok.implements(zeit.cms.content.interfaces.IReference)
     grok.baseclass()
 
-    attribute = None  # XXX must be set after adapter call by client
+    attribute = None  # XXX kludgy: must be set after adapter call by client
 
     def __init__(self, context, element):
         self.xml = element
         # set parent last so we don't trigger a write
         self.__parent__ = context
+
+    def __setattr__(self, key, value):
+        # XXX the kludge around self.attribute continues
+        if key != 'attribute' and not key.startswith('_p_'):
+            self._p_changed = True
+        # skip immediate superclass since it has the bevaiour we want to change
+        super(zeit.cms.content.xmlsupport.Persistent, self).__setattr__(
+            key, value)
 
     @property
     def target_unique_id(self):
