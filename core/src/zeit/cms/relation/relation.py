@@ -4,7 +4,6 @@
 import BTrees
 import persistent
 import zc.relation.catalog
-import zc.relation.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zope.interface
