@@ -1158,6 +1158,42 @@
   padding-top: 0;
 }
 
+.inline-form .fieldname-authorships li div.object-details {
+	border-style: solid none;
+	border-radius: 0;
+	min-width: 0;
+	padding: 7px 5px 5px 5px;
+}
+
+.inline-form .fieldname-authorships .widget .objectsequencewidget > div:last-child {
+	padding: 13px 0 0 5px;
+}
+
+.inline-form .fieldname-authorships li {
+	margin: 0 0 -1px !important;
+}
+
+.inline-form .fieldname-authorships input.autocomplete,
+.inline-form .fieldname-authorships a.button {
+	margin: 0px 0 21px;
+}
+
+.inline-form .fieldname-authorships a.button {
+	margin-left: 25px;
+}
+
+.inline-form .fieldname-authorships div.widget {
+  width: 445px;
+}
+
+.inline-form .field .fieldname-authorships {
+  float: auto;
+}
+
+.inline-form .field input.autocomplete {
+  width: 202px;
+}
+
 .type-article #metadata-c\.author_references > ul > li {
   border-color: #e4e4e4;
   border-style: solid;
