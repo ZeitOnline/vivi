@@ -31,7 +31,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'volume',
             'year',
             'mobile_alternative',
-            'canonical_url',
+            'deeplink_url',
             'breadcrumb_title',
 
             'banner',

@@ -246,8 +246,8 @@ class ICommonMetadata(zope.interface.Interface):
         default=None)
     zope.interface.alsoProvides(mobile_alternative, IMobileAlternative)
 
-    canonical_url = zope.schema.URI(
-        title=_('Canonical URL'),
+    deeplink_url = zope.schema.URI(
+        title=_('Deeplink URL'),
         required=False,
         default=None)
 
