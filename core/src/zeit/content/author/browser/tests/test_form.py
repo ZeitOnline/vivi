@@ -156,7 +156,7 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         b.getLink('Checkout').click()
         b.getControl('Add Authors', index=0).click()
 
-        b.getControl(name='form.author_references.0.').value = (
+        b.getControl(name='form.authorships.0.').value = (
             'http://xml.zeit.de/foo/bar/authors/S/William_Shakespeare-2/index')
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
