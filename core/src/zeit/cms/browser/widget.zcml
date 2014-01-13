@@ -114,6 +114,26 @@
     permission="zope.Public"
     />
 
+  <!-- ReferenceSequenceWidget -->
+
+  <adapter
+      for="zope.schema.interfaces.ITuple
+           zeit.cms.content.interfaces.ReferenceField
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
+      factory=".widget.ReferenceCollectionInputWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
+      for="zope.schema.interfaces.ITuple
+           zeit.cms.content.interfaces.ReferenceField
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.formlib.interfaces.IDisplayWidget"
+      factory=".widget.ReferenceCollectionDisplayWidget"
+      permission="zope.Public"
+      />
+
   <!-- object details -->
 
   <browser:page

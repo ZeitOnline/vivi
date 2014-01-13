@@ -2,8 +2,10 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from zeit.cms.browser.widget import \
-    ObjectSequenceWidget, ObjectSequenceDisplayWidget
+from zeit.cms.browser.widget import ObjectSequenceDisplayWidget
+from zeit.cms.browser.widget import ObjectSequenceWidget
+from zeit.cms.browser.widget import ReferenceSequenceWidget
+from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import contextlib
 import mock
 import os
@@ -11,10 +13,14 @@ import os.path
 import unittest
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
+import zeit.cms.content.interfaces
+import zeit.cms.content.reference
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zope.configuration.xmlconfig
 import zope.formlib.interfaces
+import zope.interface
+import zope.schema.interfaces
 
 
 class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
@@ -833,6 +839,72 @@ class TestDropObjectDisplayWidgetIntegration(
         with zeit.cms.testing.interaction():
             self.assert_ellipsis(
                 '...<div...id="field."...mydetails...', widget())
+
+
+class TestReferenceSequenceWidget(zeit.cms.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(TestReferenceSequenceWidget, self).setUp()
+        TestContentType.references = \
+            zeit.cms.content.reference.ReferenceProperty(
+                '.body.references.reference', 'related')
+        self.repository['content'] = TestContentType()
+        self.repository['target'] = TestContentType()
+
+        class FakeSource(object):
+
+            zope.interface.implements(zope.schema.interfaces.ISource)
+
+            def __contains__(self, value):
+                return True
+
+        self.field = zeit.cms.content.interfaces.ReferenceField(
+            source=FakeSource())
+        self.field.__name__ = 'references'
+        self.field = self.field.bind(self.repository['content'])
+
+    def tearDown(self):
+        del TestContentType.references
+        super(TestReferenceSequenceWidget, self).tearDown()
+
+    def test_invalid_unique_id_fails_validation(self):
+        widget = ReferenceSequenceWidget(self.field, mock.Mock(), mock.Mock())
+        with self.assertRaises(zope.formlib.interfaces.ConversionError):
+            widget._toFieldValue([mock.sentinel.foo, mock.sentinel.bar])
+
+    def test_unique_id_of_reference_returns_existing_reference(self):
+        content = self.repository['content']
+        content.references = (content.references.create(
+            self.repository['target']),)
+        widget = ReferenceSequenceWidget(
+            self.field, self.field.source, request=mock.Mock())
+        self.assertEqual(
+            (content.references[0],),
+            widget._toFieldValue([
+                'reference://?source=http%3A%2F%2Fxml.zeit.de%2Fcontent'
+                '&attribute=references'
+                '&target=http%3A%2F%2Fxml.zeit.de%2Ftarget']))
+
+    def test_unique_id_of_content_returns_reference_to_content(self):
+        widget = ReferenceSequenceWidget(
+            self.field, self.field.source, request=mock.Mock())
+        result = widget._toFieldValue(['http://xml.zeit.de/target'])
+        self.assertEqual(
+            self.repository['target'], result[0].target)
+
+    def test_content_not_in_source_should_raise(self):
+        class FakeSource(object):
+            def __contains__(self, value):
+                return False
+
+            def get_check_types(self):
+                return []
+        self.field.vocabulary = FakeSource()
+        widget = ReferenceSequenceWidget(
+            self.field, self.field.vocabulary, request=mock.Mock())
+        self.assertRaises(
+            zope.formlib.interfaces.ConversionError,
+            lambda: widget._toFieldValue(['http://xml.zeit.de/target']))
 
 
 class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):

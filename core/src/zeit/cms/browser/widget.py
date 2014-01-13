@@ -423,6 +423,44 @@ class DropObjectWidget(
             self.context.description, context=self.request)
 
 
+def ReferenceCollectionInputWidget(field, value_type, request):
+    """Widget for Tuple(ReferenceField).
+
+    For simplicity this does not do another lookup according to the source, as
+    Tuple(Choice) does in zope.formlib.itemswidget.ChoiceCollectionInputWidget.
+    This could be added, of course, but then we'd need another item in the
+    discriminator: (field, value_type, source, request) instead of the current
+    (field, source, request).
+    """
+    return ReferenceSequenceWidget(field, value_type.vocabulary, request)
+
+
+def ReferenceCollectionDisplayWidget(field, value_type, request):
+    return ObjectSequenceDisplayWidget(field, value_type.vocabulary, request)
+
+
+class ReferenceSequenceWidget(ObjectSequenceWidget):
+
+    cache_object_details = 'false'
+
+    def _toFieldValue(self, value):
+        result = []
+        for unique_id in value:
+            try:
+                obj = zeit.cms.interfaces.ICMSContent(unique_id)
+            except TypeError:
+                raise ContentNotFoundError(unique_id, self.request)
+
+            if not zeit.cms.content.interfaces.IReference.providedBy(obj):
+                obj = self.context.get(self.context.context).create(obj)
+
+            if obj.target not in self.source:
+                raise WrongContentTypeError(
+                    unique_id, self.source.get_check_types(), self.request)
+            result.append(obj)
+        return tuple(result)
+
+
 DATETIME_WIDGET_ADDITIONAL = """\
 <input type="button" value="%(label)s"
     onclick="javascript:var date = new Date();

@@ -186,6 +186,16 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
             source=self.__parent__.uniqueId, attribute=self.attribute,
             target=self.target_unique_id)))
 
+    def __eq__(self, other):
+        return (type(self) == type(other)
+                and self.__parent__.uniqueId == other.__parent__.uniqueId
+                and self.attribute == other.attribute
+                and self.target.uniqueId == other.target_unique_id)
+
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__, self.uniqueId)
+
 
 @grok.adapter(basestring, name=ID_PREFIX)
 @grok.implementer(zeit.cms.interfaces.ICMSContent)
