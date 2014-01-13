@@ -51,7 +51,7 @@ class CommonMetadataFormBase(object):
         css_class='column-right checkboxes')
     author_fields = gocept.form.grouped.Fields(
         _("Authors"),
-        ('author_references', 'authors'),
+        ('authorships', 'authors'),
         css_class='wide-widgets column-left')
 
     field_groups = (

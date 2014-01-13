@@ -87,8 +87,10 @@ class Details(zeit.cms.browser.view.Base):
     def author(self):
         if self.common_metadata is NO_METADATA:
             return
-        if self.common_metadata.author_references:
-            return self.common_metadata.author_references[0].display_name
+        if self.common_metadata.authorships:
+            author = self.common_metadata.authorships[0].target
+            if author is not None:
+                return author.display_name
         elif self.common_metadata.authors:
             return self.common_metadata.authors[0]
 

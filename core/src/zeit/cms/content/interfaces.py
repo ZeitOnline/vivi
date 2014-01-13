@@ -92,13 +92,12 @@ class ICommonMetadata(zope.interface.Interface):
 
     # not required since e.g. Agenturmeldungen don't have an author, only
     # a copyright notice
-    author_references = zope.schema.Tuple(
+    authorships = zope.schema.Tuple(
         title=_("Authors"),
-        value_type=zope.schema.Choice(source=authorSource),
+        value_type=ReferenceField(source=authorSource),
         default=(),
         required=False)
-
-    author_references.value_type.setTaggedValue(
+    authorships.value_type.setTaggedValue(
         'zeit.cms.addform.contextfree', 'zeit.content.author.add_contextfree')
 
     authors = zope.schema.Tuple(

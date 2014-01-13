@@ -4,6 +4,8 @@ zeit.cms changes
 2.13.0 (unreleased)
 -------------------
 
+- ICommonMetadata now uses reference objects for authors (VIV-273).
+
 - Add ``ReferenceProperty`` for qualified references between conten objects,
   and corresponding ``ReferenceSequenceWidget`` (VIV-274, VIV-276).
 

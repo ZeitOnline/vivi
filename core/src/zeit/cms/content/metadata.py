@@ -49,7 +49,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
         'author',
         use_default=True)
 
-    author_references = zeit.cms.content.reference.MultiResource(
+    authorships = zeit.cms.content.reference.ReferenceProperty(
         '.head.author', xml_reference_name='author')
 
     keywords = zeit.cms.tagging.tag.Tags()

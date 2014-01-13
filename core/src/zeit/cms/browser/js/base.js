@@ -345,7 +345,7 @@ $(document).bind('fragment-ready', function(event) {
   $(".editable-area.folded .edit-bar a.fold-link").attr("cms:tooltip","ausklappen");
   $(".editable-area.folded .edit-bar a.fold-link").removeAttr("title");
   $(".editable-area .folded .edit-bar a.fold-link").attr("cms:tooltip","ausklappen"); /* for sections in editable area */
-  $("#metadata-c\\.author_references a.add_view.button").attr("cms:tooltip","Neues Autorenobjekt anlegen");
+  $("#metadata-c\\.authorships a.add_view.button").attr("cms:tooltip","Neues Autorenobjekt anlegen");
   $("#edit-form-teaser #teaser-image\\.image a.add_view.button").attr("cms:tooltip","Neue Bildergruppe im Vivi anlegen");
   $("#edit-form-leadteaser #leadteaser\\.image a.add_view.button").attr("cms:tooltip","Neue Bildergruppe im Vivi anlegen");
   $("#edit-form-leadteaser #leadteaser\\.gallery a.add_view.button").attr("cms:tooltip","Neue Bildergalerie im Vivi anlegen");
