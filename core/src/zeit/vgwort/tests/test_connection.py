@@ -59,7 +59,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.author_references = [shakespeare]
+            co.authorships = [co.authorships.create(shakespeare)]
             co.title = 'Title'
             co.teaserText = 'asdf'
         content = self.repository['testcontent']
@@ -82,7 +82,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.author_references = [author]
+            co.authorships = [co.authorships.create(author)]
             co.title = 'Title'
             co.teaserText = 'x' * 2000
         content = self.repository['testcontent']
@@ -99,7 +99,7 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.author_references = [author]
+            co.authorships = [co.authorships.create(author)]
             co.title = 'Title'
             co.teaserText = 'x' * 2000
         content = self.repository['testcontent']
@@ -123,7 +123,8 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         author2 = self.repository['author2']
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.author_references = [author, author2]
+            co.authorships = [co.authorships.create(author),
+                              co.authorships.create(author2)]
             co.title = 'Title'
             co.teaserText = 'x' * 2000
         content = self.repository['testcontent']
@@ -189,7 +190,7 @@ class MessageServiceTest(zeit.vgwort.testing.TestCase):
         product = [x for x in products if x.id == 'KINZ'][0]
         content = self.repository['testcontent']
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            co.author_references = authors
+            co.authorships = [co.authorships.create(x) for x in authors]
             co.authors = freetext
             co.product = product
             co.title = 'Title'
