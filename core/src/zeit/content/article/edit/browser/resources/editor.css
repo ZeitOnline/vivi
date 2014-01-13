@@ -1182,7 +1182,7 @@
 	margin-left: 25px;
 }
 
-.inline-form .fieldname-authorships div.widget {
+.inline-form .fieldname-authorships > div.widget {
   width: 445px;
 }
 
