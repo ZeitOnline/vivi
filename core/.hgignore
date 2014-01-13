@@ -5,6 +5,7 @@ syntax: glob
 bin
 include
 develop-eggs
+eggs
 lib
 local
 parts
