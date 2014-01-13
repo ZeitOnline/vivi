@@ -93,6 +93,13 @@ class ReferencePropertyTest(
         self.assertEqual(
             'http://xml.zeit.de/target', content.references[0].target.uniqueId)
 
+    def test_reference_to_unknown_content_is_not_returned(self):
+        content = self.repository['content']
+        content.references = (content.references.create(
+            self.repository['target']),)
+        del self.repository['target']
+        self.assertEqual((), content.references)
+
     def test_properties_of_reference_object_are_stored_in_xml(self):
         content = self.repository['content']
         content._p_jar = Mock()  # make _p_changed work

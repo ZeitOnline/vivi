@@ -37,7 +37,7 @@ class ReferenceProperty(object):
             reference = zope.component.queryMultiAdapter(
                 (instance, element), zeit.cms.content.interfaces.IReference,
                 name=self.xml_reference_name)
-            if reference is not None:
+            if reference is not None and reference.target is not None:
                 reference.attribute = attribute
                 result.append(reference)
         return References(
