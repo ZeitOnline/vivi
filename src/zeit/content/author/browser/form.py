@@ -154,13 +154,10 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
             self.setUpWidgets()
 
 
-class ReferenceDetails(zeit.edit.browser.form.InlineForm):
+class EditReference(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'reference-details'
-
-    custom_template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'reference-details.pt')
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.author.interfaces.IAuthorReference,
@@ -168,10 +165,3 @@ class ReferenceDetails(zeit.edit.browser.form.InlineForm):
         # zeit.content.article.edit.browser.form.FormFields
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
         'location')
-
-    @property
-    def form(self):
-        return super(ReferenceDetails, self).render()
-
-    def render(self):
-        return self.custom_template()
