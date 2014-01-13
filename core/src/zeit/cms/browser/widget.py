@@ -283,16 +283,10 @@ class ObjectSequenceWidget(
             try:
                 obj = zeit.cms.interfaces.ICMSContent(unique_id)
             except TypeError:
-                msg = _("The object '${id}' could not be found.",
-                        mapping=dict(id=unique_id))
-                msg = zope.i18n.translate(msg, context=self.request)
-                raise zope.formlib.interfaces.ConversionError(msg)
+                raise ContentNotFoundError(unique_id, self.request)
             if obj not in self.source:
-                msg = _("'${id}' does not have an accepted type (${types}).",
-                        mapping=dict(id=input, types=', '.join(
-                            self.source.get_check_types())))
-                msg = zope.i18n.translate(msg, context=self.request)
-                raise zope.formlib.interfaces.ConversionError(msg)
+                raise WrongContentTypeError(
+                    unique_id, self.source.get_check_types(), self.request)
             result.append(obj)
         return tuple(result)
 
@@ -365,6 +359,24 @@ def js_escape_check_types(source):
     return json.dumps([u'type-' + x for x in source.get_check_types()])
 
 
+class ContentNotFoundError(zope.formlib.interfaces.ConversionError):
+
+    def __init__(self, uniqueId, request):
+        msg = _("The object '${id}' could not be found.",
+                mapping=dict(id=uniqueId))
+        msg = zope.i18n.translate(msg, context=request)
+        super(ContentNotFoundError, self).__init__(msg)
+
+
+class WrongContentTypeError(zope.formlib.interfaces.ConversionError):
+
+    def __init__(self, uniqueId, accepted_types, request):
+        msg = _("'${id}' does not have an accepted type (${types}).",
+                mapping=dict(id=uniqueId, types=', '.join(accepted_types)))
+        msg = zope.i18n.translate(msg, context=request)
+        super(WrongContentTypeError, self).__init__(msg)
+
+
 class DropObjectWidget(
     zope.app.form.browser.widget.SimpleInputWidget,
     AddViewMixin):
@@ -390,16 +402,10 @@ class DropObjectWidget(
         try:
             obj = zeit.cms.interfaces.ICMSContent(input)
         except TypeError:
-            msg = _("The object '${id}' could not be found.",
-                    mapping=dict(id=input))
-            msg = zope.i18n.translate(msg, context=self.request)
-            raise zope.formlib.interfaces.ConversionError(msg)
+            raise ContentNotFoundError(input, self.request)
         if obj not in self.source:
-            msg = _("'${id}' does not have an accepted type (${types}).",
-                    mapping=dict(id=input, types=', '.join(
-                        self.source.get_check_types())))
-            msg = zope.i18n.translate(msg, context=self.request)
-            raise zope.formlib.interfaces.ConversionError(msg)
+            raise WrongContentTypeError(
+                input, self.source.get_check_types(), self.request)
         return obj
 
     def _toFormValue(self, value):
