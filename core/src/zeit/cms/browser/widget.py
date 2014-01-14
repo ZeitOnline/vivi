@@ -556,3 +556,20 @@ class ConvertingRestructuredTextWidget(RestructuredTextWidget):
         value = super(ConvertingRestructuredTextWidget, self)._toFormValue(
             value)
         return html2rst(value)
+
+
+class AutocompleteWidget(zope.formlib.textwidgets.TextWidget):
+
+    cssClass = 'autocomplete-widget'
+
+    def __init__(self, context, source, request):
+        super(AutocompleteWidget, self).__init__(context, request)
+        self.source = source
+        self.extra = 'cms:autocomplete-source="%s"' % (
+            self.query_url)
+
+    @property
+    def query_url(self):
+        return zope.component.queryMultiAdapter(
+            (self.source, self.request),
+            zeit.cms.browser.interfaces.ISourceQueryURL)

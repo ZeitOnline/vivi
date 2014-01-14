@@ -195,4 +195,15 @@
       permission="zope.Public"
       />
 
+  <!-- autocomplete -->
+
+  <adapter
+    for="zope.schema.interfaces.IChoice
+         zeit.cms.content.interfaces.IAutocompleteSource
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.ISimpleInputWidget"
+    factory=".widget.AutocompleteWidget"
+    permission="zope.Public"
+    />
+
 </configure>
