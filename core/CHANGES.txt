@@ -5,6 +5,8 @@ zeit.content.cp changes
 2.2.4 (unreleased)
 ------------------
 
+- Add toggle visibility icon for teaser blocks in mosaic (VIV-284).
+
 - RelatedBase is now based on MultiResource (VIV-282).
 
 

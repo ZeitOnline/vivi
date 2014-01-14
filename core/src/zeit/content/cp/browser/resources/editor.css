@@ -35,6 +35,14 @@
   background-image: url('edit-teaserlist-contents.png');
 }
 
+.edit-bar > .toggle-visible-link {
+  background-image: url('eye.png');
+}
+
+.block-visible-off .edit-bar > .toggle-visible-link {
+  background-image: url('contrast.png');
+}
+
 
 .edit-bar > .countings-link {
   float: right;
@@ -213,6 +221,11 @@
 .autopilot-off .autopilot-chooser {
   background: url('autopilot-off.png') no-repeat right;
 }
+
+.block.block-visible-off > * {
+  background-color: #cccccc;
+}
+
 
 .teaser-block-properties-form table.form-fields {
   width: 100%;

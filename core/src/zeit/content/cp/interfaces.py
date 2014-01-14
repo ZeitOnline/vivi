@@ -252,6 +252,10 @@ class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
         value_type=zope.schema.Int(),
         required=False)
 
+    visible = zope.schema.Bool(
+        title=_('Visible in frontend'),
+        default=True)
+
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
         if self.autopilot and not self.referenced_cp:

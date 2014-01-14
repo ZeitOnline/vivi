@@ -37,7 +37,8 @@ class TeaserBlockViewletManager(
             autopilot = 'autopilot-on'
         else:
             autopilot = 'autopilot-off'
-        return '%s %s' % (classes, autopilot)
+        visible = 'block-visible-off' if not self.context.visible else ''
+        return ' '.join([classes, autopilot, visible])
 
 
 class IFixedList(zope.interface.Interface):
@@ -251,14 +252,6 @@ class Display(zeit.cms.browser.view.Base):
             return self.url(image, '@@raw')
 
 
-class AutoPilotDisplay(Display):
-
-    @property
-    def autopilot_toggle_url(self):
-        on_off = 'off' if self.context.autopilot else 'on'
-        return self.url('@@toggle-autopilot?to=' + on_off)
-
-
 class Drop(zeit.edit.browser.view.Action):
     """Drop a content object on a teaserblock."""
 
@@ -355,15 +348,30 @@ def teaserEditViewName(context):
     return 'edit-teaser.html'
 
 
-class ToggleAutopilot(zeit.edit.browser.view.Action):
+class AutoPilotDisplay(Display):
+
+    @property
+    def autopilot_toggle_url(self):
+        on_off = 'off' if self.context.autopilot else 'on'
+        return self.url('@@toggle-autopilot?to=' + on_off)
+
+
+class ToggleBooleanBase(zeit.edit.browser.view.Action):
 
     to = zeit.edit.browser.view.Form('to')
+    attribute = NotImplemented
 
     def update(self):
-        self.context.autopilot = (True if self.to == 'on' else False)
+        setattr(self.context, self.attribute,
+                (True if self.to == 'on' else False))
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.signal_context_reload()
+
+
+class ToggleAutopilot(ToggleBooleanBase):
+
+    attribute = 'autopilot'
 
 
 class UpdateOrder(zeit.edit.browser.view.Action):
@@ -434,3 +442,16 @@ class Countings(object):
                 return self.countings.detail_url
             except AttributeError:
                 pass
+
+
+class ToggleVisibleMenuItem(zeit.cms.browser.view.Base):
+
+    @property
+    def toggle_url(self):
+        on_off = 'off' if self.context.visible else 'on'
+        return self.url('@@toggle-visible?to=' + on_off)
+
+
+class ToggleVisible(ToggleBooleanBase):
+
+    attribute = 'visible'

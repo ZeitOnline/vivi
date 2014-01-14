@@ -229,6 +229,26 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForXpathCount(css_path('.lightbox li.edit-bar'), 2)
         s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 3)
 
+    def test_toggle_visible(self):
+        self.open_centerpage()
+        s = self.selenium
+
+        teaser_module = self.get_module('teaser-mosaic', 'List of teasers')
+
+        s.click('link=*Add teaser bar*')
+        s.waitForElementPresent('css=a.choose-block')
+        s.click('css=a.choose-block')
+        s.waitForElementPresent(teaser_module)
+        s.dragAndDropToObject(teaser_module, 'css=a.choose-block')
+        s.waitForElementPresent(
+            'css=.block.type-teaser-bar .block.type-teaser')
+
+        s.assertElementNotPresent('css=.block.type-teaser.block-visible-off')
+        s.click('link=Switch visible')
+        s.waitForElementPresent('css=.block.type-teaser.block-visible-off')
+        s.click('link=Switch visible')
+        s.waitForElementNotPresent('css=.block.type-teaser.block-visible-off')
+
 
 class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 

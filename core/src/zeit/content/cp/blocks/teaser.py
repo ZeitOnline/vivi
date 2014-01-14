@@ -159,6 +159,10 @@ class AutoPilotTeaserBlock(TeaserBlock):
         '.', 'display-amount',
         zeit.content.cp.interfaces.IAutoPilotTeaserBlock['display_amount'])
 
+    visible = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'visible', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
+        'visible'])
+
     AUTOPILOT_ENTRIES = 6
 
     def __init__(self, *args, **kw):
@@ -166,6 +170,9 @@ class AutoPilotTeaserBlock(TeaserBlock):
         if 'hide-dupes' not in self.xml.attrib:
             self.hide_dupes = zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
                 'hide_dupes'].default
+        if 'visible' not in self.xml.attrib:
+            self.visible = zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
+                'visible'].default
 
     @property
     def suppress_image_positions(self):
