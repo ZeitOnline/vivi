@@ -87,9 +87,7 @@ def update_image_reference_on_checkin(context, event):
     images = zeit.content.image.interfaces.IImages(context, None)
     if images is None:
         return
-    image = images.image
-    if image:
-        images.image = image
+    ImagesAdapter._images.update_metadata(images)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
