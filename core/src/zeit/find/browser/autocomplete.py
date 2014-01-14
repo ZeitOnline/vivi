@@ -3,24 +3,24 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-import grokcore.component
+import grokcore.component as grok
+import re
 import urllib
 import xml.sax.saxutils
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
-import zeit.find.browser.find
 import zope.formlib.interfaces
 import zope.i18n
-import re
 
-class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
+
+class AutocompleteSourceQuery(grok.MultiAdapter,
                               zeit.cms.browser.view.Base):
 
-    grokcore.component.adapts(
+    grok.adapts(
         zeit.cms.content.interfaces.IAutocompleteSource,
         zeit.cms.browser.interfaces.ICMSLayer)
-    grokcore.component.provides(zope.formlib.interfaces.ISourceQueryView)
+    grok.provides(zope.formlib.interfaces.ISourceQueryView)
 
     def __init__(self, source, request):
         self.source = source
@@ -31,19 +31,22 @@ class AutocompleteSourceQuery(grokcore.component.MultiAdapter,
             u'<input type="text" class="autocomplete" '
             u'placeholder={placeholder} '
             u'cms:autocomplete-source="{url}?{query}" />').format(
-                url=self.url(zope.site.hooks.getSite(), '@@simple_find'),
-                query=urllib.urlencode(
-                    [('types:list', self.source.get_check_types())],
-                    doseq=True),
-                placeholder=xml.sax.saxutils.quoteattr(
-                    zope.i18n.translate(_('Type to find entries ...'),
-                                        context=self.request)))
+            url=self.url(zope.site.hooks.getSite(), '@@simple_find'),
+            query=urllib.urlencode(
+                [('types:list', self.source.get_check_types())],
+                doseq=True),
+            placeholder=xml.sax.saxutils.quoteattr(
+                zope.i18n.translate(
+                    _('Type to find entries ...'), context=self.request)))
 
 
-query_d = {u'ä':'a',u'ö':'o',u'ü':'u',u'ß':'s'}
+query_d = {u'ä': 'a', u'ö': 'o', u'ü': 'u', u'ß': 's'}
 pattern = re.compile('|'.join(query_d.keys()))
+
+
 def query_parse(q):
     return pattern.sub(lambda x: query_d[x.group()], q)
+
 
 class SimpleFind(zeit.cms.browser.view.JSON):
 
@@ -54,7 +57,7 @@ class SimpleFind(zeit.cms.browser.view.JSON):
             term = term.lower().strip()
             term = query_parse(term)
             results = zeit.find.search.search(
-                zeit.find.search.suggest_query(term,'title',types))
+                zeit.find.search.suggest_query(term, 'title', types))
         else:
             results = []
         return [
