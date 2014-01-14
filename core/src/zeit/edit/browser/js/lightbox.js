@@ -87,7 +87,8 @@ zeit.edit.TabbedLightBoxForm = zeit.edit.LightBoxForm.extend({
             var tab_view = new zeit.cms.View(
                     tab_definition.href, tab_id);
             var tab = new zeit.cms.ViewTab(
-                tab_id, tab_definition.title, tab_view);
+                tab_id, tab_definition.title, tab_view,
+                {render_on_activate: true});
             self.tabs.add(tab);
             self.events.push(
                 MochiKit.Signal.connect(

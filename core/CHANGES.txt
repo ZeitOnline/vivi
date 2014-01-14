@@ -6,6 +6,10 @@ Changes
 
 - Support nesting of InlineForms.
 
+- Render tabs in lightboxes each time the tab is activated, otherwise the
+  javascript for the forms is not updated and the form does not work after
+  switching tabs (VIV-280).
+
 
 2.1.6 (2014-01-07)
 ------------------
