@@ -118,28 +118,32 @@ representation of that object's related content includes the target URL:
 
 >>> related.related = (link,)
 >>> import lxml.etree
->>> print lxml.etree.tostring(related.xml, pretty_print=True)
-<references xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<...
+<references>
   <reference ...xmlns:ns0="http://namespaces.zeit.de/CMS/link"
              type="intern" href="http://xml.zeit.de/link"...
              ns0:href="http://gocept.com">
     ...
   </reference>
 </references>
+...
 
 rel=nofollow support
 --------------------
 
 >>> link.nofollow = True
 >>> related.related = (link,)
->>> print lxml.etree.tostring(related.xml, pretty_print=True)
-<references xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+>>> print lxml.etree.tostring(content.xml, pretty_print=True)
+<...
+<references>
   <reference ...xmlns:ns0="http://namespaces.zeit.de/CMS/link"
              type="intern" href="http://xml.zeit.de/link"...
              ns0:href="http://gocept.com" ns0:rel="nofollow">
     ...
   </reference>
 </references>
+...
 
 
 .. [#functional] 
