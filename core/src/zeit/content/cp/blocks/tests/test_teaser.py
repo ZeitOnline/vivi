@@ -112,6 +112,9 @@ class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(
             'label2', block.xml.topiclinks.topiclink)
 
+    def test_prefills_read_more_from_referenced_cp(self):
+        self.assertEqual('http://www.zeit.de/cp1', self.teaser.read_more_url)
+
 
 class SuppressImagePositionsTest(zeit.content.cp.testing.FunctionalTestCase):
 

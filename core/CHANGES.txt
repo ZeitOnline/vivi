@@ -7,6 +7,9 @@ zeit.content.cp changes
 
 - Add toggle visibility icon for teaser blocks in mosaic (VIV-284).
 
+- Pre-fill AutopilotTeaserBlock title and read more from referenced cp
+  (VIV-280).
+
 - RelatedBase is now based on MultiResource (VIV-282).
 
 

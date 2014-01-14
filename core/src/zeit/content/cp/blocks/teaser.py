@@ -243,6 +243,12 @@ class AutoPilotTeaserBlock(TeaserBlock):
     def referenced_cp(self, value):
         self._p_changed = True
         self._referenced_cp = value
+        if value and zeit.cms.content.interfaces.ICommonMetadata.providedBy(
+                value):
+            self.title = value.title
+            self.read_more = 'mehr %s' % value.title  # XXX i18n?
+            self.read_more_url = value.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
         self._update_autopilot(self.autopilot)
         self.update_topiclinks()
 
