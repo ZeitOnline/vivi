@@ -26,3 +26,10 @@ class ImageMetadataTest(zeit.cms.testing.FunctionalTestCase):
   <copyright py:pytype="str" link="http://example.com" rel="nofollow">Foo</copyright>
 </image>
 """, lxml.etree.tostring(ref, pretty_print=True))
+
+    def test_related_reference_to_image_does_not_overwrite_href(self):
+        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        node = zope.component.getAdapter(
+            image, zeit.cms.content.interfaces.IXMLReference,
+            name='related')
+        self.assertEqual(image.uniqueId, node.get('href'))

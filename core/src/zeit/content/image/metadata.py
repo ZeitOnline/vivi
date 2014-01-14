@@ -100,8 +100,14 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
         set_attribute('title', context.title)
         set_attribute('alt', context.alt)
-        set_attribute('href', context.links_to)
         set_attribute('align', context.alignment)
+
+        # XXX This is really ugly: XMLReference type 'related' uses href for
+        # the uniqueId, but type 'image' uses 'src' or 'base-id' instead, and
+        # reuses 'href' for the link information. And since XMLReferenceUpdater
+        # is called for all types of reference, we need to handle both ways.
+        if entry.get('href') != context.context.uniqueId:
+            set_attribute('href', context.links_to)
 
         entry['bu'] = context.caption or None
 
