@@ -31,6 +31,7 @@ class AutocompleteSourceQuery(grok.MultiAdapter,
             u'<input type="text" class="autocomplete" '
             u'placeholder={placeholder} '
             u'cms:autocomplete-source="{url}?{query}" />').format(
+            # XXX make use of ISourceQueryURL mechanism
             url=self.url(zope.site.hooks.getSite(), '@@simple_find'),
             query=urllib.urlencode(
                 [('types:list', self.source.get_check_types())],
