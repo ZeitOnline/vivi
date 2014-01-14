@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
+import lxml.objectify
 import zeit.cms.connector
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -72,10 +73,7 @@ def localimage_factory(context):
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
-    metadata = zeit.content.image.interfaces.IImageMetadata(context)
-    image = zope.component.getAdapter(
-        metadata,
-        zeit.cms.content.interfaces.IXMLReference, name='image')
+    image = lxml.objectify.E.image()
     image.set('src', context.uniqueId)
     if '.' in context.__name__:
         base, ext = context.__name__.rsplit('.', 1)

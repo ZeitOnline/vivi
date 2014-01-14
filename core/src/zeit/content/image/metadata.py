@@ -87,36 +87,31 @@ def metadata_for_image(image):
     return metadata
 
 
-@zope.component.adapter(zeit.content.image.interfaces.IImageMetadata)
-@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
-def MetadataXMLReference(context):
-    """XML representation of image."""
+class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
-    attributes = {}
+    target_iface = zeit.content.image.interfaces.IImageMetadata
 
-    def set_if_not_empty(name, value):
-        if value:
-            attributes[name] = value
+    def update_with_context(self, entry, context):
+        def set_attribute(name, value):
+            if value:
+                entry.set(name, value)
+            else:
+                entry.attrib.pop(name, None)
 
-    copyrights = []
-    for text, link, nofollow in context.copyrights:
-        node = lxml.objectify.E.copyright(text)
-        if link:
-            node.set('link', link)
-            if nofollow:
-                node.set('rel', 'nofollow')
-        copyrights.append(node)
+        set_attribute('title', context.title)
+        set_attribute('alt', context.alt)
+        set_attribute('href', context.links_to)
+        set_attribute('align', context.alignment)
 
-    set_if_not_empty('title', context.title)
-    set_if_not_empty('alt', context.alt)
-    set_if_not_empty('href', context.links_to)
-    set_if_not_empty('align', context.alignment)
+        entry['bu'] = context.caption or None
 
-    caption = lxml.objectify.E.bu(context.caption or None)
+        for child in entry.iterchildren('copyright'):
+            entry.remove(child)
 
-    image = lxml.objectify.E.image(
-        caption,
-        *copyrights,
-        **attributes)
-
-    return image
+        for text, link, nofollow in context.copyrights:
+            node = lxml.objectify.E.copyright(text)
+            if link:
+                node.set('link', link)
+                if nofollow:
+                    node.set('rel', 'nofollow')
+            entry.append(node)

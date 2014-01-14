@@ -138,7 +138,8 @@ The content has changed automatically:
 ...     repository['testcontent'].xml, pretty_print=True),
 <testtype>
   <head>
-    <image ...title="Image title" base-id="http://xml.zeit.de/image-group" type="jpg"...>
+    <image ...base-id="http://xml.zeit.de/image-group" type="jpg"...
+        title="Image title"...>
       <bu xsi:nil="true"/>
       <copyright py:pytype="str">&#169;</copyright>
     </image>

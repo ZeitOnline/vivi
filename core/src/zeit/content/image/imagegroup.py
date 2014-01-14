@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
+import lxml.objectify
 import persistent
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -83,10 +84,7 @@ def local_image_group_factory(context):
 @zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
-    metadata = zeit.content.image.interfaces.IImageMetadata(context)
-    image = zope.component.getAdapter(
-        metadata,
-        zeit.cms.content.interfaces.IXMLReference, name='image')
+    image = lxml.objectify.E.image()
     image.set('base-id', context.uniqueId)
 
     type = ''

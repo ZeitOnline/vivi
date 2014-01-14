@@ -98,7 +98,7 @@
     />
 
   <adapter factory=".metadata.metadata_webdav_properties" />
-  <adapter factory=".metadata.MetadataXMLReference" name="image" />
+  <adapter factory=".metadata.XMLReferenceUpdater" name="image-metadata" />
 
 
   <!-- source -->
