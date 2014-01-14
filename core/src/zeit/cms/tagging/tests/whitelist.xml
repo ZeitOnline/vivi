@@ -39,7 +39,7 @@
   <tag uuid="66daffdd-20ee-4e25-9765-299039a133aa">
     Denkmal
   </tag>
-  <tag uuid="936db2b2-e1de-43d2-a2c3-1c5564a34923">
+  <tag uuid="936db2b2-e1de-43d2-a2c3-1c5564a34923" entity_type="Location">
     Berg
   </tag>
   <tag uuid="2350fd0f-2869-490e-9bc2-35b7c4a438c2">
@@ -60,10 +60,10 @@
   <tag uuid="585ec3ea-b9a4-4bb1-8f4f-3a31394c101e">
     Sprache
   </tag>
-  <tag uuid="8dbe0317-3ce7-425f-9d44-f38bdc2d796d">
+  <tag uuid="8dbe0317-3ce7-425f-9d44-f38bdc2d796d" entity_type="Location">
     Belgrad
   </tag>
-  <tag uuid="616fa700-bbf7-4a2e-9056-4532bd363ceb">
+  <tag uuid="616fa700-bbf7-4a2e-9056-4532bd363ceb" entity_type="Location">
     Kosovo
   </tag>
   <tag uuid="d55d9889-6aaa-4c71-b7a2-c7acefdc0c50">
@@ -72,10 +72,10 @@
   <tag uuid="8dc028d7-8546-42d3-83d7-50b59c1aef4b">
     Soldat
   </tag>
-  <tag uuid="dc4e429e-4989-46ee-a40e-a38388f7617a">
+  <tag uuid="dc4e429e-4989-46ee-a40e-a38388f7617a" entity_type="Location">
     Westeuropa
   </tag>
-  <tag uuid="fb4f1490-b187-4073-a51f-02bf101a354d">
+  <tag uuid="fb4f1490-b187-4073-a51f-02bf101a354d" entity_type="Location">
     Italien
   </tag>
   <tag uuid="d75e69e7-5b6e-4249-be85-aec0bd108223">
@@ -87,7 +87,7 @@
   <tag uuid="c00aa01c-49d5-4f99-b82e-08eaaf87464e">
     See
   </tag>
-  <tag uuid="cf450d19-c8a2-4c92-b29a-51bf1f5bbf87">
+  <tag uuid="cf450d19-c8a2-4c92-b29a-51bf1f5bbf87" entity_type="Location">
     Schweiz
   </tag>
   <tag uuid="8b96f00c-6079-4170-8be5-8e6938dde915">
@@ -105,10 +105,10 @@
   <tag uuid="e2337340-dbe4-414f-9e74-e06a4be4b359">
     Kinderkrankheit
   </tag>
-  <tag uuid="f4b4f50b-6597-4ab4-8e8e-5d262d3680a5">
+  <tag uuid="f4b4f50b-6597-4ab4-8e8e-5d262d3680a5" entity_type="Location">
     Frankreich
   </tag>
-  <tag uuid="1c8b0c32-1a49-4370-9818-7af636e4b30b">
+  <tag uuid="1c8b0c32-1a49-4370-9818-7af636e4b30b" entity_type="Location">
     Europa
   </tag>
   <tag uuid="887a216f-e738-45fb-a83b-a31840fad535">
@@ -123,19 +123,19 @@
   <tag uuid="865c055f-b13f-4bfc-bd05-16943a59be82">
     Konflikt
   </tag>
-  <tag uuid="8f320803-deb9-4af0-abc5-d262f37ac621">
+  <tag uuid="8f320803-deb9-4af0-abc5-d262f37ac621" entity_type="Location">
     Argentinien
   </tag>
-  <tag uuid="677bc5e6-35e8-47da-af94-c8fed6316ba2">
+  <tag uuid="677bc5e6-35e8-47da-af94-c8fed6316ba2" entity_type="Location">
     Paris
   </tag>
-  <tag uuid="463f99c3-1d2e-49af-b381-82505b9623a7">
+  <tag uuid="463f99c3-1d2e-49af-b381-82505b9623a7" entity_type="Location">
     Hannover
   </tag>
   <tag uuid="7b30a006-30c4-4d2e-b294-a9a7802cbfbc">
     Kohle
   </tag>
-  <tag uuid="e25ec114-33a2-42dc-a0c1-9cb9a9158b84">
+  <tag uuid="e25ec114-33a2-42dc-a0c1-9cb9a9158b84" entity_type="Location">
     Griechenland
   </tag>
   <tag uuid="f0c02270-9bb3-47da-9fa2-a33f919f75d4">
@@ -150,7 +150,7 @@
   <tag uuid="b55c8611-2fe1-465d-a894-97cf1a94504f">
     Demonstration
   </tag>
-  <tag uuid="4eac3148-6017-4cd8-8e88-1e2eccc6519f">
+  <tag uuid="4eac3148-6017-4cd8-8e88-1e2eccc6519f" entity_type="Location">
     Finnland
   </tag>
   <tag uuid="b3ec6fe7-5412-46dd-bcf9-91abe2024e39">

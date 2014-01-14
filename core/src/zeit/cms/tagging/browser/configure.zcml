@@ -24,7 +24,7 @@
     for="zope.location.interfaces.ISite"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="zeit.cms.tagging.search"
-    class=".autocomplete.Search"
+    class=".autocomplete.WhitelistSearch"
     permission="zope.View"
     />
 
@@ -33,6 +33,14 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="object-details"
     template="object-details.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zope.location.interfaces.ISite"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="zeit.cms.tagging.location.search"
+    class=".autocomplete.LocationSearch"
     permission="zope.View"
     />
 

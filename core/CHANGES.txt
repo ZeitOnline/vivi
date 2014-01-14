@@ -9,6 +9,8 @@ zeit.cms changes
 - Add ``ReferenceProperty`` for qualified references between conten objects,
   and corresponding ``ReferenceSequenceWidget`` (VIV-274, VIV-276).
 
+- Add autocompleteable source for locations (VIV-275).
+
 - Add DAV property ``deeplink_url`` to ICommonMetadata (VIV-270).
 
 internal:

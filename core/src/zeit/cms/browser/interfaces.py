@@ -200,3 +200,15 @@ class IDisplayViewName(zope.interface.Interface):
         IDisplayViewName, name='edit.html')
 
     """
+
+
+class ISourceQueryURL(zope.interface.Interface):
+    """Adapts an IAutocompleteSource and request to a string, which is the URL
+    through which this source can be queried (at the moment: using the jqueryui
+    autocomplete JSON protocol).
+
+    XXX Using a traverser to get to the source (How? Dotted name and require
+    sources to be singletons?) and a well-known view name on the source instead
+    of on the site would be much cleaner.
+
+    """
