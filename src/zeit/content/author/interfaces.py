@@ -65,5 +65,7 @@ class IAuthor(zope.interface.Interface):
 
 class IAuthorReference(zeit.cms.content.interfaces.IReference):
 
-    location = zope.schema.TextLine(
-        title=_('Location'), required=False)
+    location = zope.schema.Choice(
+        title=_('Location'),
+        source=zeit.cms.tagging.source.locationSource,
+        required=False)
