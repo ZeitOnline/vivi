@@ -78,6 +78,9 @@ class LocationSource(
             """IAutocompleteSource, but not applicable for us"""
             return []
 
+        def __contains__(self, value):
+            return True
+
     def getValues(self, context):
         xml = self._get_tree()
         return [
