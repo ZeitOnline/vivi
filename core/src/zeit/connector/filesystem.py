@@ -164,6 +164,14 @@ class Connector(object):
         except IOError:
             raise KeyError("The resource %r does not exist." % id)
 
+    def _get_metadata_file(self, id):
+        filename = self._absolute_path(self._path(id)) + '.meta'
+        __traceback_info__ = (id, filename)
+        try:
+            return file(filename, 'rb')
+        except IOError:
+            return self._get_file(id)
+
     def _make_id(self, path):
         return urlparse.urljoin(ID_NAMESPACE, '/'.join(
             element for element in path if element))
@@ -173,7 +181,7 @@ class Connector(object):
         # We have not properties for this type, try to read it from the file.
         # This is sort of a hack, but we need it to get properties at all
         if self.getResourceType(id) != 'collection':
-            data = self._get_file(id)
+            data = self._get_metadata_file(id)
             try:
                 xml = lxml.etree.parse(data)
             except lxml.etree.LxmlError:
