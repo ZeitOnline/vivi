@@ -163,6 +163,8 @@ class Connector(object):
     def _get_file(self, id):
         filename = self._absolute_path(self._path(id))
         __traceback_info__ = (id, filename)
+        if os.path.isdir(filename):
+            raise ValueError('The path %r points to a directory.' % filename)
         try:
             return file(filename, 'rb')
         except IOError:
@@ -181,34 +183,31 @@ class Connector(object):
             element for element in path if element))
 
     def _get_properties(self, id):
-        properties = {}
-        # We have not properties for this type, try to read it from the file.
-        # This is sort of a hack, but we need it to get properties at all
-        if self.getResourceType(id) != 'collection':
+        properties = {('getlastmodified', 'DAV:'): self._get_lastmodified(id)}
+
+        try:
             data = self._get_metadata_file(id)
-            try:
-                xml = lxml.etree.parse(data)
-            except lxml.etree.LxmlError:
-                pass
-            else:
-                nodes = xml.xpath('//head/attribute')
-                for node in nodes:
-                    properties[node.get('name'), node.get('ns')] = node.text
+            xml = lxml.etree.parse(data)
+        except (ValueError, lxml.etree.LxmlError):
+            return properties
 
-                # XXX workaround for zeit.frontend, can probably go away
-                # once the filesystem connector is finished.
-                tags = xml.xpath('//head/rankedTags')
-                if tags:
-                    value = (
-                        '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
-                        '/CMS/tagging">')
-                    value += lxml.etree.tostring(tags[0])
-                    value += '</tag:rankedTags>'
-                    properties[(
-                        'rankedTags',
-                        'http://namespaces.zeit.de/CMS/tagging')] = value
+        nodes = xml.xpath('//head/attribute')
+        for node in nodes:
+            properties[node.get('name'), node.get('ns')] = node.text
 
-        properties[('getlastmodified', 'DAV:')] = self._get_lastmodified(id)
+        # XXX workaround for zeit.frontend, can probably go away
+        # once the filesystem connector is finished.
+        tags = xml.xpath('//head/rankedTags')
+        if tags:
+            value = (
+                '<tag:rankedTags xmlns:tag="http://namespaces.zeit.de'
+                '/CMS/tagging">')
+            value += lxml.etree.tostring(tags[0])
+            value += '</tag:rankedTags>'
+            properties[(
+                'rankedTags',
+                'http://namespaces.zeit.de/CMS/tagging')] = value
+
         return properties
 
     def _get_lastmodified(self, id):
