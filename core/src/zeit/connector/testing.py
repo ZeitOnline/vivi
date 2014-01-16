@@ -77,6 +77,15 @@ class real_connector_layer(real_connector_zcml_layer):
         del cls.connector
 
 
+filesystem_connector_layer = ZCMLLayer(
+    'ftesting-filesystem.zcml',
+    product_config="""\
+<product-config zeit.connector>
+repository-path %s
+</product-config>
+""" % pkg_resources.resource_filename('zeit.connector', 'testcontent'))
+
+
 mock_connector_layer = ZCMLLayer('ftesting-mock.zcml')
 
 
@@ -114,6 +123,11 @@ class ConnectorTest(TestCase):
     def tearDown(self):
         reset_testing_folder(self)
         super(ConnectorTest, self).tearDown()
+
+
+class FilesystemConnectorTest(TestCase):
+
+    layer = filesystem_connector_layer
 
 
 class MockTest(TestCase):
