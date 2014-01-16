@@ -2,10 +2,13 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.checkout.helper import checked_out
+from zeit.cms.interfaces import ICMSContent
 import transaction
 import unittest
 import zeit.cms.tagging.testing
 import zeit.content.article.edit.browser.testing
+import zeit.content.author.author
 
 
 class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
@@ -184,3 +187,37 @@ class HeaderTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(
             clipboard + '//span[contains(@class, "uniqueId") and '
             'contains(text(), "Somalia")]')
+
+
+class AuthorLocationTest(
+        zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(AuthorLocationTest, self).setUp()
+        shakespeare = zeit.content.author.author.Author()
+        shakespeare.firstname = 'William'
+        shakespeare.lastname = 'Shakespeare'
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['shakespeare'] = shakespeare
+                with checked_out(ICMSContent(
+                        'http://xml.zeit.de/online/2007/01/Somalia')) as co:
+                    co.authorships = [co.authorships.create(
+                        self.repository['shakespeare'])]
+
+    def test_entering_location_via_autocomplete(self):
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s = self.selenium
+        fold = 'css=#edit-form-metadata .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
+        location_input = '.object-details.type-author .autocomplete-widget'
+        s.waitForElementPresent('css=%s' % location_input)
+        self.add_by_autocomplete('Paris', location_input)
+
+        s.clickAndWait('id=checkin')
+        s.waitForElementPresent(fold)
+        s.click(fold)
+        location_display = 'css=.object-details.type-author .widget'
+        s.waitForElementPresent(location_display)
+        s.waitForText(location_display, 'Paris')
