@@ -123,6 +123,10 @@ class BodyLandingZone(LandingZoneBase):
 
 class Body(object):
 
+    def __call__(self):
+        self.context.ensure_division()
+        return super(Body, self).__call__()
+
     @zope.cachedescriptors.property.Lazy
     def writeable(self):
         return zope.security.canAccess(self.context, 'add')

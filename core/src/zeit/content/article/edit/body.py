@@ -8,6 +8,7 @@ import lxml.objectify
 import z3c.traverser.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
+import zeit.edit.block
 import zeit.edit.container
 import zeit.edit.rule
 import zope.publisher.interfaces
@@ -55,6 +56,25 @@ class EditableBody(zeit.edit.container.Base,
                 result.append(key)
             for child in division.iterchildren():
                 result.append(self._set_default_key(child))
+        return result
+
+    def values(self):
+        # We re-implement values() so it works without keys(), since those are
+        # not present in the repository and anyway created on demand, which is
+        # a Bad Idea(tm) for (concurrent!) read-only purposes (most notably
+        # zeit.frontend).
+
+        result = []
+        for didx, division in enumerate(
+            self.xml.xpath('division[@type="page"]'), start=1):
+            if didx > 1:
+                result.append(self._get_element_for_node(division))
+            for child in division.iterchildren():
+                element = self._get_element_for_node(child)
+                if element is None:
+                    element = self._get_element_for_node(
+                        child, zeit.edit.block.UnknownBlock.type)
+                result.append(element)
         return result
 
     def _get_element_type(self, xml_node):

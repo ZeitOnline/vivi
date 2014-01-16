@@ -11,6 +11,12 @@
       interface="zeit.edit.interfaces.IWriteContainer"
       permission="zeit.EditContent"
       />
+    <!-- can't simply require IEditableBody, since that inherits from
+         IContainer which we already covered above -->
+    <require
+      attributes="ensure_division"
+      permission="zeit.EditContent"
+      />
   </class>
 
   <subscriber

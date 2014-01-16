@@ -116,6 +116,23 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         body.add(block)
         self.assertEqual(2, len(body.xml.getchildren()))
 
+    def test_values_does_not_set_block_ids(self):
+        body = self.get_body()
+        find_id_attributes = lambda: body.xml.xpath(
+            '//*[@ns:__name__]',
+            namespaces={'ns': 'http://namespaces.zeit.de/CMS/cp'})
+        self.assertFalse(find_id_attributes())
+        body.values()
+        self.assertFalse(find_id_attributes())
+        body.keys()
+        self.assertTrue(find_id_attributes())
+
+    def test_values_returns_same_blocks_as_keys(self):
+        body = self.get_body()
+        self.assertEqual(
+            [x.xml for x in body.values()],
+            [body[x].xml for x in body.keys()])
+
 
 class TestCleaner(unittest.TestCase):
 
