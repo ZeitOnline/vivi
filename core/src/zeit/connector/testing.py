@@ -44,9 +44,7 @@ def ZCMLLayer(
     return layer
 
 
-zope_connector_layer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'zope_connector_layer', allow_teardown=True)
+zope_connector_layer = ZCMLLayer('ftesting.zcml')
 
 
 real_connector_zcml_layer = ZCMLLayer('ftesting-real.zcml')
@@ -79,9 +77,7 @@ class real_connector_layer(real_connector_zcml_layer):
         del cls.connector
 
 
-mock_connector_layer = zope.app.testing.functional.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting-mock.zcml'),
-    __name__, 'mock_connector_layer', allow_teardown=True)
+mock_connector_layer = ZCMLLayer('ftesting-mock.zcml')
 
 
 optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
