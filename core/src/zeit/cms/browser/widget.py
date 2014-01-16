@@ -573,3 +573,9 @@ class AutocompleteWidget(zope.formlib.textwidgets.TextWidget):
         return zope.component.queryMultiAdapter(
             (self.source, self.request),
             zeit.cms.browser.interfaces.ISourceQueryURL)
+
+
+class AutocompleteDisplayWidget(zope.formlib.widgets.DisplayWidget):
+
+    def __init__(self, context, source, request):
+        super(AutocompleteDisplayWidget, self).__init__(context, request)

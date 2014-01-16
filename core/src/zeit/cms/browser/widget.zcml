@@ -206,4 +206,13 @@
     permission="zope.Public"
     />
 
+  <adapter
+    for="zope.schema.interfaces.IChoice
+         zeit.cms.content.interfaces.IAutocompleteSource
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.formlib.interfaces.IDisplayWidget"
+    factory=".widget.AutocompleteDisplayWidget"
+    permission="zope.Public"
+    />
+
 </configure>
