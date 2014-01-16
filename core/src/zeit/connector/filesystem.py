@@ -68,6 +68,14 @@ class Connector(object):
         path = self._absolute_path(self._path(id))
         if os.path.isdir(path):
             return 'collection'
+
+        properties = self._get_properties(id)
+        if properties:
+            type = properties.get(
+                zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
+            if type:
+                return type
+
         data = self._get_file(id).read(200)
         if '<article>' in data:
             # Ok, this is hardcore. But it's not production code, is it.
