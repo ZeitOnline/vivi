@@ -56,8 +56,12 @@ class Connector(object):
 
     def _get_collection_names(self, path):
         absolute_path = self._absolute_path(path)
-        return (set(os.listdir(absolute_path))
-                if os.path.isdir(absolute_path) else set())
+        names = (set(os.listdir(absolute_path))
+                 if os.path.isdir(absolute_path) else set())
+        for x in names.copy():
+            if x.endswith('.meta') and x[:-5] in names:
+                names.remove(x)
+        return names
 
     def getResourceType(self, id):
         __traceback_info__ = id
