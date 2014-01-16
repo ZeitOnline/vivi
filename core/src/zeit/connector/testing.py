@@ -86,6 +86,10 @@ optionflags=(doctest.REPORT_NDIFF + doctest.NORMALIZE_WHITESPACE +
 
 class TestCase(zope.app.testing.functional.FunctionalTestCase):
 
+    @property
+    def connector(self):
+        return zope.component.getUtility(zeit.connector.interfaces.IConnector)
+
     def setUp(self):
         pass
 
@@ -107,17 +111,12 @@ class ConnectorTest(TestCase):
     layer = real_connector_layer
     level = 2
 
-    def setUp(self):
-        super(ConnectorTest, self).setUp()
-        self.connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
-
     def tearDown(self):
         reset_testing_folder(self)
         super(ConnectorTest, self).tearDown()
 
 
-class MockTest(ConnectorTest):
+class MockTest(TestCase):
 
     layer = mock_connector_layer
 
