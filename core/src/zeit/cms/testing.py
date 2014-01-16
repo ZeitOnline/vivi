@@ -431,6 +431,17 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             partial.append(part)
             self.wait_for_condition('.'.join(partial))
 
+    def add_by_autocomplete(self, text, widget):
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval('window.jQuery("%s").val("%s").trigger("keydown")' % (
+            widget, text))
+        s = self.selenium
+        autocomplete_item = 'css=.ui-menu-item a'
+        s.waitForElementPresent(autocomplete_item)
+        s.waitForVisible(autocomplete_item)
+        s.click(autocomplete_item)
+        s.waitForNotVisible(autocomplete_item)
+
 
 def click_wo_redirect(browser, *args, **kwargs):
     browser.mech_browser.set_handle_redirect(False)
