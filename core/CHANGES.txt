@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.2.4 (unreleased)
+2.2.4 (2014-01-20)
 ------------------
 
 - Add toggle visibility icon for teaser blocks in mosaic (VIV-284).
