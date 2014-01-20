@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.1.7 (unreleased)
+2.1.7 (2014-01-20)
 ------------------
 
 - Support nesting of InlineForms.
