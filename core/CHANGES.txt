@@ -4,7 +4,7 @@ zeit.content.video changes
 2.2.6 (unreleased)
 ------------------
 
-- Update to new MultiResource API.
+- Update to new MultiResource API (VIV-282).
 
 
 2.2.5 (2014-01-08)
