@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.13.0 (unreleased)
+2.13.0 (2014-01-20)
 -------------------
 
 - ICommonMetadata now uses reference objects for authors (VIV-273).
