@@ -6,7 +6,7 @@ README = open(os.path.join(here, 'README.txt')).read()
 NEWS = open(os.path.join(here, 'CHANGES.txt')).read()
 
 
-version = '2.1.7'
+version = '2.1.8.dev0'
 
 install_requires = [
     'setuptools',
