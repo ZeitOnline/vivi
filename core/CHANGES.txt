@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.1.1 (unreleased)
+3.1.1 (2014-01-20)
 ------------------
 
 - Display "Deeplink URL" field (VIV-270).
