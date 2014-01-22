@@ -154,17 +154,6 @@ class MultiResourceTest(
         self.assertEqual(
             'http://xml.zeit.de/target', content.related[0].uniqueId)
 
-    def test_setting_existing_references_leaves_xml_node_alone(self):
-        self.repository['other'] = TestContentType()
-        content = self.repository['content']
-        content.related = (self.repository['target'],)
-        # both .references and .related use the same xpath
-        content.references[0].foo = 'bar'
-        content.related = (
-            self.repository['target'], self.repository['other'])
-        self.assertEqual(
-            'bar', content.xml.body.references.reference.get('foo'))
-
     def test_should_be_updated_on_checkin(self):
         self.repository['target'].teaserTitle = u'foo'
 

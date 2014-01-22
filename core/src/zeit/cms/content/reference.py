@@ -79,7 +79,11 @@ class MultiResource(ReferenceProperty):
 
     def __set__(self, instance, value):
         references = self.references(instance)
-        value = tuple(references.get(x) or references.create(x) for x in value)
+        # NOTE: You must not access the same XML nodes
+        # via both ReferenceProperty and MultiResource,
+        # since setting MultiResource overwrites existing Reference nodes,
+        # thus destroying any properties they might have had.
+        value = tuple(references.create(x) for x in value)
         super(MultiResource, self).__set__(instance, value)
         self.update_metadata(instance)
 
