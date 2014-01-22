@@ -174,7 +174,7 @@ when we reassign the two objects the metadata will be reflected in the xml:
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related"
-        ... year="2006" issue="19"...>
+        ...year="2006" issue="19"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">I relate the title</title>
         <text py:pytype="str">Dude.</text>
@@ -214,7 +214,7 @@ After sending the event the metadata is updated:
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related"
-        ... year="2007" issue="19"...>
+        ...year="2007" issue="19"...>
         <supertitle xsi:nil="true"/>
         <title py:pytype="str">I relate the title</title>
         <text py:pytype="str">Dude.</text>
