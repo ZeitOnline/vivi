@@ -15,6 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
+        'ZConfig',
         'ZODB3>=3.8b4',
         'gocept.cache>=0.2.2',
         'gocept.lxml',

@@ -5,8 +5,12 @@
 
 import StringIO
 import mock
+import os
 import transaction
+import zeit.connector.connector
+import zeit.connector.interfaces
 import zeit.connector.testing
+import zope.component
 
 
 class TestUnicode(zeit.connector.testing.ConnectorTest):
@@ -405,3 +409,18 @@ class TestXMLSupport(zeit.connector.testing.ConnectorTest):
         prop = lxml.objectify.fromstring(res.properties[('foo', 'bar')])
         self.assertEqual(
             ['a'], [n.tag for n in prop.getchildren()])
+
+
+class TestNonCachingConnector(zeit.connector.testing.ConnectorTest):
+
+    def setUp(self):
+        connector = zeit.connector.connector.NonCachingConnector(roots={
+            'default': os.environ['connector-url'],
+            'search': os.environ['search-connector-url']})
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.registerUtility(connector, zeit.connector.interfaces.IConnector)
+
+    def test_smoke(self):
+        resource = self.connector[
+            u'http://xml.zeit.de/online/2007/09/laktose-milchzucker-gewöhnung']
+        resource.data
