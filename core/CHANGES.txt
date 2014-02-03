@@ -4,7 +4,7 @@ zeit.cms changes
 2.13.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use WSGI pipelin instead of zope.server (VIV-295).
 
 
 2.13.1 (2014-01-22)

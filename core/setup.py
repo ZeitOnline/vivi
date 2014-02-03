@@ -21,6 +21,7 @@ setup(
         'ZODB3>=3.8.1',
         'decorator',
         'docutils',
+        'fanstatic[cssmin,jsmin]',
         'gocept.async>=0.1.1',
         'gocept.cache>=0.2',
         'gocept.fckeditor',
@@ -39,6 +40,7 @@ setup(
         'martian',
         'mock',
         'pypandoc',
+        'repoze.vhm',
         'rwproperty>=1.0',
         'setuptools',
         'sprout',
@@ -90,9 +92,13 @@ setup(
         'gocept.selenium>=2.0.0b5.dev0',
         'gocept.jslint>=0.2',
     ],
-    entry_points=dict(
-        console_scripts=[
+    entry_points={
+        'console_scripts': [
             'dump_references = zeit.cms.relation.migrate:dump_references',
             'load_references = zeit.cms.relation.migrate:load_references',
-        ])
+        ],
+        'paste.app_factory': [
+            'main=zeit.cms.application:APPLICATION',
+        ],
+    }
 )
