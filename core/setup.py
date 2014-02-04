@@ -9,11 +9,11 @@ setup(
     description="""\
 """,
     packages=find_packages('src'),
-    package_dir = {'': 'src'},
-    include_package_data = True,
+    package_dir={'': 'src'},
+    include_package_data=True,
     zip_safe=False,
     license='gocept proprietary',
-    namespace_packages = ['zeit', 'zeit.content'],
+    namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'gocept.filestore',
         'gocept.form[formlib]>=0.7.2',
@@ -64,8 +64,8 @@ setup(
         'zope.index',
         'zope.location>=3.4.0b2',
     ],
-    entry_points = """
+    entry_points="""
         [console_scripts]
-        run-cds-import = zeit.content.article.cds:import_main
+        run-cds-import=zeit.content.article.cds:import_main
         """
 )
