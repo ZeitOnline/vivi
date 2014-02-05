@@ -6,6 +6,7 @@ import UserDict
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import pkg_resources
+import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.type
 import zeit.edit.container
