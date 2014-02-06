@@ -11,7 +11,8 @@ log = logging.getLogger('JavaScript')
 class JSONLog(zeit.cms.browser.view.JSON):
 
     def json(self):
-        decoded = json.loads(self.request.bodyStream.read())
+        decoded = json.loads(self.request.bodyStream.read(
+            int(self.request['CONTENT_LENGTH'])))
         log_func = getattr(log, decoded['level'].lower())
 
         error_reporting_util = zope.component.getUtility(
