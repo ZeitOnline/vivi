@@ -1,7 +1,8 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import gocept.selenium.ztk
+import gocept.httpserverlayer.wsgi
+import gocept.selenium
 import mock
 import pkg_resources
 import zeit.cms.testing
@@ -46,7 +47,11 @@ class SearchLayer(SearchZCMLLayer):
             package, filename)
 
 
-SeleniumLayer = gocept.selenium.ztk.Layer(SearchLayer)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(SearchLayer,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
+SeleniumLayer = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 
 class QueryTest(zeit.cms.testing.FunctionalTestCase):
