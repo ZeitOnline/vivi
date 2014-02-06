@@ -106,7 +106,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
         # the uniqueId, but type 'image' uses 'src' or 'base-id' instead, and
         # reuses 'href' for the link information. And since XMLReferenceUpdater
         # is called for all types of reference, we need to handle both ways.
-        if entry.get('href') != context.context.uniqueId:
+        if entry.get('src') or entry.get('base-id'):
             set_attribute('href', context.links_to)
 
         entry['bu'] = context.caption or None

@@ -6,7 +6,9 @@ zeit.cms changes
 
 - Use Fanstatic instead of zc.resourcelibrary (VIV-296).
 
-- Use WSGI pipelin instead of zope.server (VIV-295).
+- Use WSGI pipeline instead of zope.server (VIV-295).
+
+- Fix handling of 'related' references to image groups (VIV-306).
 
 
 2.13.1 (2014-01-22)
