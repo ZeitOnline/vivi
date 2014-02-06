@@ -15,6 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit'],
     install_requires=[
+        'gocept.httpserverlayer',
         'gocept.selenium',
         'gocept.testing>=1.4.0.dev0',
         'grokcore.component',
