@@ -331,6 +331,22 @@ def unique_id_to_content(uniqueId):
         return None
 
 
+@grokcore.component.adapter(
+    basestring, name=zeit.cms.interfaces.ID_NAMESPACE)
+@grokcore.component.implementer(zeit.cms.interfaces.ICMSWCContent)
+def unique_id_to_wc_or_repository(uniqueId):
+    wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
+    obj = None
+    for obj in wc.values():
+        if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
+            continue
+        if obj.uniqueId == uniqueId:
+            break
+    else:
+        obj = zeit.cms.interfaces.ICMSContent(uniqueId, None)
+    return obj
+
+
 # XXX kludgy heuristics, these URLs are defined in XSLT somewhere
 IGNORED_LIVE_PAGE_SUFFIXES = re.compile(r'/((seite-\d+)|(komplettansicht))/?$')
 

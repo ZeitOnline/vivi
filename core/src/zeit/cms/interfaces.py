@@ -52,6 +52,11 @@ class ICMSContent(zope.interface.Interface):
         constraint=valid_name)
 
 
+class ICMSWCContent(zope.interface.Interface):
+    """Adapting to this yields ICMSContent from the workingcopy if present,
+    else from the repository."""
+
+
 class IEditorialContent(ICMSContent):
     """Editorial content.
 

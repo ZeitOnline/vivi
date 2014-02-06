@@ -36,14 +36,38 @@ def no_scheme_unique_id_to_cms_content(unique_id):
         unique_id, zeit.cms.interfaces.ICMSContent, name=name)
 
 
+# XXX Having to duplicate all these is kludgy.
+
+@grok.adapter(basestring)
+@grok.implementer(zeit.cms.interfaces.ICMSWCContent)
+def unique_id_to_cmswc_content(unique_id):
+    parsed = urlparse.urlparse(unique_id)
+    name = '%s://' % (parsed.scheme or '<no-scheme>')
+    return zope.component.queryAdapter(
+        unique_id, zeit.cms.interfaces.ICMSWCContent, name=name)
+
+
+@grok.adapter(basestring, name='http://')
+@grok.implementer(zeit.cms.interfaces.ICMSWCContent)
+def http_scheme_unique_id_to_cmswc_content(unique_id):
+    parsed = urlparse.urlparse(unique_id)
+    assert parsed.scheme == 'http'
+    name = 'http://%s/' % parsed.netloc
+    return zope.component.queryAdapter(
+        unique_id, zeit.cms.interfaces.ICMSWCContent, name=name)
+
+
+@grok.adapter(basestring, name='<no-scheme>://')
+@grok.implementer(zeit.cms.interfaces.ICMSWCContent)
+def no_scheme_unique_id_to_cmswc_content(unique_id):
+    parsed = urlparse.urlparse(unique_id)
+    name = '<no-scheme>://%s/' % (parsed.netloc or '<no-netloc>')
+    return zope.component.queryAdapter(
+        unique_id, zeit.cms.interfaces.ICMSWCContent, name=name)
+
+
 def resolve_wc_or_repository(unique_id):
-    wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
-    obj = None
-    for obj in wc.values():
-        if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
-            continue
-        if obj.uniqueId == unique_id:
-            break
-    else:
+    obj = zeit.cms.interfaces.ICMSWCContent(unique_id, None)
+    if obj is None:
         obj = zeit.cms.interfaces.ICMSContent(unique_id, None)
     return obj
