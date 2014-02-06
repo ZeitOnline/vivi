@@ -46,22 +46,6 @@
     menu="zeit-context-views" title="Edit metadata"
     />
 
-  <resourceLibrary
-    name="zeit.content.cp"
-    require="zeit.edit
-             zeit.cms
-             zeit.find
-             zc.datetimewidget
-    ">
-    <directory source="resources" include="
-      editor.js
-      library.js
-      teaser.js
-      editor.css
-      "/>
-  </resourceLibrary>
-
-
   <!-- Editor -->
 
   <class class="zeit.content.cp.centerpage.CenterPage">
@@ -220,7 +204,7 @@
   <browser:page
     name="raw.css"
     for="zeit.cms.repository.interfaces.IUnknownResource"
-    class=".layout.RawCSS"
+    class=".resources.RawCSS"
     permission="zope.View" />
 
 </configure>

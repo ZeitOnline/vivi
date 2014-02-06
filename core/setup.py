@@ -33,7 +33,7 @@ setup(
         'requests',
         'setuptools',
         'zc.sourcefactory',
-        'zeit.cms>=2.13.0.dev0',
+        'zeit.cms>=2.14.0.dev0',
         'zeit.content.quiz>=0.4.2',
         'zeit.content.video',
         'zeit.edit >= 2.1.3',
@@ -51,9 +51,14 @@ setup(
         'zope.lifecycleevent',
         'zope.viewlet',
     ],
-    entry_points="""
-        [console_scripts]
-        refresh-feeds = zeit.content.cp.feed:refresh_all
-        sweep-teasergroup-repository = zeit.content.cp.teasergroup.teasergroup:sweep_repository
-    """,
+    entry_points={
+        'console_scripts': [
+            'refresh-feeds = zeit.content.cp.feed:refresh_all',
+            'sweep-teasergroup-repository = zeit.content.cp.teasergroup'
+            '.teasergroup:sweep_repository',
+        ],
+        'fanstatic.libraries': [
+            'zeit_content_cp=zeit.content.cp.browser.resources:lib',
+        ],
+    },
 )
