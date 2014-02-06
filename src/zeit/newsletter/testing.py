@@ -2,7 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.newsletter.newsletter import Newsletter
-import gocept.selenium.ztk
+import gocept.httpserverlayer.wsgi
+import gocept.selenium
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -46,7 +47,11 @@ class TestBrowserLayer(ZCMLLayer):
         ZCMLLayer.setup.tearDown()
 
 
-selenium_layer = gocept.selenium.ztk.Layer(ZCMLLayer)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCMLLayer,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
+selenium_layer = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
