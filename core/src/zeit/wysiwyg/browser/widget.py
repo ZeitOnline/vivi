@@ -1,10 +1,9 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import urllib
-import zc.resourcelibrary
+import gocept.fckeditor.resources
+import zeit.cms.browser.view
 import zope.app.form.browser.textwidgets
-import zope.component
 
 
 TEMPLATE = """
@@ -26,16 +25,15 @@ fckeditor.ReplaceTextarea();
 class FckEditorWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
 
     def __call__(self, *args, **kw):
-        zc.resourcelibrary.need('zeit.wysiwyg')
-
-        wysiwyg_resource = zope.component.getAdapter(
-            self.request, name='zeit.wysiwyg')()
-        fck_resource = zope.component.getAdapter(
-            self.request, name='gocept.fckeditor')()
+        gocept.fckeditor.resources.fckeditor.need()
         data = dict(
             field_name=self.name,
-            gocept_fckeditor=fck_resource,
-            zeit_wysiwyg=wysiwyg_resource,
+            gocept_fckeditor=zeit.cms.browser.view.resource_url(
+                self.request, 'gocept.fckeditor', ''),
+            # Need a Zope resource so it evaluates TAL
+            # (to need() more resources)
+            zeit_wysiwyg=zope.component.getAdapter(
+                self.request, name='zeit.wysiwyg')(),
             application_url=self.request.getApplicationURL()
         )
         return super(FckEditorWidget, self).__call__() + TEMPLATE % data

@@ -5,6 +5,11 @@
 
   <include package="gocept.fckeditor" />
 
+  <browser:resourceDirectory
+    name="zeit.wysiwyg"
+    directory="resources"
+    />
+
   <browser:page
     name="wysiwyg_edit.html"
     for="..interfaces.IHTMLContent"
@@ -12,17 +17,6 @@
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Edit WYSIWYG"
     />
-
-  <resourceLibrary name="zeit.wysiwyg" require="gocept.fckeditor.editor">
-    <directory source="resources" />
-  </resourceLibrary>
-
-  <resourceLibrary name="zeit.wysiwyg.fckeditor" require="gocept.fckeditor">
-    <directory
-      source="resources"
-      include="common.js common.css"
-      />
-  </resourceLibrary>
 
   <adapter
     for="zc.form.interfaces.IHTMLSnippet
