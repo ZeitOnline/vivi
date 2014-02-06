@@ -5,8 +5,8 @@
     <link
       rel="stylesheet" type="text/css"
       tal:attributes="
-      href string:${request/++resource++zeit.cms.recension}/recension.css"/>
-      
+      href string:${request/getApplicationURL}/fanstatic/zeit.content.article.recension/recension.css"/>
+
     <div class="recension"
       tal:condition="view/recensions"
       tal:repeat="recension view/recensions">

@@ -48,7 +48,7 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
             }
 
             // Dynamically created styles up here.
-            dummy_ad = application_url+'/@@/zeit.content.article.edit/dummy-ad.png',
+            dummy_ad = application_url+'/fanstatic/zeit.content.article/dummy-ad.png',
             styles  += '.type-p:nth-child(' + pos_div + ')'
                     + ' p:nth-child(' + pos_paragraph + ')'
                     + ' { background: url("' + dummy_ad + '")'

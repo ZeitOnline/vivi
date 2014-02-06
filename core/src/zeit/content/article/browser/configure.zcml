@@ -85,12 +85,6 @@
     permission="zeit.AddContent"
     />
 
-  <!-- Recensions -->
-
-  <resourceLibrary name="zeit.cms.recension">
-    <directory source="resources" include="recension.css" />
-  </resourceLibrary>
-
   <!-- workflow -->
   <adapter
     factory=".workflow.ArticleWorkflowForm"

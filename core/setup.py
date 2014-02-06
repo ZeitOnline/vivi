@@ -45,7 +45,7 @@ setup(
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
-        'zeit.cms>=2.13.0.dev0',
+        'zeit.cms>=2.14.0.dev0',
         'zeit.connector>1.14.1',
         'zeit.content.author',
         'zeit.content.cp>=0.33.0',
@@ -66,8 +66,15 @@ setup(
         'zope.index',
         'zope.location>=3.4.0b2',
     ],
-    entry_points="""
-        [console_scripts]
-        run-cds-import=zeit.content.article.cds:import_main
-        """
+    entry_points={
+        'console_scripts': [
+            'run-cds-import=zeit.content.article.cds:import_main',
+        ],
+        'fanstatic.libraries': [
+            'zeit_content_article=zeit.content.article.edit'
+            '.browser.resources:lib',
+            'zeit_content_article_recension=zeit.content.article'
+            '.browser.resources:lib',
+        ],
+    },
 )

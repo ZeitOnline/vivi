@@ -42,7 +42,7 @@
 }
 
 .type-article .content-icon.type-article {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 12px -1735px;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 12px -1735px;
   border-right:1px solid white;
   display: block;
   float:left;
@@ -590,7 +590,7 @@
 }
 
 .type-article .rte-toolbar > a {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 0px 0px;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px 0px;
   display: block;
   height: 20px;
   text-align: center;
@@ -920,7 +920,7 @@
 }
 
 .type-article .error div.empty {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 0px -2221px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -2221px transparent;
   height: 10px;
   left: 12px;
   position: absolute;
@@ -1066,53 +1066,53 @@
 
 .type-article .module-icon-video,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.0"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -654px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -654px transparent;
 }
 
 .type-article .module-icon-image,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.1"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -835px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -835px transparent;
 }
 
 .type-article .module-icon-audio,
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.2"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -896px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -896px transparent;
 }
 
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.3"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -715px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -715px transparent;
 }
 
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.4"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -776px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -776px transparent;
 }
 
 .type-article form[action$="asset-badges"] .value label[for="asset-badges\.badges\.5"] {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -955px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -955px transparent;
 }
 
 .type-article #article-editor-text .module-icon-image {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1769px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1769px transparent;
 }
 
 .type-article #article-editor-text .module-icon-video {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -2189px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -2189px transparent;
 }
 
 .type-article #article-editor-text .module-icon-infobox {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
 }
 
 .type-article #article-editor-text .module-icon-timeline {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1920px transparent;
 }
 
 .type-article #article-editor-text .module-icon-portraitbox {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -2040px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -2040px transparent;
 }
 
 .type-article #article-editor-text .module-icon-gallery {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat scroll 20px -1800px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 20px -1800px transparent;
 }
 
 
@@ -1817,7 +1817,7 @@
   -moz-border-radius:3px;
   -moz-box-shadow:0px 0px 0px rgb(0, 0, 0);
   background-size: auto, 100% auto;
-  background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px , -moz-linear-gradient(top,  #f1f4f9 50%, #dee1e6 94%) repeat scroll 0 0 transparent;
+  background: url('/fanstatic/zeit.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px , -moz-linear-gradient(top,  #f1f4f9 50%, #dee1e6 94%) repeat scroll 0 0 transparent;
   border-radius:2px 2px 2px 2px;
   border: 1px solid #c1c1c1;
   box-shadow:0px 0px 0px rgb(0, 0, 0);
@@ -1835,7 +1835,7 @@
 .type-article .article-editor-inner a.button:hover,
 .type-article .article-editor-inner button:hover,
 .type-article .article-editor-inner input[type=button]:hover {
-  background: url('../zeit\.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px, -moz-linear-gradient(top, #f1f4f9 50%, #d2d4d9 94%) repeat scroll 0 0 transparent;
+  background: url('/fanstatic/zeit.cms/icons/icons_sprites.png') no-repeat scroll 10px -113px, -moz-linear-gradient(top, #f1f4f9 50%, #d2d4d9 94%) repeat scroll 0 0 transparent;
   border-color: #a6a6a6;
 }
 
