@@ -408,20 +408,20 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 .cp-content-inner .edit-bar > .fold-link,
 .cp-content-inner .object-details .fold-link,
 .cp-content-inner .object-details .toggle_infos {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 0px -2511px;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px -2511px;
 }
 
 .cp-content-inner .folded .edit-bar > .fold-link,
 .cp-content-inner .toggle_infos.folded {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 0px -2541px;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px -2541px;
 }
 
 #article-editor-text .fold-link {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 6px -2605px;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2605px;
 }
 
 #article-editor-text .folded .fold-link {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 6px -2635px;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 6px -2635px;
 }
 
 .cp-content-inner .folded > .block-inner > * {
@@ -710,26 +710,26 @@ legend {
 }
 
 #checkin {
-  background: url("../zeit.cms/icons/wf_bb_einchecken.png") no-repeat 5px 2px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_einchecken.png") no-repeat 5px 2px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
   font-size: 14px !important;
   padding-left: 51px;
   
 }
 
 #checkin-publish {
-  background: url("../zeit.cms/icons/wf_bb_speichern-und-veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_speichern-und-veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
   font-size: 14px !important;
   padding-left: 77px;
 }
 
 #delete_workingcopy, #delete_from_repository {
-  background: url("../zeit.cms/icons/delete.png") no-repeat 3px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%)  !important;
+  background: url("/fanstatic/zeit.cms/icons/delete.png") no-repeat 3px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%)  !important;
   font-size: 14px !important;
   padding-left: 22px;
 }
 
 #publish {
-  background: url("../zeit.cms/icons/wf_bb_veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_veroeffentlichen.png") no-repeat 5px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
   font-size: 14px !important;
   padding-left: 37px;
 }
@@ -756,14 +756,14 @@ legend {
 }
 
 .inline-form .fieldtype-checkbox .widget.checkboxdisabled {
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -1407px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -1407px transparent;
   display: block;
   width: 10px;
   height: 15px;
 }
 
 .inline-form .fieldtype-checkbox .widget.checkboxchecked {
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -1380px transparent;
+  background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat scroll 0px -1380px transparent;
 }
 
 .inline-form .fieldtype-checkbox .widget input.checkboxType[disabled="disabled"] {

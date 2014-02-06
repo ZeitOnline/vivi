@@ -1,6 +1,8 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import fanstatic
+import os.path
 import zeit.cms.browser.view
 import zeit.edit.browser.landing
 import zope.component
@@ -19,10 +21,10 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         types = {}
         for name, adapter, library_name in self.get_adapters():
             if name not in types:
-                image = self.resources.get('module-%s.png' % name, None)
-                if image is None:
-                    image = self.resources['module-default-image.png']
-                image = image()
+                image = 'module-%s.png' % name
+                if not self.resource_exists(image):
+                    image = 'module-default-image.png'
+                image = self.resource_url(image)
                 types[name] = dict(
                     css=['module', 'represents-content-object'],
                     image=image,
@@ -48,6 +50,10 @@ class BlockFactories(zeit.cms.browser.view.JSON):
     @property
     def factory_context(self):
         return self.context
+
+    def resource_exists(self, filename):
+        library = fanstatic.get_library_registry()[self.resource_library]
+        return os.path.exists(os.path.join(library.path, filename))
 
 
 class BlockLandingZone(zeit.edit.browser.landing.LandingZone):

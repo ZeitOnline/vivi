@@ -30,9 +30,15 @@ setup(
         'lxml',
         'mock',
         'zc.resourcelibrary',
-        'zeit.cms>=2..13.0dev',
+        'zeit.cms>=2.14.0.dev0',
         'zeit.find>=2.2.dev.0',
         'zope.schema',
         'zope.interface',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_edit=zeit.edit.browser.resources:lib_css',
+            'zeit_edit_js=zeit.edit.browser.resources:lib_js',
+        ],
+    }
 )

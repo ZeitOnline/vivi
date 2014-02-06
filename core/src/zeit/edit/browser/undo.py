@@ -11,7 +11,7 @@ import zope.security.proxy
 
 class History(zeit.cms.browser.view.JSON):
 
-    resource_library = 'zeit.edit.styles'
+    resource_library = 'zeit.edit'
     template = 'history.jsont'
 
     def json(self):

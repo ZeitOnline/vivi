@@ -1,4 +1,3 @@
-<tal:resource replace="resource_library:zeit.edit" />
 <div id="cp-content">
   <div id="cp-content-inner">
   </div>

@@ -4,7 +4,7 @@ Changes
 2.1.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use Fanstatic instead of zc.resourcelibrary (VIV-296).
 
 
 2.1.7 (2014-01-20)
