@@ -4,7 +4,7 @@ zeit.find changes
 2.2.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use Fanstatic instead of zc.resourcelibrary (VIV-296).
 
 
 2.2.2 (2014-01-07)

@@ -6,8 +6,6 @@ from zeit.find.daterange import DATE_RANGES
 import datetime
 import urlparse
 import zc.iso8601.parse
-import zc.resourcelibrary
-import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.clipboard.interfaces
 import zeit.cms.content.interfaces
@@ -17,7 +15,6 @@ import zope.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
 import zope.i18n
-import zope.interface
 import zope.session.interfaces
 import zope.traversing.browser.interfaces
 import zope.viewlet.interfaces
@@ -140,7 +137,7 @@ class SearchResultBase(JSONView):
         return self.request.getApplicationURL()
 
     def get_arrow(self, result):
-        return self.resources['arrow_right.png']()
+        return self.resource_url('arrow_right.png')
 
     def get_date(self, result):
         return format_date(self._get_unformatted_date(result))
@@ -159,14 +156,14 @@ class SearchResultBase(JSONView):
         return get_favorited_css_class(self.get_favorited(result))
 
     def get_publication_status(self, result):
-        r = self.resources
+        r = self.resource_url
         published = self._get_unformatted_publication_status(result)
         if published == 'published':
-            publication_status = r['published.png']()
+            publication_status = r('published.png')
         elif published == 'published-with-changes':
-            publication_status = r['published_new.png']()
+            publication_status = r('published_new.png')
         else:
-            publication_status = r['unpublished.png']()
+            publication_status = r('unpublished.png')
         return publication_status
 
     def get_related_url(self, result):
@@ -417,7 +414,6 @@ class ExpandedSearchResult(JSONView):
 
         related = related_content.related
 
-        r = self.resources
         results = []
         for content in related:
             metadata = zeit.cms.content.interfaces.ICommonMetadata(

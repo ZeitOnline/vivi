@@ -7,7 +7,7 @@
 
   <script language="javascript" tal:content="string:
   (function() {
-    var url = '${context/++resource++zeit.find}';
+    var url = '${request/getApplicationURL}/fanstatic/zeit.find';
     zeit.cms.import(url+'/find.css');
     var d = zeit.cms.import(url+'/find.js');
     var initial_query = MochiKit.Base.evalJSON('${view/initial_query}');

@@ -28,10 +28,6 @@ on the UI itself:
 >>> print browser.contents
 <html>
   <head>
-    ...
-    <script src="...json-template.js" type="text/javascript"> </script>
-    <script src="...find.js" type="text/javascript"> </script>
-    ...
     <script language="javascript">
             var application_url = 'http://localhost:8080/++skin++cms';
             var context_url = application_url;
@@ -77,7 +73,7 @@ data for dropdowns/selects:
 {u'products': [{u'product_id': u'ZEI', u'product_name': u'Die Zeit'},...
  u'ressorts': [{u'ressort': u'Deutschland', u'ressort_name': u'Deutschland'},...
  u'series': [{u'serie': u'-', u'serie_title': u'-'},...
- u'template_url': u'http://localhost:8080/++skin++cms/@@/zeit.find/search_form.jsont',
+ u'template_url': u'http://localhost:8080/++skin++cms/fanstatic/zeit.find/search_form.jsont',
  u'types': [{u'title': u'File', u'type': u'file'},
            {u'title': u'Folder', u'type': u'collection'}...
 
@@ -131,7 +127,7 @@ The favorites tab now lists the favorited object:
     ...
     u'graphical_preview_url': u'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
     ...
- u'template_url': u'http://localhost:8080/++skin++cms/@@/zeit.find/search_result.jsont'}
+ u'template_url': u'http://localhost:8080/++skin++cms/fanstatic/zeit.find/search_result.jsont'}
 
 
 The view does not break when there is a clip in the favorites. The clip isn't
@@ -178,7 +174,7 @@ The search view returns all data for rendering the result:
               ...
               u'graphical_preview_url': u'http://localhost:8080/++skin++cms/repository/2006/DSC00109_2.JPG/@@thumbnail',
              ...
- u'template_url': u'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/@@/zeit.find/search_result.jsont'}
+ u'template_url': u'http://localhost:8080/++skin++cms/++noop++a12dffa9629480a5cafd9df8a674891e/fanstatic/zeit.find/search_result.jsont'}
 
 Favorites are marked in the search result as well:
 
@@ -243,7 +239,7 @@ The URL to get the relateds of a search result is included in the result:
 
 >>> browser.open(first_result['related_url'])
 >>> print browser.contents
-{"template_url": "http://localhost:8080/++skin++cms/++noop++7104bd1fcec67bdf850d905dc2279504/@@/zeit.find/no_expanded_search_result.jsont"}
+{"template_url": "http://localhost:8080/++skin++cms/++noop++7104bd1fcec67bdf850d905dc2279504/fanstatic/zeit.find/no_expanded_search_result.jsont"}
 
 Add content to testcontent
 
@@ -277,4 +273,4 @@ Add content to testcontent
               u'teaser_text': u'',
               u'teaser_title': u'Related title',
               u'uniqueId': u'http://xml.zeit.de/related'}],
- u'template_url': u'http://localhost:8080/++skin++cms/++noop++94b533aa204ba84e5cd044c4f71cae06/@@/zeit.find/expanded_search_result.jsont'}
+ u'template_url': u'http://localhost:8080/++skin++cms/++noop++94b533aa204ba84e5cd044c4f71cae06/fanstatic/zeit.find/expanded_search_result.jsont'}
