@@ -4,7 +4,7 @@ zeit.addcentral changes
 1.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use Fanstatic instead of zc.resourcelibrary (VIV-296).
 
 
 1.1.1 (2013-10-02)

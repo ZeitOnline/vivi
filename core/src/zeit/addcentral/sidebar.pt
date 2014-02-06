@@ -1,5 +1,3 @@
-<tal:block content="resource_library:zeit.addcentral" />
-
 <div
   tal:define="panel_id string:zeit.addcentral;
   panel_handlers nocall:context/@@panel_handlers"

@@ -4,13 +4,6 @@
   xmlns:grok="http://namespaces.zope.org/grok"
   >
 
-  <resourceLibrary
-    name="zeit.addcentral"
-    layer="zeit.cms.browser.interfaces.ICMSStyles"
-    require="zeit.cms.content.dropdown">
-    <directory source="resources" include="addcentral.css" />
-  </resourceLibrary>
-
   <browser:viewlet
     for="*"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
