@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
-import gocept.httpserverlayer.zopeapptesting
+import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import logging
 import lovely.remotetask.interfaces
@@ -89,8 +89,10 @@ class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
         pass
 
 
-HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
-    name='HTTPLayer', bases=(WorkflowLayer,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(WorkflowLayer,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(

@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from __future__ import with_statement
-import gocept.httpserverlayer.zopeapptesting
+import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import pkg_resources
 import zeit.cms.repository.interfaces
@@ -13,8 +13,9 @@ import zope.component
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
-HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
-    name='HTTPLayer', bases=(ZCML_LAYER,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
 SELENIUM_LAYER = gocept.selenium.RCLayer(
     name='SeleniumLayer', bases=(HTTP_LAYER,))
 

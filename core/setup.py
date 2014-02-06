@@ -39,6 +39,7 @@ setup(
         'lxml>=2.0.2',
         'martian',
         'mock',
+        'plone.testing',
         'pypandoc',
         'repoze.vhm',
         'rwproperty>=1.0',

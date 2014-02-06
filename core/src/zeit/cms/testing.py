@@ -6,7 +6,7 @@ import BaseHTTPServer
 import __future__
 import contextlib
 import copy
-import gocept.httpserverlayer.zopeapptesting
+import gocept.httpserverlayer.wsgi
 import gocept.jslint
 import gocept.selenium
 import gocept.testing.assertion
@@ -16,6 +16,7 @@ import json
 import logging
 import os
 import pkg_resources
+import plone.testing
 import random
 import re
 import socket
@@ -97,6 +98,27 @@ def ZCMLLayer(
         testTearDown=classmethod(testTearDown),
     ))
     return layer
+
+
+class WSGILayer(plone.testing.Layer):
+
+    def setUp(self):
+        db = zope.app.testing.functional.FunctionalTestSetup().db
+        self['zope_app'] = zope.app.wsgi.WSGIPublisherApplication(db)
+        self['wsgi_app'] = zeit.cms.application.APPLICATION.setup_pipeline(
+            self['zope_app'])
+
+    def testSetUp(self):
+        # Switch database to the currently active DemoStorage.
+        # Adapted from gocept.httpserverlayer.zopeapptesting.TestCase
+        db = zope.app.testing.functional.FunctionalTestSetup().db
+        application = self['zope_app']
+        factory = type(application.requestFactory)
+        application.requestFactory = factory(db)
+
+    def tearDown(self):
+        del self['wsgi_app']
+        del self['zope_app']
 
 
 class HTTPServer(BaseHTTPServer.HTTPServer):
@@ -197,8 +219,9 @@ cms_product_config = string.Template("""\
 
 
 ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=True)
-HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
-    name='HTTPLayer', bases=(ZCML_LAYER,))
+WSGI_LAYER = WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
 SELENIUM_LAYER = gocept.selenium.RCLayer(
     name='SeleniumLayer', bases=(HTTP_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
@@ -322,15 +345,6 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             # XXX waiting for a version of gocept.selenium that handles
             # timeouts consistently for SeleniumRC (#10750)
             self.layer['selenium'].selenium.set_timeout(self.TIMEOUT * 1000)
-
-        # XXX The following 5 lines are copied from
-        # gocept.httpserverlayer.zopeapptesting.TestCase in order to avoid
-        # inheriting from zope.app.testing.functional.TestCase.
-        db = zope.app.testing.functional.FunctionalTestSetup().db
-        application = self.layer['httpd'].application
-        assert isinstance(application, zope.app.wsgi.WSGIPublisherApplication)
-        factory = type(application.requestFactory)
-        application.requestFactory = factory(db)
 
         if self.log_errors:
             with site(self.getRootFolder()):
