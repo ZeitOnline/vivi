@@ -18,7 +18,7 @@ setup(
         'Pillow',
         'gocept.form',
         'setuptools',
-        'zeit.cms>=2.13.0.dev0',
+        'zeit.cms>=2.14.0.dev0',
         'zeit.imp>=0.15.0.dev0',
         'zeit.wysiwyg',
         'zope.app.appsetup',
@@ -30,4 +30,9 @@ setup(
         'zope.security',
         'zope.testing',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_content_gallery=zeit.content.gallery.browser.resources:lib',
+        ],
+    },
 )
