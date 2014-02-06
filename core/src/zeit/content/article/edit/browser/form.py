@@ -106,7 +106,8 @@ class ArticleContentMainImage(zeit.edit.browser.form.InlineForm):
     legend = _('')
     prefix = 'article-content-main-image'
     undo_description = _('edit article content main image')
-    form_fields = FormFields(IArticle).select('main_image','main_image_layout')
+    form_fields = FormFields(IArticle).select(
+        'main_image', 'main_image_layout')
 
     def __call__(self):
         zope.interface.alsoProvides(
