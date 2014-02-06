@@ -2,8 +2,8 @@
 # See also LICENSE.txt
 
 from zeit.magazin.interfaces import IZMOSection, IZMOFolder
+import gocept.httpserverlayer.wsgi
 import gocept.selenium
-import gocept.selenium.ztk
 import pkg_resources
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -57,4 +57,8 @@ class LAYER(ZCML_LAYER):
         pass
 
 
-SELENIUM_LAYER = gocept.selenium.ztk.Layer(LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
+SELENIUM_LAYER = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
