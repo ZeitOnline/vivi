@@ -21,8 +21,6 @@ class TestElement(zeit.edit.block.SimpleElement):
     grokcore.component.implements(ITestElement)
 
 
-
-
 class TestSimpleElementGrokker(zeit.edit.testing.FunctionalTestCase):
 
     def test_grokking_test_element_should_register_multiadapter(self):
