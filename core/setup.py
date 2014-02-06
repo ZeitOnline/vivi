@@ -17,10 +17,12 @@ setup(
     install_requires=[
         'gocept.filestore',
         'gocept.form[formlib]>=0.7.2',
+        'gocept.httpserverlayer',
         'gocept.jslint>=0.2',
         'gocept.lxml>=0.2.1',
         'gocept.mochikit>=1.3.2',
         'gocept.pagelet',
+        'gocept.selenium',
         'grokcore.component>=2.2',
         'iso8601>=0.1.2',
         'lovely.remotetask',

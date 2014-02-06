@@ -1,7 +1,8 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import gocept.selenium.ztk
+import gocept.httpserverlayer.wsgi
+import gocept.selenium
 import pkg_resources
 import re
 import shutil
@@ -170,15 +171,24 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
             body, zeit.edit.interfaces.IElementFactory, factory_name)
 
 
-selenium_layer = gocept.selenium.ztk.Layer(ArticleLayer)
-selenium_workflow_layer = gocept.selenium.ztk.Layer(CDSLayer)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(ArticleLayer,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
+selenium_layer = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
 
-HTTP_LAYER = gocept.httpserverlayer.zopeapptesting.Layer(
-    name='HTTPLayer', bases=(ArticleLayer,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
+
+CDS_WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='CDSWSGILayer', bases=(CDSLayer,))
+CDS_HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='CDSHTTPLayer', bases=(WSGI_LAYER,))
+selenium_workflow_layer = gocept.selenium.RCLayer(
+    name='CDSSeleniumLayer', bases=(CDS_HTTP_LAYER,))
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
