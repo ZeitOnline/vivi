@@ -71,7 +71,7 @@ class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
 
     def test_icon_is_draggable_as_content_object(self):
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/contenticondrag.html')
+            '/@@/zeit.cms.browser.tests.fixtures/contenticondrag.html')
         s = self.selenium
         s.waitForElementPresent('css=#result .content-icon')
         s.dragAndDropToObject('css=#result .content-icon', 'id=testwidget')
@@ -249,7 +249,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     def setUp(self):
         super(TestObjectSequenceWidgetJavascript, self).setUp()
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/objectsequencewidget.html')
+            '/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget.html')
 
     def test_widget_should_render_note_about_new_items(self):
         s = self.selenium
@@ -421,7 +421,7 @@ class ObjectWidgetDetailViews(
 
     def test_object_sequence_widgets_use_their_configured_views(self):
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/'
+            '/@@/zeit.cms.browser.tests.fixtures/'
             'objectsequencewidget-detail-views.html')
         s = self.selenium
         s.assertElementNotPresent('css=div.supertitle')
@@ -435,7 +435,7 @@ class ObjectWidgetDetailViews(
 
     def test_drop_object_widgets_use_their_configured_views(self):
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/'
+            '/@@/zeit.cms.browser.tests.fixtures/'
             'dropobjectwidget-detail-views.html')
         s = self.selenium
         s.assertElementNotPresent('css=div.supertitle')
@@ -450,7 +450,7 @@ class ObjectWidgetDetailViews(
     def test_remove_button_is_shown_even_upon_error_when_loading_details(self):
         ObjectWidgetMyDetails.raise_error = True
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/'
+            '/@@/zeit.cms.browser.tests.fixtures/'
             'dropobjectwidget-detail-views.html')
         s = self.selenium
         self.eval(
@@ -465,7 +465,7 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
     def setUp(self):
         super(TestObjectSequenceWidgetAutocompleteJavascript, self).setUp()
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/'
+            '/@@/zeit.cms.browser.tests.fixtures/'
             'objectsequencewidget-autocomplete.html')
 
     def test_input_should_activate_autocomplete(self):
@@ -494,7 +494,7 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
     def setUp(self):
         super(TestDropObjectWidget, self).setUp()
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/dropobjectwidget.html')
+            '/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget.html')
 
     def test_no_value_should_create_landing_zone(self):
         s = self.selenium
@@ -542,7 +542,7 @@ class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
     def setUp(self):
         super(TestDropObjectWidgetAccept, self).setUp()
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/dropobjectwidget-accept.html')
+            '/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget-accept.html')
 
     def start_drag(self, locator):
         s = self.selenium
@@ -942,7 +942,7 @@ class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
     def setUp(self):
         super(RestructuredTextWidgetJavascriptTest, self).setUp()
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/restructuredtext.html')
+            '/@@/zeit.cms.browser.tests.fixtures/restructuredtext.html')
 
     def test_clicking_preview_div_shows_textarea(self):
         s = self.selenium

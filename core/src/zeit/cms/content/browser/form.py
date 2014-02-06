@@ -6,7 +6,6 @@ from zeit.cms.asset.browser.form import AssetBase  # Legacy
 from zeit.cms.i18n import MessageFactory as _
 import copy
 import gocept.form.grouped
-import zc.resourcelibrary
 import zeit.cms.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.settings.interfaces
@@ -16,7 +15,6 @@ import zope.app.form.browser.textwidgets
 class ShowLimitInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
 
     def __call__(self):
-        zc.resourcelibrary.need('zeit.cms.content.validation')
         max_length = self.context.max_length
         result = [
             '<div class="show-input-limit" maxlength="%s"></div>' % max_length,
@@ -83,13 +81,6 @@ class CommonMetadataFormBase(object):
                 changed_fields.append(field)
             self.form_fields = form_fields + zope.formlib.form.FormFields(
                 *changed_fields)
-
-    @property
-    def template(self):
-        # Sneak in the javascript for copying teaser texts
-        zc.resourcelibrary.need('zeit.cms.content.teaser')
-        zc.resourcelibrary.need('zeit.cms.content.dropdown')
-        return super(CommonMetadataFormBase, self).template
 
 
 class CommonMetadataAddForm(CommonMetadataFormBase,

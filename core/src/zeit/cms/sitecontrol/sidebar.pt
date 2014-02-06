@@ -6,8 +6,6 @@
   id panel_id"
   i18n:domain="zeit.cms">
 
-  <tal:block replace="resource_library:zeit.cms.sidecontrol" />
-
   <h1>
     <a href="#" i18n:translate="">
       Site control

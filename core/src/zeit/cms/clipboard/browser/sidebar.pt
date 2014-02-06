@@ -9,9 +9,6 @@
                   id panel_id"
   panel:flex="1">
 
-  <tal:replace replace="resource_library:zeit.cms.tree" />
-  <tal:replace replace="resource_library:zeit.cms.clipboard" />
-
   <h1>
     <a href="clipboard"
       tal:attributes="href clipboard_url">

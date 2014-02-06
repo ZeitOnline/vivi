@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <tal:block replace="resource_library:zeit.cms.javascript"/>
-
+    <tal:block replace="context/@@standard_macros/require_resources"/>
+  </head>
+  <body>
     <script type="text/javascript">
       (function($) {
       $(document).ready(function() {
@@ -13,8 +14,7 @@
       });
       }(jQuery));
     </script>
-  </head>
-  <body>
+
     <div id="example"></div>
   </body>
 </html>

@@ -61,14 +61,6 @@
     permission="zope.View"
     />
 
-  <resourceLibrary
-    name="zeit.workflow"
-    require="zeit.cms">
-    <directory
-      source="resources"
-      include="workflow.css"/>
-  </resourceLibrary>
-
   <!-- Status indicators -->
 
   <browser:viewlet
@@ -100,14 +92,6 @@
     />
 
   <!-- 1 click publishing -->
-
-  <resourceLibrary
-    name="zeit.workflow.publish"
-    require="zeit.cms">
-    <directory
-      source="resources"
-      include="publish.js"/>
-  </resourceLibrary>
 
   <browser:viewlet
     name="Publish"

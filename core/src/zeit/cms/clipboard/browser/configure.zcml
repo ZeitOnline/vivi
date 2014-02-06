@@ -86,11 +86,6 @@
     name="drag-pane.html"
     />
 
-
-  <resourceLibrary name="zeit.cms.clipboard" require="zeit.cms">
-    <directory source="resources" include="clipboard.js" />
-  </resourceLibrary>
-
   <browser:containerViews
     for="zeit.cms.clipboard.interfaces.IClipboard"
     contents="zope.ManageContent"

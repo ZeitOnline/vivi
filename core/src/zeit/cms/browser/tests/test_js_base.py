@@ -8,7 +8,7 @@ class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
 
     def setUp(self):
         super(EvaluateTest, self).setUp()
-        self.open('/@@/zeit.cms.javascript.base/tests/evaluate/index.html')
+        self.open('/@@/zeit.cms.browser.tests.fixtures/evaluate/index.html')
 
     def write_html(self, text):
         text = text.replace('\n', ' ')

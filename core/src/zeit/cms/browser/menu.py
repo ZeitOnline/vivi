@@ -6,6 +6,7 @@ from zeit.cms.i18n import MessageFactory as _
 import time
 import xml.sax.saxutils
 import z3c.menu.simple.menu
+import zeit.cms.browser.view
 import zope.app.pagetemplate
 import zope.app.publisher.browser.menu
 import zope.app.publisher.interfaces.browser
@@ -53,9 +54,8 @@ class ActionMenuItem(MenuItemBase, z3c.menu.simple.menu.SimpleMenuItem):
         if img_url.startswith('/@@/'):
             # Dereference resource library
             library_name, path = img_url[4:].split('/', 1)
-            library = zope.component.getAdapter(
-                self.request, name=library_name)
-            img_url = library() + '/' + path
+            img_url = zeit.cms.browser.view.resource_url(
+                self.request, library_name, path)
         return '<img src=%s />' % xml.sax.saxutils.quoteattr(img_url)
 
 

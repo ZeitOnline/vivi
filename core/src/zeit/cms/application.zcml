@@ -142,7 +142,6 @@
   <include package="zope.app.keyreference"/>
 
   <include package="zc.resourcelibrary" file="meta.zcml"/>
-  <include package="zc.resourcelibrary" />
   <include package="zc.form" />
   <include package="zc.table" />
   <include package="zc.sourcefactory" />

@@ -3,7 +3,6 @@
 
 from zope.interface.common.idatetime import ITZInfo
 from zeit.workflow.publishinfo import id_to_principal
-import zc.resourcelibrary
 import zeit.objectlog.interfaces
 import zope.component
 import zope.interface
@@ -43,5 +42,4 @@ class ObjectLog(object):
             yield dict(entries=items, display_date=date.strftime('%d.%m.%Y'))
 
     def __call__(self):
-        zc.resourcelibrary.need('zeit.workflow')
         return super(ObjectLog, self).__call__()

@@ -129,11 +129,10 @@ def get_locking_indicator(context, request):
     else:
         img = 'lock-open'
         title = _('Not locked')
-    resource_url = zope.component.getMultiAdapter(
-        (request,), name='zeit.cms')()
     title = zope.i18n.translate(title, context=request)
-    return '<img src="%s/icons/%s.png" title="%s" class="%s" />' % (
-        resource_url, img, title, img)
+    return '<img src="%s" title="%s" class="%s" />' % (
+        zeit.cms.browser.view.resource_url(
+            request, 'zeit.cms', 'icons/%s.png' % img), title, img)
 
 
 def get_locking_indicator_for_listing(context, request):

@@ -738,11 +738,11 @@ li.busy {
 }
 
 .object-details.type-author .object-link.goto-object {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 12px -537px;
+  background: url("./icons/icons_sprites.png") no-repeat 12px -537px;
 }
 
 .object-details.type-author .object-link.goto-object:hover {
-  background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 12px -567px;
+  background: url("./icons/icons_sprites.png") no-repeat 12px -567px;
 }
 
 .object-link.preview {
@@ -769,7 +769,7 @@ li.busy {
 .publish-state {
     padding-top:15px;
     padding-left:20px;
-    background: url("../zeit\.cms/icons/icons_sprites.png") no-repeat 15px -1581px;
+    background: url("./icons/icons_sprites.png") no-repeat 15px -1581px;
 }
 
 .publish-state.published {

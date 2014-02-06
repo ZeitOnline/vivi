@@ -14,8 +14,8 @@ class TestJSON(unittest.TestCase):
         class View(JSON):
             def json(self):
                 return result
-            resources = mock.MagicMock()
-            resources.__getitem__().return_value = 'mocked template'
+            resource_url = mock.Mock()
+            resource_url.return_value = 'mocked template'
         result = {'template': 'bla'}
         view = View()
         view.request = mock.Mock()
@@ -41,7 +41,7 @@ class FragmentReady(zeit.cms.testing.SeleniumTestCase):
     def setUp(self):
         super(FragmentReady, self).setUp()
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/fragmentready.html')
+            '/@@/zeit.cms.browser.tests.fixtures/fragmentready.html')
 
     def test_event_is_fired_on_document_and_contains_actual_dom_element(self):
         self.eval('window.jQuery("#example").trigger_fragment_ready();')

@@ -4,6 +4,8 @@ zeit.cms changes
 2.13.2 (unreleased)
 -------------------
 
+- Use Fanstatic instead of zc.resourcelibrary (VIV-296).
+
 - Use WSGI pipelin instead of zope.server (VIV-295).
 
 

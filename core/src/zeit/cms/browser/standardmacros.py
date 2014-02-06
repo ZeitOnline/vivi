@@ -2,10 +2,9 @@
 # See also LICENSE.txt
 
 import z3c.flashmessage.interfaces
-import zc.resourcelibrary
-import zc.resourcelibrary.resourcelibrary
 import zeit.cms.browser
 import zeit.cms.browser.interfaces
+import zeit.cms.browser.resources
 import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
@@ -13,12 +12,6 @@ import zope.app.basicskin.standardmacros
 import zope.component
 import zope.location.interfaces
 import zope.security.proxy
-
-
-EXCLUDE_LIBRARIES = [
-    'zeit.cms.error',  # only makes sense on error pages
-    'zeit.wysiwyg.fckeditor',  # too convoluted to make behave nicely
-]
 
 
 class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
@@ -48,13 +41,6 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
         return title
 
     @property
-    def resource_libraries(self):
-        for library in zc.resourcelibrary.resourcelibrary.library_info.keys():
-            if library in EXCLUDE_LIBRARIES:
-                continue
-            zc.resourcelibrary.need(library)
-
-    @property
     def type_declaration(self):
         no_type = type(
             'NoTypeDeclaration', (object,), dict(type_identifier='unknown'))
@@ -78,3 +64,6 @@ class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
                           zeit.cms.section.interfaces.ISection):
                 return iface.__name__
         return 'unknown'
+
+    def require_resources(self):
+        zeit.cms.browser.resources.backend.need()

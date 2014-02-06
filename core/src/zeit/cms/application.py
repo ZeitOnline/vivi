@@ -1,8 +1,10 @@
+import fanstatic
 import os
 import pkg_resources
 import zope.app.wsgi.paste
 
 
+FANSTATIC_PATH = fanstatic.DEFAULT_SIGNATURE
 FANSTATIC_DEBUG = os.environ.get('FANSTATIC_DEBUG', False)
 FANSTATIC_VERSIONING = os.environ.get('FANSTATIC_VERSIONING', True)
 BUNDLE = not FANSTATIC_DEBUG
@@ -24,11 +26,15 @@ class Application(object):
             'versioning_use_md5': True,
             # Once on startup, not every request
             'recompute_hashes': False,
+            'publisher_signature': FANSTATIC_PATH,
         }),
     ]
 
     def __call__(self, global_conf, zope_conf):
         app = zope.app.wsgi.paste.ZopeApplication({}, zope_conf)
+        return self.setup_pipeline(app, global_conf)
+
+    def setup_pipeline(self, app, global_conf=None):
         for spec, protocol, name, extra in self.pipeline:
             if protocol == 'factory':
                 app = spec(app, **extra)

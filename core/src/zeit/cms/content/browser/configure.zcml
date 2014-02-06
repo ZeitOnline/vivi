@@ -32,22 +32,6 @@
     permission="zope.View"
     />
 
-  <!-- Teaser copying -->
-  <resourceLibrary name="zeit.cms.content.teaser"
-    require="zeit.cms.javascript.base">
-    <directory source="resources" include="teaser.js" />
-  </resourceLibrary>
-
-  <resourceLibrary name="zeit.cms.content.validation"
-    require="mochikit">
-    <directory source="resources" include="inputlimit.js" />
-  </resourceLibrary>
-
-  <resourceLibrary name="zeit.cms.content.dropdown"
-    require="zeit.cms">
-    <directory source="resources" include="dropdown.js" />
-  </resourceLibrary>
-
   <!-- Combination widget template -->
   <view
     type="zeit.cms.browser.interfaces.ICMSLayer"
@@ -106,10 +90,5 @@
       factory=".widget.MobileAlternativeWidget"
       permission="zope.Public"
       />
-
-  <resourceLibrary name="zeit.cms.content.mobile_alternative"
-    require="zeit.cms">
-    <directory source="resources" include="mobile_alternative.js" />
-  </resourceLibrary>
 
 </configure>

@@ -31,7 +31,7 @@
   color: transparent;
   text-indent: -1000px;
   width: 15px;
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 4px -116px transparent;
+  background: url("./icons/icons_sprites.png") no-repeat scroll 4px -116px transparent;
   cursor: pointer;
 }
 
@@ -82,7 +82,7 @@
   white-space: nowrap;
   overflow: hidden; 
   text-indent: -1000px;
-  background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 23px -420px transparent;
+  background: url("./icons/icons_sprites.png") no-repeat scroll 23px -420px transparent;
   margin: 0px !important;
   min-height: 10px;
   border: 0px solid #FFF;
@@ -184,7 +184,7 @@
 }
 
 .editable-area .overlay-position .button {
-    background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 10px 5px #fff !important;
+    background: url("./icons/icons_sprites.png") no-repeat scroll 10px 5px #fff !important;
     border: 1px solid #000;
     float: left;
     font-size: 14px;
@@ -199,7 +199,7 @@
 }
 
 .editable-area .overlay-position .preview-button {
-    background: url("../zeit.cms/icons/icons_sprites.png") no-repeat scroll 10px -685px #666 !important;
+    background: url("./icons/icons_sprites.png") no-repeat scroll 10px -685px #666 !important;
     color: #fff !important;
     margin-left: 2em;
 }

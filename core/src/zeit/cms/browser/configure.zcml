@@ -207,10 +207,6 @@
     permission="zope.View"
     />
 
-  <resourceLibrary name="zeit.cms.panels">
-    <directory source="js" include="panelHandlers.js" />
-  </resourceLibrary>
-
   <adapter factory=".sidebar.panelStateFactory" trusted="yes" />
 
   <browser:page
@@ -452,5 +448,11 @@
     template="test-setup-auth.pt"
     permission="zope.Public"
   />
+
+  <!-- testing only -->
+  <browser:resourceDirectory
+    name="zeit.cms.browser.tests.fixtures"
+    directory="js/tests"
+    />
 
 </configure>

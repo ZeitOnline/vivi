@@ -6,9 +6,6 @@
                   id panel_id"
   i18n:domain="zeit.cms">
 
-  
-  <tal:replace replace="resource_library:zeit.cms.tree" />
-  
   <h1>
     <a href="repository"
       tal:attributes="href view/repository/@@absolute_url">

@@ -129,7 +129,6 @@ class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):
         return super(MobileAlternativeWidget, self).__call__()
 
     def __call__(self):
-        zc.resourcelibrary.need('zeit.cms.content.mobile_alternative')
         return self.template()
 
     @property

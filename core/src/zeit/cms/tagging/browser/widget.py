@@ -5,7 +5,6 @@ from zeit.cms.tagging.interfaces import KEYWORD_CONFIGURATION
 import grokcore.component
 import json
 import xml.sax.saxutils
-import zc.resourcelibrary
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -46,7 +45,6 @@ class Widget(grokcore.component.MultiAdapter,
         self.source = source
 
     def __call__(self):
-        zc.resourcelibrary.need('zeit.cms.tagger')
         return self.template()
 
     @property

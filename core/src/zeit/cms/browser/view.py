@@ -4,8 +4,10 @@
 
 """
 
+import fanstatic
 import json
 import z3c.flashmessage.interfaces
+import zeit.cms.application
 import zope.component
 
 
@@ -62,14 +64,20 @@ class JSON(Base):
             if template is None:
                 template = self.template
             if template is not None:
-                result['template_url'] = self.resources[template]()
+                result['template_url'] = self.resource_url(template)
         return json.dumps(result)
 
     def json(self):
         return {}
 
-    @property
-    def resources(self):
-        return zope.component.getAdapter(
-            self.request, zope.interface.Interface,
-            name=self.resource_library)
+    def resource_url(self, filename):
+        return resource_url(self.request, self.resource_library, filename)
+
+
+def resource_url(request, library, filename):
+    return '/'.join([
+        request.getApplicationURL(),
+        zeit.cms.application.FANSTATIC_PATH,
+        library,
+        filename,
+    ])

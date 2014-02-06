@@ -5,14 +5,13 @@
     PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"> 
     <html xmlns="http://www.w3.org/1999/xhtml"
-      tal:define="favicon context/++resource++zeit.cms/icons/favicon.png">
+      tal:define="favicon string:${request/getApplicationURL}/fanstatic/zeit.cms/icons/favicon.png">
       <head>
         <title i18n:translate="">Error</title>
         <link rel="icon" tal:attributes="href favicon"
           type="image/x-icon" />
         <link rel="shortcut icon" tal:attributes="href favicon"
           type="image/x-icon" />
-        <tal:replace replace="resource_library:zeit.cms.error" />
       </head>
       <body>
         <div id="content">
@@ -31,7 +30,7 @@
     <html xmlns="http://www.w3.org/1999/xhtml"
       tal:define="view_title options/title|view/title|string:Zeit CMS;
       context_title context/@@standard_macros/context_title;
-      favicon context/++resource++zeit.cms/icons/favicon.png">
+      favicon string:${request/getApplicationURL}/fanstatic/zeit.cms/icons/favicon.png">
       <head>
         <script type="text/javascript" tal:content="string:
           var application_url = '${request/getApplicationURL}';
@@ -39,9 +38,8 @@
         "/>
         <tal:comment condition="nothing">
           Make sure that application_url and context_url are available
-          before any script is loaded"
+          before any script is loaded (fanstatic injects at end of <head>).
         </tal:comment>
-        <!-- zc.resourcelibrary -->
         <title>
           <metal:title metal:define-slot="title">
             <span tal:replace="context_title" /> –
@@ -52,7 +50,7 @@
           type="image/x-icon" />
         <link rel="shortcut icon" tal:attributes="href favicon"
           type="image/x-icon" />
-        <tal:replace replace="context/@@standard_macros/resource_libraries"/>
+        <tal:replace content="context/@@standard_macros/require_resources"/>
 
       </head>
       <body

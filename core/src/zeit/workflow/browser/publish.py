@@ -2,7 +2,6 @@
 # See also LICENSE.txt
 
 import lovely.remotetask.interfaces
-import zc.resourcelibrary
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
 import zope.component
@@ -14,7 +13,6 @@ class PublishMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     lightbox = '@@publish.html'
 
     def render(self):
-        zc.resourcelibrary.need('zeit.workflow.publish')
         return super(PublishMenuItem, self).render()
 
 
@@ -50,7 +48,6 @@ class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
     def render(self):
         if self.visible:
-            zc.resourcelibrary.need('zeit.workflow.publish')
             return super(RetractMenuItem, self).render()
         else:
             return ''

@@ -6,7 +6,7 @@
     tal:attributes="href string:javascript:zeit.cms.menu.toggle('${view/menu_id}')"
     i18n:attributes="title">
     <img alt="actionmenuicon"
-      tal:attributes="src context/++resource++zeit.cms/icons/submenu.png" />
+      tal:attributes="src string:${request/getApplicationURL}/fanstatic/zeit.cms/icons/submenu.png" />
   </a>
   <ul class="secondary-context-actions hidden"
     tal:attributes="id view/menu_id"

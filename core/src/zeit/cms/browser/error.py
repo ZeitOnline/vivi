@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.browser.resources
 import zope.i18n
 
 
@@ -8,6 +9,7 @@ class ErrorView(object):
 
     def __call__(self):
         self.request.response.setStatus(500)
+        zeit.cms.browser.resources.error_css.need()
         return self.index()
 
     def message(self):

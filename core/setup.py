@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='2.13.2.dev0',
+    version='2.14.0.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
@@ -35,6 +35,8 @@ setup(
         'grokcore.component',
         'grokcore.view',
         'guppy',
+        'js.jquery',
+        'js.mochikit',
         'lovely.remotetask>=0.5',
         'lxml>=2.0.2',
         'martian',
@@ -49,7 +51,6 @@ setup(
         'z3c.conditionalviews>=1.0b2.dev-r91510',
         'z3c.etestbrowser',
         'z3c.flashmessage',
-        'z3c.hashedresource',
         'z3c.menu.simple>=0.5.1',
         'z3c.noop',
         'z3c.noop',
@@ -59,8 +60,6 @@ setup(
         'zc.iso8601',
         'zc.recipe.egg>=1.1.0dev-r84019',
         'zc.relation',
-        'zc.relation',
-        'zc.resourcelibrary',
         'zc.set',
         'zc.sourcefactory',
         'zc.table',
@@ -100,6 +99,20 @@ setup(
         ],
         'paste.app_factory': [
             'main=zeit.cms.application:APPLICATION',
+        ],
+        'fanstatic.libraries': [
+            'zeit_cms=zeit.cms.browser.resources:lib_css',
+            'zeit_cms_js=zeit.cms.browser.resources:lib_js',
+            'zeit_cms_content=zeit.cms.content.browser.resources:lib',
+            'zeit_cms_workingcopy=zeit.cms.workingcopy.browser.resources:lib',
+            'zeit_cms_tagging=zeit.cms.tagging.browser.resources:lib',
+            'zeit_cms_clipboard=zeit.cms.clipboard.browser.resources:lib',
+            'zeit_cms_sitecontrol=zeit.cms.sitecontrol.resources:lib',
+            'zeit_content_image=zeit.content.image.browser.resources:lib',
+            'zeit_workflow=zeit.workflow.browser.resources:lib',
+
+            'zc_table=zeit.cms.browser.resources:zc_table',
+            'zc_datetimewidget=zeit.cms.browser.resources:zc_datetimewidget',
         ],
     }
 )

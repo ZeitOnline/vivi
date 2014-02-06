@@ -14,6 +14,6 @@ class DragAndDrop(zeit.cms.testing.SeleniumTestCase):
     def test_droppable_is_activated_for_content_draggables(self):
         s = self.selenium
         self.open(
-            '/@@/zeit.cms.javascript.base/tests/landingzone.html')
+            '/@@/zeit.cms.browser.tests.fixtures/landingzone.html')
         self.start_drag('drag')
         s.waitForElementPresent('css=#drop.droppable-active')
