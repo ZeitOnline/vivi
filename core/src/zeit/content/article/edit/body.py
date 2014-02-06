@@ -3,7 +3,7 @@
 
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import gocept.lxml.interfaces
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import z3c.traverser.interfaces
 import zeit.content.article.edit.interfaces
@@ -20,14 +20,12 @@ editable_body_name = 'editable-body'
 
 
 class EditableBody(zeit.edit.container.Base,
-                   grokcore.component.MultiAdapter):
+                   grok.MultiAdapter):
 
-    grokcore.component.implements(
-        zeit.content.article.edit.interfaces.IEditableBody)
-    grokcore.component.provides(
-        zeit.content.article.edit.interfaces.IEditableBody)
-    grokcore.component.adapts(zeit.content.article.interfaces.IArticle,
-                              gocept.lxml.interfaces.IObjectified)
+    grok.implements(zeit.content.article.edit.interfaces.IEditableBody)
+    grok.provides(zeit.content.article.edit.interfaces.IEditableBody)
+    grok.adapts(zeit.content.article.interfaces.IArticle,
+                gocept.lxml.interfaces.IObjectified)
 
     __name__ = editable_body_name
 
@@ -132,9 +130,8 @@ class EditableBody(zeit.edit.container.Base,
         assert self.xml.find('division') is not None
 
 
-@grokcore.component.adapter(zeit.content.article.interfaces.IArticle)
-@grokcore.component.implementer(
-    zeit.content.article.edit.interfaces.IEditableBody)
+@grok.adapter(zeit.content.article.interfaces.IArticle)
+@grok.implementer(zeit.content.article.edit.interfaces.IEditableBody)
 def get_editable_body(article):
     return zope.component.queryMultiAdapter(
         (article,
@@ -166,7 +163,7 @@ _find_name_attributes = lxml.etree.XPath(
     namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
 def remove_name_attributes(context, event):
@@ -176,10 +173,9 @@ def remove_name_attributes(context, event):
     lxml.etree.cleanup_namespaces(unwrapped.xml)
 
 
-class ArticleValidator(zeit.edit.rule.RecursiveValidator,
-                       grokcore.component.Adapter):
+class ArticleValidator(zeit.edit.rule.RecursiveValidator, grok.Adapter):
 
-    grokcore.component.context(zeit.content.article.interfaces.IArticle)
+    grok.context(zeit.content.article.interfaces.IArticle)
 
     @property
     def children(self):
@@ -187,7 +183,7 @@ class ArticleValidator(zeit.edit.rule.RecursiveValidator,
         return body.values()
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IValidateCheckinEvent)
 def validate_article(context, event):
