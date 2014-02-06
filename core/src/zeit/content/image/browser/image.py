@@ -2,20 +2,18 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import PIL.Image
 import transaction
-import urlparse
 import z3c.conditionalviews
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
-import zeit.cms.content.property
 import zeit.cms.repository.interfaces
 import zeit.cms.settings.interfaces
 import zeit.connector.interfaces
 import zeit.content.image.imagereference
 import zeit.content.image.interfaces
-import zope.cachedescriptors.property
 import zope.component
 import zope.file.download
 import zope.publisher.interfaces
@@ -50,7 +48,7 @@ class ImageView(zeit.cms.browser.view.Base):
 
     title = _('View image')
 
-    @zope.cachedescriptors.property.Lazy
+    @cachedproperty
     def metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(self.context)
 
@@ -86,7 +84,7 @@ class Scaled(object):
     def tag(self):
         return get_img_tag(self.scaled.context, self.request)
 
-    @zope.cachedescriptors.property.Lazy
+    @cachedproperty
     def scaled(self):
         try:
             image = zeit.content.image.interfaces.ITransform(self.context)
@@ -154,7 +152,7 @@ class ImageListRepresentation(
         # XXX
         return ''
 
-    @zope.cachedescriptors.property.Lazy
+    @cachedproperty
     def image_metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(self.context)
 
@@ -227,6 +225,6 @@ def imageadapter_browse_location(context, source):
 
 class MetadataPreviewHTML(object):
 
-    @zope.cachedescriptors.property.Lazy
+    @cachedproperty
     def metadata(self):
         return zeit.content.image.interfaces.IImageMetadata(self.context)
