@@ -24,11 +24,16 @@ setup(
         'setuptools',
         'zeit.addcentral',
         'zeit.edit',
-        'zeit.cms>=1.54.0.dev',
+        'zeit.cms>=2.14.0.dev',
         'zeit.connector',
         'zope.interface',
         'zope.cachedescriptors',
         'zope.component',
         'zope.container',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_newsletter=zeit.newsletter.browser.resources:lib',
+        ],
+    },
 )
