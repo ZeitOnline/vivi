@@ -21,8 +21,7 @@ setup(
     install_requires=[
         'gocept.selenium',
         'setuptools',
-        'zc.resourcelibrary',
-        'zeit.cms>=2.8.0.dev0',
+        'zeit.cms>=2.14.0.dev0',
         'zope.app.pagetemplate',
         'zope.browser',
         'zope.cachedescriptors',
@@ -33,4 +32,9 @@ setup(
         'zope.session',
         'zope.viewlet',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_addcentral=zeit.addcentral.resources:lib',
+        ],
+    },
 )
