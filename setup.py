@@ -14,7 +14,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit'],
     install_requires=[
-        'gocept.fckeditor>=2.6.4.1-1',
+        'gocept.fckeditor[fanstatic]>=2.6.4.1-2',
         'lxml',
         'pytz',
         'rwproperty',
@@ -37,4 +37,9 @@ setup(
         'zeit.content.infobox',
         'zeit.content.portraitbox',
     ]),
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_wysiwyg=zeit.wysiwyg.browser.resources:lib',
+        ],
+    },
 )
