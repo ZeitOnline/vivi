@@ -41,7 +41,8 @@ class Form(object):
 
         if (instance.request.method == 'POST'
             and not instance.request.form.get('_body_decoded')):
-            decoded = json.loads(instance.request.bodyStream.read())
+            decoded = json.loads(instance.request.bodyStream.read(
+                int(instance.request['CONTENT_LENGTH'])))
             instance.request.form.update(decoded)
             instance.request.form['_body_decoded'] = True
 
