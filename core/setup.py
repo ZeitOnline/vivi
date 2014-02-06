@@ -18,6 +18,11 @@ setup(
         'gocept.httpserverlayer',
         'gocept.selenium>=0.6',
         'setuptools',
-        'zeit.cms>=2.12.0.dev0',
+        'zeit.cms>=2.14.0.dev0',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_imp=zeit.imp.browser.resources:lib',
+        ],
+    },
 )

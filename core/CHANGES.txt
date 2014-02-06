@@ -4,7 +4,7 @@ zeit.imp changes
 0.15.1 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Use Fanstatic instead of zc.resourcelibrary (VIV-296).
 
 
 0.15.0 (2014-01-07)
