@@ -22,6 +22,7 @@ setup(
         'cssselect',
         'feedparser',
         'gocept.cache',
+        'gocept.httpserverlayer',
         'gocept.jslint>=0.2',
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',

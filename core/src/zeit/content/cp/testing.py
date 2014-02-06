@@ -3,7 +3,8 @@
 
 import SimpleHTTPServer
 import __future__
-import gocept.selenium.ztk
+import gocept.httpserverlayer.wsgi
+import gocept.selenium
 import os
 import pkg_resources
 import re
@@ -119,7 +120,11 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = layer
 
 
-selenium_layer = gocept.selenium.ztk.Layer(layer)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(layer,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
+selenium_layer = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
