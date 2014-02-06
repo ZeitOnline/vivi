@@ -2,13 +2,19 @@
 # Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zeit.content.image.testing
-import zeit.cms.testing
+import gocept.httpserverlayer.wsgi
 import gocept.selenium.ztk
+import zeit.cms.testing
+import zeit.content.image.testing
 import zeit.imp.tests
 
 
-Layer = gocept.selenium.ztk.Layer(zeit.imp.tests.imp_layer)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(zeit.imp.tests.imp_layer,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
+Layer = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 
 class Selenium(zeit.cms.testing.SeleniumTestCase):

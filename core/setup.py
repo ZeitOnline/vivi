@@ -15,6 +15,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit'],
     install_requires=[
+        'gocept.httpserverlayer',
         'gocept.selenium>=0.6',
         'setuptools',
         'zeit.cms>=2.12.0.dev0',
