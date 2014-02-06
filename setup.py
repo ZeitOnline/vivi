@@ -19,7 +19,7 @@ setup(
         'mock',
         'pysolr',
         'setuptools',
-        'zeit.cms>=2.13.0.dev0',
+        'zeit.cms>=2.14.0.dev0',
         'zeit.edit',
         'zeit.find',
         'zope.annotation',
@@ -27,4 +27,9 @@ setup(
         'zope.interface',
         'zope.testing',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_content_author=zeit.content.author.browser.resources:lib',
+        ],
+    },
 )
