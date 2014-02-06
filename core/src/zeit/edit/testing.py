@@ -1,12 +1,17 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import gocept.selenium.ztk
+import gocept.httpserverlayer.wsgi
+import gocept.selenium
 import zeit.cms.testing
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
-SELENIUM_LAYER = gocept.selenium.ztk.Layer(ZCML_LAYER)
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
+HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
+    name='HTTPLayer', bases=(WSGI_LAYER,))
+SELENIUM_LAYER = gocept.selenium.RCLayer(
+    name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):

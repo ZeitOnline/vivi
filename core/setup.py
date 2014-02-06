@@ -22,6 +22,7 @@ setup(
     zip_safe=False,
     install_requires=[
         'setuptools',
+        'gocept.httpserverlayer',
         'gocept.jslint>=0.2',
         'gocept.lxml',
         'gocept.selenium',
