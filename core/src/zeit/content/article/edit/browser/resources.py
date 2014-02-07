@@ -16,12 +16,12 @@ Resource('editor.js', depends=[
     zeit.edit.browser.resources.drop_js,
     zeit.edit.browser.resources.sortable_js,
     zeit.edit.browser.resources.json_js,
-    globals()['editor_css'],
+    editor_css,
 ])
 
 Resource('ads.js', depends=[
     zeit.cms.browser.resources.base,
-    globals()['editor_js'],
+    editor_js,
 ])
 
 Resource('counter.js', depends=[zeit.cms.browser.resources.base])
@@ -31,12 +31,12 @@ Resource('sync.js', depends=[zeit.cms.browser.resources.base])
 
 Resource('blocks.js', depends=[
     zeit.cms.browser.resources.base,
-    globals()['editor_js'],
+    editor_js,
 ])
 
 Resource('html.js', depends=[
     zeit.cms.browser.resources.base,
-    globals()['editor_js'],
+    editor_js,
 ])
 
 Resource('strftime.js')
