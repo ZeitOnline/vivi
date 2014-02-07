@@ -385,6 +385,7 @@ class DropObjectWidget(
         'dropobject-widget.pt')
 
     detail_view_name = '@@object-details'
+    cache_object_details = 'true'
     add_type = None
     display_search_button = True
     display_url_field = True
@@ -446,19 +447,35 @@ class ReferenceSequenceWidget(ObjectSequenceWidget):
     def _toFieldValue(self, value):
         result = []
         for unique_id in value:
-            try:
-                obj = zeit.cms.interfaces.ICMSContent(unique_id)
-            except TypeError:
-                raise ContentNotFoundError(unique_id, self.request)
-
-            if not zeit.cms.content.interfaces.IReference.providedBy(obj):
-                obj = self.context.get(self.context.context).create(obj)
-
-            if obj.target not in self.source:
-                raise WrongContentTypeError(
-                    unique_id, self.source.get_check_types(), self.request)
-            result.append(obj)
+            result.append(resolve_reference(
+                unique_id, self.context, self.source, self.request))
         return tuple(result)
+
+
+def resolve_reference(unique_id, field, source, request):
+    try:
+        obj = zeit.cms.interfaces.ICMSContent(unique_id)
+    except TypeError:
+        raise ContentNotFoundError(unique_id, request)
+
+    if not zeit.cms.content.interfaces.IReference.providedBy(obj):
+        obj = field.get(field.context).create(obj)
+
+    if obj.target not in source:
+        raise WrongContentTypeError(
+            unique_id, source.get_check_types(), request)
+    return obj
+
+
+class ReferenceWidget(DropObjectWidget):
+
+    cache_object_details = 'false'
+
+    def _toFieldValue(self, input):
+        if input == self._missing:
+            return self.context.missing_value
+        return resolve_reference(
+            input, self.context, self.source, self.request)
 
 
 DATETIME_WIDGET_ADDITIONAL = """\

@@ -82,6 +82,29 @@
     permission="zope.Public"
     />
 
+  <!-- ReferenceWidget -->
+
+  <adapter
+    for="
+    zeit.cms.content.interfaces.ReferenceField
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.IGlobalSearchLayer"
+    provides="zope.app.form.interfaces.IInputWidget"
+    factory=".widget.ReferenceWidget"
+    permission="zope.Public"
+    />
+
+  <adapter
+    for="
+    zeit.cms.content.interfaces.ReferenceField
+    zeit.cms.content.interfaces.ICMSContentSource
+    .interfaces.ICMSLayer"
+    provides="zope.app.form.interfaces.IDisplayWidget"
+    factory=".widget.DropObjectDisplayWidget"
+    permission="zope.Public"
+    />
+
+
   <!-- ObjectSequenceWidget -->
 
   <adapter
