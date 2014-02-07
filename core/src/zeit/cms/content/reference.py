@@ -47,7 +47,11 @@ class ReferenceProperty(object):
     def __set__(self, instance, value):
         xml = zope.security.proxy.getObject(instance.xml)
         value = tuple(zope.security.proxy.getObject(x.xml) for x in value)
-        self.path.setattr(xml, value)
+        if str(self.path) == '.':
+            # Special case for single reference
+            xml.getparent().replace(xml, value[0])
+        else:
+            self.path.setattr(xml, value)
         instance._p_changed = True
 
     def __name__(self, instance):
