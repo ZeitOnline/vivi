@@ -1,6 +1,7 @@
 # Copyright (c) 2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
@@ -47,9 +48,17 @@ class ReferenceProperty(object):
     def __set__(self, instance, value):
         xml = zope.security.proxy.getObject(instance.xml)
         value = tuple(zope.security.proxy.getObject(x.xml) for x in value)
-        if str(self.path) == '.':
-            # Special case for single reference
-            xml.getparent().replace(xml, value[0])
+        if str(self.path) == '.':  # Special case for single reference
+            assert len(value) <= 1
+            xml.attrib.clear()
+            for child in xml.iterchildren():
+                xml.remove(child)
+            if value:
+                value = value[0]
+                for key, val in value.attrib.items():
+                    xml.set(key, val)
+                for child in value[:]:
+                    xml.append(copy.copy(child))
         else:
             self.path.setattr(xml, value)
         instance._p_changed = True
