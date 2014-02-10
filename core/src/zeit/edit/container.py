@@ -34,12 +34,26 @@ class Base(UserDict.DictMixin,
     def _get_keys(self, xml_node):
         raise NotImplementedError
 
+    def index(self, value):
+        # A simple implementation would be self.values().index(value), but that
+        # won't work in the general case since the abstract implementation of
+        # self.values is "self[x] for x in self.keys()", which defeats the
+        # purpose of this method.
+        raise NotImplementedError
+
     def _get_element_type(self, xml_node):
         raise NotImplementedError
 
     # Default implementation
 
     def __getitem__(self, key):
+        try:
+            position = int(key)
+        except ValueError:
+            pass
+        else:
+            return self.values()[position]
+
         node = self._find_item(self.xml, name=key)
         if node:
             node = node[0]

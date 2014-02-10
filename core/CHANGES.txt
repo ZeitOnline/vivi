@@ -6,6 +6,8 @@ Changes
 
 - Use Fanstatic instead of zc.resourcelibrary (VIV-296).
 
+- Implement uniqueId resolving for elements (VIV-305).
+
 
 2.1.7 (2014-01-20)
 ------------------
