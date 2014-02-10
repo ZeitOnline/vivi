@@ -22,7 +22,7 @@ class ArticleHeaderSource(zeit.cms.content.sources.MasterSlaveSource):
     attribute = 'name'
     slave_tag = 'header'
     master_node_xpath = '/templates/template'
-    master_value_key = 'header_layout'
+    master_value_key = 'template'
 
     @property
     def master_value_iface(self):
