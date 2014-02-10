@@ -26,11 +26,11 @@ class IElementFactory(zope.interface.Interface):
         """Create block."""
 
 
-class IElement(zeit.cms.interfaces.ICMSContent,
-               zeit.cms.content.interfaces.IXMLRepresentation):
+class IElement(zeit.cms.content.interfaces.IXMLRepresentation):
     """An element which can be instantiated and added to a page."""
 
     type = zope.interface.Attribute("Type identifier.")
+    uniqueId = zope.interface.Attribute("Only used as source for references")
 
 
 class IBlock(IElement, zope.container.interfaces.IContained):
