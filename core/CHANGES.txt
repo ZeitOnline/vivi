@@ -10,6 +10,8 @@ zeit.cms changes
 
 - Fix handling of 'related' references to image groups (VIV-306).
 
+- Prevent adding the same reference target twice (VIV-309).
+
 
 2.13.1 (2014-01-22)
 -------------------

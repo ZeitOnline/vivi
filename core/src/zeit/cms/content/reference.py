@@ -1,6 +1,7 @@
 # Copyright (c) 2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import collections
 import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
@@ -46,6 +47,7 @@ class ReferenceProperty(object):
             xml_reference_name=self.xml_reference_name)
 
     def __set__(self, instance, value):
+        value = self._filter_duplicates(value)
         xml = zope.security.proxy.getObject(instance.xml)
         value = tuple(zope.security.proxy.getObject(x.xml) for x in value)
         if str(self.path) == '.':  # Special case for single reference
@@ -62,6 +64,14 @@ class ReferenceProperty(object):
         else:
             self.path.setattr(xml, value)
         instance._p_changed = True
+
+    def _filter_duplicates(self, value):
+        # We actually want an OrderedSet, so we use only the keys.
+        result = collections.OrderedDict()
+        for item in value:
+            if item not in result.keys():
+                result[item] = True
+        return result.keys()
 
     def __name__(self, instance):
         class_ = type(instance)
