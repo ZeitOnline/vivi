@@ -56,6 +56,9 @@ class EditableBody(zeit.edit.container.Base,
                 result.append(self._set_default_key(child))
         return result
 
+    def index(self, value):
+        return self.values().index(value)
+
     def values(self):
         # We re-implement values() so it works without keys(), since those are
         # not present in the repository and anyway created on demand, which is
@@ -139,7 +142,26 @@ def get_editable_body(article):
         zeit.content.article.edit.interfaces.IEditableBody)
 
 
-class BodyTraverser(object):
+class BodyTraverser(grok.Adapter):
+
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.implements(zope.traversing.interfaces.ITraversable)
+
+    def traverse(self, name, furtherPath):
+        if name == editable_body_name:
+            body = zeit.content.article.edit.interfaces.IEditableBody(
+                self.context, None)
+            if body is not None:
+                return body
+        else:
+            # XXX zope.component does not offer an API to get the next adapter
+            # that is less specific than the current one. So we hard-code the
+            # default.
+            return zope.traversing.adapters.DefaultTraversable(
+                self.context).traverse(name, furtherPath)
+
+
+class BodyPublishTraverser(object):
 
     zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
 
@@ -148,12 +170,12 @@ class BodyTraverser(object):
         self.request = request
 
     def publishTraverse(self, request, name):
-        if name == editable_body_name:
-            body = zeit.content.article.edit.interfaces.IEditableBody(
-                self.context, None)
-            if body is not None:
-                return body
-        raise zope.publisher.interfaces.NotFound(self.context, name, request)
+        try:
+            return zope.traversing.interfaces.ITraversable(
+                self.context).traverse(name, None)
+        except zope.location.interfaces.LocationError:
+            raise zope.publisher.interfaces.NotFound(
+                self.context, name, request)
 
 
 # Remove all the __name__ thingies on before adding an article to the

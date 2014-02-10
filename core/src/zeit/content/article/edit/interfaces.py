@@ -201,7 +201,7 @@ class ImageLayoutSource(BodyAwareXMLSource, MainImageLayoutSource):
 
 class IImage(IReference, ILayoutable):
 
-    references = zope.schema.Choice(
+    references = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
         description=_("Drag an image here"),
         source=zeit.content.image.interfaces.bareImageSource,
@@ -216,21 +216,6 @@ class IImage(IReference, ILayoutable):
         title=_('Layout'),
         source=ImageLayoutSource(),
         default=u'large',
-        required=False)
-
-    custom_caption = zope.schema.Text(
-        title=_("Custom image sub text"),
-        default=u'',
-        required=False)
-
-    title = zope.schema.TextLine(
-        title=_('title attribute'),
-        default=u'',
-        required=False)
-
-    alt = zope.schema.TextLine(
-        title=_('alt attribute'),
-        default=u'',
         required=False)
 
 

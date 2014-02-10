@@ -31,6 +31,7 @@ Resource('sync.js', depends=[zeit.cms.browser.resources.base])
 
 Resource('blocks.js', depends=[
     zeit.cms.browser.resources.base,
+    zeit.edit.browser.resources.edit_js,
     editor_js,
 ])
 

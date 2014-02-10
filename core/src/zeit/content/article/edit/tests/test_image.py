@@ -17,14 +17,11 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         image = Image(None, tree.image)
         image.__name__ = u'myname'
         image.layout = u'large'
-        image.references = zeit.cms.interfaces.ICMSContent(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG')
-        self.assertEqual(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG',
-            image.xml.get('src'))
-        self.assertEqual(
-            'http://xml.zeit.de/2006/DSC00109_2.JPG',
-            image.references.uniqueId)
+        image_uid = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+        image.references = image.references.create(
+            zeit.cms.interfaces.ICMSContent(image_uid))
+        self.assertEqual(image_uid, image.references.target.uniqueId)
+        self.assertEqual(image_uid, image.xml.get('src'))
         self.assertEqual(u'myname', image.__name__)
         self.assertEqual(u'large', image.layout)
 
@@ -168,7 +165,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 co, zope.lifecycleevent.Attributes(IImages, 'image'))
 
             image_block = body.values()[0]
-            self.assertEqual(image_id, image_block.references.uniqueId)
+            self.assertEqual(image_id, image_block.references.target.uniqueId)
             self.assertFalse(image_block.is_empty)
 
             IImages(co).image = None
@@ -196,7 +193,8 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
             image_block = factory()
-            image_block.references = image_group
+            image_block.references = image_block.references.create(
+                image_group)
             image_block.set_manually = True
 
             image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
@@ -206,13 +204,11 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
             image_block = body.values()[0]
             self.assertEqual(
-                image_group.uniqueId, image_block.references.uniqueId)
+                image_group.uniqueId, image_block.references.target.uniqueId)
 
     @contextlib.contextmanager
     def image(self):
         from zeit.cms.interfaces import ICMSContent
-        from zeit.content.article.article import Article
-        from zeit.content.article.interfaces import IArticle
         import zeit.cms.browser.form
         import zeit.cms.checkout.helper
         import zeit.content.article.edit.body
@@ -226,67 +222,9 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             factory = zope.component.getAdapter(
                 body, zeit.edit.interfaces.IElementFactory, 'image')
             image = factory()
-            image.references = ICMSContent(
-                'http://xml.zeit.de/2006/DSC00109_2.JPG')
+            image.references = image.references.create(
+                ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG'))
             yield image
-
-    def test_custom_caption_should_be_set_to_bu_tag(self):
-        with self.image() as image:
-            image.custom_caption = u'a custom caption'
-        self.assertEqual(
-            u'a custom caption',
-            self.repository['article'].xml.body.division.image.bu)
-
-    def test_custom_attributes_should_be_kept_on_checkin(self):
-        with self.image() as image:
-            image.custom_caption = u'a custom caption'
-            image.alt = u'alttext'
-            image.title = u'title'
-        image = self.repository['article'].xml.body.division.image
-        self.assertEqual(
-            u'a custom caption', image.get('custom-caption'))
-        self.assertEqual(
-            u'alttext', image.get('alt'))
-        self.assertEqual(
-            u'title', image.get('title'))
-
-    def test_setting_reference_should_not_remove_custom_caption(self):
-        from zeit.cms.interfaces import ICMSContent
-        with self.image() as image:
-            image.custom_caption = u'a custom caption'
-            image.references = ICMSContent(
-                'http://xml.zeit.de/2006/DSC00109_2.JPG')
-        self.assertEqual(
-            u'a custom caption',
-            self.repository['article'].xml.body.division.image.get(
-                'custom-caption'))
-
-    def test_no_custom_caption_keeps_bu_from_image(self):
-        from zeit.cms.interfaces import ICMSContent
-        from zeit.content.image.interfaces import IImageMetadata
-        with zeit.cms.checkout.helper.checked_out(ICMSContent(
-                'http://xml.zeit.de/2006/DSC00109_2.JPG')) as co:
-            IImageMetadata(co).caption = u'foo'
-
-        with self.image() as image:
-            image.references = ICMSContent(
-                'http://xml.zeit.de/2006/DSC00109_2.JPG')
-        self.assertEqual(
-            u'foo', self.repository['article'].xml.body.division.image.bu)
-
-    def test_setting_custom_caption_to_empty_restores_bu_from_image(self):
-        from zeit.cms.interfaces import ICMSContent
-        from zeit.content.image.interfaces import IImageMetadata
-        with zeit.cms.checkout.helper.checked_out(ICMSContent(
-                'http://xml.zeit.de/2006/DSC00109_2.JPG')) as co:
-            IImageMetadata(co).caption = u'foo'
-
-        with self.image() as image:
-            image.references = ICMSContent(
-                'http://xml.zeit.de/2006/DSC00109_2.JPG')
-            image.custom_caption = u''
-        self.assertEqual(
-            u'foo', self.repository['article'].xml.body.division.image.bu)
 
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):

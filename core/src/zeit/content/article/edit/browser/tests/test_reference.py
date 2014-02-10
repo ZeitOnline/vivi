@@ -72,23 +72,6 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(select)
         s.assertSelectedLabel(select, 'small')
 
-    def test_custom_caption_should_be_editable(self):
-        s = self.selenium
-        self.add_article()
-        self.create_block('image')
-        # Article always has one image block already
-        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
-        text = 'css=.block.type-image form.wired textarea'
-        s.waitForElementPresent(text)
-        s.assertValue(text, '')
-        s.type(text, 'A custom caption')
-        s.fireEvent(text, 'blur')
-        s.waitForElementNotPresent('css=.field.dirty')
-        # Re-open the page and verify that the data is still there
-        s.clickAndWait('link=Edit contents')
-        s.waitForElementPresent(text)
-        s.assertValue(text, 'A custom caption')
-
     def test_widget_shows_add_button(self):
         # this ensures that the widget can find the Article (to determine
         # ressort etc.), which means that an IReference block is adaptable to
@@ -201,6 +184,25 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             'css=#form-article-content-main-image .image_details')
         s.waitForElementPresent(
             'css=#editable-body .image_details')
+
+    def test_metadata_can_be_overridden_locally(self):
+        self.add_image_to_clipboard()
+        s = self.selenium
+        # Article always has one image block already
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_image"]',
+            'css=.action-article-body-content-droppable')
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
+        # ensure object-details are displayed
+        s.waitForElementPresent('css=.block.type-image .image_details')
+
+        text = 'css=.block.type-image form.wired textarea'
+        s.waitForElementPresent(text)
+        s.assertValue(text, '')
+        s.type(text, 'A custom caption')
+        s.fireEvent(text, 'blur')
+        s.waitForElementNotPresent('css=.field.dirty')
 
 
 class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):

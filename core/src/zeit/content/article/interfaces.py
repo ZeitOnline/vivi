@@ -51,7 +51,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.article.source.GenreSource(),
         required=False)
 
-    main_image = zope.schema.Choice(
+    main_image = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
         description=_("Drag an image here"),
         source=zeit.content.image.interfaces.imageSource,

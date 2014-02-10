@@ -189,9 +189,6 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         from zeit.content.infobox.infobox import Infobox
         self.assert_updated(Infobox(), 'infobox')
 
-    def test_image_metadata_should_be_updated(self):
-        self.assert_updated(self.repository['2006']['DSC00109_2.JPG'], 'image')
-
 
 class EmptyMarkerTest(object):
 
