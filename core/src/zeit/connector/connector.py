@@ -86,6 +86,8 @@ class Connector(object):
 
     zope.interface.implements(zeit.connector.interfaces.ICachingConnector)
 
+    long_name = u'DAV connector'
+
     def __init__(self, roots={}, prefix=u'http://xml.zeit.de/'):
         # NOTE: roots['default'] should be defined
         # "extra" roots, a dict. ATM only xroots['search']
@@ -779,8 +781,23 @@ class Connector(object):
     def locktokens(self):
         return zeit.connector.lockinfo.LockInfo()
 
+    @classmethod
+    def factory(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.connector')
+        document_store = (config or {}).get('document-store')
+        if not document_store:
+            raise ZConfig.ConfigurationError(
+                cls.long_name + " not configured properly.")
+        return cls(dict(default=document_store))
+
+
+connector_factory = Connector.factory
+
 
 class TransactionBoundCachingConnector(Connector):
+
+    long_name = u'(Transaction-bound) DAV connector'
 
     body_cache = gocept.cache.property.TransactionBoundCache(
         '_v_body_cache', zeit.connector.cache.ResourceCache)
@@ -792,11 +809,5 @@ class TransactionBoundCachingConnector(Connector):
         '_v_child_name_cache', zeit.connector.cache.ChildNameCache)
 
 
-def transaction_bound_caching_connector_factory():
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.connector')
-    document_store = (config or {}).get('document-store')
-    if not document_store:
-        raise ZConfig.ConfigurationError(
-            "(Transaction-bound) DAV connector not configured properly.")
-    return TransactionBoundCachingConnector(dict(default=document_store))
+transaction_bound_caching_connector_factory = \
+    TransactionBoundCachingConnector.factory

@@ -6,6 +6,8 @@ CHANGES
 
 - Fixed an interface declaration.
 
+- Added a ZCML file for configuring a plain caching DAV connector.
+
 - Replaced the non-caching DAV connector with one that uses transaction-bound
   caches. (#FRIED-31)
 
