@@ -3,6 +3,7 @@
 import ZConfig
 import cStringIO
 import datetime
+import gocept.cache.property
 import gocept.lxml.objectify
 import httplib
 import logging
@@ -779,74 +780,23 @@ class Connector(object):
         return zeit.connector.lockinfo.LockInfo()
 
 
-class ResourceNonCache(object):
+class TransactionBoundCachingConnector(Connector):
 
-    zope.interface.implements(zeit.connector.interfaces.IResourceCache)
+    body_cache = gocept.cache.property.TransactionBoundCache(
+        '_v_body_cache', zeit.connector.cache.ResourceCache)
 
-    def getData(self, unique_id, properties):
-        raise KeyError()
+    property_cache = gocept.cache.property.TransactionBoundCache(
+        '_v_property_cache', zeit.connector.cache.PropertyCache)
 
-    def setData(self, unique_id, properties, data):
-        return cStringIO.StringIO(data.read())
-
-    def sweep(self):
-        pass
+    child_name_cache = gocept.cache.property.TransactionBoundCache(
+        '_v_child_name_cache', zeit.connector.cache.ChildNameCache)
 
 
-class NonCache(object):
-
-    def __getitem__(self, key):
-        raise KeyError
-
-    def get(self, key, default=None):
-        return default
-
-    def __contains__(self, key):
-        return False
-
-    def keys(self, include_deleted=False):
-        return ()
-
-    def __delitem__(self, key):
-        pass
-
-    def remove(self, key):
-        pass
-
-    def __setitem__(self, key, value):
-        pass
-
-
-class PropertyNonCache(NonCache):
-
-    zope.interface.implements(zeit.connector.interfaces.IPropertyCache)
-
-
-class ChildNameNonCache(NonCache):
-
-    zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
-
-
-class NonCachingConnector(Connector):
-
-    @property
-    def body_cache(self):
-        return ResourceNonCache()
-
-    @property
-    def property_cache(self):
-        return NonCache()
-
-    @property
-    def child_name_cache(self):
-        return ChildNameNonCache()
-
-
-def non_caching_connector_factory():
+def transaction_bound_caching_connector_factory():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.connector')
     document_store = (config or {}).get('document-store')
     if not document_store:
         raise ZConfig.ConfigurationError(
-            "(Non-caching) DAV connector not configured properly.")
-    return NonCachingConnector(dict(default=document_store))
+            "(Transaction-bound) DAV connector not configured properly.")
+    return TransactionBoundCachingConnector(dict(default=document_store))

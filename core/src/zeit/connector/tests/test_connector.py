@@ -1,5 +1,5 @@
 # coding: utf8
-# Copyright (c) 2007-2010 gocept gmbh & co. kg
+# Copyright (c) 2007-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 """Connector test setup."""
 
@@ -411,12 +411,12 @@ class TestXMLSupport(zeit.connector.testing.ConnectorTest):
             ['a'], [n.tag for n in prop.getchildren()])
 
 
-class TestNonCachingConnector(zeit.connector.testing.ConnectorTest):
+class TestTBCConnector(zeit.connector.testing.ConnectorTest):
 
     def setUp(self):
-        connector = zeit.connector.connector.NonCachingConnector(roots={
-            'default': os.environ['connector-url'],
-            'search': os.environ['search-connector-url']})
+        connector = zeit.connector.connector.TransactionBoundCachingConnector(
+            roots={'default': os.environ['connector-url'],
+                   'search': os.environ['search-connector-url']})
         gsm = zope.component.getGlobalSiteManager()
         gsm.registerUtility(connector, zeit.connector.interfaces.IConnector)
 
