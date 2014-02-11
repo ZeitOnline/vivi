@@ -71,7 +71,7 @@ layout does not reflect in the image URL used for displaying the block: XXX
 <...
   <div class="teaserTitle">Block title</div>
   <div class="fullgraphical-image">
-    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG"
+    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw"
         title="http://xml.zeit.de/my_quiz" />
   </div>
   ...
@@ -157,7 +157,7 @@ size; similarly for the title:
 <...
   <div class="teaserTitle">Teaser title</div>
   <div class="fullgraphical-image">
-    <img src="http://localhost/++skin++cms/repository/image-group/image-group-148x84.jpg".../>
+    <img src="http://localhost/++skin++cms/repository/image-group/image-group-148x84.jpg/@@raw".../>
   </div>
   ...
 
@@ -212,7 +212,7 @@ precedence; similarly, again, for the title:
 <...
   <div class="teaserTitle">Block title</div>
   <div class="fullgraphical-image">
-    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG".../>
+    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw".../>
   </div>
   ...
 
@@ -224,6 +224,6 @@ The layout doesn't break if the referenced content is removed:
 <...
   <div class="teaserTitle">Block title</div>
   <div class="fullgraphical-image">
-    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG" />
+    <img src="http://localhost/++skin++cms/repository/2006/DSC00109_2.JPG/@@raw" />
   </div>
   ...
