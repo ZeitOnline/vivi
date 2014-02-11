@@ -1,4 +1,4 @@
-# Copyright (c) 2007-2010 gocept gmbh & co. kg
+# Copyright (c) 2007-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import zope.interface
@@ -198,7 +198,7 @@ class IConnector(zope.interface.Interface):
 class ICachingConnector(IConnector):
     """A connector that caches."""
 
-    def invalidateCache(id):
+    def invalidate_cache(id):
         """Invalidate (and reload) the cache for the given id."""
 
 
