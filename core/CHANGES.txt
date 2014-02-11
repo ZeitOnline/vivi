@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.2.6 (unreleased)
+2.2.6 (2014-02-11)
 ------------------
 
 - Use correct @@raw URL for image views in fullgraphical block (VIV-306).
