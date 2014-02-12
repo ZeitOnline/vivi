@@ -4,7 +4,7 @@ zeit.cms changes
 2.14.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix styling of folder table filter widget.
 
 
 2.14.0 (2014-02-10)

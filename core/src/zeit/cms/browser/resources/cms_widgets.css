@@ -372,28 +372,6 @@ table.properties textarea {
 }
 
 
-/* 
- * tablefilter 
- *
- * */
-
-#tableFilter  {
-  position: absolute;
-  top: 0;
-  right: 0;
-}
-
-#tableFilter input {
-  font-family: sans-serif;
-  width: 20em;
-  color: #196692;
-}
-
-#add_menu {
-  border: 1px solid black;
-  font-family: sans-serif;
-}
-
 /* XXX should be factored out to Article */
 /* Metadata preview contents */
 /* article */
