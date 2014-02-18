@@ -4,7 +4,8 @@ zeit.content.article changes
 3.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Always generate block UUIDs on checkout (even when they might not be needed),
+  since relying on a browser request to trigger this is too fragile (FRIED-23).
 
 
 3.1.2 (2014-02-10)

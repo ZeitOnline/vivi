@@ -157,7 +157,8 @@ def migrate_image_nodes_inside_p(article, event):
                 p.addnext(getattr(lxml.objectify.E, p.tag)(image.tail))
                 lxml.objectify.deannotate(p.getnext())
                 image.getparent().replace(image, stripped)
-            if not (p.countchildren() or
-                    p.text and p.text.strip() or
-                    p.attrib):
+            if (not p.countchildren()
+                and not (p.text and p.text.strip())
+                and (not p.attrib or p.attrib.keys() == [
+                    '{http://namespaces.zeit.de/CMS/cp}__name__'])):
                 p.getparent().remove(p)

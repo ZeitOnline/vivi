@@ -235,6 +235,18 @@ def set_default_values(context, event):
         context, zeit.content.article.interfaces.IArticle)
 
 
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def ensure_block_ids(context, event):
+    body = zeit.content.article.edit.interfaces.IEditableBody(context)
+    # Keys are generated on demand, so we force this once, otherwise a
+    # consistent result is not guaranteed (since different requests might
+    # overlap and thus generate different keys).
+    body.keys()
+    body.ensure_division()
+
+
 DOUBLE_QUOTE_CHARACTERS = re.compile(u'[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
 
 
