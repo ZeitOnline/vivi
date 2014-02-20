@@ -55,7 +55,7 @@ zeit.edit._locked_makeJSONRequest = function(
                     (function() {
                         var ident = MochiKit.Signal.connect(
                             target_component, signal.when, function() {
-                            log("Signalling "+ [target_component.__name__, signal.when, signal.name]);
+                            log("Signalling (when) "+ [target_component.__name__, signal.when, signal.name]);
                             MochiKit.Signal.disconnect(ident);
                             MochiKit.Signal.signal.apply(
                                 this,
@@ -71,6 +71,7 @@ zeit.edit._locked_makeJSONRequest = function(
             immediate_actions.reverse();
             while(immediate_actions.length) {
                 var signal = immediate_actions.pop();
+                log("Signalling (immediate) "+ [target_component.__name__, signal.name]);
                 MochiKit.Signal.signal.apply(
                     this,
                     extend([target_component, signal.name], signal.args));

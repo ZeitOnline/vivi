@@ -79,7 +79,7 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
         self.assertEllipsis(
             '...folded...', self.render(in_workingcopy=True,
             folded_workingcopy=True))
-        self.assertNotEllipsis(
+        self.assertNotIn(
             '...folded...', self.render(in_workingcopy=False,
             folded_workingcopy=True, folded_repository=False))
 
@@ -87,7 +87,7 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
         self.assertEllipsis(
             '...folded...', self.render(in_workingcopy=False,
             folded_repository=True))
-        self.assertNotEllipsis(
+        self.assertNotIn(
             '...folded...', self.render(in_workingcopy=True,
             folded_repository=True))
 

@@ -87,6 +87,7 @@ zeit.edit.Editor = gocept.Class.extend({
             return result;
         });
         d.addCallback(function(result) {
+            log('zeit.edit.Editor after-reload');
             MochiKit.Signal.signal(self, 'after-reload');
             MochiKit.Signal.signal(window, 'changed');
             return result;
