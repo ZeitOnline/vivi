@@ -24,7 +24,7 @@ class DisplayWidget(zeit.cms.testing.BrowserTestCase,
                 '...<li class=" shown">...'
                 '<li class=" shown">...',
                 self.browser.contents)
-            self.assertNotEllipsis('t3', self.browser.contents)
+            self.assertNotIn('t3', self.browser.contents)
 
 
 class InputWidget(zeit.cms.testing.SeleniumTestCase,

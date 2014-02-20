@@ -198,7 +198,7 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
         result = widget()
         adapter.assert_called()
         self.assertEllipsis('...<div> mock </div>...', result)
-        self.assertNotEllipsis('...name="field..url"...', result)
+        self.assertNotIn('...name="field..url"...', result)
 
     def test_widget_should_render_url_input_if_query_view_is_absent(self):
         widget = self.get_widget()
@@ -934,7 +934,7 @@ class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_rst_warnings_are_not_shown(self):
         self.widget.setRenderedValue('* foo\nbar')
-        self.assertNotEllipsis('...System Message...', self.widget())
+        self.assertNotIn('...System Message...', self.widget())
 
 
 class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
