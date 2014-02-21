@@ -81,7 +81,7 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
         self.assertEquals('Pop.', resource.data.read())
 
 
-class TestConflictDetectionBase(object):
+class ConflictDetectionBase(object):
 
     def setUp(self):
         from zeit.connector.interfaces import UUID_PROPERTY
@@ -128,18 +128,19 @@ class TestConflictDetectionBase(object):
 
 
 class TestConflictDetectionReal(
-    TestConflictDetectionBase,
+    ConflictDetectionBase,
     zeit.connector.testing.ConnectorTest):
 
     pass
 
+
 class TestConflictDetectionMock(
-    TestConflictDetectionBase,
+    ConflictDetectionBase,
     zeit.connector.testing.MockTest):
     pass
 
 
-class TestMoveConflictDetectionBase(object):
+class MoveConflictDetectionBase(object):
 
     def test_move_with_same_body_should_remove_original(self):
         source = self.get_resource('source', 'source-body')
@@ -178,13 +179,13 @@ class TestMoveConflictDetectionBase(object):
 
 
 class TestMoveConflictDetectionReal(
-    TestMoveConflictDetectionBase,
+    MoveConflictDetectionBase,
     zeit.connector.testing.ConnectorTest):
     """Test move conflict with real connector and real DAV."""
 
 
 class TestMoveConflictDetectionMock(
-    TestMoveConflictDetectionBase,
+    MoveConflictDetectionBase,
     zeit.connector.testing.MockTest):
     """Test move conflict with mock connector."""
 
