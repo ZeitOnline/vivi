@@ -85,7 +85,7 @@ class ConflictDetectionBase(object):
 
     def setUp(self):
         from zeit.connector.interfaces import UUID_PROPERTY
-        super(TestConflictDetectionBase, self).setUp()
+        super(ConflictDetectionBase, self).setUp()
         rid = u'http://xml.zeit.de/testing/conflicting'
         self.connector[rid] = self.get_resource('conflicting', 'Pop.')
         r_a = self.connector[rid]
