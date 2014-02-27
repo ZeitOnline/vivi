@@ -506,6 +506,25 @@ def site(root):
     zope.site.hooks.setSite(old_site)
 
 
+def copy_inherited_functions(base, locals):
+    """py.test annotates the test function object with data, e.g. required
+    fixtures. Normal inheritance means that there is only *one* function object
+    (in the base class), which means for example that subclasses cannot specify
+    different layers, since they would all aggregate on that one function
+    object, which would be completely wrong.
+
+    """
+    def make_delegate(name):
+        def delegate(self):
+            return getattr(super(type(self), self), name)()
+        return delegate
+
+    for name in dir(base):
+        if not name.startswith('test_'):
+            continue
+        locals[name] = make_delegate(name)
+
+
 class BrowserAssertions(gocept.testing.assertion.Ellipsis):
 
     # XXX backwards-compat method signature for existing tests, should probably
