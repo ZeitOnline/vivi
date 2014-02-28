@@ -4,7 +4,7 @@ zeit.cms changes
 2.14.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use py.test runner.
 
 
 2.14.1 (2014-02-12)

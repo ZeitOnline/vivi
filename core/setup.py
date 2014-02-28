@@ -43,6 +43,7 @@ setup(
         'mock',
         'plone.testing',
         'pypandoc',
+        'pytest',
         'repoze.vhm',
         'rwproperty>=1.0',
         'setuptools',

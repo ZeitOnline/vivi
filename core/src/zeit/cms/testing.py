@@ -17,6 +17,7 @@ import logging
 import os
 import pkg_resources
 import plone.testing
+import pytest
 import random
 import re
 import socket
@@ -317,6 +318,7 @@ class FunctionalTestCase(FunctionalTestCaseCommon):
         self.principal = create_interaction(u'zope.user')
 
 
+#@pytest.mark.slow
 class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
                        FunctionalTestCaseCommon):
 
