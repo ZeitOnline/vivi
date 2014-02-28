@@ -513,6 +513,7 @@ def copy_inherited_functions(base, locals):
     different layers, since they would all aggregate on that one function
     object, which would be completely wrong.
 
+    Usage: copy_inherited_functions(BaseClass, locals())
     """
     def make_delegate(name):
         def delegate(self):
