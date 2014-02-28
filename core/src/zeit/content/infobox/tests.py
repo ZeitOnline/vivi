@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.testing import copy_inherited_functions
 import mock
 import pkg_resources
 import unittest
@@ -15,12 +16,17 @@ InfoboxLayer = zeit.cms.testing.ZCMLLayer(
 
 
 class InfoboxSourceTest(
-    zeit.cms.content.tests.test_contentsource.ContentSourceTest):
+    zeit.cms.content.tests.test_contentsource.ContentSourceBase,
+    zeit.cms.testing.FunctionalTestCase):
 
     layer = InfoboxLayer
 
     source = zeit.content.infobox.interfaces.infoboxSource
     expected_types = ['infobox']
+
+    copy_inherited_functions(
+        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
+        locals())
 
 
 class ReferenceTest(zeit.cms.testing.FunctionalTestCase):
