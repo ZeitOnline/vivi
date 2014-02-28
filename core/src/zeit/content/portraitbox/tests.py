@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.testing import copy_inherited_functions
 import mock
 import pkg_resources
 import unittest
@@ -15,13 +16,16 @@ PortraitboxLayer = zeit.cms.testing.ZCMLLayer(
 
 
 class PortraitboxSourceTest(
-    zeit.cms.content.tests.test_contentsource.ContentSourceTest):
+    zeit.cms.content.tests.test_contentsource.ContentSourceBase,
+    zeit.cms.testing.FunctionalTestCase):
 
     layer = PortraitboxLayer
 
     source = zeit.content.portraitbox.interfaces.portraitboxSource
     expected_types = ['portraitbox']
 
+    copy_inherited_functions(
+        zeit.cms.content.tests.test_contentsource.ContentSourceBase, locals())
 
 class ReferenceTest(zeit.cms.testing.FunctionalTestCase):
 
