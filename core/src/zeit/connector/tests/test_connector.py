@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 """Connector test setup."""
 
+from zeit.connector.testing import copy_inherited_functions
 import StringIO
 import mock
 import os
@@ -131,13 +132,14 @@ class TestConflictDetectionReal(
     ConflictDetectionBase,
     zeit.connector.testing.ConnectorTest):
 
-    pass
+    copy_inherited_functions(ConflictDetectionBase, locals())
 
 
 class TestConflictDetectionMock(
     ConflictDetectionBase,
     zeit.connector.testing.MockTest):
-    pass
+
+    copy_inherited_functions(ConflictDetectionBase, locals())
 
 
 class MoveConflictDetectionBase(object):
@@ -183,11 +185,15 @@ class TestMoveConflictDetectionReal(
     zeit.connector.testing.ConnectorTest):
     """Test move conflict with real connector and real DAV."""
 
+    copy_inherited_functions(MoveConflictDetectionBase, locals())
+
 
 class TestMoveConflictDetectionMock(
     MoveConflictDetectionBase,
     zeit.connector.testing.MockTest):
     """Test move conflict with mock connector."""
+
+    copy_inherited_functions(MoveConflictDetectionBase, locals())
 
 
 class TestResource(zeit.connector.testing.ConnectorTest):

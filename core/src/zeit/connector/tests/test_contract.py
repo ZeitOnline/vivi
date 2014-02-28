@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.connector.dav.interfaces import DAVNotFoundError
+from zeit.connector.testing import copy_inherited_functions
 import zeit.connector.testing
 
 
@@ -15,11 +16,11 @@ class ContractTest(object):
                 'http://xml.zeit.de/nonexistent'))
 
 
-class ContractReal(ContractTest,
-                   zeit.connector.testing.ConnectorTest):
-    pass
+class ContractReal(ContractTest, zeit.connector.testing.ConnectorTest):
+
+    copy_inherited_functions(ContractTest, locals())
 
 
-class ContractMock(ContractTest,
-                   zeit.connector.testing.MockTest):
-    pass
+class ContractMock(ContractTest, zeit.connector.testing.MockTest):
+
+    copy_inherited_functions(ContractTest, locals())
