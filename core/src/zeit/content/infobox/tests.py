@@ -25,8 +25,7 @@ class InfoboxSourceTest(
     expected_types = ['infobox']
 
     copy_inherited_functions(
-        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
-        locals())
+        zeit.cms.content.tests.test_contentsource.ContentSourceBase, locals())
 
 
 class ReferenceTest(zeit.cms.testing.FunctionalTestCase):
