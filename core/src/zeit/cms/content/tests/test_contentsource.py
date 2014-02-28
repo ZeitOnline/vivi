@@ -18,7 +18,8 @@ class ContentSourceBase(object):
             sorted(self.source.get_check_types()))
 
 
-class FolderSourceTest(ContentSourceBase):
+class FolderSourceTest(ContentSourceBase,
+                       zeit.cms.testing.FunctionalTestCase):
 
     source = zeit.cms.content.contentsource.FolderSource()
     expected_types = ['collection']
