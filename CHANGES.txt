@@ -4,7 +4,7 @@ zeit.vgwort changes
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use py.test runner.
 
 
 2.2.1 (2014-01-20)

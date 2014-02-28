@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import mock
+import pytest
 import unittest
 import xmlrpclib
 import zeit.cms.content.interfaces
@@ -70,6 +71,7 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ZCMLLayer
 
 
+@pytest.mark.slow
 class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
                        unittest.TestCase):
 

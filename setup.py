@@ -16,6 +16,7 @@ setup(
     namespace_packages = ['zeit'],
     install_requires=[
         'grokcore.component',
+        'pytest',
         'setuptools',
         'suds',
         'zeit.cms>=2.13.0.dev0',
