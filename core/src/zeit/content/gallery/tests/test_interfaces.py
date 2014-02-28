@@ -1,20 +1,27 @@
 # Copyright (c) 2007-2009 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.testing import copy_inherited_functions
 import unittest
 import zeit.cms.content.tests.test_contentsource
+import zeit.cms.testing
 import zeit.content.gallery.interfaces
 import zeit.content.gallery.testing
 import zope.interface.exceptions
 
 
 class TestGallerySource(
-    zeit.cms.content.tests.test_contentsource.ContentSourceTest):
+    zeit.cms.content.tests.test_contentsource.ContentSourceBase,
+    zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.gallery.testing.GalleryLayer
 
     source = zeit.content.gallery.interfaces.gallerySource
     expected_types = ['gallery']
+
+    copy_inherited_functions(
+        zeit.cms.content.tests.test_contentsource.ContentSourceBase,
+        locals())
 
 
 class MaxLengthTest(unittest.TestCase):
