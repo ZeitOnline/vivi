@@ -1,11 +1,12 @@
 # Copyright (c) 2009-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.testing import copy_inherited_functions
 import zeit.cms.testing
 import zeit.cms.content.contentsource
 
 
-class ContentSourceTest(zeit.cms.testing.FunctionalTestCase):
+class ContentSourceBase(object):
 
     source = zeit.cms.content.contentsource.CMSContentSource()
     expected_types = [
@@ -17,7 +18,9 @@ class ContentSourceTest(zeit.cms.testing.FunctionalTestCase):
             sorted(self.source.get_check_types()))
 
 
-class FolderSourceTest(ContentSourceTest):
+class FolderSourceTest(ContentSourceBase):
 
     source = zeit.cms.content.contentsource.FolderSource()
     expected_types = ['collection']
+
+    copy_inherited_functions(ContentSourceBase, locals())
