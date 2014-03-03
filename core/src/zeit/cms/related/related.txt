@@ -54,6 +54,7 @@ Let's have a look at the source:
       <reference ...
         type="intern" href="http://xml.zeit.de/related"...>
         <supertitle xsi:nil="true"/>
+        <teaser_supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
@@ -80,6 +81,7 @@ Assigning the same content object again doesn't change the xml:
       <reference ...
         type="intern" href="http://xml.zeit.de/related"...>
         <supertitle xsi:nil="true"/>
+        <teaser_supertitle xsi:nil="true"/>
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
@@ -103,19 +105,15 @@ Let's add another related content:
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related"...>
-        <supertitle xsi:nil="true"/>
+        ...
         <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-        <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
+        ...
       </reference>
       <reference ...
         type="intern" href="http://xml.zeit.de/related2"...>
-        <supertitle xsi:nil="true"/>
+        ...
         <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
-        <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
+        ...
       </reference>
     </references>
   </head>
@@ -144,19 +142,19 @@ So far nothing has changed:
     <references>
       <reference ...
         type="intern" href="http://xml.zeit.de/related"...>
-        <supertitle xsi:nil="true"/>
+        ...
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
+        ...
       </reference>
       <reference ...
         type="intern" href="http://xml.zeit.de/related2"...>
-        <supertitle xsi:nil="true"/>
+        ...
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
+        ...
       </reference>
     </references>
   </head>
@@ -175,18 +173,18 @@ when we reassign the two objects the metadata will be reflected in the xml:
       <reference ...
         type="intern" href="http://xml.zeit.de/related"
         ...year="2006" issue="19"...>
-        <supertitle xsi:nil="true"/>
+        ...
         <title py:pytype="str">I relate the title</title>
         <text py:pytype="str">Dude.</text>
         <description py:pytype="str">Dude.</description>
-        <byline xsi:nil="true"/>
+        ...
       </reference>
       <reference ... type="intern" href="http://xml.zeit.de/related2"...>
-        <supertitle xsi:nil="true"/>
+        ...
         <title xsi:nil="true"/>
-        <text xsi:nil="true"/>
+        ...
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
+        ...
       </reference>
     </references>
   </head>
@@ -215,18 +213,18 @@ After sending the event the metadata is updated:
       <reference ...
         type="intern" href="http://xml.zeit.de/related"
         ...year="2007" issue="19"...>
-        <supertitle xsi:nil="true"/>
+        ...
         <title py:pytype="str">I relate the title</title>
         <text py:pytype="str">Dude.</text>
         <description py:pytype="str">Dude.</description>
-        <byline xsi:nil="true"/>
+        ...
       </reference>
       <reference ...type="intern" href="http://xml.zeit.de/related2"...>
-        <supertitle xsi:nil="true"/>
+        ...
         <title xsi:nil="true"/>
         <text xsi:nil="true"/>
         <description xsi:nil="true"/>
-        <byline xsi:nil="true"/>
+        ...
       </reference>
     </references>
     ...

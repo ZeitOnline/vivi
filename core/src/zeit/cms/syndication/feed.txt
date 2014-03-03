@@ -393,6 +393,7 @@ Insert the article to the feed:
   <container>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Frankreich</supertitle>
+      <teaser_supertitle py:pytype="str">Frankreich</teaser_supertitle>
       <title py:pytype="str">Keine Sieger</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
@@ -417,6 +418,7 @@ changes:
   <container>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
+      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
@@ -444,6 +446,7 @@ too:
   <container>
     <block href="tct"...>
       <supertitle xsi:nil="true"/>
+      <teaser_supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
@@ -451,6 +454,7 @@ too:
     </block>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
+      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
@@ -473,6 +477,7 @@ When we change the order this is reflected:
   <container>
     <block href="tct"...>
       <supertitle xsi:nil="true"/>
+      <teaser_supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
@@ -480,6 +485,7 @@ When we change the order this is reflected:
     </block>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
+      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
@@ -501,6 +507,7 @@ We can also remove all relateds:
   <container>
     <block href="tct"...>
       <supertitle xsi:nil="true"/>
+      <teaser_supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
@@ -508,6 +515,7 @@ We can also remove all relateds:
     </block>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
+      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
@@ -529,6 +537,7 @@ node in the HTML:
   <container>
     <block href="tct"...>
       <supertitle xsi:nil="true"/>
+      <teaser_supertitle xsi:nil="true"/>
       <title xsi:nil="true"/>
       <text xsi:nil="true"/>
       <description xsi:nil="true"/>
@@ -536,6 +545,7 @@ node in the HTML:
     </block>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
+      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>

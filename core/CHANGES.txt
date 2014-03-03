@@ -8,6 +8,8 @@ zeit.cms changes
   so that ``href`` now means "final resolved uniqueId", which XSLT needs
   (VIV-322).
 
+- Write teaserSupertitle into separate XML tag (VIV-106).
+
 - Use py.test runner.
 
 

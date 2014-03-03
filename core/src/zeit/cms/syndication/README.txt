@@ -172,11 +172,9 @@ Check the source of the feed first:
   <title>Politik</title>
   <container>
     <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true">
-      <supertitle xsi:nil="true"/>
+      ...
       <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>...
+      ...
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
@@ -202,11 +200,9 @@ Now, the channel metadata has changed:
   <title>Politik</title>
   <container>
     <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true">
-      <supertitle xsi:nil="true"/>
+      ...
       <title py:pytype="str">nice Teaser Title</title>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>...
+      ...
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
@@ -236,11 +232,9 @@ The feed was not updated:
   <title>Politik</title>
   <container>
     <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true"...>
-      <supertitle xsi:nil="true"/>
+      ...
       <title py:pytype="str">nice Teaser Title</title>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>...
+      ...
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
@@ -272,11 +266,9 @@ The feed has not changed this time:
   <title>Politik</title>
   <container>
     <block ...href="http://xml.zeit.de/testcontent" ...hp_hide="true">
-      <supertitle xsi:nil="true"/>
+      ...
       <title py:pytype="str">nice other Teaser Title</title>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>...
+      ...
     </block>
   </container>
   <object_limit xmlns:py="http://codespeak.net/lxml/objectify/pytype">50</object_limit>
