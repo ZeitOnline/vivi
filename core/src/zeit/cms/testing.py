@@ -570,7 +570,7 @@ class JSLintTestCase(gocept.jslint.TestCase):
     predefined = (
         'zeit', 'gocept',
         'application_url', 'context_url',
-        'DOMParser', 'escape', 'unescape', 'getSelection',
+        'DOMParser', 'escape', 'unescape',
         'jsontemplate',
         'MochiKit', '$$', 'forEach', 'filter', 'map', 'extend', 'bind',
         'log', 'repr', 'logger', 'logDebug', 'logError',  # XXX
