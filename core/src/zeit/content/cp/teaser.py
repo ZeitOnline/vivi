@@ -40,11 +40,14 @@ class XMLTeaser(zope.container.contained.Contained,
         '.', '{http://namespaces.zeit.de/CMS/cp}free-teaser',
         zeit.content.cp.interfaces.IXMLTeaser['free_teaser'])
 
-    # When free_teaser is True, this is a http://teaser.vivi.zeit.de/ id.
-    # When free_teaser is False this just points to the referenced article.
-    uniqueId = zeit.cms.content.property.ObjectPathAttributeProperty(
+    # The uniqueId of the content object we are referencing
+    _href = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'href')
-    original_uniqueId = zeit.cms.content.property.ObjectPathAttributeProperty(
+    # For free teasers, the special teaser uniqueId
+    _uniqueId = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'uniqueId')
+    # BBB Before the uniqueId/href convention, content uniqueId was stored here
+    _uniqueId_old = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', '{http://namespaces.zeit.de/CMS/link}href')
 
     def __init__(self, context, xml, name):
@@ -58,9 +61,34 @@ class XMLTeaser(zope.container.contained.Contained,
             return None
         raise AttributeError(key)
 
+    # When free_teaser is True, this is a http://teaser.vivi.zeit.de/ id.
+    # When free_teaser is False this just points to the referenced article.
+    @property
+    def uniqueId(self):
+        if self.free_teaser:
+            # BBB Before the uniqueId/href convention, the ``href`` attribute
+            # contained both kinds of values, depending on ``free_teaser``.
+            return self._uniqueId or self._href
+        else:
+            return self._href
+
+    @uniqueId.setter
+    def uniqueId(self, value):
+        self._href = value
+
     @property
     def free_teaser(self):
         return self._free_teaser
+
+    @property
+    def original_uniqueId(self):
+        # BBB Before the uniqueId/href convention, the content uniqueId was
+        # stored in the ``{link}href`` attribute.
+        return self._uniqueId_old or self._href
+
+    @original_uniqueId.setter
+    def original_uniqueId(self, value):
+        self._href = value
 
     @free_teaser.setter
     def free_teaser(self, value):
@@ -70,8 +98,7 @@ class XMLTeaser(zope.container.contained.Contained,
             return
         cp = zeit.content.cp.interfaces.ICenterPage(self.__parent__)
 
-        self.original_uniqueId = self.uniqueId
-        self.uniqueId = 'http://teaser.vivi.zeit.de/%s#%s' % (
+        self._uniqueId = 'http://teaser.vivi.zeit.de/%s#%s' % (
             cp.uniqueId, str(uuid.uuid4()))
         self._free_teaser = True
 
@@ -110,8 +137,10 @@ def resolve_teaser_unique_id(context):
 
     if not zeit.content.cp.interfaces.ICenterPage.providedBy(obj):
         return
-    block = obj.xml.xpath('//block[@href=%s]' %
-                          xml.sax.saxutils.quoteattr(context))
+    # BBB Before the uniqueId/href convention, the teaser-uniqueId was stored
+    # in the ``href`` attribute.
+    block = obj.xml.xpath('//block[@uniqueId={id} or @href={id}]'.format(
+                          id=xml.sax.saxutils.quoteattr(context)))
     if not block:
         return
     assert len(block) == 1
@@ -142,9 +171,12 @@ def warn_about_free_teasers(context, event):
     relating_objects = relations.get_relations(context)
     for obj in relating_objects:
         if zeit.content.cp.interfaces.ICenterPage.providedBy(obj):
+            # BBB Before the uniqueId/href convention, the content uniqueId was
+            # stored in the ``{link}href`` attribute.
             blocks = obj.xml.xpath(
-                '//block[@link:href=%s and @cp:free-teaser]' % (
-                    xml.sax.saxutils.quoteattr(context.uniqueId),),
+                '//block[@cp:free-teaser '
+                'and (@href={id} or @link:href={id})]'.format(
+                    id=xml.sax.saxutils.quoteattr(context.uniqueId)),
                 namespaces=dict(link='http://namespaces.zeit.de/CMS/link',
                                 cp='http://namespaces.zeit.de/CMS/cp'))
             if blocks:
@@ -192,8 +224,7 @@ class TeaserLinkUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
     def update(self, entry):
         # We don't override `update_with_context` since we don't want to adapt
         # to `ITeaser` which would create new teaser objects from articles.
-        entry.set('{http://namespaces.zeit.de/CMS/link}href',
-                  self.context.original_content.uniqueId)
+        entry.set('href', self.context.original_content.uniqueId)
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.ITeaser)
