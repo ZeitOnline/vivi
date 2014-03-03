@@ -93,11 +93,9 @@ The source of a fullgraphical block does contain the layout decision:
            cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca"
            layout="148x84" title="Block title">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...>
-    <supertitle xsi:nil="true"/>
+    ...
     <title xsi:nil="true"/>
-    <text xsi:nil="true"/>
-    <description xsi:nil="true"/>
-    <byline xsi:nil="true"/>
+    ...
   </block>
   <image type="intern" href="http://xml.zeit.de/2006/DSC00109_2.JPG"...>
 </container>...
@@ -125,11 +123,9 @@ the fullgraphical block breaking:
 <container cp:type="fullgraphical" module="fullgraphical"
            cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...>
-    <supertitle xsi:nil="true"/>
+    ...
     <title xsi:nil="true"/>
-    <text xsi:nil="true"/>
-    <description xsi:nil="true"/>
-    <byline xsi:nil="true"/>
+    ...
   </block>
   <image xsi:nil="true"/>
 </container>...
@@ -182,11 +178,9 @@ object in order to catch its metadata updates:
 <container cp:type="fullgraphical" module="fullgraphical"
            cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...>
-    <supertitle xsi:nil="true"/>
+    ...
     <title py:pytype="str">Teaser title</title>
-    <text xsi:nil="true"/>
-    <description xsi:nil="true"/>
-    <byline xsi:nil="true"/>
+    ...
     <image base-id="http://xml.zeit.de/image-group" type="jpg" publication-date="" expires="">
       <bu xsi:nil="true"/>
       <copyright py:pytype="str">©</copyright>
