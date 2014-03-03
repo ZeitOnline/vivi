@@ -76,6 +76,7 @@ class Placeholder(zeit.cms.testing.FunctionalTestCase):
         super(Placeholder, self).setUp()
         self.form = TestAddForm(
             object(), zope.publisher.browser.TestRequest())
+        self.form.factory = object
 
     def test_text_input_widgets_get_placeholder(self):
         self.form.setUpWidgets()

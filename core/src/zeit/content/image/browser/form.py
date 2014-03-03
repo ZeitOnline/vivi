@@ -40,9 +40,10 @@ class AddForm(ImageFormBase, zeit.cms.browser.form.AddForm):
                    + ImageFormBase.form_fields.omit('references'))
 
     title = _("Add image")
+    factory = zeit.content.image.image.LocalImage
 
     def create(self, data):
-        image = zeit.content.image.image.LocalImage()
+        image = self.new_object
         blob = data.pop('blob')
         self.update_file(image, blob)
         name = data.pop('__name__')

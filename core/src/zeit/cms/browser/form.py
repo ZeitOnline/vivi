@@ -205,12 +205,23 @@ class AddFormBase(object):
         return apply_changes_with_setattr(
             object, self.form_fields, data, self.adapters)
 
-    def create(self, data):
+    def make_object(self):
         if self.factory is None:
             raise ValueError("No factory specified.")
-        new_object = self.factory()
-        self.applyChanges(new_object, data)
-        return new_object
+        return self.factory()
+
+    def setUpWidgets(self, ignore_request=False):
+        self.new_object = self.make_object()
+        return super(AddFormBase, self).setUpWidgets(ignore_request)
+
+    def _get_widgets(self, form_fields, ignore_request):
+        return zope.formlib.form.setUpInputWidgets(
+            form_fields, self.prefix, self.new_object, self.request,
+            ignore_request=ignore_request)
+
+    def create(self, data):
+        self.applyChanges(self.new_object, data)
+        return self.new_object
 
     @zope.formlib.form.action(_("Add"),
                               condition=zope.formlib.form.haveInputWidgets)

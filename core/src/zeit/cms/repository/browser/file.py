@@ -2,21 +2,20 @@
 # See also LICENSE.txt
 """File views."""
 
-import os.path
-
+from zeit.cms.i18n import MessageFactory as _
 import ZODB.interfaces
 import gocept.form.grouped
+import os.path
+import zeit.cms.browser.interfaces
+import zeit.cms.browser.listing
+import zeit.cms.browser.view
+import zeit.cms.repository.file
+import zeit.cms.repository.interfaces
 import zope.app.pagetemplate
 import zope.component
 import zope.formlib.form
 import zope.interface
 import zope.security.proxy
-
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.listing
-import zeit.cms.browser.view
-import zeit.cms.repository.interfaces
-from zeit.cms.i18n import MessageFactory as _
 
 
 class FileListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
@@ -85,9 +84,10 @@ class AddForm(FormBase,
               zeit.cms.browser.form.AddForm):
 
     title = _('Add file')
+    factory = zeit.cms.repository.file.LocalFile
 
     def create(self, data):
-        file = zeit.cms.repository.file.LocalFile()
+        file = self.new_object
         self.update_file(file, data['blob'])
         name = data.get('__name__')
         if not name:
