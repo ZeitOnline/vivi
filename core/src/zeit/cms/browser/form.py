@@ -195,6 +195,8 @@ class AddFormBase(object):
     """
 
     factory = None
+    widgets_of_new_object = True
+
     next_view = None
     cancel_next_view = None
     checkout = True
@@ -211,7 +213,10 @@ class AddFormBase(object):
         return self.factory()
 
     def setUpWidgets(self, ignore_request=False):
-        self.new_object = self.make_object()
+        if self.widgets_of_new_object:
+            self.new_object = self.make_object()
+        else:
+            self.new_object = self.context
         return super(AddFormBase, self).setUpWidgets(ignore_request)
 
     def _get_widgets(self, form_fields, ignore_request):
@@ -220,6 +225,8 @@ class AddFormBase(object):
             ignore_request=ignore_request)
 
     def create(self, data):
+        if not self.widgets_of_new_object:
+            self.new_object = self.make_object()
         self.applyChanges(self.new_object, data)
         return self.new_object
 
