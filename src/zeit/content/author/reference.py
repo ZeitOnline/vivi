@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import copy
 import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.interfaces
@@ -22,6 +23,18 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
     def update_with_context(self, node, context):
         node.display_name = context.display_name
+
+
+class AuthorshipXMLReferenceUpdater(
+        zeit.cms.content.xmlsupport.XMLReferenceUpdater):
+
+    target_iface = zeit.cms.content.interfaces.ICommonMetadata
+
+    def update_with_context(self, node, context):
+        for author in node.findall('author'):
+            node.remove(author)
+        for reference in context.authorships:
+            node.append(copy.copy(reference.xml))
 
 
 class Reference(zeit.cms.content.reference.Reference):

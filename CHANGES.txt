@@ -4,7 +4,7 @@ zeit.content.author changes
 2.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Include authorship information in XMLReference to ICommonMetadata (VIV-278).
 
 
 2.1.1 (2014-02-10)

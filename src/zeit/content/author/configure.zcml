@@ -34,6 +34,10 @@
     factory=".reference.XMLReferenceUpdater"
     name="zeit.content.author"
     />
+  <adapter
+    factory=".reference.AuthorshipXMLReferenceUpdater"
+    name="zeit.cms.content.interfaces.ICommonMetadata.authorships"
+    />
 
   <class class=".reference.Reference">
     <require
