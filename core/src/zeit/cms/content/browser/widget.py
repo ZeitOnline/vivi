@@ -139,6 +139,9 @@ class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):
         context = self.context.context
         if not zeit.cms.content.interfaces.ICommonMetadata.providedBy(context):
             return None
+        # Support AddForms
+        if not context.uniqueId:
+            return None
         return context.uniqueId.replace(
             zeit.cms.interfaces.ID_NAMESPACE, prefix)
 
@@ -153,7 +156,7 @@ class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):
     def _toFieldValue(self, input):
         value = super(MobileAlternativeWidget, self)._toFieldValue(input)
         desktop = self.request.form.get('%s.desktop' % self.name)
-        if desktop:
+        if desktop and self.desktop_url:
             value = self.desktop_url.encode('utf-8')
         return value
 
