@@ -193,7 +193,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     place_cursor: function(element, place_cursor_at_end) {
         // Place cursor to the beginnning of element
         log('Placing cursor to', element.nodeName);
-        var range = getSelection().getRangeAt(0);
+        var range = window.getSelection().getRangeAt(0);
         var direction;
         if (place_cursor_at_end)  {
             direction = 'lastChild';
@@ -518,7 +518,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
         self.dirty = self.check_dirty(event.key().string);
 
-        var range = getSelection().getRangeAt(0);
+        var range = window.getSelection().getRangeAt(0);
         var container = range.commonAncestorContainer;
         // lastnode/firstnodee?
         var direction = null;
@@ -713,7 +713,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     get_selected_container: function() {
         var container;
-        var range = getSelection().getRangeAt(0);
+        var range = window.getSelection().getRangeAt(0);
         if ((range.startContainer.nodeType ==
              range.startContainer.ELEMENT_NODE) &&
             (range.startContainer == range.endContainer) &&
@@ -729,7 +729,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     select_container: function(element) {
         var self = this;
         try {
-            var range = getSelection().getRangeAt(0);
+            var range = window.getSelection().getRangeAt(0);
             range.setStartBefore(element);
             range.setEndAfter(element);
         } catch(e) {
