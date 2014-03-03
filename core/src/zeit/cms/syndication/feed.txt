@@ -430,29 +430,6 @@ changes:
 </channel>
 
 
-When only one of the homepage teaser (title/text) is entered, we have only one
-node in the HTML:
-
->>> feed.updateMetadata(art2)
->>> print feed.xml_source
-<channel xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-  <title>Politik</title>
-  <container>
-    <block href="tct"...>
-      ...
-      <title xsi:nil="true"/>
-      ...
-    </block>
-    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
-      ...
-      <title py:pytype="str">New Title</title>
-      ...
-    </block>
-    <block href="art1".../>
-  </container>
-  <object_limit>50</object_limit>
-</channel>
-
 An edge case are entries that do not point to actual CMS content, they are
 ignored silently when updating metadata:
 
