@@ -391,7 +391,7 @@ Insert the article to the feed:
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title>Politik</title>
   <container>
-    <block href="art2" year="2007" issue="4"...>
+    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Frankreich</supertitle>
       <title py:pytype="str">Keine Sieger</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -415,7 +415,7 @@ changes:
 <channel xmlns:xsd="http://www.w3.org/2001/XMLSchema"...>
   <title>Politik</title>
   <container>
-    <block href="art2" year="2007" issue="4"...>
+    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -449,7 +449,7 @@ too:
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
     </block>
-    <block href="art2" year="2007" issue="4"...>
+    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -478,7 +478,7 @@ When we change the order this is reflected:
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
     </block>
-    <block href="art2" year="2007" issue="4"...>
+    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -506,7 +506,7 @@ We can also remove all relateds:
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
     </block>
-    <block href="art2" year="2007" issue="4"...>
+    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
@@ -534,7 +534,7 @@ node in the HTML:
       <description xsi:nil="true"/>
       <byline xsi:nil="true"/>
     </block>
-    <block href="art2" year="2007" issue="4"...>
+    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <title py:pytype="str">New Title</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>

@@ -4,6 +4,10 @@ zeit.cms changes
 2.14.2 (unreleased)
 -------------------
 
+- Add ``uniqueId`` attribute to feed items which means "referenced uniqueId",
+  so that ``href`` now means "final resolved uniqueId", which XSLT needs
+  (VIV-322).
+
 - Use py.test runner.
 
 

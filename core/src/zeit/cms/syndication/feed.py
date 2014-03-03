@@ -23,6 +23,16 @@ log = logging.getLogger(__name__)
 
 
 class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
+    """A feed contains a list of references to ICMSContent objects.
+
+    These are stored as <block> tags, with the ``uniqueId`` attribute pointing
+    to the referenced ICMSContent object. If this object in turn is only a
+    reference (e.g. zeit.content.cp.teaser.XMLTeaser), the ``href`` attribute
+    may contain the final resolved uniqueId to an actual content object
+    (needed for XSLT since it can't perform this resolution).
+    If the feed entry is does not reference another object, ``href`` equals
+    ``uniqueId``.
+    """
 
     zope.interface.implements(
         zeit.cms.syndication.interfaces.IFeed,
@@ -55,7 +65,8 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
     def keys(self):
         for entry in self.iterentries():
-            yield entry.get('href')
+            # BBB Before uniqueId was introduced, href was authoritative.
+            yield entry.get('uniqueId') or entry.get('href')
 
     def insert(self, position, content):
         content = zeit.cms.interfaces.ICMSContent(content)
@@ -63,7 +74,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         if unique_id is None:
             raise ValueError('Cannot add objects without uniqueId.')
         pin_map = self.pin_map()
-        entry = lxml.objectify.E.block(href=unique_id)
+        entry = lxml.objectify.E.block(uniqueId=unique_id, href=unique_id)
         self.entries.insert(position, entry)
         while self.object_limit and len(self) > self.object_limit:
             last = list(self.keys())[-1]
@@ -127,7 +138,9 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
     @property
     def entry_map(self):
-        return dict((entry.get('href'), entry) for entry in self.iterentries())
+        # BBB Before uniqueId was introduced, href was authoritative.
+        return {entry.get('uniqueId') or entry.get('href'): entry
+                for entry in self.iterentries()}
 
     def pin_map(self):
         return dict((id, content.uniqueId)
@@ -161,7 +174,8 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
 
     def _remove_by_id(self, unique_id):
         for entry in self.iterentries():
-            if entry.get('href') == unique_id:
+            # BBB Before uniqueId was introduced, href was authoritative.
+            if (entry.get('uniqueId') or entry.get('href')) == unique_id:
                 parent = entry.getparent()
                 parent.remove(entry)
                 self._p_changed = True
