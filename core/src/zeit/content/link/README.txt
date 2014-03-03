@@ -69,11 +69,9 @@ Create a channel and insert the link[#functional]_:
     <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
       href="http://xml.zeit.de/link"...
       ns0:href="http://gocept.com" ns0:target="_blank">
-      <supertitle xsi:nil="true"/>
+      ...
       <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>...
+      ...
     </block>
   </container>
   <object_limit>50</object_limit>
@@ -93,11 +91,9 @@ channel:
     <block xmlns:ns0="http://namespaces.zeit.de/CMS/link"
       href="http://xml.zeit.de/link"...
       ns0:href="http://gocept.com">
-      <supertitle xsi:nil="true"/>
+      ...
       <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
+      ...
     </block>
   </container>
   <object_limit>50</object_limit>
