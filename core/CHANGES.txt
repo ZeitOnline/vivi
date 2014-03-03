@@ -10,6 +10,8 @@ zeit.cms changes
 
 - Write teaserSupertitle into separate XML tag (VIV-106).
 
+- Write breadcrumb_title into XML references for ICommonMetadata (VIV-324).
+
 - Use py.test runner.
 
 

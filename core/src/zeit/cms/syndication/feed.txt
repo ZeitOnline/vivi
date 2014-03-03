@@ -376,6 +376,7 @@ included. Setup an article with ICommonMetadata:
 >>> art2.year = 2007
 >>> art2.volume = 4
 >>> art2.ressort = u'International'
+>>> art2.breadcrumb_title = u'Streik'
 
 Provide the interface:
 
@@ -398,6 +399,7 @@ Insert the article to the feed:
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
       <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      <breadcrumb_title py:pytype="str">Streik</breadcrumb_title>
     </block>
     <block href="art1".../>
   </container>
@@ -420,9 +422,7 @@ changes:
       <supertitle py:pytype="str">Fronkroisch</supertitle>
       <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
       <title py:pytype="str">New Title</title>
-      <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
-      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
-      <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      ...
     </block>
     <block href="art1".../>
   </container>
@@ -445,20 +445,14 @@ too:
   <title>Politik</title>
   <container>
     <block href="tct"...>
-      <supertitle xsi:nil="true"/>
-      <teaser_supertitle xsi:nil="true"/>
+      ...
       <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
+      ...
     </block>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
-      <supertitle py:pytype="str">Fronkroisch</supertitle>
-      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
+      ...
       <title py:pytype="str">New Title</title>
-      <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
-      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
-      <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      ...
     </block>
     <block href="art1".../>
   </container>
@@ -476,20 +470,14 @@ When we change the order this is reflected:
   <title>Politik</title>
   <container>
     <block href="tct"...>
-      <supertitle xsi:nil="true"/>
-      <teaser_supertitle xsi:nil="true"/>
+      ...
       <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
+      ...
     </block>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
-      <supertitle py:pytype="str">Fronkroisch</supertitle>
-      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
+      ...
       <title py:pytype="str">New Title</title>
-      <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
-      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
-      <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      ...
     </block>
     <block href="art1".../>
   </container>
@@ -506,20 +494,14 @@ We can also remove all relateds:
   <title>Politik</title>
   <container>
     <block href="tct"...>
-      <supertitle xsi:nil="true"/>
-      <teaser_supertitle xsi:nil="true"/>
+      ...
       <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
+      ...
     </block>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
-      <supertitle py:pytype="str">Fronkroisch</supertitle>
-      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
+      ...
       <title py:pytype="str">New Title</title>
-      <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
-      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
-      <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      ...
     </block>
     <block href="art1".../>
   </container>
@@ -536,20 +518,14 @@ node in the HTML:
   <title>Politik</title>
   <container>
     <block href="tct"...>
-      <supertitle xsi:nil="true"/>
-      <teaser_supertitle xsi:nil="true"/>
+      ...
       <title xsi:nil="true"/>
-      <text xsi:nil="true"/>
-      <description xsi:nil="true"/>
-      <byline xsi:nil="true"/>
+      ...
     </block>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
-      <supertitle py:pytype="str">Fronkroisch</supertitle>
-      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
+      ...
       <title py:pytype="str">New Title</title>
-      <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
-      <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
-      <byline py:pytype="str">Von Alain-Xavier Wurst</byline>
+      ...
     </block>
     <block href="art1".../>
   </container>
