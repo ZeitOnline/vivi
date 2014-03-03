@@ -7,6 +7,7 @@ import docutils.core
 import json
 import pypandoc
 import time
+import urlparse
 import xml.sax.saxutils
 import zc.datetimewidget.datetimewidget
 import zeit.cms.browser.interfaces
@@ -453,6 +454,11 @@ class ReferenceSequenceWidget(ObjectSequenceWidget):
 
 
 def resolve_reference(unique_id, field, source, request):
+    if not field.context.uniqueId:  # Support AddForms
+        params = urlparse.parse_qs(urlparse.urlparse(unique_id).query)
+        if 'target' in params:
+            unique_id = params['target'][0]
+
     try:
         obj = zeit.cms.interfaces.ICMSContent(unique_id)
     except TypeError:
