@@ -276,6 +276,11 @@ class TestTextEditing(
             time.sleep(0.1)
         self.assertEqual(x, s.getElementPositionLeft(toolbar))
 
+    @unittest.skip('webdriver cannot click according to a character position')
+    def test_click_in_paragraph_starts_editing_and_places_cursor_exactly_there(
+            self):
+        pass
+
 
 class TestEditingMultipleParagraphs(
     zeit.content.article.edit.browser.testing.EditorTestCase):
