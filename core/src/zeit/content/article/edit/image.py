@@ -21,7 +21,7 @@ class ImageReferenceProperty(
         if value is None:
             instance.xml.attrib.pop('src', None)
             instance.xml.attrib.pop('base-id', None)
-            super(ImageReferenceProperty, self).__set__(instance, ())
+            super(ImageReferenceProperty, self).__set__(instance, value)
             instance.is_empty = True
             return
 
