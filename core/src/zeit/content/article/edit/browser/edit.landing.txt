@@ -6,7 +6,7 @@ Mock UUID to generate known Ids.
 >>> import gocept.testing.mock
 >>> import mock
 >>> patches = gocept.testing.mock.Patches()
->>> fake_uuid = mock.Mock(side_effect=lambda: str(fake_uuid.call_count))
+>>> fake_uuid = mock.Mock(side_effect=lambda: 'id-%s' % fake_uuid.call_count)
 >>> _ = patches.add('zeit.edit.container.Base._generate_block_id', fake_uuid)
 
 
@@ -28,33 +28,33 @@ Open an article's editable body. It contains landing zones:
      cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body"
      class="editable-area action-block-sorter">
   <div cms:tooltip="" class="block type-image...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/2"
-     id="2">
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2"
+     id="id-2">
   <div class="block-inner">
     ...
   </div>
 </div>
   <div class="landing-zone action-editable-body-module-droppable..."
-       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/2/@@landing-zone-drop-module">
+       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2/@@landing-zone-drop-module">
   </div>
   <div cms:tooltip="" class="block type-p...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/3"
-     id="3">
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3"
+     id="id-3">
      ...
 </div>
   <div class="landing-zone action-editable-body-module-droppable..."
-       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/3/@@landing-zone-drop-module">
+       cms:create-block-url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3/@@landing-zone-drop-module">
   </div>
   ...
 
 
 A module can be created:
 
->>> browser.open('2/@@landing-zone-drop-module?block_type=p')
+>>> browser.open('id-2/@@landing-zone-drop-module?block_type=p')
 >>> import pprint
 >>> import json
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
-[{u'args': [u'15'], u'name': u'added', u'when': u'after-reload'},
+[{u'args': [u'id-15'], u'name': u'added', u'when': u'after-reload'},
  {u'args': [u'editable-body',
             u'http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/@@contents'],
   u'name': u'reload',
@@ -64,16 +64,16 @@ A module can be created:
 <div id="editable-body"
 ...
   <div cms:tooltip="" class="block type-image...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/2"
-     id="2">
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-2"
+     id="id-2">
      ...
   <div cms:tooltip="" class="block type-p...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/15"
-     id="15">
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-15"
+     id="id-15">
      ...
   <div cms:tooltip="" class="block type-p...
-     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/3"
-     id="3">
+     cms:url="http://localhost:8080/++skin++vivi/workingcopy/zope.user/Somalia/editable-body/id-3"
+     id="id-3">
      ...
 
 

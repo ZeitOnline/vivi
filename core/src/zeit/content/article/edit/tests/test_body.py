@@ -15,7 +15,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         super(EditableBodyTest, self).setUp()
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
-        fake_uuid.side_effect = lambda: str(fake_uuid.call_count)
+        fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
         self.patches.add(
             'zeit.edit.container.Base._generate_block_id', fake_uuid)
 
@@ -43,15 +43,15 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         # The first division is omitted, thus only 5 keys
         self.assertEqual(5, len(body.keys()))
         # Starts at 2 as the first <division> is skipped but still gets a key
-        self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
+        self.assertEqual(['id-2', 'id-3', 'id-4', 'id-5', 'id-6'], body.keys())
 
     def test_deleting_division_should_merge_contained_paragraphs(self):
         body = self.get_body()
         # Note: calling for the first time keys() actually makes the keys
         # available.
-        self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
-        del body['4']
-        self.assertEqual(['2', '3', '5', '6'], body.keys())
+        self.assertEqual(['id-2', 'id-3', 'id-4', 'id-5', 'id-6'], body.keys())
+        del body['id-4']
+        self.assertEqual(['id-2', 'id-3', 'id-5', 'id-6'], body.keys())
 
     def test_add_should_add_to_last_division(self):
         import lxml.objectify
@@ -65,19 +65,19 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_update_order_should_put_object_into_right_division(self):
         body = self.get_body()
-        self.assertEqual(['2', '3', '4', '5', '6'], body.keys())
-        body.updateOrder(['2', '3', '5', '4', '6'])
-        self.assertEqual(['2', '3', '5', '4', '6'], body.keys())
-        body.updateOrder(['2', '4', '5', '3', '6'])
-        self.assertEqual(['2', '4', '5', '3', '6'], body.keys())
-        del body['2']
-        body.updateOrder(['4', '3', '5', '6'])
-        self.assertEqual(['4', '3', '5', '6'], body.keys())
+        self.assertEqual(['id-2', 'id-3', 'id-4', 'id-5', 'id-6'], body.keys())
+        body.updateOrder(['id-2', 'id-3', 'id-5', 'id-4', 'id-6'])
+        self.assertEqual(['id-2', 'id-3', 'id-5', 'id-4', 'id-6'], body.keys())
+        body.updateOrder(['id-2', 'id-4', 'id-5', 'id-3', 'id-6'])
+        self.assertEqual(['id-2', 'id-4', 'id-5', 'id-3', 'id-6'], body.keys())
+        del body['id-2']
+        body.updateOrder(['id-4', 'id-3', 'id-5', 'id-6'])
+        self.assertEqual(['id-4', 'id-3', 'id-5', 'id-6'], body.keys())
 
     def test_articles_without_division_should_be_migrated(self):
         body = self.get_body(
             '<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
-        self.assertEqual(['2', '3'], body.keys())
+        self.assertEqual(['id-2', 'id-3'], body.keys())
         self.assertEqual(
             ['foo', 'division'],
             [child.tag for child in body.xml.iterchildren()])
@@ -101,7 +101,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
     def test_nested_elements_should_be_ignored(self):
         body = self.get_body(
             '<division><p>I have <p>another para</p> in me</p></division>')
-        self.assertEqual([u'2'], body.keys())
+        self.assertEqual([u'id-2'], body.keys())
 
     def test_adding_division_should_add_on_toplevel(self):
         from zeit.content.article.edit.interfaces import IDivision
