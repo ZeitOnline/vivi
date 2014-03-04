@@ -5,10 +5,12 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
 import sys
+import urlparse
 import zeit.cms.content.xmlsupport
 import zeit.edit.interfaces
 import zope.component
 import zope.interface
+import zope.traversing.api
 
 
 class Element(zope.container.contained.Contained,
@@ -26,6 +28,11 @@ class Element(zope.container.contained.Contained,
         # Set parent last so we don't trigger a write.
         self.__parent__ = context
 
+    def __eq__(self, other):
+        if not zeit.edit.interfaces.IElement.providedBy(other):
+            return False
+        return self.xml == other.xml
+
     @property
     def __name__(self):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
@@ -39,6 +46,32 @@ class Element(zope.container.contained.Contained,
     @property
     def type(self):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}type')
+
+    @property
+    def uniqueId(self):
+        parent = self.__parent__.uniqueId
+        if not parent.startswith(zeit.edit.interfaces.BLOCK_NAMESPACE):
+            return '%s%s#%s' % (
+                zeit.edit.interfaces.BLOCK_NAMESPACE, parent, self.__name__)
+        else:
+            name = self.__name__
+            if name is None:
+                # XXX Since Container does not generally support index(),
+                # this won't generally work. It's only implemented for
+                # z.c.article.edit.Body at the moment.
+                name = self.__parent__.index(self)
+            return '%s/%s' % (parent, name)
+
+
+@grok.adapter(
+    basestring, name='http://block.vivi.zeit.de/')
+@grok.implementer(zeit.cms.interfaces.ICMSContent)
+def resolve_block_id(context):
+    parts = urlparse.urlparse(context)
+    assert parts.path.startswith('/')
+    path = parts.path[1:]
+    content = zeit.cms.cmscontent.resolve_wc_or_repository(path)
+    return zope.traversing.api.traverse(content, parts.fragment)
 
 
 class SimpleElement(Element):

@@ -4,7 +4,7 @@ Changes
 2.1.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Implement uniqueId resolving for elements (VIV-305).
 
 
 2.1.8 (2014-02-10)

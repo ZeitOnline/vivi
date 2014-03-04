@@ -3,10 +3,14 @@
 
 from zeit.content.cp.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zope.container.interfaces
 import zope.interface
 import zope.schema
 import zope.viewlet.interfaces
+
+
+BLOCK_NAMESPACE = 'http://block.vivi.zeit.de/'
 
 
 class IEditable(zope.interface.Interface):
@@ -52,6 +56,10 @@ class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
     This references a <region> or <cluster>
 
     """
+
+    def index(value):
+        """Determine position of the given value among self.values,
+        even when value does not have a __name__ yet."""
 
 
 class IWriteContainer(zope.container.interfaces.IOrdered):
