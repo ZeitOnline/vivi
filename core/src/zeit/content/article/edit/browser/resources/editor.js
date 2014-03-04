@@ -117,6 +117,11 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.autosave_interval*1000);
             self.initial_paragraph = MochiKit.Selector.findChildElements(
                 block, ['.editable > *'])[0];
+            if (window.getSelection().rangeCount) {
+                var range = window.getSelection().getRangeAt(0);
+                self.initial_selection_node = range.startContainer;
+                self.initial_selection_offset = range.startOffset;
+            }
             self.editable = self.merge(block);
             self.block = MochiKit.DOM.getFirstParentByTagAndClassName(
                 self.editable, null, 'block');
@@ -174,7 +179,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 }));
             self.fix_html();
             $('body').trigger('update-ads');
-            self.place_cursor(self.initial_paragraph, place_cursor_at_end);
+            self.place_cursor(place_cursor_at_end);
             self.editable.focus();
             self.init_linkbar();
             self.init_toolbar();
@@ -190,33 +195,43 @@ zeit.content.article.Editable = gocept.Class.extend({
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
 
-    place_cursor: function(element, place_cursor_at_end) {
-        // Place cursor to the beginnning of element
-        log('Placing cursor to', element.nodeName);
-        var range = getSelection().getRangeAt(0);
-        var direction;
-        if (place_cursor_at_end)  {
-            direction = 'lastChild';
+    place_cursor: function(place_cursor_at_end) {
+        var self = this;
+        var text_node;
+        var offset;
+        if (isUndefinedOrNull(place_cursor_at_end)
+            && ! isUndefinedOrNull(self.initial_selection_node)) {
+            text_node = self.initial_selection_node;
+            log('Placing cursor to ', text_node.parentNode.nodeName);
+            offset = self.initial_selection_offset;
         } else {
-            direction = 'firstChild';
-        }
-
-        var text_node = element;
-        while (text_node[direction] !== null) {
-            // We need to avoid placing the cursor inside a br element since
-            // it is not possible to type in there and trying to do so leads
-            // to funny effects (#12266). The br element is put in this place
-            // in an effort to keep empty paragraphs editable while editing.
-            if (text_node[direction].nodeName === 'BR') {
-                break;
+            text_node = self.initial_paragraph;
+            log('Placing cursor to ', text_node.nodeName);
+            var direction;
+            if (place_cursor_at_end)  {
+                direction = 'lastChild';
+            } else {
+                direction = 'firstChild';
             }
-            text_node = text_node[direction];
+
+            while (text_node[direction] !== null) {
+                // We need to avoid placing the cursor inside a br element
+                // since it is not possible to type in there and trying to do
+                // so leads to funny effects (#12266). The br element is put in
+                // this place in an effort to keep empty paragraphs editable
+                // while editing.
+                if (text_node[direction].nodeName === 'BR') {
+                    break;
+                }
+                text_node = text_node[direction];
+            }
+            offset = 0;
+            if (place_cursor_at_end &&
+                text_node.nodeType == text_node.TEXT_NODE)  {
+                offset = text_node.data.length;
+            }
         }
-        var offset = 0;
-        if (place_cursor_at_end &&
-            text_node.nodeType == text_node.TEXT_NODE)  {
-            offset = text_node.data.length;
-        }
+        var range = window.getSelection().getRangeAt(0);
         range.setStart(text_node, offset);
         range.setEnd(text_node, offset);
     },
@@ -518,7 +533,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
         self.dirty = self.check_dirty(event.key().string);
 
-        var range = getSelection().getRangeAt(0);
+        var range = window.getSelection().getRangeAt(0);
         var container = range.commonAncestorContainer;
         // lastnode/firstnodee?
         var direction = null;
@@ -713,7 +728,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     get_selected_container: function() {
         var container;
-        var range = getSelection().getRangeAt(0);
+        var range = window.getSelection().getRangeAt(0);
         if ((range.startContainer.nodeType ==
              range.startContainer.ELEMENT_NODE) &&
             (range.startContainer == range.endContainer) &&
@@ -729,7 +744,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     select_container: function(element) {
         var self = this;
         try {
-            var range = getSelection().getRangeAt(0);
+            var range = window.getSelection().getRangeAt(0);
             range.setStartBefore(element);
             range.setEndAfter(element);
         } catch(e) {

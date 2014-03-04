@@ -3,7 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
-import grokcore.component
+import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
 import re
@@ -194,11 +194,11 @@ class LayoutDependency(object):
         return workflow.date_last_published < dc.modified
 
 
-class SearchableText(grokcore.component.Adapter):
+class SearchableText(grok.Adapter):
     """SearchableText for an article."""
 
-    grokcore.component.context(zeit.content.article.interfaces.IArticle)
-    grokcore.component.implements(zope.index.text.interfaces.ISearchableText)
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.implements(zope.index.text.interfaces.ISearchableText)
 
     def getSearchableText(self):
         main_text = []
@@ -222,7 +222,7 @@ class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
         return True
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def ensure_division_handler(context, event):
@@ -230,7 +230,7 @@ def ensure_division_handler(context, event):
     body.ensure_division()
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def set_default_values(context, event):
@@ -238,10 +238,22 @@ def set_default_values(context, event):
         context, zeit.content.article.interfaces.IArticle)
 
 
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def ensure_block_ids(context, event):
+    body = zeit.content.article.edit.interfaces.IEditableBody(context)
+    # Keys are generated on demand, so we force this once, otherwise a
+    # consistent result is not guaranteed (since different requests might
+    # overlap and thus generate different keys).
+    body.keys()
+    body.ensure_division()
+
+
 DOUBLE_QUOTE_CHARACTERS = re.compile(u'[\u201c\u201d\u201e\u201f\u00ab\u00bb]')
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def normalize_quotation_marks(context, event):
