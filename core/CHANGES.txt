@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 2.0.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- zeit.content.image has its own egg now.
 
 
 2.0.2 (2014-02-10)
