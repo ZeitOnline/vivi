@@ -1,0 +1,7 @@
+zeit.content.text changes
+=========================
+
+2.0.0 (unreleased)
+------------------
+
+- Extracted from zeit.cms egg.
