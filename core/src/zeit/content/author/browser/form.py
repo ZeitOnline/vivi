@@ -94,10 +94,9 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 
     def create(self, data):
         self.confirmed_duplicate = data.pop('confirmed_duplicate', None)
-        new_object = self.factory()
         data['__name__'] = 'index'
-        self.applyChanges(new_object, data)
-        return new_object
+        self.applyChanges(self.new_object, data)
+        return self.new_object
 
     def ask_before_adding_author_twice(self, author):
         if self.confirmed_duplicate or not author.exists:
