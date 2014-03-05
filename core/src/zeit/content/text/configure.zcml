@@ -1,0 +1,19 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
+
+  <class class=".text.Text">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.IText"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IText"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>

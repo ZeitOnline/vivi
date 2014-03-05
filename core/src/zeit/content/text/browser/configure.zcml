@@ -1,0 +1,52 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zeit.cms">
+
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    name="zeit.content.text.Add"
+    permission="zeit.AddContent"
+    class=".form.Add"
+    menu="zeit-add-menu" title="Plain text"
+    />
+
+  <browser:page
+    for="zeit.content.text.interfaces.IText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".form.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit"
+    />
+
+
+  <browser:page
+    for="zeit.content.text.interfaces.IText"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    class=".form.Display"
+    permission="zope.View"
+    menu="zeit-context-views" title="View"
+    />
+
+  <browser:icon
+    for="zeit.content.text.interfaces.IText"
+    layer="zeit.cms.browser.interfaces.ICMSOldStyles"
+    name="zmi_icon"
+    width="18"
+    height="18"
+    file="texticon.png"
+    />
+
+  <browser:icon
+    for="zeit.content.text.interfaces.IText"
+    layer="zeit.cms.browser.interfaces.ICMSStyles"
+    name="zmi_icon"
+    width="20"
+    height="20"
+    file="vivi/texticon.png"
+    />
+
+</configure>
+
