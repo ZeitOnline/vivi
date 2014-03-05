@@ -18,23 +18,17 @@ class ImageReferenceProperty(
         zeit.cms.content.reference.SingleReferenceProperty):
 
     def __set__(self, instance, value):
-        if value is None:
-            instance.xml.attrib.pop('src', None)
-            instance.xml.attrib.pop('base-id', None)
-            super(ImageReferenceProperty, self).__set__(instance, value)
-            instance.is_empty = True
-            return
-
         saved_attributes = {name: getattr(instance, name) for name in [
             '__name__',
             'layout',
+            'set_manually',
         ]}
 
         super(ImageReferenceProperty, self).__set__(instance, value)
 
-        for name, value in saved_attributes.items():
-            setattr(instance, name, value)
-        instance.is_empty = False
+        for name, val in saved_attributes.items():
+            setattr(instance, name, val)
+        instance.is_empty = (value is None)
         instance._p_changed = True
 
 

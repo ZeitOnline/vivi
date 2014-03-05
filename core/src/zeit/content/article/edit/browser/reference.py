@@ -46,7 +46,7 @@ class EditImage(EditBase):
         result = super(EditImage, self).handle_edit_action.success(data)
         # needs to happen afterwards, since setting self.context.references
         # might replace the XML node, thus taking the attribute away
-        if self.context.references is not None:
+        if self.context.references:
             self.context.set_manually = True
         else:
             self.context.set_manually = False
