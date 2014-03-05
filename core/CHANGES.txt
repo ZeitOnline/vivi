@@ -12,6 +12,8 @@ zeit.cms changes
 
 - Write breadcrumb_title into XML references for ICommonMetadata (VIV-324).
 
+- Add ``SingleReferenceProperty`` for single-valued references (VIV-305).
+
 - Use py.test runner.
 
 
@@ -44,7 +46,7 @@ zeit.cms changes
 
 - ICommonMetadata now uses reference objects for authors (VIV-273).
 
-- Add ``ReferenceProperty`` for qualified references between conten objects,
+- Add ``ReferenceProperty`` for qualified references between content objects,
   and corresponding ``ReferenceSequenceWidget`` (VIV-274, VIV-276).
 
 - Add autocompleteable source for locations (VIV-275).

@@ -188,6 +188,14 @@
       />
   </class>
 
+  <class class=".reference.EmptyReference">
+    <require
+      permission="zope.View"
+      interface=".interfaces.IReference"
+      />
+  </class>
+
+
   <!-- XXX AbsoluteURL can be accessed in two ways, and one doesn't delegate to
        the other -->
   <adapter
@@ -208,6 +216,18 @@
   <subscriber
     factory=".reference.Traverser"
     for="zeit.cms.content.interfaces.IReferences
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.cms.content.interfaces.IReference
+    zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <subscriber
+    factory=".reference.Traverser"
+    for="zeit.cms.content.interfaces.IReference
     zeit.cms.browser.interfaces.ICMSLayer"
     provides="z3c.traverser.interfaces.ITraverserPlugin"
     />

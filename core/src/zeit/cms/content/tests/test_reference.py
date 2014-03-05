@@ -4,6 +4,7 @@
 from mock import Mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.reference import ReferenceProperty
+from zeit.cms.content.reference import SingleReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import urllib
@@ -146,6 +147,53 @@ class ReferencePropertyTest(
             self.repository['content'].xml.body.references.reference.title)
 
 
+class SingleReferenceFixture(ReferenceFixture):
+
+    def setUp(self):
+        super(SingleReferenceFixture, self).setUp()
+        TestContentType.references = SingleReferenceProperty(
+            '.body.references.reference', 'test')
+
+
+class SingleReferencePropertyTest(
+        SingleReferenceFixture, zeit.cms.testing.FunctionalTestCase):
+
+    # XXX This checks basically the same API as the ReferencePropertyTest
+    # above, but I'm not sure the benefits of reducing the duplicated test code
+    # by extracting the mechanics of setting/getting references outweigh the
+    # reduced readiblity.
+
+    def test_referenced_content_is_accessible_through_reference(self):
+        content = self.repository['content']
+        content._p_jar = Mock()  # make _p_changed work
+        # Check that we can call create() on an empty reference.
+        content.references = content.references.create(
+            self.repository['target'])
+        # Check that we can call create() on a filled reference.
+        content.references = content.references.create(
+            self.repository['target'])
+        self.assertTrue(content._p_changed)
+        self.assertEqual(
+            'http://xml.zeit.de/target', content.references.target.uniqueId)
+
+    def test_setting_to_empty_removes_reference(self):
+        content = self.repository['content']
+        content.references = content.references.create(
+            self.repository['target'])
+        content.references = None
+        self.assertFalse(content.references)
+        # This is important for formlib
+        self.assertEqual(None, content.references)
+
+    def test_works_with_security(self):
+        content = zope.security.proxy.ProxyFactory(self.repository['content'])
+        target = zope.security.proxy.ProxyFactory(self.repository['target'])
+        content.references = content.references.create(target)
+        content.references = content.references.create(target)
+        self.assertEqual(
+            'http://xml.zeit.de/target', content.references.target.uniqueId)
+
+
 class MultiResourceTest(
         ReferenceFixture, zeit.cms.testing.FunctionalTestCase):
 
@@ -183,13 +231,18 @@ class MultiResourceTest(
             u'bar', body['references']['reference']['title'])
 
 
-class ReferenceTraversalTest(
-        ReferenceFixture, zeit.cms.testing.FunctionalTestCase):
+class ReferenceTraversalBase(object):
+
+    def set_reference(self, obj, value):
+        raise NotImplementedError()
+
+    def get_reference(self, obj):
+        raise NotImplementedError()
 
     def test_absolute_url(self):
         with checked_out(self.repository['content']) as co:
-            co.references = (co.references.create(
-                self.repository['target']),)
+            self.set_reference(co, co.references.create(
+                self.repository['target']))
         b = zope.testbrowser.testing.Browser()
         zope.security.management.endInteraction()
         b.addHeader('Authorization', 'Basic user:userpw')
@@ -197,15 +250,38 @@ class ReferenceTraversalTest(
         try:
             b.open(
                 'http://localhost/++skin++vivi/@@redirect_to?unique_id=%s' % (
-                    urllib.quote_plus(content.references[0].uniqueId)))
+                    urllib.quote_plus(self.get_reference(content).uniqueId)))
         except urllib2.HTTPError, e:
             self.assertEqual(404, e.getcode())
             self.assertIn('/repository/content/++attribute++references', b.url)
 
     def test_adapting_reference_url_to_cmscontent(self):
         content = self.repository['content']
-        content.references = (content.references.create(
-            self.repository['target']),)
+        self.set_reference(content, content.references.create(
+            self.repository['target']))
+        reference = self.get_reference(content)
         self.assertEqual(
-            content.references[0].target.uniqueId,
-            ICMSContent(content.references[0].uniqueId).target.uniqueId)
+            reference.target.uniqueId,
+            ICMSContent(reference.uniqueId).target.uniqueId)
+
+
+class ReferenceTraversalTest(
+        ReferenceFixture, ReferenceTraversalBase,
+        zeit.cms.testing.FunctionalTestCase):
+
+    def set_reference(self, obj, value):
+        obj.references = (value,)
+
+    def get_reference(self, obj):
+        return obj.references[0]
+
+
+class SingleReferenceTraversalTest(
+        SingleReferenceFixture, ReferenceTraversalBase,
+        zeit.cms.testing.FunctionalTestCase):
+
+    def set_reference(self, obj, value):
+        obj.references = value
+
+    def get_reference(self, obj):
+        return obj.references

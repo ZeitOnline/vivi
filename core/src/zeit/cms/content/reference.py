@@ -41,6 +41,7 @@ class ReferenceProperty(object):
                 name=self.xml_reference_name)
             if reference is not None and reference.target is not None:
                 reference.attribute = attribute
+                reference.xml_reference_name = self.xml_reference_name
                 result.append(reference)
         return References(
             result, source=instance, attribute=attribute,
@@ -87,6 +88,69 @@ class ReferenceProperty(object):
 
     def update_metadata(self, instance):
         for reference in self.__get__(instance, None):
+            reference.update_metadata()
+
+    @staticmethod
+    def create_reference(source, attribute, target, xml_reference_name):
+        try:
+            element = zope.component.getAdapter(
+                target, zeit.cms.content.interfaces.IXMLReference,
+                name=xml_reference_name)
+        except zope.component.ComponentLookupError:
+            raise ValueError(
+                ("Could not create XML reference type '%s' for %s "
+                 "(referenced by %s).") % (
+                xml_reference_name, target.uniqueId, source.uniqueId))
+        reference = zope.component.queryMultiAdapter(
+            (source, element), zeit.cms.content.interfaces.IReference,
+            name=xml_reference_name)
+        reference.attribute = attribute
+        reference.xml_reference_name = xml_reference_name
+        return reference
+
+    @staticmethod
+    def find_reference(source, attribute, target, default=None):
+        if zeit.cms.interfaces.ICMSContent.providedBy(target):
+            target = target.uniqueId
+        result = None
+        value = getattr(source, attribute, ())
+        if not isinstance(value, tuple):
+            # We must support both multi-valued and single-valued reference
+            # properties here, since our clients cannot know which kind it is.
+            value = (value,)
+        for reference in value:
+            if reference.target_unique_id == target:
+                if result is not None:
+                    raise ValueError(
+                        '%s has more than one reference to %s on %s' %
+                        (source.uniqueId, target, attribute))
+                result = reference
+        if result is not None:
+            return result
+        return default
+
+
+class SingleReferenceProperty(ReferenceProperty):
+
+    def __get__(self, instance, class_):
+        if instance is None:
+            return self
+        value = super(SingleReferenceProperty, self).__get__(instance, class_)
+        if value:
+            return value[0]
+        attribute = self.__name__(instance)
+        return EmptyReference(instance, attribute, self.xml_reference_name)
+
+    def __set__(self, instance, value):
+        if value is None:
+            value = ()
+        else:
+            value = (value,)
+        super(SingleReferenceProperty, self).__set__(instance, value)
+
+    def update_metadata(self, instance):
+        reference = self.__get__(instance, None)
+        if reference:
             reference.update_metadata()
 
 
@@ -139,36 +203,43 @@ class References(tuple):
         return self
 
     def create(self, target):
-        try:
-            element = zope.component.getAdapter(
-                target, zeit.cms.content.interfaces.IXMLReference,
-                name=self.xml_reference_name)
-        except zope.component.ComponentLookupError:
-            raise ValueError(
-                ("Could not create XML reference type '%s' for %s "
-                 "(referenced by %s).") % (
-                self.xml_reference_name,
-                target.uniqueId, self.source.uniqueId))
-        reference = zope.component.queryMultiAdapter(
-            (self.source, element), zeit.cms.content.interfaces.IReference,
-            name=self.xml_reference_name)
-        reference.attribute = self.attribute
-        return reference
+        return ReferenceProperty.create_reference(
+            self.source, self.attribute, target, self.xml_reference_name)
 
     def get(self, target, default=None):
-        if zeit.cms.interfaces.ICMSContent.providedBy(target):
-            target = target.uniqueId
-        result = None
-        for reference in self:
-            if reference.target_unique_id == target:
-                if result is not None:
-                    raise ValueError(
-                        '%s has more than one reference to %s on %s' %
-                        (self.source.uniqueId, target, self.attribute))
-                result = reference
-        if result is not None:
-            return result
+        return ReferenceProperty.find_reference(
+            self.source, self.attribute, target, default)
+
+
+class EmptyReference(object):
+
+    zope.interface.implements(zeit.cms.content.interfaces.IReference)
+
+    target = None
+    target_unique_id = None
+    # XXX Do we need non-fake values for ILocation?
+    __parent__ = None
+    __name__ = None
+
+    def __init__(self, source, attribute, xml_reference_name):
+        self.source = source
+        self.attribute = attribute
+        self.xml_reference_name = xml_reference_name
+
+    def create(self, target):
+        return ReferenceProperty.create_reference(
+            self.source, self.attribute, target, self.xml_reference_name)
+
+    def get(self, target, default=None):
         return default
+
+    def __nonzero__(self):
+        return False
+
+    def __eq__(self, other):
+        if isinstance(other, type(self)):
+            return True
+        return other is None
 
 
 ID_PREFIX = 'reference://'
@@ -182,7 +253,9 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
     grok.implements(zeit.cms.content.interfaces.IReference)
     grok.baseclass()
 
-    attribute = None  # XXX kludgy: must be set after adapter call by client
+    # XXX kludgy: These must be set manually after adapter call by clients.
+    attribute = None
+    xml_reference_name = None
 
     def __init__(self, context, element):
         self.xml = element
@@ -190,8 +263,9 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
         self.__parent__ = context
 
     def __setattr__(self, key, value):
-        # XXX the kludge around self.attribute continues
-        if key != 'attribute' and not key.startswith('_p_'):
+        # XXX the kludge around our attributes continues
+        if (key not in ['attribute', 'xml_reference_name']
+            and not key.startswith('_p_')):
             self._p_changed = True
         # skip immediate superclass since it has the bevaiour we want to change
         super(zeit.cms.content.xmlsupport.Persistent, self).__setattr__(
@@ -208,6 +282,14 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
     @property
     def target(self):
         return zeit.cms.interfaces.ICMSContent(self.target_unique_id, None)
+
+    def get(self, target, default=None):
+        return ReferenceProperty.find_reference(
+            self.__parent__, self.attribute, target, default)
+
+    def create(self, target):
+        return ReferenceProperty.create_reference(
+            self.__parent__, self.attribute, target, self.xml_reference_name)
 
     def update_metadata(self):
         if self.target is None:

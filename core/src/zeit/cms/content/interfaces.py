@@ -387,6 +387,14 @@ class IReference(IXMLRepresentation,
     attribute = zope.interface.Attribute(
         'Attribute name of reference property on source')
 
+    def create(target):
+        """Create a new references from our source to the given target
+        (either an ICMSContent or a uniqueId)."""
+
+    def get(target, default=None):
+        """If our source has a reference to the given target
+        (ICMSContent or uniqueId), return that, else return default."""
+
     def update_metadata():
         """Run XMLReferenceUpdater on our XML node."""
 
