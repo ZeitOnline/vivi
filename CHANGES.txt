@@ -4,7 +4,7 @@ zeit.newsletter changes
 0.4 (unreleased)
 ----------------
 
-- Nothing changed yet.
+- zeit.content.image has its own egg now.
 
 
 0.3 (2014-02-10)
