@@ -183,21 +183,10 @@ class VideoEmptyMarker(
 
     block_type = 'video'
 
-    def create_reference(self):
+    def create_target(self):
         from zeit.content.video.video import Video
         self.repository['video'] = Video()
         return self.repository['video']
 
-    def test_block_is_not_empty_after_setting_reference(self):
-        block = self.create_block()
-        block.video = self.create_reference()
-        zope.lifecycleevent.modified(block)
-        self.assertFalse(block.is_empty)
-
-    def test_block_is_empty_after_removing_reference(self):
-        block = self.create_block()
-        block.video = self.create_reference()
-        zope.lifecycleevent.modified(block)
-        block.video = None
-        zope.lifecycleevent.modified(block)
-        self.assertTrue(block.is_empty)
+    def set_reference(self, block, target):
+        block.video = target

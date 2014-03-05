@@ -17,11 +17,19 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.get_article(with_empty_block=True)
         b = self.browser
         b.open('editable-body/blockname/@@edit-image?show_form=1')
-        b.getControl('Custom image sub text').value = 'foo bar'
+        b.getControl('Layout').displayValue = ['large']
         b.getControl('Apply').click()
         b.open('@@edit-image?show_form=1')  # XXX
         self.assertEqual(
-            'foo bar', b.getControl('Custom image sub text').value)
+            ['large'], b.getControl('Layout').displayValue)
+
+    def get_image_block(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+                article = list(wc.values())[0]
+                image_block = IEditableBody(article)['blockname']
+                return image_block
 
     def test_setting_image_reference_also_sets_manual_flag(self):
         # so that the copying mechanism from IImages knows to leave the block
@@ -32,12 +40,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         b.getControl(name='EditImage.blockname.references').value = image_id
         b.getControl('Apply').click()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                article = list(wc.values())[0]
-                image_block = IEditableBody(article)['blockname']
-                self.assertTrue(image_block.set_manually)
+        self.assertTrue(self.get_image_block().set_manually)
 
     def test_removing_image_reference_removes_manual_flag(self):
         self.get_article(with_empty_block=True)
@@ -45,12 +48,7 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         b.open('editable-body/blockname/@@edit-image?show_form=1')
         b.getControl(name='EditImage.blockname.references').value = ''
         b.getControl('Apply').click()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
-                article = list(wc.values())[0]
-                image_block = IEditableBody(article)['blockname']
-                self.assertFalse(image_block.set_manually)
+        self.assertFalse(self.get_image_block().set_manually)
 
 
 class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
@@ -71,23 +69,6 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent(select)
         s.assertSelectedLabel(select, 'small')
-
-    def test_custom_caption_should_be_editable(self):
-        s = self.selenium
-        self.add_article()
-        self.create_block('image')
-        # Article always has one image block already
-        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
-        text = 'css=.block.type-image form.wired textarea'
-        s.waitForElementPresent(text)
-        s.assertValue(text, '')
-        s.type(text, 'A custom caption')
-        s.fireEvent(text, 'blur')
-        s.waitForElementNotPresent('css=.field.dirty')
-        # Re-open the page and verify that the data is still there
-        s.clickAndWait('link=Edit contents')
-        s.waitForElementPresent(text)
-        s.assertValue(text, 'A custom caption')
 
     def test_widget_shows_add_button(self):
         # this ensures that the widget can find the Article (to determine
@@ -201,6 +182,25 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             'css=#form-article-content-main-image .image_details')
         s.waitForElementPresent(
             'css=#editable-body .image_details')
+
+    def test_metadata_can_be_overridden_locally(self):
+        self.add_image_to_clipboard()
+        s = self.selenium
+        # Article always has one image block already
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
+        s.dragAndDropToObject(
+            '//li[@uniqueid="Clip/my_image"]',
+            'css=.action-article-body-content-droppable')
+        s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
+        # ensure object-details are displayed
+        s.waitForElementPresent('css=.block.type-image .image_details')
+
+        text = 'css=.block.type-image form.wired textarea'
+        s.waitForElementPresent(text)
+        s.assertValue(text, '')
+        s.type(text, 'A custom caption')
+        s.fireEvent(text, 'blur')
+        s.waitForElementNotPresent('css=.field.dirty')
 
 
 class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):

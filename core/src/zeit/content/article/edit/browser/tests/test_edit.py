@@ -25,7 +25,7 @@ class TextViewHelper(object):
         super(TextViewHelper, self).setUp()
         self.patches = gocept.testing.mock.Patches()
         fake_uuid = mock.Mock()
-        fake_uuid.side_effect = lambda: str(fake_uuid.call_count)
+        fake_uuid.side_effect = lambda: 'id-%s' % fake_uuid.call_count
         self.patches.add(
             'zeit.edit.container.Base._generate_block_id', fake_uuid)
 
@@ -60,21 +60,22 @@ class SaveTextTest(TextViewHelper,
 
     def test_update_should_remove_given_paragrahs(self):
         view = self.get_view()
-        self.assertEqual(['2', '3', '4', '5', '6'], view.context.keys())
-        view.request.form['paragraphs'] = ['5', '6']
+        self.assertEqual(
+            ['id-2', 'id-3', 'id-4', 'id-5', 'id-6'], view.context.keys())
+        view.request.form['paragraphs'] = ['id-5', 'id-6']
         view.request.form['text'] = []
         view.update()
-        self.assertEqual(['2', '3', '4'], view.context.keys())
+        self.assertEqual(['id-2', 'id-3', 'id-4'], view.context.keys())
 
     def test_update_should_add_new_paragraphs_where_old_where_removed(self):
         view = self.get_view()
-        view.request.form['paragraphs'] = ['2', '3']
+        view.request.form['paragraphs'] = ['id-2', 'id-3']
         view.request.form['text'] = [
             dict(factory='p', text='Hinter'),
             dict(factory='p', text='den'),
             dict(factory='p', text='Wortbergen')]
         view.update()
-        self.assertEqual(['7', '8', '9', '4', '5', '6'],
+        self.assertEqual(['id-7', 'id-8', 'id-9', 'id-4', 'id-5', 'id-6'],
                          view.context.keys())
 
     def test_update_should_append_when_no_paragraphs_are_replaced(self):
@@ -85,8 +86,9 @@ class SaveTextTest(TextViewHelper,
             dict(factory='p', text='den'),
             dict(factory='p', text='Wortbergen')]
         view.update()
-        self.assertEqual(['2', '3', '4', '5', '6', '7', '8', '9'],
-                         view.context.keys())
+        self.assertEqual(
+            ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'],
+            view.context.keys())
 
     def test_update_should_remove_empty_paragraphs(self):
         view = self.get_view()
@@ -96,8 +98,9 @@ class SaveTextTest(TextViewHelper,
             dict(factory='p', text='den'),
             dict(factory='p', text='Wortbergen')]
         view.update()
-        self.assertEqual(['2', '3', '4', '5', '6', '7', '8', '9'],
-                         view.context.keys())
+        self.assertEqual(
+            ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'],
+            view.context.keys())
 
     def test_update_should_trigger_reload_of_body(self):
         view = self.get_view()
@@ -113,18 +116,18 @@ class SaveTextTest(TextViewHelper,
 
     def test_unknown_factories_are_mapped_to_p(self):
         view = self.get_view()
-        view.request.form['paragraphs'] = ['2', '3']
+        view.request.form['paragraphs'] = ['id-2', 'id-3']
         view.request.form['text'] = [
             dict(factory='iaminvalid', text='Hinter')]
         view.update()
-        self.assertEqual('p', view.context['7'].type)
+        self.assertEqual('p', view.context['id-7'].type)
 
     def test_wild_html_should_be_munged_into_paragraph(self):
         view = self.get_view()
-        view.request.form['paragraphs'] = ['2', '3']
+        view.request.form['paragraphs'] = ['id-2', 'id-3']
         view.request.form['text'] = [{'text': u'\n<h3 class="supertitle"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">Vergewaltigungsverdacht</a></h3>\n<h4 class="title"><a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange" rel="bookmark">Britische Polizei verhaftet Julian Assange</a></h4>\n<p>Julian Assange wollte sich "freiwillig" mit der britischen Polizei \ntreffen, doch jetzt klickten die Handschellen. Der untergetauchte \nWikileaks-Gr\xfcnder wurde verhaftet.&nbsp;\n\t    <a href="http://www.zeit.de/gesellschaft/zeitgeschehen/2010-12/asasange-festnahme-grossbritannien" class="more-link" rel="no-follow" title="Vergewaltigungsverdacht - Britische Polizei verhaftet Julian Assange">[weiter\u2026]</a></p>\n', 'factory': 'div'}, {'text': '\n<a><strong></strong></a>', 'factory': 'p'}]
         view.update()
-        self.assertEqual('p', view.context['7'].type)
+        self.assertEqual('p', view.context['id-7'].type)
 
 
 class AutoSaveTextTest(TextViewHelper,
@@ -141,7 +144,7 @@ class AutoSaveTextTest(TextViewHelper,
             dict(factory='p', text='Wortbergen')]
         view.update()
         result = json.loads(view.render())
-        self.assertEqual(['2', '3', '4'], result['data']['new_ids'])
+        self.assertEqual(['id-2', 'id-3', 'id-4'], result['data']['new_ids'])
 
 
 class TestTextEditing(

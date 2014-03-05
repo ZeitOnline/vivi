@@ -5,15 +5,31 @@ from zeit.cms.i18n import MessageFactory as _
 import grokcore.component
 import lxml.objectify
 import zeit.cms.checkout.interfaces
-import zeit.cms.content.interfaces
-import zeit.cms.interfaces
-import zeit.content.article.edit.block
+import zeit.cms.content.reference
 import zeit.content.article.edit.interfaces
 import zeit.content.article.edit.reference
 import zeit.content.article.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.interfaces
-import zope.component
+import zope.lifecycleevent
+
+
+class ImageReferenceProperty(
+        zeit.cms.content.reference.SingleReferenceProperty):
+
+    def __set__(self, instance, value):
+        saved_attributes = {name: getattr(instance, name) for name in [
+            '__name__',
+            'layout',
+            'set_manually',
+        ]}
+
+        super(ImageReferenceProperty, self).__set__(instance, value)
+
+        for name, val in saved_attributes.items():
+            setattr(instance, name, val)
+        instance.is_empty = (value is None)
+        instance._p_changed = True
 
 
 class Image(zeit.content.article.edit.reference.Reference):
@@ -22,20 +38,10 @@ class Image(zeit.content.article.edit.reference.Reference):
         zeit.content.article.edit.interfaces.IImage)
     type = 'image'
 
+    references = ImageReferenceProperty('.', 'image')
+
     layout = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'layout', zeit.content.article.edit.interfaces.IImage['layout'])
-
-    _custom_caption = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'custom-caption',
-        zeit.content.article.edit.interfaces.IImage['custom_caption'])
-
-    title = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'title',
-        zeit.content.article.edit.interfaces.IImage['title'])
-
-    alt = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'alt',
-        zeit.content.article.edit.interfaces.IImage['alt'])
 
     # XXX this is a stopgap to fix #11730. The proper solution involves
     # a real Reference object, see #10686.
@@ -49,53 +55,6 @@ class Image(zeit.content.article.edit.reference.Reference):
             self.layout = zeit.content.article.edit.interfaces.IImage[
                 'layout'].default
 
-    @property
-    def references(self):
-        # the IXMLReference of type 'image' could be for both,
-        # IImage (src attribute) or IImageGroup (base-id attribute)
-        unique_id = self.xml.get('src') or self.xml.get('base-id')
-        return zeit.cms.interfaces.ICMSContent(unique_id, None)
-
-    @references.setter
-    def references(self, value):
-        if value is None:
-            self.xml.attrib.pop('src', None)
-            self.xml.attrib.pop('base-id', None)
-            self.is_empty = True
-            return
-
-        node = zope.component.getAdapter(
-            value, zeit.cms.content.interfaces.IXMLReference,
-            name='image')
-        saved_attributes = {name: getattr(self, name) for name in [
-            '__name__',
-            'alt',
-            'custom_caption',
-            'layout',
-            'title',
-        ]}
-
-        self.xml.getparent().replace(self.xml, node)
-        self.xml = node
-
-        for name, value in saved_attributes.items():
-            setattr(self, name, value)
-        self.is_empty = False
-        self._p_changed = True
-
-    @property
-    def custom_caption(self):
-        return self._custom_caption
-
-    @custom_caption.setter
-    def custom_caption(self, value):
-        self._custom_caption = value
-        self.xml['bu'] = value
-        if not value:
-            metadata = zeit.content.image.interfaces.IImageMetadata(
-                self.references, None)
-            self.xml['bu'] = getattr(metadata, 'caption', value)
-
 
 class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 
@@ -108,7 +67,8 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
 def factor_image_block_from_image(body, image):
     block = Factory(body)()
-    block.references = image
+    block.references = (block.references.get(image)
+                        or block.references.create(image))
     return block
 
 
@@ -116,9 +76,7 @@ def factor_image_block_from_image(body, image):
                             zeit.content.image.interfaces.IImageGroup)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
 def factor_image_block_from_imagegroup(body, group):
-    block = Factory(body)()
-    block.references = group
-    return block
+    return factor_image_block_from_image(body, group)
 
 
 @grokcore.component.subscribe(

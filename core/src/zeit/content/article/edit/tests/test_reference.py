@@ -189,9 +189,6 @@ class TestMetadataUpdate(zeit.content.article.testing.FunctionalTestCase):
         from zeit.content.infobox.infobox import Infobox
         self.assert_updated(Infobox(), 'infobox')
 
-    def test_image_metadata_should_be_updated(self):
-        self.assert_updated(self.repository['2006']['DSC00109_2.JPG'], 'image')
-
 
 class EmptyMarkerTest(object):
 
@@ -200,8 +197,11 @@ class EmptyMarkerTest(object):
     def create_block(self):
         return self.get_factory(self.get_article(), self.block_type)()
 
-    def create_reference(self):
+    def create_target(self):
         raise NotImplementedError()
+
+    def set_reference(self, block, target):
+        block.references = target
 
     def test_block_is_empty_after_creation(self):
         block = self.create_block()
@@ -217,15 +217,15 @@ class EmptyMarkerTest(object):
 
     def test_block_is_not_empty_after_setting_reference(self):
         block = self.create_block()
-        block.references = self.create_reference()
+        self.set_reference(block, self.create_target())
         zope.lifecycleevent.modified(block)
         self.assertFalse(block.is_empty)
 
     def test_block_is_empty_after_removing_reference(self):
         block = self.create_block()
-        block.references = self.create_reference()
+        self.set_reference(block, self.create_target())
         zope.lifecycleevent.modified(block)
-        block.references = None
+        self.set_reference(block, None)
         zope.lifecycleevent.modified(block)
         self.assertTrue(block.is_empty)
 
@@ -234,7 +234,7 @@ class EmptyMarkerTest(object):
         body = zeit.content.article.edit.body.EditableBody(
             article, article.xml.body)
         block = zope.component.getMultiAdapter(
-            (body, self.create_reference()), zeit.edit.interfaces.IElement)
+            (body, self.create_target()), zeit.edit.interfaces.IElement)
         self.assertFalse(block.is_empty)
 
 
@@ -243,8 +243,14 @@ class ImageEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
 
     block_type = 'image'
 
-    def create_reference(self):
+    def create_target(self):
         return self.repository['2006']['DSC00109_2.JPG']
+
+    def set_reference(self, block, target):
+        if target is None:
+            block.references = target
+        else:
+            block.references = block.references.create(target)
 
 
 class GalleryEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
@@ -252,7 +258,7 @@ class GalleryEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
 
     block_type = 'gallery'
 
-    def create_reference(self):
+    def create_target(self):
         from zeit.content.gallery.gallery import Gallery
         self.repository['gallery'] = Gallery()
         return self.repository['gallery']
@@ -263,7 +269,7 @@ class PortraitboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
 
     block_type = 'portraitbox'
 
-    def create_reference(self):
+    def create_target(self):
         from zeit.content.portraitbox.portraitbox import Portraitbox
         self.repository['portraitbox'] = Portraitbox()
         return self.repository['portraitbox']
@@ -274,7 +280,7 @@ class InfoboxEmptyMarker(zeit.content.article.testing.FunctionalTestCase,
 
     block_type = 'infobox'
 
-    def create_reference(self):
+    def create_target(self):
         from zeit.content.infobox.infobox import Infobox
         self.repository['infobox'] = Infobox()
         return self.repository['infobox']

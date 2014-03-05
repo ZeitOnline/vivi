@@ -176,8 +176,10 @@ def factor_block_from_portraitbox(body, context):
 def update_reference_metadata(article, event):
     body = zeit.content.article.edit.interfaces.IEditableBody(article)
     for block in body.values():
-        reference = zeit.content.article.edit.interfaces.IReference(
-            block, None)
-        if reference is not None and reference.references is not None:
+        if (zeit.content.article.edit.interfaces.IImage.providedBy(block)
+            and block.references is not None):
+            type(block).references.update_metadata(block)
+        elif (zeit.content.article.edit.interfaces.IReference.providedBy(block)
+              and block.references is not None):
             # Re-assigning the old value updates xml metadata
-            reference.references = reference.references
+            block.references = block.references
