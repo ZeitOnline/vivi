@@ -20,6 +20,7 @@ setup(
         'setuptools',
         'zeit.cms>=2.15.0.dev0',
         'zeit.imp>=0.15.0.dev0',
+        'zeit.content.image',
         'zeit.wysiwyg',
         'zope.app.appsetup',
         'zope.app.testing',
