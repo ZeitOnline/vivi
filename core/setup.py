@@ -1,0 +1,32 @@
+from setuptools import setup, find_packages
+
+setup(
+    name='zeit.content.link',
+    version='2.0.0.dev0',
+    author='gocept',
+    author_email='mail@gocept.com',
+    url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
+    description="ZEIT Link",
+    packages=find_packages('src'),
+    package_dir={'': 'src'},
+    include_package_data=True,
+    zip_safe=False,
+    license='gocept proprietary',
+    namespace_packages=['zeit', 'zeit.content'],
+    install_requires=[
+        'cssselect',
+        'Pillow',
+        'gocept.form',
+        'setuptools',
+        'zeit.cms>=2.15.0.dev0',
+        'zeit.content.image',
+        'zope.app.appsetup',
+        'zope.app.testing',
+        'zope.component',
+        'zope.formlib',
+        'zope.interface',
+        'zope.publisher',
+        'zope.security',
+        'zope.testing',
+    ],
+)
