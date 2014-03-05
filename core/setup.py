@@ -109,7 +109,6 @@ setup(
             'zeit_cms_tagging=zeit.cms.tagging.browser.resources:lib',
             'zeit_cms_clipboard=zeit.cms.clipboard.browser.resources:lib',
             'zeit_cms_sitecontrol=zeit.cms.sitecontrol.resources:lib',
-            'zeit_content_image=zeit.content.image.browser.resources:lib',
             'zeit_workflow=zeit.workflow.browser.resources:lib',
 
             'zc_table=zeit.cms.browser.resources:zc_table',
