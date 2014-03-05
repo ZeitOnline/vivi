@@ -14,7 +14,7 @@ zeit.cms changes
 
 - Add ``SingleReferenceProperty`` for single-valued references (VIV-305).
 
-- Extract zeit.content.image into its own egg.
+- Extract zeit.content.image and zeit.content.link into their own eggs.
 
 - Use py.test runner.
 
