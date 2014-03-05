@@ -34,6 +34,7 @@ setup(
         'setuptools',
         'zc.sourcefactory',
         'zeit.cms>=2.15.0.dev0',
+        'zeit.content.image',
         'zeit.content.quiz>=0.4.2',
         'zeit.content.video',
         'zeit.edit >= 2.1.3',
