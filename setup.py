@@ -22,6 +22,7 @@ setup(
         'zeit.cms>=2.15.0.dev0',
         'zeit.content.article',
         'zeit.content.image>=2.0.0.dev0',
+        'zeit.content.link',
         'zeit.content.quiz',
         'zeit.content.rawxml',
         'zeit.content.video',

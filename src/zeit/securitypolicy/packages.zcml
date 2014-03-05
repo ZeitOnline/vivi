@@ -9,6 +9,9 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
+  <include package="zeit.content.link" />
+  <include package="zeit.content.link.browser" />
+
   <include package="zeit.content.rawxml" />
   <include package="zeit.content.rawxml.browser" />
 

@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.1.2 (unreleased)
 ------------------
 
-- zeit.content.image has its own egg now.
+- zeit.content.image and zeit.content.link have their own eggs now.
 
 
 2.1.1 (2014-01-07)
