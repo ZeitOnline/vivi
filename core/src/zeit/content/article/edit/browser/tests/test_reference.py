@@ -17,11 +17,11 @@ class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
         self.get_article(with_empty_block=True)
         b = self.browser
         b.open('editable-body/blockname/@@edit-image?show_form=1')
-        b.getControl('Custom image sub text').value = 'foo bar'
+        b.getControl('Layout').displayValue = ['large']
         b.getControl('Apply').click()
         b.open('@@edit-image?show_form=1')  # XXX
         self.assertEqual(
-            'foo bar', b.getControl('Custom image sub text').value)
+            ['large'], b.getControl('Layout').displayValue)
 
     def test_setting_image_reference_also_sets_manual_flag(self):
         # so that the copying mechanism from IImages knows to leave the block
