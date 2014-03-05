@@ -223,3 +223,9 @@ class IReferences(zope.interface.Interface):
 
 class IMasterImage(zope.interface.Interface):
     """Marks an image in an image group as master for the other images."""
+
+
+class IImageReference(zeit.cms.content.interfaces.IReference,
+                      IImageMetadata):
+    """Reference to an image, allows overriding metadata locally for the
+    referring content object."""
