@@ -8,6 +8,7 @@ import zeit.cms.repository.browser.file
 import zeit.content.image.browser.interfaces
 import zeit.content.image.image
 import zeit.content.image.interfaces
+import zeit.edit.browser.form
 import zope.formlib.form
 
 
@@ -82,3 +83,17 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
                 [blob], self.prefix, self.context, self.request,
                 adapters=self.adapters, ignore_request=ignore_request)
         return widgets
+
+
+class EditReference(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'reference-details'
+    undo_description = _('edit image')
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.image.interfaces.IImageReference,
+        # support read-only mode, see
+        # zeit.content.article.edit.browser.form.FormFields
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+        'caption', 'title', 'alt')

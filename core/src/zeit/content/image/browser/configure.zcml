@@ -303,4 +303,29 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.image.interfaces.IImageReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-heading"
+    class=".image.ReferenceDetailsHeading"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.image.interfaces.IImageReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-body"
+    class=".image.ReferenceDetailsBody"
+    template="reference-details.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="zeit.content.image.interfaces.IImageReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".form.EditReference"
+    permission="zope.View"
+    />
+
 </configure>
