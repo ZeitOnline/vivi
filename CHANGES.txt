@@ -4,4 +4,7 @@ zeit.content.image changes
 2.0.0 (unreleased)
 ------------------
 
+- Provide ImageReference that allows overriding caption, alt and title locally
+  (VIV-305).
+
 - Extracted from zeit.cms egg.

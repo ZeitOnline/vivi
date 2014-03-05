@@ -163,4 +163,13 @@
 
   <adapter factory=".masterimage.group_to_master" />
 
+  <class class=".imagereference.ImageReference">
+    <require
+      interface=".interfaces.IImageReference"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IImageReference"
+      permission="zeit.EditContent" />
+  </class>
+
 </configure>
