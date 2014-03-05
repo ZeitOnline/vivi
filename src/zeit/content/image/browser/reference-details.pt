@@ -1,0 +1,26 @@
+<div class="image_details" i18n:domain="zeit.cms">
+
+  <span class="copyright" tal:repeat="copyright view/copyrights">
+    <span tal:replace="copyright/copyright">ZEIT</span>
+    (<a tal:attributes="href copyright/url"
+      tal:content="copyright/url">
+      http://...
+    </a>)
+  </span>
+
+  <div class="overlay-anchor">
+    <img tal:replace="structure context/target/@@preview/tag" />
+    <div class="overlay"><div class="overlay-position">
+      <a class="button edit-button" i18n:translate="" target="_blank"
+         tal:attributes="href string:${context/target/@@absolute_url}">edit</a>
+    </div></div>
+  </div>
+
+
+  <form
+    class="inline-form"
+    tal:attributes="action string:${context/@@absolute_url}/@@edit.html"
+    tal:content="structure context/@@edit.html">
+  </form>
+
+</div>

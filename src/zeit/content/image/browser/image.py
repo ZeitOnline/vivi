@@ -2,8 +2,10 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zope.browserpage import ViewPageTemplateFile
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import PIL.Image
+import pkg_resources
 import transaction
 import z3c.conditionalviews
 import zeit.cms.browser.interfaces
@@ -72,6 +74,29 @@ class ImageView(zeit.cms.browser.view.Base):
                 url=url,
                 nofollow=nofollow))
         return result
+
+
+class ReferenceDetailsHeading(zeit.cms.browser.objectdetails.Details):
+
+    template = ViewPageTemplateFile(pkg_resources.resource_filename(
+        'zeit.cms.browser', 'object-details-heading.pt'))
+
+    def __init__(self, context, request):
+        super(ReferenceDetailsHeading, self).__init__(context.target, request)
+
+    def __call__(self):
+        return self.template()
+
+
+class ReferenceDetailsBody(ImageView):
+
+    @cachedproperty
+    def metadata(self):
+        return zeit.content.image.interfaces.IImageMetadata(
+            self.context.target)
+
+    def tag(self):
+        return get_img_tag(self.context.target, self.request, view='@@raw')
 
 
 class Scaled(object):
