@@ -25,6 +25,7 @@ setup(
         'zeit.content.link',
         'zeit.content.quiz',
         'zeit.content.rawxml',
+        'zeit.content.text',
         'zeit.content.video',
         'zeit.imp',
         'zeit.invalidate',
