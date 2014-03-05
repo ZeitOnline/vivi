@@ -21,7 +21,8 @@ setup(
     install_requires=[
         'gocept.selenium',
         'setuptools',
-        'zeit.cms>=2.14.0.dev0',
+        'zeit.cms>=2.15.0.dev0',
+        'zeit.content.image>=2.0.0.dev0',
         'zope.app.pagetemplate',
         'zope.browser',
         'zope.cachedescriptors',
