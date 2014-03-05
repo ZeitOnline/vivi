@@ -9,9 +9,6 @@
   <include package="zeit.workflow" />
   <include package="zeit.workflow.browser" />
 
-  <include package="zeit.content.text" />
-  <include package="zeit.content.text.browser" />
-
   <include package="zeit.ghost" />
   <include package="zeit.ghost.browser" />
 

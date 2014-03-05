@@ -13,7 +13,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     license='gocept proprietary',
-    namespace_packages=['zeit', 'zeit.content'],
+    namespace_packages=['zeit'],
     install_requires=[
         'BeautifulSoup',
         'Pillow',
