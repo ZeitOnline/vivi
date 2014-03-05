@@ -20,7 +20,8 @@ setup(
         'grokcore.component',
         'setuptools',
         'zc.iso8601',
-        'zeit.cms>=2.14.0.dev0',
+        'zeit.cms>=2.15.0.dev0',
+        'zeit.content.image',
         'zeit.solr>=2.0',
     ],
     entry_points={
