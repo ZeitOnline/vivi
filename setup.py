@@ -20,6 +20,7 @@ setup(
         'pysolr',
         'setuptools',
         'zeit.cms>=2.15.0.dev0',
+        'zeit.content.image',
         'zeit.edit',
         'zeit.find',
         'zope.annotation',
