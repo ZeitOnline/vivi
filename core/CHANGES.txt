@@ -4,7 +4,7 @@ zeit.content.portraitbox changes
 1.22.11 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- zeit.content.image has its own egg now.
 
 
 1.22.10 (2012-03-06)
