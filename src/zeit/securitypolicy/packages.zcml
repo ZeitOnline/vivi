@@ -15,6 +15,9 @@
   <include package="zeit.content.rawxml" />
   <include package="zeit.content.rawxml.browser" />
 
+  <include package="zeit.content.text" />
+  <include package="zeit.content.text.browser" />
+
   <include package="zeit.calendar" />
   <include package="zeit.calendar.browser" />
 
