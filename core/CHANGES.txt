@@ -4,7 +4,7 @@ zeit.imp changes
 0.15.2 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- zeit.content.image has its own egg now.
 
 
 0.15.1 (2014-02-10)
