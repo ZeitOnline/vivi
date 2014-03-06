@@ -88,7 +88,6 @@ class EditForm(ImageFormBase, zeit.cms.browser.form.EditForm):
 class EditReference(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    prefix = 'reference-details'
     undo_description = _('edit image')
 
     form_fields = zope.formlib.form.FormFields(
@@ -97,3 +96,7 @@ class EditReference(zeit.edit.browser.form.InlineForm):
         # zeit.content.article.edit.browser.form.FormFields
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
         'caption', 'title', 'alt')
+
+    @property
+    def prefix(self):
+        return 'reference-details-%s' % self.context.target.uniqueId
