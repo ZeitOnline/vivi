@@ -5,7 +5,7 @@
 
 <form
   class="inline-form"
-  tal:attributes="action string:${context/@@absolute_url}/@@edit.html"
+  tal:attributes="action string:${context/@@absolute_url}/@@edit.html?prefix=${view/uniqueId}"
   tal:content="structure context/@@edit.html">
 </form>
 
