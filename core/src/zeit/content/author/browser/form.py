@@ -167,4 +167,4 @@ class EditReference(zeit.edit.browser.form.InlineForm):
 
     @property
     def prefix(self):
-        return 'reference-details-%s' % self.request.get('prefix')
+        return 'reference-details-%s' % self.context.target.uniqueId
