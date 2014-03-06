@@ -15,7 +15,6 @@ setup(
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'ZODB3',
-        'cssselect',
         'Pillow',
         'gocept.async',
         'gocept.form',
