@@ -1,12 +1,12 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='zeit.content.image',
+    name='zeit.content.text',
     version='2.0.0.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
-    description="ZEIT Image",
+    description="ZEIT Text",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
