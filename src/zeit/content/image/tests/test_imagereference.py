@@ -54,3 +54,13 @@ class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('originally', ref.xml.get('title'))
         ref.update_metadata()
         self.assertEqual('originally', ref.xml.get('title'))
+
+    def test_setting_local_value_none_yields_none(self):
+        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        content = self.repository['testcontent']
+        ref = content.images.create(image)
+        content.images = (ref,)
+        ref.title = u'locally'
+        self.assertEqual('locally', ref.title)
+        ref.title = None
+        self.assertEqual(None, ref.title)
