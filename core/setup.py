@@ -47,7 +47,7 @@ setup(
         'zope.interface',
         'zope.lifecycleevent',
         'zope.proxy',
-        'zope.publisher'
+        'zope.publisher',
         'zope.schema',
         'zope.security',
         'zope.traversing',
