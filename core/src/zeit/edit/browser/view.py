@@ -10,7 +10,7 @@ import transaction
 import xml.sax.saxutils
 import zeit.cms.browser.form
 import zeit.cms.browser.view
-import zope.app.pagetemplate
+import zope.browserpage
 import zope.formlib.form
 import zope.i18n
 import zope.viewlet.manager
@@ -151,7 +151,7 @@ def validate(context):
 class EditBox(zope.formlib.form.SubPageEditForm, UndoableMixin):
     """Base class for an edit box."""
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile('view.editbox.pt')
+    template = zope.browserpage.ViewPageTemplateFile('view.editbox.pt')
     close = False
     form_fields = NotImplemented
 
@@ -174,7 +174,7 @@ class AddBox(zeit.cms.browser.form.AddFormBase,
     # there is no SubPageAddForm, so we set this up analog to SubPageEditForm
     zope.interface.implements(zope.formlib.interfaces.ISubPageForm)
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile('view.editbox.pt')
+    template = zope.browserpage.ViewPageTemplateFile('view.editbox.pt')
     close = False
     form_fields = NotImplemented
 
@@ -204,7 +204,7 @@ class AddBox(zeit.cms.browser.form.AddFormBase,
 
 class EditBoxAction(zope.viewlet.viewlet.ViewletBase):
 
-    render = zope.app.pagetemplate.ViewPageTemplateFile(
+    render = zope.browserpage.ViewPageTemplateFile(
         'view.editbox-action.pt')
     title = NotImplemented
     action = NotImplemented

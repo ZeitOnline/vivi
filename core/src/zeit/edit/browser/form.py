@@ -7,7 +7,7 @@ import zeit.cms.browser.form
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
 import zeit.edit.browser.view
-import zope.app.pagetemplate
+import zope.browserpage
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.formlib.itemswidgets
@@ -45,7 +45,7 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
                  zeit.edit.browser.view.UndoableMixin,
                  zeit.cms.browser.view.Base):
 
-    template = zope.app.pagetemplate.ViewPageTemplateFile('inlineform.pt')
+    template = zope.browserpage.ViewPageTemplateFile('inlineform.pt')
 
     css_class = None
 
