@@ -47,6 +47,7 @@ class LocalOverride(object):
         return getattr(instance, '_%s_local' % self.name)
 
     def __set__(self, instance, value):
+        __traceback_info__ = (self.name, value)
         setattr(instance, '_%s_local' % self.name, value)
         # XXX Maybe fall back to original value (from instance.target) when
         # value is None? Or is it enough that we wait until checkin,
@@ -59,6 +60,9 @@ class ImageReference(zeit.cms.content.reference.Reference):
     grok.name('image')
     grok.implements(zeit.content.image.interfaces.IImageReference)
     grok.provides(zeit.cms.content.interfaces.IReference)
+
+    # XXX The *_original XML paths must be kept in sync with
+    # z.c.image.metadata.XMLReferenceUpdater
 
     _title_original = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'title',
@@ -75,7 +79,7 @@ class ImageReference(zeit.cms.content.reference.Reference):
         zeit.content.image.interfaces.IImageReference['alt'])
 
     _caption_original = zeit.cms.content.property.ObjectPathProperty(
-        'bu', zeit.content.image.interfaces.IImageMetadata['caption'])
+        '.bu', zeit.content.image.interfaces.IImageMetadata['caption'])
     _caption_local = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'caption_local',
         zeit.content.image.interfaces.IImageReference['caption'])
