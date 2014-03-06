@@ -36,20 +36,48 @@ class ImagesAdapter(zeit.cms.related.related.RelatedBase):
         self._images = value
 
 
+class LocalOverride(object):
+
+    def __init__(self, name):
+        self.name = name
+
+    def __get__(self, instance, class_):
+        if instance is None:
+            return self
+        return getattr(instance, '_%s_local' % self.name)
+
+    def __set__(self, instance, value):
+        setattr(instance, '_%s_local' % self.name, value)
+        # XXX Maybe fall back to original value (from instance.target) when
+        # value is None? Or is it enough that we wait until checkin,
+        # when update_metadata will do that anyway?
+        setattr(instance, '_%s_original' % self.name, value)
+
+
 class ImageReference(zeit.cms.content.reference.Reference):
 
     grok.name('image')
     grok.implements(zeit.content.image.interfaces.IImageReference)
     grok.provides(zeit.cms.content.interfaces.IReference)
 
-    _title = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'local_title',
+    _title_original = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'title',
+        zeit.content.image.interfaces.IImageMetadata['title'])
+    _title_local = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'title_local',
         zeit.content.image.interfaces.IImageReference['title'])
-    _alt = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'local_alt',
+
+    _alt_original = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'alt',
+        zeit.content.image.interfaces.IImageMetadata['alt'])
+    _alt_local = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'alt_local',
         zeit.content.image.interfaces.IImageReference['alt'])
-    _caption = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'local_caption',
+
+    _caption_original = zeit.cms.content.property.ObjectPathProperty(
+        'bu', zeit.content.image.interfaces.IImageMetadata['caption'])
+    _caption_local = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'caption_local',
         zeit.content.image.interfaces.IImageReference['caption'])
 
     @property
@@ -59,36 +87,9 @@ class ImageReference(zeit.cms.content.reference.Reference):
             unique_id = self.xml.get('src')
         return unique_id
 
-    @property
-    def title(self):
-        return self._title
-
-    @title.setter
-    def title(self, value):
-        self._title = value
-        # XXX Maybe fall back to original value (from self.target) when
-        # value is None? Or is it enough that we wait until checkin,
-        # when update_metadata will do that anyway?
-        self.xml.set('title', value)
-
-    # XXX We probably want a more general solution for this than copy&paste.
-    @property
-    def alt(self):
-        return self._alt
-
-    @alt.setter
-    def alt(self, value):
-        self._alt = value
-        self.xml.set('alt', value)
-
-    @property
-    def caption(self):
-        return self._caption
-
-    @caption.setter
-    def caption(self, value):
-        self._caption = value
-        self.xml['bu'] = value
+    title = LocalOverride('title')
+    alt = LocalOverride('alt')
+    caption = LocalOverride('caption')
 
     def update_metadata(self):
         super(ImageReference, self).update_metadata()
