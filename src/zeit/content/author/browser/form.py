@@ -156,7 +156,6 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
 class EditReference(zeit.edit.browser.form.InlineForm):
 
     legend = ''
-    prefix = 'reference-details'
     undo_description = _('edit author location')
 
     form_fields = zope.formlib.form.FormFields(
@@ -165,3 +164,7 @@ class EditReference(zeit.edit.browser.form.InlineForm):
         # zeit.content.article.edit.browser.form.FormFields
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
         'location')
+
+    @property
+    def prefix(self):
+        return 'reference-details-%s' % self.request.get('prefix')

@@ -65,6 +65,7 @@
   <browser:page
     for="zeit.content.author.interfaces.IAuthorReference"
     name="object-details"
+    class=".author.ReferenceDetails"
     template="reference-details.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.View"

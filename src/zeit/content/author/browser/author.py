@@ -2,8 +2,8 @@
 # See also LICENSE.txt
 
 import grokcore
+import urllib
 import zeit.cms.browser.listing
-import zeit.content.image.interfaces
 import zope.publisher.interfaces
 
 
@@ -26,3 +26,10 @@ class AuthorListRepresentation(
     @property
     def searchableText(self):
         return self.context.display_name
+
+
+class ReferenceDetails(object):
+
+    @property
+    def uniqueId(self):
+        return urllib.quote_plus(self.context.target.uniqueId)
