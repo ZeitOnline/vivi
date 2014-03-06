@@ -25,5 +25,6 @@ setup(
         'zope.i18n',
         'zope.interface',
         'zope.schema',
+        'zope.testbrowser',
     ],
 )

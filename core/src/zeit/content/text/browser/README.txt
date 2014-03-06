@@ -93,6 +93,6 @@ We have a special icon:
 
 .. [#browser]
 
-    >>> from z3c.etestbrowser.testing import ExtendedTestBrowser
-    >>> browser = ExtendedTestBrowser()
+    >>> import zope.testbrowser.testing
+    >>> browser = zope.testbrowser.testing.Browser()
     >>> browser.addHeader('Authorization', 'Basic user:userpw')
