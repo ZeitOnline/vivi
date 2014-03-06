@@ -2,12 +2,12 @@
 Image folders
 =============
 
-There is a policy that the image folder depends on the year/volume. 
+There is a policy that the image folder depends on the year/volume.
 
 Lets create a testbrowser first:
 
->>> from z3c.etestbrowser.testing import ExtendedTestBrowser
->>> browser = ExtendedTestBrowser()
+>>> import zope.testbrowser.testing
+>>> browser = zope.testbrowser.testing.Browser()
 >>> browser.addHeader('Authorization', 'Basic globalmgr:globalmgrpw')
 
 Create the bilder structure:
