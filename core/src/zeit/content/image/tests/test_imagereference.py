@@ -38,29 +38,39 @@ class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
-        ref.title = u'locally'
-        self.assertEqual('locally', ref.xml.get('title'))
+        ref.title = u'localtitle'
+        ref.caption = u'localcaption'
+        self.assertEqual('localtitle', ref.xml.get('title'))
+        self.assertEqual('localcaption', ref.xml.bu)
 
         ref.update_metadata()
-        self.assertEqual('locally', ref.xml.get('title'))
+        self.assertEqual('localtitle', ref.xml.get('title'))
+        self.assertEqual('localcaption', ref.xml.bu)
 
     def test_empty_local_values_leave_original_ones_alone(self):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         with checked_out(image) as co:
-            IImageMetadata(co).title = 'originally'
+            IImageMetadata(co).title = 'originaltitle'
+            IImageMetadata(co).caption = 'originalcaption'
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
-        self.assertEqual('originally', ref.xml.get('title'))
+        self.assertEqual('originaltitle', ref.xml.get('title'))
+        self.assertEqual('originalcaption', ref.xml.bu)
         ref.update_metadata()
-        self.assertEqual('originally', ref.xml.get('title'))
+        self.assertEqual('originaltitle', ref.xml.get('title'))
+        self.assertEqual('originalcaption', ref.xml.bu)
 
     def test_setting_local_value_none_yields_none(self):
         image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
         content = self.repository['testcontent']
         ref = content.images.create(image)
         content.images = (ref,)
-        ref.title = u'locally'
-        self.assertEqual('locally', ref.title)
+        ref.title = u'localtitle'
+        ref.caption = u'localcaption'
+        self.assertEqual('localtitle', ref.title)
+        self.assertEqual('localcaption', ref.caption)
         ref.title = None
+        ref.caption = u''  # the caption field is non-None
         self.assertEqual(None, ref.title)
+        self.assertEqual('', ref.caption)
