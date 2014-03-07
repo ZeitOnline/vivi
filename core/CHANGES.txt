@@ -16,7 +16,10 @@ zeit.cms changes
 
 - Extract zeit.content.image and zeit.content.link into their own eggs.
 
-- Use py.test runner.
+- Internal: Use py.test runner.
+
+- Internal: Split off InlineForm (that does auto-save) from SubPageForm
+  (VIV-285, RED-1596).
 
 
 2.14.1 (2014-02-12)

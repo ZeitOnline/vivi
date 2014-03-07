@@ -281,7 +281,7 @@ zeit.cms.locked_xhr = function(url, options) {
 
 zeit.cms.follow_with_lock = function(element) {
     MochiKit.Async.callLater(
-        zeit.cms.SubPageForm.SUBMIT_DELAY_FOR_FOCUS + 0.1,
+        zeit.cms.InlineForm.SUBMIT_DELAY_FOR_FOCUS + 0.1,
         function() {
             var d = zeit.cms.request_lock.acquire();
             d.addCallback(function() {

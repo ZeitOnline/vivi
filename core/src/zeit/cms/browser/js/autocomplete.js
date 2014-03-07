@@ -16,7 +16,7 @@ $(document).bind('fragment-ready', function(event) {
                 return false;
             },
             select: function(event, ui) {
-                // for zeit.cms.SubPageForm
+                // for zeit.cms.InlineForm
                 $(elem).trigger('change');
                 $(elem).trigger('focusout');
                 return false;
