@@ -99,7 +99,7 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
         self.mochi_events.push(
             MochiKit.Signal.connect(
                 window, 'zeit.cms.LightboxReload', function(event) {
-                self.loading();
+                self.set_busy();
             }));
         self.mochi_events.push(
             MochiKit.Signal.connect(

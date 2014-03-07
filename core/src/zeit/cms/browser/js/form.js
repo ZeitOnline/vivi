@@ -37,7 +37,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 self.post_process_html();
                 $(self.container).trigger_fragment_ready();
                 MochiKit.Signal.signal(self, 'after-reload');
-                $(self.container).removeClass('busy');
+                self.unset_busy();
                 return result;
             });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
@@ -96,11 +96,10 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         }
         data.push(action + '=clicked');
         data = data.join('&');
+
+        self.set_busy();
+
         var submit_to = self.form.getAttribute('action');
-
-        // clear box with loading message
-        self.loading();
-
         var d = zeit.cms.locked_xhr(submit_to, {
             'method': 'POST',
             'headers': {
@@ -128,7 +127,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             MochiKit.Signal.signal(self, 'after-reload');
             // Delaying the class remove somehow avoids flickering
             MochiKit.Async.callLater(
-                0, function() { $(self.container).removeClass('busy'); });
+                0, MochiKit.Base.bind(self.unset_busy, self));
             return result;
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
@@ -169,13 +168,14 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         return next_url_node[0].textContent;
     },
 
-    loading: function(message) {
+    set_busy: function() {
         var self = this;
-        if (!isUndefinedOrNull(message)) {
-            log('messssage', repr(message));
-            self.container.innerHTML = message;
-        }
         $(self.container).addClass('busy');
+    },
+
+    unset_busy: function() {
+        var self = this;
+        $(self.container).removeClass('busy');
     },
 
     post_process_html: function() {
