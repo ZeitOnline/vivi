@@ -1,6 +1,7 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.testing import FunctionalTestCaseCommon
 import os.path
 import unittest
 import urllib
@@ -48,12 +49,22 @@ class SecurityPolicyLayer(SecurityPolicyZCMLLayer):
         pass
 
 
-class TestSecurityPolicyXLSSheet(zeit.cms.testing.FunctionalTestCaseCommon):
+def make_xls_test(*args):
+    # Since pytest picks up all descendants of unittest.TestCase, we must mix
+    # that in here instead of directly having XLSSheetCase inherit from
+    # FunctionalTestCaseCommon.
+    case = type(
+        'SecurityPolicyXLSSheetCase',
+        (SecurityPolicyXLSSheetCase, FunctionalTestCaseCommon), {})
+    return case(*args)
+
+
+class SecurityPolicyXLSSheetCase(object):
 
     layer = SecurityPolicyLayer
 
     def __init__(self, username, cases, description):
-        super(TestSecurityPolicyXLSSheet, self).__init__()
+        super(SecurityPolicyXLSSheetCase, self).__init__()
         self.username = username
         self.cases = cases
         self.description = description
@@ -67,7 +78,7 @@ class TestSecurityPolicyXLSSheet(zeit.cms.testing.FunctionalTestCaseCommon):
 
     def tearDown(self):
         self.connector._reset()
-        super(TestSecurityPolicyXLSSheet, self).tearDown()
+        super(SecurityPolicyXLSSheetCase, self).tearDown()
 
     def runTest(self):
         for skin, path, form, expected in self.cases:
@@ -108,7 +119,7 @@ class TestSecurityPolicyXLSSheet(zeit.cms.testing.FunctionalTestCaseCommon):
         return zope.component.getUtility(zeit.connector.interfaces.IConnector)
 
 
-def xls_tests():
+def test_suite():
     book = xlrd.open_workbook(os.path.join(
         os.path.dirname(__file__), 'test.xls'))
     sheet = book.sheet_by_index(0)
@@ -134,18 +145,12 @@ def xls_tests():
             expected = sheet.cell_value(row, expected_column)
             if path:
                 cases.append((skin, path, form, expected))
-            if cases and (not path or row == sheet.nrows-1):
+            if cases and (not path or row == sheet.nrows - 1):
                 description = 'test.xls rows %d-%d for %s' % (
-                    start_row+1, row, username)
-                suite.addTest(TestSecurityPolicyXLSSheet(
-                    username, cases, description))
+                    start_row + 1, row, username)
+                suite.addTest(make_xls_test(username, cases, description))
                 cases = []
                 start_row = None
 
-    return suite
-
-
-def test_suite():
-    suite = unittest.TestSuite()
-    suite.addTest(xls_tests())
+    suite.layer = SecurityPolicyLayer
     return suite
