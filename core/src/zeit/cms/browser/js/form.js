@@ -1,3 +1,5 @@
+(function($) {
+
 zeit.cms.SubPageForm = gocept.Class.extend({
 
     SUBMIT_DELAY_FOR_FOCUS: 0.01,
@@ -37,7 +39,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
                 // Don't submit if the focus is inside a *nested* SubPageForm;
                 // the nested form *will* be submitted, which is enough.
-                if (jQuery(event.target).closest('form')[0] != self.container) {
+                if ($(event.target).closest('form')[0] != self.container) {
                     return;
                 }
 
@@ -67,7 +69,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             // so we only need to do the post-processing and send the
             // appropriate signals.
             self.post_process_html();
-            jQuery(self.container).trigger_fragment_ready();
+            $(self.container).trigger_fragment_ready();
             MochiKit.Signal.signal(self, 'after-reload');
         }
     },
@@ -81,7 +83,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         var self = this;
         handler = MochiKit.Base.bind(handler, self);
         self.events.push([target, event, handler]);
-        jQuery(target).bind(event, handler);
+        $(target).bind(event, handler);
     },
 
     reload: function() {
@@ -100,7 +102,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             function(result) {
                 self.container.innerHTML = result;
                 self.post_process_html();
-                jQuery(self.container).trigger_fragment_ready();
+                $(self.container).trigger_fragment_ready();
                 MochiKit.Signal.signal(self, 'after-reload');
                 MochiKit.DOM.removeElementClass(self.container, 'busy');
                 return result;
@@ -114,7 +116,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         MochiKit.Signal.signal(self, 'close');
         while(self.events.length) {
             var item = self.events.pop();
-            jQuery(item[0]).unbind(item[1], item[2]);
+            $(item[0]).unbind(item[1], item[2]);
         }
     },
 
@@ -200,7 +202,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 return element.name + "=" + encodeURIComponent(element.value);
             }, elements);
         if (isUndefinedOrNull(action)) {
-            var button = jQuery(self.container).find(
+            var button = $(self.container).find(
                 '> .form-controls input').first();
             action = button.attr('name');
         }
@@ -233,7 +235,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             // XXX this is the third place that calls post_process_html and
             // sends signals -- refactor! (#11270).
             self.post_process_html();
-            jQuery(self.container).trigger_fragment_ready();
+            $(self.container).trigger_fragment_ready();
             MochiKit.Signal.signal(window, 'changed', self);
             MochiKit.Signal.signal(self, 'after-reload');
             // Delaying the class remove somehow avoids flickering
@@ -318,3 +320,5 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             });
     }
 });
+
+}(jQuery));
