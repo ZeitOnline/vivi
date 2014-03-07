@@ -105,10 +105,11 @@ base = Group([
 
 SplitDirResource('objectbrowser.js', depends=[base])
 SplitDirResource('tooltip.js', depends=[base])
-SplitDirResource('lightbox.js', depends=[base])
+SplitDirResource('form.js', depends=[base])
+SplitDirResource('lightbox.js', depends=[form_js, base])
 SplitDirResource('details.js', depends=[base])
 SplitDirResource('dnd.js', depends=[base])
-SplitDirResource('object_reference.js', depends=[base])
+SplitDirResource('object_reference.js', depends=[lightbox_js, base])
 SplitDirResource('object_sequence.js', depends=[base])
 SplitDirResource('restructuredtext.js', depends=[base])
 SplitDirResource('autocomplete.js', depends=[base])
