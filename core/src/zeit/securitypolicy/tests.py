@@ -152,5 +152,6 @@ def test_suite():
                 cases = []
                 start_row = None
 
+    # Picked up by gocept.pytestlayer (the layer on the XLSCase is ignored)
     suite.layer = SecurityPolicyLayer
     return suite
