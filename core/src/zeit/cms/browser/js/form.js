@@ -60,7 +60,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         if (target.nodeName == 'INPUT' &&
             target.type == 'button' &&
             $(target).hasClass('submit')) {
-            self.handle_submit(target.name);
+            self.submit(target.name);
             event.stopPropagation();  // suppress browser submit behaviour
         }
     },
@@ -68,12 +68,12 @@ zeit.cms.SubPageForm = gocept.Class.extend({
     submit_via_js: function(event) {
         var self = this;
         if (!isNull(self.form)) {
-            self.handle_submit();
+            self.submit();
             return false;  // suppress browser submit behaviour
        }
     },
 
-    handle_submit: function(action) {
+    submit: function(action) {
         var self = this;
         self.set_busy();
         var submit_to = self.form.getAttribute('action');
@@ -278,7 +278,7 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
         arguments.callee.$.handle_click.call(self, event);
 
         if (target.nodeName == 'INPUT' && target.type == 'checkbox') {
-            self.handle_submit();
+            self.submit();
         }
     },
 
@@ -290,7 +290,7 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
             target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT'])) {
             $(target).closest('.field').addClass('dirty');
             if (target.nodeName == 'INPUT' && target.type == 'hidden') {
-                self.handle_submit();
+                self.submit();
             }
         }
     },
@@ -314,7 +314,7 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
             // If a field of our form has the focus now, we don't want to
             // interrupt the user by saving.
             if (self.focus_node === null) {
-                self.handle_submit();
+                self.submit();
             }
         });
     },
