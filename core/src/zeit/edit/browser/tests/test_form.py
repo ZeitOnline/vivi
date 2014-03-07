@@ -114,6 +114,8 @@ class EditForm(zeit.edit.browser.form.InlineForm):
 
 class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
 
+    layer = zeit.edit.testing.WEBDRIVER_LAYER
+
     def setUp(self):
         super(InlineFormAutoSaveTest, self).setUp()
         zope.configuration.xmlconfig.string("""\
@@ -140,6 +142,14 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="inlineform-nested"
+    template="inlineform-nested.pt"
+    permission="zeit.EditContent"
+    />
+
 </configure>
 """)
 
@@ -156,7 +166,7 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
     def test_submits_form_on_focusout(self):
         s = self.selenium
         self.open('/repository/testcontent/@@checkout')
-        # XXX ?came_from=@@autosave-edit does not work
+        # XXX @@checkout?came_from=@@autosave-edit does not work
         self.open('/workingcopy/zope.user/testcontent/@@inlineform')
 
         input = 'edit.subtitle'
@@ -169,8 +179,18 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
         s.waitForElementPresent(input)
         s.assertValue(input, 'asdf')
 
+    def test_nested_inlineform_only_submits_inner_form(self):
+        s = self.selenium
+        self.open('/repository/testcontent/@@checkout')
+        self.open('/workingcopy/zope.user/testcontent/@@inlineform-nested')
 
+        input = 'edit.subtitle'
+        s.waitForElementPresent(input)
 
-        # self.eval('zeit.cms.InlineForm.submitted = false;')
-        # self.eval("""zeit.cms.InlineForm.submit = function() {
-        #     zeit.cms.InlineForm.submitted = true; }""")
+        self.eval('zeit.cms.InlineForm.submitted = 0;')
+        self.eval("""zeit.cms.InlineForm.prototype.submit = function() {
+            zeit.cms.InlineForm.submitted += 1; }""")
+
+        s.type(input, 'asdf')
+        s.click('header')
+        self.assertEqual('1', self.eval('zeit.cms.InlineForm.submitted'))

@@ -1,0 +1,30 @@
+<html metal:use-macro="context/@@standard_macros/page">
+  <tal:block metal:fill-slot="body">
+    <form
+      class="inline-form"
+      tal:attributes="action string:${context/@@absolute_url}/@@edit-inline.html">
+
+      <div class="field fieldname-copyrights fieldtype-text">
+        <div class="widget">
+          <input type="text"
+            name="outer.copyrights" id="outer.copyrights" class="textType" />
+
+          <form
+            class="inline-form"
+            tal:attributes="action string:${context/@@absolute_url}/@@edit-inline.html"
+            tal:content="structure context/@@edit-inline.html">
+          </form>
+
+        </div>
+      </div>
+    </form>
+
+    <script type="text/javascript">
+      (function($) {
+      $(document).ready(function() {
+         $(document).trigger_fragment_ready();
+      });
+      }(jQuery));
+    </script>
+  </tal:block>
+</html>
