@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from mock import Mock
+import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.edit.browser.form
 import zeit.edit.testing
@@ -100,3 +101,76 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
         self.assertEllipsis(
             '...folded...', self.render(in_workingcopy=False,
             folded_workingcopy=None, folded_repository=None))
+
+
+class EditForm(zeit.edit.browser.form.InlineForm):
+
+    legend = ''
+    prefix = 'edit'
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+        'supertitle', 'subtitle')
+
+
+class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(InlineFormAutoSaveTest, self).setUp()
+        zope.configuration.xmlconfig.string("""\
+<?xml version="1.0" encoding="UTF-8" ?>
+<configure
+  package="zeit.edit.browser.tests"
+  xmlns:browser="http://namespaces.zope.org/browser">
+
+  <include package="zope.browserpage" file="meta.zcml" />
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-inline.html"
+    class=".test_form.EditForm"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="inlineform"
+    template="inlineform.pt"
+    permission="zeit.EditContent"
+    />
+
+</configure>
+""")
+
+    def tearDown(self):
+        # XXX plone.testing.zca.pushGlobalRegistry() doesn't work,
+        # the view is not found.
+        zope.component.getSiteManager().unregisterAdapter(
+            required=(zeit.cms.content.interfaces.ICommonMetadata,
+                      zeit.cms.browser.interfaces.ICMSLayer),
+            provided=zope.interface.Interface,
+            name='autosave-edit')
+        super(InlineFormAutoSaveTest, self).tearDown()
+
+    def test_submits_form_on_focusout(self):
+        s = self.selenium
+        self.open('/repository/testcontent/@@checkout')
+        # XXX ?came_from=@@autosave-edit does not work
+        self.open('/workingcopy/zope.user/testcontent/@@inlineform')
+
+        input = 'edit.subtitle'
+        s.waitForElementPresent(input)
+        s.type(input, 'asdf')
+        s.fireEvent(input, 'blur')
+        s.waitForElementNotPresent('css=.field.dirty')
+        # Re-open the page and verify that the data is still there
+        s.refresh()
+        s.waitForElementPresent(input)
+        s.assertValue(input, 'asdf')
+
+
+
+        # self.eval('zeit.cms.InlineForm.submitted = false;')
+        # self.eval("""zeit.cms.InlineForm.submit = function() {
+        #     zeit.cms.InlineForm.submitted = true; }""")
