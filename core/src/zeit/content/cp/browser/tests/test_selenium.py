@@ -346,7 +346,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyAttribute(path + '[2]@id', bar2)
         s.verifyAttribute(path + '[3]@id', bar1)
 
-    def test_lead_foo(self):
+    def test_lead(self):
         s = self.selenium
 
         self.create_content_and_fill_clipboard()
