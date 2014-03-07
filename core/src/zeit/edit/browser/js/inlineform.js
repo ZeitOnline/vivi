@@ -23,8 +23,7 @@ var wire_forms = function(parent) {
         }
         $(container).addClass('wired');
         var url = container.getAttribute('action');
-        container.form = new zeit.cms.SubPageForm(
-            url, container, {save_on_change: true, load_immediately: false});
+        container.form = new zeit.cms.InlineForm(url, container);
     });
 };
 

@@ -33,7 +33,7 @@ setup(
         'mock',
         'setuptools',
         'transaction',
-        'zeit.cms>=2.14.0.dev0',
+        'zeit.cms>=2.15.0.dev0',
         'zeit.connector',
         'zeit.find>=2.2.dev.0',
         'zope.app.appsetup',

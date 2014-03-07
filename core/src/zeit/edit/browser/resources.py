@@ -37,7 +37,7 @@ SplitDirResource('drop.js', depends=[
 SplitDirResource('inlineform.js', depends=[
     zeit.cms.browser.resources.base,
     zeit.cms.browser.resources.view_js,
-    zeit.cms.browser.resources.lightbox_js,
+    zeit.cms.browser.resources.form_js,
     edit_js,
     editor_css,
 ])
