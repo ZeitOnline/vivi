@@ -104,7 +104,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 self.post_process_html();
                 $(self.container).trigger_fragment_ready();
                 MochiKit.Signal.signal(self, 'after-reload');
-                MochiKit.DOM.removeElementClass(self.container, 'busy');
+                $(self.container).removeClass('busy');
                 return result;
             });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
@@ -126,7 +126,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
         if (target.nodeName == 'INPUT' &&
             target.type == 'button' &&
-            MochiKit.DOM.hasElementClass(target, 'submit')) {
+            $(target).hasClass('submit')) {
             self.handle_submit(target.name);
             event.stopPropagation();
         }
@@ -152,9 +152,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
         if (zeit.cms.in_array(
             target.nodeName, ['INPUT', 'TEXTAREA', 'SELECT'])) {
-            var outer = MochiKit.DOM.getFirstParentByTagAndClassName(
-                target, null, 'field');
-            MochiKit.DOM.addElementClass(outer, 'dirty');
+            $(target).closest('.field').addClass('dirty');
             if (target.nodeName == 'INPUT' && target.type == 'hidden') {
                 self.handle_submit();
             }
@@ -239,8 +237,8 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             MochiKit.Signal.signal(window, 'changed', self);
             MochiKit.Signal.signal(self, 'after-reload');
             // Delaying the class remove somehow avoids flickering
-            MochiKit.Async.callLater(0,
-                MochiKit.DOM.removeElementClass, self.container, 'busy');
+            MochiKit.Async.callLater(
+                0, function() { $(self.container).removeClass('busy'); });
             return result;
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
@@ -268,19 +266,17 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     has_errors: function(result) {
         var self = this;
-        var errors = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'ul', 'errors', self.container);
-        return (errors != null);
+        var errors = $(self.container).find('ul.errors');
+        return (errors.length > 0);
     },
 
     get_next_url: function() {
         var self = this;
-        var next_url_node = MochiKit.DOM.getFirstElementByTagAndClassName(
-            'span', 'nextURL', self.container);
-        if (isNull(next_url_node)) {
+        var next_url_node = $(self.container).find('span.nextURL');
+        if (! next_url_node.length) {
             return null;
         }
-        return next_url_node.textContent;
+        return next_url_node[0].textContent;
     },
 
     loading: function(message) {
@@ -289,7 +285,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
             log('messssage', repr(message));
             self.container.innerHTML = message;
         }
-        MochiKit.DOM.addElementClass(self.container, 'busy');
+        $(self.container).addClass('busy');
     },
 
     post_process_html: function() {
@@ -297,8 +293,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         if (self.container.nodeName == 'FORM') {
             self.form = self.container;
         } else {
-            self.form = MochiKit.DOM.getFirstElementByTagAndClassName(
-                'form', null, self.container);
+            self.form = $(self.container).find('form');
         }
         self.rewire_submit_buttons();
         zeit.cms.evaluate_js_and_css(
@@ -307,17 +302,15 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     rewire_submit_buttons: function() {
         // Change all submits to buttons to be able to handle them in
-        // java script
+        // javascript
         var self = this;
-        forEach(
-            MochiKit.DOM.getElementsByTagAndClassName(
-                'input', null, self.container),
-            function(button) {
-                if (button.type == 'submit') {
-                    button.type = 'button';
-                    MochiKit.DOM.addElementClass(button, 'submit');
-                }
-            });
+        $(self.container).find('input[type="submit"]').each(function() {
+            var button = $(this);
+            // XXX jQuery refuses to change the ``type`` property, so we go
+            // directly to the DOM node instead.
+            this.type = 'button';
+            button.addClass('submit');
+        });
     }
 });
 
