@@ -318,7 +318,7 @@ class FunctionalTestCase(FunctionalTestCaseCommon):
         self.principal = create_interaction(u'zope.user')
 
 
-#@pytest.mark.slow
+@pytest.mark.slow
 class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
                        FunctionalTestCaseCommon):
 
