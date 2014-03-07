@@ -75,36 +75,12 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     handle_submit: function(action) {
         var self = this;
-
-        // collect data
-        var elements = filter(
-            function(element) {
-                return (element.type != 'button');
-            }, self.form.elements);
-
-        var data = map(function(element) {
-                if ((element.type == 'radio' || element.type == 'checkbox') &&
-                    !element.checked) {
-                    return;
-                }
-                return element.name + "=" + encodeURIComponent(element.value);
-            }, elements);
-        if (isUndefinedOrNull(action)) {
-            var button = $(self.container).find(
-                '> .form-controls input').first();
-            action = button.attr('name');
-        }
-        data.push(action + '=clicked');
-        data = data.join('&');
-
         self.set_busy();
-
         var submit_to = self.form.getAttribute('action');
         var d = zeit.cms.locked_xhr(submit_to, {
             'method': 'POST',
-            'headers': {
-                'Content-Type': 'application/x-www-form-urlencoded'},
-            'sendContent': data});
+            'headers': {'Content-Type': 'application/x-www-form-urlencoded'},
+            'sendContent': self.serialize_form_data(action)});
         d.addCallbacks(
             MochiKit.Base.bind(self.replace_content, self),
             function(error) {
@@ -132,6 +108,30 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
         return d;
+    },
+
+    serialize_form_data: function(action) {
+        var self = this;
+        var elements = filter(
+            function(element) {
+                return (element.type != 'button');
+            }, self.form.elements);
+
+        var data = map(function(element) {
+                if ((element.type == 'radio' || element.type == 'checkbox') &&
+                    !element.checked) {
+                    return;
+                }
+                return element.name + "=" + encodeURIComponent(element.value);
+            }, elements);
+        if (isUndefinedOrNull(action)) {
+            var button = $(self.container).find(
+                '> .form-controls input').first();
+            action = button.attr('name');
+        }
+        data.push(action + '=clicked');
+        data = data.join('&');
+        return data;
     },
 
     replace_content: function(result) {
