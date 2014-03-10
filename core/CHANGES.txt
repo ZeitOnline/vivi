@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.1.2 (unreleased)
+2.1.2 (2014-03-10)
 ------------------
 
 - zeit.content.image, zeit.content.link, and zeit.content.text have their own
