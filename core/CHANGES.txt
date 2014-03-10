@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.1.9 (unreleased)
+2.2.0 (2014-03-10)
 ------------------
 
 - Implement uniqueId resolving for elements (VIV-305).
