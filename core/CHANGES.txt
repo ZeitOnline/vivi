@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.1.4 (unreleased)
+3.1.4 (2014-03-10)
 ------------------
 
 - Position cursor at the click position when entering editable mode
