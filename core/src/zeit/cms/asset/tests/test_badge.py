@@ -8,7 +8,7 @@ import zeit.cms.interfaces
 import zeit.cms.testing
 
 
-class TestBadge(zeit.cms.testing.FunctionalTestCase):
+class TestBadge(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_p_changed(self):
         content = zeit.cms.interfaces.ICMSContent(

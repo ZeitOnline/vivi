@@ -4,7 +4,7 @@
 import zeit.cms.testing
 
 
-class PreviewTest(zeit.cms.testing.FunctionalTestCase):
+class PreviewTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_invalid_unique_ids_should_raise_valueerror(self):
         from zeit.cms.browser.preview import prefixed_url

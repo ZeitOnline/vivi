@@ -36,7 +36,7 @@ class TestJSON(unittest.TestCase):
         self.assertEqual([1, 2, 3], result)
 
 
-class FragmentReady(zeit.cms.testing.SeleniumTestCase):
+class FragmentReady(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def setUp(self):
         super(FragmentReady, self).setUp()

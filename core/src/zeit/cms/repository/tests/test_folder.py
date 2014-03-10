@@ -5,7 +5,7 @@ import zeit.cms.testing
 import zope.copypastemove.interfaces
 
 
-class RenameFolderTest(zeit.cms.testing.FunctionalTestCase):
+class RenameFolderTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_renaming_folder(self):
         renamer = zope.copypastemove.interfaces.IContainerItemRenamer(

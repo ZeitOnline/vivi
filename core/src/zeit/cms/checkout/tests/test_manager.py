@@ -49,7 +49,7 @@ def repository_content(context):
     return content
 
 
-class ManagerTest(zeit.cms.testing.FunctionalTestCase):
+class ManagerTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(ManagerTest, self).setUp()
@@ -112,7 +112,7 @@ class ManagerTest(zeit.cms.testing.FunctionalTestCase):
                     after[0][0]))
 
 
-class ValidateCheckinTest(zeit.cms.testing.FunctionalTestCase):
+class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(ValidateCheckinTest, self).setUp()
@@ -172,7 +172,7 @@ class ValidateCheckinTest(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue(manager.canCheckin)
 
 
-class SemanticChangeTest(zeit.cms.testing.FunctionalTestCase):
+class SemanticChangeTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(SemanticChangeTest, self).setUp()
@@ -203,7 +203,7 @@ class SemanticChangeTest(zeit.cms.testing.FunctionalTestCase):
         self.assertIsInstance(self.sc.last_semantic_change, datetime.datetime)
 
 
-class DeleteWorkingCopy(zeit.cms.testing.FunctionalTestCase):
+class DeleteWorkingCopy(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_new_content_is_deleted_in_repo_when_wc_is_deleted(self):
         content = self.repository['testcontent']

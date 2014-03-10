@@ -7,7 +7,7 @@ import zeit.cms.clipboard.interfaces
 import zeit.cms.testing
 
 
-class ClipboardTest(zeit.cms.testing.FunctionalTestCase):
+class ClipboardTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         super(ClipboardTest, self).setUp()

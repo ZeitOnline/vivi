@@ -23,7 +23,7 @@ import zope.interface
 import zope.schema.interfaces
 
 
-class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
+class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
         super(TestObjectDetails, self).setUp()
@@ -67,7 +67,7 @@ class TestObjectDetails(zeit.cms.testing.BrowserTestCase):
             '...class="object-details type-testcontenttype"...')
 
 
-class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
+class TestObjectDetailsJavascript(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def test_icon_is_draggable_as_content_object(self):
         self.open(
@@ -79,7 +79,7 @@ class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
                        'http://xml.zeit.de/testcontent')
 
 
-class TestObjectSequenceWidget(zeit.cms.testing.FunctionalTestCase):
+class TestObjectSequenceWidget(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_to_form_value_ignores_non_cms_content(self):
         import zeit.cms.interfaces
@@ -132,8 +132,9 @@ class TestObjectSequenceWidget(zeit.cms.testing.FunctionalTestCase):
             lambda: widget._toFieldValue(['http://xml.zeit.de/testcontent']))
 
 
-class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
-                                          zeit.cms.testing.BrowserAssertions):
+class TestObjectSequenceWidgetIntegration(
+        zeit.cms.testing.ZeitCmsFunctionalTestCase,
+        zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
         import zope.security.management
@@ -244,7 +245,8 @@ class TestObjectSequenceWidgetIntegration(zeit.cms.testing.FunctionalTestCase,
                 'field.', [...], '@@object-details', 'foo'...""", widget())
 
 
-class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
+class TestObjectSequenceWidgetJavascript(
+        zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def setUp(self):
         super(TestObjectSequenceWidgetJavascript, self).setUp()
@@ -408,7 +410,7 @@ def teardown_mydetails():
 
 
 class ObjectWidgetDetailViews(
-    zeit.cms.testing.SeleniumTestCase):
+    zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def setUp(self):
         super(ObjectWidgetDetailViews, self).setUp()
@@ -460,7 +462,7 @@ class ObjectWidgetDetailViews(
 
 
 class TestObjectSequenceWidgetAutocompleteJavascript(
-    zeit.cms.testing.SeleniumTestCase):
+    zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def setUp(self):
         super(TestObjectSequenceWidgetAutocompleteJavascript, self).setUp()
@@ -489,7 +491,7 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
                       'http://xml.zeit.de/autoren/A/Test_Autor/index')
 
 
-class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
+class TestDropObjectWidget(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def setUp(self):
         super(TestDropObjectWidget, self).setUp()
@@ -537,7 +539,7 @@ zeit.cms.activate_objectbrowser = function(types) {
             'foo', self.eval('zeit.cms._activate_objectbrowser_arg'))
 
 
-class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
+class TestDropObjectWidgetAccept(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def setUp(self):
         super(TestDropObjectWidgetAccept, self).setUp()
@@ -560,7 +562,8 @@ class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
         s.assertElementNotPresent('css=.droppable-active')
 
 
-class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
+class TestDropObjectWidgetIntegration(
+        zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         import zope.security.management
@@ -650,7 +653,7 @@ class TestDropObjectWidgetIntegration(zeit.cms.testing.FunctionalTestCase):
             widget())
 
 
-class DropObjectWidget(zeit.cms.testing.FunctionalTestCase):
+class DropObjectWidget(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_setting_invalid_uniqueId_should_raise(self):
         context = mock.Mock()
@@ -723,7 +726,7 @@ class TestObjectSequenceDisplayWidget(unittest.TestCase):
 
 
 class TestObjectSequenceDisplayWidgetIntegration(
-    zeit.cms.testing.FunctionalTestCase,
+    zeit.cms.testing.ZeitCmsFunctionalTestCase,
     zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
@@ -783,7 +786,7 @@ class TestObjectSequenceDisplayWidgetIntegration(
 
 
 class TestDropObjectDisplayWidgetIntegration(
-    zeit.cms.testing.FunctionalTestCase,
+    zeit.cms.testing.ZeitCmsFunctionalTestCase,
     zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
@@ -841,7 +844,7 @@ class TestDropObjectDisplayWidgetIntegration(
                 '...<div...id="field."...mydetails...', widget())
 
 
-class TestReferenceSequenceWidget(zeit.cms.testing.FunctionalTestCase):
+class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         super(TestReferenceSequenceWidget, self).setUp()
@@ -907,7 +910,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.FunctionalTestCase):
             lambda: widget._toFieldValue(['http://xml.zeit.de/target']))
 
 
-class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
+class RestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         super(RestructuredTextWidgetTest, self).setUp()
@@ -937,7 +940,8 @@ class RestructuredTextWidgetTest(zeit.cms.testing.FunctionalTestCase):
         self.assertNotIn('...System Message...', self.widget())
 
 
-class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
+class RestructuredTextWidgetJavascriptTest(
+        zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def setUp(self):
         super(RestructuredTextWidgetJavascriptTest, self).setUp()
@@ -970,7 +974,7 @@ class RestructuredTextWidgetJavascriptTest(zeit.cms.testing.SeleniumTestCase):
 
 
 class ConvertingRestructuredTextWidgetTest(
-        zeit.cms.testing.FunctionalTestCase):
+        zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         super(ConvertingRestructuredTextWidgetTest, self).setUp()

@@ -5,7 +5,7 @@
 import zeit.cms.testing
 
 
-class TestTypeChangeBox(zeit.cms.testing.SeleniumTestCase):
+class TestTypeChangeBox(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def test_box_should_scroll(self):
         s = self.selenium

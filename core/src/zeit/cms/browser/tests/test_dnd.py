@@ -4,7 +4,7 @@
 import zeit.cms.testing
 
 
-class DragAndDrop(zeit.cms.testing.SeleniumTestCase):
+class DragAndDrop(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def start_drag(self, locator):
         s = self.selenium

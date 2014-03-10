@@ -11,7 +11,7 @@ import zope.component
 import zope.publisher.browser
 
 
-class ContentAdderTest(zeit.cms.testing.FunctionalTestCase):
+class ContentAdderTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         super(ContentAdderTest, self).setUp()
@@ -68,7 +68,7 @@ class ContentAdderTest(zeit.cms.testing.FunctionalTestCase):
             '@@zeit.cms.testcontenttype.Add?', adder())
 
 
-class RessortYearFolderTest(zeit.cms.testing.FunctionalTestCase):
+class RessortYearFolderTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_existing_folder(self):
         from zeit.cms.repository.folder import Folder

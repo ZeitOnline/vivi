@@ -10,7 +10,7 @@ import zeit.cms.workflow.interfaces
 import zope.event
 
 
-class LastSemanticPublish(zeit.cms.testing.FunctionalTestCase):
+class LastSemanticPublish(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_lsp_is_updated_when_lsc_is_newer(self):
         content = self.repository['testcontent']

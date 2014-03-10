@@ -9,7 +9,7 @@ import zeit.cms.testing
 import zope.publisher.browser
 
 
-class TestTree(zeit.cms.testing.SeleniumTestCase):
+class TestTree(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def test_tree_keeps_state(self):
         s = self.selenium
@@ -30,7 +30,7 @@ class TestTree(zeit.cms.testing.SeleniumTestCase):
             '//li[@uniqueid="http://xml.zeit.de/online/2007"]')
 
 
-class TreeURLTest(zeit.cms.testing.FunctionalTestCase):
+class TreeURLTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_handles_unicode_in_uniqueIds(self):
         UNUSED = None

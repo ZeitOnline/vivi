@@ -7,7 +7,7 @@ import zeit.cms.testing
 import zope.publisher.browser
 
 
-class LocationAutocompleteTest(zeit.cms.testing.BrowserTestCase):
+class LocationAutocompleteTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_search_endtoend(self):
         request = zope.publisher.browser.TestRequest(

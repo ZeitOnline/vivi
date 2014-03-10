@@ -5,7 +5,7 @@ import unittest
 import zeit.cms.testing
 
 
-class TestProductConfigIsolation(zeit.cms.testing.FunctionalTestCase):
+class TestProductConfigIsolation(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_1_set_product_config(self):
         import zope.app.appsetup.product

@@ -8,7 +8,7 @@ import zeit.cms.testing
 import zope.publisher.browser
 
 
-class MobileAlternativeWidgetTest(zeit.cms.testing.BrowserTestCase):
+class MobileAlternativeWidgetTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def _set_default_values(self, browser):
         b = browser

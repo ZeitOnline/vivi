@@ -12,7 +12,7 @@ import zeit.cms.workingcopy.interfaces
 import zope.component
 
 
-class TestConflicts(zeit.cms.testing.FunctionalTestCase):
+class TestConflicts(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         super(TestConflicts, self).setUp()
@@ -92,7 +92,7 @@ class ViviURLToContent(unittest.TestCase):
         self.assertFalse(self.cmscontent.called)
 
 
-class UniqueIdToContentIntegration(zeit.cms.testing.FunctionalTestCase):
+class UniqueIdToContentIntegration(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_xml_zeit_de_is_translated_to_content_object(self):
         from zeit.cms.testcontenttype.testcontenttype import TestContentType

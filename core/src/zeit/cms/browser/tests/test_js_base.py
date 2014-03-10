@@ -4,7 +4,7 @@
 import zeit.cms.testing
 
 
-class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
+class EvaluateTest(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def setUp(self):
         super(EvaluateTest, self).setUp()

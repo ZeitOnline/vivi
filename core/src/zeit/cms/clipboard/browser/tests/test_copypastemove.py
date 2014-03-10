@@ -4,7 +4,7 @@
 import zeit.cms.testing
 
 
-class WorkflowCopyBrowserTest(zeit.cms.testing.BrowserTestCase):
+class WorkflowCopyBrowserTest(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def test_reset_publishinfo_works_with_security(self):
         b = self.browser

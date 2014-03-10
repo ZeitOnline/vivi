@@ -293,7 +293,6 @@ class FunctionalTestCaseCommon(
     gocept.testing.assertion.Exceptions,
     RepositoryHelper):
 
-    layer = ZCML_LAYER
     product_config = {}
 
     def getRootFolder(self):
@@ -322,7 +321,6 @@ class FunctionalTestCase(FunctionalTestCaseCommon):
 class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
                        FunctionalTestCaseCommon):
 
-    layer = SELENIUM_LAYER
     skin = 'cms'
     log_errors = False
     log_errors_ignore = ()
@@ -551,6 +549,27 @@ class BrowserTestCase(FunctionalTestCaseCommon, BrowserAssertions):
         super(BrowserTestCase, self).setUp()
         self.browser = zope.testbrowser.testing.Browser()
         self.browser.addHeader('Authorization', 'Basic user:userpw')
+
+
+# These ugly names are due to two reasons:
+# 1. zeit.cms.testing contains both general test mechanics *and*
+#    specific test infrastructure/layers for zeit.cms itself
+# 2. pytest does not allow for subclassing a TestCase and changing its layer
+#    (for the same reason as copy_inherited_functions above).
+
+class ZeitCmsTestCase(FunctionalTestCase):
+
+    layer = ZCML_LAYER
+
+
+class ZeitCmsBrowserTestCase(BrowserTestCase):
+
+    layer = ZCML_LAYER
+
+
+class ZeitCmsSeleniumTestCase(SeleniumTestCase):
+
+    layer = SELENIUM_LAYER
 
 
 class JSLintTestCase(gocept.jslint.TestCase):

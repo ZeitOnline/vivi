@@ -8,7 +8,7 @@ import zeit.cms.tagging.testing
 import zeit.cms.testing
 
 
-class DisplayWidget(zeit.cms.testing.BrowserTestCase,
+class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
                     zeit.cms.tagging.testing.TaggingHelper):
 
     def test_customised_widget_renders_a_list_with_shown_items(self):
@@ -27,7 +27,7 @@ class DisplayWidget(zeit.cms.testing.BrowserTestCase,
             self.assertNotIn('t3', self.browser.contents)
 
 
-class InputWidget(zeit.cms.testing.SeleniumTestCase,
+class InputWidget(zeit.cms.testing.ZeitCmsSeleniumTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
 
     def setUp(self):

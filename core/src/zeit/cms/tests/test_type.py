@@ -17,7 +17,7 @@ class ITestInterface(zope.interface.Interface):
     pass
 
 
-class StoreProvidedInterfacesTest(zeit.cms.testing.FunctionalTestCase):
+class StoreProvidedInterfacesTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         super(StoreProvidedInterfacesTest, self).setUp()

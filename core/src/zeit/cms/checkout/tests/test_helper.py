@@ -9,7 +9,7 @@ import zeit.cms.testing
 import zope.component
 
 
-class TestHelper(zeit.cms.testing.FunctionalTestCase):
+class TestHelper(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_changes(self):
         content = self.repository['testcontent']

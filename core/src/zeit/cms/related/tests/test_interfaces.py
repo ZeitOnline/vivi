@@ -5,7 +5,7 @@ import zeit.cms.testing
 import zope.app.appsetup.product
 
 
-class Source(zeit.cms.testing.FunctionalTestCase):
+class Source(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def setUp(self):
         super(Source, self).setUp()

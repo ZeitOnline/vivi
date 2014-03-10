@@ -19,7 +19,7 @@ class ExampleSource(zeit.cms.content.sources.XMLSource):
 """)
 
 
-class XMLSourceTest(zeit.cms.testing.FunctionalTestCase):
+class XMLSourceTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
     def test_values_without_available_attribute_are_returned_for_all_contexts(
             self):

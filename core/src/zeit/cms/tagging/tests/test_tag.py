@@ -69,7 +69,7 @@ class TestTags(unittest.TestCase,
         self.assertEqual(['t1'], [x.code for x in result])
 
 
-class TestCMSContentWiring(zeit.cms.testing.BrowserTestCase):
+class TestCMSContentWiring(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     # This test checks that the Tag object and its views etc are wired up
     # properly so that they can be addressed as ICMSContent and traversed to.

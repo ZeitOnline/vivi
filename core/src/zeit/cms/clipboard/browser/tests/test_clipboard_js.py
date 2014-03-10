@@ -4,7 +4,7 @@
 import zeit.cms.testing
 
 
-class TestClipboard(zeit.cms.testing.SeleniumTestCase):
+class TestClipboard(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
     def test_adding_via_drag_and_drop(self):
         self.open('/repository')

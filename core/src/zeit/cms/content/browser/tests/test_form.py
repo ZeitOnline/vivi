@@ -1,7 +1,7 @@
 import zeit.cms.testing
 
 
-class MetadataForm(zeit.cms.testing.BrowserTestCase):
+class MetadataForm(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
     def setUp(self):
         super(MetadataForm, self).setUp()
