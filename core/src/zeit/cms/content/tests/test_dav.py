@@ -17,7 +17,7 @@ class ITestInterface(zope.interface.Interface):
     pass
 
 
-class TestPropertyBase(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TestPropertyBase(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(TestPropertyBase, self).setUp()

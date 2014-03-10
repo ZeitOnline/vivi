@@ -79,7 +79,7 @@ class TestObjectDetailsJavascript(zeit.cms.testing.ZeitCmsSeleniumTestCase):
                        'http://xml.zeit.de/testcontent')
 
 
-class TestObjectSequenceWidget(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TestObjectSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_to_form_value_ignores_non_cms_content(self):
         import zeit.cms.interfaces
@@ -133,7 +133,7 @@ class TestObjectSequenceWidget(zeit.cms.testing.ZeitCmsFunctionalTestCase):
 
 
 class TestObjectSequenceWidgetIntegration(
-        zeit.cms.testing.ZeitCmsFunctionalTestCase,
+        zeit.cms.testing.ZeitCmsTestCase,
         zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
@@ -563,7 +563,7 @@ class TestDropObjectWidgetAccept(zeit.cms.testing.ZeitCmsSeleniumTestCase):
 
 
 class TestDropObjectWidgetIntegration(
-        zeit.cms.testing.ZeitCmsFunctionalTestCase):
+        zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         import zope.security.management
@@ -653,7 +653,7 @@ class TestDropObjectWidgetIntegration(
             widget())
 
 
-class DropObjectWidget(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class DropObjectWidget(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_setting_invalid_uniqueId_should_raise(self):
         context = mock.Mock()
@@ -726,7 +726,7 @@ class TestObjectSequenceDisplayWidget(unittest.TestCase):
 
 
 class TestObjectSequenceDisplayWidgetIntegration(
-    zeit.cms.testing.ZeitCmsFunctionalTestCase,
+    zeit.cms.testing.ZeitCmsTestCase,
     zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
@@ -786,7 +786,7 @@ class TestObjectSequenceDisplayWidgetIntegration(
 
 
 class TestDropObjectDisplayWidgetIntegration(
-    zeit.cms.testing.ZeitCmsFunctionalTestCase,
+    zeit.cms.testing.ZeitCmsTestCase,
     zeit.cms.testing.BrowserAssertions):
 
     def setUp(self):
@@ -844,7 +844,7 @@ class TestDropObjectDisplayWidgetIntegration(
                 '...<div...id="field."...mydetails...', widget())
 
 
-class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(TestReferenceSequenceWidget, self).setUp()
@@ -910,7 +910,7 @@ class TestReferenceSequenceWidget(zeit.cms.testing.ZeitCmsFunctionalTestCase):
             lambda: widget._toFieldValue(['http://xml.zeit.de/target']))
 
 
-class RestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class RestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(RestructuredTextWidgetTest, self).setUp()
@@ -974,7 +974,7 @@ class RestructuredTextWidgetJavascriptTest(
 
 
 class ConvertingRestructuredTextWidgetTest(
-        zeit.cms.testing.ZeitCmsFunctionalTestCase):
+        zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(ConvertingRestructuredTextWidgetTest, self).setUp()

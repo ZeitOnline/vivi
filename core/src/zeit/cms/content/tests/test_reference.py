@@ -54,7 +54,7 @@ class ReferenceFixture(object):
 
 
 class ReferencePropertyTest(
-        ReferenceFixture, zeit.cms.testing.ZeitCmsFunctionalTestCase):
+        ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
 
     def test_referenced_content_is_accessible_through_reference(self):
         content = self.repository['content']
@@ -156,7 +156,7 @@ class SingleReferenceFixture(ReferenceFixture):
 
 
 class SingleReferencePropertyTest(
-        SingleReferenceFixture, zeit.cms.testing.ZeitCmsFunctionalTestCase):
+        SingleReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
 
     # XXX This checks basically the same API as the ReferencePropertyTest
     # above, but I'm not sure the benefits of reducing the duplicated test code
@@ -195,7 +195,7 @@ class SingleReferencePropertyTest(
 
 
 class MultiResourceTest(
-        ReferenceFixture, zeit.cms.testing.ZeitCmsFunctionalTestCase):
+        ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(MultiResourceTest, self).setUp()
@@ -267,7 +267,7 @@ class ReferenceTraversalBase(object):
 
 class ReferenceTraversalTest(
         ReferenceFixture, ReferenceTraversalBase,
-        zeit.cms.testing.ZeitCmsFunctionalTestCase):
+        zeit.cms.testing.ZeitCmsTestCase):
 
     def set_reference(self, obj, value):
         obj.references = (value,)
@@ -278,7 +278,7 @@ class ReferenceTraversalTest(
 
 class SingleReferenceTraversalTest(
         SingleReferenceFixture, ReferenceTraversalBase,
-        zeit.cms.testing.ZeitCmsFunctionalTestCase):
+        zeit.cms.testing.ZeitCmsTestCase):
 
     def set_reference(self, obj, value):
         obj.references = value

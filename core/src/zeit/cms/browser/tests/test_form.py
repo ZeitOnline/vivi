@@ -70,7 +70,7 @@ class TestAddForm(zeit.cms.browser.form.AddForm):
     form_fields = zope.formlib.form.Fields(ITestSchema)
 
 
-class Placeholder(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class Placeholder(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(Placeholder, self).setUp()

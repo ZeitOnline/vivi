@@ -54,7 +54,7 @@ class PersistentTest(unittest.TestCase):
         self.assertRaises(AttributeError, set_jar)
 
 
-class LivePropertyXMLSync(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class LivePropertyXMLSync(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(LivePropertyXMLSync, self).setUp()

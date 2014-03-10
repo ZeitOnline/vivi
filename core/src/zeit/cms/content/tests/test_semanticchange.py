@@ -4,7 +4,7 @@
 import zeit.cms.testing
 
 
-class TestSemanticChange(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TestSemanticChange(zeit.cms.testing.ZeitCmsTestCase):
 
     def get_content(self):
         from zeit.cms.testcontenttype.testcontenttype import TestContentType

@@ -4,7 +4,7 @@
 import zeit.cms.testing
 
 
-class DefaultAdapterTests(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class DefaultAdapterTests(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_adapting_foreign_objects_should_fail_adaption(self):
         from zeit.cms.workingcopy.interfaces import ILocalContent
@@ -37,7 +37,7 @@ class DefaultAdapterTests(zeit.cms.testing.ZeitCmsFunctionalTestCase):
             self.fail('TypeError not raised')
 
 
-class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TestRenameOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 
     def get_content(self, name='testcontent'):
         import zeit.cms.interfaces

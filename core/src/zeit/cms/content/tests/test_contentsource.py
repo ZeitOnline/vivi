@@ -19,7 +19,7 @@ class ContentSourceBase(object):
 
 
 class FolderSourceTest(ContentSourceBase,
-                       zeit.cms.testing.ZeitCmsFunctionalTestCase):
+                       zeit.cms.testing.ZeitCmsTestCase):
 
     source = zeit.cms.content.contentsource.FolderSource()
     expected_types = ['collection']

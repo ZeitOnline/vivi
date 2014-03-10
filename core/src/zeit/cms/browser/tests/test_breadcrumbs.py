@@ -22,7 +22,7 @@ class BreadcrumbsView(zeit.cms.browser.breadcrumbs.Breadcrumbs):
         self.request = zope.publisher.browser.TestRequest()
 
 
-class Breadcrumbs(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(Breadcrumbs, self).setUp()

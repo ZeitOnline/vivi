@@ -18,7 +18,7 @@ class Declaration(zeit.cms.type.TypeDeclaration):
     interface = ITestInterface
 
 
-class TestTypeDeclaration(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TestTypeDeclaration(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_adapt_to_declaration(self):
         content = zeit.cms.interfaces.ICMSContent(
@@ -27,7 +27,7 @@ class TestTypeDeclaration(zeit.cms.testing.ZeitCmsFunctionalTestCase):
         self.assertEquals('channel', type_decl.type)
 
 
-class TestTypeIdentifier(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TestTypeIdentifier(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_defaults_to_type(self):
         decl = zeit.cms.type.TypeDeclaration()

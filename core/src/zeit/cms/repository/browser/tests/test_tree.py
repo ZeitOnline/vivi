@@ -30,7 +30,7 @@ class TestTree(zeit.cms.testing.ZeitCmsSeleniumTestCase):
             '//li[@uniqueid="http://xml.zeit.de/online/2007"]')
 
 
-class TreeURLTest(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TreeURLTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_handles_unicode_in_uniqueIds(self):
         UNUSED = None

@@ -9,7 +9,7 @@ import zeit.connector.interfaces
 import zope.component
 
 
-class TestRemoveOnCheckin(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class TestRemoveOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_objects_without_properties_should_not_fail(self):
         import zeit.cms.interfaces
@@ -29,7 +29,7 @@ class TestRemoveOnCheckin(zeit.cms.testing.ZeitCmsFunctionalTestCase):
             content, mock.Mock(), mock.Mock()))
 
 
-class AlwaysWriteableProperty(zeit.cms.testing.ZeitCmsFunctionalTestCase):
+class AlwaysWriteableProperty(zeit.cms.testing.ZeitCmsTestCase):
 
     def setUp(self):
         super(AlwaysWriteableProperty, self).setUp()
