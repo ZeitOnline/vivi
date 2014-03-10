@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.2.7 (unreleased)
+2.2.7 (2014-03-10)
 ------------------
 
 - Support ``uniqueId``/``href`` convention in free teasers, instead of
