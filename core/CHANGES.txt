@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.6.8 (unreleased)
+2.6.8 (2014-03-10)
 ------------------
 
 - zeit.content.image has its own egg now.
