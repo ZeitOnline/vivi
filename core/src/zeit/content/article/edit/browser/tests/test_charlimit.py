@@ -16,7 +16,7 @@ class Form(zeit.cms.browser.form.EditForm,
         self.set_charlimit('foo')
 
 
-class CharlimitTest(zeit.cms.testing.FunctionalTestCase):
+class CharlimitTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_tagged_value_for_charlimit_is_used(self):
 
