@@ -114,7 +114,7 @@ class EditForm(zeit.edit.browser.form.InlineForm):
 
 class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
 
-    layer = zeit.edit.testing.WEBDRIVER_LAYER
+    layer = zeit.edit.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(InlineFormAutoSaveTest, self).setUp()
