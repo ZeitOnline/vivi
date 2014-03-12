@@ -252,7 +252,7 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEqual(u'Foo & Bar', cms.title)
 
 
-class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
+class CheckoutTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_video_changes_are_written_to_brightcove_on_checkin(self):
         video = zeit.cms.interfaces.ICMSContent(
@@ -323,7 +323,9 @@ class TestCheckout(zeit.brightcove.testing.BrightcoveTestCase):
             0, len(zeit.brightcove.testing.RequestHandler.posts_received))
 
 
-class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
+class VideoIdResolverTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.cms.testing.ZCML_LAYER
 
     def test_video_id_should_be_resolved_to_unique_id(self):
         with mock.patch('zeit.connector.mock.Connector.search') as search:
@@ -355,7 +357,7 @@ class TestVideoIdResolver(zeit.cms.testing.FunctionalTestCase):
                 self.assertTrue('1234' in warning[0][0])
 
 
-class TestQueryVideoId(unittest.TestCase):
+class QueryVideoIdTest(unittest.TestCase):
 
     def test_should_pass_video_to_resolver(self):
         from zeit.brightcove.converter import query_video_id
@@ -388,7 +390,7 @@ class TestQueryVideoId(unittest.TestCase):
                                mock.sentinel.default))
 
 
-class TestBackwardCompatibleUniqueIds(
+class BackwardCompatibleUniqueIdsTest(
     zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_videos_should_be_resolvable(self):
