@@ -17,7 +17,7 @@ class IExample(zope.interface.Interface):
     foo = zope.schema.TextLine(title=u'foo')
 
 
-class WidgetCSSMixin(zeit.cms.testing.FunctionalTestCase):
+class WidgetCSSMixin(zeit.cms.testing.ZeitCmsTestCase):
 
     # XXX This test should be moved to zeit.cms.browser, but it seems nearly
     # impossible to instantiate an EditForm, so we punt on this for now;
