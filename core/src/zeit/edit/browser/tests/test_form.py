@@ -114,7 +114,7 @@ class EditForm(zeit.edit.browser.form.InlineForm):
 
 class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
 
-    layer = zeit.edit.testing.SELENIUM_LAYER
+    layer = zeit.edit.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(InlineFormAutoSaveTest, self).setUp()
@@ -172,7 +172,7 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
         input = 'edit.subtitle'
         s.waitForElementPresent(input)
         s.type(input, 'asdf')
-        s.fireEvent(input, 'blur')
+        s.click('header')
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.refresh()
