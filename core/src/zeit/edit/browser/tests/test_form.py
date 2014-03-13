@@ -5,6 +5,7 @@ from mock import Mock
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.edit.browser.form
+import zeit.edit.browser.view
 import zeit.edit.testing
 import zope.formlib.form
 import zope.interface
@@ -103,10 +104,17 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
             folded_workingcopy=None, folded_repository=None))
 
 
-class EditForm(zeit.edit.browser.form.InlineForm):
+class InlineEditForm(zeit.edit.browser.form.InlineForm):
 
     legend = ''
     prefix = 'edit'
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.content.interfaces.ICommonMetadata).select(
+        'supertitle', 'subtitle')
+
+
+class LightboxEditForm(zeit.edit.browser.view.EditBox):
+
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata).select(
         'supertitle', 'subtitle')
@@ -130,7 +138,15 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
     for="zeit.cms.content.interfaces.ICommonMetadata"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-inline.html"
-    class=".test_form.EditForm"
+    class=".test_form.InlineEditForm"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-lightbox.html"
+    class=".test_form.LightboxEditForm"
     permission="zeit.EditContent"
     />
 
@@ -147,6 +163,14 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="inlineform-nested"
     template="inlineform-nested.pt"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.cms.content.interfaces.ICommonMetadata"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="inlineform-lightbox"
+    template="inlineform-lightbox.pt"
     permission="zeit.EditContent"
     />
 
@@ -194,3 +218,12 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
         s.type(input, 'asdf')
         s.click('header')
         self.assertEqual('1', self.eval('zeit.cms.InlineForm.submitted'))
+
+    def test_subpageform_in_lightbox_submits_correctly(self):
+        s = self.selenium
+        self.open('/repository/testcontent/@@checkout')
+        self.open('/workingcopy/zope.user/testcontent/@@inlineform-lightbox')
+        input = 'form.subtitle'
+        s.waitForElementPresent(input)
+        s.click('id=form.actions.apply')
+        s.waitForElementNotPresent(input)

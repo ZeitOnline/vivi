@@ -1,0 +1,18 @@
+<html metal:use-macro="context/@@standard_macros/page">
+  <tal:block metal:fill-slot="body">
+    <div id="lightbox"></div>
+
+    <script type="text/javascript" tal:content="string:
+      window.context_url = '${context/@@absolute_url}';
+    "></script>
+
+    <script type="text/javascript">
+      (function($) {
+      $(document).ready(function() {
+         new zeit.cms.LightboxForm(
+            window.context_url + '/@@edit-lightbox.html', 'lightbox');
+      });
+      }(jQuery));
+    </script>
+  </tal:block>
+</html>
