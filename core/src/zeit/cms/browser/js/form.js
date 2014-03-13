@@ -183,7 +183,7 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         if (self.container.nodeName == 'FORM') {
             self.form = self.container;
         } else {
-            self.form = $(self.container).find('form');
+            self.form = $(self.container).find('form')[0];
         }
         self.rewire_submit_buttons();
         zeit.cms.evaluate_js_and_css(
