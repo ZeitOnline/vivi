@@ -109,17 +109,17 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_main_image_is_none_if_first_body_is_empty(self):
         article = self.get_article()
-        self.assertIsNone(article.main_image)
+        self.assertEqual(None, article.main_image)
 
     def test_main_image_is_none_if_first_block_is_not_an_image(self):
         article = self.get_article()
         self.get_factory(article, 'p')()
-        self.assertIsNone(article.main_image)
+        self.assertEqual(None, article.main_image)
 
     def test_main_image_is_none_if_first_block_is_an_empty_image(self):
         article = self.get_article()
         self.get_factory(article, 'image')()
-        self.assertFalse(article.main_image)
+        self.assertEqual(None, article.main_image)
 
     def test_main_image_is_returned_if_first_block_contains_one(self):
         article = self.get_article()
@@ -134,7 +134,7 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
         block = self.get_factory(article, 'image')()
         image = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
-        article.main_image = image
+        article.main_image = article.main_image.create(image)
         body = zeit.content.article.edit.interfaces.IEditableBody(article)
         block = body.values()[0]
         self.assertEqual(image, block.references.target)
@@ -144,7 +144,7 @@ class MainImageTest(zeit.content.article.testing.FunctionalTestCase):
         article = self.get_article()
         image = zeit.cms.interfaces.ICMSContent(
             'http://xml.zeit.de/2006/DSC00109_2.JPG')
-        article.main_image = image
+        article.main_image = article.main_image.create(image)
         body = zeit.content.article.edit.interfaces.IEditableBody(article)
         block = body.values()[0]
         self.assertEqual(image, block.references.target)

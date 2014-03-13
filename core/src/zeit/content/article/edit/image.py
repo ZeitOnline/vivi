@@ -93,7 +93,10 @@ def copy_image_to_body(context, event):
     block = context.main_image_block
     if block is None or block.set_manually:
         return
-    context.main_image = zeit.content.image.interfaces.IImages(context).image
+    image = zeit.content.image.interfaces.IImages(context).image
+    if image:
+        image = block.references.get(image) or block.references.create(image)
+    context.main_image = image
 
 
 @grokcore.component.subscribe(

@@ -44,6 +44,11 @@
     trusted="yes"
     />
 
+  <class class=".article.NoMainImageBlockReference">
+    <require like_class="zeit.cms.content.reference.EmptyReference" />
+  </class>
+
+
    <!-- recensions -->
 
   <adapter

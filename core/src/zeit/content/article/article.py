@@ -89,7 +89,11 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
     def main_image(self):
         image_block = self.main_image_block
         if image_block is None:
-            return None
+            # XXX Duplicates configuration from .edit.image.Image.
+            # XXX Kludgy: We're passing the article as the source here, but
+            # that will be replaced by having the article create the image
+            # block and then use *that* as the source, so it all works out.
+            return NoMainImageBlockReference(self, 'references', 'image')
         return image_block.references
 
     @main_image.setter
@@ -97,9 +101,6 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         image_block = self.main_image_block
         if image_block is None:
             image_block = self._create_image_block_in_front()
-        if value:
-            value = (image_block.references.get(value)
-                     or image_block.references.create(value))
         image_block.references = value
 
     @property
@@ -122,6 +123,20 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         ids.insert(0, ids.pop())  # XXX ElementFactory should do this
         body.updateOrder(ids)
         return image_block
+
+
+class NoMainImageBlockReference(zeit.cms.content.reference.EmptyReference):
+    """We need someone who can create references, even when the reference is
+    empty. In case of the main image, not only can the reference be empty,
+    the block containing the reference might not even exist. So we need a
+    proxy who creates the block if necessary.
+
+    XXX The whole main_image thing is a kludge, and it shows here.
+    """
+
+    def create(self, target):
+        self.source = self.source._create_image_block_in_front()
+        return super(NoMainImageBlockReference, self).create(target)
 
 
 class ArticleType(zeit.cms.type.XMLContentTypeDeclaration):
