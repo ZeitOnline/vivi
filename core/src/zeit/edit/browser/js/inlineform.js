@@ -38,6 +38,8 @@ var evaluate_form_signals = function(event) {
     var signals = $.parseJSON($(form.container).find('> .signals').text());
     if (signals) {
         $.each(signals, function(i, signal) {
+            log("Signalling (inlineform) "+ [
+                'zeit.edit.Editor', signal.name, signal.args]);
             MochiKit.Signal.signal.apply(
                 this, extend([zeit.edit.editor, signal.name], signal.args));
         });

@@ -71,7 +71,7 @@ zeit.edit._locked_makeJSONRequest = function(
             immediate_actions.reverse();
             while(immediate_actions.length) {
                 var signal = immediate_actions.pop();
-                log("Signalling (immediate) "+ [target_component.__name__, signal.name]);
+                log("Signalling (immediate) "+ [target_component.__name__, signal.name, signal.args]);
                 MochiKit.Signal.signal.apply(
                     this,
                     extend([target_component, signal.name], signal.args));
