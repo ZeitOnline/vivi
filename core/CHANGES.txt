@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.2.1 (unreleased)
+2.2.1 (2014-03-14)
 ------------------
 
 - Fix bug that added more and more signal handlers upon each block reload.
