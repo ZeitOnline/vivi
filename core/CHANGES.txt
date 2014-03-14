@@ -9,6 +9,9 @@ zeit.cms changes
 
 - Fix XML structure of image references (VIV-305).
 
+- Fix bug in determining the correct XML node for SingleReferenceProperty.
+
+
 2.15.0 (2014-03-10)
 -------------------
 
