@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.15.1 (unreleased)
+2.15.1 (2014-03-14)
 -------------------
 
 - Fix broken split of SubpageForm/InlineForm JS code: InlineForms do need
