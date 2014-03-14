@@ -285,6 +285,7 @@ http://xml.zeit.de/2006
 http://xml.zeit.de/2006/49 collection
 http://xml.zeit.de/2006/52 collection
 http://xml.zeit.de/2006/DSC00109_2.JPG image
+http://xml.zeit.de/2006/DSC00109_3.JPG image
 
 >>> connector.move('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-27')
 >>> ('2006-27', 'http://xml.zeit.de/2006-27') in connector.listCollection(
@@ -298,6 +299,7 @@ http://xml.zeit.de/2006-27
 http://xml.zeit.de/2006-27/49 collection
 http://xml.zeit.de/2006-27/52 collection
 http://xml.zeit.de/2006-27/DSC00109_2.JPG image
+http://xml.zeit.de/2006-27/DSC00109_3.JPG image
 
 
 Overwriting content by moving is not allowed and raises an error:
@@ -316,6 +318,7 @@ http://xml.zeit.de/2006
 http://xml.zeit.de/2006/49 collection
 http://xml.zeit.de/2006/52 collection
 http://xml.zeit.de/2006/DSC00109_2.JPG image
+http://xml.zeit.de/2006/DSC00109_3.JPG image
 
 
 
@@ -327,6 +330,7 @@ http://xml.zeit.de/2006
 http://xml.zeit.de/2006/49 collection
 http://xml.zeit.de/2006/52 collection
 http://xml.zeit.de/2006/DSC00109_2.JPG image
+http://xml.zeit.de/2006/DSC00109_3.JPG image
 
 >>> connector.copy('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-copy')
 >>> zeit.connector.testing.print_tree(connector, 'http://xml.zeit.de/2006-copy')
@@ -334,6 +338,7 @@ http://xml.zeit.de/2006-copy
 http://xml.zeit.de/2006-copy/49 collection
 http://xml.zeit.de/2006-copy/52 collection
 http://xml.zeit.de/2006-copy/DSC00109_2.JPG image
+http://xml.zeit.de/2006-copy/DSC00109_3.JPG image
 
 Clean this up again:
 
