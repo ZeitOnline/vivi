@@ -33,9 +33,9 @@ too:
 There is one image in the image folder, so the gallery has a length of 1 now:
 
 >>> len(gallery)
-1
+2
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG']
+[u'DSC00109_2.JPG', u'DSC00109_3.JPG']
 
 
 
@@ -79,13 +79,13 @@ Let's add an image to the image folder:
 The gallery obviously hasn't noted this change:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG']
+[u'DSC00109_2.JPG', u'DSC00109_3.JPG']
 
 We need to call `reload_image_folder`:
 
 >>> gallery.reload_image_folder()
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'01.jpg']
+[u'DSC00109_2.JPG', u'DSC00109_3.JPG', u'01.jpg']
 
 The change is reflected in the xml:
 
@@ -449,13 +449,13 @@ Sorting
 The images in the gallery have a certain order. Currently it is:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'01.jpg']
+[u'DSC00109_2.JPG', u'DSC00109_3.JPG', u'01.jpg']
 
 Let's change the order:
 
->>> gallery.updateOrder([u'01.jpg', u'DSC00109_2.JPG'])
+>>> gallery.updateOrder([u'01.jpg', u'DSC00109_2.JPG', u'DSC00109_3.JPG'])
 >>> list(gallery.keys())
-[u'01.jpg', u'DSC00109_2.JPG']
+[u'01.jpg', u'DSC00109_2.JPG', u'DSC00109_3.JPG']
 
 This is of course reflected int he XML:
 
@@ -494,6 +494,9 @@ This is of course reflected int he XML:
             <copyright ...>...</copyright>
           </thumbnail>
         </block>
+        <block name="DSC00109_3.JPG">
+          ...
+        </block>
       </container>
     </column>
   </body>
@@ -509,9 +512,9 @@ ValueError: The order argument must contain the same keys as the container.
 
 Restore the orgiginal order again:
 
->>> gallery.updateOrder([u'DSC00109_2.JPG', u'01.jpg'])
+>>> gallery.updateOrder([u'DSC00109_2.JPG', u'DSC00109_3.JPG', u'01.jpg'])
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'01.jpg']
+[u'DSC00109_2.JPG', u'DSC00109_3.JPG', u'01.jpg']
 
 
 Container api
@@ -552,6 +555,7 @@ True
 >>> for name in gallery:
 ...     print "Key:", name
 Key: DSC00109_2.JPG
+Key: DSC00109_3.JPG
 Key: 01.jpg
 
 
@@ -568,7 +572,7 @@ Remove the 01.jpg:
 It is now longer in the keys:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG']
+[u'DSC00109_2.JPG', u'DSC00109_3.JPG']
 
 >>> gallery['01.jpg']
 Traceback (most recent call last):
@@ -650,7 +654,7 @@ Reloading the image folder will also re-create all the thumbnails. The
 thumbnail of the removed image is also removed:
 
 >>> repository['2006']['thumbnails'].keys()
-[u'DSC00109_2.JPG']
+[u'DSC00109_2.JPG', u'DSC00109_3.JPG']
 
 
 At one point we had galleries with an empty caption-tag which broke
@@ -713,7 +717,7 @@ u'http://xml.zeit.de/2006'
 The keys also correct(ed) and the names are set:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'01.jpg'] 
+[u'DSC00109_2.JPG', u'01.jpg', u'DSC00109_3.JPG']
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery>
   <head>
@@ -808,7 +812,7 @@ u'http://xml.zeit.de/2006'
 The keys also correct(ed) and the names are set:
 
 >>> list(gallery.keys())
-[u'DSC00109_2.JPG', u'01.jpg'] 
+[u'DSC00109_2.JPG', u'01.jpg', u'DSC00109_3.JPG']
 >>> print lxml.etree.tostring(gallery.xml, pretty_print=True)
 <gallery>
   <head>
