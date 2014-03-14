@@ -213,6 +213,34 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             self.assertEqual(
                 image_group.uniqueId, image_block.references.target.uniqueId)
 
+    def test_image_block_retrieves_the_correct_xml_node(self):
+        # The lxml.objectify API offer an insiduous source of bugs: Iterating
+        # over a single element a) is possible and b) yields all siblings with
+        # the same tag. So it has been easy for SingleReferenceProperty to
+        # overlook the fact that when we find a single element via xpath,
+        # that already is the one we want.
+        from zeit.cms.interfaces import ICMSContent
+        from zeit.content.article.edit.interfaces import IEditableBody
+        import zope.component
+
+        self.repository['article'] = self.get_article()
+
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['article']) as co:
+            body = IEditableBody(co)
+            factory = zope.component.getAdapter(
+                body, zeit.edit.interfaces.IElementFactory, 'image')
+            block = factory()
+            block.references = block.references.create(ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG'))
+            block = factory()
+            block.references = block.references.create(ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_3.JPG'))
+
+            self.assertEqual(
+                'http://xml.zeit.de/2006/DSC00109_3.JPG',
+                block.references.target.uniqueId)
+
     @contextlib.contextmanager
     def image(self):
         from zeit.cms.interfaces import ICMSContent

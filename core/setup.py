@@ -46,7 +46,7 @@ setup(
         'zc.table',
         'zdaemon',
         'zeit.cms>=2.15.0.dev0',
-        'zeit.connector>1.14.1',
+        'zeit.connector>=2.3.1.dev0',
         'zeit.content.author',
         'zeit.content.cp>=0.33.0',
         'zeit.content.image',
