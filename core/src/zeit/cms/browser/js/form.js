@@ -7,9 +7,14 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         self.container = container;
         self.url = url;
         self.events = [];
+        self.bind_eventhandlers();
+        self.initial_load();
+    },
+
+    bind_eventhandlers: function() {
+        var self = this;
         self.bind(self.container, 'click', self.handle_click);
         self.bind(self.container, 'submit', self.submit_via_js);
-        self.reload();
     },
 
     bind: function(target, event, handler) {
@@ -17,6 +22,11 @@ zeit.cms.SubPageForm = gocept.Class.extend({
         handler = MochiKit.Base.bind(handler, self);
         self.events.push([target, event, handler]);
         $(target).bind(event, handler);
+    },
+
+    initial_load: function() {
+        var self = this;
+        self.reload();
     },
 
     reload: function() {
@@ -216,9 +226,9 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
     mouse_down: false,
     delay_submit: false,
 
-    construct: function(url, container) {
+    bind_eventhandlers: function() {
         var self = this;
-        arguments.callee.$.construct.call(self, url, container);
+        arguments.callee.$.bind_eventhandlers.call(self);
         // In general fields are saved, when they lose focus. But there
         // are various exceptions from the rule:
         //
@@ -261,10 +271,10 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
         });
     },
 
-    reload: function() {
-        // We don't need/support actual reloading. During construct, our
-        // contents have already been rendered by the server, so we only need
-        // to do the post-processing and send the appropriate signals.
+    initial_load: function() {
+        // During construct, our contents have already been rendered by the
+        // server, so we only need to do the post-processing and send the
+        // appropriate signals.
         var self = this;
         self.post_process_html();
         $(self.container).trigger_fragment_ready();

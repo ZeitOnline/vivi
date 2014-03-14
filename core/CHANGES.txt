@@ -4,7 +4,8 @@ zeit.cms changes
 2.15.1 (unreleased)
 -------------------
 
-- Fix typo in SubpageForm JS code (VIV-285).
+- Fix broken split of SubpageForm/InlineForm JS code: InlineForms do need
+  reload() functionality (VIV-285).
 
 
 2.15.0 (2014-03-10)
