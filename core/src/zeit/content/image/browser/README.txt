@@ -303,6 +303,7 @@ The zeit.content.image package provides an image browser for IFolder:
           </div>
         </div>
       </div>
+      ...
       <div class="image">
         <div class="image-data">
           <a href="http://localhost/++skin++cms/repository/2006/opernball.jpg/@@view.html">
