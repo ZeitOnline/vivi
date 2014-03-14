@@ -64,6 +64,9 @@ var reload_inline_view = function(selector) {
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     setup_views();
     wire_forms();
+});
+
+MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
     MochiKit.Signal.connect(window, 'changed', evaluate_form_signals);
     MochiKit.Signal.connect(
         zeit.edit.editor, 'reload-inline-form', reload_inline_form);
