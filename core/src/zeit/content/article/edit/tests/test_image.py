@@ -24,6 +24,13 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual(image_uid, image.xml.get('src'))
         self.assertEqual(u'myname', image.__name__)
         self.assertEqual(u'large', image.layout)
+        self.assertEllipsis("""\
+<image ... src="{image_uid}" ... is_empty="False">
+  <bu xsi:nil="true"/>
+  <copyright py:pytype="str">&#169;</copyright>
+</image>
+        """.format(image_uid=image_uid), lxml.etree.tostring(
+            image.xml, pretty_print=True))
 
     def test_setting_image_to_none_removes_href(self):
         from zeit.content.article.edit.image import Image
