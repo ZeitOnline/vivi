@@ -129,7 +129,7 @@ zeit.edit.context.Lightbox = zeit.edit.context.Base.extend({
 zeit.edit.context.ContentActionBase = gocept.Class.extend({
 
     __name__: 'zeit.edit.ContentActionBase',
-    context: null,  // define in sublcasses
+    context: null,  // define in subclasses
 
     construct: function() {
         var self = this;
