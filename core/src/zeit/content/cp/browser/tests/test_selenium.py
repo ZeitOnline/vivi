@@ -73,7 +73,9 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementNotPresent('css=a.CloseButton')
 
         s.click('css=a.edit-link')
-        s.waitForElementPresent('id=tab-1')
+        # Wait for tab content to load, to be certain that the tabs have been
+        # wired properly.
+        s.waitForElementPresent('css=.teaser-block-properties-form')
         s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('form.publisher')
         s.waitForValue('form.publisher', 'FooPublisher')
