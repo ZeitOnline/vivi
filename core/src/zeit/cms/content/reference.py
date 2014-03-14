@@ -60,7 +60,7 @@ class ReferenceProperty(object):
                 value = value[0]
                 for key, val in value.attrib.items():
                     xml.set(key, val)
-                for child in value[:]:
+                for child in value.iterchildren():
                     xml.append(copy.copy(child))
         else:
             self.path.setattr(xml, value)

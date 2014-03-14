@@ -7,6 +7,7 @@ zeit.cms changes
 - Fix broken split of SubpageForm/InlineForm JS code: InlineForms do need
   reload() functionality (VIV-285).
 
+- Fix XML structure of image references (VIV-305).
 
 2.15.0 (2014-03-10)
 -------------------
