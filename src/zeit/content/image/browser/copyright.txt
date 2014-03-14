@@ -66,8 +66,7 @@ message about the copyright change:
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/@@view.html')
 >>> print browser.contents
-<?xml ...
-    ...>Copyright changed for: DSC00109_2.JPG, agroup<...
+<...Copyright changed for: DSC00109_2.JPG...agroup...
 
 Let's see if that's correct:
 
