@@ -5,7 +5,7 @@ zeit.content.cp changes
 2.2.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add field 'background color' for blocks (VIV-317).
 
 
 2.2.7 (2014-03-10)

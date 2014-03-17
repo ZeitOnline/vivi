@@ -40,3 +40,6 @@ class Block(zeit.edit.block.Element):
         '.', 'read_more')
     read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more_url')
+
+    background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'background_color')

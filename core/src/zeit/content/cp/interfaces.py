@@ -161,6 +161,15 @@ class ICPFeed(zope.interface.Interface):
     items = zope.interface.Attribute("tuple of feed items")
 
 
+def hex_literal(value):
+    try:
+        int(value, base=16)
+    except ValueError:
+        raise ValidationError(_("Invalid hex literal"))
+    else:
+        return True
+
+
 class IBlock(zeit.edit.interfaces.IBlock):
 
     title = zope.schema.TextLine(
@@ -187,6 +196,11 @@ class IBlock(zeit.edit.interfaces.IBlock):
     read_more_url = zope.schema.TextLine(
         title=_("Read more URL"),
         required=False)
+
+    background_color = zope.schema.TextLine(
+        title=_("Background color (ZMO only)"),
+        required=False,
+        max_length=6, constraint=hex_literal)
 
 
 class IPlaceHolder(IBlock):
