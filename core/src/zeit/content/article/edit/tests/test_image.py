@@ -241,6 +241,25 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
                 'http://xml.zeit.de/2006/DSC00109_3.JPG',
                 block.references.target.uniqueId)
 
+    def test_setting_same_image_again_keeps_it(self):
+        from zeit.cms.interfaces import ICMSContent
+        from zeit.content.article.edit.interfaces import IEditableBody
+        import zope.component
+
+        self.repository['article'] = self.get_article()
+        with zeit.cms.checkout.helper.checked_out(
+            self.repository['article']) as co:
+            body = IEditableBody(co)
+            factory = zope.component.getAdapter(
+                body, zeit.edit.interfaces.IElementFactory, 'image')
+            block = factory()
+            image_id = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
+            block.references = block.references.create(
+                ICMSContent(image_id))
+            self.assertEqual(image_id, block.references.target.uniqueId)
+            block.references = block.references.get(image_id)
+            self.assertEqual(image_id, block.references.target.uniqueId)
+
     @contextlib.contextmanager
     def image(self):
         from zeit.cms.interfaces import ICMSContent
