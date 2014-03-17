@@ -6,6 +6,7 @@ import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.interfaces
 import zeit.content.author.interfaces
+import zope.security.proxy
 
 
 @grok.adapter(zeit.content.author.interfaces.IAuthor, name='author')
@@ -34,7 +35,8 @@ class AuthorshipXMLReferenceUpdater(
         for author in node.findall('author'):
             node.remove(author)
         for reference in context.authorships:
-            node.append(copy.copy(reference.xml))
+            node.append(copy.copy(zope.security.proxy.getObject(
+                reference.xml)))
 
 
 class Reference(zeit.cms.content.reference.Reference):
