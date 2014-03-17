@@ -20,7 +20,6 @@ class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
         self.shakespeare.lastname = 'Shakespeare'
         self.repository['shakespeare'] = self.shakespeare
 
-
     def test_location_is_copied(self):
         content = self.repository['testcontent']
         content.authorships = (content.authorships.create(self.shakespeare),)
