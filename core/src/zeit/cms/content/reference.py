@@ -53,6 +53,13 @@ class ReferenceProperty(object):
         value = tuple(zope.security.proxy.getObject(x.xml) for x in value)
         if str(self.path) == '.':  # Special case for single reference
             assert len(value) <= 1
+            # XXX Kludge. What we actually want here is the idempotent
+            # behaviour of ObjectPath.setattr, but that refuses to operate on
+            # the root node. So we cheat and copy the target value in case it's
+            # the same as the source value, and then empty the source
+            # completely.
+            if value:
+                value = [copy.copy(value[0])]
             xml.attrib.clear()
             for child in xml.iterchildren():
                 xml.remove(child)

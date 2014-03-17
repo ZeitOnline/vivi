@@ -4,7 +4,8 @@ zeit.cms changes
 2.15.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix bug in SingleReferenceProperty that deleted the value when setting the
+  same value again (VIV-305).
 
 
 2.15.1 (2014-03-14)
