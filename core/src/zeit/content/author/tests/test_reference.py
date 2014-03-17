@@ -55,3 +55,15 @@ class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
         self.assertEllipsis(
             '...<author href="http://xml.zeit.de/andersen"...', reference)
         self.assertNotIn('shakespeare', reference)
+
+    def test_works_with_security(self):
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['testcontent'], temporary=False) as co:
+            co = zope.security.proxy.ProxyFactory(co)
+            co.authorships = (co.authorships.create(self.shakespeare),)
+            co.authorships[0].location = 'London'
+            reference = zope.component.getAdapter(
+                co, zeit.cms.content.interfaces.IXMLReference, name='related')
+            self.assertIn(
+                'William Shakespeare',
+                lxml.etree.tostring(reference, pretty_print=True))
