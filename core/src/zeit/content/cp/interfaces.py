@@ -508,7 +508,7 @@ class IReadTeaserBar(IReadRegion, zeit.edit.interfaces.IElement):
     layout = zope.schema.Choice(
         title=_("Layout"),
         source=zeit.content.cp.layout.TeaserBarLayoutSource(),
-        default=zeit.content.cp.layout.get_bar_layout('normal'))
+        default=zeit.content.cp.layout.DEFAULT_BAR_LAYOUT)
 
     supertitle = zope.schema.TextLine(
         title=_("Supertitle"),

@@ -10,6 +10,8 @@ zeit.content.cp changes
 - Add fields ``supertitle``, ``teaserText``, ``background_color`` for teaser
   bar (VIV-318).
 
+- Make teaserbar layouts configurable (VIV-318).
+
 
 2.2.7 (2014-03-10)
 ------------------

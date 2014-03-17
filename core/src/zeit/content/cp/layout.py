@@ -60,6 +60,8 @@ class BlockLayout(object):
 # Aufmacher:Block:Großer Teaser mit Bildergalerie und Teaserliste
 # Aufmacher:Block:Großer Teaser mit Video statt Bild und Teaserliste
 
+MAX_TEASER_BAR_BLOCKS = 4
+
 
 class BarLayout(object):
 
@@ -70,22 +72,15 @@ class BarLayout(object):
         self.title = title
         self.blocks = blocks
 
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, BarLayout) and self.id == other.id
 
-MAX_TEASER_BAR_BLOCKS = 4
 
-
-TEASER_BAR = [
-    BarLayout('normal',
-              u'Ressort Teaser mit Teaserliste', blocks=4),
-    BarLayout('mr',
-              u'Ad-Medium Rectangle', blocks=2),
-    BarLayout('dmr',
-              u'Double Ad-Medium Rectangle', blocks=1),
-    BarLayout('parquet',
-              u'Parkett (Teaser untereinander)', blocks=4),
-    BarLayout('parquet-break',
-              u'Parkett-Unterbrecherleiste', blocks=4),
-]
+# XXX We need to hard-code this, because at import-time, when the default value
+# is set on the interface, there's no product config yet.
+DEFAULT_BAR_LAYOUT = BarLayout(
+    'normal', 'Ressort Teaser mit Teaserliste', MAX_TEASER_BAR_BLOCKS)
 
 
 class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
@@ -140,10 +135,23 @@ class TeaserBlockLayoutSource(LayoutSource):
                 if layout.areas.intersection(areas)]
 
 
-class TeaserBarLayoutSource(LayoutSource):
+class TeaserBarLayoutSource(LayoutSource, zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'bar-layout-source'
+    attribute = 'id'
 
     def getValues(self, context):
-        return TEASER_BAR
+        tree = self._get_tree()
+        result = [DEFAULT_BAR_LAYOUT]
+        for node in tree.iterchildren('*'):
+            if not self.isAvailable(node, context):
+                continue
+            result.append(BarLayout(
+                node.get(self.attribute),
+                self._get_title_for(node),
+                int(node.get('blocks', MAX_TEASER_BAR_BLOCKS))))
+        return result
 
 
 def get_layout(id):
@@ -153,6 +161,6 @@ def get_layout(id):
 
 
 def get_bar_layout(id):
-    for layout in TEASER_BAR:
+    for layout in list(TeaserBarLayoutSource()(None)):
         if layout.id == id:
             return layout
