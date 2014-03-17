@@ -78,6 +78,17 @@
     weight="1"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="common-box"
+    template="layout.block.edit-commons.pt"
+    permission="zeit.EditContent"
+    weight="1"
+    />
+
   <configure package="zeit.edit.browser">
     <browser:viewlet
       for="zeit.content.cp.interfaces.ITeaserBar"

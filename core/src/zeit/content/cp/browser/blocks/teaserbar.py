@@ -53,3 +53,10 @@ class Delete(zeit.edit.browser.view.Action):
         self.signal(
             None, 'reload', self.context.__name__, self.url(self.context,
                                                             '@@contents'))
+
+
+class EditCommon(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.cp.interfaces.ITeaserBar).select(
+        'supertitle', 'teaserText', 'background_color')

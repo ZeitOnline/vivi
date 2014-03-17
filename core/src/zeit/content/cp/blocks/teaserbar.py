@@ -13,6 +13,13 @@ class TeaserBar(zeit.edit.container.TypeOnAttributeContainer):
 
     zope.interface.implements(zeit.content.cp.interfaces.ITeaserBar)
 
+    supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'supertitle')
+    teaserText = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'teaserText')
+    background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'background_color')
+
     @property
     def placeholder_factory(self):
         return zope.component.getAdapter(

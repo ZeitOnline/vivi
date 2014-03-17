@@ -37,6 +37,13 @@
     weight="-10"
     />  <!-- simulate z-index by document order -->
 
+  <browser:page
+    for="zeit.content.cp.interfaces.ITeaserBar"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-common"
+    class=".teaserbar.EditCommon"
+    permission="zeit.EditContent"
+    />
 
 </configure>
 

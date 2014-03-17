@@ -5,7 +5,10 @@ zeit.content.cp changes
 2.2.8 (unreleased)
 ------------------
 
-- Add field 'background color' for blocks (VIV-317).
+- Add field ``background_color`` for blocks (VIV-317).
+
+- Add fields ``supertitle``, ``teaserText``, ``background_color`` for teaser
+  bar (VIV-318).
 
 
 2.2.7 (2014-03-10)

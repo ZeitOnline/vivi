@@ -510,6 +510,20 @@ class IReadTeaserBar(IReadRegion, zeit.edit.interfaces.IElement):
         source=zeit.content.cp.layout.TeaserBarLayoutSource(),
         default=zeit.content.cp.layout.get_bar_layout('normal'))
 
+    supertitle = zope.schema.TextLine(
+        title=_("Supertitle"),
+        required=False)
+
+    teaserText = zope.schema.Text(
+        title=_("Teaser text"),
+        required=False,
+        max_length=170)
+
+    background_color = zope.schema.TextLine(
+        title=_("Background color (ZMO only)"),
+        required=False,
+        max_length=6, constraint=hex_literal)
+
 
 class IWriteTeaserBar(IWriteRegion):
     pass
