@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.15.2 (unreleased)
+2.15.2 (2014-03-17)
 -------------------
 
 - Fix bug in SingleReferenceProperty that deleted the value when setting the
