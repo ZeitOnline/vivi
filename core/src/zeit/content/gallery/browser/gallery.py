@@ -5,17 +5,17 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.repository.interfaces
 import zeit.content.gallery.interfaces
+import zeit.content.image.browser.image
 import zope.component
 import zope.interface
 import zope.security
-import zope.security.proxy
 
 
 @zope.component.adapter(
-        zeit.cms.repository.interfaces.IFolder,
-        zeit.content.gallery.interfaces.IGalleryFolderSource)
+    zeit.cms.repository.interfaces.IFolder,
+    zeit.content.gallery.interfaces.IGalleryFolderSource)
 @zope.interface.implementer(
-        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def gallery_folder_browse_location(context, source):
     """Gallery browse location
 
@@ -34,10 +34,10 @@ def gallery_folder_browse_location(context, source):
 
 
 @zope.component.adapter(
-        zeit.content.gallery.interfaces.IGallery,
-        zeit.content.gallery.interfaces.IGalleryFolderSource)
+    zeit.content.gallery.interfaces.IGallery,
+    zeit.content.gallery.interfaces.IGalleryFolderSource)
 @zope.interface.implementer(
-        zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+    zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 def gallery_browse_location(context, source):
     return zope.component.queryMultiAdapter(
         (context.__parent__, source),
