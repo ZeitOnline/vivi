@@ -241,6 +241,7 @@ class XMLReferenceUpdater(object):
         update_with_context(xml_node, context) in order to use this feature.
 
         """
+        __traceback_info__ = (self.context.uniqueId,)
         context = self.target_iface(self.context, None)
         if context is None:
             return
