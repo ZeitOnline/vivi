@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.15.3 (unreleased)
+2.15.3 (2014-03-18)
 -------------------
 
 - Add diagnostics for XMLReferenceUpdater so we can pinpoint errors more easily
