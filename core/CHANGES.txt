@@ -12,6 +12,9 @@ zeit.content.cp changes
 
 - Make teaserbar layouts configurable (VIV-318).
 
+- Return schema default instead of None for unknown ICommonMetadata fields
+  of free teasers (bug uncovered during testing of VIV-322).
+
 
 2.2.7 (2014-03-10)
 ------------------

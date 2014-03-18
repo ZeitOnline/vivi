@@ -57,8 +57,9 @@ class XMLTeaser(zope.container.contained.Contained,
         self.__parent__ = context
 
     def __getattr__(self, key):
-        if key in zeit.cms.content.interfaces.ICommonMetadata:
-            return None
+        field = zeit.cms.content.interfaces.ICommonMetadata.get(key, None)
+        if field is not None:
+            return field.default
         raise AttributeError(key)
 
     # When free_teaser is True, this is a http://teaser.vivi.zeit.de/ id.

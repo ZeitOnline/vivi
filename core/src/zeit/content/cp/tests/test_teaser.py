@@ -58,6 +58,9 @@ class TestXMLTeaser(XMLTeaserBase):
              'http://xml.zeit.de/testcontent'],
             sorted(x.uniqueId for x in references))
 
+    def test_unknown_commonmetadata_fields_should_return_their_default(self):
+        self.assertEqual((), self.teaser.authorships)
+
     def test_iimages_should_contain_referenced_objects_image(self):
         from zeit.content.image.interfaces import IImages
         from zeit.cms.checkout.helper import checked_out
