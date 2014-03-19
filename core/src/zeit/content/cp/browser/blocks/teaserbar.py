@@ -60,3 +60,4 @@ class EditCommon(zeit.edit.browser.view.EditBox):
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.ITeaserBar).select(
         'supertitle', 'teaserText', 'background_color')
+    form_fields['background_color'].custom_widget = zeit.cms.browser.widget.ColorpickerWidget
