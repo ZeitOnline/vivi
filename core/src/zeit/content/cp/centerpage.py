@@ -11,6 +11,7 @@ import itertools
 import lxml.etree
 import lxml.objectify
 import pkg_resources
+import xml.sax.saxutils
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -111,11 +112,20 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         return zope.container.contained.contained(area, self, key)
 
     def updateMetadata(self, content):
-        for entry in self.xml.xpath('//block[@href="%s"]' % content.uniqueId):
+        for entry in self.xml.xpath(
+                '//block[@uniqueId={id} or @href={id}]'.format(
+                    id=xml.sax.saxutils.quoteattr(content.uniqueId))):
+            if entry.get('uniqueId', content.uniqueId) != content.uniqueId:
+                # ``entry`` is a free teaser, but ``content`` is the referenced
+                # object. Skip it, since the metadata of the free teaser itself
+                # is what counts.
+                continue
+
             # migration code
             node = entry.find('references')
             if node is not None:
                 entry.remove(node)
+
             updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
                 content, None)
             if updater is not None:

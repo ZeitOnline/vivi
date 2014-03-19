@@ -58,6 +58,14 @@ class TestXMLTeaser(XMLTeaserBase):
              'http://xml.zeit.de/testcontent'],
             sorted(x.uniqueId for x in references))
 
+    def test_update_metadata_uses_free_teaser_not_referenced_object(self):
+        self.teaser.free_teaser = True
+        self.teaser.teaserSupertitle = 'teaserSupertitle'
+        UNUSED_EVENT = None
+        zeit.content.cp.centerpage.update_centerpage_on_checkin(
+            self.cp, UNUSED_EVENT)
+        self.assertEqual('teaserSupertitle', self.teaser.teaserSupertitle)
+
     def test_unknown_commonmetadata_fields_should_return_their_default(self):
         self.assertEqual((), self.teaser.authorships)
 
