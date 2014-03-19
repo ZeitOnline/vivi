@@ -4,6 +4,7 @@
 from fanstatic import Library, Group
 from js.jquery import jquery
 from js.mochikit import mochikit
+from js.vanderlee_colorpicker import colorpicker
 import fanstatic
 import os.path
 import pkg_resources
@@ -114,6 +115,7 @@ SplitDirResource('object_reference.js', depends=[lightbox_js, base])
 SplitDirResource('object_sequence.js', depends=[base])
 SplitDirResource('restructuredtext.js', depends=[base])
 SplitDirResource('autocomplete.js', depends=[base])
+SplitDirResource('colorpicker.js', depends=[base, colorpicker])
 SplitDirResource('table.js', depends=[base])
 SplitDirResource('xeyes.js', depends=[base])
 SplitDirResource('menu.js', depends=[base])

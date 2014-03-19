@@ -602,3 +602,8 @@ class AutocompleteDisplayWidget(zope.formlib.widgets.DisplayWidget):
 
     def __init__(self, context, source, request):
         super(AutocompleteDisplayWidget, self).__init__(context, request)
+
+
+class ColorpickerWidget(zope.formlib.textwidgets.TextWidget):
+
+    cssClass = 'colorpicker-widget'

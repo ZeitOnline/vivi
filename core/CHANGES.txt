@@ -4,7 +4,7 @@ zeit.cms changes
 2.15.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add colorpicker widget.
 
 
 2.15.3 (2014-03-18)

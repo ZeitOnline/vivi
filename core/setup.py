@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='2.15.4.dev0',
+    version='2.16.0.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
@@ -37,6 +37,7 @@ setup(
         'guppy',
         'js.jquery',
         'js.mochikit',
+        'js.vanderlee_colorpicker',
         'lovely.remotetask>=0.5',
         'lxml>=2.0.2',
         'martian',
