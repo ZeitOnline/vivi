@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.3.1 (unreleased)
+2.3.1 (2014-03-19)
 ------------------
 
 - Update metadata of free teasers correctly on checkin (VIV-322).
