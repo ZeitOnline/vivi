@@ -26,6 +26,13 @@
     />
 
   <adapter
+    factory=".interfaces.IZMOCenterPage"
+    for=".interfaces.IZMOSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    name="centerpage"
+    />
+
+  <adapter
     factory=".interfaces.IZMOPortraitbox"
     for=".interfaces.IZMOSection"
     provides="zeit.cms.section.interfaces.ISectionMarker"
