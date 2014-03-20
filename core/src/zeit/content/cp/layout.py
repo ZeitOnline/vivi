@@ -89,6 +89,14 @@ class LayoutSourceBase(object):
     def getToken(self, context, value):
         return value.id
 
+    def isAvailable(self, node, context):
+        # Avoid circular import
+        from zeit.content.cp.interfaces import ICenterPage
+        context = ICenterPage(context, None)
+        if context is None:
+            return True
+        return super(LayoutSourceBase, self).isAvailable(node, context)
+
 
 class TeaserBlockLayoutSource(
         LayoutSourceBase, zeit.cms.content.sources.XMLSource):

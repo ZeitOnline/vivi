@@ -7,6 +7,9 @@ zeit.content.cp changes
 
 - Use colorpicker widget (VIV-317).
 
+- Allow teaserblock/bar layouts availability to be restricted according to the
+  centerpage they are on (VIV-339).
+
 
 2.3.1 (2014-03-19)
 ------------------
