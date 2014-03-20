@@ -92,16 +92,19 @@ class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
         return value.id
 
 
-class AllTeaserBlockLayoutSource(zeit.cms.content.sources.SimpleXMLSource):
+class AllTeaserBlockLayoutSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'block-layout-source'
+    attribute = 'id'
 
-    def getValues(self):
-        xml = self._get_tree()
+    def getValues(self, context):
+        tree = self._get_tree()
         result = []
-        for layout in xml['layout']:
-            g = layout.get
+        for node in tree.iterchildren('*'):
+            if not self.isAvailable(node, context):
+                continue
+            g = node.get
             areas = g('areas')
             areas = areas.split()
             columns = g('columns', 1)
@@ -110,9 +113,12 @@ class AllTeaserBlockLayoutSource(zeit.cms.content.sources.SimpleXMLSource):
             default = g('default', '').lower() == 'true'
             image_positions = g('image_positions', '').lower() == 'true'
             result.append(BlockLayout(
-                g('id'), g('title'), g('image_pattern'), areas, columns,
-                default, image_positions))
+                node.get(self.attribute), self._get_title_for(node),
+                g('image_pattern'), areas, columns, default, image_positions))
         return result
+
+    def _get_title_for(self, node):
+        return unicode(node.get('title'))
 
 ALL_TEASERBLOCK_LAYOUTS = AllTeaserBlockLayoutSource()
 
@@ -133,7 +139,7 @@ class TeaserBlockLayoutSource(LayoutSource):
                 areas.append('lead-1')
             else:
                 areas.append('lead-x')
-        return [layout for layout in ALL_TEASERBLOCK_LAYOUTS
+        return [layout for layout in ALL_TEASERBLOCK_LAYOUTS(context)
                 if layout.areas.intersection(areas)]
 
 
@@ -159,7 +165,7 @@ ALL_TEASERBAR_LAYOUTS = TeaserBarLayoutSource()
 
 
 def get_layout(id):
-    for layout in list(ALL_TEASERBLOCK_LAYOUTS):
+    for layout in list(ALL_TEASERBLOCK_LAYOUTS(None)):
         if layout.id == id:
             return layout
 
