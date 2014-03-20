@@ -57,9 +57,6 @@ class BlockLayout(object):
             other, BlockLayout) and self.id == other.id
 
 
-# Aufmacher:Block:Großer Teaser mit Bildergalerie und Teaserliste
-# Aufmacher:Block:Großer Teaser mit Video statt Bild und Teaserliste
-
 MAX_TEASER_BAR_BLOCKS = 4
 
 
@@ -78,12 +75,13 @@ class BarLayout(object):
 
 
 # XXX We need to hard-code this, because at import-time, when the default value
-# is set on the interface, there's no product config yet.
+# is set on the interface, there's no product config yet, so we cannot use
+# get_bar_layout().
 DEFAULT_BAR_LAYOUT = BarLayout(
     'normal', 'Ressort Teaser mit Teaserliste', MAX_TEASER_BAR_BLOCKS)
 
 
-class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
+class LayoutSourceBase(object):
 
     def getTitle(self, context, value):
         return value.title
@@ -92,7 +90,8 @@ class LayoutSource(zc.sourcefactory.contextual.BasicContextualSourceFactory):
         return value.id
 
 
-class AllTeaserBlockLayoutSource(zeit.cms.content.sources.XMLSource):
+class TeaserBlockLayoutSource(
+        LayoutSourceBase, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'block-layout-source'
@@ -120,14 +119,12 @@ class AllTeaserBlockLayoutSource(zeit.cms.content.sources.XMLSource):
     def _get_title_for(self, node):
         return unicode(node.get('title'))
 
-ALL_TEASERBLOCK_LAYOUTS = AllTeaserBlockLayoutSource()
+    def filterValue(self, context, value):
+        from zeit.content.cp.interfaces import ILead  # Avoid circular import
 
+        if context is None:
+            return True
 
-class TeaserBlockLayoutSource(LayoutSource):
-
-    def getValues(self, context):
-        # Avoid circular import
-        from zeit.content.cp.interfaces import ILead
         area = zeit.edit.interfaces.IArea(context)
         areas = [area.__name__]
         if ILead.providedBy(area):
@@ -139,11 +136,13 @@ class TeaserBlockLayoutSource(LayoutSource):
                 areas.append('lead-1')
             else:
                 areas.append('lead-x')
-        return [layout for layout in ALL_TEASERBLOCK_LAYOUTS(context)
-                if layout.areas.intersection(areas)]
+        return value.areas.intersection(areas)
+
+TEASERBLOCK_LAYOUTS = TeaserBlockLayoutSource()
 
 
-class TeaserBarLayoutSource(LayoutSource, zeit.cms.content.sources.XMLSource):
+class TeaserBarLayoutSource(
+        LayoutSourceBase, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'bar-layout-source'
@@ -161,16 +160,16 @@ class TeaserBarLayoutSource(LayoutSource, zeit.cms.content.sources.XMLSource):
                 int(node.get('blocks', MAX_TEASER_BAR_BLOCKS))))
         return result
 
-ALL_TEASERBAR_LAYOUTS = TeaserBarLayoutSource()
+TEASERBAR_LAYOUTS = TeaserBarLayoutSource()
 
 
 def get_layout(id):
-    for layout in list(ALL_TEASERBLOCK_LAYOUTS(None)):
+    for layout in list(TEASERBLOCK_LAYOUTS(None)):
         if layout.id == id:
             return layout
 
 
 def get_bar_layout(id):
-    for layout in list(ALL_TEASERBAR_LAYOUTS(None)):
+    for layout in list(TEASERBAR_LAYOUTS(None)):
         if layout.id == id:
             return layout
