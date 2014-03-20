@@ -114,6 +114,8 @@ class AllTeaserBlockLayoutSource(zeit.cms.content.sources.SimpleXMLSource):
                 default, image_positions))
         return result
 
+ALL_TEASERBLOCK_LAYOUTS = AllTeaserBlockLayoutSource()
+
 
 class TeaserBlockLayoutSource(LayoutSource):
 
@@ -131,7 +133,7 @@ class TeaserBlockLayoutSource(LayoutSource):
                 areas.append('lead-1')
             else:
                 areas.append('lead-x')
-        return [layout for layout in AllTeaserBlockLayoutSource()
+        return [layout for layout in ALL_TEASERBLOCK_LAYOUTS
                 if layout.areas.intersection(areas)]
 
 
@@ -153,14 +155,16 @@ class TeaserBarLayoutSource(LayoutSource, zeit.cms.content.sources.XMLSource):
                 int(node.get('blocks', MAX_TEASER_BAR_BLOCKS))))
         return result
 
+ALL_TEASERBAR_LAYOUTS = TeaserBarLayoutSource()
+
 
 def get_layout(id):
-    for layout in list(AllTeaserBlockLayoutSource()):
+    for layout in list(ALL_TEASERBLOCK_LAYOUTS):
         if layout.id == id:
             return layout
 
 
 def get_bar_layout(id):
-    for layout in list(TeaserBarLayoutSource()(None)):
+    for layout in list(ALL_TEASERBAR_LAYOUTS(None)):
         if layout.id == id:
             return layout
