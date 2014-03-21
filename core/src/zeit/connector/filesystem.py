@@ -191,7 +191,10 @@ class Connector(object):
             element for element in path if element))
 
     def _get_properties(self, id):
-        properties = {('getlastmodified', 'DAV:'): self._get_lastmodified(id)}
+        properties = {}
+        modified = self._get_lastmodified(id)
+        if modified:
+            properties[('getlastmodified', 'DAV:')] = modified
 
         try:
             data = self._get_metadata_file(id)
@@ -220,7 +223,10 @@ class Connector(object):
 
     def _get_lastmodified(self, id):
         filename = self._absolute_path(self._path(id))
-        mtime = os.stat(filename).st_mtime
+        try:
+            mtime = os.stat(filename).st_mtime
+        except OSError:
+            return None
         return email.utils.formatdate(mtime, usegmt=True)
 
 

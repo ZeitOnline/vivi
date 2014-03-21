@@ -4,7 +4,8 @@ CHANGES
 2.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix bug in handling non-existent resources in filesystem connector:
+  don't pass along OSError, but raise the proper KeyError.
 
 
 2.3.1 (2014-03-14)

@@ -27,6 +27,10 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
              ('type', 'http://namespaces.zeit.de/CMS/meta')],
             sorted(feed.properties))
 
+    def test_nonexistent_uniqueId_raises_KeyError(self):
+        with self.assertRaises(KeyError):
+            self.connector['http://xml.zeit.de/nonexistent']
+
     def test_metadata_read_from_metadata_file(self):
         image = self.connector['http://xml.zeit.de/2006/DSC00109_2.JPG']
         author = image.properties[
