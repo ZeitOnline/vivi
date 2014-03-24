@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.3.3 (unreleased)
+2.3.3 (2014-03-24)
 ------------------
 
 - Allow RSS blocks in lead area, too (WEB-262).
