@@ -65,5 +65,6 @@ class RSSBlock(zeit.content.cp.blocks.block.Block):
 
 
 zeit.edit.block.register_element_factory(
-    [zeit.content.cp.interfaces.IInformatives,
+    [zeit.content.cp.interfaces.ILead,
+     zeit.content.cp.interfaces.IInformatives,
      zeit.content.cp.interfaces.ITeaserBar], 'rss', _('RSS block'))
