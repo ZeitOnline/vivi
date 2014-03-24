@@ -36,8 +36,7 @@ header: Location: http://<DAVHOST>:<DAVPORT>/cms/work/testing/
 header: Keep-Alive: timeout=15, max=...
 header: Connection: Keep-Alive
 header: Content-Type: text/html; charset=iso-8859-1
-send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: <DAVHOST>:<DAVPORT>\r\nUser-Agent: zeit.connector\r\n\r\n'
-send: '<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
+send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: <DAVHOST>:<DAVPORT>\r\nUser-Agent: zeit.connector\r\n\r\n<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...
 header: Server: ...
@@ -58,11 +57,9 @@ sent again:
 >>> import time
 >>> time.sleep(16)
 >>> connector._invalidate_cache('http://xml.zeit.de/testing/')
-send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: ...\r\nUser-Agent: zeit.connector\r\n\r\n'
-send: '<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
+send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: ...\r\nUser-Agent: zeit.connector\r\n\r\n<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: ''
-send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: ...\r\nUser-Agent: zeit.connector\r\n\r\n'
-send: '<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
+send: 'PROPFIND /cms/work/testing/ HTTP/1.1\r\nAccept-Encoding: identity\r\nContent-Length: 99\r\nDepth: 1\r\nConnection: keep-alive\r\nContent-Type: text/xml; charset="utf-8"\r\nHost: ...\r\nUser-Agent: zeit.connector\r\n\r\n<?xml version=\'1.0\' encoding=\'UTF-8\'?>\n<ns0:propfind xmlns:ns0="DAV:"><ns0:allprop/></ns0:propfind>'
 reply: 'HTTP/1.1 207 Multi-Status\r\n'
 header: Date: ...
 header: Server: ...
