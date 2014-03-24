@@ -82,12 +82,12 @@ class DummyOptivo(grok.GlobalUtility):
     grok.implements(zeit.newsletter.interfaces.IOptivo)
 
     def send(self, mandant, subject, html, text):
-        log.info('Optivo.send(%s)' % (dict(
-                    mandant=mandant, subject=subject, html=html, text=text)))
+        log.info('Optivo.send(%s)', dict(
+            mandant=mandant, subject=subject, html=html, text=text))
 
     def test(self, mandant, to, subject, html, text):
-        log.info('Optivo.test(%s)' % (dict(
-                    mandant=mandant, to=to,
-                    subject=subject, html=html, text=text)))
+        log.info('Optivo.test(%s)', dict(
+            mandant=mandant, to=to,
+            subject=subject, html=html, text=text))
 
 log = logging.getLogger(__name__)
