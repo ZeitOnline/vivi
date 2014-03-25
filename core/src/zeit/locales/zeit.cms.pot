@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Mar 25 14:05:26 2014\n"
+"POT-Creation-Date: Tue Mar 25 14:15:43 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -71,6 +71,7 @@ msgstr ""
 #: zeit/content/quiz/interfaces.py:67
 #: zeit/content/rawxml/interfaces.py:17
 #: zeit/content/video/browser/object-details-body.pt:24
+#: zeit/newsletter/interfaces.py:37
 #: zeit/content/gallery/interfaces.py:96
 #: zeit/content/infobox/interfaces.py:20
 msgid "Title"
@@ -1366,6 +1367,8 @@ msgstr ""
 
 #: zeit/cms/syndication/browser/configure.zcml:42
 #: zeit/content/article/edit/browser/form.py:299
+#: zeit/newsletter/browser/form.py:13
+#: zeit/newsletter/browser/form.py:18
 msgid "Metadata"
 msgstr ""
 
@@ -1742,6 +1745,7 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:258
 #: zeit/content/cp/browser/workflow.py:28
+#: zeit/newsletter/browser/workflow.py:22
 #: zeit/workflow/browser/form.py:107
 #: zeit/workflow/browser/form.py:140
 #: zeit/workflow/browser/form.py:170
@@ -1754,10 +1758,12 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:370
 #: zeit/content/article/edit/browser/form.py:378
 #: zeit/content/article/edit/browser/form.py:386
+#: zeit/newsletter/browser/form.py:20
 msgid "edit metadata"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:399
+#: zeit/newsletter/newsletter.py:137
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
@@ -2499,12 +2505,14 @@ msgid "Apply only for this page"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:34
+#: zeit/newsletter/browser/workflow.py:28
 #: zeit/workflow/browser/form.py:114
 #: zeit/workflow/browser/form.py:145
 msgid "Settings"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:36
+#: zeit/newsletter/browser/workflow.py:30
 #: zeit/workflow/browser/form.py:116
 #: zeit/workflow/browser/form.py:147
 #: zeit/workflow/browser/form.py:174
@@ -3448,6 +3456,55 @@ msgstr ""
 msgid "long text (ZMO)"
 msgstr ""
 
+#: zeit/newsletter/browser/edit.group.landing.pt:2
+msgid "Landing zone"
+msgstr ""
+
+#: zeit/newsletter/browser/edit.group_add.pt:2
+msgid "+ Add group"
+msgstr ""
+
+#: zeit/newsletter/browser/edit.py:74
+msgid "edit group title"
+msgstr ""
+
+#: zeit/newsletter/browser/workflow.py:71
+msgid "Send emails and publish now"
+msgstr ""
+
+#: zeit/newsletter/browser/workflow.py:79
+#: zeit/workflow/browser/form.py:76
+msgid "Save state only"
+msgstr ""
+
+#: zeit/newsletter/browser/workflow.py:85
+msgid "Test email"
+msgstr ""
+
+#: zeit/newsletter/category.py:95
+msgid "Newsletter category"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:19
+msgid "Subject"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:66
+msgid "Sent"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:72
+msgid "Email for test"
+msgstr ""
+
+#: zeit/newsletter/newsletter.py:122
+msgid "Group"
+msgstr ""
+
+#: zeit/newsletter/newsletter.py:73
+msgid "Daily Newsletter"
+msgstr ""
+
 #: zeit/securitypolicy/security.zcml:11
 msgid "Everybody"
 msgstr ""
@@ -3552,10 +3609,6 @@ msgstr ""
 #: zeit/workflow/browser/publish.pt:17
 #. Default: ""
 msgid "publish-preconditions-not-met"
-msgstr ""
-
-#: zeit/workflow/browser/form.py:76
-msgid "Save state only"
 msgstr ""
 
 #: zeit/workflow/browser/form.py:81
