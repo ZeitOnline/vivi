@@ -40,6 +40,10 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
             return zope.container.contained.contained(area, self, key)
         raise KeyError(key)
 
+    @property
+    def body(self):
+        return self[BODY_NAME]
+
     def send(self):
         self._send()
 

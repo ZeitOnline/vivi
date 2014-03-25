@@ -24,6 +24,8 @@ class INewsletter(zeit.cms.content.interfaces.IXMLContent,
     def send_test(to):
         """Sends test email to the given address."""
 
+    body = zope.interface.Attribute('The IBody of this newsletter')
+
 
 class IBody(zeit.edit.interfaces.IArea):
     pass

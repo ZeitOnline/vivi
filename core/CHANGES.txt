@@ -1,10 +1,12 @@
 zeit.newsletter changes
 =======================
 
-0.3.2 (unreleased)
+1.0.0 (unreleased)
 ------------------
 
 - Configure preview to use zeit.frontend (VIV-347).
+
+- Add INewsletter.body property.
 
 
 0.3.1 (2014-03-10)
