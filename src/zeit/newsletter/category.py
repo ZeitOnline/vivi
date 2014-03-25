@@ -106,12 +106,11 @@ class Builder(grok.Adapter):
         # XXX adapt (category, newsletter) so we can get configuration from the
         # category?
         self.context = context
-        # XXX introduce 'body' property on Newsletter?
-        self.body = context[zeit.newsletter.newsletter.BODY_NAME]
 
     def create_group(self, title):
         group = zope.component.getAdapter(
-            self.body, zeit.edit.interfaces.IElementFactory, name='group')()
+            self.context.body,
+            zeit.edit.interfaces.IElementFactory, name='group')()
         group.title = title
         return group
 

@@ -49,7 +49,7 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
         self.assertIsInstance(newsletter, Newsletter)
 
 
-class NewsletterInterfaceTest(unittest.TestCase):
+class NewsletterInterfaceTest(zeit.newsletter.testing.TestCase):
 
     def get_newsletter(self):
         from zeit.newsletter.newsletter import Newsletter
