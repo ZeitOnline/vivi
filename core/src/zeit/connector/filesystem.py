@@ -65,9 +65,6 @@ class Connector(object):
 
     def getResourceType(self, id):
         __traceback_info__ = id
-        path = self._absolute_path(self._path(id))
-        if os.path.isdir(path):
-            return 'collection'
 
         properties = self._get_properties(id)
         if properties:
@@ -75,6 +72,10 @@ class Connector(object):
                 zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
             if type:
                 return type
+
+        path = self._absolute_path(self._path(id))
+        if os.path.isdir(path):
+            return 'collection'
 
         data = self._get_file(id).read(200)
         if '<article>' in data:
@@ -99,7 +100,7 @@ class Connector(object):
             type = self.getResourceType(id)
             properties[
                 zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
-        if type == 'collection':
+        if type in ['collection', 'image-group']:
             data = StringIO.StringIO()
         else:
             data = self._get_file(id)

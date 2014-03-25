@@ -4,7 +4,7 @@ CHANGES
 2.3.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Handle image groups in filesystem connector.
 
 
 2.3.2 (2014-03-21)

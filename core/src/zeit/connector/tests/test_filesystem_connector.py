@@ -52,3 +52,9 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
         banner = article.properties[
             ('banner', 'http://namespaces.zeit.de/CMS/document')]
         self.assertEqual(u'yes', banner)
+
+    def test_imagegroup_is_a_directory_but_recognized_as_its_own_type(self):
+        group = self.connector['http://xml.zeit.de/2007/03/group']
+        type_ = group.properties[
+            ('type', 'http://namespaces.zeit.de/CMS/meta')]
+        self.assertEqual('image-group', type_)
