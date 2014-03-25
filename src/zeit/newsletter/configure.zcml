@@ -77,6 +77,8 @@
       />
   </class>
 
+  <utility factory=".render.renderer_from_product_config" />
+
   <!-- XXX Placeholder until zeit.optivo is implemented -->
 
   <class class=".workflow.DummyOptivo">
