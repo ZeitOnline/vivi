@@ -6,7 +6,9 @@ zeit.newsletter changes
 
 - Configure preview to use zeit.frontend (VIV-347).
 
-- Add INewsletter.body property.
+- Add INewsletter.body property; implement body.values() so that it works
+  without keys() (since the ``__name__`` attributes are not present in the
+  repository).
 
 
 0.3.1 (2014-03-10)

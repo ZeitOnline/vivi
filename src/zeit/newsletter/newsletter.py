@@ -85,6 +85,15 @@ class Body(zeit.edit.container.TypeOnAttributeContainer,
         gocept.lxml.interfaces.IObjectified)
     grok.name(BODY_NAME)
 
+    def values(self):
+        # We re-implement values() so it works without keys(), since those are
+        # not present in the repository, but since e.g. zeit.frontend is only
+        # interested in the values, anyway, this works out alright.
+        result = []
+        for node in self.xml.xpath('region'):
+            result.append(self._get_element_for_node(node))
+        return result
+
 
 class Group(zeit.edit.container.TypeOnAttributeContainer,
             grok.MultiAdapter):
@@ -98,6 +107,15 @@ class Group(zeit.edit.container.TypeOnAttributeContainer,
 
     title = zeit.cms.content.property.ObjectPathProperty(
         '.head.title', zeit.newsletter.interfaces.IGroup['title'])
+
+    def values(self):
+        # We re-implement values() so it works without keys(), since those are
+        # not present in the repository, but since e.g. zeit.frontend is only
+        # interested in the values, anyway, this works out alright.
+        result = []
+        for node in self.xml.xpath('container'):
+            result.append(self._get_element_for_node(node))
+        return result
 
 
 zeit.edit.block.register_element_factory(
