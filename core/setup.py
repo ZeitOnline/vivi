@@ -88,6 +88,7 @@ setup(
         'zope.principalannotation',
         'zope.sendmail',
         'zope.site',
+        'zope.testbrowser [zope-functional-testing]',
         'zope.testing>=3.8.0',
         'zope.xmlpickle',
         'gocept.httpserverlayer>=1.4.0.dev0',

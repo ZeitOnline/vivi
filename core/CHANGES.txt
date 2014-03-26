@@ -4,7 +4,7 @@ zeit.cms changes
 2.16.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Update zope.testbrowser.
 
 
 2.16.0 (2014-03-24)
