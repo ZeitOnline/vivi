@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Mar 25 14:15:43 2014\n"
+"POT-Creation-Date: Thu Mar 27 14:20:38 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1763,7 +1763,7 @@ msgid "edit metadata"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:399
-#: zeit/newsletter/newsletter.py:137
+#: zeit/newsletter/newsletter.py:150
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
@@ -2433,6 +2433,7 @@ msgstr ""
 #: zeit/content/image/browser/configure.zcml:201
 #: zeit/content/link/browser/configure.zcml:32
 #: zeit/content/quiz/browser/configure.zcml:55
+#: zeit/newsletter/browser/configure.zcml:48
 #: zeit/content/gallery/browser/configure.zcml:56
 msgid "View metadata"
 msgstr ""
@@ -2443,6 +2444,8 @@ msgstr ""
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/quiz/browser/configure.zcml:38
 #: zeit/magazin/browser/configure.zcml:65
+#: zeit/newsletter/browser/category.py:31
+#: zeit/newsletter/browser/configure.zcml:56
 #: zeit/content/gallery/browser/configure.zcml:39
 msgid "Edit metadata"
 msgstr ""
@@ -3456,6 +3459,10 @@ msgstr ""
 msgid "long text (ZMO)"
 msgstr ""
 
+#: zeit/newsletter/browser/category.py:26
+msgid "Newsletter metadata"
+msgstr ""
+
 #: zeit/newsletter/browser/edit.group.landing.pt:2
 msgid "Landing zone"
 msgstr ""
@@ -3481,7 +3488,7 @@ msgstr ""
 msgid "Test email"
 msgstr ""
 
-#: zeit/newsletter/category.py:95
+#: zeit/newsletter/category.py:109
 msgid "Newsletter category"
 msgstr ""
 
@@ -3489,19 +3496,35 @@ msgstr ""
 msgid "Subject"
 msgstr ""
 
-#: zeit/newsletter/interfaces.py:66
+#: zeit/newsletter/interfaces.py:49
+msgid "Timestamp when the last newsletter object in this category was created"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:56
+msgid "Optivo Mandant ID"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:59
+msgid "Name of recipient list"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:62
+msgid "Name of test-recipient list"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:89
 msgid "Sent"
 msgstr ""
 
-#: zeit/newsletter/interfaces.py:72
+#: zeit/newsletter/interfaces.py:95
 msgid "Email for test"
 msgstr ""
 
-#: zeit/newsletter/newsletter.py:122
+#: zeit/newsletter/newsletter.py:135
 msgid "Group"
 msgstr ""
 
-#: zeit/newsletter/newsletter.py:73
+#: zeit/newsletter/newsletter.py:75
 msgid "Daily Newsletter"
 msgstr ""
 

@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 25 14:15:43 2014\n"
-"PO-Revision-Date: 2014-03-25 14:17+0100\n"
+"POT-Creation-Date: Thu Mar 27 14:20:38 2014\n"
+"PO-Revision-Date: 2014-03-27 14:29+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1712,7 +1712,7 @@ msgid "edit metadata"
 msgstr "Metadaten bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:399
-#: zeit/newsletter/newsletter.py:137
+#: zeit/newsletter/newsletter.py:150
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr "Teaser"
@@ -2347,6 +2347,7 @@ msgstr "Bild anzeigen bei"
 #: zeit/content/image/browser/configure.zcml:201
 #: zeit/content/link/browser/configure.zcml:32
 #: zeit/content/quiz/browser/configure.zcml:55
+#: zeit/newsletter/browser/configure.zcml:48
 msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
@@ -2356,6 +2357,8 @@ msgstr "Metadaten anzeigen"
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/quiz/browser/configure.zcml:38
 #: zeit/magazin/browser/configure.zcml:65
+#: zeit/newsletter/browser/category.py:31
+#: zeit/newsletter/browser/configure.zcml:56
 msgid "Edit metadata"
 msgstr "Metadaten bearbeiten"
 
@@ -3336,6 +3339,10 @@ msgstr "Next-Read Layout"
 msgid "long text (ZMO)"
 msgstr "langer Text - ZEITmagazin ONLINE"
 
+#: zeit/newsletter/browser/category.py:26
+msgid "Newsletter metadata"
+msgstr "Metadaten Newsletter"
+
 #: zeit/newsletter/browser/edit.group.landing.pt:2
 msgid "Landing zone"
 msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
@@ -3360,7 +3367,7 @@ msgstr "Nur Status speichern"
 msgid "Test email"
 msgstr "Test-E-Mail senden"
 
-#: zeit/newsletter/category.py:95
+#: zeit/newsletter/category.py:109
 msgid "Newsletter category"
 msgstr "Newsletter-Kategorie"
 
@@ -3368,19 +3375,36 @@ msgstr "Newsletter-Kategorie"
 msgid "Subject"
 msgstr "Betreff"
 
-#: zeit/newsletter/interfaces.py:66
+#: zeit/newsletter/interfaces.py:49
+msgid "Timestamp when the last newsletter object in this category was created"
+msgstr ""
+"Datum/Uhrzeit wann der letzte Newsletter dieser Kategorie erstellt wurde"
+
+#: zeit/newsletter/interfaces.py:56
+msgid "Optivo Mandant ID"
+msgstr "Optivo Mandat-ID"
+
+#: zeit/newsletter/interfaces.py:59
+msgid "Name of recipient list"
+msgstr "Name der Empfängerliste"
+
+#: zeit/newsletter/interfaces.py:62
+msgid "Name of test-recipient list"
+msgstr "Name der Empfängerliste (Testversand)"
+
+#: zeit/newsletter/interfaces.py:89
 msgid "Sent"
 msgstr "Verschickt"
 
-#: zeit/newsletter/interfaces.py:72
+#: zeit/newsletter/interfaces.py:95
 msgid "Email for test"
 msgstr "E-Mail-Adresse"
 
-#: zeit/newsletter/newsletter.py:122
+#: zeit/newsletter/newsletter.py:135
 msgid "Group"
 msgstr "Ressort"
 
-#: zeit/newsletter/newsletter.py:73
+#: zeit/newsletter/newsletter.py:75
 msgid "Daily Newsletter"
 msgstr "Newsletter"
 
