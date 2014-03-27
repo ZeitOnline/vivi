@@ -55,6 +55,13 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
     mandant = zope.schema.Int(
         title=_(u'Optivo Mandant ID'))
 
+    recipientlist = zope.schema.TextLine(
+        title=_(u'Name of recipient list'))
+
+    recipientlist_test = zope.schema.TextLine(
+        title=_(u'Name of test-recipient list'),
+        required=False)
+
 
 class IRepositoryCategory(
         INewsletterCategory, zeit.cms.repository.interfaces.IFolder):

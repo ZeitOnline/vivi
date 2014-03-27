@@ -8,7 +8,8 @@ zeit.newsletter changes
 
 - Use zeit.optivo for sending (VIV-342).
 
-- Make metadata of newsletter category (e.g. Optivo Mandant ID) configurable.
+- Make metadata of newsletter category (e.g. Optivo Mandant ID, recipient list
+  name, etc.) configurable.
 
 - Add INewsletter.body property; implement body.values() so that it works
   without keys() (since the ``__name__`` attributes are not present in the

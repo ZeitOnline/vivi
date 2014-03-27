@@ -42,7 +42,7 @@ class NewsletterCategoryBase(object):
     zeit.cms.content.dav.mapProperties(
         zeit.newsletter.interfaces.INewsletterCategory,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ['mandant'])
+        ['mandant', 'recipientlist', 'recipientlist_test'])
 
 
 class NewsletterCategory(NewsletterCategoryBase,
