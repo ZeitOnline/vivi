@@ -6,6 +6,21 @@
     <implements interface="zeit.edit.interfaces.IEditable" />
   </class>
 
+  <adapter
+    for="..interfaces.INewsletter
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zope.publisher.interfaces.browser.IBrowserPage"
+    factory="zeit.workflow.browser.form.workflow_form_factory"
+    name="view.html"
+    permission="zeit.workflow.Publish"
+    />
+
+  <browser:defaultView
+    for="..interfaces.INewsletter"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="view.html"
+    />
+
   <browser:page
     for="..interfaces.INewsletter"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
