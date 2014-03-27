@@ -77,7 +77,3 @@ class IRenderer(zope.interface.Interface):
     def __call__(content):
         """Returns a dict with the keys html and text containing the rendered
         newsletter"""
-
-
-class IOptivo(zope.interface.Interface):
-    """XXX Placeholder until zeit.optivo is implemented."""

@@ -27,6 +27,7 @@ setup(
         'zeit.cms>=2.15.0.dev',
         'zeit.content.image',
         'zeit.connector',
+        'zeit.optivo',
         'zope.interface',
         'zope.cachedescriptors',
         'zope.component',

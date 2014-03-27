@@ -10,6 +10,8 @@ zeit.newsletter changes
   without keys() (since the ``__name__`` attributes are not present in the
   repository).
 
+- Use zeit.optivo for sending (VIV-342).
+
 
 0.3.1 (2014-03-10)
 ------------------
