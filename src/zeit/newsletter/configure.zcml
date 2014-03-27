@@ -56,12 +56,25 @@
   </class>
 
   <class class=".category.NewsletterCategory">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require like_class="zeit.cms.repository.folder.Folder" />
     <require
       interface=".interfaces.INewsletterCategory"
       permission="zope.View"
       />
     <require
       set_schema=".interfaces.INewsletterCategory"
+      permission="zeit.EditContent"
+      />
+  </class>
+  <class class=".category.LocalCategory">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <require
+      interface=".interfaces.ILocalCategory"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ILocalCategory"
       permission="zeit.EditContent"
       />
   </class>

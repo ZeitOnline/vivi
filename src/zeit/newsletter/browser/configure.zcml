@@ -30,6 +30,22 @@
     permission="zeit.AddContent"
     />
 
+  <browser:page
+    name="metadata.html"
+    for="..interfaces.INewsletterCategory"
+    class=".category.DisplayForm"
+    permission="zope.View"
+    menu="zeit-context-views" title="View metadata"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.INewsletterCategory"
+    class=".category.EditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
   <!-- group -->
 
   <browser:viewlet
