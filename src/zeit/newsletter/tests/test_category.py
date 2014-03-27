@@ -15,8 +15,9 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
 
     def setUp(self):
         super(CreateNewsletterTest, self).setUp()
-        self.repository['mynl'] = NewsletterCategory()
-        self.category = self.repository['mynl']
+        self.category = NewsletterCategory()
+        self.category.subject = 'nosubject'
+        self.repository['mynl'] = self.category
 
     def test_should_assemble_folder_name_from_year_and_month(self):
         folder = self.category._find_or_create_folder(
@@ -81,6 +82,19 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
         result = list(self.category._get_content_newer_than(ANY))
         for obj in result:
             self.assertTrue(ICMSContent.providedBy(obj), obj)
+
+    def test_subject_interpolates_date(self):
+        from zeit.cms.checkout.helper import checked_out
+        with checked_out(self.repository['mynl']) as category:
+            category.subject = 'foo {today}'
+
+        timestamp = datetime.datetime(2001, 6, 29, 10, 0, tzinfo=pytz.UTC)
+        with mock.patch('datetime.datetime') as dt:
+            self.category._get_content_newer_than = mock.Mock()
+            dt.now.return_value = timestamp
+            newsletter = self.repository['mynl'].create()
+
+        self.assertEqual('foo 29.06.2001', newsletter.subject)
 
 
 class DailyNewsletterBuilderTest(zeit.newsletter.testing.TestCase):

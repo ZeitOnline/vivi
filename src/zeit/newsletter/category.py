@@ -42,7 +42,8 @@ class NewsletterCategoryBase(object):
     zeit.cms.content.dav.mapProperties(
         zeit.newsletter.interfaces.INewsletterCategory,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ['mandant', 'recipientlist', 'recipientlist_test'])
+        ['mandant', 'recipientlist', 'recipientlist_test',
+         'subject'])
 
 
 class NewsletterCategory(NewsletterCategoryBase,
@@ -53,6 +54,8 @@ class NewsletterCategory(NewsletterCategoryBase,
     def create(self):
         now = datetime.datetime.now(pytz.UTC)
         newsletter = zeit.newsletter.newsletter.Newsletter()
+        newsletter.subject = self.subject.format(
+            today=now.strftime('%d.%m.%Y'))
         self.populate(newsletter)
         newsletter = self._add_newsletter(newsletter, now)
         self.last_created = now

@@ -16,7 +16,9 @@ class AddTest(zeit.newsletter.testing.SeleniumTestCase):
         super(AddTest, self).setUp()
         with zeit.cms.testing.site(self.getRootFolder()):
             self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
-            self.repository['newsletter']['taeglich'] = NewsletterCategory()
+            category = NewsletterCategory()
+            category.subject = 'nosubject'
+            self.repository['newsletter']['taeglich'] = category
         transaction.commit()
         self.open('/')
 
@@ -49,6 +51,7 @@ class CategoryMetadata(zeit.newsletter.testing.BrowserTestCase):
                '/@@checkout')
         b.getControl('Optivo Mandant ID').value = '12345'
         b.getControl('Name of recipient list').value = 'foo'
+        b.getControl('Subject').value = 'foo'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
         b.getLink('View metadata').click()
