@@ -52,6 +52,10 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
     def create():
         """Creates a new newsletter object for this category."""
 
+    subject = zope.schema.TextLine(
+        title=_(u'Subject'),
+        description=_(u'{today} -> %d.%m.%Y'))
+
     mandant = zope.schema.Int(
         title=_(u'Optivo Mandant ID'))
 
