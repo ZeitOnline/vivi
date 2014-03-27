@@ -25,7 +25,8 @@ class Renderer(object):
 
     def get_format(self, content, format):
         return urllib2.urlopen(
-            self.url(content, format=format), timeout=60).read()
+            self.url(
+                content, format=format), timeout=60).read().decode('utf-8')
 
     def url(self, content, **params):
         if not params:
