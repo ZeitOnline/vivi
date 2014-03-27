@@ -49,6 +49,18 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
         newsletter = self.repository['newsletter']
         self.assertIsInstance(newsletter, Newsletter)
 
+    def test_finds_category_by_walking_up_parents(self):
+        from zeit.newsletter.category import NewsletterCategory
+        from zeit.newsletter.interfaces import INewsletterCategory
+        from zeit.newsletter.newsletter import Newsletter
+        nl = self.repository['foo'] = Newsletter()
+        self.assertEqual(None, INewsletterCategory(nl, None))
+        self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
+        self.repository['newsletter']['taeglich'] = NewsletterCategory()
+        nl = self.repository['newsletter']['taeglich']['one'] = Newsletter()
+        self.assertEqual(
+            self.repository['newsletter']['taeglich'], INewsletterCategory(nl))
+
 
 class NewsletterInterfaceTest(zeit.newsletter.testing.TestCase):
 
@@ -68,10 +80,13 @@ class NewsletterInterfaceTest(zeit.newsletter.testing.TestCase):
 class SendTest(zeit.newsletter.testing.TestCase):
 
     def setUp(self):
+        from zeit.newsletter.category import NewsletterCategory
         from zeit.newsletter.newsletter import Newsletter
         import zeit.cms.repository.folder
         super(SendTest, self).setUp()
-        self.repository['mynl'] = zeit.cms.repository.folder.Folder()
+        category = NewsletterCategory()
+        category.mandant = '12345'
+        self.repository['mynl'] = category
         self.repository['mynl']['newsletter'] = Newsletter()
         self.newsletter = self.repository['mynl']['newsletter']
         self.newsletter.subject = 'thesubject'
@@ -87,11 +102,11 @@ class SendTest(zeit.newsletter.testing.TestCase):
     def test_send_uses_renderer_and_calls_optivo(self):
             self.newsletter.send()
             self.assertEqual(
-                ('send', 'mynl', 'thesubject',
-                 mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])
+                ('send', 12345, 'thesubject',
+                 mock.sentinel.html, 'No text part yet'), self.optivo.calls[0])
 
     def test_send_test_passes_recipient_to_optivo(self):
             self.newsletter.send_test('test@example.com')
             self.assertEqual(
-                ('test', 'mynl', 'test@example.com', 'thesubject',
-                 mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])
+                ('test', 12345, 'test@example.com', 'thesubject',
+                 mock.sentinel.html, 'No text part yet'), self.optivo.calls[0])

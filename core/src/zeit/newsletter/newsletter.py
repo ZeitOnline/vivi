@@ -51,7 +51,7 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         self._send(to)
 
     def _send(self, to=None):
-        mandant = self.__parent__.__name__
+        mandant = zeit.newsletter.interfaces.INewsletterCategory(self).mandant
         renderer = zope.component.getUtility(
             zeit.newsletter.interfaces.IRenderer)
         rendered = renderer(self)
@@ -71,6 +71,17 @@ class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.newsletter.interfaces.INewsletter
     type = 'newsletter'
     title = _('Daily Newsletter')  # multiple categories are not supported yet
+
+
+@grok.adapter(zeit.newsletter.interfaces.INewsletter)
+@grok.implementer(zeit.newsletter.interfaces.INewsletterCategory)
+def category_for_newsletter(context):
+    candidate = context.__parent__
+    while candidate:
+        if zeit.newsletter.interfaces.INewsletterCategory.providedBy(
+                candidate):
+            return candidate
+        candidate = candidate.__parent__
 
 
 class Body(zeit.edit.container.TypeOnAttributeContainer,
