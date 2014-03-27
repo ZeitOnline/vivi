@@ -6,6 +6,7 @@ import mock
 import unittest
 import zeit.cms.testing
 import zeit.newsletter.testing
+import zeit.optivo.interfaces
 import zope.component
 
 
@@ -80,17 +81,17 @@ class SendTest(zeit.newsletter.testing.TestCase):
         self.renderer.return_value = dict(
             html=mock.sentinel.html, text=mock.sentinel.text)
 
-        self.optivo = self.zca.patch_utility(
-            mock.Mock(), zeit.newsletter.interfaces.IOptivo)
+        self.optivo = zope.component.getUtility(zeit.optivo.interfaces.IOptivo)
+        self.optivo.reset()
 
     def test_send_uses_renderer_and_calls_optivo(self):
             self.newsletter.send()
-            self.optivo.send.assert_called_with(
-                'mynl', 'thesubject',
-                mock.sentinel.html, mock.sentinel.text)
+            self.assertEqual(
+                ('send', 'mynl', 'thesubject',
+                 mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])
 
     def test_send_test_passes_recipient_to_optivo(self):
             self.newsletter.send_test('test@example.com')
-            self.optivo.test.assert_called_with(
-                'mynl', 'test@example.com', 'thesubject',
-                mock.sentinel.html, mock.sentinel.text)
+            self.assertEqual(
+                ('test', 'mynl', 'test@example.com', 'thesubject',
+                 mock.sentinel.html, mock.sentinel.text), self.optivo.calls[0])

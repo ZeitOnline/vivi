@@ -21,4 +21,6 @@
   <include package="zeit.addcentral" />
   <include package="zeit.workflow" file="ftesting.zcml" />
 
+  <include package="zeit.optivo" file="mock-webservice.zcml" />
+
 </configure>

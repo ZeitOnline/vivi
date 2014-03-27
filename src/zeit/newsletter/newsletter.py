@@ -55,8 +55,8 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         renderer = zope.component.getUtility(
             zeit.newsletter.interfaces.IRenderer)
         rendered = renderer(self)
-        # XXX must become zeit.optivo.interfaces, see #9299
-        optivo = zope.component.getUtility(zeit.newsletter.interfaces.IOptivo)
+        optivo = zope.component.getUtility(zeit.optivo.interfaces.IOptivo)
+        rendered['text'] = 'No text part yet'  # XXX
         if to is None:
             optivo.send(
                 mandant, self.subject, rendered['html'], rendered['text'])
