@@ -64,7 +64,8 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         else:
             optivo.test(
                 category.mandant, category.recipientlist_test,
-                to, self.subject, rendered['html'], rendered['text'])
+                to, '[test]' + self.subject,
+                rendered['html'], rendered['text'])
 
 
 class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
