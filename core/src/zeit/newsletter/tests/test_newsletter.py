@@ -86,6 +86,8 @@ class SendTest(zeit.newsletter.testing.TestCase):
         super(SendTest, self).setUp()
         category = NewsletterCategory()
         category.mandant = '12345'
+        category.recipientlist = 'recipientlist'
+        category.recipientlist_test = 'recipientlist_test'
         self.repository['mynl'] = category
         self.repository['mynl']['newsletter'] = Newsletter()
         self.newsletter = self.repository['mynl']['newsletter']
@@ -102,11 +104,12 @@ class SendTest(zeit.newsletter.testing.TestCase):
     def test_send_uses_renderer_and_calls_optivo(self):
             self.newsletter.send()
             self.assertEqual(
-                ('send', 12345, 'thesubject',
+                ('send', 12345, 'recipientlist', 'thesubject',
                  mock.sentinel.html, 'No text part yet'), self.optivo.calls[0])
 
     def test_send_test_passes_recipient_to_optivo(self):
             self.newsletter.send_test('test@example.com')
             self.assertEqual(
-                ('test', 12345, 'test@example.com', 'thesubject',
+                ('test', 12345, 'recipientlist_test',
+                 'test@example.com', 'thesubject',
                  mock.sentinel.html, 'No text part yet'), self.optivo.calls[0])

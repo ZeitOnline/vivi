@@ -51,7 +51,7 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         self._send(to)
 
     def _send(self, to=None):
-        mandant = zeit.newsletter.interfaces.INewsletterCategory(self).mandant
+        category = zeit.newsletter.interfaces.INewsletterCategory(self)
         renderer = zope.component.getUtility(
             zeit.newsletter.interfaces.IRenderer)
         rendered = renderer(self)
@@ -59,10 +59,12 @@ class Newsletter(zeit.cms.content.xmlsupport.XMLContentBase,
         rendered['text'] = 'No text part yet'  # XXX see VIV-348
         if to is None:
             optivo.send(
-                mandant, self.subject, rendered['html'], rendered['text'])
+                category.mandant, category.recipientlist,
+                self.subject, rendered['html'], rendered['text'])
         else:
             optivo.test(
-                mandant, to, self.subject, rendered['html'], rendered['text'])
+                category.mandant, category.recipientlist_test,
+                to, self.subject, rendered['html'], rendered['text'])
 
 
 class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
