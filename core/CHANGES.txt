@@ -4,13 +4,15 @@ zeit.newsletter changes
 1.0.0 (unreleased)
 ------------------
 
-- Configure preview to use zeit.frontend (VIV-347).
+- Configure preview and rendering to use zeit.frontend (VIV-347).
+
+- Use zeit.optivo for sending (VIV-342).
+
+- Make metadata of newsletter category (e.g. Optivo Mandant ID) configurable.
 
 - Add INewsletter.body property; implement body.values() so that it works
   without keys() (since the ``__name__`` attributes are not present in the
   repository).
-
-- Use zeit.optivo for sending (VIV-342).
 
 
 0.3.1 (2014-03-10)

@@ -5,9 +5,10 @@ from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.i18n import MessageFactory as _
 import datetime
 import grokcore.component as grok
+import persistent
 import pytz
-import zeit.cms.content.interfaces
 import zeit.cms.content.dav
+import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
@@ -17,7 +18,9 @@ import zeit.connector.search
 import zeit.newsletter.interfaces
 import zeit.newsletter.newsletter
 import zope.component
+import zope.container.contained
 import zope.interface
+import zope.security.proxy
 
 
 FIRST_RELEASED = zeit.connector.search.SearchVar(
@@ -27,7 +30,7 @@ FIRST_RELEASED = zeit.connector.search.SearchVar(
 DAILY_NAME = 'taeglich'
 
 
-class NewsletterCategory(zeit.cms.repository.folder.Folder):
+class NewsletterCategoryBase(object):
 
     zope.interface.implements(zeit.newsletter.interfaces.INewsletterCategory)
 
@@ -35,6 +38,17 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
         zeit.newsletter.interfaces.INewsletterCategory,
         zeit.newsletter.interfaces.DAV_NAMESPACE,
         ['last_created'], writeable=WRITEABLE_LIVE)
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.newsletter.interfaces.INewsletterCategory,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ['mandant'])
+
+
+class NewsletterCategory(NewsletterCategoryBase,
+                         zeit.cms.repository.folder.Folder):
+
+    zope.interface.implements(zeit.newsletter.interfaces.IRepositoryCategory)
 
     def create(self):
         now = datetime.datetime.now(pytz.UTC)
@@ -66,8 +80,8 @@ class NewsletterCategory(zeit.cms.repository.folder.Folder):
 
     def populate(self, newsletter):
         relevant_content = self._get_content_newer_than(self.last_created)
-        build = zope.component.queryAdapter(newsletter,
-            zeit.newsletter.interfaces.IBuild, name=self.__name__)
+        build = zope.component.queryAdapter(
+            newsletter, zeit.newsletter.interfaces.IBuild, name=self.__name__)
         # XXX rethink strategy when no builder exists
         if build is not None:
             build(relevant_content)
@@ -94,6 +108,25 @@ class NewsletterCategoryType(zeit.cms.repository.folder.FolderType):
     type = 'newsletter-category'
     title = _('Newsletter category')
     addform = zeit.cms.type.SKIP_ADD
+
+
+class LocalCategory(NewsletterCategoryBase,
+                    persistent.Persistent,
+                    zope.container.contained.Contained):
+
+    zope.interface.implements(zeit.newsletter.interfaces.ILocalCategory)
+
+
+@grok.adapter(zeit.newsletter.interfaces.INewsletterCategory)
+@grok.implementer(zeit.newsletter.interfaces.ILocalCategory)
+def local_category_factory(context):
+    local = LocalCategory()
+    local.uniqueId = context.uniqueId
+    local.__name__ = context.__name__
+    zeit.connector.interfaces.IWebDAVWriteProperties(local).update(
+        zeit.connector.interfaces.IWebDAVReadProperties(
+            zope.security.proxy.getObject(context)))
+    return local
 
 
 class Builder(grok.Adapter):

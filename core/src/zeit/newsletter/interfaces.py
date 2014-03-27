@@ -43,14 +43,30 @@ class ITeaser(zeit.edit.interfaces.IBlock):
         source=zeit.cms.content.contentsource.cmsContentSource)
 
 
-class INewsletterCategory(zeit.cms.repository.interfaces.IFolder):
+class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
 
     last_created = zope.schema.Datetime(
-        title=u'Timestamp when the last newsletter object'
-        ' in this category was created')
+        title=_(u'Timestamp when the last newsletter object'
+                ' in this category was created'))
 
     def create():
         """Creates a new newsletter object for this category."""
+
+    mandant = zope.schema.Int(
+        title=_(u'Optivo Mandant ID'))
+
+
+class IRepositoryCategory(
+        INewsletterCategory, zeit.cms.repository.interfaces.IFolder):
+    pass
+
+
+class ILocalCategory(
+        INewsletterCategory, zeit.cms.workingcopy.interfaces.ILocalContent):
+    """Local version of a newsletter category.
+
+    The local version only holds the metadata, therefore it is not a container.
+    """
 
 
 class IBuild(zope.interface.Interface):

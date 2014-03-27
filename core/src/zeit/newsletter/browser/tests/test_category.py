@@ -32,3 +32,23 @@ class AddTest(zeit.newsletter.testing.SeleniumTestCase):
         with mock.patch('datetime.datetime', dt):
             s.clickAndWait('sidebar.form.actions.add')
             s.assertLocation('*/workingcopy/zope.user/29-1/@@edit.html')
+
+
+class CategoryMetadata(zeit.newsletter.testing.BrowserTestCase):
+
+    def setUp(self):
+        super(CategoryMetadata, self).setUp()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['newsletter'] = zeit.cms.repository.folder.Folder()
+            self.repository['newsletter']['taeglich'] = NewsletterCategory()
+        transaction.commit()
+
+    def test_metadata_of_category_is_editable(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/newsletter/taeglich'
+               '/@@checkout')
+        b.getControl('Optivo Mandant ID').value = '12345'
+        b.getControl('Apply').click()
+        b.getLink('Checkin').click()
+        b.getLink('View metadata').click()
+        self.assertEllipsis('...12345...', b.contents)
