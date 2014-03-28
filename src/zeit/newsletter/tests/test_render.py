@@ -64,5 +64,5 @@ class RendererTest(unittest.TestCase):
         content.uniqueId = 'http://xml.zeit.de/foo/bar'
         renderer = Renderer('http://localhost:%s' % port)
         result = renderer(content)
-        self.assertEqual('newsletter_html', result['html'])
-        self.assertEqual('newsletter_text', result['text'])
+        self.assertEqual('html', result['html'])
+        self.assertEqual('txt', result['text'])

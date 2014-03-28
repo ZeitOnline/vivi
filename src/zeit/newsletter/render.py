@@ -19,8 +19,8 @@ class Renderer(object):
 
     def __call__(self, content):
         return dict(
-            html=self.get_format(content, 'newsletter_html'),
-            text=self.get_format(content, 'newsletter_text'),
+            html=self.get_format(content, 'html'),
+            text=self.get_format(content, 'txt'),
         )
 
     def get_format(self, content, format):
