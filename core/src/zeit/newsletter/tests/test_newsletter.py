@@ -111,5 +111,5 @@ class SendTest(zeit.newsletter.testing.TestCase):
             self.newsletter.send_test('test@example.com')
             self.assertEqual(
                 ('test', 12345, 'recipientlist_test',
-                 'test@example.com', 'thesubject',
+                 'test@example.com', '[test] thesubject',
                  mock.sentinel.html, 'No text part yet'), self.optivo.calls[0])
