@@ -36,6 +36,7 @@ setup(
         'grokcore.view',
         'guppy',
         'js.jquery',
+        'js.jqueryui',
         'js.mochikit',
         'js.vanderlee_colorpicker',
         'lovely.remotetask>=0.5',

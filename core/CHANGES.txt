@@ -4,7 +4,8 @@ zeit.cms changes
 2.16.1 (unreleased)
 -------------------
 
-- Update zope.testbrowser.
+- Update jqueryui from 1.9 to 1.10, use js.jqueryui instead of vendoring our
+  own copy, since the colorpicker widget depends on that version.
 
 
 2.16.0 (2014-03-24)

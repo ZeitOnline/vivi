@@ -6,6 +6,7 @@ from js.jquery import jquery
 from js.mochikit import mochikit
 from js.vanderlee_colorpicker import colorpicker
 import fanstatic
+import js.jqueryui
 import os.path
 import pkg_resources
 import sys
@@ -59,15 +60,10 @@ SplitDirResource('cms.css')
 error_css = fanstatic.Resource(lib_css, 'error.css', depends=[cms_css])
 
 
-# XXX js.jqueryui doesn't have 1.9, only 1.8 or 1.10, we might want to upgrade.
 jqueryui_theme = fanstatic.Resource(
-    lib_js, 'jquery/jquery-ui-1.9.1-custom-theme/jquery-ui-1.9.1.custom.css',
-    minified='jquery/jquery-ui-1.9.1-custom-theme/'
-    'jquery-ui-1.9.1.custom.min.css')
-jqueryui = fanstatic.Resource(
-    lib_js, 'jquery/jquery-ui-1.9.1.custom.js',
-    minified='jquery/jquery-ui-1.9.1.custom.min.js',
-    depends=[jquery, jqueryui_theme])
+    lib_js, 'jquery/jquery-ui-custom-theme/jquery-ui-1.10.4.custom.css',
+    minified='jquery/jquery-ui-custom-theme/jquery-ui-1.10.4.custom.min.css')
+jqueryui = fanstatic.Group([js.jqueryui.jqueryui, jqueryui_theme])
 register(jqueryui)
 
 
