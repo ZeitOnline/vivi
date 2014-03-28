@@ -1,8 +1,8 @@
 zeit.newsletter changes
 =======================
 
-1.0.0 (unreleased)
-------------------
+1.0.0b1 (2014-03-28)
+--------------------
 
 - Configure preview and rendering to use zeit.frontend (VIV-347).
 
