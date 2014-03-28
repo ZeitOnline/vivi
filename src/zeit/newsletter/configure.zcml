@@ -7,7 +7,6 @@
   <include package="zeit.edit" />
 
   <grok:grok package="." />
-  <include package=".browser" />
 
   <class class=".newsletter.Newsletter">
     <implements
