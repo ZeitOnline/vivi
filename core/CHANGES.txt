@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.16.1 (unreleased)
+2.16.1 (2014-03-28)
 -------------------
 
 - Update jqueryui from 1.9 to 1.10, use js.jqueryui instead of vendoring our
