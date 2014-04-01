@@ -217,7 +217,7 @@ Note that the object is not published. Thus we have no "retract":
 >>> browser.getControl('retract')
 Traceback (most recent call last):
     ...
-LookupError: label 'retract'
+LookupError: label 'retract'...
 
 
 Do a publish/retract cycle to set the property to false:
