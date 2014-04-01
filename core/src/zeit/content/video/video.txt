@@ -55,7 +55,7 @@ There is no subtitle:
 >>> browser.getControl('Subtitle')
 Traceback (most recent call last):
     ...
-LookupError: label 'Subtitle'
+LookupError: label 'Subtitle'...
 
 
 
