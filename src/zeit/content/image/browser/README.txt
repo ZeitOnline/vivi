@@ -376,12 +376,12 @@ Images which are added to the group do not have any metadata on adding:
 >>> browser.getControl('Title')
 Traceback (most recent call last):
     ...
-LookupError: label 'Title'
+LookupError: label 'Title'...
 
 >>> browser.getControl('Volume')
 Traceback (most recent call last):
     ...
-LookupError: label 'Volume'
+LookupError: label 'Volume'...
 
 Set the file data:
 
