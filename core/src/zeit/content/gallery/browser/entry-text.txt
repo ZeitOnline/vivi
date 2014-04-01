@@ -43,7 +43,7 @@ Normally, gallery entries do not show a text widget:
 >>> browser.getControl('Text')
 Traceback (most recent call last):
   ...
-LookupError: label 'Text'
+LookupError: label 'Text'...
 
 
 Entries with text
