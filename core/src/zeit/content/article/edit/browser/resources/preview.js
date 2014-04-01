@@ -17,16 +17,14 @@ zeit.content.article.PreviewTabs = gocept.Class.extend({
         var self = this;
         self.tabs = $(id).tabs();
         $(id)[0].preview_tab = self;
-        self.tabs.tabs('add', '#preview-tablet', 'iPad');
-        self.tabs.tabs('add', '#preview-full', 'Desktop');
 
-        self.tabs.bind('tabsselect', function(event, ui) {
-            var id = $(ui.tab).attr('href');
+        self.tabs.on('tabsactivate', function(event, ui) {
+            var id = '#' + $(ui.newPanel).attr('id');
             self.save_selection(id);
             self.reload_frame(id);
         });
 
-        $('#edit-form-article-content').bind('fold',function(e,folded){
+        $('#edit-form-article-content').on('fold',function(e,folded){
             if (!folded){
                 var id = window.sessionStorage.getItem(self.SESSION_KEY);
                 if ($(id).css('height')=="500px"){
@@ -52,8 +50,11 @@ zeit.content.article.PreviewTabs = gocept.Class.extend({
     restore_selection: function() {
         var self = this;
         var id = window.sessionStorage.getItem(self.SESSION_KEY);
+        if (! id) {
+            id = '#preview-tablet';
+        }
         $(id).data('reloaded',true);
-        self.tabs.tabs('select', id);
+        self.tabs.tabs('option', 'active', $(id).index());
     }
 
 });
