@@ -917,6 +917,7 @@ Publishing http://xml.zeit.de/online/2007/01/Somalia
 Could not checkout http://xml.zeit.de/2007
 Could not checkout http://xml.zeit.de/2007/01
 Could not checkout http://xml.zeit.de/2007/02
+Could not checkout http://xml.zeit.de/2007/03
 ...publish.sh:
 Publishing test script
 work/online/2007/01/Somalia
@@ -924,11 +925,13 @@ work/2007
 work/politik.feed
 work/2007/01
 work/2007/02
+work/2007/03
 work/2007/test
 work/2007/01/LB-Sch-ttler
 ...
 work/2007/02/Vorspann-Dappen
 work/2007/02/W-Clear-02
+work/2007/03/group
 done.
 ...
 
