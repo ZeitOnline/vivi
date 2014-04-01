@@ -136,7 +136,7 @@ Audio blocks
 >>> browser.getControl('Player')
 Traceback (most recent call last):
     ...
-LookupError: label 'Player'
+LookupError: label 'Player'...
 
 An empty value for the expireation date means no expiration:
 

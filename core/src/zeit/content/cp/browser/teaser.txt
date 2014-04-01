@@ -84,7 +84,7 @@ The lightbox doesn't show the aricle save button now:
 >>> browser.getControl('Apply for article')
 Traceback (most recent call last):
     ...
-LookupError: label 'Apply for article'
+LookupError: label 'Apply for article'...
 
 Changing the free teaser is still possible:
 

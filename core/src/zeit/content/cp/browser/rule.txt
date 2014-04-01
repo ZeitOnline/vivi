@@ -52,7 +52,7 @@ workflow form, but hides a few fields:
 
 >>> browser.getControl('Urgent')
 Traceback (most recent call last):
-LookupError: label 'Urgent'
+LookupError: label 'Urgent'...
 
 Get rid of the remaining error by adding enough teaser blocks:
 
