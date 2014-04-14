@@ -4,7 +4,7 @@ zeit.content.image changes
 2.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Display original caption in reference details (VIV-365).
 
 
 2.0.0 (2014-03-10)
