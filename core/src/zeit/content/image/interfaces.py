@@ -31,6 +31,10 @@ class AlignmentSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = (u'left', u'center', u'right')
 
 
+class ILinkField(zope.interface.Interface):
+    """Marker interface so we can register a custom widget for this field."""
+
+
 class IImageMetadata(zope.interface.Interface):
 
     title = zope.schema.TextLine(
@@ -84,6 +88,7 @@ class IImageMetadata(zope.interface.Interface):
         title=_('Links to'),
         description=_('Enter a URL this image should link to.'),
         required=False)
+    zope.interface.alsoProvides(links_to, ILinkField)
 
     alignment = zope.schema.Choice(
         title=_('Alignment'),
