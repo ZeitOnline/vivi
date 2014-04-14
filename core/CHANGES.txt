@@ -4,7 +4,7 @@ Changes
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix CSS issue that caused wrong clipping of autocomplete lists (VIV-358).
 
 
 2.2.1 (2014-03-14)

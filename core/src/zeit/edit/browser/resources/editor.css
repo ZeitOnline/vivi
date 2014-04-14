@@ -653,7 +653,6 @@ textarea {
 fieldset {
   background: none 0;
   border: medium none;
-  overflow: hidden;
   margin: 0 0 0 10px;
   padding: 0;
 }
