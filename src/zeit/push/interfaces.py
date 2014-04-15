@@ -29,6 +29,10 @@ class IPushServices(zope.interface.Interface):
 
     """
 
+    enabled = zope.schema.Bool(title=u'Push?', required=False, default=False)
+
     parse = zope.schema.Bool(title=u'Parse.com', required=False, default=True)
 
     # XXX twitter, facebook, homepage, centerpage
+
+PUSH_SERVICES = [x for x in list(IPushServices) if x != 'enabled']

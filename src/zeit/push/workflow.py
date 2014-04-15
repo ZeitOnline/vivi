@@ -20,5 +20,26 @@ class PushServices(zeit.cms.content.dav.DAVPropertiesAdapter):
 @grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_push_properties(event):
-    if event.name in list(zeit.push.interfaces.IPushServices):
+    if event.name in zeit.push.interfaces.PUSH_SERVICES:
         event.veto()
+
+
+@grok.subscribe(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.workflow.interfaces.IPublishedEvent)
+def send_push_on_publish(context, event):
+    services = zeit.push.interfaces.IPushServices(context)
+    if not services.enabled:
+        return
+
+    for service in zeit.push.interfaces.PUSH_SERVICES:
+        if getattr(services, service):
+            send_push_notification(context, service)
+
+
+def send_push_notification(content, service):
+    url = content.uniqueId.replace(
+        zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
+    notifier = zope.component.getUtility(
+        zeit.push.interfaces.IPushNotifier, name=service)
+    notifier.send(content.title, url)
