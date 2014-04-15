@@ -1,5 +1,7 @@
 import logging
+import zeit.cms.testing
 import zeit.push.interfaces
+import zeit.workflow.testing
 import zope.interface
 
 
@@ -30,3 +32,13 @@ class PushNotifier(object):
         self.calls.append((text, link, title))
         log.info('PushNotifier.send(%s)', dict(
             text=text, link=link, title=title))
+
+
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
+    zeit.cms.testing.cms_product_config
+    + zeit.workflow.testing.product_config))
+
+
+class TestCase(zeit.cms.testing.FunctionalTestCase):
+
+    layer = ZCML_LAYER
