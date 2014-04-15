@@ -47,3 +47,21 @@ def send_push_notification(content, service):
     notifier.send(content.title, url)
     services = zeit.push.interfaces.IPushServices(content)
     services.date_last_pushed = datetime.now(pytz.UTC)
+
+
+# XXX This is for the old system only, remove once VIV-25 is fully implemented.
+@grok.subscribe(
+    zeit.cms.interfaces.ICMSContent,
+    zeit.cms.workflow.interfaces.IPublishedEvent)
+def push_to_parse_legacy_eilmeldung(context, event):
+    if context.uniqueId != 'http://xml.zeit.de/eilmeldung/eilmeldung':
+        return
+    services = zeit.push.interfaces.IPushServices(context)
+    info = zeit.cms.workflow.interfaces.IPublishInfo(context)
+    if services.date_last_pushed >= info.date_last_published:
+        return
+
+    notifier = zope.component.getUtility(
+        zeit.push.interfaces.IPushNotifier, name='parse')
+    notifier.send(context.xml.body.division.p.text, 'http://www.zeit.de/')
+    services.date_last_pushed = datetime.now(pytz.UTC)
