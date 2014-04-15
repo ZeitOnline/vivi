@@ -24,7 +24,7 @@ class Connection(object):
 
                 # App-specific payload
                 'alert-title': title,
-                'url': link,
+                'url': self.rewrite_url(link),
             }
         }
         headers = {
@@ -44,6 +44,18 @@ class Connection(object):
                 message += ' (code=%s)' % error['code']
             raise zeit.push.interfaces.WebServiceError(message)
         raise zeit.push.interfaces.TechnicalError(response.text)
+
+    @staticmethod
+    def rewrite_url(url):
+        is_blog = (
+            url.startswith('http://blog.zeit.de')
+            or url.startswith('http://www.zeit.de/blog/'))
+        url = url.replace('http://www.zeit.de', 'http://wrapper.zeit.de', 1)
+        url = url.replace(
+            'http://blog.zeit.de', 'http://wrapper.zeit.de/blog', 1)
+        if is_blog:
+            url += '?feed=articlexml'
+        return url
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
