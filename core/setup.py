@@ -19,4 +19,9 @@ setup(
         'zope.component',
         'zope.interface',
     ],
+    extras_require={
+        'cms': [
+            'zeit.cms',
+        ],
+    },
 )
