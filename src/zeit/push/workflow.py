@@ -44,7 +44,8 @@ def send_push_notification(content, service):
         zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
     notifier = zope.component.getUtility(
         zeit.push.interfaces.IPushNotifier, name=service)
-    notifier.send(content.title, url)
+    # XXX Make title configurable or read from content?
+    notifier.send(content.title, url, title=u'Eilmeldung')
     services = zeit.push.interfaces.IPushServices(content)
     services.date_last_pushed = datetime.now(pytz.UTC)
 
@@ -63,5 +64,6 @@ def push_to_parse_legacy_eilmeldung(context, event):
 
     notifier = zope.component.getUtility(
         zeit.push.interfaces.IPushNotifier, name='parse')
-    notifier.send(context.xml.body.division.p.text, 'http://www.zeit.de/')
+    notifier.send(context.xml.body.division.p.text, 'http://www.zeit.de/',
+                  title=u'Eilmeldung')
     services.date_last_pushed = datetime.now(pytz.UTC)
