@@ -22,6 +22,7 @@ setup(
     ],
     extras_require={
         'cms': [
+            'pytz',
             'zeit.cms',
         ],
     },

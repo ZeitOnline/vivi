@@ -1,5 +1,7 @@
+from datetime import datetime
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import grokcore.component as grok
+import pytz
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.workflow.interfaces
@@ -43,3 +45,5 @@ def send_push_notification(content, service):
     notifier = zope.component.getUtility(
         zeit.push.interfaces.IPushNotifier, name=service)
     notifier.send(content.title, url)
+    services = zeit.push.interfaces.IPushServices(content)
+    services.date_last_pushed = datetime.now(pytz.UTC)
