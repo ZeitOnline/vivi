@@ -23,7 +23,7 @@ class Connection(object):
                 'title': title,  # Android only
 
                 # App-specific payload
-                'alert-title': title,
+                'alert-title': title,  # iOS only
                 'url': self.rewrite_url(link),
             }
         }
