@@ -45,7 +45,7 @@ class SendingNotifications(zeit.push.testing.TestCase):
 
         zeit.push.workflow.send_push_notification(content, 'parse')
         self.notifier.send.assert_called_with(
-            'mytitle', 'http://www.zeit.de/testcontent')
+            'mytitle', 'http://www.zeit.de/testcontent', title=u'Eilmeldung')
 
     def test_updates_last_push_date(self):
         content = ICMSContent('http://xml.zeit.de/testcontent')
