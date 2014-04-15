@@ -16,7 +16,8 @@
     </div></div>
   </div>
 
-  <p class="picture_information" tal:content="structure view/metadata/caption"/>
+  <p class="folded_information picture_information"
+     tal:content="structure view/metadata/caption"/>
 
   <form
     class="inline-form"
