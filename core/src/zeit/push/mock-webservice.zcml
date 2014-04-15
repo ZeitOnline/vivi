@@ -2,6 +2,6 @@
 
   <include package="zope.component" file="meta.zcml" />
 
-  <utility factory=".testing.PushNotifier" />
+  <utility factory=".testing.PushNotifier" name="parse" />
 
 </configure>

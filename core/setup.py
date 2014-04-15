@@ -14,6 +14,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit'],
     install_requires=[
+        'mock',
         'requests',
         'setuptools',
         'zope.component',
