@@ -19,3 +19,24 @@ class ParseTest(unittest.TestCase):
         api = zeit.push.parse.Connection('invalid', 'invalid')
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             api.send(None, None)
+
+
+class URLRewriteTest(unittest.TestCase):
+
+    def rewrite(self, url):
+        return zeit.push.parse.Connection.rewrite_url(url)
+
+    def test_www_zeit_de_is_replaced_with_wrapper(self):
+        self.assertEqual(
+            'http://wrapper.zeit.de/foo/bar',
+            self.rewrite('http://www.zeit.de/foo/bar'))
+
+    def test_blog_zeit_de_is_replaced_with_wrapper_and_appends_query(self):
+        self.assertEqual(
+            'http://wrapper.zeit.de/blog/foo/bar?feed=articlexml',
+            self.rewrite('http://blog.zeit.de/foo/bar'))
+
+    def test_zeit_de_blog_is_replaced_with_wrapper_and_appends_query(self):
+        self.assertEqual(
+            'http://wrapper.zeit.de/blog/foo/bar?feed=articlexml',
+            self.rewrite('http://www.zeit.de/blog/foo/bar'))
