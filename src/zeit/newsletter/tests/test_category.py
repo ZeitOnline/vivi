@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.newsletter.category import NewsletterCategory
@@ -128,9 +128,12 @@ class DailyNewsletterBuilderTest(zeit.newsletter.testing.TestCase):
 
     def test_group_should_work_if_content_not_adaptable_to_metadata(self):
         c1 = self.create_content('c1', u'Politik')
-        # One essential part of this test is that the following line does not
-        # raise a "could not adapt" exception
-        self.builder([mock.Mock(), c1])
+        try:
+            self.builder([mock.Mock(), c1])
+        except TypeError, e:
+            if 'Could not adapt' == e.args[0]:
+                self.fail('Adaptation should not fail. Raised: %s' % e)
+            raise e
         body = self.newsletter['newsletter_body']
         group1 = body[body.keys()[0]]
         self.assertEqual(u'Politik', group1.title)
