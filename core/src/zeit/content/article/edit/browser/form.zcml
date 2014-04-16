@@ -413,6 +413,26 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".form.ArticleContentForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.article-content-suggest-keywords"
+    class="zeit.edit.browser.view.ViewLoader"
+    permission="zope.View"
+    weight="5"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.article-content-suggest-keywords"
+    class=".keyword.Suggest"
+    template="keyword-suggest.pt"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.cms.checkout.interfaces.ILocalContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".form.ArticleContentForms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.article-content-head"
     class="zeit.edit.browser.form.FormLoader"
     permission="zope.View"

@@ -28,6 +28,7 @@ Resource('counter.js', depends=[zeit.cms.browser.resources.base])
 Resource('timer.js', depends=[zeit.cms.browser.resources.base])
 Resource('preview.js', depends=[zeit.cms.browser.resources.base])
 Resource('sync.js', depends=[zeit.cms.browser.resources.base])
+Resource('keyword.js', depends=[zeit.cms.browser.resources.base])
 
 Resource('blocks.js', depends=[
     zeit.cms.browser.resources.base,
