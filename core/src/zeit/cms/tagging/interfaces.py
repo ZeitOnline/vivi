@@ -116,3 +116,14 @@ class Keywords(zope.schema.Tuple):
             super(Keywords, self)._validate(value)
         except zope.schema.interfaces.TooShort:
             raise TooFewKeywords()
+
+
+class ICurrentTopics(zope.interface.Interface):
+    """Utility that knows about topical keywords.
+    """
+
+    def __call__(ressort=None):
+        """Returns list of keywords for the given ressort (or all keywords
+        if no ressort is given)"""
+
+    headlines = zope.interface.Attribute('List of headline keywords')

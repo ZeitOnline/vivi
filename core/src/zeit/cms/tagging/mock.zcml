@@ -3,5 +3,13 @@
    i18n_domain="zope">
 
   <adapter factory=".testing.DummyTagger"  trusted="true" />
+  <utility factory=".testing.DummyCurrentTopics" />
+
+  <class class=".testing.DummyCurrentTopics">
+    <require
+      interface=".interfaces.ICurrentTopics"
+      permission="zope.View"
+      />
+  </class>
 
 </configure>
