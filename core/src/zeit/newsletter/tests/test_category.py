@@ -52,7 +52,6 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
         timestamp2 = datetime(2011, 6, 29, 15, 0, tzinfo=pytz.UTC)
 
         with mock.patch('datetime.datetime', dt):
-            self.category._create_newsletter = mock.Mock()
             self.category._get_content_newer_than = mock.Mock()
 
             dt.now.return_value = timestamp1
