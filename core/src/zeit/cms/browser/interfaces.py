@@ -102,13 +102,6 @@ class IListRepresentation(zope.interface.Interface):
         "datetime of creation date.")
 
 
-class IImageRepresentation(zope.interface.Interface):
-    """Image representation of content objects."""
-
-    title = zope.interface.Attribute("Content title")
-    thumbnailUrl = zope.interface.Attribute("Thumbnail url used for Preview")
-
-
 class ITreeState(zope.interface.common.mapping.IMapping):
     """Saves the tree state for various trees."""
 

@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Add interface for current topics (VIV-359).
 
+- Removed unused interface.
+
 
 2.16.1 (2014-03-28)
 -------------------
