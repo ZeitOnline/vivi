@@ -83,8 +83,9 @@ class NewsletterCategory(NewsletterCategoryBase,
 
     def populate(self, newsletter):
         relevant_content = self._get_content_newer_than(self.last_created)
-        build = zope.component.queryAdapter(
-            newsletter, zeit.newsletter.interfaces.IBuild, name=self.__name__)
+        build = zope.component.queryMultiAdapter(
+            (self, newsletter), zeit.newsletter.interfaces.IBuild,
+            name=self.__name__)
         # XXX rethink strategy when no builder exists
         if build is not None:
             build(relevant_content)
@@ -132,16 +133,16 @@ def local_category_factory(context):
     return local
 
 
-class Builder(grok.Adapter):
+class Builder(grok.MultiAdapter):
 
-    grok.context(zeit.newsletter.interfaces.INewsletter)
+    grok.adapts(zeit.newsletter.interfaces.INewsletterCategory,
+                zeit.newsletter.interfaces.INewsletter)
     grok.implements(zeit.newsletter.interfaces.IBuild)
     grok.baseclass()
 
-    def __init__(self, context):
-        # XXX adapt (category, newsletter) so we can get configuration from the
-        # category?
-        self.context = context
+    def __init__(self, category, newsletter):
+        self.category = category
+        self.context = newsletter
 
     def create_group(self, title):
         group = zope.component.getAdapter(
@@ -159,6 +160,10 @@ class Builder(grok.Adapter):
 
 class DailyNewsletterBuilder(Builder):
 
+    # XXX Sort out discrimination to avoid doubling category and category
+    # name. The underlying problem is that we have code relating to particular
+    # newsletters (only daily right now) while the newsletters themselves
+    # aren't special in terms of code, but only distinguished by name.
     grok.name(DAILY_NAME)
 
     # XXX make configurable

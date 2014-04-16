@@ -103,7 +103,7 @@ class DailyNewsletterBuilderTest(zeit.newsletter.testing.TestCase):
         super(DailyNewsletterBuilderTest, self).setUp()
         self.newsletter = Newsletter()
         self.builder = zeit.newsletter.category.DailyNewsletterBuilder(
-            self.newsletter)
+            None, self.newsletter)
 
     def create_content(self, name, ressort):
         content = TestContentType()
