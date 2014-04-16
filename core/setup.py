@@ -26,6 +26,7 @@ setup(
         'zeit.edit',
         'zeit.cms>=2.15.0.dev',
         'zeit.content.image',
+        'zeit.content.video',
         'zeit.connector',
         'zeit.optivo',
         'zope.interface',

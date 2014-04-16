@@ -52,6 +52,7 @@ class CategoryMetadata(zeit.newsletter.testing.BrowserTestCase):
         b.getControl('Optivo Mandant ID').value = '12345'
         b.getControl('Name of recipient list').value = 'foo'
         b.getControl('Subject').value = 'foo'
+        b.getControl('Unique id of video playlist').value = 'http://foo'
         b.getControl('Apply').click()
         b.getLink('Checkin').click()
         b.getLink('View metadata').click()
