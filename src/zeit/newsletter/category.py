@@ -15,6 +15,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.type
 import zeit.connector.interfaces
 import zeit.connector.search
+import zeit.content.video.interfaces
 import zeit.newsletter.interfaces
 import zeit.newsletter.newsletter
 import zope.component
@@ -43,7 +44,7 @@ class NewsletterCategoryBase(object):
         zeit.newsletter.interfaces.INewsletterCategory,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ['mandant', 'recipientlist', 'recipientlist_test',
-         'subject'])
+         'subject', 'video_playlist'])
 
 
 class NewsletterCategory(NewsletterCategoryBase,
@@ -179,6 +180,7 @@ class DailyNewsletterBuilder(Builder):
                 group = self.create_group(ressort)
                 for content in entries:
                     self.create_teaser(group, content)
+        self.create_video_group()
 
     def _group_by_ressort(self, content_list):
         groups = {}
@@ -189,6 +191,19 @@ class DailyNewsletterBuilder(Builder):
                 continue
             groups.setdefault(metadata.ressort, []).append(content)
         return groups
+
+    def create_video_group(self):
+        if self.category is None:
+            return
+        group = self.create_group('Videos')
+        playlist = zeit.cms.interfaces.ICMSContent(
+            self.category.video_playlist, None)
+        if playlist is None:
+            return
+        if not zeit.content.video.interfaces.IPlaylist.providedBy(playlist):
+            return
+        for video in playlist.videos:
+            self.create_teaser(group, video)
 
 
 @grok.adapter(

@@ -8,6 +8,8 @@
 
   <grok:grok package="." />
 
+  <include package="zeit.content.video" />
+
   <class class=".newsletter.Newsletter">
     <implements
       interface="zope.annotation.interfaces.IAttributeAnnotatable" />
