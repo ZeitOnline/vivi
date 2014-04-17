@@ -90,8 +90,7 @@ class NewsletterCategory(NewsletterCategoryBase,
     def populate(self, newsletter):
         relevant_content = self._get_content_newer_than(self.last_created)
         build = zope.component.queryMultiAdapter(
-            (self, newsletter), zeit.newsletter.interfaces.IBuild,
-            name=self.__name__)
+            (self, newsletter), zeit.newsletter.interfaces.IBuild)
         # XXX rethink strategy when no builder exists
         if build is not None:
             build(relevant_content)
@@ -162,15 +161,6 @@ class Builder(grok.MultiAdapter):
             group, zeit.edit.interfaces.IElementFactory, name='teaser')()
         teaser.reference = content
         return teaser
-
-
-class DailyNewsletterBuilder(Builder):
-
-    # XXX Sort out discrimination to avoid doubling category and category
-    # name. The underlying problem is that we have code relating to particular
-    # newsletters (only daily right now) while the newsletters themselves
-    # aren't special in terms of code, but only distinguished by name.
-    grok.name(DAILY_NAME)
 
     def __call__(self, content_list):
         groups = self._group_by_ressort(content_list, self.category.ressorts)

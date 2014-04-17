@@ -96,15 +96,15 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
         self.assertEqual('foo 29.06.2001', newsletter.subject)
 
 
-class DailyNewsletterBuilderTest(zeit.newsletter.testing.TestCase):
+class BuilderTest(zeit.newsletter.testing.TestCase):
 
     def setUp(self):
-        super(DailyNewsletterBuilderTest, self).setUp()
+        super(BuilderTest, self).setUp()
         self.category = NewsletterCategory()
         self.category.subject = 'nosubject'
         self.repository['mynl'] = self.category
         self.newsletter = Newsletter()
-        self.builder = zeit.newsletter.category.DailyNewsletterBuilder(
+        self.builder = zeit.newsletter.category.Builder(
             self.category, self.newsletter)
 
     def create_content(self, name, ressort):
