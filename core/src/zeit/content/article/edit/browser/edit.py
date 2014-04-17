@@ -68,8 +68,9 @@ class SaveText(AutoSaveText):
     def update(self):
         super(SaveText, self).update()
         self.signal(
-            None, 'reload',
-            'editable-body', self.url(self.context, '@@contents'))
+            None, 'reload', self.paragraphs[0],
+            self.url(self.context, '@@slice?start=%s&end=%s' % (
+                self.data['new_ids'][0], self.data['new_ids'][-1])))
 
 
 class Paragraph(object):
@@ -137,6 +138,18 @@ class Body(object):
         if self.sortable:
             css_class.append('action-block-sorter')
         return ' '.join(css_class)
+
+    @property
+    def values(self):
+        return self.context.values()
+
+
+class Slice(Body):
+
+    @property
+    def values(self):
+        return self.context.slice(
+            self.request.form['start'], self.request.form['end'])
 
 
 class BlockLandingZone(LandingZoneBase):

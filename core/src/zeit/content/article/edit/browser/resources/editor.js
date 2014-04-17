@@ -702,8 +702,13 @@ zeit.content.article.Editable = gocept.Class.extend({
             } else {
                 log('Skipping save: no changes');
                 MochiKit.Signal.signal(
-                    zeit.edit.editor, 'reload', 'editable-body',
-                    $('#editable-body').attr('cms:url') + '/@@contents');
+                    zeit.edit.editor, 'reload', self.edited_paragraphs[0],
+                    $('#editable-body').attr('cms:url') + '/@@slice?'
+                    + MochiKit.Base.queryString({
+                        'start': self.edited_paragraphs[0],
+                        'end': self.edited_paragraphs[
+                            self.edited_paragraphs.length-1],
+                    }));
             }
         });
     },

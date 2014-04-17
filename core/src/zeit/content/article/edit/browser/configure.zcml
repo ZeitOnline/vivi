@@ -52,6 +52,15 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="slice"
+    class=".edit.Slice"
+    template="edit.body.contents-provider.pt"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

@@ -54,7 +54,7 @@ setup(
         'zeit.content.gallery',
         'zeit.content.portraitbox',
         'zeit.content.video',
-        'zeit.edit>=2.2.0.dev0',
+        'zeit.edit>=2.3.0.dev0',
         'zeit.objectlog>=0.2',
         'zeit.wysiwyg>=1.41.0dev',
         'zope.app.appsetup',
