@@ -153,14 +153,14 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.builder(())
         body = self.newsletter['newsletter_body']
         self.assertEqual(1, len(body))
-        self.assertEqual('Videos', body.values()[0].title)
+        self.assertEqual('Video', body.values()[0].title)
 
     def test_should_not_break_if_playlist_id_resolves_to_something_else(self):
         self.category.video_playlist = self.category.uniqueId
         self.builder(())
         body = self.newsletter['newsletter_body']
         self.assertEqual(1, len(body))
-        self.assertEqual('Videos', body.values()[0].title)
+        self.assertEqual('Video', body.values()[0].title)
 
     def test_should_populate_video_group_from_playlist(self):
         playlist = zeit.content.video.playlist.Playlist()

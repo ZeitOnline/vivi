@@ -184,7 +184,7 @@ class Builder(grok.MultiAdapter):
     def create_video_group(self):
         if self.category is None:
             return
-        group = self.create_group('Videos')
+        group = self.create_group('Video')
         playlist = zeit.cms.interfaces.ICMSContent(
             self.category.video_playlist, None)
         if playlist is None:
