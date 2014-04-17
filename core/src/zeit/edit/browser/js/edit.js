@@ -100,10 +100,12 @@ zeit.edit.Editor = gocept.Class.extend({
     },
 
     replace_element: function(element, result) {
+        // Replaces the given element with the HTML contents of the result.
+        // Returns the *new* element, so later callbacks can operate on its
+        // contents.
         var self = this;
-        var dom = DIV();
-        dom.innerHTML = result.responseText;
-        return MochiKit.DOM.swapDOM(element, dom.firstChild);
+        // XXX Franken-Vivi
+        return jQuery(result.responseText).replaceAll(element)[0];
     },
 
     busy_until_reload_of: function(component, delay) {
