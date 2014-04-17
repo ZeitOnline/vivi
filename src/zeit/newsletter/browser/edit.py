@@ -1,12 +1,14 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
 from zope.cachedescriptors.property import Lazy as cachedproperty
+import os.path
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.image.interfaces
+import zeit.content.video.interfaces
 import zeit.edit.browser.form
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
@@ -49,6 +51,8 @@ class Teaser(zeit.cms.browser.view.Base):
         content = self.context.reference
         if content is None:
             return
+        if zeit.content.video.interfaces.IVideoContent.providedBy(content):
+            return content.thumbnail
         images = zeit.content.image.interfaces.IImages(content, None)
         if images is None:
             preview = zope.component.queryMultiAdapter(
@@ -58,13 +62,12 @@ class Teaser(zeit.cms.browser.view.Base):
             return
         if not images.image:
             return
-        image = images.image
-        if zeit.content.image.interfaces.IImageGroup.providedBy(image):
-            img = image.get('148x84')
-            if img:
-                return self.url(img)
-        else:
-            return self.url(image)
+        group = images.image
+        for name in group:
+            basename, ext = os.path.splitext(name)
+            if basename.endswith('148x84'):
+                image = group[name]
+                return self.url(image, '@@raw')
 
 
 class GroupTitle(zeit.edit.browser.form.InlineForm):
