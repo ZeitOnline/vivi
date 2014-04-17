@@ -1,11 +1,11 @@
 # coding: utf8
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
+# Copyright (c) 2007-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
 import zc.form.field
-import zc.sourcefactory.basic
+import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
