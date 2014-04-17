@@ -81,6 +81,18 @@ class Base(UserDict.DictMixin,
     def keys(self):
         return list(iter(self))
 
+    def slice(self, start, end):
+        result = []
+        started = False
+        for key in self.keys():
+            if key == start:
+                started = True
+            if started:
+                result.append(self[key])
+            if key == end:
+                break
+        return result
+
     def add(self, item):
         name = self._add(item)
         self._p_changed = True

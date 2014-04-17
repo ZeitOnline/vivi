@@ -1,9 +1,11 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from persistent.interfaces import IPersistent
 import lxml.objectify
 import mock
 import unittest
+import zeit.edit.container
 import zeit.edit.testing
 import zeit.edit.tests.fixture
 import zope.interface
@@ -12,12 +14,10 @@ import zope.interface
 class TestContainer(unittest.TestCase):
 
     def get_container(self):
-        from persistent.interfaces import IPersistent
-        from zeit.edit.container import Base
         parent = mock.Mock()
         parent._p_changed = False
         zope.interface.alsoProvides(parent, IPersistent)
-        class Container(Base):
+        class Container(zeit.edit.container.Base):
             def _add(self, item):
                 pass
             def _delete(self, key):
@@ -57,3 +57,19 @@ class UnknownBlockTest(zeit.edit.testing.FunctionalTestCase):
         self.assertTrue(zeit.edit.interfaces.IUnknownBlock.providedBy(
             container['bar']))
 
+
+class SliceTest(zeit.edit.testing.FunctionalTestCase):
+
+    def test_foo(self):
+        context = mock.Mock()
+        zope.interface.alsoProvides(context, IPersistent)
+        container = zeit.edit.tests.fixture.Container(
+            context, lxml.objectify.fromstring('<container/>'))
+        block_factory = zope.component.getAdapter(
+            container, zeit.edit.interfaces.IElementFactory, 'block')
+        blocks = [block_factory() for i in range(4)]
+        expected = [blocks[0], blocks[1]]
+        expected = [x.__name__ for x in expected]
+        actual = [x.__name__ for x in container.slice(
+            blocks[0].__name__, blocks[1].__name__)]
+        self.assertEqual(expected, actual)

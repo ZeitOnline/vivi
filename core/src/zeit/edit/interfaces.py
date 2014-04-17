@@ -60,6 +60,9 @@ class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
         """Determine position of the given value among self.values,
         even when value does not have a __name__ yet."""
 
+    def slice(start, end):
+        """Return list of blocks between the names start and end, inclusive."""
+
 
 class IWriteContainer(zope.container.interfaces.IOrdered):
     """Modify area."""
