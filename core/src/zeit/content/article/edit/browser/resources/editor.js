@@ -282,6 +282,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             jQuery(paragraph).next('.landing-zone').remove();
             MochiKit.DOM.removeElement(paragraph);
         });
+        jQuery(paragraphs[0]).next('.landing-zone').remove();
         // Clear out all non element nodes
         forEach(editable.childNodes, function(child) {
             if (child.nodeType != child.ELEMENT_NODE) {
