@@ -143,7 +143,6 @@ class Builder(grok.MultiAdapter):
     grok.adapts(zeit.newsletter.interfaces.INewsletterCategory,
                 zeit.newsletter.interfaces.INewsletter)
     grok.implements(zeit.newsletter.interfaces.IBuild)
-    grok.baseclass()
 
     def __init__(self, category, newsletter):
         self.category = category

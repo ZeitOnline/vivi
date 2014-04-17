@@ -53,6 +53,7 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
 
         with mock.patch('datetime.datetime', dt):
             self.category._get_content_newer_than = mock.Mock()
+            self.category._get_content_newer_than.return_value = []
 
             dt.now.return_value = timestamp1
             self.category.create()
@@ -94,6 +95,13 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
             newsletter = self.repository['mynl'].create()
 
         self.assertEqual('foo 29.06.2001', newsletter.subject)
+
+    def test_smoke_test_for_populated_newletter_body(self):
+        # this is just a smoke test to make sure things are wired up,
+        # since the mock connector doesn't implement search
+        with mock.patch('zeit.newsletter.category.Builder.__call__') as build:
+            self.repository['mynl'].create()
+            build.assert_called()
 
 
 class BuilderTest(zeit.newsletter.testing.TestCase):
