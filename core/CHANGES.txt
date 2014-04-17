@@ -7,6 +7,8 @@ zeit.content.image changes
 - Display original caption in reference details (VIV-365).
 
 - Rewrite links from www.zeit.de to xml.zeit.de (VIV-263).
+  NOTE: This functionality is still disabled, since the frontend
+  does not interpret rewritten links correctly yet.
 
 
 2.0.0 (2014-03-10)
