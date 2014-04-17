@@ -3,6 +3,7 @@
 
 import ZODB.utils
 import os.path
+import unittest
 import zeit.cms.testing
 import zeit.content.image.testing
 
@@ -46,6 +47,9 @@ class ImageEdit(zeit.cms.testing.BrowserTestCase):
         b.getControl(
             name='form.copyrights.0..combination_00').value = 'required'
 
+    @unittest.skip(
+        'Disabled because the frontend does not interpret rewritten links '
+        'correctly yet.')
     def test_rewrites_links_from_www_zeit_de_to_xml_zeit_de(self):
         b = self.browser
         b.getControl('Links to').value = 'http://www.zeit.de/foo/bar'

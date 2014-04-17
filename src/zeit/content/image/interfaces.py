@@ -88,7 +88,9 @@ class IImageMetadata(zope.interface.Interface):
         title=_('Links to'),
         description=_('Enter a URL this image should link to.'),
         required=False)
-    zope.interface.alsoProvides(links_to, ILinkField)
+    # XXX Disabled because the frontend does not interpret rewritten links
+    # correctly yet.
+    #zope.interface.alsoProvides(links_to, ILinkField)
 
     alignment = zope.schema.Choice(
         title=_('Alignment'),
