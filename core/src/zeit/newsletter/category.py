@@ -46,6 +46,11 @@ class NewsletterCategoryBase(object):
         ['mandant', 'recipientlist', 'recipientlist_test',
          'subject', 'video_playlist'])
 
+    # XXX make configurable
+    ressorts = (u'Politik', u'Wirtschaft', u'Meinung', u'Gesellschaft',
+                u'Kultur', u'Wissen', u'Digital', u'Studium', u'Karriere',
+                u'Lebensart', u'Reisen', u'Auto', u'Sport')
+
 
 class NewsletterCategory(NewsletterCategoryBase,
                          zeit.cms.repository.folder.Folder):
@@ -167,14 +172,9 @@ class DailyNewsletterBuilder(Builder):
     # aren't special in terms of code, but only distinguished by name.
     grok.name(DAILY_NAME)
 
-    # XXX make configurable
-    ressorts = (u'Politik', u'Wirtschaft', u'Meinung', u'Gesellschaft',
-                u'Kultur', u'Wissen', u'Digital', u'Studium', u'Karriere',
-                u'Lebensart', u'Reisen', u'Auto', u'Sport')
-
     def __call__(self, content_list):
-        groups = self._group_by_ressort(content_list)
-        for ressort in self.ressorts:
+        groups = self._group_by_ressort(content_list, self.category.ressorts)
+        for ressort in self.category.ressorts:
             entries = groups.get(ressort)
             if entries:
                 group = self.create_group(ressort)
@@ -182,12 +182,12 @@ class DailyNewsletterBuilder(Builder):
                     self.create_teaser(group, content)
         self.create_video_group()
 
-    def _group_by_ressort(self, content_list):
+    def _group_by_ressort(self, content_list, accept_ressorts):
         groups = {}
         for content in content_list:
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
-            if metadata is None or metadata.ressort not in self.ressorts:
+            if metadata is None or metadata.ressort not in accept_ressorts:
                 continue
             groups.setdefault(metadata.ressort, []).append(content)
         return groups
