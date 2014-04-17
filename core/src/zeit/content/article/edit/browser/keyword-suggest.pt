@@ -1,6 +1,6 @@
 <fieldset id="article-content-suggest-keywords" i18n:domain="zeit.cms">
 
-  <legend>Keyword suggestions (Google news)</legend>
+  <legend i18n:translate="">Keyword suggestions (Google news)</legend>
 
   <div class="ressort_keywords folded_information">
     <tal:block repeat="keyword view/ressort_keywords">
