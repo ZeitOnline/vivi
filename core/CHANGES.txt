@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.2.7 (unreleased)
+2.2.7 (2014-04-22)
 ------------------
 
 - Removed module file erroneously left over after an earlier merge.
