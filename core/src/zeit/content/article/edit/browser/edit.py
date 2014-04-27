@@ -78,7 +78,7 @@ class Paragraph(object):
     @property
     def cms_module(self):
         if self.request.interaction.checkPermission(
-            'zeit.EditContent', self.context):
+                'zeit.EditContent', self.context):
             return "zeit.content.article.Editable"
 
     @property
