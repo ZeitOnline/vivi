@@ -105,7 +105,11 @@ zeit.edit.Editor = gocept.Class.extend({
         // contents.
         var self = this;
         // XXX Franken-Vivi
-        return jQuery(result.responseText).replaceAll(element)[0];
+        result = jQuery(result.responseText).replaceAll(element)[0];
+        if (isUndefinedOrNull(result)) {
+            throw Exception('Internal error on replace_element().');
+        }
+        return result;
     },
 
     busy_until_reload_of: function(component, delay) {
