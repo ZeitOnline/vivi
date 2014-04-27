@@ -65,13 +65,6 @@ class SaveText(AutoSaveText):
 
     undo_description = _('edit body text')
 
-    def update(self):
-        super(SaveText, self).update()
-        self.signal(
-            None, 'reload', self.paragraphs[0],
-            self.url(self.context, '@@slice?start=%s&end=%s' % (
-                self.data['new_ids'][0], self.data['new_ids'][-1])))
-
 
 class Paragraph(object):
 

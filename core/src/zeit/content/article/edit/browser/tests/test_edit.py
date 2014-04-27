@@ -102,17 +102,12 @@ class SaveTextTest(TextViewHelper,
             ['id-2', 'id-3', 'id-4', 'id-5', 'id-6', 'id-7', 'id-8', 'id-9'],
             view.context.keys())
 
-    def test_update_should_trigger_reload_of_body(self):
+    def test_update_should_not_trigger_reload_of_body(self):
         view = self.get_view()
         view.request.form['paragraphs'] = []
         view.request.form['text'] = []
         view.update()
-        view.url.assert_called_with(view.context, '@@contents')
-        self.assertEqual(
-            [{'args': ('editable-body', view.url.return_value),
-              'name': 'reload',
-              'when': None}],
-            view.signals)
+        self.assertEqual([], view.signals)
 
     def test_unknown_factories_are_mapped_to_p(self):
         view = self.get_view()
