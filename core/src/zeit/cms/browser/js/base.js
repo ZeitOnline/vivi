@@ -99,7 +99,7 @@ zeit.cms.getCookie = function(name) {
   var begin = dc.indexOf("; " + prefix);
   if (begin == -1) {
     begin = dc.indexOf(prefix);
-    if (begin != 0) {
+    if (begin !== 0) {
         return null;
     }
   } else {
