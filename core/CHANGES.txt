@@ -1,6 +1,12 @@
 zeit.content.article changes
 ============================
 
+3.2.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 3.2.1 (2014-04-28)
 ------------------
 
