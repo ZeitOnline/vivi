@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.4.0 (unreleased)
+2.3.1 (2014-04-28)
 ------------------
 
 - Add safety belt for replace to not return undefined.
