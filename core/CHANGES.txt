@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.3.0 (unreleased)
+3.2.1 (2014-04-28)
 ------------------
 
 - Fix breaking editor on wysiwyg save after autosave.
