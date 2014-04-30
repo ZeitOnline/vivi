@@ -59,7 +59,8 @@ def push_to_parse_legacy_eilmeldung(context, event):
         return
     services = zeit.push.interfaces.IPushServices(context)
     info = zeit.cms.workflow.interfaces.IPublishInfo(context)
-    if services.date_last_pushed >= info.date_last_published:
+    if (services.date_last_pushed and info.date_last_published and
+            services.date_last_pushed >= info.date_last_published):
         return
 
     notifier = zope.component.getUtility(
