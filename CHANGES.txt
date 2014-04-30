@@ -4,7 +4,7 @@ zeit.push changes
 1.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix push for not-yet-pushed eilmeldung (VIV-369)
 
 
 1.0.0 (2014-04-22)
