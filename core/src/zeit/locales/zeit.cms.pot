@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Apr 16 11:29:12 2014\n"
+"POT-Creation-Date: Mon May  5 09:31:37 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -394,7 +394,6 @@ msgid "Badges"
 msgstr ""
 
 #: zeit/cms/asset/browser/form.py:21
-#: zeit/content/video/browser.py:52
 #: zeit/content/video/browser/video.py:50
 msgid "Teaser elements"
 msgstr ""
@@ -748,7 +747,6 @@ msgid "clipboard-paste-explain"
 msgstr ""
 
 #: zeit/cms/content/browser/form.py:31
-#: zeit/content/video/browser.py:43
 #: zeit/content/video/browser/video.py:41
 msgid "Navigation"
 msgstr ""
@@ -768,7 +766,6 @@ msgstr ""
 #: zeit/content/image/browser/form.py:23
 #: zeit/content/infobox/browser/form.py:27
 #: zeit/content/infobox/browser/form.py:82
-#: zeit/content/video/browser.py:39
 #: zeit/content/video/browser/video.py:37
 #: zeit/content/gallery/browser/form.py:27
 #: zeit/content/infobox/browser/form.py:27
@@ -779,7 +776,6 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:44
 #: zeit/content/article/browser/form.py:40
 #: zeit/content/article/edit/browser/form.py:472
-#: zeit/content/video/browser.py:47
 #: zeit/content/video/browser/video.py:45
 msgid "Options"
 msgstr ""
@@ -1658,34 +1654,34 @@ msgstr ""
 msgid "last published at ${date} on ${time} by ${by}"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:106
+#: zeit/content/article/edit/browser/edit.py:100
 #: zeit/content/cp/browser/landing.py:27
 #. Default: ""
 msgid "The object \"${name}\" does not exist."
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:113
+#: zeit/content/article/edit/browser/edit.py:107
 #. Default: ""
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:153
+#: zeit/content/article/edit/browser/edit.py:159
 msgid "edit XML block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:165
+#: zeit/content/article/edit/browser/edit.py:171
 msgid "edit audio block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:177
+#: zeit/content/article/edit/browser/edit.py:183
 msgid "edit citation block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:189
+#: zeit/content/article/edit/browser/edit.py:195
 msgid "edit page break"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:206
+#: zeit/content/article/edit/browser/edit.py:212
 msgid "edit html block"
 msgstr ""
 
@@ -1961,21 +1957,21 @@ msgstr ""
 msgid "Retract"
 msgstr ""
 
-#: zeit/content/article/edit/browser/workflow.py:22
+#: zeit/content/article/edit/browser/workflow.py:21
 msgid "Workflow time"
 msgstr ""
 
-#: zeit/content/article/edit/browser/workflow.py:29
+#: zeit/content/article/edit/browser/workflow.py:28
 msgid "edit workflow time"
 msgstr ""
 
-#: zeit/content/article/edit/browser/workflow.py:37
+#: zeit/content/article/edit/browser/workflow.py:36
 #: zeit/workflow/browser/form.py:74
 #: zeit/workflow/browser/menu.py:13
 msgid "Workflow"
 msgstr ""
 
-#: zeit/content/article/edit/browser/workflow.py:46
+#: zeit/content/article/edit/browser/workflow.py:45
 msgid "edit workflow status"
 msgstr ""
 
@@ -1995,7 +1991,7 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:569
 #: zeit/content/image/browser/imagegroup.py:114
 #: zeit/content/image/image.py:93
-#: zeit/content/image/interfaces.py:214
+#: zeit/content/image/interfaces.py:216
 #: zeit/content/image/browser/configure.zcml:209
 #: zeit/content/portraitbox/interfaces.py:21
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
@@ -2031,7 +2027,6 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:153
 #: zeit/content/article/edit/video.py:79
-#: zeit/content/video/browser.py:18
 #: zeit/content/video/browser/video.py:16
 #: zeit/content/video/interfaces.py:119
 #: zeit/content/video/video.py:68
@@ -3037,7 +3032,7 @@ msgid "Image group metadata"
 msgstr ""
 
 #: zeit/content/image/browser/imagegroup.py:93
-#: zeit/content/image/interfaces.py:151
+#: zeit/content/image/interfaces.py:153
 msgid "Master image"
 msgstr ""
 
@@ -3070,11 +3065,11 @@ msgstr ""
 msgid "Image Group"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:215
+#: zeit/content/image/interfaces.py:217
 msgid "Drag an image group here"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:223
+#: zeit/content/image/interfaces.py:225
 msgid "Objects using this image"
 msgstr ""
 
@@ -3121,7 +3116,7 @@ msgstr ""
 msgid "Enter a URL this image should link to."
 msgstr ""
 
-#: zeit/content/image/interfaces.py:94
+#: zeit/content/image/interfaces.py:96
 #: zeit/content/image/browser/image_view.pt:24
 msgid "Alignment"
 msgstr ""
@@ -3335,7 +3330,6 @@ msgstr ""
 msgid "Encoding"
 msgstr ""
 
-#: zeit/content/video/browser.py:102
 #: zeit/content/video/browser/video.py:100
 msgid "View playlist"
 msgstr ""
@@ -3485,7 +3479,7 @@ msgstr ""
 msgid "+ Add group"
 msgstr ""
 
-#: zeit/newsletter/browser/edit.py:74
+#: zeit/newsletter/browser/edit.py:77
 msgid "edit group title"
 msgstr ""
 
@@ -3502,8 +3496,12 @@ msgstr ""
 msgid "Test email"
 msgstr ""
 
-#: zeit/newsletter/category.py:112
+#: zeit/newsletter/category.py:118
 msgid "Newsletter category"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:103
+msgid "Email for test"
 msgstr ""
 
 #: zeit/newsletter/interfaces.py:19
@@ -3531,12 +3529,12 @@ msgstr ""
 msgid "Name of test-recipient list"
 msgstr ""
 
-#: zeit/newsletter/interfaces.py:93
-msgid "Sent"
+#: zeit/newsletter/interfaces.py:70
+msgid "Unique id of video playlist"
 msgstr ""
 
-#: zeit/newsletter/interfaces.py:99
-msgid "Email for test"
+#: zeit/newsletter/interfaces.py:97
+msgid "Sent"
 msgstr ""
 
 #: zeit/newsletter/newsletter.py:135
@@ -3708,10 +3706,15 @@ msgid "status-images-added"
 msgstr ""
 
 #: zeit/workflow/interfaces.py:80
+#. Default: "SEO optimized"
+msgid "status-seo-optimized"
+msgstr ""
+
+#: zeit/workflow/interfaces.py:85
 msgid "Urgent"
 msgstr ""
 
-#: zeit/workflow/interfaces.py:81
+#: zeit/workflow/interfaces.py:86
 msgid "Select for newsflashs or on a weekend to publish without setting corrected/refined/etc."
 msgstr ""
 
@@ -3772,7 +3775,7 @@ msgstr ""
 msgid "scheduled-for-retracting-on"
 msgstr ""
 
-#: zeit/workflow/workflow.py:61
+#: zeit/workflow/workflow.py:62
 #. Default: ""
 msgid "${name}: ${new_value}"
 msgstr ""
