@@ -263,9 +263,10 @@ class WorkflowStatusDisplay(zeit.edit.browser.form.InlineForm):
     legend = _('')
     form_fields = FormFields(
         zeit.workflow.interfaces.IContentWorkflow).select(
-        'edited', 'corrected')
+            'edited', 'corrected', 'seo_optimized')
     form_fields['edited'].custom_widget = CheckboxDisplayWidget
     form_fields['corrected'].custom_widget = CheckboxDisplayWidget
+    form_fields['seo_optimized'].custom_widget = CheckboxDisplayWidget
 
 
 class LastPublished(object):

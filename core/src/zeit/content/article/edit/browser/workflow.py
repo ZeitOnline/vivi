@@ -5,7 +5,6 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zope.cachedescriptors.property import Lazy as cachedproperty
-import json
 import mock
 import zeit.content.article.interfaces
 import zeit.edit.browser.form
@@ -50,13 +49,13 @@ class Publish(zeit.edit.browser.form.InlineForm):
         fields = zope.formlib.form.FormFields(
             zeit.workflow.interfaces.IContentWorkflow,
             zeit.content.article.interfaces.ICDSWorkflow).select(
-            'edited', 'corrected', 'urgent', 'export_cds')
+            'edited', 'corrected', 'urgent', 'seo_optimized', 'export_cds')
         if not self.can_checkout:
             fields += zope.formlib.form.FormFields(
                 zeit.cms.content.interfaces.ISemanticChange).select(
                 'has_semantic_change')
 
-        for name in ['edited', 'corrected']:
+        for name in ['edited', 'corrected', 'seo_optimized']:
             fields[name].custom_widget = zeit.cms.browser.widget.CheckboxWidget
         return fields
 
@@ -64,7 +63,7 @@ class Publish(zeit.edit.browser.form.InlineForm):
         super(Publish, self).setUpWidgets(*args, **kw)
         if IPublishInfo(self.context).urgent:
             # XXX This needs a better mechanism.
-            for name in ('corrected', 'edited'):
+            for name in ('corrected', 'edited', 'seo_optimized'):
                 self.widgets[name].extra = 'disabled="disabled"'
                 self.widgets[name].vivi_css_class = 'disabled'
         self.widgets['export_cds'].vivi_css_class = 'visual-clear'
