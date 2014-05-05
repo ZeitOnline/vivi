@@ -76,6 +76,11 @@ class IContentWorkflow(ITimeBasedPublishing):
         default=False,
         source=zeit.workflow.source.TriState())
 
+    seo_optimized = zope.schema.Choice(
+        title=_('status-seo-optimized', default=u'SEO optimized'),
+        default=False,
+        source=zeit.workflow.source.TriState())
+
     urgent = zope.schema.Bool(
         title=_('Urgent'),
         description=_('Select for newsflashs or on a weekend to publish '

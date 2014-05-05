@@ -108,7 +108,8 @@ class ContentWorkflow(WorkflowForm):
             ('last_modified_by', 'date_last_modified', 'last_semantic_change',
              'created',
              'published', 'date_last_published', 'date_first_released',
-             'edited', 'corrected', 'refined', 'images_added'),
+             'edited', 'corrected', 'refined',
+             'images_added', 'seo_optimized'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("Settings"), css_class='column-right'),

@@ -4,7 +4,7 @@ zeit.cms changes
 2.18.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add field ``seo_optimized`` to IContentWorkflow (VIV-329).
 
 
 2.17.0 (2014-04-22)
