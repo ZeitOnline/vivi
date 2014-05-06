@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Add "SEO optimized" workflow checkbox (VIV-329).
 
+- Remove unicode line breaks when pasting (WEB-299).
+
 
 3.2.1 (2014-04-28)
 ------------------

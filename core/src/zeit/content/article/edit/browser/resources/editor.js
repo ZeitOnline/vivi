@@ -621,7 +621,11 @@ zeit.content.article.Editable = gocept.Class.extend({
         setTimeout(function() {
             self.fix_html();
             $(self.editable).children().has('style').remove();
-            $('a', self.editable).attr('target', '_blank');
+            $(self.editable).find('a').attr('target', '_blank');
+            $(self.editable).find('*:not(:has(*))').each(function() {
+                var element = $(this);
+                element.text(element.text().replace(/[\u2028]/, ''));
+            });
         }, 0);
     },
 
