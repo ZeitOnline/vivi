@@ -817,7 +817,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.insert_link_node = $(
                 'a[href="#article-editor-create-link"]', self.editable);
         }
-        $(self.insert_link_node).addClass('link-edit');
+        self.insert_link_node.addClass('link-edit');
         if (!self.created_link_node) {
             $(self.href_input).val(href);
             $(self.target_select).val(target);
