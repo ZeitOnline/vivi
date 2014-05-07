@@ -4,7 +4,8 @@ zeit.content.image changes
 2.2.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix bug in IImageMetadata declaration: ``caption`` should not use a special
+  missing value (VIV-377).
 
 
 2.1.0 (2014-04-22)

@@ -81,7 +81,6 @@ class IImageMetadata(zope.interface.Interface):
     caption = zope.schema.Text(
         title=_("Image sub text"),
         default=u'',
-        missing_value=u'',
         required=False)
 
     links_to = zope.schema.URI(
