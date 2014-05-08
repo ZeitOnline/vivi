@@ -104,4 +104,23 @@
 
   <utility factory=".render.renderer_from_product_config" />
 
+  <class class=".workflow.Workflow">
+    <require
+      permission="zope.View"
+      interface=".interfaces.INewsletterWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.INewsletterWorkflow"
+      />
+  </class>
+
+  <adapter factory=".workflow.Workflow"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    for=".interfaces.INewsletter"
+    trusted="yes"
+    />
+
+  <adapter factory=".rule.NewsletterValidator" />
+
 </configure>
