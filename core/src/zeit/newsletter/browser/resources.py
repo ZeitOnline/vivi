@@ -11,3 +11,4 @@ Resource('editor.js', depends=[
     zeit.edit.browser.resources.sortable_js,
     zeit.edit.browser.resources.json_js,
 ])
+Resource('editor.css')

@@ -1,8 +1,10 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import transaction
+import zeit.edit.interfaces
 import zeit.newsletter.testing
+import zope.component
 
 
 class EditorTest(zeit.newsletter.testing.BrowserTestCase):
@@ -140,3 +142,24 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.assertText(group1 + ' .block.type-teaser', '*c2*')
         s.assertText(group1 + second_teaser, '*c1*')
         s.assertElementNotPresent(group2 + ' .block.type-teaser')
+
+
+class AdvertisementTest(zeit.newsletter.testing.SeleniumTestCase):
+
+    def setUp(self):
+        from zeit.newsletter.newsletter import Newsletter
+        super(AdvertisementTest, self).setUp()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            newsletter = Newsletter()
+            factory = zope.component.getAdapter(
+                newsletter.body, zeit.edit.interfaces.IElementFactory,
+                name='advertisement')
+            advertisement = factory()
+            advertisement.title = u'Some ad'
+            self.repository['newsletter'] = newsletter
+        transaction.commit()
+        self.open('/repository/newsletter/@@checkout')
+
+    def test_advertisement_is_wired_correctly(self):
+        s = self.selenium
+        s.waitForTextPresent('Some ad')

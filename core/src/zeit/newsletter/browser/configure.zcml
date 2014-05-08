@@ -148,6 +148,20 @@
     weight="0"
     />
 
+  <!-- advertisement -->
+
+  <browser:viewlet
+    for="..interfaces.IAdvertisement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="content"
+    class=".edit.Advertisement"
+    template="edit.advertisement.content.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
   <!-- forms -->
 
   <browser:viewlet
