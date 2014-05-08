@@ -1,16 +1,16 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import grokcore.component as grok
 import zeit.cms.workflow.interfaces
+import zeit.edit.rule
 import zeit.newsletter.interfaces
 import zeit.workflow.interfaces
-import zeit.workflow.publishinfo
 import zope.session.interfaces
 
 
-class Workflow(zeit.workflow.publishinfo.PublishInfo,
+class Workflow(zeit.edit.rule.ValidatingWorkflow,
                grok.Adapter):
 
     grok.context(zeit.newsletter.interfaces.INewsletter)
