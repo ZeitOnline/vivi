@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -41,6 +41,19 @@ class ITeaser(zeit.edit.interfaces.IBlock):
 
     reference = zope.schema.Choice(
         source=zeit.cms.content.contentsource.cmsContentSource)
+
+
+class IAdvertisement(zeit.edit.interfaces.IBlock):
+
+    href = zope.schema.TextLine(title=_('Target URL'))
+
+    title = zope.schema.TextLine(title=_('Title'))
+
+    text = zope.schema.Text(title=_('Text'))
+
+    image = zope.schema.Choice(
+        source=zeit.content.image.interfaces.imageSource,
+        required=False)
 
 
 class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):

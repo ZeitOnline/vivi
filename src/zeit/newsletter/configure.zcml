@@ -56,6 +56,17 @@
       />
   </class>
 
+  <class class=".newsletter.Advertisement">
+    <require
+      interface=".interfaces.IAdvertisement"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAdvertisement"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".category.NewsletterCategory">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require like_class="zeit.cms.repository.folder.Folder" />
