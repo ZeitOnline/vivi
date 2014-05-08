@@ -47,6 +47,8 @@ class NewsletterCategoryBase(object):
          'subject', 'video_playlist',
          'ad_bottom_href', 'ad_bottom_title',
          'ad_bottom_text', 'ad_bottom_image',
+         'ad_middle_position', 'ad_middle_href', 'ad_middle_title',
+         'ad_middle_text', 'ad_middle_image',
          ])
 
     # XXX make configurable
@@ -166,12 +168,22 @@ class Builder(grok.MultiAdapter):
 
     def __call__(self, content_list):
         groups = self._group_by_ressort(content_list, self.category.ressorts)
+        groups_above = 0
         for ressort in self.category.ressorts:
             entries = groups.get(ressort)
-            if entries:
-                group = self.create_group(ressort)
-                for content in entries:
-                    self.create_teaser(group, content)
+            if not entries:
+                continue
+            group = self.create_group(ressort)
+            for content in entries:
+                self.create_teaser(group, content)
+            groups_above += 1
+            if groups_above == self.category.ad_middle_position:
+                self.create_advertisement(
+                    self.category.ad_middle_href,
+                    self.category.ad_middle_title,
+                    self.category.ad_middle_text,
+                    self.category.ad_middle_image,
+                )
         self.create_video_group()
         self.create_advertisement(
             self.category.ad_bottom_href,
