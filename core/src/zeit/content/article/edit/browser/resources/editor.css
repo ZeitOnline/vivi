@@ -785,16 +785,14 @@
    margin-left:22px;
 }
 
-.type-article .object-details .toggle_infos,
-.type-article #article-content-suggest-keywords .toggle_infos {
+.type-article .object-details .toggle_infos {
   background-image: none;
   background-position: 15px 8px !important;
   margin-top: 10px;
   padding: 2px 0px !important;
 }
 
-.type-article .object-details .toggle_infos:hover,
-.type-article #article-content-suggest-keywords .toggle_infos:hover {
+.type-article .object-details .toggle_infos:hover {
   background-image: none;
   background-position: 15px 8px !important;
   margin-top: 10px;
@@ -803,7 +801,9 @@
 
 .type-article #article-content-suggest-keywords .toggle_infos,
 .type-article #article-content-suggest-keywords .toggle_infos:hover {
-  margin-top: 20px;
+  background-position: 0 999px, 0 0;
+  margin-top: 15px;
+  margin-bottom: 10px;
 }
 
 
