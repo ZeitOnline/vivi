@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.edit.rule import glob
+import zeit.cms.interfaces
 import zeit.newsletter.interfaces
 import zope.component
 import zope.interface
@@ -16,15 +17,30 @@ class NewsletterValidator(zeit.edit.rule.RecursiveValidator):
         return self.context.body.values()
 
 
+def get_newsletter(candidate):
+    while candidate is not None:
+        if zeit.newsletter.interfaces.INewsletter.providedBy(candidate):
+            return candidate
+        else:
+            candidate = getattr(candidate, '__parent__', None)
+
+
 @glob(zope.interface.Interface)
 def newsletter(context):
-    candidate = context
-    while not zeit.newsletter.interfaces.INewsletter.providedBy(candidate):
-        candidate = getattr(candidate, '__parent__', None)
-        if candidate is None:
-            return False
-    else:
-        return True
+    return get_newsletter(context) is not None
+
+
+@glob(zope.interface.Interface)
+def middle_ad_position(context):
+    newsletter = get_newsletter(context)
+    if newsletter is not None:
+        # Newsletter is connected to category only through containment in
+        # repository, so we need to map working copies to repository objects.
+        newsletter = zeit.cms.interfaces.ICMSContent(newsletter.uniqueId)
+        category = zeit.newsletter.interfaces.INewsletterCategory(
+            newsletter, None)
+    if category is not None:
+        return category.ad_middle_position + 1
 
 
 @glob(zope.interface.Interface)

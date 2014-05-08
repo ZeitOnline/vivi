@@ -106,14 +106,16 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
 
 class BuilderTest(zeit.newsletter.testing.TestCase):
 
-    NON_RESSORT_ELEMENTS = 2  # video group, bottom ad
+    NON_RESSORT_ELEMENTS = 3  # video group, middle ad, bottom ad
     VIDEO_GROUP_POSITION = -2
+    MIDDLE_AD_POSITION = 1
     BOTTOM_AD_POSITION = -1
 
     def setUp(self):
         super(BuilderTest, self).setUp()
         self.category = NewsletterCategory()
         self.category.subject = 'nosubject'
+        self.category.ad_middle_position = self.MIDDLE_AD_POSITION
         self.repository['mynl'] = self.category
         self.newsletter = Newsletter()
         self.builder = zeit.newsletter.category.Builder(
@@ -133,8 +135,8 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
 
         body = self.newsletter['newsletter_body']
         self.assertEqual(2 + self.NON_RESSORT_ELEMENTS, len(body))
-        group1 = body[body.keys()[0]]
-        group2 = body[body.keys()[1]]
+        groups = [el for el in body.values() if el.type == 'group']
+        group1, group2 = groups[:2]
         self.assertEqual(u'Politik', group1.title)
         self.assertEqual(u'Wirtschaft', group2.title)
 
@@ -184,6 +186,16 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual(2, len(video_group))
         self.assertEqual('Video 1', video_group.values()[0].reference.title)
         self.assertEqual('Video 2', video_group.values()[1].reference.title)
+
+    def test_middle_advertisement_should_be_inserted(self):
+        c1 = self.create_content('c1', u'Politik')
+        c2 = self.create_content('c2', u'Wirtschaft')
+        self.category.ad_middle_title = u'Some ad'
+        self.builder((c1, c2))
+        body = self.newsletter['newsletter_body']
+        advertisement = body[self.MIDDLE_AD_POSITION]
+        self.assertEqual('advertisement', advertisement.type)
+        self.assertEqual(u'Some ad', advertisement.title)
 
     def test_bottom_advertisement_should_be_appended(self):
         self.category.ad_bottom_title = u'Some ad'
