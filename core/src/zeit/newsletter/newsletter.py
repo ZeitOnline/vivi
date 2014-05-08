@@ -103,7 +103,7 @@ class Body(zeit.edit.container.TypeOnAttributeContainer,
         # not present in the repository, but since e.g. zeit.frontend is only
         # interested in the values, anyway, this works out alright.
         result = []
-        for node in self.xml.xpath('region'):
+        for node in self.xml.iterchildren():
             result.append(self._get_element_for_node(node))
         return result
 
