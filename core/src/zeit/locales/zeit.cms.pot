@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu May  8 13:55:38 2014\n"
+"POT-Creation-Date: Thu May  8 14:36:05 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -600,18 +600,18 @@ msgstr ""
 msgid "Remove"
 msgstr ""
 
-#: zeit/cms/browser/widget.py:367
+#: zeit/cms/browser/widget.py:366
 #: zeit/cms/repository/browser/repository.py:165
 #. Default: ""
 msgid "The object '${id}' could not be found."
 msgstr ""
 
-#: zeit/cms/browser/widget.py:376
+#: zeit/cms/browser/widget.py:375
 #. Default: ""
 msgid "'${id}' does not have an accepted type (${types})."
 msgstr ""
 
-#: zeit/cms/browser/widget.py:54
+#: zeit/cms/browser/widget.py:53
 msgid "The object could not be found."
 msgstr ""
 
@@ -1630,15 +1630,15 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:19
+#: zeit/content/article/browser/breaking.py:20
 msgid "Article body"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:20
+#: zeit/content/article/browser/breaking.py:21
 msgid "breaking-news-more-shortly"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:70
+#: zeit/content/article/browser/breaking.py:76
 msgid "Publish and push"
 msgstr ""
 
@@ -3629,6 +3629,10 @@ msgstr ""
 
 #: zeit/seo/interfaces.py:20
 msgid "Meta robots"
+msgstr ""
+
+#: zeit/seo/interfaces.py:24
+msgid "Hide timestamp"
 msgstr ""
 
 #: zeit/solr/configure.zcml:22

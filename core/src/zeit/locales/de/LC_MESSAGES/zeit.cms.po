@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu May  8 13:55:38 2014\n"
-"PO-Revision-Date: 2014-05-08 13:58+0100\n"
+"POT-Creation-Date: Thu May  8 14:36:05 2014\n"
+"PO-Revision-Date: 2014-05-08 14:36+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -561,17 +561,17 @@ msgid "Remove"
 msgstr "Entfernen"
 
 #. Default: ""
-#: zeit/cms/browser/widget.py:367
+#: zeit/cms/browser/widget.py:366
 #: zeit/cms/repository/browser/repository.py:165
 msgid "The object '${id}' could not be found."
 msgstr "Das Objekt »${id}« konnte nicht gefunden werden."
 
 #. Default: ""
-#: zeit/cms/browser/widget.py:376
+#: zeit/cms/browser/widget.py:375
 msgid "'${id}' does not have an accepted type (${types})."
 msgstr "'${id}' hat keinen hier akzeptierten Typ (${types})."
 
-#: zeit/cms/browser/widget.py:54
+#: zeit/cms/browser/widget.py:53
 msgid "The object could not be found."
 msgstr "Das Objekt konnte nicht gefunden werden."
 
@@ -1583,15 +1583,15 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Article"
 msgstr "Artikel"
 
-#: zeit/content/article/browser/breaking.py:19
+#: zeit/content/article/browser/breaking.py:20
 msgid "Article body"
 msgstr "Artikeltext"
 
-#: zeit/content/article/browser/breaking.py:20
+#: zeit/content/article/browser/breaking.py:21
 msgid "breaking-news-more-shortly"
 msgstr "Mehr in Kürze hier auf ZEIT ONLINE"
 
-#: zeit/content/article/browser/breaking.py:70
+#: zeit/content/article/browser/breaking.py:76
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
@@ -3511,6 +3511,10 @@ msgstr "HTML-Beschreibung (Description)"
 #: zeit/seo/interfaces.py:20
 msgid "Meta robots"
 msgstr "META-Robots"
+
+#: zeit/seo/interfaces.py:24
+msgid "Hide timestamp"
+msgstr "Zeitstempel verstecken"
 
 #: zeit/solr/configure.zcml:22
 msgid "Update Solr index"
