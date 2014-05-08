@@ -1,5 +1,6 @@
 from zeit.cms.checkout.interfaces import ICheckinManager
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.edit.interfaces import IEditableBody
 import zeit.cms.browser.form
 import zeit.cms.settings.interfaces
@@ -13,6 +14,7 @@ class Add(zeit.cms.browser.form.AddForm,
           zeit.cms.browser.form.CharlimitMixin):
 
     factory = zeit.content.article.article.Article
+    next_view = 'do-publish'
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.article.interfaces.IArticle).select(
@@ -39,6 +41,7 @@ class Add(zeit.cms.browser.form.AddForm,
             name='image')
         image_factory()
         zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(article))
+
         return article
 
     def add(self, object, container=None):
@@ -46,3 +49,5 @@ class Add(zeit.cms.browser.form.AddForm,
         self._created_object = ICheckinManager(
             self._created_object).checkin()
         self._checked_out = False
+
+        IPublishInfo(self._created_object).urgent = True

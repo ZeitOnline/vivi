@@ -99,4 +99,13 @@
     menu="zeit-add-menu" title="Breaking news"
     permission="zeit.AddContent"
     />
+
+  <gocept:pagelet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="do-publish"
+    template="breaking-publish.pt"
+    permission="zeit.workflow.Publish"
+    />
+
 </configure>

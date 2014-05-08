@@ -1,4 +1,5 @@
 from zeit.cms.interfaces import ICMSContent
+from zeit.cms.workflow.interfaces import IPublishInfo
 import zeit.cms.testing
 import zeit.content.article.testing
 
@@ -29,3 +30,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             self.assertEqual(26, article.volume)
             self.assertEqual('ZEDE', article.product.id)
             self.assertEqual(True, article.commentsAllowed)
+
+            # XXX Split into separate test?
+            self.assertEqual(True, IPublishInfo(article).urgent)

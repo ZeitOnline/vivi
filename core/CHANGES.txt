@@ -4,6 +4,9 @@ zeit.content.article changes
 3.2.2 (unreleased)
 ------------------
 
+- Add separate form for breaking news that only requires minimal input and
+  publishes automatically (VIV-367).
+
 - Add "SEO optimized" workflow checkbox (VIV-329).
 
 - Remove unicode line breaks when pasting (WEB-299).
