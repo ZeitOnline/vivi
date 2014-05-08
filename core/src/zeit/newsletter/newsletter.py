@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -148,3 +148,26 @@ class Teaser(zeit.edit.block.SimpleElement):
 
 zeit.edit.block.register_element_factory(
     zeit.newsletter.interfaces.IGroup, 'teaser', _('Teaser'))
+
+
+class Advertisement(zeit.edit.block.SimpleElement):
+
+    area = zeit.newsletter.interfaces.IBody
+    grok.implements(zeit.newsletter.interfaces.IAdvertisement)
+    type = 'advertisement'
+
+    href = zeit.cms.content.property.ObjectPathProperty(
+        '.href', zeit.newsletter.interfaces.IAdvertisement['href'])
+
+    title = zeit.cms.content.property.ObjectPathProperty(
+        '.title', zeit.newsletter.interfaces.IAdvertisement['title'])
+
+    text = zeit.cms.content.property.ObjectPathProperty(
+        '.text', zeit.newsletter.interfaces.IAdvertisement['text'])
+
+    image = zeit.cms.content.property.SingleResource(
+        '.image', xml_reference_name='image', attributes=('image',))
+
+
+zeit.edit.block.register_element_factory(
+    zeit.newsletter.interfaces.IBody, 'advertisement', _('Advertisement'))

@@ -1,9 +1,8 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 import lxml.etree
 import mock
-import unittest
 import zeit.cms.testing
 import zeit.newsletter.testing
 import zeit.optivo.interfaces
@@ -14,7 +13,8 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
                             zeit.cms.testing.BrowserAssertions):
 
     def test_block_factories_are_wired_up_correctly(self):
-        from zeit.newsletter.newsletter import Newsletter, Group, Teaser
+        from zeit.newsletter.newsletter import (
+            Newsletter, Group, Teaser, Advertisement)
         newsletter = Newsletter()
         body = newsletter['newsletter_body']
         self.assertEqual([], body.keys())
@@ -31,6 +31,12 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
         teaser = factory()
         self.assertIsInstance(teaser, Teaser)
 
+        factory = zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory, name='advertisement')
+        advertisement = factory()
+        advertisement.title = u'Some ad'
+        self.assertIsInstance(advertisement, Advertisement)
+
         xml = lxml.etree.tostring(newsletter.xml, pretty_print=True)
         self.assert_ellipsis("""\
 <newsletter...>
@@ -39,6 +45,9 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
     <region cp:type="group"...>
       <container cp:type="teaser"...>
     </region>
+    <container cp:type="advertisement"...>
+      <title>Some ad</title>
+    </container>
   </body>
 </newsletter>
 """, xml)
