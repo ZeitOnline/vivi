@@ -96,3 +96,45 @@ class Placeholder(zeit.cms.testing.ZeitCmsTestCase):
         self.form.setUpWidgets()
         self.assertEqual(
             'placeholder="customised"', self.form.widgets['special'].extra)
+
+
+class CharlimitForm(zeit.cms.browser.form.EditForm,
+                    zeit.cms.browser.form.CharlimitMixin):
+
+    def setUpWidgets(self, *args, **kw):
+        super(CharlimitForm, self).setUpWidgets(*args, **kw)
+        self.set_charlimit('foo')
+
+
+class CharlimitTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_tagged_value_for_charlimit_is_used(self):
+
+        class Schema(zope.interface.Interface):
+            foo = zope.schema.TextLine()
+            foo.setTaggedValue('zeit.cms.charlimit', 70)
+
+        class Context(object):
+            zope.interface.implements(Schema)
+            foo = "bar"
+
+        form = CharlimitForm(Context(), zope.publisher.browser.TestRequest())
+        form.form_fields = zope.formlib.form.FormFields(Schema)
+        form.setUpWidgets()
+        widget = form.widgets['foo']
+        self.assertEllipsis('...cms:charlimit="70"...', widget())
+
+    def test_charlimit_falls_back_to_max_length(self):
+
+        class Schema(zope.interface.Interface):
+            foo = zope.schema.TextLine(max_length=70)
+
+        class Context(object):
+            zope.interface.implements(Schema)
+            foo = "bar"
+
+        form = CharlimitForm(Context(), zope.publisher.browser.TestRequest())
+        form.form_fields = zope.formlib.form.FormFields(Schema)
+        form.setUpWidgets()
+        widget = form.widgets['foo']
+        self.assertEllipsis('...cms:charlimit="70"...', widget())

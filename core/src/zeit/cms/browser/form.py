@@ -151,6 +151,17 @@ class PlaceholderMixin(object):
                             'placeholder="%s"' % placeholder)
 
 
+class CharlimitMixin(object):
+
+    def set_charlimit(self, field_name):
+        widget = self.widgets[field_name]
+        field = widget.context
+        limit = field.queryTaggedValue('zeit.cms.charlimit', field.max_length)
+        if hasattr(widget, 'extra'):
+            # i.e. we're not in read-only mode
+            widget.extra += ' cms:charlimit="%s"' % limit
+
+
 class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
 
     widget_groups = ()

@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Add field ``seo_optimized`` to IContentWorkflow (VIV-329).
 
+- Move CharlimitMixin from zeit.content.article to zeit.cms.browser.form.
+
 
 2.17.0 (2014-04-22)
 -------------------
