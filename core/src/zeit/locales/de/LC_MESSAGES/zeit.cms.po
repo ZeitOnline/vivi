@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu May  8 10:15:03 2014\n"
-"PO-Revision-Date: 2014-05-08 10:15+0100\n"
+"POT-Creation-Date: Thu May  8 13:42:06 2014\n"
+"PO-Revision-Date: 2014-05-08 13:42+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -118,7 +118,6 @@ msgid "Banner"
 msgstr "Banner"
 
 #: zeit/brightcove/interfaces.py:99 zeit/cms/content/interfaces.py:230
-#: zeit/content/article/browser/configure.zcml:94
 msgid "Breaking news"
 msgstr "In den Schlagzeilen anzeigen (Print)"
 
@@ -562,17 +561,17 @@ msgid "Remove"
 msgstr "Entfernen"
 
 #. Default: ""
-#: zeit/cms/browser/widget.py:366
+#: zeit/cms/browser/widget.py:367
 #: zeit/cms/repository/browser/repository.py:165
 msgid "The object '${id}' could not be found."
 msgstr "Das Objekt »${id}« konnte nicht gefunden werden."
 
 #. Default: ""
-#: zeit/cms/browser/widget.py:375
+#: zeit/cms/browser/widget.py:376
 msgid "'${id}' does not have an accepted type (${types})."
 msgstr "'${id}' hat keinen hier akzeptierten Typ (${types})."
 
-#: zeit/cms/browser/widget.py:53
+#: zeit/cms/browser/widget.py:54
 msgid "The object could not be found."
 msgstr "Das Objekt konnte nicht gefunden werden."
 
@@ -1584,9 +1583,13 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Article"
 msgstr "Artikel"
 
-#: zeit/content/article/browser/breaking.py:26
+#: zeit/content/article/browser/breaking.py:28
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
+
+#: zeit/content/article/browser/configure.zcml:94
+msgid "Add breaking news"
+msgstr "Eilmeldung"
 
 #: zeit/content/article/browser/form.py:85
 msgid "Edit article"
