@@ -49,4 +49,8 @@ $(document).bind('fragment-ready', function(event) {
     $('[cms\\:charlimit]', event.__target).limitedInput();
 });
 
+$(document).ready(function() {
+    $('[cms\\:charlimit]').limitedInput();
+});
+
 }(jQuery));
