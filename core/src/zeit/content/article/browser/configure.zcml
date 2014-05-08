@@ -96,9 +96,12 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".breaking.Add"
     name="zeit.content.article.AddBreakingNews"
-    menu="zeit-add-menu" title="Breaking news"
+    menu="zeit-add-menu" title="Add breaking news"
     permission="zeit.AddContent"
     />
+  <!-- XXX The string "breaking news" is already in use somewhere else
+       and translated very specifically (something about "Print editions")
+  -->
 
   <gocept:pagelet
     for="zeit.content.article.interfaces.IArticle"
@@ -107,5 +110,14 @@
     template="breaking-publish.pt"
     permission="zeit.workflow.Publish"
     />
+
+  <class class=".breaking.BreakingNewsBody">
+    <require
+      interface=".breaking.IBreakingNewsBody"
+      permission="zope.View" />
+    <require
+      set_schema=".breaking.IBreakingNewsBody"
+      permission="zeit.EditContent" />
+  </class>
 
 </configure>
