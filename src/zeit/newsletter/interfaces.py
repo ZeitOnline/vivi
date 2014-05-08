@@ -83,6 +83,17 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
         title=_('Unique id of video playlist'),
         required=False)
 
+    ad_bottom_href = zope.schema.TextLine(title=_('Bottom ad target URL'))
+
+    ad_bottom_title = zope.schema.TextLine(title=_('Bottom ad title'))
+
+    ad_bottom_text = zope.schema.Text(title=_('Bottom ad text'))
+
+    ad_bottom_image = zope.schema.Choice(
+        title=_('Bottom ad image'),
+        source=zeit.content.image.interfaces.imageSource,
+        required=False)
+
 
 class IRepositoryCategory(
         INewsletterCategory, zeit.cms.repository.interfaces.IFolder):

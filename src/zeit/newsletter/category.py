@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
@@ -44,7 +44,10 @@ class NewsletterCategoryBase(object):
         zeit.newsletter.interfaces.INewsletterCategory,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ['mandant', 'recipientlist', 'recipientlist_test',
-         'subject', 'video_playlist'])
+         'subject', 'video_playlist',
+         'ad_bottom_href', 'ad_bottom_title',
+         'ad_bottom_text', 'ad_bottom_image',
+         ])
 
     # XXX make configurable
     ressorts = (u'Politik', u'Wirtschaft', u'Meinung', u'Gesellschaft',
@@ -170,6 +173,12 @@ class Builder(grok.MultiAdapter):
                 for content in entries:
                     self.create_teaser(group, content)
         self.create_video_group()
+        self.create_advertisement(
+            self.category.ad_bottom_href,
+            self.category.ad_bottom_title,
+            self.category.ad_bottom_text,
+            self.category.ad_bottom_image,
+        )
 
     def _group_by_ressort(self, content_list, accept_ressorts):
         groups = {}
@@ -193,6 +202,15 @@ class Builder(grok.MultiAdapter):
             return
         for video in playlist.videos:
             self.create_teaser(group, video)
+
+    def create_advertisement(self, href, title, text, image):
+        ad = zope.component.getAdapter(
+            self.context.body,
+            zeit.edit.interfaces.IElementFactory, name='advertisement')()
+        ad.href = href
+        ad.title = title
+        ad.text = text
+        ad.image = image
 
 
 @grok.adapter(
