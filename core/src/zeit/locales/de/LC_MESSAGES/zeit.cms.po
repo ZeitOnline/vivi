@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu May  8 13:42:06 2014\n"
-"PO-Revision-Date: 2014-05-08 13:42+0100\n"
+"POT-Creation-Date: Thu May  8 13:55:38 2014\n"
+"PO-Revision-Date: 2014-05-08 13:58+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1583,7 +1583,15 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Article"
 msgstr "Artikel"
 
-#: zeit/content/article/browser/breaking.py:28
+#: zeit/content/article/browser/breaking.py:19
+msgid "Article body"
+msgstr "Artikeltext"
+
+#: zeit/content/article/browser/breaking.py:20
+msgid "breaking-news-more-shortly"
+msgstr "Mehr in Kürze hier auf ZEIT ONLINE"
+
+#: zeit/content/article/browser/breaking.py:70
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
