@@ -46,6 +46,10 @@ class Add(zeit.cms.browser.form.AddForm,
 
     def add(self, object, container=None):
         super(Add, self).add(object, container)
+        # We need to check out the new article so that AfterCheckout events are
+        # run (which e.g. set default values of ICommonMetadata fields), but
+        # the user won't want to edit anything right now, so we check in
+        # immediately (and redirect to a view that triggers publishing).
         self._created_object = ICheckinManager(
             self._created_object).checkin()
         self._checked_out = False
