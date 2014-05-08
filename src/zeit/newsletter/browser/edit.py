@@ -70,6 +70,15 @@ class Teaser(zeit.cms.browser.view.Base):
                 return self.url(image, '@@raw')
 
 
+class Advertisement(zeit.cms.browser.view.Base):
+
+    @cachedproperty
+    def image(self):
+        if not self.context.image:
+            return
+        return self.url(self.context.image, '@@raw')
+
+
 class GroupTitle(zeit.edit.browser.form.InlineForm):
 
     legend = None
