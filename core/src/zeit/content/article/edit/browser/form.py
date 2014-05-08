@@ -34,17 +34,6 @@ class FormFields(zope.formlib.form.FormFields):
         super(FormFields, self).__init__(*args, **kw)
 
 
-class CharlimitMixin(object):
-
-    def set_charlimit(self, field_name):
-        widget = self.widgets[field_name]
-        field = widget.context
-        limit = field.queryTaggedValue('zeit.cms.charlimit', field.max_length)
-        if hasattr(widget, 'extra'):
-            # i.e. we're not in read-only mode
-            widget.extra += ' cms:charlimit="%s"' % limit
-
-
 class Heading(object):
 
     def render(self):
@@ -82,7 +71,7 @@ class ArticleContentForms(zeit.edit.browser.form.FoldableFormGroup):
 
 
 class ArticleContentHead(zeit.edit.browser.form.InlineForm,
-                         CharlimitMixin):
+                         zeit.cms.browser.form.CharlimitMixin):
 
     legend = _('')
     prefix = 'article-content-head'
@@ -430,7 +419,7 @@ class TeaserImage(zeit.edit.browser.form.InlineForm):
 
 
 class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
-                       CharlimitMixin):
+                       zeit.cms.browser.form.CharlimitMixin):
 
     legend = _('')
     prefix = 'teaser-supertitle'
@@ -443,7 +432,7 @@ class TeaserSupertitle(zeit.edit.browser.form.InlineForm,
 
 
 class TeaserTitle(zeit.edit.browser.form.InlineForm,
-                  CharlimitMixin):
+                  zeit.cms.browser.form.CharlimitMixin):
 
     legend = _('')
     prefix = 'teaser-title'
@@ -456,7 +445,7 @@ class TeaserTitle(zeit.edit.browser.form.InlineForm,
 
 
 class TeaserText(zeit.edit.browser.form.InlineForm,
-                 CharlimitMixin):
+                 zeit.cms.browser.form.CharlimitMixin):
 
     legend = _('')
     prefix = 'teaser-text'
