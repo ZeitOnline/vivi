@@ -106,8 +106,9 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
 
 class BuilderTest(zeit.newsletter.testing.TestCase):
 
-    NON_RESSORT_ELEMENTS = 1  # video group
-    VIDEO_GROUP_POSITION = -1
+    NON_RESSORT_ELEMENTS = 2  # video group, bottom ad
+    VIDEO_GROUP_POSITION = -2
+    BOTTOM_AD_POSITION = -1
 
     def setUp(self):
         super(BuilderTest, self).setUp()
@@ -183,3 +184,11 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual(2, len(video_group))
         self.assertEqual('Video 1', video_group.values()[0].reference.title)
         self.assertEqual('Video 2', video_group.values()[1].reference.title)
+
+    def test_bottom_advertisement_should_be_appended(self):
+        self.category.ad_bottom_title = u'Some ad'
+        self.builder(())
+        body = self.newsletter['newsletter_body']
+        advertisement = body[self.BOTTOM_AD_POSITION]
+        self.assertEqual('advertisement', advertisement.type)
+        self.assertEqual(u'Some ad', advertisement.title)
