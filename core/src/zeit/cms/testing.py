@@ -33,6 +33,7 @@ import zope.app.appsetup.product
 import zope.app.testing.functional
 import zope.app.wsgi
 import zope.component
+import zope.i18n.interfaces
 import zope.publisher.browser
 import zope.security.management
 import zope.security.testing
@@ -502,6 +503,24 @@ def site(root):
     zope.site.hooks.setSite(root)
     yield
     zope.site.hooks.setSite(old_site)
+
+
+class TestCatalog(object):
+
+    zope.interface.implements(zope.i18n.interfaces.IGlobalMessageCatalog)
+    language = 'tt'
+    messages = {}
+
+    def queryMessage(self, msgid, default=None):
+        return self.messages.get(msgid, default)
+
+    getMessage = queryMessage
+
+    def getIdentifier(self):
+        return 'test'
+
+    def reload(self):
+        pass
 
 
 def copy_inherited_functions(base, locals):
