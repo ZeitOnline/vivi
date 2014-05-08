@@ -106,6 +106,9 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
 
 class BuilderTest(zeit.newsletter.testing.TestCase):
 
+    NON_RESSORT_ELEMENTS = 1  # video group
+    VIDEO_GROUP_POSITION = -1
+
     def setUp(self):
         super(BuilderTest, self).setUp()
         self.category = NewsletterCategory()
@@ -128,7 +131,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.builder([c1, c2, c3])
 
         body = self.newsletter['newsletter_body']
-        self.assertEqual(3, len(body))
+        self.assertEqual(2 + self.NON_RESSORT_ELEMENTS, len(body))
         group1 = body[body.keys()[0]]
         group2 = body[body.keys()[1]]
         self.assertEqual(u'Politik', group1.title)
@@ -152,14 +155,14 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
     def test_video_group_should_be_appended(self):
         self.builder(())
         body = self.newsletter['newsletter_body']
-        self.assertEqual(1, len(body))
+        self.assertNotEqual(0, len(body))
         self.assertEqual('Video', body.values()[0].title)
 
     def test_should_not_break_if_playlist_id_resolves_to_something_else(self):
         self.category.video_playlist = self.category.uniqueId
         self.builder(())
         body = self.newsletter['newsletter_body']
-        self.assertEqual(1, len(body))
+        self.assertNotEqual(0, len(body))
         self.assertEqual('Video', body.values()[0].title)
 
     def test_should_populate_video_group_from_playlist(self):
@@ -176,7 +179,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.category.video_playlist = playlist.uniqueId
         self.builder(())
         body = self.newsletter['newsletter_body']
-        video_group = body.values()[-1]
+        video_group = body.values()[self.VIDEO_GROUP_POSITION]
         self.assertEqual(2, len(video_group))
         self.assertEqual('Video 1', video_group.values()[0].reference.title)
         self.assertEqual('Video 2', video_group.values()[1].reference.title)
