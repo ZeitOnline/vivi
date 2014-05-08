@@ -4,7 +4,7 @@ zeit.seo changes
 1.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add checkbox ``hide_timestamp`` (VIV-374).
 
 
 1.4.2 (2010-08-09)

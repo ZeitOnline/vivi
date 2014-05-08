@@ -30,6 +30,10 @@ class SEO(object):
         zeit.seo.interfaces.ISEO['meta_robots'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'html-meta-robots')
 
+    hide_timestamp = zeit.cms.content.dav.DAVProperty(
+        zeit.seo.interfaces.ISEO['hide_timestamp'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'html-meta-hide-timestamp')
+
     def __init__(self, context):
         self.context = context
 
