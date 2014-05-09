@@ -148,16 +148,9 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
     layer = ArticleLayer
 
     def get_article(self):
-        from zeit.content.article.article import Article
-        from zeit.content.article.interfaces import IArticle
-        import zeit.cms.browser.form
-        article = Article()
-        zeit.cms.browser.form.apply_default_values(article, IArticle)
-        article.year = 2011
-        article.title = u'title'
-        article.ressort = u'Deutschland'
         wl = zope.component.getUtility(
             zeit.cms.tagging.interfaces.IWhitelist)
+        article = create_article()
         article.keywords = (wl['testtag'], wl['testtag2'], wl['testtag3'],)
         return article
 
@@ -169,6 +162,18 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
             article, article.xml.body)
         return zope.component.getAdapter(
             body, zeit.edit.interfaces.IElementFactory, factory_name)
+
+
+def create_article():
+    from zeit.content.article.article import Article
+    from zeit.content.article.interfaces import IArticle
+    import zeit.cms.browser.form
+    article = Article()
+    zeit.cms.browser.form.apply_default_values(article, IArticle)
+    article.year = 2011
+    article.title = u'title'
+    article.ressort = u'Deutschland'
+    return article
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
