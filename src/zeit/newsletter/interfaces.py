@@ -83,7 +83,7 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
         title=_('Unique id of video playlist'),
         required=False)
 
-    ad_middle_position = zope.schema.Int(
+    ad_middle_groups_above = zope.schema.Int(
         title=_('Number of groups above middle ad'))
 
     ad_middle_href = zope.schema.TextLine(title=_('Middle ad target URL'))

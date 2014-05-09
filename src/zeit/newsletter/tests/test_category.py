@@ -108,14 +108,14 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
 
     NON_RESSORT_ELEMENTS = 3  # video group, middle ad, bottom ad
     VIDEO_GROUP_POSITION = -2
-    MIDDLE_AD_POSITION = 1
+    MIDDLE_AD_GROUPS_ABOVE = 1
     BOTTOM_AD_POSITION = -1
 
     def setUp(self):
         super(BuilderTest, self).setUp()
         self.category = NewsletterCategory()
         self.category.subject = 'nosubject'
-        self.category.ad_middle_position = self.MIDDLE_AD_POSITION
+        self.category.ad_middle_groups_above = self.MIDDLE_AD_GROUPS_ABOVE
         self.repository['mynl'] = self.category
         self.newsletter = Newsletter()
         self.builder = zeit.newsletter.category.Builder(
@@ -193,7 +193,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.category.ad_middle_title = u'Some ad'
         self.builder((c1, c2))
         body = self.newsletter['newsletter_body']
-        advertisement = body[self.MIDDLE_AD_POSITION]
+        advertisement = body[self.MIDDLE_AD_GROUPS_ABOVE]
         self.assertEqual('advertisement', advertisement.type)
         self.assertEqual(u'Some ad', advertisement.title)
 

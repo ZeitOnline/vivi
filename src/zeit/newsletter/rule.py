@@ -42,7 +42,7 @@ def middle_ad_position(context):
         newsletter, None)
     if category is None:
         return
-    return category.ad_middle_position + 1
+    return category.ad_middle_groups_above + 1
 
 
 @glob(zope.interface.Interface)

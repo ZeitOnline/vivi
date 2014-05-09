@@ -47,7 +47,7 @@ class NewsletterCategoryBase(object):
          'subject', 'video_playlist',
          'ad_bottom_href', 'ad_bottom_title',
          'ad_bottom_text', 'ad_bottom_image',
-         'ad_middle_position', 'ad_middle_href', 'ad_middle_title',
+         'ad_middle_groups_above', 'ad_middle_href', 'ad_middle_title',
          'ad_middle_text', 'ad_middle_image',
          ])
 
@@ -177,7 +177,7 @@ class Builder(grok.MultiAdapter):
             for content in entries:
                 self.create_teaser(group, content)
             groups_above += 1
-            if groups_above == self.category.ad_middle_position:
+            if groups_above == self.category.ad_middle_groups_above:
                 self.create_advertisement(
                     self.category.ad_middle_href,
                     self.category.ad_middle_title,
