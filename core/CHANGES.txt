@@ -4,6 +4,8 @@ zeit.push changes
 1.1.0 (unreleased)
 ------------------
 
+- Log push sending to objectlog (VIV-368).
+
 - Fix push for not-yet-pushed eilmeldung (VIV-369)
 
 

@@ -4,6 +4,7 @@ import grokcore.component as grok
 import pytz
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
+import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zope.interface
 
@@ -48,6 +49,7 @@ def send_push_notification(content, service):
         zeit.push.interfaces.IPushNotifier, name=service)
     # XXX Make title configurable or read from content?
     notifier.send(content.title, url, title=u'Eilmeldung')
+    zeit.objectlog.interfaces.ILog(content).log('Push to "%s"' % service)
     services = zeit.push.interfaces.IPushServices(content)
     services.date_last_pushed = datetime.now(pytz.UTC)
 
