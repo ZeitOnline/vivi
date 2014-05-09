@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.2.0 (unreleased)
+2.1.1 (2014-05-09)
 ------------------
 
 - Fix bug in IImageMetadata declaration: ``caption`` should not use a special
