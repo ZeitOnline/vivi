@@ -3,11 +3,13 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.content.article.edit.interfaces import IParagraph
+import gocept.form.grouped
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.cms.settings.interfaces
 import zeit.content.article.article
 import zeit.edit.interfaces
+import zeit.push.interfaces
 import zope.component
 import zope.formlib.form
 import zope.i18n
@@ -61,7 +63,18 @@ class Add(zeit.cms.browser.form.AddForm,
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IArticle).select(
                 'ressort', 'sub_ressort', 'title', '__name__')
-        + zope.formlib.form.FormFields(IBreakingNewsBody))
+        + zope.formlib.form.FormFields(IBreakingNewsBody)
+        + zope.formlib.form.FormFields(
+            zeit.push.interfaces.IPushServices).select(
+                *zeit.push.interfaces.PUSH_SERVICES)
+    )
+
+    field_groups = (
+        gocept.form.grouped.Fields('', (
+            'ressort', 'sub_ressort', 'title', '__name__', 'text')),
+        gocept.form.grouped.Fields(
+            _('Push services'), zeit.push.interfaces.PUSH_SERVICES),
+    )
 
     def setUpWidgets(self, *args, **kw):
         super(Add, self).setUpWidgets(*args, **kw)
