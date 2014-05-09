@@ -40,6 +40,7 @@ class Add(zeit.cms.browser.form.AddForm,
     def setUpWidgets(self, *args, **kw):
         super(Add, self).setUpWidgets(*args, **kw)
         self.set_charlimit('title')
+        self.widgets['title'].cssClass = 'breakingnews-title'
         if not self.widgets['text'].hasInput():
             self.widgets['text'].setRenderedValue(
                 zope.i18n.translate(
