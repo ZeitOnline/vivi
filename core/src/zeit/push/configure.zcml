@@ -4,4 +4,15 @@
 
   <grok:grok package="." />
 
+  <class class=".workflow.PushServices">
+    <require
+      interface=".interfaces.IPushServices"
+      permission="zeit.workflow.Publish"
+      />
+    <require
+      set_schema=".interfaces.IPushServices"
+      permission="zeit.workflow.Publish"
+      />
+  </class>
+
 </configure>

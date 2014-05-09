@@ -29,7 +29,8 @@ class IPushServices(zope.interface.Interface):
 
     """
 
-    enabled = zope.schema.Bool(title=u'Push?', required=False, default=False)
+    enabled = zope.schema.Bool(
+        title=u'Push?', required=False, default=False, readonly=True)
     date_last_pushed = zope.schema.Datetime(
         title=u'Last push', required=False, readonly=True)
 
