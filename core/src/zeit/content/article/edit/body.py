@@ -227,3 +227,33 @@ def validate_article(context, event):
              zope.schema.interfaces.RequiredMissing('rename_to')))
     if errors:
         event.veto(errors)
+
+
+class BreakingNewsBody(grok.Adapter):
+
+    grok.context(zeit.content.article.interfaces.IArticle)
+    grok.implements(zeit.content.article.edit.interfaces.IBreakingNewsBody)
+
+    @property
+    def text(self):
+        return self._paragraph and self._paragraph.text
+
+    @text.setter
+    def text(self, value):
+        if not self._paragraph:
+            factory = zope.component.getAdapter(
+                self._body, zeit.edit.interfaces.IElementFactory,
+                name='p')
+            factory()
+        self._paragraph.text = value
+
+    @property
+    def _paragraph(self):
+        for block in self._body.values():
+            if zeit.content.article.edit.interfaces.IParagraph.providedBy(
+                    block):
+                return block
+
+    @property
+    def _body(self):
+        return zeit.content.article.edit.interfaces.IEditableBody(self.context)

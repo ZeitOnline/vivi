@@ -181,4 +181,13 @@
       />
   </class>
 
+  <class class=".body.BreakingNewsBody">
+    <require
+      interface=".interfaces.IBreakingNewsBody"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IBreakingNewsBody"
+      permission="zeit.EditContent" />
+  </class>
+
 </configure>

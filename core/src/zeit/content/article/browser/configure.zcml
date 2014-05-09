@@ -111,13 +111,4 @@
     permission="zeit.workflow.Publish"
     />
 
-  <class class=".breaking.BreakingNewsBody">
-    <require
-      interface=".breaking.IBreakingNewsBody"
-      permission="zope.View" />
-    <require
-      set_schema=".breaking.IBreakingNewsBody"
-      permission="zeit.EditContent" />
-  </class>
-
 </configure>

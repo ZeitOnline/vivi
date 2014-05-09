@@ -342,3 +342,11 @@ class ICitation(zeit.edit.interfaces.IBlock):
         title=_('Layout'),
         source=CitationLayoutSource(),
         required=False)
+
+
+class IBreakingNewsBody(zope.interface.Interface):
+
+    text = zope.schema.Text(
+        title=_('Article body'),
+        default=_('breaking-news-more-shortly'),
+        required=False)

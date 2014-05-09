@@ -2,9 +2,7 @@ from zeit.cms.checkout.interfaces import ICheckinManager
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.edit.interfaces import IEditableBody
-from zeit.content.article.edit.interfaces import IParagraph
 import gocept.form.grouped
-import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.cms.settings.interfaces
 import zeit.content.article.article
@@ -13,44 +11,6 @@ import zeit.push.interfaces
 import zope.component
 import zope.formlib.form
 import zope.i18n
-import zope.interface
-
-
-class IBreakingNewsBody(zope.interface.Interface):
-
-    text = zope.schema.Text(
-        title=_('Article body'),
-        default=_('breaking-news-more-shortly'),
-        required=False)
-
-
-class BreakingNewsBody(grok.Adapter):
-
-    grok.context(zeit.content.article.interfaces.IArticle)
-    grok.implements(IBreakingNewsBody)
-
-    @property
-    def text(self):
-        return self._paragraph and self._paragraph.text
-
-    @text.setter
-    def text(self, value):
-        if not self._paragraph:
-            factory = zope.component.getAdapter(
-                self._body, zeit.edit.interfaces.IElementFactory,
-                name='p')
-            factory()
-        self._paragraph.text = value
-
-    @property
-    def _paragraph(self):
-        for block in self._body.values():
-            if IParagraph.providedBy(block):
-                return block
-
-    @property
-    def _body(self):
-        return IEditableBody(self.context)
 
 
 class Add(zeit.cms.browser.form.AddForm,
@@ -63,7 +23,8 @@ class Add(zeit.cms.browser.form.AddForm,
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IArticle).select(
                 'ressort', 'sub_ressort', 'title', '__name__')
-        + zope.formlib.form.FormFields(IBreakingNewsBody)
+        + zope.formlib.form.FormFields(
+            zeit.content.article.edit.interfaces.IBreakingNewsBody)
         + zope.formlib.form.FormFields(
             zeit.push.interfaces.IPushServices).select(
                 *zeit.push.interfaces.PUSH_SERVICES)

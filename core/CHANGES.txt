@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.2.2 (unreleased)
+3.3.0 (unreleased)
 ------------------
 
 - Add separate form for breaking news that only requires minimal input and
