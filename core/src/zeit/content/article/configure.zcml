@@ -162,4 +162,9 @@
     name="article"
     />
 
+  <interface
+    interface=".interfaces.IBreakingNews"
+    type="zeit.cms.content.interfaces.IAddableContent"
+    />
+
 </configure>

@@ -200,3 +200,13 @@ class ICDSWorkflow(zope.interface.Interface):
 
     export_cds = zope.schema.Bool(
         title=_("Export to Tagesspiegel"))
+
+
+class IBreakingNews(IArticle):
+    """Breaking news are IArticles that receive special one-time treatment
+    on publishing.
+    """
+IBreakingNews.setTaggedValue(
+    'zeit.cms.addform', 'zeit.content.article.AddBreakingNews')
+IBreakingNews.setTaggedValue(
+    'zeit.cms.title', _('Add breaking news'))
