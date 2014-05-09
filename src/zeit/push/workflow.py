@@ -38,6 +38,8 @@ def send_push_on_publish(context, event):
         if getattr(services, service):
             send_push_notification(context, service)
 
+    services.enabled = False
+
 
 def send_push_notification(content, service):
     url = content.uniqueId.replace(
