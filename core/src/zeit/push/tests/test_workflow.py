@@ -74,3 +74,10 @@ class SendingNotifications(zeit.push.testing.TestCase):
         services.parse = False
         self.publish(content)
         self.assertFalse(self.notifier.send.called)
+
+    def test_after_push_global_enabled_flag_is_removed(self):
+        content = ICMSContent('http://xml.zeit.de/testcontent')
+        services = IPushServices(content)
+        services.enabled = True
+        self.publish(content)
+        self.assertFalse(services.enabled)
