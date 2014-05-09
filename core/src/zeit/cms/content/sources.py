@@ -279,6 +279,13 @@ class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
 
 class AddableCMSContentTypeSource(CMSContentTypeSource):
 
+    def getValues(self):
+        import zeit.cms.content.interfaces  # break circular import
+        return (list(super(AddableCMSContentTypeSource, self).getValues())
+                + list(interface for name, interface in
+                       zope.component.getUtilitiesFor(
+                           zeit.cms.content.interfaces.IAddableContent)))
+
     def filterValue(self, value):
         import zeit.cms.type  # break circular import
         return (value.queryTaggedValue('zeit.cms.addform') !=

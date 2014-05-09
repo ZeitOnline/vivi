@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Move CharlimitMixin from zeit.content.article to zeit.cms.browser.form.
 
+- Allow registering additional entries as addable content (VIV-367).
+
 
 2.17.0 (2014-04-22)
 -------------------

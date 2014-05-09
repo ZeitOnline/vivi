@@ -578,3 +578,9 @@ class IAddLocation(zope.interface.Interface):
     Register this adapter for (content_type, IContentAdder), where content_type
     is an interface like ICMSContent or IImageGroup.
     """
+
+
+class IAddableContent(zope.interface.interfaces.IInterface):
+    """Interface type to register additional addable entries
+    that are *not* ICMSContentTypes.
+    """

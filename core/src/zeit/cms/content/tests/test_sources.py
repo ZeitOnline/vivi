@@ -33,3 +33,15 @@ class XMLSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         context = Mock()
         zope.interface.alsoProvides(context, zeit.cms.interfaces.ICMSContent)
         self.assertEqual(['one', 'two'], source.getValues(context))
+
+
+class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_includes_IAddableContent(self):
+        class IFoo(zeit.cms.interfaces.ICMSContent):
+            pass
+
+        self.zca.patch_utility(
+            IFoo, zeit.cms.content.interfaces.IAddableContent, 'IFoo')
+        self.assertIn(
+            IFoo, list(zeit.cms.content.sources.AddableCMSContentTypeSource()))
