@@ -35,8 +35,8 @@ class IPushServices(zope.interface.Interface):
         title=u'Last push', required=False, readonly=True)
 
     parse = zope.schema.Bool(title=u'Parse.com', required=False, default=True)
-
-    # XXX twitter, facebook, homepage, centerpage
+    homepage = zope.schema.Bool(
+        title=u'Homepage', required=False, default=True)
 
 PUSH_SERVICES = [x for x in list(IPushServices) if x not in (
     'enabled', 'date_last_pushed')]

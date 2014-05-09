@@ -3,5 +3,6 @@
   <include package="zope.component" file="meta.zcml" />
 
   <utility factory=".parse.from_product_config" name="parse" />
+  <utility factory=".cp.from_product_config" name="homepage" />
 
 </configure>
