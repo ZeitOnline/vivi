@@ -33,14 +33,16 @@ def newsletter(context):
 @glob(zope.interface.Interface)
 def middle_ad_position(context):
     newsletter = get_newsletter(context)
-    if newsletter is not None:
-        # Newsletter is connected to category only through containment in
-        # repository, so we need to map working copies to repository objects.
-        newsletter = zeit.cms.interfaces.ICMSContent(newsletter.uniqueId)
-        category = zeit.newsletter.interfaces.INewsletterCategory(
-            newsletter, None)
-    if category is not None:
-        return category.ad_middle_position + 1
+    if newsletter is None:
+        return
+    # Newsletter is connected to category only through containment in
+    # repository, so we need to map working copies to repository objects.
+    newsletter = zeit.cms.interfaces.ICMSContent(newsletter.uniqueId)
+    category = zeit.newsletter.interfaces.INewsletterCategory(
+        newsletter, None)
+    if category is None:
+        return
+    return category.ad_middle_position + 1
 
 
 @glob(zope.interface.Interface)
