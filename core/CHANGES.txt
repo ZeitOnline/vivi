@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.3.2 (unreleased)
+2.3.2 (2014-05-09)
 ------------------
 
 - Styling tweak: Make CSS selector for object details toggle button more
