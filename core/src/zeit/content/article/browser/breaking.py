@@ -125,3 +125,4 @@ class Add(zeit.cms.browser.form.AddForm,
         self._checked_out = False
 
         IPublishInfo(self._created_object).urgent = True
+        zeit.push.interfaces.IPushServices(self._created_object).enabled = True

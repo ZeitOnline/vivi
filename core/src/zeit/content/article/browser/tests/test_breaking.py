@@ -47,6 +47,8 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
             # XXX Split into separate test?
             self.assertEqual(True, IPublishInfo(article).urgent)
+            self.assertEqual(
+                True, zeit.push.interfaces.IPushServices(article).enabled)
 
     def test_setting_body_text_creates_paragraph(self):
         self.create_breakingnews()
