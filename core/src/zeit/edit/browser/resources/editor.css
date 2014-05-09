@@ -412,7 +412,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 .cp-content-inner .folded .edit-bar > .fold-link,
-.cp-content-inner .toggle_infos.folded {
+.cp-content-inner .object-details .toggle_infos.folded {
   background: url("/fanstatic/zeit.cms/icons/icons_sprites.png") no-repeat 0px -2541px;
 }
 
