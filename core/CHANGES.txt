@@ -4,6 +4,11 @@ zeit.push changes
 1.1.0 (unreleased)
 ------------------
 
+- Replace special case that pushes to parse.com when ``/eilmeldung/eilmeldung``
+  is published with proper "push to homepage" mechanism. We still update and
+  publish ``/eilmeldung/eilmeldung``, but the other push mechanisms are now
+  separate. (VIV-372).
+
 - Log push sending to objectlog (VIV-368).
 
 - Fix push for not-yet-pushed eilmeldung (VIV-369)

@@ -24,6 +24,7 @@ setup(
         'cms': [
             'pytz',
             'zeit.cms',
+            'zeit.content.article>=3.3.0.dev0',
             'zeit.objectlog',
         ],
     },
