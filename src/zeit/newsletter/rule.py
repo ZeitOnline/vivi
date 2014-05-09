@@ -17,22 +17,14 @@ class NewsletterValidator(zeit.edit.rule.RecursiveValidator):
         return self.context.body.values()
 
 
-def get_newsletter(candidate):
-    while candidate is not None:
-        if zeit.newsletter.interfaces.INewsletter.providedBy(candidate):
-            return candidate
-        else:
-            candidate = getattr(candidate, '__parent__', None)
-
-
 @glob(zope.interface.Interface)
 def newsletter(context):
-    return get_newsletter(context) is not None
+    return zeit.newsletter.interfaces.INewsletter(context, None) is not None
 
 
 @glob(zope.interface.Interface)
 def middle_ad_position(context):
-    newsletter = get_newsletter(context)
+    newsletter = zeit.newsletter.interfaces.INewsletter(context, None)
     if newsletter is None:
         return
     # Newsletter is connected to category only through containment in
