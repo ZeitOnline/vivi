@@ -166,7 +166,7 @@ class Advertisement(zeit.edit.block.SimpleElement):
         '.text', zeit.newsletter.interfaces.IAdvertisement['text'])
 
     image = zeit.cms.content.property.SingleResource(
-        '.image', xml_reference_name='image', attributes=('image',))
+        '.image', xml_reference_name='image', attributes=('src',))
 
 
 zeit.edit.block.register_element_factory(

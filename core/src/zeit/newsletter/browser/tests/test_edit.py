@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import transaction
+import zeit.cms.interfaces
 import zeit.edit.interfaces
 import zeit.newsletter.testing
 import zope.component
@@ -156,6 +157,8 @@ class AdvertisementTest(zeit.newsletter.testing.SeleniumTestCase):
                 name='advertisement')
             advertisement = factory()
             advertisement.title = u'Some ad'
+            advertisement.image = zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/2006/DSC00109_2.JPG')
             self.repository['newsletter'] = newsletter
         transaction.commit()
         self.open('/repository/newsletter/@@checkout')
@@ -163,3 +166,4 @@ class AdvertisementTest(zeit.newsletter.testing.SeleniumTestCase):
     def test_advertisement_is_wired_correctly(self):
         s = self.selenium
         s.waitForTextPresent('Some ad')
+        s.waitForElementPresent('css=.newsletter-ad-image img')

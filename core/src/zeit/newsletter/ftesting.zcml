@@ -17,6 +17,8 @@
 
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
+  <include package="zeit.content.image" />
+
   <include package="zeit.newsletter" />
   <include package="zeit.newsletter.browser" />
 
