@@ -10,6 +10,7 @@ import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.type
 import zeit.edit.container
+import zeit.edit.interfaces
 import zeit.newsletter.interfaces
 import zope.component
 import zope.interface
@@ -171,3 +172,10 @@ class Advertisement(zeit.edit.block.SimpleElement):
 
 zeit.edit.block.register_element_factory(
     zeit.newsletter.interfaces.IBody, 'advertisement', _('Advertisement'))
+
+
+@grok.adapter(zeit.edit.interfaces.IElement)
+@grok.implementer(zeit.newsletter.interfaces.INewsletter)
+def newsletter_for_element(context):
+    return zeit.newsletter.interfaces.INewsletter(
+        getattr(context, '__parent__', None), None)
