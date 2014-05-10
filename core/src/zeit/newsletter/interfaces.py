@@ -79,6 +79,12 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
         title=_(u'Name of test-recipient list'),
         required=False)
 
+    ressorts = zope.schema.List(
+        title=_('Ressorts'),
+        value_type=zope.schema.Choice(
+            source=zeit.cms.content.sources.NavigationSource()),
+    )
+
     video_playlist = zope.schema.TextLine(
         title=_('Unique id of video playlist'),
         required=False)

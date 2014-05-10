@@ -114,6 +114,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
     def setUp(self):
         super(BuilderTest, self).setUp()
         self.category = NewsletterCategory()
+        self.category.ressorts = (u'Politik', u'Wirtschaft')
         self.category.subject = 'nosubject'
         self.category.ad_middle_groups_above = self.MIDDLE_AD_GROUPS_ABOVE
         self.repository['mynl'] = self.category

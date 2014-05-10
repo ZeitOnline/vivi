@@ -44,17 +44,16 @@ class NewsletterCategoryBase(object):
         zeit.newsletter.interfaces.INewsletterCategory,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ['mandant', 'recipientlist', 'recipientlist_test',
-         'subject', 'video_playlist',
+         'subject', 'ressorts', 'video_playlist',
          'ad_bottom_href', 'ad_bottom_title',
          'ad_bottom_text', 'ad_bottom_image',
          'ad_middle_groups_above', 'ad_middle_href', 'ad_middle_title',
          'ad_middle_text', 'ad_middle_image',
          ])
 
-    # XXX make configurable
-    ressorts = (u'Politik', u'Wirtschaft', u'Meinung', u'Gesellschaft',
-                u'Kultur', u'Wissen', u'Digital', u'Studium', u'Karriere',
-                u'Lebensart', u'Reisen', u'Auto', u'Sport')
+    def __init__(self):
+        if not self.ressorts:
+            self.ressorts = ()
 
 
 class NewsletterCategory(NewsletterCategoryBase,
