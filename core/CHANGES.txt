@@ -4,8 +4,15 @@ zeit.newsletter changes
 1.0.0b2 (unreleased)
 --------------------
 
+- Add a video group at the end of the newsletter (VIV-349).
+
 - Configure advertisement blocks through the newsletter category, include them
   with the editor (VIV-350).
+
+- Made included ressorts configurable through the newsletter category's UI
+  (VIV-351).
+
+- Display teaser images in editor (VIV-356).
 
 
 1.0.0b1 (2014-03-28)
