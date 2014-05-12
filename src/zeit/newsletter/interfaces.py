@@ -5,6 +5,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
+import zeit.content.image.interfaces
 import zeit.edit.interfaces
 import zope.container.interfaces
 import zope.interface
