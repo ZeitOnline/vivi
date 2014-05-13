@@ -1,11 +1,13 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.edit.interfaces import IEditableBody
+import unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 import zope.i18n.translationdomain
 
 
+@unittest.skip('XXX feature disabled')
 class TestAdding(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.article.testing.TestBrowserLayer

@@ -162,9 +162,11 @@
     name="article"
     />
 
+  <!-- XXX feature disabled
   <interface
     interface=".interfaces.IBreakingNews"
     type="zeit.cms.content.interfaces.IAddableContent"
     />
+  -->
 
 </configure>
