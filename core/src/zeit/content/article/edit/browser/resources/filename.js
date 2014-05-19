@@ -23,4 +23,19 @@ $(document).bind('fragment-ready', function(event) {
 });
 
 
+$(document).ready(function() {
+    $('.breakingnews-title').bind('keyup', function() {
+        var title = $(this).val();
+        var target = '#form\\.__name__';
+        $(target).val(title);
+        $(target).trigger('change');
+    });
+
+    $('#form\\.__name__').bind('change', function() {
+        var input = $(this);
+        input.val(zeit.content.article.normalize_filename(input.val()));
+    })
+});
+
+
 }(jQuery));

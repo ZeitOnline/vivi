@@ -21,12 +21,4 @@ $(document).bind('fragment-ready', function(event) {
         'change', copy_to('#article-content-head\\.subtitle'));
 });
 
-$(document).ready(function() {
-    $('.breakingnews-title').bind('keyup', function() {
-        var src = $(this).val();
-        var target = '#form\\.__name__';
-        $(target).val(src);
-    });
-});
-
 }(jQuery));
