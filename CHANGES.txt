@@ -4,7 +4,7 @@ zeit.push changes
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add a link to the actual article to ``/eilmeldung/eilmeldung`` (VIV-382).
 
 
 1.1.0 (2014-05-09)
