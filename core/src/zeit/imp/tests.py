@@ -246,6 +246,17 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
         image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEquals('RGB', image.mode)
 
+    def test_png_converted_to_rgba(self):
+        self.group = (
+            zeit.content.image.testing.create_image_group_with_master_image(
+                pkg_resources.resource_filename(
+                    __name__, 'testdata/transparent.png')))
+        crop = zeit.imp.interfaces.ICropper(self.group)
+        image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
+        self.assertEquals('RGBA', image.mode)
+        # Check that the alpha channel survives the cropping intact.
+        self.assertEquals((183, 255, 159, 64), image.getpixel((100, 25)))
+
 
 def test_suite():
     suite = unittest.TestSuite()

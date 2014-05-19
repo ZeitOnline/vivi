@@ -47,8 +47,10 @@ class Cropper(object):
 
         pil_image = pil_image.resize((w, h), self.downsample_filter)
         pil_image = pil_image.crop((x1, y1, x2, y2))
-        if pil_image.mode != 'RGB':
-            pil_image = pil_image.convert('RGB')
+        # XXX This is a rather crude heuristic.
+        mode = 'RGBA' if self.context.format == 'PNG' else 'RGB'
+        if pil_image.mode != mode:
+            pil_image = pil_image.convert(mode)
 
         for filter_class, factor in self.filters:
             filter = filter_class(pil_image)
