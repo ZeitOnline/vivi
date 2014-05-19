@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Add block for referencing an external Liveblog (WEB-246).
 
+- Rewrite filenames to match the SEO expectations while typing (VIV-338).
+
 
 3.3.1 (2014-05-13)
 ------------------

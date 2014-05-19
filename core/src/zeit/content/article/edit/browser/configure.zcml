@@ -433,4 +433,10 @@
     permission="zope.Public"
     />
 
+  <!-- testing only -->
+  <browser:resourceDirectory
+    name="zeit.content.article.edit.browser.tests.fixtures"
+    directory="tests/fixtures"
+    />
+
 </configure>

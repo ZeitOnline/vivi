@@ -221,3 +221,44 @@ class AuthorLocationTest(
         location_display = 'css=.object-details.type-author .widget'
         s.waitForElementPresent(location_display)
         s.waitForText(location_display, 'Paris')
+
+
+class FilenameTest(zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(FilenameTest, self).setUp()
+        self.open(
+            '/@@/zeit.content.article.edit.browser.tests.fixtures/js.html')
+
+    def normalize(self, text):
+        return self.eval(
+            'zeit.content.article.normalize_filename("%s")' % text)
+
+    def test_converts_to_lowercase(self):
+        self.assertEqual('foobar', self.normalize('FooBar'))
+
+    def test_removes_trailing_whitespace(self):
+        self.assertEqual('foobar', self.normalize('foobar  '))
+
+    def test_replaces_spaces_with_dash(self):
+        self.assertEqual('foo-bar', self.normalize('foo bar'))
+
+    def test_replaces_specialchars_with_dash(self):
+        self.assertEqual('fo-', self.normalize('fo&'))
+
+    def test_collapses_consecutive_dashes(self):
+        self.assertEqual('foo-bar-baz', self.normalize('foo---bar--baz'))
+
+    def test_replaces_umlauts_with_vowels(self):
+        self.assertEqual('aeoeuess', self.normalize(u'äöüß'))
+
+    def test_filename_input_is_wired_up(self):
+        self.add_article()
+        input_filename = 'new-filename.rename_to'
+        s = self.selenium
+        s.waitForElementPresent(input_filename)
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval(
+            'document.getElementById("%s").value = "foo bar"' % input_filename)
+        s.fireEvent(input_filename, 'change')
+        self.assertEqual('foo-bar', s.getValue(input_filename))
