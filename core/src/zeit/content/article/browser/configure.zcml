@@ -91,13 +91,12 @@
     provides="zeit.workflow.browser.interfaces.IWorkflowForm"
     />
 
-  <!-- XXX feature disabled -->
-  <!-- menu="zeit-add-menu" title="Add breaking news" -->
   <browser:page
     for="zeit.cms.repository.interfaces.IFolder"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".breaking.Add"
     name="zeit.content.article.AddBreakingNews"
+    menu="zeit-add-menu" title="Add breaking news"
     permission="zeit.AddContent"
     />
   <!-- XXX The string "breaking news" is already in use somewhere else
