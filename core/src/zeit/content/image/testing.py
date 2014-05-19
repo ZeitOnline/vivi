@@ -4,6 +4,8 @@
 from __future__ import with_statement
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
+import mimetypes
+import os.path
 import pkg_resources
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -43,15 +45,18 @@ def create_image_group():
 def create_image_group_with_master_image(file_name=None):
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
-    group = zeit.content.image.imagegroup.ImageGroup()
-    group.master_image = u'master-image.jpg'
-    repository['group'] = group
-    image = zeit.content.image.image.LocalImage()
-    image.mimeType = 'image/jpeg'
     if file_name is None:
-        fh = repository['2006']['DSC00109_2.JPG'].open()
+        file_name = 'DSC00109_2.JPG'
+        fh = repository['2006'][file_name].open()
     else:
         fh = open(file_name)
+    extension = os.path.splitext(file_name)[-1].lower()
+
+    group = zeit.content.image.imagegroup.ImageGroup()
+    group.master_image = u'master-image' + extension
+    repository['group'] = group
+    image = zeit.content.image.image.LocalImage()
+    image.mimeType = mimetypes.types_map[extension]
     image.open('w').write(fh.read())
-    repository['group']['master-image.jpg'] = image
+    repository['group'][group.master_image] = image
     return repository['group']
