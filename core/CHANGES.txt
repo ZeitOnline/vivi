@@ -4,7 +4,7 @@ zeit.content.article changes
 3.3.2 (unreleased)
 ------------------
 
-- Reactivate breaking news feature.
+- Reactivate breaking news feature; add max length to title field (VIV-25).
 
 - Add block for referencing an external Liveblog (WEB-246).
 

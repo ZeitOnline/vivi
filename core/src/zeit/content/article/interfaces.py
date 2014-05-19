@@ -206,6 +206,11 @@ class IBreakingNews(IArticle):
     """Breaking news are IArticles that receive special one-time treatment
     on publishing.
     """
+
+    title = zope.schema.Text(
+        title=_("Title"), missing_value=u'', max_length=30)
+
+
 IBreakingNews.setTaggedValue(
     'zeit.cms.addform', 'zeit.content.article.AddBreakingNews')
 IBreakingNews.setTaggedValue(

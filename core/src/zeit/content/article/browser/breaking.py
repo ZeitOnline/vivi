@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.edit.interfaces import IEditableBody
 import gocept.form.grouped
+import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.cms.settings.interfaces
 import zeit.content.article.article
@@ -22,7 +23,9 @@ class Add(zeit.cms.browser.form.AddForm,
     form_fields = (
         zope.formlib.form.FormFields(
             zeit.content.article.interfaces.IArticle).select(
-                'ressort', 'sub_ressort', 'title', '__name__')
+                'ressort', 'sub_ressort', '__name__')
+        + zope.formlib.form.FormFields(
+            zeit.content.article.interfaces.IBreakingNews).select('title')
         + zope.formlib.form.FormFields(
             zeit.content.article.edit.interfaces.IBreakingNewsBody)
         + zope.formlib.form.FormFields(
@@ -88,3 +91,9 @@ class Add(zeit.cms.browser.form.AddForm,
 
         IPublishInfo(self._created_object).urgent = True
         zeit.push.interfaces.IPushServices(self._created_object).enabled = True
+
+
+@grok.adapter(zeit.content.article.interfaces.IArticle)
+@grok.implementer(zeit.content.article.interfaces.IBreakingNews)
+def breaking_news_from_article(context):
+    return context
