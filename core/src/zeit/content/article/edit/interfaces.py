@@ -344,6 +344,12 @@ class ICitation(zeit.edit.interfaces.IBlock):
         required=False)
 
 
+class ILiveblog(zeit.edit.interfaces.IBlock):
+
+    blog_id = zope.schema.TextLine(
+        title=_('Liveblog id'))
+
+
 class IBreakingNewsBody(zope.interface.Interface):
 
     text = zope.schema.Text(

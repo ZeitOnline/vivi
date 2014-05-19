@@ -181,6 +181,17 @@
       />
   </class>
 
+  <class class=".liveblog.Liveblog">
+    <require
+      interface=".interfaces.ILiveblog"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ILiveblog"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".body.BreakingNewsBody">
     <require
       interface=".interfaces.IBreakingNewsBody"

@@ -187,6 +187,18 @@ class EditCitation(zeit.edit.browser.form.InlineForm):
         return 'citation.{0}'.format(self.context.__name__)
 
 
+class EditLiveblog(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.ILiveblog).omit('__name__', 'xml')
+    undo_description = _('edit liveblog block')
+
+    @property
+    def prefix(self):
+        return 'liveblog.{0}'.format(self.context.__name__)
+
+
 class EditDivision(zeit.edit.browser.form.InlineForm):
 
     legend = None

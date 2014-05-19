@@ -679,6 +679,9 @@ class TestFolding(
     def test_video_should_be_foldable(self):
         self.assert_foldable('video')
 
+    def test_liveblog_should_be_foldable(self):
+        self.assert_foldable('liveblog')
+
     def test_folding_state_is_preserved_between_editing_text(self):
         self.create_block('video')
         s = self.selenium

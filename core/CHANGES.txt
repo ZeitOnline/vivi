@@ -4,7 +4,7 @@ zeit.content.article changes
 3.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add block for referencing an external Liveblog (WEB-246).
 
 
 3.3.1 (2014-05-13)

@@ -322,6 +322,27 @@
     permission="zope.View"
     />
 
+  <!-- liveblog -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ILiveblog"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-liveblog"
+    class=".edit.EditLiveblog"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ILiveblog"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-liveblog"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
   <!-- division -->
 
   <browser:viewlet
@@ -393,6 +414,10 @@
   </class>
 
   <class class="..citation.Citation">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..liveblog.Liveblog">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 
