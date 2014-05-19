@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri May  9 10:13:59 2014\n"
-"PO-Revision-Date: 2014-05-09 10:14+0100\n"
+"POT-Creation-Date: Mon May 19 08:49:30 2014\n"
+"PO-Revision-Date: 2014-05-19 08:51+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -64,7 +64,7 @@ msgstr "Id"
 #: zeit/content/infobox/interfaces.py:20 zeit/content/quiz/interfaces.py:67
 #: zeit/content/rawxml/interfaces.py:17
 #: zeit/content/video/browser/object-details-body.pt:24
-#: zeit/newsletter/interfaces.py:37 zeit/newsletter/interfaces.py:50
+#: zeit/newsletter/interfaces.py:38 zeit/newsletter/interfaces.py:51
 msgid "Title"
 msgstr "Titel"
 
@@ -1583,19 +1583,11 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Article"
 msgstr "Artikel"
 
-#: zeit/content/article/browser/breaking.py:22
-msgid "Article body"
-msgstr "Artikeltext"
-
-#: zeit/content/article/browser/breaking.py:23
-msgid "breaking-news-more-shortly"
-msgstr "Mehr in Kürze hier auf ZEIT ONLINE"
-
-#: zeit/content/article/browser/breaking.py:75
+#: zeit/content/article/browser/breaking.py:37
 msgid "Push services"
 msgstr "Push-Dienste"
 
-#: zeit/content/article/browser/breaking.py:88
+#: zeit/content/article/browser/breaking.py:51
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
@@ -1647,10 +1639,14 @@ msgid "edit citation block"
 msgstr "Zitat Block bearbeiten"
 
 #: zeit/content/article/edit/browser/edit.py:195
+msgid "edit liveblog block"
+msgstr "Liveblog-Block bearbeiten"
+
+#: zeit/content/article/edit/browser/edit.py:207
 msgid "edit page break"
 msgstr "Seitenumbruch bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:212
+#: zeit/content/article/edit/browser/edit.py:224
 msgid "edit html block"
 msgstr "HTML-Block bearbeiten"
 
@@ -1722,7 +1718,7 @@ msgid "edit metadata"
 msgstr "Metadaten bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:391
-#: zeit/newsletter/newsletter.py:150
+#: zeit/newsletter/newsletter.py:151
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr "Teaser"
@@ -2114,9 +2110,25 @@ msgstr "Zuordnung 2"
 msgid "URL 2"
 msgstr "URL 2"
 
+#: zeit/content/article/edit/interfaces.py:350
+msgid "Liveblog id"
+msgstr "Liveblog-ID"
+
+#: zeit/content/article/edit/interfaces.py:356
+msgid "Article body"
+msgstr "Artikeltext"
+
+#: zeit/content/article/edit/interfaces.py:357
+msgid "breaking-news-more-shortly"
+msgstr "Mehr in Kürze hier auf ZEIT ONLINE"
+
 #: zeit/content/article/edit/interfaces.py:42
 msgid "Paragraph-Text"
 msgstr "Absatztext"
+
+#: zeit/content/article/edit/liveblog.py:26
+msgid "Liveblog"
+msgstr "Liveblog"
 
 #: zeit/content/article/edit/paragraph.py:156
 msgid "HTML block"
@@ -2183,7 +2195,6 @@ msgid "Export to Tagesspiegel"
 msgstr "Zum Tagesspiegel exportieren"
 
 #: zeit/content/article/interfaces.py:212
-#: zeit/content/article/browser/configure.zcml:94
 msgid "Add breaking news"
 msgstr "Eilmeldung"
 
@@ -2801,7 +2812,7 @@ msgstr "Bilder hochladen"
 #: zeit/content/infobox/interfaces.py:21
 #: zeit/content/portraitbox/interfaces.py:18
 #: zeit/content/quiz/interfaces.py:76 zeit/content/quiz/interfaces.py:118
-#: zeit/content/text/text.py:33 zeit/newsletter/interfaces.py:52
+#: zeit/content/text/text.py:33 zeit/newsletter/interfaces.py:53
 #: zeit/wysiwyg/interfaces.py:14
 msgid "Text"
 msgstr "Text"
@@ -3401,96 +3412,100 @@ msgstr "Nur Status speichern"
 msgid "Test email"
 msgstr "Test-E-Mail senden"
 
-#: zeit/newsletter/category.py:123
+#: zeit/newsletter/category.py:122
 msgid "Newsletter category"
 msgstr "Newsletter-Kategorie"
 
 #: zeit/newsletter/interfaces.py:100
+msgid "Middle ad text"
+msgstr "Werbeblock Mitte Text"
+
+#: zeit/newsletter/interfaces.py:103
+msgid "Middle ad image"
+msgstr "Werbeblock Mitte Bild"
+
+#: zeit/newsletter/interfaces.py:107
 msgid "Bottom ad target URL"
 msgstr "Werbeblock Ende URL"
 
-#: zeit/newsletter/interfaces.py:102
+#: zeit/newsletter/interfaces.py:109
 msgid "Bottom ad title"
 msgstr "Werbeblock Ende Titel"
 
-#: zeit/newsletter/interfaces.py:104
+#: zeit/newsletter/interfaces.py:111
 msgid "Bottom ad text"
 msgstr "Werbeblock Ende Text"
 
-#: zeit/newsletter/interfaces.py:107
+#: zeit/newsletter/interfaces.py:114
 msgid "Bottom ad image"
 msgstr "Werbeblock Ende Bild"
 
-#: zeit/newsletter/interfaces.py:135
+#: zeit/newsletter/interfaces.py:142
 msgid "Sent"
 msgstr "Verschickt"
 
-#: zeit/newsletter/interfaces.py:141
+#: zeit/newsletter/interfaces.py:148
 msgid "Email for test"
 msgstr "E-Mail-Adresse"
 
-#: zeit/newsletter/interfaces.py:19 zeit/newsletter/interfaces.py:69
+#: zeit/newsletter/interfaces.py:20 zeit/newsletter/interfaces.py:70
 msgid "Subject"
 msgstr "Betreff"
 
-#: zeit/newsletter/interfaces.py:48
+#: zeit/newsletter/interfaces.py:49
 msgid "Target URL"
 msgstr "Ziel-URL"
 
-#: zeit/newsletter/interfaces.py:62
+#: zeit/newsletter/interfaces.py:63
 msgid "Timestamp when the last newsletter object in this category was created"
 msgstr ""
 "Datum/Uhrzeit wann der letzte Newsletter dieser Kategorie erstellt wurde"
 
-#: zeit/newsletter/interfaces.py:70
+#: zeit/newsletter/interfaces.py:71
 msgid "{today} -> %d.%m.%Y"
 msgstr "{today} -> %d.%m.%Y"
 
-#: zeit/newsletter/interfaces.py:73
+#: zeit/newsletter/interfaces.py:74
 msgid "Optivo Mandant ID"
 msgstr "Optivo Mandat-ID"
 
-#: zeit/newsletter/interfaces.py:76
+#: zeit/newsletter/interfaces.py:77
 msgid "Name of recipient list"
 msgstr "Name der Empfängerliste"
 
-#: zeit/newsletter/interfaces.py:79
+#: zeit/newsletter/interfaces.py:80
 msgid "Name of test-recipient list"
 msgstr "Name der Empfängerliste (Testversand)"
 
-#: zeit/newsletter/interfaces.py:83
+#: zeit/newsletter/interfaces.py:84
+msgid "Ressorts"
+msgstr "Ressorts"
+
+#: zeit/newsletter/interfaces.py:90
 msgid "Unique id of video playlist"
 msgstr "Video-Playlist ID"
 
-#: zeit/newsletter/interfaces.py:87
+#: zeit/newsletter/interfaces.py:94
 msgid "Number of groups above middle ad"
 msgstr "Position Werbeblock Mitte (nach wieviel Ressorts)"
 
-#: zeit/newsletter/interfaces.py:89
+#: zeit/newsletter/interfaces.py:96
 msgid "Middle ad target URL"
 msgstr "Werbeblock Mitte URL"
 
-#: zeit/newsletter/interfaces.py:91
+#: zeit/newsletter/interfaces.py:98
 msgid "Middle ad title"
 msgstr "Werbeblock Mitte Titel"
 
-#: zeit/newsletter/interfaces.py:93
-msgid "Middle ad text"
-msgstr "Werbeblock Mitte Text"
-
-#: zeit/newsletter/interfaces.py:96
-msgid "Middle ad image"
-msgstr "Werbeblock Mitte Bild"
-
-#: zeit/newsletter/newsletter.py:135
+#: zeit/newsletter/newsletter.py:136
 msgid "Group"
 msgstr "Ressort"
 
-#: zeit/newsletter/newsletter.py:173
+#: zeit/newsletter/newsletter.py:174
 msgid "Advertisement"
 msgstr "Werbung"
 
-#: zeit/newsletter/newsletter.py:75
+#: zeit/newsletter/newsletter.py:76
 msgid "Daily Newsletter"
 msgstr "Newsletter"
 
