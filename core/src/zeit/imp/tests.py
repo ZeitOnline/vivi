@@ -49,7 +49,6 @@ class TestLayerMask(unittest.TestCase):
                                            '\n'.join(got)))
         self.assertEqual(expected, got, error_message)
 
-
     def test_mask_should_have_correct_size(self):
         # Create a 20x30 mask in an 150x100 image
         mask = zeit.imp.mask.Mask((10, 7), (6, 3))
@@ -61,7 +60,6 @@ class TestLayerMask(unittest.TestCase):
                     'xxxxxxxxxx',
                     'xxxxxxxxxx']
         self.assert_mask(expected, mask)
-
 
     def test_border_should_be_inside_given_mask_size(self):
         mask = zeit.imp.mask.Mask((20, 20), (10, 8), border=(0, 0, 0))
@@ -219,17 +217,16 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
     def test_border_color(self):
         image = self.crop.crop(200, 200, 0, 0, 200, 200,
                                border=(127, 127, 127))
-        self.assertEquals((127, 127, 127), image.getpixel((0,0)))
+        self.assertEquals((127, 127, 127), image.getpixel((0, 0)))
 
     def test_border_on_grayscale_image(self):
         self.group = (
             zeit.content.image.testing.create_image_group_with_master_image(
                 pkg_resources.resource_filename(
                     __name__, 'testdata/grayscale.jpg')))
-        crop = zeit.imp.interfaces.ICropper(self.group)
         # The following used to fail with TypeError: an integer is required
-        image = self.crop.crop(200, 200, 0, 0, 200, 200,
-                               border=(127, 127, 127))
+        crop = zeit.imp.interfaces.ICropper(self.group)
+        crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
 
     def test_cmyk_converted_to_rgb(self):
         self.group = (
@@ -237,8 +234,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
                 pkg_resources.resource_filename(
                     __name__, 'testdata/cmyk.jpg')))
         crop = zeit.imp.interfaces.ICropper(self.group)
-        image = self.crop.crop(200, 200, 0, 0, 200, 200,
-                               border=(127, 127, 127))
+        image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEquals('RGB', image.mode)
 
     def test_palette_converted_to_rgb(self):
@@ -247,8 +243,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
                 pkg_resources.resource_filename(
                     __name__, 'testdata/palette.gif')))
         crop = zeit.imp.interfaces.ICropper(self.group)
-        image = self.crop.crop(200, 200, 0, 0, 200, 200,
-                               border=(127, 127, 127))
+        image = crop.crop(200, 200, 0, 0, 200, 200, border=(127, 127, 127))
         self.assertEquals('RGB', image.mode)
 
 
