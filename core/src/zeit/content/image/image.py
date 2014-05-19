@@ -38,6 +38,11 @@ class BaseImage(object):
     def getImageSize(self):
         return PIL.Image.open(self.open()).size
 
+    @property
+    def format(self):
+        subtype = self.mimeType.split('/')[-1]
+        return subtype.upper()
+
 
 class RepositoryImage(BaseImage,
                       zeit.cms.repository.file.RepositoryFile):

@@ -108,6 +108,9 @@ class IImage(zeit.cms.interfaces.IAsset,
     def getImageSize():
         """return tuple (width, heigth) of image."""
 
+    format = zope.interface.Attribute(
+        'Our mimeType formatted as a PIL-compatible format (e.g. JPEG, PNG)')
+
 
 class ITransform(zope.interface.Interface):
 
