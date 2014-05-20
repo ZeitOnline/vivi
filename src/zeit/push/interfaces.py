@@ -1,9 +1,16 @@
 import zope.interface
+import zope.schema
+
+
+class IMessage(zope.interface.Interface):
+
+    def send():
+        """XXX docme"""
 
 
 class IPushNotifier(zope.interface.Interface):
 
-    def send(text, link, title=None):
+    def send(text, link, **kw):
         """Sends the given ``text`` as a push message through an external
         service.
 
@@ -11,7 +18,8 @@ class IPushNotifier(zope.interface.Interface):
         happens depends on the medium, possibilities include appending to the
         text, attaching as metadata, etc.).
 
-        ``title`` is optional, and at the moment only Parse.com supports it.
+        Additional kw parameters:
+        ``title`` is only supported by Parse.com at the moment.
         It can be thought of as the title of the dialog window that displays
         the push message.
 
@@ -30,7 +38,7 @@ class TechnicalError(Exception):
     """
 
 
-class IPushServices(zope.interface.Interface):
+class IPushMessages(zope.interface.Interface):
     """Configures which push services should be notified when this
     ICMSContent is published.
 
@@ -44,9 +52,8 @@ class IPushServices(zope.interface.Interface):
     date_last_pushed = zope.schema.Datetime(
         title=u'Last push', required=False, readonly=True)
 
-    parse = zope.schema.Bool(title=u'Parse.com', required=False, default=True)
-    homepage = zope.schema.Bool(
-        title=u'Homepage', required=False, default=True)
+    long_text = zope.schema.Text()
+    short_text= zope.schema.TextLine()
 
-PUSH_SERVICES = [x for x in list(IPushServices) if x not in (
-    'enabled', 'date_last_pushed')]
+    message = zope.interface.Attribute('List of IMessage objects')
+    message_config = zope.schema.Tuple(required=False, default=())

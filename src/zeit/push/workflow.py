@@ -9,46 +9,56 @@ import zeit.workflow.interfaces
 import zope.interface
 
 
-class PushServices(zeit.cms.content.dav.DAVPropertiesAdapter):
+class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    zope.interface.implements(zeit.push.interfaces.IPushServices)
+    zope.interface.implements(zeit.push.interfaces.IPushMessages)
 
     zeit.cms.content.dav.mapProperties(
-        zeit.push.interfaces.IPushServices,
+        zeit.push.interfaces.IPushMessages,
         zeit.workflow.interfaces.WORKFLOW_NS,
-        list(zeit.push.interfaces.IPushServices),
+        ('enabled', 'message_config'),
         writeable=WRITEABLE_ALWAYS, use_default=True)
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.push.interfaces.IPushMessages,
+        zeit.workflow.interfaces.WORKFLOW_NS,
+        ('date_last_pushed', 'long_text', 'short_text'),
+        writeable=WRITEABLE_ALWAYS)
+
+    @property
+    def messages(self):
+        result = []
+        for config in self.message_config:
+            result.append(
+                self._create_message(config['type'], self.context, config))
+        return result
+
+    def _create_message(self, typ, content, config):
+        message = zope.component.getAdapter(
+            content, zeit.push.interfaces.IMessage, name=typ)
+        message.config = config
+        return message
 
 
 @grok.subscribe(
     zeit.cms.content.interfaces.ISynchronisingDAVPropertyToXMLEvent)
 def ignore_push_properties(event):
-    if event.name in zeit.push.interfaces.PUSH_SERVICES:
+    if event.name == 'message_config':
         event.veto()
 
 
 @grok.subscribe(
-    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.interfaces.ICMSContent,
     zeit.cms.workflow.interfaces.IPublishedEvent)
 def send_push_on_publish(context, event):
-    services = zeit.push.interfaces.IPushServices(context)
-    if not services.enabled:
+    push = zeit.push.interfaces.IPushMessages(context)
+    if not push.enabled:
         return
 
-    for service in zeit.push.interfaces.PUSH_SERVICES:
-        if getattr(services, service):
-            send_push_notification(context, service)
+    for message in push.messages:
+        zeit.objectlog.interfaces.ILog(context).log(
+            'Push to "%s", %s' % (message.type, message.config))
+        message.send()
 
-    services.enabled = False
-
-
-def send_push_notification(content, service):
-    url = content.uniqueId.replace(
-        zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
-    notifier = zope.component.getUtility(
-        zeit.push.interfaces.IPushNotifier, name=service)
-    # XXX Make title configurable or read from content?
-    notifier.send(content.title, url, title=u'Eilmeldung')
-    zeit.objectlog.interfaces.ILog(content).log('Push to "%s"' % service)
-    services = zeit.push.interfaces.IPushServices(content)
-    services.date_last_pushed = datetime.now(pytz.UTC)
+    push.date_last_pushed = datetime.now(pytz.UTC)
+    push.enabled = False

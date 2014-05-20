@@ -1,6 +1,8 @@
+import grokcore.component as grok
 import json
 import requests
 import zeit.push.interfaces
+import zeit.push.message
 import zope.interface
 
 
@@ -14,7 +16,8 @@ class Connection(object):
         self.application_id = application_id
         self.rest_api_key = rest_api_key
 
-    def send(self, text, link, title=None):
+    def send(self, text, link, **kw):
+        title = kw.get('title')
         data = {
             'where': {},
             'data': {
@@ -66,3 +69,9 @@ def from_product_config():
         'zeit.push')
     return Connection(
         config['parse-application-id'], config['parse-rest-api-key'])
+
+
+class Message(zeit.push.message.Message):
+
+    grok.name('parse')
+    get_text_from = 'short_text'

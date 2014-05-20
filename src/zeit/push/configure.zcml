@@ -4,13 +4,13 @@
 
   <grok:grok package="." />
 
-  <class class=".workflow.PushServices">
+  <class class=".workflow.PushMessages">
     <require
-      interface=".interfaces.IPushServices"
+      interface=".interfaces.IPushMessages"
       permission="zeit.workflow.Publish"
       />
     <require
-      set_schema=".interfaces.IPushServices"
+      set_schema=".interfaces.IPushMessages"
       permission="zeit.workflow.Publish"
       />
   </class>
