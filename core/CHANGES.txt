@@ -4,7 +4,9 @@ zeit.find changes
 2.2.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove workaround for old solr version that replaced umlauts with normal
+  characters (i.e. ä->a), so searching for authors with umlauts works again
+  (VIV-238).
 
 
 2.2.4 (2014-03-10)

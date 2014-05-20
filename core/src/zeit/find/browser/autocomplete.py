@@ -1,10 +1,8 @@
-# -*- coding: utf-8 -*-
 # Copyright (c) 2010-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
-import re
 import urllib
 import xml.sax.saxutils
 import zeit.cms.browser.interfaces
@@ -41,14 +39,6 @@ class AutocompleteSourceQuery(grok.MultiAdapter,
                     _('Type to find entries ...'), context=self.request)))
 
 
-query_d = {u'ä': 'a', u'ö': 'o', u'ü': 'u', u'ß': 's'}
-pattern = re.compile('|'.join(query_d.keys()))
-
-
-def query_parse(q):
-    return pattern.sub(lambda x: query_d[x.group()], q)
-
-
 class SimpleFind(zeit.cms.browser.view.JSON):
 
     def json(self):
@@ -56,7 +46,6 @@ class SimpleFind(zeit.cms.browser.view.JSON):
         types = self.request.form.get('types', ())
         if term:
             term = term.lower().strip()
-            term = query_parse(term)
             results = zeit.find.search.search(
                 zeit.find.search.suggest_query(term, 'title', types))
         else:
