@@ -4,7 +4,17 @@ import zope.interface
 class IPushNotifier(zope.interface.Interface):
 
     def send(text, link, title=None):
-        """XXX docme
+        """Sends the given ``text`` as a push message through an external
+        service.
+
+        The ``link`` (an URL) will be integrated into the message (how this
+        happens depends on the medium, possibilities include appending to the
+        text, attaching as metadata, etc.).
+
+        ``title`` is optional, and at the moment only Parse.com supports it.
+        It can be thought of as the title of the dialog window that displays
+        the push message.
+
         """
 
 
