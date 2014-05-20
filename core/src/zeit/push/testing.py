@@ -29,10 +29,10 @@ class PushNotifier(object):
     def reset(self):
         self.calls = []
 
-    def send(self, text, link, title=None):
-        self.calls.append((text, link, title))
+    def send(self, text, link, **kw):
+        self.calls.append((text, link, kw))
         log.info('PushNotifier.send(%s)', dict(
-            text=text, link=link, title=title))
+            text=text, link=link, kw=kw))
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
