@@ -187,7 +187,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.editable.focus();
             self.init_linkbar();
             self.init_toolbar();
-            self.shortcuts();
+            self.init_shortcuts();
             self.relocate_toolbar(true);
             self.events.push(MochiKit.Signal.connect(
                 window, 'before-content-drag', function() {
@@ -929,7 +929,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 		self.update_toolbar();
     },
 
-    shortcuts: function() {
+    init_shortcuts: function() {
       var self = this;
       $("#editable-body").keydown(function(e) {
         if (e.ctrlKey || e.metaKey) {
