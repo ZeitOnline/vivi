@@ -158,9 +158,8 @@ zeit.content.article.Editable = gocept.Class.extend({
                 self.editable, 'onkeydown', self, self.handle_keydown));
             self.events.push(MochiKit.Signal.connect(
                 self.editable, 'onkeyup', self, self.handle_keyup));
-            $('.editable').bind('paste', function() {
-                self.handle_paste();
-            });
+            self.events.push(MochiKit.Signal.connect(
+                self.editable, 'onpaste', self, self.handle_paste));
             self.events.push(MochiKit.Signal.connect(
                 zeit.edit.editor, 'before-reload', function() {
                     // XXX giant hack around strange browser behaviour.
