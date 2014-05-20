@@ -930,35 +930,40 @@ zeit.content.article.Editable = gocept.Class.extend({
     },
 
     init_shortcuts: function() {
-      var self = this;
-      $("#editable-body").keydown(function(e) {
-        if (e.ctrlKey || e.metaKey) {
-            if (e.which == 66) {
-                e.preventDefault();
-                self.toolbar_command('bold');
-            } else if (e.which == 73) {
-                e.preventDefault();
-                self.toolbar_command('italic');
-            } else if (e.which == 72) {
-                e.preventDefault();
-                self.toolbar_command('formatBlock', '<h3>');
-            } else if (e.which == 76) {
-                e.preventDefault();
-                self['insert_link']();
-            } else if (e.which == 85) {
-                e.preventDefault();
-                self.toolbar_command('unlink');
-            } else if (e.which == 82) {
-                e.preventDefault();
-                self.toolbar_command('removeFormat');
-            } else if (e.which == 65) {
-                if (self.get_selected_container().nodeName != 'INPUT') {
-                  e.preventDefault();
-                  self.selectall();
+        var self = this;
+        self.events.push(MochiKit.Signal.connect(
+            $("#editable-body")[0], 'onkeydown', function(e) {
+                var modifier = e.modifier();
+                if (! (modifier['ctrl'] || modifier['meta'])) {
+                    return;
                 }
-            }
-        }
-    });
+
+                var key = e.key()['string'];
+                if (key == 'KEY_B') {
+                    e.preventDefault();
+                    self.toolbar_command('bold');
+                } else if (key == 'KEY_I') {
+                    e.preventDefault();
+                    self.toolbar_command('italic');
+                } else if (key == 'KEY_H') {
+                    e.preventDefault();
+                    self.toolbar_command('formatBlock', '<h3>');
+                } else if (key == 'KEY_L') {
+                    e.preventDefault();
+                    self['insert_link']();
+                } else if (key == 'KEY_U') {
+                    e.preventDefault();
+                    self.toolbar_command('unlink');
+                } else if (key == 'KEY_R') {
+                    e.preventDefault();
+                    self.toolbar_command('removeFormat');
+                } else if (key == 'KEY_A') {
+                    if (self.get_selected_container().nodeName != 'INPUT') {
+                      e.preventDefault();
+                      self.selectall();
+                    }
+                }
+        }));
   },
 
   selectall: function() {

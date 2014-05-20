@@ -10,6 +10,8 @@ zeit.content.article changes
 
 - Rewrite filenames to match the SEO expectations while typing (VIV-338).
 
+- Register and cleanup keydown event handlers properly (VIV-381).
+
 
 3.3.1 (2014-05-13)
 ------------------
