@@ -18,5 +18,5 @@ class ArticleWorkflowForm(zeit.workflow.browser.form.ContentWorkflow):
         + zope.formlib.form.FormFields(
             zeit.content.article.interfaces.ICDSWorkflow)
         + zope.formlib.form.FormFields(
-            zeit.push.interfaces.IPushServices).select('enabled')
+            zeit.push.interfaces.IPushMessages).select('enabled')
     )

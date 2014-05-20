@@ -12,6 +12,16 @@ import zeit.push.interfaces
 import zope.component
 import zope.formlib.form
 import zope.i18n
+import zope.interface
+import zope.schema
+
+
+class IPushServices(zope.interface.Interface):
+
+    parse = zope.schema.Bool(
+        title=u'Parse.com', required=False, default=True)
+    homepage = zope.schema.Bool(
+        title=u'Homepage', required=False, default=True)
 
 
 class Add(zeit.cms.browser.form.AddForm,
@@ -29,15 +39,14 @@ class Add(zeit.cms.browser.form.AddForm,
         + zope.formlib.form.FormFields(
             zeit.content.article.edit.interfaces.IBreakingNewsBody)
         + zope.formlib.form.FormFields(
-            zeit.push.interfaces.IPushServices).select(
-                *zeit.push.interfaces.PUSH_SERVICES)
+            IPushServices)
     )
 
     field_groups = (
         gocept.form.grouped.Fields('', (
             'ressort', 'sub_ressort', 'title', '__name__', 'text')),
         gocept.form.grouped.Fields(
-            _('Push services'), zeit.push.interfaces.PUSH_SERVICES),
+            _('Push services'), ('parse', 'homepage')),
     )
 
     def setUpWidgets(self, *args, **kw):
@@ -56,12 +65,21 @@ class Add(zeit.cms.browser.form.AddForm,
         self.createAndAdd(data)
 
     def create(self, data):
+        push_services = []
+        for name in ('parse', 'homepage'):
+            if data.pop(name, False):
+                push_services.append(name)
+
         article = super(Add, self).create(data)
         # XXX Duplicated from .form.AddAndCheckout
         settings = zeit.cms.settings.interfaces.IGlobalSettings(
             self.context)
         article.year = settings.default_year
         article.volume = settings.default_volume
+
+        push = zeit.push.interfaces.IPushMessages(article)
+        push.short_text = article.title
+        push.message_config = [{'type': x} for x in push_services]
 
         body = IEditableBody(article)
         image_factory = zope.component.getAdapter(
@@ -90,7 +108,8 @@ class Add(zeit.cms.browser.form.AddForm,
         self._checked_out = False
 
         IPublishInfo(self._created_object).urgent = True
-        zeit.push.interfaces.IPushServices(self._created_object).enabled = True
+        push = zeit.push.interfaces.IPushMessages(self._created_object)
+        push.enabled = True
 
 
 @grok.adapter(zeit.content.article.interfaces.IArticle)
