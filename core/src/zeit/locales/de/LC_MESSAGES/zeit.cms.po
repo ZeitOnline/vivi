@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon May 19 08:49:30 2014\n"
-"PO-Revision-Date: 2014-05-19 08:51+0100\n"
+"POT-Creation-Date: Wed May 21 08:57:06 2014\n"
+"PO-Revision-Date: 2014-05-21 08:57+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -59,7 +59,8 @@ msgstr "Id"
 #: zeit/cms/syndication/browser/manager.py:98
 #: zeit/cms/syndication/interfaces.py:51
 #: zeit/content/article/edit/interfaces.py:117
-#: zeit/content/article/interfaces.py:129 zeit/content/author/interfaces.py:33
+#: zeit/content/article/interfaces.py:129
+#: zeit/content/article/interfaces.py:211 zeit/content/author/interfaces.py:33
 #: zeit/content/cp/interfaces.py:176 zeit/content/gallery/interfaces.py:96
 #: zeit/content/infobox/interfaces.py:20 zeit/content/quiz/interfaces.py:67
 #: zeit/content/rawxml/interfaces.py:17
@@ -1489,7 +1490,7 @@ msgid "limit-amount-description"
 msgstr "limit-amount-description"
 
 #: zeit/cms/tagging/browser/autocomplete.py:40
-#: zeit/find/browser/autocomplete.py:41
+#: zeit/find/browser/autocomplete.py:39
 msgid "Type to find entries ..."
 msgstr "Name eingeben"
 
@@ -1583,11 +1584,11 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Article"
 msgstr "Artikel"
 
-#: zeit/content/article/browser/breaking.py:37
+#: zeit/content/article/browser/breaking.py:49
 msgid "Push services"
 msgstr "Push-Dienste"
 
-#: zeit/content/article/browser/breaking.py:51
+#: zeit/content/article/browser/breaking.py:63
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
@@ -1891,6 +1892,30 @@ msgstr "Veröffentlichen"
 msgid "Reloading"
 msgstr "lade neu"
 
+#: zeit/content/article/edit/browser/social.py:11
+msgid "Social media"
+msgstr "Social Media"
+
+#: zeit/content/article/edit/browser/social.py:21
+msgid "Enable Facebook"
+msgstr "Facebook ZON Hauptaccount"
+
+#: zeit/content/article/edit/browser/social.py:22
+msgid "Enable Google Plus"
+msgstr "G+ ZON Hauptaccount"
+
+#: zeit/content/article/edit/browser/social.py:23
+msgid "Enable Twitter"
+msgstr "Twitter ZON Hauptaccount"
+
+#: zeit/content/article/edit/browser/social.py:25
+msgid "Additional Twitter"
+msgstr "zusätzlicher Ressortaccount:"
+
+#: zeit/content/article/edit/browser/social.py:33
+msgid "edit social media"
+msgstr "Social Media bearbeiten"
+
 #: zeit/content/article/edit/browser/timestamp.pt:2
 msgid "Current timestamp:"
 msgstr "Sichtbares Datum des Artikels:  "
@@ -1947,8 +1972,8 @@ msgstr "Seitenumbruch"
 #: zeit/content/article/edit/interfaces.py:205
 #: zeit/content/article/interfaces.py:55 zeit/content/cp/interfaces.py:91
 #: zeit/content/cp/interfaces.py:569
-#: zeit/content/image/browser/imagegroup.py:114 zeit/content/image/image.py:93
-#: zeit/content/image/interfaces.py:215
+#: zeit/content/image/browser/imagegroup.py:114 zeit/content/image/image.py:98
+#: zeit/content/image/interfaces.py:218
 #: zeit/content/image/browser/configure.zcml:209
 #: zeit/content/portraitbox/interfaces.py:21
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
@@ -2194,7 +2219,8 @@ msgstr "Wählen Sie das Objekt von dem die Kommentare verwendet werden sollen."
 msgid "Export to Tagesspiegel"
 msgstr "Zum Tagesspiegel exportieren"
 
-#: zeit/content/article/interfaces.py:212
+#: zeit/content/article/interfaces.py:217
+#: zeit/content/article/browser/configure.zcml:94
 msgid "Add breaking news"
 msgstr "Eilmeldung"
 
@@ -2948,7 +2974,7 @@ msgid "Image group metadata"
 msgstr "Metadaten der Bildergruppe"
 
 #: zeit/content/image/browser/imagegroup.py:93
-#: zeit/content/image/interfaces.py:152
+#: zeit/content/image/interfaces.py:155
 msgid "Master image"
 msgstr "Hauptbild"
 
@@ -2987,11 +3013,11 @@ msgstr ""
 msgid "Image Group"
 msgstr "Bildergruppe"
 
-#: zeit/content/image/interfaces.py:216
+#: zeit/content/image/interfaces.py:219
 msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
 
-#: zeit/content/image/interfaces.py:224
+#: zeit/content/image/interfaces.py:227
 msgid "Objects using this image"
 msgstr "Bild wird verwendet von"
 
@@ -3508,6 +3534,22 @@ msgstr "Werbung"
 #: zeit/newsletter/newsletter.py:76
 msgid "Daily Newsletter"
 msgstr "Newsletter"
+
+#: zeit/push/interfaces.py:52
+msgid "Push after next publish?"
+msgstr "Bei (erneuter) Veröffentlichung automatisch posten"
+
+#: zeit/push/interfaces.py:55
+msgid "Last push"
+msgstr "Letztes Social Media Posting"
+
+#: zeit/push/interfaces.py:58
+msgid "Long push text"
+msgstr "Status Update / Facebook und G+ Vorspann"
+
+#: zeit/push/interfaces.py:60
+msgid "Short push text"
+msgstr "Tweet"
 
 #: zeit/securitypolicy/security.zcml:11
 msgid "Everybody"

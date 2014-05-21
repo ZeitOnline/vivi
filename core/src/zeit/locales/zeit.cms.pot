@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Mon May 19 08:49:30 2014\n"
+"POT-Creation-Date: Wed May 21 08:57:06 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -64,6 +64,7 @@ msgstr ""
 #: zeit/cms/syndication/interfaces.py:51
 #: zeit/content/article/edit/interfaces.py:117
 #: zeit/content/article/interfaces.py:129
+#: zeit/content/article/interfaces.py:211
 #: zeit/content/author/interfaces.py:33
 #: zeit/content/cp/interfaces.py:176
 #: zeit/content/gallery/interfaces.py:96
@@ -1530,7 +1531,7 @@ msgid "limit-amount-description"
 msgstr ""
 
 #: zeit/cms/tagging/browser/autocomplete.py:40
-#: zeit/find/browser/autocomplete.py:41
+#: zeit/find/browser/autocomplete.py:39
 msgid "Type to find entries ..."
 msgstr ""
 
@@ -1621,11 +1622,11 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:37
+#: zeit/content/article/browser/breaking.py:49
 msgid "Push services"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:51
+#: zeit/content/article/browser/breaking.py:63
 msgid "Publish and push"
 msgstr ""
 
@@ -1932,6 +1933,30 @@ msgstr ""
 msgid "Reloading"
 msgstr ""
 
+#: zeit/content/article/edit/browser/social.py:11
+msgid "Social media"
+msgstr ""
+
+#: zeit/content/article/edit/browser/social.py:21
+msgid "Enable Facebook"
+msgstr ""
+
+#: zeit/content/article/edit/browser/social.py:22
+msgid "Enable Google Plus"
+msgstr ""
+
+#: zeit/content/article/edit/browser/social.py:23
+msgid "Enable Twitter"
+msgstr ""
+
+#: zeit/content/article/edit/browser/social.py:25
+msgid "Additional Twitter"
+msgstr ""
+
+#: zeit/content/article/edit/browser/social.py:33
+msgid "edit social media"
+msgstr ""
+
 #: zeit/content/article/edit/browser/timestamp.pt:2
 msgid "Current timestamp:"
 msgstr ""
@@ -1992,8 +2017,8 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:91
 #: zeit/content/cp/interfaces.py:569
 #: zeit/content/image/browser/imagegroup.py:114
-#: zeit/content/image/image.py:93
-#: zeit/content/image/interfaces.py:215
+#: zeit/content/image/image.py:98
+#: zeit/content/image/interfaces.py:218
 #: zeit/content/image/browser/configure.zcml:209
 #: zeit/content/portraitbox/interfaces.py:21
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
@@ -2246,7 +2271,8 @@ msgstr ""
 msgid "Export to Tagesspiegel"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:212
+#: zeit/content/article/interfaces.py:217
+#: zeit/content/article/browser/configure.zcml:94
 msgid "Add breaking news"
 msgstr ""
 
@@ -2992,7 +3018,7 @@ msgid "Image group metadata"
 msgstr ""
 
 #: zeit/content/image/browser/imagegroup.py:93
-#: zeit/content/image/interfaces.py:152
+#: zeit/content/image/interfaces.py:155
 msgid "Master image"
 msgstr ""
 
@@ -3025,11 +3051,11 @@ msgstr ""
 msgid "Image Group"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:216
+#: zeit/content/image/interfaces.py:219
 msgid "Drag an image group here"
 msgstr ""
 
-#: zeit/content/image/interfaces.py:224
+#: zeit/content/image/interfaces.py:227
 msgid "Objects using this image"
 msgstr ""
 
@@ -3543,6 +3569,22 @@ msgstr ""
 
 #: zeit/newsletter/newsletter.py:76
 msgid "Daily Newsletter"
+msgstr ""
+
+#: zeit/push/interfaces.py:52
+msgid "Push after next publish?"
+msgstr ""
+
+#: zeit/push/interfaces.py:55
+msgid "Last push"
+msgstr ""
+
+#: zeit/push/interfaces.py:58
+msgid "Long push text"
+msgstr ""
+
+#: zeit/push/interfaces.py:60
+msgid "Short push text"
 msgstr ""
 
 #: zeit/securitypolicy/security.zcml:11
