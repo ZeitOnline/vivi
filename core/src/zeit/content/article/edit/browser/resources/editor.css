@@ -1867,3 +1867,44 @@
   padding-left: 5px;
   padding-right: 5px;
 }
+
+
+/* social media */
+
+.type-article #form-social .field.fieldname-long_text .label,
+.type-article #form-social .field.fieldname-short_text .label {
+    display: none;
+}
+
+.type-article #social\.short_text {
+    width: 100%;
+}
+
+.type-article #form-social .field.fieldname-facebook,
+.type-article #form-social .field.fieldname-google {
+    float: left;
+}
+
+.type-article #form-social .field.fieldname-short_text {
+    clear: left;
+    margin-top: 0.5em;
+}
+
+.type-article #form-social .field.fieldname-twitter,
+.type-article #form-social .field.fieldname-twitter_ressort {
+    float: left;
+}
+
+.type-article #form-social .field.fieldname-twitter_ressort .label span {
+    text-transform: none;
+}
+
+.type-article #form-social .field.fieldname-twitter_ressort .widget {
+    clear: none;
+    width: inherit;
+    margin-top: 0;
+}
+
+.type-article #form-social .field.fieldname-enabled {
+    clear: left;
+}

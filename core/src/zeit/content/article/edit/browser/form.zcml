@@ -830,6 +830,37 @@
     permission="zope.View"
     />
 
+  <!-- social media -->
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.edit.browser.form.Forms"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="socialmedia"
+    class=".social.Container"
+    permission="zope.View"
+    weight="75"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view=".social.Container"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.social"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.social"
+    class=".social.Social"
+    permission="zope.View"
+    />
 
   <!-- workflow -->
 
