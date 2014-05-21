@@ -18,4 +18,7 @@ class Supertitle(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.eval('document.getElementById("%s").value = ""' % self.supertitle)
         s.click('//a[@href="edit-form-teaser"]')
         s.type('id=%s' % self.teaser_supertitle, 'super\t')
-        s.assertValue('id=%s' % self.supertitle, 'super')
+        # XXX There's nothing asynchronous going on here, but with a direct
+        # assert, the test fails with "Element is no longer attached to the
+        # DOM" (at least on WS's machine).
+        s.waitForValue('id=%s' % self.supertitle, 'super')
