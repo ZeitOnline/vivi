@@ -50,16 +50,68 @@ class Social(zeit.edit.browser.form.InlineForm,
         super(Social, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
 
+    def success_handler(self, action, data, errors=None):
+        enabled_services = [
+            {'type': name} for name in ('facebook', 'google', 'twitter')
+            if data.get(name)]
+        twitter_ressort = data.get('twitter_ressort')
+        if twitter_ressort:
+            enabled_services.append(
+                {'type': 'twitter', 'account': twitter_ressort})
+        zeit.push.interfaces.IPushMessages(
+            self.context).message_config = enabled_services
+        return super(Social, self).success_handler(action, data, errors)
+
 
 class Accounts(grok.Adapter):
 
     grok.context(zeit.cms.interfaces.ICMSContent)
     grok.implements(IAccounts)
 
-    def __init__(self, context):
-        self.context = context
-        # XXX Reading is not yet implemented; writing will happen in the Form.
-        self.facebook = False
-        self.google = False
-        self.twitter = False
-        self.twitter_ressort = None
+    @property
+    def message_config(self):
+        return zeit.push.interfaces.IPushMessages(
+            self.context).message_config
+
+    @property
+    def facebook(self):
+        return {'type': 'facebook'} in self.message_config
+
+    @property
+    def google(self):
+        return {'type': 'facebook'} in self.message_config
+
+    @property
+    def twitter(self):
+        return {'type': 'facebook'} in self.message_config
+
+    @property
+    def twitter_ressort(self):
+        for service in self.message_config:
+            if service['type'] != 'twitter':
+                continue
+            account = service.get('account')
+            if account:
+                return account
+        return None
+
+    # Writing happens all services at once in the form, so we don't need to
+    # worry about identifying entries in message_config (which would be doable
+    # at the moment, but if we introduce individual texts or other
+    # configuration, it becomes unfeasible).
+
+    @facebook.setter
+    def facebook(self, value):
+        pass
+
+    @google.setter
+    def google(self, value):
+        pass
+
+    @twitter.setter
+    def twitter(self, value):
+        pass
+
+    @twitter_ressort.setter
+    def twitter_ressort(self, value):
+        pass
