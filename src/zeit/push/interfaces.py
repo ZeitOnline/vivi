@@ -1,3 +1,4 @@
+from zeit.cms.i18n import MessageFactory as _
 import zope.interface
 import zope.schema
 
@@ -48,12 +49,15 @@ class IPushMessages(zope.interface.Interface):
     """
 
     enabled = zope.schema.Bool(
-        title=u'Push?', required=False, default=False, readonly=True)
+        title=_('Push after next publish?'),
+        required=False, default=False, readonly=True)
     date_last_pushed = zope.schema.Datetime(
-        title=u'Last push', required=False, readonly=True)
+        title=_('Last push'), required=False, readonly=True)
 
-    long_text = zope.schema.Text()
-    short_text= zope.schema.TextLine()
+    long_text = zope.schema.Text(
+        title=_('Long push text'), required=False)
+    short_text= zope.schema.TextLine(
+        title=_('Short push text'), required=False, max_length=120)
 
     message = zope.interface.Attribute('List of IMessage objects')
     message_config = zope.schema.Tuple(required=False, default=())

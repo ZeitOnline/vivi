@@ -15,17 +15,13 @@ setup(
     namespace_packages=['zeit'],
     install_requires=[
         'mock',
+        'pytz',
         'requests',
         'setuptools',
+        'zeit.cms',
+        'zeit.content.article>=3.3.0.dev0',
+        'zeit.objectlog',
         'zope.component',
         'zope.interface',
     ],
-    extras_require={
-        'cms': [
-            'pytz',
-            'zeit.cms',
-            'zeit.content.article>=3.3.0.dev0',
-            'zeit.objectlog',
-        ],
-    },
 )
