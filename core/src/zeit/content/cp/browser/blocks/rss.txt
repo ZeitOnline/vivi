@@ -46,8 +46,7 @@ Set a valid URL:
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> import zeit.content.cp.testing
->>> url = 'http://localhost:%s/tagesschau.xml' % (
-...     zeit.content.cp.testing.httpd_port)
+>>> url = 'http://localhost:%s/tagesschau.xml' % layer['http_port']
 >>> browser.getControl('URL of RSS feed').value = url
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.getControl('Apply').click()
@@ -72,8 +71,7 @@ True
 Change to another URL:
 
 
->>> url = 'http://localhost:%s/heise.xml' % (
-...     zeit.content.cp.testing.httpd_port)
+>>> url = 'http://localhost:%s/heise.xml' % layer['http_port']
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL of RSS feed').value = url

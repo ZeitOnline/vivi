@@ -22,7 +22,7 @@ Creating feeds
 The feed manager creates the necessary objects and fetches the feed:
 
 >>> fm = zope.component.getUtility(zeit.content.cp.interfaces.IFeedManager)
->>> url = 'http://localhost:%s/heise.xml' % port
+>>> url = 'http://localhost:%s/heise.xml' % layer['http_port']
 >>> feed = fm.get_feed(url)
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
 <feed ...
@@ -119,7 +119,7 @@ No or invaid URL.
 >>> print feed.error
  ConnectionError: ...
 
->>> nf_url = 'http://localhost:%s/nofeed.xml' % port
+>>> nf_url = 'http://localhost:%s/nofeed.xml' % layer['http_port']
 >>> feed = fm.get_feed(nf_url)
 >>> print feed.error
 LookupError: unknown encoding:
@@ -173,7 +173,7 @@ Edge cases
 This is a test that the RSS2.0 <image> element is mapped correctly, and that
 HTML-content is preserved properly:
 
->>> url = 'http://localhost:%s/tagesschau.xml' % port
+>>> url = 'http://localhost:%s/tagesschau.xml' % layer['http_port']
 >>> feed = fm.get_feed(url)
 >>> print lxml.etree.tostring(feed.xml, pretty_print=True)
 <...

@@ -3,6 +3,7 @@
 
 import SimpleHTTPServer
 import __future__
+import gocept.httpserverlayer.custom
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import os
@@ -48,7 +49,7 @@ layer = zeit.cms.testing.ZCMLLayer(
     zeit.workflow.testing.product_config)
 
 
-class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler,
+class RequestHandler(gocept.httpserverlayer.custom.RequestHandler,
                      SimpleHTTPServer.SimpleHTTPRequestHandler):
 
     serve_from = pkg_resources.resource_filename(__name__, 'tests/feeds/')
@@ -74,26 +75,8 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler,
         return 'application/xml'
 
 
-HTTPLayer, httpd_port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
-
-
-class FeedServer(HTTPLayer, layer):
-
-    @classmethod
-    def setUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        pass
-
-    @classmethod
-    def testTearDown(cls):
-        pass
+FEED_SERVER_LAYER = gocept.httpserverlayer.custom.Layer(
+    RequestHandler, name='FeedServerLayer', bases=(layer,))
 
 
 checker = zope.testing.renormalizing.RENormalizing([

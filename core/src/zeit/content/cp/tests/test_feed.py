@@ -25,14 +25,12 @@ class FeedTest(unittest.TestCase):
 
 class TestFeedDownload(zeit.content.cp.testing.FunctionalTestCase):
 
-
-    layer = zeit.content.cp.testing.FeedServer
+    layer = zeit.content.cp.testing.FEED_SERVER_LAYER
 
     def test_download_should_abort_after_timeout(self):
         from ..feed import Feed
         feed = Feed()
-        feed.url = 'http://localhost:%s/heise.xml' % (
-            zeit.content.cp.testing.httpd_port,)
+        feed.url = 'http://localhost:%s/heise.xml' % self.layer['http_port']
         with mock.patch('zeit.content.cp.feed.DOWNLOAD_TIMEOUT', new=1):
             with mock.patch('zeit.content.cp.testing.RequestHandler.'
                             'delay_request_by', new=2):

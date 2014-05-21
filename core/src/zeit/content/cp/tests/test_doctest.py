@@ -16,7 +16,7 @@ def test_suite():
         package=zeit.content.cp))
     suite.addTest(zeit.content.cp.testing.FunctionalDocFileSuite(
         'feed.txt',
-        layer=zeit.content.cp.testing.FeedServer,
-        globs=dict(port=zeit.content.cp.testing.httpd_port),
+        layer=zeit.content.cp.testing.FEED_SERVER_LAYER,
+        globs=dict(layer=zeit.content.cp.testing.FEED_SERVER_LAYER),
         package=zeit.content.cp))
     return suite

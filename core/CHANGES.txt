@@ -5,7 +5,7 @@ zeit.content.cp changes
 2.3.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use gocept.httpserverlayer.custom to avoid port collisions in tests.
 
 
 2.3.3 (2014-03-24)
