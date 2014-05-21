@@ -13,12 +13,12 @@ class ParseTest(unittest.TestCase):
     def test_push_works(self):
         api = zeit.push.parse.Connection(
             settings['application_id'], settings['rest_api_key'])
-        api.send('Being pushy.', 'http://example.com', 'Clever title')
+        api.send('Being pushy.', 'http://example.com')
 
     def test_invalid_credentials_should_raise(self):
         api = zeit.push.parse.Connection('invalid', 'invalid')
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
-            api.send('Being pushy.', 'http://example.com', 'Clever title')
+            api.send('Being pushy.', 'http://example.com')
 
 
 class URLRewriteTest(unittest.TestCase):
