@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.push.twitter import twitterAccountSource
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.edit.browser.form
@@ -11,19 +12,14 @@ class Container(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Social media')
 
 
-# XXX Replace with XMLSource, see VIV-389
-class TwitterAccountSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    values = ['Wissen', 'Politik']
-
-
 class IAccounts(zope.interface.Interface):
 
     facebook = zope.schema.Bool(title=_('Enable Facebook'))
     google = zope.schema.Bool(title=_('Enable Google Plus'))
     twitter = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort = zope.schema.Choice(
-        title=_('Additional Twitter'), source=TwitterAccountSource(),
+        title=_('Additional Twitter'),
+        source=twitterAccountSource,
         required=False)
 
 
@@ -52,8 +48,12 @@ class Social(zeit.edit.browser.form.InlineForm,
 
     def success_handler(self, action, data, errors=None):
         enabled_services = [
-            {'type': name} for name in ('facebook', 'google', 'twitter')
+            {'type': name} for name in ('facebook', 'google')
             if data.get(name)]
+        if data.get('twitter'):
+            enabled_services.append(
+                {'type': 'twitter',
+                 'account': twitterAccountSource.MAIN_ACCOUNT})
         twitter_ressort = data.get('twitter_ressort')
         if twitter_ressort:
             enabled_services.append(
@@ -83,7 +83,9 @@ class Accounts(grok.Adapter):
 
     @property
     def twitter(self):
-        return {'type': 'facebook'} in self.message_config
+        return ({'type': 'twitter',
+                 'account': twitterAccountSource.MAIN_ACCOUNT}
+                in self.message_config)
 
     @property
     def twitter_ressort(self):
@@ -91,7 +93,7 @@ class Accounts(grok.Adapter):
             if service['type'] != 'twitter':
                 continue
             account = service.get('account')
-            if account:
+            if account != twitterAccountSource.MAIN_ACCOUNT:
                 return account
         return None
 
