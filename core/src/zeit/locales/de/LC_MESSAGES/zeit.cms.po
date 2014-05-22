@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed May 21 08:57:06 2014\n"
-"PO-Revision-Date: 2014-05-21 08:57+0100\n"
+"POT-Creation-Date: Thu May 22 11:07:29 2014\n"
+"PO-Revision-Date: 2014-05-22 11:08+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1892,27 +1892,23 @@ msgstr "Veröffentlichen"
 msgid "Reloading"
 msgstr "lade neu"
 
-#: zeit/content/article/edit/browser/social.py:11
+#: zeit/content/article/edit/browser/social.py:12
 msgid "Social media"
 msgstr "Social Media"
 
-#: zeit/content/article/edit/browser/social.py:21
+#: zeit/content/article/edit/browser/social.py:17
 msgid "Enable Facebook"
 msgstr "Facebook ZON Hauptaccount"
 
-#: zeit/content/article/edit/browser/social.py:22
-msgid "Enable Google Plus"
-msgstr "G+ ZON Hauptaccount"
-
-#: zeit/content/article/edit/browser/social.py:23
+#: zeit/content/article/edit/browser/social.py:18
 msgid "Enable Twitter"
 msgstr "Twitter ZON Hauptaccount"
 
-#: zeit/content/article/edit/browser/social.py:25
+#: zeit/content/article/edit/browser/social.py:20
 msgid "Additional Twitter"
 msgstr "zusätzlicher Ressortaccount:"
 
-#: zeit/content/article/edit/browser/social.py:33
+#: zeit/content/article/edit/browser/social.py:30
 msgid "edit social media"
 msgstr "Social Media bearbeiten"
 
@@ -3545,7 +3541,7 @@ msgstr "Letztes Social Media Posting"
 
 #: zeit/push/interfaces.py:58
 msgid "Long push text"
-msgstr "Status Update / Facebook und G+ Vorspann"
+msgstr "Status Update / Facebook"
 
 #: zeit/push/interfaces.py:60
 msgid "Short push text"
@@ -3858,6 +3854,9 @@ msgstr "Zweites Video"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Enable Google Plus"
+#~ msgstr "G+ ZON Hauptaccount"
 
 #~ msgid "Custom image sub text"
 #~ msgstr "Bildunterschrift"
