@@ -15,7 +15,6 @@ class Container(zeit.edit.browser.form.FoldableFormGroup):
 class IAccounts(zope.interface.Interface):
 
     facebook = zope.schema.Bool(title=_('Enable Facebook'))
-    google = zope.schema.Bool(title=_('Enable Google Plus'))
     twitter = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort = zope.schema.Choice(
         title=_('Additional Twitter'),
@@ -33,7 +32,7 @@ class Social(zeit.edit.browser.form.InlineForm,
         zope.formlib.form.FormFields(
             zeit.push.interfaces.IPushMessages).select('long_text')
         + zope.formlib.form.FormFields(
-            IAccounts).select('facebook', 'google')
+            IAccounts).select('facebook')
         + zope.formlib.form.FormFields(
             zeit.push.interfaces.IPushMessages).select('short_text')
         + zope.formlib.form.FormFields(
@@ -48,12 +47,12 @@ class Social(zeit.edit.browser.form.InlineForm,
 
     def success_handler(self, action, data, errors=None):
         message_config = [
-            {'type': name, 'enabled': data.get(name)}
-            for name in ('facebook', 'google')]
-        message_config.append(
+            {'type': 'facebook',
+             'enabled': data.get('facebook')},
             {'type': 'twitter',
              'enabled': data.get('twitter'),
-             'account': twitterAccountSource(None).MAIN_ACCOUNT})
+             'account': twitterAccountSource(None).MAIN_ACCOUNT}
+        ]
         twitter_ressort = data.get('twitter_ressort')
         if twitter_ressort:
             message_config.append(
@@ -79,14 +78,6 @@ class Accounts(grok.Adapter):
     def facebook(self):
         for service in self.message_config:
             if service['type'] != 'facebook':
-                continue
-            return service['enabled']
-        return True
-
-    @property
-    def google(self):
-        for service in self.message_config:
-            if service['type'] != 'google':
                 continue
             return service['enabled']
         return True
@@ -118,10 +109,6 @@ class Accounts(grok.Adapter):
 
     @facebook.setter
     def facebook(self, value):
-        pass
-
-    @google.setter
-    def google(self, value):
         pass
 
     @twitter.setter

@@ -1880,11 +1880,6 @@
     width: 100%;
 }
 
-.type-article #form-social .field.fieldname-facebook,
-.type-article #form-social .field.fieldname-google {
-    float: left;
-}
-
 .type-article #form-social .field.fieldname-short_text {
     clear: left;
     margin-top: 0.5em;
