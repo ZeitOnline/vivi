@@ -4,5 +4,6 @@
 
   <utility factory=".parse.from_product_config" name="parse" />
   <utility factory=".cp.from_product_config" name="homepage" />
+  <utility factory=".twitter.from_product_config" name="twitter" />
 
 </configure>

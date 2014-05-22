@@ -1,0 +1,50 @@
+import time
+import tweepy
+import zeit.push.testing
+import zeit.push.twitter
+
+
+class TwitterTest(zeit.push.testing.TestCase):
+
+    level = 2
+
+    # User: gocepttest
+    # Pass: 9QuecCyewip0
+    # Email: ws+twitter@gocept.com
+    api_key = 'GwK5gIOXUG4JnKWjOOVXFmDr0'
+    api_secret = 'Z2zrg2QYZAY2wEVqcG5smZOxdHCX0eo9SLkutb8aRljxVvG4sB'
+    access_token = '2512010726-zzomC6jSp453N4Hsn7Ji3hYirt0a35sV0uL8Dy3'
+    access_secret = 'DiVzrTRkh5YJCJztiqCCwXBIzGlqa1q7Zi1bDB8aASYOj'
+
+    def setUp(self):
+        auth = tweepy.OAuthHandler(self.api_key, self.api_secret)
+        auth.set_access_token(self.access_token, self.access_secret)
+        self.api = tweepy.API(auth)
+        # repr keeps all digits  while str would cut them.
+        self.nugget = repr(time.time())
+
+    def tearDown(self):
+        for status in self.api.home_timeline():
+            if self.nugget in status.text:
+                status.destroy()
+
+    def test_send_posts_twitter_status(self):
+        twitter = zeit.push.twitter.Connection(
+            self.api_key, self.api_secret)
+        twitter.send(
+            'zeit.push.tests.twitter %s' % self.nugget, 'http://example.com',
+            account='testaccount')
+
+        for status in self.api.home_timeline():
+            if self.nugget in status.text:
+                break
+        else:
+            self.fail('Tweet was not posted')
+
+
+class TwitterAccountsTest(zeit.push.testing.TestCase):
+
+    def test_main_account_is_excluded_from_source(self):
+        self.assertEqual(
+            ['ressort_wissen'],
+            list(zeit.push.twitter.twitterAccountSource(None)))
