@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.0.1 (unreleased)
+2.0.1 (2014-05-22)
 ------------------
 
 - Remove freetext author field from forms (VIV-394).
