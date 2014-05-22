@@ -1,16 +1,5 @@
-<div id="preview-tabs">
-  <ul>
-    <li><a href="#preview-tablet">iPad</a></li>
-    <li><a href="#preview-full">Desktop</a></li>
-  </ul>
-  <iframe
-     id="preview-full"
-     class="preview"
-     tal:attributes="src string:${context/@@absolute_url}/@@show_preview">
-  </iframe>
-  <iframe
-     id="preview-tablet"
-     class="preview"
-     tal:attributes="src string:${context/@@absolute_url}/@@show_preview?showtablet=on">
-  </iframe>
-</div>
+<iframe
+   id="preview-full"
+   class="preview"
+   tal:attributes="src string:${context/@@absolute_url}/@@show_preview">
+</iframe>

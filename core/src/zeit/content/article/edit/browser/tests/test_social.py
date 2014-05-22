@@ -13,10 +13,15 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
                 return zeit.cms.interfaces.ICMSContent(
                     'http://xml.zeit.de/online/2007/01/Somalia')
 
+    def open_form(self):
+        # XXX A simple browser.reload() does not work, why?
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/'
+            'online/2007/01/Somalia/@@edit.form.social?show_form=1')
+
     def test_stores_IPushMessage_fields(self):
+        self.open_form()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@edit.form.social?show_form=1')
         b.getControl('Long push text').value = 'longtext'
         b.getControl('Short push text').value = 'shorttext'
         b.getControl('Push after next publish?').selected = True
@@ -28,33 +33,39 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(True, push.enabled)
 
     def test_converts_account_checkboxes_to_message_config(self):
+        self.open_form()
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@edit.form.social?show_form=1')
         b.getControl('Enable Facebook').selected = True
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertIn({'type': 'facebook'}, push.message_config)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': True}, push.message_config)
 
-        # XXX b.reload() does not work, why?
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@edit.form.social?show_form=1')
+        self.open_form()
         self.assertTrue(b.getControl('Enable Facebook').selected)
 
-    def test_converts_twitter_ressort_to_message_config(self):
-        b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@edit.form.social?show_form=1')
-        b.getControl('Additional Twitter').displayValue = ['Politik']
+        b.getControl('Enable Facebook').selected = False
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'twitter', 'account': 'Politik'}, push.message_config)
+            {'type': 'facebook', 'enabled': False}, push.message_config)
 
-        # XXX b.reload() does not work, why?
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@edit.form.social?show_form=1')
+        self.open_form()
+        self.assertFalse(b.getControl('Enable Facebook').selected)
+
+    def test_converts_twitter_ressort_to_message_config(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Additional Twitter').displayValue = ['Wissen']
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        self.assertIn(
+            {'type': 'twitter', 'enabled': True, 'account': 'ressort_wissen'},
+            push.message_config)
+
+        self.open_form()
         self.assertEqual(
-            ['Politik'], b.getControl('Additional Twitter').displayValue)
+            ['Wissen'], b.getControl('Additional Twitter').displayValue)

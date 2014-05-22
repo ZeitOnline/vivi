@@ -65,10 +65,12 @@ class Add(zeit.cms.browser.form.AddForm,
         self.createAndAdd(data)
 
     def create(self, data):
-        push_services = []
+        message_config = []
         for name in ('parse', 'homepage'):
-            if data.pop(name, False):
-                push_services.append(name)
+            service = {'type': name, 'enabled': data.pop(name, False)}
+            if name == 'parse':
+                service['title'] = u'Eilmeldung'
+            message_config.append(service)
 
         article = super(Add, self).create(data)
         # XXX Duplicated from .form.AddAndCheckout
@@ -79,7 +81,7 @@ class Add(zeit.cms.browser.form.AddForm,
 
         push = zeit.push.interfaces.IPushMessages(article)
         push.short_text = article.title
-        push.message_config = [{'type': x} for x in push_services]
+        push.message_config = message_config
 
         body = IEditableBody(article)
         image_factory = zope.component.getAdapter(

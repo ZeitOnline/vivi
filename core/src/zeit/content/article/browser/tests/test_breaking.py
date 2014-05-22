@@ -50,7 +50,12 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             self.assertEqual(True, IPublishInfo(article).urgent)
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertEqual(True, push.enabled)
-            self.assertIn({'type': 'homepage'}, push.message_config)
+            self.assertIn(
+                {'type': 'homepage', 'enabled': True},
+                push.message_config)
+            self.assertIn(
+                {'type': 'parse', 'enabled': True, 'title': 'Eilmeldung'},
+                push.message_config)
             self.assertEqual(article.title, push.short_text)
 
     def test_setting_body_text_creates_paragraph(self):

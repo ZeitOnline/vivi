@@ -12,6 +12,7 @@ import zeit.cms.testing
 import zeit.content.author.testing
 import zeit.content.cp.testing
 import zeit.content.gallery.testing
+import zeit.push
 import zeit.workflow.testing
 import zope.component
 import zope.testing.renormalizing
@@ -53,6 +54,7 @@ ArticleZCMLLayer = zeit.cms.testing.ZCMLLayer(
         zeit.content.cp.testing.product_config +
         zeit.content.gallery.testing.product_config +
         zeit.content.author.testing.product_config +
+        zeit.push.product_config +
         zeit.cms.testing.cms_product_config))
 
 
