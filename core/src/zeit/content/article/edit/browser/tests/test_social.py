@@ -46,15 +46,16 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/'
                'online/2007/01/Somalia/@@edit.form.social?show_form=1')
-        b.getControl('Additional Twitter').displayValue = ['Politik']
+        b.getControl('Additional Twitter').displayValue = ['Wissen']
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'twitter', 'account': 'Politik'}, push.message_config)
+            {'type': 'twitter', 'account': 'ressort_wissen'},
+            push.message_config)
 
         # XXX b.reload() does not work, why?
         b.open('http://localhost/++skin++vivi/repository/'
                'online/2007/01/Somalia/@@edit.form.social?show_form=1')
         self.assertEqual(
-            ['Politik'], b.getControl('Additional Twitter').displayValue)
+            ['Wissen'], b.getControl('Additional Twitter').displayValue)

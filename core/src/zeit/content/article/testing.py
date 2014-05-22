@@ -27,6 +27,11 @@ product_config = """
     video-layout-source file://%s
     htmlblock-layout-source file://%s
 </product-config>
+
+<product-config zeit.push>
+  twitter-accounts file://%s
+  twitter-main-account testaccount
+</product-config>
 """ % (
     pkg_resources.resource_filename(
         __name__, '/tests/recension_categories.xml'),
@@ -35,6 +40,8 @@ product_config = """
     pkg_resources.resource_filename(__name__, '/edit/tests/video-layouts.xml'),
     pkg_resources.resource_filename(
         __name__, '/edit/tests/htmlblock-layouts.xml'),
+    pkg_resources.resource_filename(
+        'zeit.push.tests', 'fixtures/twitter-accounts.xml'),
 )
 
 
