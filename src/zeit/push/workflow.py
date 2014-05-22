@@ -29,6 +29,8 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
     def messages(self):
         result = []
         for config in self.message_config:
+            if not config.get('enabled'):
+                continue
             result.append(
                 self._create_message(config['type'], self.context, config))
         return result

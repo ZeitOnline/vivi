@@ -49,7 +49,7 @@ class SendingNotifications(zeit.push.testing.TestCase):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
         push.enabled = True
-        push.message_config = [{'type': 'parse'}]
+        push.message_config = [{'type': 'parse', 'enabled': True}]
         self.publish(content)
         self.assertTrue(self.parse.send.called)
 
@@ -57,7 +57,7 @@ class SendingNotifications(zeit.push.testing.TestCase):
         content = ICMSContent('http://xml.zeit.de/testcontent')
         push = IPushMessages(content)
         push.enabled = True
-        push.message_config = []
+        push.message_config = [{'type': 'parse', 'enabled': False}]
         self.publish(content)
         self.assertFalse(self.parse.send.called)
 
