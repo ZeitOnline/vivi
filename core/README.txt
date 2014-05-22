@@ -5,6 +5,14 @@ zeit.push
 This packages provides Python bindings to various Social Media services.
 
 
+Parse.com
+=========
+
+Configure the following settings in the batou environment:
+* ``parse_application_id``
+* ``parse_rest_api_key``
+
+
 Twitter
 =======
 
