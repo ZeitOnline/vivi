@@ -41,6 +41,13 @@ class TwitterTest(zeit.push.testing.TestCase):
         else:
             self.fail('Tweet was not posted')
 
+    def test_errors_should_raise_appropriate_exception(self):
+        twitter = zeit.push.twitter.Connection(
+            self.api_key, self.api_secret)
+        with self.assertRaises(zeit.push.interfaces.WebServiceError) as e:
+            twitter.send('a' * 150, '', account='testaccount')
+        self.assertIn('Status is over 140 characters', e.exception.message)
+
 
 class TwitterAccountsTest(zeit.push.testing.TestCase):
 
