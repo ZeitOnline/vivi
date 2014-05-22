@@ -67,11 +67,10 @@ class Add(zeit.cms.browser.form.AddForm,
     def create(self, data):
         message_config = []
         for name in ('parse', 'homepage'):
-            if data.pop(name, False):
-                service = {'type': name}
-                if name == 'parse':
-                    service['title'] = u'Eilmeldung'
-                message_config.append(service)
+            service = {'type': name, 'enabled': data.pop(name, False)}
+            if name == 'parse':
+                service['title'] = u'Eilmeldung'
+            message_config.append(service)
 
         article = super(Add, self).create(data)
         # XXX Duplicated from .form.AddAndCheckout
