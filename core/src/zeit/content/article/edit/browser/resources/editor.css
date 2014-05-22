@@ -1806,7 +1806,6 @@
   /* XXX why does zeit.cms:forms.css use important? I suspect FCKeditor. */
   border: none;
   height: 500px;
-  overflow-y: hidden;
   position: inherit !important;
   width: 100%;
 }
