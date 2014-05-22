@@ -4,6 +4,8 @@ zeit.content.article changes
 3.3.2 (unreleased)
 ------------------
 
+- Fix save of WhYSIWYG editor when the user clicks on an input field (VIV-395)
+
 - Reactivate breaking news feature; add max length to title field (VIV-25).
 
 - Add social media section (VIV-387 / VIV-396).

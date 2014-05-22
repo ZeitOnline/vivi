@@ -92,6 +92,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
     autosave_interval: 10,
     editor_active_lock: new MochiKit.Async.DeferredLock(),
+    unconditional_save_on_blur: false,
 
     construct: function(context_element, place_cursor_at_end) {
         var self = this;
@@ -136,15 +137,25 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.command('styleWithCSS', false, false);
             MochiKit.DOM.addElementClass(self.block, 'editing');
 
-            // Catche the blur-signal in the capturing-phase!
+            // Catch the blur-signal in the capturing-phase!
             // In case you use the toolbar, the editing-mode won't be stopped.
             var handle_blur = function(e) {
                 var clicked_on_block =
                     MochiKit.DOM.getFirstParentByTagAndClassName(
                        e.explicitOriginalTarget, 'div', 'block');
-                var is_in_block = (clicked_on_block == self.block);
+                // VIV-395: The explicitOriginalTarget only has a meaningful
+                // value, if the user did *not* click on an input field or a
+                // textarea. In this case the explicitOriginalTarget is the
+                // editor node itself, which doesn't help us at all in detecting
+                // whether we should close the editor or not. Luckily the
+                // rangeParent is null in this case. We use this as additional
+                // indicator for closing or not closing.
+                var probably_targeted_input_field = isNull(e.rangeParent);
+                var is_in_block = (clicked_on_block == self.block) &&
+                    !probably_targeted_input_field;
                 log("Blur while editing:", is_in_block, self.block.id);
-                if (is_in_block || self.locked) {
+                if (!self.unconditional_save_on_blur && (
+                        is_in_block || self.locked)) {
                     e.stopPropagation();
                 } else {
                     self.editable.parentNode.removeEventListener(
@@ -171,7 +182,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     // have no idea what causes this, so far.
                     //
                     // To get rid of this stray cursor, we focus-then-blur
-                    // something else (we scientifcally chose the
+                    // something else (we scientifically chose the
                     // fulltext-search input box at random). Synthesizing a
                     // blur on self.editable or similar has no effect, and the
                     // "something else" we dash off to needs to be an <input
@@ -575,6 +586,13 @@ zeit.content.article.Editable = gocept.Class.extend({
             setTimeout(function() {
                 $('body').trigger('update-ads');
             }, 0);
+        } else if (event.key().string == 'KEY_TAB') {
+            // When the user presses the TAB key the next input will be focused.
+            // The event system makes it impossible to detect if the new focus
+            // is inside the editable or not. Thus we indicate that the editor
+            // should be saved -- no matter what -- on the next blur event which
+            // will be triggered after the key down event.
+            self.unconditional_save_on_blur = true;
         }
 
         if (direction !== null) {
