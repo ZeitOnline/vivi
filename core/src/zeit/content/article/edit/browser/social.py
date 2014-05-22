@@ -47,19 +47,21 @@ class Social(zeit.edit.browser.form.InlineForm,
         self.set_charlimit('short_text')
 
     def success_handler(self, action, data, errors=None):
-        enabled_services = [
-            {'type': name} for name in ('facebook', 'google')
-            if data.get(name)]
-        if data.get('twitter'):
-            enabled_services.append(
-                {'type': 'twitter',
-                 'account': twitterAccountSource(None).MAIN_ACCOUNT})
+        message_config = [
+            {'type': name, 'enabled': data.get(name)}
+            for name in ('facebook', 'google')]
+        message_config.append(
+            {'type': 'twitter',
+             'enabled': data.get('twitter'),
+             'account': twitterAccountSource(None).MAIN_ACCOUNT})
         twitter_ressort = data.get('twitter_ressort')
         if twitter_ressort:
-            enabled_services.append(
-                {'type': 'twitter', 'account': twitter_ressort})
+            message_config.append(
+                {'type': 'twitter',
+                 'enabled': True,
+                 'account': twitter_ressort})
         zeit.push.interfaces.IPushMessages(
-            self.context).message_config = enabled_services
+            self.context).message_config = message_config
         return super(Social, self).success_handler(action, data, errors)
 
 
@@ -75,17 +77,29 @@ class Accounts(grok.Adapter):
 
     @property
     def facebook(self):
-        return {'type': 'facebook'} in self.message_config
+        for service in self.message_config:
+            if service['type'] != 'facebook':
+                continue
+            return service['enabled']
+        return True
 
     @property
     def google(self):
-        return {'type': 'google'} in self.message_config
+        for service in self.message_config:
+            if service['type'] != 'google':
+                continue
+            return service['enabled']
+        return True
 
     @property
     def twitter(self):
-        return ({'type': 'twitter',
-                 'account': twitterAccountSource(None).MAIN_ACCOUNT}
-                in self.message_config)
+        for service in self.message_config:
+            if service['type'] != 'twitter':
+                continue
+            if service['account'] != twitterAccountSource(None).MAIN_ACCOUNT:
+                continue
+            return service['enabled']
+        return True
 
     @property
     def twitter_ressort(self):
