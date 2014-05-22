@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.1.2 (unreleased)
+2.2.0 (2014-05-22)
 ------------------
 
 - Add ``IImage.format`` helper property (VIV-385).
