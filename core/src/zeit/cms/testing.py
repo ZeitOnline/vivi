@@ -42,36 +42,34 @@ import zope.testbrowser.testing
 import zope.testing.renormalizing
 
 
-def ZCMLLayer(
-        config_file, module=None, name=None, allow_teardown=True,
-        product_config=None):
-    if module is None:
-        module = inspect.stack()[1][0].f_globals['__name__']
-    if name is None:
-        name = 'ZCMLLayer(%s)' % config_file
-    if not config_file.startswith('/'):
+class ZCML_Layer(plone.testing.Layer):
+
+    def __init__(self, config_file, product_config=None, module=None):
+        if module is None:
+            module = inspect.stack()[1][0].f_globals['__name__']
         config_file = pkg_resources.resource_filename(module, config_file)
-    if product_config is True:
-        product_config = cms_product_config
+        if product_config is True:
+            product_config = cms_product_config
+        self.config_file = config_file
+        self.product_config = product_config
+        super(ZCML_Layer, self).__init__(name='ZCMLLayer', module=module)
 
-    def setUp(cls):
-        cls.setup = zope.app.testing.functional.FunctionalTestSetup(
-            config_file, product_config=product_config)
+    def setUp(self):
+        self.setup = zope.app.testing.functional.FunctionalTestSetup(
+            self.config_file, product_config=self.product_config)
 
-    def tearDown(cls):
-        cls.setup.tearDownCompletely()
-        if not allow_teardown:
-            raise NotImplementedError
+    def tearDown(self):
+        self.setup.tearDownCompletely()
 
-    def testSetUp(cls):
-        cls.setup.setUp()
+    def testSetUp(self):
+        self.setup.setUp()
         # ``local_product_config`` contains mutable elements which tests may
         # modify. Create a copy to let setup restore the *original* config.
-        cls.setup.local_product_config = copy.deepcopy(
-            cls.setup.local_product_config)
-        cls.setup.zca = gocept.zcapatch.Patches()
+        self.setup.local_product_config = copy.deepcopy(
+            self.setup.local_product_config)
+        self.setup.zca = gocept.zcapatch.Patches()
 
-    def testTearDown(cls):
+    def testTearDown(self):
         try:
             connector = zope.component.getUtility(
                 zeit.connector.interfaces.IConnector)
@@ -79,13 +77,38 @@ def ZCMLLayer(
             pass
         else:
             connector._reset()
-        cls.setup.zca.reset()
+        self.setup.zca.reset()
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
-        cls.setup.tearDown()
+        self.setup.tearDown()
 
-    layer = type(name, (object,), dict(
-        __module__=module,
+
+# BBB: The old class-based layers are still used by clients (who then inherit
+# from them to customize). This can be removed when all clients use the
+# plone.testing-style.
+def ZCMLLayer(
+        config_file, module=None, name=None, allow_teardown=True,
+        product_config=None):
+    if module is None:
+        module = inspect.stack()[1][0].f_globals['__name__']
+
+    LAYER = ZCML_Layer(config_file, product_config, module)
+
+    def setUp(cls):
+        LAYER.setUp()
+        cls.setup = LAYER.setup
+
+    def tearDown(cls):
+        LAYER.tearDown()
+
+    def testSetUp(cls):
+        LAYER.testSetUp()
+
+    def testTearDown(cls):
+        LAYER.testTearDown()
+
+    layer = type(LAYER.__name__, (object,), dict(
+        __module__=LAYER.__module__,
         setUp=classmethod(setUp),
         tearDown=classmethod(tearDown),
         testSetUp=classmethod(testSetUp),
@@ -212,7 +235,7 @@ cms_product_config = string.Template("""\
     base=pkg_resources.resource_filename(__name__, ''))
 
 
-ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=True)
+ZCML_LAYER = ZCML_Layer('ftesting.zcml', product_config=True)
 WSGI_LAYER = WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))

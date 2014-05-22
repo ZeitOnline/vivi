@@ -1,6 +1,7 @@
 # Copyright (c) 2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import plone.testing
 import unittest
 import zeit.cms.testing
 
@@ -18,32 +19,23 @@ class TestProductConfigIsolation(zeit.cms.testing.ZeitCmsTestCase):
             'isolated', zope.app.appsetup.product._configs['zeit.cms'])
 
 
-class LayerWithProductConfig(zeit.cms.testing.ZCML_LAYER):
+class LayerWithProductConfig(plone.testing.Layer):
 
-    @classmethod
-    def testSetUp(cls):
+    defaultBases = (zeit.cms.testing.ZCML_LAYER,)
+
+    def testSetUp(self):
         import zope.app.appsetup.product
         zope.app.appsetup.product._configs['zeit.foo'] = {}
         product_config = zope.app.appsetup.product._configs['zeit.foo']
         product_config['available'] = 'in-test'
 
-    @classmethod
-    def testTearDown(cls):
-        pass
-
-    @classmethod
-    def setUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
+PRODUCT_CONFIG_LAYER = LayerWithProductConfig()
 
 
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'test_testing_isolation.txt',
-        layer=LayerWithProductConfig))
+        layer=PRODUCT_CONFIG_LAYER))
     suite.addTest(unittest.makeSuite(TestProductConfigIsolation))
     return suite

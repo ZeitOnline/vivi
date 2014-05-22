@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.18.1 (unreleased)
+2.19.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Switch ZCMLLayer to plone.testing.
 
 
 2.18.0 (2014-05-09)
