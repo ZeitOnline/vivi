@@ -458,51 +458,6 @@
   background-size: 20px 20px;
 }
 
-.type-article #preview-tabs {
-  border:none;
-  padding:0;
-}
-
-.type-article #preview-tabs ul {
-  border:0;
-  padding:0;
-  background:none;
-  background-color:#CDD9E3;
-}
-
-.type-article #preview-tabs ul li{
-  padding:0;
-  margin:0;
-  border:0;
-  background:none;
-}
-
-.type-article #preview-tabs ul li.ui-state-active{
-  background-color:white;
-  border:1px solid #CCCCCC;
-  border-top:none;
-  border-bottom:none;
-}
-
-.type-article #preview-tabs ul li:hover{
-  background-color:#CCCCCC;
-  color:white;
-}
-.type-article #preview-tabs ul li.ui-state-active:hover{
-  background-color:white;
-  color:auto;
-}
-
-
-.type-article #preview-tabs ul li a{
-  padding:0.4em 0.6em 0.4em 0.6em;
-  margin:0;
-}
-
-.type-article #preview-tabs iframe {
-  padding:0
-}
-
 .type-article .type-article.location-unknown #edit-form-article-content .block-inner {
    padding:0;
 }
