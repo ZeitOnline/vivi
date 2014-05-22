@@ -11,7 +11,7 @@ import zeit.cms.testing
 class UpdateItem(zeit.cms.testing.BrowserTestCase,
                  zeit.cms.tagging.testing.TaggingHelper):
 
-    layer = zeit.brightcove.testing.BrightcoveLayer
+    layer = zeit.brightcove.testing.BRIGHTCOVE_LAYER
 
     def setUp(self):
         super(UpdateItem, self).setUp()

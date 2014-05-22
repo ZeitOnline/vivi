@@ -2,8 +2,10 @@
 # See also LICENSE.txt
 
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
+import gocept.httpserverlayer.custom
 import json
 import mock
+import plone.testing
 import time
 import transaction
 import urlparse
@@ -130,7 +132,7 @@ PLAYLIST_LIST_RESPONSE = {
 PLAYLIST_LIST_RESPONSE['items'][1]['id'] = 3456
 
 
-class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     posts_received = []
     response = 200
@@ -186,31 +188,37 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
         pass
 
 
-BrightcoveHTTPLayer, httpd_port = zeit.cms.testing.HTTPServerLayer(
-    RequestHandler)
+HTTP_LAYER = gocept.httpserverlayer.custom.Layer(
+    RequestHandler, name='BrightcoveHTTPLayer')
 
 
 product_config = """\
 <product-config zeit.brightcove>
     read-token rdtkn
     write-token writetnk
-    read-url http://localhost:%s/
-    write-url http://localhost:%s/
+    read-url http://localhost:{port}/
+    write-url http://localhost:{port}/
     timeout 300
     video-folder video
     playlist-folder video/playlist
 </product-config>
-""" % (httpd_port,
-       httpd_port)
+"""
 
 
-BrightcoveZCMLLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml',
-    product_config=(
-        zeit.cms.testing.cms_product_config +
-        zeit.solr.testing.product_config +
-        zeit.workflow.testing.product_config +
-        product_config))
+class ZCMLLayer(zeit.cms.testing.ZCML_Layer):
+
+    defaultBases = (HTTP_LAYER,)
+
+    def setUp(self):
+        self.product_config = self.product_config.format(
+            port=self['http_port'])
+        super(ZCMLLayer, self).setUp()
+
+ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=(
+    zeit.cms.testing.cms_product_config +
+    zeit.solr.testing.product_config +
+    zeit.workflow.testing.product_config +
+    product_config))
 
 
 def update_repository(root):
@@ -219,43 +227,41 @@ def update_repository(root):
             zeit.brightcove.update.update_from_brightcove()
 
 
-class BrightcoveLayer(BrightcoveHTTPLayer,
-                      BrightcoveZCMLLayer,
-                      zeit.solr.testing.SolrMockLayerBase):
+class BrightcoveLayer(plone.testing.Layer):
 
-    @classmethod
-    def setUp(cls):
+    defaultBases = (ZCML_LAYER, zeit.solr.testing.SolrMockLayerBase)
+
+    def setUp(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         product_config['publish-script'] = 'true'
         product_config['retract-script'] = 'true'
 
-        cls.resolve_patch = mock.patch(
+        self.resolve_patch = mock.patch(
             'zeit.brightcove.converter.resolve_video_id',
-            new=cls.resolve_video_id)
-        cls.resolve_patch.start()
+            new=self.resolve_video_id)
+        self.resolve_patch.start()
 
     @staticmethod
     def resolve_video_id(video_id):
         return zeit.brightcove.converter.Video.find_by_id(video_id).uniqueId
 
-    @classmethod
-    def tearDown(cls):
-        cls.resolve_patch.stop()
+    def tearDown(self):
+        self.resolve_patch.stop()
 
-    @classmethod
-    def testSetUp(cls):
+    def testSetUp(self):
         pass
 
-    @classmethod
-    def testTearDown(cls):
+    def testTearDown(self):
         RequestHandler.posts_received[:] = []
+
+BRIGHTCOVE_LAYER = BrightcoveLayer()
 
 
 class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase,
                          zeit.cms.tagging.testing.TaggingHelper):
 
-    layer = BrightcoveLayer
+    layer = BRIGHTCOVE_LAYER
 
     def setUp(self):
         super(BrightcoveTestCase, self).setUp()
@@ -275,7 +281,7 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase,
 
 
 def FunctionalDocFileSuite(*args, **kw):
-    kw.setdefault('layer', BrightcoveLayer)
+    kw.setdefault('layer', BRIGHTCOVE_LAYER)
     kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
