@@ -1,7 +1,7 @@
 zeit.imp changes
 ================
 
-0.15.3 (unreleased)
+0.16.0 (2014-05-22)
 +++++++++++++++++++
 
 - Support PNG (with alpha) image format (VIV-358).
