@@ -53,7 +53,7 @@ class Social(zeit.edit.browser.form.InlineForm,
         if data.get('twitter'):
             enabled_services.append(
                 {'type': 'twitter',
-                 'account': twitterAccountSource.MAIN_ACCOUNT})
+                 'account': twitterAccountSource(None).MAIN_ACCOUNT})
         twitter_ressort = data.get('twitter_ressort')
         if twitter_ressort:
             enabled_services.append(
@@ -84,7 +84,7 @@ class Accounts(grok.Adapter):
     @property
     def twitter(self):
         return ({'type': 'twitter',
-                 'account': twitterAccountSource.MAIN_ACCOUNT}
+                 'account': twitterAccountSource(None).MAIN_ACCOUNT}
                 in self.message_config)
 
     @property
@@ -93,7 +93,7 @@ class Accounts(grok.Adapter):
             if service['type'] != 'twitter':
                 continue
             account = service.get('account')
-            if account != twitterAccountSource.MAIN_ACCOUNT:
+            if account != twitterAccountSource(None).MAIN_ACCOUNT:
                 return account
         return None
 
