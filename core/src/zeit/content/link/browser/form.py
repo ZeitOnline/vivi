@@ -2,20 +2,17 @@
 # See also LICENSE.txt
 """Link forms."""
 
-import zope.formlib.form
-
-import zeit.cms.browser.form
 from zeit.cms.i18n import MessageFactory as _
-
+import zeit.cms.content.browser.form
 import zeit.content.link.interfaces
 import zeit.content.link.link
-import zeit.cms.content.browser.form
+import zope.formlib.form
 
 
 class Base(object):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.link.interfaces.ILink).omit('xml')
+        zeit.content.link.interfaces.ILink).omit('xml', 'authors')
 
 
 class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
