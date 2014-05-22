@@ -75,3 +75,15 @@ class SendingNotifications(zeit.push.testing.TestCase):
         self.assertEqual(None, push.date_last_pushed)
         self.publish(content)
         self.assertNotEqual(None, push.date_last_pushed)
+
+    def test_error_during_push_is_caught(self):
+        self.parse.send.side_effect = RuntimeError('provoked')
+        content = ICMSContent('http://xml.zeit.de/testcontent')
+        push = IPushMessages(content)
+        push.enabled = True
+        push.message_config = [{'type': 'parse', 'enabled': True}]
+        self.publish(content)
+        # This is sort of assertNothingRaised, except that publishing
+        # runs in a separate thread (remotetask), so we would not see
+        # the exception here anyway.
+        self.assertNotEqual(None, push.date_last_pushed)

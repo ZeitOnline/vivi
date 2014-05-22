@@ -1,12 +1,16 @@
 from datetime import datetime
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import grokcore.component as grok
+import logging
 import pytz
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.objectlog.interfaces
 import zeit.workflow.interfaces
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
@@ -58,9 +62,16 @@ def send_push_on_publish(context, event):
         return
 
     for message in push.messages:
-        zeit.objectlog.interfaces.ILog(context).log(
-            'Push to "%s", %s' % (message.type, message.config))
-        message.send()
+        config = {key: value for key, value in message.config.items()
+                  if key not in ('type', 'enabled')}
+        log_msg = 'Push "%s": %s' % (message.type, config)
+        try:
+            message.send()
+        except Exception, e:
+            log.error('Error during push to %s(%s)', message.type, config,
+                      exc_info=True)
+            log_msg += ' error: %s' % str(e)
+        zeit.objectlog.interfaces.ILog(context).log(log_msg)
 
     push.date_last_pushed = datetime.now(pytz.UTC)
     push.enabled = False
