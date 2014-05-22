@@ -12,6 +12,7 @@ import zeit.cms.testing
 import zeit.content.author.testing
 import zeit.content.cp.testing
 import zeit.content.gallery.testing
+import zeit.push
 import zeit.workflow.testing
 import zope.component
 import zope.testing.renormalizing
@@ -27,11 +28,6 @@ product_config = """
     video-layout-source file://%s
     htmlblock-layout-source file://%s
 </product-config>
-
-<product-config zeit.push>
-  twitter-accounts file://%s
-  twitter-main-account testaccount
-</product-config>
 """ % (
     pkg_resources.resource_filename(
         __name__, '/tests/recension_categories.xml'),
@@ -40,8 +36,6 @@ product_config = """
     pkg_resources.resource_filename(__name__, '/edit/tests/video-layouts.xml'),
     pkg_resources.resource_filename(
         __name__, '/edit/tests/htmlblock-layouts.xml'),
-    pkg_resources.resource_filename(
-        'zeit.push.tests', 'fixtures/twitter-accounts.xml'),
 )
 
 
@@ -60,6 +54,7 @@ ArticleZCMLLayer = zeit.cms.testing.ZCMLLayer(
         zeit.content.cp.testing.product_config +
         zeit.content.gallery.testing.product_config +
         zeit.content.author.testing.product_config +
+        zeit.push.product_config +
         zeit.cms.testing.cms_product_config))
 
 
