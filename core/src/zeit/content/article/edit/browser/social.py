@@ -79,7 +79,7 @@ class Accounts(grok.Adapter):
 
     @property
     def google(self):
-        return {'type': 'facebook'} in self.message_config
+        return {'type': 'google'} in self.message_config
 
     @property
     def twitter(self):
