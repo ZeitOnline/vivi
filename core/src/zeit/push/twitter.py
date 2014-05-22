@@ -24,7 +24,14 @@ class Connection(object):
         auth.set_access_token(access_token, access_secret)
         api = tweepy.API(auth)
 
-        api.update_status(u'%s %s' % (text, link))
+        try:
+            api.update_status(u'%s %s' % (text, link))
+        except tweepy.TweepError, e:
+            status = e.response.status
+            if status < 500:
+                raise zeit.push.interfaces.WebServiceError(str(e))
+            else:
+                raise zeit.push.interfaces.TechnicalError(str(e))
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
