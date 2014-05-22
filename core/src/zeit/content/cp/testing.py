@@ -43,7 +43,7 @@ product_config = """
 )
 
 
-layer = zeit.cms.testing.ZCMLLayer(
+layer = zeit.cms.testing.ZCML_Layer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config +
     zeit.workflow.testing.product_config)
