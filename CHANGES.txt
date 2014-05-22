@@ -9,6 +9,8 @@ zeit.push changes
 
 - Add a link to the actual article to ``/eilmeldung/eilmeldung`` (VIV-382).
 
+- Implement posting to Twitter (VIV-370).
+
 
 1.1.0 (2014-05-09)
 ------------------

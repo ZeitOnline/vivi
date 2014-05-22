@@ -1,4 +1,5 @@
 import logging
+import pkg_resources
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.push.interfaces
@@ -7,6 +8,15 @@ import zope.interface
 
 
 log = logging.getLogger(__name__)
+
+product_config = """\
+<product-config zeit.push>
+  twitter-accounts file://%s
+  twitter-main-account testaccount
+</product-config>
+""" % pkg_resources.resource_filename(
+    __name__, 'tests/fixtures/twitter-accounts.xml')
+
 
 parse_settings = {
     # The ``test`` app
@@ -36,7 +46,8 @@ class PushNotifier(object):
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('testing.zcml', product_config=(
-    zeit.cms.testing.cms_product_config
+    product_config
+    + zeit.cms.testing.cms_product_config
     + zeit.workflow.testing.product_config
     + zeit.content.article.testing.product_config))
 

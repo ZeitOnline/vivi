@@ -4,5 +4,6 @@
 
   <utility factory=".testing.PushNotifier" name="parse" />
   <utility factory=".testing.PushNotifier" name="homepage" />
+  <utility factory=".testing.PushNotifier" name="twitter" />
 
 </configure>

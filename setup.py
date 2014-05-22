@@ -18,6 +18,8 @@ setup(
         'pytz',
         'requests',
         'setuptools',
+        'tweepy',
+        'zc.sourcefactory',
         'zeit.cms',
         'zeit.content.article>=3.3.0.dev0',
         'zeit.objectlog',
