@@ -732,7 +732,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                         + MochiKit.Base.queryString({
                             'start': self.edited_paragraphs[0],
                             'end': self.edited_paragraphs[
-                                self.edited_paragraphs.length-1],
+                                self.edited_paragraphs.length-1]
                         }));
                     return result;
                 });
