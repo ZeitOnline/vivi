@@ -1,3 +1,4 @@
+import unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.push.interfaces
@@ -22,16 +23,17 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_stores_IPushMessage_fields(self):
         self.open_form()
         b = self.browser
-        b.getControl('Long push text').value = 'longtext'
+        # b.getControl('Long push text').value = 'longtext'
         b.getControl('Short push text').value = 'shorttext'
         b.getControl('Push after next publish?').selected = True
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual('longtext', push.long_text)
+        # self.assertEqual('longtext', push.long_text)
         self.assertEqual('shorttext', push.short_text)
         self.assertEqual(True, push.enabled)
 
+    @unittest.skip("bring back when Facebook is enabled again")
     def test_converts_account_checkboxes_to_message_config(self):
         self.open_form()
         b = self.browser

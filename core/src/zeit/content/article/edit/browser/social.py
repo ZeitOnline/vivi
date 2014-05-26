@@ -14,7 +14,7 @@ class Container(zeit.edit.browser.form.FoldableFormGroup):
 
 class IAccounts(zope.interface.Interface):
 
-    facebook = zope.schema.Bool(title=_('Enable Facebook'))
+    # facebook = zope.schema.Bool(title=_('Enable Facebook'))
     twitter = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort = zope.schema.Choice(
         title=_('Additional Twitter'),
@@ -29,11 +29,12 @@ class Social(zeit.edit.browser.form.InlineForm,
     prefix = 'social'
     undo_description = _('edit social media')
     form_fields = (
+        # zope.formlib.form.FormFields(
+        #     zeit.push.interfaces.IPushMessages).select('long_text')
+        # + zope.formlib.form.FormFields(
+        #     IAccounts).select('facebook')
+        # +
         zope.formlib.form.FormFields(
-            zeit.push.interfaces.IPushMessages).select('long_text')
-        + zope.formlib.form.FormFields(
-            IAccounts).select('facebook')
-        + zope.formlib.form.FormFields(
             zeit.push.interfaces.IPushMessages).select('short_text')
         + zope.formlib.form.FormFields(
             IAccounts).select('twitter', 'twitter_ressort')
@@ -47,8 +48,8 @@ class Social(zeit.edit.browser.form.InlineForm,
 
     def success_handler(self, action, data, errors=None):
         message_config = [
-            {'type': 'facebook',
-             'enabled': data.get('facebook')},
+            # {'type': 'facebook',
+            #  'enabled': data.get('facebook')},
             {'type': 'twitter',
              'enabled': data.get('twitter'),
              'account': twitterAccountSource(None).MAIN_ACCOUNT}
