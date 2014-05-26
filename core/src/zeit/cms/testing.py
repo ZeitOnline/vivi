@@ -47,7 +47,8 @@ class ZCML_Layer(plone.testing.Layer):
     def __init__(self, config_file, product_config=None, module=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
-        config_file = pkg_resources.resource_filename(module, config_file)
+        if not config_file.startswith('/'):
+            config_file = pkg_resources.resource_filename(module, config_file)
         if product_config is True:
             product_config = cms_product_config
         self.config_file = config_file
