@@ -19,7 +19,7 @@ class StaticArticlePublisher(object):
     def send(self, text, link, **kw):
         article = ICMSContent(self.uniqueId)
         with checked_out(article, semantic_change=True) as co:
-            IBreakingNewsBody(co).text = '<a href="{link}">{text}</a>'.format(
+            IBreakingNewsBody(co).text = u'<a href="{link}">{text}</a>'.format(
                 link=link, text=text)
         IPublishInfo(article).urgent = True
         IPublish(article).publish()
