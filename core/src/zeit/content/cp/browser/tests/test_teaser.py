@@ -10,7 +10,7 @@ class TeaserEditForm(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.cp.testing.layer
 
-    def test_teaser_supertitle_is_stored_on_free_teaser(self):
+    def test_supertitle_is_stored_on_free_teaser(self):
         b = self.browser
         zeit.content.cp.browser.testing.create_cp(b)
         b.open('contents')
@@ -23,7 +23,7 @@ class TeaserEditForm(zeit.cms.testing.BrowserTestCase):
         b.getLink('Edit').click()
         lightbox_url = b.url
 
-        b.getControl('Teaser kicker').value = 'foo'
+        b.getControl('Kicker').value = 'foo'
         b.getControl('Apply only for this page').click()
         b.open(lightbox_url)
-        self.assertEqual('foo', b.getControl('Teaser kicker').value)
+        self.assertEqual('foo', b.getControl('Kicker').value)

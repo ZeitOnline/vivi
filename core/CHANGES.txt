@@ -5,6 +5,8 @@ zeit.content.cp changes
 2.3.4 (unreleased)
 ------------------
 
+- Remove "teaser supertitle" field from teaser edit form (TT-511).
+
 - Use gocept.httpserverlayer.custom to avoid port collisions in tests.
 
 
