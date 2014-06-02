@@ -104,6 +104,10 @@ pre {
   display: inline-block;
 }
 
+.field.error {
+  display: inherit;
+}
+
 .feedsorting {
   width: 100%;
 }

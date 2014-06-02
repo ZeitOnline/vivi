@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Switch ZCMLLayer to plone.testing.
 
+- Fix styling of fields with errors (VIV-25).
+
 
 2.18.0 (2014-05-09)
 -------------------
