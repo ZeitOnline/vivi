@@ -377,6 +377,7 @@ included. Setup an article with ICommonMetadata:
 >>> art2.volume = 4
 >>> art2.ressort = u'International'
 >>> art2.breadcrumb_title = u'Streik'
+>>> art2.serie = 'Serie'
 
 Provide the interface:
 
@@ -392,7 +393,7 @@ Insert the article to the feed:
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title>Politik</title>
   <container>
-    <block href="art2" uniqueId="art2" year="2007" issue="4"...>
+    <block href="art2" uniqueId="art2" year="2007" issue="4" ressort="International" serie="Serie">
       <supertitle py:pytype="str">Frankreich</supertitle>
       <teaser_supertitle py:pytype="str">Frankreich</teaser_supertitle>
       <title py:pytype="str">Keine Sieger</title>

@@ -281,6 +281,8 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
             entry.set('issue', unicode(metadata.volume))
         if metadata.ressort:
             entry.set('ressort', unicode(metadata.ressort))
+        if metadata.serie:
+            entry.set('serie', unicode(metadata.serie))
         # BBB The ``author`` attribute is deprecated in favor of the <author>
         # tags, but XSLT and mobile still use it.
         try:
