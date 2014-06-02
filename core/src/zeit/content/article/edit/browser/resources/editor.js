@@ -245,9 +245,13 @@ zeit.content.article.Editable = gocept.Class.extend({
                 offset = text_node.data.length;
             }
         }
+        this._set_selection_offset(text_node, offset);
+    },
+
+    _set_selection_offset: function(node, offset) {
         var range = window.getSelection().getRangeAt(0);
-        range.setStart(text_node, offset);
-        range.setEnd(text_node, offset);
+        range.setStart(node, offset);
+        range.setEnd(node, offset);
     },
 
     is_block_editable: function(block) {
@@ -639,10 +643,18 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.fix_html();
             $(self.editable).children().has('style').remove();
             $(self.editable).find('a').attr('target', '_blank');
+
+            var range = window.getSelection().getRangeAt(0);
+            var selection_node = range.startContainer;
+            var selection_offset = range.startOffset;
             $(self.editable).find('*:not(:has(*))').each(function() {
-                var element = $(this);
-                element.text(element.text().replace(/[\u2028]/, ''));
+                var text_node = this.firstChild;
+                if (text_node && text_node.nodeType == text_node.TEXT_NODE) {
+                    text_node.textContent = text_node.textContent.replace(
+                            /[\u2028]/, '');
+                }
             });
+            self._set_selection_offset(selection_node, selection_offset);
         }, 0);
     },
 
