@@ -395,7 +395,6 @@ Insert the article to the feed:
   <container>
     <block href="art2" uniqueId="art2" year="2007" issue="4" ressort="International" serie="Serie">
       <supertitle py:pytype="str">Frankreich</supertitle>
-      <teaser_supertitle py:pytype="str">Frankreich</teaser_supertitle>
       <title py:pytype="str">Keine Sieger</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
       <description py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</description>
@@ -421,7 +420,6 @@ changes:
   <container>
     <block href="art2" uniqueId="art2" year="2007" issue="4"...>
       <supertitle py:pytype="str">Fronkroisch</supertitle>
-      <teaser_supertitle py:pytype="str">Fronkroisch</teaser_supertitle>
       <title py:pytype="str">New Title</title>
       ...
     </block>

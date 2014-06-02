@@ -6,9 +6,11 @@ zeit.cms changes
 
 - Switch ZCMLLayer to plone.testing.
 
-- Add ``serie`` attribute to references (VIV-383).
+- Add ``serie`` attribute to XML references (VIV-383).
 
 - Fix styling of fields with errors (VIV-25).
+
+- Remove ``teaser_supertitle`` from XML references (TT-511).
 
 
 2.18.0 (2014-05-09)
