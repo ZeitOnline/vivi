@@ -9,8 +9,7 @@ $(document).bind('fragment-ready', function(event) {
     'click.zeit.edit.details').bind(
         'click.zeit.edit.details', function(event) {
         var button = $(event.target);
-        var pane = $('.folded_information', button.closest('.object-details-body'));
-        pane.slideToggle('slow');
+        $('.folded_information', button.parent()).slideToggle('slow');
         button.toggleClass('folded');
         return false;
     });
