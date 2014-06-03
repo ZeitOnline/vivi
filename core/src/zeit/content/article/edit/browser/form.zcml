@@ -832,6 +832,7 @@
 
   <!-- social media -->
 
+  <!-- XXX feature disabled until facebook is implemented
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -842,6 +843,7 @@
     permission="zope.View"
     weight="75"
     />
+  -->
 
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
