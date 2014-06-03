@@ -756,11 +756,15 @@
 
 .type-article #article-content-suggest-keywords .toggle_infos,
 .type-article #article-content-suggest-keywords .toggle_infos:hover {
-  background-position: 10 -113px, 0 0;
+  background-position: 10px -2660px, 0 0;
   margin-top: 15px;
   margin-bottom: 10px;
 }
 
+.type-article #article-content-suggest-keywords .toggle_infos.folded,
+.type-article #article-content-suggest-keywords .toggle_infos.folded:hover {
+  background-position: 10px -113px, 0 0;
+}
 
 .type-article .object-details .folded_information {
   background-color: #f1f4f9;
