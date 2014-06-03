@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.3.4 (unreleased)
+2.3.4 (2014-06-03)
 ------------------
 
 - Remove "teaser supertitle" field from teaser edit form (TT-511).
