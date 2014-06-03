@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.3.2 (unreleased)
+3.4.0 (2014-06-03)
 ------------------
 
 - Fix save of WhYSIWYG editor when the user clicks on an input field (VIV-395)
