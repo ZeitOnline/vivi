@@ -23,7 +23,7 @@ class TeaserEditForm(zeit.cms.testing.BrowserTestCase):
         b.getLink('Edit').click()
         lightbox_url = b.url
 
-        b.getControl('Kicker').value = 'foo'
+        b.getControl('Teaser kicker').value = 'foo'
         b.getControl('Apply only for this page').click()
         b.open(lightbox_url)
-        self.assertEqual('foo', b.getControl('Kicker').value)
+        self.assertEqual('foo', b.getControl('Teaser kicker').value)

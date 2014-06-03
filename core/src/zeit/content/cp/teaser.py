@@ -23,9 +23,9 @@ class XMLTeaser(zope.container.contained.Contained,
 
     zope.interface.implements(zeit.content.cp.interfaces.IXMLTeaser)
 
-    supertitle = zeit.cms.content.property.ObjectPathProperty(
+    teaserSupertitle = zeit.cms.content.property.ObjectPathProperty(
         '.supertitle',
-        zeit.cms.content.interfaces.ICommonMetadata['supertitle'])
+        zeit.cms.content.interfaces.ICommonMetadata['teaserSupertitle'])
     teaserTitle = zeit.cms.content.property.ObjectPathProperty(
         '.title',
         zeit.cms.content.interfaces.ICommonMetadata['teaserTitle'])

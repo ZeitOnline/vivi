@@ -183,9 +183,13 @@ class Display(zeit.cms.browser.view.Base):
                 continue
 
             texts = []
-            for name in ('supertitle', 'teaserTitle', 'teaserText'):
-                texts.append(dict(
-                    css_class=name, content=getattr(metadata, name)))
+            supertitle_property = (
+                'teaserSupertitle' if metadata.teaserSupertitle
+                else 'supertitle')
+            texts.append(self._make_text_entry(
+                metadata, 'supertitle', supertitle_property))
+            for name in ('teaserTitle', 'teaserText'):
+                texts.append(self._make_text_entry(metadata, name))
 
             if i == 0:
                 self.header_image = self.get_image(content)
@@ -216,6 +220,11 @@ class Display(zeit.cms.browser.view.Base):
             for column in self.columns:
                 if column:
                     column[0]['image'] = None
+
+    def _make_text_entry(self, metadata, css_class, name=None):
+        if name is None:
+            name = css_class
+        return dict(css_class=css_class, content=getattr(metadata, name))
 
     def get_image(self, content, image_pattern=None):
         if image_pattern is None:
