@@ -60,10 +60,10 @@ class EditTeaser(zope.formlib.form.SubPageEditForm):
         _('Apply for article'), name='apply_in_article',
         condition=_is_not_teaser)
     def apply_in_article(self, action, data):
-        # TODO: adapt fails
         content = zeit.cms.interfaces.ICMSContent(self.context.uniqueId)
         with zeit.cms.checkout.helper.checked_out(content) as co:
-            # XXX if co is None
+            # XXX This fails (and co will be None) if the user has the original
+            # article checked out already (VIV-403)
             self._apply(co, data)
 
     @zope.formlib.form.action(
