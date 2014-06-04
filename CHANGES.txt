@@ -4,7 +4,7 @@ zeit.push changes
 1.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Re-activate /eilmeldung/eilmeldung parse.com workaround.
 
 
 1.2.0 (2014-06-03)
