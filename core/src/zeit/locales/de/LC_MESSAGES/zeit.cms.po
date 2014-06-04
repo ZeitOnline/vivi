@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jun  4 10:45:30 2014\n"
-"PO-Revision-Date: 2014-06-04 10:48+0100\n"
+"POT-Creation-Date: Wed Jun  4 11:16:38 2014\n"
+"PO-Revision-Date: 2014-06-04 11:17+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1585,12 +1585,12 @@ msgid "Article"
 msgstr "Artikel"
 
 #: zeit/content/article/browser/breaking.py:22
-msgid "Parse.com"
+msgid "breaking-news-parse"
 msgstr "Android-Geräte"
 
 #: zeit/content/article/browser/breaking.py:24
-msgid "Homepage"
-msgstr "Homepage"
+msgid "breaking-news-homepage"
+msgstr "Homepage und iOS-Geräte"
 
 #: zeit/content/article/browser/breaking.py:49
 msgid "Push services"
@@ -3858,6 +3858,12 @@ msgstr "Zweites Video"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "Parse.com"
+#~ msgstr "Android-Geräte"
+
+#~ msgid "Homepage"
+#~ msgstr "Homepage"
 
 #~ msgid "Enable Facebook"
 #~ msgstr "Facebook ZON Hauptaccount"

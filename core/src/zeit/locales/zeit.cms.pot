@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Jun  4 10:45:30 2014\n"
+"POT-Creation-Date: Wed Jun  4 11:16:38 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1623,11 +1623,11 @@ msgid "Article"
 msgstr ""
 
 #: zeit/content/article/browser/breaking.py:22
-msgid "Parse.com"
+msgid "breaking-news-parse"
 msgstr ""
 
 #: zeit/content/article/browser/breaking.py:24
-msgid "Homepage"
+msgid "breaking-news-homepage"
 msgstr ""
 
 #: zeit/content/article/browser/breaking.py:49
