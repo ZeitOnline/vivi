@@ -19,9 +19,9 @@ import zope.schema
 class IPushServices(zope.interface.Interface):
 
     parse = zope.schema.Bool(
-        title=u'Parse.com', required=False, default=True)
+        title=_('Parse.com'), required=False, default=True)
     homepage = zope.schema.Bool(
-        title=u'Homepage', required=False, default=True)
+        title=_('Homepage'), required=False, default=True)
 
 
 class Add(zeit.cms.browser.form.AddForm,
