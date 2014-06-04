@@ -4,7 +4,7 @@ zeit.content.article changes
 3.4.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Disable breaking news feature for the time being (again).
 
 
 3.4.1 (2014-06-03)
