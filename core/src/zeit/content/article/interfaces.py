@@ -208,7 +208,8 @@ class IBreakingNews(IArticle):
     """
 
     title = zope.schema.Text(
-        title=_("Title"), missing_value=u'', max_length=30)
+        title=_("Title"), missing_value=u'')
+    title.setTaggedValue('zeit.cms.charlimit', 30)
 
 
 IBreakingNews.setTaggedValue(

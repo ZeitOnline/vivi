@@ -4,7 +4,7 @@ zeit.content.article changes
 3.4.3 (unreleased)
 ------------------
 
-- Reactivate breaking news feature (again).
+- Reactivate breaking news feature (again), make title character limit soft.
 
 
 3.4.2 (2014-06-04)

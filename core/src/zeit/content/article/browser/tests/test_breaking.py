@@ -87,16 +87,3 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.catalog.messages['breaking-news-more-shortly'] = 'foo'
         self.create_breakingnews()
         self.assertEqual('foo', b.getControl('Article body').value)
-
-    def test_title_has_max_length(self):
-        # ICommonMetadata.title only has a charlimit annotation=75, but no max
-        # length (due to Print articles, IIRC), but for breaking news we want
-        # a hard limit of 30 due to the mobile devices.
-        self.create_breakingnews()
-        self.fill_in_required_values()
-        b = self.browser
-        b.getControl('Title').value = 'a' * (
-            zeit.content.article.interfaces.IBreakingNews[
-                'title'].max_length + 1)
-        b.getControl('Publish and push').click()
-        self.assertEllipsis('...too long...', b.contents)
