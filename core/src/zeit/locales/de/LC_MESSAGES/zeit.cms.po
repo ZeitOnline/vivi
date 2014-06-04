@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu May 22 11:07:29 2014\n"
-"PO-Revision-Date: 2014-05-22 11:08+0100\n"
+"POT-Creation-Date: Wed Jun  4 10:45:30 2014\n"
+"PO-Revision-Date: 2014-06-04 10:48+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1584,6 +1584,14 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Article"
 msgstr "Artikel"
 
+#: zeit/content/article/browser/breaking.py:22
+msgid "Parse.com"
+msgstr "Android-Geräte"
+
+#: zeit/content/article/browser/breaking.py:24
+msgid "Homepage"
+msgstr "Homepage"
+
 #: zeit/content/article/browser/breaking.py:49
 msgid "Push services"
 msgstr "Push-Dienste"
@@ -1895,10 +1903,6 @@ msgstr "lade neu"
 #: zeit/content/article/edit/browser/social.py:12
 msgid "Social media"
 msgstr "Social Media"
-
-#: zeit/content/article/edit/browser/social.py:17
-msgid "Enable Facebook"
-msgstr "Facebook ZON Hauptaccount"
 
 #: zeit/content/article/edit/browser/social.py:18
 msgid "Enable Twitter"
@@ -2215,7 +2219,7 @@ msgstr "Wählen Sie das Objekt von dem die Kommentare verwendet werden sollen."
 msgid "Export to Tagesspiegel"
 msgstr "Zum Tagesspiegel exportieren"
 
-#: zeit/content/article/interfaces.py:217
+#: zeit/content/article/interfaces.py:218
 #: zeit/content/article/browser/configure.zcml:94
 msgid "Add breaking news"
 msgstr "Eilmeldung"
@@ -2718,7 +2722,7 @@ msgid "Time"
 msgstr "Zeit"
 
 #. Default: ""
-#: zeit/content/cp/teaser.py:188
+#: zeit/content/cp/teaser.py:185
 msgid "\"${name}\" is referenced by a free teaser in \"${teaser}\""
 msgstr ""
 "Achtung: »${name}« wird von dem Teaser »${teaser}« referenziert. Inhaltliche "
@@ -3075,15 +3079,15 @@ msgstr "Infobox bearbeiten"
 msgid "View infobox"
 msgstr "Infobox anzeigen"
 
-#: zeit/content/link/browser/form.py:23
+#: zeit/content/link/browser/form.py:20
 msgid "Add link"
 msgstr "Link hinzufügen"
 
-#: zeit/content/link/browser/form.py:31
+#: zeit/content/link/browser/form.py:28
 msgid "Edit link"
 msgstr "Link bearbeiten"
 
-#: zeit/content/link/browser/form.py:36
+#: zeit/content/link/browser/form.py:33
 msgid "View link metadata"
 msgstr "Metadaten"
 
@@ -3855,6 +3859,9 @@ msgstr "Zweites Video"
 msgid "with info"
 msgstr "mit Info"
 
+#~ msgid "Enable Facebook"
+#~ msgstr "Facebook ZON Hauptaccount"
+
 #~ msgid "Enable Google Plus"
 #~ msgstr "G+ ZON Hauptaccount"
 
@@ -4156,9 +4163,6 @@ msgstr "mit Info"
 #~ msgstr ""
 #~ "Beim Checkin werden Metadaten und Teaser in den aktivierten Channels "
 #~ "nicht automatisch aktualisiert."
-
-#~ msgid "Homepage"
-#~ msgstr "Homepage"
 
 #~ msgid "Zeit CMS Search Preferences"
 #~ msgstr "Benutzereinstellungen zur Suche"

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu May 22 11:07:29 2014\n"
+"POT-Creation-Date: Wed Jun  4 10:45:30 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1622,6 +1622,14 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
+#: zeit/content/article/browser/breaking.py:22
+msgid "Parse.com"
+msgstr ""
+
+#: zeit/content/article/browser/breaking.py:24
+msgid "Homepage"
+msgstr ""
+
 #: zeit/content/article/browser/breaking.py:49
 msgid "Push services"
 msgstr ""
@@ -1935,10 +1943,6 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/social.py:12
 msgid "Social media"
-msgstr ""
-
-#: zeit/content/article/edit/browser/social.py:17
-msgid "Enable Facebook"
 msgstr ""
 
 #: zeit/content/article/edit/browser/social.py:18
@@ -2267,7 +2271,7 @@ msgstr ""
 msgid "Export to Tagesspiegel"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:217
+#: zeit/content/article/interfaces.py:218
 #: zeit/content/article/browser/configure.zcml:94
 msgid "Add breaking news"
 msgstr ""
@@ -2766,7 +2770,7 @@ msgstr ""
 msgid "Time"
 msgstr ""
 
-#: zeit/content/cp/teaser.py:188
+#: zeit/content/cp/teaser.py:185
 #. Default: ""
 msgid "\"${name}\" is referenced by a free teaser in \"${teaser}\""
 msgstr ""
@@ -3115,15 +3119,15 @@ msgstr ""
 msgid "View infobox"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:23
+#: zeit/content/link/browser/form.py:20
 msgid "Add link"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:31
+#: zeit/content/link/browser/form.py:28
 msgid "Edit link"
 msgstr ""
 
-#: zeit/content/link/browser/form.py:36
+#: zeit/content/link/browser/form.py:33
 msgid "View link metadata"
 msgstr ""
 
