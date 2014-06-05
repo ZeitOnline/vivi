@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.1.3 (unreleased)
+2.1.3 (2014-06-05)
 ------------------
 
 - Use plone.testing-based layers.
