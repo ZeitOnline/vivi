@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.httpserverlayer.custom
 import mock
 import pkg_resources
 import suds.sax.parser
@@ -137,13 +138,13 @@ class WebServiceTest(zeit.vgwort.testing.EndToEndTestCase):
         self.service.new_document(content)
 
 
-class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     def do_GET(self):
         self.send_response(200)
         self.end_headers()
         wsdl = pkg_resources.resource_string(__name__, 'pixelService.wsdl')
-        wsdl = wsdl.replace('__PORT__', str(port))
+        wsdl = wsdl.replace('__PORT__', str(HTTP_LAYER['http_port']))
         self.wfile.write(wsdl)
 
     def do_POST(self):
@@ -156,16 +157,17 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
         self.wfile.write('')
 
 
-HTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
+HTTP_LAYER = gocept.httpserverlayer.custom.Layer(
+    RequestHandler, name='HTTPLayer', module=__name__)
 
 
 class HTTPErrorTest(unittest.TestCase):
 
-    layer = HTTPLayer
+    layer = HTTP_LAYER
 
     def test_http_error_should_raise_technical_error(self):
         service = zeit.vgwort.connection.PixelService(
-            'http://localhost:%s' % port, '', '')
+            'http://%s' % self.layer['http_address'], '', '')
         time.sleep(1)
         self.assertRaises(
             zeit.vgwort.interfaces.TechnicalError,
