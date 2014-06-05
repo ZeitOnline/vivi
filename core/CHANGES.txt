@@ -2,7 +2,7 @@ zeit.magazin changes
 ====================
 
 
-1.1.1 (unreleased)
+1.1.1 (2014-06-05)
 ------------------
 
 - Use plone.testing-based layers.
