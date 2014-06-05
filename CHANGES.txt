@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-2.2.3 (unreleased)
+2.2.3 (2014-06-05)
 ------------------
 
 - Use gocept.httpserverlayer.custom to avoid port collisions in tests.
