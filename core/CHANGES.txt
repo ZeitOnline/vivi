@@ -1,10 +1,17 @@
 zeit.content.article changes
 ============================
 
-3.4.3 (unreleased)
+3.4.4 (unreleased)
 ------------------
 
 - Reactivate breaking news feature (again), make title character limit soft.
+
+
+3.4.3 (2014-06-05)
+------------------
+
+- Restrict rewriting of filenames to articles and breaking news,
+  don't accidentally rewrite image filenames, for example.
 
 
 3.4.2 (2014-06-04)

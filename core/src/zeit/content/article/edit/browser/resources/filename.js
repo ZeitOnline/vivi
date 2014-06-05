@@ -31,7 +31,7 @@ $(document).ready(function() {
         $(target).trigger('change');
     });
 
-    $('#form\\.__name__').bind('change', function() {
+    $('.breakingnews-filename').bind('change', function() {
         var input = $(this);
         input.val(zeit.content.article.normalize_filename(input.val()));
     });
