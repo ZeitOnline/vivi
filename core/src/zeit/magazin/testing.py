@@ -5,6 +5,7 @@ from zeit.magazin.interfaces import IZMOSection, IZMOFolder
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import pkg_resources
+import plone.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -32,19 +33,12 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
         + zeit.content.article.testing.product_config))
 
 
-class LAYER(ZCML_LAYER):
+class Layer(plone.testing.Layer):
 
-    @classmethod
-    def setUp(cls):
-        pass
+    defaultBases = (ZCML_LAYER,)
 
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        with zeit.cms.testing.site(cls.setup.getRootFolder()):
+    def testSetUp(self):
+        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
             magazin = zeit.cms.repository.folder.Folder()
@@ -52,9 +46,7 @@ class LAYER(ZCML_LAYER):
             zope.interface.alsoProvides(magazin, IZMOFolder)
             repository['magazin'] = magazin
 
-    @classmethod
-    def testTearDown(cls):
-        pass
+LAYER = Layer()
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
