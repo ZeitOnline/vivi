@@ -18,7 +18,7 @@ setup(
         'Pillow',
         'gocept.form',
         'setuptools',
-        'zeit.cms>=2.15.0.dev0',
+        'zeit.cms>=2.20.0.dev0',
         'zeit.connector>=2.3.1.dev0',
         'zeit.imp>=0.15.0.dev0',
         'zeit.content.image',

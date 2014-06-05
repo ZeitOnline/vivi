@@ -12,9 +12,9 @@ def test_suite():
         'README.txt',
         'reference.txt',
         package='zeit.content.gallery',
-        layer=zeit.content.gallery.testing.GalleryLayer))
+        layer=zeit.content.gallery.testing.ZCML_LAYER))
     suite.addTest(zeit.cms.testing.FunctionalDocFileSuite(
         'workflow.txt',
         package='zeit.content.gallery',
-        layer=zeit.content.gallery.testing.GalleryWorkflowLayer))
+        layer=zeit.content.gallery.testing.WORKFLOW_LAYER))
     return suite

@@ -53,5 +53,5 @@ def test_suite():
         'imp.txt',
         'ticket.txt',
         'upload.txt',
-        layer=zeit.content.gallery.testing.GalleryLayer))
+        layer=zeit.content.gallery.testing.ZCML_LAYER))
     return suite

@@ -11,7 +11,7 @@ import zope.component
 
 class TestGalleryStorer(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.content.gallery.testing.GalleryLayer
+    layer = zeit.content.gallery.testing.ZCML_LAYER
 
     def setUp(self):
         super(TestGalleryStorer, self).setUp()

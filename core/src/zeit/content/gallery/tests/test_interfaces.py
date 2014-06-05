@@ -14,7 +14,7 @@ class TestGallerySource(
     zeit.cms.content.tests.test_contentsource.ContentSourceBase,
     zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.content.gallery.testing.GalleryLayer
+    layer = zeit.content.gallery.testing.ZCML_LAYER
 
     source = zeit.content.gallery.interfaces.gallerySource
     expected_types = ['gallery']
