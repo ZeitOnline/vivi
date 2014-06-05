@@ -4,6 +4,7 @@
 from zeit.newsletter.newsletter import Newsletter
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
+import plone.testing
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -18,55 +19,45 @@ product_config = """\
 </product-config>
 """
 
-ZCMLLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
-        zeit.cms.testing.cms_product_config
-        + zeit.workflow.testing.product_config
-        + product_config))
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
+    zeit.cms.testing.cms_product_config
+    + zeit.workflow.testing.product_config
+    + product_config))
 
 
-class TestBrowserLayer(ZCMLLayer):
+class TestBrowserLayer(plone.testing.Layer):
 
-    @classmethod
-    def setUp(cls):
+    defaultBases = (ZCML_LAYER,)
+
+    def setUp(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
         product_config['publish-script'] = 'true'
         product_config['retract-script'] = 'true'
 
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        ZCMLLayer.setup.setUp()
-        cls.setUp()
-
-    @classmethod
-    def testTearDown(cls):
-        ZCMLLayer.setup.tearDown()
+BROWSER_LAYER = TestBrowserLayer()
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCMLLayer,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-selenium_layer = gocept.selenium.RCLayer(
+SELENIUM_LAYER = gocept.selenium.RCLayer(
     name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCMLLayer
+    layer = ZCML_LAYER
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
-    layer = TestBrowserLayer
+    layer = BROWSER_LAYER
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
-    layer = selenium_layer
+    layer = SELENIUM_LAYER
     skin = 'vivi'
 
     def setUp(self):
