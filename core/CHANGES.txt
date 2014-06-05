@@ -4,6 +4,8 @@ zeit.cms changes
 2.20.0 (unreleased)
 -------------------
 
+- Fix icon sprite (VIV-407).
+
 - Complete switching of ZCMLLayer to plone.testing.
 
 
