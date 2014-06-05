@@ -42,7 +42,7 @@ import zope.testbrowser.testing
 import zope.testing.renormalizing
 
 
-class ZCML_Layer(plone.testing.Layer):
+class ZCMLLayer(plone.testing.Layer):
 
     def __init__(self, config_file, product_config=None, module=None):
         if module is None:
@@ -53,14 +53,16 @@ class ZCML_Layer(plone.testing.Layer):
             product_config = cms_product_config
         self.config_file = config_file
         self.product_config = product_config
-        super(ZCML_Layer, self).__init__(name='ZCMLLayer', module=module)
+        super(ZCMLLayer, self).__init__(name='ZCMLLayer', module=module)
 
     def setUp(self):
         self.setup = zope.app.testing.functional.FunctionalTestSetup(
             self.config_file, product_config=self.product_config)
+        self['functional_setup'] = self.setup
 
     def tearDown(self):
         self.setup.tearDownCompletely()
+        del self['functional_setup']
 
     def testSetUp(self):
         self.setup.setUp()
@@ -82,40 +84,6 @@ class ZCML_Layer(plone.testing.Layer):
         zope.site.hooks.setSite(None)
         zope.security.management.endInteraction()
         self.setup.tearDown()
-
-
-# BBB: The old class-based layers are still used by clients (who then inherit
-# from them to customize). This can be removed when all clients use the
-# plone.testing-style.
-def ZCMLLayer(
-        config_file, module=None, name=None, allow_teardown=True,
-        product_config=None):
-    if module is None:
-        module = inspect.stack()[1][0].f_globals['__name__']
-
-    LAYER = ZCML_Layer(config_file, product_config, module)
-
-    def setUp(cls):
-        LAYER.setUp()
-        cls.setup = LAYER.setup
-
-    def tearDown(cls):
-        LAYER.tearDown()
-
-    def testSetUp(cls):
-        LAYER.testSetUp()
-
-    def testTearDown(cls):
-        LAYER.testTearDown()
-
-    layer = type(LAYER.__name__, (object,), dict(
-        __module__=LAYER.__module__,
-        setUp=classmethod(setUp),
-        tearDown=classmethod(tearDown),
-        testSetUp=classmethod(testSetUp),
-        testTearDown=classmethod(testTearDown),
-    ))
-    return layer
 
 
 class WSGILayer(plone.testing.Layer):
@@ -236,7 +204,7 @@ cms_product_config = string.Template("""\
     base=pkg_resources.resource_filename(__name__, ''))
 
 
-ZCML_LAYER = ZCML_Layer('ftesting.zcml', product_config=True)
+ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=True)
 WSGI_LAYER = WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
