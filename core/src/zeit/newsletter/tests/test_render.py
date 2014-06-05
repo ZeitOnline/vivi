@@ -3,13 +3,13 @@
 
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.newsletter.render import Renderer
+import gocept.httpserverlayer.custom
 import time
 import unittest
 import urlparse
-import zeit.cms.testing
 
 
-class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
+class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
     response_code = 200
     requests = []
@@ -38,12 +38,13 @@ class RequestHandler(zeit.cms.testing.BaseHTTPRequestHandler):
             self.wfile.write('error')
 
 
-HTTPLayer, port = zeit.cms.testing.HTTPServerLayer(RequestHandler)
+HTTP_LAYER = gocept.httpserverlayer.custom.Layer(
+    RequestHandler, name='HTTPLayer', module=__name__)
 
 
 class RendererTest(unittest.TestCase):
 
-    layer = HTTPLayer
+    layer = HTTP_LAYER
 
     def test_converts_uniqueId_to_rendering_host(self):
         content = TestContentType()
@@ -62,7 +63,7 @@ class RendererTest(unittest.TestCase):
     def test_returns_html_and_plain_text(self):
         content = TestContentType()
         content.uniqueId = 'http://xml.zeit.de/foo/bar'
-        renderer = Renderer('http://localhost:%s' % port)
+        renderer = Renderer('http://localhost:%s' % self.layer['http_port'])
         result = renderer(content)
         self.assertEqual('html', result['html'])
         self.assertEqual('txt', result['text'])
