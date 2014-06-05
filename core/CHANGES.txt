@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-2.2.6 (unreleased)
+2.2.6 (2014-06-05)
 ------------------
 
 - Use plone.testing-based layers.
