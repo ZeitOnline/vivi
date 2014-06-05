@@ -3,6 +3,7 @@
 
 from zeit.cms.testing import FunctionalTestCaseCommon
 import os.path
+import plone.testing
 import unittest
 import urllib
 import xlrd
@@ -17,7 +18,7 @@ import zope.component.hooks
 import zope.testbrowser.testing
 
 
-SecurityPolicyZCMLLayer = zeit.cms.testing.ZCMLLayer(
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         zeit.cms.testing.cms_product_config +
@@ -26,27 +27,18 @@ SecurityPolicyZCMLLayer = zeit.cms.testing.ZCMLLayer(
         zeit.brightcove.testing.product_config))
 
 
-class SecurityPolicyLayer(SecurityPolicyZCMLLayer):
+class SecurityPolicyLayer(plone.testing.Layer):
 
-    @classmethod
-    def setUp(cls):
-        pass
+    defaultBases = (ZCML_LAYER,)
 
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
+    def testSetUp(self):
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         prop = connector._get_properties(
             'http://xml.zeit.de/online/2007/01/Somalia')
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = 'testtag'
 
-    @classmethod
-    def testTearDown(cls):
-        pass
+LAYER = SecurityPolicyLayer()
 
 
 def make_xls_test(*args):
@@ -61,7 +53,7 @@ def make_xls_test(*args):
 
 class SecurityPolicyXLSSheetCase(object):
 
-    layer = SecurityPolicyLayer
+    layer = LAYER
 
     def __init__(self, username, cases, description):
         super(SecurityPolicyXLSSheetCase, self).__init__()
@@ -153,5 +145,5 @@ def test_suite():
                 start_row = None
 
     # Picked up by gocept.pytestlayer (the layer on the XLSCase is ignored)
-    suite.layer = SecurityPolicyLayer
+    suite.layer = LAYER
     return suite

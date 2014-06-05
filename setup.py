@@ -15,11 +15,12 @@ setup(
     license='gocept proprietary',
     namespace_packages = ['zeit'],
     install_requires=[
+        'plone.testing',
         'setuptools',
         'xlrd',
         'zeit.brightcove',
         'zeit.calendar',
-        'zeit.cms>=2.15.0.dev0',
+        'zeit.cms>=2.20.0.dev0',
         'zeit.content.article',
         'zeit.content.image>=2.0.0.dev0',
         'zeit.content.link',
