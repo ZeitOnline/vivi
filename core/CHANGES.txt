@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.6.9 (unreleased)
+2.6.9 (2014-06-05)
 ------------------
 
 - Use plone.testing-based layers.
