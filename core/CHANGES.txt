@@ -1,6 +1,13 @@
 zeit.content.article changes
 ============================
 
+3.4.3 (unreleased)
+------------------
+
+- Restrict rewriting of filenames to articles and breaking news,
+  don't accidentally rewrite image filenames, for example.
+
+
 3.4.2 (2014-06-04)
 ------------------
 
