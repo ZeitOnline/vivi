@@ -28,36 +28,35 @@ product_config = """
 """
 
 
-ZCMLLayerBase = zeit.cms.testing.ZCMLLayer(
+class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
+
+    def setUp(self):
+        super(ZCMLLayer, self).setUp()
+
+        # inject a testing xmlrpc ServerProxy into the TokenService
+        # XXX ugly!
+        def patch_once(*args, **kw):
+            if self.patch_called:
+                self.patcher.stop()
+                return xmlrpclib.ServerProxy(*args, **kw)
+            else:
+                self.patch_called = True
+                return zope.app.testing.xmlrpc.ServerProxy(*args, **kw)
+
+        self.patcher = mock.patch('xmlrpclib.ServerProxy', patch_once)
+        self.patcher.start()
+        self.patch_called = False
+
+        zope.component.getSiteManager().registerUtility(
+            zeit.vgwort.token.TokenService())
+
+ZCML_LAYER = ZCMLLayer(
     'ftesting-mock.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
-
 
 SOAPLayer = zeit.cms.testing.ZCMLLayer(
     'ftesting-soap.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
-
-
-class ZCMLLayer(ZCMLLayerBase):
-
-    @classmethod
-    def setUp(cls):
-        # inject a testing xmlrpc ServerProxy into the TokenService
-        # XXX ugly!
-        def patch_once(*args, **kw):
-            if cls.patch_called:
-                cls.patcher.stop()
-                return xmlrpclib.ServerProxy(*args, **kw)
-            else:
-                cls.patch_called = True
-                return zope.app.testing.xmlrpc.ServerProxy(*args, **kw)
-
-        cls.patcher = mock.patch('xmlrpclib.ServerProxy', patch_once)
-        cls.patcher.start()
-        cls.patch_called = False
-
-        zope.component.getSiteManager().registerUtility(
-            zeit.vgwort.token.TokenService())
 
 
 def FunctionalDocFileSuite(*args, **kw):
@@ -68,7 +67,7 @@ def FunctionalDocFileSuite(*args, **kw):
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ZCMLLayer
+    layer = ZCML_LAYER
 
 
 @pytest.mark.slow
