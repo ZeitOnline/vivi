@@ -3,16 +3,13 @@
 
 from zeit.cms.testing import copy_inherited_functions
 import mock
-import pkg_resources
 import unittest
 import zeit.cms.content.tests.test_contentsource
 import zeit.cms.testing
 import zeit.content.infobox.interfaces
 
 
-InfoboxLayer = zeit.cms.testing.ZCMLLayer(
-    pkg_resources.resource_filename(__name__, 'ftesting.zcml'),
-    __name__, 'InfoboxLayer', allow_teardown=True)
+InfoboxLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
 
 
 class InfoboxSourceTest(
