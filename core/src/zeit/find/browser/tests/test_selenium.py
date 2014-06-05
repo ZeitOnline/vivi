@@ -43,7 +43,7 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         self.selenium.waitForVisible('css=div.teaser_title')
 
     def set_result(self, filename):
-        zeit.find.tests.SearchLayer.set_result(__name__, filename)
+        zeit.find.tests.LAYER.set_result(__name__, filename)
 
     def test_relateds(self):
         s = self.selenium
