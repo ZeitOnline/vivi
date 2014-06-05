@@ -7,7 +7,7 @@ import zeit.content.video.testing
 
 class TestThumbnail(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.video.testing.Layer
+    layer = zeit.content.video.testing.LAYER
 
     def test_view_on_video_should_redirect_to_video_thumbnail_url(self):
         import urllib2
@@ -78,7 +78,7 @@ class TestThumbnail(zeit.cms.testing.BrowserTestCase):
 
 class TestStill(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.video.testing.Layer
+    layer = zeit.content.video.testing.LAYER
 
     def test_preview_view_on_video_should_redirect_to_still_url(self):
         import urllib2
@@ -116,7 +116,7 @@ class TestStill(zeit.cms.testing.BrowserTestCase):
 
 class TestPlaylist(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.video.testing.Layer
+    layer = zeit.content.video.testing.LAYER
 
     def test_playlist_should_be_viewable(self):
         from zeit.content.video.playlist import Playlist

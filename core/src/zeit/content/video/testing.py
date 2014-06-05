@@ -3,6 +3,7 @@
 
 import doctest
 import pkg_resources
+import plone.testing
 import zeit.cms.testing
 import zeit.solr.testing
 import zeit.workflow.testing
@@ -16,7 +17,7 @@ product_config = """\
     pkg_resources.resource_filename(__name__, 'tests/serie.xml'))
 
 
-ZCMLLayer = zeit.cms.testing.ZCMLLayer(
+ZCML_LAYER = zeit.cms.testing.ZCML_Layer(
     'ftesting.zcml',
     product_config=(
         zeit.cms.testing.cms_product_config +
@@ -25,33 +26,18 @@ ZCMLLayer = zeit.cms.testing.ZCMLLayer(
         product_config))
 
 
-class Layer(ZCMLLayer,
-            zeit.solr.testing.SolrMockLayerBase):
-
-    @classmethod
-    def setUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        pass
-
-    @classmethod
-    def testTearDown(cls):
-        pass
+LAYER = plone.testing.Layer(
+    bases=(ZCML_LAYER, zeit.solr.testing.SOLR_MOCK_LAYER),
+    name='Layer', module=__name__)
 
 
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = Layer
+    layer = LAYER
 
 
 def FunctionalDocFileSuite(*args, **kw):
-    kw.setdefault('layer', Layer)
+    kw.setdefault('layer', LAYER)
     kw['package'] = doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 

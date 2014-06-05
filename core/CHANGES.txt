@@ -4,7 +4,7 @@ zeit.content.video changes
 2.2.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use gocept.httpserverlayer.custom to avoid port collisions in tests.
 
 
 2.2.7 (2014-04-22)
