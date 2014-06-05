@@ -189,7 +189,7 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
 
 
 HTTP_LAYER = gocept.httpserverlayer.custom.Layer(
-    RequestHandler, name='BrightcoveHTTPLayer')
+    RequestHandler, name='BrightcoveHTTPLayer', module=__name__)
 
 
 product_config = """\
