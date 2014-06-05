@@ -29,7 +29,7 @@ class TestSourceQueryView(unittest.TestCase):
 
 class TestSourceQueryViewIntegration(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.find.tests.SearchLayer
+    layer = zeit.find.tests.LAYER
 
     def test_query_view_should_be_registered(self):
         import zeit.cms.content.interfaces
@@ -49,10 +49,9 @@ class TestSourceQueryViewIntegration(zeit.cms.testing.FunctionalTestCase):
 class TestSimpleFind(unittest.TestCase,
                      zeit.cms.testing.BrowserAssertions):
 
-    layer = zeit.find.tests.SearchLayer
+    layer = zeit.find.tests.LAYER
 
     def setUp(self):
-        self.layer.setup.setUp()
         from zope.testbrowser.testing import Browser
         self.browser = Browser()
         self.browser.addHeader('Authorization', 'Basic user:userpw')
@@ -60,9 +59,6 @@ class TestSimpleFind(unittest.TestCase,
         search_patch = mock.patch('zeit.find.search.search')
         self.addCleanup(search_patch.stop)
         self.search = search_patch.start()
-
-    def tearDown(self):
-        self.layer.setup.tearDown()
 
     def test_no_query_should_return_empty_list(self):
         self.browser.open('@@simple_find')

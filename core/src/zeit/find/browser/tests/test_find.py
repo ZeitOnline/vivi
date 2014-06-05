@@ -51,7 +51,7 @@ class TestSearchResult(unittest.TestCase):
 
 class TestFavorites(unittest.TestCase):
 
-    layer = zeit.find.tests.SearchZCMLLayer
+    layer = zeit.find.tests.ZCML_LAYER
 
     def setUp(self):
         from zeit.find.browser.find import Favorites

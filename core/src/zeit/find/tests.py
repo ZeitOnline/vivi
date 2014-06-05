@@ -5,6 +5,7 @@ import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import mock
 import pkg_resources
+import plone.testing
 import zeit.cms.testing
 import zope.component
 
@@ -17,37 +18,32 @@ product_config = """\
 """
 
 
-SearchZCMLLayer = zeit.cms.testing.ZCMLLayer(
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
-class SearchLayer(SearchZCMLLayer):
+class Layer(plone.testing.Layer):
 
-    @classmethod
-    def setUp(cls):
+    defaultBases = (ZCML_LAYER,)
+
+    def setUp(self):
         import zeit.solr.interfaces
-        cls.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
+        self.solr = zope.component.getUtility(zeit.solr.interfaces.ISolr)
 
-    @classmethod
-    def tearDown(cls):
-        pass
+    def testSetUp(self):
+        self.solr._send_request = mock.Mock()
 
-    @classmethod
-    def testSetUp(cls):
-        cls.solr._send_request = mock.Mock()
+    def testTearDown(self):
+        del self.solr._send_request
 
-    @classmethod
-    def testTearDown(cls):
-        del cls.solr._send_request
-
-    @classmethod
-    def set_result(cls, package, filename):
-        cls.solr._send_request.return_value = pkg_resources.resource_string(
+    def set_result(self, package, filename):
+        self.solr._send_request.return_value = pkg_resources.resource_string(
             package, filename)
 
+LAYER = Layer()
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(SearchLayer,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 SeleniumLayer = gocept.selenium.RCLayer(
@@ -56,7 +52,7 @@ SeleniumLayer = gocept.selenium.RCLayer(
 
 class QueryTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = SearchLayer
+    layer = LAYER
 
     def test_query(self):
         import zeit.find.search
@@ -79,10 +75,9 @@ class QueryTest(zeit.cms.testing.FunctionalTestCase):
     def test_suggest(self):
         import zeit.find.search
         self.layer.set_result(__name__, 'testdata/obama.json')
-        q = zeit.find.search.suggest_query('Diet','title',['author'])
+        q = zeit.find.search.suggest_query('Diet', 'title', ['author'])
         self.assertEqual(
-            u'((title:(diet*) OR title:(diet)) AND (type:(author)))',
-            q)        
+            u'((title:(diet*) OR title:(diet)) AND (type:(author)))', q)
         zeit.find.search.search(q, sort_order='title')
         req = self.layer.solr._send_request
         query = req.call_args[0][1]
