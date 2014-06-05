@@ -205,7 +205,7 @@ product_config = """\
 """
 
 
-class ZCMLLayer(zeit.cms.testing.ZCML_Layer):
+class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
     defaultBases = (HTTP_LAYER,)
 
@@ -229,7 +229,7 @@ def update_repository(root):
 
 class BrightcoveLayer(plone.testing.Layer):
 
-    defaultBases = (ZCML_LAYER, zeit.solr.testing.SolrMockLayerBase)
+    defaultBases = (ZCML_LAYER, zeit.solr.testing.SOLR_MOCK_LAYER)
 
     def setUp(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
