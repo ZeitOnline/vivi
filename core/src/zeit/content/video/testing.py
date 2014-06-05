@@ -17,7 +17,7 @@ product_config = """\
     pkg_resources.resource_filename(__name__, 'tests/serie.xml'))
 
 
-ZCML_LAYER = zeit.cms.testing.ZCML_Layer(
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         zeit.cms.testing.cms_product_config +
