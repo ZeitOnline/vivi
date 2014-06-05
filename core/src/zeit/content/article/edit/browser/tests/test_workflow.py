@@ -13,7 +13,7 @@ import zeit.content.article.testing
 
 class Checkin(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def test_validation_errors_should_be_displayed_at_checkin_button(self):
         b = self.browser
@@ -234,7 +234,7 @@ class WorkflowEndToEnd(
 
 class Publish(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def prepare_content(self, urgent):
         root = self.getRootFolder()
@@ -265,7 +265,7 @@ class Publish(zeit.cms.testing.BrowserTestCase):
 
 class Delete(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def test_checked_out_article_has_cancel_but_no_delete(self):
         b = self.browser

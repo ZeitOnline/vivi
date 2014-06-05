@@ -8,7 +8,7 @@ import zeit.content.article.testing
 
 class BadgeWidget(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def test_shows_labels_in_display_mode(self):
         with zeit.cms.testing.site(self.getRootFolder()):

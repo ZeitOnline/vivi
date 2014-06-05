@@ -6,7 +6,7 @@ import zeit.push.interfaces
 
 class SocialFormTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def get_article(self):
         with zeit.cms.testing.site(self.getRootFolder()):

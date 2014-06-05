@@ -10,4 +10,4 @@ def test_suite():
         'README.txt',
         'recension.txt',
         package='zeit.content.article.browser',
-        layer=zeit.content.article.testing.ArticleLayer)
+        layer=zeit.content.article.testing.LAYER)

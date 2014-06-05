@@ -11,4 +11,4 @@ def test_suite():
         'edit.txt',
         'edit.form.txt',
         package='zeit.content.article.edit.browser',
-        layer=zeit.content.article.testing.ArticleLayer)
+        layer=zeit.content.article.testing.LAYER)

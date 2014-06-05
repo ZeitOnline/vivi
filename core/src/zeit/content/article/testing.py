@@ -4,6 +4,7 @@
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
 import pkg_resources
+import plone.testing
 import re
 import shutil
 import tempfile
@@ -46,7 +47,7 @@ checker = zope.testing.renormalizing.RENormalizing([
 checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 
-ArticleZCMLLayer = zeit.cms.testing.ZCMLLayer(
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=(
         product_config +
@@ -58,18 +59,11 @@ ArticleZCMLLayer = zeit.cms.testing.ZCMLLayer(
         zeit.cms.testing.cms_product_config))
 
 
-class ArticleLayer(ArticleZCMLLayer):
+class ArticleLayer(plone.testing.Layer):
 
-    @classmethod
-    def setUp(cls):
-        pass
+    defaultBases = (ZCML_LAYER,)
 
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
+    def testSetUp(self):
         connector = zope.component.getUtility(
             zeit.connector.interfaces.IConnector)
         prop = connector._get_properties(
@@ -77,31 +71,10 @@ class ArticleLayer(ArticleZCMLLayer):
         prop[zeit.cms.tagging.testing.KEYWORD_PROPERTY] = (
             'testtag|testtag2|testtag3')
 
-    @classmethod
-    def testTearDown(cls):
-        pass
+LAYER = ArticleLayer()
 
 
-class TestBrowserLayer(ArticleLayer):
-
-    @classmethod
-    def setUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        ArticleLayer.setup.setUp()
-
-    @classmethod
-    def testTearDown(cls):
-        ArticleLayer.setup.tearDown()
-
-
-CDSZCMLLayer = zeit.cms.testing.ZCMLLayer(
+CDS_ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'cds_ftesting.zcml',
     product_config=(
         product_config +
@@ -110,25 +83,17 @@ CDSZCMLLayer = zeit.cms.testing.ZCMLLayer(
         zeit.cms.testing.cms_product_config))
 
 
-class CDSLayer(CDSZCMLLayer):
+class CDSLayer(plone.testing.Layer):
 
-    @classmethod
-    def setUp(cls):
-        pass
+    defaultBases = (CDS_ZCML_LAYER,)
 
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
+    def testSetUp(self):
         product_config = zope.app.appsetup.product._configs[
             'zeit.content.article']
         product_config['cds-export'] = tempfile.mkdtemp()
         product_config['cds-import'] = tempfile.mkdtemp()
 
-    @classmethod
-    def testTearDown(cls):
+    def testTearDown(self):
         product_config = zope.app.appsetup.product._configs[
             'zeit.content.article']
         # I don't know why, but those directories get removed automatically
@@ -144,10 +109,12 @@ class CDSLayer(CDSZCMLLayer):
         del product_config['cds-export']
         del product_config['cds-import']
 
+CDS_LAYER = CDSLayer()
+
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = ArticleLayer
+    layer = LAYER
 
     def get_article(self):
         wl = zope.component.getUtility(
@@ -179,10 +146,10 @@ def create_article():
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(ArticleLayer,))
+    name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-selenium_layer = gocept.selenium.RCLayer(
+SELENIUM_LAYER = gocept.selenium.RCLayer(
     name='SeleniumLayer', bases=(HTTP_LAYER,))
 
 WD_LAYER = gocept.selenium.WebdriverLayer(
@@ -191,7 +158,7 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 CDS_WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='CDSWSGILayer', bases=(CDSLayer,))
+    name='CDSWSGILayer', bases=(CDS_LAYER,))
 CDS_HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='CDSHTTPLayer', bases=(WSGI_LAYER,))
 selenium_workflow_layer = gocept.selenium.RCLayer(
@@ -200,7 +167,7 @@ selenium_workflow_layer = gocept.selenium.RCLayer(
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
-    layer = selenium_layer
+    layer = SELENIUM_LAYER
 
     WIDGET_SELECTOR = 'xpath=//label[@for="%s"]/../../*[@class="widget"]'
 

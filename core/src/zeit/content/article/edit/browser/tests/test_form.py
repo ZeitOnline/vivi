@@ -17,7 +17,7 @@ import zeit.workflow.testing
 
 class MemoTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def test_memo_is_editable_while_checked_in(self):
         with zeit.cms.testing.site(self.getRootFolder()):
@@ -40,7 +40,7 @@ class ReadonlyTest(zeit.cms.testing.BrowserTestCase):
 
     """
 
-    layer = zeit.content.article.testing.TestBrowserLayer
+    layer = zeit.content.article.testing.LAYER
 
     def setUp(self):
         super(ReadonlyTest, self).setUp()
@@ -60,7 +60,7 @@ class ReadonlyTest(zeit.cms.testing.BrowserTestCase):
 
 class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def test_displays_status_fields_as_checkboxes(self):
         with zeit.cms.testing.site(self.getRootFolder()):
@@ -99,7 +99,7 @@ class WorkflowStatusDisplayTest(zeit.cms.testing.BrowserTestCase):
 
 class PageNumberDisplay(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def test_no_page_displays_as_not_applicable(self):
         b = self.browser
@@ -172,7 +172,7 @@ class CharLimit(zeit.content.article.edit.browser.testing.EditorTestCase):
 
 class FilenameTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.ArticleLayer
+    layer = zeit.content.article.testing.LAYER
 
     def test_existing_filename_yields_error_message(self):
         with zeit.cms.testing.site(self.getRootFolder()):

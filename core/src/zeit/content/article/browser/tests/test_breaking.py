@@ -9,7 +9,7 @@ import zope.i18n.translationdomain
 
 class TestAdding(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.TestBrowserLayer
+    layer = zeit.content.article.testing.LAYER
 
     def setUp(self):
         super(TestAdding, self).setUp()

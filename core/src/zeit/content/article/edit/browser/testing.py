@@ -9,7 +9,7 @@ import zeit.content.article.testing
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.TestBrowserLayer
+    layer = zeit.content.article.testing.LAYER
 
     block_type = NotImplemented
 
@@ -23,7 +23,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
         self.contents_url = browser.url
 
     def get_article(self, with_empty_block=False):
-        article = self.layer.setup.getRootFolder()[
+        article = self.getRootFolder()[
             'workingcopy']['zope.user']['Somalia']
         for p in article.xml.xpath('//division/*'):
             p.getparent().remove(p)

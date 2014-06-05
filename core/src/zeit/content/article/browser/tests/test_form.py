@@ -7,7 +7,7 @@ import zeit.content.article.testing
 
 class TestAdding(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.TestBrowserLayer
+    layer = zeit.content.article.testing.LAYER
 
     def setUp(self):
         super(TestAdding, self).setUp()
@@ -107,7 +107,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
 class DefaultView(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.article.testing.TestBrowserLayer
+    layer = zeit.content.article.testing.LAYER
 
     def test_in_repository_shows_edit_view_readonly(self):
         b = self.browser
