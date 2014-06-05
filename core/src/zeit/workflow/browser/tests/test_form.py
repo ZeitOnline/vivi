@@ -7,7 +7,7 @@ import zeit.workflow.testing
 
 class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.workflow.testing.WorkflowLayer
+    layer = zeit.workflow.testing.LAYER
 
     def test_publish_content(self):
         b = self.browser

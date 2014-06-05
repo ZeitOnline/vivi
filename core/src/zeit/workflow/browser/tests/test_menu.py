@@ -5,7 +5,7 @@ import zeit.workflow.testing
 
 class WorkflowTabTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.workflow.testing.WorkflowLayer
+    layer = zeit.workflow.testing.LAYER
 
     def test_workflow_tab_is_shown_for_repository_content(self):
         b = self.browser

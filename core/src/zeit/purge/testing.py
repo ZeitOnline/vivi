@@ -46,7 +46,7 @@ product_config = """\
 """ % timeout
 
 
-class ZCMLLayer(zeit.cms.testing.ZCML_Layer):
+class ZCMLLayer(zeit.cms.testing.ZCMLLayer):
 
     defaultBases = (HTTP_LAYER1, HTTP_LAYER2)
 

@@ -10,5 +10,5 @@ def test_suite():
         'README.txt',
         'dependency.txt',
         'syndication.txt',
-        layer=zeit.workflow.testing.WorkflowLayer,
+        layer=zeit.workflow.testing.LAYER,
         package='zeit.workflow')

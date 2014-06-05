@@ -7,6 +7,7 @@ import gocept.selenium
 import logging
 import lovely.remotetask.interfaces
 import os
+import plone.testing
 import sys
 import zeit.cms.testing
 import zope.component
@@ -23,40 +24,35 @@ product_config = """
 </product-config>
 """
 
-WorkflowBaseLayer = zeit.cms.testing.ZCMLLayer(
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
-class WorkflowScriptsLayer(object):
+class WorkflowScriptsLayer(plone.testing.Layer):
     """Layer which copies the publish/retract scripts and makes them
     executable."""
 
-    @classmethod
-    def setUp(cls):
+    def setUp(self):
         import zope.app.appsetup.product
-        cls._tempfiles = []
+        self._tempfiles = []
         product_config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        product_config['publish-script'] = cls._make_copy('publish.sh')
-        product_config['retract-script'] = cls._make_copy('retract.sh')
+        product_config['publish-script'] = self._make_copy('publish.sh')
+        product_config['retract-script'] = self._make_copy('retract.sh')
 
-    @classmethod
-    def tearDown(cls):
-        for f in cls._tempfiles:
+    def tearDown(self):
+        for f in self._tempfiles:
             os.remove(f.name)
-        del cls._tempfiles
+        del self._tempfiles
 
-    @classmethod
-    def testSetUp(cls):
+    def testSetUp(self):
         pass
 
-    @classmethod
-    def testTearDown(cls):
+    def testTearDown(self):
         pass
 
-    @classmethod
-    def _make_copy(cls, script):
+    def _make_copy(self, script):
         import os
         import pkg_resources
         import stat
@@ -65,32 +61,19 @@ class WorkflowScriptsLayer(object):
         destination = tempfile.NamedTemporaryFile(suffix=script, delete=False)
         destination.write(source)
         destination.close()
-        os.chmod(destination.name, stat.S_IRUSR|stat.S_IXUSR)
-        cls._tempfiles.append(destination)
+        os.chmod(destination.name, stat.S_IRUSR | stat.S_IXUSR)
+        self._tempfiles.append(destination)
         return destination.name
 
+SCRIPTS_LAYER = WorkflowScriptsLayer()
 
-class WorkflowLayer(WorkflowBaseLayer, WorkflowScriptsLayer):
 
-    @classmethod
-    def setUp(cls):
-        pass
-
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        pass
-
-    @classmethod
-    def testTearDown(cls):
-        pass
+LAYER = plone.testing.Layer(
+    name='Layer', module=__name__, bases=(ZCML_LAYER, SCRIPTS_LAYER))
 
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='WSGILayer', bases=(WorkflowLayer,))
+    name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(

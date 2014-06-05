@@ -8,5 +8,5 @@ import zeit.workflow.testing
 def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'README.txt',
-        layer=zeit.workflow.testing.WorkflowLayer
+        layer=zeit.workflow.testing.LAYER
     )

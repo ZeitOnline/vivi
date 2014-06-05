@@ -1,14 +1,11 @@
 # Copyright (c) 2007-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import os.path
 import unittest
 import zeit.cms.testing
 
 
-GhostLayer = zeit.cms.testing.ZCMLLayer(
-    os.path.join(os.path.dirname(__file__), 'ftesting.zcml'),
-    __name__, 'GhostLayer', allow_teardown=True)
+GhostLayer = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
 
 
 def test_suite():

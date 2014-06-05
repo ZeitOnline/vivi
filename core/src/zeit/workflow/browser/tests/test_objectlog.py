@@ -10,7 +10,7 @@ import zeit.workflow.testing
 
 class ObjectLog(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.workflow.testing.WorkflowLayer
+    layer = zeit.workflow.testing.LAYER
 
     def test_log_entries_are_grouped_by_date(self):
         testcontent = self.repository['testcontent']

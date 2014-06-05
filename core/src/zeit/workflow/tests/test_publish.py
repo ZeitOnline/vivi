@@ -31,7 +31,7 @@ class FakePublishTask(zeit.workflow.publish.PublishRetractTask):
 
 class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.workflow.testing.WorkflowLayer
+    layer = zeit.workflow.testing.LAYER
 
     def setUp(self):
         super(PublishRetractLockingTest, self).setUp()
@@ -84,7 +84,7 @@ class PublishRetractLockingTest(zeit.cms.testing.FunctionalTestCase):
 
 class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.workflow.testing.WorkflowLayer
+    layer = zeit.workflow.testing.LAYER
 
     def setUp(self):
         super(PublicationDependencies, self).setUp()
@@ -156,7 +156,7 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
 
 class SynchronousPublishTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.workflow.testing.WorkflowLayer
+    layer = zeit.workflow.testing.LAYER
 
     def test_publish_and_retract_in_same_process(self):
         article = ICMSContent('http://xml.zeit.de/online/2007/01/Somalia')

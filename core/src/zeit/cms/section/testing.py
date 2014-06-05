@@ -1,6 +1,7 @@
 # Copyright (c) 2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import plone.testing
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
 import zeit.cms.testcontenttype.interfaces
@@ -12,28 +13,19 @@ import zope.interface
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
 
 
-class SECTION_LAYER(ZCML_LAYER):
+class SectionLayer(plone.testing.Layer):
 
-    @classmethod
-    def setUp(cls):
-        pass
+    defaultBases = (ZCML_LAYER,)
 
-    @classmethod
-    def tearDown(cls):
-        pass
-
-    @classmethod
-    def testSetUp(cls):
-        with zeit.cms.testing.site(cls.setup.getRootFolder()):
+    def testSetUp(self):
+        with zeit.cms.testing.site(self['functional_setup'].getRootFolder()):
             repository = zope.component.getUtility(
                 zeit.cms.repository.interfaces.IRepository)
             example = zeit.cms.repository.folder.Folder()
             zope.interface.alsoProvides(example, IExampleSection)
             repository['example'] = example
 
-    @classmethod
-    def testTearDown(cls):
-        pass
+SECTION_LAYER = SectionLayer()
 
 
 class IExampleSection(zeit.cms.section.interfaces.ISection):

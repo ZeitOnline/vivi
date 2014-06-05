@@ -13,5 +13,5 @@ def test_suite():
         'indicator.txt',
         'nagios.txt',
         package='zeit.workflow.browser',
-        layer=zeit.workflow.testing.WorkflowLayer))
+        layer=zeit.workflow.testing.LAYER))
     return suite
