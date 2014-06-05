@@ -289,12 +289,11 @@ class FunctionalTestCaseCommon(
 
     def getRootFolder(self):
         """Returns the Zope root folder."""
-        return zope.app.testing.functional.FunctionalTestSetup().\
-            getRootFolder()
+        return self.layer['functional_setup'].getRootFolder()
 
     @property
     def zca(self):
-        return zope.app.testing.functional.FunctionalTestSetup().zca
+        return self.layer['functional_setup'].zca
 
     def setUp(self):
         super(FunctionalTestCaseCommon, self).setUp()
