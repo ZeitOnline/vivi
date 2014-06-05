@@ -76,7 +76,7 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler,
 
 
 FEED_SERVER_LAYER = gocept.httpserverlayer.custom.Layer(
-    RequestHandler, name='FeedServerLayer', bases=(layer,))
+    RequestHandler, name='FeedServerLayer', module=__name__, bases=(layer,))
 
 
 checker = zope.testing.renormalizing.RENormalizing([
