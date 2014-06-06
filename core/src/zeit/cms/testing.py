@@ -44,7 +44,8 @@ import zope.testing.renormalizing
 
 class ZCMLLayer(plone.testing.Layer):
 
-    def __init__(self, config_file, product_config=None, module=None):
+    def __init__(self, config_file, product_config=None,
+                 name='ZCMLLayer', module=None):
         if module is None:
             module = inspect.stack()[1][0].f_globals['__name__']
         if not config_file.startswith('/'):
@@ -53,7 +54,7 @@ class ZCMLLayer(plone.testing.Layer):
             product_config = cms_product_config
         self.config_file = config_file
         self.product_config = product_config
-        super(ZCMLLayer, self).__init__(name='ZCMLLayer', module=module)
+        super(ZCMLLayer, self).__init__(name=name, module=module)
 
     def setUp(self):
         self.setup = zope.app.testing.functional.FunctionalTestSetup(
