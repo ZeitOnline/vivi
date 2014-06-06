@@ -19,7 +19,7 @@ setup(
         'pytest',
         'setuptools',
         'suds',
-        'zeit.cms>=2.20.0.dev0',
+        'zeit.cms>=2.21.0.dev0',
         'zeit.connector',
         'zeit.content.author',
         'zope.app.generations',

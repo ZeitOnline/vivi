@@ -55,7 +55,7 @@ ZCML_LAYER = ZCMLLayer(
     product_config=zeit.cms.testing.cms_product_config + product_config)
 
 SOAPLayer = zeit.cms.testing.ZCMLLayer(
-    'ftesting-soap.zcml',
+    'ftesting-soap.zcml', name='SOAPLayer',
     product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
