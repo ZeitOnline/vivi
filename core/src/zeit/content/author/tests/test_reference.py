@@ -67,3 +67,20 @@ class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
             self.assertIn(
                 'William Shakespeare',
                 lxml.etree.tostring(reference, pretty_print=True))
+
+    def test_fills_in_bbb_author_attribute(self):
+        andersen = zeit.content.author.author.Author()
+        andersen.firstname = 'Hans Christian'
+        andersen.lastname = 'Andersen'
+        self.repository['andersen'] = andersen
+
+        content = self.repository['testcontent']
+        content.authorships = (
+            content.authorships.create(self.shakespeare),
+            content.authorships.create(andersen))
+        reference = zope.component.getAdapter(
+            content, zeit.cms.content.interfaces.IXMLReference, name='related')
+        self.assertEllipsis(
+            """<reference...
+            author="William Shakespeare;Hans Christian Andersen"...""",
+            lxml.etree.tostring(reference, pretty_print=True))
