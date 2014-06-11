@@ -4,7 +4,8 @@ zeit.content.author changes
 2.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Populate ``author`` attribute of references with author objects instead of
+  freetext authors (VIV-410).
 
 
 2.1.3 (2014-03-17)

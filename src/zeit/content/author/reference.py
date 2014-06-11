@@ -37,6 +37,10 @@ class AuthorshipXMLReferenceUpdater(
         for reference in context.authorships:
             node.append(copy.copy(zope.security.proxy.getObject(
                 reference.xml)))
+        # BBB The ``author`` attribute is deprecated in favor of the <author>
+        # tags, but XSLT and mobile still use it.
+        node.set('author', unicode(';'.join(
+            [x.target.display_name for x in context.authorships])))
 
 
 class Reference(zeit.cms.content.reference.Reference):
