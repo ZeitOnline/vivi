@@ -284,14 +284,6 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
             entry.set('ressort', unicode(metadata.ressort))
         if metadata.serie:
             entry.set('serie', unicode(metadata.serie))
-        # BBB The ``author`` attribute is deprecated in favor of the <author>
-        # tags, but XSLT and mobile still use it.
-        try:
-            # Check first element as well, since it may be an empty string.
-            if metadata.authors and metadata.authors[0]:
-                entry.set('author', unicode(";".join(metadata.authors)))
-        except AttributeError:
-            pass
         try:
             type_decl = zeit.cms.interfaces.ITypeDeclaration(self.context)
         except TypeError:

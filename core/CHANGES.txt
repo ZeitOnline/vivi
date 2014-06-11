@@ -4,7 +4,8 @@ zeit.cms changes
 2.21.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Populate ``author`` attribute of references with author objects instead of
+  freetext authors (VIV-410).
 
 
 2.21.0 (2014-06-06)
