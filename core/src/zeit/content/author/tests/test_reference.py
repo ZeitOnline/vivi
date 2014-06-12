@@ -75,6 +75,11 @@ class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
         self.repository['andersen'] = andersen
 
         content = self.repository['testcontent']
+        reference = zope.component.getAdapter(
+            content, zeit.cms.content.interfaces.IXMLReference, name='related')
+        self.assertNotIn(
+            'author=""', lxml.etree.tostring(reference, pretty_print=True))
+
         content.authorships = (
             content.authorships.create(self.shakespeare),
             content.authorships.create(andersen))
