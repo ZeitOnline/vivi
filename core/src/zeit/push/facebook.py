@@ -2,6 +2,7 @@ import fb
 import grokcore.component as grok
 import xml.sax.saxutils
 import zc.sourcefactory.source
+import zeit.cms.content.sources
 import zeit.push.interfaces
 import zeit.push.message
 import zope.interface
@@ -10,10 +11,6 @@ import zope.interface
 class Connection(object):
 
     zope.interface.implements(zeit.push.interfaces.IPushNotifier)
-
-    def __init__(self, api_key, api_secret):
-        self.api_key = api_key
-        self.api_secret = api_secret
 
     def send(self, text, link, **kw):
         account = kw['account']
@@ -25,16 +22,6 @@ class Connection(object):
             fb_api.publish(cat='feed', id='me', message=message)
         except Exception, e:
             raise zeit.push.interfaces.TechnicalError(str(e))
-
-
-@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-def from_product_config():
-    # soft dependency
-    import zope.app.appsetup.product
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.push')
-    return Connection(config['facebook-application-id'],
-                      config['facebook-application-secret'])
 
 
 class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
