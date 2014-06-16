@@ -86,11 +86,15 @@ Facebook
 - Go to http://developer.facebook.com and register as developer
 - Create a New App, name 'ZEIT ONLINE' (so that "posted by" type of things look
   nice)
-- Go to Settings/Basic
+- Go to Settings:
   * Click "Add Platform", Type: Website, Site URL: http://www.zeit.de
-  * Click "Save Changes"
   * Set App Domains: zeit.de
+  * Set contact email
   * Click "Save Changes"
+- Go to Status & Review
+  * Set application "public" (i.e. not longer developer mode, so posts made
+    through it actually appear publicly).
+
 
 1. Authorize the vivi application with a Facebook account
 ---------------------------------------------------------
