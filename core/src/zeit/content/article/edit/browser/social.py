@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.twitter import twitterAccountSource
+from zeit.push.facebook import facebookAccountSource
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.edit.browser.form
@@ -14,7 +15,11 @@ class Container(zeit.edit.browser.form.FoldableFormGroup):
 
 class IAccounts(zope.interface.Interface):
 
-    # facebook = zope.schema.Bool(title=_('Enable Facebook'))
+    facebook = zope.schema.Bool(title=_('Enable Facebook'))
+    facebook_ressort = zope.schema.Choice(
+        title=_('Additional Facebook'),
+        source=facebookAccountSource,
+        required=False)
     twitter = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort = zope.schema.Choice(
         title=_('Additional Twitter'),
@@ -29,11 +34,11 @@ class Social(zeit.edit.browser.form.InlineForm,
     prefix = 'social'
     undo_description = _('edit social media')
     form_fields = (
-        # zope.formlib.form.FormFields(
-        #     zeit.push.interfaces.IPushMessages).select('long_text')
-        # + zope.formlib.form.FormFields(
-        #     IAccounts).select('facebook')
-        # +
+        zope.formlib.form.FormFields(
+            zeit.push.interfaces.IPushMessages).select('long_text')
+        + zope.formlib.form.FormFields(
+            IAccounts).select('facebook', 'facebook_ressort')
+        +
         zope.formlib.form.FormFields(
             zeit.push.interfaces.IPushMessages).select('short_text')
         + zope.formlib.form.FormFields(
@@ -48,8 +53,9 @@ class Social(zeit.edit.browser.form.InlineForm,
 
     def success_handler(self, action, data, errors=None):
         message_config = [
-            # {'type': 'facebook',
-            #  'enabled': data.get('facebook')},
+            {'type': 'facebook',
+             'enabled': data.get('facebook'),
+             'account': facebookAccountSource(None).MAIN_ACCOUNT},
             {'type': 'twitter',
              'enabled': data.get('twitter'),
              'account': twitterAccountSource(None).MAIN_ACCOUNT}
@@ -80,8 +86,20 @@ class Accounts(grok.Adapter):
         for service in self.message_config:
             if service['type'] != 'facebook':
                 continue
+            if service['account'] != facebookAccountSource(None).MAIN_ACCOUNT:
+                continue
             return service['enabled']
         return True
+
+    @property
+    def facebook_ressort(self):
+        for service in self.message_config:
+            if service['type'] != 'facebook':
+                continue
+            account = service.get('account')
+            if account != facebookAccountSource(None).MAIN_ACCOUNT:
+                return account
+        return None
 
     @property
     def twitter(self):
@@ -110,6 +128,10 @@ class Accounts(grok.Adapter):
 
     @facebook.setter
     def facebook(self, value):
+        pass
+
+    @facebook_ressort.setter
+    def facebook_ressort(self, value):
         pass
 
     @twitter.setter
