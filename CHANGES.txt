@@ -1,6 +1,12 @@
 zeit.content.author changes
 ===========================
 
+2.2.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.2.0 (2014-06-16)
 ------------------
 
