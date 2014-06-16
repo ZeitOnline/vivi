@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.1.4 (unreleased)
+2.2.0 (2014-06-16)
 ------------------
 
 - Populate ``author`` attribute of references with author objects instead of
