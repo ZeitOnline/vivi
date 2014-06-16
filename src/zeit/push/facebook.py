@@ -1,5 +1,10 @@
+# coding: utf-8
+import argparse
 import fb
 import grokcore.component as grok
+import requests
+import urllib
+import urlparse
 import xml.sax.saxutils
 import zc.sourcefactory.source
 import zeit.cms.content.sources
@@ -64,3 +69,74 @@ class Message(zeit.push.message.Message):
 
     grok.name('facebook')
     get_text_from = 'long_text'
+
+
+def create_access_token(argv=None):
+    parser = argparse.ArgumentParser(
+        description='Create Facebook access token')
+    parser.add_argument('--app-id', help='Application ID',
+                        default='638028906281625')
+    parser.add_argument('--app-secret', help='Application Secret')
+    parser.add_argument('--page-name', help='Name of the page',
+                        default='ZEIT ONLINE')
+    options = parser.parse_args(argv)
+    if not all([options.app_id, options.app_secret, options.page_name]):
+        parser.print_help()
+        raise SystemExit(1)
+    options.redirect_uri = 'http://vivi.zeit.de/@@ping'
+
+    # Step 1: Get user token. <https://developers.facebook.com
+    # /docs/facebook-login/manually-build-a-login-flow#login>
+    login_url = 'https://www.facebook.com/dialog/oauth?' + urllib.urlencode({
+        'client_id': options.app_id,
+        'redirect_uri': options.redirect_uri,
+        'scope': 'manage_pages,publish_actions',
+    })
+    print u'Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
+        login_url)
+    print (
+        u'Nach der Bestätigung der Berechtigungen erfolgt eine Weiterleitung,')
+    result_url = raw_input('die neue URL bitte hier eingeben: ')
+    code = urlparse.parse_qs(urlparse.urlparse(result_url).query)['code'][0]
+
+    # Step 1b: Convert code to token <https://developers.facebook.com
+    # /docs/facebook-login/manually-build-a-login-flow#confirm>
+    r = requests.get(
+        'https://graph.facebook.com/oauth/access_token?' + urllib.urlencode({
+            'client_id': options.app_id,
+            'client_secret': options.app_secret,
+            'redirect_uri': options.redirect_uri,
+            'code': code,
+        }))
+    result = urlparse.parse_qs(r.text)
+    if 'error' in result:
+        print result['error']
+        raise SystemExit(1)
+    short_lived_user_token = result['access_token'][0]
+
+    # Step 2: Exchange for long-lived token. <https://developers.facebook.com
+    # /docs/facebook-login/access-tokens/#extending>
+    r = requests.get(
+        'https://graph.facebook.com/oauth/access_token?' + urllib.urlencode({
+            'client_id': options.app_id,
+            'client_secret': options.app_secret,
+            'grant_type': 'fb_exchange_token',
+            'fb_exchange_token': short_lived_user_token,
+        }))
+    result = urlparse.parse_qs(r.text)
+    if 'error' in result:
+        print result['error']
+        raise SystemExit(1)
+    long_lived_user_token = result['access_token'][0]
+
+    # Step 3. Retrieve page access token. <https://developers.facebook.com
+    # /docs/facebook-login/access-tokens/#pagetokens>
+    #
+    # Note: Since we used a long-lived user token, the page token will be
+    # long-lived (~60 days), too.
+    user = fb.graph.api(long_lived_user_token)
+    accounts = user.get_object(cat='single', id='me', fields=['accounts'])
+    page_token = [x['access_token'] for x in accounts['accounts']['data']
+                  if x['name'] == options.page_name][0]
+
+    print u'Das Page Token für %s ist: %s' % (options.page_name, page_token)

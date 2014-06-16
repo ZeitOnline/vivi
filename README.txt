@@ -74,3 +74,47 @@ not have publicly available via http://xml.zeit.de)::
       <account name="zeitonline_pol" token="" secret="">Politik</account>
       ...
     </twitter-accounts>
+
+
+Facebook
+========
+
+0. Register vivi as an application with Facebook
+------------------------------------------------
+
+- Log in to Facebook account that has write access to the 'ZEIT ONLINE' page
+- Go to http://developer.facebook.com and register as developer
+- Create a New App, name 'ZEIT ONLINE' (so that "posted by" type of things look
+  nice)
+- Go to Settings/Basic
+  * Click "Add Platform", Type: Website, Site URL: http://www.zeit.de
+  * Click "Save Changes"
+  * Set App Domains: zeit.de
+  * Click "Save Changes"
+
+1. Authorize the vivi application with a Facebook account
+---------------------------------------------------------
+
+Log in to Facebook account that has write access to the 'ZEIT ONLINE' page and
+that is configured as administrator or developer for the Facebook application.
+Then run::
+
+    $ ./work/maintenancejobs/bin/facebook-access-token \
+         --app-id=<APP-ID> \
+         --app-secret=<APP SECRET> \
+         --page-name=<PAGE NAME>  # e.g. 'ZEIT ONLINE'
+
+The script will prompt you to open an URL, which contains a kind of Facebook
+loging screen where you need to confirm the request for permission to post
+statuses (set visibility to 'public') and manage pages. Then the browser will
+be redirected to a "success" page, and its URL will contain a user-specific
+access code. Paste the URL to the script, and it will exchange this code for a
+long-lived (60 days) access token for the *page*.
+
+NOTE: We require write permissions, and Facebook only allows an application to
+request write permissions after they have reviewed that application. Since vivi
+is an internal application, reviewing it does not make much sense. There is a
+workaround, however: The user(s) that grant permissions to the application must
+be registered as administrators or developers of that application -- then, no
+review is necessary and the write permission can be requested anyway
+(see https://developers.facebook.com/docs/apps/review/login for details).
