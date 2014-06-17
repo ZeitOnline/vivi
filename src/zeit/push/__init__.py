@@ -5,8 +5,10 @@ import pkg_resources
 # zeit.content.article.testing.
 product_config = """\
 <product-config zeit.push>
-  twitter-accounts file://%s
+  twitter-accounts file://{fixtures}/twitter-accounts.xml
   twitter-main-account testaccount
+  facebook-accounts file://{fixtures}/facebook-accounts.xml
+  facebook-main-account testaccount
 </product-config>
-""" % pkg_resources.resource_filename(
-    __name__, 'tests/fixtures/twitter-accounts.xml')
+""".format(fixtures=pkg_resources.resource_filename(
+    __name__, 'tests/fixtures'))

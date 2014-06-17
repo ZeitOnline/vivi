@@ -22,10 +22,11 @@ class Connection(object):
         access_token = facebookAccountSource.factory.access_token(account)
 
         fb_api = fb.graph.api(access_token)
-        try:
-            fb_api.publish(cat='feed', id='me', message=text, link=link)
-        except Exception, e:
-            raise zeit.push.interfaces.TechnicalError(str(e))
+        result = fb_api.publish(
+            cat='feed', id='me', message=text, link=link)
+        if 'error' in result:
+            # XXX Don't know how to differentiate technical and semantic errors
+            raise zeit.push.interfaces.TechnicalError(str(result['error']))
 
 
 class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
