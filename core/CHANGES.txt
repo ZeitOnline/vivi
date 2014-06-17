@@ -1,8 +1,10 @@
 zeit.cms changes
 ================
 
-2.22.1 (unreleased)
+2.23.0 (unreleased)
 -------------------
+
+- Include "Select2" jQuery plugin for nicer select widgets (VIV-389).
 
 - Fix "retract" icon (VIV-361).
 

@@ -4,6 +4,7 @@
 from fanstatic import Library, Group
 from js.jquery import jquery
 from js.mochikit import mochikit
+from js.select2 import select2_de
 from js.vanderlee_colorpicker import colorpicker
 import fanstatic
 import js.jqueryui
@@ -66,7 +67,6 @@ jqueryui_theme = fanstatic.Resource(
 jqueryui = fanstatic.Group([js.jqueryui.jqueryui, jqueryui_theme])
 register(jqueryui)
 
-
 zc_table = Library(
     'zc.table', pkg_resources.resource_filename('zc.table', 'resources'))
 zc_table_js = fanstatic.Resource(zc_table, 'sorting.js')
@@ -92,7 +92,8 @@ register(datetime_widget_js)
 
 SplitDirResource('namespace.js')
 SplitDirResource('logging.js', depends=[namespace_js, mochikit, jquery])
-SplitDirResource('base.js', depends=[namespace_js, mochikit, jquery, jqueryui])
+SplitDirResource('base.js', depends=[
+    namespace_js, mochikit, jquery, jqueryui, select2_de])
 
 base = Group([
     namespace_js, logging_js, base_js,

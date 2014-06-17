@@ -340,6 +340,11 @@ $(document).bind('fragment-ready', function(event) {
 
 
 $(document).bind('fragment-ready', function(event) {
+    $('select.chosen', event.__target).select2();
+});
+
+
+$(document).bind('fragment-ready', function(event) {
   $("#editor-forms-heading .content-icon.type-article").attr("cms:tooltip","Diesen Artikel ins Clipboard ziehen");
   $(".editable-area .edit-bar a.fold-link").attr("cms:tooltip","einklappen");
   $(".editable-area.folded .edit-bar a.fold-link").attr("cms:tooltip","ausklappen");
