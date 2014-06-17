@@ -33,7 +33,7 @@ class TwitterTest(zeit.push.testing.TestCase):
             self.api_key, self.api_secret)
         twitter.send(
             'zeit.push.tests.twitter %s' % self.nugget, 'http://example.com',
-            account='testaccount')
+            account='twitter-test')
 
         for status in self.api.home_timeline():
             if self.nugget in status.text:
@@ -45,7 +45,7 @@ class TwitterTest(zeit.push.testing.TestCase):
         twitter = zeit.push.twitter.Connection(
             self.api_key, self.api_secret)
         with self.assertRaises(zeit.push.interfaces.WebServiceError) as e:
-            twitter.send('a' * 150, '', account='testaccount')
+            twitter.send('a' * 150, '', account='twitter-test')
         self.assertIn('Status is over 140 characters', e.exception.message)
 
 
@@ -53,5 +53,5 @@ class TwitterAccountsTest(zeit.push.testing.TestCase):
 
     def test_main_account_is_excluded_from_source(self):
         self.assertEqual(
-            ['ressort_wissen'],
+            ['twitter_ressort_wissen'],
             list(zeit.push.twitter.twitterAccountSource(None)))
