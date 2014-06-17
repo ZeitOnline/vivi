@@ -19,9 +19,7 @@ class Message(grok.Adapter):
     def send(self):
         notifier = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name=self.type)
-        push = zeit.push.interfaces.IPushMessages(self.context)
-        notifier.send(getattr(push, self.get_text_from), self.url,
-                      **self.config)
+        notifier.send(self.text, self.url, **self.config)
 
     @property
     def type(self):
@@ -31,3 +29,13 @@ class Message(grok.Adapter):
     def url(self):
         return self.context.uniqueId.replace(
             zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
+
+    @property
+    def text(self):
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        text = getattr(push, self.get_text_from)
+        limit = zeit.push.interfaces.IPushMessages[
+            self.get_text_from].queryTaggedValue('zeit.cms.charlimit')
+        if limit and len(text) > limit:
+            text = text[:limit - 3] + u'...'
+        return text
