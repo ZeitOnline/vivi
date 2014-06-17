@@ -69,8 +69,9 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_converts_ressorts_to_message_config(self):
         self.open_form()
         b = self.browser
-        b.getControl('Additional Twitter').displayValue = ['Wissen']
-        b.getControl('Additional Facebook').displayValue = ['Deutschland']
+        b.getControl('Additional Twitter').displayValue = ['Wissen', 'Politik']
+        b.getControl('Additional Facebook').displayValue = [
+            'Deutschland', 'International']
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -79,12 +80,22 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
              'account': 'twitter_ressort_wissen'},
             push.message_config)
         self.assertIn(
+            {'type': 'twitter', 'enabled': True,
+             'account': 'twitter_ressort_politik'},
+            push.message_config)
+        self.assertIn(
             {'type': 'facebook', 'enabled': True,
              'account': 'fb_ressort_deutschland'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': True,
+             'account': 'fb_ressort_international'},
             push.message_config)
 
         self.open_form()
         self.assertEqual(
-            ['Wissen'], b.getControl('Additional Twitter').displayValue)
+            ['Wissen', 'Politik'],
+            b.getControl('Additional Twitter').displayValue)
         self.assertEqual(
-            ['Deutschland'], b.getControl('Additional Facebook').displayValue)
+            ['Deutschland', 'International'],
+            b.getControl('Additional Facebook').displayValue)
