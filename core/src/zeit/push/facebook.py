@@ -22,9 +22,8 @@ class Connection(object):
         access_token = facebookAccountSource.factory.access_token(account)
 
         fb_api = fb.graph.api(access_token)
-        message = u'%s %s' % (text, link)
         try:
-            fb_api.publish(cat='feed', id='me', message=message)
+            fb_api.publish(cat='feed', id='me', message=text, link=link)
         except Exception, e:
             raise zeit.push.interfaces.TechnicalError(str(e))
 
