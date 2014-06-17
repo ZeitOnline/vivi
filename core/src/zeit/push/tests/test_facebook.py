@@ -58,5 +58,5 @@ class FacebookAccountsTest(zeit.push.testing.TestCase):
 
     def test_main_account_is_excluded_from_source(self):
         self.assertEqual(
-            ['fb_ressort_deutschland'],
+            ['fb_ressort_deutschland', 'fb_ressort_international'],
             list(zeit.push.facebook.facebookAccountSource(None)))

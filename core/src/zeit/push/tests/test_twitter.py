@@ -53,5 +53,5 @@ class TwitterAccountsTest(zeit.push.testing.TestCase):
 
     def test_main_account_is_excluded_from_source(self):
         self.assertEqual(
-            ['twitter_ressort_wissen'],
+            ['twitter_ressort_wissen', 'twitter_ressort_politik'],
             list(zeit.push.twitter.twitterAccountSource(None)))
