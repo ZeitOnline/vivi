@@ -60,12 +60,13 @@ class Social(zeit.edit.browser.form.InlineForm,
              'enabled': data.get('twitter'),
              'account': twitterAccountSource(None).MAIN_ACCOUNT}
         ]
-        twitter_ressort = data.get('twitter_ressort')
-        if twitter_ressort:
-            message_config.append(
-                {'type': 'twitter',
-                 'enabled': True,
-                 'account': twitter_ressort})
+        for type_ in ['twitter', 'facebook']:
+            ressort = data.get('%s_ressort' % type_)
+            if ressort:
+                message_config.append(
+                    {'type': type_,
+                     'enabled': True,
+                     'account': ressort})
         zeit.push.interfaces.IPushMessages(
             self.context).message_config = message_config
         return super(Social, self).success_handler(action, data, errors)
