@@ -4,7 +4,10 @@ zeit.content.article changes
 3.4.5 (unreleased)
 ------------------
 
-- Reactivate breaking news feature (again), make title character limit soft.
+- Reactivate social media section, implement Facebook (VIV-387, VIV-371).
+
+- Reactivate breaking news feature (again), make title character limit soft
+  (VIV-25).
 
 
 3.4.4 (2014-06-05)

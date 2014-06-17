@@ -1,4 +1,3 @@
-import unittest
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.push.interfaces
@@ -33,41 +32,59 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual('shorttext', push.short_text)
         self.assertEqual(True, push.enabled)
 
-    @unittest.skip("bring back when Facebook is enabled again")
     def test_converts_account_checkboxes_to_message_config(self):
         self.open_form()
         b = self.browser
+        b.getControl('Enable Twitter').selected = True
         b.getControl('Enable Facebook').selected = True
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'facebook', 'enabled': True}, push.message_config)
+            {'type': 'twitter', 'enabled': True, 'account': 'twitter-test'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': True, 'account': 'fb-test'},
+            push.message_config)
 
         self.open_form()
+        self.assertTrue(b.getControl('Enable Twitter').selected)
         self.assertTrue(b.getControl('Enable Facebook').selected)
 
+        b.getControl('Enable Twitter').selected = False
         b.getControl('Enable Facebook').selected = False
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'facebook', 'enabled': False}, push.message_config)
+            {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': False, 'account': 'fb-test'},
+            push.message_config)
 
         self.open_form()
         self.assertFalse(b.getControl('Enable Facebook').selected)
 
-    def test_converts_twitter_ressort_to_message_config(self):
+    def test_converts_ressorts_to_message_config(self):
         self.open_form()
         b = self.browser
         b.getControl('Additional Twitter').displayValue = ['Wissen']
+        b.getControl('Additional Facebook').displayValue = ['Deutschland']
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
-            {'type': 'twitter', 'enabled': True, 'account': 'ressort_wissen'},
+            {'type': 'twitter', 'enabled': True,
+             'account': 'twitter_ressort_wissen'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': True,
+             'account': 'fb_ressort_deutschland'},
             push.message_config)
 
         self.open_form()
         self.assertEqual(
             ['Wissen'], b.getControl('Additional Twitter').displayValue)
+        self.assertEqual(
+            ['Deutschland'], b.getControl('Additional Facebook').displayValue)

@@ -1844,15 +1844,19 @@
 }
 
 .type-article #form-social .field.fieldname-twitter,
-.type-article #form-social .field.fieldname-twitter_ressort {
+.type-article #form-social .field.fieldname-twitter_ressort,
+.type-article #form-social .field.fieldname-facebook,
+.type-article #form-social .field.fieldname-facebook_ressort {
     float: left;
 }
 
-.type-article #form-social .field.fieldname-twitter_ressort .label span {
+.type-article #form-social .field.fieldname-twitter_ressort .label span,
+.type-article #form-social .field.fieldname-facebook_ressort .label span {
     text-transform: none;
 }
 
-.type-article #form-social .field.fieldname-twitter_ressort .widget {
+.type-article #form-social .field.fieldname-twitter_ressort .widget,
+.type-article #form-social .field.fieldname-facebook_ressort .widget {
     clear: none;
     width: inherit;
     margin-top: 0;

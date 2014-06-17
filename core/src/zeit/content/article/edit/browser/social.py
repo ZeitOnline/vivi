@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.twitter import twitterAccountSource
+from zeit.push.facebook import facebookAccountSource
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.edit.browser.form
@@ -14,7 +15,11 @@ class Container(zeit.edit.browser.form.FoldableFormGroup):
 
 class IAccounts(zope.interface.Interface):
 
-    # facebook = zope.schema.Bool(title=_('Enable Facebook'))
+    facebook = zope.schema.Bool(title=_('Enable Facebook'))
+    facebook_ressort = zope.schema.Choice(
+        title=_('Additional Facebook'),
+        source=facebookAccountSource,
+        required=False)
     twitter = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort = zope.schema.Choice(
         title=_('Additional Twitter'),
@@ -29,11 +34,11 @@ class Social(zeit.edit.browser.form.InlineForm,
     prefix = 'social'
     undo_description = _('edit social media')
     form_fields = (
-        # zope.formlib.form.FormFields(
-        #     zeit.push.interfaces.IPushMessages).select('long_text')
-        # + zope.formlib.form.FormFields(
-        #     IAccounts).select('facebook')
-        # +
+        zope.formlib.form.FormFields(
+            zeit.push.interfaces.IPushMessages).select('long_text')
+        + zope.formlib.form.FormFields(
+            IAccounts).select('facebook', 'facebook_ressort')
+        +
         zope.formlib.form.FormFields(
             zeit.push.interfaces.IPushMessages).select('short_text')
         + zope.formlib.form.FormFields(
@@ -48,18 +53,20 @@ class Social(zeit.edit.browser.form.InlineForm,
 
     def success_handler(self, action, data, errors=None):
         message_config = [
-            # {'type': 'facebook',
-            #  'enabled': data.get('facebook')},
+            {'type': 'facebook',
+             'enabled': data.get('facebook'),
+             'account': facebookAccountSource(None).MAIN_ACCOUNT},
             {'type': 'twitter',
              'enabled': data.get('twitter'),
              'account': twitterAccountSource(None).MAIN_ACCOUNT}
         ]
-        twitter_ressort = data.get('twitter_ressort')
-        if twitter_ressort:
-            message_config.append(
-                {'type': 'twitter',
-                 'enabled': True,
-                 'account': twitter_ressort})
+        for type_ in ['twitter', 'facebook']:
+            ressort = data.get('%s_ressort' % type_)
+            if ressort:
+                message_config.append(
+                    {'type': type_,
+                     'enabled': True,
+                     'account': ressort})
         zeit.push.interfaces.IPushMessages(
             self.context).message_config = message_config
         return super(Social, self).success_handler(action, data, errors)
@@ -77,30 +84,43 @@ class Accounts(grok.Adapter):
 
     @property
     def facebook(self):
-        for service in self.message_config:
-            if service['type'] != 'facebook':
-                continue
-            return service['enabled']
-        return True
+        service = self._get_service('facebook', main=True)
+        if service is None:
+            return True
+        return service['enabled']
+
+    @property
+    def facebook_ressort(self):
+        service = self._get_service('facebook', main=False)
+        return service and service['account']
 
     @property
     def twitter(self):
-        for service in self.message_config:
-            if service['type'] != 'twitter':
-                continue
-            if service['account'] != twitterAccountSource(None).MAIN_ACCOUNT:
-                continue
-            return service['enabled']
-        return True
+        service = self._get_service('twitter', main=True)
+        if service is None:
+            return True
+        return service['enabled']
 
     @property
     def twitter_ressort(self):
+        service = self._get_service('twitter', main=False)
+        return service and service['account']
+
+    def _get_service(self, type_, main=True):
+        source = {
+            'twitter': twitterAccountSource,
+            'facebook': facebookAccountSource,
+        }[type_](None)
+
         for service in self.message_config:
-            if service['type'] != 'twitter':
+            if service['type'] != type_:
                 continue
             account = service.get('account')
-            if account != twitterAccountSource(None).MAIN_ACCOUNT:
-                return account
+            if not account:  # BBB
+                continue
+            is_main = (account == source.MAIN_ACCOUNT)
+            if is_main == main:
+                return service
         return None
 
     # Writing happens all services at once in the form, so we don't need to
@@ -110,6 +130,10 @@ class Accounts(grok.Adapter):
 
     @facebook.setter
     def facebook(self, value):
+        pass
+
+    @facebook_ressort.setter
+    def facebook_ressort(self, value):
         pass
 
     @twitter.setter
