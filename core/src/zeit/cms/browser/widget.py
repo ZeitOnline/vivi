@@ -23,6 +23,7 @@ import zope.app.pagetemplate
 import zope.cachedescriptors.property
 import zope.component
 import zope.formlib.interfaces
+import zope.formlib.itemswidgets
 import zope.formlib.textwidgets
 import zope.interface
 import zope.schema
@@ -607,3 +608,14 @@ class AutocompleteDisplayWidget(zope.formlib.widgets.DisplayWidget):
 class ColorpickerWidget(zope.formlib.textwidgets.TextWidget):
 
     cssClass = 'colorpicker-widget'
+
+
+def empty_toFieldValue(self, input):
+    # XXX Work around formlib bug, browser always POSTs the parameter with
+    # no value, which somehow gets converted to a list containing an empty
+    # string [''], which formlib does not expect.
+    if input == [u'']:
+        input = None
+    return orig_toFieldValue(self, input)
+orig_toFieldValue = zope.formlib.itemswidgets.MultiDataHelper._toFieldValue
+zope.formlib.itemswidgets.MultiDataHelper._toFieldValue = empty_toFieldValue
