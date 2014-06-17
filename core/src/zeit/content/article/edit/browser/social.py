@@ -5,6 +5,7 @@ import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.edit.browser.form
 import zope.formlib.form
+import zope.i18n
 import zope.interface
 
 
@@ -48,8 +49,11 @@ class Social(zeit.edit.browser.form.InlineForm,
     def setUpWidgets(self, *args, **kw):
         super(Social, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
-        self.widgets['facebook_ressorts'].extra = 'class="chosen"'
-        self.widgets['twitter_ressorts'].extra = 'class="chosen"'
+        extra = 'class="chosen" data-placeholder="%s"' % zope.i18n.translate(
+            zope.formlib.i18n._('vocabulary-missing-single-value-for-edit'),
+            context=self.request)
+        self.widgets['facebook_ressorts'].extra = extra
+        self.widgets['twitter_ressorts'].extra = extra
 
     def success_handler(self, action, data, errors=None):
         message_config = [
