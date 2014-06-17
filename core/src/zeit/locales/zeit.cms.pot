@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Jun  4 11:16:38 2014\n"
+"POT-Creation-Date: Tue Jun 17 11:03:20 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -149,27 +149,27 @@ msgid "Complete event"
 msgstr ""
 
 #: zeit/calendar/browser/calendar_macros.pt:42
-#: zeit/cms/browser/lightbox.pt:2
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
-#: zeit/cms/browser/sourceedit.pt:16
-#: zeit/cms/browser/sourceedit.pt:39
-#: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/context-views-menu-item.pt:5
-#: zeit/cms/browser/menu-context-views.pt:8
-#: zeit/cms/browser/menu-context-views.pt:8
-#: zeit/cms/browser/action-menu-item.pt:2
-#: zeit/cms/browser/action-menu-item.pt:11
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
 #: zeit/cms/browser/main_template.pt:46
 #: zeit/cms/browser/main_template.pt:179
 #: zeit/cms/browser/main_template.pt:202
 #: zeit/cms/browser/main_template.pt:220
-#: zeit/content/cp/browser/blocks/teaser.edit-properties.pt:21
+#: zeit/cms/browser/action-menu-item.pt:2
+#: zeit/cms/browser/action-menu-item.pt:11
+#: zeit/cms/browser/sourceedit.pt:16
+#: zeit/cms/browser/sourceedit.pt:39
+#: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/menu-context-views.pt:8
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
+#: zeit/cms/browser/lightbox.pt:2
+#: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
+#: zeit/content/cp/browser/blocks/teaser.edit-properties.pt:21
 #: zeit/edit/browser/inlineform.pt:16
 #: zeit/edit/browser/inlineform.pt:38
 #: zeit/edit/browser/view.editbox-action.pt:1
@@ -1634,7 +1634,7 @@ msgstr ""
 msgid "Push services"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:63
+#: zeit/content/article/browser/breaking.py:64
 msgid "Publish and push"
 msgstr ""
 
@@ -1936,24 +1936,32 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
 #: zeit/content/cp/browser/publish.pt:9
-#: zeit/workflow/browser/retract.pt:6
 #: zeit/workflow/browser/publish.pt:7
+#: zeit/workflow/browser/retract.pt:6
 msgid "Reloading"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:12
+#: zeit/content/article/edit/browser/social.py:13
 msgid "Social media"
 msgstr ""
 
 #: zeit/content/article/edit/browser/social.py:18
-msgid "Enable Twitter"
+msgid "Enable Facebook"
 msgstr ""
 
 #: zeit/content/article/edit/browser/social.py:20
+msgid "Additional Facebook"
+msgstr ""
+
+#: zeit/content/article/edit/browser/social.py:23
+msgid "Enable Twitter"
+msgstr ""
+
+#: zeit/content/article/edit/browser/social.py:25
 msgid "Additional Twitter"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:30
+#: zeit/content/article/edit/browser/social.py:35
 msgid "edit social media"
 msgstr ""
 
@@ -2036,9 +2044,9 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:509
 #: zeit/content/cp/interfaces.py:574
 #: zeit/content/gallery/interfaces.py:106
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 #: zeit/wysiwyg/browser/resources/reference/image.pt:26
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 msgid "Layout"
 msgstr ""
 
@@ -2112,15 +2120,15 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:257
 #: zeit/content/article/edit/interfaces.py:311
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 msgid "short"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:258
 #: zeit/content/article/edit/interfaces.py:312
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 msgid "wide"
 msgstr ""
 
@@ -2155,8 +2163,8 @@ msgid "Expires"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:313
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:46
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:55
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:46
 msgid "double"
 msgstr ""
 
@@ -2165,11 +2173,11 @@ msgid "Attribution"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:326
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
-#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
-#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
-#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
+#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
+#: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
+#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 msgid "URL"
 msgstr ""
 
@@ -3854,16 +3862,6 @@ msgstr ""
 msgid "from Article"
 msgstr ""
 
-#: zeit/wysiwyg/browser/resources/reference/image.pt:31
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:52
-msgid "small"
-msgstr ""
-
-#: zeit/wysiwyg/browser/resources/reference/image.pt:32
-#: zeit/wysiwyg/browser/resources/video/dialog.pt:54
-msgid "large"
-msgstr ""
-
 #: zeit/wysiwyg/browser/resources/reference/image.pt:34
 msgid "Hochkant"
 msgstr ""
@@ -3876,7 +3874,17 @@ msgstr ""
 msgid "Second Video"
 msgstr ""
 
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:52
+#: zeit/wysiwyg/browser/resources/reference/image.pt:31
+msgid "small"
+msgstr ""
+
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
+msgstr ""
+
+#: zeit/wysiwyg/browser/resources/video/dialog.pt:54
+#: zeit/wysiwyg/browser/resources/reference/image.pt:32
+msgid "large"
 msgstr ""
 
