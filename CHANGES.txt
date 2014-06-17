@@ -4,7 +4,7 @@ zeit.push changes
 1.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Implement posting to Facebook (VIV-371).
 
 
 1.2.1 (2014-06-04)
