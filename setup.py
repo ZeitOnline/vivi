@@ -14,6 +14,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit'],
     install_requires=[
+        'fb',
         'mock',
         'pytz',
         'requests',
@@ -26,4 +27,9 @@ setup(
         'zope.component',
         'zope.interface',
     ],
+    entry_points={
+        'console_scripts': [
+            'facebook-access-token = zeit.push.facebook:create_access_token',
+        ],
+    },
 )
