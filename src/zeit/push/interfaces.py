@@ -57,14 +57,11 @@ class IPushMessages(zope.interface.Interface):
     long_text = zope.schema.Text(
         title=_('Long push text'), required=False)
     short_text= zope.schema.TextLine(
-        title=_('Short push text'),
-        required=False,
-        # 117 + 1 Space + 22 characters t.co-URL = 140
-        #
-        # XXX It's not yet clear what we can do when the user enters another
-        # URL as part of the tweet and that URL gets *longer* during the
-        # shortening process.
-        max_length=117)
+        title=_('Short push text'), required=False)
+    # 117 + 1 Space + 22 characters t.co-URL = 140
+    # XXX It's not yet clear what we can do when the user enters another URL as
+    # part of the tweet and that URL gets *longer* in the shortening process.
+    short_text.setTaggedValue('zeit.cms.charlimit', 117)
 
     message = zope.interface.Attribute('List of IMessage objects')
     message_config = zope.schema.Tuple(required=False, default=())
