@@ -83,42 +83,43 @@ class Accounts(grok.Adapter):
 
     @property
     def facebook(self):
-        for service in self.message_config:
-            if service['type'] != 'facebook':
-                continue
-            if service['account'] != facebookAccountSource(None).MAIN_ACCOUNT:
-                continue
-            return service['enabled']
-        return True
+        service = self._get_service('facebook', main=True)
+        if service is None:
+            return True
+        return service['enabled']
 
     @property
     def facebook_ressort(self):
-        for service in self.message_config:
-            if service['type'] != 'facebook':
-                continue
-            account = service.get('account')
-            if account != facebookAccountSource(None).MAIN_ACCOUNT:
-                return account
-        return None
+        service = self._get_service('facebook', main=False)
+        return service and service['account']
 
     @property
     def twitter(self):
-        for service in self.message_config:
-            if service['type'] != 'twitter':
-                continue
-            if service['account'] != twitterAccountSource(None).MAIN_ACCOUNT:
-                continue
-            return service['enabled']
-        return True
+        service = self._get_service('twitter', main=True)
+        if service is None:
+            return True
+        return service['enabled']
 
     @property
     def twitter_ressort(self):
+        service = self._get_service('twitter', main=False)
+        return service and service['account']
+
+    def _get_service(self, type_, main=True):
+        source = {
+            'twitter': twitterAccountSource,
+            'facebook': facebookAccountSource,
+        }[type_](None)
+
         for service in self.message_config:
-            if service['type'] != 'twitter':
+            if service['type'] != type_:
                 continue
             account = service.get('account')
-            if account != twitterAccountSource(None).MAIN_ACCOUNT:
-                return account
+            if not account:  # BBB
+                continue
+            is_main = (account == source.MAIN_ACCOUNT)
+            if is_main == main:
+                return service
         return None
 
     # Writing happens all services at once in the form, so we don't need to
