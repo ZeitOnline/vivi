@@ -4,7 +4,7 @@ zeit.cms changes
 2.22.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix "retract" icon (VIV-361).
 
 
 2.22.0 (2014-06-16)
