@@ -10,9 +10,12 @@ class FacebookTest(zeit.push.testing.TestCase):
 
     # User: tl+facebooktest@gocept.com
     # Pass: FiN7XHSx
-    app_id = '492113357602143'
-    app_secret = '7a1c8fbc7250d7b58103882368db33aa'
-    # Created on 2014-07-16, expires in about 60 days, recreate with
+    # app_id = '492113357602143'
+    # app_secret = '7a1c8fbc7250d7b58103882368db33aa'
+    #
+    # Page access token for
+    # <https://www.facebook.com/pages/Vivi-Test/721128357931123>,
+    # created on 2014-07-16, expires in about 60 days, recreate with
     # ./work/maintenancejobs/bin/facebook-access-token
     access_token = (
         'CAAGZCkxHefV8BAFx0CjyFY8hYn5dd0vKJh0NPOSLQxkR4jYQtwbu3QQvNzglDqyp26E6'
@@ -43,3 +46,17 @@ class FacebookTest(zeit.push.testing.TestCase):
                 break
         else:
             self.fail('Status was not posted')
+
+    def test_errors_should_raise(self):
+        facebook = zeit.push.facebook.Connection()
+        with self.assertRaises(zeit.push.interfaces.TechnicalError) as e:
+            facebook.send('foo', '', account='ressort_deutschland')
+        self.assertIn('Invalid OAuth access token.', e.exception.message)
+
+
+class FacebookAccountsTest(zeit.push.testing.TestCase):
+
+    def test_main_account_is_excluded_from_source(self):
+        self.assertEqual(
+            ['ressort_deutschland'],
+            list(zeit.push.facebook.facebookAccountSource(None)))
