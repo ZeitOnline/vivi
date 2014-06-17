@@ -37,7 +37,7 @@ class FacebookTest(zeit.push.testing.TestCase):
         facebook = zeit.push.facebook.Connection()
         facebook.send(
             'zeit.push.tests.facebook %s' % self.nugget, 'http://example.com',
-            account='testaccount')
+            account='fb-test')
 
         for status in self.api.get_object(
                 cat='single', id='me', fields=['feed'])['feed']['data']:
@@ -50,7 +50,7 @@ class FacebookTest(zeit.push.testing.TestCase):
     def test_errors_should_raise(self):
         facebook = zeit.push.facebook.Connection()
         with self.assertRaises(zeit.push.interfaces.TechnicalError) as e:
-            facebook.send('foo', '', account='ressort_deutschland')
+            facebook.send('foo', '', account='fb_ressort_deutschland')
         self.assertIn('Invalid OAuth access token.', e.exception.message)
 
 
@@ -58,5 +58,5 @@ class FacebookAccountsTest(zeit.push.testing.TestCase):
 
     def test_main_account_is_excluded_from_source(self):
         self.assertEqual(
-            ['ressort_deutschland'],
+            ['fb_ressort_deutschland'],
             list(zeit.push.facebook.facebookAccountSource(None)))

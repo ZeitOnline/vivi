@@ -6,9 +6,9 @@ import pkg_resources
 product_config = """\
 <product-config zeit.push>
   twitter-accounts file://{fixtures}/twitter-accounts.xml
-  twitter-main-account testaccount
+  twitter-main-account twitter-test
   facebook-accounts file://{fixtures}/facebook-accounts.xml
-  facebook-main-account testaccount
+  facebook-main-account fb-test
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))
