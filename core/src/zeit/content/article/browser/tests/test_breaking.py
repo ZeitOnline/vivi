@@ -37,7 +37,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.create_breakingnews()
         self.fill_in_required_values()
         self.browser.getControl('Publish and push').click()
-
         with zeit.cms.testing.site(self.getRootFolder()):
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             # XXX Kind of duplicate from .test_form.TestAdding
@@ -46,7 +45,13 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             self.assertEqual('ZEDE', article.product.id)
             self.assertEqual(True, article.commentsAllowed)
 
-            # XXX Split into separate test?
+    def test_checkboxes_set_appropriate_message_config(self):
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        self.browser.getControl('Publish and push').click()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+
             self.assertEqual(True, IPublishInfo(article).urgent)
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertEqual(True, push.enabled)
