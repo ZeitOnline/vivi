@@ -66,6 +66,24 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 push.message_config)
             self.assertEqual(article.title, push.short_text)
 
+    def test_publishing_works(self):
+        # This tests the integration with zeit.push, but not the actual push
+        # methods themselves.
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        self.browser.getControl('Publish and push').click()
+        self.browser.open('@@publish')
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                zeit.workflow.testing.run_publish()
+            article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+            self.assertEqual(True, IPublishInfo(article).published)
+            for service in ['homepage', 'ios-legacy', 'parse']:
+                notifier = zope.component.getUtility(
+                    zeit.push.interfaces.IPushNotifier, name=service)
+                self.assertEqual(1, len(notifier.calls))
+
     def test_setting_body_text_creates_paragraph(self):
         self.create_breakingnews()
         self.fill_in_required_values()
