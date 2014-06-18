@@ -71,7 +71,7 @@ def from_product_config():
         config['parse-application-id'], config['parse-rest-api-key'])
 
 
-class Message(zeit.push.message.Message):
+class Message(zeit.push.message.OneTimeMessage):
 
     grok.name('parse')
     get_text_from = 'short_text'
