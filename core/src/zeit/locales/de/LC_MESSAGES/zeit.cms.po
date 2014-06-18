@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Jun 18 09:34:56 2014\n"
-"PO-Revision-Date: 2014-06-18 09:35+0100\n"
+"PO-Revision-Date: 2014-06-18 11:04+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1589,7 +1589,7 @@ msgstr "Mobilgeräte (Android, iOS)"
 
 #: zeit/content/article/browser/breaking.py:24
 msgid "breaking-news-homepage"
-msgstr "Banner (Homepage, Centerpages)"
+msgstr "Eilmeldungsbanner (auf www.zeit.de)"
 
 #: zeit/content/article/browser/breaking.py:26
 msgid "breaking-news-social"
