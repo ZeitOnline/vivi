@@ -2,7 +2,6 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.edit.interfaces import IEditableBody
 import zeit.cms.testing
-import zeit.content.article.interfaces
 import zeit.content.article.testing
 import zope.i18n.translationdomain
 
@@ -17,6 +16,10 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.zca.patch_utility(domain, name='zeit.cms')
         self.catalog = zeit.cms.testing.TestCatalog()
         domain.addCatalog(self.catalog)
+
+        for name, notifier in zope.component.getUtilitiesFor(
+                zeit.push.interfaces.IPushNotifier):
+            notifier.reset()
 
         self.browser.open(
             'http://localhost:8080/++skin++vivi/repository/online/2007/01/')
@@ -58,7 +61,8 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 zeit.workflow.testing.run_publish()
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             self.assertEqual(True, IPublishInfo(article).published)
-            for service in ['homepage', 'ios-legacy', 'parse']:
+            for service in ['homepage', 'ios-legacy', 'parse',
+                            'twitter', 'facebook']:
                 notifier = zope.component.getUtility(
                     zeit.push.interfaces.IPushNotifier, name=service)
                 self.assertEqual(1, len(notifier.calls))

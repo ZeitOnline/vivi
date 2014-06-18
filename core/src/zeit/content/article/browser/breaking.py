@@ -22,6 +22,8 @@ class IPushServices(zope.interface.Interface):
         title=_('breaking-news-mobile'), required=False, default=True)
     homepage = zope.schema.Bool(
         title=_('breaking-news-homepage'), required=False, default=True)
+    social = zope.schema.Bool(
+        title=_('breaking-news-social'), required=False, default=True)
 
 
 class Add(zeit.cms.browser.form.AddForm,
@@ -46,7 +48,7 @@ class Add(zeit.cms.browser.form.AddForm,
         gocept.form.grouped.Fields('', (
             'ressort', 'sub_ressort', 'title', '__name__', 'text')),
         gocept.form.grouped.Fields(
-            _('Push services'), ('homepage', 'mobile')),
+            _('Push services'), ('homepage', 'mobile', 'social')),
     )
 
     def setUpWidgets(self, *args, **kw):
@@ -75,6 +77,11 @@ class Add(zeit.cms.browser.form.AddForm,
         if data.pop('homepage', False):
             message_config.append(
                 {'type': 'homepage', 'enabled': True})
+        if data.pop('social', False):
+            message_config.append(
+                {'type': 'facebook', 'enabled': True})
+            message_config.append(
+                {'type': 'twitter', 'enabled': True})
 
         article = super(Add, self).create(data)
         # XXX Duplicated from .form.AddAndCheckout
@@ -85,6 +92,7 @@ class Add(zeit.cms.browser.form.AddForm,
 
         push = zeit.push.interfaces.IPushMessages(article)
         push.short_text = article.title
+        push.long_text = article.title
         push.message_config = message_config
 
         body = IEditableBody(article)
