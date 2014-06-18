@@ -68,6 +68,31 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 zeit.push.interfaces.IPushNotifier, name='parse')
             self.assertEqual('Eilmeldung', parse.calls[0][2]['title'])
 
+    def test_banners_and_parse_are_disabled_after_publish(self):
+        # The breaking news is a normal article, so it has the normal social
+        # media functionality, thus it may be "armed" again later on
+        # (IPushMessages.enabled). But that should of course only apply to
+        # those push services actually meant by the social media UI (i.e.
+        # Twitter+Facebook), and not send "breaking news" messages again
+        # (e.g. to mobile devices).
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        self.browser.getControl('Publish and push').click()
+        self.browser.open('@@publish')
+
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                zeit.workflow.testing.run_publish()
+            article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+            push = zeit.push.interfaces.IPushMessages(article)
+            self.assertIn(
+                {'type': 'parse', 'enabled': False, 'title': 'Eilmeldung'},
+                push.message_config)
+            self.assertIn(
+                {'type': 'homepage', 'enabled': False}, push.message_config)
+            self.assertIn(
+                {'type': 'ios-legacy', 'enabled': False}, push.message_config)
+
     def test_setting_body_text_creates_paragraph(self):
         self.create_breakingnews()
         self.fill_in_required_values()
