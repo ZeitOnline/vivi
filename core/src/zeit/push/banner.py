@@ -37,7 +37,13 @@ def ios_legacy():
     return StaticArticlePublisher(config['ios-legacy-uniqueid'])
 
 
-class Message(zeit.push.message.Message):
+class HomepageMessage(zeit.push.message.Message):
 
     grok.name('homepage')
+    get_text_from = 'short_text'
+
+
+class LegacyIOSMessage(zeit.push.message.Message):
+
+    grok.name('ios-legacy')
     get_text_from = 'short_text'
