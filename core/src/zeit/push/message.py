@@ -39,3 +39,16 @@ class Message(grok.Adapter):
         if limit and len(text) > limit:
             text = text[:limit - 3] + u'...'
         return text
+
+
+class OneTimeMessage(Message):
+    """A Message that disables its service after it has been sent."""
+
+    def send(self):
+        super(OneTimeMessage, self).send()
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        config = push.message_config[:]
+        for service in config:
+            if service == self.config:
+                service['enabled'] = False
+        push.message_config = config
