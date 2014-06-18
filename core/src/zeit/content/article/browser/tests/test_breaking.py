@@ -54,6 +54,9 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 {'type': 'homepage', 'enabled': True},
                 push.message_config)
             self.assertIn(
+                {'type': 'ios-legacy', 'enabled': True},
+                push.message_config)
+            self.assertIn(
                 {'type': 'parse', 'enabled': True, 'title': 'Eilmeldung'},
                 push.message_config)
             self.assertEqual(article.title, push.short_text)

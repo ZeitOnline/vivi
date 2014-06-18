@@ -18,8 +18,8 @@ import zope.schema
 
 class IPushServices(zope.interface.Interface):
 
-    parse = zope.schema.Bool(
-        title=_('breaking-news-parse'), required=False, default=True)
+    mobile = zope.schema.Bool(
+        title=_('breaking-news-mobile'), required=False, default=True)
     homepage = zope.schema.Bool(
         title=_('breaking-news-homepage'), required=False, default=True)
 
@@ -46,7 +46,7 @@ class Add(zeit.cms.browser.form.AddForm,
         gocept.form.grouped.Fields('', (
             'ressort', 'sub_ressort', 'title', '__name__', 'text')),
         gocept.form.grouped.Fields(
-            _('Push services'), ('parse', 'homepage')),
+            _('Push services'), ('homepage', 'mobile')),
     )
 
     def setUpWidgets(self, *args, **kw):
@@ -67,11 +67,14 @@ class Add(zeit.cms.browser.form.AddForm,
 
     def create(self, data):
         message_config = []
-        for name in ('parse', 'homepage'):
-            service = {'type': name, 'enabled': data.pop(name, False)}
-            if name == 'parse':
-                service['title'] = u'Eilmeldung'
-            message_config.append(service)
+        if data.pop('mobile', False):
+            message_config.append(
+                {'type': 'parse', 'enabled': True, 'title': 'Eilmeldung'})
+            message_config.append(
+                {'type': 'ios-legacy', 'enabled': True})
+        if data.pop('homepage', False):
+            message_config.append(
+                {'type': 'homepage', 'enabled': True})
 
         article = super(Add, self).create(data)
         # XXX Duplicated from .form.AddAndCheckout
