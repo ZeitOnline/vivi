@@ -41,29 +41,3 @@ class Message(zeit.push.message.Message):
 
     grok.name('homepage')
     get_text_from = 'short_text'
-
-
-# XXX This is for the old system only, remove once VIV-25 is fully implemented.
-from datetime import datetime
-import pytz
-import zeit.cms.workflow.interfaces
-import zope.component
-
-
-@grok.subscribe(ICMSContent, zeit.cms.workflow.interfaces.IPublishedEvent)
-def push_to_parse_legacy_eilmeldung(context, event):
-    if context.uniqueId != 'http://xml.zeit.de/eilmeldung/eilmeldung':
-        return
-    last_pushed = zeit.push.interfaces.IPushMessages(
-        context).date_last_pushed
-    last_published = zeit.cms.workflow.interfaces.IPublishInfo(
-        context).date_last_published
-    if (last_pushed and last_published and last_pushed >= last_published):
-        return
-
-    notifier = zope.component.getUtility(
-        zeit.push.interfaces.IPushNotifier, name='parse')
-    notifier.send(context.xml.body.division.p.text, 'http://www.zeit.de/',
-                  title=u'Eilmeldung')
-    zeit.push.interfaces.IPushMessages(
-        context).date_last_pushed = datetime.now(pytz.UTC)
