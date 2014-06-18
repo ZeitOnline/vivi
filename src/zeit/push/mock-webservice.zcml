@@ -3,8 +3,10 @@
   <include package="zope.component" file="meta.zcml" />
 
   <utility factory=".testing.PushNotifier" name="parse" />
-  <utility factory=".testing.PushNotifier" name="homepage" />
   <utility factory=".testing.PushNotifier" name="twitter" />
   <utility factory=".testing.PushNotifier" name="facebook" />
+
+  <utility factory=".testing.PushNotifier" name="homepage" />
+  <utility factory=".testing.PushNotifier" name="ios-legacy" />
 
 </configure>

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.push',
-    version='1.2.2.dev0',
+    version='1.3.0.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://bitbucket.org/gocept/zeit.push',

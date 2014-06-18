@@ -26,10 +26,15 @@ class StaticArticlePublisher(object):
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
-def from_product_config():
-    config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.push')
-    return StaticArticlePublisher(config['eilmeldung-uniqueid'])
+def homepage_banner():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+    return StaticArticlePublisher(config['homepage-banner-uniqueid'])
+
+
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
+def ios_legacy():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+    return StaticArticlePublisher(config['ios-legacy-uniqueid'])
 
 
 class Message(zeit.push.message.Message):
