@@ -45,28 +45,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             self.assertEqual('ZEDE', article.product.id)
             self.assertEqual(True, article.commentsAllowed)
 
-    def test_checkboxes_set_appropriate_message_config(self):
-        self.create_breakingnews()
-        self.fill_in_required_values()
-        self.browser.getControl('Publish and push').click()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
-
-            self.assertEqual(True, IPublishInfo(article).urgent)
-            push = zeit.push.interfaces.IPushMessages(article)
-            self.assertEqual(True, push.enabled)
-            self.assertIn(
-                {'type': 'homepage', 'enabled': True},
-                push.message_config)
-            self.assertIn(
-                {'type': 'ios-legacy', 'enabled': True},
-                push.message_config)
-            self.assertIn(
-                {'type': 'parse', 'enabled': True, 'title': 'Eilmeldung'},
-                push.message_config)
-            self.assertEqual(article.title, push.short_text)
-
-    def test_publishing_works(self):
+    def test_publish_sends_push_messages(self):
         # This tests the integration with zeit.push, but not the actual push
         # methods themselves.
         self.create_breakingnews()
@@ -83,6 +62,11 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 notifier = zope.component.getUtility(
                     zeit.push.interfaces.IPushNotifier, name=service)
                 self.assertEqual(1, len(notifier.calls))
+                self.assertEqual(article.title, notifier.calls[0][0])
+
+            parse = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='parse')
+            self.assertEqual('Eilmeldung', parse.calls[0][2]['title'])
 
     def test_setting_body_text_creates_paragraph(self):
         self.create_breakingnews()
