@@ -6,7 +6,7 @@
   <utility factory=".twitter.from_product_config" name="twitter" />
   <utility factory=".facebook.Connection" name="facebook" />
 
-  <utility factory=".cp.homepage_banner" name="homepage" />
-  <utility factory=".cp.ios_legacy" name="ios-legacy" />
+  <utility factory=".banner.homepage_banner" name="homepage" />
+  <utility factory=".banner.ios_legacy" name="ios-legacy" />
 
 </configure>
