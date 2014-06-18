@@ -1,13 +1,15 @@
 zeit.push changes
 =================
 
-1.2.2 (unreleased)
+1.3.0 (unreleased)
 ------------------
 
 - Implement posting to Facebook (VIV-371).
 
 - Make character limit for Twitter message soft, truncate/ellide overlong
   messages instead.
+
+- Use separate file /eilmeldung/homepage-banner (VIV-417).
 
 
 1.2.1 (2014-06-04)

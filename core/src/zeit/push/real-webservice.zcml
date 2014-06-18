@@ -3,8 +3,10 @@
   <include package="zope.component" file="meta.zcml" />
 
   <utility factory=".parse.from_product_config" name="parse" />
-  <utility factory=".cp.from_product_config" name="homepage" />
   <utility factory=".twitter.from_product_config" name="twitter" />
   <utility factory=".facebook.Connection" name="facebook" />
+
+  <utility factory=".cp.homepage_banner" name="homepage" />
+  <utility factory=".cp.ios_legacy" name="ios-legacy" />
 
 </configure>
