@@ -27,6 +27,7 @@ Resource('ads.js', depends=[
 Resource('counter.js', depends=[zeit.cms.browser.resources.base])
 Resource('filename.js', depends=[zeit.cms.browser.resources.base])
 Resource('keyword.js', depends=[zeit.cms.browser.resources.base])
+Resource('social.js', depends=[zeit.cms.browser.resources.base])
 Resource('sync.js', depends=[zeit.cms.browser.resources.base])
 Resource('timer.js', depends=[zeit.cms.browser.resources.base])
 

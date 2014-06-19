@@ -90,3 +90,33 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.open_form()
         self.assertEqual(
             ['Wissen'], b.getControl('Additional Twitter').displayValue)
+
+
+class TwitterShorteningTest(
+        zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def test_short_text_is_truncated_with_ellipsis(self):
+        self.add_article()
+        input = 'social.short_text'
+        s = self.selenium
+        s.waitForElementPresent(input)
+        original = 'a' * 106 + ' This is too long'
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval(
+            'document.getElementById("%s").value = "%s"' % (input, original))
+        s.fireEvent(input, 'change')
+        text = s.getValue(input)
+        self.assertEqual(117, len(text))
+        self.assertTrue(text.endswith('This is...'))
+
+    def test_short_text_is_left_alone_if_below_limit(self):
+        self.add_article()
+        input = 'social.short_text'
+        s = self.selenium
+        s.waitForElementPresent(input)
+        original = 'a' * 100 + ' This is not long'
+        # XXX type() doesn't work with selenium-1 and FF>7
+        self.eval(
+            'document.getElementById("%s").value = "%s"' % (input, original))
+        s.fireEvent(input, 'change')
+        self.assertEqual(original, s.getValue(input))

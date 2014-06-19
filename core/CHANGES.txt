@@ -9,6 +9,8 @@ zeit.content.article changes
 - Reactivate breaking news feature (again), make title character limit soft,
   group checkboxes differently, add Twitter/Facebook (VIV-25).
 
+- Shorten twitter text if it is too long (VIV-370).
+
 - Add button to retract breaking news banner (VIV-418).
 
 - Fix filename rewriting: handle multiple umlauts, remove special characters at
