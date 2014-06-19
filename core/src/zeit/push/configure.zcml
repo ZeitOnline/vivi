@@ -1,5 +1,6 @@
 <configure
   xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:grok="http://namespaces.zope.org/grok">
 
   <grok:grok package="." />
@@ -14,5 +15,14 @@
       permission="zeit.workflow.Publish"
       />
   </class>
+
+  <browser:page
+    for="*"
+    name="breaking-banner-retract"
+    class=".banner.Retract"
+    template="banner-retract.pt"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    permission="zeit.workflow.Publish"
+    />
 
 </configure>

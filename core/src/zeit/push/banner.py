@@ -47,3 +47,18 @@ class LegacyIOSMessage(zeit.push.message.OneTimeMessage):
 
     grok.name('ios-legacy')
     get_text_from = 'short_text'
+
+
+class Retract(object):
+
+    @property
+    def homepage(self):
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='homepage')
+        return ICMSContent(notifier.uniqueId)
+
+    @property
+    def ios_legacy(self):
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='ios-legacy')
+        return ICMSContent(notifier.uniqueId)
