@@ -6,8 +6,6 @@ zeit.content.article changes
 
 - Reactivate social media section, implement Facebook (VIV-387, VIV-371).
 
-- Make Twitter and Facebook ressorts multi selectable (VIV-389).
-
 - Reactivate breaking news feature (again), make title character limit soft,
   group checkboxes differently, add Twitter/Facebook (VIV-25).
 

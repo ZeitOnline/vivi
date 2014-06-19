@@ -1844,19 +1844,19 @@
 }
 
 .type-article #form-social .field.fieldname-twitter,
-.type-article #form-social .field.fieldname-twitter_ressorts,
+.type-article #form-social .field.fieldname-twitter_ressort,
 .type-article #form-social .field.fieldname-facebook,
-.type-article #form-social .field.fieldname-facebook_ressorts {
+.type-article #form-social .field.fieldname-facebook_ressort {
     float: left;
 }
 
-.type-article #form-social .field.fieldname-twitter_ressorts .label span,
-.type-article #form-social .field.fieldname-facebook_ressorts .label span {
+.type-article #form-social .field.fieldname-twitter_ressort .label span,
+.type-article #form-social .field.fieldname-facebook_ressort .label span {
     text-transform: none;
 }
 
-.type-article #form-social .field.fieldname-twitter_ressorts .widget,
-.type-article #form-social .field.fieldname-facebook_ressorts .widget {
+.type-article #form-social .field.fieldname-twitter_ressort .widget,
+.type-article #form-social .field.fieldname-facebook_ressort .widget {
     clear: none;
     width: inherit;
     margin-top: 0;
@@ -1866,8 +1866,8 @@
     clear: left;
 }
 
-.type-article #form-social .select2-container {
-    margin-top: -5px;  /* vertically centered appearance */
+.type-article #form-social select {
+    margin-top: -4px;  /* vertically centered appearance */
 }
 
 /* breaking news */
