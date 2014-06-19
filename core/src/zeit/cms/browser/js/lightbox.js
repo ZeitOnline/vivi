@@ -104,10 +104,10 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
         self.mochi_events.push(
             MochiKit.Signal.connect(
                 self.lightbox, 'before-close', self, self.close));
+        zeit.cms.current_lightbox = self;
     },
 
     create_lightbox: function(container) {
-        //var self = this;
         return new gocept.Lightbox(container, {
             use_ids: false
         });
@@ -131,10 +131,17 @@ zeit.cms.LightboxForm = zeit.cms.SubPageForm.extend({
              MochiKit.Signal.disconnect(self.mochi_events.pop());
          }
         self.lightbox.close();
+        zeit.cms.current_lightbox = null;
     }
 });
 
 
 zeit.cms.lightbox_form = function(url) {
     new zeit.cms.LightboxForm(url);
+};
+
+
+zeit.cms.LoadInLightbox = function(context_element) {
+    var url = context_element.getAttribute('href');
+    return new zeit.cms.LightboxForm(url);
 };

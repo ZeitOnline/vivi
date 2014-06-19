@@ -8,6 +8,10 @@ zeit.cms changes
 
 - Fix "retract" icon (VIV-361).
 
+Internal:
+
+- Make current LightboxForm available as ``zeit.cms.current_lightbox``.
+
 
 2.22.0 (2014-06-16)
 -------------------
