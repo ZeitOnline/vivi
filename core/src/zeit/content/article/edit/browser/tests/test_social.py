@@ -36,7 +36,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.open_form()
         b = self.browser
         b.getControl('Enable Twitter').selected = True
-        b.getControl('Enable Facebook').selected = True
+        b.getControl('Enable Facebook', index=0).selected = True
+        b.getControl('Enable Facebook Magazin').selected = True
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -46,16 +47,22 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'facebook', 'enabled': True, 'account': 'fb-test'},
             push.message_config)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': True, 'account': 'fb-magazin'},
+            push.message_config)
 
         self.open_form()
         self.assertTrue(b.getControl('Enable Twitter').selected)
-        self.assertTrue(b.getControl('Enable Facebook').selected)
+        self.assertTrue(b.getControl('Enable Facebook', index=0).selected)
+        self.assertTrue(b.getControl('Enable Facebook Magazin').selected)
 
         b.getControl('Enable Twitter').selected = False
-        b.getControl('Enable Facebook').selected = False
+        b.getControl('Enable Facebook', index=0).selected = False
+        b.getControl('Enable Facebook Magazin').selected = False
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
+        self.assertEqual(2, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
             push.message_config)
@@ -64,13 +71,14 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
 
         self.open_form()
-        self.assertFalse(b.getControl('Enable Facebook').selected)
+        self.assertFalse(b.getControl('Enable Twitter').selected)
+        self.assertFalse(b.getControl('Enable Facebook', index=0).selected)
+        self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
 
     def test_converts_ressorts_to_message_config(self):
         self.open_form()
         b = self.browser
         b.getControl('Additional Twitter').displayValue = ['Wissen']
-        b.getControl('Additional Facebook').displayValue = ['Deutschland']
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -78,13 +86,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'twitter', 'enabled': True,
              'account': 'twitter_ressort_wissen'},
             push.message_config)
-        self.assertIn(
-            {'type': 'facebook', 'enabled': True,
-             'account': 'fb_ressort_deutschland'},
-            push.message_config)
 
         self.open_form()
         self.assertEqual(
             ['Wissen'], b.getControl('Additional Twitter').displayValue)
-        self.assertEqual(
-            ['Deutschland'], b.getControl('Additional Facebook').displayValue)
