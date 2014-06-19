@@ -9,6 +9,7 @@ import lovely.remotetask.interfaces
 import os
 import plone.testing
 import sys
+import threading
 import zeit.cms.testing
 import zope.component
 
@@ -80,6 +81,28 @@ WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 SELENIUM_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='SeleniumLayer', bases=(WD_LAYER,))
+
+
+class RemoteTaskHelper(object):
+
+    def start_tasks(self):
+        self.tasks = []
+        with zeit.cms.testing.site(self.getRootFolder()):
+            for name, task in zope.component.getUtilitiesFor(
+                lovely.remotetask.interfaces.ITaskService):
+                task.startProcessing()
+                self.tasks.append(task)
+
+    def stop_tasks(self):
+        for task in self.tasks:
+            task.stopProcessing()
+            self._join_thread(task)
+
+    def _join_thread(self, task):
+        # XXX it would be nice if TaskService offered an API to do this
+        for thread in threading.enumerate():
+            if thread.getName() == task._threadName():
+                thread.join()
 
 
 def run_publish(priorities=(PRIORITY_DEFAULT,)):

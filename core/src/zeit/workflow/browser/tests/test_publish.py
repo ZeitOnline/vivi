@@ -1,37 +1,12 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import lovely.remotetask.interfaces
-import threading
 import zeit.cms.testing
 import zeit.workflow.testing
-import zope.component
-
-
-class RemoteTaskHelper(object):
-
-    def start_tasks(self):
-        self.tasks = []
-        with zeit.cms.testing.site(self.getRootFolder()):
-            for name, task in zope.component.getUtilitiesFor(
-                lovely.remotetask.interfaces.ITaskService):
-                task.startProcessing()
-                self.tasks.append(task)
-
-    def stop_tasks(self):
-        for task in self.tasks:
-            task.stopProcessing()
-            self._join_thread(task)
-
-    def _join_thread(self, task):
-        # XXX it would be nice if TaskService offered an API to do this
-        for thread in threading.enumerate():
-            if thread.getName() == task._threadName():
-                thread.join()
 
 
 class TestPublish(zeit.cms.testing.SeleniumTestCase,
-                  RemoteTaskHelper):
+                  zeit.workflow.testing.RemoteTaskHelper):
 
     layer = zeit.workflow.testing.SELENIUM_LAYER
 
@@ -94,7 +69,7 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
 
 
 class TestRetract(zeit.cms.testing.SeleniumTestCase,
-                  RemoteTaskHelper):
+                  zeit.workflow.testing.RemoteTaskHelper):
 
     layer = zeit.workflow.testing.SELENIUM_LAYER
 

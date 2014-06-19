@@ -12,6 +12,7 @@ Internal:
 
 - Make context of publish worklist configurable.
 - Make current LightboxForm available as ``zeit.cms.current_lightbox``.
+- Move RemoteTaskHelper to zeit.workflow.testing so it's reusable.
 
 
 2.22.0 (2014-06-16)
