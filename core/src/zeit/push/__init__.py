@@ -9,6 +9,7 @@ product_config = """\
   twitter-main-account twitter-test
   facebook-accounts file://{fixtures}/facebook-accounts.xml
   facebook-main-account fb-test
+  facebook-magazin-account fb-magazin
 </product-config>
 """.format(fixtures=pkg_resources.resource_filename(
     __name__, 'tests/fixtures'))
