@@ -1,7 +1,7 @@
 <p id="breaking-retract"
    tal:condition="view/is_breaking"
    i18n:domain="zeit.cms">
-  <span i18n:translate="">breaking-news-homepage</span>:
+  <span i18n:translate="">Breaking news banner</span>:
   <span tal:replace="structure view/banner/@@published-icon" />
   <a class="button"
      id="breaking-retract-banner"
@@ -10,5 +10,5 @@
      cms:lightbox-reload-id="breaking-retract"
      tal:attributes="href string:${context/@@absolute_url}/@@breaking-banner-retract;
                      cms:lightbox-reload-url request/getURL"
-     i18n:translate="">Retract Banner</a>
+     i18n:translate="">Retract banner</a>
 </p>

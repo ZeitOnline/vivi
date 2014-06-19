@@ -47,9 +47,8 @@ class Add(zeit.cms.browser.form.AddForm,
 
     field_groups = (
         gocept.form.grouped.Fields('', (
-            'ressort', 'sub_ressort', 'title', '__name__', 'text')),
-        gocept.form.grouped.Fields(
-            _('Push services'), ('homepage', 'mobile', 'social')),
+            'ressort', 'sub_ressort', 'title', '__name__', 'text',
+            'homepage', 'mobile', 'social')),
     )
 
     def setUpWidgets(self, *args, **kw):
