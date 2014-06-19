@@ -41,11 +41,21 @@ class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
         def MAIN_ACCOUNT(self):
             return self.factory.main_account()
 
+        @property
+        def MAGAZIN_ACCOUNT(self):
+            return self.factory.magazin_account()
+
     @classmethod
     def main_account(cls):
         config = zope.app.appsetup.product.getProductConfiguration(
             cls.product_configuration)
         return config['facebook-main-account']
+
+    @classmethod
+    def magazin_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            cls.product_configuration)
+        return config['facebook-magazin-account']
 
     def isAvailable(self, node, context):
         return (super(FacebookAccountSource, self).isAvailable(node, context)
