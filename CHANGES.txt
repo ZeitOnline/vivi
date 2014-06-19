@@ -11,6 +11,8 @@ zeit.push changes
 
 - Use separate file /eilmeldung/homepage-banner (VIV-417).
 
+- Add lightbox view to retract published "banner" articles (VIV-418).
+
 
 1.2.1 (2014-06-04)
 ------------------
