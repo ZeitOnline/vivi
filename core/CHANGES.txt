@@ -6,9 +6,6 @@ zeit.push changes
 
 - Implement posting to Facebook (VIV-371).
 
-- Make character limit for Twitter message soft, truncate/ellide overlong
-  messages instead.
-
 - Use separate file /eilmeldung/homepage-banner (VIV-417).
 
 - Add lightbox view to retract published "banner" articles (VIV-418).
