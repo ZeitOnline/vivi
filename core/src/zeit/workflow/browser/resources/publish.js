@@ -149,6 +149,10 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
     error: function(step) {
         MochiKit.DOM.removeElementClass(element, 'busy');
         MochiKit.DOM.addElementClass(element, 'error');
+    },
+
+    close: function(context) {
+        zeit.cms.current_lightbox.close();
     }
 });
 
