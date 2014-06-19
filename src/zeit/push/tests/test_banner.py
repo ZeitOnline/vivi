@@ -3,7 +3,6 @@ from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.edit.interfaces import IEditableBody
-import gocept.testing.patch
 import lxml.etree
 import zeit.content.article.testing
 import zeit.push.banner
