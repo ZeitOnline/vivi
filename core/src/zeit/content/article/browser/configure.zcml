@@ -111,4 +111,13 @@
     permission="zeit.workflow.Publish"
     />
 
+  <browser:page
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.form.breaking-retract-banner"
+    class=".breaking.Retract"
+    template="breaking-retract.pt"
+    permission="zope.View"
+    />
+
 </configure>

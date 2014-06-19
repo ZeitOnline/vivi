@@ -5,6 +5,7 @@ from zeit.content.article.edit.interfaces import IEditableBody
 import gocept.form.grouped
 import grokcore.component as grok
 import zeit.cms.browser.form
+import zeit.cms.interfaces
 import zeit.cms.settings.interfaces
 import zeit.content.article.article
 import zeit.edit.interfaces
@@ -130,3 +131,27 @@ class Add(zeit.cms.browser.form.AddForm,
 @grok.implementer(zeit.content.article.interfaces.IBreakingNews)
 def breaking_news_from_article(context):
     return context
+
+
+class Retract(object):
+
+    @property
+    def is_breaking(self):
+        # XXX This is somewhat fragile: when the user edits the "social media"
+        # section, message_config is overwritten and the information we use
+        # here as the marker is lost.
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        for service in push.message_config:
+            if service['type'] == 'homepage':
+                return True
+        return False
+
+    @property
+    def banner_published(self):
+        return IPublishInfo(self.banner).published
+
+    @property
+    def banner(self):
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='homepage')
+        return zeit.cms.interfaces.ICMSContent(notifier.uniqueId)

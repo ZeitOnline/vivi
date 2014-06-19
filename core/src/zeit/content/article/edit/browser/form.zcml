@@ -878,6 +878,17 @@
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zeit.content.article.edit.browser.workflow.WorkflowContainer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit.form.breaking-retract-banner"
+    class="zeit.edit.browser.view.ViewLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.interfaces.IArticle"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".workflow.WorkflowContainer"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.publish"

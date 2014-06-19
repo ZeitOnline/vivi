@@ -1869,3 +1869,19 @@
 .type-article #form-social .select2-container {
     margin-top: -5px;  /* vertically centered appearance */
 }
+
+/* breaking news */
+
+#breaking-retract {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+#breaking-retract-banner {
+  background-position: 10px -418px, 0 0;
+  margin-left: 1em;
+}
+
+#breaking-retract-banner:hover {
+  background-position: 10px -448px, 0 0;
+}

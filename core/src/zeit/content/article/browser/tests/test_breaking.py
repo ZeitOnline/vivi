@@ -1,8 +1,10 @@
 from zeit.cms.interfaces import ICMSContent
-from zeit.cms.workflow.interfaces import IPublishInfo
+from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 from zeit.content.article.edit.interfaces import IEditableBody
 import zeit.cms.testing
 import zeit.content.article.testing
+import zeit.workflow.testing
 import zope.i18n.translationdomain
 
 
@@ -126,3 +128,56 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         self.catalog.messages['breaking-news-more-shortly'] = 'foo'
         self.create_breakingnews()
         self.assertEqual('foo', b.getControl('Article body').value)
+
+
+class RetractBannerTest(
+        zeit.content.article.testing.SeleniumTestCase,
+        zeit.workflow.testing.RemoteTaskHelper):
+
+    def setUp(self):
+        super(RetractBannerTest, self).setUp()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            # Set up dummy banner articles.
+            for name in ['homepage', 'ios-legacy']:
+                content = TestContentType()
+                self.repository[name] = content
+                notifier = zope.component.getUtility(
+                    zeit.push.interfaces.IPushNotifier, name=name)
+                notifier.uniqueId = content.uniqueId
+
+            # Publish homepage banner so the retract button is shown.
+            with zeit.cms.testing.interaction():
+                IPublishInfo(self.repository['homepage']).urgent = True
+                IPublish(self.repository['homepage']).publish()
+                zeit.workflow.testing.run_publish()
+
+            # Make Somalia breaking news, so the retract section is shown.
+            article = ICMSContent(
+                'http://xml.zeit.de/online/2007/01/Somalia')
+            push = zeit.push.interfaces.IPushMessages(article)
+            push.message_config = ({'type': 'homepage'},)
+
+        self.start_tasks()
+
+    def tearDown(self):
+        self.stop_tasks()
+        for name in ['homepage', 'ios-legacy']:
+            notifier = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name=name)
+            del notifier.uniqueId
+        super(RetractBannerTest, self).tearDown()
+
+    def test_retract_banner_endtoend(self):
+        self.open('/repository/online/2007/01/Somalia')
+        s = self.selenium
+        s.waitForElementPresent('id=breaking-retract')
+        s.assertElementPresent(
+            'css=#breaking-retract .publish-state.published')
+        s.click('id=breaking-retract-banner')
+        s.waitForElementPresent('css=.lightbox')
+        # Retract happens...
+        s.waitForElementNotPresent('css=.lightbox')
+        # Button is gone now, since there's nothing to retract anymore
+        s.waitForElementNotPresent('id=breaking-retract-banner')
+        s.assertElementPresent(
+            'css=#breaking-retract .publish-state.not-published')
