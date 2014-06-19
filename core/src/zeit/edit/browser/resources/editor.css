@@ -733,6 +733,12 @@ legend {
   padding-left: 37px;
 }
 
+#retract {
+  background: url("/fanstatic/zeit.cms/icons/wf_bb_zurueckziehen.png") no-repeat 5px 4px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
+  font-size: 14px !important;
+  padding-left: 37px;
+}
+
 
 #editor-forms a.add_view {
   background-position: 7px -114px, 0 0;
