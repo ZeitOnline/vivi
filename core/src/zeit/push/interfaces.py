@@ -66,5 +66,21 @@ class IPushMessages(zope.interface.Interface):
         # shortening process.
         max_length=117)
 
-    message = zope.interface.Attribute('List of IMessage objects')
+    """A message configuration is a dict with at least the following keys:
+       - type: Kind of service (twitter, facebook, ...). Must correspond
+         to the utility name of an IPushNotifier.
+       - enabled: Boolean. This allows keeping the message configuration
+         even when it should not be used at the moment. At the moment we
+         do not store any specific configuration, e.g. the text is always
+         taken from either short_text or long_text, but one could imagine,
+         say, wanting to send different text to different Twitter accounts,
+         so having the ``enabled`` flag is more for future-proofing.
+
+    Any other keys are type-dependent. (A common additional key is ``account``,
+    e.g. Twitter and Facebook support posting to different accounts.)
+
+    """
     message_config = zope.schema.Tuple(required=False, default=())
+
+    message = zope.interface.Attribute(
+        'List of IMessage objects, one for each enabled message_config entry')
