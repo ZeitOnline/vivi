@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Jun 19 11:13:37 2014\n"
+"POT-Creation-Date: Thu Jun 19 12:42:27 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1949,32 +1949,28 @@ msgstr ""
 msgid "Reloading"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:14
+#: zeit/content/article/edit/browser/social.py:13
 msgid "Social media"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:19
+#: zeit/content/article/edit/browser/social.py:18
 msgid "Enable Facebook"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:21
-msgid "Additional Facebook"
+#: zeit/content/article/edit/browser/social.py:19
+msgid "Enable Facebook Magazin"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:23
+#: zeit/content/article/edit/browser/social.py:20
 msgid "Enable Twitter"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:25
+#: zeit/content/article/edit/browser/social.py:22
 msgid "Additional Twitter"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:34
+#: zeit/content/article/edit/browser/social.py:32
 msgid "edit social media"
-msgstr ""
-
-#: zeit/content/article/edit/browser/social.py:53
-msgid "vocabulary-missing-single-value-for-edit"
 msgstr ""
 
 #: zeit/content/article/edit/browser/timestamp.pt:2
