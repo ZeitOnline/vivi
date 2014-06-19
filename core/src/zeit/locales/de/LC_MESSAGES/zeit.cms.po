@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jun 19 08:25:18 2014\n"
-"PO-Revision-Date: 2014-06-19 08:25+0100\n"
+"POT-Creation-Date: Thu Jun 19 11:13:37 2014\n"
+"PO-Revision-Date: 2014-06-19 11:14+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1583,25 +1583,25 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Article"
 msgstr "Artikel"
 
-#: zeit/content/article/browser/breaking-retract.pt:2
-msgid "Retract Banner"
+#: zeit/content/article/browser/breaking-retract.pt:4
+msgid "Breaking news banner"
+msgstr "Eilmeldungsbanner"
+
+#: zeit/content/article/browser/breaking-retract.pt:6
+msgid "Retract banner"
 msgstr "Eilmeldungsbanner depublizieren"
 
-#: zeit/content/article/browser/breaking.py:22
+#: zeit/content/article/browser/breaking.py:23
 msgid "breaking-news-mobile"
-msgstr "Mobilgeräte (Android, iOS)"
+msgstr "Push versenden"
 
-#: zeit/content/article/browser/breaking.py:24
+#: zeit/content/article/browser/breaking.py:25
 msgid "breaking-news-homepage"
-msgstr "Eilmeldungsbanner (auf www.zeit.de)"
+msgstr "Eilmeldungsbanner anzeigen"
 
-#: zeit/content/article/browser/breaking.py:26
+#: zeit/content/article/browser/breaking.py:27
 msgid "breaking-news-social"
-msgstr "Social Media (Facebook, Twitter)"
-
-#: zeit/content/article/browser/breaking.py:51
-msgid "Push services"
-msgstr "Push-Dienste"
+msgstr "Auf Facebook und Twitter posten"
 
 #: zeit/content/article/browser/breaking.py:66
 msgid "Publish and push"
@@ -3894,6 +3894,9 @@ msgstr "mit Info"
 #: zeit/wysiwyg/browser/resources/reference/image.pt:32
 msgid "large"
 msgstr "vollbreit"
+
+#~ msgid "Push services"
+#~ msgstr "Push-Dienste"
 
 #, fuzzy
 #~ msgid "banner"
