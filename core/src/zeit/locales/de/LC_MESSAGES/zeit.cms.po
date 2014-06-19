@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jun 18 09:34:56 2014\n"
-"PO-Revision-Date: 2014-06-18 11:04+0100\n"
+"POT-Creation-Date: Thu Jun 19 08:25:18 2014\n"
+"PO-Revision-Date: 2014-06-19 08:25+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1583,6 +1583,10 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Article"
 msgstr "Artikel"
 
+#: zeit/content/article/browser/breaking-retract.pt:2
+msgid "Retract Banner"
+msgstr "Eilmeldungsbanner depublizieren"
+
 #: zeit/content/article/browser/breaking.py:22
 msgid "breaking-news-mobile"
 msgstr "Mobilgeräte (Android, iOS)"
@@ -1953,7 +1957,8 @@ msgid "publish-now"
 msgstr "Jetzt veröffentlichen"
 
 #: zeit/content/article/edit/browser/workflow.pt:72
-#: zeit/workflow/browser/retract.pt:2 zeit/workflow/browser/retract.pt:5
+#: zeit/push/banner-retract.pt:2 zeit/workflow/browser/retract.pt:2
+#: zeit/workflow/browser/retract.pt:5
 msgid "Retract"
 msgstr "Depublizieren"
 
@@ -3550,6 +3555,22 @@ msgstr "Werbung"
 msgid "Daily Newsletter"
 msgstr "Newsletter"
 
+#: zeit/push/banner-retract.pt:12
+msgid "iOS legacy"
+msgstr "iOS-Geräte (alt)"
+
+#: zeit/push/banner-retract.pt:13
+msgid "Done"
+msgstr "Fertig"
+
+#: zeit/push/banner-retract.pt:8
+msgid "homepage banner"
+msgstr "Eilmeldungsbanner"
+
+#: zeit/push/banner-retract.pt:8 zeit/push/banner-retract.pt:12
+msgid "Retract ${target}"
+msgstr "${target} depublizieren"
+
 #: zeit/push/interfaces.py:52
 msgid "Push after next publish?"
 msgstr "Bei (erneuter) Veröffentlichung automatisch posten"
@@ -3873,6 +3894,10 @@ msgstr "mit Info"
 #: zeit/wysiwyg/browser/resources/reference/image.pt:32
 msgid "large"
 msgstr "vollbreit"
+
+#, fuzzy
+#~ msgid "banner"
+#~ msgstr "Banner"
 
 #~ msgid "Parse.com"
 #~ msgstr "Android-Geräte"
@@ -4220,9 +4245,6 @@ msgstr "vollbreit"
 
 #~ msgid "Homepage teaser title"
 #~ msgstr "Homepageteaser-Titel"
-
-#~ msgid "Homepage teaser text"
-#~ msgstr "Homepageteaser-Text"
 
 #~ msgid "Assets and related"
 #~ msgstr "Assets und Related"

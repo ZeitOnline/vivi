@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Jun 18 09:34:56 2014\n"
+"POT-Creation-Date: Thu Jun 19 08:25:18 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1622,6 +1622,10 @@ msgstr ""
 msgid "Article"
 msgstr ""
 
+#: zeit/content/article/browser/breaking-retract.pt:2
+msgid "Retract Banner"
+msgstr ""
+
 #: zeit/content/article/browser/breaking.py:22
 msgid "breaking-news-mobile"
 msgstr ""
@@ -1995,6 +1999,7 @@ msgid "publish-now"
 msgstr ""
 
 #: zeit/content/article/edit/browser/workflow.pt:72
+#: zeit/push/banner-retract.pt:2
 #: zeit/workflow/browser/retract.pt:2
 #: zeit/workflow/browser/retract.pt:5
 msgid "Retract"
@@ -3585,6 +3590,23 @@ msgstr ""
 
 #: zeit/newsletter/newsletter.py:76
 msgid "Daily Newsletter"
+msgstr ""
+
+#: zeit/push/banner-retract.pt:12
+msgid "iOS legacy"
+msgstr ""
+
+#: zeit/push/banner-retract.pt:13
+msgid "Done"
+msgstr ""
+
+#: zeit/push/banner-retract.pt:8
+msgid "homepage banner"
+msgstr ""
+
+#: zeit/push/banner-retract.pt:8
+#: zeit/push/banner-retract.pt:12
+msgid "Retract ${target}"
 msgstr ""
 
 #: zeit/push/interfaces.py:52
