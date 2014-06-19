@@ -1,12 +1,14 @@
 (function($){
 
 var check_char_limit = function(target, span, limit) {
-    var count = $(target).val().length;
+    var count = target.val().length;
     var label = count + '/' + limit;
     if ((limit - count) < 0) {
         span.css("color", "#900").html(label);
+        target.addClass('error');
     } else {
         span.css("color", "#000").html(label);
+        target.removeClass('error');
     }
 };
 
@@ -19,7 +21,7 @@ $.fn.limitedInput = function() {
         container.append(span);
         check_char_limit(area, span, limit);
         area.bind("keyup focus blur", function(event) {
-            check_char_limit(event.target, span, limit);
+            check_char_limit($(event.target), span, limit);
         });
     });
 };
