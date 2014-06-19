@@ -244,13 +244,16 @@ class FilenameTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.assertEqual('foo-bar', self.normalize('foo bar'))
 
     def test_replaces_specialchars_with_dash(self):
-        self.assertEqual('fo-', self.normalize('fo&'))
+        self.assertEqual('f-o', self.normalize('f&o'))
+
+    def test_removes_specialchars_at_end_of_string(self):
+        self.assertEqual('fo', self.normalize('fo&&'))
 
     def test_collapses_consecutive_dashes(self):
         self.assertEqual('foo-bar-baz', self.normalize('foo---bar--baz'))
 
     def test_replaces_umlauts_with_vowels(self):
-        self.assertEqual('aeoeuess', self.normalize(u'äöüß'))
+        self.assertEqual('aeaeoeuess', self.normalize(u'ääöüß'))
 
     def test_filename_input_is_wired_up(self):
         self.add_article()

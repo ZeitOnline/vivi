@@ -13,6 +13,9 @@ zeit.content.article changes
 
 - Add button to retract breaking news banner (VIV-418).
 
+- Fix filename rewriting: handle multiple umlauts, remove special characters at
+  the end of the name (VIV-409).
+
 
 3.4.4 (2014-06-05)
 ------------------
