@@ -29,8 +29,8 @@ class Published(object):
             return u''
         title = self.messages[status]
         title = zope.i18n.translate(title, context=self.request)
-        return (u'<span class="publish-state %s" title="%s" '
-                '/>' % (status, title))
+        return (u'<span class="publish-state %s" title="%s"></span>' % (
+            status, title))
 
 
 class PublishedViewlet(Published, zope.viewlet.viewlet.ViewletBase):

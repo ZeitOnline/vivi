@@ -178,7 +178,7 @@ Let's indicate a published object:
   <tr class="odd">
     ...
     <td>
-      <div class="workflow-column"><span class="publish-state published" title="Published" /></div>
+      <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
     </td>
     <td>
     </td>
@@ -207,7 +207,7 @@ We don't know when the object was published. Assume it's fresh:
   <tr class="odd">
     ...
     <td>
-      <div class="workflow-column"><span class="publish-state published" title="Published" /></div>
+      <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
     </td>
     <td>
     </td>
@@ -234,7 +234,7 @@ With a publication date *after* the modifcation date it is also fresh:
   <tr class="odd">
     ...
     <td>
-      <div class="workflow-column"><span class="publish-state published" title="Published" /></div>
+      <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
     </td>
     <td>
     </td>
@@ -255,7 +255,7 @@ With a publication time *before* the modifaction time it is not fresh:
   <tr class="odd">
     ...
     <td>
-      <div class="workflow-column"><span class="publish-state published-with-changes" title="Published but has changes" /></div>
+      <div class="workflow-column"><span class="publish-state published-with-changes" title="Published but has changes"></span></div>
     </td>
     <td>
     </td>
@@ -277,7 +277,7 @@ modification time.
   <tr class="odd">
     ...
     <td>
-      <div class="workflow-column"><span class="publish-state published" title="Published" /></div>
+      <div class="workflow-column"><span class="publish-state published" title="Published"></span></div>
     </td>
     <td>
     </td>
