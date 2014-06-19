@@ -13,6 +13,10 @@ zeit.workflow.publish.Publisher = gocept.Class.extend({
         var self = this;
         var action = self.worklist.shift();
         self.busy(action);
+        var override_result = action.getAttribute('cms:context');
+        if (override_result) {
+            result = override_result;
+        }
         var d = self[action.getAttribute('action')](result);
         d.addCallbacks(
             function(result) {

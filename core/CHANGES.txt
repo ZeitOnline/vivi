@@ -10,6 +10,7 @@ zeit.cms changes
 
 Internal:
 
+- Make context of publish worklist configurable.
 - Make current LightboxForm available as ``zeit.cms.current_lightbox``.
 
 
