@@ -341,7 +341,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             self.old_log_level = logging.root.level
             logging.root.setLevel(logging.WARN)
             transaction.commit()
-        self.selenium.getEval('window.sessionStorage.clear()')
+        self.run_js('window.sessionStorage.clear();')
 
         self.original_windows = set(self.selenium.getAllWindowIds())
         self.original_width = self.selenium.getEval('window.outerWidth')
@@ -417,6 +417,9 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
 
     def eval(self, text):
         return self.selenium.getEval(self.js_globals + text)
+
+    def run_js(self, text):
+        return self.selenium.runScript(self.js_globals + text)
 
     def wait_for_condition(self, text):
         self.selenium.waitForCondition(self.js_globals + """\
