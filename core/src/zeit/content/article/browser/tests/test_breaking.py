@@ -73,6 +73,11 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             parse = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='parse')
             self.assertEqual('Eilmeldung', parse.calls[0][2]['title'])
+            facebook = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='facebook')
+            self.assertEqual(
+                zeit.push.facebook.facebookAccountSource(None).MAIN_ACCOUNT,
+                facebook.calls[0][2]['account'])
 
     def test_banners_and_parse_are_disabled_after_publish(self):
         # The breaking news is a normal article, so it has the normal social

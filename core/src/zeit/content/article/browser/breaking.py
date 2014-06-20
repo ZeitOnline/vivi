@@ -79,9 +79,13 @@ class Add(zeit.cms.browser.form.AddForm,
                 {'type': 'homepage', 'enabled': True})
         if data.pop('social', False):
             message_config.append(
-                {'type': 'facebook', 'enabled': True})
+                {'type': 'facebook', 'enabled': True,
+                 'account': zeit.push.facebook.facebookAccountSource(
+                     self.context).MAIN_ACCOUNT})
             message_config.append(
-                {'type': 'twitter', 'enabled': True})
+                {'type': 'twitter', 'enabled': True,
+                 'account': zeit.push.twitter.twitterAccountSource(
+                     self.context).MAIN_ACCOUNT})
 
         article = super(Add, self).create(data)
         # XXX Duplicated from .form.AddAndCheckout
