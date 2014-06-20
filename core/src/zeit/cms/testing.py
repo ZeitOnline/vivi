@@ -419,7 +419,11 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         return self.selenium.getEval(self.js_globals + text)
 
     def run_js(self, text):
-        return self.selenium.runScript(self.js_globals + text)
+        if isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
+            return self.selenium.runScript(self.js_globals + text)
+        else:
+            # selenium-1 means something else by runScript
+            return self.selenium.getEval(self.js_globals + text)
 
     def wait_for_condition(self, text):
         self.selenium.waitForCondition(self.js_globals + """\
