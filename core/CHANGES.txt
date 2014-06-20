@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.3.3 (unreleased)
+2.3.3 (2014-06-20)
 ------------------
 
 - Fix icon on retract button (VIV-361).
