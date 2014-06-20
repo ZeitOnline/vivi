@@ -30,9 +30,9 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         s.assertElementNotPresent('css=.editable p') # before
         self.create()
-        s.getEval("this.browserbot.findElement("
-                  "  'css=.block.type-p .editable').innerHTML = "
-                  "   '<p>Mary had a little</p>'")
+        self.run_js("window.jQuery("
+                    "  '.block.type-p .editable')[0].innerHTML = "
+                    "   '<p>Mary had a little</p>'")
         self.mark_dirty()
         self.save()
         s.waitForElementPresent('css=.editable p:contains(Mary had)')

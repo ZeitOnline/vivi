@@ -225,12 +225,12 @@ class TestTextEditing(
         self.create('<p>I want to link something</p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        s.getEval("""(function(s) {
-            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+        self.run_js("""(function() {
+            var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
             range.setEnd(p.firstChild, 14);
-        })(this);""")
+        })();""")
         s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
 
     def test_editing_should_end_on_content_drag(self):
@@ -326,9 +326,8 @@ class TestEditingMultipleParagraphs(
         s.click(second_p)
         s.keyDown(second_p, '\\38')
         s.keyUp(second_p, '\\38')
-        s.waitForEval(
-            'selenium.browserbot.getCurrentWindow()'
-            '.getSelection().getRangeAt(0).startOffset', '3')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 3')
 
     def test_arrow_down_moves_across_non_text_block_and_places_cursor_at_start(
         self):
@@ -338,9 +337,8 @@ class TestEditingMultipleParagraphs(
         s.click(first_p)
         s.keyDown(first_p, '\\40')
         s.keyUp(first_p, '\\40')
-        s.waitForEval(
-            'selenium.browserbot.getCurrentWindow()'
-            '.getSelection().getRangeAt(0).startOffset', '0')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 0')
 
 
 class TestLinkEditing(
@@ -356,12 +354,12 @@ class TestLinkEditing(
         self.create('<p>I want to link something</p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        s.getEval("""(function(s) {
-            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+        self.run_js("""(function() {
+            var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
             range.setEnd(p.firstChild, 14);
-        })(this);""")
+        })();""")
         s.assertElementNotPresent('xpath=//a[@href="http://example.com/"]')
 
     def select_link(self, additional='', href='http://example.com/'):
@@ -369,12 +367,12 @@ class TestLinkEditing(
         self.create(
             '<p>I want to <a href="{1}" {0}>link</a> something</p>'.format(
                 additional, href))
-        s.getEval("""(function(s) {
-            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+        self.run_js("""(function() {
+            var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p, 1);
             range.setEnd(p, 2);
-        })(this);""")
+        })();""")
         s.assertElementPresent('xpath=//a[@href="{0}"]'.format(href))
 
     def test_links_should_be_addable(self):
@@ -625,13 +623,13 @@ class TestLinkEditing(
         self.create('<p>I want to link <b>some bold text</b></p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        s.getEval("""(function(s) {
-            var p = s.browserbot.findElement('css=.block.type-p .editable p');
+        self.run_js("""(function() {
+            var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
-            var b = s.browserbot.findElement('css=.block.type-p .editable b');
+            var b = window.jQuery('.block.type-p .editable b')[0];
             range.setEnd(b.firstChild, 9);
-        })(this);""")
+        })();""")
         s.click('xpath=//a[@href="insert_link"]')
         s.waitForVisible('css=.link_input input[name=href]')
         s.type('css=.link_input input[name=href]', 'http://example.com/')
@@ -857,8 +855,8 @@ class AutoSaveIntegration(
 
     def test_text_is_saved_correctly_by_autosave_and_normal_save_after(self):
         self.create('<p>foo</p><p>bar</p>')
-        self.selenium.waitForCondition(
-            "this.browserbot.findElement('css=.block.type-p .editable')"
+        self.wait_for_condition(
+            "window.jQuery('.block.type-p .editable')[0]"
             ".editable.edited_paragraphs.length == 2")
         self.assert_paragraphs('foo', 'bar')
         self.save()
@@ -879,7 +877,7 @@ class DirtySaveVersusPersistTests(
     def save(self):
         # Override self.save() as the superclass expects that save is working
         # properly but as we mocked persist it doesn't.
-        self.selenium.getEval('%s.save()' % self.get_js_editable())
+        self.run_js('%s.save()' % self.get_js_editable())
 
     def test_does_not_save_on_server_if_not_dirty(self):
         self.create('<p>foo</p><p>bar</p>')

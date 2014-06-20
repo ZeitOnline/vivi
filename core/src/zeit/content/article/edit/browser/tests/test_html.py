@@ -13,9 +13,9 @@ class HTMLConvertTest(
         self.add_article()
 
     def convert(self):
-        self.selenium.getEval(
+        self.run_js(
             "window.zeit.content.article.html.to_xml("
-            "this.browserbot.findElement('css=.editable'))")
+            "window.jQuery('.editable')[0])")
 
     def test_h3_is_translated_to_intertitle(self):
         s = self.selenium
