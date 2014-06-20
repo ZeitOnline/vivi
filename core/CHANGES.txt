@@ -4,7 +4,7 @@ zeit.cms changes
 2.23.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Enable translating menu item titles (VIV-361).
 
 
 2.23.0 (2014-06-20)

@@ -28,6 +28,10 @@ class MenuItemBase(zope.viewlet.viewlet.ViewletBase):
 
     sort = 0
 
+    @property
+    def title(self):
+        return _(self.__name__)
+
     def __cmp__(self, other):
         __traceback_info__ = (self, other)
         return cmp(float(self.sort), float(other.sort))
