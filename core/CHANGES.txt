@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.23.0 (unreleased)
+2.23.0 (2014-06-20)
 -------------------
 
 - Include "Select2" jQuery plugin for nicer select widgets (VIV-389).
