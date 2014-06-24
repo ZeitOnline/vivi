@@ -1,6 +1,7 @@
 # Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import urllib
 import zeit.addcentral.testing
 import zeit.cms.testing
 
@@ -36,3 +37,26 @@ class JavascriptTest(zeit.cms.testing.SeleniumTestCase):
         s.click('sidebar.form.actions.add')
         s.waitForLocation(
             '*/international/meinung/*-*/@@zeit.cms.repository.folder.Add*')
+
+
+class FormTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.addcentral.testing.ZCML_LAYER
+
+    def test_ressort_is_required_for_breaking_news(self):
+        b = self.browser
+        b.post('http://localhost/++skin++vivi/@@addcentral', urllib.urlencode({
+            'sidebar.form.type_':
+            'zeit.content.article.interfaces.IBreakingNews',
+            'sidebar.form.ressort-empty-marker': '1',
+            'sidebar.form.actions.add': 'Add'}))
+        self.assertEllipsis('...Required input is missing...', b.contents)
+
+        # Test that this does not poison the requred status for other content
+        # types.
+        b.post('http://localhost/++skin++vivi/@@addcentral', urllib.urlencode({
+            'sidebar.form.type_':
+            'zeit.cms.testcontenttype.interfaces.ITestContentType',
+            'sidebar.form.ressort-empty-marker': '1',
+            'sidebar.form.actions.add': 'Add'}))
+        self.assertEllipsis('...@@zeit.cms.testcontenttype.Add...', b.contents)
