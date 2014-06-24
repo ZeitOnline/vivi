@@ -1,3 +1,4 @@
+# coding: utf-8
 import time
 import fb
 import zeit.push.testing
@@ -36,13 +37,14 @@ class FacebookTest(zeit.push.testing.TestCase):
     def test_send_posts_status(self):
         facebook = zeit.push.facebook.Connection()
         facebook.send(
-            'zeit.push.tests.facebook %s' % self.nugget, 'http://example.com',
+            u'zeit.push.tests.faceboök %s' % self.nugget, 'http://example.com',
             account='fb-test')
 
         for status in self.api.get_object(
                 cat='single', id='me', fields=['feed'])['feed']['data']:
             if self.nugget in status['message']:
                 self.assertEqual('http://example.com/', status['link'])
+                self.assertIn(u'faceboök', status['message'])
                 break
         else:
             self.fail('Status was not posted')

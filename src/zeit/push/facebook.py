@@ -23,7 +23,7 @@ class Connection(object):
 
         fb_api = fb.graph.api(access_token)
         result = fb_api.publish(
-            cat='feed', id='me', message=text, link=link)
+            cat='feed', id='me', message=text.encode('utf-8'), link=link)
         if 'error' in result:
             # XXX Don't know how to differentiate technical and semantic errors
             raise zeit.push.interfaces.TechnicalError(str(result['error']))
