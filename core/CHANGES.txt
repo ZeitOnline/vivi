@@ -1,7 +1,7 @@
 zeit.addcentral changes
 =======================
 
-1.1.4 (unreleased)
+1.1.4 (2014-06-24)
 ------------------
 
 - Make ressort required for breaking news (VIV-25).
