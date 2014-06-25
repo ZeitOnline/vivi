@@ -118,10 +118,10 @@ def create_access_token(argv=None):
             'redirect_uri': options.redirect_uri,
             'code': code,
         }))
-    result = urlparse.parse_qs(r.text)
-    if 'error' in result:
-        print result['error']
+    if 'error' in r.text:
+        print r.text
         raise SystemExit(1)
+    result = urlparse.parse_qs(r.text)
     short_lived_user_token = result['access_token'][0]
 
     # Step 2: Exchange for long-lived token. <https://developers.facebook.com
@@ -133,10 +133,10 @@ def create_access_token(argv=None):
             'grant_type': 'fb_exchange_token',
             'fb_exchange_token': short_lived_user_token,
         }))
-    result = urlparse.parse_qs(r.text)
-    if 'error' in result:
-        print result['error']
+    if 'error' in r.text:
+        print r.text
         raise SystemExit(1)
+    result = urlparse.parse_qs(r.text)
     long_lived_user_token = result['access_token'][0]
 
     # Step 3. Retrieve page access token. <https://developers.facebook.com
