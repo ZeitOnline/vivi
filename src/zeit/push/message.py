@@ -20,8 +20,10 @@ class Message(grok.Adapter):
         notifier = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name=self.type)
         push = zeit.push.interfaces.IPushMessages(self.context)
-        notifier.send(getattr(push, self.get_text_from), self.url,
-                      **self.config)
+        text = getattr(push, self.get_text_from)
+        if not text:
+            raise ValueError('No text configured')
+        notifier.send(text, self.url, **self.config)
 
     @property
     def type(self):
