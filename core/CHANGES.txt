@@ -4,7 +4,8 @@ zeit.content.article changes
 3.4.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Temporarily removed posting of breaking news to Facebook as we cannot yet
+  handle images correctly in that scenario.
 
 
 3.4.6 (2014-06-20)
