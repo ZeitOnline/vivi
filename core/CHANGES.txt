@@ -4,7 +4,8 @@ zeit.locales CHANGES
 2.0.20 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Temporarily removed posting of breaking news to Facebook as we cannot yet
+  handle images correctly in that scenario.
 
 
 2.0.19 (2014-06-24)
