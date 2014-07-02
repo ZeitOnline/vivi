@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.24.0 (unreleased)
+2.24.0 (2014-07-02)
 -------------------
 
 - Internal: add ``run_js`` method for selenium tests.
