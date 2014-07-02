@@ -1601,7 +1601,7 @@ msgstr "Eilmeldungsbanner anzeigen"
 
 #: zeit/content/article/browser/breaking.py:27
 msgid "breaking-news-social"
-msgstr "Auf Facebook und Twitter posten"
+msgstr "Auf Twitter posten"
 
 #: zeit/content/article/browser/breaking.py:66
 msgid "Publish and push"
