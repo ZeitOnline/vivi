@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.4.7 (unreleased)
+3.4.7 (2014-07-02)
 ------------------
 
 - Temporarily removed posting of breaking news to Facebook as we cannot yet
