@@ -28,6 +28,17 @@
       permission="zeit.EditContent" />
   </class>
 
+  <class class=".breaking.BreakingNews">
+    <require
+      interface=".interfaces.IBreakingNews"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IBreakingNews"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <adapter factory=".article.LayoutDependency" name="layout"/>
 
   <subscriber handler=".article.updateTextLengthOnChange" />

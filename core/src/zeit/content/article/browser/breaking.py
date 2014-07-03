@@ -118,6 +118,8 @@ class Add(zeit.cms.browser.form.AddForm,
 
     def add(self, object, container=None):
         super(Add, self).add(object, container)
+        zeit.content.article.interfaces.IBreakingNews(
+            self._created_object).is_breaking = True
         # We need to check out the new article so that AfterCheckout events are
         # run (which e.g. set default values of ICommonMetadata fields), but
         # the user won't want to edit anything right now, so we check in
@@ -131,24 +133,12 @@ class Add(zeit.cms.browser.form.AddForm,
         push.enabled = True
 
 
-@grok.adapter(zeit.content.article.interfaces.IArticle)
-@grok.implementer(zeit.content.article.interfaces.IBreakingNews)
-def breaking_news_from_article(context):
-    return context
-
-
 class Retract(object):
 
     @property
     def is_breaking(self):
-        # XXX This is somewhat fragile: when the user edits the "social media"
-        # section, message_config is overwritten and the information we use
-        # here as the marker is lost.
-        push = zeit.push.interfaces.IPushMessages(self.context)
-        for service in push.message_config:
-            if service['type'] == 'homepage':
-                return True
-        return False
+        return zeit.content.article.interfaces.IBreakingNews(
+            self.context).is_breaking
 
     @property
     def banner_published(self):

@@ -2,6 +2,7 @@ from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 from zeit.content.article.edit.interfaces import IEditableBody
+import lxml.etree
 import zeit.cms.testing
 import zeit.content.article.testing
 import zeit.workflow.testing
@@ -49,6 +50,19 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             self.assertEqual(26, article.volume)
             self.assertEqual('ZEDE', article.product.id)
             self.assertEqual(True, article.commentsAllowed)
+
+    def test_marks_article_as_breaking(self):
+        self.create_breakingnews()
+        self.fill_in_required_values()
+        self.browser.getControl('Publish and push').click()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
+            self.assertEqual(
+                True, zeit.content.article.interfaces.IBreakingNews(
+                    article).is_breaking)
+            self.assertEllipsis(
+                '...<attribute...name="is_breaking">yes</attribute>...',
+                lxml.etree.tostring(article.xml, pretty_print=True))
 
     def test_publish_sends_push_messages(self):
         # This tests the integration with zeit.push, but not the actual push

@@ -202,7 +202,9 @@ class ICDSWorkflow(zope.interface.Interface):
         title=_("Export to Tagesspiegel"))
 
 
-class IBreakingNews(IArticle):
+# XXX This should inherit from IArticle for expressiveness, but that somehow
+# breaks the DAVPropertiesAdapter mechanics.
+class IBreakingNews(zope.interface.Interface):
     """Breaking news are IArticles that receive special one-time treatment
     on publishing.
     """
@@ -210,6 +212,11 @@ class IBreakingNews(IArticle):
     title = zope.schema.Text(
         title=_("Title"), missing_value=u'')
     title.setTaggedValue('zeit.cms.charlimit', 70)
+
+    is_breaking = zope.schema.Bool(
+        title=_('Breaking news article'),
+        default=False,
+        required=False)
 
 
 IBreakingNews.setTaggedValue(

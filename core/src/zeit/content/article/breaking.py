@@ -1,0 +1,28 @@
+import grokcore.component as grok
+import zeit.cms.content.dav
+import zeit.cms.interfaces
+import zeit.content.article.interfaces
+
+
+class BreakingNews(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    grok.adapts(zeit.content.article.interfaces.IArticle)
+    grok.implements(zeit.content.article.interfaces.IBreakingNews)
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.article.interfaces.IBreakingNews,
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        ('is_breaking',))
+
+    # XXX IBreakingNews is supposed to be a specialized IArticle, so we should
+    # proxy all attributes we don't have to self.context, but that's hard to do
+    # generically without creating infloops, so we list the proxied attributes
+    # manually (compare the AddForm in .browser.breaking).
+
+    @property
+    def title(self):
+        return self.context.title
+
+    @title.setter
+    def title(self, value):
+        self.context.title = value
