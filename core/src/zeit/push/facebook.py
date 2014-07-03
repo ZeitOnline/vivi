@@ -2,6 +2,7 @@
 import argparse
 import fb
 import grokcore.component as grok
+import logging
 import requests
 import urllib
 import urlparse
@@ -13,6 +14,9 @@ import zeit.push.message
 import zope.interface
 
 
+log = logging.getLogger(__name__)
+
+
 class Connection(object):
 
     zope.interface.implements(zeit.push.interfaces.IPushNotifier)
@@ -21,6 +25,7 @@ class Connection(object):
         account = kw['account']
         access_token = facebookAccountSource.factory.access_token(account)
 
+        log.debug('Sending %s, %s to %s', text, link, account)
         fb_api = fb.graph.api(access_token)
         result = fb_api.publish(
             cat='feed', id='me', message=text.encode('utf-8'), link=link)

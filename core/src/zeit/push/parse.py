@@ -1,9 +1,13 @@
 import grokcore.component as grok
 import json
+import logging
 import requests
 import zeit.push.interfaces
 import zeit.push.message
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class Connection(object):
@@ -35,6 +39,7 @@ class Connection(object):
             'X-Parse-REST-API-Key': self.rest_api_key,
             'Content-Type': 'application/json',
         }
+        log.debug('Sending %s', data)
         response = requests.post(
             '%s/push' % self.base_url, data=json.dumps(data), headers=headers)
 
