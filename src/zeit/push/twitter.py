@@ -1,10 +1,14 @@
 import grokcore.component as grok
+import logging
 import tweepy
 import xml.sax.saxutils
 import zc.sourcefactory.source
 import zeit.push.interfaces
 import zeit.push.message
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class Connection(object):
@@ -24,6 +28,7 @@ class Connection(object):
         auth.set_access_token(access_token, access_secret)
         api = tweepy.API(auth)
 
+        log.debug('Sending %s, %s to %s', text, link, account)
         try:
             api.update_status(u'%s %s' % (text, link))
         except tweepy.TweepError, e:
