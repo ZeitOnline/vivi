@@ -64,6 +64,7 @@ def send_push_on_publish(context, event):
     for message in push.messages:
         config = {key: value for key, value in message.config.items()
                   if key not in ('type', 'enabled')}
+        config['text'] = message.text
         log_msg = 'Push "%s": %s' % (message.type, config)
         try:
             message.send()
