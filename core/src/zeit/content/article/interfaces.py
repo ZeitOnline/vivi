@@ -202,9 +202,7 @@ class ICDSWorkflow(zope.interface.Interface):
         title=_("Export to Tagesspiegel"))
 
 
-# XXX This should inherit from IArticle for expressiveness, but that somehow
-# breaks the DAVPropertiesAdapter mechanics.
-class IBreakingNews(zope.interface.Interface):
+class IBreakingNews(IArticle):
     """Breaking news are IArticles that receive special one-time treatment
     on publishing.
     """

@@ -1,12 +1,13 @@
 import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.interfaces
+import zeit.connector.interfaces
 import zeit.content.article.interfaces
 
 
 class BreakingNews(zeit.cms.content.dav.DAVPropertiesAdapter):
 
-    grok.adapts(zeit.content.article.interfaces.IArticle)
+    grok.context(zeit.content.article.interfaces.IArticle)
     grok.implements(zeit.content.article.interfaces.IBreakingNews)
 
     zeit.cms.content.dav.mapProperties(
@@ -26,3 +27,9 @@ class BreakingNews(zeit.cms.content.dav.DAVPropertiesAdapter):
     @title.setter
     def title(self, value):
         self.context.title = value
+
+
+@grok.adapter(BreakingNews)
+@grok.implementer(zeit.connector.interfaces.IWebDAVProperties)
+def webdav_properties(context):
+    return zeit.connector.interfaces.IWebDAVProperties(context.context)
