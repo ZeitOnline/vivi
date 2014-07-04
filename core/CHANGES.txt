@@ -6,6 +6,8 @@ zeit.push changes
 
 - Send different payloads to android and ios devices on parse.com (VIV-426).
 
+- Add separate banner file for the wrapper apps (WEB-318).
+
 - Don't send a push when no text is configured.
 
 - Log the text in the objectlog.

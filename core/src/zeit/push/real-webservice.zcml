@@ -8,5 +8,6 @@
 
   <utility factory=".banner.homepage_banner" name="homepage" />
   <utility factory=".banner.ios_legacy" name="ios-legacy" />
+  <utility factory=".banner.wrapper_banner" name="wrapper" />
 
 </configure>

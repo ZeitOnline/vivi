@@ -8,5 +8,6 @@
 
   <utility factory=".testing.PushNotifier" name="homepage" />
   <utility factory=".testing.PushNotifier" name="ios-legacy" />
+  <utility factory=".testing.PushNotifier" name="wrapper" />
 
 </configure>
