@@ -22,18 +22,29 @@ class Connection(object):
 
     def send(self, text, link, **kw):
         title = kw.get('title')
-        data = {
-            'where': {},
+        self.push({
+            'where': {'deviceType': 'android'},
             'data': {
                 # Parse.com payload
                 'alert': text,
-                'title': title,  # Android only
-
+                'title': title,
                 # App-specific payload
-                'alert-title': title,  # iOS only
                 'url': self.rewrite_url(link),
             }
-        }
+        })
+        self.push({
+            'where': {'deviceType': 'ios'},
+            'data': {
+                # App-specific payload
+                'aps': {
+                    'alert': text,
+                    'alert-title': title,
+                    'url': self.rewrite_url(link),
+                }
+            }
+        })
+
+    def push(self, data):
         headers = {
             'X-Parse-Application-Id': self.application_id,
             'X-Parse-REST-API-Key': self.rest_api_key,
