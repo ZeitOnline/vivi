@@ -51,7 +51,7 @@ class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
     def setUp(self):
         super(RetractBannerTest, self).setUp()
         with zeit.cms.testing.site(self.getRootFolder()):
-            for name in ['homepage', 'ios-legacy']:
+            for name in ['homepage', 'ios-legacy', 'wrapper']:
                 content = TestContentType()
                 self.repository[name] = content
                 notifier = zope.component.getUtility(
@@ -59,7 +59,7 @@ class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
                 notifier.uniqueId = content.uniqueId
 
     def tearDown(self):
-        for name in ['homepage', 'ios-legacy']:
+        for name in ['homepage', 'ios-legacy', 'wrapper']:
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=name)
             del notifier.uniqueId
@@ -70,4 +70,5 @@ class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
         b.open('http://localhost/++skin++vivi/@@breaking-banner-retract')
         self.assertEllipsis("""\
             ...cms:context=".../repository/homepage"...
-            ...cms:context=".../repository/ios-legacy"...""", b.contents)
+            ...cms:context=".../repository/ios-legacy"...
+            ...cms:context=".../repository/wrapper"...""", b.contents)

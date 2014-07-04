@@ -42,6 +42,12 @@ def ios_legacy():
     return StaticArticlePublisher(config['ios-legacy-uniqueid'])
 
 
+@zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
+def wrapper_banner():
+    config = zope.app.appsetup.product.getProductConfiguration('zeit.push')
+    return StaticArticlePublisher(config['wrapper-banner-uniqueid'])
+
+
 class HomepageMessage(zeit.push.message.OneTimeMessage):
 
     grok.name('homepage')
@@ -52,6 +58,17 @@ class LegacyIOSMessage(zeit.push.message.OneTimeMessage):
 
     grok.name('ios-legacy')
     get_text_from = 'short_text'
+
+
+class LegacyIOSMessage(zeit.push.message.OneTimeMessage):
+
+    grok.name('wrapper')
+    get_text_from = 'short_text'
+
+    @property
+    def url(self):
+        return self.context.uniqueId.replace(
+            zeit.cms.interfaces.ID_NAMESPACE, 'http://wrapper.zeit.de/')
 
 
 class Retract(object):
@@ -66,4 +83,10 @@ class Retract(object):
     def ios_legacy(self):
         notifier = zope.component.getUtility(
             zeit.push.interfaces.IPushNotifier, name='ios-legacy')
+        return ICMSContent(notifier.uniqueId)
+
+    @property
+    def wrapper(self):
+        notifier = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='wrapper')
         return ICMSContent(notifier.uniqueId)
