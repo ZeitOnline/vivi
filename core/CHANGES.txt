@@ -5,7 +5,7 @@ zeit.content.article changes
 ------------------
 
 - Add DAV-Property ``is_breaking`` to mark articles that were created as
-  breaking news (so the frontend can do different things to them).
+  breaking news, so the frontend can do different things to them (WEB-319).
 
 - Split off EditorHelper test baseclass, for reuse from other packages.
 
