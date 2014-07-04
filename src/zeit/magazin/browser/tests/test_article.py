@@ -2,12 +2,14 @@
 # Copyright (c) 2013 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
 import zeit.magazin.testing
 
 
 class ArticleTemplateTest(
-        zeit.content.article.edit.browser.testing.EditorTestCase):
+        zeit.content.article.edit.browser.testing.EditorHelper,
+        zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.magazin.testing.SELENIUM_LAYER
 
