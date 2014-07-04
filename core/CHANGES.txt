@@ -1,11 +1,13 @@
 zeit.content.article changes
 ============================
 
-3.4.8 (unreleased)
+3.5.0 (unreleased)
 ------------------
 
 - Add DAV-Property ``is_breaking`` to mark articles that were created as
   breaking news (so the frontend can do different things to them).
+
+- Split off EditorHelper test baseclass, for reuse from other packages.
 
 
 3.4.7 (2014-07-02)

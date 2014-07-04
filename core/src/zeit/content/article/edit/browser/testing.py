@@ -36,7 +36,7 @@ class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
         return article
 
 
-class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
+class EditorHelper(object):
 
     editable_locator = '.block.type-p .editable'
 
@@ -104,3 +104,8 @@ class EditorTestCase(zeit.content.article.testing.SeleniumTestCase):
         s.refresh()
         s.click('//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
+
+
+class EditorTestCase(zeit.content.article.testing.SeleniumTestCase,
+                     EditorHelper):
+    pass
