@@ -79,7 +79,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 zeit.workflow.testing.run_publish()
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             self.assertEqual(True, IPublishInfo(article).published)
-            for service in ['homepage', 'ios-legacy', 'parse',
+            for service in ['homepage', 'ios-legacy', 'wrapper', 'parse',
                             'twitter']:
                 # XXX temporarily disabled Facebook
                 #             'twitter', 'facebook']:
@@ -122,6 +122,8 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 {'type': 'homepage', 'enabled': False}, push.message_config)
             self.assertIn(
                 {'type': 'ios-legacy', 'enabled': False}, push.message_config)
+            self.assertIn(
+                {'type': 'wrapper', 'enabled': False}, push.message_config)
 
     def test_setting_body_text_creates_paragraph(self):
         self.create_breakingnews()

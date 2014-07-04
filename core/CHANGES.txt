@@ -7,6 +7,9 @@ zeit.content.article changes
 - Add DAV-Property ``is_breaking`` to mark articles that were created as
   breaking news, so the frontend can do different things to them (WEB-319).
 
+- Create separate banner file ``/eilmeldung/wrapper-banner`` when "Homepage"
+  is enabled (WEB-318).
+
 - Split off EditorHelper test baseclass, for reuse from other packages.
 
 

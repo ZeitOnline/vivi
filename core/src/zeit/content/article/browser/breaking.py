@@ -77,6 +77,8 @@ class Add(zeit.cms.browser.form.AddForm,
         if data.pop('homepage', False):
             message_config.append(
                 {'type': 'homepage', 'enabled': True})
+            message_config.append(
+                {'type': 'wrapper', 'enabled': True})
         if data.pop('social', False):
             # XXX temporarily disabled Facebook
             # message_config.append(
