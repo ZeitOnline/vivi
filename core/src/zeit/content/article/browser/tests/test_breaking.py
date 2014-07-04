@@ -3,7 +3,9 @@ from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo, IPublish
 from zeit.content.article.edit.interfaces import IEditableBody
 import lxml.etree
+import zeit.cms.checkout.helper
 import zeit.cms.testing
+import zeit.content.article.interfaces
 import zeit.content.article.testing
 import zeit.workflow.testing
 import zope.i18n.translationdomain
@@ -176,8 +178,10 @@ class RetractBannerTest(
             # Make Somalia breaking news, so the retract section is shown.
             article = ICMSContent(
                 'http://xml.zeit.de/online/2007/01/Somalia')
-            push = zeit.push.interfaces.IPushMessages(article)
-            push.message_config = ({'type': 'homepage'},)
+            with zeit.cms.testing.interaction():
+                with zeit.cms.checkout.helper.checked_out(article) as co:
+                    zeit.content.article.interfaces.IBreakingNews(
+                        co).is_breaking = True
 
         self.start_tasks()
 
