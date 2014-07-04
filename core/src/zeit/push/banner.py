@@ -60,7 +60,7 @@ class LegacyIOSMessage(zeit.push.message.OneTimeMessage):
     get_text_from = 'short_text'
 
 
-class LegacyIOSMessage(zeit.push.message.OneTimeMessage):
+class WrapperMessage(zeit.push.message.OneTimeMessage):
 
     grok.name('wrapper')
     get_text_from = 'short_text'
