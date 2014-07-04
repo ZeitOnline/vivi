@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Thu Jun 19 12:42:27 2014\n"
+"POT-Creation-Date: Fri Jul  4 14:57:47 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
 
-#: zeit/addcentral/sidebar.py:28
+#: zeit/addcentral/sidebar.py:36
 #: zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:244
 #: zeit/cms/application.zcml:44
@@ -547,7 +547,7 @@ msgstr ""
 msgid "Add..."
 msgstr ""
 
-#: zeit/cms/browser/menu.py:98
+#: zeit/cms/browser/menu.py:102
 #: zeit/cms/browser/object-details-body.pt:13
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:14
 msgid "CMS"
@@ -2288,7 +2288,11 @@ msgstr ""
 msgid "Export to Tagesspiegel"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:218
+#: zeit/content/article/interfaces.py:215
+msgid "Breaking news article"
+msgstr ""
+
+#: zeit/content/article/interfaces.py:223
 #: zeit/content/article/browser/configure.zcml:94
 msgid "Add breaking news"
 msgstr ""
@@ -3592,7 +3596,11 @@ msgstr ""
 msgid "iOS legacy"
 msgstr ""
 
-#: zeit/push/banner-retract.pt:13
+#: zeit/push/banner-retract.pt:16
+msgid "wrapper banner"
+msgstr ""
+
+#: zeit/push/banner-retract.pt:17
 msgid "Done"
 msgstr ""
 
@@ -3602,6 +3610,7 @@ msgstr ""
 
 #: zeit/push/banner-retract.pt:8
 #: zeit/push/banner-retract.pt:12
+#: zeit/push/banner-retract.pt:16
 msgid "Retract ${target}"
 msgstr ""
 

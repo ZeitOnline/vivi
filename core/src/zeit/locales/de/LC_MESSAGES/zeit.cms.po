@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jun 19 12:42:27 2014\n"
-"PO-Revision-Date: 2014-06-24 13:30+0100\n"
+"POT-Creation-Date: Fri Jul  4 14:57:47 2014\n"
+"PO-Revision-Date: 2014-07-04 14:59+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -25,7 +25,7 @@ msgstr ""
 "Generated-By: zope/app/locales/extract.py\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: zeit/addcentral/sidebar.py:28 zeit/addcentral/sidebar.pt:10
+#: zeit/addcentral/sidebar.py:36 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:244 zeit/cms/application.zcml:44
 #: zeit/content/article/edit/browser/recension-list.pt:93
 #: zeit/edit/browser/view.py:185
@@ -509,7 +509,7 @@ msgstr "Fehler"
 msgid "Add..."
 msgstr "Hinzufügen …"
 
-#: zeit/cms/browser/menu.py:98 zeit/cms/browser/object-details-body.pt:13
+#: zeit/cms/browser/menu.py:102 zeit/cms/browser/object-details-body.pt:13
 #: zeit/content/article/edit/browser/object-details-internallinks-heading.pt:14
 msgid "CMS"
 msgstr "CMS"
@@ -2235,7 +2235,11 @@ msgstr "Wählen Sie das Objekt von dem die Kommentare verwendet werden sollen."
 msgid "Export to Tagesspiegel"
 msgstr "Zum Tagesspiegel exportieren"
 
-#: zeit/content/article/interfaces.py:218
+#: zeit/content/article/interfaces.py:215
+msgid "Breaking news article"
+msgstr "Eilmeldungsartikel"
+
+#: zeit/content/article/interfaces.py:223
 #: zeit/content/article/browser/configure.zcml:94
 msgid "Add breaking news"
 msgstr "Eilmeldung"
@@ -3555,7 +3559,11 @@ msgstr "Newsletter"
 msgid "iOS legacy"
 msgstr "Steuerdatei"
 
-#: zeit/push/banner-retract.pt:13
+#: zeit/push/banner-retract.pt:16
+msgid "wrapper banner"
+msgstr "Steuerdatei"
+
+#: zeit/push/banner-retract.pt:17
 msgid "Done"
 msgstr "Fertig"
 
@@ -3564,6 +3572,7 @@ msgid "homepage banner"
 msgstr "Eilmeldungsbanner"
 
 #: zeit/push/banner-retract.pt:8 zeit/push/banner-retract.pt:12
+#: zeit/push/banner-retract.pt:16
 msgid "Retract ${target}"
 msgstr "${target} depublizieren"
 
