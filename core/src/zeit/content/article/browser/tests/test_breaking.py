@@ -164,7 +164,7 @@ class RetractBannerTest(
         super(RetractBannerTest, self).setUp()
         with zeit.cms.testing.site(self.getRootFolder()):
             # Set up dummy banner articles.
-            for name in ['homepage', 'ios-legacy']:
+            for name in ['homepage', 'ios-legacy', 'wrapper']:
                 content = TestContentType()
                 self.repository[name] = content
                 notifier = zope.component.getUtility(
@@ -189,7 +189,7 @@ class RetractBannerTest(
 
     def tearDown(self):
         self.stop_tasks()
-        for name in ['homepage', 'ios-legacy']:
+        for name in ['homepage', 'ios-legacy', 'wrapper']:
             notifier = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name=name)
             del notifier.uniqueId
