@@ -1,6 +1,8 @@
+from datetime import datetime, timedelta
 import grokcore.component as grok
 import json
 import logging
+import pytz
 import requests
 import zeit.push.interfaces
 import zeit.push.message
@@ -16,14 +18,19 @@ class Connection(object):
 
     base_url = 'https://api.parse.com/1'
 
-    def __init__(self, application_id, rest_api_key):
+    def __init__(self, application_id, rest_api_key, expire_interval):
         self.application_id = application_id
         self.rest_api_key = rest_api_key
+        self.expire_interval = expire_interval
 
     def send(self, text, link, **kw):
         title = kw.get('title')
+        expiration_time = datetime.now(pytz.UTC) + timedelta(
+            seconds=self.expire_interval)
+        expiration_time = expiration_time.isoformat()
         self.push({
             'where': {'deviceType': 'android'},
+            'expiration_time': expiration_time,
             'data': {
                 # Parse.com payload
                 'alert': text,
@@ -34,6 +41,7 @@ class Connection(object):
         })
         self.push({
             'where': {'deviceType': 'ios'},
+            'expiration_time': expiration_time,
             'data': {
                 # App-specific payload
                 'aps': {
@@ -84,7 +92,8 @@ def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.push')
     return Connection(
-        config['parse-application-id'], config['parse-rest-api-key'])
+        config['parse-application-id'], config['parse-rest-api-key'],
+        int(config['parse-expire-interval']))
 
 
 class Message(zeit.push.message.OneTimeMessage):
