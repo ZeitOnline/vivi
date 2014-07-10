@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.4.0 (unreleased)
+1.4.0 (2014-07-10)
 ------------------
 
 - Send different payloads to android and ios devices on parse.com (VIV-426).
