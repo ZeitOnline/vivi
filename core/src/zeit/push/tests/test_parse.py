@@ -10,10 +10,9 @@ class ParseTest(unittest.TestCase):
 
     level = 2
 
-    @unittest.skip(
-        'Since Parse offers no REST API to retrieve push messages,'
-        ' an automated integration test does not really work.')
     def test_push_works(self):
+        # Parse offers no REST API to retrieve push messages,
+        # so this is just a smoke test.
         api = zeit.push.parse.Connection(
             settings['application_id'], settings['rest_api_key'], 1)
         api.send('Being pushy.', 'http://example.com')
@@ -52,9 +51,9 @@ class ExpirationTest(unittest.TestCase):
             'any', 'any', 3600)
         with mock.patch('zeit.push.parse.datetime') as mock_datetime:
             mock_datetime.now.return_value = datetime(
-                2014, 07, 1, 10, 15, tzinfo=pytz.UTC)
+                2014, 07, 1, 10, 15, 7, 38, tzinfo=pytz.UTC)
             with mock.patch.object(api, 'push') as push:
                 api.send('foo', 'any')
                 data = push.call_args[0][0]
                 self.assertEqual(
-                    '2014-07-01T11:15:00+00:00', data['expiration_time'])
+                    '2014-07-01T11:15:07+00:00', data['expiration_time'])

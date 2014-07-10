@@ -25,8 +25,8 @@ class Connection(object):
 
     def send(self, text, link, **kw):
         title = kw.get('title')
-        expiration_time = datetime.now(pytz.UTC) + timedelta(
-            seconds=self.expire_interval)
+        expiration_time = datetime.now(pytz.UTC).replace(
+            microsecond=0) + timedelta(seconds=self.expire_interval)
         expiration_time = expiration_time.isoformat()
         self.push({
             'where': {'deviceType': 'android'},
