@@ -10,6 +10,7 @@ class ParseTest(unittest.TestCase):
 
     level = 2
 
+    @unittest.skip('Cannot push to ios without a apple certificate')
     def test_push_works(self):
         # Parse offers no REST API to retrieve push messages,
         # so this is just a smoke test.
