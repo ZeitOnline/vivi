@@ -4,7 +4,6 @@
 from zeit.content.cp.i18n import MessageFactory as _
 from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
 import urlparse
-import zc.sourcefactory.basic
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -19,7 +18,6 @@ import zeit.content.quiz.source
 import zeit.edit.interfaces
 import zope.container.interfaces
 import zope.interface
-import zope.schema.vocabulary
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'

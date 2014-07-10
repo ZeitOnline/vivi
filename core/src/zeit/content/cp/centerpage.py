@@ -9,7 +9,6 @@ import collections
 import grokcore.component
 import itertools
 import lxml.etree
-import lxml.objectify
 import pkg_resources
 import xml.sax.saxutils
 import zeit.cms.checkout.interfaces
