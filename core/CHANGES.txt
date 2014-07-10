@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.5.0 (unreleased)
+3.5.0 (2014-07-10)
 ------------------
 
 - Add DAV-Property ``is_breaking`` to mark articles that were created as
