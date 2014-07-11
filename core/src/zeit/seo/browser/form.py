@@ -1,16 +1,12 @@
 # Copyright (c) 2008-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
-import zope.formlib.form
-
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-
 import zeit.cms.browser.form
 import zeit.cms.content.interfaces
-from zeit.cms.i18n import MessageFactory as _
-
 import zeit.seo.interfaces
+import zope.formlib.form
 
 
 class SEOBaseForm(object):
