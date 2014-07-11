@@ -30,7 +30,7 @@ setup(
         'zeit.content.video',
         'zeit.imp',
         'zeit.invalidate',
-        'zeit.seo',
+        'zeit.seo>=1.6.0.dev0',
         'zope.app.zcmlfiles',
     ],
 )
