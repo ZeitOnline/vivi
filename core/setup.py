@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.seo',
-    version='1.5.1.dev0',
+    version='1.6.0.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
@@ -26,4 +26,9 @@ setup(
         'zope.interface',
         'zope.schema',
     ],
+    entry_points={
+        'fanstatic.libraries': [
+            'zeit_seo=zeit.seo.browser.resources:lib',
+        ],
+    },
 )
