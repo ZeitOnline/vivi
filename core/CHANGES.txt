@@ -4,7 +4,7 @@ zeit.cms changes
 2.25.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Move JS character counter from zeit.content.article here.
 
 
 2.24.0 (2014-07-02)
