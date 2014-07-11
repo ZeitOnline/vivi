@@ -19,6 +19,7 @@
   <include package="zeit.cms" file="ftesting-securitypolicy.zcml" />
 
   <include package="zeit.seo" />
+  <include package="zeit.seo.browser" />
 
   <grant
     principal="zope.Authenticated"
