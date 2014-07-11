@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update to use zeit.seo.browser subpackage.
 
 
 2.1.3 (2014-06-05)

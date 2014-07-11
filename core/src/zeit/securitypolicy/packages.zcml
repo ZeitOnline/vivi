@@ -25,6 +25,7 @@
   <include package="zeit.content.quiz.browser" />
 
   <include package="zeit.seo" />
+  <include package="zeit.seo.browser" />
 
   <include package="zeit.imp" />
   <include package="zeit.imp.browser" />
