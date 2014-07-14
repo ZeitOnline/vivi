@@ -27,7 +27,9 @@ def parse_filter_args(request, crop):
 class ScaledImage(zeit.cms.browser.view.Base):
 
     def __call__(self, width, height):
-        return self.get_scaled_image(self.context, width, height)
+        return self.get_scaled_image(
+            zeit.content.image.interfaces.IMasterImage(self.context),
+            width, height)
 
     def get_scaled_image(self, image, width, height):
         width, height = int(width), int(height)
@@ -36,13 +38,10 @@ class ScaledImage(zeit.cms.browser.view.Base):
         parse_filter_args(self.request, cropper)
         pil_image = cropper.crop(width, height, 0, 0, width, height)
         f = StringIO.StringIO()
-        pil_image.save(f, zeit.content.image.interfaces.IMasterImage(
-            self.context).format)
+        pil_image.save(f, image.format)
         self.request.response.setHeader(
             'Cache-Control', 'public,max-age=3600')
-        self.request.response.setHeader(
-            'Content-Type',
-            zeit.content.image.interfaces.IMasterImage(image).mimeType)
+        self.request.response.setHeader('Content-Type', image.mimeType)
         # Hellooo memory consumption
         return f.getvalue()
 
