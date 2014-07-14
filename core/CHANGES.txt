@@ -1,7 +1,7 @@
 zeit.imp changes
 ================
 
-0.16.1 (unreleased)
+0.16.1 (2014-07-14)
 +++++++++++++++++++
 
 - Fix bug in 0.16.0 that rendered imp unusable for gallery entries.
