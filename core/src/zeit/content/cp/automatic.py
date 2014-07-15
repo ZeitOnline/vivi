@@ -1,3 +1,5 @@
+import copy
+import lxml
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 import zeit.cms.content.property
 import zeit.content.cp.interfaces
@@ -68,3 +70,13 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
                 block.insert(0, zeit.cms.interfaces.ICMSContent(
                     solr_result.next()['uniqueId']))
         return values
+
+    @property
+    def rendered_xml(self):
+        region = getattr(lxml.objectify.E, self.xml.tag)(**self.xml.attrib)
+        for block in self.values():
+            if IAutomaticTeaserBlock.providedBy(block):
+                region.append(block.rendered_xml)
+            else:
+                region.append(copy.copy(block.xml))
+        return region

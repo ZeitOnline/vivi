@@ -1,4 +1,7 @@
+import copy
+import lxml
 import gocept.lxml.interfaces
+import zeit.cms.syndication.feed
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.edit.block
@@ -38,7 +41,7 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     def layout(self):
         default = None
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
-            self):
+                self):
             if layout.id == self.xml.get('module'):
                 return layout
             if layout.default:
@@ -49,6 +52,18 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     def layout(self, layout):
         self._p_changed = True
         self.xml.set('module', layout.id)
+
+    @property
+    def rendered_xml(self):
+        container = copy.copy(self.xml)
+        container.attrib['{http://namespaces.zeit.de/CMS/cp}type'] = 'teaser'
+        for entry in self.entries:
+            updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(entry)
+            block = lxml.objectify.E.block(
+                uniqueId=entry.uniqueId, href=entry.uniqueId)
+            updater.update(block)
+            container.append(block)
+        return container
 
 
 zeit.edit.block.register_element_factory(
