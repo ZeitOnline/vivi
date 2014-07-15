@@ -8,6 +8,9 @@ zeit.content.cp changes
 - Introduce automatic regions that only store a solr query and fill in the
   actual content at rendering time in the frontend (VIV-434).
 
+- Fix free teaser behaviour: delegate ICommonMetadata fields to the referenced
+  content (VIV-433).
+
 
 2.3.4 (2014-06-03)
 ------------------

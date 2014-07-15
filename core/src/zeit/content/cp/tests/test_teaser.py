@@ -66,7 +66,14 @@ class TestXMLTeaser(XMLTeaserBase):
             self.cp, UNUSED_EVENT)
         self.assertEqual('teaserSupertitle', self.teaser.teaserSupertitle)
 
-    def test_unknown_commonmetadata_fields_should_return_their_default(self):
+    def test_commonmetadata_fields_xmlteaser_doesnt_have_should_delegate(self):
+        from zeit.cms.checkout.helper import checked_out
+        with checked_out(self.repository['testcontent']) as co:
+            co.title = 'original'
+        self.teaser.free_teaser = True
+        self.assertEqual('original', self.teaser.title)
+
+    def test_commonmetadata_fields_xmlteaser_doesnt_have_should_return_their_default(self):
         self.assertEqual((), self.teaser.authorships)
 
     def test_iimages_should_contain_referenced_objects_image(self):
