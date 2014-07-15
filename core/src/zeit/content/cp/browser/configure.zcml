@@ -207,4 +207,13 @@
     class=".resources.RawCSS"
     permission="zope.View" />
 
+  <browser:page
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="automatic.html"
+    class=".automatic.Edit"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Automatic contents"
+    />
+
 </configure>

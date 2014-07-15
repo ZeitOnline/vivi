@@ -177,4 +177,19 @@
 
   <utility factory=".feed.FeedManager" />
 
+  <class class=".automatic.AutomaticRegion">
+    <require
+      interface="zeit.content.cp.interfaces.IAutomaticRegion"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.content.cp.interfaces.IAutomaticRegion"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter
+    factory=".automatic.AutomaticRegion"
+    trusted="yes" />
+
 </configure>

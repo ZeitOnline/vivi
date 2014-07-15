@@ -146,6 +146,13 @@ class IMosaic(zeit.edit.interfaces.IContainer):
     """Teaser mosaic."""
 
 
+class IAutomaticRegion(zope.interface.Interface):
+
+    automatic = zope.schema.Bool(title=_('automatic'))
+    count = zope.schema.Int(title=_('Amount of teasers'), default=15)
+    query = zope.schema.Text(title=_('Raw query'), required=False)
+
+
 class ICMSContentIterable(zope.interface.Interface):
     """An iterable object iterating over CMSContent."""
 
