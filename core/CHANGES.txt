@@ -5,7 +5,8 @@ zeit.content.cp changes
 2.3.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Introduce automatic regions that only store a solr query and fill in the
+  actual content at rendering time in the frontend (VIV-434).
 
 
 2.3.4 (2014-06-03)
