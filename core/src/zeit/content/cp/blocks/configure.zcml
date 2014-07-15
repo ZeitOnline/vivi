@@ -76,6 +76,24 @@
       permission="zeit.EditContent" />
   </class>
 
+  <!-- automatic teaser block -->
+  <adapter
+    provides="zeit.edit.interfaces.IElement"
+    name="auto-teaser"
+    factory=".automatic.AutomaticTeaserBlock"
+    />
+  <class class=".automatic.AutomaticTeaserBlock">
+    <require
+      interface="..interfaces.IReadTeaserBlock"
+      permission="zope.View"/>
+    <require
+      set_schema="..interfaces.IReadTeaserBlock"
+      permission="zeit.EditContent"/>
+    <require
+      interface="..interfaces.IWriteTeaserBlock"
+      permission="zeit.EditContent"/>
+  </class>
+
   <!-- Teaser bar -->
 
   <class class=".teaserbar.TeaserBar">

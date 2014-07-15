@@ -146,7 +146,7 @@ class IMosaic(zeit.edit.interfaces.IContainer):
     """Teaser mosaic."""
 
 
-class IAutomaticRegion(zope.interface.Interface):
+class IAutomaticRegion(IRegion):
 
     automatic = zope.schema.Bool(title=_('automatic'))
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
@@ -329,6 +329,10 @@ class IWriteTeaserBlockColumns(zope.interface.Interface):
 
 class ITeaserBlockColumns(IReadTeaserBlockColumns, IWriteTeaserBlockColumns):
     """Column information for a teaser block."""
+
+
+class IAutomaticTeaserBlock(ITeaserBlock):
+    pass
 
 
 def validate_xml_block(xml):

@@ -21,6 +21,7 @@
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
     name="contents"
+    class=".automatic.Display"
     template="layout.lead.contents-provider.pt"
     permission="zeit.EditContent"
     weight="0"
