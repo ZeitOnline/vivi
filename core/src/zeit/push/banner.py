@@ -1,4 +1,5 @@
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.checkout.interfaces import ICheckinManager
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.edit.interfaces import IBreakingNewsBody
@@ -23,11 +24,24 @@ class StaticArticlePublisher(object):
     def send(self, text, link, **kw):
         article = ICMSContent(self.uniqueId)
         log.debug('Setting %s, %s as body of %s', text, link, self.uniqueId)
+        self._ensure_unlocked(article)
         with checked_out(article, semantic_change=True) as co:
             IBreakingNewsBody(co).text = u'<a href="{link}">{text}</a>'.format(
                 link=link, text=text)
         IPublishInfo(article).urgent = True
         IPublish(article).publish()
+
+    def _ensure_unlocked(self, content):
+        lockable = zope.app.locking.interfaces.ILockable(content, None)
+        if not lockable:
+            return
+        if lockable.isLockedOut():
+            lockable.breaklock()
+        if lockable.ownLock():
+            checked_out = zeit.cms.interfaces.ICMSWCContent(
+                content.uniqueId, None)
+            if checked_out is not None:
+                ICheckinManager(checked_out).delete()
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)

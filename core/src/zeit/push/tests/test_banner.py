@@ -1,4 +1,5 @@
 # coding: utf-8
+from zeit.cms.checkout.interfaces import ICheckoutManager
 from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
@@ -14,13 +15,16 @@ import zope.component
 
 class StaticArticlePublisherTest(zeit.push.testing.TestCase):
 
-    def test_sets_first_paragraph_and_publishes(self):
+    def setUp(self):
+        super(StaticArticlePublisherTest, self).setUp()
         self.repository['foo'] = zeit.content.article.testing.create_article()
+        self.publisher = zeit.push.banner.StaticArticlePublisher(
+            'http://xml.zeit.de/foo')
+
+    def test_sets_first_paragraph_and_publishes(self):
         self.assertEqual(
             None, ISemanticChange(self.repository['foo']).last_semantic_change)
-        publisher = zeit.push.banner.StaticArticlePublisher(
-            'http://xml.zeit.de/foo')
-        publisher.send('mytext', 'http://zeit.de/foo')
+        self.publisher.send('mytext', 'http://zeit.de/foo')
         zeit.workflow.testing.run_publish()
         article = self.repository['foo']
         self.assertEqual(True, IPublishInfo(article).published)
@@ -31,17 +35,26 @@ class StaticArticlePublisherTest(zeit.push.testing.TestCase):
             lxml.etree.tostring(IEditableBody(article).values()[0].xml))
 
     def test_regression_handles_unicode(self):
-        self.repository['foo'] = zeit.content.article.testing.create_article()
         self.assertEqual(
             None, ISemanticChange(self.repository['foo']).last_semantic_change)
-        publisher = zeit.push.banner.StaticArticlePublisher(
-            'http://xml.zeit.de/foo')
-        publisher.send(u'mütext', 'http://zeit.de/foo')
+        self.publisher.send(u'mütext', 'http://zeit.de/foo')
         zeit.workflow.testing.run_publish()
         article = self.repository['foo']
         self.assertEllipsis(
             '...m&#252;text...',
             lxml.etree.tostring(IEditableBody(article).values()[0].xml))
+
+    def test_checked_out_already_deletes_from_workingcopy_first(self):
+        ICheckoutManager(self.repository['foo']).checkout()
+        self.publisher.send('mytext', 'http://zeit.de/foo')
+
+    def test_checked_out_by_somebody_else_steals_lock_first(self):
+        zope.security.management.endInteraction()
+        zeit.cms.testing.create_interaction('other')
+        ICheckoutManager(self.repository['foo']).checkout()
+        zope.security.management.endInteraction()
+        zeit.cms.testing.create_interaction('zope.user')
+        self.publisher.send('mytext', 'http://zeit.de/foo')
 
 
 class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
