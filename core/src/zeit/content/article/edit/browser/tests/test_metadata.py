@@ -225,43 +225,6 @@ class AuthorLocationTest(
 
 class FilenameTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
-    def setUp(self):
-        super(FilenameTest, self).setUp()
-        self.open(
-            '/@@/zeit.content.article.edit.browser.tests.fixtures/js.html')
-
-    def normalize(self, text):
-        return self.eval(
-            'zeit.content.article.normalize_filename("%s")' % text)
-
-    def test_converts_to_lowercase(self):
-        self.assertEqual('foobar', self.normalize('FooBar'))
-
-    def test_removes_trailing_whitespace(self):
-        self.assertEqual('foobar', self.normalize('foobar  '))
-
-    def test_replaces_spaces_with_dash(self):
-        self.assertEqual('foo-bar', self.normalize('foo bar'))
-
-    def test_replaces_specialchars_with_dash(self):
-        self.assertEqual('f-o', self.normalize('f&o'))
-
-    def test_removes_specialchars_at_end_of_string(self):
-        self.assertEqual('fo', self.normalize('fo&&'))
-
-    def test_collapses_consecutive_dashes(self):
-        self.assertEqual('foo-bar-baz', self.normalize('foo---bar--baz'))
-
-    def test_replaces_umlauts_with_vowels(self):
-        self.assertEqual('aeaeoeuess', self.normalize(u'ääöüß'))
-
-    def test_keeps_filename_extensions(self):
-        self.assertEqual('foo.jpg', self.normalize('foo.jpg'))
-
-    def test_removes_dots_except_for_the_last_one(self):
-        self.assertEqual(
-            'foo-bar-baz.qux', self.normalize('foo....bar.baz.qux'))
-
     def test_filename_input_is_wired_up(self):
         self.add_article()
         input_filename = 'new-filename.rename_to'
