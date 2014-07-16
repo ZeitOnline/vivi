@@ -74,6 +74,7 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
     @property
     def rendered_xml(self):
         region = getattr(lxml.objectify.E, self.xml.tag)(**self.xml.attrib)
+        region.attrib.pop('automatic', None)
         for block in self.values():
             if IAutomaticTeaserBlock.providedBy(block):
                 region.append(block.rendered_xml)
