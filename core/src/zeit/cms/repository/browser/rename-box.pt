@@ -19,4 +19,10 @@
 
   </form>
 
+  <script type="text/javascript">
+    $('#form\\.new_name').bind('change', function() {
+        var input = $(this);
+        input.val(zeit.cms.normalize_filename(input.val()));
+    });
+  </script>
 </div>  
