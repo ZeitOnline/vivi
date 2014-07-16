@@ -1,5 +1,5 @@
 from datetime import datetime
-from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS, WRITEABLE_LIVE
 import grokcore.component as grok
 import logging
 import pytz
@@ -26,8 +26,12 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         zeit.push.interfaces.IPushMessages,
         zeit.workflow.interfaces.WORKFLOW_NS,
-        ('date_last_pushed', 'long_text', 'short_text'),
-        writeable=WRITEABLE_ALWAYS)
+        ('long_text', 'short_text'))
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.push.interfaces.IPushMessages,
+        zeit.workflow.interfaces.WORKFLOW_NS,
+        ('date_last_pushed',), writeable=WRITEABLE_LIVE)
 
     @property
     def messages(self):
