@@ -153,7 +153,8 @@ zeit.content.gallery.Uploader = gocept.Class.extend({
 
     upload_start: function(file) {
         var self = this;
-        self.swfupload.addFileParam(file.id, 'form.__name__', file.name);
+        self.swfupload.addFileParam(
+            file.id, 'form.__name__', zeit.cms.normalize_filename(file.name));
         self.make_active(file);
         return true;
     },
