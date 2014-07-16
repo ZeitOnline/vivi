@@ -123,4 +123,4 @@ SplitDirResource('tab.js', depends=[base, view_js])
 SplitDirResource('tree.js', depends=[base])
 SplitDirResource('filteringtable.js', depends=[base])
 SplitDirResource('panelHandlers.js', depends=[base])
-
+SplitDirResource('filename.js', depends=[base])

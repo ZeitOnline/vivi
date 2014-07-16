@@ -4,6 +4,9 @@ zeit.cms changes
 2.25.0 (unreleased)
 -------------------
 
+- Enable rewriting filenames for all content types; keep filename extenions
+  intact (moved from zeit.content.article) (VIV-409).
+
 - Move JS character counter from zeit.content.article here.
 
 - Support non-<form> containers for SubPageForm/InlineForm,
