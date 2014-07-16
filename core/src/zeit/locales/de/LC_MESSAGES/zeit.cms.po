@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Jul 16 14:16:48 2014\n"
-"PO-Revision-Date: 2014-07-16 14:17+0100\n"
+"PO-Revision-Date: 2014-07-16 14:19+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -3595,7 +3595,7 @@ msgstr "${target} depublizieren"
 
 #: zeit/push/interfaces.py:52
 msgid "Push after next publish?"
-msgstr "Bei (erneuter) Veröffentlichung automatisch posten"
+msgstr "Bei Veröffentlichung automatisch posten"
 
 #: zeit/push/interfaces.py:55
 msgid "Last push"
