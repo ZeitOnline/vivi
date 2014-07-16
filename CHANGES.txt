@@ -7,6 +7,8 @@ zeit.push changes
 - When a banner file is already checked out (by the same or another user),
   overwrite it anyway.
 
+- Make long_text and short_text only writeable while checked out (VIV-451).
+
 
 1.4.0 (2014-07-10)
 ------------------

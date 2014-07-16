@@ -11,8 +11,12 @@
       permission="zeit.workflow.Publish"
       />
     <require
-      set_schema=".interfaces.IPushMessages"
+      set_attributes="enabled date_last_pushed message_config"
       permission="zeit.workflow.Publish"
+      />
+    <require
+      set_attributes="long_text short_text"
+      permission="zeit.EditContent"
       />
   </class>
 
