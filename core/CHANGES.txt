@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Move JS character counter to zeit.cms.
 
+- Change social media checkboxes default to unchecked.
+
 
 3.5.0 (2014-07-10)
 ------------------

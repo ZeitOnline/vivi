@@ -86,9 +86,7 @@ class Accounts(grok.Adapter):
     @property
     def facebook(self):
         service = self._get_service('facebook', main=True)
-        if service is None:
-            return True
-        return service['enabled']
+        return service and service['enabled']
 
     @property
     def facebook_magazin(self):
@@ -98,9 +96,7 @@ class Accounts(grok.Adapter):
     @property
     def twitter(self):
         service = self._get_service('twitter', main=True)
-        if service is None:
-            return True
-        return service['enabled']
+        return service and service['enabled']
 
     @property
     def twitter_ressort(self):
