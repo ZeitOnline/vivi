@@ -255,6 +255,13 @@ class FilenameTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_replaces_umlauts_with_vowels(self):
         self.assertEqual('aeaeoeuess', self.normalize(u'ääöüß'))
 
+    def test_keeps_filename_extensions(self):
+        self.assertEqual('foo.jpg', self.normalize('foo.jpg'))
+
+    def test_removes_dots_except_for_the_last_one(self):
+        self.assertEqual(
+            'foo-bar-baz.qux', self.normalize('foo....bar.baz.qux'))
+
     def test_filename_input_is_wired_up(self):
         self.add_article()
         input_filename = 'new-filename.rename_to'

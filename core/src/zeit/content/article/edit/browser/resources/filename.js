@@ -9,8 +9,18 @@ zeit.content.article.normalize_filename = function(filename) {
     result = result.replace(/ö/g, 'oe');
     result = result.replace(/ü/g, 'ue');
     result = result.replace(/ß/g, 'ss');
-    result = result.replace(/(.*?)([^a-z0-9]+)$/, '$1');
-    result = result.replace(/[^a-z0-9]/g, '-');
+
+    // Remove all special characters, but keep dots for special treatment
+    result = result.replace(/(.*?)([^a-z0-9.]+)$/, '$1');
+    result = result.replace(/[^a-z0-9.]/g, '-');
+    // Save the last dot (so filename extensions are not destroyed)
+    result = result.replace(/(.*)\.(.*?)/, '$1_$2');
+    // Remove all dots
+    result = result.replace(/\./g, '-');
+    // Restore last dot
+    result = result.replace(/_/, '.');
+
+    // Collapse multiple consecutive dashes
     result = result.replace(/-+/g, '-');
     return result;
 };
