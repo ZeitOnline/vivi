@@ -19,10 +19,10 @@
   <p class="folded_information picture_information"
      tal:content="structure view/metadata/caption"/>
 
-  <form
+  <div
     class="inline-form"
     tal:attributes="action string:${context/@@absolute_url}/@@edit.html"
     tal:content="structure context/@@edit.html">
-  </form>
+  </div>
 
 </div>

@@ -4,6 +4,9 @@ zeit.content.image changes
 2.2.1 (unreleased)
 ------------------
 
+- Use <div class="inline-form"> instead of a nested <form> for reference
+  details (VIV-428).
+
 - Fix "change copyright" icon.
 
 
