@@ -393,6 +393,17 @@
     />
 
 
+  <class class=".social.Accounts">
+    <require
+      interface=".social.IAccounts"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".social.IAccounts"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class="..reference.Reference">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>

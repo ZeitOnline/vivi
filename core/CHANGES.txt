@@ -10,6 +10,8 @@ zeit.content.article changes
 
 - Change social media checkboxes default to unchecked.
 
+- Make social media settings writeable only while checked out (VIV-451).
+
 
 3.5.0 (2014-07-10)
 ------------------

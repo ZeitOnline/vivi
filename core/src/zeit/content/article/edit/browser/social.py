@@ -1,10 +1,10 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.push.twitter import twitterAccountSource
+from zeit.content.article.edit.browser.form import FormFields
 from zeit.push.facebook import facebookAccountSource
+from zeit.push.twitter import twitterAccountSource
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.edit.browser.form
-import zope.formlib.form
 import zope.interface
 
 
@@ -31,16 +31,15 @@ class Social(zeit.edit.browser.form.InlineForm,
     prefix = 'social'
     undo_description = _('edit social media')
     form_fields = (
-        zope.formlib.form.FormFields(
+        FormFields(
             zeit.push.interfaces.IPushMessages).select('long_text')
-        + zope.formlib.form.FormFields(
+        + FormFields(
             IAccounts).select('facebook', 'facebook_magazin')
-        +
-        zope.formlib.form.FormFields(
+        + FormFields(
             zeit.push.interfaces.IPushMessages).select('short_text')
-        + zope.formlib.form.FormFields(
+        + FormFields(
             IAccounts).select('twitter', 'twitter_ressort')
-        + zope.formlib.form.FormFields(
+        + FormFields(
             zeit.push.interfaces.IPushMessages).select('enabled')
     )
 
@@ -77,6 +76,10 @@ class Accounts(grok.Adapter):
 
     grok.context(zeit.cms.interfaces.ICMSContent)
     grok.implements(IAccounts)
+
+    def __init__(self, context):
+        super(Accounts, self).__init__(context)
+        self.__parent__ = context  # make security work
 
     @property
     def message_config(self):
