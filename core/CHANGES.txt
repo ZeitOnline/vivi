@@ -4,7 +4,8 @@ zeit.content.author changes
 2.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use <div class="inline-form"> instead of a nested <form> for reference
+  details (VIV-428).
 
 
 2.2.0 (2014-06-16)
