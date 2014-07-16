@@ -122,10 +122,12 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     serialize_form_data: function(action) {
         var self = this;
-        var elements = filter(
-            function(element) {
-                return (element.type != 'button');
-            }, self.form.elements);
+        // Submittable elements, see
+        // <http://www.w3.org/TR/html5/forms.html#form-associated-element>
+        var elements = $(self.form).find(
+            'button, input, keygen, object, select, textarea');
+        elements = filter(function(element) {
+            return (element.type != 'button'); }, elements);
 
         var data = map(function(element) {
                 if ((element.type == 'radio' || element.type == 'checkbox') &&
@@ -190,14 +192,17 @@ zeit.cms.SubPageForm = gocept.Class.extend({
 
     post_process_html: function() {
         var self = this;
-        if (self.container.nodeName == 'FORM') {
-            self.form = self.container;
-        } else {
-            self.form = $(self.container).find('form')[0];
-        }
+        self.form = self.find_form_tag();
         self.rewire_submit_buttons();
         zeit.cms.evaluate_js_and_css(
             self.container, function(code) { eval(code); });
+    },
+
+    find_form_tag: function() {
+        var self = this;
+        // XXX It's not quite clear in which situations the container looks
+        // like what, so we need findAndSelf.
+        return $(self.container).findAndSelf('form')[0];
     },
 
     rewire_submit_buttons: function() {
@@ -249,7 +254,7 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
 
             // Don't submit if the focus is inside a *nested* SubPageForm;
             // the nested form *will* be submitted, which is enough.
-            if ($(event.target).closest('form')[0] != self.container) {
+            if ($(event.target).closest('.inline-form')[0] != self.container) {
                 return;
             }
 
@@ -327,6 +332,11 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
                 self.submit();
             }
         });
+    },
+
+    find_form_tag: function() {
+        var self = this;
+        return $(self.container).findAndSelf('.inline-form')[0];
     },
 
     is_input: function(node) {

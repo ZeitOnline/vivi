@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Move JS character counter from zeit.content.article here.
 
+- Support non-<form> containers for SubPageForm/InlineForm,
+  since nested <form>-tags are not valid HTML (VIV-428).
+
 
 2.24.0 (2014-07-02)
 -------------------

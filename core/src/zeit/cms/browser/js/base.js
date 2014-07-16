@@ -358,4 +358,9 @@ $(document).bind('fragment-ready', function(event) {
   $("#edit-form-recensions #recensions a.button").attr("cms:tooltip","Neue Rezensionsinformation hinterlegen");
 });
 
+
+jQuery.fn.findAndSelf = function(selector) {
+    return this.find(selector).addBack(selector);
+};
+
 }(jQuery));
