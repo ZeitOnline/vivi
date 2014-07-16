@@ -4,6 +4,9 @@ zeit.content.article changes
 3.5.1 (unreleased)
 ------------------
 
+- Enable rewriting filenames for all content types; keep filename extenions
+  intact (VIV-409).
+
 - Move JS character counter to zeit.cms.
 
 - Change social media checkboxes default to unchecked.

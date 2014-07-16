@@ -42,7 +42,7 @@ $(document).ready(function() {
         $(target).trigger('change');
     });
 
-    $('.breakingnews-filename').bind('change', function() {
+    $('#form\\.__name__').bind('change', function() {
         var input = $(this);
         input.val(zeit.content.article.normalize_filename(input.val()));
     });
