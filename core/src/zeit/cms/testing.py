@@ -475,7 +475,8 @@ def set_site(site=None):
 
 
 # XXX use zope.publisher.testing for the following two
-def create_interaction(name=u'zope.user'):
+def create_interaction(name='zope.user'):
+    name = unicode(name)  # XXX At least zope.dublincore requires unicode...
     principal = zope.security.testing.Principal(
         name, groups=['zope.Authenticated'], description=u'test@example.com')
     request = zope.publisher.browser.TestRequest()
