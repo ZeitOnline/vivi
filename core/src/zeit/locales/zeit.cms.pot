@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Jul 16 14:16:48 2014\n"
+"POT-Creation-Date: Thu Jul 17 11:46:54 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1775,7 +1775,7 @@ msgid "edit metadata"
 msgstr ""
 
 #: zeit/content/article/edit/browser/form.py:391
-#: zeit/newsletter/newsletter.py:151
+#: zeit/newsletter/newsletter.py:153
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr ""
@@ -2481,11 +2481,7 @@ msgstr ""
 msgid "Display image at these positions"
 msgstr ""
 
-#: zeit/content/cp/browser/configure.zcml:210
-msgid "Automatic contents"
-msgstr ""
-
-#: zeit/content/cp/browser/configure.zcml:24
+#: zeit/content/cp/browser/configure.zcml:25
 #: zeit/content/gallery/browser/configure.zcml:56
 #: zeit/content/image/browser/configure.zcml:201
 #: zeit/content/link/browser/configure.zcml:32
@@ -2493,17 +2489,17 @@ msgstr ""
 msgid "View metadata"
 msgstr ""
 
-#: zeit/content/cp/browser/configure.zcml:40
+#: zeit/content/cp/browser/configure.zcml:41
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/image/browser/configure.zcml:217
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/quiz/browser/configure.zcml:38
 #: zeit/magazin/browser/configure.zcml:65
-#: zeit/newsletter/browser/category.py:31
+#: zeit/newsletter/browser/category.py:49
 msgid "Edit metadata"
 msgstr ""
 
-#: zeit/content/cp/browser/configure.zcml:7
+#: zeit/content/cp/browser/configure.zcml:8
 msgid "CenterPage"
 msgstr ""
 
@@ -3482,7 +3478,23 @@ msgstr ""
 msgid "long text (ZMO)"
 msgstr ""
 
-#: zeit/newsletter/browser/category.py:26
+#: zeit/newsletter/browser/category.py:25
+msgid "Middle ad"
+msgstr ""
+
+#: zeit/newsletter/browser/category.py:29
+msgid "Bottom ad"
+msgstr ""
+
+#: zeit/newsletter/browser/category.py:33
+msgid "General"
+msgstr ""
+
+#: zeit/newsletter/browser/category.py:36
+msgid "Optivo"
+msgstr ""
+
+#: zeit/newsletter/browser/category.py:44
 msgid "Newsletter metadata"
 msgstr ""
 
@@ -3596,11 +3608,12 @@ msgstr ""
 msgid "Middle ad title"
 msgstr ""
 
-#: zeit/newsletter/newsletter.py:136
+#: zeit/newsletter/newsletter.py:138
 msgid "Group"
 msgstr ""
 
-#: zeit/newsletter/newsletter.py:174
+#: zeit/newsletter/newsletter.py:202
+#: zeit/newsletter/newsletter.py:205
 msgid "Advertisement"
 msgstr ""
 

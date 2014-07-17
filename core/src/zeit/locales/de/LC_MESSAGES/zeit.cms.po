@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Jul 16 14:16:48 2014\n"
-"PO-Revision-Date: 2014-07-16 14:19+0100\n"
+"POT-Creation-Date: Thu Jul 17 11:46:54 2014\n"
+"PO-Revision-Date: 2014-07-17 11:48+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1734,7 +1734,7 @@ msgid "edit metadata"
 msgstr "Metadaten bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:391
-#: zeit/newsletter/newsletter.py:151
+#: zeit/newsletter/newsletter.py:153
 #: zeit/wysiwyg/browser/resources/pagebreak/dialog.pt:14
 msgid "Teaser"
 msgstr "Teaser"
@@ -2434,11 +2434,7 @@ msgstr "↑ Links | Rechts ↓"
 msgid "Display image at these positions"
 msgstr "Bild anzeigen bei"
 
-#: zeit/content/cp/browser/configure.zcml:210
-msgid "Automatic contents"
-msgstr "Automatische Bestückung"
-
-#: zeit/content/cp/browser/configure.zcml:24
+#: zeit/content/cp/browser/configure.zcml:25
 #: zeit/content/gallery/browser/configure.zcml:56
 #: zeit/content/image/browser/configure.zcml:201
 #: zeit/content/link/browser/configure.zcml:32
@@ -2446,17 +2442,17 @@ msgstr "Automatische Bestückung"
 msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
-#: zeit/content/cp/browser/configure.zcml:40
+#: zeit/content/cp/browser/configure.zcml:41
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/image/browser/configure.zcml:217
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/quiz/browser/configure.zcml:38
 #: zeit/magazin/browser/configure.zcml:65
-#: zeit/newsletter/browser/category.py:31
+#: zeit/newsletter/browser/category.py:49
 msgid "Edit metadata"
 msgstr "Metadaten bearbeiten"
 
-#: zeit/content/cp/browser/configure.zcml:7
+#: zeit/content/cp/browser/configure.zcml:8
 msgid "CenterPage"
 msgstr "Center-Page"
 
@@ -2539,7 +2535,6 @@ msgid "automatic"
 msgstr "Automatik aktivieren"
 
 #: zeit/content/cp/interfaces.py:152
-#, fuzzy
 msgid "Amount of teasers"
 msgstr "Anzahl Teaser"
 
@@ -3447,7 +3442,23 @@ msgstr "Next-Read Layout"
 msgid "long text (ZMO)"
 msgstr "langer Text - ZEITmagazin ONLINE"
 
-#: zeit/newsletter/browser/category.py:26
+#: zeit/newsletter/browser/category.py:25
+msgid "Middle ad"
+msgstr "Werbeblock Mitte"
+
+#: zeit/newsletter/browser/category.py:29
+msgid "Bottom ad"
+msgstr "Werbeblock Ende"
+
+#: zeit/newsletter/browser/category.py:33
+msgid "General"
+msgstr "Allgemein"
+
+#: zeit/newsletter/browser/category.py:36
+msgid "Optivo"
+msgstr "Optivo"
+
+#: zeit/newsletter/browser/category.py:44
 msgid "Newsletter metadata"
 msgstr "Metadaten Newsletter"
 
@@ -3481,27 +3492,27 @@ msgstr "Newsletter-Kategorie"
 
 #: zeit/newsletter/interfaces.py:100
 msgid "Middle ad text"
-msgstr "Werbeblock Mitte Text"
+msgstr "Text"
 
 #: zeit/newsletter/interfaces.py:103
 msgid "Middle ad image"
-msgstr "Werbeblock Mitte Bild"
+msgstr "Bild"
 
 #: zeit/newsletter/interfaces.py:107
 msgid "Bottom ad target URL"
-msgstr "Werbeblock Ende URL"
+msgstr "URL"
 
 #: zeit/newsletter/interfaces.py:109
 msgid "Bottom ad title"
-msgstr "Werbeblock Ende Titel"
+msgstr "Titel"
 
 #: zeit/newsletter/interfaces.py:111
 msgid "Bottom ad text"
-msgstr "Werbeblock Ende Text"
+msgstr "Text"
 
 #: zeit/newsletter/interfaces.py:114
 msgid "Bottom ad image"
-msgstr "Werbeblock Ende Bild"
+msgstr "Bild"
 
 #: zeit/newsletter/interfaces.py:142
 msgid "Sent"
@@ -3554,17 +3565,17 @@ msgstr "Position Werbeblock Mitte (nach wieviel Ressorts)"
 
 #: zeit/newsletter/interfaces.py:96
 msgid "Middle ad target URL"
-msgstr "Werbeblock Mitte URL"
+msgstr "URL"
 
 #: zeit/newsletter/interfaces.py:98
 msgid "Middle ad title"
-msgstr "Werbeblock Mitte Titel"
+msgstr "Titel"
 
-#: zeit/newsletter/newsletter.py:136
+#: zeit/newsletter/newsletter.py:138
 msgid "Group"
 msgstr "Ressort"
 
-#: zeit/newsletter/newsletter.py:174
+#: zeit/newsletter/newsletter.py:202 zeit/newsletter/newsletter.py:205
 msgid "Advertisement"
 msgstr "Werbung"
 
@@ -3916,6 +3927,9 @@ msgstr "mit Info"
 #: zeit/wysiwyg/browser/resources/reference/image.pt:32
 msgid "large"
 msgstr "vollbreit"
+
+#~ msgid "Automatic contents"
+#~ msgstr "Automatische Bestückung"
 
 #~ msgid "Additional Facebook"
 #~ msgstr "zusätzlicher Facebook-Account:"
