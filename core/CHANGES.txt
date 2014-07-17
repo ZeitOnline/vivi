@@ -6,6 +6,8 @@ zeit.seo changes
 
 - Add character counter to form fields.
 
+- Move browser code to subpackage.
+
 
 1.5.0 (2014-05-09)
 ------------------
