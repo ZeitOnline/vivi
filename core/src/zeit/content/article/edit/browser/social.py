@@ -44,6 +44,12 @@ class Social(zeit.edit.browser.form.InlineForm,
     )
 
     def setUpWidgets(self, *args, **kw):
+        # Needs to be WRITEABLE_LIVE for zeit.push internals, but
+        # should not be writeable through the UI while checked in.
+        if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(
+                self.context):
+            self.form_fields['enabled'].for_display = True
+
         super(Social, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
 
