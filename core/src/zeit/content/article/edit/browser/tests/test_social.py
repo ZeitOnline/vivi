@@ -97,6 +97,23 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(
             ['Wissen'], b.getControl('Additional Twitter').displayValue)
 
+    def test_checkbox_is_only_editable_while_checked_out(self):
+        self.open_form()
+        b = self.browser
+        # Assert nothing raised
+        b.getControl('Push after next publish?').selected = True
+
+        b.open('@@checkin')
+        b.open('@@edit.form.social?show_form=1')
+        with self.assertRaises(AttributeError) as err:
+            b.getControl('Push after next publish?').selected = True
+        self.assertEqual('item is disabled', err.exception.message)
+
+        b.open('@@checkout')
+        b.open('@@edit.form.social?show_form=1')
+        # Assert nothing raised
+        b.getControl('Push after next publish?').selected = True
+
 
 class TwitterShorteningTest(
         zeit.content.article.edit.browser.testing.EditorTestCase):

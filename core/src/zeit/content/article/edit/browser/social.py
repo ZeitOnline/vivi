@@ -30,18 +30,21 @@ class Social(zeit.edit.browser.form.InlineForm,
     legend = _('')
     prefix = 'social'
     undo_description = _('edit social media')
-    form_fields = (
-        FormFields(
-            zeit.push.interfaces.IPushMessages).select('long_text')
-        + FormFields(
-            IAccounts).select('facebook', 'facebook_magazin')
-        + FormFields(
-            zeit.push.interfaces.IPushMessages).select('short_text')
-        + FormFields(
-            IAccounts).select('twitter', 'twitter_ressort')
-        + FormFields(
-            zeit.push.interfaces.IPushMessages).select('enabled')
-    )
+
+    def __init__(self, *args, **kw):
+        super(Social, self).__init__(*args, **kw)
+        self.form_fields = (
+            FormFields(
+                zeit.push.interfaces.IPushMessages).select('long_text')
+            + FormFields(
+                IAccounts).select('facebook', 'facebook_magazin')
+            + FormFields(
+                zeit.push.interfaces.IPushMessages).select('short_text')
+            + FormFields(
+                IAccounts).select('twitter', 'twitter_ressort')
+            + FormFields(
+                zeit.push.interfaces.IPushMessages).select('enabled')
+        )
 
     def setUpWidgets(self, *args, **kw):
         # Needs to be WRITEABLE_LIVE for zeit.push internals, but
