@@ -25,7 +25,8 @@ zeit.cms.normalize_filename = function(filename) {
 
 
 $(document).ready(function() {
-    $('#form\\.__name__').bind('change', function() {
+    $('form:not([action$="zeit.content.link.Add"]) #form\\.__name__').bind(
+        'change', function() {
         var input = $(this);
         input.val(zeit.cms.normalize_filename(input.val()));
     });
