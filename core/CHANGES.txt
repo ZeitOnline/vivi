@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.3.5 (unreleased)
+2.4.0 (2014-07-17)
 ------------------
 
 - Introduce automatic regions that only store a solr query and fill in the
