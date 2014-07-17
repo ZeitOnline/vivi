@@ -149,19 +149,23 @@ class AdvertisementTest(zeit.newsletter.testing.SeleniumTestCase):
 
     def setUp(self):
         from zeit.newsletter.newsletter import Newsletter
+        from zeit.newsletter.category import NewsletterCategory
         super(AdvertisementTest, self).setUp()
         with zeit.cms.testing.site(self.getRootFolder()):
-            newsletter = Newsletter()
-            factory = zope.component.getAdapter(
-                newsletter.body, zeit.edit.interfaces.IElementFactory,
-                name='advertisement')
-            advertisement = factory()
-            advertisement.title = u'Some ad'
-            advertisement.image = zeit.cms.interfaces.ICMSContent(
+            category = NewsletterCategory()
+            category.ad_middle_title = u'Some ad'
+            category.ad_middle_groups_above = 0
+            category.ad_middle_image = zeit.cms.interfaces.ICMSContent(
                 'http://xml.zeit.de/2006/DSC00109_2.JPG')
-            self.repository['newsletter'] = newsletter
+            self.repository['newsletter'] = category
+            newsletter = Newsletter()
+            ad_factory = zope.component.getAdapter(
+                newsletter.body, zeit.edit.interfaces.IElementFactory,
+                name='advertisement-middle')
+            ad_factory()
+            self.repository['newsletter']['one'] = newsletter
         transaction.commit()
-        self.open('/repository/newsletter/@@checkout')
+        self.open('/repository/newsletter/one/@@checkout')
 
     def test_advertisement_is_wired_correctly(self):
         s = self.selenium

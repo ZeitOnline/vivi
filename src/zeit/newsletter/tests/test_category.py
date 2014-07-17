@@ -1,9 +1,10 @@
 # Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.checkout.helper import checked_out
+from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.newsletter.category import NewsletterCategory
 from zeit.newsletter.newsletter import Newsletter
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import datetime
 import mock
 import pytz
@@ -118,7 +119,7 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.category.subject = 'nosubject'
         self.category.ad_middle_groups_above = self.MIDDLE_AD_GROUPS_ABOVE
         self.repository['mynl'] = self.category
-        self.newsletter = Newsletter()
+        self.newsletter = self.repository['mynl']['newsletter'] = Newsletter()
         self.builder = zeit.newsletter.category.Builder(
             self.category, self.newsletter)
 
@@ -189,19 +190,21 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual('Video 2', video_group.values()[1].reference.title)
 
     def test_middle_advertisement_should_be_inserted(self):
+        with checked_out(self.category) as co:
+            co.ad_middle_title = u'Some ad'
         c1 = self.create_content('c1', u'Politik')
         c2 = self.create_content('c2', u'Wirtschaft')
-        self.category.ad_middle_title = u'Some ad'
         self.builder((c1, c2))
         body = self.newsletter['newsletter_body']
         advertisement = body[self.MIDDLE_AD_GROUPS_ABOVE]
-        self.assertEqual('advertisement', advertisement.type)
+        self.assertEqual('advertisement-middle', advertisement.type)
         self.assertEqual(u'Some ad', advertisement.title)
 
     def test_bottom_advertisement_should_be_appended(self):
-        self.category.ad_bottom_title = u'Some ad'
+        with checked_out(self.category) as co:
+            co.ad_bottom_title = u'Some ad'
         self.builder(())
         body = self.newsletter['newsletter_body']
         advertisement = body[self.BOTTOM_AD_POSITION]
-        self.assertEqual('advertisement', advertisement.type)
+        self.assertEqual('advertisement-bottom', advertisement.type)
         self.assertEqual(u'Some ad', advertisement.title)

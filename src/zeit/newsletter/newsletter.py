@@ -79,6 +79,8 @@ class NewsletterType(zeit.cms.type.XMLContentTypeDeclaration):
 @grok.adapter(zeit.newsletter.interfaces.INewsletter)
 @grok.implementer(zeit.newsletter.interfaces.INewsletterCategory)
 def category_for_newsletter(context):
+    if zeit.cms.checkout.interfaces.ILocalContent.providedBy(context):
+        context = zeit.cms.interfaces.ICMSContent(context.uniqueId)
     candidate = context.__parent__
     while candidate:
         if zeit.newsletter.interfaces.INewsletterCategory.providedBy(
@@ -151,27 +153,56 @@ zeit.edit.block.register_element_factory(
     zeit.newsletter.interfaces.IGroup, 'teaser', _('Teaser'))
 
 
-class Advertisement(zeit.edit.block.SimpleElement):
+class AdvertisementBase(object):
 
     area = zeit.newsletter.interfaces.IBody
+    type = NotImplemented
+
+    @property
+    def category(self):
+        nl = zeit.newsletter.interfaces.INewsletter(self)
+        return zeit.newsletter.interfaces.INewsletterCategory(nl)
+
+    @property
+    def position(self):
+        return self.type.replace('advertisement-', '')
+
+    @property
+    def href(self):
+        return getattr(self.category, 'ad_%s_href' % self.position)
+
+    @property
+    def title(self):
+        return getattr(self.category, 'ad_%s_title' % self.position)
+
+    @property
+    def text(self):
+        return getattr(self.category, 'ad_%s_text' % self.position)
+
+    @property
+    def image(self):
+        return getattr(self.category, 'ad_%s_image' % self.position)
+
+
+class MiddleAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
+
+    # XXX Putting implements on AdvertisementBase breaks during grokking, why?
     grok.implements(zeit.newsletter.interfaces.IAdvertisement)
-    type = 'advertisement'
+    type = 'advertisement-middle'
 
-    href = zeit.cms.content.property.ObjectPathProperty(
-        '.href', zeit.newsletter.interfaces.IAdvertisement['href'])
 
-    title = zeit.cms.content.property.ObjectPathProperty(
-        '.title', zeit.newsletter.interfaces.IAdvertisement['title'])
+class BottomAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
 
-    text = zeit.cms.content.property.ObjectPathProperty(
-        '.text', zeit.newsletter.interfaces.IAdvertisement['text'])
-
-    image = zeit.cms.content.property.SingleResource(
-        '.image', xml_reference_name='image', attributes=('src',))
+    grok.implements(zeit.newsletter.interfaces.IAdvertisement)
+    type = 'advertisement-bottom'
 
 
 zeit.edit.block.register_element_factory(
-    zeit.newsletter.interfaces.IBody, 'advertisement', _('Advertisement'))
+    zeit.newsletter.interfaces.IBody, 'advertisement-middle',
+    _('Advertisement'))
+zeit.edit.block.register_element_factory(
+    zeit.newsletter.interfaces.IBody, 'advertisement-bottom',
+    _('Advertisement'))
 
 
 @grok.adapter(zeit.edit.interfaces.IElement)

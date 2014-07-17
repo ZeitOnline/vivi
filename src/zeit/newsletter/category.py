@@ -177,19 +177,9 @@ class Builder(grok.MultiAdapter):
                 self.create_teaser(group, content)
             groups_above += 1
             if groups_above == self.category.ad_middle_groups_above:
-                self.create_advertisement(
-                    self.category.ad_middle_href,
-                    self.category.ad_middle_title,
-                    self.category.ad_middle_text,
-                    self.category.ad_middle_image,
-                )
+                self.create_advertisement('middle')
         self.create_video_group()
-        self.create_advertisement(
-            self.category.ad_bottom_href,
-            self.category.ad_bottom_title,
-            self.category.ad_bottom_text,
-            self.category.ad_bottom_image,
-        )
+        self.create_advertisement('bottom')
 
     def _group_by_ressort(self, content_list, accept_ressorts):
         groups = {}
@@ -214,14 +204,11 @@ class Builder(grok.MultiAdapter):
         for video in playlist.videos:
             self.create_teaser(group, video)
 
-    def create_advertisement(self, href, title, text, image):
-        ad = zope.component.getAdapter(
+    def create_advertisement(self, position):
+        zope.component.getAdapter(
             self.context.body,
-            zeit.edit.interfaces.IElementFactory, name='advertisement')()
-        ad.href = href
-        ad.title = title
-        ad.text = text
-        ad.image = image
+            zeit.edit.interfaces.IElementFactory,
+            name='advertisement-%s' % position)()
 
 
 @grok.adapter(
