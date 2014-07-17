@@ -2,6 +2,7 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   xmlns:gocept="http://namespaces.gocept.com/zcml"
+  xmlns:zcml="http://namespaces.zope.org/zcml"
   i18n_domain="zeit.cms">
 
   <browser:page
@@ -213,7 +214,16 @@
     name="automatic.html"
     class=".automatic.Edit"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Automatic contents"
+    />
+
+  <browser:menuItem
+    zcml:condition="have zeit.content.cp.automatic"
+    for="..interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    menu="zeit-context-views"
+    title="Automatic contents"
+    action="@@automatic.html"
+    permission="zeit.EditContent"
     />
 
 </configure>
