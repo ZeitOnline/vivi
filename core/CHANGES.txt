@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.6.10 (unreleased)
+2.6.10 (2014-07-17)
 -------------------
 
 - Normalize image filenames during bulk upload (VIV-409).
