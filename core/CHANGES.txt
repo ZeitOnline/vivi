@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.4.1 (unreleased)
+1.4.1 (2014-07-17)
 ------------------
 
 - When a banner file is already checked out (by the same or another user),
