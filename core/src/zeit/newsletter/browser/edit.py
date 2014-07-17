@@ -87,3 +87,9 @@ class GroupTitle(zeit.edit.browser.form.InlineForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.newsletter.interfaces.IGroup).select('title')
+
+
+class Empty(object):
+
+    def render(self):
+        return u''

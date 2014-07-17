@@ -1,8 +1,8 @@
 .newsletter-ad {
     padding-top: 20px;
     background: #ECF5FC;
-    border-top: 1px solid #cccccc;
-    border-bottom: 1px solid #cccccc;
+    /* This causes vertical expansion so it envelops the floating image */
+    overflow: hidden;
 }
 
 .newsletter-ad-label {
