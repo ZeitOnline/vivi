@@ -1,7 +1,7 @@
 zeit.seo changes
 ================
 
-1.6.0 (unreleased)
+1.6.0 (2014-07-17)
 ------------------
 
 - Add character counter to form fields.
