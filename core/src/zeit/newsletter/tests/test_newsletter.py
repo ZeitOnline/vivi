@@ -14,7 +14,8 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
 
     def test_block_factories_are_wired_up_correctly(self):
         from zeit.newsletter.newsletter import (
-            Newsletter, Group, Teaser, Advertisement)
+            Newsletter, Group, Teaser, MiddleAdvertisement, BottomAdvertisement
+        )
         newsletter = Newsletter()
         body = newsletter['newsletter_body']
         self.assertEqual([], body.keys())
@@ -32,10 +33,16 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
         self.assertIsInstance(teaser, Teaser)
 
         factory = zope.component.getAdapter(
-            body, zeit.edit.interfaces.IElementFactory, name='advertisement')
+            body, zeit.edit.interfaces.IElementFactory,
+            name='advertisement-middle')
         advertisement = factory()
-        advertisement.title = u'Some ad'
-        self.assertIsInstance(advertisement, Advertisement)
+        self.assertIsInstance(advertisement, MiddleAdvertisement)
+
+        factory = zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory,
+            name='advertisement-bottom')
+        advertisement = factory()
+        self.assertIsInstance(advertisement, BottomAdvertisement)
 
         xml = lxml.etree.tostring(newsletter.xml, pretty_print=True)
         self.assert_ellipsis("""\
@@ -45,9 +52,8 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
     <region cp:type="group"...>
       <container cp:type="teaser"...>
     </region>
-    <container cp:type="advertisement"...>
-      <title>Some ad</title>
-    </container>
+    <container cp:type="advertisement-middle".../>
+    <container cp:type="advertisement-bottom".../>
   </body>
 </newsletter>
 """, xml)

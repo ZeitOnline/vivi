@@ -4,7 +4,8 @@ zeit.newsletter changes
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Don't copy advertisement properties to the Newsletter, but always read it
+  from the Category (VIV-414).
 
 
 1.0.0 (2014-06-05)
