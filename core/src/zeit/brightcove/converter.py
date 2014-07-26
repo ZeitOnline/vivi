@@ -394,7 +394,7 @@ class Video(Converter):
             video).related
         date_last_modified = \
             zeit.cms.content.interfaces.ISemanticChange(
-            video).last_semantic_change
+                video).last_semantic_change
         if date_last_modified is not None:
             instance.date_last_modified = date_last_modified
         try:
