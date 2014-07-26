@@ -144,7 +144,7 @@ class PublicationDependencies(zeit.cms.testing.FunctionalTestCase):
         content = [self.repository['testcontent']] + self.related
         for i in range(3):
             with checked_out(content[i]) as co:
-                IRelatedContent(co).related = tuple([content[i+1]])
+                IRelatedContent(co).related = tuple([content[i + 1]])
 
         BEFORE_PUBLISH = datetime.now(pytz.UTC)
         self.publish(content[0])

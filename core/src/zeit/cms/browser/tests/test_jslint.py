@@ -10,4 +10,4 @@ class JSLintTest(zeit.cms.testing.JSLintTestCase):
     exclude = (
         'MochiKit.js',
         'json-template.js',
-        )
+    )

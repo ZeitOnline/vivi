@@ -9,4 +9,4 @@ def test_suite():
     return zeit.cms.testing.FunctionalDocFileSuite(
         'checkin.txt',
         layer=zeit.ghost.tests.GhostLayer,
-        )
+    )

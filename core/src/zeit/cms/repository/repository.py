@@ -36,7 +36,7 @@ class Container(zope.container.contained.Contained):
 
     uniqueId = None
     _local_unique_map_data = gocept.cache.property.TransactionBoundCache(
-            '_v_local_unique_map', dict)
+        '_v_local_unique_map', dict)
 
     # Container interface
 

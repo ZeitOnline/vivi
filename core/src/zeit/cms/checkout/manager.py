@@ -217,7 +217,7 @@ def deleteNewContentFromRepositoryOnWorkingcopyDelete(context, event):
 
     """
     renameable = zeit.cms.repository.interfaces.IAutomaticallyRenameable(
-            context, None)
+        context, None)
     if renameable is None or not renameable.renameable:
         return
     content = zeit.cms.interfaces.ICMSContent(context.uniqueId, None)

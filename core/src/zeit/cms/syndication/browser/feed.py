@@ -289,7 +289,8 @@ class RememberSyndicationTargetMenuItem(zeit.cms.browser.menu.ActionMenuItem):
     title = _('Remember as syndication target')
 
     def render(self):
-        view = zope.component.getMultiAdapter((self.context, self.request),
+        view = zope.component.getMultiAdapter(
+            (self.context, self.request),
             name='remove-from-my-syndication-targets.html')
         if view.in_targets:
             return ''
@@ -304,7 +305,8 @@ class RemoveFromMySyndicationTargetsMenuItem(
     title = _('Remove from my syndication targets')
 
     def render(self):
-        view = zope.component.getMultiAdapter((self.context, self.request),
+        view = zope.component.getMultiAdapter(
+            (self.context, self.request),
             name='remove-from-my-syndication-targets.html')
         if not view.in_targets:
             return ''

@@ -12,6 +12,7 @@ TWITTER = u"""\
 </raw>
 """
 
+
 class TestObjectifySoup(unittest.TestCase):
 
     def test_should_parse_youtube_embed_code(self):

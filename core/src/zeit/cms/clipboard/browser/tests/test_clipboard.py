@@ -21,8 +21,7 @@ class ClipboardTest(zeit.cms.testing.ZeitCmsTestCase):
         folder = self.clipboard.addClip('Favoriten')
         self.repository['test'] = TestContentType()
         content = self.repository['test']
-        self.clipboard.addContent(folder, content, 'testname',
-            insert=True)
+        self.clipboard.addContent(folder, content, 'testname', insert=True)
         clip = list(folder.values())[0]
         self.assertEqual('testcontenttype', self.view.getType(clip))
 

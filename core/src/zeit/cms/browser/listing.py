@@ -68,6 +68,7 @@ class BaseListRepresentation(object):
         if type_decl:
             return type_decl.type_identifier
 
+
 class CommonListRepresentation(BaseListRepresentation):
     """Common properties of list representations."""
 

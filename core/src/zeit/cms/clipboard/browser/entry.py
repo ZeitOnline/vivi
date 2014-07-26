@@ -1,15 +1,13 @@
 # Copyright (c) 2007-2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
+import zeit.cms.browser.interfaces
+import zeit.cms.clipboard.interfaces
 import zope.component
 import zope.i18n
 import zope.interface
 import zope.publisher.interfaces
-
-import zeit.cms.browser.interfaces
-from  zeit.cms.i18n import MessageFactory as _
-
-import zeit.cms.clipboard.interfaces
 
 
 class Entry(object):

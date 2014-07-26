@@ -107,7 +107,7 @@ class ReferenceProperty(object):
             raise ValueError(
                 ("Could not create XML reference type '%s' for %s "
                  "(referenced by %s).") % (
-                xml_reference_name, target.uniqueId, source.uniqueId))
+                     xml_reference_name, target.uniqueId, source.uniqueId))
         reference = zope.component.queryMultiAdapter(
             (source, element), zeit.cms.content.interfaces.IReference,
             name=xml_reference_name)

@@ -29,9 +29,9 @@ def checked_out(content, events=True, semantic_change=None,
     manager = zeit.cms.checkout.interfaces.ICheckoutManager(content)
     try:
         checked_out = manager.checkout(temporary=temporary, event=events)
-    except zeit.cms.checkout.interfaces.CheckinCheckoutError, e:
+    except zeit.cms.checkout.interfaces.CheckinCheckoutError:
         log.warning("Could not checkout %s." %
-                       content.uniqueId, exc_info=True)
+                    content.uniqueId, exc_info=True)
         yield None
     else:
         try:

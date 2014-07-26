@@ -17,5 +17,5 @@ def test_suite():
         'modified.txt',
         'status.txt',
         package='zeit.cms.workflow',
-        ))
+    ))
     return suite

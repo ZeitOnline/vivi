@@ -26,7 +26,7 @@ class FileListRepresentation(zeit.cms.browser.listing.BaseListRepresentation):
     zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
 
     author = title = subtitle = byline = ressort = volume = page = year = \
-            searchableText = None
+        searchableText = None
 
 
 class FileView(object):

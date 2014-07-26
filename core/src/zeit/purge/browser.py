@@ -24,7 +24,7 @@ class Purge(grokcore.view.View,
                 _('Error while purging ${server}: ${message}',
                   mapping=dict(server=e.server,
                                message=e.message)),
-            type='error')
+                type='error')
         else:
             self.send_message(_('Purged ${id}', mapping=dict(
                 id=self.context.uniqueId)))

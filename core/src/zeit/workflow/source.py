@@ -30,7 +30,7 @@ class _NotNecessary(object):
 NotNecessary = _NotNecessary()
 # Make it a rock
 zope.security.checker.BasicTypes[_NotNecessary] = (
-        zope.security.checker.NoProxy)
+    zope.security.checker.NoProxy)
 
 
 @zope.component.adapter(_NotNecessary)

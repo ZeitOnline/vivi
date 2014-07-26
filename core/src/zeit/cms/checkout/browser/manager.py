@@ -181,8 +181,8 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
 class CheckinConflictErrorInformation(zope.formlib.form.SubPageDisplayForm):
 
     form_fields = zope.formlib.form.FormFields(
-            zeit.cms.workflow.interfaces.IModified,
-            zeit.cms.content.interfaces.ISemanticChange)
+        zeit.cms.workflow.interfaces.IModified,
+        zeit.cms.content.interfaces.ISemanticChange)
 
 
 class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
@@ -234,4 +234,4 @@ class NonSemanticChangeCheckinMenuItem(CheckinMenuItem):
     @property
     def action(self):
         action = super(NonSemanticChangeCheckinMenuItem, self).action
-        return action+'&semantic_change='
+        return action + '&semantic_change='

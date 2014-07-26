@@ -38,10 +38,9 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
             url = self.cms_url(ressort_id)
             if url:
                 result.append(dict(
-                        title=context.ressort,
-                        url=url,
-                        uniqueId=None,
-                        ))
+                    title=context.ressort,
+                    url=url,
+                    uniqueId=None))
 
         if context.sub_ressort:
             sub_ressort_id = '%s/%s' % (
@@ -49,10 +48,9 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
             url = self.cms_url(sub_ressort_id)
             if url:
                 result.append(dict(
-                        title=context.sub_ressort,
-                        url=url,
-                        uniqueId=None,
-                        ))
+                    title=context.sub_ressort,
+                    url=url,
+                    uniqueId=None))
 
         name = self.content_name(context)
         url = self.url(context)
@@ -60,8 +58,7 @@ class Breadcrumbs(zeit.cms.browser.view.Base):
         result.append(dict(
             title=name,
             url=url,
-            uniqueId=unique_id,
-            ))
+            uniqueId=unique_id))
 
         return result
 

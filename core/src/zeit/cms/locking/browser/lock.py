@@ -34,7 +34,6 @@ class Lock(zeit.cms.browser.lightbox.Form):
         lockable = self.lockable
         lockinfo = lockable.getLockInfo()
         locked_until = None
-        created = None
 
         if zeit.cms.locking.interfaces.ILockInfo.providedBy(lockinfo):
             locked_until = lockinfo.locked_until
@@ -45,8 +44,7 @@ class Lock(zeit.cms.browser.lightbox.Form):
             locked_until=locked_until,
         )
 
-    @zope.formlib.form.action(_('Steal lock'),
-                              condition=_stealable)
+    @zope.formlib.form.action(_('Steal lock'), condition=_stealable)
     def steal(self, action, data):
         old_locker = self.lockable.locker()
         self.lockable.breaklock()
@@ -57,16 +55,14 @@ class Lock(zeit.cms.browser.lightbox.Form):
                   name=self.context.__name__,
                   old_locker=old_locker)))
 
-    @zope.formlib.form.action(_('Lock'),
-                             condition=_lockable)
+    @zope.formlib.form.action(_('Lock'), condition=_lockable)
     def lock(self, action, data):
         self.lockable.lock()
         self.send_message(
             _('"${name}" has been locked.',
               mapping=dict(name=self.context.__name__)))
 
-    @zope.formlib.form.action(_('Unlock'),
-                             condition=_unlockable)
+    @zope.formlib.form.action(_('Unlock'), condition=_unlockable)
     def unlock(self, action, data):
         self.lockable.unlock()
         self.send_message(

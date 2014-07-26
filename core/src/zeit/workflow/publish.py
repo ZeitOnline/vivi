@@ -139,8 +139,8 @@ active_objects_lock = threading.Lock()
 class PublishRetractTask(object):
 
     zope.interface.implements(lovely.remotetask.interfaces.ITask)
-    #inputSchema = zope.schema.Object()  # XXX
-    #outputSchema = None or an error message
+    # inputSchema = zope.schema.Object()  # XXX
+    # outputSchema = None or an error message
 
     def __call__(self, service, jobid, input):
         info = (type(self).__name__, input.uniqueId, jobid)

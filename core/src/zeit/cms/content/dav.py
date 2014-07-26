@@ -340,12 +340,12 @@ class CollectionTextLineProperty(object):
         start = 0
         while value:
             found = value.find(';', start)
-            if found > 0 and value[found-1] == '\\':
+            if found > 0 and value[found - 1] == '\\':
                 start = found + 1
                 continue
             if found > 0:
                 item = value[:found]
-                value = value[found+1:]
+                value = value[found + 1:]
             else:
                 item = value
                 value = ''

@@ -200,7 +200,7 @@ class ValidateCheckinEvent(EventBase):
         self.vetoed = None
 
     def veto(self, message=None):
-        if message == None:
+        if message is None:
             message = _('not allowed')
         self.vetoed = message
 
