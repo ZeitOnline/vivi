@@ -87,7 +87,7 @@ class HTMLConverter(object):
 
     def _steps(self, direction):
         steps = [adapter for name, adapter in zope.component.getAdapters(
-                (self.context, self), zeit.wysiwyg.interfaces.IConversionStep)]
+            (self.context, self), zeit.wysiwyg.interfaces.IConversionStep)]
         steps = sorted(steps, key=lambda x: getattr(x, 'order_' + direction))
         return steps
 
@@ -162,7 +162,7 @@ class HTMLConverter(object):
             if entity_name in ('gt', 'lt', 'quot', 'amp', 'apos'):
                 # don't replace XML built-in entities
                 continue
-            value = value.replace('&'+entity_name+';', unichr(codepoint))
+            value = value.replace('&' + entity_name + ';', unichr(codepoint))
         return value
 
 
@@ -362,7 +362,7 @@ class NestedParagraphsStep(ConversionStep):
         p_nodes = node.xpath('p')
         parent_index = node.getparent().index(node)
         for i, insert in enumerate(p_nodes):
-            node.getparent().insert(parent_index+i+1, insert)
+            node.getparent().insert(parent_index + i + 1, insert)
         if p_nodes:
             node.getparent().remove(node)
 
@@ -509,7 +509,7 @@ class URLStep(ConversionStep):
         repository_url = self.url(self.repository)
         if not url.startswith(repository_url):
             return url
-        path = url[len(repository_url)+1:]
+        path = url[len(repository_url) + 1:]
         obj = zope.traversing.interfaces.ITraverser(self.repository).traverse(
             path, None)
         if not zeit.cms.interfaces.ICMSContent.providedBy(obj):

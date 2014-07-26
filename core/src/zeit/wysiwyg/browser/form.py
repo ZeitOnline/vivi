@@ -18,7 +18,6 @@ class EditForm(zeit.cms.browser.form.EditForm):
         zeit.wysiwyg.interfaces.IHTMLContent,
         render_context=True)
 
-
     @property
     def metadata(self):
         return zeit.cms.content.interfaces.ICommonMetadata(self.context)
