@@ -126,4 +126,3 @@ class TestRenditionsProperty(unittest.TestCase):
         video.xml.head.renditions = node
         self.assertEqual('foo', video.renditions[0].url)
         self.assertEqual(100, video.renditions[0].frame_width)
-
