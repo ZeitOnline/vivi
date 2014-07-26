@@ -85,7 +85,7 @@ class VideoXMLReferenceUpdater(grokcore.component.Adapter):
             node.remove(still_node)
         if self.context.video_still:
             node.append(getattr(lxml.objectify.E, 'video-still')(
-                    src=self.context.video_still))
+                src=self.context.video_still))
 
         thumbnail_node = node.find('thumbnail')
         if thumbnail_node is not None:

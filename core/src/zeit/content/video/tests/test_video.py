@@ -62,7 +62,7 @@ class TestReference(zeit.content.video.testing.TestCase):
         self.update(self.node)
         self.assertEqual(
             'http://thumbnailurl', self.node['thumbnail'].get('src'))
-    
+
     def test_nodes_should_be_removed_from_reference(self):
         self.create_video(
             video_still='http://stillurl', thumbnail='http://thumbnailurl')
@@ -77,15 +77,13 @@ class TestReference(zeit.content.video.testing.TestCase):
 
 
 class TestRenditionsProperty(unittest.TestCase):
-    
+
     def test_element_factory_should_return_rendition(self):
         import mock
         from zeit.content.video.video import RenditionsProperty
-        from zeit.content.video.video import VideoRendition        
         prop = RenditionsProperty(".foo")
-        
-        node = lxml.objectify.XML("<rendition url='foo' frame_width='100' />")  
-        
+
+        node = lxml.objectify.XML("<rendition url='foo' frame_width='100' />")
         rendition = prop._element_factory(node, mock.sentinel.tree)
         self.assertEqual(node.get('url'), rendition.url)
         self.assertEqual(int(node.get('frame_width')), rendition.frame_width)
@@ -104,8 +102,8 @@ class TestRenditionsProperty(unittest.TestCase):
 
     def test_video_should_store_renditions(self):
         from zeit.content.video.video import Video
-        from zeit.content.video.video import VideoRendition        
-        
+        from zeit.content.video.video import VideoRendition
+
         video = Video()
         rendition = VideoRendition()
         rendition.url = 'foo'
@@ -113,24 +111,19 @@ class TestRenditionsProperty(unittest.TestCase):
         rendition2 = VideoRendition()
         rendition2.url = 'baa'
         rendition2.frame_width = 200
-        video.renditions = (rendition,rendition2)
+        video.renditions = (rendition, rendition2)
 
-        xmlstr = lxml.etree.tostring(video.xml.head.renditions, pretty_print=True)
-        self.assertEqual('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100"/>\n  <rendition url="baa" frame_width="200"/>\n</renditions>\n',xmlstr)
+        xmlstr = lxml.etree.tostring(
+            video.xml.head.renditions, pretty_print=True)
+        self.assertEqual('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100"/>\n  <rendition url="baa" frame_width="200"/>\n</renditions>\n', xmlstr)
 
     def test_video_should_load_renditions(self):
         from zeit.content.video.video import Video
-        from zeit.content.video.video import VideoRendition        
-        
+
         node = lxml.objectify.XML('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100"/>\n  <rendition url="baa" frame_width="200"/>\n</renditions>\n')
-        
+
         video = Video()
         video.xml.head.renditions = node
         self.assertEqual('foo', video.renditions[0].url)
         self.assertEqual(100, video.renditions[0].frame_width)
-
-
-
-
-
 
