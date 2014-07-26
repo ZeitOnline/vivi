@@ -82,8 +82,7 @@ class VideoStepTest(zeit.wysiwyg.testing.WYSIWYGTestCase):
     <video href2="" href="" expires="2011-01-03T06:00:00+01:00" format="large"/>
   </body>
 </article>
-""",
-            lxml.etree.tostring(article.xml, pretty_print=True))
+""", lxml.etree.tostring(article.xml, pretty_print=True))
 
 
 class TopLevelTest(zeit.wysiwyg.testing.WYSIWYGTestCase):

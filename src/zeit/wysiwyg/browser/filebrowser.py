@@ -69,10 +69,9 @@ class FileBrowser(zeit.cms.browser.view.Base,
                 id=name,
                 title=title,
                 uniqueId=unique_id,
-                id_and_title = id_and_title)
+                id_and_title=id_and_title)
 
     def get_list_repr(self, obj):
         return zope.component.queryMultiAdapter(
             (obj, self.request),
             zeit.cms.browser.interfaces.IListRepresentation)
-
