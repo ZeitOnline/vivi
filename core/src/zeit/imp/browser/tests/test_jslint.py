@@ -10,4 +10,4 @@ class JSLintTest(zeit.cms.testing.JSLintTestCase):
     exclude = ('ui4w.js',)
     predefined = zeit.cms.testing.JSLintTestCase.predefined + (
         'UI',
-        )
+    )

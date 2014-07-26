@@ -34,6 +34,7 @@ class ICropper(zope.interface.Interface):
 
         """
 
+
 class IStorer(zope.interface.Interface):
 
     def store(name, pil_image):
@@ -46,6 +47,7 @@ class IStorer(zope.interface.Interface):
         returns image
 
         """
+
 
 class IPossibleScale(zope.interface.Interface):
 

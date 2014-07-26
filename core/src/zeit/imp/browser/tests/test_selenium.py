@@ -44,13 +44,13 @@ class SeleniumBasicTests(Selenium):
     def test_crop_mask(self):
         s = self.selenium
 
-        #s.comment('After clicking on the mask choice the image is loaded')
+        # s.comment('After clicking on the mask choice the image is loaded')
         self.click_label(u"450×200")
         s.verifyAttribute(
             'id=imp-mask-image@src',
             '*&mask_width=450&mask_height=200&border=')
 
-        #s.comment('The border will be passed')
+        # s.comment('The border will be passed')
         self.click_label("grauer Rahmen")
         s.verifyAttribute(
             'id=imp-mask-image@src',
@@ -77,14 +77,14 @@ class SeleniumBasicTests(Selenium):
     def test_mask_string_parse(self):
         s = self.selenium
 
-        #s.comment('Simple dimensions')
+        # s.comment('Simple dimensions')
         s.runScript(
             'window.document.imp.set_mask("500x200/500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.name', '500x200')
 
-        #s.comment('The dimensions can be variable, indicated by a ?')
+        # s.comment('The dimensions can be variable, indicated by a ?')
         s.runScript(
             'window.document.imp.set_mask("art-200/?500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
@@ -102,7 +102,7 @@ class SeleniumBasicTests(Selenium):
 
     def test_zoom_slider(self):
         s = self.selenium
-        #s.comment('Zooming works with a slider')
+        # s.comment('Zooming works with a slider')
         s.verifyEval('window.document.imp.zoom>1', 'false')
         s.clickAt('id=imp-zoom-slider', '500,0')
         s.waitForEval('window.document.imp.zoom>1', 'true')
@@ -123,8 +123,7 @@ class SeleniumBasicTests(Selenium):
         s.verifyEval('window.document.imp_zoom_slider.get_value()>1', 'true')
 
     def zoom_with_wheel(self, delta_y):
-        self.selenium.runScript(
-        """\
+        self.selenium.runScript("""\
             var evt = window.document.createEvent('MouseEvents')
             evt.initEvent('DOMMouseScroll', false, false)
             evt.wheelDeltaX = 0;
@@ -138,7 +137,7 @@ class SeleniumCropTests(Selenium):
     def test_crop_wo_mask(self):
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
-        #s.comment('Nothing happens when the crop button is clicked.')
+        # s.comment('Nothing happens when the crop button is clicked.')
         s.click('crop')
         s.verifyElementNotPresent('css=#imp-image-bar > div')
 
@@ -149,9 +148,9 @@ class SeleniumCropTests(Selenium):
         s.dragAndDrop('id=imp-mask', '-30,-100')
         self.click_label(u"450×200")
         s.click('crop')
-        #s.comment('After cropping the image is inserted in the image bar')
+        # s.comment('After cropping the image is inserted in the image bar')
         s.waitForElementPresent('css=#imp-image-bar > div')
-        #s.comment('The label is marked as "cropped"')
+        # s.comment('The label is marked as "cropped"')
         s.verifyElementPresent('css=label.cropped')
 
     def test_crop_outside_mask(self):
@@ -216,15 +215,15 @@ class SeleniumMaskTests(Selenium):
         self.verify_press('\\38', '201')
 
     def test_input_field_down_arrow_once_handling(self):
-        #self.selenium.comment('Pressing DOWN-ARROW once decreases by 1.')
+        # self.selenium.comment('Pressing DOWN-ARROW once decreases by 1.')
         self.verify_press('\\40', '199')
 
     def test_input_field_left_arrow_once_handling(self):
-        #self.selenium.comment('Pressing LEFT-ARROW once decreases by 1.')
+        # self.selenium.comment('Pressing LEFT-ARROW once decreases by 1.')
         self.verify_press('\\37', '199')
 
     def test_input_field_right_arrow_once_handling(self):
-        #self.selenium.comment('Pressing RIGHT-ARROW once increases by 1.')
+        # self.selenium.comment('Pressing RIGHT-ARROW once increases by 1.')
         self.verify_press('\\39', '201')
 
     def verify_press(self, key_code, expected_value):
@@ -236,19 +235,19 @@ class SeleniumMaskTests(Selenium):
         s.verifyEval('window.document.imp.mask_dimensions.h', expected_value)
 
     def test_input_field_up_arrow_hold_handling(self):
-        #self.selenium.comment('Holding UP-ARROW increases.')
+        # self.selenium.comment('Holding UP-ARROW increases.')
         self.verify_hold('\\38', '>210')
 
     def test_input_field_down_arrow_hold_handling(self):
-        #self.selenium.comment('Holding DOWN-ARROW decreases.')
+        # self.selenium.comment('Holding DOWN-ARROW decreases.')
         self.verify_hold('\\40', '<190')
 
     def test_input_field_left_arrow_hold_handling(self):
-        #self.selenium.comment('Holding LEFT-ARROW decreases.')
+        # self.selenium.comment('Holding LEFT-ARROW decreases.')
         self.verify_hold('\\37', '<190')
 
     def test_input_field_right_arrow_hold_handling(self):
-        #self.selenium.comment('Holding RIGHT-ARROW increases.')
+        # self.selenium.comment('Holding RIGHT-ARROW increases.')
         self.verify_hold('\\39', '>210')
 
     def verify_hold(self, key_code, expected_value):

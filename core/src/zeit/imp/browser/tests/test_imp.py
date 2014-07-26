@@ -46,7 +46,8 @@ class ImageBarTest(TestBase):
             __name__, 'testdata/01.jpg'))
         self.repository['group']['foo-240x120.jpg'] = image
         self.assertAPI([{
-            'url': 'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
+            'url':
+            'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
             'name': 'foo-240x120.jpg',
             'scale_name': 'foo-240x120'}])
 
@@ -57,10 +58,12 @@ class ImageBarTest(TestBase):
         self.repository['group']['foo-artikel.jpg'] = image
         transaction.commit()
         self.assertAPI([
-            {'url': 'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
+            {'url':
+             'http://localhost/++skin++cms/repository/group/foo-240x120.jpg',
              'name': 'foo-240x120.jpg',
              'scale_name': 'foo-240x120'},
-            {'url': 'http://localhost/++skin++cms/repository/group/foo-artikel.jpg',
+            {'url':
+             'http://localhost/++skin++cms/repository/group/foo-artikel.jpg',
              'name': 'foo-artikel.jpg',
              'scale_name': 'foo-artikel'}])
 
