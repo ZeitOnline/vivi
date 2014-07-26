@@ -30,4 +30,3 @@ class TestSimpleElementGrokker(zeit.edit.testing.FunctionalTestCase):
         element = zope.component.getMultiAdapter(
             (object(), tree), zeit.edit.interfaces.IElement,
             name='testelement')
-
