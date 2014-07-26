@@ -20,8 +20,8 @@ class TestTicketAuthorization(unittest.TestCase):
         config = zope.app.appsetup.product.loadConfiguration(
             StringIO.StringIO(zeit.content.gallery.testing.product_config))
         config = [
-          zope.app.appsetup.product.FauxConfiguration(name, values)
-          for name, values in config.items()]
+            zope.app.appsetup.product.FauxConfiguration(name, values)
+            for name, values in config.items()]
         zope.app.appsetup.product.setProductConfigurations(config)
 
     def tearDown(self):

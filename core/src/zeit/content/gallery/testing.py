@@ -21,7 +21,7 @@ product_config = """
 """ % (
     pkg_resources.resource_filename(__name__, 'scales.xml'),
     pkg_resources.resource_filename(__name__, 'gallery-types.xml'),
-    )
+)
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(

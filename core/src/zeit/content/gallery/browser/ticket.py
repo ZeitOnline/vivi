@@ -77,9 +77,11 @@ def get_hash(rnd, principal):
 
 format = '>q28s'
 
+
 def pack(rnd, hash_, principal):
     packed = struct.pack(format, rnd, hash_) + principal
     return base64.urlsafe_b64encode(packed).strip()
+
 
 def unpack(ticket):
     ticket = base64.urlsafe_b64decode(str(ticket))
