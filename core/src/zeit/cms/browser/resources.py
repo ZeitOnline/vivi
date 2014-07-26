@@ -86,7 +86,7 @@ datetime_calendar_en_js = fanstatic.Resource(
 datetime_widget_js = fanstatic.Resource(
     zc_datetimewidget, 'datetimewidget.js', depends=[
         datetime_css, datetime_calendar_en_js, datetime_calendar_setup_js,
-])
+    ])
 register(datetime_widget_js)
 
 

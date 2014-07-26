@@ -2,12 +2,18 @@
 import unittest
 
 YOUTUBE = """\
-<iframe width="560" height="315" src="http://www.youtube.com/embed/qnydFmqHuVo" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="http://www.youtube.com/embed/qnydFmqHuVo"
+frameborder="0" allowfullscreen></iframe>
 """
 
 TWITTER = u"""\
 <raw>
-<blockquote class="twitter-tweet" lang="de"><p>"I suffer from short-term memory loss. It runs in my family. At least I think it does.... Where are they...?"<a href="https://twitter.com/search/%23Dory">#Dory</a> 😂 🐠</p>&mdash; Emily Faith Pedone (@nothinbutdream) <a href="https://twitter.com/nothinbutdream/status/319927139904405504">4. April 2013</a></blockquote>
+<blockquote class="twitter-tweet" lang="de"><p>"I suffer from short-term memory
+loss. It runs in my family. At least I think it does.... Where are they...?"
+<a href="https://twitter.com/search/%23Dory">#Dory</a> 😂 🐠</p>&mdash;
+Emily Faith Pedone (@nothinbutdream)
+<a href="https://twitter.com/nothinbutdream/status/319927139904405504">
+4. April 2013</a></blockquote>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 </raw>
 """
