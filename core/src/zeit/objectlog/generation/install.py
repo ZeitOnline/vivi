@@ -2,12 +2,12 @@
 # See also LICENSE.txt
 # $Id$
 
-import zope.app.component.hooks
-import zope.app.component
-import zope.app.zopeappgenerations
-
 import zeit.objectlog.interfaces
 import zeit.objectlog.objectlog
+import zope.app.component
+import zope.app.component.hooks
+import zope.app.zopeappgenerations
+
 
 def install(root):
     site_manager = zope.component.getSiteManager()

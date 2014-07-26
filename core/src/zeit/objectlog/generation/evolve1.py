@@ -2,13 +2,9 @@
 # See also LICENSE.txt
 
 import BTrees
-
-import zope.app.component.hooks
 import zope.app.component
+import zope.app.component.hooks
 import zope.app.zopeappgenerations
-
-import zeit.objectlog.interfaces
-import zeit.objectlog.objectlog
 
 
 def install(root):
@@ -24,6 +20,7 @@ def install(root):
         log._object_log[key] = new_log
 
     del log._time_line
+
 
 def evolve(context):
     site = zope.app.component.hooks.getSite()

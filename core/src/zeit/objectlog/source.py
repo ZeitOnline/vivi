@@ -1,16 +1,12 @@
 # Copyright (c) 2008 gocept gmbh & co. kg
 # See also LICENSE.txt
-# $Id$
 
+from zeit.objectlog.i18n import MessageFactory as _
+import zc.sourcefactory.contextual
+import zeit.objectlog.interfaces
+import zope.app.form.browser.interfaces
 import zope.i18n
 import zope.interface.common.idatetime
-
-import zope.app.form.browser.interfaces
-
-import zc.sourcefactory.contextual
-
-import zeit.objectlog.interfaces
-from zeit.objectlog.i18n import MessageFactory as _
 
 
 class LogEntrySource(
@@ -22,7 +18,7 @@ class LogEntrySource(
 
     def createTerm(self, context, source, value, title, token, request):
         # We got to create the title here as we haven't got the request in
-        # `getTitle` :( 
+        # `getTitle` :(
 
         if value.principal is None:
             principal = _('System')
@@ -45,12 +41,11 @@ class LogEntrySource(
         message = zope.i18n.translate(value.message, context=request)
 
         title = _("${time} [${principal}]: ${message}",
-                 mapping=dict(
-                     time=time,
-                     principal_id=value.principal,
-                     principal=principal,
-                     message=message))
+                  mapping=dict(
+                      time=time,
+                      principal_id=value.principal,
+                      principal=principal,
+                      message=message))
 
         return super(LogEntrySource, self).createTerm(
             context, source, value, title, token, request)
-

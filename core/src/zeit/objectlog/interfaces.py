@@ -67,7 +67,7 @@ class ILog(zope.interface.Interface):
         readonly=True)
 
 
-class  ILogProcessor(zope.interface.Interface):
+class ILogProcessor(zope.interface.Interface):
     """Adapter that may be used to process the context's object log."""
 
     def __call__(log_entries):
