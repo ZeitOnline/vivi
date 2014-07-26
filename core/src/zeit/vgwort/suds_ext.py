@@ -13,7 +13,7 @@ from suds.sax.attribute import Attribute
 import suds.bindings.document
 
 
-### patching suds.bindings.document.Document ------------------------------
+# patching suds.bindings.document.Document ------------------------------
 
 
 def bodycontent(self, method, args, kwargs):

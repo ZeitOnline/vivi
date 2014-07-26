@@ -9,11 +9,11 @@ setup(
     description="""\
 """,
     packages=find_packages('src'),
-    package_dir = {'': 'src'},
-    include_package_data = True,
+    package_dir={'': 'src'},
+    include_package_data=True,
     zip_safe=False,
     license='gocept proprietary',
-    namespace_packages = ['zeit'],
+    namespace_packages=['zeit'],
     install_requires=[
         'grokcore.component',
         'pytest',
@@ -28,7 +28,7 @@ setup(
         'zope.testing',
     ],
     entry_points=dict(console_scripts=[
-        'vgwort-order-tokens = zeit.vgwort.token:order_tokens',
-        'vgwort-report = zeit.vgwort.report:report_new_documents',
-        ]),
+        'vgwort-order-tokens=zeit.vgwort.token:order_tokens',
+        'vgwort-report=zeit.vgwort.report:report_new_documents',
+    ]),
 )
