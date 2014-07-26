@@ -24,7 +24,7 @@ class TestSourceQueryView(unittest.TestCase):
              'placeholder="Type to find entries ..." '
              'cms:autocomplete-source="'
              '/mock/url?types%3Alist=t1&types%3Alist=t2&types%3Alist=t3" />'),
-             result)
+            result)
 
 
 class TestSourceQueryViewIntegration(zeit.cms.testing.FunctionalTestCase):

@@ -76,7 +76,7 @@ def counts(q):
         'facet.field': ['ressort', 'type', 'authors'],
         'facet.mincount': 1,
         'facet.query': date_queries,
-        }
+    }
 
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     facet_data = conn.search(q, rows=0, **facets).facets
@@ -171,6 +171,7 @@ def query(fulltext=None,
         return lq.and_(*terms)
     return lq.any_value()
 
+
 def _set_type_terms(types, terms=None):
     terms = terms or []
     type_terms = []
@@ -180,15 +181,17 @@ def _set_type_terms(types, terms=None):
         terms.append(lq.or_(*type_terms))
     return terms
 
+
 def suggest_query(query, field, types):
     query = query.lower().strip()
     terms = []
-    terms.append(lq.field_raw(field, query+'*'))
+    terms.append(lq.field_raw(field, query + '*'))
     terms.append(lq.field_raw(field, query))
     terms = [lq.or_(*terms)]
     terms = _set_type_terms(types, terms=terms)
-    return lq.and_(*terms)            
+    return lq.and_(*terms)
+
 
 def grouper(n, iterable, padvalue=None):
     return itertools.izip(
-        *[itertools.chain(iterable, itertools.repeat(padvalue, n-1))]*n)
+        *[itertools.chain(iterable, itertools.repeat(padvalue, n - 1))] * n)

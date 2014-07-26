@@ -239,7 +239,7 @@ class SearchResult(SearchResultBase):
 
     def get_graphical_preview_url(self, result):
         url = result.get('graphical-preview-url')
-        if url == None:
+        if url is None:
             return None
         url_p = urlparse.urlsplit(url)
         if url_p.scheme == '':
@@ -322,7 +322,6 @@ class SearchResult(SearchResultBase):
         return favorite_uniqueIds
 
 
-
 class ResultFilters(JSONView):
 
     template = 'result_filters.jsont'
@@ -346,7 +345,7 @@ class ResultFilters(JSONView):
             'time_entries': self.time_entries(time_counts),
             'type_entries': self.type_entries(type_counts),
             'author_entries': self.entries(author_counts),
-            }
+        }
         if not (result['topic_entries'] or result['time_entries'] or
                 result['type_entries'] or result['author_entries']):
             return {'template': 'no_result_filters.jsont'}
@@ -357,7 +356,7 @@ class ResultFilters(JSONView):
                        for name, date_range in DATE_RANGES]
         result = []
         for ((name, count),
-             (name2, (start_date, end_date)))  in zip(counts, date_ranges):
+             (name2, (start_date, end_date))) in zip(counts, date_ranges):
             if count == 0:
                 continue
             result.append(dict(title=name,
@@ -425,13 +424,13 @@ class ExpandedSearchResult(JSONView):
                 content).last_semantic_change
             publication_status = self.render_publication_status(content)
             results.append({
-                    'uniqueId': content.uniqueId,
-                    'publication_status': publication_status,
-                    'supertitle': metadata.supertitle or '',
-                    'teaser_title': metadata.teaserTitle or '',
-                    'teaser_text': metadata.teaserText or '',
-                    'date': format_date(date),
-                    })
+                'uniqueId': content.uniqueId,
+                'publication_status': publication_status,
+                'supertitle': metadata.supertitle or '',
+                'teaser_title': metadata.teaserTitle or '',
+                'teaser_text': metadata.teaserText or '',
+                'date': format_date(date),
+            })
         if not results:
             return {'template': 'no_expanded_search_result.jsont'}
 
@@ -681,6 +680,7 @@ def search_form(request):
         year=year,
     )
 
+
 def form_query(request, filter_terms=None):
     form = search_form(request)
     if form is None:
@@ -688,10 +688,11 @@ def form_query(request, filter_terms=None):
     form['filter_terms'] = filter_terms
     return zeit.find.search.query(**form)
 
+
 def get_favorites(request):
     favorites_id = u'Favoriten'
     clipboard = zeit.cms.clipboard.interfaces.IClipboard(request.principal)
-    if not favorites_id in clipboard:
+    if favorites_id not in clipboard:
         clipboard.addClip(favorites_id)
     return clipboard[favorites_id]
 
@@ -699,8 +700,10 @@ def get_favorites(request):
 class InputError(Exception):
     pass
 
+
 class InputDateParseError(InputError):
     pass
+
 
 def parse_input_date(s):
     """Given a date input string, return datetime.datetime object
@@ -731,8 +734,10 @@ def parse_input_date(s):
         raise InputDateParseError("Year is not a proper number")
     return datetime.datetime(year, month, day)
 
+
 class VolumeYearError(InputError):
     pass
+
 
 def parse_volume_year(s):
     """Parse volume/year indicator.
@@ -759,10 +764,12 @@ def parse_volume_year(s):
         raise VolumeYearError("Year is not a proper number")
     return volume, year
 
+
 def format_date(dt):
     if dt is None:
         return ''
     return dt.strftime('%d.%m.%Y')
+
 
 def format_amount(amount):
     if amount >= 1000:
