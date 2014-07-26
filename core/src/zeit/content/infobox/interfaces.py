@@ -18,9 +18,8 @@ class IInfobox(zeit.cms.content.interfaces.IXMLContent):
         value_type=zc.form.field.Combination(
             (zope.schema.TextLine(
                 title=_('Title')),
-              zc.form.field.HTMLSnippet(title=_("Text")),
-            )))
-
+             zc.form.field.HTMLSnippet(title=_("Text")))
+        ))
 
 
 class InfoboxSource(zeit.cms.content.contentsource.CMSContentSource):
