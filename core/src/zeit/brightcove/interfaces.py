@@ -100,7 +100,6 @@ class IVideo(IBrightcoveContent,
         default=False)
 
 
-
 class IPlaylist(IBrightcoveContent):
     """A playlist."""
     video_ids = zope.schema.Tuple(

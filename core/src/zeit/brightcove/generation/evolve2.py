@@ -41,8 +41,7 @@ class Repository(persistent.Persistent,
         return self._data.items()
 
 
-class Content(persistent.Persistent,
-            zope.container.contained.Contained):
+class Content(persistent.Persistent, zope.container.contained.Contained):
     # Stub so the generation can remove the objects properly
     pass
 
@@ -71,4 +70,3 @@ def update(root):
 
 def evolve(context):
     zeit.cms.generation.do_evolve(context, update)
-

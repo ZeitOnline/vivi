@@ -181,16 +181,14 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
 
     def test_renditions_should_be_converted_to_cms(self):
         video = Video.find_by_id('1234')
-        video.data['renditions'] = [{"url": "http:example.org/my_rendition",
-                      "frameWidth": 400}]
+        video.data['renditions'] = [{
+            "url": "http:example.org/my_rendition",
+            "frameWidth": 400}]
         cmsobj = video.to_cms()
         self.assertEqual(
-           "http:example.org/my_rendition",
-           cmsobj.renditions[0].url)
+            "http:example.org/my_rendition", cmsobj.renditions[0].url)
 
-        self.assertEqual(
-           400,
-           cmsobj.renditions[0].frame_width)
+        self.assertEqual(400, cmsobj.renditions[0].frame_width)
 
     def test_comments_should_default_to_true(self):
         video = Video.find_by_id('1234')

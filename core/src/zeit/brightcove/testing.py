@@ -153,8 +153,8 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler):
             query.get('video_fields')):
             result = SINGLE_VIDEO_RESPONSE
         elif (query.get('command') == ['find_videos_by_ids'] and
-            query.get('video_ids') == ['6789'] and
-            query.get('video_fields')):
+              query.get('video_ids') == ['6789'] and
+              query.get('video_fields')):
             result = ANOTHER_SINGLE_VIDEO_RESPONSE
         elif (query.get('command') == ['find_playlists_by_ids'] and
               query.get('playlist_ids') == ['2345']):
@@ -284,7 +284,6 @@ def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('layer', BRIGHTCOVE_LAYER)
     kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
-
 
 
 # test video IDs from the live system.

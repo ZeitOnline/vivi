@@ -46,5 +46,5 @@ class UpdateItem(zeit.cms.testing.BrowserTestCase,
                '@@update-brightcove-item?playlist_id=9988')
         result = json.loads(b.contents)
         self.assertEqual(dict(
-                error='ValueError: playlist_id=9988 not found in Brightcove.'),
+            error='ValueError: playlist_id=9988 not found in Brightcove.'),
             result)

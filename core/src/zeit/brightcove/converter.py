@@ -491,7 +491,7 @@ BRIGHTCOVE_ID = zeit.connector.search.SearchVar(
 
 def resolve_video_id(video_id):
     connector = zope.component.getUtility(
-            zeit.connector.interfaces.IConnector)
+        zeit.connector.interfaces.IConnector)
     result = list(
         connector.search([BRIGHTCOVE_ID], BRIGHTCOVE_ID == video_id))
     if not result:

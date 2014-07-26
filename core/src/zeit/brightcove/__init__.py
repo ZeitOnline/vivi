@@ -12,7 +12,7 @@ zeit.content.video.video.Video.brightcove_id = DAVProperty(
     zope.schema.ASCIILine(
         title=_('Brightcove Id'),
         readonly=True,
-        ),
+    ),
     DAV_NAMESPACE,
     'id',
-    )
+)
