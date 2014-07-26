@@ -238,8 +238,9 @@ class DAVResponse(object):
         return ret
 
     def __repr__(self):
-        return "  DAVResponse for %s: %r %r\n  " % (self.url, self.status, self.reason) + \
-        "\n  ".join([p.__repr__() for p in self.propstats])
+        return "  DAVResponse for %s: %r %r\n  " % (
+            self.url, self.status, self.reason) + \
+            "\n  ".join([p.__repr__() for p in self.propstats])
 
 
 class DAVResult(object):
