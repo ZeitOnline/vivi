@@ -24,7 +24,6 @@ class ITeaserGroup(zeit.cms.interfaces.ICMSContent):
         title=_('Automatically remove'),
         default=True)
 
-
     def create():
         """Add the group to the database."""
 

@@ -1,15 +1,12 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import transaction
 import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.cp.testing
-import zeit.solr.testing
 import zope.component
-import zope.security.management
 
 
 def create_content(root):
@@ -38,7 +35,7 @@ def test_suite():
         'teaserbar.txt',
         'xml.txt',
         package='zeit.content.cp.browser.blocks',
-        ))
+    ))
     rss_test = zeit.content.cp.testing.FunctionalDocFileSuite(
         'rss.txt',
         package='zeit.content.cp.browser.blocks',

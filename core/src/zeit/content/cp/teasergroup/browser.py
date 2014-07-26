@@ -36,7 +36,6 @@ class CreateTeaserGroup(zope.formlib.form.SubPageForm):
         return super(CreateTeaserGroup, self).template
 
 
-
 class DisplayTeaserGroup(zeit.cms.browser.form.DisplayForm):
 
     title = _('Display teaser group')

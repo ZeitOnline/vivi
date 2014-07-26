@@ -15,6 +15,5 @@ def install(root):
         zeit.content.cp.teasergroup.interfaces.IRepository)
 
 
-
 def evolve(context):
     zeit.cms.generation.do_evolve(context, install)

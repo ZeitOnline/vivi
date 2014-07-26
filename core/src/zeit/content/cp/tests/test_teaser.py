@@ -73,7 +73,7 @@ class TestXMLTeaser(XMLTeaserBase):
         self.teaser.free_teaser = True
         self.assertEqual('original', self.teaser.title)
 
-    def test_commonmetadata_fields_xmlteaser_doesnt_have_should_return_their_default(self):
+    def test_cm_fields_xmlteaser_doesnt_have_should_return_their_default(self):
         self.assertEqual((), self.teaser.authorships)
 
     def test_iimages_should_contain_referenced_objects_image(self):
@@ -114,7 +114,8 @@ class TestXMLTeaser(XMLTeaserBase):
         finally:
             gsm.unregisterAdapter(
                 preview_factory,
-                (zeit.content.cp.interfaces.IXMLTeaser, zope.interface.Interface),
+                (zeit.content.cp.interfaces.IXMLTeaser,
+                 zope.interface.Interface),
                 zope.interface.Interface,
                 name='preview')
 

@@ -74,7 +74,8 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(2, len(items))
         self.assertEqual('reference', items[0].tag)
         self.assertEqual('http://xml.zeit.de/test2', items[0].get('href'))
-        self.assertEqual('http://xml.zeit.de/testcontent', items[1].get('href'))
+        self.assertEqual(
+            'http://xml.zeit.de/testcontent', items[1].get('href'))
 
     def test_teasers_are_added_only_once(self):
         cp = self.repository['cp']
@@ -157,7 +158,7 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         cp = self.publish(cp)
         # The teaser was not added to the feed because the object it references
         # is already in the feed
-        #self.assertEquals(2, len(cp.xml.feed.getchildren()))
+        # self.assertEquals(2, len(cp.xml.feed.getchildren()))
         self.assertEqual(
             ['http://xml.zeit.de/test2', 'http://xml.zeit.de/testcontent'],
             [x.get('href') for x in cp.xml.feed.getchildren()])

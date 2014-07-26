@@ -5,14 +5,14 @@ import zeit.content.cp.interfaces
 import zeit.edit.browser.view
 import zope.component
 import zope.formlib.form
-import zope.viewlet.manager
 
 
 class EditCommon(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IBlock).omit('type', 'xml', '__name__')
-    form_fields['background_color'].custom_widget = zeit.cms.browser.widget.ColorpickerWidget
+    form_fields['background_color'].custom_widget = (
+        zeit.cms.browser.widget.ColorpickerWidget)
 
 
 class SwitchType(object):

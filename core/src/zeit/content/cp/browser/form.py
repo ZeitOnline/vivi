@@ -34,13 +34,12 @@ class FormBase(object):
          'topiclink_label_1', 'topiclink_url_1',
          'topiclink_label_2', 'topiclink_url_2',
          'topiclink_label_3', 'topiclink_url_3',
-        ),
+         ),
         css_class='wide-widgets column-left')
 
     og_fields = gocept.form.grouped.Fields(
         _("OG Metadata"),
-         ('og_title', 'og_description', 'og_image',
-        ),
+         ('og_title', 'og_description', 'og_image'),
         css_class='wide-widgets column-right')
 
     field_groups = (

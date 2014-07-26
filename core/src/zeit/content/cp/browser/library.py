@@ -8,14 +8,8 @@ See http://cmsdev.zeit.de/node/362
 
 """
 
-import zeit.content.cp.browser.landing
 import zeit.edit.browser.library
-import zeit.edit.browser.view
-import zope.browser.interfaces
 import zope.component
-import zope.i18n
-
-
 
 
 class ClusterBlockFactories(zeit.edit.browser.library.BlockFactories):

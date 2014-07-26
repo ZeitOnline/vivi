@@ -112,7 +112,7 @@ class SearchableText(grokcore.component.Adapter):
 class Repository(zope.container.btree.BTreeContainer):
 
     zope.interface.implements(
-            zeit.content.cp.teasergroup.interfaces.IRepository)
+        zeit.content.cp.teasergroup.interfaces.IRepository)
 
     AUTOREMOVE_AFTER = datetime.timedelta(days=7)
 

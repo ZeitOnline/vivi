@@ -126,7 +126,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         self._update_favicon()
 
     def _append(self, parent, name, data, key):
-        if not key in data:
+        if key not in data:
             return
         elem = lxml.etree.SubElement(parent, name)
         elem.text = unicode(data[key])
@@ -249,7 +249,8 @@ class FeedManager(object):
                 return
             co_feed.fetch_and_convert()
         try:
-            zeit.cms.workflow.interfaces.IPublish(feed).publish(priority=PRIORITY_LOW)
+            zeit.cms.workflow.interfaces.IPublish(feed).publish(
+                priority=PRIORITY_LOW)
         except zeit.cms.workflow.interfaces.PublishingError:
             # This is raised when there are errors in the feed. It will not
             # be published then.
@@ -267,7 +268,8 @@ def _refresh_all():
         if not zeit.content.cp.interfaces.IFeed.providedBy(feed):
             continue
         if (not feed.last_update or
-            now > feed.last_update + datetime.timedelta(minutes=int(interval))):
+            now > feed.last_update + datetime.timedelta(
+                minutes=int(interval))):
             logger.info('Refreshing feed for <%s>' % feed.url)
             fm.refresh_feed(feed.url)
         else:

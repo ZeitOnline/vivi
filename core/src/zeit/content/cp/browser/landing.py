@@ -28,10 +28,11 @@ class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):
                     name=self.uniqueId)))
         self.block.insert(0, content)
         if self.relateds:
-            related = zeit.cms.related.interfaces.IRelatedContent(content, None)
+            related = zeit.cms.related.interfaces.IRelatedContent(
+                content, None)
             if related is not None:
                 for i, related in enumerate(related.related):
-                    self.block.insert(i+1, related)
+                    self.block.insert(i + 1, related)
 
 
 class LeaderLandingZoneDrop(TeaserBlockLandingZone):
@@ -42,4 +43,4 @@ class LeaderLandingZoneDrop(TeaserBlockLandingZone):
 
 class TeaserLandingZoneInsertAfter(TeaserBlockLandingZone):
 
-      order = 'after-context'
+    order = 'after-context'

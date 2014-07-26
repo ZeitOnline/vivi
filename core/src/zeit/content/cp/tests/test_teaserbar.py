@@ -16,8 +16,8 @@ class TeaserBarTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super(TeaserBarTest, self).setUp()
         cp = zeit.content.cp.centerpage.CenterPage()
-        self.bar = zeit.content.cp.blocks.teaserbar.TeaserBar(cp['teaser-mosaic'],
-                                                  lxml.objectify.E.region())
+        self.bar = zeit.content.cp.blocks.teaserbar.TeaserBar(
+            cp['teaser-mosaic'], lxml.objectify.E.region())
         self.bar.layout = get_bar_layout('normal')
 
     def item(self, index):

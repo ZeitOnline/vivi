@@ -621,7 +621,7 @@ class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyText('css=#lead .block.type-teaser .teaser-list',
                      '*c1 teaser*')
         s.verifyNotText('css=#lead .block.type-teaser .teaser-list',
-                     '*c2 teaser*')
+                        '*c2 teaser*')
         # Verify the removal in the source:
         s.waitForNotText(
             'css=#informatives .block.type-teaser .teaser-list', '*c1 teaser*')

@@ -153,7 +153,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
     _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
     hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'hide-dupes', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
-        'hide_dupes'])
+            'hide_dupes'])
 
     display_amount = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'display-amount',
@@ -161,7 +161,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
     visible = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'visible', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
-        'visible'])
+            'visible'])
 
     AUTOPILOT_ENTRIES = 6
 

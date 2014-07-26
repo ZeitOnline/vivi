@@ -7,6 +7,7 @@ import zope.component
 import zope.event
 import zope.lifecycleevent
 
+
 class DropContent(zeit.edit.browser.view.Action):
 
     uniqueId = zeit.edit.browser.view.Form('uniqueId')
