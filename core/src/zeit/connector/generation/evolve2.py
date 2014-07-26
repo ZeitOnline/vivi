@@ -10,7 +10,6 @@ import zope.app.component.hooks
 import zope.app.zopeappgenerations
 
 
-
 def update(root):
     site_manager = zope.component.getSiteManager()
 
@@ -30,4 +29,3 @@ def evolve(context):
         update(root)
     finally:
         zope.app.component.hooks.setSite(site)
-

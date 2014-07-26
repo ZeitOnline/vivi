@@ -1,21 +1,23 @@
 # TODO:
-# - maybe change parsing to use an explicit parser object with etree.XMLParser(ns_clean=True)?
+# - maybe change parsing to use an explicit parser object with
+# etree.XMLParser(ns_clean=True)?
 
-__all__ = ('xml_from_string', 'xml_from_file' )
+__all__ = ('xml_from_string', 'xml_from_file')
 
 import lxml.etree
 import zeit.connector.dav.interfaces
 
+
 class DavXmlDoc:
 
-    def __init__ ( self ):
-        self.doc   = None
+    def __init__(self):
+        self.doc = None
         self.nsmap = {
             'D': 'DAV:',
             'd': 'DAV:',
             'DAV:': 'DAV:'}
 
-    def from_string( self, string):
+    def from_string(self, string):
         self.parse(lxml.etree.fromstring, string)
 
     def from_file(self, f):
@@ -30,9 +32,9 @@ class DavXmlDoc:
                     lxml.etree.ErrorLevels.FATAL))
 
     def xpathEval(self, expr):
-        return self.doc.xpath(expr, namespaces=self.nsmap);
+        return self.doc.xpath(expr, namespaces=self.nsmap)
 
-    #:note: why is this here? Or better, iff this is here,
+    # :note: why is this here? Or better, iff this is here,
     # why aren't the other node-finding functions here?
     def get_response_nodes(self):
         """Return a list of all D:response nodes"""
@@ -49,7 +51,7 @@ def xml_from_string(data):
     return d
 
 
-def xml_from_file (f_in):
+def xml_from_file(f_in):
     d = DavXmlDoc()
     d.from_file(f_in)
     return d

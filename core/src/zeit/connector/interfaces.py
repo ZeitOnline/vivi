@@ -85,7 +85,6 @@ class IConnector(zope.interface.Interface):
         XXX define more error cases
         """
 
-
     def __getitem__(id):
         """Return the resource identified by `id`.
 
@@ -202,7 +201,6 @@ class ICachingConnector(IConnector):
         """Invalidate (and reload) the cache for the given id."""
 
 
-
 class IWebDAVReadProperties(zope.interface.common.mapping.IEnumerableMapping):
     """Mapping for WebDAV properties.
 
@@ -217,6 +215,7 @@ class IWebDAVReadProperties(zope.interface.common.mapping.IEnumerableMapping):
     should be removed.
 
     """
+
 
 class IWebDAVWriteProperties(
     zope.interface.common.mapping.IExtendedWriteMapping):
@@ -261,7 +260,6 @@ class IResource(zope.interface.Interface):
         title=u"WebDAV properties")
 
 
-
 class IResourceCache(zope.interface.Interface):
     """A cache for resource data.
 
@@ -285,7 +283,6 @@ class IResourceCache(zope.interface.Interface):
 class ICache(zope.interface.common.mapping.IReadMapping,
              zope.interface.common.mapping.IWriteMapping):
     """Generic cache interface."""
-
 
     def keys(include_deleted=False):
         """Return the keys.
@@ -355,4 +352,3 @@ class ResourceInvalidatedEvent(object):
 
 # Legacy
 ResourceInvaliatedEvent = ResourceInvalidatedEvent
-

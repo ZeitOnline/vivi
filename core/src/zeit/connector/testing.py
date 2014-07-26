@@ -19,14 +19,15 @@ import zope.testing.renormalizing
 
 # XXX copied from zeit.cms; we need zeit.testing!
 def ZCMLLayer(
-    config_file, module=None, name=None, allow_teardown=True,
-    product_config=None):
+        config_file, module=None, name=None, allow_teardown=True,
+        product_config=None):
     if module is None:
         module = inspect.stack()[1][0].f_globals['__name__']
     if name is None:
         name = 'ZCMLLayer(%s)' % config_file
     if not config_file.startswith('/'):
         config_file = pkg_resources.resource_filename(module, config_file)
+
     def setUp(cls):
         cls.setup = zope.app.testing.functional.FunctionalTestSetup(
             config_file, product_config=product_config)
@@ -147,7 +148,7 @@ parsed_url = urlparse.urlparse(os.environ['connector-url'])
 checker = zope.testing.renormalizing.RENormalizing([
     (re.compile(str(parsed_url.hostname)), '<DAVHOST>'),
     (re.compile(str(parsed_url.port)), '<DAVPORT>'),
-    ])
+])
 
 
 def FunctionalDocFileSuite(*paths, **kw):
@@ -171,8 +172,7 @@ def reset_testing_folder(test):
         zope.component.hooks.setSite(root)
 
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-    for name, uid in connector.listCollection(
-        'http://xml.zeit.de/testing/'):
+    for name, uid in connector.listCollection('http://xml.zeit.de/testing/'):
         del connector[uid]
 
     if old_site is not no_site:
@@ -198,7 +198,7 @@ def list_tree(connector, base, level=0):
     for name, uid in sorted(connector.listCollection(base)):
         result.append('%s %s' % (uid, connector[uid].type))
         if uid.endswith('/'):
-            result.extend(list_tree(connector, uid, level+1))
+            result.extend(list_tree(connector, uid, level + 1))
 
     return result
 
@@ -210,14 +210,14 @@ def create_folder_structure(connector):
         id = u'http://xml.zeit.de/testing/' + id
         res = zeit.connector.resource.Resource(
             id, None, 'folder', StringIO.StringIO(''),
-            contentType = 'httpd/unix-directory')
+            contentType='httpd/unix-directory')
         connector.add(res)
 
     def add_file(id):
         id = u'http://xml.zeit.de/testing/' + id
         res = zeit.connector.resource.Resource(
             id, None, 'text', StringIO.StringIO('Pop.'),
-            contentType = 'text/plain')
+            contentType='text/plain')
         connector.add(res)
 
     add_folder('testroot')

@@ -18,7 +18,8 @@ XML_CONTENT_TYPE = 'text/xml; charset="utf-8"'
 
 logger = logging.getLogger(__name__)
 
-class BadAuthTypeError ( Exception ):
+
+class BadAuthTypeError(Exception):
     pass
 
 
@@ -33,7 +34,7 @@ class HTTPBasicAuthCon(object):
     rx = re.compile('[ \t]*([^ \t]+)[ \t]+realm="([^"]*)"')
     authhdr = 'WWW-Authenticate'
 
-    def __init__ (self, host, port=None, strict=None):
+    def __init__(self, host, port=None, strict=None):
         self._resp = None
         self._authon = False
         self._host = host
@@ -92,7 +93,7 @@ class HTTPBasicAuthCon(object):
         if isinstance(uri, unicode):
             uri = uri.encode('utf8')
         path = urlparse.urlunparse(('', '') + urlparse.urlparse(uri)[2:])
-        # NOTE: Everything after the netloc is considered a path and will be 
+        # NOTE: Everything after the netloc is considered a path and will be
         # quoted
         quoted = urllib.quote(path)
         return quoted
@@ -293,8 +294,8 @@ class DAVBase(object):
                     method, url,
                     "\n  ".join(debug_header_items),
                     body))
-
-        self.request(method, url, body, extra_hdrs) # that's HTTPxxxAuthCon.request, called via DAVConnection
+        # that's HTTPxxxAuthCon.request, called via DAVConnection
+        self.request(method, url, body, extra_hdrs)
         try:
             resp = self.getresponse()
         except httplib.BadStatusLine:
@@ -313,7 +314,7 @@ class DAVBase(object):
 
 class DAVConnection (HTTPBasicAuthCon, DAVBase):
 
-    def __init__ (self, host, port=None, strict=None, referrer=None):
+    def __init__(self, host, port=None, strict=None, referrer=None):
         HTTPBasicAuthCon.__init__(self, host, port, strict)
         self._con._http_vsn_str = 'HTTP/1.1'
         self._con._http_vsn = 11
@@ -323,12 +324,12 @@ class DAVConnection (HTTPBasicAuthCon, DAVBase):
 import socket
 if getattr(socket, 'ssl', None):
     # only include DAVS if SSL support is compiled in
-    class HTTPSBasicAuthCon ( HTTPBasicAuthCon ):
+    class HTTPSBasicAuthCon(HTTPBasicAuthCon):
         connect_class = httplib.HTTPSConnection
         pass
 
-    class DAVSConnection ( HTTPSBasicAuthCon, DAVBase):
-        def __init__ ( self, host, port=None, strict=None):
+    class DAVSConnection(HTTPSBasicAuthCon, DAVBase):
+        def __init__(self, host, port=None, strict=None):
             HTTPSBasicAuthCon.__init__(self, host, port, strict)
             self._con._http_vsn_str = 'HTTP/1.1'
             self._con._http_vsn = 11

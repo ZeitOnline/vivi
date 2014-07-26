@@ -9,11 +9,11 @@ setup(
     description="""\
 """,
     packages=find_packages('src'),
-    package_dir = {'': 'src'},
-    include_package_data = True,
+    package_dir={'': 'src'},
+    include_package_data=True,
     zip_safe=False,
     license='gocept proprietary',
-    namespace_packages = ['zeit'],
+    namespace_packages=['zeit'],
     install_requires=[
         'ZConfig',
         'ZODB3>=3.8b4',
@@ -37,9 +37,9 @@ setup(
         'zope.interface',
         'zope.location>=3.4b2',
         'zope.testing',
-        ],
-    entry_points = """
+    ],
+    entry_points="""
         [console_scripts]
-        refresh-cache = zeit.connector.invalidator:invalidate_whole_cache
+        refresh-cache=zeit.connector.invalidator:invalidate_whole_cache
         """
 )

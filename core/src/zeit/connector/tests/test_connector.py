@@ -129,15 +129,13 @@ class ConflictDetectionBase(object):
 
 
 class TestConflictDetectionReal(
-    ConflictDetectionBase,
-    zeit.connector.testing.ConnectorTest):
+    ConflictDetectionBase, zeit.connector.testing.ConnectorTest):
 
     copy_inherited_functions(ConflictDetectionBase, locals())
 
 
 class TestConflictDetectionMock(
-    ConflictDetectionBase,
-    zeit.connector.testing.MockTest):
+    ConflictDetectionBase, zeit.connector.testing.MockTest):
 
     copy_inherited_functions(ConflictDetectionBase, locals())
 
@@ -181,16 +179,14 @@ class MoveConflictDetectionBase(object):
 
 
 class TestMoveConflictDetectionReal(
-    MoveConflictDetectionBase,
-    zeit.connector.testing.ConnectorTest):
+    MoveConflictDetectionBase, zeit.connector.testing.ConnectorTest):
     """Test move conflict with real connector and real DAV."""
 
     copy_inherited_functions(MoveConflictDetectionBase, locals())
 
 
 class TestMoveConflictDetectionMock(
-    MoveConflictDetectionBase,
-    zeit.connector.testing.MockTest):
+    MoveConflictDetectionBase, zeit.connector.testing.MockTest):
     """Test move conflict with mock connector."""
 
     copy_inherited_functions(MoveConflictDetectionBase, locals())
@@ -376,8 +372,7 @@ class TestSearch(zeit.connector.testing.ConnectorTest):
         from zeit.connector.search import SearchVar
         var = SearchVar('name', 'namespace')
         result = self.connector.search([var], var == 'foo')
-        with mock.patch(
-            'zeit.connector.dav.davresource.DAVResult') as dav:
+        with mock.patch('zeit.connector.dav.davresource.DAVResult') as dav:
             dav.has_errors.return_value = True
             self.assertRaises(
                 DAVError, lambda: result.next())

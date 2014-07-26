@@ -86,7 +86,7 @@ class Connector(zeit.connector.filesystem.Connector):
         new_etag = resource.properties.get(('getetag', 'DAV:'))
         if new_etag and new_etag != old_etag:
             if (id not in self
-                or resource.data.read() != self[id].data.read()):
+                    or resource.data.read() != self[id].data.read()):
                 raise zeit.connector.dav.interfaces.PreconditionFailedError()
 
         if id in self._deleted:
@@ -111,7 +111,7 @@ class Connector(zeit.connector.filesystem.Connector):
                     continue
                 existing_uuid = self._properties[key].get(UUID_PROPERTY)
                 if (existing_uuid and existing_uuid ==
-                    resource.properties[UUID_PROPERTY]):
+                        resource.properties[UUID_PROPERTY]):
                     raise httplib.HTTPException(409, 'Conflict')
 
         # Just a very basic in-memory data storage for testing purposes.
@@ -167,7 +167,7 @@ class Connector(zeit.connector.filesystem.Connector):
             # conflict. Verify body.
             if ('httpd/unix-directory' in (self[old_id].contentType,
                                            self[new_id].contentType) or
-                self[old_id].data.read() != self[new_id].data.read()):
+                    self[old_id].data.read() != self[new_id].data.read()):
                 raise zeit.connector.interfaces.MoveError(
                     old_id,
                     "Could not move %s to %s, because target alread exists." %
@@ -191,8 +191,8 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
-        #locked_by, locked_until = self.locked(id)
-        #if locked_by is not None and locked_by != principal:
+        # locked_by, locked_until = self.locked(id)
+        # if locked_by is not None and locked_by != principal:
         #    raise zeit.cms.interfaces.LockingError(
         #        "%s is already locked." % id)
         self._locked[id] = (principal, until, True)
@@ -244,7 +244,7 @@ class Connector(zeit.connector.filesystem.Connector):
         stored_properties = self._get_properties(id)
         for ((name, namespace), value) in properties.items():
             if (name.startswith('get')
-                and name not in ('getlastmodified', 'getetag')):
+                    and name not in ('getlastmodified', 'getetag')):
                 continue
             stored_properties[(name, namespace)] = value
             if value is zeit.connector.interfaces.DeleteProperty:

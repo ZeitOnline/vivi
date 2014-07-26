@@ -52,7 +52,7 @@ INVALID_ETAG = object()
 
 class Body(persistent.Persistent):
 
-    BUFFER_SIZE = 10*1024
+    BUFFER_SIZE = 10 * 1024
     __slots__ = ('data', 'etag')
 
     def __init__(self):
@@ -83,7 +83,6 @@ class Body(persistent.Persistent):
             raise RuntimeError('self.data is of unsupported type %s' %
                                type(self.data))
         return data_file
-
 
     def update(self, data, etag):
         if etag == self.etag:
@@ -167,7 +166,6 @@ class ResourceCache(persistent.Persistent):
 
         log.debug('Storing body of %s with etag %s' % (
             unique_id, current_etag))
-
 
         # Reuse previously stored container
         store = self._data.get(key)
@@ -344,7 +342,7 @@ class Properties(persistent.mapping.PersistentMapping):
     def __setitem__(self, key, value):
         key = zope.security.proxy.removeSecurityProxy(key)
         if (key is not zeit.connector.interfaces.DeleteProperty
-            and not isinstance(key, WebDAVPropertyKey)):
+                and not isinstance(key, WebDAVPropertyKey)):
             key = WebDAVPropertyKey(key)
         super(Properties, self).__setitem__(key, value)
 

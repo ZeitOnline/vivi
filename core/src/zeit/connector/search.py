@@ -1,7 +1,7 @@
 # search.py
 # format a search spec as S-expression
 
-quotetable = (('"',  '\\"'),
+quotetable = (('"', '\\"'),
               ('\n', '\\n'),
               ('\t', '\\t'),
               # add others as necessary
@@ -17,9 +17,9 @@ def quotestring(str):
 
 def render(x):
     "Kludge: render a string or some special object"
-    if isinstance(x, SearchSymbol): # FIXME more generic!
+    if isinstance(x, SearchSymbol):  # FIXME more generic!
         return x._render()
-    else: # assume string
+    else:  # assume string
         if isinstance(x, unicode):
             x = x.encode('utf8')
         return quotestring(x)
@@ -48,19 +48,19 @@ class SearchExpr(object):
             if o.operator == self.operator:
                 oo = oo + list(o.operands)
             else:
-                oo = oo + [o,]
+                oo = oo + [o]
         self.operands = oo
         return self
 
     def _render(self):
         self._collect()
-        return '(:' + ' '.join( [self.operator,] + \
-                                    [o._render() for o in self.operands] ) + ')'
+        return '(:' + ' '.join(
+            [self.operator] + [o._render() for o in self.operands]) + ')'
 
     def _pprint(self, prfix=''):
         self._collect()
         return prfix + '(:' + self.operator + "\n" + \
-            '\n'.join([o._pprint(prfix+'  ') for o in self.operands]) + ')'
+            '\n'.join([o._pprint(prfix + '  ') for o in self.operands]) + ')'
 
 
 class SearchTerm(SearchExpr):
@@ -71,10 +71,10 @@ class SearchTerm(SearchExpr):
        in the class SearchVar"""
     def _render(self):
         # NOTE: assumes operand[1..] to be "constants"
-        return '(:%s %s %s)' % (self.operator,
-                               self.operands[0]._render(),
-                               ' '.join([render(o) \
-                                             for o in self.operands[1:]]))
+        return '(:%s %s %s)' % (
+            self.operator,
+            self.operands[0]._render(),
+            ' '.join([render(o) for o in self.operands[1:]]))
 
     def _pprint(self, prfix=''):
         return prfix + self._render()

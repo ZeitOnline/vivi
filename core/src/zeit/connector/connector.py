@@ -28,13 +28,13 @@ import zope.interface
 # - Due to the way we implement IDs, we can "deduct" the ID of a
 #   resource's parent given the resource's ID (just chop off the
 #   last path's element).
-# 
+#
 # - Resource ids all have a common prefix (default: http://xml.zeit.de/)
 #   Given the "correct" environment they might be interpreted as URL.
 #
 # - Double slashes whithin the path part are treated as single ones (analog
 #   to POSIX).
-# 
+#
 # - Collection resources SHOULD end in slash, non-collections SHOULD NOT
 #   (not sure whether we should enforce it, but we comply with it).
 
@@ -56,7 +56,7 @@ class DAVUnexpectedResultError(zeit.connector.dav.interfaces.DAVError):
     """Exception raised on unexpected HTTP return code."""
 
 
-_max_timeout_days = ((sys.maxint-1) / 86400) - 1
+_max_timeout_days = ((sys.maxint - 1) / 86400) - 1
 
 
 def _abs2timeout(time):
@@ -69,7 +69,7 @@ def _abs2timeout(time):
     if abs(d.days) > _max_timeout_days:
         return None
     # No negative or zero timeouts:
-    return max(d.days * 86400 + d.seconds + int(d.microseconds/1000000.0), 1)
+    return max(d.days * 86400 + d.seconds + int(d.microseconds / 1000000.0), 1)
 
 
 class CannonicalId(unicode):
@@ -294,10 +294,10 @@ class Connector(object):
         if self._get_cannonical_id(new_id) in self:
             target = self[new_id]
             # The target already exists. It's possible that there was a
-            # conflict. For non-directories verify body. 
+            # conflict. For non-directories verify body.
             if not (resolve_conflicts and
-                    'httpd/unix-directory' not in  (source.contentType,
-                                                    target.contentType) and
+                    'httpd/unix-directory' not in (source.contentType,
+                                                   target.contentType) and
                     source.data.read() == self[new_id].data.read()):
                 raise exception(
                     old_id,
@@ -312,7 +312,7 @@ class Connector(object):
                 new_id += '/'
         else:
             if new_id.endswith('/'):
-                new_id = new_id[:len(new_id)-1]
+                new_id = new_id[:len(new_id) - 1]
         old_loc = self._id2loc(old_id)
         new_loc = self._id2loc(new_id)
 
@@ -320,18 +320,18 @@ class Connector(object):
         method = getattr(conn, method_name)
 
         if old_id.endswith('/'):
-           # We cannot copy/move folders directly because the properties of all
-           # copied/moved objects lost then.
-           self._add_collection(new_id)
-           self.changeProperties(new_id, source.properties)
-           for name, child_id in self.listCollection(old_id):
-               self._copy_or_move(method_name, exception,
-                                  child_id, urlparse.urljoin(new_id, name))
-           if method_name == 'move':
-               del self[old_id]
+            # We cannot copy/move folders directly because the properties of
+            # all copied/moved objects lost then.
+            self._add_collection(new_id)
+            self.changeProperties(new_id, source.properties)
+            for name, child_id in self.listCollection(old_id):
+                self._copy_or_move(method_name, exception,
+                                   child_id, urlparse.urljoin(new_id, name))
+                if method_name == 'move':
+                    del self[old_id]
         else:
-           token = self._get_my_locktoken(old_id)
-           response = method(old_loc, new_loc, locktoken=token)
+            token = self._get_my_locktoken(old_id)
+            response = method(old_loc, new_loc, locktoken=token)
 
         self._invalidate_cache(old_id)
         self._invalidate_cache(new_id)
@@ -477,12 +477,14 @@ class Connector(object):
                 davres.status, davres.reason, '/', davres.body, response)
         for url, resp in davres.responses.items():
             try:
-                id = self._loc2id(urlparse.urljoin(self._roots['default'], url))
+                id = self._loc2id(
+                    urlparse.urljoin(self._roots['default'], url))
             except ValueError:
                 # Search returns documents which are outside the root, ignore
                 continue
             props = resp.get_all_properties()
-            yield tuple([id] + [props[(a.name, a.namespace)] for a in attrlist])
+            yield tuple([id] + [
+                props[(a.name, a.namespace)] for a in attrlist])
 
     def _get_my_lockinfo(self, id):
         # returns (token, principal, time)
@@ -592,7 +594,7 @@ class Connector(object):
                 self._invalidate_cache(id)
 
     def _add_collection(self, id):
-        # NOTE id is the collection's id. Trailing slash is appended as necessary.
+        # NOTE id is the collection's id. Trailing slash is appended if needed.
         # We assume id to map to a non-existent resource, its
         # parent is assumed to exist.
         if not id.endswith('/'):
@@ -613,7 +615,7 @@ class Connector(object):
             return None  # FIXME throw exception?
         hresp.read()
         st = int(hresp.status)
-        if  st== httplib.OK:
+        if st == httplib.OK:
             return hresp.getheader('ETag', 'Unspecified ETag')
         elif st == httplib.NOT_FOUND:
             return None
@@ -763,7 +765,6 @@ class Connector(object):
         if id.endswith('/'):
             last = last + '/'
         return parent + '/', last
-
 
     @zope.cachedescriptors.property.Lazy
     def body_cache(self):

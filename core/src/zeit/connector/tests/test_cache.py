@@ -36,15 +36,15 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
             'data',
             self.cache.getData(self.uniqueId, self.properties1).read())
         del self.cache._etags[self.key]
-        self.assertRaises(KeyError,
-            self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(
+            KeyError, self.cache.getData, self.uniqueId, self.properties1)
         del self.cache._etags
-        self.assertRaises(KeyError,
-            self.cache.getData, self.uniqueId, self.properties1)
+        self.assertRaises(
+            KeyError, self.cache.getData, self.uniqueId, self.properties1)
 
     def test_missing_blob_file(self):
-        data1 = StringIO.StringIO(self.BUFFER_SIZE*2*'x')
-        data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
+        data1 = StringIO.StringIO(self.BUFFER_SIZE* 2 * 'x')
+        data2 = StringIO.StringIO(self.BUFFER_SIZE* 2 * 'y')
         self.cache.setData(self.uniqueId, self.properties1, data1)
         transaction.commit()
         body = self.cache._data[self.key]
@@ -68,7 +68,7 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
         del data._p_changed
         self.assertRaises(KeyError,
                           self.cache.getData, self.uniqueId, self.properties1)
-        data2 = StringIO.StringIO(self.BUFFER_SIZE*2*'y')
+        data2 = StringIO.StringIO(self.BUFFER_SIZE * 2 * 'y')
         self.cache.setData(self.uniqueId, self.properties2, data2)
         self.assertEquals(
             data2.getvalue(),
@@ -77,6 +77,7 @@ class TestResourceCache(zope.app.testing.functional.FunctionalTestCase):
     def test_blob_conflict_resolution(self):
         size = zeit.connector.cache.Body.BUFFER_SIZE
         body = StringIO.StringIO('body' * size)
+
         def store():
             transaction.abort()
             self.cache.setData(self.uniqueId, self.properties1, body)

@@ -17,19 +17,22 @@ class DAVError(Exception):
                 args)
         super(DAVError, self).__init__(*args)
 
-class DAVNoFileError (DAVError):
+
+class DAVNoFileError(DAVError):
     """Exception raised if a DAVFile specific method is invoked on a collection.
     """
 
 
 class DAVNoCollectionError(DAVError):
-    """Exception raised if a collection specific method is invoked on a non-collection.
+    """Exception raised if a collection specific method is invoked
+    on a non-collection.
     """
 
 
 class DAVNotFoundError(DAVError):
     """Exception raised if a resource or a property was not found.
     """
+
 
 class DAVLockedError(DAVError):
     """Raised when modifying or locking a locked resource."""
@@ -39,10 +42,8 @@ class DAVRedirectError(DAVError):
     """Raised when a resource was moved."""
 
 
-
 class PreconditionFailedError(httplib.HTTPException):
     """Raised when a precondition (if header) fails."""
-
 
 
 class DAVBadStatusLineError(DAVError):
