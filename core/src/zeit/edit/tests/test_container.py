@@ -17,11 +17,14 @@ class TestContainer(unittest.TestCase):
         parent = mock.Mock()
         parent._p_changed = False
         zope.interface.alsoProvides(parent, IPersistent)
+
         class Container(zeit.edit.container.Base):
             def _add(self, item):
                 pass
+
             def _delete(self, key):
                 pass
+
             def _get_keys(self, node):
                 return []
         return Container(parent, mock.Mock())

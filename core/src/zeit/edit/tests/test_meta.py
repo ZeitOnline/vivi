@@ -31,5 +31,3 @@ class TestSimpleElementGrokker(zeit.edit.testing.FunctionalTestCase):
             (object(), tree), zeit.edit.interfaces.IElement,
             name='testelement')
 
-
-

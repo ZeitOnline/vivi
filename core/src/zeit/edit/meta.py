@@ -54,5 +54,5 @@ class SimpleElementGrokker(martian.ClassGrokker):
             discriminator=('adapter', for_, provides, context.type),
             callable=zope.component.provideAdapter,
             args=(context, for_, provides, context.type),
-            )
+        )
         return True

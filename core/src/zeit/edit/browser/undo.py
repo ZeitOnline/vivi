@@ -25,7 +25,7 @@ class History(zeit.cms.browser.view.JSON):
         return dict(
             context_url=self.url(self.context),
             history=history,
-            )
+        )
 
 
 class Revert(zeit.edit.browser.view.Action):

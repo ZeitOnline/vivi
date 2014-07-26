@@ -79,29 +79,35 @@ class FoldableFormGroup(zeit.edit.testing.FunctionalTestCase):
 
     def test_setting_folded_workingcopy_renders_css_class(self):
         self.assertEllipsis(
-            '...folded...', self.render(in_workingcopy=True,
-            folded_workingcopy=True))
+            '...folded...', self.render(
+                in_workingcopy=True,
+                folded_workingcopy=True))
         self.assertNotIn(
-            '...folded...', self.render(in_workingcopy=False,
-            folded_workingcopy=True, folded_repository=False))
+            '...folded...', self.render(
+                in_workingcopy=False,
+                folded_workingcopy=True, folded_repository=False))
 
     def test_setting_folded_repository_renders_css_class(self):
         self.assertEllipsis(
-            '...folded...', self.render(in_workingcopy=False,
-            folded_repository=True))
+            '...folded...', self.render(
+                in_workingcopy=False,
+                folded_repository=True))
         self.assertNotIn(
-            '...folded...', self.render(in_workingcopy=True,
-            folded_repository=True))
+            '...folded...', self.render(
+                in_workingcopy=True,
+                folded_repository=True))
 
     def test_default_for_workingcopy_is_folded(self):
         self.assertEllipsis(
-            '...folded...', self.render(in_workingcopy=True,
-            folded_workingcopy=None, folded_repository=None))
+            '...folded...', self.render(
+                in_workingcopy=True,
+                folded_workingcopy=None, folded_repository=None))
 
     def test_default_for_repository_is_folded(self):
         self.assertEllipsis(
-            '...folded...', self.render(in_workingcopy=False,
-            folded_workingcopy=None, folded_repository=None))
+            '...folded...', self.render(
+                in_workingcopy=False,
+                folded_workingcopy=None, folded_repository=None))
 
 
 class InlineEditForm(zeit.edit.browser.form.InlineForm):
