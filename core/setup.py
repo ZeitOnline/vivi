@@ -5,7 +5,7 @@ setup(
     version='3.5.2.dev0',
     author='gocept',
     author_email='mail@gocept.com',
-    url='https://svn.gocept.com/repos/gocept-int/zeit.cms/zeit.content.article',
+    url='',
     description="""\
 """,
     packages=find_packages('src'),

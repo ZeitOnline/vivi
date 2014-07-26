@@ -166,7 +166,7 @@ def import_file(path):
     remove_at = now + DELETE_TIMEOUT + datetime.timedelta(days=1)
     remove_at = remove_at.replace(hour=1)
     remove_in = remove_at - datetime.datetime.now(pytz.UTC)
-    delay = 60*60*24 * remove_in.days + remove_in.seconds
+    delay = 60 * 60 * 24 * remove_in.days + remove_in.seconds
     tasks.addCronJob(
         u'zeit.content.article.cds.remove_if_not_published',
         article.uniqueId, delay=delay)

@@ -72,7 +72,7 @@ class FormBase(object):
             _('Translation'),
             ('original_language', 'translator'),
             css_class='column-right'),
-        )
+    )
 
 
 class Edit(FormBase, zeit.edit.browser.view.EditBox):

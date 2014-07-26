@@ -187,7 +187,6 @@ zeit.cms.with_lock = function(callable) {
         s.waitForElementPresent('css=#edit-form-workflow a.save')
 
 
-
 class WorkflowEndToEnd(
     zeit.content.article.edit.browser.testing.EditorTestCase):
 
@@ -277,8 +276,9 @@ class Delete(zeit.cms.testing.BrowserTestCase):
 
     def test_checked_in_article_has_delete_but_no_cancel(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/repository/'
-               'online/2007/01/Somalia/@@edit.form.checkin-buttons?show_form=1')
+        b.open(
+            'http://localhost/++skin++vivi/repository'
+            '/online/2007/01/Somalia/@@edit.form.checkin-buttons?show_form=1')
         self.assertNothingRaised(b.getLink, 'Delete')
         self.assertNotIn('Cancel', b.contents)
 

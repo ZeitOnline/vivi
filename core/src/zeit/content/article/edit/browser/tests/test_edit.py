@@ -820,7 +820,7 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.waitForElementPresent('css=#content_editable_hacks')
         s.assertText('css=#content_editable_hacks',
-            'regex:.type-p:nth-child\(3\).*background:.*dummy-ad')
+                     'regex:.type-p:nth-child\(3\).*background:.*dummy-ad')
 
     @unittest.skip("no typeKeys 'til webdriver")
     def test_dummy_ad_should_be_updated_by_changing_paragraphs(self):

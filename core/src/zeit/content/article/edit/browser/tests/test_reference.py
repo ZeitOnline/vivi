@@ -113,7 +113,8 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         # Article always has one image block already
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/my_image"]', 'css=.action-article-body-content-droppable')
+            '//li[@uniqueid="Clip/my_image"]',
+            'css=.action-article-body-content-droppable')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
         # ensure object-details are displayed
         s.waitForElementPresent('css=.block.type-image .image_details')
@@ -125,7 +126,8 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         # Article always has one image block already (albeit invisible)
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/my_group"]', 'css=.action-article-body-content-droppable')
+            '//li[@uniqueid="Clip/my_group"]',
+            'css=.action-article-body-content-droppable')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
 
     def test_changing_image_in_teaser_updates_lead_teaser(self):
