@@ -23,7 +23,8 @@ class ImageMetadataTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEllipsis("""\
 <image...>
   ...
-  <copyright py:pytype="str" link="http://example.com" rel="nofollow">Foo</copyright>
+  <copyright py:pytype="str" link="http://example.com"
+        rel="nofollow">Foo</copyright>
 </image>
 """, lxml.etree.tostring(ref, pretty_print=True))
 
