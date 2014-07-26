@@ -32,7 +32,7 @@ def get_img_tag(image, request, view=None):
         view = ''
     return (
         '<img src="%s%s" alt="" height="%s" width="%s" border="0" />' % (
-        url, view, height, width))
+            url, view, height, width))
 
 
 class Image(zope.file.download.Display):

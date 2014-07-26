@@ -64,13 +64,13 @@ class IImageMetadata(zope.interface.Interface):
                 title=_("Copyright"),
                 min_length=3,
                 required=True),
-            zope.schema.URI(
-                title=_('Link'),
-                description=_('Link to copyright holder'),
-                required=False),
+             zope.schema.URI(
+                 title=_('Link'),
+                 description=_('Link to copyright holder'),
+                 required=False),
              zope.schema.Bool(
                  title=_('set nofollow'),
-                 required=False))))
+                required=False))))
 
     alt = zope.schema.TextLine(
         title=_("Alternative text"),
@@ -89,7 +89,7 @@ class IImageMetadata(zope.interface.Interface):
         required=False)
     # XXX Disabled because the frontend does not interpret rewritten links
     # correctly yet.
-    #zope.interface.alsoProvides(links_to, ILinkField)
+    # zope.interface.alsoProvides(links_to, ILinkField)
 
     alignment = zope.schema.Choice(
         title=_('Alignment'),
