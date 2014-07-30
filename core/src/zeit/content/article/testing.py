@@ -142,6 +142,7 @@ def create_article():
     article.year = 2011
     article.title = u'title'
     article.ressort = u'Deutschland'
+    zope.event.notify(zope.lifecycleevent.ObjectCreatedEvent(article))
     return article
 
 
