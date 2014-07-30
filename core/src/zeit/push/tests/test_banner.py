@@ -35,8 +35,6 @@ class StaticArticlePublisherTest(zeit.push.testing.TestCase):
             lxml.etree.tostring(IEditableBody(article).values()[0].xml))
 
     def test_regression_handles_unicode(self):
-        self.assertEqual(
-            None, ISemanticChange(self.repository['foo']).last_semantic_change)
         self.publisher.send(u'mütext', 'http://zeit.de/foo')
         zeit.workflow.testing.run_publish()
         article = self.repository['foo']
