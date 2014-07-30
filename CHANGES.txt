@@ -4,7 +4,7 @@ zeit.push changes
 1.4.2 (unreleased)
 ------------------
 
-- Update last_semantic_change of banner files properly (VIV-459).
+- Update last_semantic_change of banner files properly (VIV-460).
 
 
 1.4.1 (2014-07-17)
