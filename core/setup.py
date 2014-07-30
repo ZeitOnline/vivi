@@ -22,7 +22,7 @@ setup(
         'tweepy',
         'zc.sourcefactory',
         'zeit.cms>=2.23.0.dev0',
-        'zeit.content.article>=3.3.0.dev0',
+        'zeit.content.article>=3.5.2.dev0',
         'zeit.objectlog',
         'zope.component',
         'zope.interface',

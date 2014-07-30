@@ -1,10 +1,13 @@
+from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import ICheckinManager
+from zeit.cms.content.interfaces import ISemanticChange
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.content.article.edit.interfaces import IBreakingNewsBody
 import grokcore.component as grok
 import logging
+import pytz
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -25,9 +28,20 @@ class StaticArticlePublisher(object):
         article = ICMSContent(self.uniqueId)
         log.debug('Setting %s, %s as body of %s', text, link, self.uniqueId)
         self._ensure_unlocked(article)
-        with checked_out(article, semantic_change=True) as co:
+        with checked_out(article) as co:
             IBreakingNewsBody(co).text = u'<a href="{link}">{text}</a>'.format(
                 link=link, text=text)
+            # XXX The checked_out helper is rather technical (it does not
+            # simulate a complete user interaction), thus specifying
+            # checked_out(semantic_change=True) doesn't help: Since the checked
+            # out object is newly created and we don't (can't?) call
+            # transaction.commit() here (and a temporary workingcopy does not
+            # really participate in the ZODB machinery anyway), the _p_mtime of
+            # the checked out object is not set, which means its modified date
+            # is not updated -- which means LSC would be set to the last
+            # modified date taken from the repository, which is not what we
+            # want.
+            ISemanticChange(co).last_semantic_change = datetime.now(pytz.UTC)
         IPublishInfo(article).urgent = True
         IPublish(article).publish()
 
