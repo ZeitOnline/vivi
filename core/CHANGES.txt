@@ -4,7 +4,8 @@ zeit.content.article changes
 3.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make create_article test helper do the same things that creating through the
+  browser would do.
 
 
 3.5.1 (2014-07-17)
