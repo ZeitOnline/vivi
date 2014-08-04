@@ -5,7 +5,9 @@ zeit.content.cp changes
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Introduce ILeadTime to store start and end timestamps for when an article is
+  featured in the "leader" position (first teaser in the lead area) of a
+  centerpage (WEB-325).
 
 
 2.4.0 (2014-07-17)
