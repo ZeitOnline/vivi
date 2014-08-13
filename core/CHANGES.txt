@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.4.1 (unreleased)
+2.5.0 (2014-08-13)
 ------------------
 
 - Introduce ILeadTime to store start and end timestamps for when an article is
