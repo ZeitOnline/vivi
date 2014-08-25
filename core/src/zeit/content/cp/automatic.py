@@ -62,14 +62,36 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
     def values(self):
         values = self.context.values()
         if self.automatic:
-            solr_result = iter(zeit.find.search.search(
-                self.query, sort_order='date-first-released desc'))
+            result = []
+            solr_result = list(zeit.find.search.search(
+                self.query, sort_order='date-first-released desc',
+                additional_result_fields=['lead_candidate']))
             for block in values:
                 if not IAutomaticTeaserBlock.providedBy(block):
+                    result.append(block)
                     continue
-                block.insert(0, zeit.cms.interfaces.ICMSContent(
-                    solr_result.next()['uniqueId']))
-        return values
+                try:
+                    # This assumes that the *first* block always has layout
+                    # 'leader', since otherwise the first result that
+                    # may_be_leader might be given to a non-leader block.
+                    if block.layout.id == 'leader':
+                        id = self._extract_leader(solr_result)
+                    else:
+                        id = solr_result.pop(0)['uniqueId']
+                except IndexError:
+                    continue
+                block.insert(0, zeit.cms.interfaces.ICMSContent(id))
+                result.append(block)
+        else:
+            result = values
+        return result
+
+    def _extract_leader(self, solr_result):
+        for i, item in enumerate(solr_result):
+            if item.get('lead_candidate'):
+                solr_result.pop(i)
+                return item['uniqueId']
+        raise IndexError()
 
     @property
     def rendered_xml(self):
@@ -81,3 +103,13 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
             else:
                 region.append(copy.copy(block.xml))
         return region
+
+
+class AutomaticConfig(zeit.cms.content.dav.DAVPropertiesAdapter):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IAutomaticConfig)
+
+    zeit.cms.content.dav.mapProperties(
+        zeit.content.cp.interfaces.IAutomaticConfig,
+        zeit.content.cp.interfaces.DAV_NAMESPACE,
+        ('lead_candidate',))

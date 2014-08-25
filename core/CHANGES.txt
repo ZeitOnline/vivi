@@ -7,6 +7,8 @@ zeit.content.cp changes
 
 - Make automatic blocks non-editable (VIV-447).
 
+- Fill automatic "leader" block only with specially marked articles (VIV-436).
+
 
 2.5.0 (2014-08-13)
 ------------------

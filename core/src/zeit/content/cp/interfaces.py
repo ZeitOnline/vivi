@@ -600,3 +600,11 @@ class ILeadTimeWorklist(zope.interface.Interface):
 
     previous_leader = zope.schema.Choice(
         source=zeit.cms.content.contentsource.CMSContentSource())
+
+
+class IAutomaticConfig(zope.interface.Interface):
+
+    lead_candidate = zope.schema.Bool(
+        title=_('Lead candidate'),
+        default=False,
+        required=False)
