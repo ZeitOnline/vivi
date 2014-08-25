@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Jul 17 11:46:54 2014\n"
-"PO-Revision-Date: 2014-07-17 11:48+0100\n"
+"POT-Creation-Date: Mon Aug 25 11:49:53 2014\n"
+"PO-Revision-Date: 2014-08-25 11:50+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -40,11 +40,11 @@ msgstr "Brightcove ID"
 msgid "Edit brightcove videos"
 msgstr "Edit brightcove videos"
 
-#: zeit/brightcove/interfaces.py:107 zeit/content/video/interfaces.py:93
+#: zeit/brightcove/interfaces.py:106 zeit/content/video/interfaces.py:93
 msgid "Video IDs"
 msgstr "Video-Ids"
 
-#: zeit/brightcove/interfaces.py:112
+#: zeit/brightcove/interfaces.py:111
 msgid "URI of the Playlist-Video"
 msgstr "URI der Playlist"
 
@@ -52,8 +52,8 @@ msgstr "URI der Playlist"
 msgid "Id"
 msgstr "Id"
 
-#: zeit/brightcove/interfaces.py:33 zeit/calendar/interfaces.py:41
-#: zeit/cms/browser/listing.py:268 zeit/cms/content/browser/template.py:46
+#: zeit/brightcove/interfaces.py:33 zeit/calendar/interfaces.py:38
+#: zeit/cms/browser/listing.py:269 zeit/cms/content/browser/template.py:46
 #: zeit/cms/content/interfaces.py:135 zeit/cms/content/interfaces.py:437
 #: zeit/cms/syndication/browser/feed.py:157
 #: zeit/cms/syndication/browser/manager.py:98
@@ -197,11 +197,11 @@ msgstr "Nächste Woche"
 msgid "Next four weeks"
 msgstr "Nächste vier Wochen"
 
-#: zeit/calendar/browser/event.py:134
+#: zeit/calendar/browser/event.py:133
 msgid "Event completed."
 msgstr "Termin erledigt."
 
-#: zeit/calendar/browser/event.py:142
+#: zeit/calendar/browser/event.py:141
 msgid "Event reactivated."
 msgstr "Termin wiederhergestellt."
 
@@ -209,7 +209,7 @@ msgstr "Termin wiederhergestellt."
 msgid "Event"
 msgstr "Termin"
 
-#: zeit/calendar/browser/event.py:27 zeit/calendar/interfaces.py:45
+#: zeit/calendar/browser/event.py:27 zeit/calendar/interfaces.py:42
 #: zeit/content/cp/interfaces.py:85
 msgid "Description"
 msgstr "Beschreibung"
@@ -238,15 +238,15 @@ msgstr "Termin bearbeiten"
 msgid "Apply"
 msgstr "Speichern"
 
-#: zeit/calendar/browser/event.py:83
+#: zeit/calendar/browser/event.py:82
 msgid "Delete event"
 msgstr "Termin löschen"
 
-#: zeit/calendar/browser/event.py:84
+#: zeit/calendar/browser/event.py:83
 msgid "Really delete event?"
 msgstr "Termin wirklich löschen?"
 
-#: zeit/calendar/browser/event.py:88
+#: zeit/calendar/browser/event.py:87
 msgid "Event deleted."
 msgstr "Termin gelöscht."
 
@@ -254,84 +254,84 @@ msgstr "Termin gelöscht."
 msgid "Create and modify calendar entries"
 msgstr "Erstellen und Anzeigen von Kalendereinträgen"
 
-#: zeit/calendar/interfaces.py:24
+#: zeit/calendar/interfaces.py:22
 msgid "The event ends before it starts."
 msgstr "Der Termin endet bevor er beginnt."
 
-#: zeit/calendar/interfaces.py:32
+#: zeit/calendar/interfaces.py:29
 msgid "Start"
 msgstr "Beginn"
 
-#: zeit/calendar/interfaces.py:33
+#: zeit/calendar/interfaces.py:30
 msgid "Date when the event starts."
 msgstr "Datum des Terminbeginns"
 
-#: zeit/calendar/interfaces.py:36
+#: zeit/calendar/interfaces.py:33
 msgid "End"
 msgstr "Ende"
 
-#: zeit/calendar/interfaces.py:37
+#: zeit/calendar/interfaces.py:34
 msgid "Date when the event ends."
 msgstr "Datum des Terminendes"
 
-#: zeit/calendar/interfaces.py:42
+#: zeit/calendar/interfaces.py:39
 msgid "Title will be shown in overview pages."
 msgstr "Der Titel wird in den Übersitchtsseiten angezeigt."
 
-#: zeit/calendar/interfaces.py:49 zeit/cms/related/interfaces.py:34
+#: zeit/calendar/interfaces.py:46 zeit/cms/related/interfaces.py:34
 msgid "Related content"
 msgstr "interne Links"
 
-#: zeit/calendar/interfaces.py:50
+#: zeit/calendar/interfaces.py:47
 msgid "Documents that are related to this object."
 msgstr "Dokumente, die verlinkt werden sollen."
 
-#: zeit/calendar/interfaces.py:57
+#: zeit/calendar/interfaces.py:54
 msgid "Location/Type"
 msgstr " Lokation/Typ"
 
-#: zeit/calendar/interfaces.py:58
+#: zeit/calendar/interfaces.py:55
 msgid "Where should the article be placed."
 msgstr "Wo soll der Artikel erscheinen?"
 
-#: zeit/calendar/interfaces.py:62 zeit/cms/browser/listing.py:281
+#: zeit/calendar/interfaces.py:59 zeit/cms/browser/listing.py:282
 #: zeit/cms/content/interfaces.py:79 zeit/cms/content/interfaces.py:554
 msgid "Ressort"
 msgstr "Ressort"
 
-#: zeit/calendar/interfaces.py:67
+#: zeit/calendar/interfaces.py:64
 msgid "Topic?"
 msgstr "Thema?"
 
-#: zeit/calendar/interfaces.py:68
+#: zeit/calendar/interfaces.py:65
 msgid "Is the article a topic for the next week?"
 msgstr "Ist der Artikel ggf. ein Thema für die nächste Woche?"
 
-#: zeit/calendar/interfaces.py:71
+#: zeit/calendar/interfaces.py:68
 msgid "Completed?"
 msgstr "Erledigt?"
 
-#: zeit/calendar/interfaces.py:72
+#: zeit/calendar/interfaces.py:69
 msgid "Check when the event has been completed."
 msgstr "Auswählen, wenn die Aufgabe erledigt ist."
 
-#: zeit/calendar/interfaces.py:76
+#: zeit/calendar/interfaces.py:73
 msgid "Added by"
 msgstr "Hinzugefügt von"
 
-#: zeit/calendar/interfaces.py:81
+#: zeit/calendar/interfaces.py:78
 msgid "Priority"
 msgstr "Priorität"
 
-#: zeit/calendar/source.py:13
+#: zeit/calendar/source.py:12
 msgid "^^ mandatory"
 msgstr "⇈ zwingend"
 
-#: zeit/calendar/source.py:14
+#: zeit/calendar/source.py:13
 msgid "^ important"
 msgstr "↑ wichtig"
 
-#: zeit/calendar/source.py:15
+#: zeit/calendar/source.py:14
 msgid "> suggestion"
 msgstr "↝ vorschlag"
 
@@ -376,7 +376,7 @@ msgstr "Assets bearbeiten"
 msgid "Assets"
 msgstr "Assets"
 
-#: zeit/cms/browser/breadcrumbs.py:104
+#: zeit/cms/browser/breadcrumbs.py:101
 msgid "(new)"
 msgstr "(neu)"
 
@@ -456,20 +456,20 @@ msgstr "Anzeigen"
 msgid "Form"
 msgstr "Formular"
 
-#: zeit/cms/browser/listing.py:253
+#: zeit/cms/browser/listing.py:254
 msgid "Directory listing"
 msgstr "Dateiliste"
 
-#: zeit/cms/browser/listing.py:257
+#: zeit/cms/browser/listing.py:258
 msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
-#: zeit/cms/browser/listing.py:264 zeit/cms/syndication/browser/feed.py:153
+#: zeit/cms/browser/listing.py:265 zeit/cms/syndication/browser/feed.py:153
 #: zeit/content/article/interfaces.py:127 zeit/content/author/author.py:59
 msgid "Author"
 msgstr "Autor"
 
-#: zeit/cms/browser/listing.py:272 zeit/cms/interfaces.py:50
+#: zeit/cms/browser/listing.py:273 zeit/cms/interfaces.py:50
 #: zeit/cms/repository/browser/file.py:40
 #: zeit/cms/repository/browser/file_details.pt:2
 #: zeit/content/image/browser/imagegroup.py:106
@@ -477,15 +477,15 @@ msgstr "Autor"
 msgid "File name"
 msgstr "Dateiname"
 
-#: zeit/cms/browser/listing.py:276
+#: zeit/cms/browser/listing.py:277
 msgid "Modified"
 msgstr "Verändert"
 
-#: zeit/cms/browser/listing.py:279 zeit/cms/syndication/browser/feed.py:160
+#: zeit/cms/browser/listing.py:280 zeit/cms/syndication/browser/feed.py:160
 msgid "Hits"
 msgstr "Treffer"
 
-#: zeit/cms/browser/listing.py:285 zeit/cms/content/interfaces.py:74
+#: zeit/cms/browser/listing.py:286 zeit/cms/content/interfaces.py:74
 msgid "Page"
 msgstr "Seite"
 
@@ -692,7 +692,7 @@ msgid "${source} was copied to ${target}."
 msgstr "»${source}« wurde nach »${target}« kopiert."
 
 #. Default: ""
-#: zeit/cms/clipboard/browser/entry.py:83
+#: zeit/cms/clipboard/browser/entry.py:81
 msgid "Broken reference to ${uniqueId}"
 msgstr "Invalide Referenz zu ${uniqueId}"
 
@@ -717,7 +717,7 @@ msgstr "Navigation"
 msgid "Head"
 msgstr "Kopf"
 
-#: zeit/cms/content/browser/form.py:39 zeit/content/cp/browser/form.py:31
+#: zeit/cms/content/browser/form.py:39 zeit/content/cp/browser/form.py:32
 #: zeit/content/gallery/browser/form.py:27
 #: zeit/content/image/browser/form.py:23
 #: zeit/content/infobox/browser/form.py:27
@@ -1001,16 +1001,16 @@ msgstr "Gesperrt von"
 msgid "Locked until"
 msgstr "Gesperrt bis"
 
-#: zeit/cms/locking/browser/lock.py:117
+#: zeit/cms/locking/browser/lock.py:113
 msgid "Locked by you"
 msgstr "Von Ihnen gesperrt"
 
 #. Default: ""
-#: zeit/cms/locking/browser/lock.py:127
+#: zeit/cms/locking/browser/lock.py:123
 msgid "Locked by ${user}"
 msgstr "Gesperrt von ${user}"
 
-#: zeit/cms/locking/browser/lock.py:131
+#: zeit/cms/locking/browser/lock.py:127
 msgid "Not locked"
 msgstr "Nicht gesperrt"
 
@@ -1018,34 +1018,34 @@ msgstr "Nicht gesperrt"
 msgid "Locks"
 msgstr "Sperren"
 
-#: zeit/cms/locking/browser/lock.py:48
+#: zeit/cms/locking/browser/lock.py:47
 msgid "Steal lock"
 msgstr "Sperre stehlen"
 
 #. Default: ""
-#: zeit/cms/locking/browser/lock.py:55
+#: zeit/cms/locking/browser/lock.py:53
 msgid "The lock on \"${name}\" has been stolen from \"${old_locker}\"."
 msgstr "Sperre auf  »${name}« von «${old_locker}» gestohlen."
 
-#: zeit/cms/locking/browser/lock.py:60
+#: zeit/cms/locking/browser/lock.py:58
 msgid "Lock"
 msgstr "Sperren"
 
 #. Default: ""
-#: zeit/cms/locking/browser/lock.py:65
+#: zeit/cms/locking/browser/lock.py:62
 msgid "\"${name}\" has been locked."
 msgstr "»${name}« wurde gesperrt."
 
-#: zeit/cms/locking/browser/lock.py:68
+#: zeit/cms/locking/browser/lock.py:65
 msgid "Unlock"
 msgstr "Sperre aufheben"
 
 #. Default: ""
-#: zeit/cms/locking/browser/lock.py:73
+#: zeit/cms/locking/browser/lock.py:69
 msgid "\"${name}\" has been unlocked."
 msgstr "Die Sperre auf »${name}« wurde entfernt."
 
-#: zeit/cms/locking/browser/lock.py:89
+#: zeit/cms/locking/browser/lock.py:85
 msgid "Manage lock"
 msgstr "Sperre verwalten"
 
@@ -1371,7 +1371,7 @@ msgstr "»${name}« wurde aus Ihren Syndizierungszielen entfernt."
 msgid "Remember as syndication target"
 msgstr "Als Syndizierungsziel merken"
 
-#: zeit/cms/syndication/browser/feed.py:304
+#: zeit/cms/syndication/browser/feed.py:305
 msgid "Remove from my syndication targets"
 msgstr "Aus Syndizierungszielen entfernen"
 
@@ -2065,7 +2065,7 @@ msgstr "Ziehen Sie Bildergalerien hier, um sie zu verknüpfen"
 #: zeit/content/article/edit/interfaces.py:236
 #: zeit/content/article/edit/interfaces.py:246
 #: zeit/content/article/edit/reference.py:109
-#: zeit/content/infobox/infobox.py:69 zeit/content/infobox/interfaces.py:38
+#: zeit/content/infobox/infobox.py:69 zeit/content/infobox/interfaces.py:37
 #: zeit/wysiwyg/browser/resources/reference/image.pt:33
 msgid "Infobox"
 msgstr "Infobox"
@@ -2425,7 +2425,7 @@ msgstr "Autopilot"
 msgid "Parquet"
 msgstr "Parkett"
 
-#: zeit/content/cp/browser/blocks/teaser.py:317
+#: zeit/content/cp/browser/blocks/teaser.py:319
 msgid "^ Left | Right v"
 msgstr "↑ Links | Rechts ↓"
 
@@ -2460,7 +2460,7 @@ msgstr "Center-Page"
 msgid "Edit centerpage"
 msgstr "Centerpage bearbeiten"
 
-#: zeit/content/cp/browser/form.py:41
+#: zeit/content/cp/browser/form.py:42
 msgid "OG Metadata"
 msgstr "Metadaten"
 
@@ -2469,6 +2469,10 @@ msgid "Add centerpage"
 msgstr "Centerpage hinzufügen"
 
 #: zeit/content/cp/browser/form.py:77
+msgid "Automatic contents"
+msgstr "Automatische Bestückung"
+
+#: zeit/content/cp/browser/form.py:86
 msgid "View centerpage metadata"
 msgstr "Metadaten"
 
@@ -2717,6 +2721,14 @@ msgstr "Schlagwort für Navi-Teaser 1"
 msgid "Link to"
 msgstr "Verlinkt nach"
 
+#: zeit/content/cp/interfaces.py:589 zeit/workflow/interfaces.py:36
+msgid "From"
+msgstr "Von"
+
+#: zeit/content/cp/interfaces.py:590 zeit/workflow/interfaces.py:38
+msgid "To"
+msgstr "Bis"
+
 #: zeit/content/cp/interfaces.py:61
 msgid "Label for topiclink #2"
 msgstr "Schlagwort für Navi-Teaser 2"
@@ -2764,7 +2776,7 @@ msgstr ""
 msgid "Create teaser group"
 msgstr "Teasergruppe anlegen"
 
-#: zeit/content/cp/teasergroup/browser.py:42
+#: zeit/content/cp/teasergroup/browser.py:41
 msgid "Display teaser group"
 msgstr "Teasergruppe anzeigen"
 
@@ -3751,14 +3763,6 @@ msgstr ""
 msgid "${title}: ${state}"
 msgstr "${title}: ${state}"
 
-#: zeit/workflow/interfaces.py:36
-msgid "From"
-msgstr "Von"
-
-#: zeit/workflow/interfaces.py:38
-msgid "To"
-msgstr "Bis"
-
 #: zeit/workflow/interfaces.py:40
 msgid "Publication period"
 msgstr "Veröffentlichungszeitraum"
@@ -3927,9 +3931,6 @@ msgstr "mit Info"
 #: zeit/wysiwyg/browser/resources/reference/image.pt:32
 msgid "large"
 msgstr "vollbreit"
-
-#~ msgid "Automatic contents"
-#~ msgstr "Automatische Bestückung"
 
 #~ msgid "Additional Facebook"
 #~ msgstr "zusätzlicher Facebook-Account:"
