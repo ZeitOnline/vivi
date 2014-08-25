@@ -435,3 +435,11 @@ margin-top: 4px;
 .action-content-droppable.video-image.landing-zone.visible {
   width:43%
 }
+
+/* Automatic teaser blocks */
+
+.block.type-auto-teaser .edit-bar .toggle-automatic {
+  display: inline-block;
+  height: 16px;
+  font-weight: bold;
+}

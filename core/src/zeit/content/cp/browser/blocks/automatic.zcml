@@ -1,0 +1,64 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  xmlns:gocept="http://namespaces.gocept.com/zcml"
+  i18n_domain="zeit.cms">
+
+  <!-- automatic teaser block -->
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="delete"
+    class=".automatic.Empty"
+    permission="zeit.EditContent"
+    weight="90"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="drag"
+    class=".automatic.Empty"
+    permission="zeit.EditContent"
+    weight="1000"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="edit-box"
+    class=".automatic.Empty"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="edit-contents"
+    class=".automatic.Empty"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="toggle-automatic"
+    template="layout.teaser.toggle-automatic.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+</configure>
