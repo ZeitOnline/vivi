@@ -208,22 +208,4 @@
     class=".resources.RawCSS"
     permission="zope.View" />
 
-  <browser:page
-    for="..interfaces.ICenterPage"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="automatic.html"
-    class=".automatic.Edit"
-    permission="zeit.EditContent"
-    />
-
-  <browser:menuItem
-    zcml:condition="have zeit.content.cp.automatic"
-    for="..interfaces.ICenterPage"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    menu="zeit-context-views"
-    title="Automatic contents"
-    action="@@automatic.html"
-    permission="zeit.EditContent"
-    />
-
 </configure>

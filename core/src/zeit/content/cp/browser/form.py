@@ -3,6 +3,7 @@
 
 from zeit.content.cp.i18n import MessageFactory as _
 import gocept.form.grouped
+import grokcore.component as grok
 import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -68,9 +69,24 @@ class EditForm(FormBase,
                zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _("Edit centerpage")
+    form_fields = FormBase.form_fields + zope.formlib.form.FormFields(
+        zeit.content.cp.interfaces.IAutomaticRegion).select(
+            'count', 'query', 'automatic')
+
+    automatic_fields = gocept.form.grouped.Fields(
+        _("Automatic contents"),
+         ('count', 'query', 'automatic'),
+        css_class='wide-widgets')
+    field_groups = (automatic_fields,) + FormBase.field_groups
 
 
 class DisplayForm(FormBase,
                   zeit.cms.content.browser.form.CommonMetadataDisplayForm):
 
     title = _("View centerpage metadata")
+
+
+@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
+@grok.implementer(zeit.content.cp.interfaces.IAutomaticRegion)
+def autoregion_for_cp(context):
+    return zeit.content.cp.interfaces.IAutomaticRegion(context['lead'])

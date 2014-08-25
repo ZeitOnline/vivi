@@ -10,7 +10,7 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
     def test_stores_properties_in_xml(self):
         b = self.browser
         zeit.content.cp.browser.testing.create_cp(b)
-        b.open('@@automatic.html')
+        b.open('@@edit-metadata.html')
         b.getControl('Amount of teasers').value = '5'
         b.getControl('automatic').selected = True
         b.getControl('Raw query').value = 'foo'
