@@ -39,7 +39,6 @@ setup(
         'zeit.content.video',
         'zeit.edit >= 2.1.3',
         'zeit.find >= 0.4',
-        'zeit.solr',
         'zope.app.appsetup',
         'zope.app.generations',
         'zope.app.pagetemplate',
