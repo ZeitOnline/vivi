@@ -8,7 +8,7 @@ import zeit.solr.interfaces
 import zope.component
 
 
-def search(q, sort_order=None):
+def search(q, sort_order=None, additional_result_fields=None):
     """Search solr according to query.
 
     q - the lucene query
@@ -52,6 +52,8 @@ def search(q, sort_order=None):
         'volume',
         'year',
     ]
+    if additional_result_fields:
+        result_fields.extend(additional_result_fields)
 
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields),
