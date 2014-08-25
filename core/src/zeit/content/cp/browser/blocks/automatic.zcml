@@ -54,6 +54,18 @@
     for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
+    manager="..interfaces.IEditorContentViewletManager"
+    name="contents"
+    class=".automatic.Display"
+    template="layout.teaser.content.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
     name="toggle-automatic"
     template="layout.teaser.toggle-automatic.pt"

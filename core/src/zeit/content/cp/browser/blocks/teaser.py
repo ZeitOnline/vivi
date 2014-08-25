@@ -157,9 +157,11 @@ class TeaserPositions(grok.Adapter):
 
 class Display(zeit.cms.browser.view.Base):
 
+    base_css_classes = ['teaser-contents action-content-droppable']
+
     @property
     def css_class(self):
-        css = ['teaser-contents action-content-droppable']
+        css = self.base_css_classes[:]
         layout = self.context.layout
         if layout is not None:
             css.append(layout.id)
