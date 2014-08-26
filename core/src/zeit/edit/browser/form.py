@@ -78,6 +78,10 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
         return errors
 
     def get_all_input_even_if_invalid(self, data):
+        # Since zope.formlib does not offer an API to the input value of a
+        # widget regardless of validation errors, this is quite a bit of
+        # guesswork, and not 100% complete (e.g. SequenceWidgets are not
+        # handled here).
         form_prefix = zope.formlib.form.expandPrefix(self.prefix)
         for input, widget in self.widgets.__iter_input_and_widget__():
             if input and zope.formlib.interfaces.IInputWidget.providedBy(
@@ -88,6 +92,9 @@ class InlineForm(zeit.cms.browser.form.WidgetCSSMixin,
                         # combination widget has a helper for us.
                         data[name] = widget.loadValueFromRequest()
                     except AttributeError:
+                        if not hasattr(widget, '_toFieldValue'):
+                            # e.g. SequenceWidget
+                            continue
                         data[name] = widget._toFieldValue(
                             widget._getFormInput())
                 except zope.formlib.interfaces.ConversionError:
