@@ -1,9 +1,10 @@
+from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 import copy
 import lxml
-from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 import zeit.cms.content.property
 import zeit.content.cp.interfaces
 import zeit.find.search
+import zope.app.appsetup.product
 import zope.component
 import zope.interface
 
@@ -64,7 +65,7 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
         if self.automatic:
             result = []
             solr_result = list(zeit.find.search.search(
-                self.query, sort_order='date-first-released desc',
+                self.query, sort_order='%s desc' % self.sort_field_name,
                 additional_result_fields=['lead_candidate']))
             for block in values:
                 if not IAutomaticTeaserBlock.providedBy(block):
@@ -85,6 +86,12 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
         else:
             result = values
         return result
+
+    @property
+    def sort_field_name(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.cp')
+        return config.get('automatic-sort-field', 'date-first-released')
 
     def _extract_leader(self, solr_result):
         for i, item in enumerate(solr_result):
