@@ -4,7 +4,8 @@ zeit.cms changes
 2.25.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix bug in publish/retract dialog: use the correct context when the dialog is
+  opened from a folder view (VIV-452).
 
 
 2.25.0 (2014-07-17)

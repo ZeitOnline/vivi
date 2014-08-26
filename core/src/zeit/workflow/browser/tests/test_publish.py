@@ -1,8 +1,10 @@
 # Copyright (c) 2011 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import transaction
 import zeit.cms.testing
 import zeit.workflow.testing
+import zope.component.hooks
 
 
 class TestPublish(zeit.cms.testing.SeleniumTestCase,
@@ -19,13 +21,12 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
         self.stop_tasks()
         super(TestPublish, self).tearDown()
 
-    def prepare_content(self):
+    def prepare_content(self, id='http://xml.zeit.de/testcontent'):
         from zeit.workflow.interfaces import IContentWorkflow
         import zeit.cms.interfaces
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
-                content = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/testcontent')
+                content = zeit.cms.interfaces.ICMSContent(id)
                 IContentWorkflow(content).urgent = True
 
     def test_action_should_be_available(self):
@@ -66,6 +67,31 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
                          'Error during publish/retract: OSError*')
         finally:
             config['zeit.workflow']['publish-script'] = old_script
+
+    def test_opening_dialog_from_folder_view_points_to_content(self):
+        # Regression VIV-452
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
+        zope.component.hooks.setSite(self.getRootFolder())
+        self.repository['other'] = TestContentType()
+        self.prepare_content('http://xml.zeit.de/other')
+        self.prepare_content('http://xml.zeit.de/testcontent')
+        with zeit.cms.testing.interaction():
+            IPublish(self.repository['other']).publish()
+            IPublish(self.repository['testcontent']).publish()
+            transaction.commit()
+        self.open('/repository')
+        s = self.selenium
+        s.click('xpath=//*[contains(text(), "testcontent")]')
+        s.waitForElementPresent('css=#bottomcontent a[title=Retract]')
+        s.click('css=#bottomcontent a[title=Retract]')
+        s.waitForElementPresent('css=ol#worklist')
+        s.waitForElementPresent('css=li.busy[action=retract]')
+        s.waitForElementNotPresent('css=li.busy[action=retract]')
+        s.waitForPageToLoad()
+        self.assertFalse(
+            IPublishInfo(self.repository['testcontent']).published)
+        self.assertTrue(IPublishInfo(self.repository['other']).published)
 
 
 class TestRetract(zeit.cms.testing.SeleniumTestCase,

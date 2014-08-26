@@ -3,7 +3,9 @@
 
 <tal:block condition="view/can_publish">
 <ol id="worklist">
-  <li action="publish" i18n:translate="">Publishing</li>
+  <li action="publish"
+      tal:attributes="cms:context context/@@absolute_url"
+      i18n:translate="">Publishing</li>
   <li action="reload" i18n:translate="">Reloading</li>
 </ol>
 
