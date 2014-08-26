@@ -75,8 +75,7 @@ class EditForm(FormBase,
 
     automatic_fields = gocept.form.grouped.Fields(
         _("Automatic contents"),
-         ('count', 'query', 'automatic'),
-        css_class='wide-widgets')
+         ('automatic', 'count', 'query'))
     field_groups = (automatic_fields,) + FormBase.field_groups
 
 

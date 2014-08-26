@@ -448,3 +448,21 @@ margin-top: 4px;
   background-color: white;
   opacity: 0.4;
 }
+
+.fieldname-automatic, .fieldname-count {
+  float: left;
+}
+
+.fieldname-query {
+  clear: left;
+}
+
+/* display label and widget side-by-side */
+.fieldname-count * {
+  float: left;
+}
+
+.fieldname-count label {
+  margin-top: 9px; /* XXX center vertically */
+  margin-left: 4em;
+}
