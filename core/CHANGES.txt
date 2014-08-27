@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.5.3 (unreleased)
+3.5.3 (2014-08-27)
 ------------------
 
 - Reactivate posting breaking news to Facebook.
