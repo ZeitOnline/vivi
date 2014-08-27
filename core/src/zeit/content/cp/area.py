@@ -2,10 +2,12 @@
 # See also LICENSE.txt
 
 import gocept.lxml.interfaces
+import grokcore.component as grok
 import itertools
+import lxml
 import zeit.content.cp.interfaces
-import zope.component
 import zeit.edit.container
+import zope.component
 import zope.interface
 
 
@@ -59,3 +61,15 @@ def container_to_centerpage(context):
     # Is this required? Is there any IContainer which is not an IElement at the
     # same time?
     return zeit.content.cp.interfaces.ICenterPage(context.__parent__, None)
+
+
+@grok.adapter(zeit.content.cp.interfaces.IRegion)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml(context):
+    region = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
+    region.attrib.pop('automatic', None)
+    # XXX This API is non-obvious: IAutomaticRegion also works for regions
+    # that are not or can never be automatic.
+    for block in zeit.content.cp.interfaces.IAutomaticRegion(context).values():
+        region.append(zeit.content.cp.interfaces.IRenderedXML(block))
+    return region

@@ -608,3 +608,7 @@ class IAutomaticConfig(zope.interface.Interface):
         title=_('Lead candidate'),
         default=False,
         required=False)
+
+
+class IRenderedXML(zope.interface.Interface):
+    """Recursively converts a CenterPage to an lxml tree."""

@@ -1,6 +1,8 @@
 # Copyright (c) 2009-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import copy
+import grokcore.component as grok
 import zeit.cms.content.property
 import zeit.content.cp.interfaces
 import zeit.edit.block
@@ -43,3 +45,9 @@ class Block(zeit.edit.block.Element):
 
     background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'background_color')
+
+
+@grok.adapter(zeit.content.cp.interfaces.IBlock)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml(context):
+    return copy.copy(context.xml)

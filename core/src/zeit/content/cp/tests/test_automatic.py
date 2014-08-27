@@ -1,4 +1,5 @@
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
+import lxml.etree
 import mock
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
@@ -51,3 +52,21 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
             'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
         self.assertEqual(
             'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
+
+    def test_renders_xml_with_filled_in_blocks(self):
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto.count = 1
+        auto.automatic = True
+
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = [
+                dict(uniqueId='http://xml.zeit.de/testcontent',
+                     lead_candidate=True)]
+            xml = zeit.content.cp.interfaces.IRenderedXML(lead)
+        self.assertEllipsis(
+            """\
+<region...>
+  <container...cp:type="teaser"...>
+    <block href="http://xml.zeit.de/testcontent"...""",
+            lxml.etree.tostring(xml, pretty_print=True))
