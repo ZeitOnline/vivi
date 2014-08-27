@@ -10,6 +10,8 @@ import zope.component
 import zope.dublincore.interfaces
 import zope.interface
 import zope.publisher.interfaces
+import zope.security.interfaces
+import zope.security.management
 import zope.securitypolicy.interfaces
 
 
@@ -120,7 +122,10 @@ def principalAdapter(context):
 def workingcopy_for_current_principal(ignored):
     # Find the current principal. Note that it is possible for there
     # to be more than one principal - in this case adapting fails
-    interaction = zope.security.management.getInteraction()
+    try:
+        interaction = zope.security.management.getInteraction()
+    except zope.security.interfaces.NoInteraction:
+        return
     principal = None
     for p in interaction.participations:
         if principal is None:
