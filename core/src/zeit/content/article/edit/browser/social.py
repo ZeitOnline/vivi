@@ -5,6 +5,7 @@ from zeit.push.twitter import twitterAccountSource
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.edit.browser.form
+import zope.app.appsetup.product
 import zope.interface
 
 
@@ -22,6 +23,7 @@ class IAccounts(zope.interface.Interface):
         title=_('Additional Twitter'),
         source=twitterAccountSource,
         required=False)
+    mobile = zope.schema.Bool(title=_('Enable mobile push'))
 
 
 class Social(zeit.edit.browser.form.InlineForm,
@@ -42,6 +44,8 @@ class Social(zeit.edit.browser.form.InlineForm,
                 zeit.push.interfaces.IPushMessages).select('short_text')
             + FormFields(
                 IAccounts).select('twitter', 'twitter_ressort')
+            + FormFields(
+                IAccounts).select('mobile')
             + FormFields(
                 zeit.push.interfaces.IPushMessages).select('enabled')
         )
@@ -76,6 +80,14 @@ class Social(zeit.edit.browser.form.InlineForm,
                 {'type': 'twitter',
                  'enabled': True,
                  'account': twitter_ressort})
+        if data.get('mobile'):
+            product_config = zope.app.appsetup.product.getProductConfiguration(
+                'zeit.push')
+            message_config.append({
+                'type': 'parse', 'enabled': True,
+                'title': product_config['parse-title-news'],
+                'channels': 'parse-channel-news',
+            })
         zeit.push.interfaces.IPushMessages(
             self.context).message_config = message_config
         return super(Social, self).success_handler(action, data, errors)
@@ -115,6 +127,17 @@ class Accounts(grok.Adapter):
         service = self._get_service('twitter', main=False)
         return service and service['account']
 
+    @property
+    def mobile(self):
+        for service in self.message_config:
+            if service['type'] != 'parse':
+                continue
+            if service.get('channels') == 'parse-channel-news':
+                break
+        else:
+            service = None
+        return service and service['enabled']
+
     def _get_service(self, type_, main=True):
         source = {
             'twitter': twitterAccountSource,
@@ -151,4 +174,8 @@ class Accounts(grok.Adapter):
 
     @twitter_ressort.setter
     def twitter_ressort(self, value):
+        pass
+
+    @mobile.setter
+    def mobile(self, value):
         pass

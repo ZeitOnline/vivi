@@ -4,7 +4,8 @@ zeit.content.article changes
 3.5.4 (unreleased)
 ------------------
 
-- Send breaking news on a separate parse.com channel (VIV-466).
+- Add "push to mobile" to social media section, send breaking news on a
+  separate parse.com channel (VIV-466).
 
 
 3.5.3 (2014-08-27)
