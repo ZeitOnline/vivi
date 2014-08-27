@@ -4,6 +4,8 @@ import mock
 import pytz
 import unittest
 import zeit.push.parse
+import zeit.push.testing
+import zope.app.appsetup.product
 
 
 class ParseTest(unittest.TestCase):
@@ -45,7 +47,7 @@ class URLRewriteTest(unittest.TestCase):
             self.rewrite('http://www.zeit.de/blog/foo/bar'))
 
 
-class ExpirationTest(unittest.TestCase):
+class ParametersTest(zeit.push.testing.TestCase):
 
     def test_sets_expiration_time(self):
         api = zeit.push.parse.Connection(
@@ -58,3 +60,33 @@ class ExpirationTest(unittest.TestCase):
                 data = push.call_args[0][0]
                 self.assertEqual(
                     '2014-07-01T11:15:07+00:00', data['expiration_time'])
+
+    def test_no_channels_given_omits_channels_parameter(self):
+        api = zeit.push.parse.Connection(
+            'any', 'any', 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any')
+            data = push.call_args[0][0]
+            self.assertNotIn('channels', data)
+
+    def test_channels_string_is_looked_up_in_product_config(self):
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push')
+        product_config['foo'] = 'bar qux'
+        api = zeit.push.parse.Connection(
+            'any', 'any', 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any', channels='foo')
+            data = push.call_args[0][0]
+            self.assertEqual(['bar', 'qux'], data['channels'])
+
+    def test_aa_empty_product_config_omits_channels_parameter(self):
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push')
+        product_config['foo'] = ''
+        api = zeit.push.parse.Connection(
+            'any', 'any', 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any', channels='foo')
+            data = push.call_args[0][0]
+            self.assertNotIn('channels', data)
