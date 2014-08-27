@@ -1,8 +1,11 @@
 zeit.cms changes
 ================
 
-2.25.1 (unreleased)
+2.26.0 (unreleased)
 -------------------
+
+- When resolving "WC or CMS" content, ignore the workingcopy part if there is
+  no interaction.
 
 - Fix bug in publish/retract dialog: use the correct context when the dialog is
   opened from a folder view (VIV-452).

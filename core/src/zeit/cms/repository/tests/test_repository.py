@@ -10,6 +10,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.cms.workingcopy.interfaces
 import zope.component
+import zope.security.management
 
 
 class TestConflicts(zeit.cms.testing.ZeitCmsTestCase):
@@ -108,3 +109,10 @@ class UniqueIdToContentIntegration(zeit.cms.testing.ZeitCmsTestCase):
         self.assertEqual(
             ICMSContent('http://xml.zeit.de/testcontent'),
             ICMSContent('http://vivi.zeit.de/repository/testcontent'))
+
+    def test_no_interaction_ignores_workingcopy(self):
+        zope.security.management.endInteraction()
+        self.assertEqual(
+            ICMSContent('http://xml.zeit.de/testcontent'),
+            zeit.cms.cmscontent.resolve_wc_or_repository(
+                'http://xml.zeit.de/testcontent'))

@@ -335,9 +335,11 @@ def unique_id_to_content(uniqueId):
     basestring, name=zeit.cms.interfaces.ID_NAMESPACE)
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSWCContent)
 def unique_id_to_wc_or_repository(uniqueId):
-    wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
+    wc = zope.component.queryAdapter(
+        None, zeit.cms.workingcopy.interfaces.IWorkingcopy)
+    wc_values = wc.values() if wc is not None else []
     obj = None
-    for obj in wc.values():
+    for obj in wc_values:
         if not zeit.cms.interfaces.ICMSContent.providedBy(obj):
             continue
         if obj.uniqueId == uniqueId:
