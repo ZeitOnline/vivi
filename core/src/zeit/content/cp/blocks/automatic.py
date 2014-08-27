@@ -63,7 +63,7 @@ zeit.edit.block.register_element_factory(
 def rendered_xml(context):
     container = copy.copy(context.xml)
     container.attrib['{http://namespaces.zeit.de/CMS/cp}type'] = 'teaser'
-    for entry in context.entries:
+    for entry in context:
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(entry)
         block = lxml.objectify.E.block(
             uniqueId=entry.uniqueId, href=entry.uniqueId)
