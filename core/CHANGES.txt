@@ -4,6 +4,9 @@ zeit.cms changes
 2.26.0 (unreleased)
 -------------------
 
+- Filename rewriting: Remove all dots except for those of explicitly
+  whitelisted filename extensions (VIV-463).
+
 - When resolving "WC or CMS" content, ignore the workingcopy part if there is
   no interaction.
 

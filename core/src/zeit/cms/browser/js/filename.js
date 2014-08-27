@@ -11,11 +11,12 @@ zeit.cms.normalize_filename = function(filename) {
     // Remove all special characters, but keep dots for special treatment
     result = result.replace(/(.*?)([^a-z0-9.]+)$/, '$1');
     result = result.replace(/[^a-z0-9.]/g, '-');
-    // Save the last dot (so filename extensions are not destroyed)
-    result = result.replace(/(.*)\.(.*?)/, '$1_$2');
+    // Save dot of filename extensions
+    result = result.replace(
+            /^(.*)\.(jpg|png|pdf|mp3|swf|rtf|gif|svg|bmp)$/, '$1_$2');
     // Remove all dots
     result = result.replace(/\./g, '-');
-    // Restore last dot
+    // Restore saved dot
     result = result.replace(/_/, '.');
 
     // Collapse multiple consecutive dashes

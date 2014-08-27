@@ -37,6 +37,6 @@ class FilenameTest(zeit.cms.testing.ZeitCmsSeleniumTestCase):
     def test_keeps_filename_extensions(self):
         self.assertEqual('foo.jpg', self.normalize('foo.jpg'))
 
-    def test_removes_dots_except_for_the_last_one(self):
+    def test_removes_dots(self):
         self.assertEqual(
-            'foo-bar-baz.qux', self.normalize('foo....bar.baz.qux'))
+            'st-foo-bar-baz-qux', self.normalize('st.foo....bar.baz.qux'))
