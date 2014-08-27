@@ -2,8 +2,8 @@
 # See also LICENSE.txt
 
 import mock
-import zeit.cms.testing
 import zeit.content.cp.testing
+import zope.component
 
 
 class XMLTeaserBase(zeit.content.cp.testing.FunctionalTestCase):
@@ -20,7 +20,6 @@ class XMLTeaserBase(zeit.content.cp.testing.FunctionalTestCase):
         import zeit.content.cp.centerpage
         import zeit.content.cp.interfaces
         import zeit.edit.interfaces
-        import zope.component
         super(XMLTeaserBase, self).setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
         self.cp = zeit.cms.checkout.interfaces.ICheckoutManager(
@@ -118,6 +117,20 @@ class TestXMLTeaser(XMLTeaserBase):
                  zope.interface.Interface),
                 zope.interface.Interface,
                 name='preview')
+
+    def test_rendered_xml_has_correct_href(self):
+        self.teaser.free_teaser = True
+        self.cp = zeit.cms.checkout.interfaces.ICheckinManager(
+            self.cp).checkin()
+
+        # Free teasers are looked up in the workingcopy first, but since the
+        # IRenderedXML code is used from zeit.frontend where there is no
+        # interaction, so we must make sure it works without one.
+        zope.security.management.endInteraction()
+        xml = zeit.content.cp.interfaces.IRenderedXML(
+            self.cp['lead'].values()[0])
+        self.assertEqual(
+            'http://xml.zeit.de/testcontent', xml.block.get('href'))
 
 
 class TestResolver(XMLTeaserBase):

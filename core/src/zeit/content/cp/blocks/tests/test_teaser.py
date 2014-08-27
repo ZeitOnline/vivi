@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.centerpage import CenterPage
+import lxml.etree
 import zeit.cms.checkout.helper
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -139,3 +140,35 @@ class SuppressImagePositionsTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual([3, 4], self.teaser.suppress_image_positions)
         self.assertEqual(
             '4,5', self.teaser.xml.get('suppress-image-positions'))
+
+
+class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def test_autopilot_block_renders_teasers_from_referenced_cp(self):
+        self.referenced_cp = CenterPage()
+        teaser = zope.component.getAdapter(
+            self.referenced_cp['lead'],
+            zeit.edit.interfaces.IElementFactory, name='teaser')()
+        teaser.insert(0, self.repository['testcontent'])
+        self.repository['cp1'] = self.referenced_cp
+
+        self.cp = CenterPage()
+        bar = zope.component.getAdapter(
+            self.cp['teaser-mosaic'],
+            zeit.edit.interfaces.IElementFactory, name='teaser-bar')()
+        self.teaser = zope.component.getAdapter(
+            bar,
+            zeit.edit.interfaces.IElementFactory, name='teaser')()
+        self.teaser.referenced_cp = self.repository['cp1']
+        self.teaser.autopilot = True
+
+        self.repository['cp'] = self.cp
+
+        xml = zeit.content.cp.interfaces.IRenderedXML(self.teaser)
+        self.assertEllipsis(
+            """\
+<container...>
+  <referenced_cp>http://xml.zeit.de/cp1</referenced_cp>
+  <autopilot>true</autopilot>
+  <block href="http://xml.zeit.de/testcontent"...""",
+            lxml.etree.tostring(xml, pretty_print=True))

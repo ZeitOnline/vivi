@@ -56,17 +56,3 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
 
 zeit.edit.block.register_element_factory(
     zeit.content.cp.interfaces.ILead, 'auto-teaser')
-
-
-@grok.adapter(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
-@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
-def rendered_xml(context):
-    container = copy.copy(context.xml)
-    container.attrib['{http://namespaces.zeit.de/CMS/cp}type'] = 'teaser'
-    for entry in context:
-        updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(entry)
-        block = lxml.objectify.E.block(
-            uniqueId=entry.uniqueId, href=entry.uniqueId)
-        updater.update(block)
-        container.append(block)
-    return container

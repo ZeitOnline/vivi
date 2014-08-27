@@ -3,6 +3,7 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
+import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
@@ -508,3 +509,43 @@ def update_topiclinks_of_referenced_cps(context, event):
         # with relateds for example), since that might result in different
         # teasers being copied over
         block.update_topiclinks()
+
+
+@grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml_teaserblock(context):
+    container = getattr(
+        lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
+    # Change automatic teaser into normal one, since we're about to resolve it.
+    container.attrib['{http://namespaces.zeit.de/CMS/cp}type'] = 'teaser'
+
+    # Render non-content items like topiclinks.
+    for child in context.xml.getchildren():
+        if child.tag not in [
+                'block', '{http://www.w3.org/2003/XInclude}include']:
+            container.append(copy.copy(child))
+
+    # Render content.
+    for entry in context:
+        container.append(zeit.content.cp.interfaces.IRenderedXML(entry))
+
+    return container
+
+
+@grok.adapter(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml_cmscontent(context):
+    block = lxml.objectify.E.block(
+        uniqueId=context.uniqueId, href=context.uniqueId)
+    updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
+    updater.update(block)
+    return block
+
+
+@grok.adapter(zeit.content.cp.interfaces.IXMLTeaser)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml_free_teaser(context):
+    block = rendered_xml_cmscontent(context)
+    if context.free_teaser:
+        block.set('href', context.original_uniqueId)
+    return block

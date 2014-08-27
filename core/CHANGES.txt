@@ -2,12 +2,15 @@ zeit.content.cp changes
 =======================
 
 
-2.5.1 (unreleased)
+2.6.0 (unreleased)
 ------------------
 
 - Make automatic blocks non-editable (VIV-447).
 
 - Fill automatic "leader" block only with specially marked articles (VIV-436).
+
+- Add rendering a centerpage as XML (while resolving automatic blocks and
+  autopilot blocks) (VIV-445).
 
 
 2.5.0 (2014-08-13)
