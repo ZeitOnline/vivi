@@ -10,6 +10,7 @@ import zeit.cms.settings.interfaces
 import zeit.content.article.article
 import zeit.edit.interfaces
 import zeit.push.interfaces
+import zope.app.appsetup.product
 import zope.component
 import zope.formlib.form
 import zope.i18n
@@ -69,9 +70,14 @@ class Add(zeit.cms.browser.form.AddForm,
 
     def create(self, data):
         message_config = []
+        product_config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push')
         if data.pop('mobile', False):
-            message_config.append(
-                {'type': 'parse', 'enabled': True, 'title': 'Eilmeldung'})
+            message_config.append({
+                'type': 'parse', 'enabled': True,
+                'title': product_config['parse-title-breaking'],
+                'channels': 'parse-channel-breaking',
+            })
             message_config.append(
                 {'type': 'ios-legacy', 'enabled': True})
         if data.pop('homepage', False):

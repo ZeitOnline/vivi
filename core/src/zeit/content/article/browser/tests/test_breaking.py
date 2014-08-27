@@ -113,7 +113,8 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertIn(
-                {'type': 'parse', 'enabled': False, 'title': 'Eilmeldung'},
+                {'type': 'parse', 'enabled': False, 'title': 'Eilmeldung',
+                 'channels': 'parse-channel-breaking'},
                 push.message_config)
             self.assertIn(
                 {'type': 'homepage', 'enabled': False}, push.message_config)
