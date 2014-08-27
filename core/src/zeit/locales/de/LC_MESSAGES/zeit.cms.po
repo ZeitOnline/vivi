@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Aug 25 11:49:53 2014\n"
-"PO-Revision-Date: 2014-08-26 08:45+0100\n"
+"POT-Creation-Date: Wed Aug 27 13:51:24 2014\n"
+"PO-Revision-Date: 2014-08-27 13:52+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1591,19 +1591,19 @@ msgstr "Eilmeldungsbanner"
 msgid "Retract banner"
 msgstr "Eilmeldungsbanner depublizieren"
 
-#: zeit/content/article/browser/breaking.py:23
+#: zeit/content/article/browser/breaking.py:24
 msgid "breaking-news-mobile"
 msgstr "Push versenden"
 
-#: zeit/content/article/browser/breaking.py:25
+#: zeit/content/article/browser/breaking.py:26
 msgid "breaking-news-homepage"
 msgstr "Eilmeldungsbanner anzeigen"
 
-#: zeit/content/article/browser/breaking.py:27
+#: zeit/content/article/browser/breaking.py:28
 msgid "breaking-news-social"
 msgstr "Auf Twitter posten"
 
-#: zeit/content/article/browser/breaking.py:66
+#: zeit/content/article/browser/breaking.py:67
 msgid "Publish and push"
 msgstr "Veröffentlichen & Push"
 
@@ -1902,32 +1902,36 @@ msgid "Publishing"
 msgstr "Veröffentlichen"
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
-#: zeit/content/cp/browser/publish.pt:9 zeit/workflow/browser/publish.pt:7
-#: zeit/workflow/browser/retract.pt:6
+#: zeit/content/cp/browser/publish.pt:9 zeit/workflow/browser/publish.pt:9
+#: zeit/workflow/browser/retract.pt:8
 msgid "Reloading"
 msgstr "lade neu"
 
-#: zeit/content/article/edit/browser/social.py:13
+#: zeit/content/article/edit/browser/social.py:14
 msgid "Social media"
 msgstr "Social Media"
 
-#: zeit/content/article/edit/browser/social.py:18
+#: zeit/content/article/edit/browser/social.py:19
 msgid "Enable Facebook"
 msgstr "Facebook ZON Hauptaccount"
 
-#: zeit/content/article/edit/browser/social.py:19
+#: zeit/content/article/edit/browser/social.py:20
 msgid "Enable Facebook Magazin"
 msgstr "Facebook ZEITmagazin"
 
-#: zeit/content/article/edit/browser/social.py:20
+#: zeit/content/article/edit/browser/social.py:21
 msgid "Enable Twitter"
 msgstr "Twitter ZON Hauptaccount"
 
-#: zeit/content/article/edit/browser/social.py:22
+#: zeit/content/article/edit/browser/social.py:23
 msgid "Additional Twitter"
 msgstr "zusätzlicher Ressortaccount:"
 
-#: zeit/content/article/edit/browser/social.py:32
+#: zeit/content/article/edit/browser/social.py:26
+msgid "Enable mobile push"
+msgstr "Pushnachricht mobile Apps"
+
+#: zeit/content/article/edit/browser/social.py:34
 msgid "edit social media"
 msgstr "Social Media bearbeiten"
 
@@ -2365,7 +2369,7 @@ msgstr "Quiz-Block"
 msgid "RSS block"
 msgstr "RSS-Block"
 
-#: zeit/content/cp/blocks/teaser.py:321
+#: zeit/content/cp/blocks/teaser.py:322
 msgid "List of teasers"
 msgstr "Teaserliste"
 
@@ -2472,7 +2476,7 @@ msgstr "Centerpage hinzufügen"
 msgid "Automatic contents"
 msgstr "Automatische Bestückung"
 
-#: zeit/content/cp/browser/form.py:86
+#: zeit/content/cp/browser/form.py:85
 msgid "View centerpage metadata"
 msgstr "Metadaten"
 
@@ -2530,7 +2534,7 @@ msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 "${id} hat Validierungsfehler und  kann daher nicht veröffentlicht werden."
 
-#: zeit/content/cp/centerpage.py:173
+#: zeit/content/cp/centerpage.py:174
 msgid "Centerpage 2009"
 msgstr "Center-Page 2009"
 
@@ -2728,6 +2732,10 @@ msgstr "Von"
 #: zeit/content/cp/interfaces.py:590 zeit/workflow/interfaces.py:38
 msgid "To"
 msgstr "Bis"
+
+#: zeit/content/cp/interfaces.py:608
+msgid "Lead candidate"
+msgstr "Artikel kann als Aufmacher laufen"
 
 #: zeit/content/cp/interfaces.py:61
 msgid "Label for topiclink #2"
@@ -3735,7 +3743,7 @@ msgid "scheduled-for-immediate-retracting"
 msgstr "»${id}« wird zurückgezogen."
 
 #. Default: ""
-#: zeit/workflow/browser/form.py:59 zeit/workflow/browser/publish.pt:17
+#: zeit/workflow/browser/form.py:59 zeit/workflow/browser/publish.pt:19
 msgid "publish-preconditions-not-met"
 msgstr ""
 "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die "
@@ -3950,9 +3958,6 @@ msgstr "vollbreit"
 
 #~ msgid "Homepage"
 #~ msgstr "Homepage"
-
-#~ msgid "Enable Google Plus"
-#~ msgstr "G+ ZON Hauptaccount"
 
 #~ msgid "Custom image sub text"
 #~ msgstr "Bildunterschrift"

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Mon Aug 25 11:49:53 2014\n"
+"POT-Creation-Date: Wed Aug 27 13:51:24 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1630,19 +1630,19 @@ msgstr ""
 msgid "Retract banner"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:23
+#: zeit/content/article/browser/breaking.py:24
 msgid "breaking-news-mobile"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:25
+#: zeit/content/article/browser/breaking.py:26
 msgid "breaking-news-homepage"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:27
+#: zeit/content/article/browser/breaking.py:28
 msgid "breaking-news-social"
 msgstr ""
 
-#: zeit/content/article/browser/breaking.py:66
+#: zeit/content/article/browser/breaking.py:67
 msgid "Publish and push"
 msgstr ""
 
@@ -1944,32 +1944,36 @@ msgstr ""
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:8
 #: zeit/content/cp/browser/publish.pt:9
-#: zeit/workflow/browser/publish.pt:7
-#: zeit/workflow/browser/retract.pt:6
+#: zeit/workflow/browser/publish.pt:9
+#: zeit/workflow/browser/retract.pt:8
 msgid "Reloading"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:13
+#: zeit/content/article/edit/browser/social.py:14
 msgid "Social media"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:18
+#: zeit/content/article/edit/browser/social.py:19
 msgid "Enable Facebook"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:19
+#: zeit/content/article/edit/browser/social.py:20
 msgid "Enable Facebook Magazin"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:20
+#: zeit/content/article/edit/browser/social.py:21
 msgid "Enable Twitter"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:22
+#: zeit/content/article/edit/browser/social.py:23
 msgid "Additional Twitter"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:32
+#: zeit/content/article/edit/browser/social.py:26
+msgid "Enable mobile push"
+msgstr ""
+
+#: zeit/content/article/edit/browser/social.py:34
 msgid "edit social media"
 msgstr ""
 
@@ -2412,7 +2416,7 @@ msgstr ""
 msgid "RSS block"
 msgstr ""
 
-#: zeit/content/cp/blocks/teaser.py:321
+#: zeit/content/cp/blocks/teaser.py:322
 msgid "List of teasers"
 msgstr ""
 
@@ -2520,7 +2524,7 @@ msgstr ""
 msgid "Automatic contents"
 msgstr ""
 
-#: zeit/content/cp/browser/form.py:86
+#: zeit/content/cp/browser/form.py:85
 msgid "View centerpage metadata"
 msgstr ""
 
@@ -2580,7 +2584,7 @@ msgstr ""
 msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 
-#: zeit/content/cp/centerpage.py:173
+#: zeit/content/cp/centerpage.py:174
 msgid "Centerpage 2009"
 msgstr ""
 
@@ -2779,6 +2783,10 @@ msgstr ""
 #: zeit/content/cp/interfaces.py:590
 #: zeit/workflow/interfaces.py:38
 msgid "To"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:608
+msgid "Lead candidate"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:61
@@ -3778,7 +3786,7 @@ msgid "scheduled-for-immediate-retracting"
 msgstr ""
 
 #: zeit/workflow/browser/form.py:59
-#: zeit/workflow/browser/publish.pt:17
+#: zeit/workflow/browser/publish.pt:19
 #. Default: ""
 msgid "publish-preconditions-not-met"
 msgstr ""
