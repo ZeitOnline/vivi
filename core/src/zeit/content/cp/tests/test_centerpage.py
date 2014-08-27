@@ -2,12 +2,10 @@
 # See also LICENSE.txt
 
 from zeit.cms.checkout.helper import checked_out
-import copy
 import gocept.cache.method
 import lovely.remotetask.interfaces
 import pkg_resources
 import transaction
-import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.workflow.interfaces
@@ -26,11 +24,11 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         # undisturbed
         gocept.cache.method.clear()
 
-        product_config = zope.app.appsetup.product.getProductConfiguration(
+        zope.app.appsetup.product.getProductConfiguration(
             'zeit.edit')['rules-url'] = 'file://%s' % (
                 pkg_resources.resource_filename(
                     'zeit.content.cp.tests.fixtures', 'empty_rules.py'))
-        product_config = zope.app.appsetup.product.getProductConfiguration(
+        zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.cp')['cp-feed-max-items'] = '5'
         self.repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
