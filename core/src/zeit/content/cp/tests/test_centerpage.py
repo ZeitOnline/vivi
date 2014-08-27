@@ -4,6 +4,7 @@
 from zeit.cms.checkout.helper import checked_out
 import gocept.cache.method
 import lovely.remotetask.interfaces
+import lxml.etree
 import pkg_resources
 import transaction
 import zeit.cms.repository.interfaces
@@ -195,3 +196,25 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
              'http://xml.zeit.de/test2',
              'http://xml.zeit.de/testcontent'],
             [x.get('href') for x in cp.xml.feed.getchildren()])
+
+
+class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def create_teaser(self, cp):
+        import zeit.edit.interfaces
+        factory = zope.component.getAdapter(
+            cp['lead'], zeit.edit.interfaces.IElementFactory,
+            name='teaser')
+        return factory()
+
+    def test_without_any_auto_blocks_the_rendered_xml_looks_the_same(self):
+        cp = zeit.content.cp.centerpage.CenterPage()
+        t1 = self.create_teaser(cp)
+        self.create_teaser(cp)
+        t1.insert(0, self.repository['testcontent'])
+        self.repository['cp'] = cp
+
+        self.assertEllipsis(
+            lxml.etree.tostring(cp.xml, pretty_print=True),
+            lxml.etree.tostring(zeit.content.cp.interfaces.IRenderedXML(
+                cp), pretty_print=True))

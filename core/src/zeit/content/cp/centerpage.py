@@ -6,7 +6,8 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.connector.search import SearchVar
 import UserDict
 import collections
-import grokcore.component
+import copy
+import grokcore.component as grok
 import itertools
 import lxml.etree
 import pkg_resources
@@ -279,11 +280,10 @@ def has_changed(context):
     return context._p_changed
 
 
-class SiteControlTopicPages(grokcore.component.GlobalUtility):
+class SiteControlTopicPages(grok.GlobalUtility):
 
-    grokcore.component.implements(
-        zeit.cms.sitecontrol.interfaces.ISitesProvider)
-    grokcore.component.name('topicpage')
+    grok.implements(zeit.cms.sitecontrol.interfaces.ISitesProvider)
+    grok.name('topicpage')
 
     def __iter__(self):
         connector = zope.component.getUtility(
@@ -295,3 +295,27 @@ class SiteControlTopicPages(grokcore.component.GlobalUtility):
         result = [zeit.cms.interfaces.ICMSContent(uid, None)
                   for uid, dummy in result]
         return (obj for obj in result if obj is not None)
+
+
+@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml(context):
+    # XXX This method duplicates the XML structure from cp-template.xml
+    ElementMaker = lxml.objectify.ElementMaker(nsmap=collections.OrderedDict((
+        ('cp', 'http://namespaces.zeit.de/CMS/cp'),
+        ('py', 'http://codespeak.net/lxml/objectify/pytype'),
+        ('xi', 'http://www.w3.org/2001/XInclude'),
+        ('xsd', 'http://www.w3.org/2001/XMLSchema'),
+        ('xsi', 'http://www.w3.org/2001/XMLSchema-instance'),
+    )))
+    root = getattr(ElementMaker, context.xml.tag)(**context.xml.attrib)
+    root.append(copy.copy(context.xml.head))
+    root.append(lxml.objectify.E.body(
+        lxml.objectify.E.cluster(
+            zeit.content.cp.interfaces.IRenderedXML(context['lead']),
+            zeit.content.cp.interfaces.IRenderedXML(context['informatives']),
+            area='feature'),
+        zeit.content.cp.interfaces.IRenderedXML(context['teaser-mosaic']),
+    ))
+    root.append(copy.copy(context.xml.feed))
+    return root

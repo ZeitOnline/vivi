@@ -73,3 +73,12 @@ def rendered_xml(context):
     for block in zeit.content.cp.interfaces.IAutomaticRegion(context).values():
         region.append(zeit.content.cp.interfaces.IRenderedXML(block))
     return region
+
+
+@grok.adapter(zeit.content.cp.interfaces.IMosaic)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml_mosaic(context):
+    root = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
+    for item in context.values():
+        root.append(zeit.content.cp.interfaces.IRenderedXML(item))
+    return root
