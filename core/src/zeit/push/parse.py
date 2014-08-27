@@ -6,6 +6,7 @@ import pytz
 import requests
 import zeit.push.interfaces
 import zeit.push.message
+import zope.app.appsetup.product as productconfig
 import zope.interface
 
 
@@ -28,9 +29,22 @@ class Connection(object):
         expiration_time = datetime.now(pytz.UTC).replace(
             microsecond=0) + timedelta(seconds=self.expire_interval)
         expiration_time = expiration_time.isoformat()
-        self.push({
-            'where': {'deviceType': 'android'},
+
+        parameters = {
             'expiration_time': expiration_time,
+        }
+        channels = kw.get('channels')
+        if channels:
+            if not isinstance(channels, list):
+                product_config = productconfig.getProductConfiguration(
+                    'zeit.push')
+                channels = product_config[channels].split(' ')
+            if all(channels):
+                parameters['channels'] = channels
+
+        android = parameters.copy()
+        android.update({
+            'where': {'deviceType': 'android'},
             'data': {
                 # Parse.com payload
                 'alert': text,
@@ -39,9 +53,11 @@ class Connection(object):
                 'url': self.rewrite_url(link),
             }
         })
-        self.push({
+        self.push(android)
+
+        ios = parameters.copy()
+        ios.update({
             'where': {'deviceType': 'ios'},
-            'expiration_time': expiration_time,
             'data': {
                 # App-specific payload
                 'aps': {
@@ -51,6 +67,7 @@ class Connection(object):
                 }
             }
         })
+        self.push(ios)
 
     def push(self, data):
         headers = {
@@ -87,8 +104,6 @@ class Connection(object):
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
 def from_product_config():
-    # soft dependency
-    import zope.app.appsetup.product
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.push')
     return Connection(
