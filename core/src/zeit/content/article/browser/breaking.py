@@ -80,11 +80,10 @@ class Add(zeit.cms.browser.form.AddForm,
             message_config.append(
                 {'type': 'wrapper', 'enabled': True})
         if data.pop('social', False):
-            # XXX temporarily disabled Facebook
-            # message_config.append(
-            #     {'type': 'facebook', 'enabled': True,
-            #      'account': zeit.push.facebook.facebookAccountSource(
-            #          self.context).MAIN_ACCOUNT})
+            message_config.append(
+                {'type': 'facebook', 'enabled': True,
+                 'account': zeit.push.facebook.facebookAccountSource(
+                     self.context).MAIN_ACCOUNT})
             message_config.append(
                 {'type': 'twitter', 'enabled': True,
                  'account': zeit.push.twitter.twitterAccountSource(

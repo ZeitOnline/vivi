@@ -80,9 +80,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             self.assertEqual(True, IPublishInfo(article).published)
             for service in ['homepage', 'ios-legacy', 'wrapper', 'parse',
-                            'twitter']:
-                # XXX temporarily disabled Facebook
-                #             'twitter', 'facebook']:
+                            'twitter', 'facebook']:
                 notifier = zope.component.getUtility(
                     zeit.push.interfaces.IPushNotifier, name=service)
                 self.assertEqual(1, len(notifier.calls))
@@ -91,12 +89,11 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             parse = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='parse')
             self.assertEqual('Eilmeldung', parse.calls[0][2]['title'])
-            # XXX temporarily disabled Facebook
-            # facebook = zope.component.getUtility(
-            #     zeit.push.interfaces.IPushNotifier, name='facebook')
-            # self.assertEqual(
-            #     zeit.push.facebook.facebookAccountSource(None).MAIN_ACCOUNT,
-            #     facebook.calls[0][2]['account'])
+            facebook = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name='facebook')
+            self.assertEqual(
+                zeit.push.facebook.facebookAccountSource(None).MAIN_ACCOUNT,
+                facebook.calls[0][2]['account'])
 
     def test_banners_and_parse_are_disabled_after_publish(self):
         # The breaking news is a normal article, so it has the normal social
