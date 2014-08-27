@@ -4,7 +4,7 @@
 
 from zeit.content.cp.i18n import MessageFactory as _
 import gocept.lxml.interfaces
-import grokcore.component
+import grokcore.component as grok
 import lxml.objectify
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
@@ -321,8 +321,8 @@ zeit.edit.block.register_element_factory(
     zeit.content.cp.interfaces.IRegion, 'teaser', _('List of teasers'))
 
 
-@grokcore.component.adapter(zeit.content.cp.interfaces.ITeaserBlock)
-@grokcore.component.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)
+@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     for teaser in context:
         yield teaser
@@ -330,8 +330,8 @@ def cms_content_iter(context):
             yield zeit.cms.interfaces.ICMSContent(teaser.original_uniqueId)
 
 
-@grokcore.component.adapter(zeit.content.cp.interfaces.IAutoPilotTeaserBlock)
-@grokcore.component.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@grok.adapter(zeit.content.cp.interfaces.IAutoPilotTeaserBlock)
+@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def autopilot_cms_content_iter(context):
     if context.autopilot:
         yield context.referenced_cp
@@ -361,7 +361,7 @@ def cp_feed_name(name):
     return CP_FEED_NAME % name
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def create_cp_channel(context, event):
@@ -434,9 +434,8 @@ def create_xi_include(context, xpath, name_maker=make_path_for_unique_id):
     return include
 
 
-@grokcore.component.adapter(zeit.content.cp.interfaces.ICenterPage,
-                            name='excerpt')
-@grokcore.component.implementer(zeit.cms.syndication.interfaces.IFeed)
+@grok.adapter(zeit.content.cp.interfaces.ICenterPage, name='excerpt')
+@grok.implementer(zeit.cms.syndication.interfaces.IFeed)
 def feed_excerpt(context):
     return zeit.cms.interfaces.ICMSContent(
         cp_feed_name(context.uniqueId), None)
@@ -490,7 +489,7 @@ def feed_xi_include(context):
     return create_xi_include(context, '/channel/container/block')
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_topiclinks_of_referenced_cps(context, event):
