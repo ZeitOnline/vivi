@@ -139,13 +139,3 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
                 solr_result.pop(i)
                 return item['uniqueId']
         raise IndexError()
-
-
-class AutomaticConfig(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    zope.interface.implements(zeit.content.cp.interfaces.IAutomaticConfig)
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.content.cp.interfaces.IAutomaticConfig,
-        zeit.content.cp.interfaces.DAV_NAMESPACE,
-        ('lead_candidate',))
