@@ -18,8 +18,8 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', zeit.content.cp.interfaces.IAutomaticRegion['count'])
 
-    query = zeit.cms.content.property.ObjectPathProperty(
-        '.query.raw', zeit.content.cp.interfaces.IAutomaticRegion['query'])
+    raw_query = zeit.cms.content.property.ObjectPathProperty(
+        '.raw_query', zeit.content.cp.interfaces.IAutomaticRegion['raw_query'])
 
     def __init__(self, context):
         self.context = context
@@ -62,7 +62,7 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
         if self.automatic:
             result = []
             solr_result = list(zeit.find.search.search(
-                self.query, sort_order='date-first-released desc',
+                self.raw_query, sort_order='date-first-released desc',
                 additional_result_fields=['lead_candidate']))
             for block in values:
                 if not IAutomaticTeaserBlock.providedBy(block):

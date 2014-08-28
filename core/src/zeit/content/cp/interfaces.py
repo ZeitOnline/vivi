@@ -150,7 +150,7 @@ class IAutomaticRegion(IRegion):
 
     automatic = zope.schema.Bool(title=_('automatic'))
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
-    query = zope.schema.Text(title=_('Raw query'), required=False)
+    raw_query = zope.schema.Text(title=_('Raw query'), required=False)
 
 
 class ICMSContentIterable(zope.interface.Interface):

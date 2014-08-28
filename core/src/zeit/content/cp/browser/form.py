@@ -71,11 +71,11 @@ class EditForm(FormBase,
     title = _("Edit centerpage")
     form_fields = FormBase.form_fields + zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IAutomaticRegion).select(
-            'count', 'query', 'automatic')
+            'count', 'raw_query', 'automatic')
 
     automatic_fields = gocept.form.grouped.Fields(
         _("Automatic contents"),
-         ('automatic', 'count', 'query'))
+         ('automatic', 'count', 'raw_query'))
     field_groups = (automatic_fields,) + FormBase.field_groups
 
 
