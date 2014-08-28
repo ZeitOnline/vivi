@@ -12,6 +12,7 @@ zeit.cms.normalize_filename = function(filename) {
     // XXX It's unclear why this doesn't work as a single regexp.
     result = result.replace(/^([^a-z0-9]+)(.*?)$/, '$2');
     result = result.replace(/^(.*?)([^a-z0-9]+)$/, '$1');
+
     // Replace special characters, but keep dots for special treatment
     result = result.replace(/[^a-z0-9.]/g, '-');
     // Save dot of filename extensions
@@ -24,6 +25,10 @@ zeit.cms.normalize_filename = function(filename) {
 
     // Collapse multiple consecutive dashes
     result = result.replace(/-+/g, '-');
+
+    // Edge case: Remove special char before the filename extension
+    result = result.replace(/-\./, '.');
+
     return result;
 };
 

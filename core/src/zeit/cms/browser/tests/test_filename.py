@@ -31,6 +31,9 @@ class FilenameTest(zeit.cms.testing.ZeitCmsSeleniumTestCase):
     def test_removes_specialchars_at_end_of_string(self):
         self.assertEqual('fo', self.normalize('fo&&'))
 
+    def test_removes_specialchars_before_extension(self):
+        self.assertEqual('fo.jpg', self.normalize('fo&&.jpg'))
+
     def test_collapses_consecutive_dashes(self):
         self.assertEqual('foo-bar-baz', self.normalize('foo---bar--baz'))
 
