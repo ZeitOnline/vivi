@@ -1708,6 +1708,10 @@
   background-position: 10px -2720px, 0 0;
 }
 
+.type-article #form-channel-selector {
+  margin-top: 15px;
+}
+
 .type-article .fieldname-memo textarea,
 .type-article .fieldname-memo .rst-preview {
   background-color: #fff79a;

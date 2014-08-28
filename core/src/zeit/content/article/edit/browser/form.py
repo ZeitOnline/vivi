@@ -543,6 +543,14 @@ class ChannelFormGroup(zeit.edit.browser.form.FoldableFormGroup):
     title = _('Run in channel')
 
 
+class LeadCandidate(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'lead-candidate'
+    undo_description = _('select channel')
+    form_fields = FormFields(ICommonMetadata).select('lead_candidate')
+
+
 class ChannelSelector(zeit.edit.browser.form.InlineForm):
 
     legend = _('')
