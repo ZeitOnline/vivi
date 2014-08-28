@@ -41,6 +41,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'in_rankings',
             'is_content',
             'minimal_header',
+            'lead_candidate',
         ))
 
     authors = zeit.cms.content.dav.DAVProperty(
