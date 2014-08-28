@@ -292,7 +292,9 @@ zeit.cms.InlineForm = zeit.cms.SubPageForm.extend({
 
         arguments.callee.$.handle_click.call(self, event);
 
-        if (target.nodeName == 'INPUT' && target.type == 'checkbox') {
+        // 'editcheck' signifies a zope.formlib SequenceWidget
+        if (target.nodeName == 'INPUT' && target.type == 'checkbox'
+            && ! $(target).hasClass('editcheck')) {
             self.submit();
         }
     },
