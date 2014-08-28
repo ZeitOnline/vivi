@@ -19,8 +19,8 @@ class TwitterTest(zeit.push.testing.TestCase):
     # User: gocepttest2
     # Pass: dalvEwjarph2
     # Email: ws+twitter2@gocept.com
-    access_token = '2734252303-ly3KyZ6BvlV6lhkvnhCX3bJZ35Rq91LPprSRVcm'
-    access_secret = 'DwZudWx0ao27sotLrvXSo9qD2YHgG1Et9giROopLSPhDt'
+    # access_token = '2734252303-ly3KyZ6BvlV6lhkvnhCX3bJZ35Rq91LPprSRVcm'
+    # access_secret = 'DwZudWx0ao27sotLrvXSo9qD2YHgG1Et9giROopLSPhDt'
 
     def setUp(self):
         auth = tweepy.OAuthHandler(self.api_key, self.api_secret)
