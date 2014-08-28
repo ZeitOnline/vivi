@@ -32,6 +32,7 @@ setup(
         'lxml',
         'requests',
         'setuptools',
+        'xml-compare',
         'zc.sourcefactory',
         'zeit.cms>=2.26.0.dev0',
         'zeit.content.image',

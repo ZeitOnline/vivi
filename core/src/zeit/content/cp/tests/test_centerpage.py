@@ -1,6 +1,7 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from xml_compare import xml_compare
 from zeit.cms.checkout.helper import checked_out
 import gocept.cache.method
 import lovely.remotetask.interfaces
@@ -207,14 +208,16 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
             name='teaser')
         return factory()
 
+    def assertXML(self, expected, actual):
+        errors = []
+        xml_compare(
+            expected, actual, reporter=errors.append, strip_whitespaces=True)
+        if errors:
+            raise AssertionError('\n'.join(errors))
+
     def test_without_any_auto_blocks_the_rendered_xml_looks_the_same(self):
         cp = zeit.content.cp.centerpage.CenterPage()
         t1 = self.create_teaser(cp)
         self.create_teaser(cp)
         t1.insert(0, self.repository['testcontent'])
-        self.repository['cp'] = cp
-
-        self.assertEllipsis(
-            lxml.etree.tostring(cp.xml, pretty_print=True),
-            lxml.etree.tostring(zeit.content.cp.interfaces.IRenderedXML(
-                cp), pretty_print=True))
+        self.assertXML(cp.xml, zeit.content.cp.interfaces.IRenderedXML(cp))
