@@ -32,7 +32,9 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
         auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
         auto.count = 5
         auto.automatic = True
-        self.assertEqual(0, len(auto.values()))
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = []
+            self.assertEqual(0, len(auto.values()))
 
     def test_only_marked_articles_are_put_into_leader_block(self):
         self.repository['normal'] = TestContentType()
@@ -84,3 +86,34 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
               <condition...type="Channel"...>International Nahost</condition>
               <condition...type="Channel"...>Wissen</condition>
             </query>...""", lxml.etree.tostring(auto.xml, pretty_print=True))
+
+    def test_prefers_raw_query_if_present(self):
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto.count = 1
+        auto.raw_query = 'raw'
+        auto.automatic = True
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = []
+            auto.values()
+            self.assertEqual('raw', search.call_args[0][0])
+
+    def test_builds_query_from_conditions(self):
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto.count = 1
+        auto.query = (
+            ('Channel', 'International', 'Nahost'),
+            ('Channel', 'Wissen', None),
+            ('Keyword', 'Berlin', None))
+        auto.automatic = True
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = []
+            auto.values()
+            query = search.call_args[0][0]
+            self.assertIn('published:(published)', query)
+            self.assertIn(
+                '(channels:(International Nahost)'
+                ' OR channels:(Wissen)'
+                ' OR keywords:(Berlin))',
+                query)

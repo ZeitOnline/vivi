@@ -5,6 +5,8 @@ zeit.content.cp changes
 2.6.0 (unreleased)
 ------------------
 
+- Add UI to specify solr query by selecting channels (VIV-470).
+
 - Make automatic blocks non-editable (VIV-447).
 
 - Fill automatic "leader" block only with specially marked articles (VIV-436).

@@ -88,12 +88,30 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
             type=type_)
             for type_, channel, subchannel in value]))
 
+    SOLR_FIELD = {
+        'Channel': 'channels',
+        'Keyword': 'keywords',
+    }
+
+    def _build_query(self):
+        query = zeit.find.search.query(published='published')
+        conditions = []
+        for type_, channel, subchannel in self.query:
+            value = '%s %s' % (channel, subchannel) if subchannel else channel
+            conditions.append(zeit.solr.query.field(
+                self.SOLR_FIELD[type_], value))
+        if conditions:
+            query = zeit.solr.query.and_(
+                query, zeit.solr.query.or_(*conditions))
+        return query
+
     def values(self):
         values = self.context.values()
         if self.automatic:
             result = []
+            query = self.raw_query if self.raw_query else self._build_query()
             solr_result = list(zeit.find.search.search(
-                self.raw_query, sort_order='date-first-released desc',
+                query, sort_order='date-first-released desc',
                 additional_result_fields=['lead_candidate']))
             for block in values:
                 if not IAutomaticTeaserBlock.providedBy(block):
