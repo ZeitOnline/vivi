@@ -67,6 +67,6 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEllipsis(
             """\
 <region...>
-  <container...cp:type="teaser"...>
-    <block href="http://xml.zeit.de/testcontent"...""",
+  <container...type="teaser"...>
+    <block...href="http://xml.zeit.de/testcontent"...""",
             lxml.etree.tostring(xml, pretty_print=True))
