@@ -4,6 +4,7 @@
 from zeit.content.cp.i18n import MessageFactory as _
 from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
 import urlparse
+import zc.form.field
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -146,10 +147,33 @@ class IMosaic(zeit.edit.interfaces.IContainer):
     """Teaser mosaic."""
 
 
+class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+
+    values = ['Channel']  # XXX or 'Keyword', see VIV-471
+
+
 class IAutomaticRegion(IRegion):
 
     automatic = zope.schema.Bool(title=_('automatic'))
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
+
+    query = zope.schema.Tuple(
+        title=_('Channel Query'),
+        value_type=zc.form.field.Combination(
+            (zope.schema.Choice(
+                title=_('Channel Query Type'),
+                source=QueryTypeSource(), default='Channel'),
+             zope.schema.Choice(
+                title=_('Channel equals'),
+                source=zeit.cms.content.sources.NavigationSource()),
+             zope.schema.Choice(
+                 title=_('Subchannel'),
+                 source=zeit.cms.content.sources.SubNavigationSource(),
+                 required=False))
+        ),
+        default=(),
+        required=False)
+
     raw_query = zope.schema.Text(title=_('Raw query'), required=False)
 
 

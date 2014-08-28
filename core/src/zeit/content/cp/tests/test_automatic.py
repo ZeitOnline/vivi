@@ -70,3 +70,17 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
   <container...type="teaser"...>
     <block...href="http://xml.zeit.de/testcontent"...""",
             lxml.etree.tostring(xml, pretty_print=True))
+
+    def test_stores_query_in_xml(self):
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        self.assertEqual((), auto.query)
+        auto.query = (
+            ('Channel', 'International', 'Nahost'),
+            ('Channel', 'Wissen', None))
+        self.assertEllipsis(
+            """<...
+            <query>
+              <condition...type="Channel"...>International Nahost</condition>
+              <condition...type="Channel"...>Wissen</condition>
+            </query>...""", lxml.etree.tostring(auto.xml, pretty_print=True))

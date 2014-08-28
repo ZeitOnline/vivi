@@ -1,4 +1,5 @@
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
+import lxml.objectify
 import zeit.cms.content.property
 import zeit.content.cp.interfaces
 import zeit.find.search
@@ -56,6 +57,36 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
         return zope.component.getAdapter(
             self.context, zeit.edit.interfaces.IElementFactory,
             name='auto-teaser')
+
+    @property
+    def query(self):
+        if not hasattr(self.xml, 'query'):
+            return ()
+
+        result = []
+        for condition in self.xml.query.getchildren():
+            channel = unicode(condition)
+            subchannel = None
+            if ' ' in channel:
+                channel, subchannel = channel.split(' ')
+            result.append((condition.get('type'), channel, subchannel))
+        return tuple(result)
+
+    @query.setter
+    def query(self, value):
+        try:
+            self.xml.remove(self.xml.query)
+        except AttributeError:
+            pass
+
+        if not value:
+            return
+
+        E = lxml.objectify.E
+        self.xml.append(E.query(*[E.condition(
+            '%s %s' % (channel, subchannel) if subchannel else channel,
+            type=type_)
+            for type_, channel, subchannel in value]))
 
     def values(self):
         values = self.context.values()
