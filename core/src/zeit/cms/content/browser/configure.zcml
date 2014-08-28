@@ -32,6 +32,14 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="*"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="channelupdater.json"
+    class=".widget.ChannelUpdater"
+    permission="zope.View"
+    />
+
   <!-- Combination widget template -->
   <view
     type="zeit.cms.browser.interfaces.ICMSLayer"

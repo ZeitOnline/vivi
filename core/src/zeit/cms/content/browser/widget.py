@@ -119,6 +119,12 @@ class SubNavigationUpdater(MasterSlaveDropdownUpdater):
     slave_source = zeit.cms.content.sources.SubNavigationSource()
 
 
+class ChannelUpdater(MasterSlaveDropdownUpdater):
+
+    master_source = zeit.cms.content.sources.NavigationSource()
+    slave_source = zeit.cms.content.sources.SubNavigationSource()
+
+
 class MobileAlternativeWidget(zope.formlib.widgets.BytesWidget):
 
     template = zope.app.pagetemplate.ViewPageTemplateFile(

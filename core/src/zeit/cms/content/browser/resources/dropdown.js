@@ -13,7 +13,7 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
         // addcentral and, e.g., an article's edit form happened to be what
         // was requested, so we left it at that.
         self.slave_field = MochiKit.DOM.getFirstParentByTagAndClassName(
-            slave, 'div', 'field');
+            slave, '', 'field');
 
         MochiKit.Signal.connect(master, 'onchange', self, self.update);
         self.update();
@@ -64,13 +64,13 @@ zeit.cms.configure_master_slave = function(prefix, master, slave, update_url) {
     if (isNull(master) || isNull(slave)) {
         return
     }
-    if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[prefix])) {
-        zeit.cms.master_slave_dropdown[prefix].destroy();
+    if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[master.name])) {
+        zeit.cms.master_slave_dropdown[master.name].destroy();
     }
     var path = window.location.pathname.split('/').slice(0, -1);
     path.push(update_url);
     path = path.join('/');
-    zeit.cms.master_slave_dropdown[prefix] =
+    zeit.cms.master_slave_dropdown[master.name] =
         new zeit.cms.MasterSlaveDropDown(master, slave, path);
 };
 
@@ -78,6 +78,25 @@ zeit.cms.configure_master_slave = function(prefix, master, slave, update_url) {
 zeit.cms.configure_ressort_dropdown = function(prefix) {
     zeit.cms.configure_master_slave(
         prefix, 'ressort', 'sub_ressort', '@@subnavigationupdater.json');
+};
+
+
+zeit.cms.configure_channel_dropdowns = function(
+        prefix, field, master_index, slave_index) {
+    // XXX Rather ugly API to support usage in both z.c.article and z.c.cp.
+    if (isUndefinedOrNull(prefix)) {
+        prefix = 'form.';
+    }
+    var masters = jQuery(
+        '[id^="' + prefix + field + '"][id$="combination_' + master_index + '"]'
+        );
+
+    jQuery.each(masters, function(index, value) {
+        zeit.cms.configure_master_slave(
+            prefix, field + '.' + index + '..combination_' + master_index,
+            field + '.' + index + '..combination_' + slave_index,
+            '@@channelupdater.json');
+    });
 };
 
 /**
@@ -95,6 +114,8 @@ zeit.cms.style_dropdowns = function(container) {
 
 MochiKit.Signal.connect(window, 'onload', function(event) {
     zeit.cms.configure_ressort_dropdown();
+    zeit.cms.configure_channel_dropdowns('form.', 'channels', '00', '01');
+    zeit.cms.configure_channel_dropdowns('form.', 'query', '01', '02');
     zeit.cms.style_dropdowns();
 });
 
