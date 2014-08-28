@@ -168,7 +168,7 @@ class IAutomaticRegion(IRegion):
                 source=zeit.cms.content.sources.NavigationSource()),
              zope.schema.Choice(
                  title=_('Subchannel'),
-                 source=zeit.cms.content.sources.SubNavigationSource(),
+                 source=zeit.cms.content.sources.SubChannelSource(),
                  required=False))
         ),
         default=(),
