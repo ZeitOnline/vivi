@@ -122,3 +122,20 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     @property
     def product_text(self):
         return self._product_text
+
+    _channels = zeit.cms.content.dav.DAVProperty(
+        zope.schema.Tuple(value_type=zope.schema.TextLine()),
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'channels')
+
+    @property
+    def channels(self):
+        if self._channels:
+            return tuple(tuple(x.split(' ') if ' ' in x else (x, None))
+                         for x in self._channels)
+        else:
+            return ()
+
+    @channels.setter
+    def channels(self, value):
+        self._channels = tuple(' '.join([x for x in channel if x])
+                               for channel in value)

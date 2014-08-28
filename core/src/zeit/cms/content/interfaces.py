@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import zc.form.field
 import zeit.cms.content.field
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -82,6 +83,20 @@ class ICommonMetadata(zope.interface.Interface):
     sub_ressort = zope.schema.Choice(
         title=_('Sub ressort'),
         source=zeit.cms.content.sources.SubNavigationSource(),
+        required=False)
+
+    channels = zope.schema.Tuple(
+        title=_('Channels'),
+        value_type=zc.form.field.Combination(
+            (zope.schema.Choice(
+                title=_('Channel'),
+                source=zeit.cms.content.sources.NavigationSource()),
+             zope.schema.Choice(
+                 title=_('Subchannel'),
+                 source=zeit.cms.content.sources.SubNavigationSource(),
+                 required=False))
+        ),
+        default=(),
         required=False)
 
     printRessort = zope.schema.TextLine(

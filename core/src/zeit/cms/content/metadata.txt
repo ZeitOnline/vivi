@@ -71,6 +71,15 @@ Traceback (most recent call last):
     ...
 AttributeError: can't set attribute
 
+Channels
+++++++++
+
+>>> content.channels = (('International', 'Nahost'), ('Wissen', None))
+>>> properties[('channels', 'http://namespaces.zeit.de/CMS/document')]
+u'International Nahost;Wissen'
+>>> content.channels
+((u'International', u'Nahost'), (u'Wissen', None))
+
 None handling
 +++++++++++++
 

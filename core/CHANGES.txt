@@ -4,6 +4,8 @@ zeit.cms changes
 2.26.0 (unreleased)
 -------------------
 
+- Add channels to ICommonMetadata (VIV-469).
+
 - Filename rewriting: Remove all dots except for those of explicitly
   whitelisted filename extensions (VIV-463).
 
