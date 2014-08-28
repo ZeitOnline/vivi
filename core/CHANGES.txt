@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.26.0 (unreleased)
+2.26.0 (2014-08-28)
 -------------------
 
 - Add channels to ICommonMetadata (VIV-469).
