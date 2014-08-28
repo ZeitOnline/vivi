@@ -23,5 +23,5 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
                 cp = list(wc.values())[0]
                 self.assertEllipsis(
                     '<region...count="5" automatic="True"...>...'
-                    '<raw>foo</raw>...',
+                    '<raw_query>foo</raw_query>...',
                     lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
