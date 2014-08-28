@@ -97,8 +97,12 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
         query = zeit.find.search.query(published='published')
         conditions = []
         for type_, channel, subchannel in self.query:
-            value = '%s %s' % (channel, subchannel) if subchannel else channel
-            conditions.append(zeit.solr.query.field(
+            if subchannel:
+                value = '"%s %s"' % (channel, subchannel)
+            else:
+                # XXX Unclear whether this will work as desired for keywords.
+                value = '%s*' % channel
+            conditions.append(zeit.solr.query.field_raw(
                 self.SOLR_FIELD[type_], value))
         if conditions:
             query = zeit.solr.query.and_(
