@@ -212,6 +212,22 @@ class SubNavigationSource(MasterSlaveSource):
         return unicode(node['title'])
 
 
+class SubChannelSource(SubNavigationSource):
+
+    def _get_master_nodes(self, context):
+        if type(context).__name__ == 'Fake':
+            # for .browser.MasterSlaveDropdownUpdater
+            return super(SubChannelSource, self)._get_master_nodes(context)
+        # The ``channels`` field is a list of combination values.
+        # The formlib validation machinery does not give us enough context
+        # to determine the master value, so we are forced to allow all values.
+        # We can get away with this since the UI only offers valid subchannel
+        # values (powered by MasterSlaveDropdownUpdater above).
+        tree = self._get_tree()
+        all_nodes = tree.xpath(self.master_node_xpath)
+        return all_nodes
+
+
 class SerieSource(SimpleContextualXMLSource):
 
     config_url = 'source-serie'
