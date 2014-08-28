@@ -14,6 +14,7 @@ from zeit.content.image.interfaces import IImageGroup
 from zeit.workflow.publishinfo import id_to_principal
 import zeit.cms.asset.interfaces
 import zeit.cms.browser.interfaces
+import zeit.cms.content.interfaces
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.article.interfaces
@@ -535,3 +536,25 @@ class OptionsLayout(zeit.edit.browser.form.InlineForm):
         super(OptionsLayout, self).setUpWidgets(*args, **kw)
         self.widgets['layout'].display_search_button = False
         self.widgets['layout'].display_url_field = False
+
+
+class ChannelFormGroup(zeit.edit.browser.form.FoldableFormGroup):
+
+    title = _('Run in channel')
+
+
+class ChannelSelector(zeit.edit.browser.form.InlineForm):
+
+    legend = _('')
+    prefix = 'channel-selector'
+    undo_description = _('select channel')
+    form_fields = FormFields(ICommonMetadata).select('channels')
+
+    def render(self):
+        result = super(ChannelSelector, self).render()
+        if result:
+            result += """\
+<script type="text/javascript">
+    zeit.cms.configure_channel_dropdowns("%s.", "channels", "00", "01");
+</script>""" % (self.prefix,)
+        return result

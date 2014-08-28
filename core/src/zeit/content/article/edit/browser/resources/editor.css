@@ -1575,6 +1575,16 @@
 }
 
 
+/* Channels */
+
+.type-article #edit-form-channel .combinationFieldWidget td.label {
+    display: none;
+}
+.type-article #edit-form-channel .combinationFieldWidget tr.field {
+    display: inline-block;
+}
+
+
 /* INTERNAL LINKS */
 
 .type-article #edit-form-internallinks .inline-form .field {
@@ -1691,6 +1701,11 @@
   border: none;
   resize: vertical;
   width: 99%;
+}
+
+.type-article .article-editor-inner .fieldname-channels input[name="channel-selector.channels.remove"],
+.type-article .article-editor-inner .fieldname-channels input[name="channel-selector.channels.remove"]:hover {
+  background-position: 10px -2720px, 0 0;
 }
 
 .type-article .fieldname-memo textarea,

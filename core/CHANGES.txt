@@ -4,6 +4,8 @@ zeit.content.article changes
 3.5.4 (unreleased)
 ------------------
 
+- Add Channel selection UI (VIV-469).
+
 - Add "push to mobile" to social media section, send breaking news on a
   separate parse.com channel (VIV-466).
 
