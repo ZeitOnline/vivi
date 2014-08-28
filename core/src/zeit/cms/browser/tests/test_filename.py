@@ -25,6 +25,9 @@ class FilenameTest(zeit.cms.testing.ZeitCmsSeleniumTestCase):
     def test_replaces_specialchars_with_dash(self):
         self.assertEqual('f-o', self.normalize('f&o'))
 
+    def test_removes_specialchars_at_beginning_of_string(self):
+        self.assertEqual('fo', self.normalize('&&fo'))
+
     def test_removes_specialchars_at_end_of_string(self):
         self.assertEqual('fo', self.normalize('fo&&'))
 

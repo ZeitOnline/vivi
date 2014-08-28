@@ -8,8 +8,11 @@ zeit.cms.normalize_filename = function(filename) {
     result = result.replace(/ü/g, 'ue');
     result = result.replace(/ß/g, 'ss');
 
-    // Remove all special characters, but keep dots for special treatment
-    result = result.replace(/(.*?)([^a-z0-9.]+)$/, '$1');
+    // Remove special characters at beginning and end
+    // XXX It's unclear why this doesn't work as a single regexp.
+    result = result.replace(/^([^a-z0-9]+)(.*?)$/, '$2');
+    result = result.replace(/^(.*?)([^a-z0-9]+)$/, '$1');
+    // Replace special characters, but keep dots for special treatment
     result = result.replace(/[^a-z0-9.]/g, '-');
     // Save dot of filename extensions
     result = result.replace(
