@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.6.0 (unreleased)
+2.6.0 (2014-08-28)
 ------------------
 
 - Add UI to specify solr query by selecting channels (VIV-470).
