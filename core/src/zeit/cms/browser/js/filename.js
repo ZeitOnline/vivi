@@ -17,7 +17,7 @@ zeit.cms.normalize_filename = function(filename) {
     result = result.replace(/[^a-z0-9.]/g, '-');
     // Save dot of filename extensions
     result = result.replace(
-            /^(.*)\.(jpg|png|pdf|mp3|swf|rtf|gif|svg|bmp)$/, '$1_$2');
+            /^(.*)\.(jpg|jpeg|png|pdf|mp3|swf|rtf|gif|svg|bmp)$/, '$1_$2');
     // Remove all dots
     result = result.replace(/\./g, '-');
     // Restore saved dot
