@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.26.1 (unreleased)
+2.26.1 (2014-08-29)
 -------------------
 
 - Fix brown-bag release.
