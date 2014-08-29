@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.6.1 (unreleased)
+2.6.1 (2014-08-29)
 ------------------
 
 - Fix brown-bag release.
