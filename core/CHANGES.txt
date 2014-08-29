@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.3.4 (unreleased)
+2.3.4 (2014-08-29)
 ------------------
 
 - Exclude list widgets from ``get_all_input_even_if_invalid``.
