@@ -176,6 +176,10 @@ class IAutomaticRegion(IRegion):
 
     raw_query = zope.schema.Text(title=_('Raw query'), required=False)
 
+    # XXX really ugly styling hack
+    automatic.setTaggedValue('placeholder', ' ')
+    raw_query.setTaggedValue('placeholder', ' ')
+
 
 class ICMSContentIterable(zope.interface.Interface):
     """An iterable object iterating over CMSContent."""
