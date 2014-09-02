@@ -181,6 +181,28 @@ def disallowCommentsIfCommentsAreNotShown(object, event):
         object.commentsAllowed = False
 
 
+@grok.subscribe(
+    zeit.content.article.interfaces.IArticle,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def set_default_channel_to_ressort(context, event):
+    if context.channels:  # already set
+        return
+    relevant_change = False
+    for description in event.descriptions:
+        if (description.interface is not
+                zeit.cms.content.interfaces.ICommonMetadata):
+            continue
+        if ('ressort' in description.attributes or
+            'sub_ressort' in description.attributes):
+            relevant_change = True
+            break
+    if not relevant_change:
+        return
+    if not context.ressort:
+        return
+    context.channels = ((context.ressort, context.sub_ressort),)
+
+
 class LayoutDependency(object):
 
     zope.component.adapts(zeit.content.article.interfaces.IArticle)

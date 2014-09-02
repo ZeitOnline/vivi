@@ -328,6 +328,7 @@ class MetadataA(zeit.edit.browser.form.InlineForm):
         self.signal('reload-inline-view', 'edit.heading')
         self.signal(
             'reload-inline-view', 'edit.form.article-content-suggest-keywords')
+        self.signal('reload-inline-form', 'channel-selector')
 
 
 # This will be renamed properly as soon as the fields are finally decided.

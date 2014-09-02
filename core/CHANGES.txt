@@ -5,7 +5,10 @@ zeit.content.article changes
 ------------------
 
 - Use feature toggle ``zeit.content.article.social-push-mobile`` (VIV-466).
+
 - Use feature toggle ``zeit.content.cp.automatic``.
+
+- Set channels to ressort if no channels are set yet (VIV-469).
 
 
 3.6.0 (2014-08-29)
