@@ -12,13 +12,13 @@ class ParseTest(unittest.TestCase):
 
     level = 2
 
-    @unittest.skip('Cannot push to ios without a apple certificate')
     def test_push_works(self):
         # Parse offers no REST API to retrieve push messages,
         # so this is just a smoke test.
         api = zeit.push.parse.Connection(
             settings['application_id'], settings['rest_api_key'], 1)
-        api.send('Being pushy.', 'http://example.com')
+        # XXX We cannot push to ios without a apple certificate.
+        api.send('Being pushy.', 'http://example.com', skip_ios=True)
 
     def test_invalid_credentials_should_raise(self):
         api = zeit.push.parse.Connection('invalid', 'invalid', 1)
