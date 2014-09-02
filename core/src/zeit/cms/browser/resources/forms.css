@@ -115,8 +115,8 @@ legend {
     padding-left: 2em;
 }
 
-.sequencewidget > tbody > tr > td {
-    padding: 0.5em 0;
+.sequencewidget .field, .sequencewidget .widget {
+    padding: 0;
 }
 
 .sequencewidget {
