@@ -83,7 +83,7 @@ class ParametersTest(zeit.push.testing.TestCase):
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels='foo')
             data = push.call_args[0][0]
-            self.assertEqual(['bar', 'qux'], data['where']['channels'])
+            self.assertEqual(['bar', 'qux'], data['where']['channels']['$in'])
 
     def test_aa_empty_product_config_omits_channels_parameter(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
