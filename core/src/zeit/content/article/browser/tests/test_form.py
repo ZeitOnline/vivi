@@ -1,8 +1,12 @@
 # Copyright (c) 2010-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.content.article.interfaces import IArticle
+from zope.browser.interfaces import ITerms
 import zeit.cms.testing
 import zeit.content.article.testing
+import zope.component
+import zope.publisher.browser
 
 
 class TestAdding(zeit.cms.testing.BrowserTestCase):
@@ -22,10 +26,6 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
                 return list(wc.values())[0]
 
     def test_ressort_should_be_set_from_url(self):
-        from zeit.content.article.interfaces import IArticle
-        from zope.browser.interfaces import ITerms
-        import zope.component
-        import zope.publisher.browser
         request = zope.publisher.browser.TestRequest()
         terms = zope.component.getMultiAdapter(
             (IArticle['ressort'].source(object()), request), ITerms)
@@ -42,6 +42,19 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
         article = self.get_article()
         self.assertEqual('Deutschland', article.ressort)
         self.assertEqual('Integration', article.sub_ressort)
+
+    def test_channels_should_be_set_to_ressort(self):
+        request = zope.publisher.browser.TestRequest()
+        terms = zope.component.getMultiAdapter(
+            (IArticle['ressort'].source(object()), request), ITerms)
+        ressort_token = terms.getTerm('Deutschland').token
+        menu = self.browser.getControl(name='add_menu')
+        menu.displayValue = ['Article']
+        url = menu.value[0]
+        url = '{0}?form.ressort={1}'.format(url, ressort_token)
+        self.browser.open(url)
+        article = self.get_article()
+        self.assertEqual((('Deutschland', None),), article.channels)
 
     def test_default_year_and_volume_should_be_set(self):
         menu = self.browser.getControl(name='add_menu')
