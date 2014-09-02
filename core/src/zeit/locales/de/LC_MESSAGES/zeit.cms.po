@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Thu Aug 28 14:35:39 2014\n"
-"PO-Revision-Date: 2014-09-01 07:44+0100\n"
+"PO-Revision-Date: 2014-09-02 13:49+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1609,7 +1609,7 @@ msgstr "Eilmeldungsbanner anzeigen"
 
 #: zeit/content/article/browser/breaking.py:28
 msgid "breaking-news-social"
-msgstr "Auf Twitter posten"
+msgstr "Auf Facebook und Twitter posten"
 
 #: zeit/content/article/browser/breaking.py:67
 msgid "Publish and push"
