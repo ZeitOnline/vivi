@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Thu Aug 28 14:35:39 2014\n"
-"PO-Revision-Date: 2014-09-02 13:49+0100\n"
+"PO-Revision-Date: 2014-09-02 15:01+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2576,7 +2576,7 @@ msgstr "ist gleich"
 
 #: zeit/content/cp/interfaces.py:177
 msgid "Raw query"
-msgstr "SOLR Query (optional)"
+msgstr "Benutzerdefinierte Bestückung (via solr query, optional)"
 
 #: zeit/content/cp/interfaces.py:197
 msgid "Invalid hex literal"
