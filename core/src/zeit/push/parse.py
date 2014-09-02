@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+import copy
 import grokcore.component as grok
 import json
 import logging
@@ -32,6 +33,7 @@ class Connection(object):
 
         parameters = {
             'expiration_time': expiration_time,
+            'where': {},
         }
         channels = kw.get('channels')
         if channels:
@@ -40,36 +42,32 @@ class Connection(object):
                     'zeit.push')
                 channels = product_config[channels].split(' ')
             if all(channels):
-                parameters['channels'] = channels
+                parameters['where']['channels'] = channels
 
-        android = parameters.copy()
-        android.update({
-            'where': {'deviceType': 'android'},
-            'data': {
-                # Parse.com payload
-                'alert': text,
-                'title': title,
-                # App-specific payload
-                'url': self.rewrite_url(link),
-            }
-        })
+        android = copy.deepcopy(parameters)
+        android['where']['deviceType'] = 'android'
+        android['data'] = {
+            # Parse.com payload
+            'alert': text,
+            'title': title,
+            # App-specific payload
+            'url': self.rewrite_url(link),
+        }
         self.push(android)
 
         # XXX Skipping iOs is for unittests only, since we cannot push to ios
         # without a apple certificate.
         if not kw.get('skip_ios'):
-            ios = parameters.copy()
-            ios.update({
-                'where': {'deviceType': 'ios'},
-                'data': {
-                    # App-specific payload
-                    'aps': {
-                        'alert': text,
-                        'alert-title': title,
-                        'url': self.rewrite_url(link),
-                    }
+            ios = copy.deepcopy(parameters)
+            ios['where']['deviceType'] = 'ios'
+            ios['data'] = {
+                # App-specific payload
+                'aps': {
+                    'alert': text,
+                    'alert-title': title,
+                    'url': self.rewrite_url(link),
                 }
-            })
+            }
             self.push(ios)
 
     def push(self, data):

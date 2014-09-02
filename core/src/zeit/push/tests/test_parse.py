@@ -17,8 +17,13 @@ class ParseTest(unittest.TestCase):
         # so this is just a smoke test.
         api = zeit.push.parse.Connection(
             settings['application_id'], settings['rest_api_key'], 1)
-        # XXX We cannot push to ios without a apple certificate.
         api.send('Being pushy.', 'http://example.com', skip_ios=True)
+
+    def test_push_works_with_channels(self):
+        api = zeit.push.parse.Connection(
+            settings['application_id'], settings['rest_api_key'], 1)
+        api.send('Being pushy.', 'http://example.com', channels=['News'],
+                 skip_ios=True)
 
     def test_invalid_credentials_should_raise(self):
         api = zeit.push.parse.Connection('invalid', 'invalid', 1)
@@ -67,7 +72,7 @@ class ParametersTest(zeit.push.testing.TestCase):
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any')
             data = push.call_args[0][0]
-            self.assertNotIn('channels', data)
+            self.assertNotIn('channels', data['where'])
 
     def test_channels_string_is_looked_up_in_product_config(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
@@ -78,7 +83,7 @@ class ParametersTest(zeit.push.testing.TestCase):
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels='foo')
             data = push.call_args[0][0]
-            self.assertEqual(['bar', 'qux'], data['channels'])
+            self.assertEqual(['bar', 'qux'], data['where']['channels'])
 
     def test_aa_empty_product_config_omits_channels_parameter(self):
         product_config = zope.app.appsetup.product.getProductConfiguration(
@@ -89,4 +94,4 @@ class ParametersTest(zeit.push.testing.TestCase):
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels='foo')
             data = push.call_args[0][0]
-            self.assertNotIn('channels', data)
+            self.assertNotIn('channels', data['where'])

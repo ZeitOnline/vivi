@@ -4,7 +4,7 @@ zeit.push changes
 1.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix our parse.com-API usage for ``channels``.
 
 
 1.5.0 (2014-08-29)
