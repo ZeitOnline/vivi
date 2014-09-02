@@ -48,7 +48,7 @@ class Connection(object):
             else:
                 channels = channel_name
             if all(channels):
-                parameters['where']['channels'] = channels
+                parameters['where']['channels'] = {'$in': channels}
 
         android = copy.deepcopy(parameters)
         android['where']['deviceType'] = 'android'
