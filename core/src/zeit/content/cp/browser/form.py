@@ -66,10 +66,7 @@ class AddForm(FormBase,
         'automaticMetadataUpdateDisabled')
 
 
-class EditForm(FormBase,
-               zeit.cms.content.browser.form.CommonMetadataEditForm):
-
-    title = _("Edit centerpage")
+class AutomaticFields(object):
 
     automatic_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IAutomaticRegion).select(
@@ -79,7 +76,7 @@ class EditForm(FormBase,
          ('automatic', 'count', 'query', 'raw_query'))
 
     def __init__(self, *args, **kw):
-        super(EditForm, self).__init__(*args, **kw)
+        super(AutomaticFields, self).__init__(*args, **kw)
 
         if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
                 'zeit.content.cp.automatic'):
@@ -88,7 +85,15 @@ class EditForm(FormBase,
                 self.automatic_group,) + FormBase.field_groups
 
 
+class EditForm(FormBase,
+               AutomaticFields,
+               zeit.cms.content.browser.form.CommonMetadataEditForm):
+
+    title = _("Edit centerpage")
+
+
 class DisplayForm(FormBase,
+                  AutomaticFields,
                   zeit.cms.content.browser.form.CommonMetadataDisplayForm):
 
     title = _("View centerpage metadata")

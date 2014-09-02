@@ -7,6 +7,8 @@ zeit.content.cp changes
 
 - Use feature toggle ``zeit.content.cp.automatic``.
 
+- Improve "automatic content" form styling (VIV-470).
+
 
 2.6.1 (2014-08-29)
 ------------------
