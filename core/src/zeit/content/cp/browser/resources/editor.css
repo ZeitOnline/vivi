@@ -462,6 +462,10 @@ margin-top: 4px;
   float: left;
 }
 
+.fieldname-count input {
+  width: 2em;
+}
+
 .fieldname-count label {
   margin-top: 9px; /* XXX center vertically */
   margin-left: 4em;
