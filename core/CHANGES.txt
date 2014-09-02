@@ -4,7 +4,7 @@ zeit.cms changes
 2.26.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use feature toggle ``zeit.content.cp.automatic``.
 
 
 2.26.1 (2014-08-29)

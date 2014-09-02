@@ -9,6 +9,7 @@ import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.settings.interfaces
+import zope.app.appsetup.appsetup
 import zope.app.form.browser.textwidgets
 
 
@@ -69,6 +70,11 @@ class CommonMetadataFormBase(object):
 
     def __init__(self, context, request):
         super(CommonMetadataFormBase, self).__init__(context, request)
+
+        if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.content.cp.automatic'):
+            self.form_fields = self.form_fields.omit(
+                'channels', 'lead_candidate')
 
         if not self.for_display:
             # Change the widgets of the teaser fields
