@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Thu Aug 28 14:35:39 2014\n"
-"PO-Revision-Date: 2014-09-02 15:01+0100\n"
+"PO-Revision-Date: 2014-09-02 15:12+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2767,7 +2767,7 @@ msgstr "Schlagwort für Navi-Teaser 2"
 
 #: zeit/content/cp/interfaces.py:632
 msgid "Lead candidate"
-msgstr "Artikel kann als Aufmacher laufen"
+msgstr "kann als Aufmacher laufen"
 
 #: zeit/content/cp/interfaces.py:66
 msgid "Label for topiclink #3"
