@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add feature toggle ``zeit.content.article.social-push-mobile`` (VIV-466).
 
 
 3.6.0 (2014-08-29)

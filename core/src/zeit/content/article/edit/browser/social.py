@@ -5,6 +5,7 @@ from zeit.push.twitter import twitterAccountSource
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.edit.browser.form
+import zope.app.appsetup.appsetup
 import zope.app.appsetup.product
 import zope.interface
 
@@ -43,12 +44,13 @@ class Social(zeit.edit.browser.form.InlineForm,
             + FormFields(
                 zeit.push.interfaces.IPushMessages).select('short_text')
             + FormFields(
-                IAccounts).select('twitter', 'twitter_ressort')
-            + FormFields(
+                IAccounts).select('twitter', 'twitter_ressort'))
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.content.article.social-push-mobile'):
+            self.form_fields += FormFields(
                 IAccounts).select('mobile')
-            + FormFields(
-                zeit.push.interfaces.IPushMessages).select('enabled')
-        )
+        self.form_fields += FormFields(
+            zeit.push.interfaces.IPushMessages).select('enabled')
 
     def setUpWidgets(self, *args, **kw):
         # Needs to be WRITEABLE_LIVE for zeit.push internals, but
