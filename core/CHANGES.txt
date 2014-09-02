@@ -4,7 +4,8 @@ zeit.content.article changes
 3.6.1 (unreleased)
 ------------------
 
-- Add feature toggle ``zeit.content.article.social-push-mobile`` (VIV-466).
+- Use feature toggle ``zeit.content.article.social-push-mobile`` (VIV-466).
+- Use feature toggle ``zeit.content.cp.automatic``.
 
 
 3.6.0 (2014-08-29)
