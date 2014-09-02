@@ -55,19 +55,22 @@ class Connection(object):
         })
         self.push(android)
 
-        ios = parameters.copy()
-        ios.update({
-            'where': {'deviceType': 'ios'},
-            'data': {
-                # App-specific payload
-                'aps': {
-                    'alert': text,
-                    'alert-title': title,
-                    'url': self.rewrite_url(link),
+        # XXX Skipping iOs is for unittests only, since we cannot push to ios
+        # without a apple certificate.
+        if not kw.get('skip_ios'):
+            ios = parameters.copy()
+            ios.update({
+                'where': {'deviceType': 'ios'},
+                'data': {
+                    # App-specific payload
+                    'aps': {
+                        'alert': text,
+                        'alert-title': title,
+                        'url': self.rewrite_url(link),
+                    }
                 }
-            }
-        })
-        self.push(ios)
+            })
+            self.push(ios)
 
     def push(self, data):
         headers = {
