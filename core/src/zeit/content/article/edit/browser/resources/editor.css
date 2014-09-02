@@ -1580,7 +1580,7 @@
 .type-article #edit-form-channel .combinationFieldWidget td.label {
     display: none;
 }
-.type-article #edit-form-channel .combinationFieldWidget tr.field {
+.type-article #edit-form-channel .combinationFieldWidget tr {
     display: inline-block;
 }
 
