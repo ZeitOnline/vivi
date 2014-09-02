@@ -8,6 +8,7 @@ import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
+import zope.app.appsetup.appsetup
 import zope.formlib.form
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
@@ -69,14 +70,22 @@ class EditForm(FormBase,
                zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _("Edit centerpage")
-    form_fields = FormBase.form_fields + zope.formlib.form.FormFields(
+
+    automatic_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IAutomaticRegion).select(
             'count', 'query', 'raw_query', 'automatic')
-
-    automatic_fields = gocept.form.grouped.Fields(
+    automatic_group = gocept.form.grouped.Fields(
         _("Automatic contents"),
          ('automatic', 'count', 'query', 'raw_query'))
-    field_groups = (automatic_fields,) + FormBase.field_groups
+
+    def __init__(self, *args, **kw):
+        super(EditForm, self).__init__(*args, **kw)
+
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.content.cp.automatic'):
+            self.form_fields = FormBase.form_fields + self.automatic_fields
+            self.field_groups = (
+                self.automatic_group,) + FormBase.field_groups
 
 
 class DisplayForm(FormBase,
