@@ -20,6 +20,10 @@ class Connection(object):
 
     base_url = 'https://api.parse.com/1'
 
+    # Channels only work on mobile apps with version greater than or equal to
+    # this (see VIV-466).
+    MIN_APPVERSION_CHANNELS = '1.1'
+
     def __init__(self, application_id, rest_api_key, expire_interval):
         self.application_id = application_id
         self.rest_api_key = rest_api_key
@@ -33,14 +37,16 @@ class Connection(object):
 
         parameters = {
             'expiration_time': expiration_time,
-            'where': {},
+            'where': {'appVersion': {'$gte': self.MIN_APPVERSION_CHANNELS}},
         }
-        channels = kw.get('channels')
-        if channels:
-            if not isinstance(channels, list):
+        channel_name = kw.get('channels')
+        if channel_name:
+            if not isinstance(channel_name, list):
                 product_config = productconfig.getProductConfiguration(
                     'zeit.push')
-                channels = product_config[channels].split(' ')
+                channels = product_config[channel_name].split(' ')
+            else:
+                channels = channel_name
             if all(channels):
                 parameters['where']['channels'] = channels
 
@@ -69,6 +75,14 @@ class Connection(object):
                 }
             }
             self.push(ios)
+
+        # Backward compat for mobile apps that don't understand channels.
+        if channel_name == 'parse-channel-breaking':
+            for data in [android, ios]:
+                data['where']['appVersion'] = {
+                    '$lt': self.MIN_APPVERSION_CHANNELS}
+                del data['where']['channels']
+                self.push(data)
 
     def push(self, data):
         headers = {

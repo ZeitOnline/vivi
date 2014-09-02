@@ -6,6 +6,9 @@ zeit.push changes
 
 - Fix our parse.com-API usage for ``channels``.
 
+- Send additional "breaking news" notifications without a channel, for those
+  mobile app versions that cannot handle channels (backwards compatibility).
+
 
 1.5.0 (2014-08-29)
 ------------------
