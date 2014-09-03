@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.6.1 (unreleased)
+3.6.1 (2014-09-03)
 ------------------
 
 - Use feature toggle ``zeit.content.article.social-push-mobile`` (VIV-466).
