@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.6.2 (unreleased)
+2.6.2 (2014-09-03)
 ------------------
 
 - Use feature toggle ``zeit.content.cp.automatic``.
