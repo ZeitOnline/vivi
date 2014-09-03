@@ -1,8 +1,10 @@
 import lxml.etree
+import unittest
 import zeit.cms.testing
 import zeit.content.cp.testing
 
 
+@unittest.skip('XXX feature temporarily disabled')
 class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
 
     layer = zeit.content.cp.testing.layer
