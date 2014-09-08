@@ -138,7 +138,7 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
         return zeit.cms.interfaces.ICMSContent(self.context.uniqueId, None)
 
     @property
-    def information(self):
+    def remote_information(self):
         if self.obj_in_repository is None:
             return zope.i18n.translate(
                 _('The object was removed from the repository.'),
@@ -148,8 +148,16 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
             name='checkin-conflict-error-information')
         return view()
 
+    @property
+    def local_information(self):
+        view = zope.component.getMultiAdapter(
+            (self.context, self.request),
+            name='checkin-conflict-error-information')
+        return view()
+
     def render(self):
-        if 'checkin' in self.request.form:
+        if ('checkin' in self.request.form
+            or 'checkin-correction' in self.request.form):
             self.checkin()
         elif 'delete' in self.request.form:
             self.delete()
@@ -159,11 +167,15 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
             return super(CheckinConflictError, self).render()
 
     def checkin(self):
+        if 'checkin' in self.request.form:
+            semantic_change = 'true'
+        else:
+            semantic_change = self.request.get('semantic_change', '')
         self.redirect(self.url(
             self.context, '@@checkin?%s' % urllib.urlencode(dict(
                 came_from=self.request.get('came_from', ''),
                 ignore_conflicts='true',
-                semantic_change=self.request.get('semantic_change', 'true'),
+                semantic_change=semantic_change,
             ))))
 
     def delete(self):
@@ -182,7 +194,8 @@ class CheckinConflictErrorInformation(zope.formlib.form.SubPageDisplayForm):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.workflow.interfaces.IModified,
-        zeit.cms.content.interfaces.ISemanticChange)
+        zeit.cms.content.interfaces.ISemanticChange).omit(
+            'has_semantic_change')
 
 
 class MenuItem(zeit.cms.browser.menu.ActionMenuItem):

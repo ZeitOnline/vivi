@@ -58,15 +58,8 @@ actually works:
   <form method="POST"
         action="http://localhost/++skin++cms/workingcopy/zope.user/testcontent/@@checkin-conflict-error">
     <input type="hidden" name="came_from" value="edit.html" />
-    <input type="hidden" name="semantic_change" value="true" />
-    <input type="submit" name="checkin"
-           value="Checkin anyway" />
-    <input type="submit" name="delete"
-           value="Delete workingcopy" />
-    <input type="submit" name="cancel" value="Cancel" />
-  </form>
   ...
-    
+
 
 Cancel goes back to the ``came_from`` view:
 

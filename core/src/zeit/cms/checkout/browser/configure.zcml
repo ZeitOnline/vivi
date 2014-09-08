@@ -37,7 +37,7 @@
     />
 
   <browser:view
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="checkin-conflict-error-information"
     class=".manager.CheckinConflictErrorInformation"

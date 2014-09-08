@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Redirect to renamed object instead of its parent folder (VIV-487).
 
+- Offer both checkin and checkin/correction on conflict warning dialog
+  (VIV-485).
+
 
 2.26.2 (2014-09-03)
 -------------------

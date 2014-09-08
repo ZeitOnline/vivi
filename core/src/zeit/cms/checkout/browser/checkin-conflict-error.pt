@@ -9,19 +9,21 @@
 
   </p>
 
-  <form tal:content="structure view/information" />
+
+  <h3 i18n:translate="">Local version</h3>
+  <form tal:content="structure view/local_information" />
+
+  <h3 i18n:translate="">Other version</h3>
+  <form tal:content="structure view/remote_information" />
 
   <form method="POST"
         tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}">
     <input type="hidden" name="came_from"
            tal:attributes="value request/came_from | nothing" />
-    <input type="hidden" name="semantic_change"
-           tal:attributes="value request/semantic_change | string:true" />
-    <input type="submit" name="checkin" value="Checkin anyway"
-           tal:condition="python:bool(request.get('semantic_change', 'true'))"
+    <input type="submit" name="checkin-correction"
+           value="Checkin correction anyway"
            i18n:attributes="value" />
-    <input type="submit" name="checkin" value="Checkin correction anyway"
-           tal:condition="python:not bool(request.get('semantic_change', 'true'))"
+    <input type="submit" name="checkin" value="Checkin anyway"
            i18n:attributes="value" />
     <input type="submit" name="delete" value="Delete workingcopy"
            i18n:attributes="value" />
