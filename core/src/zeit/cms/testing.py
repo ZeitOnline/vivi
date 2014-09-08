@@ -341,7 +341,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             self.old_log_level = logging.root.level
             logging.root.setLevel(logging.WARN)
             transaction.commit()
-        self.run_js('window.sessionStorage.clear();')
+        self.run_js('window.localStorage.clear();')
 
         self.original_windows = set(self.selenium.getAllWindowIds())
         self.original_width = self.selenium.getEval('window.outerWidth')
