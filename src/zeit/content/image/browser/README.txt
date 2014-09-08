@@ -475,11 +475,13 @@ Let's have a look at the index:
 
 When we want to change the metadata of the image group, we need to check it
 out. Checking out an image goup creates a local object (ILocalContent) which is
-different from the repository version: it is no folder:
+different from the repository version: it is no folder.
+(The workingcopy version has a '-2' in its URL since there already was a ghost
+in the workingcopy)
 
 >>> browser.getLink('Checkout').click()
 >>> browser.url
-'http://localhost/++skin++cms/workingcopy/zope.user/new-hampshire/@@edit.html'
+'http://localhost/++skin++cms/workingcopy/zope.user/new-hampshire-2/@@edit.html'
 
 >>> print browser.contents
 <?xml version="1.0"?>
@@ -511,7 +513,7 @@ Make sure we have a metadata preview for local image groups:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/'
-...     'new-hampshire/@@metadata_preview')
+...     'new-hampshire-2/@@metadata_preview')
 >>> print browser.contents
  <div class="contextViewsAndActions">
 <div class="context-views">

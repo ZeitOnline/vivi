@@ -11,6 +11,7 @@ import zeit.content.image.browser.form
 import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
+import zeit.ghost.ghost
 import zope.formlib.form
 import zope.publisher.interfaces
 
@@ -52,6 +53,7 @@ class AddForm(FormBase,
         if self.image is not None:
             super(AddForm, self).add(self.image, group)
         self._created_object = group
+        zeit.ghost.ghost.create_ghost(group)
 
     def create_image(self, data):
         image = zeit.content.image.image.LocalImage()
