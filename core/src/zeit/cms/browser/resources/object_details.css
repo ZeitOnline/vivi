@@ -78,7 +78,6 @@
 #internallinks\.related li a[rel="remove"],
 #metadata-c\.authorships li a[rel="remove"] {
   display: inline;
-  text-indent: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-indent: -1000px;
