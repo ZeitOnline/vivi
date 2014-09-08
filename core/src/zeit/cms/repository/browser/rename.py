@@ -38,6 +38,7 @@ class Rename(zeit.cms.browser.lightbox.Form):
             container)
         renamer.renameItem(old_name, new_name)
 
+        # Changing the context also properly sets nextURL.
         self.context = container[new_name]
         self.send_message(_('Renamed "${old_name}" to "${new_name}"',
                             mapping=dict(old_name=old_name,

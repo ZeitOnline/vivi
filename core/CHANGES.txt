@@ -4,7 +4,7 @@ zeit.cms changes
 2.26.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Redirect to renamed object instead of its parent folder (VIV-487).
 
 
 2.26.2 (2014-09-03)

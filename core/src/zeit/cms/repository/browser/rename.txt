@@ -74,13 +74,13 @@ Choose a new name now and submit:
 >>> browser.getControl('New file name').value = 'Somalia-krieg'
 >>> browser.getControl('Rename').click()
 
-The page contains the url to the container of the renamed object. Javascript
+The page contains the url to the renamed object. Javascript
 will redirect to this URL:
 
 >>> print browser.contents
 <div id="rename-box" class="floating">
     ...
-   <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/@@view.html</span>
+   <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/Somalia-krieg/@@view.html</span>
     ...
     
 
