@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Thu Aug 28 14:35:39 2014\n"
-"PO-Revision-Date: 2014-09-02 15:12+0100\n"
+"PO-Revision-Date: 2014-09-08 11:48+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -581,7 +581,7 @@ msgstr "Trotzdem einchecken"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:23
 msgid "Checkin correction anyway"
-msgstr "Check-in (Korrektur)"
+msgstr "Trotzdem einchecken (Korrektur)"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:26
 msgid "Delete workingcopy"
