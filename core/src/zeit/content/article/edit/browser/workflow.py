@@ -49,7 +49,7 @@ class Publish(zeit.edit.browser.form.InlineForm):
         fields = zope.formlib.form.FormFields(
             zeit.workflow.interfaces.IContentWorkflow,
             zeit.content.article.interfaces.ICDSWorkflow).select(
-            'edited', 'corrected', 'urgent', 'seo_optimized', 'export_cds')
+            'edited', 'corrected', 'seo_optimized', 'urgent', 'export_cds')
         if not self.can_checkout:
             fields += zope.formlib.form.FormFields(
                 zeit.cms.content.interfaces.ISemanticChange).select(
