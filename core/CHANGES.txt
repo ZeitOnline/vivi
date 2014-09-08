@@ -4,7 +4,7 @@ zeit.content.image changes
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Put a ghost in the workingcopy for new imagegroups (VIV-489).
 
 
 2.2.1 (2014-07-17)
