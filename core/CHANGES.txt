@@ -4,7 +4,7 @@ Changes
 2.3.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Store folding state globally, not per article (VIV-481).
 
 
 2.3.4 (2014-08-29)
