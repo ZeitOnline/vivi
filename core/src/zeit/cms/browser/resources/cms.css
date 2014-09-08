@@ -1,6 +1,6 @@
 /* zeit css */
-/* 
- * normal HTML element CSS defs 
+/*
+ * normal HTML element CSS defs
  *
  * */
 body {
@@ -17,7 +17,7 @@ body {
   color: #4C4C4C;
 }
 
-a:visited, 
+a:visited,
 a {
   color: black;
   text-decoration: none;
@@ -63,7 +63,7 @@ h2 {
 .byline {
   text-transform: uppercase;
 }
-    
+
 pre {
   border: none;
 }
@@ -77,8 +77,8 @@ pre {
   overflow: auto;
 }
 
-/* 
- * class + ID definitions 
+/*
+ * class + ID definitions
  *
  * */
 .selected {
@@ -143,8 +143,8 @@ pre {
 }
 
 
-/* 
- * layout (positioning and such) specific CSS defs 
+/*
+ * layout (positioning and such) specific CSS defs
  */
 
 #visualContentSeparator {
@@ -272,7 +272,7 @@ pre {
 
 #topcontent {
   position: absolute;
-  top: 3em; 
+  top: 3em;
   right: 0;
   left: 0;
   bottom: 0;
@@ -364,12 +364,12 @@ pre {
 }
 
 
-/* 
- * navigations 
+/*
+ * navigations
  *
  * */
-  
-  
+
+
 #breadcrumbs li,
 #main-navigation li,
 #folder-actions li,
@@ -556,8 +556,8 @@ pre {
 }
 
 
-/* 
- * context actions 
+/*
+ * context actions
  *
  * */
 
@@ -571,7 +571,7 @@ pre {
   margin: 0;
   padding: 0.4em;
   white-space: nowrap;
-} 
+}
 
 .context-actions img,
 .context-action img {

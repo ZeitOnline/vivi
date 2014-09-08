@@ -80,7 +80,7 @@
   display: inline;
   text-indent: 100%;
   white-space: nowrap;
-  overflow: hidden; 
+  overflow: hidden;
   text-indent: -1000px;
   background: url("./icons/icons_sprites.png") no-repeat scroll 23px -420px transparent;
   margin: 0px !important;

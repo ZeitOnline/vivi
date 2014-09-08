@@ -73,8 +73,8 @@ table.properties textarea {
 
 
 /*
- * General Panel defs 
- * 
+ * General Panel defs
+ *
  * */
 .PanelContent {
    overflow-y: auto;
@@ -83,7 +83,7 @@ table.properties textarea {
 }
 
 .folded .PanelContent {
-   display: none;  
+   display: none;
 }
 .unfolded .PanelContent {
    display: block;
@@ -198,9 +198,9 @@ table.properties textarea {
 
 
 
-/* 
+/*
  * Styles for xmltree (repository and clipboard panel)
- * 
+ *
  * */
 .Tree ul {
    list-style-position: inside;
@@ -270,7 +270,7 @@ table.properties textarea {
 }
 
 .TreeHover > *:first-child {
- border-bottom: 2px solid red !important; 
+ border-bottom: 2px solid red !important;
     padding-bottom: 2em;
 }
 
@@ -393,7 +393,6 @@ table.properties textarea {
 #metadata_preview .teaser-title {
   display: inline;
   font-weight: bold;
-  
 }
 
 #metadata_preview .teaser-text {
