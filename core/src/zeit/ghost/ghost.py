@@ -5,11 +5,21 @@ import zeit.cms.checkout.interfaces
 import zeit.cms.clipboard.entry
 import zeit.cms.clipboard.interfaces
 import zeit.cms.interfaces
-import zeit.cms.workingcopy.interfaces
 import zeit.ghost.interfaces
 import zope.component
-import zope.dublincore.interfaces
+import zope.container.interfaces
 import zope.interface
+
+
+def create_ghost(content, workingcopy=None):
+    if workingcopy is None:
+        workingcopy = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+    entry = zeit.cms.clipboard.entry.Entry(content)
+    zope.interface.directlyProvides(
+        entry, zeit.ghost.interfaces.IGhost)
+    chooser = zope.container.interfaces.INameChooser(workingcopy)
+    name = chooser.chooseName(content.__name__, entry)
+    workingcopy[name] = entry
 
 
 @zope.component.adapter(
@@ -17,13 +27,7 @@ import zope.interface
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def add_ghost_after_checkin(context, event):
     """Add a ghost for the checked in object."""
-    workingcopy = event.workingcopy
-    entry = zeit.cms.clipboard.entry.Entry(context)
-    zope.interface.directlyProvides(
-        entry, zeit.ghost.interfaces.IGhost)
-    chooser = zope.app.container.interfaces.INameChooser(workingcopy)
-    name = chooser.chooseName(context.__name__, entry)
-    workingcopy[name] = entry
+    create_ghost(context, event.workingcopy)
 
 
 @zope.component.adapter(
