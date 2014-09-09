@@ -119,6 +119,7 @@ def import_file(path):
     zope.interface.alsoProvides(
         article,
         zeit.content.article.interfaces.ITagesspiegelArticle)
+    article.main_image = None  # Create image block if not present.
     zeit.cms.workflow.interfaces.IModified(article).last_modified_by = (
         PRINCIPAL)
 

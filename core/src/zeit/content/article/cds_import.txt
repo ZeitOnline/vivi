@@ -66,6 +66,8 @@ to be 2008/26):
 Jahr der Überraschungen
 >>> print article.ressort
 Wissen
+>>> article.main_image_block is None
+False
 
 It was last modified by the importer:
 

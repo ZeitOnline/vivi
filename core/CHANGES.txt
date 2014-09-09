@@ -4,6 +4,9 @@ zeit.content.article changes
 3.6.2 (unreleased)
 ------------------
 
+- Add an empty main image to articles imported via CDS, so syncing the teaser
+  image in the UI later on works (VIV-491).
+
 - Fix position of SEO workflow checkbox (VIV-484).
 
 
