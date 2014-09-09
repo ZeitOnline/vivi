@@ -5,7 +5,8 @@ zeit.content.cp changes
 2.6.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix automatically changing teaser layout from leader to buttons now that
+  leader is allowed everywhere (VIV-497).
 
 
 2.6.2 (2014-09-03)

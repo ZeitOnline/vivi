@@ -17,9 +17,11 @@ import zeit.content.cp.interfaces
 import zeit.edit.interfaces
 import zeit.workflow.interfaces
 import zope.component
+import zope.container.contained
 import zope.container.interfaces
 import zope.copypastemove.interfaces
 import zope.interface
+import zope.lifecycleevent
 import zope.schema
 
 
@@ -380,36 +382,45 @@ def create_cp_channel(context, event):
     zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
     region = context.__parent__
-    # Are we leaders?
     if zeit.content.cp.interfaces.ILead.providedBy(region):
-        apply_layout(region, None)
+        apply_layout(region, zope.container.contained.ContainerModifiedEvent(
+            region, zope.lifecycleevent.Attributes(
+                zeit.edit.interfaces.IContainer, context.__name__)))
 
 
 @zope.component.adapter(
     zeit.content.cp.interfaces.ILead,
-    zope.lifecycleevent.IObjectModifiedEvent)
+    zope.container.interfaces.IContainerModifiedEvent)
 def apply_layout(context, event):
     """Apply the layout for elements in the teaser list.
 
     The first one mustn't be small, all other have to be small.
     """
+    if (not event.descriptions
+        or event.descriptions[0].interface
+        is not zeit.edit.interfaces.IContainer):
+        # not triggered by updateOrder
+        return
+    previously_first = event.descriptions[0].attributes[0]
+
     cp_type = zeit.content.cp.interfaces.ICenterPage(context).type
     if (cp_type == 'archive-print-volume'
         or cp_type == 'archive-print-year'):
         return
-    # We are leaders!
     content = list(context.values())
     if len(content) == 0:
         return
-    first = content[0]
+
     buttons = zeit.content.cp.layout.get_layout('buttons')
+    first = content[0]
     if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(first) and
         (first.layout == buttons or first.layout is None)):
         first.layout = zeit.content.cp.layout.get_layout('leader')
+
     for elem in content[1:]:
         if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(elem):
             continue
-        if elem.layout is None:
+        if elem.__name__ == previously_first or elem.layout is None:
             elem.layout = buttons
 
 
