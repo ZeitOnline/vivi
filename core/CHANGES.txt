@@ -9,6 +9,8 @@ zeit.cms changes
 - Offer both checkin and checkin/correction on conflict warning dialog
   (VIV-485).
 
+- Improve clickable area for object details preview links (VIV-492).
+
 
 2.26.2 (2014-09-03)
 -------------------

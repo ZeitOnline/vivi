@@ -730,26 +730,26 @@ li.busy {
   outline: 4px solid #a6cc17;
 }
 
-.object-link {
+.object-link a {
   background-position: 1.25em center;
   background-repeat: no-repeat;
   padding-left: 3.2em;
   height: 17px;
 }
 
-.object-link.goto-object {
+.object-link.goto-object a {
   background-image: url(icons/show-original.png);
 }
 
-.object-details.type-author .object-link.goto-object {
+.object-details.type-author .object-link.goto-object a {
   background: url("./icons/icons_sprites.png") no-repeat 12px -537px;
 }
 
-.object-details.type-author .object-link.goto-object:hover {
+.object-details.type-author .object-link.goto-object a:hover {
   background: url("./icons/icons_sprites.png") no-repeat 12px -567px;
 }
 
-.object-link.preview {
+.object-link.preview a {
   background-image: url(icons/preview_non-menu.png);
   height: 25px;
   background-position: 1.25em -1px;
