@@ -34,7 +34,7 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
              self.teasers1.__name__])
         self.assertEqual('leader', self.teasers3.layout.id)
 
-    def test_leader_should_becom_buttons_on_sort_to_position_n(self):
+    def test_leader_should_become_buttons_on_sort_to_position_n(self):
         self.assertEqual('leader', self.teasers1.layout.id)
         self.lead.updateOrder(
             [self.teasers3.__name__,
