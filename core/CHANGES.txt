@@ -1,10 +1,12 @@
 Changes
 =======
 
-2.3.5 (unreleased)
+2.4.0 (unreleased)
 ------------------
 
 - Store folding state globally, not per article (VIV-481).
+
+- Provide old order value in modified event on ``updateOrder`` (VIV-497).
 
 
 2.3.4 (2014-08-29)

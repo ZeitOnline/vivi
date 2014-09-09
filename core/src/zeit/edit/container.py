@@ -114,11 +114,12 @@ class Base(UserDict.DictMixin,
         return 'id-' + str(uuid.uuid4())
 
     def updateOrder(self, order):
-        __traceback_info__ = (order, self.keys())
+        old_order = self.keys()
+        __traceback_info__ = (order, old_order)
         if not isinstance(order, (tuple, list)):
             raise TypeError('order must be tuple or list, got %s.' %
                             type(order))
-        if set(order) != set(self.keys()):
+        if set(order) != set(old_order):
             raise ValueError('order must have the same keys.')
         objs = dict(self.items())
         for key in order:
@@ -127,7 +128,9 @@ class Base(UserDict.DictMixin,
             self._add(objs[key])
         self._p_changed = True
         zope.event.notify(
-            zope.container.contained.ContainerModifiedEvent(self))
+            zope.container.contained.ContainerModifiedEvent(
+                self, zope.lifecycleevent.Attributes(
+                    zeit.edit.interfaces.IContainer, *old_order)))
 
     def __delitem__(self, key):
         item = self._delete(key)
