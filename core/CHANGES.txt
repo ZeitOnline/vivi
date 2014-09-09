@@ -6,6 +6,8 @@ Changes
 
 - Store folding state globally, not per article (VIV-481).
 
+- Add rule function ``scheduled_for_publishing`` (VIV-494).
+
 - Provide old order value in modified event on ``updateOrder`` (VIV-497).
 
 

@@ -1,8 +1,10 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from datetime import datetime, timedelta
 import StringIO
 import mock
+import pytz
 import unittest
 import zeit.edit.testing
 import zope.interface
@@ -135,6 +137,29 @@ error_unless(is_published(context))
         s = self.apply(r, tc)
         self.assertEqual(zeit.edit.rule.ERROR, s.status)
         zeit.cms.workflow.interfaces.IPublishInfo(tc).published = True
+        r.status = None
+        s = self.apply(r, tc)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
+
+    def test_scheduled_for_publishing(self):
+        import zeit.cms.interfaces
+        import zeit.edit.rule
+
+        r = zeit.edit.rule.Rule("""
+error_unless(scheduled_for_publishing(context))
+""")
+        tc = zeit.cms.interfaces.ICMSContent('http://xml.zeit.de/testcontent')
+        s = self.apply(r, tc)
+        self.assertEqual(zeit.edit.rule.ERROR, s.status)
+
+        now = datetime.now(pytz.UTC)
+        pi = zeit.cms.workflow.interfaces.IPublishInfo(tc)
+        pi.release_period = (now, None)
+        r.status = None
+        s = self.apply(r, tc)
+        self.assertNotEqual(zeit.edit.rule.ERROR, s.status)
+
+        pi.release_period = (now, now + timedelta(days=1))
         r.status = None
         s = self.apply(r, tc)
         self.assertNotEqual(zeit.edit.rule.ERROR, s.status)

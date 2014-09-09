@@ -1,14 +1,18 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from datetime import datetime
+from zeit.workflow.interfaces import ITimeBasedPublishing
 import ZODB.POSException
 import gocept.cache.method
 import grokcore.component
 import logging
+import pytz
 import sys
 import urllib2
 import zeit.cms.workflow.interfaces
 import zeit.edit.interfaces
+import zeit.workflow.interfaces
 import zeit.workflow.publishinfo
 import zeit.workflow.timebased
 import zope.app.appsetup.product
@@ -156,7 +160,7 @@ class RulesManager(grokcore.component.GlobalUtility):
 
     def create_rule(self, commands, line_no):
         code = '\n'.join(commands)
-        compile(code, '<string>', 'exec') # syntax check
+        compile(code, '<string>', 'exec')  # syntax check
         rule = zeit.edit.rule.Rule(code, line_no + 1)
         return rule
 
@@ -275,3 +279,18 @@ def is_published(context):
             return True
         return pi is not None and pi.published
     return is_published_inner
+
+
+@glob(zope.interface.Interface)
+def scheduled_for_publishing(context):
+    def inner(obj):
+        pi = zeit.cms.workflow.interfaces.IPublishInfo(obj, None)
+        if (pi is None or not ITimeBasedPublishing.providedBy(pi)):
+            return False
+        if not pi.release_period[0]:
+            return False
+        if pi.release_period[1]:
+            now = datetime.now(pytz.UTC)
+            return now <= pi.release_period[1]
+        return True
+    return inner
