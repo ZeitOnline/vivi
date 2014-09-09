@@ -4,7 +4,7 @@
         id="leader"
         title="Großer Teaser mit Bild und Teaserliste"
         image_pattern="450x200"
-        areas="lead-1"
+        areas="lead-1 lead"
         default="true"
         />
     <layout

@@ -312,17 +312,17 @@ We need to add a second teaser block:
 
 >>> browser.getLink('Edit').click()
 >>> browser.open('edit-properties')
->>> browser.getLink('Großer Teaser mit Bild und Teaserliste')
-<Link text='[IMG] Gro\xc3\x9fer Teaser mit Bild und Teaserliste' ...>
+>>> browser.getLink('Großer Teaser mit zwei Spalten')
+<Link...>
 >>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
-<Link text='[IMG] Kleiner Teaser mit kleinem Bild und Teaserliste' ...>
+<Link...>
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
-<Link text='[IMG] Kleiner Teaser mit kleinem Bild und Teaserliste' ...>
->>> browser.getLink('Großer Teaser mit Bild und Teaserliste')
+<Link...>
+>>> browser.getLink('Großer Teaser mit zwei Spalten')
 Traceback (most recent call last):
   ...
 LinkNotFoundError

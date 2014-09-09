@@ -271,7 +271,7 @@ other positions:
 ['archive-print-volume', 'archive-print-year', 'buttons', 'leader', 'leader-two-columns', 'leader-upright']
 >>> sorted(l.id for l in
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_2))
-['archive-print-volume', 'archive-print-year', 'buttons']
+['archive-print-volume', 'archive-print-year', 'buttons', 'leader']
 
 There are different layouts in the informatives:
 
