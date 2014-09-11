@@ -113,3 +113,17 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
                 'zeit.content.article.find_next('
                 'document.getElementById("content"), "nonexistent")'
                 '["position"]'))
+
+
+class FindReplaceTest(
+    zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def test_replacing_text(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>foo bar baz</p>")
+        self.eval(
+            'zeit.content.article.select('
+            'window.jQuery(".block.type-p p")[0].firstChild, 0, 3)')
+        self.run_js(self.get_js_editable() + '.replace_selected_text("qux")')
+        self.assertEqual('qux bar baz', s.getText('css=.block.type-p p'))

@@ -1015,7 +1015,14 @@ zeit.content.article.Editable = gocept.Class.extend({
   },
 
   replace_selected_text: function(replacement) {
-      // XXX
+      var range = window.getSelection().getRangeAt(0);
+      if (range.startContainer != range.endContainer) {
+          return;
+      }
+      var node = range.startContainer;
+      node.textContent = (node.textContent.substring(0, range.startOffset)
+                          + replacement
+                          + node.textContent.substring(range.endOffset));
   }
 
 });
