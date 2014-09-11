@@ -122,8 +122,7 @@ class FindReplaceTest(
         s = self.selenium
         self.add_article()
         self.create("<p>foo bar baz</p>")
-        self.eval(
-            'zeit.content.article.select('
-            'window.jQuery(".block.type-p p")[0].firstChild, 0, 3)')
-        self.run_js(self.get_js_editable() + '.replace_selected_text("qux")')
+        self.run_js(
+            self.get_js_editable() + '.replace_text('
+            'window.jQuery(".block.type-p p")[0].firstChild, 0, 3, "qux")')
         self.assertEqual('qux bar baz', s.getText('css=.block.type-p p'))

@@ -1014,15 +1014,14 @@ zeit.content.article.Editable = gocept.Class.extend({
       // XXX zeit.content.article.find_next(text, direction);
   },
 
-  replace_selected_text: function(replacement) {
-      var range = window.getSelection().getRangeAt(0);
-      if (range.startContainer != range.endContainer) {
-          return;
-      }
-      var node = range.startContainer;
-      node.textContent = (node.textContent.substring(0, range.startOffset)
+  find_and_select_next: function(text, direction) {
+      return zeit.content.article.find_next(self.editable, text, direction);
+  },
+
+  replace_text: function(node, start, end, replacement) {
+      node.textContent = (node.textContent.substring(0, start)
                           + replacement
-                          + node.textContent.substring(range.endOffset));
+                          + node.textContent.substring(end));
   }
 
 });
