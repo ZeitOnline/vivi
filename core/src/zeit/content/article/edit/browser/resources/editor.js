@@ -249,9 +249,8 @@ zeit.content.article.Editable = gocept.Class.extend({
     },
 
     _set_selection_offset: function(node, offset) {
-        var range = window.getSelection().getRangeAt(0);
-        range.setStart(node, offset);
-        range.setEnd(node, offset);
+        var self = this;
+        zeit.content.article.select(node, offset, offset);
     },
 
     is_block_editable: function(block) {

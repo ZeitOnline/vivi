@@ -7,7 +7,12 @@ import zeit.edit.browser.resources
 
 
 lib = Library('zeit.content.article', 'resources')
+
 Resource('editor.css')
+
+Resource('replace.js', depends=[
+    zeit.cms.browser.resources.base,
+])
 
 Resource('editor.js', depends=[
     zeit.cms.browser.resources.base,
@@ -16,6 +21,7 @@ Resource('editor.js', depends=[
     zeit.edit.browser.resources.drop_js,
     zeit.edit.browser.resources.sortable_js,
     zeit.edit.browser.resources.json_js,
+    replace_js,
     editor_css,
 ])
 
