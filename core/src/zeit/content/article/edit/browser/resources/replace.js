@@ -228,12 +228,12 @@ zeit.content.article.FindDialog = gocept.Class.extend({
 
     goto_prev: function() {
         var self = this;
-        self.find(zeit.content.article.FORWARD);
+        self.find(zeit.content.article.BACKWARD);
     },
 
     goto_next: function() {
         var self = this;
-        self.find(zeit.content.article.BACKWARD);
+        self.find(zeit.content.article.FORWARD);
     },
 
     find: function(direction) {
