@@ -40,3 +40,53 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
             '0', self.eval('window.getSelection().getRangeAt(0).startOffset'))
         self.assertEqual(
             '3', self.eval('window.getSelection().getRangeAt(0).endOffset'))
+
+    def test_not_found_moves_to_sibling_text(self):
+        self.eval('zeit.content.article.select('
+                  'window.jQuery("#three b")[0].firstChild, 0, 0)')
+        self.eval(
+            'zeit.content.article.find_next('
+            'document.getElementById("content"), "foo")')
+        self.assertEqual(
+            '1', self.eval('window.getSelection().getRangeAt(0).startOffset'))
+        self.assertEqual(
+            '4', self.eval('window.getSelection().getRangeAt(0).endOffset'))
+
+    def test_not_found_moves_to_sibling_element(self):
+        self.eval('zeit.content.article.select('
+                  'document.getElementById("one").firstChild, 4, 4)')
+        self.eval(
+            'zeit.content.article.find_next('
+            'document.getElementById("content"), "foo")')
+        self.assertEqual(
+            '"two"', self.eval(
+                'window.getSelection().getRangeAt(0).startContainer'
+                '.parentNode.id'))
+        self.assertEqual(
+            '0', self.eval('window.getSelection().getRangeAt(0).startOffset'))
+        self.assertEqual(
+            '3', self.eval('window.getSelection().getRangeAt(0).endOffset'))
+
+    def test_not_found_moves_to_parent_sibling(self):
+        self.eval('zeit.content.article.select('
+                  'document.getElementById("list-c").firstChild, 3, 3)')
+        self.eval(
+            'zeit.content.article.find_next('
+            'document.getElementById("content"), "foo")')
+        self.assertEqual(
+            '"three"', self.eval(
+                'window.getSelection().getRangeAt(0).startContainer'
+                '.parentNode.id'))
+        self.assertEqual(
+            '0', self.eval('window.getSelection().getRangeAt(0).startOffset'))
+        self.assertEqual(
+            '3', self.eval('window.getSelection().getRangeAt(0).endOffset'))
+
+    def test_not_found_at_all_returns_special_value(self):
+        self.eval('zeit.content.article.select('
+                  'document.getElementById("three").firstChild, 0, 0)')
+        self.assertEqual(
+            '-1', self.eval(
+                'zeit.content.article.find_next('
+                'document.getElementById("content"), "nonexistent")'
+                '["position"]'))

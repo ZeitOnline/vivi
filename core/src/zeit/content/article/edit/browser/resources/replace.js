@@ -3,7 +3,8 @@
 zeit.cms.declare_namespace('zeit.content.article');
 
 
-var NOT_FOUND = {};
+var NOT_FOUND = {'node': null, 'position': -1};
+zeit.content.article.NOT_FOUND = NOT_FOUND;
 
 
 zeit.content.article.find_next = function(toplevel, text, direction) {
@@ -16,11 +17,22 @@ zeit.content.article.find_next = function(toplevel, text, direction) {
         start = selection['position'];
     }
 
-    var match = zeit.content.article._find_below(node, text, start, direction);
-    if (match != NOT_FOUND) {
-        zeit.content.article.select(
-            match['node'], match['position'], match['position'] + text.length);
+    var match;
+    while (true) {
+        match = zeit.content.article._find_below(node, text, start, direction);
+        if (match != NOT_FOUND) {
+            zeit.content.article.select(
+                match['node'],
+                match['position'],
+                match['position'] + text.length);
+            return match;
+        }
+        node = zeit.content.article._next_candidate(toplevel, node, direction);
+        if (node == null) {
+            break;
+        }
     }
+    return NOT_FOUND;
 };
 
 
@@ -44,6 +56,18 @@ zeit.content.article._find_below = function(node, text, start, direction) {
         }
         return NOT_FOUND;
     }
+};
+
+
+zeit.content.article._next_candidate = function(toplevel, node, direction) {
+    if (node == toplevel) {
+        return null;
+    }
+    if (node.nextSibling) {
+        return node.nextSibling;
+    }
+    return zeit.content.article._next_candidate(
+        toplevel, node.parentNode, direction);
 };
 
 

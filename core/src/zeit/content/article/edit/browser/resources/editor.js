@@ -407,6 +407,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a title='Link entfernen [Cmd/Strg+u]' rel='command' href='unlink'>A</a>\
             <a title='Liste' rel='command' href='insertunorderedlist'>UL</a>\
             <a title='Formatierungen entfernen [Cmd/Strg+r]' rel='command' href='removeFormat'>PL</a>\
+            <a title='Suchen' rel='method' href='search'>SEA</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
@@ -1007,6 +1008,14 @@ zeit.content.article.Editable = gocept.Class.extend({
         $('#form-article-content-head textarea').css({'background':'#b4d5ff'});
       }
     });
+  },
+
+  find_and_select_next: function(text, direction) {
+      // XXX zeit.content.article.find_next(text, direction);
+  },
+
+  replace_selected_text: function(replacement) {
+      // XXX
   }
 
 });
