@@ -1020,6 +1020,7 @@ zeit.content.article.Editable = gocept.Class.extend({
   },
 
   find_and_select_next: function(text, direction) {
+      var self = this;
       return zeit.content.article.find_next(self.editable, text, direction);
   },
 
