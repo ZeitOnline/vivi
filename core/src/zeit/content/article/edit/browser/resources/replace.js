@@ -41,6 +41,12 @@ zeit.content.article.find_next = function(toplevel, text, direction) {
         if (node == null) {
             break;
         }
+        // The selection only matters for the very first node, so we reset it.
+        if (direction == FORWARD) {
+            start = 0;
+        } else {
+            start = undefined;
+        }
     }
     return NOT_FOUND;
 };

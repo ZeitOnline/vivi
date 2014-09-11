@@ -79,6 +79,17 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
         self.assertEqual(
             '3', self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
+    def test_moving_to_sibling_starts_from_the_beginning(self):
+        self.eval('zeit.content.article.select('
+                  'document.getElementById("three").firstChild, 0, 3)')
+        self.eval(
+            'zeit.content.article.find_next('
+            'document.getElementById("content"), "foo")')
+        self.assertEqual(
+            '1', self.eval('window.getSelection().getRangeAt(0).startOffset'))
+        self.assertEqual(
+            '4', self.eval('window.getSelection().getRangeAt(0).endOffset'))
+
     def test_not_found_moves_to_parent_sibling(self):
         self.eval('zeit.content.article.select('
                   'document.getElementById("list-c").firstChild, 3, 3)')
