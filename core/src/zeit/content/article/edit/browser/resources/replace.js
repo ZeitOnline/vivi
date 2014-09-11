@@ -3,7 +3,7 @@
 zeit.cms.declare_namespace('zeit.content.article');
 
 
-var NOT_FOUND = {'node': null, 'position': -1};
+var NOT_FOUND = {'node': null, 'position': -1, text: null};
 zeit.content.article.NOT_FOUND = NOT_FOUND;
 
 
@@ -57,7 +57,7 @@ zeit.content.article._find_below_forward = function(node, text, start) {
         var haystack = node.textContent.substring(start);
         var position = haystack.indexOf(text);
         if (position != -1) {
-            return {'node': node, 'position': position + start};
+            return {'node': node, 'position': position + start, 'text': text};
         } else {
             return NOT_FOUND;
         }
@@ -80,7 +80,7 @@ zeit.content.article._find_below_backward = function(node, text, start) {
         var haystack = node.textContent.substring(0, start);
         var position = haystack.lastIndexOf(text);
         if (position != -1) {
-            return {'node': node, 'position': position};
+            return {'node': node, 'position': position, 'text': text};
         } else {
             return NOT_FOUND;
         }
@@ -149,5 +149,117 @@ zeit.content.article._get_selection = function(toplevel, direction) {
     }
     return result;
 };
+
+
+zeit.content.article.FindDialog = gocept.Class.extend({
+
+    TEMPLATE: '\
+<div id="find-dialog"> \
+  <p><label for="find-dialog-searchtext">Suchen nach</label> \
+  <input type="text" id="find-dialog-searchtext" /></p> \
+  <p><label for="find-dialog-replacement">Ersetzen mit</label> \
+  <input type="text" id="find-dialog-replacement" /></p> \
+</div> \
+',
+
+    construct: function(editable) {
+        var self = this;
+        self.editable = editable;
+        self.restore_selection = {};
+        if (window.getSelection().rangeCount) {
+            var range = window.getSelection().getRangeAt(0);
+            self.restore_selection['node'] = range.startContainer;
+            self.restore_selection['start'] = range.startOffset;
+        }
+        self.init_form();
+        self.current_match = NOT_FOUND;
+    },
+
+    init_form: function() {
+        var self = this;
+        self.form = $('#find-dialog');
+        if (! self.form.length) {
+            self.form = $(self.TEMPLATE).appendTo($('body'));
+            self.form.dialog({
+                'modal': true,
+                'title': 'Suchen und Ersetzen',
+                'buttons': [
+                    {'text': 'Ersetzen',
+                     click: MochiKit.Base.bind(self.replace_current, self)},
+                    {'text': 'Zurück',
+                     click: MochiKit.Base.bind(self.goto_prev, self)},
+                    {'text': 'Weiter',
+                     click: MochiKit.Base.bind(self.goto_next, self)}
+                ]
+            });
+            self.form.on('keydown', function(event) {
+                if (event.which == 13) {
+                    event.preventDefault();
+                    this._find_dialog.goto_next();
+                }
+            });
+            self.form.on('dialogclose', function() {
+                this._find_dialog.close();
+            });
+        }
+        self.form.dialog(
+            'option', 'position',
+            { my: "center", at: "center", of: window });
+        $('#find-dialog-searchtext').val('');
+        $('#find-dialog-replacement').val('');
+        self.form[0]._find_dialog = self;
+    },
+
+    show: function() {
+        var self = this;
+        self.form.dialog('open');
+    },
+
+    close: function() {
+        var self = this;
+        if (self.restore_selection) {
+            window.getSelection().removeAllRanges();
+            zeit.content.article.select(
+                self.restore_selection['node'],
+                self.restore_selection['start'],
+                self.restore_selection['start']);
+            //self.restore_selection['node'].parentNode.scrollIntoView();
+        }
+    },
+
+    goto_prev: function() {
+        var self = this;
+        self.find(zeit.content.article.FORWARD);
+    },
+
+    goto_next: function() {
+        var self = this;
+        self.find(zeit.content.article.BACKWARD);
+    },
+
+    find: function(direction) {
+        var self = this;
+        self.current_match = self.editable.find_and_select_next(
+            $('#find-dialog-searchtext').val(), direction);
+        if (self.current_match == NOT_FOUND) {
+            alert('Keine weiteren Ergebnisse');
+        } else {
+            self.current_match['node'].parentNode.scrollIntoView();
+        }
+    },
+
+    replace_current: function() {
+        var self = this;
+        if (self.current_match == NOT_FOUND) {
+            return;
+        }
+        var match = self.current_match;
+        self.editable.replace_text(
+            match['node'], match['position'],
+            match['position'] + match['text'].length,
+            $('#find-dialog-replacement').val());
+    }
+
+});
 
 }(jQuery));
