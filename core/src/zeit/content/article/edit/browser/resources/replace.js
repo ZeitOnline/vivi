@@ -159,8 +159,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
   <input type="text" id="find-dialog-searchtext" /></p> \
   <p><label for="find-dialog-replacement">Ersetzen mit</label> \
   <input type="text" id="find-dialog-replacement" /></p> \
-</div> \
-',
+</div>',
 
     construct: function(editable) {
         var self = this;
