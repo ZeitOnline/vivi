@@ -30,6 +30,18 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
         self.assertEqual(
             '11', self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
+    def test_searching_backward(self):
+        self.eval('zeit.content.article.select('
+                  'document.getElementById("two").firstChild, 4, 4)')
+        self.eval(
+            'zeit.content.article.find_next('
+            'document.getElementById("two"), "foo", '
+            'zeit.content.article.BACKWARD)')
+        self.assertEqual(
+            '0', self.eval('window.getSelection().getRangeAt(0).startOffset'))
+        self.assertEqual(
+            '3', self.eval('window.getSelection().getRangeAt(0).endOffset'))
+
     def test_selection_outside_of_node_is_ignored(self):
         self.eval('zeit.content.article.select('
                   'document.getElementById("one").firstChild, 4, 4)')

@@ -7,11 +7,21 @@ var NOT_FOUND = {'node': null, 'position': -1};
 zeit.content.article.NOT_FOUND = NOT_FOUND;
 
 
+var FORWARD = 'forward';
+var BACKWARD = 'backward';
+zeit.content.article.FORWARD = FORWARD;
+zeit.content.article.BACKWARD = BACKWARD;
+
+
 zeit.content.article.find_next = function(toplevel, text, direction) {
+    if (! direction) {
+        direction = FORWARD;
+    }
+    var find_below = zeit.content.article['_find_below_' + direction];
 
     var node = toplevel;
     var start = 0;
-    var selection = zeit.content.article._get_selection_end(toplevel);
+    var selection = zeit.content.article._get_selection(toplevel, direction);
     if (selection) {
         node = selection['node'];
         start = selection['position'];
@@ -19,7 +29,7 @@ zeit.content.article.find_next = function(toplevel, text, direction) {
 
     var match;
     while (true) {
-        match = zeit.content.article._find_below(node, text, start, direction);
+        match = find_below(node, text, start);
         if (match != NOT_FOUND) {
             zeit.content.article.select(
                 match['node'],
@@ -36,7 +46,7 @@ zeit.content.article.find_next = function(toplevel, text, direction) {
 };
 
 
-zeit.content.article._find_below = function(node, text, start, direction) {
+zeit.content.article._find_below_forward = function(node, text, start) {
     if (node.nodeType == node.TEXT_NODE) {
         var haystack = node.textContent.substring(start);
         var position = haystack.indexOf(text);
@@ -48,8 +58,31 @@ zeit.content.article._find_below = function(node, text, start, direction) {
     } else {
         for (var i = 0; i < node.childNodes.length; i++) {
             var child = node.childNodes[i];
-            var match = zeit.content.article._find_below(
-                child, text, /*start=*/0, direction);
+            var match = zeit.content.article._find_below_forward(
+                child, text, /*start=*/0);
+            if (match != NOT_FOUND) {
+                return match;
+            }
+        }
+        return NOT_FOUND;
+    }
+};
+
+
+zeit.content.article._find_below_backward = function(node, text, start) {
+    if (node.nodeType == node.TEXT_NODE) {
+        var haystack = node.textContent.substring(0, start);
+        var position = haystack.lastIndexOf(text);
+        if (position != -1) {
+            return {'node': node, 'position': position};
+        } else {
+            return NOT_FOUND;
+        }
+    } else {
+        for (var i = node.childNodes.length - 1; i >= 0; i--) {
+            var child = node.childNodes[i];
+            var match = zeit.content.article._find_below_backward(
+                child, text, /*start=*/undefined);
             if (match != NOT_FOUND) {
                 return match;
             }
@@ -63,8 +96,9 @@ zeit.content.article._next_candidate = function(toplevel, node, direction) {
     if (node == toplevel) {
         return null;
     }
-    if (node.nextSibling) {
-        return node.nextSibling;
+    var relation = (direction == FORWARD) ? 'nextSibling' : 'previousSibling';
+    if (node[relation]) {
+        return node[relation];
     }
     return zeit.content.article._next_candidate(
         toplevel, node.parentNode, direction);
@@ -84,7 +118,7 @@ zeit.content.article.select = function(node, start, end) {
 };
 
 
-zeit.content.article._get_selection_end = function(toplevel) {
+zeit.content.article._get_selection = function(toplevel, direction) {
     var result = null;
     if (window.getSelection().rangeCount) {
         var range = window.getSelection().getRangeAt(0);
@@ -98,7 +132,13 @@ zeit.content.article._get_selection_end = function(toplevel) {
             }
         }
         if (inside_toplevel) {
-            result = {'node': range.endContainer, 'position': range.endOffset};
+            if (direction == FORWARD) {
+                result = {'node': range.endContainer,
+                          'position': range.endOffset};
+            } else {
+                result = {'node': range.startContainer,
+                          'position': range.startOffset};
+            }
         }
     }
     return result;
