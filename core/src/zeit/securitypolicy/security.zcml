@@ -146,12 +146,28 @@
     role="zeit.Producer"
     permission="zeit.cms.repository.ViewNavigationTree"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.Retract"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.Delete"
+    />
 
 
   <!-- CvD grants -->
   <grant
     role="zeit.CvD"
     permission="zeit.ManageLocks"
+    />
+  <grant
+    role="zeit.CvD"
+    permission="zeit.content.cp.Retract"
+    />
+  <grant
+    role="zeit.CvD"
+    permission="zeit.content.cp.Delete"
     />
 
   <!-- SEO grants -->

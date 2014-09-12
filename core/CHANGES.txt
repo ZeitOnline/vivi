@@ -5,7 +5,8 @@ zeit.securitypolicy changes
 2.1.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow only roles zeit.Producer and zeit.CvD to delete and retract centerpages
+  (VIV-496).
 
 
 2.1.4 (2014-07-17)
