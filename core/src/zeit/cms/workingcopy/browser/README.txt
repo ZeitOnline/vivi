@@ -74,8 +74,8 @@ Looking at our working copy also shows the `Somalia` article:
 There is a delete link to remove object from the workingcopy again:
 
 >>> browser.getLink('Somalia').click()
->>> browser.getLink('Cancel')
-<Link text='[IMG] Cancel'
+>>> browser.getLink('Cancel workingcopy')
+<Link text='[IMG] Cancel workingcopy'
     url="javascript:zeit.cms.lightbox_form('http://localhost/++skin++cms/workingcopy/zope.user/Somalia/@@delete.html')">
 
 Let's open the delete form:
@@ -99,7 +99,7 @@ Let's open the delete form:
   </p>
   <form action="http://localhost/++skin++cms/workingcopy/zope.user/Somalia/delete.html"...
     <p>
-      <input type="submit" value="Delete" name="form.actions.delete" />
+      <input type="submit" value="Confirm delete" name="form.actions.delete" />
     </p>
   </form>
 </div>
@@ -107,7 +107,7 @@ Let's open the delete form:
 
 Let's delete it:
 
->>> browser.getControl('Delete').click()
+>>> browser.getControl('Confirm delete').click()
 >>> print browser.contents
 <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01/Somalia</span>
 >>> browser.open('http://localhost/++skin++cms/workingcopy/zope.user')
@@ -142,9 +142,9 @@ We need some setup:
 ...     co).renameable = True
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/Querdax/@@delete.html')
->>> browser.getControl('Delete').click()
+>>> browser.getControl('Confirm delete').click()
 >>> print browser.url
-http://localhost/++skin++cms/workingcopy/zope.user/Querdax/delete.html?form.actions.delete=Delete
+http://localhost/++skin++cms/workingcopy/zope.user/Querdax/delete.html?form.actions.delete=Confirm+delete
 >>> print browser.contents
 <span class="nextURL">http://localhost/++skin++cms/repository/online/2007/01</span>
 
