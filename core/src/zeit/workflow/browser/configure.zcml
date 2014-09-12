@@ -126,9 +126,9 @@
     for="zeit.cms.repository.interfaces.IRepositoryContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".publish.RetractMenuItem"
-    manager="zeit.cms.browser.interfaces.IContextActions"
+    manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.workflow.Publish"
-    icon="/@@/zeit.cms/icons/retract.png"
+    icon="/@@/zeit.cms/icons/wf_bb_zurueckziehen.png"
     />
 
   <browser:page

@@ -38,7 +38,7 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
 
 class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
-    sort = -1
+    sort = 200
     lightbox = '@@retract.html'
 
     @property
