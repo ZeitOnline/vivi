@@ -141,6 +141,14 @@
     principal="zope.producer"
     permission="zeit.cms.repository.ViewNavigationTree"
     />
+  <grant
+    principal="zope.producer"
+    permission="zeit.content.cp.Delete"
+    />
+  <grant
+    principal="zope.producer"
+    permission="zeit.content.cp.Retract"
+    />
 
 </configure>
 
