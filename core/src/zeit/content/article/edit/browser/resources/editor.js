@@ -205,6 +205,8 @@ zeit.content.article.Editable = gocept.Class.extend({
                         self.save();
                     }
                 }));
+            self.initialized = true;
+            MochiKit.Signal.signal(self, 'initialized');
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
     },
@@ -556,7 +558,6 @@ zeit.content.article.Editable = gocept.Class.extend({
         var container = range.commonAncestorContainer;
         // lastnode/firstnodee?
         var direction = null;
-        var cursor_at_end = false;
         if (event.key().string == 'KEY_ARROW_DOWN' &&
             ((container.nodeType == container.TEXT_NODE &&  // Last
             container.parentNode.nextSibling === null) ||   // node
@@ -572,7 +573,6 @@ zeit.content.article.Editable = gocept.Class.extend({
             container.previousSibling === null)) &&     // node
             range.startOffset === 0) {
             direction = 'previousSibling';
-            cursor_at_end = true;
         } else if (
             event.key().string == 'KEY_ENTER') {
             setTimeout(function() {
@@ -600,32 +600,39 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
 
         if (direction !== null) {
-            var block = self.block;
-            var next_block = null;
-            while (block[direction] !== null) {
-                block = block[direction];
-                if (block.nodeType != block.ELEMENT_NODE) {
-                    continue;
-                }
-                if (MochiKit.DOM.hasElementClass(block, 'block') &&
-                    self.is_block_editable(block)) {
-                    next_block = block;
-                    break;
-                }
-            }
-            if (next_block !== null) {
-                log('Next block', next_block.id);
-                // Note id as save may (or probably will) replace the element
-                var next_block_id = next_block.id;
-                self.save();
-                new zeit.content.article.Editable(
-                    MochiKit.DOM.getFirstElementByTagAndClassName(
-                        'div', 'editable', $('#' + next_block_id)[0]),
-                    cursor_at_end);
+            if (self.activate_next_editable(direction)) {
                 event.stop();
             }
-
         }
+    },
+
+    activate_next_editable: function(direction) {
+        var self = this;
+        var cursor_at_end = (direction == 'nextSibling') ? false : true;
+        var block = self.block;
+        var next_block = null;
+        while (block[direction] !== null) {
+            block = block[direction];
+            if (block.nodeType != block.ELEMENT_NODE) {
+                continue;
+            }
+            if (MochiKit.DOM.hasElementClass(block, 'block') &&
+                self.is_block_editable(block)) {
+                next_block = block;
+                break;
+            }
+        }
+        if (next_block === null) {
+            return null;
+        }
+        log('Next block', next_block.id);
+        // Note id as save may (or probably will) replace the element
+        var next_block_id = next_block.id;
+        self.save();
+        return new zeit.content.article.Editable(
+            MochiKit.DOM.getFirstElementByTagAndClassName(
+                'div', 'editable', $('#' + next_block_id)[0]),
+            cursor_at_end);
     },
 
     handle_keyup: function(event) {

@@ -164,11 +164,13 @@ zeit.content.article.FindDialog = gocept.Class.extend({
     construct: function(editable) {
         var self = this;
         self.editable = editable;
-        self.restore_selection = {};
+        self.restore_selection = null;
         if (window.getSelection().rangeCount) {
             var range = window.getSelection().getRangeAt(0);
-            self.restore_selection['node'] = range.startContainer;
-            self.restore_selection['start'] = range.startOffset;
+            self.restore_selection = {
+                'node': range.startContainer,
+                'start': range.startOffset
+            };
         }
         self.init_form();
         self.current_match = NOT_FOUND;
@@ -241,7 +243,24 @@ zeit.content.article.FindDialog = gocept.Class.extend({
         self.current_match = self.editable.find_and_select_next(
             $('#find-dialog-searchtext').val(), direction);
         if (self.current_match == NOT_FOUND) {
-            alert('Keine weiteren Ergebnisse');
+            var relation = (
+                direction == FORWARD) ? 'nextSibling' : 'previousSibling';
+            var next_editable = self.editable.activate_next_editable(relation);
+            if (next_editable !== null) {
+                self.editable = next_editable;
+                self.restore_selection = null;
+                if (!self.editable.initialized) {
+                    var ident = MochiKit.Signal.connect(
+                        self.editable, 'initialized', function() {
+                            MochiKit.Signal.disconnect(ident);
+                            self.find(direction);
+                        });
+                } else {
+                    self.find(direction);
+                }
+            } else {
+                alert('Keine weiteren Ergebnisse');
+            }
         } else {
             self.current_match['node'].parentNode.scrollIntoView();
         }
