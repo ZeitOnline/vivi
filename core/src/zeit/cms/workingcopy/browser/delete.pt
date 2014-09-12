@@ -19,7 +19,7 @@
   <form action="" id="lightbox.form"
     tal:attributes="action view/@@absolute_url">
     <p>
-      <input type="submit" value="Delete" name="form.actions.delete"
+      <input type="submit" value="Confirm delete" name="form.actions.delete"
         i18n:attributes="value" />
     </p>
   </form>

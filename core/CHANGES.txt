@@ -11,6 +11,8 @@ zeit.cms changes
 
 - Improve clickable area for object details preview links (VIV-492).
 
+- Improve wording for "delete workingcopy" (VIV-483).
+
 
 2.26.2 (2014-09-03)
 -------------------

@@ -111,4 +111,4 @@ class DeleteFromWorkingcopy(zeit.cms.repository.browser.delete.DeleteContent):
 class DeleteMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
     """Delete menu item."""
 
-    title = _('Cancel')
+    title = _('Cancel workingcopy')
