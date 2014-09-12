@@ -10,6 +10,8 @@ Changes
 
 - Provide old order value in modified event on ``updateOrder`` (VIV-497).
 
+- Use trashcan icon for delete instead of cross (VIV-493).
+
 
 2.3.4 (2014-08-29)
 ------------------
