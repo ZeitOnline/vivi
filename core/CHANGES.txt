@@ -11,6 +11,8 @@ zeit.content.article changes
 
 - Fix CSS so the publish status of the teaser image is visible (VIV-504).
 
+- Use trashcan icon for delete instead of cross (VIV-493).
+
 
 3.6.1 (2014-09-03)
 ------------------

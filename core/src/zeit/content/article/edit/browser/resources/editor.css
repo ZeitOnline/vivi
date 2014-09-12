@@ -326,8 +326,7 @@
 }
 
 .type-article .article-editor-inner .edit-bar > .delete-link {
-  background-image: url('delete.png');
-  background-position: 0 2px;
+  background-image: url("/fanstatic/zeit.cms/icons/delete.png");
 }
 
 .type-article .article-editor-inner .dragger .center {
