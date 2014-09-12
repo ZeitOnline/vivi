@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Thu Sep 11 14:32:32 2014\n"
-"PO-Revision-Date: 2014-09-11 14:33+0100\n"
+"POT-Creation-Date: Fri Sep 12 10:04:12 2014\n"
+"PO-Revision-Date: 2014-09-12 10:06+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -415,7 +415,6 @@ msgid "Add new..."
 msgstr "Hinzufügen…"
 
 #: zeit/cms/browser/form.py:272
-#: zeit/cms/workingcopy/browser/workingcopy.py:114
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:30
 #: zeit/content/article/edit/browser/workflow.pt:4
 #: zeit/content/quiz/browser/answer.py:58
@@ -1241,7 +1240,6 @@ msgstr "Zeigen"
 
 #: zeit/cms/repository/browser/menu.py:17
 #: zeit/cms/content/browser/template.zcml:58
-#: zeit/cms/workingcopy/browser/delete.pt:22
 #: zeit/cms/repository/browser/delete.pt:28
 #: zeit/content/article/edit/browser/workflow.pt:52
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:31
@@ -1578,16 +1576,18 @@ msgstr "Letzte Veröffentlichnung von"
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
 
+#: zeit/cms/workingcopy/browser/delete.pt:22
+msgid "Confirm delete"
+msgstr "Bestätigen"
+
 #: zeit/cms/workingcopy/browser/delete.pt:3
 msgid "Delete from workingcopy"
-msgstr "Arbeitskopie löschen"
+msgstr "Bearbeitung abbrechen"
 
 #. Default: "Do you really want to delete your workingcopy?"
 #: zeit/cms/workingcopy/browser/delete.pt:8
 msgid "delete-from-workingcopy"
-msgstr ""
-"Wollen Sie die Bearbeitung wirklich abbrechen? (Dadurch wird nur Ihre "
-"Arbeitskopie gelöscht)"
+msgstr "Wollen Sie die Bearbeitung wirklich abbrechen?"
 
 #: zeit/cms/workingcopy/browser/sidebar.pt:10
 msgid "Edited documents"
@@ -1596,6 +1596,10 @@ msgstr "Dokumente in Bearbeitung"
 #: zeit/cms/workingcopy/browser/sidebar.pt:19
 msgid "No edited documents."
 msgstr "Keine Dokumente in Bearbeitung"
+
+#: zeit/cms/workingcopy/browser/workingcopy.py:114
+msgid "Cancel workingcopy"
+msgstr "Bearbeitung abbrechen"
 
 #: zeit/content/article/article.py:147
 #: zeit/content/article/edit/browser/form.py:65
@@ -4351,9 +4355,6 @@ msgstr "vollbreit"
 
 #~ msgid "Find"
 #~ msgstr "Suchen"
-
-#~ msgid "Configure"
-#~ msgstr "Configure"
 
 #~ msgid "Error Reporting Utility for Logging Errors"
 #~ msgstr "Error Reporting Utility for Logging Errors"
