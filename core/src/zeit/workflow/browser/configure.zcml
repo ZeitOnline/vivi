@@ -123,7 +123,7 @@
 
   <browser:viewlet
     name="Retract"
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".publish.RetractMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
@@ -132,7 +132,7 @@
     />
 
   <browser:page
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
+    for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="retract.html"
     template="retract.pt"

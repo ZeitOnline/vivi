@@ -1,6 +1,7 @@
 # Copyright (c) 2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.repository.interfaces import IRepositoryContent
 import lovely.remotetask.interfaces
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
@@ -47,7 +48,7 @@ class RetractMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
         return info.published
 
     def render(self):
-        if self.visible:
-            return super(RetractMenuItem, self).render()
-        else:
+        if not self.visible or not IRepositoryContent.providedBy(self.context):
             return ''
+        else:
+            return super(RetractMenuItem, self).render()
