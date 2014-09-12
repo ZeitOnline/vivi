@@ -25,6 +25,6 @@ class WorkingcopyTest(zeit.content.article.testing.SeleniumTestCase):
         s = self.selenium
         s.waitForElementPresent('id=delete_workingcopy')
         s.click('id=delete_workingcopy')
-        s.waitForElementPresent('xpath=//input[@value="Delete"]')
+        s.waitForElementPresent('xpath=//input[@value="Confirm delete"]')
         s.assertTextPresent('Do you really want to delete your workingcopy?')
         s.clickAndWait('form.actions.delete')
