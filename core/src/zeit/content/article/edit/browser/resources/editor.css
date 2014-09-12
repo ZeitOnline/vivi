@@ -1458,12 +1458,12 @@
   float: left;
 }
 
-.type-article #edit-form-teaser .inline-form .object-details span {
-  float: left;
-  overflow: hidden;
-  padding-top: 0;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+.type-article #edit-form-teaser .inline-form .object-details span.publish-state {
+  padding-top: 15px;
+}
+
+.type-article #edit-form-teaser .inline-form .object-details ul.metadata {
+  float: right;
 }
 
 .type-article #edit-form-teaser .inline-form .image_details img {

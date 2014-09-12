@@ -9,6 +9,8 @@ zeit.content.article changes
 
 - Fix position of SEO workflow checkbox (VIV-484).
 
+- Fix CSS so the publish status of the teaser image is visible (VIV-504).
+
 
 3.6.1 (2014-09-03)
 ------------------
