@@ -94,5 +94,15 @@
     title="Edit templates"
     />
 
+  <permission
+    id="zeit.content.cp.Retract"
+    title="Retract centerpages"
+    />
+
+  <permission
+    id="zeit.content.cp.Delete"
+    title="Delete centerpages"
+    />
+
 </configure>
 
