@@ -8,6 +8,8 @@ zeit.content.cp changes
 - Fix automatically changing teaser layout from leader to buttons now that
   leader is allowed everywhere (VIV-497).
 
+- Restrict delete and retract of centerpages with special permissions (VIV-496).
+
 
 2.6.2 (2014-09-03)
 ------------------
