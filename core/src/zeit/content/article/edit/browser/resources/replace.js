@@ -197,9 +197,9 @@ zeit.content.article.FindDialog = gocept.Class.extend({
                     {'text': 'Ersetzen',
                      click: function() {
                          this._find_dialog.replace_current(); }},
-                    {'text': 'Zurück',
+                    {'text': '< Zurück',
                      click: function() { this._find_dialog.goto_prev(); }},
-                    {'text': 'Weiter',
+                    {'text': 'Weiter >',
                      click: function() { this._find_dialog.goto_next(); }}
                 ]
             });
