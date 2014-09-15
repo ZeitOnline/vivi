@@ -263,6 +263,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
             }
         } else {
             self.current_match['node'].parentNode.scrollIntoView();
+            self.restore_selection = null;
         }
     },
 
