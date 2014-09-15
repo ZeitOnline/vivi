@@ -1912,3 +1912,9 @@
 #breaking-retract-banner:hover {
   background-position: 10px -448px, 0 0;
 }
+
+
+.find-dialog .ui-dialog-buttonset .ui-button:nth-child(3) {
+  /* XXX jqueryui does not seem to allow specifying classes for buttons, sigh */
+  margin-left: 2em;
+}

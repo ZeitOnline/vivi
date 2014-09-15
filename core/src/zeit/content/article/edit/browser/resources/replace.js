@@ -191,6 +191,8 @@ zeit.content.article.FindDialog = gocept.Class.extend({
             self.form.dialog({
                 'modal': true,
                 'title': 'Suchen und Ersetzen',
+                'dialogClass': 'find-dialog',
+                'width': 500,
                 'buttons': [
                     {'text': 'Ersetzen',
                      click: function() {
