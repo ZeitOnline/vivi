@@ -231,8 +231,14 @@ zeit.content.article.FindDialog = gocept.Class.extend({
                 self.restore_selection['startContainer'],
                 self.restore_selection['startOffset'],
                 self.restore_selection['startOffset']);
-            //self.restore_selection['node'].parentNode.scrollIntoView();
+            // I think we don't want to scollIntoView, since I think the most
+            // common scenario for restore_selection is closing the dialog
+            // after not finding anything, which means there will have been
+            // no scrolling away anyway.
+            // self.restore_selection[
+            //     'startContainer'].parentNode.scrollIntoView();
         }
+        self.editable.editable.focus();
     },
 
     goto_prev: function() {
