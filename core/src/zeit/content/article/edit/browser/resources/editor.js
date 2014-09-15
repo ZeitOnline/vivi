@@ -725,7 +725,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         log('Saving', self.block.id);
         window.clearInterval(self.autosave_timer);
         MochiKit.DOM.addElementClass(self.block, 'busy');
-        zeit.cms.with_lock(function() {
+        return zeit.cms.with_lock(function() {
             while (self.events.length) {
                MochiKit.Signal.disconnect(self.events.pop());
             }
@@ -758,6 +758,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                     return result;
                 });
             }
+            return d;
         });
     },
 
@@ -1038,6 +1039,17 @@ zeit.content.article.Editable = gocept.Class.extend({
       node.textContent = (node.textContent.substring(0, start)
                           + replacement
                           + node.textContent.substring(end));
+  },
+
+  replace_all: function(find, replace) {
+      var self = this;
+      var d = self.save(/*supress_reload=*/true);
+      d.addCallback(function() {
+          return zeit.edit.makeJSONRequest(
+              $('#editable-body').attr('cms:url') + '/@@replace-all',
+          {'find': find, 'replace': replace});
+      });
+      return d;
   }
 
 });

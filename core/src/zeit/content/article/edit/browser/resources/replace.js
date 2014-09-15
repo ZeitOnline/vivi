@@ -197,6 +197,9 @@ zeit.content.article.FindDialog = gocept.Class.extend({
                     {'text': 'Ersetzen',
                      click: function() {
                          this._find_dialog.replace_current(); }},
+                    {'text': 'Alles ersetzen',
+                     click: function() {
+                         this._find_dialog.replace_all(); }},
                     {'text': '< Zurück',
                      click: function() { this._find_dialog.goto_prev(); }},
                     {'text': 'Weiter >',
@@ -210,7 +213,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
                 }
             });
             self.form.on('dialogclose', function() {
-                this._find_dialog.close();
+                this._find_dialog.on_close();
             });
         }
         self.form.dialog(
@@ -227,6 +230,11 @@ zeit.content.article.FindDialog = gocept.Class.extend({
     },
 
     close: function() {
+        var self = this;
+        self.form.dialog('close');
+    },
+
+    on_close: function() {
         var self = this;
         if (self.restore_selection) {
             window.getSelection().removeAllRanges();
@@ -296,6 +304,18 @@ zeit.content.article.FindDialog = gocept.Class.extend({
             match['node'], match['position'],
             match['position'] + match['text'].length,
             $('#find-dialog-replacement').val());
+    },
+
+    replace_all: function() {
+        var self = this;
+        var find = $('#find-dialog-searchtext').val();
+        var replace = $('#find-dialog-replacement').val();
+        if (! find) {
+            alert('Bitte Suchtext eingeben.');
+            return;
+        }
+        var d = self.editable.replace_all(find, replace);
+        d.addCallback(function() { self.close(); });
     }
 
 });
