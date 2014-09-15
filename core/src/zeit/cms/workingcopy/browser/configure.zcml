@@ -48,7 +48,7 @@
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     class=".workingcopy.DeleteMenuItem"
     permission="zeit.DeleteContent"
-    icon="/@@/zeit.cms/icons/cross.png"
+    icon="/@@/zeit.cms/icons/cross-large.png"
     lightbox="@@delete.html"
     sort="100"
     />
