@@ -23,7 +23,6 @@ zeit.content.article.find_next = function(
     var node = toplevel;
     var start = 0;
     if (isUndefined(selection)) {
-        // This branch is for testing purposes, to decouple from FindDialog.
         selection = zeit.content.article._get_selection(toplevel);
     }
     if (selection && selection['inside_toplevel']) {
@@ -251,7 +250,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
         self.current_match = self.editable.find_and_select_next(
             $('#find-dialog-searchtext').val(), direction,
             self.start_selection);
-        self.start_selection = null;
+        self.start_selection = undefined;
         if (self.current_match == NOT_FOUND) {
             var relation = (
                 direction == FORWARD) ? 'nextSibling' : 'previousSibling';
