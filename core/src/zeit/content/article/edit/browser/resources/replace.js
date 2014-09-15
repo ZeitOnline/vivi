@@ -260,7 +260,8 @@ zeit.content.article.FindDialog = gocept.Class.extend({
         if (self.current_match == NOT_FOUND) {
             var relation = (
                 direction == FORWARD) ? 'nextSibling' : 'previousSibling';
-            var next_editable = self.editable.activate_next_editable(relation);
+            var next_editable = self.editable.activate_next_editable(
+                relation, /*suppress_focus=*/true);
             if (next_editable !== null) {
                 self.editable = next_editable;
                 self.restore_selection = null;

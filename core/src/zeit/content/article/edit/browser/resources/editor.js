@@ -94,7 +94,7 @@ zeit.content.article.Editable = gocept.Class.extend({
     editor_active_lock: new MochiKit.Async.DeferredLock(),
     unconditional_save_on_blur: false,
 
-    construct: function(context_element, place_cursor_at_end) {
+    construct: function(context_element, place_cursor_at_end, suppress_focus) {
         var self = this;
         self.dirty = false;
         self.block_id = MochiKit.DOM.getFirstParentByTagAndClassName(
@@ -194,7 +194,9 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.fix_html();
             $('body').trigger('update-ads');
             self.place_cursor(place_cursor_at_end);
-            self.editable.focus();
+            if (! suppress_focus) {
+                self.editable.focus();
+            }
             self.init_linkbar();
             self.init_toolbar();
             self.init_shortcuts();
@@ -606,7 +608,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
     },
 
-    activate_next_editable: function(direction) {
+    activate_next_editable: function(direction, suppress_focus) {
         var self = this;
         var cursor_at_end = (direction == 'nextSibling') ? false : true;
         var block = self.block;
@@ -632,7 +634,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         return new zeit.content.article.Editable(
             MochiKit.DOM.getFirstElementByTagAndClassName(
                 'div', 'editable', $('#' + next_block_id)[0]),
-            cursor_at_end);
+            cursor_at_end, suppress_focus);
     },
 
     handle_keyup: function(event) {
