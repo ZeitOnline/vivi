@@ -193,11 +193,12 @@ zeit.content.article.FindDialog = gocept.Class.extend({
                 'title': 'Suchen und Ersetzen',
                 'buttons': [
                     {'text': 'Ersetzen',
-                     click: MochiKit.Base.bind(self.replace_current, self)},
+                     click: function() {
+                         this._find_dialog.replace_current(); }},
                     {'text': 'Zurück',
-                     click: MochiKit.Base.bind(self.goto_prev, self)},
+                     click: function() { this._find_dialog.goto_prev(); }},
                     {'text': 'Weiter',
-                     click: MochiKit.Base.bind(self.goto_next, self)}
+                     click: function() { this._find_dialog.goto_next(); }}
                 ]
             });
             self.form.on('keydown', function(event) {
