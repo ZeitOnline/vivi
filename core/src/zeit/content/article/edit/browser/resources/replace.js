@@ -13,7 +13,8 @@ zeit.content.article.FORWARD = FORWARD;
 zeit.content.article.BACKWARD = BACKWARD;
 
 
-zeit.content.article.find_next = function(toplevel, text, direction) {
+zeit.content.article.find_next = function(
+    toplevel, text, direction, selection) {
     if (! direction) {
         direction = FORWARD;
     }
@@ -21,10 +22,18 @@ zeit.content.article.find_next = function(toplevel, text, direction) {
 
     var node = toplevel;
     var start = 0;
-    var selection = zeit.content.article._get_selection(toplevel, direction);
-    if (selection) {
-        node = selection['node'];
-        start = selection['position'];
+    if (isUndefined(selection)) {
+        // This branch is for testing purposes, to decouple from FindDialog.
+        selection = zeit.content.article._get_selection(toplevel);
+    }
+    if (selection && selection['inside_toplevel']) {
+        if (direction == FORWARD) {
+            node = selection['endContainer'];
+            start = selection['endOffset'];
+        } else {
+            node = selection['startContainer'];
+            start = selection['startOffset'];
+        }
     }
 
     var match;
@@ -124,8 +133,7 @@ zeit.content.article.select = function(node, start, end) {
 };
 
 
-zeit.content.article._get_selection = function(toplevel, direction) {
-    var result = null;
+zeit.content.article._get_selection = function(toplevel) {
     if (window.getSelection().rangeCount) {
         var range = window.getSelection().getRangeAt(0);
         var selected_node = range.endContainer;
@@ -137,17 +145,15 @@ zeit.content.article._get_selection = function(toplevel, direction) {
                 break;
             }
         }
-        if (inside_toplevel) {
-            if (direction == FORWARD) {
-                result = {'node': range.endContainer,
-                          'position': range.endOffset};
-            } else {
-                result = {'node': range.startContainer,
-                          'position': range.startOffset};
-            }
-        }
+        return {
+            'inside_toplevel': inside_toplevel,
+            'startContainer': range.startContainer,
+            'startOffset': range.startOffset,
+            'endContainer': range.endContainer,
+            'endOffset': range.endOffset
+        };
     }
-    return result;
+    return null;
 };
 
 
@@ -165,12 +171,14 @@ zeit.content.article.FindDialog = gocept.Class.extend({
         var self = this;
         self.editable = editable;
         self.restore_selection = null;
-        if (window.getSelection().rangeCount) {
-            var range = window.getSelection().getRangeAt(0);
-            self.restore_selection = {
-                'node': range.startContainer,
-                'start': range.startOffset
-            };
+        self.start_selection = null;
+        var selection = zeit.content.article._get_selection(
+            self.editable.editable);
+        if (selection) {
+            self.restore_selection = selection;
+            if (selection['inside_toplevel']) {
+                self.start_selection = selection;
+            }
         }
         self.init_form();
         self.current_match = NOT_FOUND;
@@ -221,9 +229,9 @@ zeit.content.article.FindDialog = gocept.Class.extend({
         if (self.restore_selection) {
             window.getSelection().removeAllRanges();
             zeit.content.article.select(
-                self.restore_selection['node'],
-                self.restore_selection['start'],
-                self.restore_selection['start']);
+                self.restore_selection['startContainer'],
+                self.restore_selection['startOffset'],
+                self.restore_selection['startOffset']);
             //self.restore_selection['node'].parentNode.scrollIntoView();
         }
     },
@@ -241,7 +249,9 @@ zeit.content.article.FindDialog = gocept.Class.extend({
     find: function(direction) {
         var self = this;
         self.current_match = self.editable.find_and_select_next(
-            $('#find-dialog-searchtext').val(), direction);
+            $('#find-dialog-searchtext').val(), direction,
+            self.start_selection);
+        self.start_selection = null;
         if (self.current_match == NOT_FOUND) {
             var relation = (
                 direction == FORWARD) ? 'nextSibling' : 'previousSibling';
