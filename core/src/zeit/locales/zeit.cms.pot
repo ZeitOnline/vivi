@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Sep 16 10:19:53 2014\n"
+"POT-Creation-Date: Tue Sep 16 12:06:24 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -449,7 +449,6 @@ msgid "Add new..."
 msgstr ""
 
 #: zeit/cms/browser/form.py:272
-#: zeit/cms/checkout/browser/checkin-conflict-error.pt:30
 #: zeit/content/article/edit/browser/workflow.pt:4
 #: zeit/content/quiz/browser/answer.py:58
 #: zeit/content/quiz/browser/question.py:55
@@ -635,6 +634,10 @@ msgstr ""
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:3
 msgid "Conflict Error"
+msgstr ""
+
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:30
+msgid "Cancel checkin"
 msgstr ""
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:7

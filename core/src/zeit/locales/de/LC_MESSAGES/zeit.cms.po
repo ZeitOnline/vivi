@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Sep 16 10:19:53 2014\n"
-"PO-Revision-Date: 2014-09-16 10:20+0100\n"
+"POT-Creation-Date: Tue Sep 16 12:06:24 2014\n"
+"PO-Revision-Date: 2014-09-16 12:07+0100\n"
 "Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -415,7 +415,6 @@ msgid "Add new..."
 msgstr "Hinzufügen…"
 
 #: zeit/cms/browser/form.py:272
-#: zeit/cms/checkout/browser/checkin-conflict-error.pt:30
 #: zeit/content/article/edit/browser/workflow.pt:4
 #: zeit/content/quiz/browser/answer.py:58
 #: zeit/content/quiz/browser/question.py:55
@@ -576,11 +575,11 @@ msgstr "Das Objekt konnte nicht gefunden werden."
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:13
 msgid "Local version"
-msgstr "Lokale Version"
+msgstr "Ihre Version"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:16
 msgid "Other version"
-msgstr "Bereits eingecheckte Version"
+msgstr "Konflikt-Version"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:23
 msgid "Checkin correction anyway"
@@ -592,15 +591,22 @@ msgstr "Trotzdem einchecken"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:28
 msgid "Delete workingcopy"
-msgstr "Arbeitskopie löschen"
+msgstr "Bearbeitung abbrechen"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:3
 msgid "Conflict Error"
 msgstr "Konflikt"
 
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:30
+msgid "Cancel checkin"
+msgstr "Zurück zum Artikel"
+
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:7
 msgid "There was an error while checking in your version of ${name}."
-msgstr "Es gab einen Fehler beim Einchecken Ihrer Arbeitskopie von ${name}."
+msgstr ""
+"Achtung, ${name} wurde in der Zwischenzeit von einem anderen Nutzer "
+"bearbeitet. Wenn Sie jetzt einchecken, werden dessen Änderungen "
+"überschrieben."
 
 #: zeit/cms/checkout/browser/manager.py:144
 msgid "The object was removed from the repository."
@@ -4080,9 +4086,6 @@ msgstr "vollbreit"
 
 #~ msgid "Development"
 #~ msgstr "Relaunch"
-
-#~ msgid "Checkin"
-#~ msgstr "Speichern"
 
 #, fuzzy
 #~ msgid "edit article content body"
