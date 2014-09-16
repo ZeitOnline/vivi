@@ -2,12 +2,11 @@
 
   <h1 i18n:translate="">Conflict Error</h1>
 
-  <p i18n:translate="">
+  <p><b i18n:translate="">
 
-    There was an error while checking in your version of <span
+      There was an error while checking in your version of <span
       tal:content="context/uniqueId" i18n:name="name" />.
-
-  </p>
+  </b></p>
 
 
   <h3 i18n:translate="">Local version</h3>
