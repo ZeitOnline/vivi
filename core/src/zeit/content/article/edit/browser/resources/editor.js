@@ -208,9 +208,9 @@ zeit.content.article.Editable = gocept.Class.extend({
                     }
                 }));
             self.initialized = true;
-            MochiKit.Signal.signal(self, 'initialized');
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
+        self.initialized = d;
     },
 
     place_cursor: function(place_cursor_at_end) {

@@ -276,15 +276,9 @@ zeit.content.article.FindDialog = gocept.Class.extend({
             if (next_editable !== null) {
                 self.editable = next_editable;
                 self.restore_selection = null;
-                if (!self.editable.initialized) {
-                    var ident = MochiKit.Signal.connect(
-                        self.editable, 'initialized', function() {
-                            MochiKit.Signal.disconnect(ident);
-                            self.find(direction);
-                        });
-                } else {
+                self.editable.initialized.addCallback(function(){
                     self.find(direction);
-                }
+                });
             } else {
                 alert('Keine weiteren Ergebnisse');
             }
