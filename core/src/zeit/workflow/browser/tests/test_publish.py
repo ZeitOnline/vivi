@@ -84,6 +84,7 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
         s = self.selenium
         s.click('xpath=//*[contains(text(), "testcontent")]')
         s.waitForElementPresent('css=#bottomcontent a[title=Retract]')
+        s.click('css=#bottomcontent a[title="Additional actions"]')
         s.click('css=#bottomcontent a[title=Retract]')
         s.waitForElementPresent('css=ol#worklist')
         s.waitForElementPresent('css=li.busy[action=retract]')
@@ -126,6 +127,7 @@ class TestRetract(zeit.cms.testing.SeleniumTestCase,
 
     def test_retract_should_retract_item_and_reload_page(self):
         s = self.selenium
+        s.click('css=a[title="Additional actions"]')
         s.click('link=Retract')
         s.waitForElementPresent('css=ol#worklist')
         s.waitForElementPresent('css=li.busy[action=retract]')
