@@ -157,8 +157,8 @@ class ReplaceAll(zeit.edit.browser.view.Action):
     replace = zeit.edit.browser.view.Form('replace')
 
     def update(self):
-        # XXX implement me
-
+        zeit.content.article.edit.interfaces.IFindReplace(
+            self.context).replace_all(self.find, self.replace)
         self.signal_context_reload()
 
 
