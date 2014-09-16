@@ -128,7 +128,7 @@
     class=".publish.RetractMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.workflow.Publish"
-    icon="/@@/zeit.cms/icons/wf_bb_zurueckziehen.png"
+    icon="/@@/zeit.cms/icons/retract_topmenu.png"
     />
 
   <browser:page
