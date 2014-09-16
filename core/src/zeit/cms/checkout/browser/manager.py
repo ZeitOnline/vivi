@@ -7,12 +7,12 @@ import urllib
 import zeit.cms.browser.menu
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces
-import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.workflow.interfaces
 import zope.browser.interfaces
 import zope.cachedescriptors.property
 import zope.component
+import zope.dublincore.interfaces
 import zope.formlib.form
 import zope.i18n
 
@@ -192,10 +192,22 @@ class CheckinConflictError(zeit.cms.browser.view.Base):
 
 class CheckinConflictErrorInformation(zope.formlib.form.SubPageDisplayForm):
 
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.workflow.interfaces.IModified,
-        zeit.cms.content.interfaces.ISemanticChange).omit(
-            'has_semantic_change')
+    form_field_base = zope.formlib.form.FormFields(
+        zeit.cms.workflow.interfaces.IModified)
+
+    form_fields = form_field_base.select('last_modified_by')
+
+    def __init__(self, context, request):
+        super(CheckinConflictErrorInformation, self).__init__(context, request)
+        if zeit.cms.workflow.interfaces.IModified(
+                self.context).date_last_checkout:
+            self.form_fields += self.form_field_base.select(
+                'date_last_checkout')
+        else:
+            # Backwards-compatibility for articles that have not been checked
+            # out since date_last_checkout was introduced.
+            self.form_fields += self.form_field_base.select(
+                'date_last_modified')
 
 
 class MenuItem(zeit.cms.browser.menu.ActionMenuItem):
