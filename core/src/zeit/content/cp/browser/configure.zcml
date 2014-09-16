@@ -176,7 +176,7 @@
     class="zeit.workflow.browser.publish.RetractMenuItem"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.content.cp.Retract"
-    icon="/@@/zeit.cms/icons/wf_bb_zurueckziehen.png"
+    icon="/@@/zeit.cms/icons/retract_topmenu.png"
     />
   <configure package="zeit.workflow.browser">
   <browser:page
