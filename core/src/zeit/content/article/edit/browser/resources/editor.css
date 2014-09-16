@@ -540,7 +540,7 @@
   border : 1px solid #cccccc;
   left: -35px;
   position: absolute;
-  z-index: 1000;
+  z-index: 50;
 }
 
 .type-article .rte-toolbar > a {
@@ -631,6 +631,16 @@
   background-position: 3px -208px;
 }
 
+.type-article .rte-toolbar > a[href='show_find_dialog'] {
+  background-position: 3px -55px;
+  color: transparent;
+}
+
+.type-article .rte-toolbar > a[href='show_find_dialog']:hover,
+.type-article .rte-toolbar > a.active[href='show_find_dialog'] {
+  background-position: 3px -85px;
+}
+
 .type-article .link_input {
   background-color: #fff;
   border-radius: 5px;
@@ -640,7 +650,7 @@
   padding: 1em;
   position: absolute;
   width: 80%;
-  z-index: 1000;
+  z-index: 50;
 }
 
 .type-article .link_input input[type="text"] {
@@ -1900,4 +1910,10 @@
 
 #breaking-retract-banner:hover {
   background-position: 10px -448px, 0 0;
+}
+
+
+.find-dialog .ui-dialog-buttonset .ui-button:nth-child(3) {
+  /* XXX jqueryui does not seem to allow specifying classes for buttons, sigh */
+  margin-left: 2em;
 }

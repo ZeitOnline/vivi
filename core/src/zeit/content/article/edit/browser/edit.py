@@ -151,6 +151,17 @@ class BlockLandingZone(LandingZoneBase):
     order = 'after-context'
 
 
+class ReplaceAll(zeit.edit.browser.view.Action):
+
+    find = zeit.edit.browser.view.Form('find')
+    replace = zeit.edit.browser.view.Form('replace')
+
+    def update(self):
+        zeit.content.article.edit.interfaces.IFindReplace(
+            self.context).replace_all(self.find, self.replace)
+        self.signal_context_reload()
+
+
 class EditRawXML(zeit.edit.browser.form.InlineForm):
 
     legend = None

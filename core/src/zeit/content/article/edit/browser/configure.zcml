@@ -61,6 +61,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IEditableBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="replace-all"
+    class=".edit.ReplaceAll"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -442,6 +450,12 @@
     class=".edit.DoubleQuotes"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     permission="zope.Public"
+    />
+
+  <!-- testing only -->
+  <browser:resourceDirectory
+    name="zeit.content.article.edit.browser.tests.fixtures"
+    directory="tests/fixtures"
     />
 
 </configure>

@@ -28,6 +28,13 @@ class IEditableBody(zeit.edit.interfaces.IArea):
         """
 
 
+class IFindReplace(zope.interface.Interface):
+    """Find/replace functionality for IEditableBody."""
+
+    def replace_all(find, replace):
+        """Replace the ``find`` text with ``replace`` in all text IBlocks."""
+
+
 class ILayoutable(zope.interface.Interface):
     """A block with layout information."""
 
