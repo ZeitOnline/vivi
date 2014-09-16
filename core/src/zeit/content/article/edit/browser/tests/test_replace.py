@@ -1,4 +1,10 @@
+# coding: utf-8
+from zeit.cms.checkout.interfaces import IWorkingcopy
+from zeit.content.article.edit.interfaces import IEditableBody
+from zeit.edit.interfaces import IElementFactory
+import transaction
 import zeit.content.article.testing
+import zope.component
 
 
 class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
@@ -118,11 +124,72 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
 class FindReplaceTest(
     zeit.content.article.edit.browser.testing.EditorTestCase):
 
-    def test_replacing_text(self):
+    def test_finding_text_works_accross_non_text_blocks(self):
+        s = self.selenium
+        self.add_article()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                co = list(IWorkingcopy(None).values())[0]
+                body = IEditableBody(co)
+                p_factory = zope.component.getAdapter(
+                    body, IElementFactory, 'p')
+                img_factory = zope.component.getAdapter(
+                    body, IElementFactory, 'image')
+                paragraph = p_factory()
+                paragraph.text = 'foo bar baz'
+                img_factory()
+                paragraph = p_factory()
+                paragraph.text = 'foo baz'
+                transaction.commit()
+        s.refresh()
+        para = 'css=.block.type-p .editable p'
+        s.waitForElementPresent(para)
+        s.click(para)
+        s.waitForElementPresent('xpath=//a[@href="show_find_dialog"]')
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'baz')
+        s.click('css=button:contains(Weiter)')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 8')
+        s.click('css=button:contains(Weiter)')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 4')
+
+    def test_finding_text_backwards(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>foo bar foo</p>")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'foo')
+        s.click('css=button:contains(Weiter)')
+        s.click('css=button:contains(Weiter)')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 8')
+        s.click(u'css=button:contains(Zurück)')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 0')
+
+    def test_replacing_single_match(self):
         s = self.selenium
         self.add_article()
         self.create("<p>foo bar baz</p>")
-        self.run_js(
-            self.get_js_editable() + '.replace_text('
-            'window.jQuery(".block.type-p p")[0].firstChild, 0, 3, "qux")')
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'foo')
+        s.type('id=find-dialog-replacement', 'qux')
+        s.click('css=button:contains(Weiter)')
+        s.click('css=button:contains(Ersetzen)')
         self.assertEqual('qux bar baz', s.getText('css=.block.type-p p'))
+
+    def test_replacing_all(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>foo bar baz</p>")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'foo')
+        s.type('id=find-dialog-replacement', 'qux')
+        s.click('css=button:contains(Alles ersetzen)')
+        s.waitForText('css=.block.type-p p', 'qux bar baz')
