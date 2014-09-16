@@ -22,7 +22,7 @@ class Modified(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         zeit.cms.workflow.interfaces.IModified,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('last_modified_by', ))
+        ('last_modified_by', 'date_last_checkout'))
 
     @property
     def date_last_modified(self):
@@ -40,6 +40,17 @@ def update_last_modified_by(context, event):
         return
     zope.security.proxy.removeSecurityProxy(modified).last_modified_by = (
         event.principal.id)
+
+
+@zope.component.adapter(
+    zope.interface.Interface,
+    zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
+def update_date_last_checkout(context, event):
+    modified = zeit.cms.workflow.interfaces.IModified(context, None)
+    if modified is None:
+        return
+    zope.security.proxy.removeSecurityProxy(modified).date_last_checkout = (
+        datetime.now(pytz.UTC))
 
 
 @zope.component.adapter(

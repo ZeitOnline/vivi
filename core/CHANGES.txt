@@ -9,6 +9,8 @@ zeit.cms changes
 - Offer both checkin and checkin/correction on conflict warning dialog
   (VIV-485).
 
+- Store timestamp of last checkout.
+
 - Improve clickable area for object details preview links (VIV-492).
 
 - Improve wording for "delete workingcopy" (VIV-483).

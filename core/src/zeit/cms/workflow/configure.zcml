@@ -2,6 +2,7 @@
   xmlns="http://namespaces.zope.org/zope">
 
   <subscriber handler=".modified.update_last_modified_by" />
+  <subscriber handler=".modified.update_date_last_checkout" />
   <subscriber handler=".modified.update_date_last_published_semantic" />
   <adapter factory=".status.PublicationStatus" />
 
