@@ -162,7 +162,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
 <div id="find-dialog"> \
   <p><label for="find-dialog-searchtext">Suchen nach</label> \
   <input type="text" id="find-dialog-searchtext" /></p> \
-  <p><label for="find-dialog-replacement">Ersetzen mit</label> \
+  <p><label for="find-dialog-replacement">Ersetzen durch</label> \
   <input type="text" id="find-dialog-replacement" /></p> \
 </div>',
 
