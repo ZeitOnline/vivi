@@ -181,6 +181,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
     construct: function(editable) {
         var self = this;
         self.editable = editable;
+        self.focus_editable_on_close = true;
         self.restore_selection = null;
         self.start_selection = null;
         var selection = zeit.content.article._get_selection(
@@ -261,7 +262,9 @@ zeit.content.article.FindDialog = gocept.Class.extend({
             // self.restore_selection[
             //     'startContainer'].parentNode.scrollIntoView();
         }
-        self.editable.editable.focus();
+        if (self.focus_editable_on_close) {
+            self.editable.editable.focus();
+        }
     },
 
     goto_prev: function() {
@@ -321,6 +324,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
             return;
         }
         var d = self.editable.replace_all(find, replace);
+        self.focus_editable_on_close = false;
         d.addCallback(function() { self.close(); });
     }
 
