@@ -1029,10 +1029,11 @@ zeit.content.article.Editable = gocept.Class.extend({
       dialog.show();
   },
 
-  find_and_select_next: function(text, direction, start_selection) {
+  find_and_select_next: function(
+      text, direction, case_sensitive, start_selection) {
       var self = this;
       return zeit.content.article.find_next(
-          self.editable, text, direction, start_selection);
+          self.editable, text, direction, case_sensitive, start_selection);
   },
 
   replace_text: function(node, start, end, replacement) {

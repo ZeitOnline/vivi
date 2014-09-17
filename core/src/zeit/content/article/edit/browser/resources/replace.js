@@ -14,7 +14,7 @@ zeit.content.article.BACKWARD = BACKWARD;
 
 
 zeit.content.article.find_next = function(
-    toplevel, text, direction, selection) {
+    toplevel, text, direction, case_sensitive, selection) {
     if (! direction) {
         direction = FORWARD;
     }
@@ -37,7 +37,7 @@ zeit.content.article.find_next = function(
 
     var match;
     while (true) {
-        match = find_below(node, text, start);
+        match = find_below(node, text, start, case_sensitive);
         if (match != NOT_FOUND) {
             zeit.content.article.select(
                 match['node'],
@@ -60,9 +60,14 @@ zeit.content.article.find_next = function(
 };
 
 
-zeit.content.article._find_below_forward = function(node, text, start) {
+zeit.content.article._find_below_forward = function(
+    node, text, start, case_sensitive) {
     if (node.nodeType == node.TEXT_NODE) {
         var haystack = node.textContent.substring(start);
+        if (!case_sensitive) {
+            haystack = haystack.toLowerCase();
+            text = text.toLowerCase();
+        }
         var position = haystack.indexOf(text);
         if (position != -1) {
             return {'node': node, 'position': position + start, 'text': text};
@@ -73,7 +78,7 @@ zeit.content.article._find_below_forward = function(node, text, start) {
         for (var i = 0; i < node.childNodes.length; i++) {
             var child = node.childNodes[i];
             var match = zeit.content.article._find_below_forward(
-                child, text, /*start=*/0);
+                child, text, /*start=*/0, case_sensitive);
             if (match != NOT_FOUND) {
                 return match;
             }
@@ -83,9 +88,14 @@ zeit.content.article._find_below_forward = function(node, text, start) {
 };
 
 
-zeit.content.article._find_below_backward = function(node, text, start) {
+zeit.content.article._find_below_backward = function(
+    node, text, start, case_sensitive) {
     if (node.nodeType == node.TEXT_NODE) {
         var haystack = node.textContent.substring(0, start);
+        if (!case_sensitive) {
+            haystack = haystack.toLowerCase();
+            text = text.toLowerCase();
+        }
         var position = haystack.lastIndexOf(text);
         if (position != -1) {
             return {'node': node, 'position': position, 'text': text};
@@ -96,7 +106,7 @@ zeit.content.article._find_below_backward = function(node, text, start) {
         for (var i = node.childNodes.length - 1; i >= 0; i--) {
             var child = node.childNodes[i];
             var match = zeit.content.article._find_below_backward(
-                child, text, /*start=*/undefined);
+                child, text, /*start=*/undefined, case_sensitive);
             if (match != NOT_FOUND) {
                 return match;
             }
@@ -164,6 +174,8 @@ zeit.content.article.FindDialog = gocept.Class.extend({
   <input type="text" id="find-dialog-searchtext" /></p> \
   <p><label for="find-dialog-replacement">Ersetzen durch</label> \
   <input type="text" id="find-dialog-replacement" /></p> \
+  <p><label><input type="checkbox" id="find-dialog-case"/> \
+    Groß/Kleinschreibung beachten</label></p> \
 </div>',
 
     construct: function(editable) {
@@ -266,7 +278,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
         var self = this;
         self.current_match = self.editable.find_and_select_next(
             $('#find-dialog-searchtext').val(), direction,
-            self.start_selection);
+            $('#find-dialog-case').attr('checked'), self.start_selection);
         self.start_selection = undefined;
         if (self.current_match == NOT_FOUND) {
             var relation = (

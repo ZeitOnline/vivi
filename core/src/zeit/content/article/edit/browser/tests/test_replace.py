@@ -48,6 +48,15 @@ class FindDOMTest(zeit.content.article.testing.SeleniumTestCase):
         self.assertEqual(
             '3', self.eval('window.getSelection().getRangeAt(0).endOffset'))
 
+    def test_setting_case_insensitive_ignores_case(self):
+        self.eval(
+            'zeit.content.article.find_next('
+            'document.getElementById("one"), "FoO")')
+        self.assertEqual(
+            '0', self.eval('window.getSelection().getRangeAt(0).startOffset'))
+        self.assertEqual(
+            '3', self.eval('window.getSelection().getRangeAt(0).endOffset'))
+
     def test_selection_outside_of_node_is_ignored(self):
         self.eval('zeit.content.article.select('
                   'document.getElementById("one").firstChild, 4, 4)')
@@ -168,6 +177,29 @@ class FindReplaceTest(
         self.wait_for_condition(
             'window.getSelection().getRangeAt(0).startOffset == 8')
         s.click(u'css=button:contains(Zurück)')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 0')
+
+    def test_finding_text_case_insensitive(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>FOO bar foo</p>")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'fOo')
+        s.click('css=button:contains(Weiter)')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 0')
+
+    def test_finding_text_case_sensitive(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>FOO bar foo</p>")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'FOO')
+        s.click('id=find-dialog-case')
+        s.click('css=button:contains(Weiter)')
         self.wait_for_condition(
             'window.getSelection().getRangeAt(0).startOffset == 0')
 
