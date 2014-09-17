@@ -34,3 +34,9 @@ class XMLReplaceTest(zeit.content.article.testing.FunctionalTestCase):
             'foo', 'qux')
         self.assertEqual(['qux bar qux', 'bar', 'qux'],
                          [x.text for x in body.xml.division.ul.li])
+
+    def test_returns_match_count(self):
+        body = self.create_body('<p>foo bar foo bar</p><p>foo</p>')
+        count = zeit.content.article.edit.interfaces.IFindReplace(
+            body).replace_all('foo', 'qux')
+        self.assertEqual(3, count)

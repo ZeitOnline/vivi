@@ -157,9 +157,10 @@ class ReplaceAll(zeit.edit.browser.view.Action):
     replace = zeit.edit.browser.view.Form('replace')
 
     def update(self):
-        zeit.content.article.edit.interfaces.IFindReplace(
+        count = zeit.content.article.edit.interfaces.IFindReplace(
             self.context).replace_all(self.find, self.replace)
         self.signal_context_reload()
+        self.signal(None, 'after-replace-all', count)
 
 
 class EditRawXML(zeit.edit.browser.form.InlineForm):

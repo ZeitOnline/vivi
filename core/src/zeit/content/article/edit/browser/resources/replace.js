@@ -326,4 +326,20 @@ zeit.content.article.FindDialog = gocept.Class.extend({
 
 });
 
+
+zeit.content.article.display_replace_count = function(count) {
+    alert(count + ' Stelle(n) ersetzt.');
+};
+
+
+MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+    if (! zeit.cms.in_article_editor()) {
+        return;
+    }
+
+    MochiKit.Signal.connect(
+        zeit.edit.editor, 'after-replace-all',
+        zeit.content.article.display_replace_count);
+});
+
 }(jQuery));

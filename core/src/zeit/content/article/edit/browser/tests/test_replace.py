@@ -225,3 +225,5 @@ class FindReplaceTest(
         s.type('id=find-dialog-replacement', 'qux')
         s.click('css=button:contains(Alles ersetzen)')
         s.waitForText('css=.block.type-p p', 'qux bar baz')
+        # XXX swaitForAlert() does not seem to work.
+        self.assertEqual('1 Stelle(n) ersetzt.', s.selenium.get_alert())
