@@ -722,7 +722,7 @@ legend {
 }
 
 #delete_workingcopy, #delete_from_repository {
-  background: url("/fanstatic/zeit.cms/icons/cross.png") no-repeat 3px 1px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%)  !important;
+  background: url("/fanstatic/zeit.cms/icons/cross.png") no-repeat 3px 5px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%)  !important;
   font-size: 14px !important;
   padding-left: 22px;
 }
