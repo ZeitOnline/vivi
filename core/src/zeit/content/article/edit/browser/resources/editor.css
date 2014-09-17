@@ -1917,3 +1917,9 @@
   /* XXX jqueryui does not seem to allow specifying classes for buttons, sigh */
   margin-left: 2em;
 }
+
+.find-dialog label[for=find-dialog-searchtext],
+.find-dialog label[for=find-dialog-replacement] {
+    display: inline-block;
+    width: 10em;
+}
