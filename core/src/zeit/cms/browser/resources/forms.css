@@ -538,3 +538,16 @@ iframe {
 a.add_view {
   -moz-appearance: button;
 }
+
+
+.conflict-error table.form-fields .widget {
+    margin-bottom: 0;
+}
+
+.conflict-error table.form-fields .field {
+    padding: 0;
+}
+
+.conflict-error table.form-fields > * > tr > td {
+    height: auto;
+}

@@ -10,11 +10,12 @@
 
 
   <h3 i18n:translate="">Local version</h3>
-  <form tal:content="structure view/local_information" />
+  <form class="conflict-error" tal:content="structure view/local_information" />
 
   <h3 i18n:translate="">Other version</h3>
-  <form tal:content="structure view/remote_information" />
+  <form class="conflict-error" tal:content="structure view/remote_information" />
 
+  <p>
   <form method="POST"
         tal:attributes="action string:${context/@@absolute_url}/@@${view/__name__}">
     <input type="hidden" name="came_from"
@@ -29,6 +30,6 @@
     <input type="submit" name="cancel" value="Cancel checkin"
            i18n:attributes="value" />
   </form>
-
+  </p>
 
 </div>
