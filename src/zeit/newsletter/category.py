@@ -175,8 +175,6 @@ class Builder(grok.MultiAdapter):
         groups_above = 0
         for ressort in self.category.ressorts:
             entries = groups.get(ressort)
-            if not entries:
-                continue
             group = self.create_group(ressort)
             for content in entries:
                 self.create_teaser(group, content)
@@ -188,12 +186,14 @@ class Builder(grok.MultiAdapter):
 
     def _group_by_ressort(self, content_list, accept_ressorts):
         groups = {}
+        for ressort in accept_ressorts:
+            groups[ressort] = []
         for content in content_list:
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
             if metadata is None or metadata.ressort not in accept_ressorts:
                 continue
-            groups.setdefault(metadata.ressort, []).append(content)
+            groups[metadata.ressort].append(content)
         return groups
 
     def create_video_group(self):
