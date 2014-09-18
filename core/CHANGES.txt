@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.6.3 (unreleased)
+2.6.3 (2014-09-18)
 ------------------
 
 - Fix automatically changing teaser layout from leader to buttons now that
