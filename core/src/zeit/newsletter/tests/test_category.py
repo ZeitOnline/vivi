@@ -145,6 +145,20 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual([c1, c3], [x.reference for x in group1.values()])
         self.assertEqual([c2], [x.reference for x in group2.values()])
 
+    def test_configured_ressorts_are_contained_even_if_empty(self):
+        c1 = self.create_content('c1', u'Politik')
+        c3 = self.create_content('c3', u'Politik')
+        self.builder([c1, c3])
+
+        body = self.newsletter['newsletter_body']
+        self.assertEqual(2 + self.NON_RESSORT_ELEMENTS, len(body))
+        groups = [el for el in body.values() if el.type == 'group']
+        group1, group2 = groups[:2]
+        self.assertEqual(u'Politik', group1.title)
+        self.assertEqual(u'Wirtschaft', group2.title)
+
+        self.assertEqual([], group2.values())
+
     def test_group_should_work_if_content_not_adaptable_to_metadata(self):
         c1 = self.create_content('c1', u'Politik')
         try:
@@ -157,10 +171,11 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         group1 = body[body.keys()[0]]
         self.assertEqual(u'Politik', group1.title)
 
-    def test_video_group_should_be_appended(self):
+    def test_video_group_should_be_appended_even_if_empty(self):
         self.builder(())
         body = self.newsletter['newsletter_body']
         self.assertNotEqual(0, len(body))
+        self.assertEqual('Video', body.values()[0].title)
         self.assertEqual('Video', body.values()[0].title)
 
     def test_should_not_break_if_playlist_id_resolves_to_something_else(self):
@@ -168,7 +183,9 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.builder(())
         body = self.newsletter['newsletter_body']
         self.assertNotEqual(0, len(body))
+        video_group = body.values()[0]
         self.assertEqual('Video', body.values()[0].title)
+        self.assertEqual(0, len(video_group))
 
     def test_should_populate_video_group_from_playlist(self):
         playlist = zeit.content.video.playlist.Playlist()
