@@ -4,7 +4,16 @@ zeit.newsletter changes
 1.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Honour DailyNL flag on content when populating a newsletter (VIV-506).
+
+- Include all configured ressorts in newsletter even if they end up empty
+  (VIV-512).
+
+- Store the newsletter's creation date as the category's last_created marker
+  when publishing the newsletter (VIV-510).
+
+- Don't include videos from the playlist that are older than last_created
+  (VIV-513).
 
 
 1.1.0 (2014-07-17)
