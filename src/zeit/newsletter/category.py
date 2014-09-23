@@ -70,8 +70,14 @@ class NewsletterCategory(NewsletterCategoryBase,
         newsletter.subject = self.subject.format(
             today=now.strftime('%d.%m.%Y'))
         self.populate(newsletter)
+        # XXX It would be a good idea to pass the exact same timestamp from
+        # here down to the connector search that will be stored as the
+        # last_created date later when the newsletter has been published. Even
+        # before #VIV-510, this has not been the case, but now that we use the
+        # newsletter object's created date which is in turn set when adding
+        # the newsletter to the object graph, this has become trickier. Simply
+        # adding the newsletter before populating it makes it come up empty.
         newsletter = self._add_newsletter(newsletter, now)
-        self.last_created = now
         return newsletter
 
     def _add_newsletter(self, newsletter, timestamp):

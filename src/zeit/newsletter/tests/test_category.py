@@ -45,7 +45,14 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
         name = self.category._choose_name(folder, datetime.date(2011, 6, 29))
         self.assertEqual('29-2', name)
 
-    def test_last_creation_time_is_remembered(self):
+    # XXX re VIV-510: In addition to the following test, we'd need one that
+    # asserts that creation times do get stored when a newsletter was
+    # successfully published. While this is true for trying it out in a
+    # running instance, something in the test setup used to break the identity
+    # of the category object between test code and Newsletter.send(). Left
+    # this test as an exercise to be completed after an urgent feature release.
+
+    def test_last_creation_time_is_not_remembered_while_unpublished(self):
         from datetime import datetime
         dt = mock.Mock()
         dt.side_effect = lambda *args, **kw: datetime(*args, **kw)
@@ -63,7 +70,7 @@ class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
             dt.now.return_value = timestamp2
             self.category.create()
             self.category._get_content_newer_than.assert_called_with(
-                timestamp1)
+                None)
 
     def test_smoke_query_for_newer_content(self):
         # this is just a smoke test (against syntax errors and such),
