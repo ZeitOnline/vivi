@@ -20,6 +20,7 @@ import zeit.newsletter.interfaces
 import zeit.newsletter.newsletter
 import zope.component
 import zope.container.contained
+import zope.dublincore.interfaces
 import zope.interface
 import zope.security.proxy
 
@@ -206,6 +207,8 @@ class Builder(grok.MultiAdapter):
         if self.category is None:
             return
         group = self.create_group('Video')
+        if self.category.last_created is None:
+            return
         playlist = zeit.cms.interfaces.ICMSContent(
             self.category.video_playlist, None)
         if playlist is None:
@@ -213,6 +216,9 @@ class Builder(grok.MultiAdapter):
         if not zeit.content.video.interfaces.IPlaylist.providedBy(playlist):
             return
         for video in playlist.videos:
+            created = zope.dublincore.interfaces.IDCTimes(video).created
+            if created is None or created < self.category.last_created:
+                continue
             self.create_teaser(group, video)
 
     def create_advertisement(self, position):
