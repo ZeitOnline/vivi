@@ -1,8 +1,8 @@
 zeit.newsletter changes
 =======================
 
-1.1.1 (unreleased)
-------------------
+1.2 (2014-09-23)
+----------------
 
 - Honour DailyNL flag on content when populating a newsletter (VIV-506).
 
