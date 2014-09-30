@@ -30,6 +30,18 @@ class ParseTest(unittest.TestCase):
         with self.assertRaises(zeit.push.interfaces.WebServiceError):
             api.send('Being pushy.', 'http://example.com')
 
+    def test_channel_breaking_is_pushed_to_all_supporting_app_versions(self):
+        api = zeit.push.parse.Connection(None, None, 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('Foo', 'http://b.ar', channels='parse-channel-breaking')
+            assert len(push.call_args_list) == 4
+
+    def test_channel_news_is_pushed_to_all_supporting_app_versions(self):
+        api = zeit.push.parse.Connection(None, None, 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('Foo', 'http://b.ar', channels='parse-channel-news')
+            assert len(push.call_args_list) == 2
+
 
 class URLRewriteTest(unittest.TestCase):
 

@@ -1,13 +1,14 @@
 from datetime import datetime, timedelta
-import copy
+from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import json
 import logging
 import pytz
 import requests
+import zeit.cms.interfaces
 import zeit.push.interfaces
 import zeit.push.message
-import zope.app.appsetup.product as productconfig
+import zope.app.appsetup.product
 import zope.interface
 
 
@@ -21,8 +22,11 @@ class Connection(object):
     base_url = 'https://api.parse.com/1'
 
     # Channels only work on mobile apps with version greater than or equal to
-    # this (see VIV-466).
-    MIN_APPVERSION_CHANNELS = '1.1'
+    # these (see VIV-466).
+    MIN_ANDROID_VERSION = '1.1'
+    MIN_IOS_VERSION = '20140514.1'
+
+    PUSH_ACTION_ID = 'de.zeit.online.PUSH'
 
     def __init__(self, application_id, rest_api_key, expire_interval):
         self.application_id = application_id
@@ -30,59 +34,102 @@ class Connection(object):
         self.expire_interval = expire_interval
 
     def send(self, text, link, **kw):
-        title = kw.get('title')
-        expiration_time = datetime.now(pytz.UTC).replace(
-            microsecond=0) + timedelta(seconds=self.expire_interval)
-        expiration_time = expiration_time.isoformat()
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push') or {}
 
-        parameters = {
-            'expiration_time': expiration_time,
-            'where': {'appVersion': {'$gte': self.MIN_APPVERSION_CHANNELS}},
-        }
+        # Determine common payload attributes.
+        url = self.rewrite_url(link)
+        expiration_time = (datetime.now(pytz.UTC).replace(microsecond=0) +
+                           timedelta(seconds=self.expire_interval)).isoformat()
+
         channel_name = kw.get('channels')
-        if channel_name:
-            if not isinstance(channel_name, list):
-                product_config = productconfig.getProductConfiguration(
-                    'zeit.push')
-                channels = product_config[channel_name].split(' ')
-            else:
-                channels = channel_name
-            if all(channels):
-                parameters['where']['channels'] = {'$in': channels}
+        if isinstance(channel_name, list):
+            channels = channel_name
+        else:
+            channels = config.get(channel_name, '').split(' ')
 
-        android = copy.deepcopy(parameters)
-        android['where']['deviceType'] = 'android'
-        android['data'] = {
-            # Parse.com payload
-            'alert': text,
-            'title': title,
-            # App-specific payload
-            'url': self.rewrite_url(link),
+        if config.get('parse-channel-news') in channels:
+            title = kw.get('supertitle', _('ZEIT ONLINE:'))
+        else:
+            title = _('Eilmeldung')
+
+        # Android >= 1.1
+        android = {
+            'expiration_time': expiration_time,
+            'where': {
+                'deviceType': 'android',
+                'appVersion': {'$gte': self.MIN_ANDROID_VERSION},
+                'channels': {'$in': channels}
+            },
+            'data': {
+                'action': self.PUSH_ACTION_ID,
+                'headline': title,
+                'text': text,
+                'url': url,
+            }
         }
+        if not all(channels):
+            del android['where']['channels']
         self.push(android)
 
-        # XXX Skipping iOs is for unittests only, since we cannot push to ios
-        # without a apple certificate.
-        if not kw.get('skip_ios'):
-            ios = copy.deepcopy(parameters)
-            ios['where']['deviceType'] = 'ios'
-            ios['data'] = {
-                # App-specific payload
+        # Android < 1.1
+        if channel_name == 'parse-channel-breaking':
+            android_legacy = {
+                'expiration_time': expiration_time,
+                'where': {
+                    'deviceType': 'android',
+                    'appVersion': {'$lt': self.MIN_ANDROID_VERSION}
+                },
+                'data': {
+                    'alert': text,
+                    'title': title,
+                    'url': url
+                }
+            }
+            self.push(android_legacy)
+
+        if kw.get('skip_ios'):
+            # XXX Skipping iOs is for unittests only, since we cannot push to
+            # ios without a apple certificate.
+            return
+
+        # iOS > 20140514.1
+        ios = {
+            'expiration_time': expiration_time,
+            'where': {
+                'deviceType': 'ios',
+                'appVersion': {'$gt': self.MIN_IOS_VERSION},
+                'channels': {'$in': channels}
+            },
+            'data': {
                 'aps': {
                     'alert': text,
                     'alert-title': title,
-                    'url': self.rewrite_url(link),
+                    'url': url,
                 }
             }
-            self.push(ios)
+        }
+        if not all(channels):
+            del ios['where']['channels']
+        self.push(ios)
 
-        # Backward compat for mobile apps that don't understand channels.
+        # iOS <= 20140514.1
         if channel_name == 'parse-channel-breaking':
-            for data in [android, ios]:
-                data['where']['appVersion'] = {
-                    '$lt': self.MIN_APPVERSION_CHANNELS}
-                del data['where']['channels']
-                self.push(data)
+            ios_legacy = {
+                'expiration_time': expiration_time,
+                'where': {
+                    'deviceType': 'ios',
+                    'appVersion': {'$lte': self.MIN_IOS_VERSION}
+                },
+                'data': {
+                    'aps': {
+                        'alert': text,
+                        'alert-title': title,
+                        'url': url,
+                    }
+                }
+            }
+            self.push(ios_legacy)
 
     def push(self, data):
         headers = {
