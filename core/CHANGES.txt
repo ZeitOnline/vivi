@@ -4,7 +4,7 @@ zeit.push changes
 1.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adjust parse.com-API payloads (VIV-517)
 
 
 1.5.1 (2014-09-03)
