@@ -21,7 +21,13 @@ class Message(grok.Adapter):
             zeit.push.interfaces.IPushNotifier, name=self.type)
         if not self.text:
             raise ValueError('No text configured')
+        if self.supertitle:
+            self.config.update({'supertitle': self.supertitle})
         notifier.send(self.text, self.url, **self.config)
+
+    @property
+    def supertitle(self):
+        return getattr(self.context, 'supertitle')
 
     @property
     def text(self):
