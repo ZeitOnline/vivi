@@ -39,6 +39,7 @@ Verify the source:
 >>> print browser.getControl('Source').value.replace('\r', '')
 <testtype>
   <head>
+    <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="date_last_checkout">...</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-title">HTML title</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-description">HTML description</attribute>
     <attribute xmlns:py="http://codespeak.net/lxml/objectify/pytype" py:pytype="str" ns="http://namespaces.zeit.de/CMS/document" name="html-meta-robots">noindex</attribute>
@@ -47,6 +48,7 @@ Verify the source:
   </head>
   <body/>
 </testtype>
+<BLANKLINE>
 
 
 Go back to the SEO tab and check in. We're still at the SEO view then:
