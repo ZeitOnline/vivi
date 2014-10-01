@@ -37,7 +37,7 @@ After committing we'll still get a file back:
 >>> transaction.commit()
 >>> res = connector['http://xml.zeit.de/index']
 >>> res.data
-<open file '...', mode 'rb' at 0x...>
+<open file u'...', mode 'rb' at 0x...>
 
 The directory listing is empty:
 
