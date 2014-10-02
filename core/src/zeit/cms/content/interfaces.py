@@ -277,6 +277,11 @@ class ICommonMetadata(zope.interface.Interface):
         max_length=55)
     breadcrumb_title.setTaggedValue('zeit.cms.charlimit', 55)
 
+    rebrush_website_content = zope.schema.Bool(
+        title=_('Rebrush website content'),
+        required=False,
+        default=False)
+
 
 class IProduct(zope.interface.Interface):
     """A publication product"""

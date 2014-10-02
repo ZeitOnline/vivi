@@ -46,7 +46,8 @@ class CommonMetadataFormBase(object):
         ('dailyNewsletter', 'commentsAllowed', 'commentSectionEnable',
          'foldable',
          'minimal_header', 'countings', 'is_content', 'in_rankings',
-         'banner', 'banner_id', 'breaking_news', 'mobile_alternative'),
+         'banner', 'banner_id', 'breaking_news', 'mobile_alternative',
+         'rebrush_website_content'),
         css_class='column-right checkboxes')
     author_fields = gocept.form.grouped.Fields(
         _("Authors"),
