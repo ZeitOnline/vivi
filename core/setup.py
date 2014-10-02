@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='2.27.3.dev0',
+    version='2.27.3.dev2',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
@@ -97,6 +97,7 @@ setup(
         'gocept.selenium>=2.0.0b5.dev0',
         'gocept.jslint>=0.2',
     ],
+    setup_requires=['setuptools_hg'],
     entry_points={
         'console_scripts': [
             'dump_references = zeit.cms.relation.migrate:dump_references',
