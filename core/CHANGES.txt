@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.27.3 (unreleased)
+2.27.3 (2014-10-02)
 -------------------
 
 - Edit MANIFEST.in.
