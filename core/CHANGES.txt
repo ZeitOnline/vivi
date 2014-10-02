@@ -4,7 +4,7 @@ zeit.cms changes
 2.27.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add MANIFEST.in.
 
 
 2.27.1 (2014-10-02)
