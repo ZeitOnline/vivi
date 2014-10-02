@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.27.1 (unreleased)
+2.27.1 (2014-10-02)
 -------------------
 
 - Option to identify new (zeit.frontend) content from XSLT content
