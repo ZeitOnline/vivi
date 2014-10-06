@@ -20,7 +20,7 @@ class PermissionsTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.open(
             'http://localhost/++skin++vivi/repository/online/2007/01/island')
-        self.assertNotEllipsis('...<a...island/@@delete.html...', b.contents)
+        self.assertNotIn('island/@@delete.html', b.contents)
 
     def test_producing_may_delete(self):
         b = self.producing
@@ -35,7 +35,7 @@ class PermissionsTest(zeit.cms.testing.BrowserTestCase):
             b.open(
                 'http://localhost/++skin++vivi/repository/online/2007/01/'
                 'island')
-            self.assertNotEllipsis('...<a...island/@@retract...', b.contents)
+            self.assertNotIn('island/@@retract', b.contents)
 
     def test_producing_may_retract(self):
         b = self.producing
