@@ -17,6 +17,7 @@ class TestRemoveOnCheckin(zeit.cms.testing.ZeitCmsTestCase):
         import zope.interface
         from zeit.cms.checkout.interfaces import BeforeCheckinEvent
         content = mock.Mock()
+        content.uniqueId = 'http://xml.zeit.de/foo'
         zope.interface.alsoProvides(content, zeit.cms.interfaces.ICMSContent)
         zope.event.notify(BeforeCheckinEvent(
             content, mock.Mock(), mock.Mock()))
