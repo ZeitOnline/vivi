@@ -4,7 +4,8 @@ zeit.imp changes
 0.16.2 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Restrict minimum possible zoom to not be smaller than the size of the mask
+  (VIV-500).
 
 
 0.16.1 (2014-07-14)

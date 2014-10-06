@@ -252,7 +252,6 @@ zeit.imp.Imp = gocept.Class.extend({
         } else {
             return;
         }
-        MochiKit.Signal.signal(self, 'configuration-change', {});
         // Resize the image to fit to mask
         var mask = self.mask_dimensions;
         var width_for_fixed_height = self.original_dimensions.w * (
@@ -274,6 +273,8 @@ zeit.imp.Imp = gocept.Class.extend({
             Math.floor(visual_dim.w/2 - self.current_dimensions.w/2) - 1,
             Math.floor(visual_dim.h/2 - self.current_dimensions.h/2) - 1);
         MochiKit.Style.setElementPosition('imp-image-drag', image_position);
+        MochiKit.Signal.signal(self, 'configuration-change', {
+            'zoom-min': self.zoom});
     },
 
     set_mask: function(value) {
@@ -441,25 +442,42 @@ zeit.imp.ZoomSlider = gocept.Class.extend({
         var self = this;
         self.imp = imp;
         self.zoom_slider = null;
-        self.init();
-        MochiKit.Signal.connect(self.imp, 'resize', self, 'init');
+        self.init_slider();
+        MochiKit.Signal.connect(self.imp, 'resize', self, 'init_slider');
         MochiKit.Signal.connect(
             self.imp, 'zoom-change', self, 'update_slider_from_zoom');
+        MochiKit.Signal.connect(
+            self.imp, 'configuration-change', self, 'update_slider_minimum');
         self._updating_slider = false;
     },
 
-    init: function() {
+    init_slider: function(minimum, maximum) {
         var self = this;
         if (self.zoom_slider !== null) {
             MochiKit.Signal.disconnectAll(self.zoom_slider);
         }
+        if (isUndefinedOrNull(minimum)) {
+            minimum = 0;
+        }
+        if (isUndefinedOrNull(maximum)) {
+            maximum = 3;
+        }
         self.zoom_slider = new UI.Slider(
-            'imp-zoom-slider', 3001,
-            UI.Slider.ValueMappers.range(0, 3, 0.001));
+            'imp-zoom-slider', ((maximum - minimum) * 1000) + 1,
+            UI.Slider.ValueMappers.range(minimum, maximum, 0.001));
         self.zoom_slider.setValue(self.imp.zoom);
         MochiKit.Signal.connect(
             self.zoom_slider, 'valueChanged',
             self, 'update_zoom_from_slider');
+    },
+
+    update_slider_minimum: function(parameters) {
+        var self = this;
+        if (isUndefinedOrNull(parameters)
+            || isUndefinedOrNull(parameters['zoom-min'])) {
+            return;
+        }
+        self.init_slider(parameters['zoom-min']);
     },
 
     update_zoom_from_slider: function(event) {

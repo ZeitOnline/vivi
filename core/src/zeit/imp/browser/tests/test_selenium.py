@@ -154,10 +154,16 @@ class SeleniumCropTests(Selenium):
         s.verifyElementPresent('css=label.cropped')
 
     def test_crop_outside_mask(self):
+        # Since VIV-500 we need to trouble ourselves a bit to produce such a
+        # scenario: Zoom in, drag it off-center, zoom out again. As the center
+        # is somewhat preserved by zooming operations, the image will be moved
+        # outside the mask afterwards.
         s = self.selenium
         s.verifyElementNotPresent('css=#imp-image-bar > div')
         s.verifyElementNotPresent('css=label.cropped')
-        self.click_label(u"450×200")
+        self.click_label(u"140×140")
+        s.clickAt('id=imp-zoom-slider', '500,0')
+        s.dragAndDrop('id=imp-mask', '+500,+500')
         s.clickAt('id=imp-zoom-slider', '1,0')
         s.click('crop')
         s.verifyAlert('Das Bild ist nicht*')
@@ -171,6 +177,19 @@ class SeleniumCropTests(Selenium):
         s.dragAndDrop('id=imp-mask', '+1000,+1000')
         s.click('crop')
         s.waitForElementPresent('css=#imp-image-bar > div')
+
+    def test_zoom_slider_has_minimum_of_mask_size(self):
+        s = self.selenium
+        # Put the zoom slider somewhere else than the minimum,
+        self.click_label(u"450×200")
+        s.clickAt('id=imp-zoom-slider', '500,0')
+        # then select another mask
+        self.click_label(u"140×140")
+        # Assert that the slider is at the minimum value
+        self.wait_for_condition(
+            'window.jQuery("#imp-zoom-slider div").position().left == 0')
+        zoom = self.eval('document.imp_zoom_slider.get_value()')
+        self.assertTrue(zoom.startswith('0.09'))
 
 
 class SeleniumMaskTests(Selenium):
