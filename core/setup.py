@@ -14,7 +14,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
-        'ZODB3',
+        'ZODB',
         'Pillow',
         'gocept.async',
         'gocept.form',
@@ -22,6 +22,7 @@ setup(
         'gocept.selenium',
         'grokcore.component',
         'lxml',
+        'persistent',
         'pytz',
         'setuptools',
         'transaction',
