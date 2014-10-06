@@ -22,9 +22,9 @@ class BlobCleanupTest(zeit.cms.testing.BrowserTestCase):
         ZODB.utils.mktemp = self.orig_mktemp
         super(BlobCleanupTest, self).tearDown()
 
-    def mktemp(self, dir=None):
+    def mktemp(self, dir=None, prefix='tmp'):
         self.assertEqual(None, self.tempfile)
-        self.tempfile = self.orig_mktemp(dir)
+        self.tempfile = self.orig_mktemp(dir, prefix)
         return self.tempfile
 
     def test_temporary_file_for_thumbnail_is_cleaned_up_after_request(self):
