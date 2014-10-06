@@ -4,7 +4,7 @@ zeit.cms changes
 2.27.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Update dependency to ZODB-4.0.
 
 
 2.27.3 (2014-10-02)
