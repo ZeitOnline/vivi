@@ -4,6 +4,9 @@ Changes
 2.4.1 (unreleased)
 ------------------
 
+- Fix CSS issue that caused some inline form input fields to be inaccessible,
+  since they were overlayed by a div (VIV-524).
+
 - Update dependency to ZODB-4.0.
 
 

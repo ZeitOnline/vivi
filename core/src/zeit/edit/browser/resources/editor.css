@@ -450,12 +450,10 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 
 .inline-form .field {
   margin: 1px 25px 5px 0;
-  position: relative;
 }
 
 #edit-form-assets .inline-form .field {
   margin: 0 0px 20px 0;
-  position: relative;
   background: #F2F2F2;
   -moz-border-radius: 5px;
 }
