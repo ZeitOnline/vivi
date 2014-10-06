@@ -7,6 +7,8 @@ zeit.imp changes
 - Restrict minimum possible zoom to not be smaller than the size of the mask
   (VIV-500).
 
+- Mark center of mask (VIV-501).
+
 
 0.16.1 (2014-07-14)
 +++++++++++++++++++

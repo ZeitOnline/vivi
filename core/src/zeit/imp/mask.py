@@ -17,15 +17,27 @@ class Mask(object):
 
     """
 
-    def __init__(self, image_size, mask_size, border=None):
+    def __init__(self, image_size, mask_size, border=None,
+                 cross_size=6, cross_color=(0, 255, 0, 128)):
         self.image_size, self.mask_size = image_size, mask_size
         image = PIL.Image.new('RGBA', image_size, (200, 200, 200, 220))
         draw = PIL.ImageDraw.ImageDraw(image)
         outline = None
         if border is not None:
             outline=tuple(border) + (255, )
-        draw.rectangle(self._get_rect_box(),
-                       fill=(255, 0, 0, 0), outline=outline)
+        visible = self._get_rect_box()
+        draw.rectangle(visible, fill=(255, 0, 0, 0), outline=outline)
+
+        mw, mh = self.mask_size
+        cx = mw / 2 + visible[0][0]
+        cy = mh / 2 + visible[0][1]
+        draw.line(
+            [(cx - cross_size, cy), (cx + cross_size, cy)],
+            fill=cross_color, width=1)
+        draw.line(
+            [(cx, cy - cross_size), (cx, cy + cross_size)],
+            fill=cross_color, width=1)
+
         del draw
         self._data = cStringIO.StringIO()
         image.save(self._data, format='PNG')

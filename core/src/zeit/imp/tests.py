@@ -32,7 +32,8 @@ class TestLayerMask(unittest.TestCase):
 
     mask_colors = {(200, 200, 200, 220): 'x',
                    (255, 0, 0, 0): ' ',
-                   (0, 0, 0, 255): '#'}
+                   (0, 0, 0, 255): '#',
+                   (0, 255, 0, 128): ' '}
 
     def assert_mask(self, expected, mask):
         mask_image = PIL.Image.open(mask.open('r'))
@@ -51,7 +52,7 @@ class TestLayerMask(unittest.TestCase):
 
     def test_mask_should_have_correct_size(self):
         # Create a 20x30 mask in an 150x100 image
-        mask = zeit.imp.mask.Mask((10, 7), (6, 3))
+        mask = zeit.imp.mask.Mask((10, 7), (6, 3), cross_size=0)
         expected = ['xxxxxxxxxx',
                     'xxxxxxxxxx',
                     'xx      xx',
@@ -62,7 +63,8 @@ class TestLayerMask(unittest.TestCase):
         self.assert_mask(expected, mask)
 
     def test_border_should_be_inside_given_mask_size(self):
-        mask = zeit.imp.mask.Mask((20, 20), (10, 8), border=(0, 0, 0))
+        mask = zeit.imp.mask.Mask((20, 20), (10, 8), border=(0, 0, 0),
+                                  cross_size=0)
         expected = ['xxxxxxxxxxxxxxxxxxxx',
                     'xxxxxxxxxxxxxxxxxxxx',
                     'xxxxxxxxxxxxxxxxxxxx',
