@@ -14,7 +14,7 @@ setup(
     license='gocept proprietary',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
-        'ZODB3',
+        'persistent',
         'setuptools',
         'zeit.cms>=2.15.0.dev0',
         'zeit.connector',
