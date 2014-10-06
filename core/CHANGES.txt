@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.4.1 (unreleased)
+2.4.1 (2014-10-06)
 ------------------
 
 - Fix CSS issue that caused some inline form input fields to be inaccessible,
