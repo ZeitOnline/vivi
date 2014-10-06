@@ -21,7 +21,7 @@ setup(
     include_package_data=True,
     zip_safe=False,
     install_requires=[
-        'ZODB3',
+        'ZODB',
         'fanstatic',
         'gocept.cache',
         'gocept.httpserverlayer',
@@ -31,6 +31,7 @@ setup(
         'lxml',
         'martian',
         'mock',
+        'persistent',
         'setuptools',
         'transaction',
         'zeit.cms>=2.15.0.dev0',
