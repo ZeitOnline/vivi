@@ -235,8 +235,12 @@ zeit.imp.Imp = gocept.Class.extend({
         var zoom = -event.mouse().wheel.y;
         this.zoom = this.zoom + 1/Math.pow(256, 2) * Math.pow(zoom, 2) *
             zoom/Math.abs(zoom);
-        if (this.zoom <= 0) {
-            this.zoom = 0.001;
+        // XXX This dependency is the wrong way around (or rather, now it's
+        // circular), but I don't see a way to avoid that currently.
+        var min_zoom = (
+            document.imp_zoom_slider.zoom_slider.valueMapperFunctions[0](0));
+        if (this.zoom < min_zoom) {
+            this.zoom = min_zoom;
         }
         log('INFO', 'Zooming ' + zoom+" new zoom " + this.zoom);
         this.zoom_image();
