@@ -17,6 +17,7 @@
   <role id="zeit.Producer" title="Producer" />
   <role id="zeit.CvD" title="Chef vom Dienst" />
   <role id="zeit.SEO" title="Search engine optimiser" />
+  <role id="zeit.Betatester" title="Beta tester" />
 
   <!-- Groups and other principals -->
   <unauthenticatedPrincipal
@@ -178,6 +179,12 @@
   <grant
     role="zeit.SEO"
     permission="zeit.seo.Edit"
+    />
+
+  <!-- Betatester grants -->
+  <grant
+    role="zeit.Betatester"
+    permission="zeit.content.cp.EditAutomatic"
     />
 
 </configure>

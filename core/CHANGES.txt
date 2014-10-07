@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.1.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Introduce role ``zeit.Betatester`` (VIV-525).
 
 
 2.1.5 (2014-09-18)
