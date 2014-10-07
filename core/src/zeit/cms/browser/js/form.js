@@ -137,8 +137,15 @@ zeit.cms.SubPageForm = gocept.Class.extend({
                 return element.name + "=" + encodeURIComponent(element.value);
             }, elements);
         if (isUndefinedOrNull(action)) {
-            var button = $(self.container).find(
+            var button = $(self.form).find(
                 '> .form-controls input').first();
+            if (! button.length) {  // ugly jQuery API
+                // XXX We need to special case between InlineForms and
+                // LightboxForms, since the latter have an extra div in their
+                // template, sigh.
+                button = $(self.form).find(
+                    '> div > .form-controls input').first();
+            }
             action = button.attr('name');
         }
         data.push(action + '=clicked');

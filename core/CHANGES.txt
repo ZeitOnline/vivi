@@ -4,6 +4,8 @@ zeit.cms changes
 2.27.4 (unreleased)
 -------------------
 
+- Fix submitting SubPageForms (VIV-488).
+
 - Update dependency to ZODB-4.0.
 
 
