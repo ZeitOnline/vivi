@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.28.0 (unreleased)
+2.28.0 (2014-10-07)
 -------------------
 
 - Introduce permission ``zeit.content.cp.EditAutomatic`` (VIV-525).
