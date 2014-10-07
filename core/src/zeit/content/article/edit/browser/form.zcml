@@ -701,7 +701,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="channel"
     class=".form.ChannelFormGroup"
-    permission="zope.View"
+    permission="zeit.content.cp.EditAutomatic"
     weight="20"
     />
 
@@ -713,7 +713,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.lead-candidate"
     class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
+    permission="zeit.content.cp.EditAutomatic"
     weight="10"
     />
 
@@ -722,7 +722,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.lead-candidate"
     class=".form.LeadCandidate"
-    permission="zope.View"
+    permission="zeit.content.cp.EditAutomatic"
     />
 
   <browser:viewlet
@@ -733,7 +733,7 @@
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.channel-selector"
     class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
+    permission="zeit.content.cp.EditAutomatic"
     weight="20"
     />
 
@@ -742,7 +742,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit.form.channel-selector"
     class=".form.ChannelSelector"
-    permission="zope.View"
+    permission="zeit.content.cp.EditAutomatic"
     />
 
   <!-- keywords (new article only) -->
