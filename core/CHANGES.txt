@@ -1,8 +1,10 @@
 zeit.cms changes
 ================
 
-2.27.4 (unreleased)
+2.28.0 (unreleased)
 -------------------
+
+- Introduce permission ``zeit.content.cp.EditAutomatic`` (VIV-525).
 
 - Fix submitting SubPageForms (VIV-488).
 

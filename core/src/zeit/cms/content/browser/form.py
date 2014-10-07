@@ -72,8 +72,10 @@ class CommonMetadataFormBase(object):
     def __init__(self, context, request):
         super(CommonMetadataFormBase, self).__init__(context, request)
 
-        if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.content.cp.automatic'):
+        if not (zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.content.cp.automatic')
+                and self.request.interaction.checkPermission(
+                    'zeit.content.cp.EditAutomatic', self.context)):
             self.form_fields = self.form_fields.omit(
                 'channels', 'lead_candidate')
 
