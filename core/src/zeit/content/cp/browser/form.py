@@ -69,7 +69,8 @@ class AddForm(FormBase,
 class AutomaticFields(object):
 
     automatic_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.IAutomaticRegion).select(
+        zeit.content.cp.interfaces.IAutomaticRegion,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'count', 'query', 'raw_query', 'automatic')
     automatic_group = gocept.form.grouped.Fields(
         _("Automatic contents"),
