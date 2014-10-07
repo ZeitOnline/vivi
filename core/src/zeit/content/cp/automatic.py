@@ -33,6 +33,8 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
 
     @automatic.setter
     def automatic(self, value):
+        if self._automatic and not value:
+            self._materialize_filled_values()
         self._automatic = value
         self._fill_with_placeholders()
 
@@ -143,3 +145,24 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
                 solr_result.pop(i)
                 return item['uniqueId']
         raise IndexError()
+
+    def _materialize_filled_values(self):
+        order = self.context.keys()
+        teaser_factory = zope.component.getAdapter(
+            self.context, zeit.edit.interfaces.IElementFactory, name='teaser')
+        for old in self.values():
+            if not IAutomaticTeaserBlock.providedBy(old):
+                continue
+            items = reversed(list(old))
+            new = teaser_factory()
+            for content in items:
+                new.insert(0, content)
+            new.__name__ = old.__name__
+            del self.context[old.__name__]
+        # Preserve non-auto blocks.
+        self.context.updateOrder(order)
+
+        # Remove unfilled auto blocks.
+        for block in list(self.context.values()):
+            if IAutomaticTeaserBlock.providedBy(block):
+                del self.context[block.__name__]

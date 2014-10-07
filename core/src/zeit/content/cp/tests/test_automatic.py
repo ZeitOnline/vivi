@@ -3,6 +3,8 @@ import lxml.etree
 import mock
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
+import zeit.edit.interfaces
+import zope.component
 
 
 class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
@@ -117,3 +119,28 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
                 ' OR channels:(Wissen*)'
                 ' OR keywords:(Berlin*))',
                 query)
+
+    def test_turning_automatic_off_materializes_filled_in_blocks(self):
+        self.repository['normal'] = TestContentType()
+        self.repository['leader'] = TestContentType()
+
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto.count = 5
+        auto.automatic = True
+        zope.component.getAdapter(
+            lead, zeit.edit.interfaces.IElementFactory, name='rss')()
+
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = [dict(uniqueId='http://xml.zeit.de/normal'),
+                                   dict(uniqueId='http://xml.zeit.de/leader',
+                                        lead_candidate=True)]
+            auto.automatic = False
+
+        result = lead.values()
+        self.assertEqual(
+            ['teaser', 'teaser', 'rss'], [x.type for x in result])
+        self.assertEqual(
+            'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
+        self.assertEqual(
+            'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
