@@ -1,11 +1,11 @@
 from datetime import datetime, timedelta
 from zeit.cms.i18n import MessageFactory as _
+from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
 import grokcore.component as grok
 import json
 import logging
 import pytz
 import requests
-import zeit.cms.interfaces
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -48,7 +48,7 @@ class Connection(object):
         else:
             channels = config.get(channel_name, '').split(' ')
 
-        if config.get('parse-channel-news') in channels:
+        if config.get(PARSE_NEWS_CHANNEL) in channels:
             title = kw.get('supertitle', _('ZEIT ONLINE:'))
         else:
             title = _('Eilmeldung')
@@ -73,7 +73,7 @@ class Connection(object):
         self.push(android)
 
         # Android < 1.1
-        if channel_name == 'parse-channel-breaking':
+        if channel_name == PARSE_BREAKING_CHANNEL:
             android_legacy = {
                 'expiration_time': expiration_time,
                 'where': {
@@ -114,7 +114,7 @@ class Connection(object):
         self.push(ios)
 
         # iOS <= 20140514.1
-        if channel_name == 'parse-channel-breaking':
+        if channel_name == PARSE_BREAKING_CHANNEL:
             ios_legacy = {
                 'expiration_time': expiration_time,
                 'where': {
@@ -188,6 +188,6 @@ def set_push_news_flag(context, event):
         return
     for service in push.message_config:
         if (service['type'] == 'parse' and service['enabled']
-            and service.get('channels') == 'parse-channel-news'):
+            and service.get('channels') == PARSE_NEWS_CHANNEL):
             context.push_news = True
             break

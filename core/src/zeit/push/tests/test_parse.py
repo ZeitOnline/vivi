@@ -1,5 +1,6 @@
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
+from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
 from zeit.push.testing import parse_settings as settings
 import mock
 import pytz
@@ -34,13 +35,13 @@ class ParseTest(unittest.TestCase):
     def test_channel_breaking_is_pushed_to_all_supporting_app_versions(self):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
-            api.send('Foo', 'http://b.ar', channels='parse-channel-breaking')
+            api.send('Foo', 'http://b.ar', channels=PARSE_BREAKING_CHANNEL)
             assert len(push.call_args_list) == 4
 
     def test_channel_news_is_pushed_to_all_supporting_app_versions(self):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
-            api.send('Foo', 'http://b.ar', channels='parse-channel-news')
+            api.send('Foo', 'http://b.ar', channels=PARSE_NEWS_CHANNEL)
             assert len(push.call_args_list) == 2
 
 
@@ -120,7 +121,7 @@ class PushNewsFlagTest(zeit.push.testing.TestCase):
             push.enabled = True
             push.message_config = ({
                 'type': 'parse', 'enabled': True,
-                'channels': 'parse-channel-news',
+                'channels': PARSE_NEWS_CHANNEL,
             },)
         content = self.repository['testcontent']
         self.assertTrue(content.push_news)
