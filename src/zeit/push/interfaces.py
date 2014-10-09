@@ -84,3 +84,7 @@ class IPushMessages(zope.interface.Interface):
 
     messages = zope.interface.Attribute(
         'List of IMessage objects, one for each enabled message_config entry')
+
+
+PARSE_NEWS_CHANNEL = 'parse-channel-news'
+PARSE_BREAKING_CHANNEL = 'parse-channel-breaking'

@@ -1,8 +1,8 @@
 zeit.push changes
 =================
 
-1.6 (unreleased)
-----------------
+1.6.0 (unreleased)
+------------------
 
 - Set ``push_news`` flag on checkin (VIV-526).
 
