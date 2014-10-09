@@ -1,4 +1,5 @@
 from datetime import datetime
+from zeit.cms.checkout.helper import checked_out
 from zeit.push.testing import parse_settings as settings
 import mock
 import pytz
@@ -107,3 +108,19 @@ class ParametersTest(zeit.push.testing.TestCase):
             api.send('foo', 'any', channels='foo')
             data = push.call_args[0][0]
             self.assertNotIn('channels', data['where'])
+
+
+class PushNewsFlagTest(zeit.push.testing.TestCase):
+
+    def test_sets_flag_on_checkin(self):
+        content = self.repository['testcontent']
+        self.assertFalse(content.push_news)
+        with checked_out(content) as co:
+            push = zeit.push.interfaces.IPushMessages(co)
+            push.enabled = True
+            push.message_config = ({
+                'type': 'parse', 'enabled': True,
+                'channels': 'parse-channel-news',
+            },)
+        content = self.repository['testcontent']
+        self.assertTrue(content.push_news)

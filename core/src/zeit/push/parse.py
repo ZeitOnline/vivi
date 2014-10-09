@@ -177,3 +177,17 @@ class Message(zeit.push.message.OneTimeMessage):
 
     grok.name('parse')
     get_text_from = 'short_text'
+
+
+@grok.subscribe(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
+def set_push_news_flag(context, event):
+    push = zeit.push.interfaces.IPushMessages(context)
+    if not push.enabled:
+        return
+    for service in push.message_config:
+        if (service['type'] == 'parse' and service['enabled']
+            and service.get('channels') == 'parse-channel-news'):
+            context.push_news = True
+            break
