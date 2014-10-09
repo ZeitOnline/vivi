@@ -44,8 +44,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Enable Twitter').selected = True
         b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Enable Facebook Magazin').selected = True
-        # XXX temporarily disabled
-        # b.getControl('Enable mobile push').selected = True
+        b.getControl('Enable mobile push').selected = True
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -58,24 +57,21 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertIn(
             {'type': 'facebook', 'enabled': True, 'account': 'fb-magazin'},
             push.message_config)
-        # XXX temporarily disabled
-        # self.assertIn(
-        #     {'type': 'parse', 'enabled': True,
-        #      'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL,
-        #      'title': 'News'}, push.message_config)
+        self.assertIn(
+            {'type': 'parse', 'enabled': True,
+             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL,
+             'title': 'News'}, push.message_config)
 
         self.open_form()
         self.assertTrue(b.getControl('Enable Twitter').selected)
         self.assertTrue(b.getControl('Enable Facebook', index=0).selected)
         self.assertTrue(b.getControl('Enable Facebook Magazin').selected)
-        # XXX temporarily disabled
-        # self.assertTrue(b.getControl('Enable mobile push').selected)
+        self.assertTrue(b.getControl('Enable mobile push').selected)
 
         b.getControl('Enable Twitter').selected = False
         b.getControl('Enable Facebook', index=0).selected = False
         b.getControl('Enable Facebook Magazin').selected = False
-        # XXX temporarily disabled
-        # b.getControl('Enable mobile push').selected = False
+        b.getControl('Enable mobile push').selected = False
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -91,8 +87,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertFalse(b.getControl('Enable Twitter').selected)
         self.assertFalse(b.getControl('Enable Facebook', index=0).selected)
         self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
-        # XXX temporarily disabled
-        # self.assertFalse(b.getControl('Enable mobile push').selected)
+        self.assertFalse(b.getControl('Enable mobile push').selected)
 
     def test_converts_ressorts_to_message_config(self):
         self.open_form()
