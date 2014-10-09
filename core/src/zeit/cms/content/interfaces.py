@@ -246,6 +246,7 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=True)
 
+    # probably obsolete, we have z.c.article.interfaces.IBreakingNews now
     breaking_news = zope.schema.Bool(
         title=_('Breaking news'),
         required=False,
