@@ -252,6 +252,11 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=False)
 
+    push_news = zope.schema.Bool(
+        title=_('Content that was pushed to mobile'),
+        required=False,
+        default=False)
+
     in_rankings = zope.schema.Bool(
         title=_('Show in rankings'),
         required=False,

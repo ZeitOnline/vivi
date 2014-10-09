@@ -42,6 +42,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'is_content',
             'minimal_header',
             'lead_candidate',
+            'push_news',
             'rebrush_website_content',
         ))
 
