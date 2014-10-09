@@ -82,5 +82,5 @@ class IPushMessages(zope.interface.Interface):
     """
     message_config = zope.schema.Tuple(required=False, default=())
 
-    message = zope.interface.Attribute(
+    messages = zope.interface.Attribute(
         'List of IMessage objects, one for each enabled message_config entry')
