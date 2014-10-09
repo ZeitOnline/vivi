@@ -65,7 +65,7 @@ class CommonMetadataFormBase(object):
         option_fields,
     )
     form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata)
+        zeit.cms.content.interfaces.ICommonMetadata).omit('push_news')
 
     for_display = False
 
