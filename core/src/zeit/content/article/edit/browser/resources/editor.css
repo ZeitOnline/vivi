@@ -1280,11 +1280,6 @@
   margin-left:12px;
 }
 
-.type-article .inline-form div.widget > input#new-filename\.rename_to {
-  position:absolute;
-  top:-3px;
-}
-
 .type-article form[action$="edit.form.workflow-status"] {
   margin-bottom:30px;
 }

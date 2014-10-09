@@ -4,7 +4,8 @@ zeit.content.article changes
 3.6.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix CSS bug that caused "new filename" input field to be wrongly positioned
+  (VIV-530).
 
 
 3.6.3 (2014-10-07)
