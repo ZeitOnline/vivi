@@ -76,7 +76,7 @@ class Add(zeit.cms.browser.form.AddForm,
             message_config.append({
                 'type': 'parse', 'enabled': True,
                 'title': product_config['parse-title-breaking'],
-                'channels': 'parse-channel-breaking',
+                'channels': zeit.push.interfaces.PARSE_BREAKING_CHANNEL,
             })
             message_config.append(
                 {'type': 'ios-legacy', 'enabled': True})

@@ -88,7 +88,7 @@ class Social(zeit.edit.browser.form.InlineForm,
             message_config.append({
                 'type': 'parse', 'enabled': True,
                 'title': product_config['parse-title-news'],
-                'channels': 'parse-channel-news',
+                'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL,
             })
         zeit.push.interfaces.IPushMessages(
             self.context).message_config = message_config
@@ -134,7 +134,8 @@ class Accounts(grok.Adapter):
         for service in self.message_config:
             if service['type'] != 'parse':
                 continue
-            if service.get('channels') == 'parse-channel-news':
+            if service.get(
+                    'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
                 break
         else:
             service = None

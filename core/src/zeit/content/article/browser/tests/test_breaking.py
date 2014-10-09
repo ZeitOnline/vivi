@@ -114,7 +114,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertIn(
                 {'type': 'parse', 'enabled': False, 'title': 'Eilmeldung',
-                 'channels': 'parse-channel-breaking'},
+                 'channels': zeit.push.interfaces.PARSE_BREAKING_CHANNEL},
                 push.message_config)
             self.assertIn(
                 {'type': 'homepage', 'enabled': False}, push.message_config)
