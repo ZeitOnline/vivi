@@ -15,6 +15,7 @@ setup(
     namespace_packages=['zeit'],
     install_requires=[
         'fb',
+        'grokcore.component',
         'mock',
         'pytz',
         'requests',
@@ -24,12 +25,18 @@ setup(
         'zeit.cms >= 2.29.0.dev0',
         'zeit.content.article',
         'zeit.objectlog',
+        'zope.app.appsetup',
         'zope.component',
         'zope.interface',
+        'zope.formlib',
+        'zope.schema',
     ],
     entry_points={
         'console_scripts': [
             'facebook-access-token = zeit.push.facebook:create_access_token',
+        ],
+        'fanstatic.libraries': [
+            'zeit_push=zeit.push.browser.resources:lib',
         ],
     },
 )

@@ -6,6 +6,9 @@ zeit.push changes
 
 - Set ``push_news`` flag on checkin (VIV-526).
 
+- Extract social media form from z.c.article, so we can reuse it for different
+  content types (VIV-516).
+
 
 1.5.3 (2014-09-30)
 ------------------
