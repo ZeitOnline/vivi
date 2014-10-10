@@ -1,4 +1,5 @@
-<div i18n:domain="zeit.cms"> <!-- lightbox -->
+<div tal:condition="view/banner_matches"
+     i18n:domain="zeit.cms"> <!-- lightbox -->
 <h1 i18n:translate="">Retract</h1>
 
 <ol id="worklist">
@@ -21,4 +22,12 @@
   new zeit.workflow.publish.Publisher('worklist');
 </script>
 
+</div>
+
+
+<div tal:condition="not: view/banner_matches" i18n:domain="zeit.cms">
+<h1 i18n:translate="">Error</h1>
+<p i18n:translate="">
+  The banner for this breaking news article has already been retracted.
+</p>
 </div>
