@@ -143,13 +143,20 @@ class Add(zeit.cms.browser.form.AddForm,
 class Retract(object):
 
     @property
+    def breakingnews(self):
+        return zeit.content.article.interfaces.IBreakingNews(self.context)
+
+    @property
     def is_breaking(self):
-        return zeit.content.article.interfaces.IBreakingNews(
-            self.context).is_breaking
+        return self.breakingnews.is_breaking
 
     @property
     def banner_published(self):
         return IPublishInfo(self.banner).published
+
+    @property
+    def banner_matches(self):
+        return self.breakingnews.banner_matches(self.banner)
 
     @property
     def banner(self):

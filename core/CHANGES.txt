@@ -4,6 +4,9 @@ zeit.content.article changes
 3.6.4 (unreleased)
 ------------------
 
+- Don't display a retract button for breaking news banners that don't belong to
+  the current article (VIV-532).
+
 - Fix CSS bug that caused "new filename" input field to be wrongly positioned
   (VIV-530).
 
