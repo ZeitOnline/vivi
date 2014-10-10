@@ -216,6 +216,10 @@ class IBreakingNews(IArticle):
         default=False,
         required=False)
 
+    def banner_matches(banner):
+        """Returns True if the given banner content object refers to this
+        breaking news article."""
+
 
 IBreakingNews.setTaggedValue(
     'zeit.cms.addform', 'zeit.content.article.AddBreakingNews')

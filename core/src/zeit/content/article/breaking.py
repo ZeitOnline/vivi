@@ -1,3 +1,4 @@
+from zeit.content.article.edit.interfaces import IBreakingNewsBody
 import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.interfaces
@@ -27,6 +28,9 @@ class BreakingNews(zeit.cms.content.dav.DAVPropertiesAdapter):
     @title.setter
     def title(self, value):
         self.context.title = value
+
+    def banner_matches(self, banner):
+        return IBreakingNewsBody(banner).article_id == self.context.uniqueId
 
 
 @grok.adapter(BreakingNews)

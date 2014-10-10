@@ -363,3 +363,6 @@ class IBreakingNewsBody(zope.interface.Interface):
         title=_('Article body'),
         default=_('breaking-news-more-shortly'),
         required=False)
+
+    article_id = zope.interface.Attribute(
+        'The uniqueID of the breaking news article')

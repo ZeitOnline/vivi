@@ -4,6 +4,7 @@
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 import gocept.lxml.interfaces
 import grokcore.component as grok
+import lxml.etree
 import lxml.objectify
 import z3c.traverser.interfaces
 import zeit.content.article.edit.interfaces
@@ -257,3 +258,14 @@ class BreakingNewsBody(grok.Adapter):
     @property
     def _body(self):
         return zeit.content.article.edit.interfaces.IEditableBody(self.context)
+
+    @property
+    def article_id(self):
+        try:
+            anchor = lxml.objectify.fromstring(self.text)
+        except lxml.etree.XMLSyntaxError:
+            return False
+        else:
+            # XXX Duplicates knowlegde of zeit.push.message.Message.url
+            return anchor.get('href').replace(
+                'http://www.zeit.de/', zeit.cms.interfaces.ID_NAMESPACE)
