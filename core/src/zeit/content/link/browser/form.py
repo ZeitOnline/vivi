@@ -15,7 +15,7 @@ class Base(object):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.link.interfaces.ILink).omit(
-            'xml', 'authors')
+            'xml', 'authors', 'push_news')
 
 
 class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
