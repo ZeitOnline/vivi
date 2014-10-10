@@ -51,7 +51,7 @@ class Connection(object):
         if config.get(PARSE_NEWS_CHANNEL) in channels:
             title = kw.get('supertitle', _('ZEIT ONLINE:'))
         else:
-            title = _('Eilmeldung')
+            title = _('Breaking news')
 
         # Android >= 1.1
         android = {
