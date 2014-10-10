@@ -20,6 +20,7 @@ setup(
         'zeit.cms>=2.15.0.dev0',
         'zeit.content.image',
         'zeit.connector',
+        'zeit.push>=1.6.0.dev0',
         'zope.cachedescriptors',
         'zope.component',
         'zope.formlib',
