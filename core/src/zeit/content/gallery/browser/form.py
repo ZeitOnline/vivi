@@ -8,6 +8,7 @@ import zeit.cms.content.browser.form
 import zeit.cms.interfaces
 import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
+import zeit.push.browser.form
 import zeit.wysiwyg.interfaces
 import zope.formlib.form
 
@@ -51,9 +52,30 @@ class AddGallery(GalleryFormBase,
 
 
 class EditGallery(GalleryFormBase,
+                  zeit.push.browser.form.SocialBase,
                   zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _("Edit gallery")
+
+    def __init__(self, *args, **kw):
+        social_fields = gocept.form.grouped.Fields(
+            _("Social media"),
+            ('long_text', 'facebook', 'facebook_magazin',
+             'short_text', 'twitter', 'twitter_ressort'),
+            css_class='wide-widgets column-left')
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.content.article.social-push-mobile'):
+            social_fields.fields += ('mobile',)
+        social_fields.fields += ('enabled',)
+        self.field_groups = GalleryFormBase.field_groups[:3] + (
+            social_fields,) + GalleryFormBase.field_groups[3:]
+        super(EditGallery, self).__init__(*args, **kw)
+
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
+        self.applyAccountData(data)
+        return super(EditGallery, self).handle_edit_action.success(data)
 
 
 class DisplayGallery(GalleryFormBase,

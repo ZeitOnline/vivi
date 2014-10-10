@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.6.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add social media section to edit form (VIV-516).
 
 
 2.6.10 (2014-07-17)
