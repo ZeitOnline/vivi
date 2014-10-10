@@ -1862,15 +1862,11 @@
 }
 
 .type-article #form-social .field.fieldname-short_text {
-    clear: left;
     margin-top: 0.5em;
 }
 
-.type-article #form-social .field.fieldname-twitter,
-.type-article #form-social .field.fieldname-twitter_ressort,
-.type-article #form-social .field.fieldname-facebook,
-.type-article #form-social .field.fieldname-facebook_magazin {
-    float: left;
+.type-article #form-social .field.fieldname-twitter_ressort {
+   padding-top: 0.5em; /* XXX revert to default */
 }
 
 .type-article #form-social .field.fieldname-twitter_ressort .label span {
@@ -1883,10 +1879,7 @@
     margin-top: 0;
 }
 
-.type-article #form-social .field.fieldname-enabled {
-    clear: left;
-}
-
+/* XXX unclear why we need to repeat this from zeit.cms:forms.css */
 .type-article #form-social select {
     margin-top: -4px;  /* vertically centered appearance */
 }

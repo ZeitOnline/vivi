@@ -36,7 +36,6 @@ Resource('filename.js', depends=[
     zeit.cms.browser.resources.base,
     zeit.cms.browser.resources.filename_js])
 Resource('keyword.js', depends=[zeit.cms.browser.resources.base])
-Resource('social.js', depends=[zeit.cms.browser.resources.base])
 Resource('sync.js', depends=[zeit.cms.browser.resources.base])
 Resource('timer.js', depends=[zeit.cms.browser.resources.base])
 

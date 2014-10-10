@@ -3,8 +3,6 @@
    xmlns:meta="http://namespaces.zope.org/meta"
    i18n_domain="zope">
 
-  <meta:provides feature="zeit.content.article.social-push-mobile" />
-
   <include package="zeit.cms" file="ftesting.zcml" />
 
   <include package="zeit.edit" />
@@ -35,5 +33,6 @@
 
   <include package="zeit.push" />
   <include package="zeit.push" file="mock-webservice.zcml" />
+  <include package="zeit.push.browser" />
 
 </configure>
