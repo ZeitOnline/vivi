@@ -9,6 +9,8 @@ zeit.push changes
 - Extract social media form from z.c.article, so we can reuse it for different
   content types (VIV-516).
 
+- Only retract banners that match the current article (VIV-532).
+
 
 1.5.3 (2014-09-30)
 ------------------

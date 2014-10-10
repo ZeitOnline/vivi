@@ -5,6 +5,7 @@ from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.cms.workflow.interfaces import IPublishInfo
 from zeit.content.article.edit.interfaces import IEditableBody
 import lxml.etree
+import mock
 import zeit.content.article.testing
 import zeit.push.banner
 import zeit.push.interfaces
@@ -81,7 +82,8 @@ class RetractBannerTest(zeit.cms.testing.BrowserTestCase):
 
     def test_renders_url_for_each_banner(self):
         b = self.browser
-        b.open('http://localhost/++skin++vivi/@@breaking-banner-retract')
+        with mock.patch('zeit.push.banner.Retract.banner_matches', new=True):
+            b.open('http://localhost/++skin++vivi/@@breaking-banner-retract')
         self.assertEllipsis("""\
             ...cms:context=".../repository/homepage"...
             ...cms:context=".../repository/ios-legacy"...
