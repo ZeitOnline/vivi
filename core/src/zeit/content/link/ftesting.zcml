@@ -18,7 +18,10 @@
 
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
-  
+
+  <include package="zeit.push" />
+  <include package="zeit.push.browser" />
+
   <include package="zeit.content.link" />
   <include package="zeit.content.link.browser" />
 
