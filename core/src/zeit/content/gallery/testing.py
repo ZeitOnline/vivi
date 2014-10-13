@@ -8,6 +8,7 @@ import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.interfaces
 import zeit.imp.tests
+import zeit.push
 import zeit.workflow.testing
 import zope.component
 
@@ -29,6 +30,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     product_config=(
         zeit.cms.testing.cms_product_config +
         zeit.imp.tests.product_config +
+        zeit.push.product_config +
         product_config))
 
 
