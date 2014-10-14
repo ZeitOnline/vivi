@@ -14,6 +14,7 @@ class RuleTest(zeit.newsletter.testing.TestCase):
         with zeit.cms.testing.site(self.getRootFolder()):
             category = NewsletterCategory()
             category.ad_middle_groups_above = 42
+            category.ad_thisweeks_groups_above = 63
             self.repository['category'] = category
             self.category = self.repository['category']
             self.category['newsletter'] = Newsletter()
@@ -36,16 +37,30 @@ class RuleTest(zeit.newsletter.testing.TestCase):
     def test_middle_ad_position_is_read_from_newsletter_category(self):
         self.assertEqual(43, self.globs['middle_ad_position'])
 
+    def test_thisweeks_ad_position_is_read_from_newsletter_category(self):
+        self.assertEqual(64, self.globs['thisweeks_ad_position'])
+
     def test_middle_ad_position_handles_non_news_letter_elements(self):
         body = self.newsletter.body
         body.__parent__ = None
         globs = IRuleGlobs(body.values()[0])
         self.assertEqual('__NONE__', globs['middle_ad_position'])
 
+    def test_thisweeks_ad_position_handles_non_news_letter_elements(self):
+        body = self.newsletter.body
+        body.__parent__ = None
+        globs = IRuleGlobs(body.values()[0])
+        self.assertEqual('__NONE__', globs['thisweeks_ad_position'])
+
     def test_middle_ad_position_handles_missing_category(self):
         self.repository['newsletter'] = self.newsletter
         globs = IRuleGlobs(self.newsletter.body.values()[0])
         self.assertEqual('__NONE__', globs['middle_ad_position'])
+
+    def test_thisweeks_ad_position_handles_missing_category(self):
+        self.repository['newsletter'] = self.newsletter
+        globs = IRuleGlobs(self.newsletter.body.values()[0])
+        self.assertEqual('__NONE__', globs['thisweeks_ad_position'])
 
     def test_last_position_is_determined_from_newsletter_body(self):
         self.assertEqual(1, self.globs['last_position'])

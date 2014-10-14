@@ -67,6 +67,21 @@
       />
   </class>
 
+  <class class=".newsletter.ThisWeeksAdvertisement">
+    <require
+      interface=".interfaces.IAdvertisement"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAdvertisement"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <class class=".newsletter.ThisWeeksAdvertisement">
+    <require like_class=".newsletter.MiddleAdvertisement" />
+  </class>
+
   <class class=".newsletter.BottomAdvertisement">
     <require like_class=".newsletter.MiddleAdvertisement" />
   </class>

@@ -104,6 +104,21 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 
+    ad_thisweeks_groups_above = zope.schema.Int(
+        title=_('Number of groups above this week\'s ad'))
+
+    ad_thisweeks_href = zope.schema.TextLine(
+        title=_('This week\'s ad target URL'))
+
+    ad_thisweeks_title = zope.schema.TextLine(title=_('This week\'s ad title'))
+
+    ad_thisweeks_text = zope.schema.Text(title=_('This week\'s ad text'))
+
+    ad_thisweeks_image = zope.schema.Choice(
+        title=_('This week\'s ad image'),
+        source=zeit.content.image.interfaces.imageSource,
+        required=False)
+
     ad_bottom_href = zope.schema.TextLine(title=_('Bottom ad target URL'))
 
     ad_bottom_title = zope.schema.TextLine(title=_('Bottom ad title'))

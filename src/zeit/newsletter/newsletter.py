@@ -194,6 +194,13 @@ class MiddleAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
     type = 'advertisement-middle'
 
 
+class ThisWeeksAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
+
+    # XXX Putting implements on AdvertisementBase breaks during grokking, why?
+    grok.implements(zeit.newsletter.interfaces.IAdvertisement)
+    type = 'advertisement-thisweeks'
+
+
 class BottomAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
 
     grok.implements(zeit.newsletter.interfaces.IAdvertisement)
@@ -202,6 +209,9 @@ class BottomAdvertisement(zeit.edit.block.SimpleElement, AdvertisementBase):
 
 zeit.edit.block.register_element_factory(
     zeit.newsletter.interfaces.IBody, 'advertisement-middle',
+    _('Advertisement'))
+zeit.edit.block.register_element_factory(
+    zeit.newsletter.interfaces.IBody, 'advertisement-thisweeks',
     _('Advertisement'))
 zeit.edit.block.register_element_factory(
     zeit.newsletter.interfaces.IBody, 'advertisement-bottom',
