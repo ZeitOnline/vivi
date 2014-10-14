@@ -14,9 +14,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Oct 10 11:36:16 2014\n"
-"PO-Revision-Date: 2014-10-10 11:36+0100\n"
-"Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
+"POT-Creation-Date: Tue Oct 14 12:36:34 2014\n"
+"PO-Revision-Date: 2014-10-14 12:46+0100\n"
+"Last-Translator: Thomas Lotze <tl@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -2500,7 +2500,7 @@ msgstr "Metadaten anzeigen"
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/quiz/browser/configure.zcml:38
 #: zeit/magazin/browser/configure.zcml:65
-#: zeit/newsletter/browser/category.py:49
+#: zeit/newsletter/browser/category.py:53
 msgid "Edit metadata"
 msgstr "Metadaten bearbeiten"
 
@@ -3527,18 +3527,22 @@ msgid "Middle ad"
 msgstr "Werbeblock Mitte"
 
 #: zeit/newsletter/browser/category.py:29
+msgid "This week's ad"
+msgstr "Diese Woche in der aktuellen Zeit"
+
+#: zeit/newsletter/browser/category.py:33
 msgid "Bottom ad"
 msgstr "Werbeblock Ende"
 
-#: zeit/newsletter/browser/category.py:33
+#: zeit/newsletter/browser/category.py:37
 msgid "General"
 msgstr "Allgemein"
 
-#: zeit/newsletter/browser/category.py:36
+#: zeit/newsletter/browser/category.py:40
 msgid "Optivo"
 msgstr "Optivo"
 
-#: zeit/newsletter/browser/category.py:44
+#: zeit/newsletter/browser/category.py:48
 msgid "Newsletter metadata"
 msgstr "Metadaten Newsletter"
 
@@ -3566,7 +3570,7 @@ msgstr "Nur Status speichern"
 msgid "Test email"
 msgstr "Test-E-Mail senden"
 
-#: zeit/newsletter/category.py:134
+#: zeit/newsletter/category.py:136
 msgid "Newsletter category"
 msgstr "Newsletter-Kategorie"
 
@@ -3578,31 +3582,52 @@ msgstr "Text"
 msgid "Middle ad image"
 msgstr "Bild"
 
-#: zeit/newsletter/interfaces.py:107
+#: zeit/newsletter/interfaces.py:108
+msgid "Number of groups above this week's ad"
+msgstr "Position Werbeblock aktuell (nach wieviel Ressorts)"
+
+#: zeit/newsletter/interfaces.py:111
+msgid "This week's ad target URL"
+msgstr "URL"
+
+#: zeit/newsletter/interfaces.py:113
+msgid "This week's ad title"
+msgstr "Titel"
+
+#: zeit/newsletter/interfaces.py:115
+msgid "This week's ad text"
+msgstr "Text"
+
+#: zeit/newsletter/interfaces.py:118
+msgid "This week's ad image"
+msgstr "Bild"
+
+#: zeit/newsletter/interfaces.py:122
 msgid "Bottom ad target URL"
 msgstr "URL"
 
-#: zeit/newsletter/interfaces.py:109
+#: zeit/newsletter/interfaces.py:124
 msgid "Bottom ad title"
 msgstr "Titel"
 
-#: zeit/newsletter/interfaces.py:111
+#: zeit/newsletter/interfaces.py:126
 msgid "Bottom ad text"
 msgstr "Text"
 
-#: zeit/newsletter/interfaces.py:114
+#: zeit/newsletter/interfaces.py:129
 msgid "Bottom ad image"
 msgstr "Bild"
 
-#: zeit/newsletter/interfaces.py:142
+#: zeit/newsletter/interfaces.py:157
 msgid "Sent"
 msgstr "Verschickt"
 
-#: zeit/newsletter/interfaces.py:148
+#: zeit/newsletter/interfaces.py:163
 msgid "Email for test"
 msgstr "E-Mail-Adresse"
 
-#: zeit/newsletter/interfaces.py:20 zeit/newsletter/interfaces.py:70
+#: zeit/newsletter/interfaces.py:20
+#: zeit/newsletter/interfaces.py:70
 msgid "Subject"
 msgstr "Betreff"
 
@@ -3655,7 +3680,9 @@ msgstr "Titel"
 msgid "Group"
 msgstr "Ressort"
 
-#: zeit/newsletter/newsletter.py:205 zeit/newsletter/newsletter.py:208
+#: zeit/newsletter/newsletter.py:212
+#: zeit/newsletter/newsletter.py:215
+#: zeit/newsletter/newsletter.py:218
 msgid "Advertisement"
 msgstr "Werbung"
 
