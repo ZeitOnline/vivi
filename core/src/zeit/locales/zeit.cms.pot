@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Oct 14 12:36:34 2014\n"
+"POT-Creation-Date: Tue Oct 14 23:03:17 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -72,8 +72,8 @@ msgstr ""
 #: zeit/content/quiz/interfaces.py:67
 #: zeit/content/rawxml/interfaces.py:17
 #: zeit/content/video/browser/object-details-body.pt:24
-#: zeit/newsletter/interfaces.py:38
-#: zeit/newsletter/interfaces.py:51
+#: zeit/newsletter/interfaces.py:46
+#: zeit/newsletter/interfaces.py:59
 msgid "Title"
 msgstr ""
 
@@ -3000,7 +3000,7 @@ msgstr ""
 #: zeit/content/quiz/interfaces.py:76
 #: zeit/content/quiz/interfaces.py:118
 #: zeit/content/text/text.py:33
-#: zeit/newsletter/interfaces.py:53
+#: zeit/newsletter/interfaces.py:61
 #: zeit/wysiwyg/interfaces.py:14
 msgid "Text"
 msgstr ""
@@ -3611,109 +3611,137 @@ msgstr ""
 msgid "Test email"
 msgstr ""
 
-#: zeit/newsletter/category.py:136
+#: zeit/newsletter/category.py:138
 msgid "Newsletter category"
 msgstr ""
 
-#: zeit/newsletter/interfaces.py:100
-msgid "Middle ad text"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:103
-msgid "Middle ad image"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:108
-msgid "Number of groups above this week's ad"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:111
-msgid "This week's ad target URL"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:113
-msgid "This week's ad title"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:115
-msgid "This week's ad text"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:118
-msgid "This week's ad image"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:122
-msgid "Bottom ad target URL"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:124
-msgid "Bottom ad title"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:126
-msgid "Bottom ad text"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:129
-msgid "Bottom ad image"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:157
-msgid "Sent"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:163
-msgid "Email for test"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:20
-#: zeit/newsletter/interfaces.py:70
-msgid "Subject"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:49
-msgid "Target URL"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:63
-msgid "Timestamp when the last newsletter object in this category was created"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:71
-msgid "{today} -> %d.%m.%Y"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:74
-msgid "Optivo Mandant ID"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:77
-msgid "Name of recipient list"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:80
-msgid "Name of test-recipient list"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:84
-msgid "Ressorts"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:90
-msgid "Unique id of video playlist"
-msgstr ""
-
-#: zeit/newsletter/interfaces.py:94
+#: zeit/newsletter/interfaces.py:102
 msgid "Number of groups above middle ad"
 msgstr ""
 
-#: zeit/newsletter/interfaces.py:96
+#: zeit/newsletter/interfaces.py:104
 msgid "Middle ad target URL"
 msgstr ""
 
-#: zeit/newsletter/interfaces.py:98
+#: zeit/newsletter/interfaces.py:106
 msgid "Middle ad title"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:108
+msgid "Middle ad text"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:111
+msgid "Middle ad image"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:116
+msgid "Number of groups above this week's ad"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:119
+msgid "This week's ad target URL"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:121
+msgid "This week's ad title"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:123
+msgid "This week's ad text"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:126
+msgid "This week's ad image"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:130
+msgid "Monday"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:131
+msgid "Tuesday"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:132
+msgid "Wednesday"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:133
+msgid "Thursday"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:134
+msgid "Friday"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:135
+msgid "Saturday"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:136
+msgid "Sunday"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:138
+msgid "Bottom ad target URL"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:140
+msgid "Bottom ad title"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:142
+msgid "Bottom ad text"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:145
+msgid "Bottom ad image"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:181
+msgid "Sent"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:187
+msgid "Email for test"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:28
+#: zeit/newsletter/interfaces.py:78
+msgid "Subject"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:57
+msgid "Target URL"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:71
+msgid "Timestamp when the last newsletter object in this category was created"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:79
+msgid "{today} -> %d.%m.%Y"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:82
+msgid "Optivo Mandant ID"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:85
+msgid "Name of recipient list"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:88
+msgid "Name of test-recipient list"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:92
+msgid "Ressorts"
+msgstr ""
+
+#: zeit/newsletter/interfaces.py:98
+msgid "Unique id of video playlist"
 msgstr ""
 
 #: zeit/newsletter/newsletter.py:141
