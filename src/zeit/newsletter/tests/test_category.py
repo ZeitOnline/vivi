@@ -310,6 +310,16 @@ class BuilderTest(zeit.newsletter.testing.TestCase):
         self.assertEqual('advertisement-thisweeks', advertisement.type)
         self.assertEqual(u'Some ad', advertisement.title)
 
+    def test_thisweeks_advert_should_be_omitted_on_unchecked_weekday(self):
+        weekday = datetime.date.today().weekday()
+        with checked_out(self.category) as co:
+            co.ad_thisweeks_title = u'Some ad'
+            setattr(co, 'ad_thisweeks_on_%d' % weekday, False)
+        self.builder(())
+        body = self.newsletter['newsletter_body']
+        self.assertFalse(
+            any(ad.type == 'advertisement-thisweeks' for ad in body.values()))
+
     def test_bottom_advertisement_should_be_appended(self):
         with checked_out(self.category) as co:
             co.ad_bottom_title = u'Some ad'

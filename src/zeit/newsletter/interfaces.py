@@ -127,6 +127,14 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 
+    ad_thisweeks_on_0 = zope.schema.Bool(title=_('Monday'))
+    ad_thisweeks_on_1 = zope.schema.Bool(title=_('Tuesday'))
+    ad_thisweeks_on_2 = zope.schema.Bool(title=_('Wednesday'))
+    ad_thisweeks_on_3 = zope.schema.Bool(title=_('Thursday'))
+    ad_thisweeks_on_4 = zope.schema.Bool(title=_('Friday'))
+    ad_thisweeks_on_5 = zope.schema.Bool(title=_('Saturday'))
+    ad_thisweeks_on_6 = zope.schema.Bool(title=_('Sunday'))
+
     ad_bottom_href = zope.schema.TextLine(title=_('Bottom ad target URL'))
 
     ad_bottom_title = zope.schema.TextLine(title=_('Bottom ad title'))

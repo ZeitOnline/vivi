@@ -1,4 +1,4 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
+# Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
@@ -29,7 +29,7 @@ class FormBase(object):
         gocept.form.grouped.Fields(_('This week\'s ad'), (
             'ad_thisweeks_title', 'ad_thisweeks_text', 'ad_thisweeks_href',
             'ad_thisweeks_image', 'ad_thisweeks_groups_above'
-        )),
+        ) + tuple('ad_thisweeks_on_%d' % dow for dow in range(7))),
         gocept.form.grouped.Fields(_('Bottom ad'), (
             'ad_bottom_title', 'ad_bottom_text', 'ad_bottom_href',
             'ad_bottom_image',
