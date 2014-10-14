@@ -14,7 +14,8 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
 
     def test_block_factories_are_wired_up_correctly(self):
         from zeit.newsletter.newsletter import (
-            Newsletter, Group, Teaser, MiddleAdvertisement, BottomAdvertisement
+            Newsletter, Group, Teaser,
+            MiddleAdvertisement, ThisWeeksAdvertisement, BottomAdvertisement
         )
         newsletter = Newsletter()
         body = newsletter['newsletter_body']
@@ -40,6 +41,12 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
 
         factory = zope.component.getAdapter(
             body, zeit.edit.interfaces.IElementFactory,
+            name='advertisement-thisweeks')
+        advertisement = factory()
+        self.assertIsInstance(advertisement, ThisWeeksAdvertisement)
+
+        factory = zope.component.getAdapter(
+            body, zeit.edit.interfaces.IElementFactory,
             name='advertisement-bottom')
         advertisement = factory()
         self.assertIsInstance(advertisement, BottomAdvertisement)
@@ -53,6 +60,7 @@ class NewsletterObjectsTest(zeit.newsletter.testing.TestCase,
       <container cp:type="teaser"...>
     </region>
     <container cp:type="advertisement-middle".../>
+    <container cp:type="advertisement-thisweeks".../>
     <container cp:type="advertisement-bottom".../>
   </body>
 </newsletter>

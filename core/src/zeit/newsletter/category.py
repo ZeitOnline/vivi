@@ -53,6 +53,8 @@ class NewsletterCategoryBase(object):
          'ad_bottom_text', 'ad_bottom_image',
          'ad_middle_groups_above', 'ad_middle_href', 'ad_middle_title',
          'ad_middle_text', 'ad_middle_image',
+         'ad_thisweeks_groups_above', 'ad_thisweeks_href',
+         'ad_thisweeks_title', 'ad_thisweeks_text', 'ad_thisweeks_image',
          ])
 
     def __init__(self):
@@ -188,6 +190,8 @@ class Builder(grok.MultiAdapter):
             groups_above += 1
             if groups_above == self.category.ad_middle_groups_above:
                 self.create_advertisement('middle')
+            if groups_above == self.category.ad_thisweeks_groups_above:
+                self.create_advertisement('thisweeks')
         self.create_video_group()
         self.create_advertisement('bottom')
 
