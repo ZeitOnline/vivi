@@ -55,11 +55,13 @@ class NewsletterCategoryBase(object):
          'ad_middle_text', 'ad_middle_image',
          'ad_thisweeks_groups_above', 'ad_thisweeks_href',
          'ad_thisweeks_title', 'ad_thisweeks_text', 'ad_thisweeks_image',
-         ])
+         ] + ['ad_thisweeks_on_%d' % dow for dow in range(7)])
 
     def __init__(self):
         if not self.ressorts:
             self.ressorts = ()
+        for dow in range(7):
+            setattr(self, 'ad_thisweeks_on_%d' % dow, True)
 
 
 class NewsletterCategory(NewsletterCategoryBase,
@@ -191,7 +193,9 @@ class Builder(grok.MultiAdapter):
             if groups_above == self.category.ad_middle_groups_above:
                 self.create_advertisement('middle')
             if groups_above == self.category.ad_thisweeks_groups_above:
-                self.create_advertisement('thisweeks')
+                weekday = datetime.date.today().weekday()
+                if getattr(self.category, 'ad_thisweeks_on_%d' % weekday):
+                    self.create_advertisement('thisweeks')
         self.create_video_group()
         self.create_advertisement('bottom')
 
