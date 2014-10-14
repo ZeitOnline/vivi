@@ -11,7 +11,6 @@ import pytz
 import unittest
 import zeit.cms.repository.folder
 import zeit.newsletter.testing
-import zope.dublincore.interfaces
 
 
 class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
