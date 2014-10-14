@@ -9,6 +9,9 @@ zeit.imp changes
 
 - Mark center of mask (VIV-501).
 
+- Fix rounding error while zooming: round properly instead of flooring
+  (VIV-502).
+
 
 0.16.1 (2014-07-14)
 +++++++++++++++++++

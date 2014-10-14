@@ -117,7 +117,7 @@ zeit.imp.Imp = gocept.Class.extend({
         }
 
         var old_dim = this.current_dimensions;
-        var rnd = Math.floor;
+        var rnd = Math.round;
 
         var new_dim = new MochiKit.DOM.Dimensions(
             rnd(this.original_dimensions.w * this.zoom),
