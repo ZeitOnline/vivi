@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.facebook import facebookAccountSource
 from zeit.push.twitter import twitterAccountSource
+import gocept.form.grouped
 import grokcore.component as grok
 import zeit.cms.browser.form
 import zope.app.appsetup.product
@@ -24,6 +25,13 @@ class IAccounts(zope.interface.Interface):
 class SocialBase(zeit.cms.browser.form.CharlimitMixin):
 
     FormFieldsFactory = zope.formlib.form.FormFields
+
+    social_fields = gocept.form.grouped.Fields(
+        _("Social media"),
+        ('long_text', 'facebook', 'facebook_magazin',
+         'short_text', 'twitter', 'twitter_ressort',
+         'mobile', 'enabled'),
+        css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
         super(SocialBase, self).__init__(*args, **kw)
