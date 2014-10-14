@@ -4,6 +4,7 @@
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.newsletter.category import NewsletterCategory
+from zeit.newsletter.interfaces import INewsletterCategory
 from zeit.newsletter.newsletter import Newsletter
 import datetime
 import mock
@@ -11,6 +12,35 @@ import pytz
 import unittest
 import zeit.cms.repository.folder
 import zeit.newsletter.testing
+import zope.schema
+
+
+class InvariantsTest(zeit.newsletter.testing.TestCase):
+
+    def test_middle_ad_above_thisweeks_ad_validates(self):
+        category = NewsletterCategory()
+        category.ad_middle_groups_above = 2
+        category.ad_thisweeks_groups_above = 3
+        try:
+            INewsletterCategory.validateInvariants(category)
+        except zope.schema.ValidationError, e:
+            raise AssertionError(e)
+
+    def test_middle_ad_same_place_as_thisweeks_ad_raises(self):
+        category = NewsletterCategory()
+        category.ad_middle_groups_above = 2
+        category.ad_thisweeks_groups_above = 2
+        self.assertRaises(
+            zope.schema.ValidationError,
+            lambda: INewsletterCategory.validateInvariants(category))
+
+    def test_middle_ad_below_thisweeks_ad_raises(self):
+        category = NewsletterCategory()
+        category.ad_middle_groups_above = 3
+        category.ad_thisweeks_groups_above = 2
+        self.assertRaises(
+            zope.schema.ValidationError,
+            lambda: INewsletterCategory.validateInvariants(category))
 
 
 class CreateNewsletterTest(zeit.newsletter.testing.TestCase):
