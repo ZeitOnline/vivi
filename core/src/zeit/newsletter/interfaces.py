@@ -1,3 +1,4 @@
+# coding: utf-8
 # Copyright (c) 2011-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
@@ -9,9 +10,16 @@ import zeit.content.image.interfaces
 import zeit.edit.interfaces
 import zope.container.interfaces
 import zope.interface
+import zope.schema.interfaces
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/newsletter'
+
+
+class InvariantViolated(zope.schema.interfaces.ValidationError):
+
+    def doc(self):
+        return self.args[0]
 
 
 class INewsletter(zeit.cms.content.interfaces.IXMLContent,
@@ -129,6 +137,14 @@ class INewsletterCategory(zeit.cms.repository.interfaces.IDAVContent):
         title=_('Bottom ad image'),
         source=zeit.content.image.interfaces.imageSource,
         required=False)
+
+    @zope.interface.invariant
+    def middle_ad_above_thisweeks(obj):
+        if obj.ad_middle_groups_above < obj.ad_thisweeks_groups_above:
+            return
+        raise InvariantViolated(
+            u'Der Werbeblock "Diese Woche in der aktuellen Zeit" muss an '
+            u'einer späteren Position als der Werbeblock "Mitte" erscheinen.')
 
 
 class IRepositoryCategory(
