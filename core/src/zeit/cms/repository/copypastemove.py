@@ -23,7 +23,6 @@ class CMSObjectMover(zope.copypastemove.ObjectMover):
         chooser = zope.container.interfaces.INameChooser(target)
         new_name = chooser.chooseName(new_name, obj)
         target[new_name] = obj
-        new = target[new_name]
         return new_name
 
 
