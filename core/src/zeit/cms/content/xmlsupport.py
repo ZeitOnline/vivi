@@ -269,6 +269,7 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
     target_iface = zeit.cms.content.interfaces.ICommonMetadata
 
     def update_with_context(self, entry, metadata):
+        entry.set('href', metadata.uniqueId)
         entry['supertitle'] = metadata.teaserSupertitle
         if not entry['supertitle']:
             entry['supertitle'] = metadata.supertitle

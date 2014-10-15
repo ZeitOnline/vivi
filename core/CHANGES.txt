@@ -4,6 +4,9 @@ zeit.cms changes
 2.29.0 (unreleased)
 -------------------
 
+- Register moved objects with external redirector service, adjust references to
+  moved objects (WEB-298).
+
 - Add ``push_news`` flag to ICommonMetadata (VIV-526).
 
 

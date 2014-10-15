@@ -10,6 +10,7 @@ import re
 import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.redirect.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.section.interfaces
 import zeit.connector.dav.interfaces
@@ -328,7 +329,13 @@ def unique_id_to_content(uniqueId):
     try:
         return repository.getContent(uniqueId)
     except (ValueError, KeyError):
-        return None
+        lookup = zope.component.getUtility(
+            zeit.cms.redirect.interfaces.ILookup)
+        new_id = lookup.find(uniqueId)
+        if new_id:
+            return zeit.cms.interfaces.ICMSContent(new_id, None)
+        else:
+            return None
 
 
 @grokcore.component.adapter(
