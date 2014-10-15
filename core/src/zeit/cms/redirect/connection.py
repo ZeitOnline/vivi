@@ -45,4 +45,4 @@ class Lookup(object):
 @zope.interface.implementer(zeit.cms.redirect.interfaces.ILookup)
 def from_product_config():
     config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-    return Lookup(config['redirect-url'])
+    return Lookup(config['redirect-service-url'])
