@@ -11,6 +11,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.cmscontent
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
+import zeit.cms.redirect.interfaces
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
@@ -190,6 +191,15 @@ def warn_about_free_teasers(context, event):
                                    teaser=obj.uniqueId)),
                     'error')
                 break
+
+
+class FakeRenameInfo(grokcore.component.Adapter):
+    """IXMLTeaser cannot be renamed."""
+
+    grokcore.component.context(zeit.content.cp.interfaces.IXMLTeaser)
+    grokcore.component.implements(zeit.cms.redirect.interfaces.IRenameInfo)
+
+    previous_uniqueIds = ()
 
 
 # LEGACY: Old teaser content type
