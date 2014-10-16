@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
 import grokcore.component
 import urlparse
 import uuid
@@ -100,7 +101,7 @@ class XMLTeaser(zope.container.contained.Contained,
             return
         cp = zeit.content.cp.interfaces.ICenterPage(self.__parent__)
 
-        self._uniqueId = 'http://teaser.vivi.zeit.de/%s#%s' % (
+        self._uniqueId = TEASER_ID_NAMESPACE + '%s#%s' % (
             cp.uniqueId, str(uuid.uuid4()))
         self._free_teaser = True
 
@@ -127,8 +128,7 @@ def teaser_preview(context, request):
         (original, request), name='preview')
 
 
-@grokcore.component.adapter(
-    basestring, name='http://teaser.vivi.zeit.de/')
+@grokcore.component.adapter(basestring, name=TEASER_ID_NAMESPACE)
 @grokcore.component.implementer(zeit.cms.interfaces.ICMSContent)
 def resolve_teaser_unique_id(context):
     parsed = urlparse.urlparse(context)

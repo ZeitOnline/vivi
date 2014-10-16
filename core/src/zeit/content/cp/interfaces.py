@@ -22,6 +22,7 @@ import zope.interface
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'
+TEASER_ID_NAMESPACE = 'http://teaser.vivi.zeit.de/'
 
 
 class ValidationError(zope.schema.ValidationError):

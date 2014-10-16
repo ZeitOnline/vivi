@@ -1,10 +1,10 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.connector.search import SearchVar
+from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
 import UserDict
 import collections
 import copy
@@ -141,8 +141,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
             if node is not None:
                 entry.remove(node)
 
-            if not entry.get(
-                    'uniqueId', '').startswith('http://teaser.vivi.zeit.de/'):
+            if not entry.get('uniqueId', '').startswith(TEASER_ID_NAMESPACE):
                 entry.set('href', content.uniqueId)
                 entry.set('uniqueId', content.uniqueId)
             updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
