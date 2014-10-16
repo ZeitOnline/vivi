@@ -4,6 +4,8 @@ zeit.content.image changes
 2.2.3 (unreleased)
 ------------------
 
+- Update references when moving objects (WEB-298).
+
 - Update dependency to ZODB-4.0.
 
 

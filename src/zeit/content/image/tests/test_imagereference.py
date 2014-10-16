@@ -6,9 +6,13 @@ from zeit.cms.content.reference import ReferenceProperty
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 from zeit.content.image.interfaces import IImageMetadata
+import gocept.async.tests
+import lxml.etree
+import mock
 import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
+import zope.copypastemove.interfaces
 
 
 class ImageAssetTest(zeit.cms.testing.FunctionalTestCase):
@@ -74,3 +78,29 @@ class ImageReferenceTest(zeit.cms.testing.FunctionalTestCase):
         ref.caption = u''  # the caption field is non-None
         self.assertEqual(None, ref.title)
         self.assertEqual('', ref.caption)
+
+
+class MoveReferencesTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_moving_image_updates_uniqueId_in_referencing_obj(self):
+        # This is basically the same test as zeit.cms.redirect.tests.test_move,
+        # but for image references instead of related references.
+        image = ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG')
+        with checked_out(self.repository['testcontent']) as co:
+            zeit.content.image.interfaces.IImages(co).image = image
+
+        zope.copypastemove.interfaces.IObjectMover(image).moveTo(
+            self.repository, 'changed')
+        gocept.async.tests.process()
+
+        content = self.repository['testcontent']
+        with mock.patch('zeit.cms.redirect.interfaces.ILookup') as lookup:
+            self.assertEqual(
+                'http://xml.zeit.de/changed',
+                zeit.content.image.interfaces.IImages(content).image.uniqueId)
+            self.assertFalse(lookup().find.called)
+        self.assertIn(
+            'http://xml.zeit.de/changed',
+            lxml.etree.tostring(content.xml, pretty_print=True))

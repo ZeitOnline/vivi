@@ -91,6 +91,12 @@ class ImageReference(zeit.cms.content.reference.Reference):
             unique_id = self.xml.get('src')
         return unique_id
 
+    def _update_target_unique_id(self):
+        if self.xml.get('base-id'):
+            self.xml.set('base-id', self.target.uniqueId)
+        elif self.xml.get('src'):
+            self.xml.set('src', self.target.uniqueId)
+
     title = LocalOverride('title')
     alt = LocalOverride('alt')
     caption = LocalOverride('caption')
