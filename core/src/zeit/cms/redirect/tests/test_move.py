@@ -12,8 +12,8 @@ import zope.copypastemove.interfaces
 class MoveTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_renaming_referenced_obj_updates_uniqueId_in_referencing_obj(self):
-        self.repository['article'] = TestContentType()
-        article = self.repository['article']
+        self.repository['2007']['article'] = TestContentType()
+        article = self.repository['2007']['article']
         self.repository['referencing'] = TestContentType()
         with checked_out(self.repository['referencing']) as co:
             IRelatedContent(co).related = (article,)

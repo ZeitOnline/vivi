@@ -1,5 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import grokcore.component as grok
+import os.path
 import zeit.cms.checkout.interfaces
 import zeit.cms.redirect.interfaces
 import zeit.cms.relation.corehandlers
@@ -34,8 +35,8 @@ def store_redirect(context, event):
     if zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
     lookup = zope.component.getUtility(zeit.cms.redirect.interfaces.ILookup)
-    old_id = event.oldParent.uniqueId + event.oldName
-    new_id = event.newParent.uniqueId + event.newName
+    old_id = os.path.join(event.oldParent.uniqueId, event.oldName)
+    new_id = os.path.join(event.newParent.uniqueId, event.newName)
     lookup.rename(old_id, new_id)
     zeit.cms.redirect.interfaces.IRenameInfo(
         context).previous_uniqueIds += (old_id,)
