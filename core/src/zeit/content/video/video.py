@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.repository.repository import Repository
 import grokcore.component
 import lxml.objectify
 import pkg_resources
@@ -111,4 +112,12 @@ class Dependencies(grokcore.component.Adapter):
     def get_dependencies(self):
         relations = zope.component.getUtility(
             zeit.cms.relation.interfaces.IRelations)
-        return relations.get_relations(self.context)
+        for rel in relations.get_relations(self.context):
+            obj = rel
+            while not isinstance(obj, Repository):
+                if (obj.__name__ == 'test' and
+                        isinstance(obj.__parent__, Repository)):
+                    break
+                obj = obj.__parent__
+            else:
+                yield rel

@@ -89,3 +89,19 @@ class TestReferencesAdapter(zeit.content.video.testing.TestCase):
         zeit.workflow.testing.run_publish()
         self.assertTrue(
             zeit.cms.workflow.interfaces.IPublishInfo(pls).published)
+
+    def test_publication_deps_in_test_folder_not_published_with_video(self):
+        factory = zeit.content.video.testing.video_factory(self)
+        video = factory.next()
+        video = factory.next()  # in repository
+        factory = zeit.content.video.testing.playlist_factory(self, 'test')
+        pls = factory.next()
+        pls.videos = (video,)
+        pls = factory.next()  # in repository
+
+        zeit.cms.workflow.interfaces.IPublish(video).publish()
+        zeit.workflow.testing.run_publish()
+        self.assertTrue(
+            zeit.cms.workflow.interfaces.IPublishInfo(video).published)
+        self.assertFalse(
+            zeit.cms.workflow.interfaces.IPublishInfo(pls).published)

@@ -4,7 +4,8 @@ zeit.content.video changes
 2.2.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- When publishing a video, don't publish dependent content inside the test
+  folder (VIV-289).
 
 
 2.2.8 (2014-06-05)

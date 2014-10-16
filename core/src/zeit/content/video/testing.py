@@ -4,6 +4,7 @@
 import doctest
 import pkg_resources
 import plone.testing
+import zeit.cms.repository.folder
 import zeit.cms.testing
 import zeit.solr.testing
 import zeit.workflow.testing
@@ -42,14 +43,21 @@ def FunctionalDocFileSuite(*args, **kw):
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
 
 
-def playlist_factory(self):
+def playlist_factory(self, location=''):
     from zeit.content.video.playlist import Playlist
+    parent = self.repository
     with zeit.cms.testing.site(self.getRootFolder()):
         with zeit.cms.testing.interaction():
             playlist = Playlist()
             yield playlist
-            self.repository['pls'] = playlist
-    yield self.repository['pls']
+            for name in location.split('/'):
+                if not name:
+                    continue
+                if name not in parent:
+                    parent[name] = zeit.cms.repository.folder.Folder()
+                parent = parent[name]
+            parent['pls'] = playlist
+    yield parent['pls']
 
 
 def video_factory(self):
