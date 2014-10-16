@@ -10,6 +10,7 @@ import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.redirect.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.type
 import zope.interface
@@ -279,3 +280,11 @@ class FakeXMLReferenceUpdater(grok.Adapter):
 
     def update(self, node):
         pass
+
+
+class FakeRenameInfo(grok.Adapter):
+
+    grok.context(FakeEntry)
+    grok.implements(zeit.cms.redirect.interfaces.IRenameInfo)
+
+    previous_uniqueIds = ()
