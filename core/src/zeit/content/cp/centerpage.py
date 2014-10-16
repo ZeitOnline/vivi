@@ -3,6 +3,7 @@
 
 from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.connector.search import SearchVar
 import UserDict
 import collections
@@ -112,10 +113,24 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
         return zope.container.contained.contained(area, self, key)
 
     def updateMetadata(self, content):
-        for entry in self.xml.xpath(
-                '//block[@uniqueId={id} or @href={id}]'.format(
-                    id=xml.sax.saxutils.quoteattr(content.uniqueId))):
-            if entry.get('uniqueId', content.uniqueId) != content.uniqueId:
+        # Note that this method is a shortcut using XPath to query instead of
+        # instantiating all blocks and their content objects to find the
+        # matching one (since that's probably too expensive). So actually the
+        # updating should be performed by the respective blocks (or their
+        # ReferenceProperties) and not by duplicating their
+        # implementation/serialzation details here.
+
+        # Support renaming (see doc/implementation/move.txt).
+        possible_ids = set((
+            content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
+        unique_ids = ' or '.join(['@href=%s' % xml.sax.saxutils.quoteattr(x)
+                                  for x in possible_ids])
+        # @uniqueId is for free teasers only, and those can't be renamed.
+        query = '//block[@uniqueId={id} or {unique_ids}]'.format(
+            id=xml.sax.saxutils.quoteattr(content.uniqueId),
+            unique_ids=unique_ids)
+        for entry in self.xml.xpath(query):
+            if entry.get('uniqueId', content.uniqueId) not in possible_ids:
                 # ``entry`` is a free teaser, but ``content`` is the referenced
                 # object. Skip it, since the metadata of the free teaser itself
                 # is what counts.
@@ -126,6 +141,10 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
             if node is not None:
                 entry.remove(node)
 
+            if not entry.get(
+                    'uniqueId', '').startswith('http://teaser.vivi.zeit.de/'):
+                entry.set('href', content.uniqueId)
+                entry.set('uniqueId', content.uniqueId)
             updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
                 content, None)
             if updater is not None:

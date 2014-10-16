@@ -16,6 +16,7 @@ import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zope.app.appsetup.product
 import zope.component
+import zope.copypastemove.interfaces
 
 
 class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
@@ -221,3 +222,30 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.create_teaser(cp)
         t1.insert(0, self.repository['testcontent'])
         self.assertXML(cp.xml, zeit.content.cp.interfaces.IRenderedXML(cp))
+
+
+class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def create_teaser(self, cp):
+        import zeit.edit.interfaces
+        factory = zope.component.getAdapter(
+            cp['lead'], zeit.edit.interfaces.IElementFactory,
+            name='teaser')
+        return factory()
+
+    def test_moving_referenced_article_updates_uniqueId_on_cp_checkin(self):
+        cp = zeit.content.cp.centerpage.CenterPage()
+        t1 = self.create_teaser(cp)
+        self.create_teaser(cp)
+        t1.insert(0, self.repository['testcontent'])
+
+        zope.copypastemove.interfaces.IObjectMover(
+            self.repository['testcontent']).moveTo(
+            self.repository, 'changed')
+        self.repository['cp'] = cp
+        with checked_out(cp):
+            pass
+        cp = self.repository['cp']
+        self.assertIn(
+            'http://xml.zeit.de/changed',
+            lxml.etree.tostring(cp.xml, pretty_print=True))
