@@ -157,6 +157,7 @@ class AdvertisementTest(zeit.newsletter.testing.SeleniumTestCase):
             category.ad_middle_groups_above = 0
             category.ad_middle_image = zeit.cms.interfaces.ICMSContent(
                 'http://xml.zeit.de/2006/DSC00109_2.JPG')
+            category.ad_thisweeks_groups_above = 0
             self.repository['newsletter'] = category
             newsletter = Newsletter()
             ad_factory = zope.component.getAdapter(
