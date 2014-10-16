@@ -1,8 +1,9 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import grokcore.component as grok
+import zeit.cms.checkout.interfaces
 import zeit.cms.redirect.interfaces
-import zeit.cms.repository.interfaces
 import zeit.cms.relation.corehandlers
+import zeit.cms.repository.interfaces
 import zope.component
 import zope.lifecycleevent.interfaces
 
@@ -29,6 +30,8 @@ class Dummy(object):
 def store_redirect(context, event):
     if not all([event.oldParent, event.newParent,
                 event.oldName, event.newName]):
+        return
+    if zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(event.newParent):
         return
     lookup = zope.component.getUtility(zeit.cms.redirect.interfaces.ILookup)
     old_id = event.oldParent.uniqueId + event.oldName
