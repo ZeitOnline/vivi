@@ -54,8 +54,4 @@
     <require like_class=".feed.Feed" />
   </class>
 
-  <adapter factory=".feed.feed_references" name="zeit.cms.syndication" />
-  <subscriber handler=".feed.update_feed_metadata_on_checkin" />
-
-  <adapter factory=".feed.FakeXMLReferenceUpdater" />
 </configure>

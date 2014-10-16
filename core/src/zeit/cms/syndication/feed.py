@@ -2,21 +2,19 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import logging
 import lxml.etree
 import rwproperty
-import zeit.cms.connector
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.type
-import zope.component
 import zope.interface
 import zope.location.location
 import zope.proxy
-import zope.security.proxy
 
 
 log = logging.getLogger(__name__)
@@ -197,8 +195,8 @@ class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
         return config.hasFeature('zeit.cms.decentral-syndication')
 
 
-@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
-@zope.interface.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
+@grok.adapter(zeit.cms.interfaces.ICMSContent, name='zeit.cms.syndication')
+@grok.implementer(zeit.cms.relation.interfaces.IReferenceProvider)
 def feed_references(context):
     feed = zeit.cms.syndication.interfaces.IFeed(context, None)
     if not feed:
@@ -206,7 +204,7 @@ def feed_references(context):
     return list(feed)
 
 
-@zope.component.adapter(
+@grok.subscribe(
     zeit.cms.syndication.interfaces.IFeed,
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_feed_metadata_on_checkin(context, event):
@@ -274,13 +272,10 @@ class FakeEntry(object):
         self.title = unicode(entry.find('title'))
 
 
-class FakeXMLReferenceUpdater(object):
+class FakeXMLReferenceUpdater(grok.Adapter):
 
-    zope.component.adapts(FakeEntry)
-    zope.interface.implements(zeit.cms.content.interfaces.IXMLReferenceUpdater)
-
-    def __init__(self, context):
-        pass
+    grok.context(FakeEntry)
+    grok.implements(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
     def update(self, node):
         pass
