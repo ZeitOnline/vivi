@@ -308,9 +308,14 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
     def update_metadata(self):
         if self.target is None:
             return
+        self._update_target_unique_id()
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(self.target)
         updater.update(self.xml)
         self._p_changed = True
+
+    def _update_target_unique_id(self):
+        # Support renaming (see doc/implementation/move.txt).
+        self.xml.set('href', self.target.uniqueId)
 
     @property
     def uniqueId(self):
