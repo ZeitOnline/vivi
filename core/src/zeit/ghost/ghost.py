@@ -62,13 +62,7 @@ def remove_excessive_ghosts(context, event):
 
 
 def _remove_excessive_ghosts(workingcopy):
-    """Remove ghosts from workingcopy which exceed the target size.
-    Removes ghosts until either the size of the wc is okay or no ghosts are
-    left to remove.
-    """
-    while True:
-        if len(workingcopy) <= TARGET_WORKINGCOPY_SIZE:
-            break
+    while len(workingcopy) > TARGET_WORKINGCOPY_SIZE:
         ghost_removed = remove_oldest_ghost(workingcopy)
         if not ghost_removed:
             # no ghosts left to remove
