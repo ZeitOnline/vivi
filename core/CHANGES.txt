@@ -9,6 +9,8 @@ zeit.cms changes
 
 - Add ``push_news`` flag to ICommonMetadata (VIV-526).
 
+- Fix bug, so more than one excessive Ghost can be removed.
+
 
 2.28.0 (2014-10-07)
 -------------------

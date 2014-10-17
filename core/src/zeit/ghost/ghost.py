@@ -50,23 +50,26 @@ def remove_ghost_after_checkout(context, event):
             del workingcopy[name]
 
 
+TARGET_WORKINGCOPY_SIZE = 7
+
+
 @zope.component.adapter(
     zeit.cms.interfaces.ICMSContent,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def remove_excessive_ghosts(context, event):
-    """Remove ghosts from workingcopy which exceed the target of 7
+    _remove_excessive_ghosts(event.workingcopy)
 
-    Removes ghosts until either the size of the wc is 7 or no ghosts are left
-    to remove.
 
+def _remove_excessive_ghosts(workingcopy):
+    """Remove ghosts from workingcopy which exceed the target size.
+    Removes ghosts until either the size of the wc is okay or no ghosts are
+    left to remove.
     """
-    workingcopy = event.workingcopy
-    target_size = 7
     while True:
-        if len(workingcopy) <= target_size:
+        if len(workingcopy) <= TARGET_WORKINGCOPY_SIZE:
             break
         ghost_removed = remove_oldest_ghost(workingcopy)
-        if ghost_removed is None:
+        if not ghost_removed:
             # no ghosts left to remove
             break
 
@@ -77,5 +80,6 @@ def remove_oldest_ghost(workingcopy):
         content for content in workingcopy.values()
         if zeit.cms.clipboard.interfaces.IObjectReference.providedBy(content)]
     if not ghosts:
-        return
+        return False
     del workingcopy[ghosts[-1].__name__]
+    return True
