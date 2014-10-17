@@ -14,6 +14,7 @@ import zope.interface
 def create_ghost(content, workingcopy=None):
     if workingcopy is None:
         workingcopy = zeit.cms.checkout.interfaces.IWorkingcopy(None)
+    _remove_excessive_ghosts(workingcopy)
     entry = zeit.cms.clipboard.entry.Entry(content)
     zope.interface.directlyProvides(
         entry, zeit.ghost.interfaces.IGhost)
