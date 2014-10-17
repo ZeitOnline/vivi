@@ -49,6 +49,11 @@ We now will add objects to the feed. Let's create some fake object:
 ...         self.uniqueId = id
 
 
+>>> import mock
+>>> rename_patch = mock.patch('zeit.cms.syndication.feed.IRenameInfo')
+>>> RenameInfo = rename_patch.start()
+>>> RenameInfo().previous_uniqueIds = ()
+
 We add an article with id `art1` and get the id back form the `keys` method:
 
 >>> article = Article('art1')
@@ -436,3 +441,9 @@ ignored silently when updating metadata:
 >>> feed = Feed()
 >>> feed.insert(0, article)
 >>> for x in feed: feed.updateMetadata(x)
+
+
+Teardown
+========
+
+>>> rename_patch.stop()
