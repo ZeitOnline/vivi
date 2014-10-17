@@ -92,7 +92,7 @@
   <!-- Delete view -->
 
   <browser:viewlet
-    for="zeit.cms.interfaces.ICMSContent"
+    for="zeit.cms.repository.interfaces.IRepositoryContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="Delete"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
