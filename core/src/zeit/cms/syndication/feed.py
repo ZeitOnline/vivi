@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.redirect.interfaces import IRenameInfo
 import grokcore.component as grok
 import logging
 import lxml.etree
@@ -122,7 +123,16 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
                 return id + 1
 
     def updateMetadata(self, content):
-        entry = self.entry_map[content.uniqueId]
+        possible_ids = set((
+            content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
+        for id in possible_ids:
+            entry = self.entry_map.get(id)
+            if entry is not None:
+                break
+        else:
+            raise KeyError(content.uniqueId)
+        entry.set('href', content.uniqueId)
+        entry.set('uniqueId', content.uniqueId)
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(content)
         updater.update(entry)
 
