@@ -470,10 +470,21 @@ margin-top: 4px;
   margin-top: 9px; /* XXX center vertically */
   margin-left: 4em;
 }
+.location-repository.type-centerpage-2009 .fieldname-count .widget {
+  margin-top: 7px; /* XXX center vertically */
+}
 
 .type-centerpage-2009 .fieldname-query .combinationFieldWidget tr {
     display: inline-block;
 }
+
+.type-centerpage-2009 .fieldname-query .combinationFieldWidget .widget {
+  margin-bottom: 0.5em;
+}
+.location-repository.type-centerpage-2009 .fieldname-query .combinationFieldWidget .widget {
+  margin-bottom: 0px;
+}
+
 
 /* Since the title of the field 'query' is used by SequenceWidget for the
 buttons, we only can get a different label if we override it here. */
