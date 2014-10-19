@@ -7,6 +7,8 @@ zeit.content.cp changes
 
 - Update references when moving objects (WEB-298).
 
+- Improve "automatic content" form styling (VIV-470).
+
 
 2.6.4 (2014-10-07)
 ------------------

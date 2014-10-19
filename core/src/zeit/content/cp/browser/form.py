@@ -74,7 +74,8 @@ class AutomaticFields(object):
             'count', 'query', 'raw_query', 'automatic')
     automatic_group = gocept.form.grouped.Fields(
         _("Automatic contents"),
-         ('automatic', 'count', 'query', 'raw_query'))
+         ('automatic', 'count', 'query', 'raw_query'),
+        css_class='wide-widgets')
 
     def __init__(self, *args, **kw):
         super(AutomaticFields, self).__init__(*args, **kw)
