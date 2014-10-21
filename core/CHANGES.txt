@@ -1,7 +1,7 @@
 zeit.content.text changes
 =========================
 
-2.0.1 (unreleased)
+2.0.1 (2014-10-21)
 ------------------
 
 - Update dependency to ZODB-4.0.
