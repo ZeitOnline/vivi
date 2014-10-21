@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.2.9 (unreleased)
+2.2.9 (2014-10-21)
 ------------------
 
 - When publishing a video, don't publish dependent content inside the test
