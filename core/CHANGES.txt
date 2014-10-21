@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.4.2 (unreleased)
+2.4.2 (2014-10-21)
 ------------------
 
 - Add event when dragging modules, so the content-editable can save itself and
