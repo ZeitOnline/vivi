@@ -1,7 +1,7 @@
 zeit.imp changes
 ================
 
-0.16.2 (unreleased)
+0.17.0 (2014-10-21)
 +++++++++++++++++++
 
 - Restrict minimum possible zoom to not be smaller than the size of the mask
