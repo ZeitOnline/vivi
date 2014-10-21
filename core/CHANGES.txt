@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.6.4 (unreleased)
+3.6.4 (2014-10-21)
 ------------------
 
 - Don't display a retract button for breaking news banners that don't belong to
