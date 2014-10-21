@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.6.5 (unreleased)
+2.6.5 (2014-10-21)
 ------------------
 
 - Update references when moving objects (WEB-298).
