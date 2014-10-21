@@ -23,6 +23,11 @@ Create a dummy content object:
 ...     date_first_released = None
 ...     date_last_published = None
 
+>>> import mock
+>>> rename_patch = mock.patch('zeit.cms.syndication.feed.IRenameInfo')
+>>> RenameInfo = rename_patch.start()
+>>> RenameInfo().previous_uniqueIds = ()
+
 Create a feed:
 
 >>> import zeit.cms.syndication.feed
@@ -145,6 +150,12 @@ Now retract:
 >>> tasks.process()
 >>> len(repository['politik.feed'])
 0
+
+
+Teardown
+========
+
+>>> rename_patch.stop()
 
 
 .. [#functional] Setup functional test and get some common utilities
