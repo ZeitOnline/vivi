@@ -1,8 +1,8 @@
 zeit.newsletter changes
 =======================
 
-1.3 (unreleased)
-----------------
+1.3.0 (2014-10-21)
+------------------
 
 - Added a new advertisement section (VIV-514).
 
