@@ -74,7 +74,7 @@ data for dropdowns/selects:
  u'ressorts': [{u'ressort': u'Deutschland', u'ressort_name': u'Deutschland'},...
  u'series': [{u'serie': u'-', u'serie_title': u'-'},...
  u'template_url': u'http://localhost:8080/++skin++cms/fanstatic/zeit.find/search_form.jsont',
- u'types': [{u'title': u'File', u'type': u'file'},
+ u'types': [...{u'title': u'File', u'type': u'file'},...
            {u'title': u'Folder', u'type': u'collection'}...
 
 
@@ -268,7 +268,7 @@ Add content to testcontent
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result)
 {u'results': [{u'date': u'',
-              u'publication_status': u'',
+              u'publication_status': u'...not-published...',
               u'supertitle': u'',
               u'teaser_text': u'',
               u'teaser_title': u'Related title',
