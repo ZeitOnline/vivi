@@ -4,9 +4,10 @@
    i18n_domain="zope">
 
   <include package="zeit.cms" file="ftesting.zcml" />
+  <includeOverrides package="zeit.workflow" file="ftesting.zcml"/>
 
-  <includeOverrides package="zeit.workflow" />
-  <include package="zeit.solr" />
   <include package="zeit.content.video" />
+
+  <include package="zeit.solr" />
 
 </configure>
