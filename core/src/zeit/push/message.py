@@ -40,7 +40,7 @@ class Message(grok.Adapter):
 
     @property
     def url(self):
-        return self.context.uniqueId.replace(
+        return zeit.push.interfaces.IPushURL(self.context).replace(
             zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
 
 
@@ -55,3 +55,9 @@ class OneTimeMessage(Message):
             if service == self.config:
                 service['enabled'] = False
         push.message_config = config
+
+
+@grok.adapter(zeit.cms.interfaces.ICMSContent)
+@grok.implementer(zeit.push.interfaces.IPushURL)
+def default_push_url(context):
+    return context.uniqueId

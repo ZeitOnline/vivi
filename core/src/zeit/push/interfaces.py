@@ -88,3 +88,13 @@ class IPushMessages(zope.interface.Interface):
 
 PARSE_NEWS_CHANNEL = 'parse-channel-news'
 PARSE_BREAKING_CHANNEL = 'parse-channel-breaking'
+
+
+class IPushURL(zope.interface.Interface):
+    """Adapts ICMSContent to the uniqueId that is used to calculate the URL
+    to be transmitted in the push message.
+
+    Usually, that's the uniqueId of the ICMSContent itself, but this interface
+    provides an extension point for special treatments of certain content
+    types, e.g. zeit.content.link objects.
+    """

@@ -96,7 +96,7 @@ class WrapperMessage(zeit.push.message.OneTimeMessage):
 
     @property
     def url(self):
-        return self.context.uniqueId.replace(
+        return zeit.push.interfaces.IPushURL(self.context).replace(
             zeit.cms.interfaces.ID_NAMESPACE, 'http://wrapper.zeit.de/')
 
 
