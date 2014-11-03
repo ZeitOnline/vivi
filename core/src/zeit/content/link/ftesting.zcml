@@ -13,6 +13,7 @@
   <include package="zeit.content.image.browser" />
 
   <include package="zeit.push" />
+  <include package="zeit.push" file="mock-webservice.zcml" />
   <include package="zeit.push.browser" />
 
 </configure>

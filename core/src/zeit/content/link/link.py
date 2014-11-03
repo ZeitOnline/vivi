@@ -2,13 +2,15 @@
 # See also LICENSE.txt
 """Implementation of the link content type."""
 
-import zeit.cms.type
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import zeit.cms.content.metadata
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
+import zeit.cms.type
 import zeit.content.link.interfaces
+import zeit.push.interfaces
 import zope.component
 import zope.interface
 
@@ -58,3 +60,9 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             entry.set(rel_attribute, 'nofollow')
         else:
             entry.attrib.pop(rel_attribute, None)
+
+
+@grok.adapter(zeit.content.link.interfaces.ILink)
+@grok.implementer(zeit.push.interfaces.IPushURL)
+def link_push_url(context):
+    return context.url
