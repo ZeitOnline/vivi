@@ -7,6 +7,8 @@ zeit.push changes
 - Introduce ``IPushURL`` indirection so link objects can change the pushed url
   (VIV-516).
 
+- Fix bug in social media addform so it actually stores push configuration.
+
 
 1.6.0 (2014-10-21)
 ------------------
