@@ -13,7 +13,6 @@ import zeit.cms.cmscontent
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.redirect.interfaces
-import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.component
@@ -45,9 +44,12 @@ class XMLTeaser(zope.container.contained.Contained,
     # For free teasers, the special teaser uniqueId
     _uniqueId = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'uniqueId')
-    # BBB Before the uniqueId/href convention, content uniqueId was stored here
-    _uniqueId_old = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', '{http://namespaces.zeit.de/CMS/link}href')
+
+    # Migration notice: Before we introduced the uniqueId/href convention for
+    # VIV-322, the 'uniqueId' attribute was unused, the content uniqueId was
+    # stored in the '{http://namespaces.zeit.de/CMS/link}href' attribute, and
+    # the 'href' attribute contained either the teaser-uniqueId or the
+    # content-uniqueId, depending on the value of 'free-teaser'.
 
     def __init__(self, context, xml, name):
         self.xml = xml
@@ -69,9 +71,7 @@ class XMLTeaser(zope.container.contained.Contained,
     @property
     def uniqueId(self):
         if self.free_teaser:
-            # BBB Before the uniqueId/href convention, the ``href`` attribute
-            # contained both kinds of values, depending on ``free_teaser``.
-            return self._uniqueId or self._href
+            return self._uniqueId
         else:
             return self._href
 
@@ -85,9 +85,7 @@ class XMLTeaser(zope.container.contained.Contained,
 
     @property
     def original_uniqueId(self):
-        # BBB Before the uniqueId/href convention, the content uniqueId was
-        # stored in the ``{link}href`` attribute.
-        return self._uniqueId_old or self._href
+        return self._href
 
     @original_uniqueId.setter
     def original_uniqueId(self, value):

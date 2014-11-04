@@ -5,7 +5,9 @@ zeit.content.cp changes
 2.6.6 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Remove backwards-compatibility support for the ``href``/``{link}href``
+  attribute convention of free teasers, only the new ``uniqueId``/``href``
+  convention is supported anymore (VIV-546, VIV-322).
 
 
 2.6.5 (2014-10-21)
