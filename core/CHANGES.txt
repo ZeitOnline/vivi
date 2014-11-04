@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Set has_last_semantic for articles that contain liveblog blocks (VIV-534).
 
 
 3.6.4 (2014-10-21)
