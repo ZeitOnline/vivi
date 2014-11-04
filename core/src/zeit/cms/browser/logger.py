@@ -18,7 +18,7 @@ class JSONLog(zeit.cms.browser.view.JSON):
         error_reporting_util = zope.component.getUtility(
             zope.error.interfaces.IErrorReportingUtility)
         username = error_reporting_util._getUsername(self.request)
-        message = '%s (%s)\n%s' % (
+        message = '%s (%s) %s' % (
             decoded['url'],
             username,
             '\n'.join(str(x) for x in decoded['message']))

@@ -50,8 +50,14 @@
     MochiKit.Logging.logger.addListener(
         'console-listener', zeit.cms.logging.CONSOLE_LEVEL, console_listener);
 
-    window.onerror = function(err, url, line) {
-      logError(url + " line " + line + ": " + err);
+    window.onerror = function(message, url, line, column, error) {
+      if (error) {  // parameters column and error are supported on FF>=30
+          var traceback =  error.stack.slice(0, -1).replace("\n", "\n  ");
+          logError(message + "\nJS-Traceback (most recent call first):\n  "
+                   + traceback + "\n" + message);
+      } else {
+          logError(message + "\nJS-Traceback:\n  " + url + ":" + line);
+      }
     };
 
 }(jQuery));
