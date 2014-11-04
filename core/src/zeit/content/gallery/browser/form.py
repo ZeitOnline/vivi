@@ -51,11 +51,9 @@ class AddGallery(GalleryFormBase,
     form_fields = GalleryFormBase.form_fields.omit(
         'automaticMetadataUpdateDisabled')
 
-    @zope.formlib.form.action(_("Add"),
-                              condition=zope.formlib.form.haveInputWidgets)
-    def handle_add(self, action, data):
-        self.applyAccountData(data)
-        return super(AddGallery, self).handle_add.success(data)
+    def applyChanges(self, object, data):
+        self.applyAccountData(object, data)
+        return super(AddGallery, self).applyChanges(object, data)
 
 
 class EditGallery(GalleryFormBase,
@@ -63,11 +61,9 @@ class EditGallery(GalleryFormBase,
 
     title = _("Edit gallery")
 
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyAccountData(data)
-        return super(EditGallery, self).handle_edit_action.success(data)
+    def applyChanges(self, data):
+        self.applyAccountData(self.context, data)
+        return super(EditGallery, self).applyChanges(data)
 
 
 class DisplayGallery(GalleryFormBase,
