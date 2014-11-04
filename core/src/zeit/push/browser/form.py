@@ -4,6 +4,8 @@ from zeit.push.twitter import twitterAccountSource
 import gocept.form.grouped
 import grokcore.component as grok
 import zeit.cms.browser.form
+import zeit.cms.testcontenttype.interfaces
+import zeit.cms.testcontenttype.testcontenttype
 import zope.app.appsetup.product
 import zope.formlib.form
 import zope.interface
@@ -58,7 +60,7 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         super(SocialBase, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
 
-    def applyAccountData(self, data):
+    def applyAccountData(self, object, data):
         message_config = [
             {'type': 'facebook',
              'enabled': data.pop('facebook', False),
@@ -87,7 +89,7 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
                 'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL,
             })
         zeit.push.interfaces.IPushMessages(
-            self.context).message_config = message_config
+            object).message_config = message_config
 
 
 class Accounts(grok.Adapter):
@@ -179,12 +181,27 @@ class Accounts(grok.Adapter):
         pass
 
 
+class SocialAddForm(
+        SocialBase, zeit.cms.content.browser.form.CommonMetadataAddForm):
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.cms.testcontenttype.interfaces.ITestContentType).omit(
+            'authors', 'xml')
+    factory = zeit.cms.testcontenttype.testcontenttype.TestContentType
+
+    field_groups = (
+        zeit.cms.content.browser.form.CommonMetadataAddForm.field_groups
+        + (SocialBase.social_fields,))
+
+    def applyChanges(self, object, data):
+        self.applyAccountData(object, data)
+        return super(SocialAddForm, self).applyChanges(object, data)
+
+
 class SocialEditForm(SocialBase, zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.FormFields()
 
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyAccountData(data)
-        return super(SocialEditForm, self).handle_edit_action.success(data)
+    def applyChanges(self, data):
+        self.applyAccountData(self.context, data)
+        return super(SocialEditForm, self).applyChanges(data)

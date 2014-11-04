@@ -106,6 +106,28 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             ['Wissen'], b.getControl('Additional Twitter').displayValue)
 
 
+class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.push.testing.ZCML_LAYER
+
+    def test_applies_push_configuration_to_added_object(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi'
+               '/repository/@@zeit.cms.testcontenttype.AddSocial')
+        b.getControl('File name').value = 'social'
+        b.getControl('Title').value = 'Social content'
+        b.getControl('Ressort').displayValue = ['Deutschland']
+        b.getControl('Enable Twitter').selected = True
+        b.getControl('Add', index=0).click()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            content = zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/social')
+            push = zeit.push.interfaces.IPushMessages(content)
+            self.assertIn(
+                {'type': 'twitter', 'enabled': True,
+                 'account': 'twitter-test'}, push.message_config)
+
+
 class TwitterShorteningTest(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.push.testing.WEBDRIVER_LAYER

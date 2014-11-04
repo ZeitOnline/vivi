@@ -24,5 +24,12 @@
     class=".form.SocialEditForm"
     permission="zeit.EditContent"
     />
+  <browser:page
+    for="zeit.cms.repository.interfaces.IFolder"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    class=".form.SocialAddForm"
+    name="zeit.cms.testcontenttype.AddSocial"
+    permission="zeit.AddContent"
+    />
 
 </configure>
