@@ -66,6 +66,8 @@ to be 2008/26):
 Jahr der Überraschungen
 >>> print article.ressort
 Wissen
+>>> article.channels
+((u'Wissen', None),)
 >>> article.main_image_block is None
 False
 

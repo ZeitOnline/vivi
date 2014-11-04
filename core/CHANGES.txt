@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Set has_last_semantic for articles that contain liveblog blocks (VIV-534).
 
+- Set default channels for CDS articles (VIV-547).
+
 
 3.6.4 (2014-10-21)
 ------------------

@@ -72,6 +72,10 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
             value = el.text
             if value:
                 properties[(name, ns)] = value
+        zope.lifecycleevent.modified(
+            self, zope.lifecycleevent.Attributes(
+                zeit.cms.content.interfaces.ICommonMetadata,
+                *list(zeit.cms.content.interfaces.ICommonMetadata)))
 
     @property
     def main_image_block(self):
