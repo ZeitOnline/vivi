@@ -33,11 +33,9 @@ class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
     form_fields = Base.form_fields.omit(
         'automaticMetadataUpdateDisabled')
 
-    @zope.formlib.form.action(_("Add"),
-                              condition=zope.formlib.form.haveInputWidgets)
-    def handle_add(self, action, data):
-        self.applyAccountData(data)
-        return super(Add, self).handle_add.success(data)
+    def applyChanges(self, object, data):
+        self.applyAccountData(object, data)
+        return super(Add, self).applyChanges(object, data)
 
 
 class Edit(Base,
@@ -45,11 +43,9 @@ class Edit(Base,
 
     title = _('Edit link')
 
-    @zope.formlib.form.action(
-        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
-    def handle_edit_action(self, action, data):
-        self.applyAccountData(data)
-        return super(Edit, self).handle_edit_action.success(data)
+    def applyChanges(self, data):
+        self.applyAccountData(self.context, data)
+        return super(Edit, self).applyChanges(data)
 
 
 class Display(Base, zeit.cms.content.browser.form.CommonMetadataDisplayForm):
