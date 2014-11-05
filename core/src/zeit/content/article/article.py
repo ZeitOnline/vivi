@@ -66,16 +66,20 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
 
     def updateDAVFromXML(self):
         properties = zeit.connector.interfaces.IWebDAVProperties(self)
+        modified = []
         for el in self.xml.head.attribute:
             name = el.get('name')
             ns = el.get('ns')
             value = el.text
             if value:
                 properties[(name, ns)] = value
+                prop = zeit.cms.content.dav.findProperty(
+                    zeit.cms.content.metadata.CommonMetadata, name, ns)
+                if prop:
+                    modified.append(prop.field.__name__)
         zope.lifecycleevent.modified(
             self, zope.lifecycleevent.Attributes(
-                zeit.cms.content.interfaces.ICommonMetadata,
-                *list(zeit.cms.content.interfaces.ICommonMetadata)))
+                zeit.cms.content.interfaces.ICommonMetadata, *modified))
 
     @property
     def main_image_block(self):
