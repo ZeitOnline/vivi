@@ -8,6 +8,8 @@ zeit.content.article changes
 
 - Set default channels for CDS articles (VIV-547).
 
+- Allow drag&drop of modules while in edit mode (VIV-405).
+
 
 3.6.4 (2014-10-21)
 ------------------

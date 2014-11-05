@@ -202,8 +202,18 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.init_shortcuts();
             self.relocate_toolbar(true);
             self.events.push(MochiKit.Signal.connect(
-                window, 'before-content-drag', function() {
+                window, 'before-content-drag', function(event) {
+                    // XXX I guess since window is a DOM object, MochiKit
+                    // treats signals differently and does not simply pass
+                    // additional parameters to the connected handler?!
+                    var draggable = event.event();
                     if (!self.locked) {
+                        var ident = MochiKit.Signal.connect(
+                            zeit.edit.editor, 'after-reload', function() {
+                                MochiKit.Signal.disconnect(ident);
+                                MochiKit.DragAndDrop.Droppables.prepare(
+                                    draggable.element);
+                        });
                         self.save();
                     }
                 }));
