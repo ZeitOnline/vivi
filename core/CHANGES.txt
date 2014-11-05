@@ -10,6 +10,8 @@ zeit.cms changes
 
 - Pass draggable to ``before-content-drag`` event (VIV-405).
 
+- Sort add menu items alphabetically.
+
 
 2.29.0 (2014-10-21)
 -------------------

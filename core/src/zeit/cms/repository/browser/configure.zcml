@@ -18,6 +18,7 @@
 
   <browser:menu
     id="zeit-add-menu"
+    class=".menu.SortingMenu"
     title="Add ..."
     description="Menu for adding content."
     />
