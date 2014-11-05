@@ -63,7 +63,7 @@ MochiKit.Signal.connect(
         return;
     }
 
-    MochiKit.Signal.signal(window, 'before-content-drag');
+    MochiKit.Signal.signal(window, 'before-content-drag', draggable);
 
     var div = $('drag-pane');
     if (div) {

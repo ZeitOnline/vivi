@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Introduce ``zeit.cms.content.dav.findProperty``.
 
+- Pass draggable to ``before-content-drag`` event (VIV-405).
+
 
 2.29.0 (2014-10-21)
 -------------------
