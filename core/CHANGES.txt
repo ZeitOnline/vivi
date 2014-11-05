@@ -1,10 +1,11 @@
 Changes
 =======
 
-2.4.3 (unreleased)
+2.5.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Move the additional ``Droppables.prepare`` step to the article editor where
+  it belongs, otherwise landing zones are not removed properly (VIV-405).
 
 
 2.4.2 (2014-10-21)

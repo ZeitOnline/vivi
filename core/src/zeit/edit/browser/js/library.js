@@ -60,17 +60,12 @@ MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'start',
         // XXX It's unclear which semantics we want here: A generic before-drag
         // event, or specific before-content-drag, before-module-drag etc.?
         // Since there is only one subscriber at the moment, we leave it as is.
-        MochiKit.Signal.signal(window, 'before-content-drag');
+        MochiKit.Signal.signal(window, 'before-content-drag', draggable);
         draggable.element = draggable.element.cloneNode(true);
         MochiKit.DOM.addElementClass(
             draggable.element, 'module-drag-pane');
         draggable.offset = [-10, -10];
         jQuery('body').append(draggable.element);
-        var ident = MochiKit.Signal.connect(
-            zeit.edit.editor, 'after-reload', function() {
-                MochiKit.Signal.disconnect(ident);
-                MochiKit.DragAndDrop.Droppables.prepare(draggable.element);
-        });
 });
 
 MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'end',
