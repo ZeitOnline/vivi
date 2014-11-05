@@ -449,6 +449,16 @@ def mapProperty(field, namespace, name=None, vars=None, use_default=False,
                              writeable=writeable)
 
 
+def findProperty(class_, name, namespace):
+    for attribute in dir(class_):
+        prop = getattr(class_, attribute)
+        if not isinstance(prop, DAVProperty):
+            continue
+        if prop.name == name and prop.namespace == namespace:
+            return prop
+    return None
+
+
 class DAVPropertiesAdapter(grokcore.component.Adapter):
 
     grokcore.component.context(zeit.cms.repository.interfaces.IDAVContent)

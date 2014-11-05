@@ -3,7 +3,9 @@
 
 import grokcore.component
 import grokcore.component.testing
+import unittest
 import zeit.cms.content.dav
+import zeit.cms.content.metadata
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -58,3 +60,18 @@ class TestPropertyBase(zeit.cms.testing.ZeitCmsTestCase):
     def test_adapter_should_set_parent(self):
         adapter = zeit.cms.content.dav.DAVPropertiesAdapter(self.content)
         self.assertEqual(self.content, adapter.__parent__)
+
+
+class FindPropertyTest(unittest.TestCase):
+
+    def test_match_found_returns_property(self):
+        prop = zeit.cms.content.dav.findProperty(
+            zeit.cms.content.metadata.CommonMetadata, 'ressort',
+            zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
+        self.assertEqual('ressort', prop.field.__name__)
+
+    def test_no_match_found_returns_none(self):
+        prop = zeit.cms.content.dav.findProperty(
+            zeit.cms.content.metadata.CommonMetadata, 'nonexistent',
+            zeit.cms.interfaces.DOCUMENT_SCHEMA_NS)
+        self.assertEqual(None, prop)

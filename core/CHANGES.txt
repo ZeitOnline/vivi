@@ -1,10 +1,12 @@
 zeit.cms changes
 ================
 
-2.29.1 (unreleased)
+2.30.0 (unreleased)
 -------------------
 
 - Log stack trace of JavaScript errors.
+
+- Introduce ``zeit.cms.content.dav.findProperty``.
 
 
 2.29.0 (2014-10-21)
