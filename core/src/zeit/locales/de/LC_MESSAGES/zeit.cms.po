@@ -15,8 +15,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Oct 14 23:03:17 2014\n"
-"PO-Revision-Date: 2014-10-14 23:14+0100\n"
-"Last-Translator: Thomas Lotze <tl@gocept.com>\n"
+"PO-Revision-Date: 2014-11-06 12:25+0100\n"
+"Last-Translator: Wolfgang Schnerring <ws@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
@@ -756,7 +756,7 @@ msgstr "Autoren"
 #: zeit/content/article/edit/browser/recension.py:67
 #: zeit/content/cp/browser/form.py:52 zeit/content/gallery/browser/form.py:38
 msgid "misc."
-msgstr "sonstiges"
+msgstr "Sonstiges"
 
 #: zeit/cms/content/browser/mobile_alternative.pt:9
 msgid "no mobile alternative"
@@ -3666,8 +3666,7 @@ msgstr "Verschickt"
 msgid "Email for test"
 msgstr "E-Mail-Adresse"
 
-#: zeit/newsletter/interfaces.py:28
-#: zeit/newsletter/interfaces.py:78
+#: zeit/newsletter/interfaces.py:28 zeit/newsletter/interfaces.py:78
 msgid "Subject"
 msgstr "Betreff"
 
@@ -3677,7 +3676,8 @@ msgstr "Ziel-URL"
 
 #: zeit/newsletter/interfaces.py:71
 msgid "Timestamp when the last newsletter object in this category was created"
-msgstr "Datum/Uhrzeit wann der letzte Newsletter dieser Kategorie erstellt wurde"
+msgstr ""
+"Datum/Uhrzeit wann der letzte Newsletter dieser Kategorie erstellt wurde"
 
 #: zeit/newsletter/interfaces.py:79
 msgid "{today} -> %d.%m.%Y"
@@ -3707,8 +3707,7 @@ msgstr "Video-Playlist ID"
 msgid "Group"
 msgstr "Ressort"
 
-#: zeit/newsletter/newsletter.py:212
-#: zeit/newsletter/newsletter.py:215
+#: zeit/newsletter/newsletter.py:212 zeit/newsletter/newsletter.py:215
 #: zeit/newsletter/newsletter.py:218
 msgid "Advertisement"
 msgstr "Werbung"
