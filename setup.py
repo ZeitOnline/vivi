@@ -16,6 +16,7 @@ setup(
     install_requires=[
         'fb',
         'grokcore.component',
+        'gocept.testing',
         'mock',
         'pytz',
         'requests',

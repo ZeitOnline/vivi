@@ -1,11 +1,13 @@
 # coding: utf-8
-import time
 import fb
-import zeit.push.testing
+import gocept.testing.assertion
+import time
 import zeit.push.facebook
+import zeit.push.testing
 
 
-class FacebookTest(zeit.push.testing.TestCase):
+class FacebookTest(zeit.push.testing.TestCase,
+                   gocept.testing.assertion.String):
 
     level = 2
 
@@ -43,7 +45,7 @@ class FacebookTest(zeit.push.testing.TestCase):
         for status in self.api.get_object(
                 cat='single', id='me', fields=['feed'])['feed']['data']:
             if self.nugget in status['message']:
-                self.assertEqual('http://example.com/', status['link'])
+                self.assertStartsWith('http://example.com/', status['link'])
                 self.assertIn(u'faceboök', status['message'])
                 break
         else:
