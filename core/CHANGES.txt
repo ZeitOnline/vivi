@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.1.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Grant ``zeit.content.cp.ViewAutomatic`` to ``zeit.Betatester`` (VIV-525).
 
 
 2.1.6 (2014-10-07)
