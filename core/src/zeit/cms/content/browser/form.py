@@ -53,6 +53,10 @@ class CommonMetadataFormBase(object):
         _("Authors"),
         ('authorships', 'authors'),
         css_class='wide-widgets column-left')
+    auto_cp_fields = gocept.form.grouped.Fields(
+        _("Run in channel"),
+        ('channels', 'lead_candidate'),
+        css_class='column-right')
 
     field_groups = (
         navigation_fields,
@@ -87,6 +91,11 @@ class CommonMetadataFormBase(object):
         if omit_auto_cp:
             self.form_fields = self.form_fields.omit(
                 'channels', 'lead_candidate')
+        else:
+            self.field_groups = (
+                self.field_groups[:2]
+                + (self.auto_cp_fields,)
+                + self.field_groups[2:])
 
         if not self.for_display:
             # Change the widgets of the teaser fields
