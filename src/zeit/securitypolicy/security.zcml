@@ -184,6 +184,10 @@
   <!-- Betatester grants -->
   <grant
     role="zeit.Betatester"
+    permission="zeit.content.cp.ViewAutomatic"
+    />
+  <grant
+    role="zeit.Betatester"
     permission="zeit.content.cp.EditAutomatic"
     />
 
