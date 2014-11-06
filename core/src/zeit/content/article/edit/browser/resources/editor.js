@@ -235,24 +235,37 @@ zeit.content.article.Editable = gocept.Class.extend({
         } else {
             text_node = self.initial_paragraph;
             log('Placing cursor to ', text_node.nodeName);
-            var direction;
+            var direction_child;
+            var direction_sibling;
             if (place_cursor_at_end)  {
-                direction = 'lastChild';
+                direction_child = 'lastChild';
+                direction_sibling = 'previousSibling';
             } else {
-                direction = 'firstChild';
+                direction_child = 'firstChild';
+                direction_sibling = 'nextSibling';
             }
 
-            while (text_node[direction] !== null) {
+            var child;
+            while (text_node.childNodes.length) {
+                child = text_node[direction_child];
                 // We need to avoid placing the cursor inside a br element
                 // since it is not possible to type in there and trying to do
                 // so leads to funny effects (#12266). The br element is put in
                 // this place in an effort to keep empty paragraphs editable
                 // while editing.
-                if (text_node[direction].nodeName === 'BR') {
+                if (child.nodeName !== 'BR') {
+                    text_node = child;
+                    continue;
+                }
+                if (child[direction_sibling] !== null) {
+                    text_node = child[direction_sibling];
+                } else {
+                    // BR is the only child so we need to refer to its parent,
+                    // i.e. not descend from text_node at all.
                     break;
                 }
-                text_node = text_node[direction];
             }
+
             offset = 0;
             if (place_cursor_at_end &&
                 text_node.nodeType == text_node.TEXT_NODE)  {
