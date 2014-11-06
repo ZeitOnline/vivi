@@ -16,6 +16,7 @@ import zope.app.appsetup.product
 import zope.app.publication.interfaces
 import zope.component
 import zope.dottedname
+import zope.i18n
 import zope.security.proxy
 import zope.testing.cleanup
 
@@ -297,10 +298,15 @@ class AddableCMSContentTypeSource(CMSContentTypeSource):
 
     def getValues(self):
         import zeit.cms.content.interfaces  # break circular import
-        return (list(super(AddableCMSContentTypeSource, self).getValues())
-                + list(interface for name, interface in
-                       zope.component.getUtilitiesFor(
-                           zeit.cms.content.interfaces.IAddableContent)))
+        types = (list(super(AddableCMSContentTypeSource, self).getValues())
+                 + list(interface for name, interface in
+                        zope.component.getUtilitiesFor(
+                            zeit.cms.content.interfaces.IAddableContent)))
+        by_title = {
+            # XXX Hard-code language, since we don't have a request here.
+            zope.i18n.translate(self.getTitle(x), target_language='de'): x
+            for x in types}
+        return [by_title[x] for x in sorted(by_title.keys())]
 
     def filterValue(self, value):
         import zeit.cms.type  # break circular import
