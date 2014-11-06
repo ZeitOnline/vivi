@@ -235,6 +235,10 @@
     provides="z3c.traverser.interfaces.ITraverserPlugin"
     />
 
+  <permission
+    id="zeit.content.cp.ViewAutomatic"
+    title="View automatic CP fields"
+    />
   <zeit:edit-permission
     id="zeit.content.cp.EditAutomatic"
     title="Edit automatic CPs"

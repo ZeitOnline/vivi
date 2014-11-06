@@ -12,6 +12,8 @@ zeit.cms changes
 
 - Sort add menu items alphabetically.
 
+- Add readonly permission ``zeit.content.cp.ViewAutomatic`` (VIV-525).
+
 
 2.29.0 (2014-10-21)
 -------------------
