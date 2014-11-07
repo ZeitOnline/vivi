@@ -10,6 +10,9 @@ zeit.content.article changes
 
 - Allow drag&drop of modules while in edit mode (VIV-405).
 
+- When searching or replacing, ask to wrap around at end or beginning of text,
+  resp. (VIV-10716).
+
 
 3.6.4 (2014-10-21)
 ------------------

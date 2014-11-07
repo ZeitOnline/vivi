@@ -631,20 +631,26 @@ zeit.content.article.Editable = gocept.Class.extend({
         }
     },
 
-    activate_next_editable: function(direction, suppress_focus) {
+    activate_next_editable: function(direction, wrap_around,  suppress_focus) {
         var self = this;
-        var cursor_at_end = (direction == 'nextSibling') ? false : true;
-        var block = self.block;
         var next_block = null;
-        while (block[direction] !== null) {
-            block = block[direction];
-            if (block.nodeType != block.ELEMENT_NODE) {
-                continue;
-            }
-            if (MochiKit.DOM.hasElementClass(block, 'block') &&
-                self.is_block_editable(block)) {
-                next_block = block;
-                break;
+        if (wrap_around) {
+            var editables = $('#editable-body .block .editable');
+            next_block = ((direction == 'nextSibling') ?
+                          editables.first() : editables.last()
+                         ).closest('.block')[0];
+        } else {
+            var block = self.block;
+            while (block[direction] !== null) {
+                block = block[direction];
+                if (block.nodeType != block.ELEMENT_NODE) {
+                    continue;
+                }
+                if (MochiKit.DOM.hasElementClass(block, 'block') &&
+                    self.is_block_editable(block)) {
+                    next_block = block;
+                    break;
+                }
             }
         }
         if (next_block === null) {
@@ -654,6 +660,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         // Note id as save may (or probably will) replace the element
         var next_block_id = next_block.id;
         self.save();
+        var cursor_at_end = (direction == 'nextSibling') ? false : true;
         return new zeit.content.article.Editable(
             MochiKit.DOM.getFirstElementByTagAndClassName(
                 'div', 'editable', $('#' + next_block_id)[0]),

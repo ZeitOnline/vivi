@@ -254,7 +254,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
             zeit.content.article.select(
                 self.restore_selection['startContainer'],
                 self.restore_selection['startOffset'],
-                self.restore_selection['startOffset']);
+                self.restore_selection['endOffset']);
             // I think we don't want to scollIntoView, since I think the most
             // common scenario for restore_selection is closing the dialog
             // after not finding anything, which means there will have been
@@ -287,15 +287,34 @@ zeit.content.article.FindDialog = gocept.Class.extend({
             var relation = (
                 direction == FORWARD) ? 'nextSibling' : 'previousSibling';
             var next_editable = self.editable.activate_next_editable(
-                relation, /*suppress_focus=*/true);
+                relation, /*wrap_around=*/false, /*suppress_focus=*/true);
+
+            if (next_editable === null) {
+                var query_text = (direction == FORWARD) ?
+                    'Das Textende wurde erreicht. ' +
+                        'Suche am Textanfang fortsetzen?' :
+                    'Der Textanfang wurde erreicht. ' +
+                        'Suche am Textende fortsetzen?';
+
+                // Clicking inside the confirmation dialog may kill the
+                // selection.
+                self.restore_selection = zeit.content.article._get_selection(
+                    self.editable.editable);
+                if (confirm(query_text)) {
+                    next_editable = self.editable.activate_next_editable(
+                        relation,
+                        /*wrap_around=*/true, /*suppress_focus=*/true);
+                } else {
+                    self.close();
+                }
+            }
+
             if (next_editable !== null) {
                 self.editable = next_editable;
                 self.restore_selection = null;
                 self.editable.initialized.addCallback(function(){
                     self.find(direction);
                 });
-            } else {
-                alert('Keine weiteren Ergebnisse');
             }
         } else {
             self.current_match['node'].parentNode.scrollIntoView();

@@ -227,3 +227,58 @@ class FindReplaceTest(
         s.waitForText('css=.block.type-p p', 'qux bar baz')
         # XXX swaitForAlert() does not seem to work.
         self.assertEqual('1 Stelle(n) ersetzt.', s.selenium.get_alert())
+
+    def test_asks_for_confirmation_to_wrap_around_at_end(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>foo bar foo</p>")
+        self.eval("zeit.content.article.select("
+                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+                  "4, 4)")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'foo')
+        s.click('css=button:contains(Weiter)')
+        s.chooseOkOnNextConfirmation()
+        s.click('css=button:contains(Weiter)')
+        s.waitForConfirmation(
+            'Das Textende wurde erreicht. Suche am Textanfang fortsetzen?')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 0')
+
+    def test_asks_for_confirmation_to_wrap_around_at_beginning(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>foo bar foo</p>")
+        self.eval("zeit.content.article.select("
+                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+                  "4, 4)")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'foo')
+        s.click(u'css=button:contains(Zurück)')
+        s.chooseOkOnNextConfirmation()
+        s.click(u'css=button:contains(Zurück)')
+        s.waitForConfirmation(
+            'Der Textanfang wurde erreicht. Suche am Textende fortsetzen?')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 8')
+
+    def test_closes_replace_dialog_on_cancelled_wrapping_confirmation(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>foo bar foo</p>")
+        self.eval("zeit.content.article.select("
+                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+                  "4, 4)")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'foo')
+        s.click('css=button:contains(Weiter)')
+        s.chooseCancelOnNextConfirmation()
+        s.click('css=button:contains(Weiter)')
+        s.waitForConfirmation(
+            'Das Textende wurde erreicht. Suche am Textanfang fortsetzen?')
+        s.waitForNotVisible('id=find-dialog-searchtext')
+        self.wait_for_condition(
+            'window.getSelection().getRangeAt(0).startOffset == 8')
