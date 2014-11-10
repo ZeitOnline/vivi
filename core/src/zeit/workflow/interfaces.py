@@ -108,7 +108,7 @@ class IPublicationDependencies(zope.interface.Interface):
     """Adapter to find the publication dependencies of an object."""
 
     def get_dependencies():
-        """Return a sequence of all depdnent objects.
+        """Return a sequence of all dependent objects.
 
     The sequence contains all objects which need to be published along with the
     adapted object. Dependent containers will be published recursively.
