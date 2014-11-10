@@ -9,6 +9,8 @@ zeit.push changes
 
 - Fix bug in social media addform so it actually stores push configuration.
 
+- Translage parse.com title (VIV-552).
+
 
 1.6.0 (2014-10-21)
 ------------------

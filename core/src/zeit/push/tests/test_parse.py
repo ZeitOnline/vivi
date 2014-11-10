@@ -110,6 +110,20 @@ class ParametersTest(zeit.push.testing.TestCase):
             data = push.call_args[0][0]
             self.assertNotIn('channels', data['where'])
 
+    def test_translates_title(self):
+        domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
+        self.zca.patch_utility(domain, name='zeit.cms')
+        self.catalog = zeit.cms.testing.TestCatalog()
+        domain.addCatalog(self.catalog)
+        self.catalog.messages['breaking-news-parse-title'] = 'foo'
+        api = zeit.push.parse.Connection(
+            'any', 'any', 1)
+        api.LANGUAGE = 'tt'
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any')
+            data = push.call_args[0][0]
+            self.assertEqual('foo', data['data']['aps']['alert-title'])
+
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):
 
