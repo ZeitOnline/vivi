@@ -28,6 +28,8 @@ class Connection(object):
 
     PUSH_ACTION_ID = 'de.zeit.online.PUSH'
 
+    LANGUAGE = 'de'
+
     def __init__(self, application_id, rest_api_key, expire_interval):
         self.application_id = application_id
         self.rest_api_key = rest_api_key
@@ -51,7 +53,10 @@ class Connection(object):
         if config.get(PARSE_NEWS_CHANNEL) in channels:
             title = kw.get('supertitle', _('ZEIT ONLINE:'))
         else:
-            title = _('Breaking news')
+            title = _('breaking-news-parse-title')
+        # There's no i18n in the mobile app, so we translate to a hard-coded
+        # language here.
+        title = zope.i18n.translate(title, target_language=self.LANGUAGE)
 
         # Android >= 1.1
         android = {
