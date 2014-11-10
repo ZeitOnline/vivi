@@ -93,9 +93,9 @@ class CommonMetadataFormBase(object):
                 'channels', 'lead_candidate')
         else:
             self.field_groups = (
-                self.field_groups[:2]
+                self.field_groups[:3]
                 + (self.auto_cp_fields,)
-                + self.field_groups[2:])
+                + self.field_groups[3:])
 
         if not self.for_display:
             # Change the widgets of the teaser fields
