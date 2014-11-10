@@ -16,7 +16,7 @@
 
 <div id="publish.errors">
   <tal:block tal:condition="not: view/can_publish">
-    <p i18n:translate="publish-preconditions-not-met">Cannot publish since preconditions for publishing are not met.</p>
+    <p i18n:translate="publish-preconditions-not-met">Cannot publish since preconditions for publishing are not met. <span i18n:name="name" tal:content="context/uniqueId" /></p>
   </tal:block>
 </div>
 </div>
