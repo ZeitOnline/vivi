@@ -202,6 +202,8 @@ class SocialEditForm(SocialBase, zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.FormFields()
 
-    def applyChanges(self, data):
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
         self.applyAccountData(self.context, data)
-        return super(SocialEditForm, self).applyChanges(data)
+        super(SocialEditForm, self).handle_edit_action.success(data)
