@@ -40,6 +40,7 @@ class Status(object):
 class Rule(object):
 
     def __init__(self, code, line=None):
+        self.source = code
         self.code = compile(code, '<string>', 'exec')
         self.line = line
 
