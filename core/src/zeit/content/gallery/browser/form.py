@@ -34,10 +34,10 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase):
         base.navigation_fields,
         base.head_fields,
         text_fields,
-        zeit.push.browser.form.SocialBase.social_fields,
         gocept.form.grouped.RemainingFields(
             _("misc."),
             css_class='column-right'),
+        zeit.push.browser.form.SocialBase.social_fields,
         base.option_fields,
     )
 
