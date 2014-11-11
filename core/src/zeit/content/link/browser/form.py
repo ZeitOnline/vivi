@@ -44,9 +44,11 @@ class Edit(Base,
 
     title = _('Edit link')
 
-    def applyChanges(self, data):
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
         self.applyAccountData(self.context, data)
-        return super(Edit, self).applyChanges(data)
+        super(Edit, self).handle_edit_action.success(data)
 
 
 class Display(Base, zeit.cms.content.browser.form.CommonMetadataDisplayForm):
