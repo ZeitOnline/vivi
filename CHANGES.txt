@@ -4,7 +4,8 @@ zeit.content.image changes
 2.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Extend behaviour of apply action in form by overwriting the action from zope,
+  rather using our custom applyChanges semantic that we just removed (VIV-516).
 
 
 2.2.3 (2014-10-21)
