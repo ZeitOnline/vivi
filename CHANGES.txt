@@ -4,7 +4,8 @@ zeit.newsletter changes
 1.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Call apply changes of super class by direct call to the apply action, since
+  our custom applyChanges hook is not present in inline forms (VIV-516).
 
 
 1.3.0 (2014-10-21)
