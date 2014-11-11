@@ -61,9 +61,11 @@ class EditGallery(GalleryFormBase,
 
     title = _("Edit gallery")
 
-    def applyChanges(self, data):
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
         self.applyAccountData(self.context, data)
-        return super(EditGallery, self).applyChanges(data)
+        super(EditGallery, self).handle_edit_action.success(data)
 
 
 class DisplayGallery(GalleryFormBase,
