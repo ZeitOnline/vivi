@@ -20,9 +20,10 @@ class Base(zeit.push.browser.form.SocialBase):
             'xml', 'authors', 'push_news')
 
     field_groups = (
-        base.field_groups[:3]
-        + (zeit.push.browser.form.SocialBase.social_fields,)
-        + base.field_groups[3:]
+        base.field_groups[:4]
+        + (zeit.push.browser.form.SocialBase.social_fields,
+           base.option_fields,
+           base.author_fields)
     )
 
 
