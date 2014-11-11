@@ -217,7 +217,6 @@ zeit.content.article.Editable = gocept.Class.extend({
                         self.save();
                     }
                 }));
-            self.initialized = true;
         });
         d.addErrback(function(err) {zeit.cms.log_error(err); return err;});
         self.initialized = d;
