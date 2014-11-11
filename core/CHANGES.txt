@@ -561,7 +561,7 @@ internal:
 
 - Remove XMLSnippet, its functionality is not used anymore.
 
-- We need to use @@raw view to get the actual URL of images (#12159)  
+- We need to use @@raw view to get the actual URL of images (#12159)
 
 
 1.55.0 (2012-12-17)
@@ -1444,7 +1444,7 @@ Technisches
 1.18.1 (2009-04-17)
 -------------------
 
-- UUIDs leben jetzt in ``{http://namespaces.zeit.de/CMS/document}uuid`` und 
+- UUIDs leben jetzt in ``{http://namespaces.zeit.de/CMS/document}uuid`` und
   haben das Format ``{urn:uuid:3acb7948-9c83-439b-90ce-98426541ca80}``.
 
 1.18 (2009-04-16)
@@ -1492,7 +1492,7 @@ Technisches
 -------------------
 
 - Lightbox flexibilisiert.
-  
+
 
 1.16.1 (2009-03-23)
 -------------------
@@ -1513,7 +1513,7 @@ Technische Änderungen
 ~~~~~~~~~~~~~~~~~~~~~
 
 - Stabile Sortierung der abhängigen Objekte im Workflow.
-  
+
 - Hit-Importer sperrt nur noch für max. 10 Sekunden.
 
 
@@ -1702,7 +1702,7 @@ Technische Änderungen
   Ursprungsobjekts erzeugt. Damit können contextabhängige Styles angesehen
   werden (v.a. Zuender). (Bug #4311)
 - Löschen funktioniert wieder.
- 	
+
 
 1.3 (2008-11-17)
 ----------------
@@ -1972,7 +1972,7 @@ Technische Änderungen
   "unbekannten Resourcen" kaputt (bug #4300).
 - DailyNL in den Standard-Metadaten (bug #4307).
 - JS-Warnung, wenn kein Firefox verwendet wird (bug #4305).
-- Popup-Asset/Image-Browser expandiert den automatisch Baum wenn man in einem 
+- Popup-Asset/Image-Browser expandiert den automatisch Baum wenn man in einem
   Ordner drin ist.
 - date-last-modified als webdav-property für XML-Inhalte (bug #4310).
 
@@ -2076,7 +2076,7 @@ Technische Änderungen
 - Objekte Referenzieren: Wenn der Pfeil -> mit aktivem Shift, Ctrl oder Meta
   gedrückt wird geht ein neues Tab/Fenster auf (bug #4175).
 - Auf der Biga gibt es jetzt einen Link zum Bild (bug #4180).
-- Der HTML-Titel im CMS beinhaltet jetzt den Titel des Objekts (bug #4152). 
+- Der HTML-Titel im CMS beinhaltet jetzt den Titel des Objekts (bug #4152).
 - ObjectBrowser zeigt jetzt den aktuellen Pfad an (bug #4058).
 - ObjectBrowser gibt eine Meldung aus, wenn im Ordner nichts auswählbares
   vorhanden ist.
@@ -2133,7 +2133,7 @@ Technische Änderungen
 - Behandlung von Clipboard-Einträgen auf gelöschte Objekte verbessert.
 - Sortierung nach Änderungsdatum ging nicht immer (bug #4150).
 - Wenn ein Verzeichnis XML-Resourcen enthält, die kein valides XML enthalten
-  werden sie jetzt als unbekannte Resource interpretiert (bug #4151).  
+  werden sie jetzt als unbekannte Resource interpretiert (bug #4151).
 
 
 0.9.12 (2008-04-30)
