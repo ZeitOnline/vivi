@@ -40,3 +40,12 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.open('@@edit.form.social?show_form=1')
         # Assert nothing raised
         b.getControl('Push after next publish?').selected = True
+
+    def test_smoke_form_submit_stores_values(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Push after next publish?').selected = True
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        self.assertEqual(True, push.enabled)

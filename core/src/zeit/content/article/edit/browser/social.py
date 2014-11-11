@@ -19,6 +19,6 @@ class Social(zeit.push.browser.form.SocialBase,
     FormFieldsFactory = FormFields
     form_fields = FormFieldsFactory()
 
-    def success_handler(self, action, data, errors=None):
-        self.applyAccountData(data)
-        return super(Social, self).success_handler(action, data, errors)
+    def applyChanges(self, data):
+        self.applyAccountData(self.context, data)
+        return super(Social, self).applyChanges(data)
