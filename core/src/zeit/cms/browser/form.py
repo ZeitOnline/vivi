@@ -167,10 +167,6 @@ class FormBase(zeit.cms.browser.view.Base, WidgetCSSMixin, PlaceholderMixin):
     widget_groups = ()
     template = zope.app.pagetemplate.ViewPageTemplateFile('grouped-form.pt')
 
-    def applyChanges(self, object, data):
-        return zope.formlib.form.applyChanges(
-            object, self.form_fields, data, self.adapters)
-
     def render(self):
         self._send_message()
         if self.status and not self.errors:
@@ -302,7 +298,7 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
 
     def nextURL(self):
         if (not self.redirect_to_parent_after_edit
-            and not self.redirect_to_view):
+                and not self.redirect_to_view):
             return None
 
         new_context = self.context
@@ -315,32 +311,11 @@ class EditForm(FormBase, gocept.form.grouped.EditForm):
 
         return self.url(new_context, view)
 
-    def applyChanges(self, data):
-        """Apply changes and set message."""
-        if zope.formlib.form.applyChanges(
-            self.context, self.form_fields, data, self.adapters):
-            zope.event.notify(
-                zope.lifecycleevent.ObjectModifiedEvent(self.context))
-            formatter = self.request.locale.dates.getFormatter(
-                'dateTime', 'medium')
-
-            try:
-                time_zone = zope.interface.common.idatetime.ITZInfo(
-                    self.request)
-            except TypeError:
-                time_zone = pytz.UTC
-
-            self.status = _zope(
-                "Updated on ${date_time}",
-                mapping={'date_time': formatter.format(
-                    datetime.datetime.now(time_zone))})
-        else:
-            self.status = _('No changes')
-
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
     def handle_edit_action(self, action, data):
-        self.applyChanges(data)
+        """Overwritten to use custom translation for Apply."""
+        super(EditForm, self).handle_edit_action.success(data)
 
 
 class DisplayForm(FormBase, gocept.form.grouped.DisplayForm):
