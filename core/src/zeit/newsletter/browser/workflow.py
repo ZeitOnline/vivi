@@ -85,6 +85,6 @@ class Form(zeit.workflow.browser.form.WorkflowForm, grok.MultiAdapter):
     @zope.formlib.form.action(_('Test email'),
                               name='test')
     def handle_test(self, action, data):
-        self.applyChanges(data)
+        super(Form, self).handle_edit_action.success(data)
         recipient = zeit.newsletter.interfaces.ITestRecipient(self.request)
         self.context.send_test(recipient.email)
