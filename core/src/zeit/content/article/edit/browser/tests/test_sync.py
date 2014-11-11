@@ -1,4 +1,5 @@
 import zeit.content.article.edit.browser.testing
+import time
 
 
 class Supertitle(zeit.content.article.edit.browser.testing.EditorTestCase):
@@ -18,7 +19,15 @@ class Supertitle(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.eval('document.getElementById("%s").value = ""' % self.supertitle)
         s.click('//a[@href="edit-form-teaser"]')
         s.type('id=%s' % self.teaser_supertitle, 'super\t')
-        # XXX There's nothing asynchronous going on here, but with a direct
-        # assert, the test fails with "Element is no longer attached to the
-        # DOM" (at least on WS's machine).
-        s.waitForValue('id=%s' % self.supertitle, 'super')
+
+        # We cannot use waitForValue, since the DOM element changes in-between
+        # but Selenium retrieves the element once and only checks the value
+        # repeatedly, thus leading to an error that DOM is no longer attached
+        for i in range(10):
+            try:
+                s.assertValue('id=%s' % self.supertitle, 'super')
+                break
+            except:
+                time.sleep(0.1)
+                continue
+        s.assertValue('id=%s' % self.supertitle, 'super')
