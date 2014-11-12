@@ -6,6 +6,8 @@ zeit.content.link changes
 
 - Push the URL of the target object, not the link object itself (VIV-516).
 
+- Remove ``deeplink_url`` from forms (VIV-553).
+
 
 2.0.2 (2014-10-21)
 ------------------
