@@ -194,6 +194,8 @@ zeit.content.article.FindDialog = gocept.Class.extend({
         }
         self.init_form();
         self.current_match = NOT_FOUND;
+        self.previous_searchtext = '';
+        self.stop_wrap_around = false;
     },
 
     init_form: function() {
@@ -279,8 +281,13 @@ zeit.content.article.FindDialog = gocept.Class.extend({
 
     find: function(direction) {
         var self = this;
+        var searchtext = $('#find-dialog-searchtext').val();
+        if (self.previous_searchtext != searchtext) {
+            self.stop_wrap_around = false;
+        }
+        self.previous_searchtext = searchtext;
         self.current_match = self.editable.find_and_select_next(
-            $('#find-dialog-searchtext').val(), direction,
+            searchtext, direction,
             $('#find-dialog-case').attr('checked'), self.start_selection);
         self.start_selection = undefined;
         if (self.current_match == NOT_FOUND) {
@@ -288,8 +295,19 @@ zeit.content.article.FindDialog = gocept.Class.extend({
                 direction == FORWARD) ? 'nextSibling' : 'previousSibling';
             var next_editable = self.editable.activate_next_editable(
                 relation, /*wrap_around=*/false, /*suppress_focus=*/true);
+            if (typeof(next_editable) == 'undefined' ||
+                    next_editable === null) {
+                if (self.stop_wrap_around) {
+                    self.close();
+                    // Clicking inside the alert dialog may kill the
+                    // selection.
+                    self.restore_selection =
+                        zeit.content.article._get_selection(
+                            self.editable.editable);
+                    alert('Keine weiteren Ergebnisse.');
+                    return;
+                }
 
-            if (next_editable === null) {
                 var query_text = (direction == FORWARD) ?
                     'Das Textende wurde erreicht. ' +
                         'Suche am Textanfang fortsetzen?' :
@@ -301,6 +319,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
                 self.restore_selection = zeit.content.article._get_selection(
                     self.editable.editable);
                 if (confirm(query_text)) {
+                    self.stop_wrap_around = true;
                     next_editable = self.editable.activate_next_editable(
                         relation,
                         /*wrap_around=*/true, /*suppress_focus=*/true);
@@ -319,6 +338,7 @@ zeit.content.article.FindDialog = gocept.Class.extend({
         } else {
             self.current_match['node'].parentNode.scrollIntoView();
             self.restore_selection = null;
+            self.stop_wrap_around = false;
         }
     },
 

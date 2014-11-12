@@ -3,6 +3,7 @@ from zeit.cms.checkout.interfaces import IWorkingcopy
 from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.edit.interfaces import IElementFactory
 import transaction
+import unittest
 import zeit.content.article.testing
 import zope.component
 
@@ -282,3 +283,20 @@ class FindReplaceTest(
         s.waitForNotVisible('id=find-dialog-searchtext')
         self.wait_for_condition(
             'window.getSelection().getRangeAt(0).startOffset == 8')
+
+    @unittest.skip('Wrap-around breaks if there is only one editable.')
+    def test_stops_wrapping_if_nothing_found_since_last_wrap(self):
+        s = self.selenium
+        self.add_article()
+        self.create("<p>foo bar foo</p>")
+        self.eval("zeit.content.article.select("
+                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+                  "4, 4)")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'baz')
+        s.chooseOkOnNextConfirmation()
+        s.click('css=button:contains(Weiter)')
+        s.waitForConfirmation(
+            'Das Textende wurde erreicht. Suche am Textanfang fortsetzen?')
+        s.waitForAlert('Keine weiteren Ergebnisse.')
