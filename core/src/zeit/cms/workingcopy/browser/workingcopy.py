@@ -2,10 +2,10 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import logging
-import zc.table.column
-import zc.table.table
 import zeit.cms.browser.column
+import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.menu
 import zeit.cms.checkout.interfaces
@@ -88,6 +88,12 @@ def localcontent_default_browsing_location(context, schema):
     return zope.component.queryMultiAdapter(
         (object_in_repository, schema),
         zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
+
+
+@grok.adapter(zeit.cms.workingcopy.interfaces.IWorkingcopyLocation)
+@grok.implementer(zeit.cms.browser.interfaces.IAdditionalLayer)
+def layer_for_workingcopy(context):
+    return zeit.cms.browser.interfaces.IWorkingcopyLayer
 
 
 class DeleteFromWorkingcopy(zeit.cms.repository.browser.delete.DeleteContent):

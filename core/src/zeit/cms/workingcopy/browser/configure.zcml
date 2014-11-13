@@ -42,8 +42,8 @@
 
   <!-- delete -->
   <browser:viewlet
-    for="zeit.cms.workingcopy.interfaces.ILocalContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.IWorkingcopyLayer"
     name="Delete"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     class=".workingcopy.DeleteMenuItem"
@@ -54,8 +54,8 @@
     />
 
   <browser:page
-    for="zeit.cms.workingcopy.interfaces.ILocalContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.IWorkingcopyLayer"
     name="delete.html"
     class=".workingcopy.DeleteFromWorkingcopy"
     template="delete.pt"

@@ -1,4 +1,4 @@
-<configure 
+<configure
   xmlns="http://namespaces.zope.org/zope"
   xmlns:browser="http://namespaces.zope.org/browser"
   i18n_domain="zeit.cms">
@@ -93,8 +93,8 @@
   <!-- Delete view -->
 
   <browser:viewlet
-    for="zeit.cms.repository.interfaces.IRepositoryContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
     name="Delete"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     class=".menu.Delete"
@@ -106,7 +106,7 @@
 
   <browser:page
     for="zeit.cms.interfaces.ICMSContent"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
     name="delete.html"
     class=".delete.DeleteContent"
     template="delete.pt"
@@ -116,7 +116,7 @@
   <browser:viewlet
     name="Delete"
     for="zeit.cms.repository.interfaces.IFolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
     class=".menu.Delete"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     permission="zeit.DeleteFolder"
@@ -126,11 +126,11 @@
     />
 
   <browser:page
-    name="delete.html"
     for="zeit.cms.repository.interfaces.IFolder"
-    template="delete.pt"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
+    name="delete.html"
     class=".delete.DeleteContent"
+    template="delete.pt"
     permission="zeit.DeleteFolder"
     />
 
@@ -143,7 +143,7 @@
     name="get_object_browser"
     class=".objectbrowser.ObjectBrowser"
     template="objectbrowser.pt"
-    permission="zope.View" 
+    permission="zope.View"
     />
 
   <adapter factory=".objectbrowser.folder_default_browse_location" />
@@ -154,7 +154,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="default-browsing-location"
     class=".objectbrowser.BrowsingLocation"
-    permission="zope.View" 
+    permission="zope.View"
     />
 
   <!-- unique id redirector -->

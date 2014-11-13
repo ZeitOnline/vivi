@@ -33,6 +33,20 @@
     name="vivi"
     />
 
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zope.site.interfaces.IRootFolder
+         zope.publisher.interfaces.IPublisherRequest"
+    />
+
+  <subscriber
+    factory=".layer.LayerAddTraverser"
+    for="zope.site.interfaces.IRootFolder
+         zope.publisher.interfaces.IPublisherRequest"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+     />
+
   <browser:page
     for="*"
     name="standard_macros"

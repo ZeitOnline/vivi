@@ -22,11 +22,30 @@ class ICMSLayer(zope.publisher.interfaces.browser.IBrowserRequest):
     """Master Layer for CMS skin"""
 
 
+class IRepositoryLayer(ICMSLayer):
+    """Layer for repository content."""
+
+
+class IWorkingcopyLayer(ICMSLayer):
+    """Layer for workingcopy content."""
+
+
 class IGlobalSearchLayer(zope.publisher.interfaces.browser.IBrowserRequest):
     """A for UI elements which require a search to be available.
 
     This layer is exists to migrate elements to use the global search once it
     becomes available (#6380).
+
+    """
+
+
+class IAdditionalLayer(zope.interface.Interface):
+    """Adapter to retrieve an additional layer for the given object.
+
+    Used to add an additional layer to the request, depending on the URL. More
+    specifically, the first container after root is inspected and depending on
+    if it is "repository" or "workingcopy", the interface IRepositoryLayer or
+    IWorkingcopyLayer is added.
 
     """
 

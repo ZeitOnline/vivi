@@ -17,6 +17,9 @@ zeit.cms changes
 - Use same hooks to apply changes for EditForm and InlineForm by removing
   custom hook in EditForm. (VIV-516).
 
+- Add extra layer to the request, to distinguish between workingcopy and
+  repository views during registration. (VIV-496)
+
 
 2.29.0 (2014-10-21)
 -------------------

@@ -7,7 +7,6 @@ import grokcore.component
 import logging
 import persistent
 import re
-import transaction
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.redirect.interfaces

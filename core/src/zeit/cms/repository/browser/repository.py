@@ -2,7 +2,9 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+import grokcore.component as grok
 import hashlib
+import zeit.cms.browser.interfaces
 import zeit.cms.browser.tree
 import zeit.cms.browser.view
 import zeit.cms.interfaces
@@ -19,6 +21,12 @@ class Repository(object):
     def __call__(self):
         return zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
+
+
+@grok.adapter(zeit.cms.repository.interfaces.IRepository)
+@grok.implementer(zeit.cms.browser.interfaces.IAdditionalLayer)
+def layer_for_repository(context):
+    return zeit.cms.browser.interfaces.IRepositoryLayer
 
 
 class HTMLTree(zope.viewlet.viewlet.ViewletBase,
