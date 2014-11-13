@@ -9,6 +9,8 @@ zeit.content.cp changes
   attribute convention of free teasers, only the new ``uniqueId``/``href``
   convention is supported anymore (VIV-546, VIV-322).
 
+- Actually restrict delete permission of centerpages (VIV-496).
+
 
 2.6.5 (2014-10-21)
 ------------------
@@ -426,7 +428,7 @@ zeit.content.cp changes
 - Ist ein Objekt im RSS-Feed kommt ein freier Teaser dieses Objekts nicht mehr
   in den RSS-Feed und umgekehrt (#6724).
 
-  
+
 0.32.1 (2010-02-23)
 -------------------
 
@@ -691,7 +693,7 @@ zeit.content.cp changes
 
 - In der CP beinhaltete Objekte werden automatisch veröffentlicht (wenn lsc <=
   dlp <= dlm, #6057)
-  
+
 - Robusteres erstellen von freien Teasern.
 
 - Centerpage kann eingecheckt werden, auch wenn (ganz) alte Feeds beinhaltet

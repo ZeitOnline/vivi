@@ -190,7 +190,7 @@
 
   <browser:viewlet
     for="zeit.content.cp.interfaces.ICenterPage"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
     name="Delete"
     manager="zeit.cms.browser.interfaces.ISecondaryContextActions"
     class="zeit.cms.repository.browser.menu.Delete"
@@ -202,7 +202,7 @@
   <configure package="zeit.cms.repository.browser">
   <browser:page
     for="zeit.content.cp.interfaces.ICenterPage"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
     name="delete.html"
     class=".delete.DeleteContent"
     template="delete.pt"
