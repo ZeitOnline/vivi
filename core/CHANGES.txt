@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.5.0 (unreleased)
+2.5.0 (2014-11-14)
 ------------------
 
 - Move the additional ``Droppables.prepare`` step to the article editor where
