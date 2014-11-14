@@ -2,6 +2,12 @@ zeit.securitypolicy changes
 ===========================
 
 
+2.1.8 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.1.7 (2014-11-14)
 ------------------
 
