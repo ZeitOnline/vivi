@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.2.4 (unreleased)
+2.2.4 (2014-11-14)
 ------------------
 
 - Extend behaviour of apply action in form by overwriting the action from zope,
