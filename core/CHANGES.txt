@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.7.0 (unreleased)
+1.7.0 (2014-11-14)
 ------------------
 
 - Introduce ``IPushURL`` indirection so link objects can change the pushed url
