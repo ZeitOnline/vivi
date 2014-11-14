@@ -28,7 +28,7 @@ class PermissionsTest(zeit.cms.testing.BrowserTestCase):
             'http://localhost/++skin++vivi/repository/online/2007/01/island')
         self.assertEllipsis('...<a...island/@@delete.html...', b.contents)
 
-    def test_normal_user_may_not_retract(self):
+    def test_normal_user_may_not_retract_via_menu_item(self):
         b = self.browser
         with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pi:
             pi().published = True
@@ -37,7 +37,17 @@ class PermissionsTest(zeit.cms.testing.BrowserTestCase):
                 'island')
             self.assertNotIn('island/@@retract', b.contents)
 
-    def test_producing_may_retract(self):
+    def test_normal_user_may_not_retract_via_button(self):
+        b = self.browser
+        with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pi:
+            pi().published = True
+            b.open(
+                'http://localhost/++skin++vivi/repository/online/2007/01/'
+                'island/workflow.html')
+            with self.assertRaises(LookupError):
+                b.getControl('Save state and retract now')
+
+    def test_producing_may_retract_via_menu_item(self):
         b = self.producing
         with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pi:
             pi().published = True
@@ -45,3 +55,13 @@ class PermissionsTest(zeit.cms.testing.BrowserTestCase):
                 'http://localhost/++skin++vivi/repository/online/2007/01/'
                 'island')
             self.assertEllipsis('...<a...island/@@retract...', b.contents)
+
+    def test_producing_may_retract_via_button(self):
+        b = self.producing
+        with mock.patch('zeit.cms.workflow.interfaces.IPublishInfo') as pi:
+            pi().published = True
+            b.open(
+                'http://localhost/++skin++vivi/repository/online/2007/01/'
+                'island/workflow.html')
+            with self.assertNothingRaised():
+                b.getControl('Save state and retract now')

@@ -9,7 +9,7 @@ zeit.content.cp changes
   attribute convention of free teasers, only the new ``uniqueId``/``href``
   convention is supported anymore (VIV-546, VIV-322).
 
-- Actually restrict delete permission of centerpages (VIV-496).
+- Actually check delete and restrict permission of centerpages (VIV-496).
 
 
 2.6.5 (2014-10-21)

@@ -15,6 +15,12 @@ import zope.dublincore.interfaces
 import zope.formlib.form
 
 
+def is_published_and_has_permission(form, action):
+    return (zeit.workflow.browser.form.is_published(form, action)
+            and form.request.interaction.checkPermission(
+                'zeit.content.cp.Retract', form.context))
+
+
 class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
     # same as zeit.workflow.browser.form.ContentWorkflow, except for the
     # fields: we use ITimeBasedPublishing instead of IContentWorkflow
@@ -47,6 +53,29 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))
+
+    @zope.formlib.form.action(_('Save state only'), name='save')
+    def handle_save_state(self, action, data):
+        """Duplicate action from base class, since we overwrite handle_retract.
+        """
+        super(CenterPageWorkflowForm, self).handle_save_state.success(data)
+
+    @zope.formlib.form.action(_('Save state and publish now'), name='publish')
+    def handle_publish(self, action, data):
+        """Duplicate action from base class, since we overwrite handle_retract.
+        """
+        super(CenterPageWorkflowForm, self).handle_publish.success(data)
+
+    @gocept.form.action.confirm(
+        _('Save state and retract now'),
+        name='retract',
+        confirm_message=_('Really retract? This will remove the object from '
+                          'all channels it is syndicated in and make it '
+                          'unavailable to the public!'),
+        condition=is_published_and_has_permission)
+    def handle_retract(self, action, data):
+        """Overwrite action to additionally test Retract permission."""
+        super(CenterPageWorkflowForm, self).handle_retract.success(data)
 
     def get_error_message(self, mapping):
         return _('Could not publish ${id} since it has validation errors.',
