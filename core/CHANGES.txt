@@ -19,6 +19,8 @@ zeit.content.article changes
 - Use apply action from zope as hook instead of applyChanges hook that is not
   present in inline forms (VIV-516).
 
+- Change shortcut for find/replace to Ctrl-Shift-F.
+
 
 3.6.4 (2014-10-21)
 ------------------

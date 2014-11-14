@@ -433,7 +433,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             <a title='Link entfernen [Cmd/Strg+u]' rel='command' href='unlink'>A</a>\
             <a title='Liste' rel='command' href='insertunorderedlist'>UL</a>\
             <a title='Formatierungen entfernen [Cmd/Strg+r]' rel='command' href='removeFormat'>PL</a>\
-            <a title='Suchen [Cmd/Strg+f]' rel='method' href='show_find_dialog'>SEA</a>\
+            <a title='Suchen [Cmd/Strg+F]' rel='method' href='show_find_dialog'>SEA</a>\
             ";
         self.events.push(MochiKit.Signal.connect(
             self.block, 'onclick',
@@ -1010,7 +1010,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 if (key == 'KEY_B') {
                     e.preventDefault();
                     self.toolbar_command('bold');
-                } else if (key == 'KEY_F') {
+                } else if (key == 'KEY_F' && modifier['shift']) {
                     e.preventDefault();
                     self.show_find_dialog();
                 } else if (key == 'KEY_I') {
