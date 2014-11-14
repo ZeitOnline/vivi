@@ -2,6 +2,12 @@ zeit.content.cp changes
 =======================
 
 
+2.7.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.7.0 (2014-11-14)
 ------------------
 
