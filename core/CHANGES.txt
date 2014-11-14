@@ -1,7 +1,7 @@
 zeit.content.gallery changes
 ============================
 
-2.6.12 (unreleased)
+2.6.12 (2014-11-14)
 -------------------
 
 - Fix bug in social media addform so it actually stores push configuration
