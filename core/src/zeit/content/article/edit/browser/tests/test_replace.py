@@ -1,4 +1,5 @@
 # coding: utf-8
+from zeit.cms.checkout.helper import checked_out
 from zeit.cms.checkout.interfaces import IWorkingcopy
 from zeit.content.article.edit.interfaces import IEditableBody
 from zeit.edit.interfaces import IElementFactory
@@ -300,3 +301,51 @@ class FindReplaceTest(
         s.waitForConfirmation(
             'Das Textende wurde erreicht. Suche am Textanfang fortsetzen?')
         s.waitForAlert('Keine weiteren Ergebnisse.')
+
+    @unittest.skip('Need to commit this even though test is not finished.')
+    def test_saves_if_replacing_ends_in_subsequent_editable(self):
+        from zeit.content.article.article import Article
+        from zeit.content.article.interfaces import IArticle
+        with zeit.cms.testing.site(self.getRootFolder()):
+            wl = zope.component.getUtility(
+                zeit.cms.tagging.interfaces.IWhitelist)
+            with zeit.cms.testing.interaction():
+                self.repository['article'] = Article()
+                with checked_out(self.repository['article']) as co:
+                    zeit.cms.browser.form.apply_default_values(
+                        co, IArticle)
+                    co.year = 2010
+                    co.ressort = u'International'
+                    co.title = 'foo'
+                    co.keywords = (
+                        wl['testtag'], wl['testtag2'], wl['testtag3'],)
+                    body = IEditableBody(co)
+                    p_factory = zope.component.getAdapter(
+                        body, IElementFactory, 'p')
+                    img_factory = zope.component.getAdapter(
+                        body, IElementFactory, 'image')
+                    paragraph = p_factory()
+                    paragraph.text = 'foobar'
+                    img_factory()
+                    paragraph = p_factory()
+                    paragraph.text = 'foobaz'
+        self.open('/repository/article/@@checkout')
+
+        s = self.selenium
+        s.waitForElementPresent('css=.block.type-p .editable p')
+        s.click('css=.block.type-p .editable p')
+        self.eval("zeit.content.article.select("
+                  "window.jQuery('.block.type-p .editable p')[0].firstChild, "
+                  "0, 0)")
+        s.click('xpath=//a[@href="show_find_dialog"]')
+        s.waitForVisible('id=find-dialog-searchtext')
+        s.type('id=find-dialog-searchtext', 'foo')
+        s.type('id=find-dialog-replacement', 'qux')
+        s.click('css=button:contains(Weiter)')
+        s.click('css=button:contains(Ersetzen)')
+        s.click('css=button:contains(Weiter)')
+        s.click('css=button:contains(Ersetzen)')
+        s.click('css=.find-dialog button.ui-dialog-titlebar-close')
+        s.click('css=.wired')
+        s.waitForTextPresent('quxbar')
+        s.waitForTextPresent('quxbaz')

@@ -1066,6 +1066,8 @@ zeit.content.article.Editable = gocept.Class.extend({
   },
 
   replace_text: function(node, start, end, replacement) {
+      var self = this;
+      self.editable.editable.dirty = true;
       node.textContent = (node.textContent.substring(0, start)
                           + replacement
                           + node.textContent.substring(end));
@@ -1073,6 +1075,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
   replace_all: function(find, replace) {
       var self = this;
+      self.editable.editable.dirty = true;
       var d = self.save(/*supress_reload=*/true);
       d.addCallback(function() {
           return zeit.edit.makeJSONRequest(
