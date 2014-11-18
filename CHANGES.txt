@@ -15,7 +15,7 @@ zeit.push changes
 
 - Fix bug in social media addform so it actually stores push configuration.
 
-- Translage parse.com title (VIV-552).
+- Translate parse.com title (VIV-552).
 
 
 1.6.0 (2014-10-21)
@@ -23,7 +23,7 @@ zeit.push changes
 
 - Set ``push_news`` flag on checkin (VIV-526).
 
-- Extract social media form from z.c.article, so we can reuse it for different
+- Extract social media form from zc.article, so we can reuse it for different
   content types (VIV-516).
 
 - Only retract banners that match the current article (VIV-532).
