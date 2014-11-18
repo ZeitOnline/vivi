@@ -1,4 +1,5 @@
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
+import zeit.cms.content.interfaces
 import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
@@ -8,8 +9,8 @@ class MessageTest(zeit.push.testing.TestCase):
 
     def test_send_delegates_to_IPushNotifier_utility(self):
         content = TestContentType()
-        push = zeit.push.interfaces.IPushMessages(content)
-        push.short_text = 'mytext'
+        push = zeit.cms.content.interfaces.ICommonMetadata(content)
+        push.title = 'mytext'
         self.repository['foo'] = content
         message = zope.component.getAdapter(
             content, zeit.push.interfaces.IMessage, name='parse')

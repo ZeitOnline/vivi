@@ -4,7 +4,7 @@ zeit.push changes
 1.7.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use title of article as text for push messages send to Parse (VIV-564).
 
 
 1.7.0 (2014-11-14)

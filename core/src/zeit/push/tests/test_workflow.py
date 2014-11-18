@@ -4,6 +4,7 @@ from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 from zeit.push.interfaces import IPushMessages
 import lxml.etree
 import mock
+import zeit.cms.content.interfaces
 import zeit.push.testing
 import zeit.workflow.testing
 
@@ -35,7 +36,7 @@ class SendingNotifications(zeit.push.testing.TestCase):
         super(SendingNotifications, self).setUp()
         self.parse = mock.Mock()
         self.zca.patch_adapter(
-            self.parse, (ICMSContent,),
+            self.parse, (zeit.cms.content.interfaces.ICommonMetadata,),
             zeit.push.interfaces.IMessage, name='parse')
         # getAdapter instantiates factory, which causes one call
         self.parse = self.parse()
