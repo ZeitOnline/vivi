@@ -56,7 +56,7 @@ class IPushMessages(zope.interface.Interface):
 
     long_text = zope.schema.Text(
         title=_('Long push text'), required=False)
-    short_text= zope.schema.TextLine(
+    short_text = zope.schema.TextLine(
         title=_('Short push text'),
         required=False,
         # 117 + 1 Space + 22 characters t.co-URL = 140
