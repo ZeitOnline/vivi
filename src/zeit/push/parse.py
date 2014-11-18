@@ -193,6 +193,6 @@ def set_push_news_flag(context, event):
         return
     for service in push.message_config:
         if (service['type'] == 'parse' and service['enabled']
-            and service.get('channels') == PARSE_NEWS_CHANNEL):
+                and service.get('channels') == PARSE_NEWS_CHANNEL):
             context.push_news = True
             break
