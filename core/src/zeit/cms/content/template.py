@@ -2,16 +2,11 @@
 # See also LICENSE.txt
 
 import persistent
-
-import zope.securitypolicy.interfaces
-
+import zc.sourcefactory.basic
+import zeit.cms.content.interfaces
+import zeit.connector.resource
 import zope.app.container.btree
 import zope.app.container.contained
-import zope.app.security.settings
-
-import zc.sourcefactory.basic
-
-import zeit.cms.content.interfaces
 
 
 class BasicTemplateSourceFactory(zc.sourcefactory.basic.BasicSourceFactory):
