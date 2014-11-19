@@ -3,6 +3,7 @@
 
 import grokcore.component as grok
 import zeit.cms.checkout.interfaces
+import zeit.cms.content.property
 import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
