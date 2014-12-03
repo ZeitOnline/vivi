@@ -121,6 +121,10 @@ class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
 centerPageSource = CenterPageSource()
 
 
+class IRegion(zeit.edit.interfaces.IContainer):
+    """Abstract layer above IArea."""
+
+
 class IReadArea(zeit.edit.interfaces.IReadContainer):
     pass
 
@@ -132,10 +136,6 @@ class IWriteArea(zeit.edit.interfaces.IWriteContainer):
 # Must split read / write for security declarations for ITeaserBar.
 class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea):
     """An area contains blocks."""
-
-
-class IRegion(zeit.edit.interfaces.IContainer):
-    """Abstract layer above IArea."""
 
 
 class ILead(IArea):

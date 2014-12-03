@@ -11,58 +11,6 @@ import zope.component
 import zope.interface
 
 
-@zope.component.adapter(zeit.edit.interfaces.IArea)
-@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
-def cms_content_iter(context):
-    return itertools.chain(*[
-        zeit.content.cp.interfaces.ICMSContentIterable(block)
-        for block in context.values()
-        if block is not None])
-
-
-@grok.adapter(zeit.content.cp.interfaces.IRegion)  # maybe use IContainer for both
-@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
-def cms_content_iter_for_region(context):
-    return itertools.chain(*[
-        zeit.content.cp.interfaces.ICMSContentIterable(block)
-        for block in context.values()
-        if block is not None])
-
-
-class Area(zeit.edit.container.TypeOnAttributeContainer):
-
-    zope.interface.implements(zeit.content.cp.interfaces.IArea)
-    zope.component.adapts(
-        zeit.content.cp.interfaces.IRegion,
-        gocept.lxml.interfaces.IObjectified)
-
-    type = 'area'
-
-    @property
-    def __name__(self):
-        name = self.xml.get('area')
-        if name == 'teaser-row-full':  # XXX backward compatibility for teaser bar
-            return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
-        return name
-
-    @__name__.setter
-    def __name__(self, name):
-        if name != self.__name__:
-            self._p_changed = True
-            area = self.xml.get('area')
-            if area == 'teaser-row-full':
-                self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
-            self.xml.set('area', name)
-
-
-class AreaFactory(zeit.edit.block.ElementFactory):
-
-    tag_name = 'region'  # XXX actually "area"
-
-    def get_xml(self):
-        return getattr(lxml.objectify.E, self.tag_name)()
-
-
 class Region(zeit.edit.container.Base):
 
     zope.interface.implements(zeit.content.cp.interfaces.IRegion)
@@ -119,6 +67,40 @@ class RegionFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
+class Area(zeit.edit.container.TypeOnAttributeContainer):
+
+    zope.interface.implements(zeit.content.cp.interfaces.IArea)
+    zope.component.adapts(
+        zeit.content.cp.interfaces.IRegion,
+        gocept.lxml.interfaces.IObjectified)
+
+    type = 'area'
+
+    @property
+    def __name__(self):
+        name = self.xml.get('area')
+        if name == 'teaser-row-full':  # XXX backward compatibility for teaser bar
+            return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
+        return name
+
+    @__name__.setter
+    def __name__(self, name):
+        if name != self.__name__:
+            self._p_changed = True
+            area = self.xml.get('area')
+            if area == 'teaser-row-full':
+                self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
+            self.xml.set('area', name)
+
+
+class AreaFactory(zeit.edit.block.ElementFactory):
+
+    tag_name = 'region'  # XXX actually "area"
+
+    def get_xml(self):
+        return getattr(lxml.objectify.E, self.tag_name)()
+
+
 @zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
 @zope.component.adapter(zeit.edit.interfaces.IContainer)
 def container_to_centerpage(context):
@@ -152,3 +134,21 @@ def rendered_xml_mosaic(context):
     for item in context.values():
         root.append(zeit.content.cp.interfaces.IRenderedXML(item))
     return root
+
+
+@zope.component.adapter(zeit.edit.interfaces.IArea)
+@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter(context):
+    return itertools.chain(*[
+        zeit.content.cp.interfaces.ICMSContentIterable(block)
+        for block in context.values()
+        if block is not None])
+
+
+@grok.adapter(zeit.content.cp.interfaces.IRegion)  # maybe use IContainer for both
+@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter_for_region(context):
+    return itertools.chain(*[
+        zeit.content.cp.interfaces.ICMSContentIterable(block)
+        for block in context.values()
+        if block is not None])
