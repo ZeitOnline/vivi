@@ -155,7 +155,7 @@ class TypeOnAttributeContainer(Base):
         namespaces=dict(
             cms='http://namespaces.zeit.de/CMS/cp'))
     _get_keys = lxml.etree.XPath(
-        './*/attribute::cms:__name__',
+        './*/@cms:__name__',
         namespaces=dict(
             cms='http://namespaces.zeit.de/CMS/cp'))
 
