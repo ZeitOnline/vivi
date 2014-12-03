@@ -61,7 +61,8 @@ class Region(zeit.edit.container.Base):
 
 class RegionFactory(zeit.edit.block.ElementFactory):
 
-    tag_name = 'cluster'  # XXX actually "region"
+    # XML tags are named "cluster", thus do not change.
+    tag_name = 'cluster'
 
     def get_xml(self):
         return getattr(lxml.objectify.E, self.tag_name)()
@@ -95,7 +96,8 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
 
 class AreaFactory(zeit.edit.block.ElementFactory):
 
-    tag_name = 'region'  # XXX actually "area"
+    # XML tags are named "region", thus do not change.
+    tag_name = 'region'
 
     def get_xml(self):
         return getattr(lxml.objectify.E, self.tag_name)()

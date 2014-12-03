@@ -66,11 +66,11 @@
   <adapter
     factory=".area.RegionFactory"
     for="zeit.content.cp.interfaces.ICenterPage"
-    name="cluster" /> <!-- region -->
+    name="cluster" /> <!-- XML tags are named "cluster". -->
   <adapter
     factory=".area.AreaFactory"
     for="zeit.content.cp.interfaces.IRegion"
-    name="region" /> <!-- area -->
+    name="region" /> <!-- XML tags are named "region". -->
 
   <class class=".area.Region">
     <require
@@ -81,7 +81,7 @@
       permission="zeit.EditContent"
       />
   </class>
-  <class class=".area.Area">  <!-- area -->
+  <class class=".area.Area">
     <require
       interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" />
@@ -95,12 +95,12 @@
     provides="zeit.content.cp.interfaces.IRegion"
     name="cluster"
     factory=".area.Region"
-    /> <!-- region -->
+    /> <!-- XML tags are named "cluster". -->
   <adapter
     provides="zeit.content.cp.interfaces.IArea"
     name="region"
     factory=".area.Area"
-    /> <!-- area -->
+    /> <!-- XML tags are named "region". -->
 
   <class class=".teaser.Teaser">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
