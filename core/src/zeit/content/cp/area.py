@@ -18,9 +18,9 @@ class Region(zeit.edit.container.Base):
         zeit.content.cp.interfaces.ICenterPage,
         gocept.lxml.interfaces.IObjectified)
 
-    _find_item = lxml.etree.XPath('./*[@area = $name or @cms:__name__ = $name]',
+    _find_item = lxml.etree.XPath(
+        './*[@area = $name or @cms:__name__ = $name]',
         namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
-    # _get_keys = lxml.etree.XPath('./*/attribute::area')
 
     type = 'area'
 
