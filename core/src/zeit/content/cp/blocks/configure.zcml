@@ -60,10 +60,10 @@
 
   <adapter factory=".teaser.ExcerptDependency" name="zeit.content.cp-excerpt" />
 
-  <subscriber 
+  <subscriber
     handler=".teaser.apply_layout_for_added" />
 
-  <subscriber 
+  <subscriber
     handler=".teaser.apply_layout" />
 
   <adapter factory=".teaser.ColumnSpec" trusted="yes" />
@@ -110,7 +110,7 @@
   </class>
 
   <adapter
-    factory=".teaserbar.TeaserBarFactory" 
+    factory=".teaserbar.TeaserBarFactory"
     name="teaser-bar" />
   <adapter
     provides="zeit.edit.interfaces.IElement"
