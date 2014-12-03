@@ -132,8 +132,12 @@ class IWriteRegion(zeit.edit.interfaces.IWriteContainer):
 # IRegion wants to be an IArea, but also preserve the IReadArea/IWriteArea
 # split, so we inherit from IArea again. Absolutely no thanks to Zope for this
 # whole read/write business :-(
-class IRegion(IReadRegion, IWriteRegion, zeit.edit.interfaces.IContainer):
+class IRegion(IReadRegion, IWriteRegion, zeit.edit.interfaces.IArea):
     """A region contains blocks."""
+
+
+class ISection(zeit.edit.interfaces.IContainer):
+    """Abstract layer above IArea."""
 
 
 class ILead(IRegion):
@@ -144,7 +148,7 @@ class IInformatives(IRegion):
     """The informatives region."""
 
 
-class IMosaic(zeit.edit.interfaces.IContainer):
+class IMosaic(ISection):
     """Teaser mosaic."""
 
 

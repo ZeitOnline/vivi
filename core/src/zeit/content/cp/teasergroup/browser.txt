@@ -32,7 +32,7 @@ Create a teaserblock with a few teasers:
   u'name': u'added',
   u'when': u'after-reload'},
  {u'args': [u'lead',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/lead/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> uuid = result['signals'][0]['args'][0]
@@ -101,11 +101,11 @@ centerpage by dropping the group on a landing zone:
 It is also possible to drop a teaser group onto a teaser block:
 
 >>> browser.open(
-...     'lead/%s/@@drop?uniqueId=teasergroup://c1%%2C%%20c2%%20and%%20c3' % 
+...     'lead/%s/@@drop?uniqueId=teasergroup://c1%%2C%%20c2%%20and%%20c3' %
 ...     uuid)
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result['signals'])
 [{u'args': [u'id-<GUID>',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/id-<GUID>/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/lead/id-<GUID>/@@contents'],
   u'name': u'reload',
   u'when': None}]

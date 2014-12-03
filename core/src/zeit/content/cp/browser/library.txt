@@ -66,7 +66,7 @@ In the informatives area is a landing zone to create a block:
 >>> print browser.contents
 <div...
  <div class="landing-zone action-informatives-module-droppable"
-      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
+      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module">
       ...
 
 Create a cpextra block as first block in the informatives. The view returns
@@ -81,7 +81,7 @@ information about the created block:
   u'name': u'added',
   u'when': u'after-reload'},
  {u'args': [u'informatives',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> print browser.headers
@@ -99,12 +99,12 @@ it, is rendered too:
 >>> print browser.contents
 <div...
 <div class="landing-zone action-informatives-module-droppable"
-     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module">
 </div>
   <div ...class="block type-cpextra...id="id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
     ...
   <div class="landing-zone action-informatives-module-droppable"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
   </div>
   ...
 
@@ -112,19 +112,19 @@ Add an audio block after the just created cpextra block now:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-...     'informatives/%s/@@landing-zone-drop-module?block_type=audio' % 
+...     'informatives/%s/@@landing-zone-drop-module?block_type=audio' %
 ...     created_block_id)
 
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...
 <div class="landing-zone action-informatives-module-droppable"
-     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@landing-zone-drop-module">
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module">
 </div>
   <div ...class="block type-cpextra...id="id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
     ...
   <div class="landing-zone action-informatives-module-droppable"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
   </div>
   ...<div...class="block type-audio...
 

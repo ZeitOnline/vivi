@@ -23,32 +23,39 @@ import zeit.cms.related.related
 import zeit.cms.sitecontrol.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
-import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.cp.interfaces
+import zeit.edit.container
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
 import zope.proxy
 
 
+# XXX Is it OK to inherit IElement for CenterPage? Does it make sense?
 class CenterPage(zeit.cms.content.metadata.CommonMetadata,
-                 UserDict.DictMixin):
+                 zeit.edit.container.Base):
 
     zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
                               zeit.cms.interfaces.IEditorialContent)
 
     default_template = pkg_resources.resource_string(__name__,
                                                      'cp-template.xml')
-    editable_areas = collections.OrderedDict([
-        ('lead', lxml.etree.XPath('cluster/region[@area="lead"]')),
-        ('informatives',
-         lxml.etree.XPath('cluster/region[@area="informatives"]')),
-        ('teaser-mosaic', lxml.etree.XPath('cluster[@area="teaser-mosaic"]')),
-    ])
 
-    keys = editable_areas.keys
-    __contains__ = editable_areas.__contains__
+    _find_item = lxml.etree.XPath('./body/*[@area = $name]')
+    _get_keys = lxml.etree.XPath('./body/*/attribute::area')
+
+    def _get_element_type(self, xml_node):
+        return xml_node.tag
+
+    def __getitem__(self, key):
+        if key in ['lead', 'informatives']:
+            return self['feature'][key]
+        section = super(CenterPage, self).__getitem__(key)
+        if key == 'teaser-mosaic':
+            zope.interface.alsoProvides(
+                section, zeit.content.cp.interfaces.IMosaic)
+        return section
 
     _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])
@@ -103,14 +110,6 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
     og_image = zeit.cms.content.property.ObjectPathProperty(
         '.head.og_meta.og_image',
         zeit.content.cp.interfaces.ICenterPage['og_image'])
-
-    def __getitem__(self, key):
-        xml = self.editable_areas[key](self.xml['body'])[0]
-        area = zope.component.getMultiAdapter(
-            (self, xml),
-            zeit.edit.interfaces.IArea,
-            name=key)
-        return zope.container.contained.contained(area, self, key)
 
     def updateMetadata(self, content):
         # Note that this method is a shortcut using XPath to query instead of

@@ -18,6 +18,25 @@ class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
         return itertools.chain(areas, *[a.values() for a in areas])
 
 
+@glob(zeit.edit.interfaces.IElement)
+def section(context):
+    return zeit.content.cp.interfaces.ISection(context).__name__
+
+
+@glob(zeit.content.cp.interfaces.ISection)
+def area(context):
+    # emergency brake, since otherwise sections don't know they were formely an
+    # area and would forward the question to their parent, which is a
+    # CenterPage, which asks their parent, which will trigger an adapter to
+    # AutomaticRegion which is ... not what we want in any case ever
+    return None # context.__name__
+
+
+@glob(zeit.content.cp.interfaces.ITeaserBar)
+def area(context):
+    return context.__parent__.__name__
+
+
 @glob(zeit.content.cp.interfaces.IRegion)
 def is_region(context):
     return True

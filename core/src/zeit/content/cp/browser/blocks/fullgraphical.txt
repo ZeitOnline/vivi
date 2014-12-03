@@ -24,7 +24,7 @@ Set up test data:
   u'name': u'added',
   u'when': u'after-reload'},
  {u'args': [u'informatives',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/informatives/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> browser.open(contents_url)

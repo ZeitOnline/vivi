@@ -63,7 +63,16 @@
   <adapter factory=".area.container_to_centerpage" />
   <adapter factory=".area.cms_content_iter" />
 
-  <class class=".area.Lead">
+  <adapter
+    factory=".area.SectionFactory"
+    for="zeit.content.cp.interfaces.ICenterPage"
+    name="cluster" /> <!-- region -->
+  <adapter
+    factory=".area.RegionFactory"
+    for="zeit.content.cp.interfaces.ISection"
+    name="region" /> <!-- area -->
+
+  <class class=".area.Section">
     <require
       interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" />
@@ -72,16 +81,7 @@
       permission="zeit.EditContent"
       />
   </class>
-  <class class=".area.Informatives">
-    <require
-      interface="zeit.edit.interfaces.IReadContainer"
-      permission="zope.View" />
-    <require
-      interface="zeit.edit.interfaces.IWriteContainer"
-      permission="zeit.EditContent"
-      />
-  </class>
-  <class class=".area.Mosaic">
+  <class class=".area.Region">  <!-- area -->
     <require
       interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" />
@@ -92,20 +92,15 @@
   </class>
 
   <adapter
-    provides="zeit.edit.interfaces.IArea"
-    name="lead"
-    factory=".area.Lead"
-    />
+    provides="zeit.content.cp.interfaces.ISection"
+    name="cluster"
+    factory=".area.Section"
+    /> <!-- region -->
   <adapter
-    provides="zeit.edit.interfaces.IArea"
-    name="informatives"
-    factory=".area.Informatives"
-    />
-  <adapter
-    provides="zeit.edit.interfaces.IArea"
-    name="teaser-mosaic"
-    factory=".area.Mosaic"
-    />
+    provides="zeit.content.cp.interfaces.IRegion"
+    name="region"
+    factory=".area.Region"
+    /> <!-- area -->
 
   <class class=".teaser.Teaser">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />

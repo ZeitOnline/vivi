@@ -38,7 +38,7 @@ Drop testcontent on the landing zone:
   u'name': u'added',
   u'when': u'after-reload'},
  {u'args': [u'lead',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/lead/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
@@ -64,7 +64,7 @@ There is another landing zone after the created block now:
   u'name': u'added',
   u'when': u'after-reload'},
  {u'args': [u'lead',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/lead/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
@@ -93,7 +93,7 @@ area on 2+ blocks):
   u'name': u'added',
   u'when': u'after-reload'},
  {u'args': [u'lead',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/lead/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/lead/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> browser.open(contents_url)

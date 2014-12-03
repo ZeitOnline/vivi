@@ -12,16 +12,7 @@ Centerpage
 u'homepage'
 
 
-A centerpage has three editable areas:
-
->>> cp['lead']
-<zeit.content.cp.area.Lead object at 0x...>
->>> cp['informatives']
-<zeit.content.cp.area.Informatives object at 0x...>
->>> cp['teaser-mosaic']
-<zeit.content.cp.area.Mosaic object at 0x...>
-
-They are represented in XML as:
+The ancient XML representation looked as follows:
 
 >>> import lxml.etree
 >>> print lxml.etree.tostring(cp.xml, pretty_print=True)
@@ -52,10 +43,10 @@ KeyError: 'ugc-bar'
 
 The centerpage is reachable via ``__parent__`` or by adapting to it:
 
->>> cp['informatives'].__parent__
+>>> cp['feature'].__parent__
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
 >>> import zeit.content.cp.interfaces
->>> zeit.content.cp.interfaces.ICenterPage(cp['informatives'])
+>>> zeit.content.cp.interfaces.ICenterPage(cp['feature'])
 <zeit.content.cp.centerpage.CenterPage object at 0x...>
 
 [#modified-handler]_
@@ -207,7 +198,7 @@ It is possible to get the center page from the block by adapting to ICenterPage:
 The ``__parent__`` of a block is the area:
 
 >>> block.__parent__
-<zeit.content.cp.area.Informatives object at 0x...>
+<zeit.content.cp.area.Region object at 0x...>
 
 
 Areas support ordering of their contents via the ``updateOrder`` method:
