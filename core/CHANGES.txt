@@ -5,7 +5,7 @@ zeit.content.cp changes
 2.7.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add extra container `ISection` between `ICenterPage` and `IArea`. (VIV-621)
 
 
 2.7.0 (2014-11-14)
