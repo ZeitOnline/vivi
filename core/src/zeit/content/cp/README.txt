@@ -72,9 +72,9 @@ Header image
 Topic Links
 +++++++++++
 
->>> cp.topiclink_title = 'Sachsen Linkse' 
->>> cp.topiclink_label_1 = 'Sachsen spezial' 
->>> cp.topiclink_url_1 = 'http://www.zeit.de/themen/sachsen/index' 
+>>> cp.topiclink_title = 'Sachsen Linkse'
+>>> cp.topiclink_label_1 = 'Sachsen spezial'
+>>> cp.topiclink_url_1 = 'http://www.zeit.de/themen/sachsen/index'
 >>> print lxml.etree.tostring(cp.xml, pretty_print=True)
 <centerpage...>
   <head>
@@ -93,9 +93,9 @@ Topic Links
 OG-Metadata
 +++++++++++
 
->>> cp.og_title = 'Isch bin da Title' 
->>> cp.og_description = 'Hier geht die Description' 
->>> cp.og_image = 'yo-man.jpg' 
+>>> cp.og_title = 'Isch bin da Title'
+>>> cp.og_description = 'Hier geht die Description'
+>>> cp.og_image = 'yo-man.jpg'
 >>> print lxml.etree.tostring(cp.xml, pretty_print=True)
 <centerpage...>
   <head>
@@ -103,7 +103,7 @@ OG-Metadata
     <og_meta>
        <og_title...>Isch bin da Title</og_title>
        <og_description...>Hier geht die Description</og_description>
-       <og_image...>yo-man.jpg</og_image>    
+       <og_image...>yo-man.jpg</og_image>
     </og_meta>
   ...
 </centerpage>
