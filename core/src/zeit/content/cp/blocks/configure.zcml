@@ -113,9 +113,6 @@
     factory=".teaserbar.TeaserBarFactory" 
     name="teaser-bar" />
   <adapter
-    factory="..area.cms_content_iter"
-    for="..interfaces.ITeaserBar" />
-  <adapter
     provides="zeit.edit.interfaces.IElement"
     name="teaser-bar"
     factory=".teaserbar.TeaserBar"

@@ -8,7 +8,7 @@ import unittest
 class TestContentIter(unittest.TestCase):
 
     def test_unresolveable_blocks_should_not_be_adapted(self):
-        from zeit.content.cp.area import cms_content_iter
+        from zeit.content.cp.centerpage import cms_content_iter
         area = mock.Mock()
         area.values = mock.Mock(
             return_value=[mock.sentinel.block1,

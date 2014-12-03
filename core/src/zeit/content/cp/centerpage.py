@@ -5,7 +5,6 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.redirect.interfaces import IRenameInfo
 from zeit.connector.search import SearchVar
 from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
-import UserDict
 import collections
 import copy
 import grokcore.component as grok
@@ -26,6 +25,7 @@ import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.cp.interfaces
 import zeit.edit.container
+import zeit.edit.interfaces
 import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
@@ -195,12 +195,13 @@ class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
 _test_helper_cp_changed = False
 
 
-@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
-@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+@grok.adapter(zeit.edit.interfaces.IContainer)
+@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
-    return itertools.chain(
-        *[zeit.content.cp.interfaces.ICMSContentIterable(area)
-          for area in context.values()])
+    return itertools.chain(*[
+        zeit.content.cp.interfaces.ICMSContentIterable(block)
+        for block in context.values()
+        if block is not None])
 
 
 @zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)

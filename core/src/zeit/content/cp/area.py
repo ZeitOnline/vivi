@@ -136,21 +136,3 @@ def rendered_xml_mosaic(context):
     for item in context.values():
         root.append(zeit.content.cp.interfaces.IRenderedXML(item))
     return root
-
-
-@zope.component.adapter(zeit.edit.interfaces.IArea)
-@zope.interface.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
-def cms_content_iter(context):
-    return itertools.chain(*[
-        zeit.content.cp.interfaces.ICMSContentIterable(block)
-        for block in context.values()
-        if block is not None])
-
-
-@grok.adapter(zeit.content.cp.interfaces.IRegion)  # maybe use IContainer for both
-@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
-def cms_content_iter_for_region(context):
-    return itertools.chain(*[
-        zeit.content.cp.interfaces.ICMSContentIterable(block)
-        for block in context.values()
-        if block is not None])

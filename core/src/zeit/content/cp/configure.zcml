@@ -33,7 +33,6 @@
     name="zeit.content.cp"
     />
 
-  <adapter factory=".centerpage.cms_content_iter" />
   <adapter
     factory=".centerpage.cp_references"
     name="zeit.content.cp.centerpage"
@@ -60,9 +59,6 @@
   <include package=".teasergroup" />
 
   <!-- Areas -->
-  <adapter factory=".area.container_to_centerpage" />
-  <adapter factory=".area.cms_content_iter" />
-
   <adapter
     factory=".area.RegionFactory"
     for="zeit.content.cp.interfaces.ICenterPage"
