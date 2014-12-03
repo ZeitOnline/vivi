@@ -43,7 +43,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
                                                      'cp-template.xml')
 
     _find_item = lxml.etree.XPath('./body/*[@area = $name]')
-    _get_keys = lxml.etree.XPath('./body/*/attribute::area')
+    _get_keys = lxml.etree.XPath('./body/*/@area')
 
     def _get_element_type(self, xml_node):
         return xml_node.tag
