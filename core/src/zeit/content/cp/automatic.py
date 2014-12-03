@@ -7,20 +7,20 @@ import zope.component
 import zope.interface
 
 
-class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
+class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
-    zope.component.adapts(zeit.content.cp.interfaces.IRegion)
-    zope.interface.implements(zeit.content.cp.interfaces.IAutomaticRegion)
+    zope.component.adapts(zeit.content.cp.interfaces.IArea)
+    zope.interface.implements(zeit.content.cp.interfaces.IAutomaticArea)
 
     _automatic = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'automatic',
-        zeit.content.cp.interfaces.IAutomaticRegion['automatic'])
+        zeit.content.cp.interfaces.IAutomaticArea['automatic'])
 
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'count', zeit.content.cp.interfaces.IAutomaticRegion['count'])
+        '.', 'count', zeit.content.cp.interfaces.IAutomaticArea['count'])
 
     raw_query = zeit.cms.content.property.ObjectPathProperty(
-        '.raw_query', zeit.content.cp.interfaces.IAutomaticRegion['raw_query'])
+        '.raw_query', zeit.content.cp.interfaces.IAutomaticArea['raw_query'])
 
     def __init__(self, context):
         self.context = context

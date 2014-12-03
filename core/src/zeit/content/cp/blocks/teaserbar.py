@@ -64,10 +64,10 @@ class TeaserBarFactory(zeit.edit.block.TypeOnAttributeElementFactory):
         'layout'].default.id
 
     def get_xml(self):
-        region = super(TeaserBarFactory, self).get_xml()
-        region.tag = 'region'
-        region.set('area', 'teaser-row-full')
-        return region
+        area = super(TeaserBarFactory, self).get_xml()
+        area.tag = 'region'
+        area.set('area', 'teaser-row-full')
+        return area
 
     def __call__(self):
         bar = super(TeaserBarFactory, self).__call__()

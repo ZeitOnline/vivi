@@ -68,7 +68,7 @@
     for="zeit.content.cp.interfaces.ICenterPage"
     name="cluster" /> <!-- region -->
   <adapter
-    factory=".area.RegionFactory"
+    factory=".area.AreaFactory"
     for="zeit.content.cp.interfaces.ISection"
     name="region" /> <!-- area -->
 
@@ -81,7 +81,7 @@
       permission="zeit.EditContent"
       />
   </class>
-  <class class=".area.Region">  <!-- area -->
+  <class class=".area.Area">  <!-- area -->
     <require
       interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" />
@@ -97,9 +97,9 @@
     factory=".area.Section"
     /> <!-- region -->
   <adapter
-    provides="zeit.content.cp.interfaces.IRegion"
+    provides="zeit.content.cp.interfaces.IArea"
     name="region"
-    factory=".area.Region"
+    factory=".area.Area"
     /> <!-- area -->
 
   <class class=".teaser.Teaser">
@@ -176,19 +176,19 @@
 
   <utility factory=".feed.FeedManager" />
 
-  <class class=".automatic.AutomaticRegion">
+  <class class=".automatic.AutomaticArea">
     <require
-      interface="zeit.content.cp.interfaces.IAutomaticRegion"
+      interface="zeit.content.cp.interfaces.IAutomaticArea"
       permission="zope.View"
       />
     <require
-      set_schema="zeit.content.cp.interfaces.IAutomaticRegion"
+      set_schema="zeit.content.cp.interfaces.IAutomaticArea"
       permission="zeit.content.cp.EditAutomatic"
       />
   </class>
 
   <adapter
-    factory=".automatic.AutomaticRegion"
+    factory=".automatic.AutomaticArea"
     trusted="yes" />
 
 

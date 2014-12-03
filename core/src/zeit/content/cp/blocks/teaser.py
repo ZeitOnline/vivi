@@ -149,7 +149,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
         zope.container.interfaces.IContained)
 
     zope.component.adapts(
-        zeit.content.cp.interfaces.IRegion,
+        zeit.content.cp.interfaces.IArea,
         gocept.lxml.interfaces.IObjectified)
 
     _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
@@ -321,7 +321,7 @@ class AutoPilotTeaserBlock(TeaserBlock):
 
 
 zeit.edit.block.register_element_factory(
-    zeit.content.cp.interfaces.IRegion, 'teaser', _('List of teasers'))
+    zeit.content.cp.interfaces.IArea, 'teaser', _('List of teasers'))
 
 
 @grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)
@@ -381,10 +381,10 @@ def create_cp_channel(context, event):
     zeit.edit.interfaces.IElement,
     zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
-    region = context.__parent__
-    if zeit.content.cp.interfaces.ILead.providedBy(region):
-        apply_layout(region, zope.container.contained.ContainerModifiedEvent(
-            region, zope.lifecycleevent.Attributes(
+    area = context.__parent__
+    if zeit.content.cp.interfaces.ILead.providedBy(area):
+        apply_layout(area, zope.container.contained.ContainerModifiedEvent(
+            area, zope.lifecycleevent.Attributes(
                 zeit.edit.interfaces.IContainer, context.__name__)))
 
 

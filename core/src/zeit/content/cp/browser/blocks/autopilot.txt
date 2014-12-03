@@ -71,7 +71,7 @@ centerpage:
 
 The teaser block displays a marker to show that it is on autopilot. It then
 pulls in the first teaser of each teaser block from the referenced CenterPage's
-lead region:
+lead area:
 
 >>> browser.open(contents_url)
 >>> 'autopilot-on' in browser.contents

@@ -121,31 +121,29 @@ class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
 centerPageSource = CenterPageSource()
 
 
-class IReadRegion(zeit.edit.interfaces.IReadContainer):
+class IReadArea(zeit.edit.interfaces.IReadContainer):
     pass
 
 
-class IWriteRegion(zeit.edit.interfaces.IWriteContainer):
+class IWriteArea(zeit.edit.interfaces.IWriteContainer):
     pass
 
 
-# IRegion wants to be an IArea, but also preserve the IReadArea/IWriteArea
-# split, so we inherit from IArea again. Absolutely no thanks to Zope for this
-# whole read/write business :-(
-class IRegion(IReadRegion, IWriteRegion, zeit.edit.interfaces.IArea):
-    """A region contains blocks."""
+# Must split read / write for security declarations for ITeaserBar.
+class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea):
+    """An area contains blocks."""
 
 
 class ISection(zeit.edit.interfaces.IContainer):
     """Abstract layer above IArea."""
 
 
-class ILead(IRegion):
-    """The lead region."""
+class ILead(IArea):
+    """The lead area."""
 
 
-class IInformatives(IRegion):
-    """The informatives region."""
+class IInformatives(IArea):
+    """The informatives area."""
 
 
 class IMosaic(ISection):
@@ -157,7 +155,7 @@ class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ['Channel']  # XXX or 'Keyword', see VIV-471
 
 
-class IAutomaticRegion(IRegion):
+class IAutomaticArea(IArea):
 
     automatic = zope.schema.Bool(title=_('automatic'))
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
@@ -545,7 +543,7 @@ class IXMLTeaser(zeit.cms.interfaces.ICMSContent,
         u'The content referenced by the teaser')
 
 
-class IReadTeaserBar(IReadRegion, zeit.edit.interfaces.IElement):
+class IReadTeaserBar(IReadArea, zeit.edit.interfaces.IElement):
 
     layout = zope.schema.Choice(
         title=_("Layout"),
@@ -567,14 +565,14 @@ class IReadTeaserBar(IReadRegion, zeit.edit.interfaces.IElement):
         max_length=6, constraint=hex_literal)
 
 
-class IWriteTeaserBar(IWriteRegion):
+class IWriteTeaserBar(IWriteArea):
     pass
 
 
-class ITeaserBar(IReadTeaserBar, IWriteTeaserBar, IRegion):
+class ITeaserBar(IReadTeaserBar, IWriteTeaserBar, IArea):
     """A teaser bar is a bar in the teaser mosaic.
 
-    The TeaserBar has a dual nature of being both a block and a region.
+    The TeaserBar has a dual nature of being both a block and a area.
 
     """
 

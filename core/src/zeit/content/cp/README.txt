@@ -198,7 +198,7 @@ It is possible to get the center page from the block by adapting to ICenterPage:
 The ``__parent__`` of a block is the area:
 
 >>> block.__parent__
-<zeit.content.cp.area.Region object at 0x...>
+<zeit.content.cp.area.Area object at 0x...>
 
 
 Areas support ordering of their contents via the ``updateOrder`` method:

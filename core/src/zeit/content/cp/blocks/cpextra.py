@@ -28,7 +28,7 @@ class CPExtraBlock(zeit.content.cp.blocks.block.Block):
 
 
 zeit.edit.block.register_element_factory(
-    zeit.content.cp.interfaces.IRegion, 'cpextra', _('CP extra'), module='')
+    zeit.content.cp.interfaces.IArea, 'cpextra', _('CP extra'), module='')
 
 
 @grokcore.component.subscribe(

@@ -11,12 +11,12 @@
     Meistkommentiert
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IRegion"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="weather">
     Wetter
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IRegion"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="stocks">
     Börse
   </cpextra>
@@ -45,18 +45,18 @@
   </cpextra>
 
 
-  <cpextra for="zeit.content.cp.interfaces.IRegion"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="homepage_news">
     Neu auf Zeit Online
   </cpextra>
 
   <cpextra
-    for="zeit.content.cp.interfaces.IRegion"
+    for="zeit.content.cp.interfaces.IArea"
     id="dpa-news">
     dpa-News
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IRegion"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="authors-register">
     Autoren-Register
   </cpextra>
@@ -64,10 +64,10 @@
   <cpextra for="zeit.content.cp.interfaces.IInformatives"
            id="linkatory">
     Linkatory
-  </cpextra> 
+  </cpextra>
 
   <cpextra
-    for="zeit.content.cp.interfaces.IRegion"
+    for="zeit.content.cp.interfaces.IArea"
     id="homepage_news_pics">
     Neu auf Zeit Online (Bilder)
   </cpextra>
@@ -77,17 +77,17 @@
     Rezensionssuche
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IRegion"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="solr-month">
     Solr Monatsübersicht
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IRegion"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="dwds-ticker">
     DWDS Ticker
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IRegion"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="sportextra">
     Sport Extra
   </cpextra>

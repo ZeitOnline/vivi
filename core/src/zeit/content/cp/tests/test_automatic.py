@@ -7,22 +7,22 @@ import zeit.edit.interfaces
 import zope.component
 
 
-class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
+class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticRegionTest, self).setUp()
+        super(AutomaticAreaTest, self).setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
     def test_fills_with_placeholders_when_set_to_automatic(self):
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
         auto.automatic = True
         self.assertEqual(5, len(lead))
 
     def test_fills_with_placeholders_when_teaser_count_changed(self):
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
         auto.automatic = True
         self.assertEqual(5, len(lead))
@@ -31,7 +31,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def tests_values_contain_only_blocks_with_content(self):
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
         auto.automatic = True
         with mock.patch('zeit.find.search.search') as search:
@@ -43,7 +43,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['leader'] = TestContentType()
 
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 2
         auto.automatic = True
 
@@ -59,7 +59,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_renders_xml_with_filled_in_blocks(self):
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
         auto.automatic = True
 
@@ -77,7 +77,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_stores_query_in_xml(self):
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         self.assertEqual((), auto.query)
         auto.query = (
             ('Channel', 'International', 'Nahost'),
@@ -91,7 +91,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_prefers_raw_query_if_present(self):
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
         auto.raw_query = 'raw'
         auto.automatic = True
@@ -102,7 +102,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_builds_query_from_conditions(self):
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
         auto.query = (
             ('Channel', 'International', 'Nahost'),
@@ -125,7 +125,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
         self.repository['leader'] = TestContentType()
 
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
         auto.automatic = True
         zope.component.getAdapter(

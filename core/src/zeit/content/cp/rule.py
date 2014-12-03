@@ -28,7 +28,7 @@ def area(context):
     # emergency brake, since otherwise sections don't know they were formely an
     # area and would forward the question to their parent, which is a
     # CenterPage, which asks their parent, which will trigger an adapter to
-    # AutomaticRegion which is ... not what we want in any case ever
+    # AutomaticArea which is ... not what we want in any case ever
     return None # context.__name__
 
 
@@ -37,13 +37,13 @@ def area(context):
     return context.__parent__.__name__
 
 
-@glob(zeit.content.cp.interfaces.IRegion)
-def is_region(context):
+@glob(zeit.content.cp.interfaces.IArea)
+def is_area(context):
     return True
 
 
 @glob(zope.interface.Interface)
-def is_region(context):
+def is_area(context):
     return False
 
 

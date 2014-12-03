@@ -25,7 +25,7 @@ class ITeaserBlockLayout(zope.interface.Interface):
         max=2,
         default=1)
     default = zope.schema.Bool(
-        title=u"True if this is the default for an area/region")
+        title=u"True if this is the default for an area")
 
 
 class ITeaserBarLayout(zope.interface.Interface):

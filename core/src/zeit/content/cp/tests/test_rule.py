@@ -42,15 +42,15 @@ error_if(True, u'Block in teasermosaic.')
         s = r.apply(teaser, IRuleGlobs(teaser))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
 
-    def test_is_region_in_teasermosaic_should_apply_to_teaserbar(self):
+    def test_is_area_in_teasermosaic_should_apply_to_teaserbar(self):
         factory = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
             zeit.edit.interfaces.IElementFactory,
             name='teaser-bar')
         bar = factory()
         r = Rule("""
-applicable(is_region and section == 'teaser-mosaic' and position)
-error_if(True, u'Region in teasermosaic.')
+applicable(is_area and section == 'teaser-mosaic' and position)
+error_if(True, u'Area in teasermosaic.')
 """)
         s = r.apply(bar, IRuleGlobs(bar))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)

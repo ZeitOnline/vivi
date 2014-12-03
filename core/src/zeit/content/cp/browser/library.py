@@ -29,8 +29,8 @@ class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
     def get_adapters(self):
         adapters = []
         for name in ('lead', 'informatives', 'teaser-mosaic'):
-            region = self.context[name]
+            area = self.context[name]
             view = zope.component.getMultiAdapter(
-                (region, self.request), name=self.__name__)
+                (area, self.request), name=self.__name__)
             adapters.extend(view.get_adapters())
         return adapters

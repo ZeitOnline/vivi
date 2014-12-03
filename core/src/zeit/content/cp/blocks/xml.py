@@ -19,7 +19,7 @@ class XMLBlock(zeit.content.cp.blocks.block.Block):
 
 class XMLBlockFactory(zeit.edit.block.TypeOnAttributeElementFactory):
 
-    zope.component.adapts(zeit.content.cp.interfaces.IRegion)
+    zope.component.adapts(zeit.content.cp.interfaces.IArea)
     element_type = module = 'xml'
     title = _('Raw XML block')
 

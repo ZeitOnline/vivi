@@ -29,9 +29,9 @@ def cms_content_iter_for_section(context):
         if block is not None])
 
 
-class Region(zeit.edit.container.TypeOnAttributeContainer):
+class Area(zeit.edit.container.TypeOnAttributeContainer):
 
-    zope.interface.implements(zeit.content.cp.interfaces.IRegion)
+    zope.interface.implements(zeit.content.cp.interfaces.IArea)
     zope.component.adapts(
         zeit.content.cp.interfaces.ISection,
         gocept.lxml.interfaces.IObjectified)
@@ -55,7 +55,7 @@ class Region(zeit.edit.container.TypeOnAttributeContainer):
             self.xml.set('area', name)
 
 
-class RegionFactory(zeit.edit.block.ElementFactory):
+class AreaFactory(zeit.edit.block.ElementFactory):
 
     tag_name = 'region'  # XXX actually "area"
 
@@ -133,16 +133,16 @@ def element_to_section(context):
     return zeit.content.cp.interfaces.ISection(context.__parent__, None)
 
 
-@grok.adapter(zeit.content.cp.interfaces.IRegion)
+@grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
-    region = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
-    region.attrib.pop('automatic', None)
-    # XXX This API is non-obvious: IAutomaticRegion also works for regions
+    area = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
+    area.attrib.pop('automatic', None)
+    # XXX This API is non-obvious: IAutomaticArea also works for areas
     # that are not or can never be automatic.
-    for block in zeit.content.cp.interfaces.IAutomaticRegion(context).values():
-        region.append(zeit.content.cp.interfaces.IRenderedXML(block))
-    return region
+    for block in zeit.content.cp.interfaces.IAutomaticArea(context).values():
+        area.append(zeit.content.cp.interfaces.IRenderedXML(block))
+    return area
 
 
 @grok.adapter(zeit.content.cp.interfaces.IMosaic)

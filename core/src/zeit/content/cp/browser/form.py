@@ -70,7 +70,7 @@ class AddForm(FormBase,
 class AutomaticFields(object):
 
     automatic_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.IAutomaticRegion,
+        zeit.content.cp.interfaces.IAutomaticArea,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
             'count', 'query', 'raw_query', 'automatic')
     automatic_group = gocept.form.grouped.Fields(
@@ -103,6 +103,6 @@ class DisplayForm(FormBase,
 
 
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)
-@grok.implementer(zeit.content.cp.interfaces.IAutomaticRegion)
-def autoregion_for_cp(context):
-    return zeit.content.cp.interfaces.IAutomaticRegion(context['lead'])
+@grok.implementer(zeit.content.cp.interfaces.IAutomaticArea)
+def autoarea_for_cp(context):
+    return zeit.content.cp.interfaces.IAutomaticArea(context['lead'])

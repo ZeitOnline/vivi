@@ -147,7 +147,7 @@
     />
 
   <view
-    for="zeit.content.cp.interfaces.IRegion zeit.edit.interfaces.IElement"
+    for="zeit.content.cp.interfaces.IArea zeit.edit.interfaces.IElement"
     type="zeit.cms.browser.interfaces.ICMSLayer"
     name="type-switcher"
     factory=".block.SwitchType"
