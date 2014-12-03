@@ -23,15 +23,6 @@ def region(context):
     return zeit.content.cp.interfaces.IRegion(context).__name__
 
 
-@glob(zeit.content.cp.interfaces.IRegion)
-def area(context):
-    # emergency brake, since otherwise regions don't know they were formely an
-    # area and would forward the question to their parent, which is a
-    # CenterPage, which asks their parent, which will trigger an adapter to
-    # AutomaticArea which is ... not what we want in any case ever
-    return None # context.__name__
-
-
 @glob(zeit.content.cp.interfaces.ITeaserBar)
 def area(context):
     return context.__parent__.__name__

@@ -109,6 +109,13 @@ def element_to_region(context):
     return zeit.content.cp.interfaces.IRegion(context.__parent__, None)
 
 
+@grok.adapter(zeit.content.cp.interfaces.IRegion)
+@grok.implementer(zeit.edit.interfaces.IArea)
+def region_to_area(context):
+    """A region *contains*, areas."""
+    return None
+
+
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
