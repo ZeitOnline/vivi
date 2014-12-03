@@ -19,13 +19,13 @@ class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
 
 
 @glob(zeit.edit.interfaces.IElement)
-def section(context):
-    return zeit.content.cp.interfaces.ISection(context).__name__
+def region(context):
+    return zeit.content.cp.interfaces.IRegion(context).__name__
 
 
-@glob(zeit.content.cp.interfaces.ISection)
+@glob(zeit.content.cp.interfaces.IRegion)
 def area(context):
-    # emergency brake, since otherwise sections don't know they were formely an
+    # emergency brake, since otherwise regions don't know they were formely an
     # area and would forward the question to their parent, which is a
     # CenterPage, which asks their parent, which will trigger an adapter to
     # AutomaticArea which is ... not what we want in any case ever

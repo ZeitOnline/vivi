@@ -51,11 +51,11 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
     def __getitem__(self, key):
         if key in ['lead', 'informatives']:
             return self['feature'][key]
-        section = super(CenterPage, self).__getitem__(key)
+        region = super(CenterPage, self).__getitem__(key)
         if key == 'teaser-mosaic':
             zope.interface.alsoProvides(
-                section, zeit.content.cp.interfaces.IMosaic)
-        return section
+                region, zeit.content.cp.interfaces.IMosaic)
+        return region
 
     _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])

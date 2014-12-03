@@ -20,9 +20,9 @@ def cms_content_iter(context):
         if block is not None])
 
 
-@grok.adapter(zeit.content.cp.interfaces.ISection)  # maybe use IContainer for both
+@grok.adapter(zeit.content.cp.interfaces.IRegion)  # maybe use IContainer for both
 @grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
-def cms_content_iter_for_section(context):
+def cms_content_iter_for_region(context):
     return itertools.chain(*[
         zeit.content.cp.interfaces.ICMSContentIterable(block)
         for block in context.values()
@@ -33,7 +33,7 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
 
     zope.interface.implements(zeit.content.cp.interfaces.IArea)
     zope.component.adapts(
-        zeit.content.cp.interfaces.ISection,
+        zeit.content.cp.interfaces.IRegion,
         gocept.lxml.interfaces.IObjectified)
 
     type = 'area'
@@ -63,9 +63,9 @@ class AreaFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
-class Section(zeit.edit.container.Base):
+class Region(zeit.edit.container.Base):
 
-    zope.interface.implements(zeit.content.cp.interfaces.ISection)
+    zope.interface.implements(zeit.content.cp.interfaces.IRegion)
     zope.component.adapts(
         zeit.content.cp.interfaces.ICenterPage,
         gocept.lxml.interfaces.IObjectified)
@@ -92,7 +92,7 @@ class Section(zeit.edit.container.Base):
         return xml_node.tag
 
     def __getitem__(self, key):
-        area = super(Section, self).__getitem__(key)
+        area = super(Region, self).__getitem__(key)
         if key == 'lead':
             zope.interface.alsoProvides(
                 area, zeit.content.cp.interfaces.ILead)
@@ -111,7 +111,7 @@ class Section(zeit.edit.container.Base):
         return keys
 
 
-class SectionFactory(zeit.edit.block.ElementFactory):
+class RegionFactory(zeit.edit.block.ElementFactory):
 
     tag_name = 'cluster'  # XXX actually "region"
 
@@ -128,9 +128,9 @@ def container_to_centerpage(context):
 
 
 @grok.adapter(zeit.edit.interfaces.IElement)
-@grok.implementer(zeit.content.cp.interfaces.ISection)
-def element_to_section(context):
-    return zeit.content.cp.interfaces.ISection(context.__parent__, None)
+@grok.implementer(zeit.content.cp.interfaces.IRegion)
+def element_to_region(context):
+    return zeit.content.cp.interfaces.IRegion(context.__parent__, None)
 
 
 @grok.adapter(zeit.content.cp.interfaces.IArea)

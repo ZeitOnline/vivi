@@ -134,7 +134,7 @@ class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea):
     """An area contains blocks."""
 
 
-class ISection(zeit.edit.interfaces.IContainer):
+class IRegion(zeit.edit.interfaces.IContainer):
     """Abstract layer above IArea."""
 
 
@@ -146,7 +146,7 @@ class IInformatives(IArea):
     """The informatives area."""
 
 
-class IMosaic(ISection):
+class IMosaic(IRegion):
     """Teaser mosaic."""
 
 

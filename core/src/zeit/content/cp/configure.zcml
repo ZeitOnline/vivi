@@ -64,15 +64,15 @@
   <adapter factory=".area.cms_content_iter" />
 
   <adapter
-    factory=".area.SectionFactory"
+    factory=".area.RegionFactory"
     for="zeit.content.cp.interfaces.ICenterPage"
     name="cluster" /> <!-- region -->
   <adapter
     factory=".area.AreaFactory"
-    for="zeit.content.cp.interfaces.ISection"
+    for="zeit.content.cp.interfaces.IRegion"
     name="region" /> <!-- area -->
 
-  <class class=".area.Section">
+  <class class=".area.Region">
     <require
       interface="zeit.edit.interfaces.IReadContainer"
       permission="zope.View" />
@@ -92,9 +92,9 @@
   </class>
 
   <adapter
-    provides="zeit.content.cp.interfaces.ISection"
+    provides="zeit.content.cp.interfaces.IRegion"
     name="cluster"
-    factory=".area.Section"
+    factory=".area.Region"
     /> <!-- region -->
   <adapter
     provides="zeit.content.cp.interfaces.IArea"

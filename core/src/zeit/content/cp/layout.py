@@ -134,8 +134,8 @@ class TeaserBlockLayoutSource(
             return True
 
         area = zeit.edit.interfaces.IArea(context)
-        section = zeit.content.cp.interfaces.ISection(context)
-        areas = [area.__name__, section.__name__]
+        region = zeit.content.cp.interfaces.IRegion(context)
+        areas = [area.__name__, region.__name__]
         if ILead.providedBy(area):
             try:
                 position = area.keys().index(context.__name__)

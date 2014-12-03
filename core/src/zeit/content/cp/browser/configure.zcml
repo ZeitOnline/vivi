@@ -15,7 +15,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ISection"
+    for="zeit.content.cp.interfaces.IRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="add"
     class="zeit.edit.browser.block.Add"
@@ -23,7 +23,7 @@
     />
 
   <browser:page
-    for="zeit.content.cp.interfaces.ISection"
+    for="zeit.content.cp.interfaces.IRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="delete"
     class="zeit.edit.browser.block.Delete"
