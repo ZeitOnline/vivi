@@ -103,14 +103,6 @@ class AreaFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
-@zope.interface.implementer(zeit.content.cp.interfaces.ICenterPage)
-@zope.component.adapter(zeit.edit.interfaces.IContainer)
-def container_to_centerpage(context):
-    # Is this required? Is there any IContainer which is not an IElement at the
-    # same time?
-    return zeit.content.cp.interfaces.ICenterPage(context.__parent__, None)
-
-
 @grok.adapter(zeit.edit.interfaces.IElement)
 @grok.implementer(zeit.content.cp.interfaces.IRegion)
 def element_to_region(context):
