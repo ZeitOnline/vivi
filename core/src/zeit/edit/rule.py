@@ -258,7 +258,10 @@ def is_area(context):
 
 @glob(zeit.edit.interfaces.IElement)
 def area(context):
-    return zeit.edit.interfaces.IArea(context).__name__
+    area = zeit.edit.interfaces.IArea(context, None)
+    if area is not None:
+        return area.__name__
+    return None
 
 
 @glob(zeit.edit.interfaces.IContainer)

@@ -4,7 +4,7 @@ Changes
 2.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow that a context may have no area. Introduced for sections. (VIV-621)
 
 
 2.5.0 (2014-11-14)
