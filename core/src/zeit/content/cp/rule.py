@@ -28,16 +28,6 @@ def area(context):
     return context.__parent__.__name__
 
 
-@glob(zeit.content.cp.interfaces.IArea)
-def is_area(context):
-    return True
-
-
-@glob(zope.interface.Interface)
-def is_area(context):
-    return False
-
-
 @glob(zeit.content.cp.interfaces.ITeaserBlock)
 def layout(context):
     return context.layout.id
