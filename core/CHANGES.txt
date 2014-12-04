@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.3.5 (unreleased)
+2.3.5 (2014-12-04)
 ------------------
 
 - Filesystem connector now handles directory-type resources (especially:
