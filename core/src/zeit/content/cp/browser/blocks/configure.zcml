@@ -48,52 +48,6 @@
     permission="zeit.EditContent"
     />
 
-  <!-- place holder -->
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IPlaceHolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditorContentViewletManager"
-    name="content"
-    template="layout.placeholder.content.pt"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IPlaceHolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditorContentViewletManager"
-    name="edit"
-    template="layout.placeholder.edit.pt"
-    permission="zeit.EditContent"
-    weight="90"
-    />
-
-  <view
-    for="zeit.content.cp.interfaces.IArea zeit.edit.interfaces.IElement"
-    type="zeit.cms.browser.interfaces.ICMSLayer"
-    name="type-switcher"
-    factory=".block.SwitchType"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IPlaceHolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="drop-module"
-    class=".placeholder.DropModule"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IPlaceHolder"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="drop-content"
-    class=".placeholder.DropContent"
-    permission="zeit.EditContent"
-    />
-
   <include file="av.zcml" />
   <include file="teaser.zcml" />
   <include file="automatic.zcml" />

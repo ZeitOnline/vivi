@@ -251,11 +251,6 @@ class IBlock(zeit.edit.interfaces.IBlock):
         required=False,
         max_length=6, constraint=hex_literal)
 
-
-class IPlaceHolder(IBlock):
-    """Placeholder."""
-
-
 #
 # Teaser block (aka teaser list)
 #
