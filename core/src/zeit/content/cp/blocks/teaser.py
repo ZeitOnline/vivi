@@ -7,6 +7,7 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
+import sys
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
@@ -74,8 +75,9 @@ class ColumnSpec(zeit.cms.content.xmlsupport.Persistent):
         return 'ColumnSpec(%s)' % spec
 
 
-class TeaserBlock(zeit.content.cp.blocks.block.Block,
-                  zeit.cms.syndication.feed.Feed):
+class TeaserBlock(
+        zeit.content.cp.blocks.block.Block,
+        zeit.cms.syndication.feed.Feed):
 
     # TeaserBlock reuses Feed for its "list of IElement" behaviour
 
@@ -84,16 +86,44 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         zeit.cms.syndication.interfaces.IFeed,
         zope.container.interfaces.IContained)
 
+    zope.component.adapts(
+        zeit.content.cp.interfaces.IArea,
+        gocept.lxml.interfaces.IObjectified)
+
+    _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
+    _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
+    hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'hide-dupes', zeit.content.cp.interfaces.ITeaserBlock[
+            'hide_dupes'])
+
+    display_amount = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'display-amount',
+        zeit.content.cp.interfaces.ITeaserBlock['display_amount'])
+
+    visible = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'visible', zeit.content.cp.interfaces.ITeaserBlock[
+            'visible'])
+
+    AUTOPILOT_ENTRIES = 6
+
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
         if self.xml.get('module') == 'teaser':
             self.layout = self.layout
         assert self.xml.get('module') != 'teaser'
+        if 'hide-dupes' not in self.xml.attrib:
+            self.hide_dupes = zeit.content.cp.interfaces.ITeaserBlock[
+                'hide_dupes'].default
+        if 'visible' not in self.xml.attrib:
+            self.visible = zeit.content.cp.interfaces.ITeaserBlock[
+                'visible'].default
 
     def insert(self, index, content):
+        self._assert_not_autopilot()
+        # self._p_changed = True
         content = zeit.cms.interfaces.ICMSContent(content)
         if zeit.content.cp.teasergroup.interfaces.ITeaserGroup.providedBy(
-            content):
+                content):
             self._insert_teaser_group(index, content)
         else:
             self._insert_content(index, content)
@@ -116,15 +146,16 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         return self.xml
 
     def clear(self):
-        self._p_changed = True
-        for entry in self:
-            self.remove(entry)
+        if not self.autopilot:
+            self._p_changed = True
+            for entry in self:  # list?
+                self.remove(entry)
 
     @property
     def layout(self):
         default = None
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
-            self):
+                self):
             if layout.id == self.xml.get('module'):
                 return layout
             if layout.default:
@@ -135,43 +166,6 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
     def layout(self, layout):
         self._p_changed = True
         self.xml.set('module', layout.id)
-
-
-class AutoPilotTeaserBlock(TeaserBlock):
-
-    zope.interface.implementsOnly(
-        zeit.content.cp.interfaces.IAutoPilotTeaserBlock,
-        zeit.cms.syndication.interfaces.IFeed,
-        zope.container.interfaces.IContained)
-
-    zope.component.adapts(
-        zeit.content.cp.interfaces.IArea,
-        gocept.lxml.interfaces.IObjectified)
-
-    _autopilot = zeit.cms.content.property.ObjectPathProperty('.autopilot')
-    _referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
-    hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'hide-dupes', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
-            'hide_dupes'])
-
-    display_amount = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'display-amount',
-        zeit.content.cp.interfaces.IAutoPilotTeaserBlock['display_amount'])
-
-    visible = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'visible', zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
-            'visible'])
-
-    AUTOPILOT_ENTRIES = 6
-
-    def __init__(self, *args, **kw):
-        super(AutoPilotTeaserBlock, self).__init__(*args, **kw)
-        if 'hide-dupes' not in self.xml.attrib:
-            self.hide_dupes = zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
-                'hide_dupes'].default
-        if 'visible' not in self.xml.attrib:
-            self.visible = zeit.content.cp.interfaces.IAutoPilotTeaserBlock[
-                'visible'].default
 
     @property
     def suppress_image_positions(self):
@@ -192,33 +186,30 @@ class AutoPilotTeaserBlock(TeaserBlock):
                 self.referenced_cp, [])
             return iter(list(feed)[:self.AUTOPILOT_ENTRIES])
         else:
-            return super(AutoPilotTeaserBlock, self).__iter__()
+            return super(TeaserBlock, self).__iter__()
 
     def keys(self):
         if self.autopilot:
             return [c.uniqueId for c in self]
         else:
-            return super(AutoPilotTeaserBlock, self).keys()
-
-    def insert(self, *args, **kw):
-        self._p_changed = True
-        self._forbidden_on_autopilot('insert', *args, **kw)
+            return super(TeaserBlock, self).keys()
 
     def remove(self, *args, **kw):
+        self._assert_not_autopilot()
         self._p_changed = True
-        self._forbidden_on_autopilot('remove', *args, **kw)
+        super(TeaserBlock, self).remove(*args, **kw)
 
     def updateOrder(self, *args, **kw):
+        self._assert_not_autopilot()
         self._p_changed = True
-        self._forbidden_on_autopilot('updateOrder', *args, **kw)
+        super(TeaserBlock, self).updateOrder(*args, **kw)
 
-    def _forbidden_on_autopilot(self, method, *args, **kw):
+    def _assert_not_autopilot(self):
+        """Ensure that certain methods shall never be called in autopilot."""
         if self.autopilot:
-            raise RuntimeError("%s: '%s' is forbidden while on autopilot"
-                               % (self, method))
-        else:
-            return getattr(super(AutoPilotTeaserBlock, self), method)(*args,
-                                                                      **kw)
+            raise RuntimeError(
+                "{cls}: '{method}' is forbidden while on autopilot".format(
+                    cls=self, method=sys._getframe(1).f_code.co_name))
 
     @property
     def autopilot(self):
@@ -250,11 +241,6 @@ class AutoPilotTeaserBlock(TeaserBlock):
                 zeit.cms.interfaces.ID_NAMESPACE, 'http://www.zeit.de/')
         self._update_autopilot(self.autopilot)
         self.update_topiclinks()
-
-    def clear(self):
-        if not self.autopilot:
-            for entry in list(self):
-                self.remove(entry)
 
     def _update_autopilot(self, autopilot):
         # we need to manipulate self.entries, which is only allowed while not
@@ -323,19 +309,12 @@ zeit.edit.block.register_element_factory(
 @grok.adapter(zeit.content.cp.interfaces.ITeaserBlock)
 @grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
+    if context.autopilot:
+        yield context.referenced_cp
     for teaser in context:
         yield teaser
         if zeit.content.cp.interfaces.IXMLTeaser.providedBy(teaser):
             yield zeit.cms.interfaces.ICMSContent(teaser.original_uniqueId)
-
-
-@grok.adapter(zeit.content.cp.interfaces.IAutoPilotTeaserBlock)
-@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
-def autopilot_cms_content_iter(context):
-    if context.autopilot:
-        yield context.referenced_cp
-    for obj in cms_content_iter(context):
-        yield obj
 
 
 class CenterpageFeed(zeit.cms.syndication.feed.Feed):
@@ -506,7 +485,7 @@ def update_topiclinks_of_referenced_cps(context, event):
         for area in region.values():
             blocks.extend(area.values())
     for block in blocks:
-        if not zeit.content.cp.interfaces.IAutoPilotTeaserBlock.providedBy(
+        if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(
                 block):
             continue
         # Note that we can't simply re-set referenced_cp here (as we do

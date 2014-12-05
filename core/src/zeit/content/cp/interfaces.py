@@ -256,24 +256,6 @@ class IBlock(zeit.edit.interfaces.IBlock):
 #
 
 
-class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
-
-    layout = zope.schema.Choice(
-        title=_("Layout"),
-        source=zeit.content.cp.layout.TeaserBlockLayoutSource())
-
-
-class AutopilotSource(zeit.cms.content.contentsource.CMSContentSource):
-
-    name = 'autopilot'
-    check_interfaces = (
-        ICenterPage,
-        zeit.cms.syndication.interfaces.IFeed,
-    )
-
-autopilotSource = AutopilotSource()
-
-
 # ObjectPathAttributeProperty talks directly to the field,
 # so it has no access to the token machinery, thus no conversion
 # from/to string happens there -- so we need to do that explicitly.
@@ -287,7 +269,22 @@ class IntChoice(zope.schema.Choice):
         return super(IntChoice, self).fromUnicode(value)
 
 
-class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
+class AutopilotSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'autopilot'
+    check_interfaces = (
+        ICenterPage,
+        zeit.cms.syndication.interfaces.IFeed,
+    )
+
+autopilotSource = AutopilotSource()
+
+
+class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
+
+    layout = zope.schema.Choice(
+        title=_("Layout"),
+        source=zeit.content.cp.layout.TeaserBlockLayoutSource())
 
     referenced_cp = zope.schema.Choice(
         title=_('Get teasers from (autopilot)'),
@@ -323,22 +320,12 @@ class IAutoPilotReadTeaserBlock(IReadTeaserBlock):
 
 
 class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
-    pass
-
-
-class IAutoPilotWriteTeaserBlock(IWriteTeaserBlock):
 
     def update_topiclinks():
         """Copy topiclinks of the referenced CP into our XML."""
 
 
 class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
-    """A list of teasers."""
-
-
-class IAutoPilotTeaserBlock(
-        ITeaserBlock,
-        IAutoPilotReadTeaserBlock, IAutoPilotWriteTeaserBlock):
     """A list of teasers."""
 
 

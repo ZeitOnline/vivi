@@ -17,17 +17,6 @@
       interface="..interfaces.IWriteTeaserBlock"
       permission="zeit.EditContent"/>
   </class>
-  <class class=".teaser.AutoPilotTeaserBlock">
-    <require
-      interface="..interfaces.IAutoPilotReadTeaserBlock"
-      permission="zope.View"/>
-    <require
-      set_schema="..interfaces.IAutoPilotReadTeaserBlock"
-      permission="zeit.EditContent"/>
-    <require
-      interface="..interfaces.IAutoPilotWriteTeaserBlock"
-      permission="zeit.EditContent"/>
-  </class>
 
   <adapter factory=".teaser.CenterpageFeed" />
   <adapter factory=".teaser.cp_xi_include" name="xi:include" />
@@ -35,7 +24,7 @@
   <adapter
     provides="zeit.edit.interfaces.IElement"
     name="teaser"
-    factory=".teaser.AutoPilotTeaserBlock"
+    factory=".teaser.TeaserBlock"
     />
 
   <adapter factory=".teaser.ExcerptDependency" name="zeit.content.cp-excerpt" />

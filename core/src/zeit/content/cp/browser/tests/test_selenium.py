@@ -232,20 +232,18 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForXpathCount(css_path('.lightbox li.edit-bar'), 2)
         s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 3)
 
-    @unittest.skip("Enable when all modules are available everywhere")
     def test_toggle_visible(self):
         self.open_centerpage()
         s = self.selenium
 
-        teaser_module = self.get_module('teaser-mosaic', 'List of teasers')
-
-        s.click('link=*Add teaser bar*')
-        s.waitForElementPresent('css=a.choose-block')
-        s.click('css=a.choose-block')
+        s.click('link=*Add block*')
+        teaser_module = self.get_module('informatives', 'List of teasers')
         s.waitForElementPresent(teaser_module)
-        s.dragAndDropToObject(teaser_module, 'css=a.choose-block')
+        s.dragAndDropToObject(
+            teaser_module,
+            'css=.landing-zone.action-informatives-module-droppable')
         s.waitForElementPresent(
-            'css=.block.type-teaser-bar .block.type-teaser')
+            'css=.block.type-area .block.type-teaser')
 
         s.assertElementNotPresent('css=.block.type-teaser.block-visible-off')
         s.click('link=Switch visible')
@@ -263,7 +261,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
         s.click('link=*Add teaser bar*')
 
-        path = css_path('.block.type-teaser-bar .block.type-teaser')
+        path = css_path('.block.type-area .block.type-teaser')
 
         teaser_module = self.get_module('teaser-mosaic', 'List of teasers')
 

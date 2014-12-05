@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.cp.interfaces import IAutoPilotTeaserBlock
+from zeit.content.cp.interfaces import ITeaserBlock
 import gocept.form.grouped
 import grokcore.component as grok
 import zeit.cms.browser.form
@@ -54,20 +54,39 @@ class IPositions(zope.interface.Interface):
     zope.interface.alsoProvides(image_positions, IFixedList)
 
 
-class EditProperties(zope.formlib.form.SubPageEditForm):
+# XXX this cobbles together just enough to combine SubPageForm and GroupedForm
+class EditProperties(
+        zope.formlib.form.SubPageEditForm,
+        zeit.cms.browser.form.WidgetCSSMixin,
+        gocept.form.grouped.EditForm):
 
     layout_prefix = 'teaser'
     template = zope.app.pagetemplate.ViewPageTemplateFile(
         'teaser.edit-properties.pt')
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
-    form_fields = ()
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ITeaserBlock).select(
+            'referenced_cp', 'autopilot', 'hide_dupes', 'display_amount')
+        + zope.formlib.form.FormFields(IPositions))
+
+    widget_groups = ()
+    field_groups = (
+        gocept.form.grouped.RemainingFields(
+            _('Autopilot'), css_class='column-left'),
+        gocept.form.grouped.Fields(
+            _('Parquet'), ('display_amount', 'image_positions'),
+            css_class='column-right'),
+    )
 
     close = False
 
     @property
     def form(self):
-        return super(EditProperties, self).template
+        return 'macro'  # we use the grouped-form macros instead
+        # return super(EditProperties, self).template
 
     @property
     def layouts(self):
@@ -91,34 +110,6 @@ class EditProperties(zope.formlib.form.SubPageEditForm):
     def handle_edit_action(self, action, data):
         self.close = True
         return super(EditProperties, self).handle_edit_action.success(data)
-
-
-# XXX this cobbles together just enough to combine SubPageForm and GroupedForm
-class AutoPilotEditProperties(
-        EditProperties,
-        zeit.cms.browser.form.WidgetCSSMixin,
-        gocept.form.grouped.EditForm):
-
-    interface = zeit.content.cp.interfaces.IAutoPilotTeaserBlock
-
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.cp.interfaces.IAutoPilotTeaserBlock).select(
-            'referenced_cp', 'autopilot', 'hide_dupes', 'display_amount')
-        + zope.formlib.form.FormFields(IPositions))
-
-    widget_groups = ()
-    field_groups = (
-        gocept.form.grouped.RemainingFields(
-            _('Autopilot'), css_class='column-left'),
-        gocept.form.grouped.Fields(
-            _('Parquet'), ('display_amount', 'image_positions'),
-            css_class='column-right'),
-    )
-
-    @property
-    def form(self):
-        return 'macro'  # we use the grouped-form macros instead
 
 
 class FixedSequenceWidget(zope.formlib.sequencewidget.ListSequenceWidget):
@@ -172,7 +163,7 @@ class Display(zeit.cms.browser.view.Base):
         self.header_image = None
         for i, content in enumerate(self.context):
 
-            if (IAutoPilotTeaserBlock.providedBy(self.context)
+            if (ITeaserBlock.providedBy(self.context)
                 and self.context.display_amount is not None
                 and i + 1 > self.context.display_amount):
                 break
@@ -253,6 +244,11 @@ class Display(zeit.cms.browser.view.Base):
         else:
             return self.url(image, '@@raw')
 
+    @property
+    def autopilot_toggle_url(self):
+        on_off = 'off' if self.context.autopilot else 'on'
+        return self.url('@@toggle-autopilot?to=' + on_off)
+
 
 class Drop(zeit.edit.browser.view.Action):
     """Drop a content object on a teaserblock."""
@@ -261,21 +257,14 @@ class Drop(zeit.edit.browser.view.Action):
     index = zeit.edit.browser.view.Form('index', json=True, default=0)
 
     def update(self):
+        if self.context.autopilot:
+            self.context.autopilot = False
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         self.context.insert(self.index, content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.signal(
             None, 'reload', self.context.__name__, self.url('@@contents'))
-
-
-class AutoPilotDrop(Drop):
-    """Drop a content object on a teaserblock."""
-
-    def update(self):
-        if self.context.autopilot:
-            self.context.autopilot = False
-        super(AutoPilotDrop, self).update()
 
 
 class EditContents(zeit.cms.browser.view.Base):
@@ -350,14 +339,6 @@ def teaserEditViewName(context):
     return 'edit-teaser.html'
 
 
-class AutoPilotDisplay(Display):
-
-    @property
-    def autopilot_toggle_url(self):
-        on_off = 'off' if self.context.autopilot else 'on'
-        return self.url('@@toggle-autopilot?to=' + on_off)
-
-
 class ToggleBooleanBase(zeit.edit.browser.view.Action):
 
     to = zeit.edit.browser.view.Form('to')
@@ -381,6 +362,7 @@ class UpdateOrder(zeit.edit.browser.view.Action):
     keys = zeit.edit.browser.view.Form('keys', json=True)
 
     def update(self):
+        self.context.autopilot = False
         keys = self.keys
         try:
             left = keys.index(COLUMN_ID)
@@ -393,13 +375,6 @@ class UpdateOrder(zeit.edit.browser.view.Action):
         self.context.updateOrder(keys)
         zope.event.notify(
             zope.lifecycleevent.ObjectModifiedEvent(self.context))
-
-
-class AutoPilotUpdateOrder(UpdateOrder):
-
-    def update(self):
-        self.context.autopilot = False
-        super(AutoPilotUpdateOrder, self).update()
 
 
 class Delete(zeit.edit.browser.view.Action):
