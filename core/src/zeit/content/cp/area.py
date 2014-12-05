@@ -22,7 +22,7 @@ class Region(zeit.edit.container.Base):
         './*[@area = $name or @cms:__name__ = $name]',
         namespaces=dict(cms='http://namespaces.zeit.de/CMS/cp'))
 
-    type = 'area'
+    type = 'region'
 
     @property
     def __name__(self):
@@ -37,7 +37,7 @@ class Region(zeit.edit.container.Base):
     def _get_element_type(self, xml_node):
         if xml_node.get('area') == 'teaser-row-full':  # XXX backward compatibility for teaser bar
             return xml_node.get('{http://namespaces.zeit.de/CMS/cp}type')
-        return xml_node.tag
+        return 'area'
 
     def __getitem__(self, key):
         area = super(Region, self).__getitem__(key)
@@ -98,6 +98,7 @@ class AreaFactory(zeit.edit.block.ElementFactory):
 
     # XML tags are named "region", thus do not change.
     tag_name = 'region'
+    element_type = 'area'
 
     def get_xml(self):
         return getattr(lxml.objectify.E, self.tag_name)()
