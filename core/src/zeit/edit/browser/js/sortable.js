@@ -13,18 +13,36 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
 
     NOT_DRAGGABLE: {},
 
-    construct: function(container, passed_options) {
+    /*
+
+    We must differentiate between the container with meta data and the
+    container which contains draggable children, since the HTML may contain a
+    node between parent and children, thus they are not direct decendents.
+
+    Arguments:
+      container_id ... ID selector without leading #,
+                       DOM element should contain target URL,
+                       options will be stored there
+      child_container_selector ... complete selector of the DOM element that
+                                   contains the draggable children
+    */
+    construct: function(container_id, child_container_selector) {
         var self = this;
-        self.container = container;
+        self.container_id = container_id;
+        if (child_container_selector) {
+            self.child_container_selector = child_container_selector;
+        } else {
+            self.child_container_selector = '#' + self.container_id;
+        }
         var options = MochiKit.Base.update(
-            MochiKit.Base.clone(self.default_options), passed_options);
-        MochiKit.Sortable.sortables[container] = options;
+            MochiKit.Base.clone(self.default_options));
+        MochiKit.Sortable.sortables[container_id] = options;
         arguments.callee.$.construct.call(self);
     },
 
     connect: function() {
         var self = this;
-        var container = $(self.container);
+        var container = $$(self.child_container_selector)[0];
 
         var nodes = self.get_sortable_nodes();
         forEach(nodes, function(node) {
@@ -92,7 +110,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
         });
         var url = self.options()['update_url'];
         if (isUndefinedOrNull(url)) {
-            url = $(self.container).getAttribute(
+            url = $(self.container_id).getAttribute(
                 'cms:url') + '/@@updateOrder';
         }
         // We already hold the request lock, see on_start()
@@ -125,7 +143,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
 
     options: function() {
         var self = this;
-        return MochiKit.Sortable.options(self.container);
+        return MochiKit.Sortable.options(self.container_id);
     }
 
 });
@@ -137,14 +155,14 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
     __name__: 'zeit.edit.sortable.BlockSorter',
     context: zeit.edit.context.Editor,
 
-    construct: function(container_id, passed_options) {
+    construct: function(container_id, child_container_selector) {
         var self = this;
-        arguments.callee.$.construct.call(self, container_id, passed_options);
+        arguments.callee.$.construct.call(self, container_id, child_container_selector);
     },
 
     get_sortable_nodes: function() {
         var self = this;
-        var selector = '#' + self.container + ' > div.block[id]';
+        var selector = self.child_container_selector + ' > div.block[id]';
         return $$(selector);
     },
 
@@ -165,12 +183,12 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
         d.addCallback(function(result) {
             var url = self.options()['reload_url'];
             if (isUndefinedOrNull(url)) {
-                url = $(self.container).getAttribute(
+                url = $(self.container_id).getAttribute(
                     'cms:url') + '/@@contents';
             }
             var reload_id = self.options()['reload_id'];
             if (isUndefinedOrNull(reload_id)) {
-                reload_id = self.container;
+                reload_id = self.container_id;
             }
             MochiKit.Signal.signal(
                 self.editor, 'reload', reload_id, url);

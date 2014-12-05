@@ -6,6 +6,9 @@ Changes
 
 - Allow that a context may have no area. Introduced for sections. (VIV-621)
 
+- Change API of ``zeit.edit.sortable.Sortable`` to make a difference between
+  parent with meta data and child container. (VIV-627)
+
 
 2.5.0 (2014-11-14)
 ------------------
