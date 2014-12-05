@@ -90,6 +90,8 @@ class ElementFactory(object):
 
     zope.interface.implements(zeit.edit.interfaces.IElementFactory)
 
+    element_type = NotImplemented
+
     def __init__(self, context):
         self.context = context
 
