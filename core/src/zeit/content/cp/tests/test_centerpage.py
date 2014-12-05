@@ -6,8 +6,10 @@ from zeit.cms.checkout.helper import checked_out
 import gocept.cache.method
 import lovely.remotetask.interfaces
 import lxml.etree
+import mock
 import pkg_resources
 import transaction
+import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.workflow.interfaces
@@ -249,3 +251,22 @@ class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertIn(
             'http://xml.zeit.de/changed',
             lxml.etree.tostring(cp.xml, pretty_print=True))
+
+
+class TestContentIter(unittest.TestCase):
+
+    def test_unresolveable_blocks_should_not_be_adapted(self):
+        from zeit.content.cp.centerpage import cms_content_iter
+        centerpage = mock.Mock()
+        centerpage.values = mock.Mock(
+            return_value=[mock.sentinel.block1,
+                          None,
+                          mock.sentinel.block2])
+        with mock.patch('zeit.content.cp.interfaces.ICMSContentIterable') as \
+                ci:
+            cms_content_iter(centerpage)
+            self.assertEqual(2, ci.call_count)
+            self.assertEqual(
+                [((mock.sentinel.block1, ), {}),
+                 ((mock.sentinel.block2, ), {})],
+                ci.call_args_list)

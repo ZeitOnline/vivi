@@ -1,24 +1,49 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
+import StringIO
+import zeit.content.cp.area
+import zeit.content.cp.centerpage
+import zeit.content.cp.testing
 
-import mock
-import unittest
+
+CENTERPAGE = """
+<centerpage
+  xmlns:cp="http://namespaces.zeit.de/CMS/cp"
+  xmlns:py="http://codespeak.net/lxml/objectify/pytype"
+  xmlns:xi="http://www.w3.org/2001/XInclude"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <head/>
+  <body>
+    <cluster area="feature">
+      <region area="lead"/>
+      <region area="informatives"/>
+    </cluster>
+    <cluster area="teaser-mosaic">
+      {content}
+    </cluster>
+  </body>
+  <feed/>
+</centerpage>
+"""
+
+TEASERBAR = """
+<region cp:type="teaser-bar" module="dmr" area="teaser-row-full"
+        cp:__name__="{uuid}" supertitle="asd" teaserText="qwe"
+        background_color="ff"/>
+"""
 
 
-class TestContentIter(unittest.TestCase):
+class TeaserBarBackwardCompatibilityTest(
+        zeit.content.cp.testing.FunctionalTestCase):
 
-    def test_unresolveable_blocks_should_not_be_adapted(self):
-        from zeit.content.cp.centerpage import cms_content_iter
-        area = mock.Mock()
-        area.values = mock.Mock(
-            return_value=[mock.sentinel.block1,
-                          None,
-                          mock.sentinel.block2])
-        with mock.patch('zeit.content.cp.interfaces.ICMSContentIterable') as \
-            ci:
-            cms_content_iter(area)
-            self.assertEqual(2, ci.call_count)
-            self.assertEqual(
-                [((mock.sentinel.block1, ), {}),
-                 ((mock.sentinel.block2, ), {})],
-                ci.call_args_list)
+    def test_can_read_old_xml_with_teaser_bar_and_creates_areas(self):
+        cp = zeit.content.cp.centerpage.CenterPage(StringIO.StringIO(
+            CENTERPAGE.format(content=TEASERBAR.format(uuid='FOO'))))
+        self.assertIsInstance(
+            cp['teaser-mosaic']['FOO'], zeit.content.cp.area.Area)
+
+    def test_can_read_old_xml_and_recognizes_teaserbar_ids_correctly(self):
+        cp = zeit.content.cp.centerpage.CenterPage(StringIO.StringIO(
+            CENTERPAGE.format(content=(
+                TEASERBAR.format(uuid='FOO')
+                + TEASERBAR.format(uuid='BAR')))))
+        self.assertEqual(['FOO', 'BAR'], cp['teaser-mosaic'].keys())
