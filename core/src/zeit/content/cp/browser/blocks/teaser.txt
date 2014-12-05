@@ -211,14 +211,14 @@ The layout can be selected at the edit box:
 
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(contents_url)
->>> browser.getLink('Edit').click()
+>>> browser.getLink('Edit', index=1).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('Großer Teaser mit Bild und Teaserliste').click()
 
 It is marked in the edit box now:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit').click()
+>>> browser.getLink('Edit', index=1).click()
 >>> browser.open('edit-properties')
 >>> print browser.contents
 <div...
@@ -262,7 +262,7 @@ The 450x200 image is used now:
 When we change the layout to "Kleiner Teaser" the image will not be used any
 more:
 
->>> browser.getLink('Edit').click()
+>>> browser.getLink('Edit', index=1).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('Kleiner Teaser').click()
 >>> browser.open(contents_url)
@@ -282,7 +282,7 @@ When the image is not an image group, it will be just used:
 ...         with zeit.cms.checkout.helper.checked_out(test_content) as co:
 ...             zeit.content.image.interfaces.IImages(co).image = (
 ...                 group['obama-clinton-120x120.jpg'])
->>> browser.getLink('Edit').click()
+>>> browser.getLink('Edit', index=1).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('Großer Teaser').click()
 >>> browser.open(contents_url)
@@ -310,7 +310,7 @@ We need to add a second teaser block:
 ...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
 >>> browser.open(contents_url)
 
->>> browser.getLink('Edit').click()
+>>> browser.getLink('Edit', index=1).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('Großer Teaser mit zwei Spalten')
 <Link...>
@@ -318,7 +318,7 @@ We need to add a second teaser block:
 <Link...>
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=2).click()
+>>> browser.getLink('Edit', index=3).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
 <Link...>

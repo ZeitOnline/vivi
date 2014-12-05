@@ -23,7 +23,7 @@ The teaser block contains a list of teasers[#functional]_.
 >>> import lxml.etree
 >>> print lxml.etree.tostring(teasers.xml, pretty_print=True)
 <container ...
-    cp:type="teaser" module="leader"
+    cp:type="teaser" module="leader"...
     cp:__name__="id-fa40681a-fbbd-414f-92ce-dbbd884ef3b5"...>
   <block href="http://xml.zeit.de/testcontent"...>
     ...
@@ -42,7 +42,7 @@ We are actually referencing ourselves here.
 
 >>> teaserbar = zope.component.getAdapter(
 ...     cp['teaser-mosaic'], zeit.edit.interfaces.IElementFactory,
-...     name="teaser-bar")()
+...     name="area")()
 >>> teasers = zope.component.getAdapter(
 ...     teaserbar, zeit.edit.interfaces.IElementFactory,
 ...     name='teaser')()
@@ -288,7 +288,7 @@ And yet other ones in the mosaic:
 
 >>> factory = zope.component.getAdapter(
 ...     cp['teaser-mosaic'], zeit.edit.interfaces.IElementFactory,
-...     name='teaser-bar')
+...     name='area')
 >>> bar = factory()
 >>> factory = zope.component.getAdapter(
 ...     bar, zeit.edit.interfaces.IElementFactory,

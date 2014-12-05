@@ -3,8 +3,8 @@
 
 import gocept.lxml.interfaces
 import grokcore.component as grok
-import itertools
 import lxml
+import zeit.cms.content.property
 import zeit.content.cp.interfaces
 import zeit.edit.container
 import zope.component
@@ -35,8 +35,6 @@ class Region(zeit.edit.container.Base):
             self.xml.set('area', name)
 
     def _get_element_type(self, xml_node):
-        if xml_node.get('area') == 'teaser-row-full':  # XXX backward compatibility for teaser bar
-            return xml_node.get('{http://namespaces.zeit.de/CMS/cp}type')
         return 'area'
 
     def __getitem__(self, key):
@@ -74,6 +72,13 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
     zope.component.adapts(
         zeit.content.cp.interfaces.IRegion,
         gocept.lxml.interfaces.IObjectified)
+
+    supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'supertitle')
+    teaserText = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'teaserText')
+    background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'background_color')
 
     type = 'area'
 

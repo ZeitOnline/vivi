@@ -5,7 +5,9 @@ zeit.content.cp changes
 2.7.1 (unreleased)
 ------------------
 
-- Add extra container `ISection` between `ICenterPage` and `IArea`. (VIV-621)
+- Add extra container `IRegion` between `ICenterPage` and `IArea`. (VIV-621)
+
+- `TeaserBar` is now an `IArea` and has no custom behaviour anymore. (VIV-627)
 
 
 2.7.0 (2014-11-14)

@@ -125,8 +125,30 @@ class IRegion(zeit.edit.interfaces.IContainer):
     """Abstract layer above IArea."""
 
 
+def hex_literal(value):
+    try:
+        int(value, base=16)
+    except ValueError:
+        raise ValidationError(_("Invalid hex literal"))
+    else:
+        return True
+
+
 class IReadArea(zeit.edit.interfaces.IReadContainer):
-    pass
+
+    supertitle = zope.schema.TextLine(
+        title=_("Supertitle"),
+        required=False)
+
+    teaserText = zope.schema.Text(
+        title=_("Teaser text"),
+        required=False,
+        max_length=170)
+
+    background_color = zope.schema.TextLine(
+        title=_("Background color (ZMO only)"),
+        required=False,
+        max_length=6, constraint=hex_literal)
 
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):
@@ -195,15 +217,6 @@ class ICPFeed(zope.interface.Interface):
     """Feed section of a CenterPage"""
 
     items = zope.interface.Attribute("tuple of feed items")
-
-
-def hex_literal(value):
-    try:
-        int(value, base=16)
-    except ValueError:
-        raise ValidationError(_("Invalid hex literal"))
-    else:
-        return True
 
 
 class IBlock(zeit.edit.interfaces.IBlock):
@@ -541,40 +554,6 @@ class IXMLTeaser(zeit.cms.interfaces.ICMSContent,
         title=u'The unique id of the content referenced by the teaser')
     original_content = zope.interface.Attribute(
         u'The content referenced by the teaser')
-
-
-class IReadTeaserBar(IReadArea, zeit.edit.interfaces.IElement):
-
-    layout = zope.schema.Choice(
-        title=_("Layout"),
-        source=zeit.content.cp.layout.TeaserBarLayoutSource(),
-        default=zeit.content.cp.layout.DEFAULT_BAR_LAYOUT)
-
-    supertitle = zope.schema.TextLine(
-        title=_("Supertitle"),
-        required=False)
-
-    teaserText = zope.schema.Text(
-        title=_("Teaser text"),
-        required=False,
-        max_length=170)
-
-    background_color = zope.schema.TextLine(
-        title=_("Background color (ZMO only)"),
-        required=False,
-        max_length=6, constraint=hex_literal)
-
-
-class IWriteTeaserBar(IWriteArea):
-    pass
-
-
-class ITeaserBar(IReadTeaserBar, IWriteTeaserBar, IArea):
-    """A teaser bar is a bar in the teaser mosaic.
-
-    The TeaserBar has a dual nature of being both a block and a area.
-
-    """
 
 
 class IQuizBlock(IBlock):

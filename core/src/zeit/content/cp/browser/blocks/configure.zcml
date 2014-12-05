@@ -10,19 +10,19 @@
     <!-- Teaserbar is both an area and a block. Special treat is reaquired. -->
     <browser:viewletManager
       provides="..interfaces.IContentViewletManager"
-      for="zeit.content.cp.interfaces.ITeaserBar"
+      for="zeit.content.cp.interfaces.IArea"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
-      class="zeit.content.cp.browser.blocks.teaserbar.TeaserBarViewletManager"
+      class="zeit.content.cp.browser.area.AreaViewletManager"
       template="layout.block.contents.pt"
       name="zeit.edit.contents"
       permission="zope.View"
-      />
+      /> <!-- Move to other configure.zcml -->
   </configure>
 
   <configure package="zeit.edit.browser">
     <browser:viewlet
-      for="zeit.content.cp.interfaces.ITeaserBar"
+      for="zeit.content.cp.interfaces.IArea"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
       manager="..interfaces.IContentViewletManager"
@@ -30,7 +30,7 @@
       template="layout.block.edit.pt"
       permission="zeit.EditContent"
       weight="-10"
-      />
+      /> <!-- Move to other configure.zcml -->
   </configure>
 
   <browser:viewlet
@@ -57,7 +57,7 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBar"
+    for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
@@ -65,7 +65,7 @@
     template="layout.block.edit-properties.pt"
     permission="zeit.EditContent"
     weight="0"
-    />
+    /> <!-- Move to other configure.zcml -->
 
   <browser:viewlet
     for="zeit.content.cp.interfaces.IBlock"
@@ -79,7 +79,7 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBar"
+    for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
@@ -87,11 +87,11 @@
     template="layout.block.edit-commons.pt"
     permission="zeit.EditContent"
     weight="1"
-    />
+    /> <!-- Move to other configure.zcml -->
 
   <configure package="zeit.edit.browser">
     <browser:viewlet
-      for="zeit.content.cp.interfaces.ITeaserBar"
+      for="zeit.content.cp.interfaces.IArea"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
       manager="..interfaces.IEditBarViewletManager"
@@ -99,12 +99,12 @@
       template="layout.block.delete.pt"
       permission="zeit.EditContent"
       weight="10"
-      />
+      /> <!-- Move to other configure.zcml -->
   </configure>
 
   <configure package="zeit.edit.browser">
     <browser:viewlet
-      for="zeit.content.cp.interfaces.ITeaserBar"
+      for="zeit.content.cp.interfaces.IArea"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
       manager="..interfaces.IEditBarViewletManager"
@@ -112,7 +112,7 @@
       template="layout.block.drag.pt"
       permission="zeit.EditContent"
       weight="100"
-      />
+      /> <!-- Move to other configure.zcml -->
   </configure>
 
   <browser:page
@@ -172,7 +172,6 @@
   <include file="av.zcml" />
   <include file="teaser.zcml" />
   <include file="automatic.zcml" />
-  <include file="teaserbar.zcml" />
   <include file="xml.zcml" />
   <include file="rss.zcml" />
   <include file="cpextra.zcml" />

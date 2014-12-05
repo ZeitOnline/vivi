@@ -8,9 +8,7 @@ Autopilot
 >>> zeit.content.cp.browser.testing.create_cp(browser)
 >>> browser.open('contents')
 >>> contents_url = browser.url
->>> browser.getLink('Add teaser bar').click()
->>> browser.open(contents_url)
->>> zeit.content.cp.browser.testing.create_block_in_mosaic(browser, 'teaser')
+>>> browser.open('informatives/@@landing-zone-drop-module?block_type=teaser')
 
 A teaser block can be set on 'autopilot'. In this mode, it will retrieve
 teasers from another CenterPage for display. To demonstrate this, we first
@@ -53,7 +51,7 @@ It is not possible to switch on the autopilot when there is no centerpage
 referenced:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=3).click()
+>>> browser.getLink('Edit', index=1).click()
 >>> browser.getControl('Autopilot active').selected = True
 >>> browser.getControl('Hide duplicate teasers').selected = True
 >>> browser.getControl('Apply').click()
@@ -85,8 +83,8 @@ We can now switch it of again:
 >>> import json
 >>> import pprint
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
-[{u'args': [u'id-c8d4c0eb-368c-427c-9a47-d63d9559b78b',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/teaser-mosaic/id-14978ec2-a9a5-4c03-8d53-7f8c98480ed4/id-c8d4c0eb-368c-427c-9a47-d63d9559b78b/@@contents'],
+[{u'args': [u'id-<GUID>',
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/id-<GUID>/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> browser.open(contents_url)

@@ -4,21 +4,6 @@
   <adapter factory=".block.cms_content_to_centerpage" />
   <adapter factory=".block.cms_content_iter" />
 
-  <!-- Place holder -->
-
-  <class class=".placeholder.PlaceHolder">
-    <require
-      interface="..interfaces.IPlaceHolder"
-      permission="zope.View" />
-  </class>
-
-  <adapter
-    provides="zeit.edit.interfaces.IElement"
-    name="placeholder"
-    factory=".placeholder.PlaceHolder"
-    />
-
-
   <!-- Teaser list -->
 
   <class class=".teaser.TeaserBlock">
@@ -47,11 +32,6 @@
   <adapter factory=".teaser.CenterpageFeed" />
   <adapter factory=".teaser.cp_xi_include" name="xi:include" />
   <adapter factory=".teaser.feed_xi_include" name="xi:include" />
-  <adapter
-    provides="zeit.edit.interfaces.IElement"
-    name="teaser"
-    factory=".teaser.TeaserBlock"
-    />
   <adapter
     provides="zeit.edit.interfaces.IElement"
     name="teaser"
@@ -93,30 +73,6 @@
       interface="..interfaces.IWriteTeaserBlock"
       permission="zeit.EditContent"/>
   </class>
-
-  <!-- Teaser bar -->
-
-  <class class=".teaserbar.TeaserBar">
-    <require
-      interface="..interfaces.IReadTeaserBar"
-      permission="zope.View" />
-    <require
-      set_schema="..interfaces.IReadTeaserBar"
-      permission="zope.View" />
-    <require
-      interface="..interfaces.IWriteTeaserBar"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <adapter
-    factory=".teaserbar.TeaserBarFactory"
-    name="teaser-bar" />
-  <adapter
-    provides="zeit.edit.interfaces.IElement"
-    name="teaser-bar"
-    factory=".teaserbar.TeaserBar"
-    />
 
   <!-- RSS block -->
   <class class=".rss.RSSBlock">

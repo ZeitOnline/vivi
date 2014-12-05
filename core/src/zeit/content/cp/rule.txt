@@ -72,30 +72,6 @@ Validating the number of blocks in an area
 [u'In der Aufmacherfl\xe4che sollen mehr als 6 Teaserbl\xf6cke stehen']
 
 
-Validating the layout of a teaser bar
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
->>> bar_factory = zope.component.getAdapter(
-...     cp['teaser-mosaic'], zeit.edit.interfaces.IElementFactory,
-...     name='teaser-bar')
-
-
->>> teaserbar_1 = bar_factory()
->>> teaserbar_2 = bar_factory()
-
->>> create_rules("""\
-... applicable(is_area and area == 'teaser-mosaic' and position == 2)
-... error_unless(layout == 'dmr', u'Die zweite Teserleiste muss ein DMR sein')
-... """)
-
->>> validator = zeit.edit.interfaces.IValidator(teaserbar_1)
->>> validator.status
->>> validator = zeit.edit.interfaces.IValidator(teaserbar_2)
->>> validator.status
-'error'
->>> validator.messages
-[u'Die zweite Teserleiste muss ein DMR sein']
-
 Edge cases
 ++++++++++
 
@@ -139,7 +115,7 @@ Encoding:
 ... applicable(True)
 ... error_unless(False, u'öüäß')
 ... """.encode('latin-1'))
->>> validator = zeit.edit.interfaces.IValidator(teaserbar_1)
+>>> validator = zeit.edit.interfaces.IValidator(dummy)
 >>> validator.messages
 [u'\xf6\xfc\xe4\xdf']
 
@@ -149,7 +125,7 @@ Syntax error handling:
 ... applicable(True)
 ... error_unless(False
 ... """)
->>> validator = zeit.edit.interfaces.IValidator(teaserbar_1)
+>>> validator = zeit.edit.interfaces.IValidator(dummy)
 >>> validator.messages
 [u'\xf6\xfc\xe4\xdf']
 

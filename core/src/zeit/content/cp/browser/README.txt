@@ -101,9 +101,9 @@ The contents of cp-content is loaded via javascript:
 >>> print browser.contents
 <div...
 <div class="cp-editor-top">
-  <div id="lead-outer"><div id="lead"...class="editable-area validation-error"...
-  <div id="informatives-outer"><div id="informatives"...class="editable-area"...
-  <div id="teaser-mosaic"...class="editable-area"...
+  <div id="lead-outer"><div ...class="...editable-area..."...id="lead"...
+  <div id="informatives-outer"><div ...class="...editable-area..."...id="informatives"...
+  <div id="teaser-mosaic"...
 
 
 There is a "add block" link which only activates a tab:
@@ -127,7 +127,7 @@ teaser bar:
 >>> browser.getLink('Add teaser bar').click()
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-teaser-bar")]')
+...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-area")]')
 >>> bar_ids = original_ids = [bar.get('id') for bar in bar_divs]
 >>> bar_ids
 ['id-92ae9ac4-0bd2-4e64-9eeb-40bb10f32f4c',
@@ -149,7 +149,7 @@ The order has been updated now:
 True
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-teaser-bar")]')
+...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-area")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == reversed_ids
 True
@@ -161,7 +161,7 @@ Restore the original order again:
 ...     'teaser-mosaic/updateOrder?keys=' + json.dumps(original_ids))
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-teaser-bar")]')
+...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-area")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == tuple(original_ids)
 True
@@ -175,9 +175,9 @@ Blocks and teaser bars can be removed using the delete link:
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 2
->>> browser.getLink('Delete').url
+>>> browser.getLink('Delete', index=1).url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@delete?key=id-<GUID>'
->>> browser.getLink('Delete').click()
+>>> browser.getLink('Delete', index=1).click()
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 1

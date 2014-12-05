@@ -65,7 +65,7 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         self.create_teaserlist()
         s = self.selenium
 
-        s.click('css=a.edit-link')
+        s.click('xpath=(//a[contains(@class, "edit-link")])[2]')
         s.waitForElementPresent('id=tab-1')
         s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('id=form.publisher')
@@ -73,7 +73,7 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.click('//div[@id="tab-1"]//input[@id="form.actions.apply"]')
         s.waitForElementNotPresent('css=a.CloseButton')
 
-        s.click('css=a.edit-link')
+        s.click('xpath=(//a[contains(@class, "edit-link")])[2]')
         # Wait for tab content to load, to be certain that the tabs have been
         # wired properly.
         s.waitForElementPresent('css=.teaser-block-properties-form')
@@ -232,6 +232,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForXpathCount(css_path('.lightbox li.edit-bar'), 2)
         s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 3)
 
+    @unittest.skip("Enable when all modules are available everywhere")
     def test_toggle_visible(self):
         self.open_centerpage()
         s = self.selenium
@@ -293,24 +294,25 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyOrdered(block1, block2)
         s.verifyOrdered(block2, block4)
 
+    @unittest.skip("Areas are not sortable at the moment, reactivate later")
     def test_mosaic(self):
         self.open_centerpage()
         s = self.selenium
         # Create three teaser bars
 
-        path = css_path('div.block.type-teaser-bar')
-        s.click('link=*Add teaser bar*')
-        s.waitForXpathCount(path, 1)
-        s.click('link=*Add teaser bar*')
-        s.waitForXpathCount(path, 2)
+        path = css_path('div.block.type-area')
         s.click('link=*Add teaser bar*')
         s.waitForXpathCount(path, 3)
+        s.click('link=*Add teaser bar*')
+        s.waitForXpathCount(path, 4)
+        s.click('link=*Add teaser bar*')
+        s.waitForXpathCount(path, 5)
 
         path = 'xpath=' + path
         # Get the ids of the bars
-        bar1 = s.getAttribute(path + '[1]@id')
-        bar2 = s.getAttribute(path + '[2]@id')
-        bar3 = s.getAttribute(path + '[3]@id')
+        bar1 = s.getAttribute(path + '[3]@id')
+        bar2 = s.getAttribute(path + '[4]@id')
+        bar3 = s.getAttribute(path + '[5]@id')
 
         # All bars have an equal height
         bar_height = s.getElementHeight(bar1)
@@ -319,8 +321,8 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         # Drag bar1 below bar2: 1 2 3 -> 2 1 3
         s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % bar1,
                       '0,%s' % delta_y)
-        s.waitForAttribute(path + '[1]@id', bar2)
-        s.verifyAttribute(path + '[2]@id', bar1)
+        s.waitForAttribute(path + '[3]@id', bar2)
+        s.verifyAttribute(path + '[4]@id', bar1)
         # Wait for JS to re-start sortables
         s.pause(400)
 
@@ -339,16 +341,16 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % bar3,
                       '0,%s' % delta_y)
 
-        s.waitForAttribute(path + '[1]@id', bar3)
-        s.verifyAttribute(path + '[2]@id', bar2)
-        s.verifyAttribute(path + '[3]@id', bar1)
+        s.waitForAttribute(path + '[3]@id', bar3)
+        s.verifyAttribute(path + '[4]@id', bar2)
+        s.verifyAttribute(path + '[5]@id', bar1)
 
         # Make sure the drag survives page reloads.
         s.clickAndWait('link=Edit contents')
         s.waitForElementPresent('css=div.landing-zone')
-        s.verifyAttribute(path + '[1]@id', bar3)
-        s.verifyAttribute(path + '[2]@id', bar2)
-        s.verifyAttribute(path + '[3]@id', bar1)
+        s.verifyAttribute(path + '[3]@id', bar3)
+        s.verifyAttribute(path + '[4]@id', bar2)
+        s.verifyAttribute(path + '[5]@id', bar1)
 
     def test_lead(self):
         s = self.selenium
@@ -428,18 +430,6 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
             '//li[@uniqueid="Clip/c1"]',
             'css=.block + .landing-zone')
         s.waitForElementPresent('css=.block.type-teaser')
-
-    def test_mosaic_placeholder(self):
-        self.create_content_and_fill_clipboard()
-        self.open_centerpage()
-        s = self.selenium
-
-        s.click('link=*Add teaser bar*')
-        s.waitForElementPresent('css=div.block.type-teaser-bar')
-        s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]',
-            'css=#teaser-mosaic .landing-zone.action-content-droppable')
-        s.waitForElementPresent('css=#teaser-mosaic .block.type-teaser')
 
 
 class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):

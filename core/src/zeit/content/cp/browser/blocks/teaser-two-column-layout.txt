@@ -34,7 +34,7 @@ Create content, a teaser block and fill it with the created content:
 Switch to the two column layout:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit').click()
+>>> browser.getLink('Edit', index=1).click()
 >>> browser.open('edit-properties')
 >>> browser.getLink('zwei Spalten').click()
 

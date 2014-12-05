@@ -50,7 +50,7 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
             'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
 
         b.open(contents_url)
-        b.getLink('Common').click()
+        b.getLink('Common', index=1).click()
         form_url = b.url
 
         b.getControl('Publisher', index=0).value = 'foo'
@@ -76,7 +76,7 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
             # same way, but that means they only are allowed in teaser-mosaic.
             container = zope.component.getAdapter(
                 self.cp['teaser-mosaic'],
-                zeit.edit.interfaces.IElementFactory, name='teaser-bar')()
+                zeit.edit.interfaces.IElementFactory, name='area')()
         else:
             container = self.cp[area]
         block = zope.component.getAdapter(

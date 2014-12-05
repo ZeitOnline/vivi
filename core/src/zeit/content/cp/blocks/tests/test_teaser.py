@@ -78,7 +78,7 @@ class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
             self.repository['cp2']).checkout()
         bar = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
-            zeit.edit.interfaces.IElementFactory, name='teaser-bar')()
+            zeit.edit.interfaces.IElementFactory, name='area')()
         self.teaser = zope.component.getAdapter(
             bar,
             zeit.edit.interfaces.IElementFactory, name='teaser')()
@@ -155,7 +155,7 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
         self.cp = CenterPage()
         bar = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
-            zeit.edit.interfaces.IElementFactory, name='teaser-bar')()
+            zeit.edit.interfaces.IElementFactory, name='area')()
         self.teaser = zope.component.getAdapter(
             bar,
             zeit.edit.interfaces.IElementFactory, name='teaser')()

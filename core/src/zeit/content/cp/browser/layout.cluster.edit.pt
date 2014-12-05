@@ -1,5 +1,5 @@
 <div i18n:domain="zeit.cms" class="edit">
-  <a tal:attributes="href string:${context/@@absolute_url}/add?type=teaser-bar"
+  <a tal:attributes="href string:${context/@@absolute_url}/add?type=area"
      i18n:translate=""
      cms:cp-module="zeit.edit.LoadAndReload">
     + Add teaser bar

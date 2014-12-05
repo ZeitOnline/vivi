@@ -79,10 +79,13 @@
   </class>
   <class class=".area.Area">
     <require
-      interface="zeit.edit.interfaces.IReadContainer"
+      interface="zeit.content.cp.interfaces.IReadArea"
       permission="zope.View" />
     <require
-      interface="zeit.edit.interfaces.IWriteContainer"
+      set_schema="zeit.content.cp.interfaces.IReadArea"
+      permission="zope.View" />
+    <require
+      interface="zeit.content.cp.interfaces.IWriteArea"
       permission="zeit.EditContent"
       />
   </class>

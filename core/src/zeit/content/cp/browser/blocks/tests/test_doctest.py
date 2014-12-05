@@ -32,7 +32,6 @@ def test_suite():
         'teaser.txt',
         'teaser-countings.txt',
         'teaser-two-column-layout.txt',
-        'teaserbar.txt',
         'xml.txt',
         package='zeit.content.cp.browser.blocks',
     ))

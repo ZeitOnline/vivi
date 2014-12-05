@@ -60,8 +60,7 @@ class VideoBlock(AVBlock):
 
 
 zeit.edit.block.register_element_factory(
-    [zeit.content.cp.interfaces.IInformatives,
-     zeit.content.cp.interfaces.ITeaserBar],
+    [zeit.content.cp.interfaces.IInformatives],
     'video', _('Videoblock'))
 
 
@@ -81,6 +80,5 @@ class AudioBlock(AVBlock):
 
 
 zeit.edit.block.register_element_factory(
-    [zeit.content.cp.interfaces.IInformatives,
-     zeit.content.cp.interfaces.ITeaserBar],
+    [zeit.content.cp.interfaces.IInformatives],
     'audio', _('Audioblock'))

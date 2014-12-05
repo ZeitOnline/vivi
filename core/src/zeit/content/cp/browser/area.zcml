@@ -79,4 +79,20 @@
     weight="90"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".area.EditProperties"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-common"
+    class=".area.EditCommon"
+    permission="zeit.EditContent"
+    />
+
 </configure>

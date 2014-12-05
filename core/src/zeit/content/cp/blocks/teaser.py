@@ -84,10 +84,6 @@ class TeaserBlock(zeit.content.cp.blocks.block.Block,
         zeit.cms.syndication.interfaces.IFeed,
         zope.container.interfaces.IContained)
 
-    zope.component.adapts(
-        zeit.content.cp.interfaces.ILead,
-        gocept.lxml.interfaces.IObjectified)
-
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
         if self.xml.get('module') == 'teaser':
@@ -506,12 +502,9 @@ def feed_xi_include(context):
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def update_topiclinks_of_referenced_cps(context, event):
     blocks = []
-    for area in context.values():
-        for item in area.values():
-            if zeit.content.cp.interfaces.ITeaserBar.providedBy(item):
-                blocks.extend(item.values())
-            else:
-                blocks.append(item)
+    for region in context.values():
+        for area in region.values():
+            blocks.extend(area.values())
     for block in blocks:
         if not zeit.content.cp.interfaces.IAutoPilotTeaserBlock.providedBy(
                 block):

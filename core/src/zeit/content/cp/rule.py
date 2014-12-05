@@ -23,17 +23,7 @@ def region(context):
     return zeit.content.cp.interfaces.IRegion(context).__name__
 
 
-@glob(zeit.content.cp.interfaces.ITeaserBar)
-def area(context):
-    return context.__parent__.__name__
-
-
 @glob(zeit.content.cp.interfaces.ITeaserBlock)
-def layout(context):
-    return context.layout.id
-
-
-@glob(zeit.content.cp.interfaces.ITeaserBar)
 def layout(context):
     return context.layout.id
 

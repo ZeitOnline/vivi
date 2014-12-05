@@ -47,66 +47,14 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 });
 
 
-
-zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
-
-    __name__: 'zeit.content.cp.TeaserBarSorter',
-
-    construct: function() {
-        var self = this;
-        new zeit.edit.context.Editor(self);
-        self.sorters = [];
-    },
-
-    connect: function() {
-        var self = this;
-        forEach($$('.block.type-teaser-bar > .block-inner'), function(bar) {
-            if (!bar.id) {
-                bar.id = bar.parentNode.id + '-inner';
-            }
-            var url = bar.parentNode.getAttribute(
-                'cms:url');
-            var direction = 'horizontal';
-            if (MochiKit.DOM.hasElementClass(bar.parentNode, 'parquet')) {
-                direction = 'vertical';
-            }
-            var sorter = new zeit.edit.sortable.BlockSorter(
-                bar.id, {
-                constraint: direction,
-                overlap: direction,
-                update_url: url + '/@@updateOrder',
-                reload_id: bar.parentNode.id,
-                reload_url: url + '/@@contents'
-            });
-            self.sorters.push(sorter);
-        });
-    },
-
-    disconnect: function() {
-        var self = this;
-        while (self.sorters.length) {
-            var sorter = self.sorters.pop();
-            log("Destroying sorter " + sorter.container);
-            sorter.__context__.deactivate();
-            sorter.__context__.destroy();
-        }
-    }
-
-});
-
-
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     if (! zeit.cms.in_cp_editor()) {
         return;
     }
     zeit.content.cp.lead_sorter = new zeit.edit.sortable.BlockSorter(
-        'lead');
+        'lead', '#lead > div.block-inner');
     zeit.content.cp.informatives_sorter = new zeit.edit.sortable.BlockSorter(
-        'informatives');
-    zeit.content.cp.teaser_bar_sorter = new zeit.edit.sortable.BlockSorter(
-        'teaser-mosaic');
-    zeit.content.cp.teaser_bar_contents_sorter =
-        new zeit.content.cp.TeaserBarContentsSorter();
+        'informatives', '#informatives > div.block-inner');
 });
 
 

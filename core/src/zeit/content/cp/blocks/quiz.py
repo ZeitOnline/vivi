@@ -23,8 +23,7 @@ class QuizBlock(zeit.content.cp.blocks.block.Block):
 
 
 zeit.edit.block.register_element_factory(
-    [zeit.content.cp.interfaces.IInformatives,
-     zeit.content.cp.interfaces.ITeaserBar],
+    [zeit.content.cp.interfaces.IInformatives],
     'quiz', _('Quizblock'))
 
 

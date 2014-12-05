@@ -18,7 +18,7 @@ Some setup to fill a centerpage:
 >>> teasers = factory()
 
 >>> bar_factory = zope.component.getAdapter(
-...     tm, zeit.edit.interfaces.IElementFactory, name='teaser-bar')
+...     tm, zeit.edit.interfaces.IElementFactory, name='area')
 >>> teaser_bars = bar_factory()
 >>> teaser_bar_factory = zope.component.getAdapter(
 ...     teaser_bars, zeit.edit.interfaces.IElementFactory, name='teaser')

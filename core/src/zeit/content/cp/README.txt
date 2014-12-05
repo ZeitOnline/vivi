@@ -114,42 +114,6 @@ Blocks
 
 A block is part of an area.
 
-Placeholder block
------------------
-
-There is a special block which can easily replaced by another block. It is a
-placeholder for other blocks. This allows removing of real blocks in the teaser
-mosaic without moving other blocks around. It also allows a generic "add" action
-in the other areas where a placeholder is just added to the blocks and
-afterwards configured.
-
-Blocks are created using a block factory:
-
->>> informatives = cp['informatives']
->>> import zeit.edit.interfaces
->>> import zope.component
->>> factory = zope.component.getAdapter(
-...     informatives, zeit.edit.interfaces.IElementFactory,
-...     name='placeholder')
->>> factory.title is None
-True
->>> block = factory()
->>> block
-<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>
-
-Creating the block automatically adds it to the container:
-
->>> block.__name__ in informatives
-True
-
-It is not possible to add the block again:
-
->>> informatives.add(block)
-Traceback (most recent call last):
-    ...
-DuplicateIDError: 'id-6ec3b591-6415-47bc-b521-d40b16c5df89'
-
-
 Teaser block
 ------------
 
@@ -171,7 +135,6 @@ After calling the factory a corresponding XML node has been created:
 
 >>> print lxml.etree.tostring(informatives.xml, pretty_print=True),
 <region ... area="informatives">
-  <container cp:type="placeholder" module="placeholder" cp:__name__="..."/>
   <container cp:type="teaser" module="large" ... cp:__name__="..."/>
 </region>
 
@@ -184,11 +147,9 @@ Modules are accessible via __getitem__ [#invalid-raises-error]_:
 The area can also be iterated:
 
 >>> list(informatives.itervalues())
-[<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
- <zeit.content.cp.blocks.teaser.AutoPilotTeaserBlock object at 0x...>]
+[<zeit.content.cp.blocks.teaser.AutoPilotTeaserBlock object at 0x...>]
 >>> informatives.values()
-[<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
- <zeit.content.cp.blocks.teaser.AutoPilotTeaserBlock object at 0x...>]
+[<zeit.content.cp.blocks.teaser.AutoPilotTeaserBlock object at 0x...>]
 
 It is possible to get the center page from the block by adapting to ICenterPage:
 
@@ -204,11 +165,11 @@ The ``__parent__`` of a block is the area:
 Areas support ordering of their contents via the ``updateOrder`` method:
 
 >>> transaction.commit()
->>> ph_key, block_key = informatives.keys()
+>>> [block_key] = informatives.keys()
 >>> block.__name__ == block_key
 True
->>> informatives.updateOrder([block_key, ph_key])
->>> informatives.keys() == [block_key, ph_key]
+>>> informatives.updateOrder([block_key])
+>>> informatives.keys() == [block_key]
 True
 >>> cp._p_changed
 True
@@ -225,67 +186,14 @@ Blocks can be removed using __delitem__:
 
 >>> transaction.commit()
 >>> len(informatives)
-2
+1
 >>> del informatives[block.__name__]
 >>> len(informatives)
-1
+0
 >>> informatives.values()
-[<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>]
+[]
 >>> cp._p_changed
 True
-
-
-Teaser mosaic
-+++++++++++++
-
-The teaser mosaic contains teaser bars. Note that the term *teaser* mosaic is
-missleading as it may also contain a lot of other things (like information
-about the weather).
-
->>> transaction.commit()
->>> mosaic = cp['teaser-mosaic']
->>> factory = zope.component.getAdapter(
-...     mosaic, zeit.edit.interfaces.IElementFactory, name='teaser-bar')
->>> bar = factory()
->>> bar
-<zeit.content.cp.blocks.teaserbar.TeaserBar object at 0x...>
->>> mosaic.values()
-[<zeit.content.cp.blocks.teaserbar.TeaserBar object at 0x...>]
->>> cp._p_changed
-True
-
-
-The bar is alreay populated with four placeholders:
-
->>> len(bar)
-4
->>> bar.values()
-[<zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
- <zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
- <zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>,
- <zeit.content.cp.blocks.placeholder.PlaceHolder object at 0x...>]
-
-
-The xml of the teaser bar is actually a region:
-
->>> print lxml.etree.tostring(bar.xml, pretty_print=True),
-<region ...>
-  <container cp:type="placeholder" module="placeholder" cp:__name__="id-<GUID>"/>
-  <container cp:type="placeholder" module="placeholder" cp:__name__="id-<GUID>"/>
-  <container cp:type="placeholder" module="placeholder" cp:__name__="id-<GUID>"/>
-  <container cp:type="placeholder" module="placeholder" cp:__name__="id-<GUID>"/>
-</region>
-
-
-Teaser mosaic layouts
-+++++++++++++++++++++
-
-(analog to blocks/teaser.txt/Layouts)
-
->>> import zeit.content.cp.layout
->>> bar.layout = zeit.content.cp.layout.get_bar_layout('dmr')
->>> print lxml.etree.tostring(bar.xml, pretty_print=True)
-<region...module="dmr"...
 
 
 Checkin handler

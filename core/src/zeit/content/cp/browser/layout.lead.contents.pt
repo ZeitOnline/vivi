@@ -1,7 +1,1 @@
-<div id="lead"
-     tal:define="validation python:view.validate(context)"
-     tal:attributes="cms:url context/@@absolute_url;
-     class validation/class_;
-     cms:tooltip validation/messages;">
-     <tal:block replace="structure provider:zeit.edit.contents" />
-</div>
+<tal:block replace="structure provider:zeit.edit.contents" />

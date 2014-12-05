@@ -29,7 +29,7 @@ class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
         factory = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
             zeit.edit.interfaces.IElementFactory,
-            name='teaser-bar')
+            name='area')
         bar = factory()
         factory = zope.component.getAdapter(
             bar, zeit.edit.interfaces.IElementFactory,
@@ -46,7 +46,7 @@ error_if(True, u'Block in teasermosaic.')
         factory = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
             zeit.edit.interfaces.IElementFactory,
-            name='teaser-bar')
+            name='area')
         bar = factory()
         r = Rule("""
 applicable(is_area and region == 'teaser-mosaic' and position)
@@ -59,7 +59,7 @@ error_if(True, u'Area in teasermosaic.')
         factory = zope.component.getAdapter(
             self.cp['teaser-mosaic'],
             zeit.edit.interfaces.IElementFactory,
-            name='teaser-bar')
+            name='area')
         bar = factory()
         r = Rule("""
 applicable(is_block and region == 'teaser-mosaic')
