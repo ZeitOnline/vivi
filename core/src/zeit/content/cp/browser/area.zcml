@@ -95,4 +95,78 @@
     permission="zeit.EditContent"
     />
 
+  <configure package="zeit.edit.browser">
+    <browser:viewletManager
+      provides="zeit.edit.interfaces.IContentViewletManager"
+      for="zeit.content.cp.interfaces.IArea"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      class="zeit.content.cp.browser.area.AreaViewletManager"
+      template="layout.block.contents.pt"
+      name="zeit.edit.contents"
+      permission="zope.View"
+      />
+  </configure>
+
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.IArea"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="zeit.edit.interfaces.IContentViewletManager"
+      name="edit"
+      template="layout.block.edit.pt"
+      permission="zeit.EditContent"
+      weight="-10"
+      />
+  </configure>
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="edit-box"
+    template="layout.block.edit-properties.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="common-box"
+    template="layout.block.edit-commons.pt"
+    permission="zeit.EditContent"
+    weight="1"
+    />
+
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.IArea"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="zeit.edit.interfaces.IEditBarViewletManager"
+      name="delete"
+      template="layout.block.delete.pt"
+      permission="zeit.EditContent"
+      weight="10"
+      />
+  </configure>
+
+  <configure package="zeit.edit.browser">
+    <browser:viewlet
+      for="zeit.content.cp.interfaces.IArea"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="zeit.edit.interfaces.IEditBarViewletManager"
+      name="drag"
+      template="layout.block.drag.pt"
+      permission="zeit.EditContent"
+      weight="100"
+      />
+  </configure>
+
 </configure>
