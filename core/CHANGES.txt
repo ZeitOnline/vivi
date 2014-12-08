@@ -9,6 +9,9 @@ zeit.content.cp changes
 
 - `TeaserBar` is now an `IArea` and has no custom behaviour anymore. (VIV-627)
 
+- Suppress errors that are due to missing metadata files when rendering XML for
+  Friedbert (VIV-629).
+
 
 2.7.0 (2014-11-14)
 ------------------
