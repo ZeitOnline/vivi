@@ -130,11 +130,13 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
             image_node = zope.component.queryAdapter(
                 image, zeit.cms.content.interfaces.IXMLReference, name='image')
             if image_node is None:
-                raise ValueError(
-                    ("Could not create xml reference 'image' for %s which "
-                     "is referenced in %s.") % (
-                         image.uniqueId, self.context.uniqueId))
-            entry['image'] = image_node
+                if not self.suppress_errors:
+                    raise ValueError(
+                        ("Could not create xml reference 'image' for %s which "
+                         "is referenced in %s.") % (
+                             image.uniqueId, self.context.uniqueId))
+            else:
+                entry['image'] = image_node
         else:
             # No image referenced. Remove an image node we might have produced
             # earlier.
