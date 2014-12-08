@@ -115,7 +115,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
             query = search.call_args[0][0]
             self.assertIn('published:(published)', query)
             self.assertIn(
-                '(channels:("International Nahost")'
+                '(channels:(International*Nahost)'
                 ' OR channels:(Wissen*)'
                 ' OR keywords:(Berlin*))',
                 query)
