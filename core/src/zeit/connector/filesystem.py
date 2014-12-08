@@ -100,11 +100,8 @@ class Connector(object):
             type = self.getResourceType(id)
             properties[
                 zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
-        uniqueId = id
         if type in ['collection', 'image-group']:
             data = StringIO.StringIO()
-            if not uniqueId.endswith('/'):
-                uniqueId += '/'
         else:
             data = self._get_file(id)
         path = self._path(id)
@@ -114,7 +111,7 @@ class Connector(object):
             name = ''
         content_type = self._get_content_type(id, type)
         return zeit.connector.resource.Resource(
-            uniqueId, name, type, data, properties,
+            id, name, type, data, properties,
             contentType=content_type)
 
     def _get_content_type(self, id, type):

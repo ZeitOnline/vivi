@@ -58,8 +58,3 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
         type_ = group.properties[
             ('type', 'http://namespaces.zeit.de/CMS/meta')]
         self.assertEqual('image-group', type_)
-
-    def test_imagegroup_has_trailing_slash_in_uniqueId(self):
-        # Since XSLT expects it and the real connector does it like that.
-        group = self.connector['http://xml.zeit.de/2007/03/group']
-        self.assertEqual('http://xml.zeit.de/2007/03/group/', group.id)
