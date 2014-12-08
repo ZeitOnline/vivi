@@ -1,4 +1,4 @@
-<div class="landing-zone visible action-content-droppable action-lead-module-droppable"
+<div class="landing-zone visible action-content-droppable action-cp-module-droppable"
      tal:attributes="cms:drop-url string:${context/@@absolute_url}/landing-zone-drop;
                      cms:create-block-url string:${context/@@absolute_url}/landing-zone-drop-module"
      i18n:domain="zeit.cms"

@@ -241,7 +241,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
             teaser_module,
-            'css=.landing-zone.action-informatives-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable')
         s.waitForElementPresent(
             'css=.block.type-area .block.type-teaser')
 
@@ -439,7 +439,7 @@ class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
-            'css=.landing-zone.action-informatives-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable')
         s.waitForElementPresent('css=div.type-video')
 
     def test_lightbox_should_close_after_editing(self):
@@ -473,7 +473,7 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
-            'css=.landing-zone.action-informatives-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable')
         s.waitForElementPresent('css=div.type-quiz')
 
     def add_quiz(self):
@@ -517,7 +517,7 @@ class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
-            'css=.landing-zone.action-lead-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable')
         s.waitForElementPresent('css=div.type-xml')
 
 

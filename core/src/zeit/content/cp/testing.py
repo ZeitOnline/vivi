@@ -171,7 +171,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
             teaser_module,
-            'css=.landing-zone.action-informatives-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable')
         s.waitForElementPresent('css=div.type-teaser')
 
     def create_content_and_fill_clipboard(self):
