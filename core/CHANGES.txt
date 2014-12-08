@@ -7,6 +7,9 @@ zeit.content.cp changes
 
 - Nothing changed yet.
 
+- Suppress errors that are due to missing metadata files when rendering XML for
+  Friedbert (VIV-629).
+
 
 2.7.0 (2014-11-14)
 ------------------
