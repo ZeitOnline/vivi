@@ -100,7 +100,7 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
         conditions = []
         for type_, channel, subchannel in self.query:
             if subchannel:
-                value = '"%s %s"' % (channel, subchannel)
+                value = '%s*%s' % (channel, subchannel)
             else:
                 # XXX Unclear whether this will work as desired for keywords.
                 value = '%s*' % channel
