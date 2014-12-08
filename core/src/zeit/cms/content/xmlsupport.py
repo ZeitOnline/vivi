@@ -230,11 +230,12 @@ class XMLReferenceUpdater(object):
         zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
     target_iface = None
+    suppress_errors = False
 
     def __init__(self, context):
         self.context = context
 
-    def update(self, xml_node):
+    def update(self, xml_node, suppress_errors=False):
         """Only run the real update if context is adaptable to target_iface.
 
         Subclasses need to set the target_iface attribute and implement
@@ -245,13 +246,17 @@ class XMLReferenceUpdater(object):
         context = self.target_iface(self.context, None)
         if context is None:
             return
+        # XXX It would be cleaner to pass suppress_errors as a parameter to
+        # update_with_context, but then all subclasses would need to be changed
+        # to offer the new signature.
+        self.suppress_errors = suppress_errors
         return self.update_with_context(xml_node, context)
 
 
 class XMLReferenceUpdaterRunner(XMLReferenceUpdater):
     """Adapter that updates metadata etc on an XML reference."""
 
-    def update(self, xml_node):
+    def update(self, xml_node, suppress_errors=False):
         """Update xml_node with data from the content object."""
         for name, updater in sorted(zope.component.getAdapters(
             (self.context,),
@@ -260,7 +265,7 @@ class XMLReferenceUpdaterRunner(XMLReferenceUpdater):
                 # The unnamed adapter is the one which runs all the named
                 # adapters, i.e. this one.
                 continue
-            updater.update(xml_node)
+            updater.update(xml_node, suppress_errors)
 
 
 class CommonMetadataUpdater(XMLReferenceUpdater):
