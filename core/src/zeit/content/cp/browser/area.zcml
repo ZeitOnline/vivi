@@ -53,6 +53,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-properties"
     class=".area.EditProperties"
+    template="blocks/teaser.edit-layout.pt"
     permission="zeit.EditContent"
     />
 

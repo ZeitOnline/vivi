@@ -3,7 +3,8 @@
 
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.interfaces
-import zope.component
+import zeit.edit.browser.block
+import zeit.edit.browser.view
 import zope.formlib.form
 
 
@@ -15,17 +16,13 @@ class AreaViewletManager(zeit.edit.browser.block.BlockViewletManager):
         return ' '.join(['editable-area', classes])
 
 
-class EditProperties(zeit.content.cp.browser.blocks.teaser.EditProperties):
+class EditProperties(zeit.content.cp.browser.blocks.teaser.EditLayout):
 
     interface = zeit.content.cp.interfaces.IArea
-    layout_prefix = 'teaserbar'  # XXX should be removed
+    layout_prefix = 'teaserbar'  # XXX should be area
     layouts = ()
 
-    form_fields = zope.formlib.form.FormFields()
-
-    @property
-    def form(self):
-        return ''
+    form_fields = zope.formlib.form.Fields()  # XXX implement me
 
 
 class EditCommon(zeit.edit.browser.view.EditBox):

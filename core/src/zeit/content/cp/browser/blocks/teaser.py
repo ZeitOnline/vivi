@@ -10,6 +10,7 @@ import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.browser.block
@@ -54,39 +55,10 @@ class IPositions(zope.interface.Interface):
     zope.interface.alsoProvides(image_positions, IFixedList)
 
 
-# XXX this cobbles together just enough to combine SubPageForm and GroupedForm
-class EditProperties(
-        zope.formlib.form.SubPageEditForm,
-        zeit.cms.browser.form.WidgetCSSMixin,
-        gocept.form.grouped.EditForm):
-
-    layout_prefix = 'teaser'
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'teaser.edit-properties.pt')
+class EditLayout(object):
 
     interface = zeit.content.cp.interfaces.ITeaserBlock
-
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.cp.interfaces.ITeaserBlock).select(
-            'referenced_cp', 'autopilot', 'hide_dupes', 'display_amount')
-        + zope.formlib.form.FormFields(IPositions))
-
-    widget_groups = ()
-    field_groups = (
-        gocept.form.grouped.RemainingFields(
-            _('Autopilot'), css_class='column-left'),
-        gocept.form.grouped.Fields(
-            _('Parquet'), ('display_amount', 'image_positions'),
-            css_class='column-right'),
-    )
-
-    close = False
-
-    @property
-    def form(self):
-        return 'macro'  # we use the grouped-form macros instead
-        # return super(EditProperties, self).template
+    layout_prefix = 'teaser'
 
     @property
     def layouts(self):
@@ -106,10 +78,44 @@ class EditProperties(
             ))
         return result
 
+
+# XXX this cobbles together just enough to combine SubPageForm and GroupedForm
+class EditCommon(
+        zope.formlib.form.SubPageEditForm,
+        zeit.cms.browser.form.WidgetCSSMixin,
+        gocept.form.grouped.EditForm):
+
+    form_fields = (
+        zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ITeaserBlock).select(
+            'referenced_cp', 'autopilot', 'hide_dupes', 'display_amount')
+        + zope.formlib.form.FormFields(IPositions)
+        + zeit.content.cp.browser.blocks.block.EditCommon.form_fields)
+
+    widget_groups = ()
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _('Autopilot'),
+            ('referenced_cp', 'autopilot', 'hide_dupes'),
+            css_class='column-left'),
+        gocept.form.grouped.Fields(
+            _('Parquet'), ('display_amount', 'image_positions'),
+            css_class='column-right'),
+        gocept.form.grouped.RemainingFields(_(''), css_class='fullWidth'),
+    )
+
+    close = False
+
+    template = zope.browserpage.ViewPageTemplateFile('teaser.edit-common.pt')
+
+    @property
+    def form(self):
+        return ''  # our template uses the grouped-form macros instead
+
     @zope.formlib.form.action(_('Apply'))
     def handle_edit_action(self, action, data):
         self.close = True
-        return super(EditProperties, self).handle_edit_action.success(data)
+        return super(EditCommon, self).handle_edit_action.success(data)
 
 
 class FixedSequenceWidget(zope.formlib.sequencewidget.ListSequenceWidget):

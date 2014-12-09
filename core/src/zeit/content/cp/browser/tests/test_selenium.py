@@ -35,7 +35,9 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         link = 'css=div.block.type-teaser > * > div.edit > a.edit-link'
         s.waitForElementPresent(link)
         s.click(link)
-        s.waitForElementPresent('id=tab-1')
+        # Wait for tab content to load, to be certain that the tabs have been
+        # wired properly.
+        s.waitForElementPresent('css=.layout-chooser')
         s.click('//a[@href="tab-1"]')
         apply_button = r'css=#tab-1 #form\.actions\.apply'
         s.waitForElementPresent(apply_button)
@@ -66,7 +68,9 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
 
         s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
-        s.waitForElementPresent('id=tab-1')
+        # Wait for tab content to load, to be certain that the tabs have been
+        # wired properly.
+        s.waitForElementPresent('css=.layout-chooser')
         s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('id=form.publisher')
         s.type('form.publisher', 'FooPublisher')
@@ -74,9 +78,7 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementNotPresent('css=a.CloseButton')
 
         s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
-        # Wait for tab content to load, to be certain that the tabs have been
-        # wired properly.
-        s.waitForElementPresent('css=.teaser-block-properties-form')
+        s.waitForElementPresent('css=.layout-chooser')
         s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('form.publisher')
         s.waitForValue('form.publisher', 'FooPublisher')

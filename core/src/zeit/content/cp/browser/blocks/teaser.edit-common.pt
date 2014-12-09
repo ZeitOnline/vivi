@@ -1,0 +1,12 @@
+<div class="floating">
+
+  <form id="lightbox.form" class="teaser-block-properties-form"
+        tal:attributes="action request/URL">
+    <metal:block use-macro="context/@@form_macros/form_contents"/>
+  </form>
+
+  <script language="javascript"
+          tal:condition="view/close">
+    self.close();
+  </script>
+</div>

@@ -1,13 +1,5 @@
 <div i18n:domain="zeit.cms" class="floating">
 
-  <form id="lightbox.form" class="teaser-block-properties-form"
-        tal:attributes="action request/URL">
-    <tal:form condition="python: view.form != 'macro'" content="structure view/form"/>
-    <tal:form condition="python: view.form == 'macro'">
-      <metal:block use-macro="context/@@form_macros/form_contents"/>
-    </tal:form>
-  </form>
-
   <div style="clear:both"
       tal:attributes="class string:layout-chooser ${view/layout_prefix}">
     <div class="layout-inner"
@@ -23,10 +15,5 @@
     </div>
     <div class="visual-clear"></div>
   </div>
-
-  <script language="javascript"
-          tal:condition="view/close">
-    self.close();
-  </script>
 
 </div>

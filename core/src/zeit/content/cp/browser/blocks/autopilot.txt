@@ -51,8 +51,16 @@ True
 It is not possible to switch on the autopilot when there is no centerpage
 referenced:
 
+>>> import lxml.cssselect
+>>> browser.xml_strict = True
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=2).click()
+>>> select = lxml.cssselect.CSSSelector('div.type-teaser[cms|url]')
+>>> nsmap = {'cms': 'http://namespaces.gocept.com/zeit-cms'}
+>>> teaserblock_url = browser.etree.xpath(select.path, namespaces=nsmap)[0].get(
+...     '{http://namespaces.gocept.com/zeit-cms}url')
+>>> browser.xml_strict = False
+>>> browser.open(teaserblock_url + '/edit-common')
+
 >>> browser.getControl('Autopilot active').selected = True
 >>> browser.getControl('Hide duplicate teasers').selected = True
 >>> browser.getControl('Apply').click()
