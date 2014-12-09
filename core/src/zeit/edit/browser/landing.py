@@ -7,12 +7,31 @@ import zope.component
 
 
 class LandingZone(zeit.edit.browser.view.Action):
+    """Landing Zone to drop Content or Modules.
+
+    Order can have the following values:
+
+    * integer (position)
+    * `top` (insert at beginning)
+    * `bottom` (insert at bottom)
+    * `insert-after` (insert after element given by `insert_after` property)
+    * `after-context` (XXX bad hack, see below)
+
+    Hack `after-context`: The context parent is used as the container and the
+    element is inserted after the context.
+
+    All occurrences of `after-context` should be replaced by `insert-after`.
+
+    """
 
     order_from_form = zeit.edit.browser.view.Form('order')
+    insert_after = zeit.edit.browser.view.Form('insert-after')
 
     def update(self):
-        if self.order_from_form:
+        if self.order_from_form:  # XXX make order non-optional and remove this
             self.order = self.order_from_form
+        if not hasattr(self, 'order'):
+            raise ValueError('Order must be specified!')
         self.create_block()
         self.undo_description = _(
             "add '${type}' block", mapping=dict(type=self.block.type))
@@ -47,8 +66,13 @@ class LandingZone(zeit.edit.browser.view.Action):
     def add_block_in_order(self, keys, new_name):
         if isinstance(self.order, int):
             keys.insert(self.order, new_name)
+        elif self.order == 'top':
+            keys.insert(0, new_name)
         elif self.order == 'bottom':
             keys.append(new_name)
+        elif self.order == 'insert-after':
+            after = keys.index(self.insert_after)
+            keys.insert(after + 1, new_name)
         elif self.order == 'after-context':
             after = keys.index(self.context.__name__)
             keys.insert(after + 1, new_name)

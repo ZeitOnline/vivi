@@ -9,6 +9,9 @@ Changes
 - Change API of ``zeit.edit.sortable.Sortable`` to make a difference between
   parent with meta data and child container. (VIV-627)
 
+- Extend API of `zeit.edit.browser.LandingZone` to insert explicitly at the top
+  or after a given UUID. (VIV-621)
+
 
 2.5.0 (2014-11-14)
 ------------------
