@@ -43,7 +43,7 @@ class XMLReferenceUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
     zope.component.adapts(zeit.content.link.interfaces.ILink)
 
-    def update(self, entry):
+    def update(self, entry, suppress_errors=False):
         url = self.context.url
         if not url:
             url = ''

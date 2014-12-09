@@ -18,7 +18,7 @@ setup(
         'lxml',
         'setuptools',
         'zc.sourcefactory',
-        'zeit.cms>=2.15.0.dev0',
+        'zeit.cms>=2.31.0.dev0',
         'zeit.content.image',
         'zeit.connector',
         'zeit.push>=1.7.0.dev0',
