@@ -33,7 +33,7 @@ Editing the block
 -----------------
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('Media Id').value = '12345'
 >>> browser.getControl('Format').displayValue = ['small']
@@ -48,7 +48,7 @@ Editing the block
 <...self.close();...
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('Media Id').value
 '12345'
@@ -128,7 +128,7 @@ Audio blocks
 
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('Media Id').value = '98765'
 >>> browser.getControl('Format').displayValue = [

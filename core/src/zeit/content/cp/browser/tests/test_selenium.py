@@ -42,11 +42,11 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.click(apply_button)
         s.waitForElementNotPresent('css=.lightbox')
 
-        s.verifyXpathCount(css_path('#informatives a.delete-link'), 3)
-        s.click('css=#informatives a.delete-link')
+        s.verifyXpathCount(css_path('#informatives .block a.delete-link'), 3)
+        s.click('css=#informatives .block a.delete-link')
         # mostread/mostcommented are still there
         s.waitForXpathCount(
-            css_path('#informatives a.delete-link'), 2)
+            css_path('#informatives .block a.delete-link'), 2)
 
     def test_hover(self):
         self.create_teaserlist()
@@ -65,7 +65,7 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         self.create_teaserlist()
         s = self.selenium
 
-        s.click('xpath=(//a[contains(@class, "edit-link")])[2]')
+        s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
         s.waitForElementPresent('id=tab-1')
         s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('id=form.publisher')
@@ -73,7 +73,7 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.click('//div[@id="tab-1"]//input[@id="form.actions.apply"]')
         s.waitForElementNotPresent('css=a.CloseButton')
 
-        s.click('xpath=(//a[contains(@class, "edit-link")])[2]')
+        s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
         # Wait for tab content to load, to be certain that the tabs have been
         # wired properly.
         s.waitForElementPresent('css=.teaser-block-properties-form')
@@ -236,8 +236,8 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         self.open_centerpage()
         s = self.selenium
 
-        s.click('link=*Add block*')
-        teaser_module = self.get_module('informatives', 'List of teasers')
+        s.click('link=Module')
+        teaser_module = self.get_module('cp', 'List of teasers')
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
             teaser_module,
@@ -434,8 +434,8 @@ class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def create_videoblock(self):
         s = self.selenium
-        s.click('link=*Add block*')
-        module = self.get_module('informatives', 'Video')
+        s.click('link=Module')
+        module = self.get_module('cp', 'Video')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
@@ -468,8 +468,8 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def create_quizblock(self):
         s = self.selenium
-        s.click('link=*Add block*')
-        module = self.get_module('informatives', 'Quiz')
+        s.click('link=Module')
+        module = self.get_module('cp', 'Quiz')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
@@ -512,8 +512,7 @@ class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
 
         s = self.selenium
         s.click('link=Module')
-        s.click('link=Aufmacher')
-        module = self.get_module('lead', 'XML')
+        module = self.get_module('cp', 'XML')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,

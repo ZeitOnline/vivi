@@ -3,11 +3,10 @@ Module library
 
 The module library allows to create blocks. There are libraries to create
 blocks in the informatives area and inside the teaser mosaic. Available modules
-are transmitted in JSON[#setup]_:
+are transmitted in JSON[#setup]_ and can be added on the CP in general:
 
->>> import json
->>> import pprint
->>> browser.open('informatives/@@block-factories.json')
+>>> browser.open(cp_url)
+>>> browser.open('@@block-factories.json')
 >>> pprint.pprint(json.loads(browser.contents))
 {u'factories': [{u'css': u'module represents-content-object cp-module',
                 u'image': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/module-audio.png',
@@ -16,22 +15,6 @@ are transmitted in JSON[#setup]_:
                 ...
  u'template_url': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/block_factories.jsont'}
 
-
-One can also ask for blocks which can be added on the CP in general:
-
->>> browser.open(cp_url)
->>> browser.open('contents')
->>> contents_url = browser.url
->>> browser.open('@@block-factories.json')
->>> pprint.pprint(json.loads(browser.contents))
-{u'factories': [{u'css': u'module represents-content-object cp-module',
-                u'image': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/module-audio.png',
-                u'title': u'Audioblock',
-                u'type': u'audio'},
-                ...
-  u'template_url': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/block_factories.jsont'}
-
-
 Adding blocks works by drag and drop. We simulate this here.
 
 In the informatives area is a landing zone to create a block:
@@ -39,8 +22,9 @@ In the informatives area is a landing zone to create a block:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...
- <div class="landing-zone action-cp-module-droppable"
-      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module">
+ <div class="landing-zone action-content-droppable action-cp-module-droppable"
+      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop?order=top"
+      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module?order=top">
       ...
 
 Create a cpextra block as first block in the informatives. The view returns
@@ -72,13 +56,15 @@ it, is rendered too:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...
-<div class="landing-zone action-cp-module-droppable"
-     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module">
+<div class="landing-zone action-content-droppable action-cp-module-droppable"
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop?order=top"
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module?order=top">
 </div>
-  <div ...class="block type-cpextra...id="id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+  <div ...class="block type-cpextra...id="id-<GUID>">
     ...
-  <div class="landing-zone action-cp-module-droppable"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
+  <div class="landing-zone action-content-droppable action-cp-module-droppable"
+       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>">
   </div>
   ...
 
@@ -92,22 +78,28 @@ Add an audio block after the just created cpextra block now:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...
-<div class="landing-zone action-cp-module-droppable"
-     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module">
+<div class="landing-zone action-content-droppable action-cp-module-droppable"
+     cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop?order=top"
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@landing-zone-drop-module?order=top">
 </div>
-  <div ...class="block type-cpextra...id="id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515">
+  <div ...class="block type-cpextra...id="id-<GUID>">
     ...
-  <div class="landing-zone action-cp-module-droppable"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/id-c55fae1c-4bd9-4de3-9a50-ccaf6ccf5515/@@landing-zone-drop-module">
+  <div class="landing-zone action-content-droppable action-cp-module-droppable"
+       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>">
   </div>
   ...<div...class="block type-audio...
 
 
 .. [#setup]
 
+    >>> import json
+    >>> import pprint
     >>> import z3c.etestbrowser.testing
     >>> import zeit.content.cp.browser.testing
     >>> browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
     >>> browser.addHeader('Authorization', 'Basic user:userpw')
     >>> zeit.content.cp.browser.testing.create_cp(browser)
     >>> cp_url = browser.url
+    >>> browser.open('contents')
+    >>> contents_url = browser.url

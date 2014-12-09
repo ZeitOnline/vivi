@@ -281,7 +281,7 @@ There are different layouts in the informatives:
 >>> teaser_i = factory()
 >>> sorted(l.id for l in
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_i))
-['date', 'large', 'short', 'two-side-by-side']
+['date', 'large', 'leader', 'leader-two-columns', 'leader-upright', 'short', 'two-side-by-side']
 
 
 And yet other ones in the mosaic:
@@ -296,7 +296,7 @@ And yet other ones in the mosaic:
 >>> teaser_m = factory()
 >>> sorted(l.id for l in
 ...        zeit.content.cp.interfaces.ITeaserBlock['layout'].source(teaser_m))
-['date', 'parquet-large', 'parquet-regular', 'ressort', 'short']
+['date', 'leader', 'leader-two-columns', 'leader-upright', 'parquet-large', 'parquet-regular', 'ressort', 'short']
 
 
 Archive centerpages should always keep the same module attribute:

@@ -21,7 +21,7 @@ Editing the block
 Feed URLs must be urls:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL of RSS feed').value = 'foo/bar'
 >>> browser.getControl('Apply').click()
@@ -43,7 +43,7 @@ Only http(s) is supported:
 Set a valid URL:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> import zeit.content.cp.testing
 >>> url = 'http://localhost:%s/tagesschau.xml' % layer['http_port']
@@ -56,7 +56,7 @@ True
 <...self.close();...
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL').value
 '.../tagesschau.xml'
@@ -72,7 +72,7 @@ Change to another URL:
 
 
 >>> url = 'http://localhost:%s/heise.xml' % layer['http_port']
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL of RSS feed').value = url
 >>> print browser.getControl('Items to show').value
@@ -97,7 +97,7 @@ True
       </ul>
       ...
 
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL').value
 '.../heise.xml'
@@ -126,7 +126,7 @@ The teaser image may also be a teaser group:
 >>> import zeit.content.image.testing
 >>> with zeit.cms.testing.site(getRootFolder()):
 ...     group = zeit.content.image.testing.create_image_group()
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> print browser.getControl('Teaser image').value
 http://xml.zeit.de/2006/DSC00109_2.JPG
 >>> browser.getControl('Teaser image').value = 'http://xml.zeit.de/image-group'
@@ -140,7 +140,7 @@ http://xml.zeit.de/2006/DSC00109_2.JPG
              src="http://localhost/++skin++cms/repository/image-group/@@thumbnail" />
       </div>
       ...
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> print browser.getControl('Teaser image').value
 http://xml.zeit.de/image-group
 
@@ -154,7 +154,7 @@ group:
 >>> browser.getControl('Feed icon').value = 'http://xml.zeit.de/image-group'
 >>> browser.getControl('Apply').click()
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> print browser.getControl('Feed icon').value
 http://xml.zeit.de/image-group
 
@@ -165,7 +165,7 @@ http://xml.zeit.de/image-group
 ...     'http://xml.zeit.de/2006/DSC00109_2.JPG')
 >>> browser.getControl('Apply').click()
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> print browser.getControl('Feed icon').value
 http://xml.zeit.de/2006/DSC00109_2.JPG
 
@@ -180,7 +180,7 @@ True
 >>> browser.getControl('Time format').displayValue = ['Time']
 >>> browser.getControl('Apply').click()
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.getControl('Show supertitle').selected
 False
 >>> browser.getControl('Time format').displayValue
@@ -241,7 +241,7 @@ Displaying error messages
 =========================
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=1).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> browser.getControl('URL').value = 'http://notthere.testing/foo.rss'
 >>> browser.getControl('Apply').click()

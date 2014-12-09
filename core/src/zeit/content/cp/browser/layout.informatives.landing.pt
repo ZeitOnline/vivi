@@ -1,5 +1,0 @@
-
-<div i18n:domain="zeit.cms" class="landing-zone action-cp-module-droppable"
-     tal:attributes="cms:create-block-url string:${context/@@absolute_url}/@@landing-zone-drop-module"
-     i18n:translate="">
-</div>

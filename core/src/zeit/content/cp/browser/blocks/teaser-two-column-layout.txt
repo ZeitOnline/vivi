@@ -17,7 +17,7 @@ Create content, a teaser block and fill it with the created content:
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open(
-...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c3')
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c3&order=top')
 >>> import lxml.cssselect
 >>> browser.open(contents_url)
 >>> select = lxml.cssselect.CSSSelector(

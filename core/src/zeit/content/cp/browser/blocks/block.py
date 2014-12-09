@@ -39,7 +39,7 @@ class Position(object):
 
     def update(self):
         area = self.context.__parent__
-        if zeit.content.cp.interfaces.ILead.providedBy(area):
+        if zeit.content.cp.interfaces.IArea.providedBy(area):
             keys = self.context.__parent__.keys()
             self.position = keys.index(self.context.__name__) + 1
         else:

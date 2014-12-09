@@ -33,14 +33,3 @@ class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):
             if related is not None:
                 for i, related in enumerate(related.related):
                     self.block.insert(i + 1, related)
-
-
-class LeaderLandingZoneDrop(TeaserBlockLandingZone):
-    """Handler to drop articles on the lead landing zone."""
-
-    order = 0
-
-
-class TeaserLandingZoneInsertAfter(TeaserBlockLandingZone):
-
-    order = 'after-context'

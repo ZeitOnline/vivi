@@ -4,6 +4,7 @@
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.interfaces
 import zope.component
+import zope.formlib.form
 
 
 class AreaViewletManager(zeit.edit.browser.block.BlockViewletManager):
@@ -20,7 +21,7 @@ class EditProperties(zeit.content.cp.browser.blocks.teaser.EditProperties):
     layout_prefix = 'teaserbar'  # XXX should be removed
     layouts = ()
 
-    form_fields = []
+    form_fields = zope.formlib.form.FormFields()
 
     @property
     def form(self):

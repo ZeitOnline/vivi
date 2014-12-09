@@ -160,14 +160,6 @@ class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea):
     """An area contains blocks."""
 
 
-class ILead(IArea):
-    """The lead area."""
-
-
-class IInformatives(IArea):
-    """The informatives area."""
-
-
 class IMosaic(IRegion):
     """Teaser mosaic."""
 

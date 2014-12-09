@@ -128,15 +128,15 @@ class TeaserBlockLayoutSource(
         return unicode(node.get('title'))
 
     def filterValue(self, context, value):
-        from zeit.content.cp.interfaces import ILead  # Avoid circular import
+        from zeit.content.cp.interfaces import IRegion  # Avoid circular import
 
         if context is None:
             return True
 
         area = zeit.edit.interfaces.IArea(context)
-        region = zeit.content.cp.interfaces.IRegion(context)
+        region = IRegion(context)
         areas = [area.__name__, region.__name__]
-        if ILead.providedBy(area):
+        if zeit.edit.interfaces.IArea.providedBy(area):
             try:
                 position = area.keys().index(context.__name__)
             except ValueError:  # Not in list

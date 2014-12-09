@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <cpextras>
 
-  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="mostread">
     Meistgelesen
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="mostcommented">
     Meistkommentiert
   </cpextra>
@@ -22,24 +22,24 @@
   </cpextra>
 
 
-  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="ressort_news">
     Neu Im Ressort
   </cpextra>
 
 
-  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="live_search">
     Live-Search
   </cpextra>
 
 
-  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="print_archive">
     Print Archiv
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="blindblock">
     Blindblock
   </cpextra>
@@ -61,7 +61,7 @@
     Autoren-Register
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="linkatory">
     Linkatory
   </cpextra>
@@ -72,7 +72,7 @@
     Neu auf Zeit Online (Bilder)
   </cpextra>
 
-  <cpextra for="zeit.content.cp.interfaces.IInformatives"
+  <cpextra for="zeit.content.cp.interfaces.IArea"
            id="recensionsearch">
     Rezensionssuche
   </cpextra>

@@ -46,8 +46,9 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
         zeit.content.cp.browser.testing.create_cp(b)
         b.open('contents')
         contents_url = b.url
-        b.open(
-            'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent')
+        b.open('lead/@@landing-zone-drop'
+               '?uniqueId=http://xml.zeit.de/testcontent'
+               '&order=top')
 
         b.open(contents_url)
         b.getLink('Common', index=1).click()

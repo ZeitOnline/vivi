@@ -27,10 +27,9 @@ class ClusterBlockFactories(zeit.edit.browser.library.BlockFactories):
 class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
 
     def get_adapters(self):
-        adapters = []
-        for name in ('lead', 'informatives', 'teaser-mosaic'):
-            area = self.context[name]
-            view = zope.component.getMultiAdapter(
-                (area, self.request), name=self.__name__)
-            adapters.extend(view.get_adapters())
-        return adapters
+        area = zeit.content.cp.area.Area(None, None)
+        library_name = 'cp'
+        adapters = zope.component.getAdapters(
+            (area,), zeit.edit.interfaces.IElementFactory)
+        return [(name, adapter, library_name) for (name, adapter) in adapters
+                if adapter.title]

@@ -105,12 +105,6 @@ The contents of cp-content is loaded via javascript:
   <div id="informatives-outer"><div ...class="...editable-area..."...id="informatives"...
   <div id="teaser-mosaic"...
 
-
-There is a "add block" link which only activates a tab:
-
->>> browser.getLink('Add block')
-<Link text='+ Add block' url='tab://library-informatives'>
-
 Blocks are added via drag and drop from the block library. The library is
 explained in detail in library.txt.
 
@@ -175,9 +169,9 @@ Blocks and teaser bars can be removed using the delete link:
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 2
->>> browser.getLink('Delete', index=1).url
+>>> browser.getLink('Delete', index=2).url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@delete?key=id-<GUID>'
->>> browser.getLink('Delete', index=1).click()
+>>> browser.getLink('Delete', index=2).click()
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 1

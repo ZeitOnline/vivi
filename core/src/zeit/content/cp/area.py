@@ -37,16 +37,6 @@ class Region(zeit.edit.container.Base):
     def _get_element_type(self, xml_node):
         return 'area'
 
-    def __getitem__(self, key):
-        area = super(Region, self).__getitem__(key)
-        if key == 'lead':
-            zope.interface.alsoProvides(
-                area, zeit.content.cp.interfaces.ILead)
-        if key == 'informatives':
-            zope.interface.alsoProvides(
-                area, zeit.content.cp.interfaces.IInformatives)
-        return area
-
     def _get_keys(self, xml):
         keys = []
         for child in xml.getchildren():

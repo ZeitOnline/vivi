@@ -166,12 +166,12 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     def create_teaserlist(self):
         self.open_centerpage()
         s = self.selenium
-        s.click('link=*Add block*')
-        teaser_module = self.get_module('informatives', 'List of teasers')
+        s.click('link=Module')
+        teaser_module = self.get_module('cp', 'List of teasers')
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
             teaser_module,
-            'css=.landing-zone.action-cp-module-droppable')
+            'css=#informatives .landing-zone.action-cp-module-droppable')
         s.waitForElementPresent('css=div.type-teaser')
 
     def create_content_and_fill_clipboard(self):

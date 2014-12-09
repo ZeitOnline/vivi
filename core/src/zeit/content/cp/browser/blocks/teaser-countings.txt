@@ -14,10 +14,10 @@ Setup:
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> browser.open(
-...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c2')
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c2&order=top')
 >>> browser.open(contents_url)
 >>> browser.open(
-...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c1')
+...  'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/c1&order=top')
 >>> browser.open(contents_url)
 
 

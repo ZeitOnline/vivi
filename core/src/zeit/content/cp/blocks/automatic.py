@@ -16,7 +16,7 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         zope.container.interfaces.IContained)
 
     zope.component.adapts(
-        zeit.content.cp.interfaces.ILead,
+        zeit.content.cp.interfaces.IArea,
         gocept.lxml.interfaces.IObjectified)
 
     def __init__(self, context, xml):
@@ -55,4 +55,4 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
 
 
 zeit.edit.block.register_element_factory(
-    zeit.content.cp.interfaces.ILead, 'auto-teaser')
+    zeit.content.cp.interfaces.IArea, 'auto-teaser')

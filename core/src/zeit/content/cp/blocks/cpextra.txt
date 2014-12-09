@@ -83,12 +83,20 @@ The source is contextual.
 >>> source = zeit.content.cp.source.CPExtraSource()
 >>> lead_items = source(cpextra)
 >>> pprint.pprint(list(lead_items))
-[u'weather',
+[u'mostread',
+ u'mostcommented',
+ u'weather',
  u'stocks',
+ u'ressort_news',
+ u'live_search',
+ u'print_archive',
+ u'blindblock',
  u'homepage_news',
  u'dpa-news',
  u'authors-register',
+ u'linkatory',
  u'homepage_news_pics',
+ u'recensionsearch',
  u'solr-month',
  u'dwds-ticker',
  u'sportextra']
@@ -125,11 +133,11 @@ Add a centerpage with old xml to the repository:
 >>> import zeit.cms.repository.interfaces
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> cp.xml = lxml.objectify.fromstring("""\
-... <centerpage 
+... <centerpage
 ...   xmlns:cp="http://namespaces.zeit.de/CMS/cp"
 ...   xmlns:py="http://codespeak.net/lxml/objectify/pytype"
 ...   xmlns:xi="http://www.w3.org/2001/XInclude"
-...   xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+...   xmlns:xsd="http://www.w3.org/2001/XMLSchema"
 ...   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 ...   <head/>
 ...   <body>

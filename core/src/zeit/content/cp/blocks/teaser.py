@@ -353,18 +353,17 @@ def create_cp_channel(context, event):
 
 
 @zope.component.adapter(
-    zeit.edit.interfaces.IElement,
+    zeit.content.cp.interfaces.IBlock,
     zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
     area = context.__parent__
-    if zeit.content.cp.interfaces.ILead.providedBy(area):
-        apply_layout(area, zope.container.contained.ContainerModifiedEvent(
-            area, zope.lifecycleevent.Attributes(
-                zeit.edit.interfaces.IContainer, context.__name__)))
+    apply_layout(area, zope.container.contained.ContainerModifiedEvent(
+        area, zope.lifecycleevent.Attributes(
+            zeit.edit.interfaces.IContainer, context.__name__)))
 
 
 @zope.component.adapter(
-    zeit.content.cp.interfaces.ILead,
+    zeit.content.cp.interfaces.IArea,
     zope.container.interfaces.IContainerModifiedEvent)
 def apply_layout(context, event):
     """Apply the layout for elements in the teaser list.

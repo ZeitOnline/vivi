@@ -9,6 +9,8 @@ zeit.content.cp changes
 
 - `TeaserBar` is now an `IArea` and has no custom behaviour anymore. (VIV-627)
 
+- Allow Modules in every `IArea` of a CP. (VIV-621)
+
 
 2.7.0 (2014-11-14)
 ------------------

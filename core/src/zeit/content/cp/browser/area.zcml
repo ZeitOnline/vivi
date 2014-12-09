@@ -7,55 +7,24 @@
   <!-- Area -->
 
   <browser:page
-    for="zeit.content.cp.interfaces.ILead"
+    for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="contents"
     class=".editor.Editor"
-    template="layout.lead.contents.pt"
+    template="layout.area.contents.pt"
     permission="zeit.EditContent"
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.ILead"
+    for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
     name="contents"
     class=".automatic.Display"
-    template="layout.lead.contents-provider.pt"
+    template="layout.area.contents-provider.pt"
     permission="zeit.EditContent"
     weight="0"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IInformatives"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager=".interfaces.IEditorContentViewletManager"
-    name="contents"
-    template="layout.informatives.contents-provider.pt"
-    permission="zeit.EditContent"
-    weight="0"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IInformatives"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="contents"
-    class=".editor.Editor"
-    template="layout.informatives.contents.pt"
-    permission="zeit.EditContent"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IInformatives"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager=".interfaces.IEditorContentViewletManager"
-    name="edit"
-    template="layout.informatives.edit.pt"
-    permission="zeit.EditContent"
-    weight="90"
     />
 
   <browser:page
