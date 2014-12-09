@@ -520,7 +520,7 @@ def rendered_xml_cmscontent(context):
     block = lxml.objectify.E.block(
         uniqueId=context.uniqueId, href=context.uniqueId)
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
-    updater.update(block)
+    updater.update(block, suppress_errors=True)
     return block
 
 

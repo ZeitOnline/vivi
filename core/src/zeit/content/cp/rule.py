@@ -18,7 +18,12 @@ class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
         return itertools.chain(areas, *[a.values() for a in areas])
 
 
-@glob(zeit.edit.interfaces.IElement)
+@glob(zeit.content.cp.interfaces.IBlock)
+def region(context):
+    return zeit.content.cp.interfaces.IRegion(context).__name__
+
+
+@glob(zeit.content.cp.interfaces.IArea)
 def region(context):
     return zeit.content.cp.interfaces.IRegion(context).__name__
 

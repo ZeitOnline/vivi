@@ -230,7 +230,7 @@ class TeaserLinkUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
     zope.component.adapts(zeit.content.cp.interfaces.ITeaser)
 
-    def update(self, entry):
+    def update(self, entry, suppress_errors=False):
         # We don't override `update_with_context` since we don't want to adapt
         # to `ITeaser` which would create new teaser objects from articles.
         entry.set('href', self.context.original_content.uniqueId)

@@ -11,6 +11,12 @@ zeit.content.cp changes
 
 - Allow Modules in every `IArea` of a CP. (VIV-621)
 
+- Suppress errors that are due to missing metadata files when rendering XML for
+  Friedbert (VIV-629).
+
+- Adapt query for channels so it works with both tokenized and non-tokenized
+  indexing types (VIV-449).
+
 
 2.7.0 (2014-11-14)
 ------------------
