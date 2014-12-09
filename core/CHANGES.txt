@@ -4,7 +4,7 @@ zeit.content.video changes
 2.2.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Update XMLReferenceUpdater API (VIV-629).
 
 
 2.2.9 (2014-10-21)

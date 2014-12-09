@@ -80,7 +80,7 @@ class VideoXMLReferenceUpdater(grokcore.component.Adapter):
     grokcore.component.implements(
         zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
-    def update(self, node):
+    def update(self, node, suppress_errors=False):
         still_node = node.find('video-still')
         if still_node is not None:
             node.remove(still_node)

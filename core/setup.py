@@ -26,7 +26,7 @@ setup(
         'plone.testing',
         'pytz',
         'setuptools',
-        'zeit.cms>=2.20.0.dev0',
+        'zeit.cms>=2.31.0.dev0',
         'zeit.connector',
         'zeit.solr>=2.2.0.dev0',
         'zope.annotation',
