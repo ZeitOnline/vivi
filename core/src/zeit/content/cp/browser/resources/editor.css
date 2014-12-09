@@ -3,25 +3,6 @@
 }
 
 
-#lead-outer {
-  width: 64%;
-  float: left;
-}
-
-#informatives-outer {
-  width: 36%;
-  float: left;
-}
-
-#informatives-outer #informatives {
-  margin-top: 4.2em;
-}
-
-#teaser-mosaic {
-  clear: both;
-}
-
-
 
 /* When there is no "other" edit, we show the common. */
 .edit-bar > a.common-link:first-child {

@@ -3,11 +3,9 @@
       class="cp-content-inner cp-editor-inner">
 
   <div class="cp-editor-top">
-    <div id="lead-outer"
-         tal:content="structure context/lead/@@contents"/>
+    <div tal:replace="structure context/lead/@@contents"/>
 
-    <div id="informatives-outer"
-         tal:content="structure context/informatives/@@contents" />
+    <div tal:replace="structure context/informatives/@@contents" />
 
   </div>
 
