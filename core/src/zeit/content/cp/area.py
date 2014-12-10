@@ -115,6 +115,12 @@ def element_to_region(context):
     return zeit.content.cp.interfaces.IRegion(context.__parent__, None)
 
 
+@grok.adapter(zeit.edit.interfaces.IElement)
+@grok.implementer(zeit.content.cp.interfaces.IArea)
+def element_to_area(context):
+    return zeit.content.cp.interfaces.IArea(context.__parent__, None)
+
+
 @grok.adapter(zeit.content.cp.interfaces.IRegion)
 @grok.implementer(zeit.edit.interfaces.IArea)
 def region_to_area(context):
