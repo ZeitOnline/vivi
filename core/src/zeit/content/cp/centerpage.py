@@ -46,7 +46,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
     _get_keys = lxml.etree.XPath('./body/*/@area')
 
     def _get_element_type(self, xml_node):
-        return xml_node.tag
+        return 'region'
 
     def __getitem__(self, key):
         if key in ['lead', 'informatives']:

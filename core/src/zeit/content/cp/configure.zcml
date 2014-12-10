@@ -62,7 +62,7 @@
   <adapter
     factory=".area.RegionFactory"
     for="zeit.content.cp.interfaces.ICenterPage"
-    name="cluster" /> <!-- XML tags are named "cluster". -->
+    name="region" />
   <adapter
     factory=".area.AreaFactory"
     for="zeit.content.cp.interfaces.IRegion"
@@ -92,9 +92,9 @@
 
   <adapter
     provides="zeit.content.cp.interfaces.IRegion"
-    name="cluster"
+    name="region"
     factory=".area.Region"
-    /> <!-- XML tags are named "cluster". -->
+    />
   <adapter
     provides="zeit.content.cp.interfaces.IArea"
     name="area"

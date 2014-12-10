@@ -51,6 +51,7 @@ class RegionFactory(zeit.edit.block.ElementFactory):
 
     # XML tags are named "cluster", thus do not change.
     tag_name = 'cluster'
+    element_type = 'region'
 
     def get_xml(self):
         return getattr(lxml.objectify.E, self.tag_name)()
