@@ -38,9 +38,9 @@ class LeadTimeWorklist(zeit.cms.content.dav.DAVPropertiesAdapter):
 
 def find_leader(cp):
     # The CMS does not have a concept for "*the* lead teaser/article", and in
-    # fact it simply is the first teaser in the lead area.
+    # fact it simply is the first teaser on the page.
     try:
-        return next(ICMSContentIterable(cp['lead']))
+        return next(ICMSContentIterable(cp))
     except StopIteration:
         return None
 
