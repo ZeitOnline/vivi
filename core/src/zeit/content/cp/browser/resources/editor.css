@@ -1,3 +1,16 @@
+.type-centerpage-2009 #body {
+    background-color: #E5E6CF;
+}
+
+.type-area > .block-inner {
+    background-color: #E9E9FF;
+}
+
+.type-area .block {
+    margin: 0.5em;
+}
+
+
 /* When there is no "other" edit, we show the common. */
 .edit-bar > a.common-link:first-child {
   background-image: url('page.png');
