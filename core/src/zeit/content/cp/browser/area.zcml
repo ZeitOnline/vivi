@@ -4,6 +4,49 @@
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
+  <!-- Region -->
+
+  <configure package="zeit.edit.browser">
+    <browser:viewletManager
+      provides="zeit.edit.interfaces.IContentViewletManager"
+      for="zeit.content.cp.interfaces.IRegion"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      class="zeit.content.cp.browser.region.ViewletManager"
+      template="layout.block.contents.pt"
+      name="zeit.edit.contents"
+      permission="zope.View"
+      />
+  </configure>
+
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-properties"
+    class=".region.EditProperties"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-common"
+    class=".region.EditCommon"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="contents"
+    template="layout.region.contents-provider.pt"
+    permission="zeit.EditContent"
+    weight="0"
+    />
+
   <!-- Area -->
 
   <browser:page
@@ -38,14 +81,14 @@
 
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IMosaic"
+    for="zeit.content.cp.interfaces.IRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager=".interfaces.IEditorContentViewletManager"
-    name="edit"
-    template="layout.cluster.edit.pt"
+    name="add"
+    template="layout.region.add.pt"
     permission="zeit.EditContent"
-    weight="90"
+    weight="-10"
     />
 
   <browser:page
@@ -80,7 +123,7 @@
 
   <configure package="zeit.edit.browser">
     <browser:viewlet
-      for="zeit.content.cp.interfaces.IArea"
+      for="zeit.content.cp.interfaces.IElement"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
       manager="zeit.edit.interfaces.IContentViewletManager"
@@ -92,7 +135,7 @@
   </configure>
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IArea"
+    for="zeit.content.cp.interfaces.IElement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
@@ -103,7 +146,7 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IArea"
+    for="zeit.content.cp.interfaces.IElement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
@@ -115,7 +158,7 @@
 
   <configure package="zeit.edit.browser">
     <browser:viewlet
-      for="zeit.content.cp.interfaces.IArea"
+      for="zeit.content.cp.interfaces.IElement"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
       manager="zeit.edit.interfaces.IEditBarViewletManager"
@@ -128,7 +171,7 @@
 
   <configure package="zeit.edit.browser">
     <browser:viewlet
-      for="zeit.content.cp.interfaces.IArea"
+      for="zeit.content.cp.interfaces.IElement"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
       manager="zeit.edit.interfaces.IEditBarViewletManager"

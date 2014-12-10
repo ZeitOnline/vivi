@@ -99,11 +99,10 @@ The contents of cp-content is loaded via javascript:
 >>> browser.open('contents')
 >>> contents_url = browser.url
 >>> print browser.contents
-<div...
-<div class="cp-editor-top">
+<...
   <div ...class="...editable-area..."...id="lead"...
   <div ...class="...editable-area..."...id="informatives"...
-  <div id="teaser-mosaic"...
+  <div ...class="...editable-region..."...id="teaser-mosaic"...
 
 Blocks are added via drag and drop from the block library. The library is
 explained in detail in library.txt.
@@ -112,16 +111,15 @@ explained in detail in library.txt.
 Sorting
 +++++++
 
-Blocks can be sorted. There is an ``updateOrder`` view doing this. Add another
-teaser bar:
+Blocks can be sorted. There is an ``updateOrder`` view doing this.
 
 >>> browser.open(contents_url)
->>> browser.getLink('Add teaser bar').click()
+>>> browser.getLink('Add area', index=3).click()
 >>> browser.open(contents_url)
->>> browser.getLink('Add teaser bar').click()
+>>> browser.getLink('Add area', index=3).click()
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-area")]')
+...     '//div[@id="teaser-mosaic"]//div[contains(@class, "type-area")]')
 >>> bar_ids = original_ids = [bar.get('id') for bar in bar_divs]
 >>> bar_ids
 ['id-92ae9ac4-0bd2-4e64-9eeb-40bb10f32f4c',
@@ -143,7 +141,7 @@ The order has been updated now:
 True
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-area")]')
+...     '//div[@id="teaser-mosaic"]//div[contains(@class, "type-area")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == reversed_ids
 True
@@ -155,7 +153,7 @@ Restore the original order again:
 ...     'teaser-mosaic/updateOrder?keys=' + json.dumps(original_ids))
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
-...     '//div[@id="teaser-mosaic"]/div[contains(@class, "type-area")]')
+...     '//div[@id="teaser-mosaic"]//div[contains(@class, "type-area")]')
 >>> bar_ids = tuple(bar.get('id') for bar in bar_divs)
 >>> bar_ids == tuple(original_ids)
 True
@@ -169,9 +167,9 @@ Blocks and teaser bars can be removed using the delete link:
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 2
->>> browser.getLink('Delete', index=2).url
+>>> browser.getLink('Delete', index=3).url
 'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@delete?key=id-<GUID>'
->>> browser.getLink('Delete', index=2).click()
+>>> browser.getLink('Delete', index=3).click()
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 1

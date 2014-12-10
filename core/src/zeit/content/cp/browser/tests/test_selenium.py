@@ -67,7 +67,7 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         self.create_teaserlist()
         s = self.selenium
 
-        s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
+        s.click('xpath=(//a[contains(@class, "edit-link")])[4]')
         # Wait for tab content to load, to be certain that the tabs have been
         # wired properly.
         s.waitForElementPresent('css=.layout-chooser')
@@ -77,7 +77,7 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.click('//div[@id="tab-1"]//input[@id="form.actions.apply"]')
         s.waitForElementNotPresent('css=a.CloseButton')
 
-        s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
+        s.click('xpath=(//a[contains(@class, "edit-link")])[4]')
         s.waitForElementPresent('css=.layout-chooser')
         s.click('//a[@href="tab-1"]')
         s.waitForElementPresent('form.publisher')

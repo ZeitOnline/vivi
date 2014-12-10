@@ -1,0 +1,7 @@
+<div i18n:domain="zeit.cms">
+  <a tal:attributes="href string:${context/@@absolute_url}/landing-zone-drop-module?block_type=area&order=top"
+     i18n:translate=""
+     cms:cp-module="zeit.edit.LoadAndReload">
+    + Add area
+  </a>
+</div>

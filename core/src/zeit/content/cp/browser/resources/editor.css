@@ -1,9 +1,3 @@
-#cp-content > .cp-content.inner > .cp-editor-top {
-  width: 100%;
-}
-
-
-
 /* When there is no "other" edit, we show the common. */
 .edit-bar > a.common-link:first-child {
   background-image: url('page.png');

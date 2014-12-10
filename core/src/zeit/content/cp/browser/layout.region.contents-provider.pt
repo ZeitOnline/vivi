@@ -1,0 +1,11 @@
+<tal:block i18n:domain="zeit.cms" repeat="item context/values">
+  <tal:block replace="structure item/@@contents"/>
+
+  <div>
+    <a tal:attributes="href string:${context/@@absolute_url}/landing-zone-drop-module?block_type=area&order=insert-after&insert-after=${item/__name__}"
+       i18n:translate=""
+       cms:cp-module="zeit.edit.LoadAndReload">
+      + Add area
+    </a>
+  </div>
+</tal:block>
