@@ -36,7 +36,7 @@ class RawXMLMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
 
     zope.component.adapts(zeit.content.rawxml.interfaces.IRawXML)
 
-    def update(self, xml_node):
+    def update(self, xml_node, suppress_errors=False):
         # Since we're adding arbitrary xml, we need to mark nodes we've
         # inserted to be able to remove them later. The following attribute is
         # "ours":
