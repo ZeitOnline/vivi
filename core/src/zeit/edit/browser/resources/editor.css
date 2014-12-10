@@ -288,19 +288,19 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
 }
 
 .editable-area.validation-error {
-  background-color: #FAE9E6;
+  background-color: #E67373;
 }
 
 .editable-area.validation-warning {
-  background-color: #FFF7C4;
+  background-color: #FFE480;
 }
 
 .block.validation-error > .block-inner {
-  background-color: #FAE9E6;
+  background-color: #E67373;
 }
 
 .block.validation-warning > .block-inner {
-  background-color: #FFF7C4;
+  background-color: #FFE480;
 }
 
 .edit-bar > .locked-indicator {
