@@ -11,6 +11,9 @@ import zope.i18n
 
 class BlockFactories(zeit.cms.browser.view.JSON):
 
+    # XXX The block images should probably move to zeit.edit, or we should set
+    # up separate BlockFactories registrations for cp, article, and newsletter
+    # with their respective resource_library.
     resource_library = 'zeit.content.cp'
     template = 'block_factories.jsont'
 
