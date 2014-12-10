@@ -26,7 +26,6 @@ import zeit.connector.interfaces
 import zeit.content.cp.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
-import zope.container.contained
 import zope.interface
 import zope.lifecycleevent
 import zope.proxy
@@ -37,6 +36,7 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
                  zeit.edit.container.Base):
 
     zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
+                              zeit.edit.interfaces.IArea,
                               zeit.cms.interfaces.IEditorialContent)
 
     default_template = pkg_resources.resource_string(__name__,
@@ -56,6 +56,19 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata,
             zope.interface.alsoProvides(
                 region, zeit.content.cp.interfaces.IMosaic)
         return region
+
+    def _add(self, item):
+        # XXX Duplicated from zeit.edit.container.Base to append to
+        # self.xml.body, not self.xml
+        name = item.__name__
+        if name:
+            if name in self:
+                raise zope.container.interfaces.DuplicateIDError(name)
+        else:
+            name = self._generate_block_id()
+        item.__name__ = name
+        self.xml.body.append(zope.proxy.removeAllProxies(item.xml))
+        return name
 
     _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])

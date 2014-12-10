@@ -17,7 +17,6 @@ import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.quiz.source
 import zeit.edit.interfaces
-import zope.container.interfaces
 import zope.interface
 
 
@@ -33,7 +32,7 @@ class ValidationError(zope.schema.ValidationError):
 
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
-                  zope.container.interfaces.IReadContainer):
+                  zeit.edit.interfaces.IArea):
     """A relaunch 09 centerpage."""
 
     type = zope.schema.Choice(
