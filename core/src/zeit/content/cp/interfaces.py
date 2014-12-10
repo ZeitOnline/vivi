@@ -121,7 +121,11 @@ class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
 centerPageSource = CenterPageSource()
 
 
-class IRegion(zeit.edit.interfaces.IContainer):
+class IElement(zeit.edit.interfaces.IElement):
+    """generic element, but CP-specific"""
+
+
+class IRegion(zeit.edit.interfaces.IContainer, IElement):
     """Abstract layer above IArea."""
 
 
@@ -160,7 +164,7 @@ class IWriteArea(zeit.edit.interfaces.IWriteContainer):
 
 
 # Must split read / write for security declarations for ITeaserBar.
-class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea):
+class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
     """An area contains blocks."""
 
 
@@ -215,7 +219,7 @@ class ICPFeed(zope.interface.Interface):
     items = zope.interface.Attribute("tuple of feed items")
 
 
-class IBlock(zeit.edit.interfaces.IBlock):
+class IBlock(zeit.edit.interfaces.IBlock, IElement):
 
     title = zope.schema.TextLine(
         title=_("Title"),
