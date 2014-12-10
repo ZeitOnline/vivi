@@ -171,10 +171,6 @@ class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
     """An area contains blocks."""
 
 
-class IMosaic(IRegion):
-    """Teaser mosaic."""
-
-
 class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = ['Channel']  # XXX or 'Keyword', see VIV-471

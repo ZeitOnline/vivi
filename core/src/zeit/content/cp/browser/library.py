@@ -12,18 +12,6 @@ import zeit.edit.browser.library
 import zope.component
 
 
-class ClusterBlockFactories(zeit.edit.browser.library.BlockFactories):
-    # In the mosaic itself there are no blocks possible, so we have to look
-    # into a teaserbar.
-
-    @property
-    def factory_context(self):
-        if not self.context:
-            return None
-        key = self.context.keys()[0]
-        return self.context[key]
-
-
 class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
 
     def get_adapters(self):

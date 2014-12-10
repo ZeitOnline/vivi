@@ -70,16 +70,6 @@
     weight="0"
     />
 
-  <browser:page
-    for="zeit.content.cp.interfaces.IMosaic"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="contents"
-    class=".editor.Editor"
-    template="layout.mosaic.contents.pt"
-    permission="zeit.EditContent"
-    />
-
-
   <browser:viewlet
     for="zeit.content.cp.interfaces.IRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

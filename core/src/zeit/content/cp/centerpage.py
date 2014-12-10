@@ -217,12 +217,9 @@ class Body(zeit.edit.container.Base,
 
     def __getitem__(self, key):
         if key in ['lead', 'informatives']:
+            # backwards compatiblity for tests
             return self['feature'][key]
-        region = super(Body, self).__getitem__(key)
-        if key == 'teaser-mosaic':
-            zope.interface.alsoProvides(
-                region, zeit.content.cp.interfaces.IMosaic)
-        return region
+        return super(Body, self).__getitem__(key)
 
 
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)

@@ -128,6 +128,15 @@ def region_to_area(context):
     return None
 
 
+@grok.adapter(zeit.content.cp.interfaces.IRegion)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml_mosaic(context):
+    root = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
+    for item in context.values():
+        root.append(zeit.content.cp.interfaces.IRenderedXML(item))
+    return root
+
+
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
@@ -138,12 +147,3 @@ def rendered_xml(context):
     for block in zeit.content.cp.interfaces.IAutomaticArea(context).values():
         area.append(zeit.content.cp.interfaces.IRenderedXML(block))
     return area
-
-
-@grok.adapter(zeit.content.cp.interfaces.IMosaic)
-@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
-def rendered_xml_mosaic(context):
-    root = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
-    for item in context.values():
-        root.append(zeit.content.cp.interfaces.IRenderedXML(item))
-    return root
