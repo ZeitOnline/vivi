@@ -1,4 +1,4 @@
-<div id="body"
+<div id="body" class="editable-area"
      i18n:domain="zeit.cms"
      tal:attributes="cms:url context/@@absolute_url">
 

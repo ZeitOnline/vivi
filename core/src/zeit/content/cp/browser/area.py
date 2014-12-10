@@ -8,11 +8,11 @@ import zeit.edit.browser.view
 import zope.formlib.form
 
 
-class AreaViewletManager(zeit.edit.browser.block.BlockViewletManager):
+class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
 
     @property
     def css_class(self):
-        classes = super(AreaViewletManager, self).css_class
+        classes = super(ViewletManager, self).css_class
         return ' '.join(['editable-area', classes])
 
 
