@@ -1,6 +1,8 @@
 Teasergroup UI
 ==============
 
+XXX This feature is disabled, this doctest file is not run.
+
 Creating teaser groups
 ++++++++++++++++++++++
 
