@@ -73,6 +73,15 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
 
     type = 'area'
 
+    # XXX fixme
+    @property
+    def layout(self):
+        return zeit.content.cp.layout.get_bar_layout('parquet')
+
+    @layout.setter
+    def layout(self, value):
+        pass  # XXX fixme
+
     @property
     def __name__(self):
         name = self.xml.get('area')

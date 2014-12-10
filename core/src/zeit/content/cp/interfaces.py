@@ -136,6 +136,10 @@ def hex_literal(value):
 
 class IReadArea(zeit.edit.interfaces.IReadContainer):
 
+    layout = zope.schema.Choice(
+        title=_("Layout"),
+        source=zeit.content.cp.layout.TeaserBarLayoutSource())
+
     supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
         required=False)
