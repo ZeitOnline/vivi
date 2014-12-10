@@ -2,20 +2,6 @@
       id="cp-content-inner"
       class="cp-content-inner cp-editor-inner">
 
-  <a tal:attributes="href string:${context/@@absolute_url}/landing-zone-drop-module?block_type=region&order=top"
-     i18n:translate=""
-     cms:cp-module="zeit.edit.LoadAndReload">
-    + Add region
-  </a>
-
-  <tal:block repeat="item context/values">
-    <tal:block replace="structure item/@@contents"/>
-
-    <a tal:attributes="href string:${context/@@absolute_url}/landing-zone-drop-module?block_type=region&order=insert-after&insert-after=${item/__name__}"
-       i18n:translate=""
-       cms:cp-module="zeit.edit.LoadAndReload">
-      + Add region
-    </a>
-  </tal:block>
+  <div tal:replace="structure context/body/@@contents" />
 
 </div>

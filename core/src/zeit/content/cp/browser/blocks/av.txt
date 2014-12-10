@@ -67,7 +67,7 @@ The video block also supports dropping of videos:
 >>> import json
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
 [{u'args': [u'id-<GUID>',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/id-666b0a7d-3020-475c-b17d-b82a895e74de/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/id-666b0a7d-3020-475c-b17d-b82a895e74de/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> browser.open(edit_form_url)
@@ -94,7 +94,7 @@ Expiration date and player are updated automatically:
 >>> browser.open('@@drop?uniqueId=http://xml.zeit.de/pls')
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
 [{u'args': [u'id-<GUID>',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/id-03ffb451-4719-419a-863a-2481451bf6be/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/id-03ffb451-4719-419a-863a-2481451bf6be/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> browser.open(edit_form_url)

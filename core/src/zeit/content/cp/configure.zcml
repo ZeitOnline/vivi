@@ -10,6 +10,8 @@
   <grok:grok package="." />
   <include package="zeit.find" /> <!-- XXX why?! -->
 
+  <!-- CenterPage -->
+
   <utility
     name="zeit.content.cp"
     provides="zope.app.generations.interfaces.ISchemaManager"
@@ -32,6 +34,30 @@
     component=".interfaces.centerPageSource"
     name="zeit.content.cp"
     />
+
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for="zeit.content.cp.interfaces.ICenterPage
+         zeit.cms.browser.interfaces.ICMSLayer"
+    />
+
+  <subscriber
+    factory=".centerpage.BodyPublishTraverser"
+    for="zeit.content.cp.interfaces.ICenterPage
+    zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
+  <class class=".centerpage.Body">
+    <require
+      interface="zeit.edit.interfaces.IReadContainer"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.edit.interfaces.IWriteContainer"
+      permission="zeit.EditContent"
+      />
+  </class>
 
   <adapter
     factory=".centerpage.cp_references"
@@ -61,7 +87,7 @@
   <!-- Areas -->
   <adapter
     factory=".area.RegionFactory"
-    for="zeit.content.cp.interfaces.ICenterPage"
+    for="zeit.content.cp.interfaces.IBody"
     name="region" />
   <adapter
     factory=".area.AreaFactory"

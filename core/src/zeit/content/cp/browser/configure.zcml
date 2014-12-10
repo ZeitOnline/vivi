@@ -78,6 +78,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.IBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="contents"
+    template="layout.body.contents.pt"
+    permission="zeit.EditContent"
+    />
+
   <include file="area.zcml" />
   <include package=".blocks" />
   <include file="landing.zcml" />

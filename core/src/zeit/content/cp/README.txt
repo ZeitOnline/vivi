@@ -44,7 +44,7 @@ KeyError: 'ugc-bar'
 The centerpage is reachable via ``__parent__`` or by adapting to it:
 
 >>> cp['feature'].__parent__
-<zeit.content.cp.centerpage.CenterPage object at 0x...>
+<zeit.content.cp.centerpage.Body object at 0x...>
 >>> import zeit.content.cp.interfaces
 >>> zeit.content.cp.interfaces.ICenterPage(cp['feature'])
 <zeit.content.cp.centerpage.CenterPage object at 0x...>

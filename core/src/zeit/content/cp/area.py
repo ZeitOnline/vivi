@@ -15,7 +15,7 @@ class Region(zeit.edit.container.Base):
 
     zope.interface.implements(zeit.content.cp.interfaces.IRegion)
     zope.component.adapts(
-        zeit.content.cp.interfaces.ICenterPage,
+        zeit.content.cp.interfaces.IBody,
         gocept.lxml.interfaces.IObjectified)
 
     _find_item = lxml.etree.XPath(

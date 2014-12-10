@@ -168,7 +168,7 @@ Blocks and teaser bars can be removed using the delete link:
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))
 2
 >>> browser.getLink('Delete', index=3).url
-'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/@@delete?key=id-<GUID>'
+'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@delete?key=id-<GUID>'
 >>> browser.getLink('Delete', index=3).click()
 >>> browser.open(contents_url)
 >>> len(browser.etree.xpath('//div[contains(@class, "type-cpextra")]'))

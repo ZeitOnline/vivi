@@ -93,7 +93,7 @@ We can now switch it of again:
 >>> import pprint
 >>> pprint.pprint(json.loads(browser.contents)['signals'])
 [{u'args': [u'id-<GUID>',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/informatives/id-<GUID>/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/id-<GUID>/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> browser.open(contents_url)

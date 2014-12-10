@@ -7,11 +7,13 @@ from zeit.connector.search import SearchVar
 from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
 import collections
 import copy
+import gocept.lxml.interfaces
 import grokcore.component as grok
 import itertools
 import lxml.etree
 import pkg_resources
 import xml.sax.saxutils
+import z3c.traverser.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -28,47 +30,40 @@ import zeit.edit.container
 import zeit.edit.interfaces
 import zope.interface
 import zope.lifecycleevent
+import zope.location.interfaces
 import zope.proxy
+import zope.publisher.interfaces
+import zope.security.proxy
+import zope.traversing.adapters
+import zope.traversing.interfaces
 
 
-# XXX Is it OK to inherit IElement for CenterPage? Does it make sense?
-class CenterPage(zeit.cms.content.metadata.CommonMetadata,
-                 zeit.edit.container.Base):
+BODY_NAME = 'body'
+
+
+class CenterPage(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
-                              zeit.edit.interfaces.IArea,
                               zeit.cms.interfaces.IEditorialContent)
 
     default_template = pkg_resources.resource_string(__name__,
                                                      'cp-template.xml')
 
-    _find_item = lxml.etree.XPath('./body/*[@area = $name]')
-    _get_keys = lxml.etree.XPath('./body/*/@area')
+    @property
+    def body(self):
+        return zeit.content.cp.interfaces.IBody(self)
 
-    def _get_element_type(self, xml_node):
-        return 'region'
+    def values(self):
+        return self.body.values()
+
+    def keys(self):
+        return self.body.keys()
 
     def __getitem__(self, key):
-        if key in ['lead', 'informatives']:
-            return self['feature'][key]
-        region = super(CenterPage, self).__getitem__(key)
-        if key == 'teaser-mosaic':
-            zope.interface.alsoProvides(
-                region, zeit.content.cp.interfaces.IMosaic)
-        return region
+        return self.body[key]
 
-    def _add(self, item):
-        # XXX Duplicated from zeit.edit.container.Base to append to
-        # self.xml.body, not self.xml
-        name = item.__name__
-        if name:
-            if name in self:
-                raise zope.container.interfaces.DuplicateIDError(name)
-        else:
-            name = self._generate_block_id()
-        item.__name__ = name
-        self.xml.body.append(zope.proxy.removeAllProxies(item.xml))
-        return name
+    def __iter__(self):
+        return iter(self.body)
 
     _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])
@@ -203,6 +198,75 @@ class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):
     interface = zeit.content.cp.interfaces.ICenterPage
     title = _('Centerpage 2009')
     type = 'centerpage-2009'
+
+
+class Body(zeit.edit.container.Base,
+           grok.MultiAdapter):
+
+    grok.implements(zeit.content.cp.interfaces.IBody)
+    grok.provides(zeit.content.cp.interfaces.IBody)
+    grok.adapts(zeit.content.cp.interfaces.ICenterPage,
+                gocept.lxml.interfaces.IObjectified)
+
+    __name__ = BODY_NAME
+    _find_item = lxml.etree.XPath('./*[@area = $name]')
+    _get_keys = lxml.etree.XPath('./*/@area')
+
+    def _get_element_type(self, xml_node):
+        return 'region'
+
+    def __getitem__(self, key):
+        if key in ['lead', 'informatives']:
+            return self['feature'][key]
+        region = super(Body, self).__getitem__(key)
+        if key == 'teaser-mosaic':
+            zope.interface.alsoProvides(
+                region, zeit.content.cp.interfaces.IMosaic)
+        return region
+
+
+@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
+@grok.implementer(zeit.content.cp.interfaces.IBody)
+def get_editable_body(centerpage):
+    return zope.component.queryMultiAdapter(
+        (centerpage,
+         zope.security.proxy.removeSecurityProxy(centerpage.xml['body'])),
+        zeit.content.cp.interfaces.IBody)
+
+
+class BodyTraverser(grok.Adapter):
+
+    grok.context(zeit.content.cp.interfaces.ICenterPage)
+    grok.implements(zope.traversing.interfaces.ITraversable)
+
+    def traverse(self, name, furtherPath):
+        if name == BODY_NAME:
+            body = zeit.content.cp.interfaces.IBody(self.context, None)
+            if body is not None:
+                return body
+        else:
+            # XXX zope.component does not offer an API to get the next adapter
+            # that is less specific than the current one. So we hard-code the
+            # default.
+            return zope.traversing.adapters.DefaultTraversable(
+                self.context).traverse(name, furtherPath)
+
+
+class BodyPublishTraverser(object):
+
+    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def publishTraverse(self, request, name):
+        try:
+            return zope.traversing.interfaces.ITraversable(
+                self.context).traverse(name, None)
+        except zope.location.interfaces.LocationError:
+            raise zope.publisher.interfaces.NotFound(
+                self.context, name, request)
 
 
 _test_helper_cp_changed = False

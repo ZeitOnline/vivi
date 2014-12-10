@@ -32,7 +32,7 @@ Create a teaserblock with a few teasers:
   u'name': u'added',
   u'when': u'after-reload'},
  {u'args': [u'lead',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/lead/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/@@contents'],
   u'name': u'reload',
   u'when': None}]
 >>> uuid = result['signals'][0]['args'][0]
@@ -108,6 +108,6 @@ It is also possible to drop a teaser group onto a teaser block:
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result['signals'])
 [{u'args': [u'id-<GUID>',
-            u'http://localhost/++skin++cms/workingcopy/zope.user/island/feature/lead/id-<GUID>/@@contents'],
+            u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/lead/id-<GUID>/@@contents'],
   u'name': u'reload',
   u'when': None}]

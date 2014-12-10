@@ -120,6 +120,10 @@ class CenterPageSource(zeit.cms.content.contentsource.CMSContentSource):
 centerPageSource = CenterPageSource()
 
 
+class IBody(zeit.edit.interfaces.IArea):
+    """Container of the CenterPage that actually contains the children."""
+
+
 class IElement(zeit.edit.interfaces.IElement):
     """generic element, but CP-specific"""
 
