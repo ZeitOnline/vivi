@@ -133,10 +133,10 @@ class TeaserBlockLayoutSource(
         if context is None:
             return True
 
-        area = zeit.edit.interfaces.IArea(context)
+        area = zeit.content.cp.interfaces.IArea(context)
         region = IRegion(context)
         areas = [area.__name__, region.__name__]
-        if zeit.edit.interfaces.IArea.providedBy(area):
+        if zeit.content.cp.interfaces.IArea.providedBy(area):
             try:
                 position = area.keys().index(context.__name__)
             except ValueError:  # Not in list
