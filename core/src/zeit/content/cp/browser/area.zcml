@@ -111,6 +111,17 @@
       />
   </configure>
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditorContentViewletManager"
+    name="landing-zone"
+    template="layout.area.landing.pt"
+    permission="zeit.EditContent"
+    weight="-10"
+    />
+
   <configure package="zeit.edit.browser">
     <browser:viewlet
       for="zeit.content.cp.interfaces.IElement"

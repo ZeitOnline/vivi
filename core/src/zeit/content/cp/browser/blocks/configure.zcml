@@ -48,6 +48,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:view
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop"
+    class="..landing.TeaserBlockLandingZone"
+    permission="zeit.EditContent"
+    />
+
   <include file="av.zcml" />
   <include file="teaser.zcml" />
   <include file="automatic.zcml" />
