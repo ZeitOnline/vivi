@@ -147,7 +147,13 @@ zeit.cms.log_error = function(err) {
     if (isUndefinedOrNull(real_error.message)) {
         real_error = err;
     }
-    console.exception(real_error);
+    if (real_error.errors) {
+        forEach(real_error.errors, function(error) {
+            console.exception(error);
+        });
+    } else {
+        console.exception(real_error);
+    }
     return err;
 };
 
