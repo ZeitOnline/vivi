@@ -157,9 +157,7 @@ zeit.content.cp.teaser.Drag = zeit.edit.context.ContentActionBase.extend({
         return d;
     };
 
-    var ident = MochiKit.Signal.connect(
-        window, 'script-loading-finished', function() {
-        MochiKit.Signal.disconnect(ident);
+    MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
         if (! zeit.cms.in_cp_editor()) {
             return;
         }
