@@ -66,12 +66,19 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle')
+    _width = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'width')
     teaserText = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'teaserText')
     background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'background_color')
 
     type = 'area'
+
+    @property
+    def is_teaserbar(self):
+        # backward compatibility for teaser bar
+        return self.xml.get('area') == 'teaser-row-full'
 
     # XXX fixme
     @property
@@ -83,9 +90,26 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
         pass  # XXX fixme
 
     @property
+    def width(self):
+        # XXX since we hard code the default values for backward compatibility,
+        # this also makes it mandatory to have according rules in the width
+        # source definition
+        if self.is_teaserbar:
+            return '1/1'
+        if self.__name__ == 'informatives':
+            return '1/3'
+        if self.__name__ == 'lead':
+            return '2/3'
+        return self._width or '1/1'
+
+    @width.setter
+    def width(self, value):
+        self._width = value
+
+    @property
     def __name__(self):
         name = self.xml.get('area')
-        if name == 'teaser-row-full':  # XXX backward compatibility for teaser bar
+        if self.is_teaserbar:
             return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
         return name
 
@@ -93,8 +117,7 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
     def __name__(self, name):
         if name != self.__name__:
             self._p_changed = True
-            area = self.xml.get('area')
-            if area == 'teaser-row-full':
+            if self.is_teaserbar:
                 self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
             self.xml.set('area', name)
 

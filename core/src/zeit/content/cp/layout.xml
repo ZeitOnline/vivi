@@ -4,79 +4,77 @@
         id="leader"
         title="Großer Teaser mit Bild und Teaserliste"
         image_pattern="450x200"
-        areas="lead-1 lead"
+        areas="1/1 1/2 1/3 2/3"
         default="true"
         />
     <layout
         id="leader-two-columns"
         title="Großer Teaser mit zwei Spalten"
         image_pattern="450x200"
-        areas="lead-1"
+        areas="1/1 1/2 1/3 2/3"
         columns="2"
         />
     <layout
         id="leader-upright"
         title="Großer Teaser mit Hochkant-Bild und Teaserliste"
         image_pattern="450x200"
-        areas="lead-1"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="archive-print-volume"
         title="Ausgabenteaser im Printarchiv"
-        areas="lead"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="archive-print-year"
         title="Jahresteaser im Printarchiv"
-        areas="lead"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="buttons"
         title="Kleiner Teaser mit kleinem Bild und Teaserliste"
         image_pattern="140x140"
-        areas="lead"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="two-side-by-side"
         title="Zwei kleine Teaser mit Bild"
         image_pattern="140x140"
-        areas="informatives"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="large"
         title="Großer Teaser mit Bild und Teaserliste"
         image_pattern="140x140"
-        areas="informatives"
-        default="true"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="ressort"
         title="Ressort Teaser mit Teaserliste"
         image_pattern="140x140"
-        areas="teaser-mosaic"
-        default="true"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="short"
         title="Kurzteaser"
-        areas="teaser-mosaic informatives"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="date"
         title="Datumsteaser"
-        areas="teaser-mosaic informatives"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="parquet-regular"
         title="Parkett standard"
         image_positions="true"
-        areas="teaser-mosaic"
+        areas="1/1 1/2 1/3 2/3"
         />
     <layout
         id="parquet-large"
         title="Parkett großer Aufmacher"
         image_positions="true"
         image_pattern="540x304"
-        areas="teaser-mosaic"
+        areas="1/1 1/2 1/3 2/3"
         />
 </layouts>

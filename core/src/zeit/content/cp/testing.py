@@ -20,6 +20,7 @@ import zope.testing.renormalizing
 product_config = """
 <product-config zeit.content.cp>
     block-layout-source file://%s
+    area-width-source file://%s
     bar-layout-source file://%s
     cp-extra-url file://%s
     cp-feed-max-items 200
@@ -34,6 +35,7 @@ product_config = """
 </product-config>
 """ % (
     pkg_resources.resource_filename(__name__, 'layout.xml'),
+    pkg_resources.resource_filename(__name__, 'widths.xml'),
     pkg_resources.resource_filename(__name__, 'bar-layout.xml'),
     pkg_resources.resource_filename(__name__, 'cpextra.xml'),
     pkg_resources.resource_filename(__name__, 'cp-types.xml'),

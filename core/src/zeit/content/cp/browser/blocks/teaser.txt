@@ -296,41 +296,6 @@ When the image is not an image group, it will be just used:
       ...
 
 
-Available layout
-~~~~~~~~~~~~~~~~
-
-The avaliable layouts are different for the position of the teaser block in the
-lead area. The first teaser block has all layouts avaliable for selection,
-all others only the one with the small image.
-
-We need to add a second teaser block:
-
->>> browser.open(contents_url)
->>> browser.open(
-...  'lead/@@landing-zone-drop'
-...  '?uniqueId=http://xml.zeit.de/testcontent'
-...  '&order=top')
->>> browser.open(contents_url)
-
->>> browser.getLink('Edit', index=2).click()
->>> browser.open('edit-properties')
->>> browser.getLink('Großer Teaser mit zwei Spalten')
-<Link...>
->>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
-<Link...>
-
->>> browser.open(contents_url)
->>> browser.getLink('Edit', index=4).click()
->>> browser.open('edit-properties')
->>> browser.getLink('Kleiner Teaser mit kleinem Bild und Teaserliste')
-<Link...>
->>> browser.getLink('Großer Teaser mit zwei Spalten')
-Traceback (most recent call last):
-  ...
-LinkNotFoundError
-
-
-
 .. [#fill-dav-with-content] Create a few test objects to play with:
 
     >>> import zeit.content.cp.browser.blocks.testing

@@ -135,7 +135,7 @@ After calling the factory a corresponding XML node has been created:
 
 >>> print lxml.etree.tostring(informatives.xml, pretty_print=True),
 <region ... area="informatives">
-  <container cp:type="teaser" module="large" ... cp:__name__="..."/>
+  <container cp:type="teaser" module="leader" ... cp:__name__="..."/>
 </region>
 
 

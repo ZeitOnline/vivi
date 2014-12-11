@@ -141,11 +141,22 @@ def hex_literal(value):
         return True
 
 
+class AreaWidthSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'area-width-source'
+    attribute = 'id'
+
+
 class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     layout = zope.schema.Choice(
         title=_("Layout"),
         source=zeit.content.cp.layout.TeaserBarLayoutSource())
+
+    width = zope.schema.Choice(
+        title=_("Width"),
+        source=AreaWidthSource())
 
     supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
