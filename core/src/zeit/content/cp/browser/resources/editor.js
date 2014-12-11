@@ -47,14 +47,56 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 });
 
 
+zeit.content.cp.ContainerSorter = gocept.Class.extend({
+
+    construct: function(container_type) {
+        var self = this;
+        self.sorters = [];
+        self.container_type = container_type;
+        self.selector = '.type-' + container_type;
+        self.__name__ = ('zeit.content.cp.ContainerSorter('
+            + self.container_type + ')');
+        new zeit.edit.context.Editor(self);
+    },
+
+    connect: function() {
+        var self = this;
+        jQuery(self.selector).each(function() {
+            var sorter = new zeit.edit.sortable.BlockSorter(
+                this.id, '#' + this.id + ' > div.block-inner');
+            sorter.__name__ = ('zeit.content.cp.BlockSorter('
+                + self.container_type + ', id=' + this.id + ')');
+            self.sorters.push(sorter);
+        });
+    },
+
+    disconnect: function() {
+        var self = this;
+        while (self.sorters.length) {
+            var sorter = self.sorters.pop();
+            log("Destroying sorter " + sorter.container);
+            sorter.__context__.deactivate();
+            sorter.__context__.destroy();
+        }
+    }
+
+});
+
+
+
 MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     if (! zeit.cms.in_cp_editor()) {
         return;
     }
-    zeit.content.cp.lead_sorter = new zeit.edit.sortable.BlockSorter(
-        'lead', '#lead > div.block-inner');
-    zeit.content.cp.informatives_sorter = new zeit.edit.sortable.BlockSorter(
-        'informatives', '#informatives > div.block-inner');
+
+    zeit.content.cp.body_sorter = new zeit.edit.sortable.BlockSorter(
+        'body', '#body > div.block-inner');
+    zeit.content.cp.body_sorter.__name__ = (
+        'zeit.content.cp.ContainerSorter(body)');
+
+    zeit.content.cp.region_sorter = new zeit.content.cp.ContainerSorter(
+        'region');
+    zeit.content.cp.area_sorter = new zeit.content.cp.ContainerSorter('area');
 });
 
 

@@ -256,56 +256,17 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
 class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
-    @unittest.skip('XXX Drag&Drop fails for unknown reasons.')
-    def test_blocks_in_mosaic(self):
+    def test_sort_areas_inside_region(self):
         self.open_centerpage()
         s = self.selenium
 
-        s.click('link=*Add teaser bar*')
-
-        path = css_path('.block.type-area .block.type-teaser')
-
-        teaser_module = self.get_module('teaser-mosaic', 'List of teasers')
-
-        for nr in range(4):
-            s.waitForElementPresent('css=a.choose-block')
-            s.click('css=a.choose-block')
-            s.waitForElementPresent(teaser_module)
-            s.dragAndDropToObject(teaser_module, 'css=a.choose-block')
-            s.waitForXpathCount(path, nr + 1)
-
-        path = 'xpath=' + path
-        # Get the ids of the blocks
-        block1 = s.getAttribute(path + '[1]@id')
-        block2 = s.getAttribute(path + '[2]@id')
-        block3 = s.getAttribute(path + '[3]@id')
-        block4 = s.getAttribute(path + '[4]@id')
-
-        # All blocks have an equal width
-        width = s.getElementWidth(block1)
-
-        # Drop block3 over block1
-        delta_x = width * -2.75
-        s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % block3,
-                      '%s,0' % delta_x)
-
-        # 1 2 3 4 ->  3 1 2 4
-        s.waitForOrdered(block3, block1)
-        s.verifyOrdered(block1, block2)
-        s.verifyOrdered(block2, block4)
-
-    @unittest.skip("Areas are not sortable at the moment, reactivate later")
-    def test_mosaic(self):
-        self.open_centerpage()
-        s = self.selenium
         # Create three teaser bars
-
         path = css_path('div.block.type-area')
-        s.click('link=*Add teaser bar*')
+        s.click('link=*Add area*')
         s.waitForXpathCount(path, 3)
-        s.click('link=*Add teaser bar*')
+        s.click('link=*Add area*')
         s.waitForXpathCount(path, 4)
-        s.click('link=*Add teaser bar*')
+        s.click('link=*Add area*')
         s.waitForXpathCount(path, 5)
 
         path = 'xpath=' + path
@@ -352,7 +313,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyAttribute(path + '[4]@id', bar2)
         s.verifyAttribute(path + '[5]@id', bar1)
 
-    def test_lead(self):
+    def test_sort_blocks_inside_area(self):
         s = self.selenium
 
         self.create_content_and_fill_clipboard()
@@ -382,21 +343,6 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyAttribute(
             'css=.block.type-teaser + .landing-zone + .block.type-teaser@id',
             block1)
-
-    def test_informatives(self):
-        s = self.selenium
-        self.open_centerpage()
-        # There are two modules in the informatives anyway, don't create any
-        block1 = s.getAttribute('css=.block.type-cpextra@id')
-        block2 = s.getAttribute('css=.block.type-cpextra + * + .block@id')
-        s.assertElementPresent('css=#%s + * + #%s' % (block1, block2))
-
-        height = s.getElementHeight(block2)
-        delta_y = height * 1.75
-
-        s.dragAndDrop('css=#%s > .block-inner > .edit > .dragger' % block1,
-                      '0,%s' % delta_y)
-        s.waitForElementPresent('css=#%s + * + #%s' % (block2, block1))
 
 
 class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
