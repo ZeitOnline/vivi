@@ -39,7 +39,7 @@ zeit.content.cp.BlockHover = gocept.Class.extend({
     }
 });
 
-MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     if (! zeit.cms.in_cp_editor()) {
         return;
     }
@@ -83,8 +83,7 @@ zeit.content.cp.ContainerSorter = gocept.Class.extend({
 });
 
 
-
-MochiKit.Signal.connect(window, 'script-loading-finished', function() {
+MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     if (! zeit.cms.in_cp_editor()) {
         return;
     }
