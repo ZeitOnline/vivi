@@ -65,6 +65,9 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     def __iter__(self):
         return iter(self.body)
 
+    def __contains__(self, key):
+        return self.body.__contains__(key)
+
     _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])
     _type_dav = zeit.cms.content.dav.DAVProperty(

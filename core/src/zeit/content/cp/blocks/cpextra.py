@@ -31,6 +31,7 @@ zeit.edit.block.register_element_factory(
     zeit.content.cp.interfaces.IArea, 'cpextra', _('CP extra'), module='')
 
 
+# This method only applies to "old" (lead/informatives/mosaic) centerpages
 @grokcore.component.subscribe(
     zeit.content.cp.interfaces.ICenterPage,
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
@@ -39,6 +40,9 @@ def add_blocks_to_newly_created_cp(context, event):
     # We need to check if this is the first add or not.
     if zeit.cms.interfaces.ICMSContent(context.uniqueId, None) is not None:
         # It's already in the repository, do nothing
+        return
+    if 'informatives' not in context:
+        # It's a new-style centerpage, do nothing
         return
     mostread = zope.component.getAdapter(
         context['informatives'],
