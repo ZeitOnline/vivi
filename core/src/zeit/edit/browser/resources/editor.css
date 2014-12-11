@@ -186,7 +186,7 @@
   margin-top: 0em;
 }
 
-.editable-area > .landing-zone {
+.editable-area > .landing-zone, .editable-area > .block-inner > .landing-zone {
   margin: 0.25em 1em;
   height: 1em;
 }

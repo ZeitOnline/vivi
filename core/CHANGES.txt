@@ -12,6 +12,9 @@ Changes
 - Extend API of `zeit.edit.browser.LandingZone` to insert explicitly at the top
   or after a given UUID. (VIV-621)
 
+- Extend CSS selector for landing areas to style landing zones of
+  `zeit.content.cp.IRegion` and `zeit.content.cp.IArea`. (VIV-614)
+
 
 2.5.0 (2014-11-14)
 ------------------
