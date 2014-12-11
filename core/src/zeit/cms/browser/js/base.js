@@ -148,7 +148,6 @@ zeit.cms.log_error = function(err) {
         real_error = err;
     }
     console.exception(real_error);
-    console.error(real_error.stack);
     return err;
 };
 
