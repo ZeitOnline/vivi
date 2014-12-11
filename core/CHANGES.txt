@@ -4,7 +4,7 @@ zeit.locales CHANGES
 2.0.28 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Übersetzungen aktualisiert
 
 
 2.0.27 (2014-11-14)
