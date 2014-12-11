@@ -109,13 +109,13 @@ class AreaFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
-@grok.adapter(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.cp.interfaces.IElement)
 @grok.implementer(zeit.content.cp.interfaces.IRegion)
 def element_to_region(context):
     return zeit.content.cp.interfaces.IRegion(context.__parent__, None)
 
 
-@grok.adapter(zeit.edit.interfaces.IElement)
+@grok.adapter(zeit.content.cp.interfaces.IElement)
 @grok.implementer(zeit.content.cp.interfaces.IArea)
 def element_to_area(context):
     return zeit.content.cp.interfaces.IArea(context.__parent__, None)

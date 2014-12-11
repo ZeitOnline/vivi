@@ -32,7 +32,7 @@ class ValidationError(zope.schema.ValidationError):
 
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
-                  zeit.edit.interfaces.IArea):
+                  zeit.edit.interfaces.IContainer):
     """A relaunch 09 centerpage."""
 
     type = zope.schema.Choice(
