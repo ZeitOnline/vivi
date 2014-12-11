@@ -82,7 +82,7 @@ class AutomaticFields(object):
         super(AutomaticFields, self).__init__(*args, **kw)
 
         if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.content.cp.automatic'):
+                'zeit.content.cp.automatic') and 'lead' in self.context:
             self.form_fields = FormBase.form_fields + self.automatic_fields
             self.field_groups = (
                 self.automatic_group,) + FormBase.field_groups
