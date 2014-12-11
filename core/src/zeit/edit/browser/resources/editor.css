@@ -90,12 +90,12 @@
 .tab-content > .context-views > ul > li:first-child > a {
   border-left: none;
   -moz-border-radius-topleft: 0px;
-  
+
 }
 
 #cp-search > #search_form {
   padding: 0.7em 0.5em;
-} 
+}
 
 #cp-undo {
   overflow: auto;
@@ -134,7 +134,7 @@
   left: 1em;
   right: 1em;
 }
- 
+
 #cp-forms > .lightbox-header {
   top: 1em;
   left: 1em;
@@ -165,7 +165,7 @@
 
 .block > .block-inner {
   border: 1px solid #bbb;
-  overflow: hidden; 
+  overflow: hidden;
   padding: 0 0;
 }
 
@@ -240,7 +240,7 @@
 }
 
 form[action$="edit.form.assets"] .objectsequencewidget ul {
-  margin:1em;    
+  margin:1em;
 }
 
 
@@ -587,7 +587,7 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   text-transform: uppercase;
 }
 
-/* For editor-ng only, don't want to overwrite other required-spans:  */ 
+/* For editor-ng only, don't want to overwrite other required-spans:  */
 .article-editor-inner .field span.required {
   display:block;
   float:right;
@@ -710,7 +710,7 @@ legend {
   background: url("/fanstatic/zeit.cms/icons/wf_bb_einchecken.png") no-repeat 5px 2px, -moz-linear-gradient(center top , #F1F4F9 50%, #DEE1E6 94%) !important;
   font-size: 14px !important;
   padding-left: 51px;
-  
+
 }
 
 #checkin-publish {
