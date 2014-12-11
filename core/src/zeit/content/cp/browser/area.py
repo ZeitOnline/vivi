@@ -22,8 +22,6 @@ class EditProperties(zeit.content.cp.browser.blocks.teaser.EditLayout):
     layout_prefix = 'teaserbar'  # XXX should be area
     layouts = ()
 
-    form_fields = zope.formlib.form.Fields()  # XXX implement me
-
 
 class EditCommon(zeit.edit.browser.view.EditBox):
 
