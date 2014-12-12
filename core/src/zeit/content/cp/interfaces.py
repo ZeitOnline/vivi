@@ -283,7 +283,7 @@ class ICPFeed(zope.interface.Interface):
     items = zope.interface.Attribute("tuple of feed items")
 
 
-class IBlock(zeit.edit.interfaces.IBlock, IElement):
+class IBlock(IElement, zeit.edit.interfaces.IBlock):
 
     title = zope.schema.TextLine(
         title=_("Title"),

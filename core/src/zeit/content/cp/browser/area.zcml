@@ -187,18 +187,16 @@
     weight="5"
     />
 
-  <configure package="zeit.edit.browser">
-    <browser:viewlet
-      for="zeit.content.cp.interfaces.IElement"
-      layer="zeit.cms.browser.interfaces.ICMSLayer"
-      view="zope.interface.Interface"
-      manager="zeit.edit.interfaces.IEditBarViewletManager"
-      name="delete"
-      template="layout.block.delete.pt"
-      permission="zeit.EditContent"
-      weight="10"
-      />
-  </configure>
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="delete"
+    template="layout.block.delete.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
 
   <configure package="zeit.edit.browser">
     <browser:viewlet

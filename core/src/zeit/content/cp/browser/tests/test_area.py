@@ -1,3 +1,4 @@
+# coding: utf-8
 import lxml.cssselect
 import z3c.etestbrowser.testing
 import zeit.cms.testing
@@ -23,8 +24,10 @@ class ElementTestHelper(object):
     def test_delete_element_removes_element(self):
         s = self.selenium
         s.assertCssCount('css=.type-{}'.format(self.name), 2)
+        s.chooseOkOnNextConfirmation()
         s.click('css=.type-{} > .block-inner > .edit-bar > .delete-link'
                 .format(self.name))
+        s.waitForConfirmation(u'Wirklich löschen?')
         s.waitForCssCount('css=.type-{}'.format(self.name), 1)
 
 
