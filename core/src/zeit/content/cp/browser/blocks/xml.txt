@@ -28,7 +28,7 @@ Editing the XML
 You can edit the XML content by clicking the Edit button:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=3).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.open('edit-properties')
 >>> xml = browser.getControl(name="form.xml").value
 >>> print xml
@@ -114,7 +114,7 @@ These calls should just run through without raising HTTP 500.
 
     >>> def update_xml(m, r):
     ...     browser.open(contents_url)
-    ...     browser.getLink('Edit', index=3).click()
+    ...     browser.getLink('Edit', index=2).click()
     ...     browser.open('edit-properties')
     ...     xml = browser.getControl(name="form.xml").value
     ...     browser.getControl(name="form.xml").value = xml.replace(m, r)

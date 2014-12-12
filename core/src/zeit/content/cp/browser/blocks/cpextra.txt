@@ -23,7 +23,7 @@ Toplits are automatically created when the CP is created.
 
 CP extras can be edited:
 
->>> browser.getLink('Edit', index=3).click()
+>>> browser.getLink('Edit', index=2).click()
 >>> browser.getControl('CP Extra Id').displayOptions
 ['Meistgelesen', 'Meistkommentiert', ...
 >>> browser.getControl('CP Extra Id').displayValue

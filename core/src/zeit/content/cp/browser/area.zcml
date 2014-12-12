@@ -144,7 +144,7 @@
   </configure>
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IElement"
+    for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
