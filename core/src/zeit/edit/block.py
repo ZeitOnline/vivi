@@ -33,8 +33,10 @@ class Element(zope.container.contained.Contained,
         if not zeit.edit.interfaces.IElement.providedBy(other):
             return False
         differences = []
+        self_xml = zope.security.proxy.getObject(self.xml)
+        other_xml = zope.security.proxy.getObject(other.xml)
         xml_compare(
-            self.xml, other.xml, reporter=differences.append,
+            self_xml, other_xml, reporter=differences.append,
             strip_whitespaces=True)
         return not differences
 
