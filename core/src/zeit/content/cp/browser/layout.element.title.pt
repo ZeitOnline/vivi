@@ -1,0 +1,1 @@
+<span class="title" tal:content="context/title" />

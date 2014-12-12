@@ -11,4 +11,5 @@ class EditProperties(zeit.edit.browser.view.EditBox):
 
 class EditCommon(zeit.edit.browser.view.EditBox):
 
-    form_fields = zope.formlib.form.Fields()  # XXX implement me
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.cp.interfaces.IRegion).select('title', '__name__')

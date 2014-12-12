@@ -96,10 +96,13 @@
 
   <class class=".area.Region">
     <require
-      interface="zeit.edit.interfaces.IReadContainer"
+      interface="zeit.content.cp.interfaces.IReadRegion"
       permission="zope.View" />
     <require
-      interface="zeit.edit.interfaces.IWriteContainer"
+      set_schema="zeit.content.cp.interfaces.IReadRegion"
+      permission="zope.View" />
+    <require
+      interface="zeit.content.cp.interfaces.IWriteRegion"
       permission="zeit.EditContent"
       />
   </class>

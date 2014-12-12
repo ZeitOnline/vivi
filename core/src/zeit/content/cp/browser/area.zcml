@@ -165,6 +165,28 @@
     weight="1"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="title"
+    template="layout.element.title.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="title"
+    template="layout.element.title.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
   <configure package="zeit.edit.browser">
     <browser:viewlet
       for="zeit.content.cp.interfaces.IElement"

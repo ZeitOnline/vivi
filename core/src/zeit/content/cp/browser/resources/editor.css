@@ -38,6 +38,11 @@
   width: auto;
 }
 
+.edit-bar > .title {
+  float: left;
+  font-size: inherit;
+}
+
 .edit-bar > .rss-refresh-link {
   background-image: url('reload.png');
 }

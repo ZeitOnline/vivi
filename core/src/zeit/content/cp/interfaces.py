@@ -128,7 +128,26 @@ class IElement(zeit.edit.interfaces.IElement):
     """generic element, but CP-specific"""
 
 
-class IRegion(zeit.edit.interfaces.IContainer, IElement):
+class IReadRegion(zeit.edit.interfaces.IReadContainer):
+
+    title = zope.schema.TextLine(
+        title=_("Title"),
+        required=False)
+
+    __name__ = zope.schema.TextLine(
+        title=_("Name"),
+        required=True)
+
+
+class IWriteRegion(zeit.edit.interfaces.IWriteContainer):
+    pass
+
+
+class IRegion(
+        IReadRegion,
+        IWriteRegion,
+        zeit.edit.interfaces.IContainer,
+        IElement):
     """Abstract layer above IArea."""
 
 
@@ -162,6 +181,14 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
         required=False)
+
+    title = zope.schema.TextLine(
+        title=_("Title"),
+        required=False)
+
+    __name__ = zope.schema.TextLine(
+        title=_("Name"),
+        required=True)
 
     teaserText = zope.schema.Text(
         title=_("Teaser text"),

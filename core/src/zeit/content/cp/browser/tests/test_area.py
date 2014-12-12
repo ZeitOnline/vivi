@@ -1,6 +1,8 @@
+import lxml.cssselect
+import z3c.etestbrowser.testing
 import zeit.cms.testing
-import zeit.content.cp.testing
 import zeit.content.cp.browser.testing
+import zeit.content.cp.testing
 
 
 class ElementTestHelper(object):
@@ -40,19 +42,55 @@ class AreaTest(
     name = 'area'
 
 
-class AreaBrowserTest(zeit.cms.testing.BrowserTestCase):
+class ElementBrowserTestHelper(object):
 
-    layer = zeit.content.cp.testing.layer
+    name = NotImplemented
 
     def setUp(self):
-        super(AreaBrowserTest, self).setUp()
+        super(ElementBrowserTestHelper, self).setUp()
+        self.browser = z3c.etestbrowser.testing.ExtendedTestBrowser()
+        self.browser.addHeader('Authorization', 'Basic user:userpw')
+        self.browser.xml_strict = True
         zeit.content.cp.browser.testing.create_cp(self.browser)
         self.browser.open('contents')
         self.content_url = self.browser.url
 
+    def get_edit_link(self, index=0):
+        self.browser.open(self.content_url)
+        return lxml.cssselect.CSSSelector(
+            '.type-{} .edit-bar > .common-link'.format(
+                self.name))(self.browser.etree)[index].get('href')
+
+    def test_can_set_title(self):
+        b = self.browser
+        b.open(self.get_edit_link())
+        b.getControl('Title').value = 'FooBarBaz'
+        b.getControl('Apply').click()
+
+        b.open(self.get_edit_link())
+        self.assertEqual('FooBarBaz', b.getControl('Title').value)
+
+
+class RegionBrowserTest(
+        ElementBrowserTestHelper,
+        zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.cp.testing.layer
+
+    name = 'region'
+
+
+class AreaBrowserTest(
+        ElementBrowserTestHelper,
+        zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.cp.testing.layer
+
+    name = 'area'
+
     def test_can_set_layout_for_area(self):
         b = self.browser
-        b.getLink('Add area').click()
+        b.getLink('Add {}'.format(self.name)).click()
         edit_url = (
             'http://localhost/++skin++cms/workingcopy/zope.user/island/'
             'body/feature/{}/edit-properties'.format('lead'))

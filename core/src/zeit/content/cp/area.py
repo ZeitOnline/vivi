@@ -24,6 +24,9 @@ class Region(zeit.edit.container.Base):
 
     type = 'region'
 
+    title = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'title')
+
     @property
     def __name__(self):
         return self.xml.get('area')
@@ -68,6 +71,8 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
         '.', 'module')
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle')
+    title = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'title')
     _width = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'width')
     teaserText = zeit.cms.content.property.ObjectPathAttributeProperty(
