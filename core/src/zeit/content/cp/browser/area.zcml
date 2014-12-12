@@ -187,6 +187,17 @@
     weight="5"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="width"
+    template="layout.area.width.pt"
+    permission="zeit.EditContent"
+    weight="6"
+    />
+
   <configure package="zeit.edit.browser">
     <browser:viewlet
       for="zeit.content.cp.interfaces.IElement"
