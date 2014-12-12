@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
+import copy
 import lxml.objectify
 import mock
 import zeit.cms.interfaces
@@ -40,9 +41,7 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
 
     def test_resolving_block_ids_uses_traversal(self):
         block = zeit.cms.interfaces.ICMSContent(self.block.uniqueId)
-        # We can't compare instances, since Container creates a new instance on
-        # each getitem.
-        self.assertEqual(block.xml, self.block.xml)
+        self.assertEqual(block, self.block)
 
     def test_block_without_name_uses_index(self):
         del self.block.xml.attrib['{http://namespaces.zeit.de/CMS/cp}__name__']
@@ -51,3 +50,23 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
             self.assertEqual(
                 'http://block.vivi.zeit.de/http://xml.zeit.de'
                 '/testcontent#body/0', self.block.uniqueId)
+
+    def test_block_equality_compares_xml(self):
+        xml1 = lxml.objectify.fromstring("""
+        <container
+          xmlns:cp="http://namespaces.zeit.de/CMS/cp"
+          cp:__name__="body">
+            <block cp:type="block" cp:__name__="foo"/>
+        </container>""")
+        xml2 = lxml.objectify.fromstring("""
+        <container
+          xmlns:cp="http://namespaces.zeit.de/CMS/cp"
+          cp:__name__="body">
+            <block cp:type="block" cp:__name__="foo"/>
+        </container>""")
+        # CAUTION: xml1 == xml2 does not do what you think it does,
+        # thus block equality uses a proper in-depth xml comparison:
+        self.assertNotEqual(xml1, xml2)
+        block1 = zeit.edit.tests.fixture.Block(None, xml1)
+        block2 = zeit.edit.tests.fixture.Block(None, xml2)
+        self.assertEqual(block1, block2)

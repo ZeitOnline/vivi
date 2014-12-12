@@ -34,6 +34,7 @@ setup(
         'persistent',
         'setuptools',
         'transaction',
+        'xml_compare',
         'zeit.cms>=2.15.0.dev0',
         'zeit.connector',
         'zeit.find>=2.2.dev.0',

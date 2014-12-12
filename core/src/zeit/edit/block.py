@@ -1,6 +1,7 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from xml_compare import xml_compare
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
@@ -31,7 +32,11 @@ class Element(zope.container.contained.Contained,
     def __eq__(self, other):
         if not zeit.edit.interfaces.IElement.providedBy(other):
             return False
-        return self.xml == other.xml
+        differences = []
+        xml_compare(
+            self.xml, other.xml, reporter=differences.append,
+            strip_whitespaces=True)
+        return not differences
 
     @property
     def __name__(self):
