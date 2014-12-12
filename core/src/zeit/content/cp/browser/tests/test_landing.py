@@ -35,6 +35,7 @@ class RelatedTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_created_relateds(self):
         self.request.form['uniqueId'] = 'http://xml.zeit.de/testcontent'
+        self.request.form['relateds'] = 'true'
         self.request.form['order'] = 'top'
         view = zope.component.getMultiAdapter(
             (self.cp['lead'], self.request), name='landing-zone-drop')
@@ -49,7 +50,6 @@ class RelatedTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_no_relateds(self):
         self.request.form['uniqueId'] = 'http://xml.zeit.de/testcontent'
-        self.request.form['relateds'] = 'false'
         self.request.form['order'] = 'top'
         view = zope.component.getMultiAdapter(
             (self.cp['lead'], self.request), name='landing-zone-drop')

@@ -18,7 +18,7 @@ class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):
     block_type = 'teaser'
     uniqueId = zeit.edit.browser.view.Form('uniqueId')
     relateds = zeit.edit.browser.view.Form(
-        'relateds', json=True, default=True)
+        'relateds', json=True, default=False)
 
     def initialize_block(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId, None)
