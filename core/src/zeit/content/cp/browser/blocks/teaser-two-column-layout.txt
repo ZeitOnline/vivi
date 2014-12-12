@@ -34,8 +34,7 @@ Create content, a teaser block and fill it with the created content:
 Switch to the two column layout:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=2).click()
->>> browser.open('edit-properties')
+>>> browser.getLink('Edit block properties', index=1).click()
 >>> browser.getLink('zwei Spalten').click()
 
 Open the sorter. There is a column-separator at the end. All teaseras are on

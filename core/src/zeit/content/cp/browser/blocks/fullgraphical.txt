@@ -49,8 +49,7 @@ Edit the quiz block, reference the newly added quiz and add both an image and
 a title to the teaser block:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=2).click()
->>> browser.open('edit-properties')
+>>> browser.getLink('Edit block properties', index=2).click()
 >>> browser.getControl('Link to').value = 'http://xml.zeit.de/my_quiz'
 >>> browser.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 >>> browser.getControl('Layout').value = ['148x84']
@@ -76,8 +75,7 @@ layout does not reflect in the image URL used for displaying the block: XXX
   </div>
   ...
 
->>> browser.getLink('Edit', index=2).click()
->>> browser.open('edit-properties')
+>>> browser.getLink('Edit block properties', index=2).click()
 >>> browser.getControl('Link to').value
 'http://xml.zeit.de/my_quiz'
 >>> browser.getControl('Image').value
@@ -104,8 +102,7 @@ We may omit the image and title without either the source nor the display of
 the fullgraphical block breaking:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=2).click()
->>> browser.open('edit-properties')
+>>> browser.getLink('Edit block properties', index=2).click()
 >>> browser.getControl('Image').value = ''
 >>> browser.getControl('Apply').click()
 
@@ -194,8 +191,7 @@ referenced content object exist, the directly referenced image takes
 precedence; similarly, again, for the title:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit', index=2).click()
->>> browser.open('edit-properties')
+>>> browser.getLink('Edit block properties', index=2).click()
 >>> browser.getControl('Image').value = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
 >>> browser.getControl('Apply').click()
 >>> browser.open('edit-common')

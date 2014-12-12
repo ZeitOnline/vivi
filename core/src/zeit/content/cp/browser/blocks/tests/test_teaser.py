@@ -51,7 +51,7 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
                '&order=top')
 
         b.open(contents_url)
-        b.getLink('Common', index=2).click()
+        b.getLink('Edit block common', index=2).click()
         form_url = b.url
 
         b.getControl('Publisher', index=0).value = 'foo'

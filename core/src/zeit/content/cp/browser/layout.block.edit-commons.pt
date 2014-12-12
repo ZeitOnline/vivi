@@ -1,4 +1,4 @@
-<a class="common-link lightbox-tab-data" title="Common"
+<a class="common-link lightbox-tab-data" title="Edit block common"
    tal:define="url context/@@absolute_url"
    tal:attributes="
    href string:${context/@@absolute_url}/edit-common;
@@ -8,5 +8,5 @@
    i18n:attributes="title"
    cms:cp-module="zeit.edit.TabbedLightBoxForm"
    cms:lightbox-in="cp-content">
-  <span class="action-title">Common</span>
+  <span class="action-title">Edit block common</span>
 </a>
