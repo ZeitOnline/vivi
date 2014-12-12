@@ -31,6 +31,15 @@ class EditCommon(zeit.edit.browser.view.EditBox):
     form_fields['background_color'].custom_widget = (
         zeit.cms.browser.widget.ColorpickerWidget)
 
+    def validate(self, action, data):
+        errors = super(EditCommon, self).validate(action, data)
+        try:
+            data['__context__'] = self.context
+            zeit.content.cp.interfaces.unique_name_invariant(data)
+        except Exception as e:
+            errors.append(e)
+        return errors
+
 
 class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
 

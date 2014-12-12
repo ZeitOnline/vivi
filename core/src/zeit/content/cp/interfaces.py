@@ -128,6 +128,28 @@ class IElement(zeit.edit.interfaces.IElement):
     """generic element, but CP-specific"""
 
 
+def unique_name_invariant(data):
+    """Bad hack, this invariant is called manually from form.
+
+    We must have access to the object in question, thus we enrich the given
+    data by __context__ manually inside `edit-common` for IRegion and IArea.
+    Since validations only get data that matches a form_field they have, we
+    must call the invariant manually by overwriting `validate`.
+
+    """
+    if not isinstance(data, dict):
+        return
+    context = data['__context__']
+    for name, element in context.__parent__.items():
+        if context == element:
+            continue
+        if data['__name__'] == name:
+            raise ValidationError(
+                _("Given name {name} is not unique inside parent {parent}."
+                  .format(name=data['__name__'],
+                          parent=context.__parent__.__name__)))
+
+
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
 
     title = zope.schema.TextLine(
@@ -149,6 +171,8 @@ class IRegion(
         zeit.edit.interfaces.IContainer,
         IElement):
     """Abstract layer above IArea."""
+
+    zope.interface.invariant(unique_name_invariant)
 
 
 def hex_literal(value):
@@ -208,6 +232,8 @@ class IWriteArea(zeit.edit.interfaces.IWriteContainer):
 # Must split read / write for security declarations for IArea.
 class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
     """An area contains blocks."""
+
+    zope.interface.invariant(unique_name_invariant)
 
 
 class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):

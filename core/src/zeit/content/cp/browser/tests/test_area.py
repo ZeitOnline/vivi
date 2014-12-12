@@ -70,6 +70,33 @@ class ElementBrowserTestHelper(object):
         b.open(self.get_edit_link())
         self.assertEqual('FooBarBaz', b.getControl('Title').value)
 
+    def test_can_set_name(self):
+        b = self.browser
+        b.open(self.get_edit_link())
+        b.getControl('Name').value = 'FooBarBaz'
+        b.getControl('Apply').click()
+
+        b.open(self.get_edit_link())
+        self.assertEqual('FooBarBaz', b.getControl('Name').value)
+
+    def test_cannot_use_the_same_name_multiple_times(self):
+        b = self.browser
+        b.getLink('Add {}'.format(self.name)).click()
+        b.open(self.content_url)
+        b.getLink('Add {}'.format(self.name)).click()
+
+        b.open(self.get_edit_link(index=0))
+        b.getControl('Name').value = 'FooBarBaz'
+        b.getControl('Apply').click()
+
+        b.open(self.get_edit_link(index=1))
+        b.getControl('Name').value = 'FooBarBaz'
+        b.handleErrors = False
+        b.getControl('Apply').click()
+
+        self.assertIn(
+            'Given name FooBarBaz is not unique inside parent', b.contents)
+
 
 class RegionBrowserTest(
         ElementBrowserTestHelper,
