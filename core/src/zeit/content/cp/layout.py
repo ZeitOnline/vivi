@@ -27,14 +27,11 @@ class ITeaserBlockLayout(zope.interface.Interface):
         title=u"True if this is the default for an area")
 
 
-class ITeaserBarLayout(zope.interface.Interface):
-    """Layout of a TeaserBar."""
+class IAreaLayout(zope.interface.Interface):
+    """Layout of an Area."""
 
     id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
     title = zope.schema.TextLine(title=u'Human readable title.')
-
-    blocks = zope.schema.Int(
-        title=u'The number of blocks allowed by this layout.')
 
 
 class BlockLayout(object):
@@ -56,28 +53,23 @@ class BlockLayout(object):
             other, BlockLayout) and self.id == other.id
 
 
-MAX_TEASER_BAR_BLOCKS = 4
+class AreaLayout(object):
 
+    zope.interface.implements(IAreaLayout)
 
-class BarLayout(object):
-
-    zope.interface.implements(ITeaserBarLayout)
-
-    def __init__(self, id, title, blocks):
+    def __init__(self, id, title):
         self.id = id
         self.title = title
-        self.blocks = blocks
 
     def __eq__(self, other):
         return zope.security.proxy.isinstance(
-            other, BarLayout) and self.id == other.id
+            other, AreaLayout) and self.id == other.id
 
 
 # XXX We need to hard-code this, because at import-time, when the default value
 # is set on the interface, there's no product config yet, so we cannot use
-# get_bar_layout().
-DEFAULT_BAR_LAYOUT = BarLayout(
-    'normal', 'Ressort Teaser mit Teaserliste', MAX_TEASER_BAR_BLOCKS)
+# get_area_layout().
+DEFAULT_AREA_LAYOUT = AreaLayout('normal', 'Ressort Teaser mit Teaserliste')
 
 
 class LayoutSourceBase(object):
@@ -139,22 +131,21 @@ class AreaLayoutSource(
         LayoutSourceBase, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
-    config_url = 'bar-layout-source'
+    config_url = 'bar-layout-source'  # BBB
     attribute = 'id'
 
     def getValues(self, context):
         tree = self._get_tree()
-        result = [DEFAULT_BAR_LAYOUT]
+        result = [DEFAULT_AREA_LAYOUT]
         for node in tree.iterchildren('*'):
             if not self.isAvailable(node, context):
                 continue
-            result.append(BarLayout(
+            result.append(AreaLayout(
                 node.get(self.attribute),
-                self._get_title_for(node),
-                int(node.get('blocks', MAX_TEASER_BAR_BLOCKS))))
+                self._get_title_for(node)))
         return result
 
-TEASERBAR_LAYOUTS = AreaLayoutSource()
+AREA_LAYOUTS = AreaLayoutSource()
 
 
 def get_layout(id):
@@ -163,7 +154,7 @@ def get_layout(id):
             return layout
 
 
-def get_bar_layout(id):
-    for layout in list(TEASERBAR_LAYOUTS(None)):
+def get_area_layout(id):
+    for layout in list(AREA_LAYOUTS(None)):
         if layout.id == id:
             return layout

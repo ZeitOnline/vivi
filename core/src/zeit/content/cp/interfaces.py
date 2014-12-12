@@ -2,7 +2,7 @@
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
-from zeit.content.cp.layout import ITeaserBlockLayout, ITeaserBarLayout
+from zeit.content.cp.layout import ITeaserBlockLayout, IAreaLayout
 import urlparse
 import zc.form.field
 import zeit.cms.content.contentsource
@@ -153,7 +153,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     layout = zope.schema.Choice(
         title=_("Layout"),
         source=zeit.content.cp.layout.AreaLayoutSource(),
-        default=zeit.content.cp.layout.DEFAULT_BAR_LAYOUT)
+        default=zeit.content.cp.layout.DEFAULT_AREA_LAYOUT)
 
     width = zope.schema.Choice(
         title=_("Width"),
@@ -178,7 +178,7 @@ class IWriteArea(zeit.edit.interfaces.IWriteContainer):
     pass
 
 
-# Must split read / write for security declarations for ITeaserBar.
+# Must split read / write for security declarations for IArea.
 class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
     """An area contains blocks."""
 

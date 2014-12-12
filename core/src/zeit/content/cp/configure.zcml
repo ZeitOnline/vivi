@@ -171,9 +171,9 @@
       interface=".interfaces.ITeaserBlockLayout"
       permission="zope.View" />
   </class>
-  <class class=".layout.BarLayout">
+  <class class=".layout.AreaLayout">
     <require
-      interface=".interfaces.ITeaserBarLayout"
+      interface=".interfaces.IAreaLayout"
       permission="zope.View" />
   </class>
 
