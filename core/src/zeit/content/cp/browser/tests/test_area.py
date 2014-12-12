@@ -1,3 +1,4 @@
+# coding: utf-8
 import lxml.cssselect
 import z3c.etestbrowser.testing
 import zeit.cms.testing
@@ -23,8 +24,10 @@ class ElementTestHelper(object):
     def test_delete_element_removes_element(self):
         s = self.selenium
         s.assertCssCount('css=.type-{}'.format(self.name), 2)
+        s.chooseOkOnNextConfirmation()
         s.click('css=.type-{} > .block-inner > .edit-bar > .delete-link'
                 .format(self.name))
+        s.waitForConfirmation(u'Wirklich löschen?')
         s.waitForCssCount('css=.type-{}'.format(self.name), 1)
 
 
@@ -87,11 +90,11 @@ class ElementBrowserTestHelper(object):
 
         b.open(self.get_edit_link(index=0))
         b.getControl('Name').value = 'FooBarBaz'
+        b.handleErrors = False
         b.getControl('Apply').click()
 
         b.open(self.get_edit_link(index=1))
         b.getControl('Name').value = 'FooBarBaz'
-        b.handleErrors = False
         b.getControl('Apply').click()
 
         self.assertIn(
@@ -117,7 +120,6 @@ class AreaBrowserTest(
 
     def test_can_set_layout_for_area(self):
         b = self.browser
-        b.getLink('Add {}'.format(self.name)).click()
         edit_url = (
             'http://localhost/++skin++cms/workingcopy/zope.user/island/'
             'body/feature/{}/edit-properties'.format('lead'))

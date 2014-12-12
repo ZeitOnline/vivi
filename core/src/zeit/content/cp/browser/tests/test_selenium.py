@@ -4,7 +4,6 @@
 
 import lovely.remotetask.interfaces
 import lxml.cssselect
-import unittest
 import zeit.cms.repository.interfaces
 import zeit.content.quiz.quiz
 import zope.component
@@ -45,7 +44,9 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementNotPresent('css=.lightbox')
 
         s.verifyXpathCount(css_path('#informatives .block a.delete-link'), 3)
+        s.chooseOkOnNextConfirmation()
         s.click('css=#informatives .block a.delete-link')
+        s.waitForConfirmation(u'Wirklich löschen?')
         # mostread/mostcommented are still there
         s.waitForXpathCount(
             css_path('#informatives .block a.delete-link'), 2)

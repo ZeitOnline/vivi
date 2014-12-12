@@ -5,6 +5,15 @@ zeit.cms.in_cp_editor = function() {
     return Boolean(jQuery('.cp-editor-inner').length);
 };
 
+zeit.content.cp.LoadAndReloadWithConfirm = zeit.edit.LoadAndReload.extend({
+    construct: function(context_element) {
+        var self = this;
+        if (confirm('Wirklich löschen?')) {
+            arguments.callee.$.construct.call(self, context_element);
+        }
+    }
+});
+
 zeit.content.cp.BlockHover = gocept.Class.extend({
 
     construct: function() {
