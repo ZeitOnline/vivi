@@ -64,6 +64,8 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
         zeit.content.cp.interfaces.IRegion,
         gocept.lxml.interfaces.IObjectified)
 
+    _layout = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'module')
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle')
     _width = zeit.cms.content.property.ObjectPathAttributeProperty(
@@ -80,14 +82,16 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
         # backward compatibility for teaser bar
         return self.xml.get('area') == 'teaser-row-full'
 
-    # XXX fixme
     @property
     def layout(self):
-        return zeit.content.cp.layout.get_bar_layout('parquet')
+        for layout in zeit.content.cp.interfaces.IArea['layout'].source(self):
+            if layout.id == self._layout:
+                return layout
+        return zeit.content.cp.interfaces.IArea['layout'].default
 
     @layout.setter
     def layout(self, value):
-        pass  # XXX fixme
+        self._layout = value.id
 
     @property
     def width(self):

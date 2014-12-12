@@ -152,7 +152,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     layout = zope.schema.Choice(
         title=_("Layout"),
-        source=zeit.content.cp.layout.TeaserBarLayoutSource())
+        source=zeit.content.cp.layout.AreaLayoutSource(),
+        default=zeit.content.cp.layout.DEFAULT_BAR_LAYOUT)
 
     width = zope.schema.Choice(
         title=_("Width"),

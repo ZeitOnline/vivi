@@ -2,7 +2,6 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
-import zc.sourcefactory.contextual
 import zeit.cms.content.sources
 import zeit.edit.interfaces
 import zope.interface
@@ -136,7 +135,7 @@ class TeaserBlockLayoutSource(
 TEASERBLOCK_LAYOUTS = TeaserBlockLayoutSource()
 
 
-class TeaserBarLayoutSource(
+class AreaLayoutSource(
         LayoutSourceBase, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
@@ -155,7 +154,7 @@ class TeaserBarLayoutSource(
                 int(node.get('blocks', MAX_TEASER_BAR_BLOCKS))))
         return result
 
-TEASERBAR_LAYOUTS = TeaserBarLayoutSource()
+TEASERBAR_LAYOUTS = AreaLayoutSource()
 
 
 def get_layout(id):

@@ -38,3 +38,25 @@ class AreaTest(
         zeit.content.cp.testing.SeleniumTestCase):
 
     name = 'area'
+
+
+class AreaBrowserTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.cp.testing.layer
+
+    def setUp(self):
+        super(AreaBrowserTest, self).setUp()
+        zeit.content.cp.browser.testing.create_cp(self.browser)
+        self.browser.open('contents')
+        self.content_url = self.browser.url
+
+    def test_can_set_layout_for_area(self):
+        b = self.browser
+        b.getLink('Add area').click()
+        edit_url = (
+            'http://localhost/++skin++cms/workingcopy/zope.user/island/'
+            'body/feature/{}/edit-properties'.format('lead'))
+        b.open(edit_url)
+        b.getLink('Ad-Medium Rectangle').click()
+        b.open(edit_url)
+        self.assertEllipsis('...<a ... class="mr selected"...', b.contents)

@@ -20,7 +20,6 @@ class EditProperties(zeit.content.cp.browser.blocks.teaser.EditLayout):
 
     interface = zeit.content.cp.interfaces.IArea
     layout_prefix = 'teaserbar'  # XXX should be area
-    layouts = ()
 
 
 class EditCommon(zeit.edit.browser.view.EditBox):
@@ -30,3 +29,8 @@ class EditCommon(zeit.edit.browser.view.EditBox):
         'width', 'supertitle', 'teaserText', 'background_color')
     form_fields['background_color'].custom_widget = (
         zeit.cms.browser.widget.ColorpickerWidget)
+
+
+class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
+
+    interface = zeit.content.cp.interfaces.IArea
