@@ -6,7 +6,6 @@ import zeit.cms.checkout.helper
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
-import zeit.content.cp.browser.testing
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
 import zope.component
@@ -30,6 +29,7 @@ class RelatedTest(zeit.content.cp.testing.FunctionalTestCase):
             relateds = zeit.cms.related.interfaces.IRelatedContent(co)
             relateds.related = (c1, c2)
         self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.repository['cp'] = self.cp
         self.request = zope.publisher.browser.TestRequest(
             skin=zeit.cms.browser.interfaces.ICMSSkin)
 
