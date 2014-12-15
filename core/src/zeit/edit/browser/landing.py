@@ -26,6 +26,8 @@ class LandingZone(zeit.edit.browser.view.Action):
 
     order_from_form = zeit.edit.browser.view.Form('order')
     insert_after = zeit.edit.browser.view.Form('insert-after')
+    block_params = zeit.edit.browser.view.Form(
+        'block_params', json=True, default={})
 
     def update(self):
         if self.order_from_form:  # XXX make order non-optional and remove this
@@ -49,7 +51,8 @@ class LandingZone(zeit.edit.browser.view.Action):
         self.block = factory()
 
     def initialize_block(self):
-        pass
+        for key, value in self.block_params.items():
+            setattr(self.block, key, value)
 
     def update_order(self):
         keys = list(self.create_in)
