@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Introduce parameter ``suppress_errors`` for XMLReferenceUpdater (VIV-629).
 
+- The Exception view now returns the error as text/plain for XHR requests.
+
 
 2.30.0 (2014-11-14)
 -------------------
