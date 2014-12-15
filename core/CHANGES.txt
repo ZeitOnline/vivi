@@ -17,6 +17,8 @@ Changes
 
 - Fix bug in `IBlock` comparison, we need to do an in-depth xml comparison.
 
+- Make it possible to overwrite the library name for landing zones. (VIV-612)
+
 
 2.5.0 (2014-11-14)
 ------------------

@@ -44,15 +44,19 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         context = self.factory_context
         if context is None:
             return []
-        library_name = self.context.__name__
         adapters = zope.component.getAdapters(
             (context,), zeit.edit.interfaces.IElementFactory)
-        return [(name, adapter, library_name) for (name, adapter) in adapters
+        return [(name, adapter, self.library_name)
+                for (name, adapter) in adapters
                 if adapter.title]
 
     @property
     def factory_context(self):
         return self.context
+
+    @property
+    def library_name(self):
+        return self.context.__name__
 
     def resource_exists(self, filename):
         library = fanstatic.get_library_registry()[self.resource_library]
