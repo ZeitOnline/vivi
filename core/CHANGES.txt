@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.5.1 (unreleased)
+2.6.0 (unreleased)
 ------------------
 
 - Allow that a context may have no area. Introduced for sections. (VIV-621)
