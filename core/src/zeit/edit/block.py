@@ -114,6 +114,19 @@ class ElementFactory(object):
         self.context.add(content)
         return content
 
+    @property
+    def provided_interface(self):
+        """Retrieves the interface from the element created via the factory.
+
+        Caution: Only works with elements that are registered using grok.
+
+        """
+        element = zope.component.getSiteManager().adapters.lookup(
+            map(zope.interface.providedBy, (self.context, self.get_xml())),
+            zeit.edit.interfaces.IElement,
+            name=self.element_type)
+        return getattr(element, 'grokcore.component.directive.provides', None)
+
 
 class TypeOnAttributeElementFactory(ElementFactory):
 

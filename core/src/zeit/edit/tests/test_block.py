@@ -2,12 +2,13 @@
 # See also LICENSE.txt
 
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
-import copy
 import lxml.objectify
 import mock
+import persistent.interfaces
 import zeit.cms.interfaces
 import zeit.edit.testing
 import zeit.edit.tests.fixture
+import zope.component
 
 
 class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
@@ -70,3 +71,16 @@ class ElementUniqueIdTest(zeit.edit.testing.FunctionalTestCase):
         block1 = zeit.edit.tests.fixture.Block(None, xml1)
         block2 = zeit.edit.tests.fixture.Block(None, xml2)
         self.assertEqual(block1, block2)
+
+
+class ElementFactoryTest(zeit.edit.testing.FunctionalTestCase):
+
+    def test_factory_returns_interface_implemented_by_element(self):
+        context = mock.Mock()
+        zope.interface.alsoProvides(context, persistent.interfaces.IPersistent)
+        container = zeit.edit.tests.fixture.Container(
+            context, lxml.objectify.fromstring('<container/>'))
+        block_factory = zope.component.getAdapter(
+            container, zeit.edit.interfaces.IElementFactory, 'block')
+        self.assertEqual(
+            zeit.edit.tests.fixture.IBlock, block_factory.provided_interface)

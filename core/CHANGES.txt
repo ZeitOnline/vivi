@@ -21,6 +21,9 @@ Changes
 
 - Make it possible to use another JSON view to get all droppables. (VIV-612)
 
+- Element factories can now tell which interface is implemented by the element
+  that will be created. (VIV-633)
+
 
 2.5.0 (2014-11-14)
 ------------------

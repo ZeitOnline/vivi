@@ -26,10 +26,11 @@ class Container(zeit.edit.container.TypeOnAttributeContainer,
 zeit.edit.block.register_element_factory(IContainer, 'container', 'Container')
 
 
-class Block(zeit.edit.block.SimpleElement):
+class Block(zeit.edit.block.SimpleElement, grok.MultiAdapter):
 
     area = IContainer
     grok.implements(IBlock)
+    grok.provides(IBlock)
     type = 'block'
 
 zeit.edit.block.register_element_factory(IContainer, 'block', 'Block')
