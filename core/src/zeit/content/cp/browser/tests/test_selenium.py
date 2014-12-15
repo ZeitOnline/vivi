@@ -267,7 +267,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         self.selenium.click(u'link=Module')
         self.selenium.click(u'link=Flächen')
 
-        module = self.get_module('region', 'Area')
+        module = self.get_module('region', '1/1')
         self.selenium.waitForElementPresent(module)
 
         self.selenium.dragAndDropToObject(

@@ -1,5 +1,5 @@
 {.repeated section factories}
-<div class="{css}" cms:block_type="{type}">
+<div class="{css}" cms:block_type="{type}" cms:block_params="{params|htmltag}">
   <div class="module-inner">
     <img src="{image}" />
     {title}

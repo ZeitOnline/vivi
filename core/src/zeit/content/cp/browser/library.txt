@@ -10,6 +10,7 @@ are transmitted in JSON[#setup]_ and can be added on the CP in general:
 >>> pprint.pprint(json.loads(browser.contents))
 {u'factories': [{u'css': u'module represents-content-object cp-module',
                 u'image': u'http://localhost/++skin++cms/fanstatic/zeit.content.cp/module-audio.png',
+                u'params': u'{}',
                 u'title': u'Audioblock',
                 u'type': u'audio'},
                 ...

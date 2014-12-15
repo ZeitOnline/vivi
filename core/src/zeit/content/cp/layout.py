@@ -66,6 +66,18 @@ class AreaLayout(object):
             other, AreaLayout) and self.id == other.id
 
 
+class AreaConfig(object):
+
+    def __init__(self, id, title, width):
+        self.id = id
+        self.title = title
+        self.width = width
+
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, AreaConfig) and self.id == other.id
+
+
 # XXX We need to hard-code this, because at import-time, when the default value
 # is set on the interface, there's no product config yet, so we cannot use
 # get_area_layout().
@@ -146,6 +158,27 @@ class AreaLayoutSource(
         return result
 
 AREA_LAYOUTS = AreaLayoutSource()
+
+
+class AreaConfigSource(
+        LayoutSourceBase, zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'area-config-source'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        result = []
+        for node in tree.iterchildren('*'):
+            if not self.isAvailable(node, context):
+                continue
+            result.append(AreaConfig(
+                node.get('id'),
+                self._get_title_for(node),
+                node.get('width')))
+        return result
+
+AREA_CONFIGS = AreaConfigSource()
 
 
 def get_layout(id):

@@ -48,7 +48,7 @@ class AreaTest(
     name = 'area'
 
     def make_one(self):
-        module = self.get_module('region', 'Area')
+        module = self.get_module('region', '1/1')
         self.selenium.click(u'link=Module')
         self.selenium.click(u'link=Flächen')
         self.selenium.waitForElementPresent(module)

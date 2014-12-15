@@ -28,6 +28,8 @@ zeit.content.cp changes
 
 - Add areas via drag'n'drop. (VIV-612)
 
+- Configure available areas via XML. (VIV-633)
+
 
 2.7.0 (2014-11-14)
 ------------------
