@@ -113,7 +113,7 @@ Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 500: Internal Server Error
 >>> print browser.contents
-Only videos and playlists can be dropped on a video block.
+<...Only videos and playlists can be dropped on a video block...
 
 
 Audio blocks
