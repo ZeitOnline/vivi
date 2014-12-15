@@ -96,7 +96,7 @@ Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 500: Internal Server Error
 >>> print browser.contents
-The object "nada" does not exist.
+<...The object "nada" does not exist...
 
 
 Drop of an object which cannot be converted to a block returns an error:
@@ -108,7 +108,8 @@ Traceback (most recent call last):
     ...
 HTTPError: HTTP Error 500: Internal Server Error
 >>> print browser.contents
-Could not create block for "http://xml.zeit.de/testcontent", because I don't know which one.
+<...Could not create block for "http://xml.zeit.de/testcontent",
+because I don't know which one...
 
 
 Clean up:
