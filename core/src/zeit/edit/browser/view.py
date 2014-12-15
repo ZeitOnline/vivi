@@ -109,30 +109,8 @@ class Action(zeit.cms.browser.view.Base, UndoableMixin):
         return json.dumps(dict(signals=self.signals, data=self.data))
 
     def __call__(self):
-        try:
-            self.update()
-            self.mark_transaction_undoable()
-        except ZODB.POSException.ConflictError:
-            raise
-        except Exception, e:
-            # XXX using a view for Exception so that all AJAX/JSON request get
-            # their errors handled appropriately would be nicer, but it's not
-            # clear how that view would determine whether it's a json request
-            # or a normal browser request.
-            log.warning('Error in action %s', self.request.URL, exc_info=True)
-            transaction.doom()
-            message = None
-            if e.args:
-                if isinstance(e.args[0], basestring):
-                    message = e.args[0]
-                if isinstance(message, zope.i18n.Message):
-                    message = zope.i18n.translate(message,
-                                                  context=self.request)
-            if message is None:
-                message = repr(e)
-            self.request.response.setStatus(500)
-            self.request.response.setHeader('Content-Type', 'text/plain')
-            return message
+        self.update()
+        self.mark_transaction_undoable()
         return self.render()
 
 
