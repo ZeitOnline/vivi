@@ -27,6 +27,8 @@ Changes
 - Landing Zones accept block_params via request, which are written onto the
   created element. (VIV-633)
 
+- Add fine grained control for configuration of block factories. (VIV-633)
+
 
 2.5.0 (2014-11-14)
 ------------------

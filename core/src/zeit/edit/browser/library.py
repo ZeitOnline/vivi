@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 
 import fanstatic
+import json
 import os.path
 import zeit.cms.browser.view
 import zeit.edit.browser.landing
@@ -22,7 +23,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
 
     def list_block_types(self):
         types = {}
-        for name, adapter, library_name in self.get_adapters():
+        for name, typ, title, adapter, library_name, params in self.get_adapters():
             if name not in types:
                 image = 'module-%s.png' % name
                 if not self.resource_exists(image):
@@ -31,9 +32,9 @@ class BlockFactories(zeit.cms.browser.view.JSON):
                 types[name] = dict(
                     css=['module', 'represents-content-object'],
                     image=image,
-                    title=zope.i18n.translate(adapter.title,
-                                              context=self.request),
-                    type=name,
+                    title=zope.i18n.translate(title, context=self.request),
+                    type=typ,
+                    params=json.dumps(params),
                 )
             types[name]['css'].append(library_name + '-module')
         for type_ in types.values():
@@ -46,7 +47,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
             return []
         adapters = zope.component.getAdapters(
             (context,), zeit.edit.interfaces.IElementFactory)
-        return [(name, adapter, self.library_name)
+        return [(name, name, adapter.title, adapter, self.library_name, {})
                 for (name, adapter) in adapters
                 if adapter.title]
 
