@@ -41,6 +41,7 @@
 .edit-bar > .title {
   float: left;
   font-size: inherit;
+  margin-right: 0.5em;
 }
 
 .edit-bar > .rss-refresh-link {
