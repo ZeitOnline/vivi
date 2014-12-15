@@ -18,7 +18,7 @@ class ElementTestHelper(object):
     def test_add_element_creates_new_element(self):
         s = self.selenium
         s.assertCssCount('css=.type-{}'.format(self.name), 2)
-        s.click('link=*Add {}*'.format(self.name))
+        self.make_one()
         s.waitForCssCount('css=.type-{}'.format(self.name), 3)
 
     def test_delete_element_removes_element(self):
@@ -37,12 +37,23 @@ class RegionTest(
 
     name = 'region'
 
+    def make_one(self):
+        self.selenium.click('link=*Add region*')
+
 
 class AreaTest(
         ElementTestHelper,
         zeit.content.cp.testing.SeleniumTestCase):
 
     name = 'area'
+
+    def make_one(self):
+        module = self.get_module('region', 'Area')
+        self.selenium.click(u'link=Module')
+        self.selenium.click(u'link=Flächen')
+        self.selenium.waitForElementPresent(module)
+        self.selenium.dragAndDropToObject(
+            module, 'css=.landing-zone.action-cp-region-module-droppable')
 
 
 class ElementBrowserTestHelper(object):
@@ -84,9 +95,8 @@ class ElementBrowserTestHelper(object):
 
     def test_cannot_use_the_same_name_multiple_times(self):
         b = self.browser
-        b.getLink('Add {}'.format(self.name)).click()
-        b.open(self.content_url)
-        b.getLink('Add {}'.format(self.name)).click()
+        self.make_one()
+        self.make_one()
 
         b.open(self.get_edit_link(index=0))
         b.getControl('Name').value = 'FooBarBaz'
@@ -109,6 +119,10 @@ class RegionBrowserTest(
 
     name = 'region'
 
+    def make_one(self):
+        self.browser.open(self.content_url)
+        self.browser.getLink('Add region').click()
+
 
 class AreaBrowserTest(
         ElementBrowserTestHelper,
@@ -117,6 +131,11 @@ class AreaBrowserTest(
     layer = zeit.content.cp.testing.layer
 
     name = 'area'
+
+    def make_one(self):
+        self.browser.open(self.content_url)
+        self.browser.open(
+            'feature/@@landing-zone-drop-module?block_type=area&order=top')
 
     def test_can_set_layout_for_area(self):
         b = self.browser

@@ -157,6 +157,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:view
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="area-factories.json"
+    class=".library.CPAreaFactories"
+    permission="zeit.EditContent"
+    />
+
   <!-- 1-click publishing -->
 
   <browser:viewlet

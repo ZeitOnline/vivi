@@ -9,15 +9,25 @@ See http://cmsdev.zeit.de/node/362
 """
 
 import zeit.edit.browser.library
-import zope.component
 
 
 class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
 
-    def get_adapters(self):
-        area = zeit.content.cp.area.Area(None, None)
-        library_name = 'cp'
-        adapters = zope.component.getAdapters(
-            (area,), zeit.edit.interfaces.IElementFactory)
-        return [(name, adapter, library_name) for (name, adapter) in adapters
-                if adapter.title]
+    @property
+    def factory_context(self):
+        return zeit.content.cp.area.Area(None, None)
+
+    @property
+    def library_name(self):
+        return 'cp'
+
+
+class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
+
+    @property
+    def factory_context(self):
+        return zeit.content.cp.area.Region(None, None)
+
+    @property
+    def library_name(self):
+        return 'region'

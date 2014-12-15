@@ -1,6 +1,7 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from zeit.cms.i18n import MessageFactory as _
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml
@@ -136,6 +137,7 @@ class AreaFactory(zeit.edit.block.ElementFactory):
     # XML tags are named "region", thus do not change.
     tag_name = 'region'
     element_type = 'area'
+    title = _('Area')
 
     def get_xml(self):
         return getattr(lxml.objectify.E, self.tag_name)()

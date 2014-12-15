@@ -24,6 +24,10 @@ zeit.content.cp changes
 
 - No longer automatically insert relateds when dropping content (VIV-536).
 
+- Add regions via an 'Add region' link. (VIV-611)
+
+- Add areas via drag'n'drop. (VIV-612)
+
 
 2.7.0 (2014-11-14)
 ------------------

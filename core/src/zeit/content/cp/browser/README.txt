@@ -114,9 +114,11 @@ Sorting
 Blocks can be sorted. There is an ``updateOrder`` view doing this.
 
 >>> browser.open(contents_url)
->>> browser.getLink('Add area', index=3).click()
+>>> browser.open(
+...     'teaser-mosaic/@@landing-zone-drop-module?block_type=area&order=top')
 >>> browser.open(contents_url)
->>> browser.getLink('Add area', index=3).click()
+>>> browser.open(
+...     'teaser-mosaic/@@landing-zone-drop-module?block_type=area&order=top')
 >>> browser.open(contents_url)
 >>> bar_divs = browser.etree.xpath(
 ...     '//div[@id="teaser-mosaic"]//div[contains(@class, "type-area")]')

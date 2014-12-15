@@ -263,11 +263,21 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
         # Create three teaser bars
         path = css_path('div.block.type-area')
-        s.click('link=*Add area*')
+
+        self.selenium.click(u'link=Module')
+        self.selenium.click(u'link=Flächen')
+
+        module = self.get_module('region', 'Area')
+        self.selenium.waitForElementPresent(module)
+
+        self.selenium.dragAndDropToObject(
+            module, 'css=.landing-zone.action-cp-region-module-droppable')
         s.waitForXpathCount(path, 3)
-        s.click('link=*Add area*')
+        self.selenium.dragAndDropToObject(
+            module, 'css=.landing-zone.action-cp-region-module-droppable')
         s.waitForXpathCount(path, 4)
-        s.click('link=*Add area*')
+        self.selenium.dragAndDropToObject(
+            module, 'css=.landing-zone.action-cp-region-module-droppable')
         s.waitForXpathCount(path, 5)
 
         path = 'xpath=' + path
@@ -356,7 +366,7 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyElementNotPresent('css=.block.type-teaser')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c3"]',
-            'css=.landing-zone')
+            'css=.landing-zone.action-cp-module-droppable')
         s.waitForElementPresent('css=.block.type-teaser')
 
     def test_zones_after_blocks(self):
@@ -553,7 +563,7 @@ class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
         s.dragAndDropToObject(
             'css=.teaser-list > .teaser',
-            'css=.landing-zone')
+            'css=.landing-zone.action-cp-module-droppable')
         s.waitForElementPresent(
             'css=#lead .block.type-teaser')
         s.verifyText('css=#lead .block.type-teaser .teaser-list',
