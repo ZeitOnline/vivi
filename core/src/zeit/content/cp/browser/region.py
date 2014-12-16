@@ -1,5 +1,6 @@
 import zeit.edit.browser.block
 import zeit.edit.browser.view
+import zeit.edit.interfaces
 import zope.formlib.form
 
 
@@ -18,7 +19,7 @@ class EditCommon(zeit.edit.browser.view.EditBox):
         errors = super(EditCommon, self).validate(action, data)
         try:
             data['__context__'] = self.context
-            zeit.content.cp.interfaces.unique_name_invariant(data)
+            zeit.edit.interfaces.unique_name_invariant(data)
         except Exception as e:
             errors.append(e)
         return errors

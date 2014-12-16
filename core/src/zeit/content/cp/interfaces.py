@@ -24,12 +24,6 @@ DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'
 TEASER_ID_NAMESPACE = 'http://teaser.vivi.zeit.de/'
 
 
-class ValidationError(zope.schema.ValidationError):
-
-    def doc(self):
-        return self.args[0]
-
-
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
                   zeit.cms.content.interfaces.IXMLContent,
                   zeit.edit.interfaces.IContainer):
@@ -128,28 +122,6 @@ class IElement(zeit.edit.interfaces.IElement):
     """generic element, but CP-specific"""
 
 
-def unique_name_invariant(data):
-    """Bad hack, this invariant is called manually from form.
-
-    We must have access to the object in question, thus we enrich the given
-    data by __context__ manually inside `edit-common` for IRegion and IArea.
-    Since validations only get data that matches a form_field they have, we
-    must call the invariant manually by overwriting `validate`.
-
-    """
-    if not isinstance(data, dict):
-        return
-    context = data['__context__']
-    for name, element in context.__parent__.items():
-        if context == element:
-            continue
-        if data['__name__'] == name:
-            raise ValidationError(
-                _("Given name {name} is not unique inside parent {parent}."
-                  .format(name=data['__name__'],
-                          parent=context.__parent__.__name__)))
-
-
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
 
     title = zope.schema.TextLine(
@@ -172,14 +144,14 @@ class IRegion(
         IElement):
     """Abstract layer above IArea."""
 
-    zope.interface.invariant(unique_name_invariant)
+    zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
 
 
 def hex_literal(value):
     try:
         int(value, base=16)
     except ValueError:
-        raise ValidationError(_("Invalid hex literal"))
+        raise zeit.edit.interfaces.ValidationError(_("Invalid hex literal"))
     else:
         return True
 
@@ -233,7 +205,7 @@ class IWriteArea(zeit.edit.interfaces.IWriteContainer):
 class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
     """An area contains blocks."""
 
-    zope.interface.invariant(unique_name_invariant)
+    zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
 
 
 class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
@@ -378,7 +350,7 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
         if self.autopilot and not self.referenced_cp:
-            raise zope.schema.ValidationError(
+            raise zeit.edit.interfaces.ValidationError(
                 _("Cannot activate autopilot without referenced centerpage"))
         return True
 
@@ -427,11 +399,14 @@ class IAutomaticTeaserBlock(ITeaserBlock):
 
 def validate_xml_block(xml):
     if xml.tag != 'container':
-        raise ValidationError(_("The root element must be <container>."))
+        raise zeit.edit.interfaces.ValidationError(
+            _("The root element must be <container>."))
     if xml.get('{http://namespaces.zeit.de/CMS/cp}type') != 'xml':
-        raise ValidationError(_("cp:type must be 'xml'."))
+        raise zeit.edit.interfaces.ValidationError(
+            _("cp:type must be 'xml'."))
     if not xml.get('{http://namespaces.zeit.de/CMS/cp}__name__'):
-        raise ValidationError(_("No or empty cp:__name__ attribute."))
+        raise zeit.edit.interfaces.ValidationError(
+            _("No or empty cp:__name__ attribute."))
     return True
 
 
@@ -472,18 +447,13 @@ class IVideoBlock(IAVBlock):
         default='vid')
 
 
-class InvalidFeedURL(zope.schema.interfaces.ValidationError):
-
-    def doc(self):
-        return self.args[0]
-
-
 def valid_feed_url(uri):
     zope.schema.URI().fromUnicode(uri)  # May raise InvalidURI
     if urlparse.urlparse(uri).scheme in ('http', 'https', 'file'):
         return True
     # NOTE: we hide the fact that we support (some) file urls.
-    raise InvalidFeedURL(_('Only http and https are supported.'))
+    raise zeit.edit.interfaces.ValidationError(
+        _('Only http and https are supported.'))
 
 
 class IFeed(zeit.cms.content.interfaces.IXMLContent,

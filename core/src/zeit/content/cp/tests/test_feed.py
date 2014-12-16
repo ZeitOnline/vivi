@@ -5,6 +5,7 @@ import mock
 import unittest
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
+import zeit.edit.interfaces
 import zope.schema.interfaces
 
 
@@ -15,7 +16,7 @@ class FeedTest(unittest.TestCase):
         self.assertTrue(v('http://foo.bar/baz'))
         self.assertTrue(v('https://foo.bar/baz'))
         self.assertTrue(v('file:///foo.bar/baz'))
-        self.assertRaises(zeit.content.cp.interfaces.InvalidFeedURL,
+        self.assertRaises(zeit.edit.interfaces.ValidationError,
                           v, 'feed://foo.bar/baz')
         self.assertRaises(zope.schema.interfaces.InvalidURI,
                           v, 'foo.bar/baz')
