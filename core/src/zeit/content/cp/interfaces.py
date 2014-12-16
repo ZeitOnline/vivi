@@ -8,6 +8,7 @@ import zc.form.field
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
+import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.syndication.interfaces
 import zeit.cms.tagging.interfaces
@@ -151,7 +152,7 @@ def hex_literal(value):
     try:
         int(value, base=16)
     except ValueError:
-        raise zeit.edit.interfaces.ValidationError(_("Invalid hex literal"))
+        raise zeit.cms.interfaces.ValidationError(_("Invalid hex literal"))
     else:
         return True
 
@@ -350,7 +351,7 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
         if self.autopilot and not self.referenced_cp:
-            raise zeit.edit.interfaces.ValidationError(
+            raise zeit.cms.interfaces.ValidationError(
                 _("Cannot activate autopilot without referenced centerpage"))
         return True
 
@@ -399,13 +400,13 @@ class IAutomaticTeaserBlock(ITeaserBlock):
 
 def validate_xml_block(xml):
     if xml.tag != 'container':
-        raise zeit.edit.interfaces.ValidationError(
+        raise zeit.cms.interfaces.ValidationError(
             _("The root element must be <container>."))
     if xml.get('{http://namespaces.zeit.de/CMS/cp}type') != 'xml':
-        raise zeit.edit.interfaces.ValidationError(
+        raise zeit.cms.interfaces.ValidationError(
             _("cp:type must be 'xml'."))
     if not xml.get('{http://namespaces.zeit.de/CMS/cp}__name__'):
-        raise zeit.edit.interfaces.ValidationError(
+        raise zeit.cms.interfaces.ValidationError(
             _("No or empty cp:__name__ attribute."))
     return True
 
@@ -452,7 +453,7 @@ def valid_feed_url(uri):
     if urlparse.urlparse(uri).scheme in ('http', 'https', 'file'):
         return True
     # NOTE: we hide the fact that we support (some) file urls.
-    raise zeit.edit.interfaces.ValidationError(
+    raise zeit.cms.interfaces.ValidationError(
         _('Only http and https are supported.'))
 
 
