@@ -23,20 +23,21 @@ class BlockFactories(zeit.cms.browser.view.JSON):
 
     def list_block_types(self):
         types = {}
-        for name, typ, title, adapter, library_name, params in self.get_adapters():
-            if name not in types:
-                image = 'module-%s.png' % name
+        for item in self.get_adapters():
+            if item['name'] not in types:
+                image = 'module-%s.png' % item['name']
                 if not self.resource_exists(image):
                     image = 'module-default-image.png'
                 image = self.resource_url(image)
-                types[name] = dict(
+                types[item['name']] = dict(
                     css=['module', 'represents-content-object'],
                     image=image,
-                    title=zope.i18n.translate(title, context=self.request),
-                    type=typ,
-                    params=json.dumps(params),
+                    title=zope.i18n.translate(
+                        item['title'], context=self.request),
+                    type=item['type'],
+                    params=json.dumps(item['params']),
                 )
-            types[name]['css'].append(library_name + '-module')
+            types[item['name']]['css'].append(item['library_name'] + '-module')
         for type_ in types.values():
             type_['css'] = ' '.join(type_['css'])
         return sorted(types.values(), key=lambda r: r['title'])
@@ -47,9 +48,13 @@ class BlockFactories(zeit.cms.browser.view.JSON):
             return []
         adapters = zope.component.getAdapters(
             (context,), zeit.edit.interfaces.IElementFactory)
-        return [(name, name, adapter.title, adapter, self.library_name, {})
-                for (name, adapter) in adapters
-                if adapter.title]
+        return [{
+            'name': name,
+            'type': name,
+            'title': adapter.title,
+            'library_name': self.library_name,
+            'params': {}
+        } for (name, adapter) in adapters if adapter.title]
 
     @property
     def factory_context(self):
