@@ -56,3 +56,10 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
 
 zeit.edit.block.register_element_factory(
     zeit.content.cp.interfaces.IArea, 'auto-teaser')
+
+
+@grok.adapter(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
+@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter(context):
+    for teaser in context:
+        yield teaser

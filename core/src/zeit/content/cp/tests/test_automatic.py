@@ -75,6 +75,21 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
     <block...href="http://xml.zeit.de/testcontent"...""",
             lxml.etree.tostring(xml, pretty_print=True))
 
+    def test_cms_content_iter_returns_filled_in_blocks(self):
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
+        auto.count = 1
+        auto.automatic = True
+
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = [
+                dict(uniqueId='http://xml.zeit.de/testcontent',
+                     lead_candidate=True)]
+            content = zeit.content.cp.interfaces.ICMSContentIterable(auto)
+            self.assertEqual(
+                ['http://xml.zeit.de/testcontent'],
+                [x.uniqueId for x in content])
+
     def test_stores_query_in_xml(self):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)

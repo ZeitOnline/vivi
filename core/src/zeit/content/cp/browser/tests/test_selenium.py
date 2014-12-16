@@ -44,9 +44,7 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementNotPresent('css=.lightbox')
 
         s.verifyXpathCount(css_path('#informatives .block a.delete-link'), 3)
-        s.chooseOkOnNextConfirmation()
         s.click('css=#informatives .block a.delete-link')
-        s.waitForConfirmation(u'Wirklich löschen?')
         # mostread/mostcommented are still there
         s.waitForXpathCount(
             css_path('#informatives .block a.delete-link'), 2)
@@ -73,16 +71,16 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         # wired properly.
         s.waitForElementPresent('css=.layout-chooser')
         s.click('//a[@href="tab-1"]')
-        s.waitForElementPresent('id=form.publisher')
-        s.type('form.publisher', 'FooPublisher')
+        s.waitForElementPresent('id=form.title')
+        s.type('form.title', 'FooTitle')
         s.click('//div[@id="tab-1"]//input[@id="form.actions.apply"]')
         s.waitForElementNotPresent('css=a.CloseButton')
 
         s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
         s.waitForElementPresent('css=.layout-chooser')
         s.click('//a[@href="tab-1"]')
-        s.waitForElementPresent('form.publisher')
-        s.waitForValue('form.publisher', 'FooPublisher')
+        s.waitForElementPresent('form.title')
+        s.waitForValue('form.title', 'FooTitle')
 
 
 class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
