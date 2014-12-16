@@ -30,6 +30,12 @@ class InvalidName(zope.schema.ValidationError):
     __doc__ = _('Name contains invalid characters')
 
 
+class ValidationError(zope.schema.ValidationError):
+
+    def doc(self):
+        return self.args[0]
+
+
 valid_name_regex = re.compile(r'^[A-Za-z0-9\.\,\-_*()~]+$').match
 
 
