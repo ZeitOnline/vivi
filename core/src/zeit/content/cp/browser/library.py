@@ -9,7 +9,6 @@ See http://cmsdev.zeit.de/node/362
 """
 
 import zeit.edit.browser.library
-import zope.component
 
 
 class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
@@ -34,11 +33,10 @@ class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
         return 'region'
 
     def get_adapters(self):
-        element_type = 'area'
-        adapter = zope.component.getAdapter(
-            self.factory_context, zeit.edit.interfaces.IElementFactory,
-            name=element_type)
-        return [(area_config.id, element_type, area_config.title, adapter,
-                 self.library_name, {'width': area_config.width})
-                for area_config in zeit.content.cp.layout.AREA_CONFIGS(
-                    self.context)]
+        return [{
+            'name': area_config.id,
+            'type': 'area',
+            'title': area_config.title,
+            'library_name': self.library_name,
+            'params': {'width': area_config.width}
+        } for area_config in zeit.content.cp.layout.AREA_CONFIGS(self.context)]
