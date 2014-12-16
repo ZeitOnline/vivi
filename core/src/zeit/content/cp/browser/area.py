@@ -36,7 +36,8 @@ class EditCommon(zeit.edit.browser.view.EditBox):
         errors = super(EditCommon, self).validate(action, data)
         try:
             data['__context__'] = self.context
-            zeit.edit.interfaces.unique_name_invariant(data)
+            zeit.edit.interfaces.unique_name_invariant(
+                zeit.cms.browser.form.AttrDict(**data))
         except Exception as e:
             errors.append(e)
         return errors
