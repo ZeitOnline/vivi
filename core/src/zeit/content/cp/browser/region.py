@@ -1,4 +1,3 @@
-import zeit.edit.browser.block
 import zeit.edit.browser.view
 import zeit.edit.interfaces
 import zope.formlib.form

@@ -27,10 +27,7 @@ class EditCommon(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IArea).select(
-        'width', 'supertitle', 'title', 'teaserText', 'background_color',
-        '__name__')
-    form_fields['background_color'].custom_widget = (
-        zeit.cms.browser.widget.ColorpickerWidget)
+            'width', 'supertitle', 'title', 'teaserText', '__name__')
 
     def validate(self, action, data):
         errors = super(EditCommon, self).validate(action, data)

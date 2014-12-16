@@ -192,11 +192,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         required=False,
         max_length=170)
 
-    background_color = zope.schema.TextLine(
-        title=_("Background color (ZMO only)"),
-        required=False,
-        max_length=6, constraint=hex_literal)
-
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):
     pass
@@ -260,20 +255,6 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
 
     title = zope.schema.TextLine(
         title=_("Title"),
-        required=False)
-
-    publisher = zope.schema.TextLine(
-        title=_("Publisher"),
-        required=False)
-    publisher_url = zope.schema.TextLine(
-        title=_("Publisher URL"),
-        required=False)
-
-    supertitle = zope.schema.TextLine(
-        title=_("Supertitle"),
-        required=False)
-    supertitle_url = zope.schema.TextLine(
-        title=_("Supertitle URL"),
         required=False)
 
     read_more = zope.schema.TextLine(

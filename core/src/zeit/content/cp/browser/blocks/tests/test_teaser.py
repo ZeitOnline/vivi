@@ -54,10 +54,10 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
         b.getLink('Edit block common', index=2).click()
         form_url = b.url
 
-        b.getControl('Publisher', index=0).value = 'foo'
+        b.getControl('Title').value = 'foo'
         b.getControl('Apply').click()
         b.open(form_url)
-        self.assertEqual('foo', b.getControl('Publisher', index=0).value)
+        self.assertEqual('foo', b.getControl('Title').value)
 
 
 class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
