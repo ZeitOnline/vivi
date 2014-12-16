@@ -3,6 +3,7 @@
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zope.container.interfaces
 import zope.interface
 import zope.schema
@@ -153,7 +154,7 @@ def unique_name_invariant(data):
         if context == element:
             continue
         if data['__name__'] == name:
-            raise ValidationError(
+            raise zeit.cms.interfaces.ValidationError(
                 _("Given name {name} is not unique inside parent {parent}."
                   .format(name=data['__name__'],
                           parent=context.__parent__.__name__)))

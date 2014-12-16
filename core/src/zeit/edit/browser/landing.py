@@ -34,6 +34,7 @@ class LandingZone(zeit.edit.browser.view.Action):
             self.order = self.order_from_form
         if not hasattr(self, 'order'):
             raise ValueError('Order must be specified!')
+        self.validate_params()
         self.create_block()
         self.undo_description = _(
             "add '${type}' block", mapping=dict(type=self.block.type))
@@ -43,6 +44,9 @@ class LandingZone(zeit.edit.browser.view.Action):
         self.signal(
             None, 'reload',
             self.create_in.__name__, self.url(self.create_in, '@@contents'))
+
+    def validate_params(self):
+        pass
 
     def create_block(self):
         factory = zope.component.getAdapter(
