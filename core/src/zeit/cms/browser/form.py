@@ -87,6 +87,28 @@ def apply_default_values(context, interface):
         setattr(context, name, default)
 
 
+class AttrDict(dict):
+    """Offers dict-like API and property access to check invariants.
+
+    This helper object is used to perform validations in views to access dicts
+    like an object with attributes, which is how invariants normally access the
+    data object.
+
+    """
+
+    def __getattr__(self, name):
+        """Access dict-content like properties.
+
+        Will raise NoInputData when key is not found, since validations are
+        skipped when a required field is not present.
+
+        """
+        try:
+            return self[name]
+        except KeyError:
+            raise zope.formlib.form.NoInputData()
+
+
 class WidgetCSSMixin(object):
     """Form mix-in to manage CSS classes on widgets.
 

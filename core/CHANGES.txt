@@ -8,6 +8,8 @@ zeit.cms changes
 
 - The Exception view now returns the error as text/plain for XHR requests.
 
+- Provide helper object for invalidations. (VIV-618)
+
 
 2.30.0 (2014-11-14)
 -------------------
