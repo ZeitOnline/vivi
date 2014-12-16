@@ -18,7 +18,7 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
         b.open(
             'lead/@@landing-zone-drop?uniqueId=http://xml.zeit.de/testcontent&order=top')
         b.open(contents_url)
-        b.getLink('Edit block common', index=1).click()
+        b.getLink('Edit block common', index=2).click()
         form_url = b.url
 
         b.getControl('Background color (ZMO only)').value = 'xyz'
