@@ -2,7 +2,6 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import zeit.edit.container
 import zeit.edit.interfaces
-import zope.interface
 
 
 class IContainer(zeit.edit.interfaces.IArea,
@@ -11,8 +10,7 @@ class IContainer(zeit.edit.interfaces.IArea,
 
 
 class IBlock(zeit.edit.interfaces.IBlock):
-
-    zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
+    pass
 
 
 class Container(zeit.edit.container.TypeOnAttributeContainer,
