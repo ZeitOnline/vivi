@@ -199,12 +199,23 @@
     />
 
   <browser:viewlet
-    for="zeit.content.cp.interfaces.IElement"
+    for="zeit.content.cp.interfaces.IRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="delete"
-    template="layout.block.delete.pt"
+    template="layout.area.delete.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="delete"
+    template="layout.area.delete.pt"
     permission="zeit.EditContent"
     weight="10"
     />
