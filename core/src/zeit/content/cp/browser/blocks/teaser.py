@@ -15,7 +15,6 @@ import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.browser.block
 import zeit.edit.browser.view
-import zope.app.pagetemplate
 import zope.cachedescriptors.property
 import zope.component
 import zope.event
@@ -27,7 +26,7 @@ COLUMN_ID = 'column://'
 
 
 class TeaserBlockViewletManager(
-    zeit.edit.browser.block.BlockViewletManager):
+        zeit.edit.browser.block.BlockViewletManager):
 
     @property
     def css_class(self):
