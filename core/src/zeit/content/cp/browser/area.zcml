@@ -101,6 +101,14 @@
   <browser:page
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-automatic"
+    class=".area.EditAutomatic"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="change-layout"
     class=".area.ChangeLayout"
     permission="zeit.EditContent"
@@ -163,6 +171,17 @@
     template="layout.block.edit-commons.pt"
     permission="zeit.EditContent"
     weight="1"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="automatic-box"
+    template="layout.block.edit-automatic.pt"
+    permission="zeit.EditContent"
+    weight="2"
     />
 
   <browser:viewlet

@@ -42,6 +42,16 @@ class EditCommon(zeit.edit.browser.view.EditBox):
         return errors
 
 
+class EditAutomatic(
+        zope.formlib.form.SubPageEditForm,
+        zeit.cms.browser.form.WidgetCSSMixin):
+
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.cp.interfaces.IAutomaticArea,
+        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
+            'automatic', 'count', 'query', 'raw_query')
+
+
 class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
 
     interface = zeit.content.cp.interfaces.IArea

@@ -1,14 +1,12 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
+# Copyright (c) 2009-2014 gocept gmbh & co. kg
 # See also LICENSE.txt
 
 from zeit.content.cp.i18n import MessageFactory as _
 import gocept.form.grouped
-import grokcore.component as grok
 import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
-import zope.app.appsetup.appsetup
 import zope.formlib.form
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
@@ -67,42 +65,13 @@ class AddForm(FormBase,
         'automaticMetadataUpdateDisabled')
 
 
-class AutomaticFields(object):
-
-    automatic_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.IAutomaticArea,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'count', 'query', 'raw_query', 'automatic')
-    automatic_group = gocept.form.grouped.Fields(
-        _("Automatic contents"),
-         ('automatic', 'count', 'query', 'raw_query'),
-        css_class='wide-widgets')
-
-    def __init__(self, *args, **kw):
-        super(AutomaticFields, self).__init__(*args, **kw)
-
-        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.content.cp.automatic') and 'lead' in self.context:
-            self.form_fields = FormBase.form_fields + self.automatic_fields
-            self.field_groups = (
-                self.automatic_group,) + FormBase.field_groups
-
-
 class EditForm(FormBase,
-               AutomaticFields,
                zeit.cms.content.browser.form.CommonMetadataEditForm):
 
     title = _("Edit centerpage")
 
 
 class DisplayForm(FormBase,
-                  AutomaticFields,
                   zeit.cms.content.browser.form.CommonMetadataDisplayForm):
 
     title = _("View centerpage metadata")
-
-
-@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
-@grok.implementer(zeit.content.cp.interfaces.IAutomaticArea)
-def autoarea_for_cp(context):
-    return zeit.content.cp.interfaces.IAutomaticArea(context['lead'])
