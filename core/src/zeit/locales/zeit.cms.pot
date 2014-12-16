@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Fri Dec 12 10:40:13 2014\n"
++"POT-Creation-Date: Tue Dec 16 13:24:23 2014\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2576,6 +2576,10 @@ msgstr ""
 
 #: zeit/content/cp/browser/form.py:77
 msgid "Automatic contents"
+msgstr ""
+
+#: zeit/content/cp/browser/layout.block.edit-automatic.pt:1
+msgid "Edit block automatic"
 msgstr ""
 
 #: zeit/content/cp/browser/layout.block.edit-commons.pt:1
