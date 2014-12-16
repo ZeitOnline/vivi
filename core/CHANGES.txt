@@ -29,6 +29,9 @@ Changes
 
 - Add fine grained control for configuration of block factories. (VIV-633)
 
+- Add new step for landing zones which checks invariants of the object that
+  will be created. (VIV-618)
+
 
 2.5.0 (2014-11-14)
 ------------------

@@ -1,7 +1,9 @@
 import gocept.lxml.interfaces
 import grokcore.component as grok
+import zeit.cms.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
+import zope.interface
 
 
 class IContainer(zeit.edit.interfaces.IArea,
@@ -10,7 +12,12 @@ class IContainer(zeit.edit.interfaces.IArea,
 
 
 class IBlock(zeit.edit.interfaces.IBlock):
-    pass
+
+    @zope.interface.invariant
+    def check_name_is_not_empty(data):
+        if not data.__name__:
+            raise zeit.cms.interfaces.ValidationError(
+                'The __name__ cannot be empty!')
 
 
 class Container(zeit.edit.container.TypeOnAttributeContainer,

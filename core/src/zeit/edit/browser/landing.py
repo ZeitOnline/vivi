@@ -2,8 +2,12 @@
 # See also LICENSE.txt
 
 from zeit.cms.i18n import MessageFactory as _
+from zope.formlib.form import NoInputData
+import zeit.cms.browser.form
 import zeit.edit.browser.view
 import zope.component
+import zope.formlib.form
+import zope.interface
 
 
 class LandingZone(zeit.edit.browser.view.Action):
@@ -34,6 +38,7 @@ class LandingZone(zeit.edit.browser.view.Action):
             self.order = self.order_from_form
         if not hasattr(self, 'order'):
             raise ValueError('Order must be specified!')
+        self.validate_params()
         self.create_block()
         self.undo_description = _(
             "add '${type}' block", mapping=dict(type=self.block.type))
@@ -44,11 +49,31 @@ class LandingZone(zeit.edit.browser.view.Action):
             None, 'reload',
             self.create_in.__name__, self.url(self.create_in, '@@contents'))
 
-    def create_block(self):
-        factory = zope.component.getAdapter(
+    def validate_params(self):
+        schema = self.block_factory.provided_interface
+        if schema is None:
+            return  # block not registered via grok, cannot read interface
+
+        errors = []
+        data = zeit.cms.browser.form.AttrDict(**self.block_params)
+        data['__parent__'] = self.create_in
+        try:
+            schema.validateInvariants(data, errors)
+        except zope.interface.Invalid:
+            pass
+
+        errors = [e for e in errors if not isinstance(e, NoInputData)]
+        if errors:
+            raise zope.interface.Invalid(errors)
+
+    @property
+    def block_factory(self):
+        return zope.component.getAdapter(
             self.create_in, zeit.edit.interfaces.IElementFactory,
             name=self.block_type)
-        self.block = factory()
+
+    def create_block(self):
+        self.block = self.block_factory()
 
     def initialize_block(self):
         for key, value in self.block_params.items():
