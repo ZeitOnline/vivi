@@ -38,7 +38,7 @@
   width: auto;
 }
 
-.edit-bar > .title {
+.edit-bar > .title, .edit-bar > .width {
   float: left;
   font-size: inherit;
   margin-right: 0.5em;

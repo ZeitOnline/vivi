@@ -1,1 +1,1 @@
-<span tal:content="context/width" />
+<span class="width" tal:content="context/width" />
