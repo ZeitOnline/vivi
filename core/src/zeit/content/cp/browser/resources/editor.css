@@ -154,25 +154,6 @@
 }
 
 
-/* placeholder */
-
-.block.type-placeholder > .block-inner {
-  border-style: dashed;
-}
-
-.block.type-placeholder > .block-inner > * {
-  margin: 1.5em;
-}
-
-.block.type-placeholder > .block-inner > .choose-block {
-  background: #f2f2f2;
-  border: 1px solid black;
-  display: block;
-  text-align: center;
-  padding: 3em 1em;
-}
-
-
 /* Teaser block */
 
 .autopilot-chooser {
