@@ -183,10 +183,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_("Title"),
         required=False)
 
-    __name__ = zope.schema.TextLine(
-        title=_("Name"),
-        required=True)
-
     teaserText = zope.schema.Text(
         title=_("Teaser text"),
         required=False,
