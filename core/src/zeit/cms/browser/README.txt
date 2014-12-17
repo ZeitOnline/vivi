@@ -180,7 +180,7 @@ The preview is on the container now:
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Development')
 HTTP Error 303: See Other
-http://localhost/development-preview-prefix/online/2007/01
+http://localhost/development-preview-prefix/online/2007/01/
 
 
 Clean up:

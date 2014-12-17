@@ -287,7 +287,7 @@ When you try to delete a non existend object, a KeyError is raised:
 >>> del repository['i-dont-exist']
 Traceback (most recent call last):
     ...
-KeyError: "The resource u'http://xml.zeit.de/i-dont-exist' does not exist."
+KeyError: u"The resource 'http://xml.zeit.de/i-dont-exist' does not exist."
 
 
 Copying objects

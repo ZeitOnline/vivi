@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='2.31.1.dev0',
+    version='2.32.0.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
@@ -69,7 +69,7 @@ setup(
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
-        'zeit.connector>=2.3.3.dev0',
+        'zeit.connector>=2.4.0.dev0',
         'zeit.find',
         'zeit.objectlog>=0.6',
         'zope.app.component>=3.4.0b3',

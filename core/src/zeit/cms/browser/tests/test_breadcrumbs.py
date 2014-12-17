@@ -85,10 +85,10 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
                  uniqueId='http://xml.zeit.de/',
                  url='http://127.0.0.1/repository'),
             dict(title=u'kultur',
-                 uniqueId='http://xml.zeit.de/kultur',
+                 uniqueId='http://xml.zeit.de/kultur/',
                  url='http://127.0.0.1/repository/kultur'),
             dict(title=u'musik',
-                 uniqueId=u'http://xml.zeit.de/kultur/musik',
+                 uniqueId=u'http://xml.zeit.de/kultur/musik/',
                  url='http://127.0.0.1/repository/kultur/musik'),
         ], BreadcrumbsView(content).get_breadcrumbs)
 
@@ -101,7 +101,7 @@ class Breadcrumbs(zeit.cms.testing.ZeitCmsTestCase):
                  uniqueId='http://xml.zeit.de/',
                  url='http://127.0.0.1/repository'),
             dict(title=u'2006',
-                 uniqueId='http://xml.zeit.de/2006',
+                 uniqueId='http://xml.zeit.de/2006/',
                  url='http://127.0.0.1/repository/2006'),
             dict(title=u'DSC00109_2.JPG',
                  uniqueId=u'http://xml.zeit.de/2006/DSC00109_2.JPG',

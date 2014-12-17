@@ -227,7 +227,7 @@ source[#functional]_:
 >>> folder
 <zeit.cms.repository.folder.Folder object at 0x...>
 >>> folder.uniqueId
-u'http://xml.zeit.de/online'
+u'http://xml.zeit.de/online/'
 
 When a unique id references an object wich doesn't exist, None is returned:
 
@@ -258,7 +258,7 @@ True
 The other way round stores the unique id:
 
 >>> converter.toProperty(folder)
-u'http://xml.zeit.de/online'
+u'http://xml.zeit.de/online/'
 
 .. [#functional]_
 

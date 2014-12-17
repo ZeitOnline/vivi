@@ -197,7 +197,7 @@ For the somalia document we'll get the folder in the repository though:
 ...     (somalia, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-u'http://xml.zeit.de/online/2007/01'
+u'http://xml.zeit.de/online/2007/01/'
 
 
 When the object does not exist in the repository we're trying to get the
@@ -212,7 +212,7 @@ folder:
 ...     (somalia, source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> location.uniqueId
-u'http://xml.zeit.de/online'
+u'http://xml.zeit.de/online/'
 
 
 Cleanup:

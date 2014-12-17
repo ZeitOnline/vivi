@@ -630,7 +630,7 @@ Let's open the lightbox. It shows the clipboard tree:
 <div>
   <h1>
     Copy content into
-    http://xml.zeit.de/online
+    http://xml.zeit.de/online/
   </h1>
   <div id="LightboxClipboard" class="Tree">
   <ul>
@@ -663,7 +663,7 @@ to online:
 >>> print browser.contents
 <?xml ...
         <li class="message">http://xml.zeit.de/online/2007/01 was copied to
-        http://xml.zeit.de/online/01.</li>
+        http://xml.zeit.de/online/01/.</li>
         ...
 
 

@@ -224,7 +224,7 @@ The preview goes to the index now:
 >>> browser.open(bookmark)
 >>> zeit.cms.testing.click_wo_redirect(browser, 'Preview', index=1)
 HTTP Error 303: See Other
-http://localhost/preview-prefix/index
+http://localhost/preview-prefix/index/
 
 
 Syndicating without showing it on the homepage

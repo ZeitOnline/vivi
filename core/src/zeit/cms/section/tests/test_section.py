@@ -4,6 +4,7 @@
 from zeit.cms.repository.folder import Folder
 from zeit.cms.section.interfaces import ISection
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
+import transaction
 import zeit.cms.checkout.helper
 import zeit.cms.section.testing
 import zeit.cms.testing
@@ -47,6 +48,9 @@ class ApplyMarkersTest(zeit.cms.testing.FunctionalTestCase):
         zope.interface.alsoProvides(
             folder, zeit.cms.section.testing.IExampleSection)
         self.repository['folder'] = folder
+        # Clear Repository's cache, so we get the replaced folder object,
+        # not the cached version from above.
+        transaction.commit()
 
         obj = self.repository['folder']['test']
         self.assertFalse(
