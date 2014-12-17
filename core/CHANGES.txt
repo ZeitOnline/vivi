@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.31.0 (unreleased)
+2.31.0 (2014-12-17)
 -------------------
 
 - Introduce parameter ``suppress_errors`` for XMLReferenceUpdater (VIV-629).
