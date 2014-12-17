@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 """Connect to data stored in the filesystem in read-only mode."""
 
+from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
 import StringIO
 import ZConfig
@@ -38,6 +39,7 @@ class Connector(object):
         self.repository_path = repository_path
 
     def listCollection(self, id):
+        id = self._get_cannonical_id(id)
         """List the filenames of a collection identified by path. """
         try:
             self[id]
@@ -51,7 +53,8 @@ class Connector(object):
             name = unicode(name)
             if name.startswith('.'):
                 continue
-            id = self._make_id(path + (name, ))
+            id = unicode(
+                self._get_cannonical_id(self._make_id(path + (name, ))))
             yield (name, id)
 
     def _get_collection_names(self, path):
@@ -64,6 +67,7 @@ class Connector(object):
         return names
 
     def getResourceType(self, id):
+        id = self._get_cannonical_id(id)
         __traceback_info__ = id
 
         properties = self._get_properties(id)
@@ -93,6 +97,7 @@ class Connector(object):
         return 'unknown'
 
     def __getitem__(self, id):
+        id = self._get_cannonical_id(id)
         properties = self._get_properties(id)
         type = properties.get(
             zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
@@ -111,7 +116,7 @@ class Connector(object):
             name = ''
         content_type = self._get_content_type(id, type)
         return zeit.connector.resource.Resource(
-            id, name, type, data, properties,
+            unicode(id), name, type, data, properties,
             contentType=content_type)
 
     def _get_content_type(self, id, type):
@@ -156,6 +161,19 @@ class Connector(object):
 
     # internal helpers
 
+    def _get_cannonical_id(self, id):
+        """Add / for collections if not appended yet."""
+        if isinstance(id, CannonicalId):
+            return id
+        if id == ID_NAMESPACE:
+            return CannonicalId(id)
+        if id.endswith('/'):
+            id = id[:-1]
+        path = self._absolute_path(self._path(id))
+        if os.path.isdir(path):
+            return CannonicalId(id + '/')
+        return CannonicalId(id)
+
     def _absolute_path(self, path):
         if not path:
             return self.repository_path
@@ -167,7 +185,10 @@ class Connector(object):
         id = id.replace(ID_NAMESPACE, '', 1)
         if not id:
             return ()
-        return tuple(id.split('/'))
+        result = tuple(id.split('/'))
+        if result[-1] == '':
+            result = result[:-1]
+        return result
 
     def _get_file(self, id):
         filename = self._absolute_path(self._path(id))
@@ -177,7 +198,7 @@ class Connector(object):
         try:
             return file(filename, 'rb')
         except IOError:
-            raise KeyError("The resource %r does not exist." % id)
+            raise KeyError("The resource '%s' does not exist." % id)
 
     def _get_metadata_file(self, id):
         filename = self._absolute_path(self._path(id)) + '.meta'

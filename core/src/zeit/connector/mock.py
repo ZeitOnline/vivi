@@ -2,6 +2,7 @@
 # See also LICENSE.txt
 """Filesystem connector configured for use in testing."""
 
+from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO
 import datetime
@@ -60,13 +61,15 @@ class Connector(zeit.connector.filesystem.Connector):
         return names
 
     def getResourceType(self, id):
+        id = self._get_cannonical_id(id)
         if id in self._deleted:
-            raise KeyError("The resource %r does not exist." % id)
+            raise KeyError("The resource '%s' does not exist." % id)
         return super(Connector, self).getResourceType(id)
 
     def __getitem__(self, id):
+        id = self._get_cannonical_id(id)
         if id in self._deleted:
-            raise KeyError(id)
+            raise KeyError(unicode(id))
         return super(Connector, self).__getitem__(id)
 
     def _get_content_type(self, id, type):
@@ -78,6 +81,12 @@ class Connector(zeit.connector.filesystem.Connector):
 
     def __setitem__(self, id, object):
         resource = zeit.connector.interfaces.IResource(object)
+        id = self._get_cannonical_id(id)
+        iscoll = (resource.type == 'collection'
+                  or resource.contentType == 'httpd/unix-directory')
+        if iscoll and not id.endswith('/'):
+            id = CannonicalId(id + '/')
+        resource.id = unicode(id)  # override
 
         if id in self:
             old_etag = self[id].properties.get(('getetag', 'DAV:'))
@@ -107,7 +116,7 @@ class Connector(zeit.connector.filesystem.Connector):
                     raise httplib.HTTPException(409, 'Conflict')
 
             for key in self._properties.keys():
-                if key == resource.id:
+                if key == self._get_cannonical_id(resource.id):
                     continue
                 existing_uuid = self._properties[key].get(UUID_PROPERTY)
                 if (existing_uuid and existing_uuid ==
@@ -136,7 +145,8 @@ class Connector(zeit.connector.filesystem.Connector):
             zeit.connector.interfaces.ResourceInvaliatedEvent(id))
 
     def __delitem__(self, id):
-        resource = self[id]
+        id = self._get_cannonical_id(id)
+        self[id]  # may raise KeyError
         for name, uid in self.listCollection(id):
             del self[uid]
         self._deleted.add(id)
@@ -186,11 +196,13 @@ class Connector(zeit.connector.filesystem.Connector):
         del self[old_id]
 
     def changeProperties(self, id, properties):
+        id = self._get_cannonical_id(id)
         properties.pop(zeit.connector.interfaces.UUID_PROPERTY, None)
         self._set_properties(id, properties)
 
     def lock(self, id, principal, until):
         """Lock resource for principal until a given datetime."""
+        id = self._get_cannonical_id(id)
         # locked_by, locked_until = self.locked(id)
         # if locked_by is not None and locked_by != principal:
         #    raise zeit.cms.interfaces.LockingError(
@@ -198,10 +210,12 @@ class Connector(zeit.connector.filesystem.Connector):
         self._locked[id] = (principal, until, True)
 
     def unlock(self, id, locktoken=None):
+        id = self._get_cannonical_id(id)
         del self._locked[id]
         return locktoken
 
     def locked(self, id):
+        id = self._get_cannonical_id(id)
         return self._locked.get(id, (None, None, False))
 
     def search(self, attributes, expression):
@@ -218,6 +232,27 @@ class Connector(zeit.connector.filesystem.Connector):
         return ((unique_id,) + metadata for unique_id in unique_ids)
 
     # internal helpers
+
+    def _get_cannonical_id(self, id):
+        """Add / for collections if not appended yet."""
+        if isinstance(id, CannonicalId):
+            return id
+        if id == ID_NAMESPACE:
+            return CannonicalId(id)
+        if id.endswith('/'):
+            id = id[:-1]
+        if self._properties.get(id + '/') is not None:
+            return CannonicalId(id + '/')
+        if self._properties.get(id) is not None:
+            return CannonicalId(id)
+        if self._content_types.get(id + '/') == 'httpd/unix-directory':
+            return CannonicalId(id + '/')
+        if self._content_types.get(id) == 'httpd/unix-directory':
+            return CannonicalId(id)
+        path = self._absolute_path(self._path(id))
+        if os.path.isdir(path):
+            return CannonicalId(id + '/')
+        return CannonicalId(id)
 
     def _absolute_path(self, path):
         if not path:

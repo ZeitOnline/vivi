@@ -1,18 +1,18 @@
 CHANGES
 =======
 
-2.3.6 (unreleased)
-------------------
-
-- Nothing changed yet.
-
-
-2.3.5 (2014-12-04)
+2.4.0 (unreleased)
 ------------------
 
 - Filesystem connector now handles directory-type resources (especially:
   ImageGroups) like the DAV connector does: their uniqueId gets a trailing
   slash.
+
+
+2.3.5 (2014-12-04)
+------------------
+
+- Brown-bag release.
 
 
 2.3.4 (2014-10-21)

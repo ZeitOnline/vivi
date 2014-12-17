@@ -30,9 +30,9 @@ The browsing interface basically allows listing collections:
 
 >>> from pprint import pprint
 >>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
-[(u'2005', u'http://xml.zeit.de/online/2005'),
- (u'2006', u'http://xml.zeit.de/online/2006'),
- (u'2007', u'http://xml.zeit.de/online/2007')]
+[(u'2005', u'http://xml.zeit.de/online/2005/'),
+ (u'2006', u'http://xml.zeit.de/online/2006/'),
+ (u'2007', u'http://xml.zeit.de/online/2007/')]
 
 >>> entry = list(connector.listCollection(
 ...     'http://xml.zeit.de/online/2007/01'))[0]
@@ -59,7 +59,7 @@ above:
 >>> resource
 <zeit.connector.resource.Resource object at 0x...>
 
->>> resource.id
+>>> unicode(resource.id)
 u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
 >>> resource.type
 'article'
@@ -80,7 +80,7 @@ If a resource does not exist, a KeyError is raised:
 >>> connector['http://xml.zeit.de/foobar']
 Traceback (most recent call last):
 ...
-KeyError: "The resource 'http://xml.zeit.de/foobar' does not exist."
+KeyError: u"The resource 'http://xml.zeit.de/foobar' does not exist."
 
 It is also possible to get the root:
 
@@ -246,7 +246,7 @@ We can also add new collections to the collection:
 ...     StringIO.StringIO(''))
 >>> connector[collection_2_id] = resource
 >>> list(connector.listCollection(collection_id))
-[(u'foo', u'http://xml.zeit.de/online/2007/03/foo')]
+[(u'foo', u'http://xml.zeit.de/online/2007/03/foo/')]
 >>> connector[collection_2_id].type
 'collection'
 
@@ -258,14 +258,14 @@ Removing works via the normal __delitem__ mechanismns. Let's look what we have
 first:
 
 >>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
-[(u'2005', u'http://xml.zeit.de/online/2005'),
- (u'2006', u'http://xml.zeit.de/online/2006'),
- (u'2007', u'http://xml.zeit.de/online/2007')]
+[(u'2005', u'http://xml.zeit.de/online/2005/'),
+ (u'2006', u'http://xml.zeit.de/online/2006/'),
+ (u'2007', u'http://xml.zeit.de/online/2007/')]
 
 >>> del connector['http://xml.zeit.de/online/2005']
 >>> pprint(list(connector.listCollection('http://xml.zeit.de/online')))
-[(u'2006', u'http://xml.zeit.de/online/2006'),
- (u'2007', u'http://xml.zeit.de/online/2007')]
+[(u'2006', u'http://xml.zeit.de/online/2006/'),
+ (u'2007', u'http://xml.zeit.de/online/2007/')]
 
 >>> connector['http://xml.zeit.de/online/2005']
 Traceback (most recent call last):
@@ -282,22 +282,26 @@ folders though. So we implement a special method for moving:
 >>> import zeit.connector.testing
 >>> zeit.connector.testing.print_tree(connector, 'http://xml.zeit.de/2006')
 http://xml.zeit.de/2006
-http://xml.zeit.de/2006/49 collection
-http://xml.zeit.de/2006/52 collection
+http://xml.zeit.de/2006/49/ collection
+...
+http://xml.zeit.de/2006/52/ collection
+...
 http://xml.zeit.de/2006/DSC00109_2.JPG image
 http://xml.zeit.de/2006/DSC00109_3.JPG image
 
 >>> connector.move('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-27')
->>> ('2006-27', 'http://xml.zeit.de/2006-27') in connector.listCollection(
+>>> ('2006-27', 'http://xml.zeit.de/2006-27/') in connector.listCollection(
 ...     'http://xml.zeit.de/')
 True
->>> ('2006', 'http://xml.zeit.de/2006') in connector.listCollection(
+>>> ('2006', 'http://xml.zeit.de/2006/') in connector.listCollection(
 ...     'http://xml.zeit.de/')
 False
 >>> zeit.connector.testing.print_tree(connector, 'http://xml.zeit.de/2006-27')
 http://xml.zeit.de/2006-27
-http://xml.zeit.de/2006-27/49 collection
-http://xml.zeit.de/2006-27/52 collection
+http://xml.zeit.de/2006-27/49/ collection
+...
+http://xml.zeit.de/2006-27/52/ collection
+...
 http://xml.zeit.de/2006-27/DSC00109_2.JPG image
 http://xml.zeit.de/2006-27/DSC00109_3.JPG image
 
@@ -315,8 +319,10 @@ Let's move 2006-27 back:
 >>> connector.move('http://xml.zeit.de/2006-27', 'http://xml.zeit.de/2006')
 >>> zeit.connector.testing.print_tree(connector, 'http://xml.zeit.de/2006')
 http://xml.zeit.de/2006
-http://xml.zeit.de/2006/49 collection
-http://xml.zeit.de/2006/52 collection
+http://xml.zeit.de/2006/49/ collection
+...
+http://xml.zeit.de/2006/52/ collection
+...
 http://xml.zeit.de/2006/DSC00109_2.JPG image
 http://xml.zeit.de/2006/DSC00109_3.JPG image
 
@@ -327,16 +333,20 @@ Copying
 
 >>> zeit.connector.testing.print_tree(connector, 'http://xml.zeit.de/2006')
 http://xml.zeit.de/2006
-http://xml.zeit.de/2006/49 collection
-http://xml.zeit.de/2006/52 collection
+http://xml.zeit.de/2006/49/ collection
+...
+http://xml.zeit.de/2006/52/ collection
+...
 http://xml.zeit.de/2006/DSC00109_2.JPG image
 http://xml.zeit.de/2006/DSC00109_3.JPG image
 
 >>> connector.copy('http://xml.zeit.de/2006', 'http://xml.zeit.de/2006-copy')
 >>> zeit.connector.testing.print_tree(connector, 'http://xml.zeit.de/2006-copy')
 http://xml.zeit.de/2006-copy
-http://xml.zeit.de/2006-copy/49 collection
-http://xml.zeit.de/2006-copy/52 collection
+http://xml.zeit.de/2006-copy/49/ collection
+...
+http://xml.zeit.de/2006-copy/52/ collection
+...
 http://xml.zeit.de/2006-copy/DSC00109_2.JPG image
 http://xml.zeit.de/2006-copy/DSC00109_3.JPG image
 
@@ -439,14 +449,14 @@ connector.
 
 Currently the mock holds data:
 
->>> pprint(connector._data)
-{'http://xml.zeit.de/2006': ...}
+>>> bool(connector._data)
+True
 
 After resetting, the data is gone:
 
 >>> connector._reset()
->>> connector._data
-{}
+>>> bool(connector._data)
+False
 
 
 Please note that this is an a utility function that does not belong to the
