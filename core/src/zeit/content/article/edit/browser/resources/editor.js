@@ -1073,7 +1073,7 @@ zeit.content.article.Editable = gocept.Class.extend({
 
   replace_all: function(find, replace) {
       var self = this;
-      self.dirty = true;
+      self.dirty = true;  // XXX Is this really correct?
       var d = self.save(/*supress_reload=*/true);
       d.addCallback(function() {
           return zeit.edit.makeJSONRequest(
