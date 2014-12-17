@@ -5,7 +5,8 @@ zeit.content.cp changes
 2.7.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update tests since mock connector now yields trailing slashes for folder ids
+  (FRIED-37).
 
 
 2.7.2 (2015-01-14)
