@@ -152,7 +152,7 @@ class TestTextEditing(
     def test_paragraph_etc_should_not_appear_as_modules(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-p')
-        s.click('link=Module')
+        s.click('link=Struktur')
         s.waitForElementPresent('css=#article-modules .module:contains(Video)')
         s.assertElementNotPresent('css=#article-modules .module:contains(<p>)')
 
@@ -701,7 +701,7 @@ class TestDivision(
     def create_division(self):
         s = self.selenium
         s.assertElementNotPresent('css=.block.type-division')
-        s.click('link=Module')
+        s.click('link=Struktur')
         s.waitForElementPresent(
             'css=#article-modules .module[cms\\:block_type=division]')
         s.dragAndDropToObject(
