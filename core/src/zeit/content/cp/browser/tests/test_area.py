@@ -49,7 +49,7 @@ class AreaTest(
 
     def make_one(self):
         module = self.get_module('region', '1/1')
-        self.selenium.click(u'link=Module')
+        self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Flächen')
         self.selenium.waitForElementPresent(module)
         self.selenium.dragAndDropToObject(

@@ -237,7 +237,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         self.open_centerpage()
         s = self.selenium
 
-        s.click('link=Module')
+        s.click('link=Struktur')
         teaser_module = self.get_module('cp', 'List of teasers')
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
@@ -262,7 +262,7 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         # Create three teaser bars
         path = css_path('div.block.type-area')
 
-        self.selenium.click(u'link=Module')
+        self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Flächen')
 
         module = self.get_module('region', '1/1')
@@ -391,7 +391,7 @@ class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def create_videoblock(self):
         s = self.selenium
-        s.click('link=Module')
+        s.click('link=Struktur')
         module = self.get_module('cp', 'Video')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
@@ -425,7 +425,7 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
 
     def create_quizblock(self):
         s = self.selenium
-        s.click('link=Module')
+        s.click('link=Struktur')
         module = self.get_module('cp', 'Quiz')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
@@ -468,7 +468,7 @@ class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
         self.open_centerpage()
 
         s = self.selenium
-        s.click('link=Module')
+        s.click('link=Struktur')
         module = self.get_module('cp', 'XML')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(

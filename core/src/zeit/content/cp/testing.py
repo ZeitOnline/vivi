@@ -170,7 +170,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
     def create_teaserlist(self):
         self.open_centerpage()
         s = self.selenium
-        s.click('link=Module')
+        s.click('link=Struktur')
         teaser_module = self.get_module('cp', 'List of teasers')
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
