@@ -53,7 +53,7 @@ yields the container the object is in:
 >>> loc
 <zeit.cms.repository.folder.Folder object at 0x...>
 >>> loc.uniqueId
-u'http://xml.zeit.de/online'
+u'http://xml.zeit.de/online/'
 
 
 The gallery source is a utility:

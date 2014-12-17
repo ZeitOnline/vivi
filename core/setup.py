@@ -19,7 +19,7 @@ setup(
         'gocept.form',
         'setuptools',
         'zeit.cms>=2.25.0.dev0',
-        'zeit.connector>=2.3.1.dev0',
+        'zeit.connector>=2.4.0.dev0',
         'zeit.imp>=0.15.0.dev0',
         'zeit.content.image',
         'zeit.push>=1.7.0.dev0',

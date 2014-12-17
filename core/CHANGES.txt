@@ -4,7 +4,8 @@ zeit.content.gallery changes
 2.6.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Update tests since mock connector now yields trailing slashes for folder ids
+  (FRIED-37).
 
 
 2.6.12 (2014-11-14)
