@@ -36,6 +36,11 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     def insert(self, index, content):
         self.entries.insert(index, content)
 
+    def __getattr__(self, name):
+        if name in zeit.content.cp.interfaces.ITeaserBlock:
+            return zeit.content.cp.interfaces.ITeaserBlock[name].default
+        raise AttributeError(name)
+
     # XXX copy&paste from TeaserBlock
     @property
     def layout(self):
