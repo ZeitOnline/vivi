@@ -111,7 +111,9 @@ zeit.newsletter.TeaserSorter = gocept.Class.extend({
 });
 
 
-MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+var ident = MochiKit.Signal.connect(
+    window, 'script-loading-finished', function() {
+        MochiKit.Signal.disconnect(ident);
         if (! zeit.cms.in_newsletter_editor()) {
             return;
         }
