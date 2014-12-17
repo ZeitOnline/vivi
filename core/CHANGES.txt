@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0-beta1 (unreleased)
+3.0.0.beta1 (2014-12-17)
 ------------------------
 
 - Add extra container `IRegion` between `ICenterPage` and `IArea`. (VIV-621)
