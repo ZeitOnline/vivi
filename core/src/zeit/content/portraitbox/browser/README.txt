@@ -106,7 +106,7 @@ exists. Currently it doesn't exist[#location-setup]_:
 
 >>> obj = repository['online']['2007']['01']
 >>> get_location(obj)
-u'http://xml.zeit.de/online/2007/01'
+u'http://xml.zeit.de/online/2007/01/'
 
 Create the personen folder:
 
@@ -116,18 +116,18 @@ Create the personen folder:
 The location is the `/personen` folder now:
 
 >>> get_location(obj)
-u'http://xml.zeit.de/personen'
+u'http://xml.zeit.de/personen/'
 
 For other objects than folders we of course also get the personen folder:
 
 >>> get_location(obj['Somalia'])
-u'http://xml.zeit.de/personen'
+u'http://xml.zeit.de/personen/'
 
 >>> import zope.security.proxy
 >>> ref = zeit.content.portraitbox.interfaces.IPortraitboxReference(
 ...     zope.security.proxy.ProxyFactory(repository['testcontent']))
 >>> get_location(ref)
-u'http://xml.zeit.de/personen'
+u'http://xml.zeit.de/personen/'
 
 
 Clean up:
