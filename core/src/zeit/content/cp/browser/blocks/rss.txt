@@ -137,7 +137,7 @@ http://xml.zeit.de/2006/DSC00109_2.JPG
       ...
 >>> browser.getLink('Edit block properties', index=2).click()
 >>> print browser.getControl('Teaser image').value
-http://xml.zeit.de/image-group
+http://xml.zeit.de/image-group/
 
 
 Feed icon
@@ -151,7 +151,7 @@ group:
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit block properties', index=2).click()
 >>> print browser.getControl('Feed icon').value
-http://xml.zeit.de/image-group
+http://xml.zeit.de/image-group/
 
 ... or a normal image:
 
@@ -204,7 +204,7 @@ XML of a RSS block
       xpointer="xpointer(/feed/rss)">
     <xi:fallback>Ziel http://xml.zeit.de/rss/<MD5> nicht erreichbar.</xi:fallback>
   </xi:include>
-  <teaser_image base-id="http://xml.zeit.de/image-group" type="jpg" publication-date="" expires="">
+  <teaser_image base-id="http://xml.zeit.de/image-group/" type="jpg" publication-date="" expires="">
     <bu xsi:nil="true"/>
     <copyright>©</copyright>
   </teaser_image>

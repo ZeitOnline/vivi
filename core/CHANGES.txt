@@ -24,6 +24,9 @@ zeit.content.cp changes
 
 - Configure available areas via XML. (VIV-633)
 
+- Update tests since mock connector now yields trailing slashes for folder ids
+  (FRIED-37).
+
 
 2.7.1 (2014-12-17)
 ------------------

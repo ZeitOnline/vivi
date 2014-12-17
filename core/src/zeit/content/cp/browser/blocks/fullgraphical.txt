@@ -178,7 +178,7 @@ object in order to catch its metadata updates:
     ...
     <title py:pytype="str">Teaser title</title>
     ...
-    <image base-id="http://xml.zeit.de/image-group" type="jpg" publication-date="" expires="">
+    <image base-id="http://xml.zeit.de/image-group/" type="jpg" publication-date="" expires="">
       <bu xsi:nil="true"/>
       <copyright py:pytype="str">©</copyright>
     </image>
