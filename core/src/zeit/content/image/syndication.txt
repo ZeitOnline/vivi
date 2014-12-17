@@ -64,7 +64,7 @@ Update the metadata of the feed. The image is now referenced:
   <container>
     <block href="http://xml.zeit.de/testcontent"...>
      ...
-      <image base-id="http://xml.zeit.de/image-group" type="jpg"...>
+      <image base-id="http://xml.zeit.de/image-group/" type="jpg"...>
         <bu xsi:nil="true"/>
         <copyright py:pytype="str">&#169;</copyright>
       </image>
@@ -110,7 +110,7 @@ Before:
 >>> print lxml.etree.tostring(repository['testcontent'].xml, pretty_print=True)
 <testtype>
   <head>
-    <image ...base-id="http://xml.zeit.de/image-group" 
+    <image ...base-id="http://xml.zeit.de/image-group/" 
         type="jpg"...>
       <bu xsi:nil="true"/>
       <copyright py:pytype="str">&#169;</copyright>
@@ -136,7 +136,7 @@ The content has changed automatically:
 ...     repository['testcontent'].xml, pretty_print=True),
 <testtype>
   <head>
-    <image ...base-id="http://xml.zeit.de/image-group" type="jpg"...
+    <image ...base-id="http://xml.zeit.de/image-group/" type="jpg"...
         title="Image title"...>
       <bu xsi:nil="true"/>
       <copyright py:pytype="str">&#169;</copyright>
@@ -158,7 +158,7 @@ When a referenfced image group looses its type, the updater doesn't puke:
 Traceback (most recent call last):
     ...
 ValueError: Could not create xml reference 'image'
-    for http://xml.zeit.de/image-group 
+    for http://xml.zeit.de/image-group/
     which is referenced in http://xml.zeit.de/testcontent.
 
 
