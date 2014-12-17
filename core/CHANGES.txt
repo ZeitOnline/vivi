@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.7.1 (unreleased)
+2.7.2 (unreleased)
 ------------------
 
 - Add extra container `IRegion` between `ICenterPage` and `IArea`. (VIV-621)
@@ -14,12 +14,6 @@ zeit.content.cp changes
 - Separate layout and other properties of teaser blocks into separate tabs
   (VIV-624).
 
-- Suppress errors that are due to missing metadata files when rendering XML for
-  Friedbert (VIV-629).
-
-- Adapt query for channels so it works with both tokenized and non-tokenized
-  indexing types (VIV-449).
-
 - Make available layouts of modules dependent on widths of its area. (VIV-635)
 
 - No longer automatically insert relateds when dropping content (VIV-536).
@@ -29,6 +23,16 @@ zeit.content.cp changes
 - Add areas via drag'n'drop. (VIV-612)
 
 - Configure available areas via XML. (VIV-633)
+
+
+2.7.1 (2014-12-17)
+------------------
+
+- Suppress errors that are due to missing metadata files when rendering XML for
+  Friedbert (VIV-629).
+
+- Adapt query for channels so it works with both tokenized and non-tokenized
+  indexing types (VIV-449).
 
 
 2.7.0 (2014-11-14)
