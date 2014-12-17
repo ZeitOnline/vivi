@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.2.5 (unreleased)
+2.2.5 (2014-12-17)
 ------------------
 
 - Allow suppressing errors that are due to missing metadata files (VIV-629).
