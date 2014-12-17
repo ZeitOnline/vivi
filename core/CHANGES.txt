@@ -1,7 +1,7 @@
 zeit.content.rawxml changes
 ===========================
 
-0.4.2 (unreleased)
+0.4.2 (2014-12-17)
 ------------------
 
 - Update XMLReferenceUpdater API (VIV-629).
