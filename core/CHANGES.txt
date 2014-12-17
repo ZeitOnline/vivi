@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Fixed saving control when replacing text in editor.
 
+- Update to API changes in zeit.cms, zeit.edit.
+
 
 3.6.5 (2014-11-14)
 ------------------

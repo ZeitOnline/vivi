@@ -108,6 +108,9 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
                   "don't know which one.", mapping=dict(
                       name=self.uniqueId)))
 
+    def validate_params(self):
+        pass
+
 
 class BodyLandingZone(LandingZoneBase):
     """Handler to drop objects to the body's landing zone."""
