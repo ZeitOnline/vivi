@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.2.10 (unreleased)
+2.2.10 (2014-12-17)
 -------------------
 
 - Update XMLReferenceUpdater API (VIV-629).
