@@ -50,6 +50,8 @@ class LandingZone(zeit.edit.browser.view.Action):
             self.create_in.__name__, self.url(self.create_in, '@@contents'))
 
     def validate_params(self):
+        if not self.block_params:
+            return
         schema = self.block_factory.provided_interface
         if schema is None:
             return  # block not registered via grok, cannot read interface
@@ -76,6 +78,8 @@ class LandingZone(zeit.edit.browser.view.Action):
         self.block = self.block_factory()
 
     def initialize_block(self):
+        if not self.block_params:
+            return
         for key, value in self.block_params.items():
             setattr(self.block, key, value)
 

@@ -4,7 +4,7 @@ Changes
 2.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Ignore missing ``block_params`` instead of breaking.
 
 
 2.6.0 (2014-12-17)

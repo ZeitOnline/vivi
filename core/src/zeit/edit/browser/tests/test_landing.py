@@ -52,3 +52,9 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
         with self.assertRaises(zope.interface.Invalid) as e:
             self.landing_zone()
         self.assertIn('The __name__ cannot be empty!', str(e.exception))
+
+    def test_empty_params_are_ignored(self):
+        self.request.form['order'] = 'top'
+        self.request.form['block_params'] = json.dumps(None)
+        with self.assertNothingRaised():
+            self.landing_zone()
