@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.0.4 (unreleased)
+2.0.4 (2014-12-17)
 ------------------
 
 - Update XMLReferenceUpdater API (VIV-629).
