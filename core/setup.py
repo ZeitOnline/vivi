@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.image',
-    version='2.2.6.dev0',
+    version='2.2.6',
     author='gocept',
     author_email='mail@gocept.com',
     url='https://bitbucket.org/gocept/zeit.content.image',
