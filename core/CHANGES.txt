@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.7.1 (unreleased)
+2.7.1 (2014-12-17)
 ------------------
 
 - Suppress errors that are due to missing metadata files when rendering XML for
