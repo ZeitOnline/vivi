@@ -375,8 +375,7 @@ def apply_layout(context, event):
         is not zeit.edit.interfaces.IContainer):
         # not triggered by updateOrder
         return
-    if context.width != '2/3':
-        # backward compatibility for lead area
+    if context.__name__ != 'lead':
         return
     previously_first = event.descriptions[0].attributes[0]
 
