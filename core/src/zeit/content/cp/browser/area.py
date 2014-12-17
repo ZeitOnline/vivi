@@ -1,6 +1,7 @@
 # Copyright (c) 2009-2010 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+import gocept.form.grouped
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
@@ -29,14 +30,20 @@ class EditCommon(zeit.edit.browser.view.EditBox):
             'width', 'supertitle', 'title', 'teaserText')
 
 
-class EditAutomatic(
-        zope.formlib.form.SubPageEditForm,
-        zeit.cms.browser.form.WidgetCSSMixin):
+class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.IAutomaticArea,
-        render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE).select(
-            'automatic', 'count', 'query', 'raw_query')
+        zeit.content.cp.interfaces.IAutomaticArea).select(
+            'count', 'query', 'raw_query', 'automatic')
+
+    # XXX Kludgy: ``automatic`` must come after ``count``, since setting
+    # automatic to True needs to know the teaser count. Thus we order the
+    # form_fields accordingly, and alter the display order using field_groups.
+    field_groups = (gocept.form.grouped.Fields(
+        '', ('automatic', 'count', 'query', 'raw_query')),)
+
+    template = zope.browserpage.ViewPageTemplateFile(
+        'blocks/teaser.edit-common.pt')
 
 
 class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):

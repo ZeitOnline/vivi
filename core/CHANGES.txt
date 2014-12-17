@@ -27,6 +27,9 @@ zeit.content.cp changes
 - Update tests since mock connector now yields trailing slashes for folder ids
   (FRIED-37).
 
+- Every area can be configured for automatic contents using solr, not just the
+  lead area anymore (VIV-620).
+
 
 2.7.1 (2014-12-17)
 ------------------
