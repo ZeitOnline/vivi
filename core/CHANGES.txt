@@ -4,9 +4,7 @@ Changes
 2.6.0 (unreleased)
 ------------------
 
-- Allow that a context may have no area. Introduced for sections. (VIV-621)
-
-- Change API of ``zeit.edit.sortable.Sortable`` to make a difference between
+- Extend API of ``zeit.edit.sortable.Sortable`` to make a difference between
   parent with meta data and child container. (VIV-627)
 
 - Extend API of `zeit.edit.browser.LandingZone` to insert explicitly at the top
