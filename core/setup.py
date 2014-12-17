@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.article',
-    version='3.6.6',
+    version='3.6.7.dev0',
     author='gocept',
     author_email='mail@gocept.com',
     url='',
