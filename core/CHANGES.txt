@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.6.6 (unreleased)
+3.6.6 (2014-12-17)
 ------------------
 
 - Fixed saving control when replacing text in editor.
