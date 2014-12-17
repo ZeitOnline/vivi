@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.32.0 (unreleased)
+2.32.0 (2014-12-17)
 -------------------
 
 - Update tests since mock connector now yields trailing slashes for folder ids
