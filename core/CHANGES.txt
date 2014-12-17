@@ -1,7 +1,7 @@
 zeit.content.portraitbox changes
 ================================
 
-1.22.12 (unreleased)
+1.22.12 (2014-12-17)
 --------------------
 
 - Update tests since mock connector now yields trailing slashes for folder ids
