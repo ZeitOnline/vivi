@@ -3,7 +3,6 @@
 # See also LICENSE.txt
 
 import zeit.cms.content.sources
-import zeit.edit.interfaces
 import zope.interface
 import zope.security.proxy
 
@@ -23,6 +22,8 @@ class ITeaserBlockLayout(zope.interface.Interface):
         min=1,
         max=2,
         default=1)
+    areas = zope.schema.Set(
+        title=u'Widths of areas where this layout is allowed')
     default = zope.schema.Bool(
         title=u"True if this is the default for an area")
 
