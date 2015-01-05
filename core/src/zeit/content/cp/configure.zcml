@@ -42,7 +42,7 @@
     />
 
   <subscriber
-    factory=".centerpage.BodyPublishTraverser"
+    factory="zeit.edit.body.PublishTraverser"
     for="zeit.content.cp.interfaces.ICenterPage
     zeit.cms.browser.interfaces.ICMSLayer"
     provides="z3c.traverser.interfaces.ITraverserPlugin"

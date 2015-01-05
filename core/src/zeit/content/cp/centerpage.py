@@ -13,7 +13,6 @@ import itertools
 import lxml.etree
 import pkg_resources
 import xml.sax.saxutils
-import z3c.traverser.interfaces
 import zeit.cms.checkout.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
@@ -26,16 +25,13 @@ import zeit.cms.type
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
 import zeit.content.cp.interfaces
+import zeit.edit.body
 import zeit.edit.container
 import zeit.edit.interfaces
 import zope.interface
 import zope.lifecycleevent
-import zope.location.interfaces
 import zope.proxy
-import zope.publisher.interfaces
 import zope.security.proxy
-import zope.traversing.adapters
-import zope.traversing.interfaces
 
 
 BODY_NAME = 'body'
@@ -234,39 +230,11 @@ def get_editable_body(centerpage):
         zeit.content.cp.interfaces.IBody)
 
 
-class BodyTraverser(grok.Adapter):
+class BodyTraverser(zeit.edit.body.Traverser):
 
     grok.context(zeit.content.cp.interfaces.ICenterPage)
-    grok.implements(zope.traversing.interfaces.ITraversable)
-
-    def traverse(self, name, furtherPath):
-        if name == BODY_NAME:
-            body = zeit.content.cp.interfaces.IBody(self.context, None)
-            if body is not None:
-                return body
-        else:
-            # XXX zope.component does not offer an API to get the next adapter
-            # that is less specific than the current one. So we hard-code the
-            # default.
-            return zope.traversing.adapters.DefaultTraversable(
-                self.context).traverse(name, furtherPath)
-
-
-class BodyPublishTraverser(object):
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-
-    def publishTraverse(self, request, name):
-        try:
-            return zope.traversing.interfaces.ITraversable(
-                self.context).traverse(name, None)
-        except zope.location.interfaces.LocationError:
-            raise zope.publisher.interfaces.NotFound(
-                self.context, name, request)
+    body_name = BODY_NAME
+    body_interface = zeit.content.cp.interfaces.IBody
 
 
 _test_helper_cp_changed = False

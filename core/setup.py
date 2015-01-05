@@ -38,7 +38,7 @@ setup(
         'zeit.content.image',
         'zeit.content.quiz>=0.4.2',
         'zeit.content.video',
-        'zeit.edit >= 2.6.1.dev0',
+        'zeit.edit >= 2.7.0.dev0',
         'zeit.find >= 2.3.0.dev0',
         'zope.app.appsetup',
         'zope.app.generations',
