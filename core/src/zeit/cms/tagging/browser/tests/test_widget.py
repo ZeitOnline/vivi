@@ -27,8 +27,11 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
             self.assertNotIn('t3', self.browser.contents)
 
 
-class InputWidget(zeit.cms.testing.ZeitCmsSeleniumTestCase,
+class InputWidget(zeit.cms.testing.SeleniumTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
+
+    # XXX drag&drop fails with Webdriver
+    layer = zeit.cms.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(InputWidget, self).setUp()

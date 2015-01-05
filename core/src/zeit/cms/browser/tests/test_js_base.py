@@ -29,11 +29,11 @@ class EvaluateTest(zeit.cms.testing.ZeitCmsSeleniumTestCase):
         <script type="text/javascript">
           zeit.cms.test_inline_loaded = (zeit.cms.test_inline_loaded || 0) + 1;
         </script>""")
-        self.assertEqual('null', self.eval('zeit.cms.test_inline_loaded'))
+        self.assertEqual(None, self.eval('zeit.cms.test_inline_loaded'))
         self.evaluate_js_and_css()
-        self.assertEqual('1', self.eval('zeit.cms.test_inline_loaded'))
+        self.assertEqual(1, self.eval('zeit.cms.test_inline_loaded'))
         self.evaluate_js_and_css()
-        self.assertEqual('1', self.eval('zeit.cms.test_inline_loaded'))
+        self.assertEqual(1, self.eval('zeit.cms.test_inline_loaded'))
 
     def test_imports_style_sheets(self):
         s = self.selenium

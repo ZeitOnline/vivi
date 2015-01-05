@@ -341,7 +341,9 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             self.old_log_level = logging.root.level
             logging.root.setLevel(logging.WARN)
             transaction.commit()
-        self.run_js('window.localStorage.clear();')
+        if not isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
+            # XXX This fails with webdriver
+            self.run_js('window.localStorage.clear();')
 
         self.original_windows = set(self.selenium.getAllWindowIds())
         self.original_width = self.selenium.getEval('window.outerWidth')
@@ -416,7 +418,10 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             return self.seleniumrc_globals
 
     def eval(self, text):
-        return self.selenium.getEval(self.js_globals + text)
+        result = self.selenium.getEval(self.js_globals + text)
+        if isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
+            result = json.loads(result)
+        return result
 
     def run_js(self, text):
         if isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
@@ -586,7 +591,7 @@ class ZeitCmsBrowserTestCase(BrowserTestCase):
 
 class ZeitCmsSeleniumTestCase(SeleniumTestCase):
 
-    layer = SELENIUM_LAYER
+    layer = WEBDRIVER_LAYER
 
 
 class JSLintTestCase(gocept.jslint.TestCase):

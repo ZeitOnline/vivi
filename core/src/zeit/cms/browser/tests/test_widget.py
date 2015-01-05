@@ -68,7 +68,10 @@ class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
             '...class="object-details type-testcontenttype"...')
 
 
-class TestObjectDetailsJavascript(zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
+
+    # XXX drag&drop fails with Webdriver
+    layer = zeit.cms.testing.SELENIUM_LAYER
 
     def test_icon_is_draggable_as_content_object(self):
         self.open(
@@ -246,8 +249,10 @@ class TestObjectSequenceWidgetIntegration(
                 'field.', [...], '@@object-details', 'foo'...""", widget())
 
 
-class TestObjectSequenceWidgetJavascript(
-        zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
+
+    # XXX drag&drop fails with Webdriver
+    layer = zeit.cms.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(TestObjectSequenceWidgetJavascript, self).setUp()
@@ -492,7 +497,10 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
                       'http://xml.zeit.de/autoren/A/Test_Autor/index')
 
 
-class TestDropObjectWidget(zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
+
+    # XXX drag&drop fails with Webdriver
+    layer = zeit.cms.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(TestDropObjectWidget, self).setUp()
@@ -540,7 +548,10 @@ zeit.cms.activate_objectbrowser = function(types) {
             'foo', self.eval('zeit.cms._activate_objectbrowser_arg'))
 
 
-class TestDropObjectWidgetAccept(zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
+
+    # XXX drag&drop fails with Webdriver
+    layer = zeit.cms.testing.SELENIUM_LAYER
 
     def setUp(self):
         super(TestDropObjectWidgetAccept, self).setUp()
@@ -960,7 +971,7 @@ class RestructuredTextWidgetJavascriptTest(
     def test_clicking_on_a_link_opens_it(self):
         s = self.selenium
         s.click('link=my link')
-        s.selectWindow(s.getAllWindowNames()[-1])
+        s.selectWindow(s.getAllWindowIds()[-1])
         s.assertNotLocation('*/restructuredtext.html')
         s.close()
         s.selectWindow()

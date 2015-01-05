@@ -7,7 +7,8 @@ import zeit.cms.testing
 
 class TestListing(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.cms.testing.WEBDRIVER_LAYER
+    # XXX drag&drop fails with Webdriver
+    layer = zeit.cms.testing.SELENIUM_LAYER
 
     def test_tablelisting_filter(self):
         s = self.selenium
