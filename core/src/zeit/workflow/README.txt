@@ -540,11 +540,11 @@ Publish the folder again and verify the log:
 >>> tasks.process()
 >>> print logfile.getvalue()
 Running job ...
-Publishing http://xml.zeit.de/online/2007/01
-Could not checkout http://xml.zeit.de/online/2007/01
+Publishing http://xml.zeit.de/online/2007/01/
+Could not checkout http://xml.zeit.de/online/2007/01/
 ...publish.sh:
 Publishing test script
-work/online/2007/01
+work/online/2007/01/
 work/online/2007/01/4schanzentournee-abgesang
 work/online/2007/01/Arbeitsmarktzahlen
 work/online/2007/01/EU-Beitritt-rumaenien-bulgarien
@@ -599,7 +599,7 @@ work/online/2007/01/terror-abschuss-schaeuble
 work/online/2007/01/thailand-anschlaege
 work/online/2007/01/weissrussland-russland-gas
 done.
-Done http://xml.zeit.de/online/2007/01 (...s)
+Done http://xml.zeit.de/online/2007/01/ (...s)
 
 
 Retract script
@@ -614,7 +614,7 @@ of publish:
 >>> tasks.process()
 >>> print logfile.getvalue()
 Running job ...
-Retracting http://xml.zeit.de/online/2007/01
+Retracting http://xml.zeit.de/online/2007/01/
 ...retract.sh:
 Retracting test script
 work/online/2007/01/weissrussland-russland-gas
@@ -624,10 +624,10 @@ work/online/2007/01/teddy-kollek-nachruf
 ...
 work/online/2007/01/Arbeitsmarktzahlen
 work/online/2007/01/4schanzentournee-abgesang
-work/online/2007/01
+work/online/2007/01/
 done.
-Could not checkout http://xml.zeit.de/online/2007/01
-Done http://xml.zeit.de/online/2007/01 (...s)
+Could not checkout http://xml.zeit.de/online/2007/01/
+Done http://xml.zeit.de/online/2007/01/ (...s)
 
 
 Error handling
@@ -914,24 +914,24 @@ When somalia is published, the folder and its content is also published:
 >>> print logfile.getvalue(),
 Running job ...
 Publishing http://xml.zeit.de/online/2007/01/Somalia
-Could not checkout http://xml.zeit.de/2007
-Could not checkout http://xml.zeit.de/2007/01
-Could not checkout http://xml.zeit.de/2007/02
-Could not checkout http://xml.zeit.de/2007/03
+Could not checkout http://xml.zeit.de/2007/
+Could not checkout http://xml.zeit.de/2007/01/
+Could not checkout http://xml.zeit.de/2007/02/
+Could not checkout http://xml.zeit.de/2007/03/
 ...publish.sh:
 Publishing test script
 work/online/2007/01/Somalia
-work/2007
+work/2007/
 work/politik.feed
-work/2007/01
-work/2007/02
-work/2007/03
+work/2007/01/
+work/2007/02/
+work/2007/03/
 work/2007/test
 work/2007/01/LB-Sch-ttler
 ...
 work/2007/02/Vorspann-Dappen
 work/2007/02/W-Clear-02
-work/2007/03/group
+work/2007/03/group/
 done.
 ...
 
@@ -943,7 +943,7 @@ True
 The publication is also logged in the object log:
 
 >>> print_log(log.get_log(repository['2007']))
-http://xml.zeit.de/2007
+http://xml.zeit.de/2007/
      Published
 
 
