@@ -6,18 +6,17 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
-import z3c.traverser.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.interfaces
 import zeit.edit.block
+import zeit.edit.body
 import zeit.edit.container
 import zeit.edit.rule
-import zope.publisher.interfaces
 import zope.schema.interfaces
 import zope.security.proxy
 
 
-editable_body_name = 'editable-body'
+BODY_NAME = 'editable-body'
 
 
 class EditableBody(zeit.edit.container.Base,
@@ -28,7 +27,7 @@ class EditableBody(zeit.edit.container.Base,
     grok.adapts(zeit.content.article.interfaces.IArticle,
                 gocept.lxml.interfaces.IObjectified)
 
-    __name__ = editable_body_name
+    __name__ = BODY_NAME
 
     _find_item = lxml.etree.XPath(
         './/*[@cms:__name__ = $name]',
@@ -143,40 +142,11 @@ def get_editable_body(article):
         zeit.content.article.edit.interfaces.IEditableBody)
 
 
-class BodyTraverser(grok.Adapter):
+class BodyTraverser(zeit.edit.body.Traverser):
 
     grok.context(zeit.content.article.interfaces.IArticle)
-    grok.implements(zope.traversing.interfaces.ITraversable)
-
-    def traverse(self, name, furtherPath):
-        if name == editable_body_name:
-            body = zeit.content.article.edit.interfaces.IEditableBody(
-                self.context, None)
-            if body is not None:
-                return body
-        else:
-            # XXX zope.component does not offer an API to get the next adapter
-            # that is less specific than the current one. So we hard-code the
-            # default.
-            return zope.traversing.adapters.DefaultTraversable(
-                self.context).traverse(name, furtherPath)
-
-
-class BodyPublishTraverser(object):
-
-    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
-
-    def __init__(self, context, request):
-        self.context = context
-        self.request = request
-
-    def publishTraverse(self, request, name):
-        try:
-            return zope.traversing.interfaces.ITraversable(
-                self.context).traverse(name, None)
-        except zope.location.interfaces.LocationError:
-            raise zope.publisher.interfaces.NotFound(
-                self.context, name, request)
+    body_name = BODY_NAME
+    body_interface = zeit.content.article.edit.interfaces.IEditableBody
 
 
 # Remove all the __name__ thingies on before adding an article to the

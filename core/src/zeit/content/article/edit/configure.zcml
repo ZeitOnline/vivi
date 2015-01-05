@@ -20,9 +20,9 @@
   </class>
 
   <subscriber
-    factory=".body.BodyPublishTraverser"
+    factory="zeit.edit.body.PublishTraverser"
     for="zeit.content.article.interfaces.IArticle
-    zeit.cms.browser.interfaces.ICMSLayer"
+         zeit.cms.browser.interfaces.ICMSLayer"
     provides="z3c.traverser.interfaces.ITraverserPlugin"
     />
 
