@@ -6,16 +6,18 @@
 
   <!-- teaser block -->
 
+  <configure package="zeit.edit.browser">
   <browser:viewletManager
-    provides="..interfaces.IEditorContentViewletManager"
+    provides="zeit.content.cp.browser.interfaces.IEditorContentViewletManager"
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
-    class=".teaser.TeaserBlockViewletManager"
+    class="zeit.content.cp.browser.blocks.teaser.TeaserBlockViewletManager"
     template="layout.block.contents.pt"
     name="zeit.edit.contents"
     permission="zope.View"
     />
+  </configure>
 
   <browser:viewlet
     for="zeit.content.cp.interfaces.ITeaserBlock"
