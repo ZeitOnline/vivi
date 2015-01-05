@@ -2,17 +2,10 @@
 # See also LICENSE.txt
 
 import zeit.cms.generation
-import zeit.cms.generation.install
-import zeit.content.cp.teasergroup.interfaces
-import zeit.content.cp.teasergroup.teasergroup
 
 
 def install(root):
-    zeit.cms.generation.install.installLocalUtility(
-        root,
-        zeit.content.cp.teasergroup.teasergroup.Repository,
-        u'repository-teasergroups',
-        zeit.content.cp.teasergroup.interfaces.IRepository)
+    return  # Used to install teasergroup repository, which has been removed.
 
 
 def evolve(context):

@@ -55,8 +55,6 @@ setup(
     entry_points={
         'console_scripts': [
             'refresh-feeds = zeit.content.cp.feed:refresh_all',
-            'sweep-teasergroup-repository = zeit.content.cp.teasergroup'
-            '.teasergroup:sweep_repository',
         ],
         'fanstatic.libraries': [
             'zeit_content_cp=zeit.content.cp.browser.resources:lib',

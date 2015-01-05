@@ -122,22 +122,6 @@ class TeaserBlock(
         self._assert_not_autopilot()
         # self._p_changed = True
         content = zeit.cms.interfaces.ICMSContent(content)
-        if zeit.content.cp.teasergroup.interfaces.ITeaserGroup.providedBy(
-                content):
-            self._insert_teaser_group(index, content)
-        else:
-            self._insert_content(index, content)
-
-    def _insert_teaser_group(self, index, group):
-        for i, content in enumerate(group.teasers):
-            if zeit.content.cp.interfaces.ITeaser.providedBy(content):
-                # Teaser objects referenced in teaser groups are copied.
-                copier = zope.copypastemove.interfaces.IObjectCopier(content)
-                copied_name = copier.copyTo(content.__parent__)
-                content = content.__parent__[copied_name]
-            self._insert_content(index + i, content)
-
-    def _insert_content(self, index, content):
         super(TeaserBlock, self).insert(index, content)
 
     @property
