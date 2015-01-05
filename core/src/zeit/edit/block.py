@@ -136,7 +136,7 @@ class TypeOnAttributeElementFactory(ElementFactory):
         container = getattr(lxml.objectify.E, self.tag_name)()
         container.set(
             '{http://namespaces.zeit.de/CMS/cp}type', self.element_type)
-        container.set('module', self.module)
+        container.set('module', self.module)  # XXX Why? Who needs this?
         return container
 
 
