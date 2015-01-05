@@ -15,7 +15,7 @@ class LandingZone(zeit.edit.browser.view.Action):
 
     Order can have the following values:
 
-    * integer (position)
+    * integer (position) XXX only used as '0', should use 'top' instead
     * `top` (insert at beginning)
     * `bottom` (insert at bottom)
     * `insert-after` (insert after element given by `insert_after` property)
