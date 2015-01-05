@@ -37,6 +37,12 @@ import zope.security.proxy
 BODY_NAME = 'body'
 
 
+def create_delegate(name):
+    def delegate(self, *args, **kw):
+        return getattr(self.body, name)(*args, **kw)
+    return delegate
+
+
 class CenterPage(zeit.cms.content.metadata.CommonMetadata):
 
     zope.interface.implements(zeit.content.cp.interfaces.ICenterPage,
@@ -45,24 +51,15 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     default_template = pkg_resources.resource_string(__name__,
                                                      'cp-template.xml')
 
+    DELEGATE_METHODS = set(zeit.edit.interfaces.IContainer) - set(
+        zeit.cms.content.interfaces.IXMLContent)
+
     @property
     def body(self):
         return zeit.content.cp.interfaces.IBody(self)
 
-    def values(self):
-        return self.body.values()
-
-    def keys(self):
-        return self.body.keys()
-
-    def __getitem__(self, key):
-        return self.body[key]
-
-    def __iter__(self):
-        return iter(self.body)
-
-    def __contains__(self, key):
-        return self.body.__contains__(key)
+    for name in DELEGATE_METHODS:
+        locals()[name] = create_delegate(name)
 
     _type_xml = zeit.cms.content.property.ObjectPathAttributeProperty(
         None, 'type', zeit.content.cp.interfaces.ICenterPage['type'])
