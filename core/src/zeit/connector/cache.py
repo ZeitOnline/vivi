@@ -117,7 +117,58 @@ class Body(persistent.Persistent):
         return commited
 
 
-class ResourceCache(persistent.Persistent):
+class AccessTimes(object):
+
+    CACHE_TIMEOUT = NotImplemented
+    UPDATE_INTERVAL = NotImplemented
+
+    def __init__(self):
+        self._last_access_time = BTrees.family64.OI.BTree()
+        self._access_time_to_ids = BTrees.family32.IO.BTree()
+
+    def _update_cache_access(self, key):
+        last_access_time = self._last_access_time.get(key, 0)
+        new_access_time = self._get_time_key(time.time())
+
+        old_set = None
+        if last_access_time / 10e6 < 10e6:
+            # Ignore old access times. This is to allow an update w/o downtime.
+            old_set = self._access_time_to_ids.get(last_access_time)
+
+        try:
+            new_set = self._access_time_to_ids[new_access_time]
+        except KeyError:
+            new_set = self._access_time_to_ids[new_access_time] = (
+                BTrees.family32.OI.TreeSet())
+
+        if old_set != new_set:
+            if old_set is not None:
+                try:
+                    old_set.remove(key)
+                except KeyError:
+                    pass
+
+            new_set.insert(key)
+            self._last_access_time[key] = new_access_time
+
+    def sweep(self):
+        timeout = self._get_time_key(time.time() - self.CACHE_TIMEOUT)
+        access_times_to_remove = []
+        for access_time in self._access_time_to_ids.keys(max=timeout):
+            access_times_to_remove.append(access_time)
+            id_set = self._access_time_to_ids[access_time]
+            for id in id_set:
+                log.info('Evicting %s', id)
+                self._last_access_time.pop(id, None)
+                self.remove(id)
+        for access_time in access_times_to_remove:
+            self._access_time_to_ids.pop(access_time, None)
+
+    def _get_time_key(self, time):
+        return int(time / self.UPDATE_INTERVAL)
+
+
+class ResourceCache(AccessTimes, persistent.Persistent):
     """Cache for ressource data."""
 
     zope.interface.implements(zeit.connector.interfaces.IResourceCache)
@@ -126,9 +177,8 @@ class ResourceCache(persistent.Persistent):
     UPDATE_INTERVAL = 24 * 3600
 
     def __init__(self):
+        super(ResourceCache, self).__init__()
         self._data = BTrees.family64.OO.BTree()
-        self._last_access_time = BTrees.family64.OI.BTree()
-        self._access_time_to_ids = BTrees.family32.IO.BTree()
 
     def getData(self, unique_id, properties):
         key = get_storage_key(unique_id)
@@ -176,63 +226,29 @@ class ResourceCache(persistent.Persistent):
         self._update_cache_access(key)
         return store.open()
 
-    def _update_cache_access(self, key):
-        last_access_time = self._last_access_time.get(key, 0)
-        new_access_time = self._get_time_key(time.time())
-
-        old_set = None
-        if last_access_time / 10e6 < 10e6:
-            # Ignore old access times. This is to allow an update w/o downtime.
-            old_set = self._access_time_to_ids.get(last_access_time)
-
-        try:
-            new_set = self._access_time_to_ids[new_access_time]
-        except KeyError:
-            new_set = self._access_time_to_ids[new_access_time] = (
-                BTrees.family32.OI.TreeSet())
-
-        if old_set != new_set:
-            if old_set is not None:
-                try:
-                    old_set.remove(key)
-                except KeyError:
-                    pass
-
-            new_set.insert(key)
-            self._last_access_time[key] = new_access_time
-
-    def sweep(self):
-        timeout = self._get_time_key(time.time() - self.CACHE_TIMEOUT)
-        access_times_to_remove = []
-        for access_time in self._access_time_to_ids.keys(max=timeout):
-            access_times_to_remove.append(access_time)
-            id_set = self._access_time_to_ids[access_time]
-            for id in id_set:
-                self._last_access_time.pop(id, None)
-                self._data.pop(id, None)
-        for access_time in access_times_to_remove:
-            self._access_time_to_ids.pop(access_time, None)
-
-    def _get_time_key(self, time):
-        return int(time / self.UPDATE_INTERVAL)
+    def remove(self, unique_id):
+        self._data.pop(unique_id, None)
 
 
-class PersistentCache(persistent.Persistent):
+class PersistentCache(AccessTimes, persistent.Persistent):
 
     zope.interface.implements(zeit.connector.interfaces.IPersistentCache)
 
     CACHE_VALUE_CLASS = None  # Set in subclass
 
     def __init__(self):
+        super(PersistentCache, self).__init__()
         self._storage = BTrees.family32.OO.BTree()
 
     def __getitem__(self, key):
+        skey = get_storage_key(key)
         try:
-            value = self._storage[get_storage_key(key)]
+            value = self._storage[skey]
         except KeyError:
             raise KeyError(key)
         if self._is_deleted(value):
             raise KeyError(key)
+        self._update_cache_access(skey)
         return value
 
     def get(self, key, default=None):
@@ -244,6 +260,7 @@ class PersistentCache(persistent.Persistent):
     def __contains__(self, key):
         key = get_storage_key(key)
         value = self._storage.get(key, self)
+        self._update_cache_access(key)
         return value is not self and not self._is_deleted(value)
 
     def keys(self, include_deleted=False):
@@ -263,12 +280,14 @@ class PersistentCache(persistent.Persistent):
         del self._storage[get_storage_key(key)]
 
     def __setitem__(self, key, value):
-        old_value = self._storage.get(get_storage_key(key))
+        skey = get_storage_key(key)
+        old_value = self._storage.get(skey)
         if isinstance(old_value, self.CACHE_VALUE_CLASS):
             self._set_value(old_value, value)
         else:
             value = self.CACHE_VALUE_CLASS(value)
-            self._storage[get_storage_key(key)] = value
+            self._storage[skey] = value
+        self._update_cache_access(skey)
 
     def _is_deleted(self, value):
         return zeit.connector.interfaces.DeleteProperty in value
@@ -364,6 +383,9 @@ class PropertyCache(PersistentCache):
 
     CACHE_VALUE_CLASS = Properties
 
+    CACHE_TIMEOUT = 30 * 24 * 3600
+    UPDATE_INTERVAL = 24 * 3600
+
     def _mark_deleted(self, value):
         value.clear()
         value[zeit.connector.interfaces.DeleteProperty] = None
@@ -398,6 +420,9 @@ class ChildNameCache(PersistentCache):
     zope.interface.implements(zeit.connector.interfaces.IChildNameCache)
 
     CACHE_VALUE_CLASS = ChildNames
+
+    CACHE_TIMEOUT = 30 * 24 * 3600
+    UPDATE_INTERVAL = 24 * 3600
 
     def _mark_deleted(self, value):
         value.clear()
