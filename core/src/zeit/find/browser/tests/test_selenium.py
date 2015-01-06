@@ -8,7 +8,7 @@ import zeit.find.tests
 
 class TestTabs(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.find.tests.SeleniumLayer
+    layer = zeit.find.tests.SELENIUM_LAYER
 
     def setUp(self):
         super(TestTabs, self).setUp()
@@ -32,7 +32,7 @@ class TestTabs(zeit.cms.testing.SeleniumTestCase):
 
 class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
-    layer = zeit.find.tests.SeleniumLayer
+    layer = zeit.find.tests.SELENIUM_LAYER
     skin = 'vivi'
 
     def setUp(self):
@@ -65,7 +65,6 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
     def test_extended_search_display(self):
         s = self.selenium
-        s.verifyVisible('id=extended_search_info')
         s.verifyNotVisible('id=extended_search')
         s.click('id=extended_search_button')
         s.waitForVisible('id=extended_search')
@@ -78,7 +77,6 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
 
     def test_type_search_display(self):
         s = self.selenium
-        s.verifyVisible('id=type_search_info')
         s.verifyNotVisible('id=type_search')
         s.click('id=type_search_button')
         s.waitForVisible('id=type_search')
@@ -97,6 +95,8 @@ class TestSearch(zeit.cms.testing.SeleniumTestCase):
         s.select('name=product', 'Zeit Online')
         s.type('name=author', 'foo')
         s.select('name=sort_order', 'Datum')
+        s.click('id=type_search_button')
+        s.waitForVisible('id=type_search')
         s.check('id=search-type-testcontenttype')
         s.click('id=search_button')
         s.pause(1000)
