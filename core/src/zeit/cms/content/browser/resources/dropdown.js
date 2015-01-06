@@ -12,8 +12,7 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
         // fix #10664, the resulting difference in behaviour between
         // addcentral and, e.g., an article's edit form happened to be what
         // was requested, so we left it at that.
-        self.slave_field = MochiKit.DOM.getFirstParentByTagAndClassName(
-            slave, '', 'field');
+        self.slave_field = jQuery(slave).closest('.field');
 
         MochiKit.Signal.connect(master, 'onchange', self, self.update);
         self.update();
@@ -31,9 +30,9 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
             var data = evalJSONRequest(result)
 
             if (data.length == 0) {
-                MochiKit.Style.hideElement(self.slave_field);
+                self.slave_field.hide();
             } else {
-                MochiKit.Style.showElement(self.slave_field);
+                self.slave_field.show();
             }
 
             var selected = self.slave.value;
