@@ -339,9 +339,6 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             self.old_log_level = logging.root.level
             logging.root.setLevel(logging.WARN)
             transaction.commit()
-        if not isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
-            # XXX This fails with webdriver
-            self.run_js('window.localStorage.clear();')
 
         self.original_windows = set(self.selenium.getAllWindowIds())
         self.original_width = self.selenium.getEval('window.outerWidth')
@@ -349,6 +346,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.selenium.setWindowSize(self.window_width, self.window_height)
 
         self._prefill_http_auth_cache()
+        self.run_js('window.localStorage.clear();')
 
     def _prefill_http_auth_cache(self):
         # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
