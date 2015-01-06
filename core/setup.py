@@ -95,7 +95,7 @@ setup(
         'zope.testing>=3.8.0',
         'zope.xmlpickle',
         'gocept.httpserverlayer>=1.4.0.dev0',
-        'gocept.selenium>=2.0.0b5.dev0',
+        'gocept.selenium>=2.2.0.dev0',
         'gocept.jslint>=0.2',
     ],
     setup_requires=['setuptools_hg'],

@@ -248,12 +248,12 @@ class TestObjectSequenceWidgetIntegration(
                 'field.', [...], '@@object-details', 'foo'...""", widget())
 
 
-class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
+class TestObjectSequenceWidgetJavascriptFoo(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestObjectSequenceWidgetJavascript, self).setUp()
+        super(TestObjectSequenceWidgetJavascriptFoo, self).setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget.html')
 
@@ -268,9 +268,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForElementPresent('css=li.element')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
-        # XXX CSS2/3 selectors would be nice
-        s.waitForElementPresent(
-            '//li[contains(@class, "element") and @index = 1]')
+        s.waitForElementPresent('jquery=li.element[index=1]')
 
     def test_widget_should_not_insert_dropped_non_object_draggables(self):
         s = self.selenium
@@ -342,6 +340,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.waitForCssCount('css=.object-details', 1)
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
         s.waitForCssCount('css=.object-details', 2)
+        # Need xpath for assertOrdered, sigh.
         element1 = '//li[contains(@class, "element") and @index = 0]'
         element2 = '//li[contains(@class, "element") and @index = 1]'
         s.assertOrdered(element1, element2)
@@ -358,9 +357,8 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
                       'http://xml.zeit.de/testcontent')
         s.assertValue("//input[@name='testwidget.1']",
                       'http://xml.zeit.de/2007')
-        element1 = '//li[contains(@class, "element") and @index = 0]'
-        element2 = '//li[contains(@class, "element") and @index = 1]'
-        s.dragAndDropToObject(element1, element2)
+        s.dragAndDropToObject(
+            'jquery=li.element[index = 0]', 'jquery=li.element[index = 1]')
         s.assertValue("//input[@name='testwidget.0']",
                       'http://xml.zeit.de/2007')
         s.assertValue("//input[@name='testwidget.1']",

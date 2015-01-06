@@ -22,10 +22,9 @@ class TestClipboard(zeit.cms.testing.SeleniumTestCase):
         s.click('//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
-        s.click('xpath=//td[contains(string(.), "testcontent")]')
+        s.click('jquery=td:contains(testcontent)')
         s.waitForElementPresent('css=div#bottomcontent > div')
         s.pause(500)
         s.dragAndDropToObject(
-            'xpath=//td[contains(string(.), "testcontent")]',
-            '//li[@uniqueid="Clip"]')
-        s.pause(500)
+            'jquery=td:contains(testcontent)', '//li[@uniqueid="Clip"]')
+        s.waitForElementPresent('//li[@uniqueid="Clip/testcontent"]')

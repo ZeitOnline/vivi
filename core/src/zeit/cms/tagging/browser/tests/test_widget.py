@@ -60,8 +60,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         s = self.selenium
         s.assertText('id=form.keywords.list', '*t1*t2*t3*t4*')
         s.dragAndDropToObject(
-            "xpath=//li[contains(., 't1')]",
-            "xpath=//li[contains(., 't3')]")
+            'jquery=li:contains(t1)', 'jquery=li:contains(t3)')
         s.assertText('id=form.keywords.list', '*t2*t3*t1*t4*')
         # XXX check that sorting triggers a change event (inlineforms need it)
 
@@ -71,8 +70,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.open_content()
         s = self.selenium
         s.dragAndDropToObject(
-            "xpath=//li[contains(., 't1')]",
-            "xpath=//li[contains(., 't3')]")
+            'jquery=li:contains(t1)', 'jquery=li:contains(t3)')
         s.assertText('id=form.keywords.list', '*t2*t3*t1*t4*')
         s.clickAndWait('name=form.actions.apply')
         self.assertEqual(
@@ -83,7 +81,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click('//li[contains(., "t1")]//*[contains(@class, "delete")]')
+        s.click('jquery=li:contains(t1) .delete')
         s.clickAndWait('name=form.actions.apply')
         self.assertNotIn('t1', self.tagger())
         self.assertIn('t2', self.tagger())
@@ -105,7 +103,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click('//li[contains(., "t1")]//*[contains(@class, "delete")]')
+        s.click('jquery=li:contains(t1) .delete')
         s.click('update_tags')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
@@ -136,11 +134,9 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click(
-            '//li[contains(., "t1")]//*[contains(@class, "toggle-pin")]')
+        s.click('jquery=li:contains(t1) .toggle-pin')
         s.clickAndWait('name=form.actions.apply')
-        s.waitForElementPresent(
-            '//li[contains(., "t1")]//*[contains(@class, "pinned")]')
+        s.waitForElementPresent('jquery=li:contains(t1) .pinned')
         s.assertNotTextPresent('Wrong contained type')
 
     def test_after_autocomplete_add_shown_markings_are_updated(self):
@@ -154,7 +150,6 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
             self.add_keyword_by_autocomplete('Polarkreis')
             self.add_keyword_by_autocomplete('Kohle')
             s.clickAndWait('name=form.actions.apply')
-            s.waitForElementPresent(
-                '//li[contains(@class, "shown") and contains(., "Kohle")]')
+            s.waitForElementPresent('jquery=li.shown:contains(Kohle)')
             s.assertCssCount('css=.fieldname-keywords li.not-shown', 1)
             s.assertCssCount('css=.fieldname-keywords li.shown', 1)
