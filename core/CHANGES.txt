@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.32.1 (unreleased)
+2.33.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix test setup (clearing localStorage) to work with Webdriver (VIV-266).
 
 
 2.32.0 (2014-12-17)
