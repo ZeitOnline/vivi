@@ -252,6 +252,10 @@ form[action$="edit.form.assets"] .objectsequencewidget ul {
   visibility: hidden;
 }
 
+#cp-content .lightbox .landing-zone.droppable-active {
+  visibility: visible;
+}
+
 #cp-content .lightbox .landing-zone.visible {
   margin-top: 1em;
   height: 1em;
