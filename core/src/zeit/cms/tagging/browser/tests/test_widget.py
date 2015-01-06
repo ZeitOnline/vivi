@@ -30,8 +30,7 @@ class DisplayWidget(zeit.cms.testing.ZeitCmsBrowserTestCase,
 class InputWidget(zeit.cms.testing.SeleniumTestCase,
                   zeit.cms.tagging.testing.TaggingHelper):
 
-    # XXX drag&drop fails with Webdriver
-    layer = zeit.cms.testing.SELENIUM_LAYER
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(InputWidget, self).setUp()
@@ -54,16 +53,19 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         s.type('name=form.title', 'Test')
         s.type('name=form.authors.0.', 'Hans Wurst')
 
+    @unittest.skip("Selenium doesn't do d'n'd on jqueryui sortable.")
     def test_tags_should_be_sortable(self):
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.assertTextPresent('t1*t2*t3*t4')
+        s.assertText('id=form.keywords.list', '*t1*t2*t3*t4*')
         s.dragAndDropToObject(
             "xpath=//li[contains(., 't1')]",
             "xpath=//li[contains(., 't3')]")
-        s.assertTextPresent('t2*t3*t1*t4')
+        s.assertText('id=form.keywords.list', '*t2*t3*t1*t4*')
+        # XXX check that sorting triggers a change event (inlineforms need it)
 
+    @unittest.skip("Selenium doesn't do d'n'd on jqueryui sortable.")
     def test_sorted_tags_should_be_saved(self):
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
@@ -71,28 +73,17 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         s.dragAndDropToObject(
             "xpath=//li[contains(., 't1')]",
             "xpath=//li[contains(., 't3')]")
-        s.assertTextPresent('t2*t3*t1*t4')
+        s.assertText('id=form.keywords.list', '*t2*t3*t1*t4*')
         s.clickAndWait('name=form.actions.apply')
         self.assertEqual(
             ['t2', 't3', 't1', 't4'],
             list(self.tagger().updateOrder.call_args[0][0]))
 
-    @unittest.skip("Selenium doesn't do d'n'd on jqueryui sortable.")
-    def test_change_event_is_triggered_on_sorting_tags(self):
-        self.setup_tags('t1', 't2', 't3', 't4')
-        self.open_content()
-        s = self.selenium
-        s.dragAndDropToObject(
-            "xpath=//li[contains(., 't1')]",
-            "xpath=//li[contains(., 't3')]")
-        s.assertTextPresent('t2*t3*t1*t4')
-        # XXX
-
     def test_unchecked_tags_should_be_disabled(self):
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click('css=li:contains(t1) .delete')
+        s.click('//li[contains(., "t1")]//*[contains(@class, "delete")]')
         s.clickAndWait('name=form.actions.apply')
         self.assertNotIn('t1', self.tagger())
         self.assertIn('t2', self.tagger())
@@ -114,7 +105,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click('css=li:contains(t1) .delete')
+        s.click('//li[contains(., "t1")]//*[contains(@class, "delete")]')
         s.click('update_tags')
         s.pause(100)
         s.clickAndWait('name=form.actions.apply')
@@ -145,9 +136,11 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
         self.setup_tags('t1', 't2', 't3', 't4')
         self.open_content()
         s = self.selenium
-        s.click('css=li:contains(t1) .toggle-pin')
+        s.click(
+            '//li[contains(., "t1")]//*[contains(@class, "toggle-pin")]')
         s.clickAndWait('name=form.actions.apply')
-        s.waitForElementPresent('css=li:contains(t1) .pinned')
+        s.waitForElementPresent(
+            '//li[contains(., "t1")]//*[contains(@class, "pinned")]')
         s.assertNotTextPresent('Wrong contained type')
 
     def test_after_autocomplete_add_shown_markings_are_updated(self):
@@ -161,6 +154,7 @@ class InputWidget(zeit.cms.testing.SeleniumTestCase,
             self.add_keyword_by_autocomplete('Polarkreis')
             self.add_keyword_by_autocomplete('Kohle')
             s.clickAndWait('name=form.actions.apply')
-            s.waitForElementPresent('css=li.shown:contains(Kohle)')
+            s.waitForElementPresent(
+                '//li[contains(@class, "shown") and contains(., "Kohle")]')
             s.assertCssCount('css=.fieldname-keywords li.not-shown', 1)
             s.assertCssCount('css=.fieldname-keywords li.shown', 1)

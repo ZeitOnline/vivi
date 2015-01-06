@@ -4,7 +4,9 @@
 import zeit.cms.testing
 
 
-class DragAndDrop(zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class DragAndDrop(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def start_drag(self, locator):
         s = self.selenium
@@ -17,3 +19,4 @@ class DragAndDrop(zeit.cms.testing.ZeitCmsSeleniumTestCase):
             '/@@/zeit.cms.browser.tests.fixtures/landingzone.html')
         self.start_drag('drag')
         s.waitForElementPresent('css=#drop.droppable-active')
+        s.mouseUp('drag')

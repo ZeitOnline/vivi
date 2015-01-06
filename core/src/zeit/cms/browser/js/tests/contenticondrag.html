@@ -2,6 +2,12 @@
 <html>
   <head>
     <tal:block replace="context/@@standard_macros/require_resources"/>
+    <style type="text/css">
+      /* make visible so webdriver has something to grab for drag&drop */
+      .content-icon .uniqueId {
+        display: block;
+      }
+    </style>
   </head>
   <body>
     <div id="testwidget" style="width: 20em; height:20em;">

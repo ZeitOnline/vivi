@@ -9,7 +9,9 @@ import zeit.cms.testing
 import zope.publisher.browser
 
 
-class TestTree(zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class TestTree(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def test_tree_keeps_state(self):
         s = self.selenium

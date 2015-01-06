@@ -4,7 +4,9 @@
 import zeit.cms.testing
 
 
-class EvaluateTest(zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class EvaluateTest(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(EvaluateTest, self).setUp()

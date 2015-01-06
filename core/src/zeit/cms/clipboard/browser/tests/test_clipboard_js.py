@@ -6,8 +6,7 @@ import zeit.cms.testing
 
 class TestClipboard(zeit.cms.testing.SeleniumTestCase):
 
-    # XXX drag&drop fails with Webdriver
-    layer = zeit.cms.testing.SELENIUM_LAYER
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def test_adding_via_drag_and_drop(self):
         self.open('/repository')

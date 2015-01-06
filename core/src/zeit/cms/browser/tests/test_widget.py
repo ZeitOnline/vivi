@@ -70,8 +70,7 @@ class TestObjectDetails(zeit.cms.testing.ZeitCmsBrowserTestCase):
 
 class TestObjectDetailsJavascript(zeit.cms.testing.SeleniumTestCase):
 
-    # XXX drag&drop fails with Webdriver
-    layer = zeit.cms.testing.SELENIUM_LAYER
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def test_icon_is_draggable_as_content_object(self):
         self.open(
@@ -251,8 +250,7 @@ class TestObjectSequenceWidgetIntegration(
 
 class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
 
-    # XXX drag&drop fails with Webdriver
-    layer = zeit.cms.testing.SELENIUM_LAYER
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(TestObjectSequenceWidgetJavascript, self).setUp()
@@ -270,7 +268,9 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.dragAndDropToObject('id=drag', 'id=testwidget')
         s.waitForElementPresent('css=li.element')
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
-        s.waitForElementPresent('css=li.element[index=1]')
+        # XXX CSS2/3 selectors would be nice
+        s.waitForElementPresent(
+            '//li[contains(@class, "element") and @index = 1]')
 
     def test_widget_should_not_insert_dropped_non_object_draggables(self):
         s = self.selenium
@@ -298,10 +298,10 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.assertValue("//input[@name='testwidget.count']", '0')
         s.type("//input[@name='testwidget.url']",
-               'http://xml.zeit.de/testcontent')
+               'http://xml.zeit.de/testcontent\n')
         s.waitForValue("//input[@name='testwidget.count']", '1')
         s.type("//input[@name='testwidget.url']",
-               'http://xml.zeit.de/testcontent')
+               'http://xml.zeit.de/testcontent\n')
         s.waitForValue("//input[@name='testwidget.count']", '2')
 
     def test_widget_should_load_details_from_server(self):
@@ -326,7 +326,7 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent("//input[@name='testwidget.0']")
         s.waitForElementPresent('css=a[rel=remove]')
         s.click('css=a[rel=remove]')
-        s.waitForElementNotPresent("css=input[@name='testwidget.0']")
+        s.waitForElementNotPresent("//input[@name='testwidget.0']")
 
     def test_remove_should_decrease_count(self):
         s = self.selenium
@@ -339,22 +339,28 @@ class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
     def test_elements_should_be_sortable(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
+        s.waitForCssCount('css=.object-details', 1)
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
-        s.assertOrdered('css=li.element[index=0]', 'css=li.element[index=1]')
-        s.dragAndDropToObject('css=li.element[index=0]',
-                              'css=li.element[index=1]')
-        s.assertOrdered('css=li.element[index=1]', 'css=li.element[index=0]')
+        s.waitForCssCount('css=.object-details', 2)
+        element1 = '//li[contains(@class, "element") and @index = 0]'
+        element2 = '//li[contains(@class, "element") and @index = 1]'
+        s.assertOrdered(element1, element2)
+        s.dragAndDropToObject(element1, element2)
+        s.assertOrdered(element2, element1)
 
     def test_sorting_should_update_hidden_field_indexes(self):
         s = self.selenium
         s.dragAndDropToObject('id=drag', 'id=testwidget')
+        s.waitForCssCount('css=.object-details', 1)
         s.dragAndDropToObject('id=drag2', 'id=testwidget')
+        s.waitForCssCount('css=.object-details', 2)
         s.assertValue("//input[@name='testwidget.0']",
                       'http://xml.zeit.de/testcontent')
         s.assertValue("//input[@name='testwidget.1']",
                       'http://xml.zeit.de/2007')
-        s.dragAndDropToObject('css=li.element[index=0]',
-                              'css=li.element[index=1]')
+        element1 = '//li[contains(@class, "element") and @index = 0]'
+        element2 = '//li[contains(@class, "element") and @index = 1]'
+        s.dragAndDropToObject(element1, element2)
         s.assertValue("//input[@name='testwidget.0']",
                       'http://xml.zeit.de/2007')
         s.assertValue("//input[@name='testwidget.1']",
@@ -370,10 +376,8 @@ zeit.cms.activate_objectbrowser = function(types) {
 };
 """)
         self.eval('zeit.cms.widget_under_test.configure_search()')
-        # the serialization in selenium-1 is a little weird (a two-item list
-        # would be "foo,bar")
         self.assertEqual(
-            'foo', self.eval('zeit.cms._activate_objectbrowser_arg'))
+            ['foo'], self.eval('zeit.cms._activate_objectbrowser_arg'))
 
 
 class ObjectWidgetMyDetails(zeit.cms.browser.view.Base):
@@ -415,8 +419,9 @@ def teardown_mydetails():
         name='mydetails')
 
 
-class ObjectWidgetDetailViews(
-    zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(ObjectWidgetDetailViews, self).setUp()
@@ -468,7 +473,9 @@ class ObjectWidgetDetailViews(
 
 
 class TestObjectSequenceWidgetAutocompleteJavascript(
-    zeit.cms.testing.ZeitCmsSeleniumTestCase):
+        zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(TestObjectSequenceWidgetAutocompleteJavascript, self).setUp()
@@ -497,13 +504,12 @@ class TestObjectSequenceWidgetAutocompleteJavascript(
                       'http://xml.zeit.de/autoren/A/Test_Autor/index')
 
 
-class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
+class TestDropObjectWidgetFoo(zeit.cms.testing.SeleniumTestCase):
 
-    # XXX drag&drop fails with Webdriver
-    layer = zeit.cms.testing.SELENIUM_LAYER
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestDropObjectWidget, self).setUp()
+        super(TestDropObjectWidgetFoo, self).setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/dropobjectwidget.html')
 
@@ -520,7 +526,7 @@ class TestDropObjectWidget(zeit.cms.testing.SeleniumTestCase):
     def test_url_input_should_set_input_value(self):
         s = self.selenium
         s.type("//input[@name='testwidget.url']",
-               'http://xml.zeit.de/testcontent')
+               'http://xml.zeit.de/testcontent\n')
         s.waitForValue('name=testwidget',
                        'http://xml.zeit.de/testcontent')
 
@@ -542,16 +548,13 @@ zeit.cms.activate_objectbrowser = function(types) {
 };
 """)
         self.eval('zeit.cms.widget_under_test.configure_search()')
-        # the serialization in selenium-1 is a little weird (a two-item list
-        # would be "foo,bar")
         self.assertEqual(
-            'foo', self.eval('zeit.cms._activate_objectbrowser_arg'))
+            ['foo'], self.eval('zeit.cms._activate_objectbrowser_arg'))
 
 
 class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
 
-    # XXX drag&drop fails with Webdriver
-    layer = zeit.cms.testing.SELENIUM_LAYER
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(TestDropObjectWidgetAccept, self).setUp()
@@ -567,11 +570,13 @@ class TestDropObjectWidgetAccept(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         self.start_drag('id=drag')
         s.assertElementPresent('css=.droppable-active')
+        s.mouseUp('id=drag')
 
     def test_not_accepted_class_should_not_make_dropzone_active(self):
         s = self.selenium
         self.start_drag('id=drag2')
         s.assertElementNotPresent('css=.droppable-active')
+        s.mouseUp('id=drag2')
 
 
 class TestDropObjectWidgetIntegration(
@@ -953,7 +958,9 @@ class RestructuredTextWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
 
 
 class RestructuredTextWidgetJavascriptTest(
-        zeit.cms.testing.ZeitCmsSeleniumTestCase):
+        zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(RestructuredTextWidgetJavascriptTest, self).setUp()

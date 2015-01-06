@@ -209,8 +209,6 @@ ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=True)
 WSGI_LAYER = WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-SELENIUM_LAYER = gocept.selenium.RCLayer(
-    name='SeleniumLayer', bases=(HTTP_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
@@ -587,11 +585,6 @@ class ZeitCmsTestCase(FunctionalTestCase):
 class ZeitCmsBrowserTestCase(BrowserTestCase):
 
     layer = ZCML_LAYER
-
-
-class ZeitCmsSeleniumTestCase(SeleniumTestCase):
-
-    layer = WEBDRIVER_LAYER
 
 
 class JSLintTestCase(gocept.jslint.TestCase):

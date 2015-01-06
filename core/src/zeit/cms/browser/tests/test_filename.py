@@ -2,7 +2,9 @@
 import zeit.cms.testing
 
 
-class FilenameTest(zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class FilenameTest(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
         super(FilenameTest, self).setUp()

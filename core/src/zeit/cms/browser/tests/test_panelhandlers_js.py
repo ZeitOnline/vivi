@@ -5,7 +5,9 @@ import time
 import zeit.cms.testing
 
 
-class TestPanels(zeit.cms.testing.ZeitCmsSeleniumTestCase):
+class TestPanels(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def assertSidebarState(self, state):
         s = self.selenium
