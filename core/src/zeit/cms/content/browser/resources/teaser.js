@@ -1,14 +1,14 @@
-var TeaserCopy = Class.extend({
+var TeaserCopy = gocept.Class.extend({
     construct: function(source, target) {
         this.source = source;
         this.target = target;
-        
+
         if ($(source) == undefined | $(target) == undefined) {
             return;
         }
 
-        connect(source, 'onkeyup', this, 'copy_text');
-        connect(target, 'onfocus', this, 'mark_changed');
+        MochiKit.Signal.connect(source, 'onkeyup', this, 'copy_text');
+        MochiKit.Signal.connect(target, 'onfocus', this, 'mark_changed');
 
     },
 
@@ -20,19 +20,19 @@ var TeaserCopy = Class.extend({
             return;
         }
 
-        target.value = $(this.source).value
-        signal(target, 'onchange');
+        target.value = $(this.source).value;
+        MochiKit.Signal.signal(target, 'onchange');
     },
 
     mark_changed: function(event) {
-       $(this.target).can_copy_text = false; 
-    },
+       $(this.target).can_copy_text = false;
+    }
 
 });
 
 
-connect(window, 'onload', function(event) {
+MochiKit.Signal.connect(window, 'onload', function(event) {
     new TeaserCopy('form.title', 'form.teaserTitle');
     new TeaserCopy('form.subtitle', 'form.teaserText');
-})
+});
 

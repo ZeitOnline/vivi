@@ -1,4 +1,4 @@
-zeit.cms.MasterSlaveDropDown = Class.extend({
+zeit.cms.MasterSlaveDropDown = gocept.Class.extend({
 
     construct: function(master, slave, update_url) {
         var self = this;
@@ -19,6 +19,7 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
     },
 
     destroy: function() {
+        var self = this;
         MochiKit.Signal.disconnectAllTo(self, self.update);
     },
 
@@ -27,7 +28,7 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
         var d = MochiKit.Async.doSimpleXMLHttpRequest(
             self.update_url, {master_token: self.master.value});
         d.addCallback(function(result) {
-            var data = evalJSONRequest(result)
+            var data = MochiKit.Async.evalJSONRequest(result);
 
             if (data.length == 0) {
                 self.slave_field.hide();
@@ -36,11 +37,11 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
             }
 
             var selected = self.slave.value;
-            self.slave.options.length = 1
+            self.slave.options.length = 1;
             forEach(data, function(new_option) {
-                var label = new_option[0]
-                var value = new_option[1]
-                var option = new Option(label, value)
+                var label = new_option[0];
+                var value = new_option[1];
+                var option = new Option(label, value);
                 if (value == selected) {
                     option.selected = true;
                 }
@@ -48,20 +49,20 @@ zeit.cms.MasterSlaveDropDown = Class.extend({
             });
         });
     }
-})
+});
 
 
-zeit.cms.master_slave_dropdown = {}
+zeit.cms.master_slave_dropdown = {};
 
 zeit.cms.configure_master_slave = function(prefix, master, slave, update_url) {
     if (isUndefinedOrNull(prefix)) {
-        prefix = 'form.'
+        prefix = 'form.';
     }
-    var master = $(prefix + master);
-    var slave = $(prefix + slave);
+    master = $(prefix + master);
+    slave = $(prefix + slave);
 
     if (isNull(master) || isNull(slave)) {
-        return
+        return;
     }
     if (!isUndefinedOrNull(zeit.cms.master_slave_dropdown[master.name])) {
         zeit.cms.master_slave_dropdown[master.name].destroy();

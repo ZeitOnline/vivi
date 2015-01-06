@@ -1,6 +1,6 @@
+(function($) {
 "use strict";
 
-(function($) {
 
 zeit.cms.MobileAlternativeWidget = gocept.Class.extend({
 

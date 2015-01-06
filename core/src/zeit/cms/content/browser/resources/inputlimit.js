@@ -1,26 +1,26 @@
 // Copyright (c) 2007-2011 gocept gmbh & co. kg
 // See also LICENSE.txt
-// $Id$
 
-zeit.cms.InputValidation = Class.extend({
+zeit.cms.InputValidation = gocept.Class.extend({
 
     construct: function(field_name) {
         this.input = $(field_name);
-        this.notify_div = getFirstElementByTagAndClassName(
+        this.notify_div = MochiKit.DOM.getFirstElementByTagAndClassName(
             'div', 'show-input-limit', this.input.parentNode);
-        this.max_length = getNodeAttribute(this.notify_div, 'maxlength');
+        this.max_length = MochiKit.DOM.getNodeAttribute(
+            this.notify_div, 'maxlength');
         this.timer = null;
 
-        replaceChildNodes(
+        MochiKit.DOM.replaceChildNodes(
             this.notify_div,
             SPAN({class: 'current-length'}, this.input.value.length),
             '/',
             SPAN({class: 'max-length'}, this.max_length));
-        this.current_length = getFirstElementByTagAndClassName(
+        this.current_length = MochiKit.DOM.getFirstElementByTagAndClassName(
             'span', 'current-length', this.notify_div);
 
-        connect(this.input, 'onkeyup', this, 'check_length');
-        connect(this.input, 'onchange', this, 'check_length');
+        MochiKit.Signal.connect(this.input, 'onkeyup', this, 'check_length');
+        MochiKit.Signal.connect(this.input, 'onchange', this, 'check_length');
     },
 
     check_length: function(event) {
@@ -30,7 +30,8 @@ zeit.cms.InputValidation = Class.extend({
         if (this.timer != null) {
             this.timer.cancel();
         }
-        this.timer = callLater(0.4, this.update_notification, this);
+        this.timer = MochiKit.Async.callLater(
+            0.4, this.update_notification, this);
     },
 
     update_notification: function(self) {
