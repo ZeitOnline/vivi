@@ -47,23 +47,26 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.waitForElementPresent('css=.block.type-group')
 
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]', 'css=div.type-group .landing-zone')
+            '//li[@uniqueid="Clip/c3"]', 'css=div.type-group .landing-zone',
+            '10,10')
         s.waitForElementPresent('css=.block.type-teaser')
-        s.assertText('css=.block.type-teaser', '*http://xml.zeit.de/c3*')
+        s.assertText('css=.block.type-teaser', '*c3 teaser*')
 
     def test_drag_content_to_teaser_zone_should_append_teaser_block(self):
         self.create_content_and_fill_clipboard()
         self.test_groups_should_be_addable()
         s = self.selenium
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c3"]', 'css=div.type-group .landing-zone')
+            '//li[@uniqueid="Clip/c3"]', 'css=div.type-group .landing-zone',
+            '10,10')
         s.waitForElementPresent('css=.block.type-teaser + .landing-zone')
 
         # before:
         # group
         #   Teaser (c3)
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]', 'css=div.type-teaser + .landing-zone')
+            '//li[@uniqueid="Clip/c1"]', 'css=div.type-teaser + .landing-zone',
+            '10,10')
         # after:
         # group
         #   Teaser (c3)
@@ -71,7 +74,7 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
 
         second_teaser = 'css=.type-teaser + * + .type-teaser'
         s.waitForElementPresent(second_teaser)
-        s.assertText(second_teaser, '*http://xml.zeit.de/c1*')
+        s.assertText(second_teaser, '*c1 teaser*')
 
     def create_two_groups(self):
         s = self.selenium
@@ -86,11 +89,11 @@ class BlockEditingTest(zeit.newsletter.testing.SeleniumTestCase):
         s.waitForElementPresent(group2)
 
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]', group1 + ' .landing-zone')
+            '//li[@uniqueid="Clip/c1"]', group1 + ' .landing-zone', '10,10')
         s.waitForElementPresent(group1 + ' .block.type-teaser')
 
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]', group2+ ' .landing-zone')
+            '//li[@uniqueid="Clip/c2"]', group2+ ' .landing-zone', '10,10')
         s.waitForElementPresent(group2 + ' .block.type-teaser')
 
     def test_groups_should_be_sortable_with_drag_and_drop(self):
