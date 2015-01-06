@@ -40,8 +40,8 @@ class ArticleTemplateTest(
         self.assertEqual(
             kolumne_layouts,
             s.getSelectOptions('id=options-zmo.header_layout'))
-        s.click('options-zmo.actions.apply')
-        s.pause(250)
+        s.type('id=options-zmo.header_layout', '\t')
+        s.pause(500)
         self.assertEqual(
             kolumne_layouts,
             s.getSelectOptions('id=options-zmo.header_layout'))
