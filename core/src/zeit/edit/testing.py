@@ -10,8 +10,6 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-SELENIUM_LAYER = gocept.selenium.RCLayer(
-    name='SeleniumLayer', bases=(HTTP_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
@@ -25,5 +23,5 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
-    layer = SELENIUM_LAYER
+    layer = WEBDRIVER_LAYER
     skin = 'vivi'

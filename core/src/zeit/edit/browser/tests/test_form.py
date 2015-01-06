@@ -128,8 +128,6 @@ class LightboxEditForm(zeit.edit.browser.view.EditBox):
 
 class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
 
-    layer = zeit.edit.testing.WEBDRIVER_LAYER
-
     def setUp(self):
         super(InlineFormAutoSaveTest, self).setUp()
         zope.configuration.xmlconfig.string("""\
@@ -223,7 +221,7 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
 
         s.type(input, 'asdf')
         s.click('header')
-        self.assertEqual('1', self.eval('zeit.cms.InlineForm.submitted'))
+        self.assertEqual(1, self.eval('zeit.cms.InlineForm.submitted'))
 
     def test_subpageform_in_lightbox_submits_correctly(self):
         s = self.selenium
