@@ -112,13 +112,15 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(layer,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-selenium_layer = gocept.selenium.RCLayer(
-    name='SeleniumLayer', bases=(HTTP_LAYER,))
+WD_LAYER = gocept.selenium.WebdriverLayer(
+    name='WebdriverLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
+    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
-    layer = selenium_layer
+    layer = WEBDRIVER_LAYER
     skin = 'vivi'
 
     def setUp(self):
@@ -153,7 +155,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         s.click('id=clip-add-folder-link')
         s.type('id=clip-add-folder-title', 'Clip')
         s.click('id=clip-add-folder-submit')
-        s.waitForElementPresent('link=Clip')
+        s.waitForElementPresent('//li[@uniqueid="Clip"]')
         # Open clip
         s.click('//li[@uniqueid="Clip"]')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
@@ -175,7 +177,8 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
             teaser_module,
-            'css=#informatives .landing-zone.action-cp-module-droppable')
+            'css=#informatives .landing-zone.action-cp-module-droppable',
+            '10,10')
         s.waitForElementPresent('css=div.type-teaser')
 
     def create_content_and_fill_clipboard(self):

@@ -17,13 +17,11 @@ class TestDottedName(zeit.content.cp.testing.SeleniumTestCase):
 
     def test_lookup(self):
         self.open_centerpage()
-        s = self.selenium
-
         # Test a name that we know that exists
         # XXX should be moved to zeit.cms
-        s.verifyEval(
-            'new (window.zeit.cms.resolveDottedName("zeit.edit.Editor"))',
-            '[object Object]')
+        result = self.eval(
+            'new (window.zeit.cms.resolveDottedName("zeit.edit.Editor"))')
+        self.assertEquals('zeit.edit.Editor', result['__name__'])
 
 
 class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
@@ -52,15 +50,13 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
     def test_hover(self):
         self.create_teaserlist()
         s = self.selenium
-
-        # Hover mouse over block
-        s.verifyElementNotPresent('css=div.block.hover')
+        s.verifyElementNotPresent('css=.block.type-teaser.hover')
         s.mouseOver('css=div.teaser-list')
         s.pause(100)
-        s.verifyElementPresent('css=div.block.hover')
-        s.mouseOut('css=div.teaser-list')
+        s.verifyElementPresent('css=.block.type-teaser.hover')
+        s.mouseMoveAt('css=div.teaser-list', '100,100')
         s.pause(100)
-        s.verifyElementNotPresent('css=div.block.hover')
+        s.verifyElementNotPresent('css=.block.type-teaser.hover')
 
     def test_common_data_edit_form(self):
         self.create_teaserlist()
@@ -119,7 +115,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.click('css=a.CloseButton')
         s.waitForTextNotPresent('c2 teaser')
 
-    def test_sorting(self):
+    def test_sort_teaser_contents(self):
         s = self.selenium
         self.create_content_and_fill_clipboard()
         self.create_teaserlist()
@@ -156,7 +152,10 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         height_landing = s.getElementHeight(li('c3', True))
 
         delta_y = (height + height_landing) * 2.75
-        s.dragAndDrop(li('c3'), '0,%s' % delta_y)
+        s.mouseDown(li('c3'))
+        s.mouseMoveAt(li('c3'), '0,5')
+        s.mouseMoveAt(li('c3'), '0,%s' % int(delta_y))
+        s.mouseUp(li('c3'))
 
         s.waitForElementPresent('css=div.teaser-list-edit-box')
         s.waitForOrdered(li('c2', True), li('c1'))
@@ -164,7 +163,10 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
         # Drag the c1 node .75 up; the resulting order is 1, 2, 3
         delta_y = (height + height_landing) * -0.75
-        s.dragAndDrop(li('c1'), '0,%s' % delta_y)
+        s.mouseDown(li('c1'))
+        s.mouseMoveAt(li('c1'), '0,5')
+        s.mouseMoveAt(li('c1'), '0,%s' % int(delta_y))
+        s.mouseUp(li('c1'))
 
         s.waitForElementPresent('css=div.teaser-list-edit-box')
         s.waitForOrdered(li('c1', True), li('c2'))
@@ -222,14 +224,14 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 1)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c1"]',
-            'css=.lightbox .landing-zone')
+            'css=.lightbox .landing-zone', '10,10')
         s.waitForElementPresent('css=.lightbox li.edit-bar')
 
         # Now, there are two landing zones
         s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 2)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c2"]',
-            'css=.lightbox .landing-zone:first-child')
+            'css=.lightbox .landing-zone:first-child', '10,10')
         s.waitForXpathCount(css_path('.lightbox li.edit-bar'), 2)
         s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 3)
 
@@ -242,7 +244,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
             teaser_module,
-            'css=.landing-zone.action-cp-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent(
             'css=.block.type-area .block.type-teaser')
 
@@ -269,13 +271,16 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         self.selenium.waitForElementPresent(module)
 
         self.selenium.dragAndDropToObject(
-            module, 'css=.landing-zone.action-cp-region-module-droppable')
+            module, 'css=.landing-zone.action-cp-region-module-droppable',
+            '10,10')
         s.waitForXpathCount(path, 3)
         self.selenium.dragAndDropToObject(
-            module, 'css=.landing-zone.action-cp-region-module-droppable')
+            module, 'css=.landing-zone.action-cp-region-module-droppable',
+            '10,10')
         s.waitForXpathCount(path, 4)
         self.selenium.dragAndDropToObject(
-            module, 'css=.landing-zone.action-cp-region-module-droppable')
+            module, 'css=.landing-zone.action-cp-region-module-droppable',
+            '10,10')
         s.waitForXpathCount(path, 5)
 
         path = 'xpath=' + path
@@ -330,13 +335,13 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
 
         # Create a teaser list
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone')
+            '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone', '10,10')
         s.waitForElementPresent('css=.block.type-teaser')
         block2 = s.getAttribute('css=.block.type-teaser@id')
 
         # Add a second teaser list
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c1"]', 'css=#lead .landing-zone')
+            '//li[@uniqueid="Clip/c1"]', 'css=#lead .landing-zone', '10,10')
         s.waitForElementPresent(
             'css=.block.type-teaser + .landing-zone + .block.type-teaser')
         block1 = s.getAttribute('css=.block.type-teaser@id')
@@ -364,7 +369,7 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyElementNotPresent('css=.block.type-teaser')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c3"]',
-            'css=.landing-zone.action-cp-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent('css=.block.type-teaser')
 
     def test_zones_after_blocks(self):
@@ -374,7 +379,7 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
 
         # Create a block, there will be a landing zone after it:
         s.dragAndDropToObject(
-            '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone')
+            '//li[@uniqueid="Clip/c2"]', 'css=#lead .landing-zone', '10,10')
         s.verifyElementPresent('css=.block + .landing-zone')
 
         # The "normal" landing zone is also there
@@ -383,7 +388,7 @@ class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
         # Drop something on the after-block landing zone
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c1"]',
-            'css=.block + .landing-zone')
+            'css=.block + .landing-zone', '10,10')
         s.waitForElementPresent('css=.block.type-teaser')
 
 
@@ -396,7 +401,7 @@ class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
-            'css=.landing-zone.action-cp-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent('css=div.type-video')
 
     def test_lightbox_should_close_after_editing(self):
@@ -430,7 +435,7 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
-            'css=.landing-zone.action-cp-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent('css=div.type-quiz')
 
     def add_quiz(self):
@@ -473,7 +478,7 @@ class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
-            'css=.landing-zone.action-cp-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent('css=div.type-xml')
 
 
@@ -514,7 +519,7 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         for i in range(1, 4):
             s.dragAndDropToObject(
                 '//li[@uniqueid="Clip/c%s"]' % i,
-                'css=#lead .landing-zone')
+                'css=#lead .landing-zone', '10,10')
             s.waitForTextPresent('c%s teaser' % i)
 
     def test_publish_should_show_error_message(self):
@@ -547,7 +552,7 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
             s.click('xpath=//a[@title="Publish"]')
             s.waitForElementPresent('css=div.lightbox')
             s.waitForPageToLoad()
-            s.waitForElementPresent('css=div.landing-zone')
+            s.waitForElementPresent('css=li.error')
             s.verifyText('css=li.error',
                          'Error during publish/retract: OSError*')
         finally:
@@ -561,7 +566,7 @@ class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
         s.dragAndDropToObject(
             'css=.teaser-list > .teaser',
-            'css=.landing-zone.action-cp-module-droppable')
+            'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent(
             'css=#lead .block.type-teaser')
         s.verifyText('css=#lead .block.type-teaser .teaser-list',
@@ -578,8 +583,17 @@ class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=.teaser-list > .teaser',
             '//li[@uniqueid="Clip"]')
-        s.waitForText(
-            '//li[@uniqueid="Clip"]', '*c1-2*')
+        # We cannot use waitForText, since the DOM element changes in-between
+        # but Selenium retrieves the element once and only checks the value
+        # repeatedly, thus leading to an error that DOM is no longer attached.
+        for i in range(10):
+            try:
+                s.assertText('//li[@uniqueid="Clip"]', '*c1-2*')
+                break
+            except:
+                s.pause(100)
+                continue
+        s.assertText('//li[@uniqueid="Clip"]', '*c1-2*')
+
         # Verify text still in the drag source:
-        s.verifyText(
-            'css=.teaser-list > .teaser', '*c1 teaser*')
+        s.verifyText('css=.teaser-list > .teaser', '*c1 teaser*')

@@ -27,7 +27,7 @@ setup(
         'gocept.lxml',
         'gocept.mochikit>=1.4.2.2',
         'gocept.runner>-0.4',
-        'gocept.selenium>=0.6',
+        'gocept.selenium>=2.2.0.dev0',
         'grokcore.component',
         'lxml',
         'requests',

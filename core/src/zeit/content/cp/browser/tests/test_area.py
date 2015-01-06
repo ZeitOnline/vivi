@@ -24,7 +24,6 @@ class ElementTestHelper(object):
     def test_delete_element_removes_element(self):
         s = self.selenium
         s.assertCssCount('css=.type-{}'.format(self.name), 2)
-        s.chooseOkOnNextConfirmation()
         s.click('css=.type-{} > .block-inner > .edit-bar > .delete-link'
                 .format(self.name))
         s.waitForConfirmation(u'Wirklich löschen?')
@@ -53,7 +52,8 @@ class AreaTest(
         self.selenium.click(u'link=Flächen')
         self.selenium.waitForElementPresent(module)
         self.selenium.dragAndDropToObject(
-            module, 'css=.landing-zone.action-cp-region-module-droppable')
+            module, 'css=.landing-zone.action-cp-region-module-droppable',
+            '10,10')
 
 
 class ElementBrowserTestHelper(object):
