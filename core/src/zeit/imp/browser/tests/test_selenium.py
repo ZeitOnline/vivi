@@ -2,8 +2,10 @@
 # Copyright (c) 2008-2012 gocept gmbh & co. kg
 # See also LICENSE.txt
 
+from selenium.webdriver.common.keys import Keys
 import gocept.httpserverlayer.wsgi
-import gocept.selenium.ztk
+import gocept.selenium
+import unittest
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.imp.tests
@@ -13,13 +15,15 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(zeit.imp.tests.imp_layer,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-Layer = gocept.selenium.RCLayer(
-    name='SeleniumLayer', bases=(HTTP_LAYER,))
+WD_LAYER = gocept.selenium.WebdriverLayer(
+    name='WebdriverLayer', bases=(HTTP_LAYER,))
+WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
+    name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
 class Selenium(zeit.cms.testing.SeleniumTestCase):
 
-    layer = Layer
+    layer = WEBDRIVER_LAYER
     window_width = 1100
     window_height = 600
 
@@ -68,11 +72,14 @@ class SeleniumBasicTests(Selenium):
 
     def test_image_dragging(self):
         s = self.selenium
-        s.verifyEval('window.document.imp.get_image_position()',
-                     '{x: 1, y: 1}')
-        s.dragAndDrop('id=imp-mask', '+30,+100')
-        s.verifyEval('window.document.imp.get_image_position()',
-                     '{x: 31, y: 101}')
+        pos = self.eval('window.document.imp.get_image_position()')
+        self.assertEqual(1, pos['x'])
+        self.assertEqual(1, pos['y'])
+        s.pause(500)  # XXX What should we be waiting for here?
+        s.dragAndDrop('id=imp-mask', '30,100')
+        pos = self.eval('window.document.imp.get_image_position()')
+        self.assertEqual(31, pos['x'])
+        self.assertEqual(101, pos['y'])
 
     def test_mask_string_parse(self):
         s = self.selenium
@@ -82,7 +89,7 @@ class SeleniumBasicTests(Selenium):
             'window.document.imp.set_mask("500x200/500/200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
-        s.verifyEval('window.document.imp.name', '500x200')
+        s.verifyEval('window.document.imp.name', '"500x200"')
 
         # s.comment('The dimensions can be variable, indicated by a ?')
         s.runScript(
@@ -91,14 +98,14 @@ class SeleniumBasicTests(Selenium):
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
         s.verifyEval('window.document.imp.mask_variable.h', 'false')
-        s.verifyEval('window.document.imp.name', 'art-200')
+        s.verifyEval('window.document.imp.name', '"art-200"')
 
         s.runScript('window.document.imp.set_mask("foo/?500/?200")')
         s.verifyEval('window.document.imp.mask_dimensions.w', '500')
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.verifyEval('window.document.imp.mask_variable.w', 'true')
         s.verifyEval('window.document.imp.mask_variable.h', 'true')
-        s.verifyEval('window.document.imp.name', 'foo')
+        s.verifyEval('window.document.imp.name', '"foo"')
 
     def test_zoom_slider(self):
         s = self.selenium
@@ -108,13 +115,12 @@ class SeleniumBasicTests(Selenium):
         s.waitForEval('window.document.imp.zoom>1', 'true')
 
     def test_zoom_mouse_wheel(self):
-        s = self.selenium
-        zoom = float(s.getEval('window.document.imp.zoom.toPrecision(3)'))
+        zoom = float(self.eval('window.document.imp.zoom.toPrecision(3)'))
         self.zoom_with_wheel(10000)
-        self.assertTrue(float(s.getEval('window.document.imp.zoom')) > 1)
+        self.assertGreater(self.eval('window.document.imp.zoom'), 1)
         self.zoom_with_wheel(-9000)
-        self.assertTrue(float(s.getEval('window.document.imp.zoom')) < 1)
-        self.assertTrue(float(s.getEval('window.document.imp.zoom')) > zoom)
+        self.assertLess(self.eval('window.document.imp.zoom'), 1)
+        self.assertGreater(self.eval('window.document.imp.zoom'), zoom)
 
     def test_zoom_with_mouse_wheel_updates_slider(self):
         s = self.selenium
@@ -189,7 +195,7 @@ class SeleniumCropTests(Selenium):
         self.wait_for_condition(
             'window.jQuery("#imp-zoom-slider div").position().left == 0')
         zoom = self.eval('document.imp_zoom_slider.get_value()')
-        self.assertTrue(zoom.startswith('0.09'))
+        self.assertTrue(str(zoom).startswith('0.09'))
 
 
 class SeleniumMaskTests(Selenium):
@@ -227,47 +233,48 @@ class SeleniumMaskTests(Selenium):
         s = self.selenium
         self.click_label("Artikelbild breit")
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
-        s.type('mask-h', '280')
+        for i in range(3):
+            s.type('mask-h', Keys.BACKSPACE)
+        s.type('mask-h', '280\n')
         s.verifyEval('window.document.imp.mask_dimensions.h', '280')
 
-    def test_input_field_up_arrow_once_handling_should_increase_by_1(self):
-        self.verify_press('\\38', '201')
+    def test_input_field_up_arrow_once_increases_by_1(self):
+        self.verify_press(Keys.ARROW_UP, '201')
 
-    def test_input_field_down_arrow_once_handling(self):
-        # self.selenium.comment('Pressing DOWN-ARROW once decreases by 1.')
-        self.verify_press('\\40', '199')
+    def test_input_field_down_arrow_once_decreases_by_1(self):
+        self.verify_press(Keys.ARROW_DOWN, '199')
 
-    def test_input_field_left_arrow_once_handling(self):
-        # self.selenium.comment('Pressing LEFT-ARROW once decreases by 1.')
-        self.verify_press('\\37', '199')
+    def test_input_field_left_arrow_once_decreases_by_1(self):
+        self.verify_press(Keys.ARROW_LEFT, '199')
 
-    def test_input_field_right_arrow_once_handling(self):
-        # self.selenium.comment('Pressing RIGHT-ARROW once increases by 1.')
-        self.verify_press('\\39', '201')
+    def test_input_field_right_arrow_once_increases_by_1(self):
+        self.verify_press(Keys.ARROW_RIGHT, '201')
 
     def verify_press(self, key_code, expected_value):
         s = self.selenium
         self.click_label("Artikelbild breit")
         s.verifyEval('window.document.imp.mask_dimensions.h', '200')
         s.keyDown('mask-h', key_code)
-        s.keyUp('mask-h', key_code)
+        # XXX selenium.webdriver implements both keyDown and keyUp as
+        # "sendKeys", which results in two presses, sigh.
+        # s.keyUp('mask-h', key_code)
         s.verifyEval('window.document.imp.mask_dimensions.h', expected_value)
 
-    def test_input_field_up_arrow_hold_handling(self):
-        # self.selenium.comment('Holding UP-ARROW increases.')
-        self.verify_hold('\\38', '>210')
+    @unittest.skip('python webdriver bindings cannot hold down keys')
+    def test_input_field_up_arrow_hold_increases(self):
+        self.verify_hold(Keys.ARROW_UP, '>210')
 
-    def test_input_field_down_arrow_hold_handling(self):
-        # self.selenium.comment('Holding DOWN-ARROW decreases.')
-        self.verify_hold('\\40', '<190')
+    @unittest.skip('python webdriver bindings cannot hold down keys')
+    def test_input_field_down_arrow_hold_decreases(self):
+        self.verify_hold(Keys.ARROW_DOWN, '<190')
 
-    def test_input_field_left_arrow_hold_handling(self):
-        # self.selenium.comment('Holding LEFT-ARROW decreases.')
-        self.verify_hold('\\37', '<190')
+    @unittest.skip('python webdriver bindings cannot hold down keys')
+    def test_input_field_left_arrow_hold_decreases(self):
+        self.verify_hold(Keys.ARROW_LEFT, '<190')
 
-    def test_input_field_right_arrow_hold_handling(self):
-        # self.selenium.comment('Holding RIGHT-ARROW increases.')
-        self.verify_hold('\\39', '>210')
+    @unittest.skip('python webdriver bindings cannot hold down keys')
+    def test_input_field_right_arrow_hold_increases(self):
+        self.verify_hold(Keys.ARROW_RIGHT, '>210')
 
     def verify_hold(self, key_code, expected_value):
         s = self.selenium
@@ -323,7 +330,7 @@ class ResizeTests(Selenium):
         width = int(s.getEval('window.document.imp.mask_image_dimensions.w'))
         height = int(s.getEval('window.document.imp.mask_image_dimensions.h'))
         # Increase the window width affects mask, try width only first:
-        s.getEval('window.resizeTo(1200, 800)')
+        s.setWindowSize(1200, 800)
         s.waitForEval(
             "window.document.imp.mask_image_dimensions.w > %d" % width,
             'true')
@@ -332,7 +339,7 @@ class ResizeTests(Selenium):
             int(s.getEval("window.document.imp.mask_image_dimensions.h")))
 
         # change width and height:
-        s.getEval('window.resizeTo(800, 900)')
+        s.setWindowSize(800, 900)
         s.pause(100)
         s.waitForEval(
             "window.document.imp.mask_image_dimensions.w < %d" % width,
@@ -350,23 +357,23 @@ class ResizeTests(Selenium):
         s = self.selenium
         get_crop_args = ('window.MochiKit.Base.serializeJSON('
                          '  window.document.imp.get_crop_arguments())')
-        crop_args = s.getEval(get_crop_args)
+        crop_args = self.eval(get_crop_args)
 
-        s.getEval('window.resizeTo(900, 900)')
+        s.setWindowSize(900, 900)
         s.pause(500)
-        s.waitForEval(get_crop_args, crop_args)
+        self.assertEqual(crop_args, self.eval(get_crop_args))
 
         # Try another one, to be sure this works multiple times
-        s.getEval('window.resizeTo(1000, 800)')
+        s.setWindowSize(1000, 800)
         s.pause(500)
-        s.waitForEval("%s == '%s'" % (get_crop_args, crop_args), 'true')
+        self.assertEqual(crop_args, self.eval(get_crop_args))
 
     def test_window_resize_updates_zoom_slider(self):
         # The zoom slider doesn't automatically support size updates.
         s = self.selenium
         max_left = s.getEval(
             'window.document.imp_zoom_slider.zoom_slider._maxLeft')
-        s.getEval('window.parent.resizeTo(800, 900)')
+        s.setWindowSize(800, 900)
         s.waitForEval(
             'window.document.imp_zoom_slider.zoom_slider._maxLeft < %s' %
             max_left, 'true')
