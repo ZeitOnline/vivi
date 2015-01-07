@@ -438,10 +438,8 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
             self.wait_for_condition('.'.join(partial))
 
     def add_by_autocomplete(self, text, widget):
-        # XXX type() doesn't work with selenium-1 and FF>7
-        self.eval('window.jQuery("%s").val("%s").trigger("keydown")' % (
-            widget, text))
         s = self.selenium
+        s.type(widget, text)
         autocomplete_item = 'css=.ui-menu-item a'
         s.waitForElementPresent(autocomplete_item)
         s.waitForVisible(autocomplete_item)

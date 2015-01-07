@@ -133,7 +133,7 @@ class TaggingHelper(object):
 
     def add_keyword_by_autocomplete(self, text, form_prefix='form'):
         self.add_by_autocomplete(
-            text, '#%s\\\\.keywords\\\\.add' % form_prefix)
+            text, 'id=%s.keywords.add' % form_prefix)
 
 
 class DummyCurrentTopics(object):
