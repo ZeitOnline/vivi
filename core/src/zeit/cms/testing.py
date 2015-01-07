@@ -323,10 +323,6 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
     def setUp(self):
         super(SeleniumTestCase, self).setUp()
         self.layer['selenium'].setTimeout(self.TIMEOUT * 1000)
-        if hasattr(self.layer['selenium'].selenium, 'set_timeout'):
-            # XXX waiting for a version of gocept.selenium that handles
-            # timeouts consistently for SeleniumRC (#10750)
-            self.layer['selenium'].selenium.set_timeout(self.TIMEOUT * 1000)
 
         if self.log_errors:
             with site(self.getRootFolder()):
@@ -346,7 +342,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.selenium.setWindowSize(self.window_width, self.window_height)
 
         self._prefill_http_auth_cache()
-        self.run_js('window.localStorage.clear();')
+        self.eval('window.localStorage.clear()')
 
     def _prefill_http_auth_cache(self):
         # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
@@ -398,37 +394,18 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.selenium.click('//label[contains(string(.), %s)]' %
                             xml.sax.saxutils.quoteattr(label))
 
-    webdriver_globals = """\
+    js_globals = """\
         var document = window.document;
         var zeit = window.zeit;
     """
-    seleniumrc_globals = """\
-        var window = selenium.browserbot.getCurrentWindow();
-    """ + webdriver_globals
-
-    @property
-    def js_globals(self):
-        if isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
-            return self.webdriver_globals + 'return '
-        else:
-            return self.seleniumrc_globals
 
     def eval(self, text):
-        result = self.selenium.getEval(self.js_globals + text)
-        if isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
-            result = json.loads(result)
-        return result
-
-    def run_js(self, text):
-        if isinstance(self.layer, gocept.selenium.WebdriverSeleneseLayer):
-            return self.selenium.runScript(self.js_globals + text)
-        else:
-            # selenium-1 means something else by runScript
-            return self.selenium.getEval(self.js_globals + text)
+        return self.selenium.selenium.execute_script(
+            self.js_globals + 'return ' + text)
 
     def wait_for_condition(self, text):
         self.selenium.waitForCondition(self.js_globals + """\
-        Boolean(%s);
+        return Boolean(%s);
         """ % text)
 
     def wait_for_dotted_name(self, dotted_name):
