@@ -57,13 +57,14 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.add_article()
         self.create_block('image')
-        select = 'css=.block.type-image form.wired select'
+        # Need to skip over first hidden image block (main image)
+        select = 'css=.block.type-image:nth-child(3) form.wired select'
         s.waitForElementPresent(select)
         self.assertEqual(
             ['(nothing selected)', 'small', 'large', 'upright'],
             s.getSelectOptions(select))
         s.select(select, 'label=small')
-        s.fireEvent(select, 'blur')
+        s.type(select, '\t')
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
@@ -114,7 +115,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/my_image"]',
-            'css=.action-article-body-content-droppable')
+            'css=.action-article-body-content-droppable', '10,10')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
         # ensure object-details are displayed
         s.waitForElementPresent('css=.block.type-image .image_details')
@@ -192,7 +193,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/my_image"]',
-            'css=.action-article-body-content-droppable')
+            'css=.action-article-body-content-droppable', '10,10')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
         # ensure object-details are displayed
         s.waitForElementPresent('css=.block.type-image .image_details')
@@ -201,7 +202,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForElementPresent(text)
         s.assertValue(text, '')
         s.type(text, 'A custom caption')
-        s.fireEvent(text, 'blur')
+        s.click('css=.block.type-image:nth-child(3)')  # Trigger blur for form.
         s.waitForElementNotPresent('css=.field.dirty')
 
 
@@ -314,7 +315,7 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             ['(nothing selected)', 'small', 'with info', 'large', 'double'],
             s.getSelectOptions(select))
         s.select(select, 'label=large')
-        s.fireEvent(select, 'blur')
+        s.type(select, '\t')
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')

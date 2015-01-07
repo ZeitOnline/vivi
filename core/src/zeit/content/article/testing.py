@@ -150,25 +150,15 @@ WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
-SELENIUM_LAYER = gocept.selenium.RCLayer(
-    name='SeleniumLayer', bases=(HTTP_LAYER,))
-
 WD_LAYER = gocept.selenium.WebdriverLayer(
     name='WebdriverLayer', bases=(HTTP_LAYER,))
 WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
-CDS_WSGI_LAYER = zeit.cms.testing.WSGILayer(
-    name='CDSWSGILayer', bases=(CDS_LAYER,))
-CDS_HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
-    name='CDSHTTPLayer', bases=(WSGI_LAYER,))
-selenium_workflow_layer = gocept.selenium.RCLayer(
-    name='CDSSeleniumLayer', bases=(CDS_HTTP_LAYER,))
-
 
 class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
-    layer = SELENIUM_LAYER
+    layer = WEBDRIVER_LAYER
 
     WIDGET_SELECTOR = 'xpath=//label[@for="%s"]/../../*[@class="widget"]'
 

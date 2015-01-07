@@ -28,9 +28,11 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
                     transaction.commit()
 
         s = self.selenium
-        s.selenium.set_timeout(3600000)
+        s.setTimeout(3600000)
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        s.waitForElementPresent('css=.recension')
+        fold = 'css=#edit-form-recensions .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
 
     def test_recensions_should_be_listed(self):
         self.create_recension()
@@ -41,11 +43,7 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
         s.assertText('css=span.location', 'Berlin')
 
     def test_edit_recension_should_happen_in_lightbox(self):
-        try:
-            self.create_recension()
-        except:
-            self.flush()
-            raise
+        self.create_recension()
         s = self.selenium
         s.click('css=span.recensionaction a[rel="edit"]')
         s.waitForElementPresent('id=lightbox.form')
@@ -70,9 +68,10 @@ class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
     def test_add_recension_should_happen_in_lightbox(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        add_link = 'css=#recensions a:contains(Add new)'
-        s.waitForElementPresent(add_link)
-        s.click(add_link)
+        fold = 'css=#edit-form-recensions .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
+        s.click('jquery=#recensions a:contains(Add new)')
         s.waitForElementPresent('id=lightbox.form')
         s.type('form.authors.0.', 'Lord Byron')
         s.type('form.title', 'Poems')

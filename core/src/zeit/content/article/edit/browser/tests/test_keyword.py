@@ -24,8 +24,8 @@ class KeywordSuggestions(
 
     def test_changing_ressort_reloads_suggestions(self):
         s = self.selenium
-        input_ressort = 'metadata-a.ressort'
-        s.select(input_ressort, 'label=Deutschland')
-        s.fireEvent(input_ressort, 'blur')
+        s.click('css=#edit-form-metadata .fold-link')
+        s.select('metadata-a.ressort', 'label=Deutschland')
+        s.type('metadata-a.sub_ressort', '\t')  # Trigger blur for form.
         s.waitForText(
             'css=#article-content-suggest-keywords .ressort_keywords', '*foo*')

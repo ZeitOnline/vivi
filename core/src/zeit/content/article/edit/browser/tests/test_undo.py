@@ -19,23 +19,27 @@ class TestUndo(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         self.test_undo_list_fresh_after_checkout_is_empty()
 
-        s.waitForElementPresent('id=metadata-b.copyrights')
-        s.assertValue('id=metadata-b.copyrights', '') # before
-        s.select('id=metadata-b.product', 'Die Zeit') # required field
-        s.type('id=metadata-b.copyrights', 'ZEI')
-        s.fireEvent('id=metadata-b.copyrights', 'blur')
+        fold = 'css=#edit-form-metadata .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
+
+        s.click('link=Undo')  # Make undo pane visible
+
+        s.assertValue('id=metadata-b.copyrights', '')  # before
+        s.select('id=metadata-b.product', 'Die Zeit')  # required field
+        s.type('id=metadata-b.copyrights', 'ZEI\t')
         s.waitForElementNotPresent('css=.field.dirty')
         s.waitForXpathCount('//*[@id="cp-undo"]//a', 1)
         s.assertText('//*[@id="cp-undo"]//li[1]/a', 'edit metadata')
 
-        s.assertElementNotPresent('css=.editable p') # before
+        s.assertElementNotPresent('css=.editable p')  # before
         self.create()
         self.run_js("window.jQuery("
                     "  '.block.type-p .editable')[0].innerHTML = "
                     "   '<p>Mary had a little</p>'")
         self.mark_dirty()
         self.save()
-        s.waitForElementPresent('css=.editable p:contains(Mary had)')
+        s.waitForElementPresent('jquery=.editable p:contains(Mary had)')
         s.waitForXpathCount('//*[@id="cp-undo"]//a', 3)
         s.assertText('//*[@id="cp-undo"]//li[1]/a', 'edit body text')
         s.assertText('//*[@id="cp-undo"]//li[2]/a', "add 'p' block")

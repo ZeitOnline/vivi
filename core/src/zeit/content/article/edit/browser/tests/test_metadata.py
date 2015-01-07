@@ -16,7 +16,9 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def setUp(self):
         super(HeadTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        self.selenium.waitForElementPresent('id=options-b.year')
+        s = self.selenium
+        s.waitForElementPresent('id=options-b.year')
+        s.click('css=#edit-form-misc .fold-link')
 
     def test_form_should_highlight_changed_data(self):
         s = self.selenium
@@ -29,8 +31,9 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
     def test_form_should_save_entered_text_on_blur(self):
         s = self.selenium
         s.assertValue('id=options-b.year', '2007')
+        s._find('id=options-b.year').clear()
         s.type('id=options-b.year', '2010')
-        s.fireEvent('id=options-b.year', 'blur')
+        s.type('id=options-b.byline', '\t')  # Trigger blur for form.
         s.waitForElementNotPresent('css=.field.dirty')
         # Re-open the page and verify that the data is still there
         s.clickAndWait('link=Edit contents')
@@ -39,13 +42,15 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_form_should_save_selection_on_blur(self):
         s = self.selenium
+        s.click('css=#edit-form-metadata .fold-link')
         s.select('id=metadata-b.product', 'Zeit Magazin')
-        s.fireEvent('id=metadata-b.product', 'blur')
+        s.type('id=metadata-b.copyrights', '\t')  # Trigger blur for form.
         s.waitForElementNotPresent('css=.field.dirty')
         s.assertSelectedLabel('id=metadata-b.product', 'Zeit Magazin')
 
     def test_change_in_ressort_should_update_subressort_list(self):
         s = self.selenium
+        s.click('css=#edit-form-metadata .fold-link')
         s.assertSelectedLabel('id=metadata-a.ressort', 'International')
         s.pause(100)
         self.assertEqual(
@@ -57,8 +62,8 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
             [u'(nothing selected)', u'Datenschutz', u'Integration',
              u'Joschka Fisher', u'Meinung'],
             s.getSelectOptions('id=metadata-a.sub_ressort'))
-        s.click('metadata-a.actions.apply')
-        s.pause(250)
+        s.type('id=metadata-a.sub_ressort', '\t')  # Trigger blur for form.
+        s.pause(500)
         self.assertEqual(
             [u'(nothing selected)', u'Datenschutz', u'Integration',
              u'Joschka Fisher', u'Meinung'],
@@ -68,13 +73,14 @@ class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s = self.selenium
         s.assertValue('id=options-b.year', '2007')
         s.type('id=options-b.year', 'ASDF')
-        s.click('options-b.actions.apply')
+        s.type('id=options-b.byline', '\t')  # Trigger blur for form.
         s.waitForElementPresent('css=.inline-form div.error')
 
     def test_relateds_should_be_addable(self):
         self.add_testcontent_to_clipboard()
         s = self.selenium
         s.waitForElementPresent('id=internallinks.related')
+        s.click('css=#edit-form-internallinks .fold-link')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/testcontent"]',
             'xpath=//*[@id="internallinks.related"]//ul')
@@ -126,13 +132,18 @@ class KeywordTest(zeit.content.article.edit.browser.testing.EditorTestCase,
         self.add_article()
         s = self.selenium
         s.waitForElementPresent('id=keywords.keywords')
-        s.assertTextPresent('Only the first 6 keywords are shown')
+        s.click('css=#edit-form-keywords-new .fold-link')
+        s.assertText(
+            'id=edit-form-keywords-new',
+            '*Only the first 6 keywords are shown*')
 
     def test_helptext_should_not_be_shown_for_existing_article(self):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=keywords.keywords')
-        s.assertNotTextPresent('Only the first 6 keywords are shown')
+        s.click('css=#edit-form-metadata .fold-link')
+        s.assertNotText(
+            'id=edit-form-metadata', '*Only the first 6 keywords are shown*')
 
 
 class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
@@ -141,6 +152,7 @@ class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         super(MetadataTest, self).setUp()
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         self.selenium.waitForElementPresent('id=options-b.year')
+        self.selenium.click('css=#edit-form-metadata .fold-link')
 
     def test_comments_allowed_toggled_when_comments_section_is_toggled(self):
         s = self.selenium
@@ -211,13 +223,11 @@ class AuthorLocationTest(
         fold = 'css=#edit-form-metadata .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
-        location_input = '.object-details.type-author .autocomplete-widget'
-        s.waitForElementPresent('css=%s' % location_input)
+        location_input = 'css=.object-details.type-author .autocomplete-widget'
+        s.waitForElementPresent(location_input)
         self.add_by_autocomplete('Paris', location_input)
 
         s.clickAndWait('id=checkin')
-        s.waitForElementPresent(fold)
-        s.click(fold)
         location_display = 'css=.object-details.type-author .widget'
         s.waitForElementPresent(location_display)
         s.waitForText(location_display, 'Paris')
@@ -227,11 +237,11 @@ class FilenameTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_filename_input_is_wired_up(self):
         self.add_article()
-        input_filename = 'new-filename.rename_to'
         s = self.selenium
+        fold = 'css=#edit-form-filename .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
+        input_filename = 'new-filename.rename_to'
         s.waitForElementPresent(input_filename)
-        # XXX type() doesn't work with selenium-1 and FF>7
-        self.eval(
-            'document.getElementById("%s").value = "foo bar"' % input_filename)
-        s.fireEvent(input_filename, 'change')
+        s.type(input_filename, 'foo bar\t')
         self.assertEqual('foo-bar', s.getValue(input_filename))

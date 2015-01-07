@@ -131,11 +131,12 @@ class HeaderSync(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_header_is_reloaded_after_change_to_ressort(self):
         s = self.selenium
-        s.assertSelectedLabel('id=metadata-a.ressort', 'International')
+        s.click('css=#edit-form-metadata .fold-link')
+        s.waitForSelectedLabel('id=metadata-a.ressort', 'International')
         s.waitForElementPresent('id=editor-forms-heading')
         s.waitForText('id=editor-forms-heading', '*International*')
         s.select('id=metadata-a.ressort', 'Deutschland')
-        s.fireEvent('id=metadata-a.ressort', 'blur')
+        s.type('id=metadata-a.sub_ressort', '\t')  # Trigger blur for form.
         s.waitForElementNotPresent('css=.field.dirty')
         s.waitForText('id=editor-forms-heading', '*Deutschland*')
 

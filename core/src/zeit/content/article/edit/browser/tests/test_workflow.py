@@ -71,39 +71,36 @@ class CheckinSelenium(
     def test_validation_errors_are_removed_from_checkin_form_on_change(self):
         self.add_article()
         s = self.selenium
-        title_error = 'css=#edit-form-workflow .errors dt:contains(Title)'
-        s.waitForElementPresent(title_error)
-        input_title = 'article-content-head.title'
-        # XXX type() doesn't work with selenium-1 and FF>7
-        self.eval(
-            'document.getElementById("%s").value = "mytitle"' % input_title)
-        s.fireEvent(input_title, 'blur')
-        s.waitForElementNotPresent(title_error)
+        error = 'jquery=#edit-form-workflow .errors dt:contains(file name)'
+        s.waitForElementPresent(error)
+        fold = 'css=#edit-form-filename .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
+        s.type('new-filename.rename_to', 'asdf\t')
+        s.waitForElementNotPresent(error)
 
     def test_checkin_button_is_disabled_while_validation_errors_present(self):
         self.add_article()
         s = self.selenium
+
         disabled_checkin_button = 'css=a#checkin.button.disabled'
         s.waitForElementPresent(disabled_checkin_button)
 
-        input_title = 'article-content-head.title'
-        # XXX type() doesn't work with selenium-1 and FF>7
-        self.eval(
-            'document.getElementById("%s").value = "mytitle"' % input_title)
-        s.fireEvent(input_title, 'blur')
+        fold = 'css=#edit-form-metadata .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
+        s.type('article-content-head.title', 'mytitle\t')
         input_ressort = 'metadata-a.ressort'
         s.select(input_ressort, 'label=International')
-        s.fireEvent(input_ressort, 'blur')
-        input_filename = 'new-filename.rename_to'
-        self.eval(
-            'document.getElementById("%s").value = "asdf"' % input_filename)
-        s.fireEvent(input_filename, 'blur')
+        s.type('id=metadata-a.sub_ressort', '\t')  # Trigger blur for form.
+
+        s.click('css=#edit-form-filename .fold-link')
+        s.type('new-filename.rename_to', 'asdf\t')
         s.click('css=#edit-form-keywords-new .edit-bar .fold-link')
         s.waitForElementNotPresent('css=#edit-form-keywords-new.folded')
         self.add_keyword_by_autocomplete('testtag', form_prefix='keywords')
         self.add_keyword_by_autocomplete('testtag2', form_prefix='keywords')
         self.add_keyword_by_autocomplete('testtag3', form_prefix='keywords')
-        s.fireEvent('keywords.keywords.add', 'blur')
 
         s.waitForElementNotPresent(disabled_checkin_button)
 
@@ -129,7 +126,8 @@ class CheckinSelenium(
         s.waitForElementPresent('id=checkin')
         s.click('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.field.dirty')
-        s.assertValue('id=publish.has_semantic_change', 'on')
+        s.waitForElementPresent('id=publish.has_semantic_change')
+        s.assertChecked('id=publish.has_semantic_change')
         s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
         self.assertNotEqual(before, sc.last_semantic_change)
@@ -141,9 +139,11 @@ class CheckinSelenium(
         s.click('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.field.dirty')
         # click something else to trigger a reload of the checkin form
+        s.waitForElementPresent('id=publish.urgent')
         s.click('id=publish.urgent')
         s.waitForElementNotPresent('css=.field.dirty')
-        s.assertValue('id=publish.has_semantic_change', 'on')
+        s.waitForElementPresent('id=publish.has_semantic_change')
+        s.waitForChecked('id=publish.has_semantic_change')
 
     def test_checkin_button_change_on_semantic_change(self):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
@@ -151,10 +151,10 @@ class CheckinSelenium(
         s.waitForElementPresent('id=checkin')
         s.waitForElementNotPresent('css=.checkin-button.semantic-change')
         s.click('id=publish.has_semantic_change')
-        s.waitForValue('id=publish.has_semantic_change', 'on')
+        s.waitForChecked('id=publish.has_semantic_change')
         s.waitForElementPresent('css=.checkin-button.semantic-change')
         s.click('id=publish.has_semantic_change')
-        s.waitForValue('id=publish.has_semantic_change', 'off')
+        s.waitForNotChecked('id=publish.has_semantic_change')
         s.waitForElementNotPresent('css=.checkin-button.semantic-change')
 
     @unittest.skip('Cannot make the focus/blur-trigger work'
@@ -163,7 +163,7 @@ class CheckinSelenium(
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
-        self.eval("""\
+        self.run_js("""\
 zeit.cms.with_lock_calls = [];
 zeit.cms.with_lock = function(callable) {
     zeit.cms.with_lock_calls.push(callable);
@@ -171,11 +171,11 @@ zeit.cms.with_lock = function(callable) {
 
         s.click('id=article-content-head.title')
         s.click('id=checkin')
-        self.assertEqual('2', self.eval('zeit.cms.with_lock_calls.length'))
+        self.assertEqual(2, self.eval('zeit.cms.with_lock_calls.length'))
         self.assertEqual(
             'MochiKit.Async.doXHR',
             self.eval('zeit.cms.with_lock_calls[0].NAME'))
-        self.assertEqual('null', self.eval('zeit.cms.with_lock_calls[1].NAME'))
+        self.assertEqual(None, self.eval('zeit.cms.with_lock_calls[1].NAME'))
 
     def test_save_state_button_should_load_page(self):
         self.open('/repository/online/2007/01/Somalia')
@@ -296,5 +296,7 @@ class Objectlog(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.open(
             '/++skin++vivi/repository/online/2007/01/Somalia/')
         s = self.selenium
-        s.waitForElementPresent('css=div.objectlog table.objectlog')
+        fold = 'css=#edit-form-status .fold-link'
+        s.waitForElementPresent(fold)
+        s.click(fold)
         s.assertText('css=div.objectlog table.objectlog', '*example message*')
