@@ -41,11 +41,10 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.click(apply_button)
         s.waitForElementNotPresent('css=.lightbox')
 
-        s.verifyXpathCount(css_path('#informatives .block a.delete-link'), 3)
+        s.assertCssCount('css=#informatives .block a.delete-link', 3)
         s.click('css=#informatives .block a.delete-link')
         # mostread/mostcommented are still there
-        s.waitForXpathCount(
-            css_path('#informatives .block a.delete-link'), 2)
+        s.waitForCssCount('css=#informatives .block a.delete-link', 2)
 
     def test_hover(self):
         self.create_teaserlist()
@@ -221,19 +220,19 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
         # There is a landing zone
         s.verifyElementNotPresent('css=.lightbox li.edit-bar')
-        s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 1)
+        s.assertCssCount('css=.lightbox li.landing-zone', 1)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c1"]',
             'css=.lightbox .landing-zone', '10,10')
         s.waitForElementPresent('css=.lightbox li.edit-bar')
 
         # Now, there are two landing zones
-        s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 2)
+        s.assertCssCount('css=.lightbox li.landing-zone', 2)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c2"]',
             'css=.lightbox .landing-zone:first-child', '10,10')
-        s.waitForXpathCount(css_path('.lightbox li.edit-bar'), 2)
-        s.verifyXpathCount(css_path('.lightbox li.landing-zone'), 3)
+        s.waitForCssCount('css=.lightbox li.edit-bar', 2)
+        s.assertCssCount('css=.lightbox li.landing-zone', 3)
 
     def test_toggle_visible(self):
         self.open_centerpage()
