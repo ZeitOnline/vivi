@@ -234,7 +234,7 @@ class TestTextEditing(
         self.create('<p>I want to link something</p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.run_js("""(function() {
+        self.eval("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -364,7 +364,7 @@ class TestLinkEditing(
         self.create('<p>I want to link something</p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.run_js("""(function() {
+        self.eval("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -377,7 +377,7 @@ class TestLinkEditing(
         self.create(
             '<p>I want to <a href="{1}" {0}>link</a> something</p>'.format(
                 additional, href))
-        self.run_js("""(function() {
+        self.eval("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p, 1);
@@ -633,7 +633,7 @@ class TestLinkEditing(
         self.create('<p>I want to link <b>some bold text</b></p>'
                     '<p>And I need distance<p>'
                     '<p>from the bottom landing zone<p>')
-        self.run_js("""(function() {
+        self.eval("""(function() {
             var p = window.jQuery('.block.type-p .editable p')[0];
             var range = window.getSelection().getRangeAt(0);
             range.setStart(p.firstChild, 10);
@@ -895,7 +895,7 @@ class DirtySaveVersusPersistTests(
     def save(self):
         # Override self.save() as the superclass expects that save is working
         # properly but as we mocked persist it doesn't.
-        self.run_js('%s.save()' % self.get_js_editable())
+        self.eval('%s.save()' % self.get_js_editable())
 
     def test_does_not_save_on_server_if_not_dirty(self):
         self.create('<p>foo</p><p>bar</p>')

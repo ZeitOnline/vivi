@@ -163,7 +163,7 @@ class CheckinSelenium(
         self.open('/repository/online/2007/01/Somalia/@@checkout')
         s = self.selenium
         s.waitForElementPresent('id=checkin')
-        self.run_js("""\
+        s.runScript("""\
 zeit.cms.with_lock_calls = [];
 zeit.cms.with_lock = function(callable) {
     zeit.cms.with_lock_calls.push(callable);

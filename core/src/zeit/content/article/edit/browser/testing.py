@@ -57,7 +57,7 @@ class EditorHelper(object):
                 u"window.jQuery(window.jQuery('.block.type-p')[{0}])"
                 u".find('.editable')[0].innerHTML = '{1}';"
             ).format(existing, contents.replace(u"'", u'\\"'))
-            self.run_js(code)
+            self.selenium.runScript(code)
             self.mark_dirty()
 
     def get_js_editable(self, locator=None):
@@ -67,12 +67,12 @@ class EditorHelper(object):
 
     def mark_dirty(self, locator=None, status=True):
         editable = self.get_js_editable(locator)
-        self.run_js(
+        self.selenium.runScript(
             editable + ".dirty = " + str(status).lower() + ";")
 
     def save(self, locator=None):
         editable = self.get_js_editable(locator)
-        self.run_js(editable + ".save()")
+        self.selenium.runScript(editable + ".save()")
         self.selenium.waitForElementNotPresent('xpath=//*[@contenteditable]')
 
     def create_block(self, block, wait_for_inline=False):
