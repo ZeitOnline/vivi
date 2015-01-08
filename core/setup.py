@@ -1,12 +1,13 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.content.image',
     version='2.2.7.dev0',
-    author='gocept',
+    author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
-    url='https://bitbucket.org/gocept/zeit.content.image',
-    description="ZEIT Image",
+    url='http://www.zeit.de/',
+    description="vivi Content-Type Image, ImageGroup",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
