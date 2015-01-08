@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import os.path
 import zeit.content.gallery.interfaces
 import zeit.content.image.interfaces

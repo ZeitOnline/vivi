@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import pkg_resources
 import plone.testing
 import zeit.cms.repository.interfaces

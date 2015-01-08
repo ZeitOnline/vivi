@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Ticket authentication."""
 
 import base64
 import hashlib
