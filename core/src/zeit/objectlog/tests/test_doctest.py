@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zope.testing import doctest
 import zeit.objectlog.testing
 import zope.app.testing.functional

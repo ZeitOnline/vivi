@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.objectlog.i18n import MessageFactory as _
 import BTrees
 import datetime

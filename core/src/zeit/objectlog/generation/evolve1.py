@@ -1,6 +1,3 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import BTrees
 import zope.app.component
 import zope.app.component.hooks

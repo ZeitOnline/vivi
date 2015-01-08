@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zope.app.generations.generations
 
 minimum_generation = 1

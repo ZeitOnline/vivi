@@ -1,6 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from datetime import datetime
 import transaction
 import zeit.objectlog.interfaces

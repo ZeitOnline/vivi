@@ -1,17 +1,18 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.objectlog',
     version='0.13.dev0',
-    author='Christian Zagrodnick',
-    author_email='cz@gocept.com',
-    description="""\
-""",
+    author='gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de/',
+    description="ZODB-based event log",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    license='gocept proprietary',
+    license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
         'ZODB3',
