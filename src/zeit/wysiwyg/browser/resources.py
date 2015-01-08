@@ -1,6 +1,3 @@
-# Copyright (c) 2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from gocept.fckeditor.resources import fckeditor
 from fanstatic import Resource, Library
 import zeit.cms.browser.resources

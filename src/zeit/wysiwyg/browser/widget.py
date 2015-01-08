@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import gocept.fckeditor.resources
 import zeit.cms.browser.view
 import zope.app.form.browser.textwidgets
