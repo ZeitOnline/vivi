@@ -1,6 +1,3 @@
-# Copyright (c) 2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.magazin.interfaces import IZMOSection, IZMOFolder
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
