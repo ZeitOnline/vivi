@@ -1,3 +1,4 @@
+# coding: utf8
 """Landing zone views.
 
 See: http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-ziehen-eines-content-objekts
