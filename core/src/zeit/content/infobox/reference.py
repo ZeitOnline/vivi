@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import grokcore.component
 import zeit.cms.content.dav
 import zeit.content.infobox.interfaces
