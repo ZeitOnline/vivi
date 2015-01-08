@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.cms.workflow.interfaces
 import zeit.content.video.testing
 import zeit.workflow.testing

@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zope.browserpage import ViewPageTemplateFile
 import pkg_resources
 import zeit.cms.related.interfaces

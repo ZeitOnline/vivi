@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import lxml.objectify
 import unittest
 import zeit.cms.content.interfaces
