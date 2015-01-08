@@ -1,17 +1,18 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.push',
     version='1.7.2.dev0',
-    author='gocept',
-    author_email='mail@gocept.com',
-    url='https://bitbucket.org/gocept/zeit.push',
+    author='gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de/',
     description="Sending push notifications through various providers",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    license='gocept proprietary',
+    license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
         'fb',
