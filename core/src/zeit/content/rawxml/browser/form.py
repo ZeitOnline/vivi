@@ -1,6 +1,3 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import gocept.form.grouped
 import zope.formlib.form
 

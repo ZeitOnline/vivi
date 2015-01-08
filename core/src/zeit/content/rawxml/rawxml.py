@@ -1,6 +1,3 @@
-# Copyright (c) 2008 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import copy
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
