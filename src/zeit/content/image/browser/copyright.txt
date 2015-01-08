@@ -1,6 +1,3 @@
-Bulk change copyright
-=====================
-
 The bulk change of copyright changes the copyright of all objects in a
 collection which are adaptable to IImageMetata.
 

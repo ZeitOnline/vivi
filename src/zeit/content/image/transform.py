@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import PIL.Image
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
