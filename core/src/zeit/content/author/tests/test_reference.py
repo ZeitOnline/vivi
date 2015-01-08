@@ -1,6 +1,3 @@
-# Copyright (c) 2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import lxml.etree
 import zeit.cms.content.interfaces
 import zeit.cms.testing

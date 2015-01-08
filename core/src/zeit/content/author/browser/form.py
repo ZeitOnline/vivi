@@ -1,7 +1,4 @@
-# coding: utf-8
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+# coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import re
 import transaction
@@ -9,7 +6,6 @@ import zeit.cms.browser.form
 import zeit.content.author.author
 import zeit.content.author.interfaces
 import zeit.edit.browser.form
-import zope.app.pagetemplate
 import zope.formlib.form
 import zope.formlib.interfaces
 import zope.interface
