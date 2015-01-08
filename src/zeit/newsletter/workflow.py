@@ -1,6 +1,3 @@
-# Copyright (c) 2011-2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import grokcore.component as grok
 import zeit.cms.workflow.interfaces
