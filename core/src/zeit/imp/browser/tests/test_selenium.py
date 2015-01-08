@@ -1,7 +1,4 @@
 # coding: utf8
-# Copyright (c) 2008-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from selenium.webdriver.common.keys import Keys
 import gocept.httpserverlayer.wsgi
 import gocept.selenium

@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import PIL.Image
 import PIL.ImageDraw
 import PIL.ImageColor

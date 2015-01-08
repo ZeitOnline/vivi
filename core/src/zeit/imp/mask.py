@@ -1,14 +1,10 @@
-# Copyright (c) 2008-2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Create cropping mask as PNG with alpha."""
-
 import PIL.Image
 import PIL.ImageDraw
 import cStringIO
 
 
 class Mask(object):
-    """A mask for cropping.
+    """A mask for cropping (PNG with alpha channel).
 
     The constructed image has a semi-transparent "border" and a transparent
     mask where the image can be cropped from.

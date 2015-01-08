@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.cms.content.sources
 import zeit.imp.interfaces
 import zope.interface

@@ -1,7 +1,4 @@
 # coding: utf8
-# Copyright (c) 2008-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import PIL.Image
 import pkg_resources
 import unittest
