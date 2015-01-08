@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# Copyright (c) 2009 StudioNow, Inc <patrick@studionow.com>
-# See also LICENSE.txt
 
 import logging
 import json

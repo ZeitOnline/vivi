@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.brightcove.testing import PLAYLIST_LIST_RESPONSE
 from zeit.brightcove.testing import VIDEO_1234, PLAYLIST_2345
 from zeit.brightcove.update import update_from_brightcove

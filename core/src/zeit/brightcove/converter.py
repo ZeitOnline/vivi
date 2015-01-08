@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import calendar
 import datetime

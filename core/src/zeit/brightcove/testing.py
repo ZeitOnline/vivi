@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import gocept.httpserverlayer.custom
 import json

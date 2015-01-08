@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.brightcove.interfaces import DAV_NAMESPACE
 from zeit.cms.content.dav import DAVProperty
 from zeit.cms.i18n import MessageFactory as _
