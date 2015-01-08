@@ -1,7 +1,4 @@
 # coding: utf8
-# Copyright (c) 2008-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.wysiwyg.util import contains_element
 import copy
 import datetime

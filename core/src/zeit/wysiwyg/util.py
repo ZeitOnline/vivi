@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 
 def contains_element(list, element):
     """lxml.objectify elements are equal if their text contents are equal,

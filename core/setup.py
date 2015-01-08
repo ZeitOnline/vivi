@@ -1,17 +1,18 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.wysiwyg',
     version='2.0.4.dev0',
-    author='gocept',
-    author_email='mail@gocept.com',
-    url='https://svn.gocept.com/repos/gocept-int/zeit.cms',
-    description="ZEIT WYSIWYG Editor integration",
+    author='gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de/',
+    description="vivi legacy WYSIWYG editor",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    license='gocept proprietary',
+    license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
         'gocept.fckeditor[fanstatic]>=2.6.4.1-2',
