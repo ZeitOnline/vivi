@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.newsletter.newsletter import Newsletter
 import gocept.httpserverlayer.wsgi
 import gocept.selenium

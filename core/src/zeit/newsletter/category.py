@@ -1,6 +1,3 @@
-# Copyright (c) 2011-2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 from zeit.cms.i18n import MessageFactory as _
 import datetime

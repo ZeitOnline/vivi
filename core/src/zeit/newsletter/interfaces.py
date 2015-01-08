@@ -1,7 +1,4 @@
-# coding: utf-8
-# Copyright (c) 2011-2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+# coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.repository.interfaces
