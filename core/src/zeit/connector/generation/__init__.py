@@ -3,8 +3,8 @@
 
 import zope.app.generations.generations
 
-minimum_generation = 5
-generation = 5
+minimum_generation = 6
+generation = 6
 
 manager = zope.app.generations.generations.SchemaManager(
     minimum_generation, generation, "zeit.connector.generation")
