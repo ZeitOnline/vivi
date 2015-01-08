@@ -2,6 +2,12 @@ zeit.content.cp changes
 =======================
 
 
+3.0.0.beta3 (unreleased)
+------------------------
+
+- Nothing changed yet.
+
+
 3.0.0.beta2 (2015-01-08)
 ------------------------
 
