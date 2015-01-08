@@ -1,6 +1,3 @@
-# Copyright (c) 2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import zeit.cms.browser.interfaces
 import zeit.cms.testing

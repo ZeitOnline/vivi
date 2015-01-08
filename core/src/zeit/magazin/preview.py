@@ -1,6 +1,3 @@
-# Copyright (c) 2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import grokcore.component as grok
 import zeit.cms.browser.preview
 import zeit.magazin.interfaces
