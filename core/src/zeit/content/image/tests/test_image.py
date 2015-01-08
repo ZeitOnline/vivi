@@ -1,6 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.content.image.testing import create_image_group
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
