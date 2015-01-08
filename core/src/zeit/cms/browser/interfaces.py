@@ -1,6 +1,3 @@
-# Copyright (c) 2006-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Interfaces for CMS skin"""
 
 import gocept.form.interfaces
 import zope.interface

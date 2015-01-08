@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import BTrees
 import persistent
 import zc.relation.catalog

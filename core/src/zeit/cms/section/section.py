@@ -1,6 +1,3 @@
-# Copyright (c) 2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.section.interfaces import ISection, ISectionMarker
 import grokcore.component as grok

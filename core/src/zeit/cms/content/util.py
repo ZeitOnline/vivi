@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import BeautifulSoup
 import lxml.objectify
 import zope.schema.interfaces

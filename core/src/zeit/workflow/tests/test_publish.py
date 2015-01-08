@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from datetime import datetime
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent

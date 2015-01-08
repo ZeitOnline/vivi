@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.repository.repository import live_url_to_content
 from zeit.cms.repository.repository import vivi_url_to_content

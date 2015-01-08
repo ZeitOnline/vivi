@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zc.table.column
 import zc.table.table
 import zope.cachedescriptors.property

@@ -1,6 +1,3 @@
-# Copyright (c) 2011-2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import UserDict
 import gocept.cache.method
 import gocept.lxml.objectify

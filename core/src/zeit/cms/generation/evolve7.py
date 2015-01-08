@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zope.annotation
 import zope.component
 import zope.securitypolicy.interfaces

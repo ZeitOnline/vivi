@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import grokcore.component as grok
 import urlparse
 import zeit.cms.interfaces

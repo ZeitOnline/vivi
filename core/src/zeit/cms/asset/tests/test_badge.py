@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import transaction
 import zeit.cms.asset.interfaces
 import zeit.cms.checkout.interfaces

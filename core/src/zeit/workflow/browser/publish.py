@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.repository.interfaces import IRepositoryContent
 import lovely.remotetask.interfaces
 import zeit.cms.browser.menu

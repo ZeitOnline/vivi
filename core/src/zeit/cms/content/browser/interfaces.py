@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.asset.browser.interfaces import IAssetViews  # Legacy
 import zope.interface
 

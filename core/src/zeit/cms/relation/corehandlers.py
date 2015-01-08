@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import gocept.async
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces

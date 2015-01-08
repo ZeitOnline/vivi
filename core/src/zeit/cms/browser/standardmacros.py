@@ -1,6 +1,3 @@
-# Copyright (c) 2006-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import z3c.flashmessage.interfaces
 import zeit.cms.browser
 import zeit.cms.browser.interfaces

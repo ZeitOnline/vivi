@@ -1,6 +1,3 @@
-# Copyright (c) 2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.repository.folder import Folder
 from zeit.cms.section.interfaces import ISection
 from zeit.cms.testcontenttype.testcontenttype import TestContentType

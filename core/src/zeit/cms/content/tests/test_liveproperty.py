@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import mock
 import zeit.cms.content.interfaces

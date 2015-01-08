@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces

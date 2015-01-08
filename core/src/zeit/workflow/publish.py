@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Publish and retract actions."""
 
 from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _

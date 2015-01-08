@@ -1,6 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.cms.testing
 import zeit.workflow.testing

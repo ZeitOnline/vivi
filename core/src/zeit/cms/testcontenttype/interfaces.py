@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 
 import zeit.cms.content.interfaces
 import zeit.cms.tagging.interfaces

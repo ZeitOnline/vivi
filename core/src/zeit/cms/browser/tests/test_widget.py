@@ -1,7 +1,4 @@
 # coding: utf8
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.browser.widget import ObjectSequenceDisplayWidget
 from zeit.cms.browser.widget import ObjectSequenceWidget
 from zeit.cms.browser.widget import ReferenceSequenceWidget

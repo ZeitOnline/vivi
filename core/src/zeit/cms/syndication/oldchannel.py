@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.cms.content.adapter
 import zeit.cms.syndication.feed
 import zeit.cms.type

@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.tagging.interfaces import KEYWORD_CONFIGURATION
 import grokcore.component
 import json

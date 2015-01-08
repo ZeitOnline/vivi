@@ -1,12 +1,7 @@
 # coding: utf8
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import pprint
-
-import zope.component
-
 import zeit.cms.interfaces
+import zope.component
 
 
 class View(object):

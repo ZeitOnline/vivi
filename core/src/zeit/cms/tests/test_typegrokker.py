@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import grokcore.component.testing
 import zeit.cms.interfaces
 import zeit.cms.testing

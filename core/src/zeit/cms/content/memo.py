@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import grokcore.component
 import zeit.cms.content.dav

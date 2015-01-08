@@ -1,10 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""View baseclass. Greatly inspired and copied from grok.
-
-"""
-
-import fanstatic
 import json
 import z3c.flashmessage.interfaces
 import zeit.cms.application

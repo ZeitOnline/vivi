@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Content related forms."""
 
 from zeit.cms.asset.browser.form import AssetBase  # Legacy
 from zeit.cms.i18n import MessageFactory as _

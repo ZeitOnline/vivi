@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Implementation of the test content type."""
 
 import zeit.cms.content.metadata
 import zeit.cms.interfaces

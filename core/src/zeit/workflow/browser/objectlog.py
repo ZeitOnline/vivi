@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zope.interface.common.idatetime import ITZInfo
 from zeit.workflow.publishinfo import id_to_principal
 import zeit.objectlog.interfaces

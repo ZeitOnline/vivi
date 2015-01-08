@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.browser.view
 import zeit.cms.checkout.interfaces

@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.cms.repository.interfaces
 import zeit.workflow.interfaces
 import zope.app.publisher.xmlrpc

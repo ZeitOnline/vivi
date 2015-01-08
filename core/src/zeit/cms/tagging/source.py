@@ -1,6 +1,3 @@
-# Copyright (c) 2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zc.sourcefactory.contextual
 import zc.sourcefactory.source
 import zeit.cms.content.contentsource

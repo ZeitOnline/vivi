@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Dublincore implementation."""
 
 import datetime
 import grokcore.component

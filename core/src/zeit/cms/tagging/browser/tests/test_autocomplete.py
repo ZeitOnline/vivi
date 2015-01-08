@@ -1,6 +1,3 @@
-# Copyright (c) 2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import json
 import zeit.cms.browser.interfaces
 import zeit.cms.testing

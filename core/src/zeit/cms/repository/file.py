@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""File objects."""
 
 from zeit.cms.i18n import MessageFactory as _
 import ZODB.blob

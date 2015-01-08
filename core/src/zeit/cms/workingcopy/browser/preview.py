@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import urllib2
 import zeit.cms.browser.preview
 import zeit.cms.interfaces

@@ -1,6 +1,3 @@
-# Copyright (c) 2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from fanstatic import Library, Group
 from js.jquery import jquery
 from js.mochikit import mochikit

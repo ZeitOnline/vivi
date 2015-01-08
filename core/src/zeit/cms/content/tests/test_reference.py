@@ -1,6 +1,3 @@
-# Copyright (c) 2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from mock import Mock
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.content.reference import ReferenceProperty

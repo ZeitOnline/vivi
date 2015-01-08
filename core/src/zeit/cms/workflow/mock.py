@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""A mock workflow component for testing."""
 
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import zeit.cms.interfaces

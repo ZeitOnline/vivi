@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.workingcopy.interfaces import IWorkingcopy
 import zeit.cms.testing
 import zope.component

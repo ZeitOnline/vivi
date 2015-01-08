@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import gocept.httpserverlayer.wsgi
 import gocept.selenium

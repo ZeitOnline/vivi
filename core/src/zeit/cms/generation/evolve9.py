@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.relation.relation import _dump_content, _load_content
 import BTrees
 import zc.relation.catalog

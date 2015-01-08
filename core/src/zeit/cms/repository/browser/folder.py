@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.cms.browser.form
 import zeit.cms.repository.folder
 import zope.component

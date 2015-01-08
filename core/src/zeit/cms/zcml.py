@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zope.component.zcml
 import zope.security.zcml
 import zope.security.permission

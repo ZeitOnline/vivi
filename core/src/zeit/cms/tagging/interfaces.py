@@ -1,6 +1,3 @@
-# Copyright (c) 2011-2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.tagging.source import IWhitelistSource
 import zc.sourcefactory.basic
