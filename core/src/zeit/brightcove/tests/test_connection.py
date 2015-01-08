@@ -1,4 +1,4 @@
-
+# coding: utf-8
 import unittest
 import zeit.brightcove.connection
 
