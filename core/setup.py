@@ -98,7 +98,6 @@ setup(
         'gocept.selenium>=2.2.0.dev0',
         'gocept.jslint>=0.2',
     ],
-    setup_requires=['setuptools_hg'],
     entry_points={
         'console_scripts': [
             'dump_references = zeit.cms.relation.migrate:dump_references',
