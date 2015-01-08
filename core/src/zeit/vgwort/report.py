@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from __future__ import print_function
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import ZODB.POSException

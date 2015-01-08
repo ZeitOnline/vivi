@@ -1,5 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
 """
 Extend suds to handle parameters passed as attributes of the request element.
 (filed upstream at <https://fedorahosted.org/suds/ticket/327>)
