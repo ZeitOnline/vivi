@@ -1,7 +1,4 @@
 # coding: utf8
-# Copyright (c) 2009-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import lovely.remotetask.interfaces
 import lxml.cssselect
 import zeit.cms.repository.interfaces

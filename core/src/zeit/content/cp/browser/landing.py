@@ -1,6 +1,3 @@
-# coding: utf8
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
 """Landing zone views.
 
 See: http://cmsdev.zeit.de/content/aufmacher-fläche-einen-block-anlegen-durch-ziehen-eines-content-objekts

@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.content.cp.centerpage import CenterPage
 import lxml.etree
 import zeit.cms.checkout.helper

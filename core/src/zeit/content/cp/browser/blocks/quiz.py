@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
 
 import zope.formlib.form
 import zeit.content.cp.interfaces

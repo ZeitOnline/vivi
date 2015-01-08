@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zope.browser.interfaces

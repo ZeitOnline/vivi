@@ -1,6 +1,3 @@
-# -*- coding: utf-8 -*-
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
 
 from zeit.cms.workflow.interfaces import PRIORITY_LOW
 import datetime

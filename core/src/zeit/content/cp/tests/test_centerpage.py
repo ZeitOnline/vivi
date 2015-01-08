@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from xml_compare import xml_compare
 from zeit.cms.checkout.helper import checked_out
 import gocept.cache.method

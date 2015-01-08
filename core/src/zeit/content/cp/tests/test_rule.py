@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from __future__ import with_statement
 from zeit.edit.rule import Rule
 from zeit.edit.interfaces import IRuleGlobs

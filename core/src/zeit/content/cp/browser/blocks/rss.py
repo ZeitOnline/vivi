@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.cms.checkout.helper
 import zeit.cms.content
 import zeit.content.cp.browser.blocks.block
