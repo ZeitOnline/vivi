@@ -5,21 +5,22 @@ here = os.path.abspath(os.path.dirname(__file__))
 README = open(os.path.join(here, 'README.txt')).read()
 NEWS = open(os.path.join(here, 'CHANGES.txt')).read()
 
+
 setup(
     name='zeit.edit',
     version='2.7.0.dev0',
     description="Vivi Editor",
     long_description=README + '\n\n' + NEWS,
     keywords='',
-    author='',
-    author_email='',
-    url='',
-    license='ZPL 2.1',
+    author='gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de/',
     packages=find_packages('src'),
     package_dir={'': 'src'},
     namespace_packages=['zeit'],
     include_package_data=True,
     zip_safe=False,
+    license='BSD',
     install_requires=[
         'ZODB',
         'fanstatic',

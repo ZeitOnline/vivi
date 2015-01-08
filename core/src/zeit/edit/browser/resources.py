@@ -1,6 +1,3 @@
-# Copyright (c) 2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.browser.resources import SplitDirResource, Library
 import zeit.cms.browser.resources
 import zeit.find.browser.resources

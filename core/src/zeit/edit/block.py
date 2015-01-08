@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from xml_compare import xml_compare
 import gocept.lxml.interfaces
 import grokcore.component as grok

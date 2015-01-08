@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.i18n import MessageFactory as _
 import ZODB.POSException
 import cgi

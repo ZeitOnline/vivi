@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from persistent.interfaces import IPersistent
 import lxml.objectify
 import mock

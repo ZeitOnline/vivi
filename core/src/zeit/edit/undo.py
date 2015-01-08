@@ -1,6 +1,3 @@
-# Copyright (c) 2011-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import grokcore.component as grok
 import transaction
 import zeit.cms.checkout.interfaces

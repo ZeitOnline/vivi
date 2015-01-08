@@ -1,6 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from mock import Mock
 import zeit.cms.content.interfaces
 import zeit.cms.testing

@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from datetime import datetime, timedelta
 import StringIO
 import mock
