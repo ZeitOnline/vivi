@@ -1,18 +1,18 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.connector',
     version='2.4.1.dev0',
-    author='Tomas Zerolo, Christian Zagrodnick',
-    author_email='tomas@tuxteam.de, cz@gocept.com',
-    url='http://trac.gocept.com/zeit',
-    description="""\
-""",
+    author='Tomas Zerolo, gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de/',
+    description="DAV interface",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    license='gocept proprietary',
+    license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
         'ZConfig',

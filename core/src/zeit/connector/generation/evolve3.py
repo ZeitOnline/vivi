@@ -1,7 +1,3 @@
-# Copyright (c) 2008-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Migrate to the set oriented last access counter."""
-
 import BTrees
 import zope.app.component.hooks
 import zope.app.component
@@ -9,6 +5,8 @@ import zope.app.zopeappgenerations
 
 
 def update(root):
+    """Migrate to the set oriented last access counter."""
+
     site_manager = zope.component.getSiteManager()
 
     body_cache = site_manager['connector-body-cache']

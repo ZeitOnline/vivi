@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zope.testing import doctest
 import StringIO
 import ZODB.blob

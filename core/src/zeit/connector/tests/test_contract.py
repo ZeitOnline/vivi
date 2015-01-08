@@ -1,6 +1,3 @@
-# Copyright (c) 2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.connector.dav.interfaces import DAVNotFoundError
 from zeit.connector.testing import copy_inherited_functions
 import zeit.connector.testing

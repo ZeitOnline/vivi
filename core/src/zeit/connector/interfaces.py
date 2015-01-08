@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zope.interface
 import zope.interface.common.mapping
 import zope.schema

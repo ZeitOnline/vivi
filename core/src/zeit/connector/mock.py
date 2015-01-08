@@ -1,7 +1,3 @@
-# Copyright (c) 2007-2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Filesystem connector configured for use in testing."""
-
 from zeit.connector.connector import CannonicalId
 from zeit.connector.interfaces import UUID_PROPERTY
 import StringIO

@@ -1,8 +1,4 @@
 # coding: utf8
-# Copyright (c) 2007-2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Connector test setup."""
-
 from zeit.connector.testing import copy_inherited_functions
 import StringIO
 import mock

@@ -1,7 +1,3 @@
-# Copyright (c) 2007-2013 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Connect to data stored in the filesystem in read-only mode."""
-
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
 import StringIO

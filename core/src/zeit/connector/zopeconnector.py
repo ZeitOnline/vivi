@@ -1,7 +1,3 @@
-# Copyright (c) 2008-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Connector which integrates into Zope CA and transaction machinery."""
-
 import ZConfig
 import ZODB.POSException
 import logging
@@ -23,6 +19,8 @@ log = logging.getLogger(__name__)
 
 
 class ZopeConnector(zeit.connector.connector.Connector):
+    """Connector which integrates into zope.component
+    and transaction machinery."""
 
     def create_connection(self, root):
         connection = super(self.__class__, self).create_connection(root)

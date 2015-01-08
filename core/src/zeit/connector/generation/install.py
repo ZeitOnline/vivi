@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.connector.cache
 import zeit.connector.interfaces
 import zeit.connector.invalidator

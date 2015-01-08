@@ -1,7 +1,3 @@
-# Copyright (c) 2008-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Remove cruft data."""
-
 import zeit.connector.generation.install
 import zeit.connector.invalidator
 import zope.app.component

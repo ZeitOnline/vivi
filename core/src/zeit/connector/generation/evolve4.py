@@ -1,13 +1,11 @@
-# Copyright (c) 2008-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Remove cruft data."""
-
 import zope.app.component.hooks
 import zope.app.component
 import zope.app.zopeappgenerations
 
 
 def update(root):
+    """Remove cruft data."""
+
     site_manager = zope.component.getSiteManager()
 
     body_cache = site_manager['connector-body-cache']

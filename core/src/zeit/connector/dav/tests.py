@@ -1,7 +1,4 @@
 # coding: utf8
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import StringIO
 import unittest
 import zeit.connector.dav.davbase
