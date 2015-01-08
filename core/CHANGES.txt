@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.7.0 (unreleased)
+2.7.0 (2015-01-08)
 ------------------
 
 - Extract body traverser mechanics from article/cp.
