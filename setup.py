@@ -1,18 +1,18 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.securitypolicy',
     version='2.1.8.dev0',
-    author='gocept',
-    author_email='mail@gocept.com',
-    url='https://code.gocept.com/hg/public/zeit.securitypolicy',
-    description="""\
-""",
+    author='gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de/',
+    description="vivi roles and permissions",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    license='gocept proprietary',
+    license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
         'plone.testing',
