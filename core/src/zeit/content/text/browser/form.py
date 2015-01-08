@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Plain text forms."""
 
 import copy
 import zeit.cms.browser.form

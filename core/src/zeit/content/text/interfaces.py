@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.repository.interfaces
 import zope.schema
