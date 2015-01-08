@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.solr import query as lq
 from zeit.find.daterange import DATE_FILTERS
 import itertools

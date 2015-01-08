@@ -1,18 +1,18 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.find',
     version='2.3.2.dev0',
-    author='gocept',
-    author_email='mail@gocept.com',
-    url='https://svn.gocept.com/repos/gocept-int/zeit.find',
-    description="""\
-""",
+    author='gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de/',
+    description="vivi UI for querying solr",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    license='gocept proprietary',
+    license='BSD',
     namespace_packages=['zeit'],
     install_requires=[
         'gocept.httpserverlayer',
