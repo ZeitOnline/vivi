@@ -1,6 +1,3 @@
-# Copyright (c) 2011-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import mock
 import pysolr
 import unittest

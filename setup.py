@@ -1,18 +1,18 @@
 from setuptools import setup, find_packages
 
+
 setup(
     name='zeit.content.author',
     version='2.2.2.dev0',
-    author='gocept',
-    author_email='mail@gocept.com',
-    url='https://code.gocept.com/svn/gocept-int/zeit.cms',
-    description="""\
-""",
+    author='gocept, Zeit Online',
+    author_email='zon-backend@zeit.de',
+    url='http://www.zeit.de',
+    description="vivi Content-Type Author",
     packages=find_packages('src'),
     package_dir={'': 'src'},
     include_package_data=True,
     zip_safe=False,
-    license='gocept proprietary',
+    license='BSD',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'grokcore.component',

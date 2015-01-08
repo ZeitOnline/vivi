@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import grokcore
 import zeit.cms.browser.listing
 import zope.publisher.interfaces
