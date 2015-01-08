@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.testing import copy_inherited_functions
 import mock
 import unittest
