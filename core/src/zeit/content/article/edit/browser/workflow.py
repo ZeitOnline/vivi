@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.repository.interfaces import IAutomaticallyRenameable
 from zeit.cms.workflow.interfaces import IPublishInfo

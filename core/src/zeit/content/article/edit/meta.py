@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import grokcore.component
 import martian
 import zeit.content.article.edit.block

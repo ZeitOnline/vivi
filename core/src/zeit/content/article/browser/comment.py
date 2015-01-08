@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Comment browser integration."""
 
 import zeit.cms.browser.interfaces
 import zeit.cms.content.interfaces

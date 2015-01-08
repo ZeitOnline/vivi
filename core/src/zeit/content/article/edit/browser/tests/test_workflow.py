@@ -1,7 +1,3 @@
-# coding: utf-8
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import transaction

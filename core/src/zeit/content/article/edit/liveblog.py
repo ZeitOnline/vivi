@@ -1,6 +1,3 @@
-# Copyright (c) 2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import zeit.cms.content.interfaces

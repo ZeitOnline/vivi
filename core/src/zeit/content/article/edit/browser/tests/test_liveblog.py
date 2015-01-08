@@ -1,6 +1,3 @@
-# Copyright (c) 2014 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.content.article.edit.browser.testing
 
 

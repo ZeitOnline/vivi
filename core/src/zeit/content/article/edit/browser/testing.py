@@ -1,6 +1,3 @@
-# Copyright (c) 2011-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import transaction
 import zeit.cms.clipboard.interfaces
 import zeit.cms.testing

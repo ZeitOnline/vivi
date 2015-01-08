@@ -1,7 +1,3 @@
-# coding: utf8
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.checkout.helper import checked_out
 from zeit.cms.interfaces import ICMSContent
 import transaction

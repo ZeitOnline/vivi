@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import lxml.etree
 import unittest
 import zeit.content.article.testing

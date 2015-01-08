@@ -1,7 +1,4 @@
-# coding: utf-8
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+# coding: utf8
 import lxml.etree
 import mock
 import zeit.cms.checkout.helper

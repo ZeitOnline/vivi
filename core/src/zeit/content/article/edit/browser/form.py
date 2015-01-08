@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.browser.widget import CheckboxDisplayWidget
 from zeit.cms.browser.widget import RestructuredTextWidget
 from zeit.cms.content.interfaces import ICommonMetadata

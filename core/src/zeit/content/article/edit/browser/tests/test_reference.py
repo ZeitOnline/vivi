@@ -1,6 +1,3 @@
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.content.article.edit.interfaces import IEditableBody
 import transaction
 import unittest

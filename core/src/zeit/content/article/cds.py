@@ -1,6 +1,3 @@
-# Copyright (c) 2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import datetime
 import gocept.filestore

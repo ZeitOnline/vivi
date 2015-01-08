@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.content.article.interfaces import IBookRecensionContainer
 import transaction
 import zeit.cms.interfaces

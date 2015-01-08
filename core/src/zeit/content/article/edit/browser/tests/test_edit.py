@@ -1,7 +1,4 @@
-# coding: utf-8
-# Copyright (c) 2010-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
+# coding: utf8
 from selenium.webdriver.common.keys import Keys
 from zeit.content.article.edit.browser.edit import SaveText, AutoSaveText
 import gocept.testing.mock

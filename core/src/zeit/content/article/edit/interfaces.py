@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.content.article.i18n import MessageFactory as _
 import collections
 import zc.sourcefactory.basic

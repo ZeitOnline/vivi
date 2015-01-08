@@ -1,6 +1,3 @@
-# Copyright (c) 2011 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from zeit.edit.rule import glob
 import zeit.content.article.interfaces
 import zeit.content.article.edit.interfaces

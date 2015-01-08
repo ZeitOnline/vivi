@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import __future__
 import unittest
 import zeit.cms.testing

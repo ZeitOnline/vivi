@@ -1,6 +1,3 @@
-# Copyright (c) 2007-2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import lxml.objectify
 import z3c.traverser.interfaces
 import zeit.cms.content.property

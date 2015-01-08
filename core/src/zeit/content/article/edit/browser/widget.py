@@ -1,6 +1,3 @@
-# Copyright (c) 2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 from xml.sax.saxutils import escape
 import re
 import zope.formlib.source

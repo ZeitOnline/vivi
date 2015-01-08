@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import grokcore.component
 import lxml.objectify
 import zeit.content.article.edit.interfaces

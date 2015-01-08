@@ -1,6 +1,3 @@
-# Copyright (c) 2008-2009 gocept gmbh & co. kg
-# See also LICENSE.txt
-"""Aggregated comments."""
 
 import zeit.cms.content.dav
 import zeit.cms.interfaces
