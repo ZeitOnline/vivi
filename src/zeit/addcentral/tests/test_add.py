@@ -1,6 +1,3 @@
-# Copyright (c) 2009-2012 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import urllib
 import zeit.addcentral.testing
 import zeit.cms.testing
