@@ -1,6 +1,3 @@
-# Copyright (c) 2010 gocept gmbh & co. kg
-# See also LICENSE.txt
-
 import zeit.vgwort.interfaces
 import zope.component
 import zope.publisher.xmlrpc
