@@ -9,6 +9,9 @@ zeit.content.cp changes
 
 - Extract body traverser mechanics to zeit.edit.
 
+- Fix bug in automatic regions that prevented checking in (automatic blocks
+  need to mimic normal teaser blocks).
+
 
 3.0.0.beta1 (2014-12-17)
 ------------------------

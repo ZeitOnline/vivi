@@ -5,6 +5,7 @@ import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 import zope.component
+import zope.interface.verify
 
 
 class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
@@ -159,3 +160,10 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
             'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
         self.assertEqual(
             'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
+
+    def test_checkin_smoke_test(self):
+        with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
+            lead = cp['lead']
+            auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
+            auto.count = 1
+            auto.automatic = True

@@ -1,7 +1,5 @@
-import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
-import lxml
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.edit.block
@@ -40,6 +38,9 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         if name in zeit.content.cp.interfaces.ITeaserBlock:
             return zeit.content.cp.interfaces.ITeaserBlock[name].default
         raise AttributeError(name)
+
+    def update_topiclinks(self):
+        pass
 
     # XXX copy&paste from TeaserBlock
     @property
