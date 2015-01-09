@@ -304,6 +304,43 @@ class FunctionalTestCase(FunctionalTestCaseCommon):
         self.principal = create_interaction(u'zope.user')
 
 
+# XXX We should subclass instead of monkey-patch, but then I'd have
+# to change all the layer declarations in the zeit.* packages, sigh.
+
+def selenium_setup_authcache(self):
+    # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
+    # issue with HTTP auth and AJAX calls: if you open a page that requires
+    # auth and has AJAX calls to further pages that require the same auth,
+    # sometimes those AJAX calls come back as 401 (nothing to do with
+    # Selenium, we've seen this against the actual server).
+    #
+    # It seems that opening a page and then giving it a little time
+    # to settle in is enough to work around this issue.
+
+    original_setup(self)
+    s = self['selenium']
+    self['http_auth_cache'] = True
+    # XXX It seems something is not ready immediately?!??
+    s.pause(1000)
+    # XXX Credentials are duplicated from SeleniumTestCase.open().
+    s.open('http://user:userpw@%s/++skin++vivi/@@test-setup-auth'
+           % self['http_address'])
+    # We don't really know how much time the browser needs until it's
+    # satisfied, or how we could determine this.
+    s.pause(1000)
+original_setup = gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp
+gocept.selenium.webdriver.WebdriverSeleneseLayer.setUp = (
+    selenium_setup_authcache)
+
+
+def selenium_teardown_authcache(self):
+    original_teardown(self)
+    del self['http_auth_cache']
+original_teardown = gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown
+gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = (
+    selenium_teardown_authcache)
+
+
 class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
                        FunctionalTestCaseCommon):
 
@@ -337,32 +374,7 @@ class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
         self.original_width = self.selenium.getEval('window.outerWidth')
         self.original_height = self.selenium.getEval('window.outerHeight')
         self.selenium.setWindowSize(self.window_width, self.window_height)
-
-        self._prefill_http_auth_cache()
         self.eval('window.localStorage.clear()')
-
-    def _prefill_http_auth_cache(self):
-        # NOTE: Massively kludgy workaround. It seems that Firefox has a timing
-        # issue with HTTP auth and AJAX calls: if you open a page that requires
-        # auth and has AJAX calls to further pages that require the same auth,
-        # sometimes those AJAX calls come back as 401 (nothing to do with
-        # Selenium, we've seen this against the actual server).
-        #
-        # It seems that opening a page and then giving it a little time
-        # to settle in is enough to work around this issue.
-
-        if getattr(self.layer, 'http_auth_cache', False):
-            # While doing this in the layer's setUp would be conceptually
-            # cleaner, it would be much dirtier to implement (e.g.
-            # self.layer['selenium'] is only instantiated in testSetUp)
-            return
-        self.layer.http_auth_cache = True
-        # XXX it seems something is not ready immediately?!??
-        self.selenium.pause(1000)
-        self.open('/@@test-setup-auth')
-        # We don't really know how much time the browser needs until it's
-        # satisfied, or how we could determine this.
-        self.selenium.pause(1000)
 
     def tearDown(self):
         super(SeleniumTestCase, self).tearDown()
