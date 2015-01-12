@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Bugfix: Don't set has_last_semantic during publishing (VIV-534).
 
 
 3.6.7 (2015-01-08)

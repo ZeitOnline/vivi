@@ -27,6 +27,8 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
     zeit.content.article.interfaces.IArticle,
     zeit.cms.checkout.interfaces.IAfterCheckoutEvent)
 def set_lsc_default_for_liveblogs(context, event):
+    if event.publishing:
+        return
     body = zeit.content.article.edit.interfaces.IEditableBody(context)
     for block in body.values():
         if zeit.content.article.edit.interfaces.ILiveblog.providedBy(block):
