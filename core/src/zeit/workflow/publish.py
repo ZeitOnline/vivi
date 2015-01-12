@@ -235,7 +235,7 @@ class PublishRetractTask(object):
             # just throw away afterwards. This has two effects: 1. The users'
             # workingcopy istn't cluttered with ghosts and 2. we can publish in
             # parallel.
-            checked_out = manager.checkout(temporary=True)
+            checked_out = manager.checkout(temporary=True, publishing=True)
         except zeit.cms.checkout.interfaces.CheckinCheckoutError:
             logger.warning("Could not checkout %s" % obj.uniqueId)
             return obj

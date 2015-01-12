@@ -58,7 +58,7 @@ class CheckoutManager(object):
                       'working copy.'))
         return True
 
-    def checkout(self, event=True, temporary=False):
+    def checkout(self, event=True, temporary=False, publishing=False):
         self._guard_checkout()
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
         if lockable is not None and not lockable.locked():
@@ -81,7 +81,7 @@ class CheckoutManager(object):
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckoutEvent(
-                    self.context, workingcopy, self.principal))
+                    self.context, workingcopy, self.principal, publishing))
         content = zeit.cms.workingcopy.interfaces.ILocalContent(self.context)
         namechooser = zope.app.container.interfaces.INameChooser(workingcopy)
         name = namechooser.chooseName(content.__name__, content)
@@ -90,7 +90,7 @@ class CheckoutManager(object):
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckoutEvent(
-                    added, workingcopy, self.principal))
+                    added, workingcopy, self.principal, publishing))
 
         return workingcopy[name]
 

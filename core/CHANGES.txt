@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.33.1 (unreleased)
+2.34.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Set ``publishing`` attribute for checkout events, too, not just checkin.
 
 
 2.33.0 (2015-01-08)
