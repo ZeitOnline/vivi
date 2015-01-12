@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Set ``publishing`` attribute for checkout events, too, not just checkin.
 
+- Log semantic change status during checkin.
+
 
 2.33.0 (2015-01-08)
 -------------------

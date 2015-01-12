@@ -148,6 +148,12 @@ class CheckoutManager(object):
             zope.event.notify(
                 zeit.cms.checkout.interfaces.AfterCheckinEvent(
                     added, workingcopy, self.principal, publishing))
+            if not publishing:
+                if semantic_change:
+                    msg = _('Checked in with semantic change')
+                else:
+                    msg = _('Checked in')
+                zeit.objectlog.interfaces.ILog(added).log(msg)
         lockable = zope.app.locking.interfaces.ILockable(added, None)
         if lockable is not None:
             try:
@@ -220,10 +226,3 @@ def deleteNewContentFromRepositoryOnWorkingcopyDelete(context, event):
     content = zeit.cms.interfaces.ICMSContent(context.uniqueId, None)
     if content is not None:
         del content.__parent__[content.__name__]
-
-
-@grok.subscribe(zeit.cms.checkout.interfaces.IAfterCheckinEvent)
-def log_checkin(event):
-    if event.publishing:
-        return
-    zeit.objectlog.interfaces.ILog(event.object).log(_('Checked in'))
