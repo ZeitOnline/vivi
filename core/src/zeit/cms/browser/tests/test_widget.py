@@ -245,12 +245,12 @@ class TestObjectSequenceWidgetIntegration(
                 'field.', [...], '@@object-details', 'foo'...""", widget())
 
 
-class TestObjectSequenceWidgetJavascriptFoo(zeit.cms.testing.SeleniumTestCase):
+class TestObjectSequenceWidgetJavascript(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.cms.testing.WEBDRIVER_LAYER
 
     def setUp(self):
-        super(TestObjectSequenceWidgetJavascriptFoo, self).setUp()
+        super(TestObjectSequenceWidgetJavascript, self).setUp()
         self.open(
             '/@@/zeit.cms.browser.tests.fixtures/objectsequencewidget.html')
 
