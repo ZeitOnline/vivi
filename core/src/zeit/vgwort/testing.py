@@ -56,12 +56,6 @@ SOAPLayer = zeit.cms.testing.ZCMLLayer(
     product_config=zeit.cms.testing.cms_product_config + product_config)
 
 
-def FunctionalDocFileSuite(*args, **kw):
-    kw.setdefault('layer', ZCMLLayer)
-    kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
-    return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
-
-
 class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
