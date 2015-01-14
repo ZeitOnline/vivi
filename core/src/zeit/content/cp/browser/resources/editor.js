@@ -71,7 +71,7 @@ zeit.content.cp.TeaserBarContentsSorter = gocept.Class.extend({
                 direction = 'vertical';
             }
             var sorter = new zeit.edit.sortable.BlockSorter(
-                bar.id, {
+                bar.id, '#' + bar.id, {
                 constraint: direction,
                 overlap: direction,
                 update_url: url + '/@@updateOrder',
