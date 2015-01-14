@@ -26,7 +26,8 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
       child_container_selector ... complete selector of the DOM element that
                                    contains the draggable children
     */
-    construct: function(container_id, child_container_selector) {
+    construct: function(container_id, child_container_selector,
+                        override_options) {
         var self = this;
         self.container_id = container_id;
         if (child_container_selector) {
@@ -35,7 +36,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
             self.child_container_selector = '#' + self.container_id;
         }
         var options = MochiKit.Base.update(
-            MochiKit.Base.clone(self.default_options));
+            MochiKit.Base.clone(self.default_options), override_options);
         MochiKit.Sortable.sortables[container_id] = options;
         arguments.callee.$.construct.call(self);
     },
@@ -154,11 +155,6 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
 
     __name__: 'zeit.edit.sortable.BlockSorter',
     context: zeit.edit.context.Editor,
-
-    construct: function(container_id, child_container_selector) {
-        var self = this;
-        arguments.callee.$.construct.call(self, container_id, child_container_selector);
-    },
 
     get_sortable_nodes: function() {
         var self = this;

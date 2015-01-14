@@ -4,7 +4,8 @@ Changes
 2.7.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Re-introduce ``override_options`` parameter to
+  ``zeit.edit.sortable.Sortable`` since zeit.content.cp-2.x still needs it.
 
 
 2.7.0 (2015-01-08)
