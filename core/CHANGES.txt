@@ -8,6 +8,12 @@ zeit.content.cp changes
 - Nothing changed yet.
 
 
+2.7.2 (2015-01-14)
+------------------
+
+- Bugfix: Update to current ``zeit.edit.sortable.Sortable`` API.
+
+
 3.0.0.beta2 (2015-01-08)
 ------------------------
 
