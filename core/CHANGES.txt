@@ -4,6 +4,9 @@ CHANGES
 2.5.1 (unreleased)
 ------------------
 
+- Don't perform data migration inside generation, it takes too long / never
+  completes in production (VIV-584).
+
 - Isolate tests against real DAV servers by using a dedicated, temporary test
   folder.
 

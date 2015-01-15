@@ -14,7 +14,6 @@ def update(root):
         cache = zope.component.getUtility(iface)
         zeit.connector.cache.AccessTimes.__init__(cache)
         cache._access_time_to_ids[0] = BTrees.family32.OI.TreeSet()
-        cache._access_time_to_ids[0].update(cache._storage.keys())
 
 
 def evolve(context):
