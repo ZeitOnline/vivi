@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.5.1 (unreleased)
+2.5.1 (2015-01-15)
 ------------------
 
 - Don't perform data migration inside generation, it takes too long / never
