@@ -71,7 +71,7 @@ We can also get directory resources:
 >>> resource.type
 'folder'
 >>> 'testing/' + resource.__name__ == TESTFOLDER()
-u'testing/...'
+True
 
 Storing an object. The object will be created when not yet there.
 Don't forget content-type:
