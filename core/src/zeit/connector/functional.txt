@@ -20,7 +20,7 @@ Get the connector:
 
 Get a folder:
 
->>> connector['http://xml.zeit.de/testing']
+>>> connector['http://xml.zeit.de/%s' % TESTFOLDER()]
 <zeit.connector.resource.CachedResource object at 0x...>
 
 Get a file-like resource:
@@ -41,7 +41,7 @@ After committing we'll still get a file back:
 
 The directory listing is empty:
 
->>> list(connector.listCollection('http://xml.zeit.de/testing'))
+>>> list(connector.listCollection('http://xml.zeit.de/%s' % TESTFOLDER()))
 []
 
 
@@ -49,7 +49,7 @@ There was a bug that the property changes where not visible when using
 ``changeProperties``. Now we get the properties back:
 
 >>> import StringIO
->>> id = 'http://xml.zeit.de/testing/prop-change'
+>>> id = 'http://xml.zeit.de/%s/prop-change' % TESTFOLDER()
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'propchange', 'text',
 ...     StringIO.StringIO('Pop goes the weasel!'),
@@ -61,7 +61,7 @@ There was a bug that the property changes where not visible when using
 >>> res_got.properties[('colour', 'http://namespaces.zeit.de/test')]
 u'gr\xfcn'
 >>> del connector[id]
->>> list(connector.listCollection('http://xml.zeit.de/testing'))
+>>> list(connector.listCollection('http://xml.zeit.de/%s' % TESTFOLDER()))
 []
 
 
@@ -75,7 +75,7 @@ Locking
 When an object is locked and the transaction is rolled back, the object will be
 automatically unlocked.
 
->>> id = 'http://xml.zeit.de/testing/lockrollback'
+>>> id = 'http://xml.zeit.de/%s/lockrollback' % TESTFOLDER()
 >>> res = zeit.connector.resource.Resource(
 ...     id, 'lockrollback', 'text',
 ...     StringIO.StringIO('Pop goes the weasel!'),
@@ -140,7 +140,8 @@ Enable debugging of the http data:
 >>> import zeit.connector.dav.davbase
 >>> zeit.connector.dav.davbase.DEBUG_CONNECTION = True
 
->>> print 'x'; connector._invalidate_cache('http://xml.zeit.de/testing/')
+>>> print 'x'; connector._invalidate_cache(
+...     'http://xml.zeit.de/%s/' % TESTFOLDER())
 x...Referer: http://127.0.0.1\r\n...
 
 Reset:

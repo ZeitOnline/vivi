@@ -4,7 +4,8 @@ CHANGES
 2.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Isolate tests against real DAV servers by using a dedicated, temporary test
+  folder.
 
 
 2.5.0 (2015-01-12)

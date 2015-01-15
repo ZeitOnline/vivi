@@ -20,8 +20,8 @@ class TestMoveRollback(zeit.connector.testing.ConnectorTest):
         self.assertEqual(
             ['source'],
             [name for name, unique_id in
-             self.connector.listCollection('http://xml.zeit.de/testing')
-             if name])
+             self.connector.listCollection(
+                 'http://xml.zeit.de/%s' % self.layer.testfolder) if name])
 
     def test_move_should_not_revert_on_commit(self):
         import transaction
@@ -33,8 +33,8 @@ class TestMoveRollback(zeit.connector.testing.ConnectorTest):
         self.assertEqual(
             ['target'],
             [name for name, unique_id in
-             self.connector.listCollection('http://xml.zeit.de/testing')
-             if name])
+             self.connector.listCollection(
+                 'http://xml.zeit.de/%s' % self.layer.testfolder) if name])
 
     def test_move_should_not_try_to_revert_on_error(self):
         import transaction

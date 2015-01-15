@@ -360,7 +360,7 @@ Collections
 Creating collections works like creating any other resource. Create a resource
 object first:
 
->>> collection_id = 'http://xml.zeit.de/testing/collection'
+>>> collection_id = 'http://xml.zeit.de/%s/collection' % TESTFOLDER()
 >>> coll = Resource(
 ...     collection_id, 'collection', 'collection', StringIO.StringIO(''))
 

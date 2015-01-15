@@ -5,6 +5,7 @@ import inspect
 import os
 import pkg_resources
 import re
+import time
 import urlparse
 import zc.queue.tests
 import zeit.connector.connector
@@ -38,6 +39,7 @@ def ZCMLLayer(
         __module__=module,
         setUp=classmethod(setUp),
         tearDown=classmethod(tearDown),
+        testfolder='testing'
     ))
     return layer
 
@@ -52,17 +54,23 @@ class real_connector_layer(real_connector_zcml_layer):
 
     @classmethod
     def setUp(cls):
-        pass
+        cls.testfolder = 'testing/%s' % time.time()
+        mkdir(cls._create_connector(),
+              'http://xml.zeit.de/%s' % cls.testfolder)
 
     @classmethod
     def tearDown(cls):
-        pass
+        del cls._create_connector()['http://xml.zeit.de/%s' % cls.testfolder]
+
+    @classmethod
+    def _create_connector(cls):
+        return zeit.connector.connector.Connector(roots={
+            "default": os.environ['connector-url'],
+            "search": os.environ['search-connector-url']})
 
     @classmethod
     def testSetUp(cls):
-        cls.connector = zeit.connector.connector.Connector(roots={
-            "default": os.environ['connector-url'],
-            "search": os.environ['search-connector-url']})
+        cls.connector = cls._create_connector()
         gsm = zope.component.getGlobalSiteManager()
         gsm.registerUtility(
             cls.connector, zeit.connector.interfaces.IConnector)
@@ -105,7 +113,7 @@ class TestCase(zope.app.testing.functional.FunctionalTestCase):
 
     def get_resource(self, name, body, properties={},
                      contentType='text/plain'):
-        rid = 'http://xml.zeit.de/testing/' + name
+        rid = 'http://xml.zeit.de/%s/%s' % (self.layer.testfolder, name)
         return zeit.connector.resource.Resource(
             rid, name, 'testing',
             StringIO.StringIO(body),
@@ -154,6 +162,7 @@ def FunctionalDocFileSuite(*paths, **kw):
     kw['checker'] = checker
     kw['optionflags'] = optionflags
     kw['tearDown'] = reset_testing_folder
+    kw['globs'] = {'TESTFOLDER': lambda: layer.testfolder}
     test = zope.app.testing.functional.FunctionalDocFileSuite(
         *paths, **kw)
     test.layer = layer
@@ -167,9 +176,13 @@ def reset_testing_folder(test):
         root = test.globs['getRootFolder']()
         old_site = zope.component.hooks.getSite()
         zope.component.hooks.setSite(root)
+        testfolder = test.globs['TESTFOLDER']()
+    else:
+        testfolder = test.layer.testfolder
 
     connector = zope.component.getUtility(zeit.connector.interfaces.IConnector)
-    for name, uid in connector.listCollection('http://xml.zeit.de/testing/'):
+    for name, uid in connector.listCollection(
+            'http://xml.zeit.de/' + testfolder):
         del connector[uid]
 
     if old_site is not no_site:
@@ -200,18 +213,21 @@ def list_tree(connector, base, level=0):
     return result
 
 
-def create_folder_structure(connector):
+def mkdir(connector, id):
+    res = zeit.connector.resource.Resource(
+        id, None, 'folder', StringIO.StringIO(''),
+        contentType='httpd/unix-directory')
+    connector.add(res)
+
+
+def create_folder_structure(connector, testfolder):
     """Create a folder structure for copy/move"""
 
     def add_folder(id):
-        id = u'http://xml.zeit.de/testing/' + id
-        res = zeit.connector.resource.Resource(
-            id, None, 'folder', StringIO.StringIO(''),
-            contentType='httpd/unix-directory')
-        connector.add(res)
+        mkdir(connector, u'http://xml.zeit.de/%s/%s' % (testfolder, id))
 
     def add_file(id):
-        id = u'http://xml.zeit.de/testing/' + id
+        id = u'http://xml.zeit.de/%s/%s' % (testfolder, id)
         res = zeit.connector.resource.Resource(
             id, None, 'text', StringIO.StringIO('Pop.'),
             contentType='text/plain')
@@ -233,23 +249,23 @@ def create_folder_structure(connector):
     add_file('testroot/a/b/c/foo')
     add_file('testroot/b/b/foo')
 
-    expected_structure = [
-        'http://xml.zeit.de/testing/testroot',
-        'http://xml.zeit.de/testing/testroot/a/ folder',
-        'http://xml.zeit.de/testing/testroot/a/a/ folder',
-        'http://xml.zeit.de/testing/testroot/a/b/ folder',
-        'http://xml.zeit.de/testing/testroot/a/b/c/ folder',
-        'http://xml.zeit.de/testing/testroot/a/b/c/foo text',
-        'http://xml.zeit.de/testing/testroot/a/f text',
-        'http://xml.zeit.de/testing/testroot/b/ folder',
-        'http://xml.zeit.de/testing/testroot/b/a/ folder',
-        'http://xml.zeit.de/testing/testroot/b/b/ folder',
-        'http://xml.zeit.de/testing/testroot/b/b/foo text',
-        'http://xml.zeit.de/testing/testroot/f text',
-        'http://xml.zeit.de/testing/testroot/g text',
-        'http://xml.zeit.de/testing/testroot/h text']
+    expected_structure = [x.format(testfolder=testfolder) for x in [
+        'http://xml.zeit.de/{testfolder}/testroot',
+        'http://xml.zeit.de/{testfolder}/testroot/a/ folder',
+        'http://xml.zeit.de/{testfolder}/testroot/a/a/ folder',
+        'http://xml.zeit.de/{testfolder}/testroot/a/b/ folder',
+        'http://xml.zeit.de/{testfolder}/testroot/a/b/c/ folder',
+        'http://xml.zeit.de/{testfolder}/testroot/a/b/c/foo text',
+        'http://xml.zeit.de/{testfolder}/testroot/a/f text',
+        'http://xml.zeit.de/{testfolder}/testroot/b/ folder',
+        'http://xml.zeit.de/{testfolder}/testroot/b/a/ folder',
+        'http://xml.zeit.de/{testfolder}/testroot/b/b/ folder',
+        'http://xml.zeit.de/{testfolder}/testroot/b/b/foo text',
+        'http://xml.zeit.de/{testfolder}/testroot/f text',
+        'http://xml.zeit.de/{testfolder}/testroot/g text',
+        'http://xml.zeit.de/{testfolder}/testroot/h text']]
     assert expected_structure == list_tree(
-        connector, 'http://xml.zeit.de/testing/testroot')
+        connector, 'http://xml.zeit.de/%s/testroot' % testfolder)
 
 
 def copy_inherited_functions(base, locals):

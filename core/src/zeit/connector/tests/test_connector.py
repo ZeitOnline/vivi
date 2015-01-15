@@ -18,18 +18,19 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
 
     def test_create_and_list(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/testing/ünicöde'
+        rid = u'http://xml.zeit.de/%s/ünicöde' % self.layer.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             StringIO.StringIO('Pop.'),
             contentType='text/plain')
         self.assertEquals(
             [(u'ünicöde', rid)],
-            list(self.connector.listCollection('http://xml.zeit.de/testing/')))
+            list(self.connector.listCollection(
+                'http://xml.zeit.de/%s/' % self.layer.testfolder)))
 
     def test_overwrite(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/testing/ünicöde'
+        rid = u'http://xml.zeit.de/%s/ünicöde' % self.layer.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             StringIO.StringIO('Pop.'),
@@ -42,7 +43,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
 
     def test_copy(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/testing/ünicöde'
+        rid = u'http://xml.zeit.de/%s/ünicöde' % self.layer.testfolder
         new_rid = rid + u'-copied'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
@@ -54,7 +55,7 @@ class TestUnicode(zeit.connector.testing.ConnectorTest):
 
     def test_move(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/testing/ünicöde'
+        rid = u'http://xml.zeit.de/%s/ünicöde' % self.layer.testfolder
         new_rid = rid + u'-renamed'
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
@@ -69,7 +70,7 @@ class TestEscaping(zeit.connector.testing.ConnectorTest):
 
     def test_hash(self):
         import zeit.connector.resource
-        rid = 'http://xml.zeit.de/testing/foo#bar'
+        rid = 'http://xml.zeit.de/%s/foo#bar' % self.layer.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             StringIO.StringIO('Pop.'),
@@ -83,7 +84,7 @@ class ConflictDetectionBase(object):
     def setUp(self):
         from zeit.connector.interfaces import UUID_PROPERTY
         super(ConflictDetectionBase, self).setUp()
-        rid = u'http://xml.zeit.de/testing/conflicting'
+        rid = u'http://xml.zeit.de/%s/conflicting' % self.layer.testfolder
         self.connector[rid] = self.get_resource('conflicting', 'Pop.')
         r_a = self.connector[rid]
         self.r_a = self.get_resource(r_a.__name__, r_a.data.read(),
@@ -147,8 +148,8 @@ class MoveConflictDetectionBase(object):
         self.assertEqual(
             ['target'],
             [name for name, unique_id in
-             self.connector.listCollection('http://xml.zeit.de/testing')
-             if name])
+             self.connector.listCollection(
+                 'http://xml.zeit.de/%s' % self.layer.testfolder) if name])
 
     def test_move_with_different_data_should_fail(self):
         source = self.get_resource('source', 'source-body')
@@ -160,8 +161,8 @@ class MoveConflictDetectionBase(object):
         self.assertEqual(
             ['source', 'target'],
             [name for name, unique_id in
-             self.connector.listCollection('http://xml.zeit.de/testing')
-             if name])
+             self.connector.listCollection(
+                 'http://xml.zeit.de/%s' % self.layer.testfolder) if name])
 
     def test_move_should_fail_if_target_is_existing_directory(self):
         source = self.get_resource('source', '',
@@ -192,7 +193,7 @@ class TestResource(zeit.connector.testing.ConnectorTest):
 
     def test_properties_should_be_current(self):
         import zeit.connector.resource
-        rid = u'http://xml.zeit.de/testing/aresource'
+        rid = u'http://xml.zeit.de/%s/aresource' % self.layer.testfolder
         self.connector[rid] = zeit.connector.resource.Resource(
             rid, None, 'text',
             StringIO.StringIO('Pop.'),
@@ -207,20 +208,20 @@ class TestResource(zeit.connector.testing.ConnectorTest):
 
 class TestConnectorCache(zeit.connector.testing.ConnectorTest):
 
-    rid = 'http://xml.zeit.de/testing/cache_test'
-
     def setUp(self):
         import zeit.connector.resource
         super(TestConnectorCache, self).setUp()
+        self.rid = 'http://xml.zeit.de/%s/cache_test' % self.layer.testfolder
         self.connector[self.rid] = zeit.connector.resource.Resource(
             self.rid, None, 'text',
             StringIO.StringIO('Pop.'),
             contentType='text/plain')
-        list(self.connector.listCollection('http://xml.zeit.de/testing/'))
+        list(self.connector.listCollection(
+            'http://xml.zeit.de/%s/' % self.layer.testfolder))
 
     def test_deleting_non_existing_resource_does_not_create_cache_entry(self):
         children = self.connector.child_name_cache[
-            'http://xml.zeit.de/testing/']
+            'http://xml.zeit.de/%s/' % self.layer.testfolder]
         children.remove(self.rid)
         del self.connector[self.rid]
         self.assertEqual([], list(children))
@@ -229,7 +230,7 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
     def test_delete_updates_cache(self):
         del self.connector[self.rid]
         children = self.connector.child_name_cache[
-            'http://xml.zeit.de/testing/']
+            'http://xml.zeit.de/%s/' % self.layer.testfolder]
         self.assertEquals([], list(children))
 
     def test_cache_time_is_not_stored_on_dav(self):
@@ -273,16 +274,21 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
 
     def test_inconsistent_child_names_do_not_yields_non_existing_objects(self):
         self.assertEquals(
-            [(u'cache_test', u'http://xml.zeit.de/testing/cache_test')],
-            list(self.connector.listCollection('http://xml.zeit.de/testing/')))
-        cache = self.connector.child_name_cache['http://xml.zeit.de/testing/']
+            [(u'cache_test',
+              u'http://xml.zeit.de/%s/cache_test' % self.layer.testfolder)],
+            list(self.connector.listCollection(
+                'http://xml.zeit.de/%s/' % self.layer.testfolder)))
+        cache = self.connector.child_name_cache[
+            'http://xml.zeit.de/%s/' % self.layer.testfolder]
         self.assertEquals(
-            [u'http://xml.zeit.de/testing/cache_test'],
+            [u'http://xml.zeit.de/%s/cache_test' % self.layer.testfolder],
             list(cache))
-        cache.add('http://xml.zeit.de/testing/cache_test_2')
+        cache.add('http://xml.zeit.de/%s/cache_test_2' % self.layer.testfolder)
         self.assertEquals(
-            [(u'cache_test', u'http://xml.zeit.de/testing/cache_test')],
-            list(self.connector.listCollection('http://xml.zeit.de/testing/')))
+            [(u'cache_test',
+              u'http://xml.zeit.de/%s/cache_test' % self.layer.testfolder)],
+            list(self.connector.listCollection(
+                'http://xml.zeit.de/%s/' % self.layer.testfolder)))
 
     def test_no_changes_should_not_cause_write(self):
         # Assign caches to DB to be able to detect changes.
@@ -293,7 +299,8 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         jar = self.connector.property_cache._p_jar
         r = self.get_resource('res', 'Pop goes the weasel.')
         self.connector.add(r)
-        list(self.connector.listCollection('http://xml.zeit.de/testing/'))
+        list(self.connector.listCollection(
+            'http://xml.zeit.de/%s/' % self.layer.testfolder))
         # Two changes: property cache and child chache
         self.assertTrue(jar._registered_objects)
         transaction.commit()
@@ -303,31 +310,37 @@ class TestConnectorCache(zeit.connector.testing.ConnectorTest):
         self.assertEqual([], jar._registered_objects)
 
     def test_invalidation_on_folder_with_non_folder_id_should_not_fail(self):
-        self.connector.invalidate_cache('http://xml.zeit.de/testing')
+        self.connector.invalidate_cache(
+            'http://xml.zeit.de/%s' % self.layer.testfolder)
 
     def test_invalidation_with_redirect_should_clear_old_location_cache(self):
-        del self.connector.property_cache['http://xml.zeit.de/testing/']
-        self.connector.property_cache['http://xml.zeit.de/testing'] = {
+        del self.connector.property_cache[
+            'http://xml.zeit.de/%s/' % self.layer.testfolder]
+        self.connector.property_cache[
+            'http://xml.zeit.de/%s' % self.layer.testfolder] = {
             ('foo', 'bar'): 'baz'}
-        self.connector.child_name_cache['http://xml.zeit.de/testing'] = [
+        self.connector.child_name_cache[
+            'http://xml.zeit.de/%s' % self.layer.testfolder] = [
             'a', 'b', 'c']
-        self.connector.invalidate_cache('http://xml.zeit.de/testing')
+        self.connector.invalidate_cache(
+            'http://xml.zeit.de/%s' % self.layer.testfolder)
         self.assertEqual(
             None,
             self.connector.property_cache.get(
-                'http://xml.zeit.de/testing'))
+                'http://xml.zeit.de/%s' % self.layer.testfolder))
         self.assertEqual(
             'httpd/unix-directory',
             self.connector.property_cache[
-                'http://xml.zeit.de/testing/'][('getcontenttype', 'DAV:')])
+                'http://xml.zeit.de/%s/' % self.layer.testfolder][
+                    ('getcontenttype', 'DAV:')])
         self.assertEqual(
             None,
             self.connector.child_name_cache.get(
-                'http://xml.zeit.de/testing'))
+                'http://xml.zeit.de/%s' % self.layer.testfolder))
         self.assertEqual(
             [self.rid],
             list(self.connector.child_name_cache.get(
-                'http://xml.zeit.de/testing/')))
+                'http://xml.zeit.de/%s/' % self.layer.testfolder)))
 
 
 class TestMove(zeit.connector.testing.ConnectorTest):
@@ -336,8 +349,9 @@ class TestMove(zeit.connector.testing.ConnectorTest):
         res = self.get_resource('foo', 'body')
         self.connector.add(res)
         self.connector.lock(res.id, 'userid', None)
-        self.connector.move(res.id, 'http://xml.zeit.de/testing/bar')
-        self.connector['http://xml.zeit.de/testing/bar']
+        self.connector.move(
+            res.id, 'http://xml.zeit.de/%s/bar' % self.layer.testfolder)
+        self.connector['http://xml.zeit.de/%s/bar' % self.layer.testfolder]
 
     def test_move_locked_resource_should_raise(self):
         from zeit.connector.dav.interfaces import DAVLockedError
@@ -349,7 +363,8 @@ class TestMove(zeit.connector.testing.ConnectorTest):
         try:
             self.assertRaises(
                 DAVLockedError, lambda: self.connector.move(
-                    res.id, 'http://xml.zeit.de/testing/bar'))
+                    res.id,
+                    'http://xml.zeit.de/%s/bar' % self.layer.testfolder))
         finally:
             self.connector.unlock(res.id, token)
 
@@ -357,8 +372,9 @@ class TestMove(zeit.connector.testing.ConnectorTest):
         res = self.get_resource('foo', 'body')
         self.connector.add(res)
         self.connector.lock(res.id, 'userid', None)
-        self.connector.copy(res.id, 'http://xml.zeit.de/testing/bar')
-        self.connector['http://xml.zeit.de/testing/bar']
+        self.connector.copy(
+            res.id, 'http://xml.zeit.de/%s/bar' % self.layer.testfolder)
+        self.connector['http://xml.zeit.de/%s/bar' % self.layer.testfolder]
 
 
 class TestSearch(zeit.connector.testing.ConnectorTest):
