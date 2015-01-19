@@ -45,24 +45,13 @@ Videos can be edited:
 >>> print browser.contents
 <...Updated on...
 
-Videos use a special serie:
+Videos use a special series:
 
 >>> browser.getControl('Serie').displayOptions
 ['(nothing selected)', 'VIDEO', 'erde/energie', 'erde/klima', 'erde/nachhaltigkeit', 'erde/technologie', 'erde/umwelt']
-
-There is no subtitle:
-
->>> browser.getControl('Subtitle')
-Traceback (most recent call last):
-    ...
-LookupError: label 'Subtitle'...
-
-
-
 
 Videos can be checked in:
 
 >>> browser.getLink('Checkin').click()
 >>> print browser.contents
 <..."video" has been checked in...
-

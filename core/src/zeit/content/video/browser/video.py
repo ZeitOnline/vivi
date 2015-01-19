@@ -19,7 +19,7 @@ class Edit(zeit.cms.browser.form.EditForm):
         zope.dublincore.interfaces.IDCTimes,
         render_context=zope.formlib.interfaces.DISPLAY_UNWRITEABLE
     ).select(
-        'supertitle', 'title', 'teaserText',
+        'supertitle', 'title', 'subtitle', 'teaserText',
         'product', 'ressort', 'keywords', 'serie',
         'dailyNewsletter', 'banner', 'banner_id',
         'breaking_news', 'has_recensions', 'commentsAllowed',
