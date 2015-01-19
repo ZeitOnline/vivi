@@ -54,10 +54,10 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     keywords = zeit.cms.tagging.tag.Tags()
 
-    title = zeit.cms.content.property.ObjectPathProperty(
+    title = zeit.cms.content.property.Structure(
         '.body.title',
         zeit.cms.content.interfaces.ICommonMetadata['title'])
-    subtitle = zeit.cms.content.property.ObjectPathProperty(
+    subtitle = zeit.cms.content.property.Structure(
         '.body.subtitle',
         zeit.cms.content.interfaces.ICommonMetadata['subtitle'])
     supertitle = zeit.cms.content.property.ObjectPathProperty(

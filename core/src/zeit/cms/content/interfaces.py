@@ -148,13 +148,13 @@ class ICommonMetadata(zope.interface.Interface):
         title=_("By line"),
         required=False)
 
-    title = zope.schema.Text(
+    title = zeit.cms.content.field.XMLSnippet(
         title=_("Title"),
         missing_value=u'')
 
     title.setTaggedValue('zeit.cms.charlimit', 70)
 
-    subtitle = zope.schema.Text(
+    subtitle = zeit.cms.content.field.XMLSnippet(
         title=_("Subtitle"),
         missing_value=u'',
         required=False)
