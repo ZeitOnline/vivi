@@ -15,3 +15,5 @@ The cron job is careful not to overwrite vivi's copy of a piece of data if it
 is newer than the data stored by Brightcove. This may happen shortly after
 vivi wrote to Brightcove as there is some delay until Brightcove gives back
 the new data.
+
+API documentation: http://docs.brightcove.com/en/video-cloud/media/index.html
