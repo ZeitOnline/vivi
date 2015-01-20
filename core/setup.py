@@ -21,7 +21,7 @@ setup(
         'pytz',
         'setuptools',
         'zeit.addcentral',
-        'zeit.cms>=2.20.0.dev0',
+        'zeit.cms>=2.35.0.dev0',
         'zeit.content.video',
         'zeit.solr>=2.2.0.dev0',
         'zope.cachedescriptors',

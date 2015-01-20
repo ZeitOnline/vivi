@@ -141,11 +141,11 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         self.assertEqual(
             first_released, Video.from_cms(cmsobj).date_first_released)
 
-    def test_subtitle_can_contain_unqouted_amp(self):
+    def test_subtitle_is_treated_as_xml(self):
         video = Video.find_by_id('1234')
         video.subtitle = u'Foo & Bar'
         cms = video.to_cms()
-        self.assertEqual(u'Foo & Bar', cms.subtitle)
+        self.assertEqual(u'Foo &amp; Bar', cms.subtitle)
 
     def test_too_long_teasertext_should_be_saved(self):
         video = Video.find_by_id('1234')
@@ -240,11 +240,11 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
                 'http://xml.zeit.de/video/2010-03/6789')
         self.assertEquals(vids, tuple(v.uniqueId for v in pls.videos))
 
-    def test_title_can_contain_unqouted_amp(self):
+    def test_title_is_treated_as_xml(self):
         video = Playlist.find_by_id('2345')
         video.title = u'Foo & Bar'
         cms = video.to_cms()
-        self.assertEqual(u'Foo & Bar', cms.title)
+        self.assertEqual(u'Foo &amp; Bar', cms.title)
 
 
 class CheckoutTest(zeit.brightcove.testing.BrightcoveTestCase):
