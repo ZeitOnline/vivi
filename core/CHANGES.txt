@@ -6,6 +6,9 @@ zeit.cms changes
 
 - Re-introduce ``XMLSnippet`` (had been removed in 2.0).
 
+- Allow ``p`` and ``span`` tags and ``style`` attributes in XMLSnippet
+  (VIV-648).
+
 
 2.34.0 (2015-01-12)
 -------------------

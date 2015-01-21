@@ -35,9 +35,14 @@ class BrHandler(sprout.htmlsubset.SubsetHandler):
 
 class MarkupTextHandler(sprout.htmlsubset.SubsetHandler):
 
+    optional_attributes = ('style',)
+
     def startElementNS(self, name, qname, attrs):
         node = self.parent()
         child = node.ownerDocument.createElement(self.tree_name)
+        for attribute in self.optional_attributes:
+            if (None, attribute) in attrs:
+                child.setAttribute(attribute, attrs[(None, attribute)])
         node.appendChild(child)
         self.setResult(child)
 
@@ -75,5 +80,7 @@ def create_subset(*markup, **kw):
 
 CMS_SUBSET = create_subset(AHandler,
                            BrHandler,
+                           markupTextHandlerClass('p'),
+                           markupTextHandlerClass('span'),
                            markupTextHandlerClass('i', 'em'),
                            markupTextHandlerClass('em'))

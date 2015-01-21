@@ -63,6 +63,12 @@ u'Gehe ins<br/>Gefaengins'
 ...     u'Gehe ins<br>Gefaengins')
 u'Gehe ins<br/>Gefaengins'
 
+Paragraphs and ``style`` attributes work:
+
+>>> snippet.fromUnicode(
+...     u'<p>foo<br/><span style="color: red">bar<em>baz</em></span></p>')
+u'<p>foo<br/><span style="color: red">bar<em>baz</em></span></p>'
+
 Apparently some codeblocks put None into fromUnicode. That yields a useful
 error message:
 
