@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.2.11 (unreleased)
+2.2.11 (2015-01-21)
 -------------------
 
 - Add subtitle to form (VIV-648).
