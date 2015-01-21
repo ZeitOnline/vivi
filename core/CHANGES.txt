@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.6.8 (unreleased)
+2.6.8 (2015-01-21)
 ------------------
 
 - Update tests for re-introduction of XMLSnippet (VIV-648).
