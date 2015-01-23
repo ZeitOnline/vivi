@@ -80,10 +80,13 @@ class TestRenditionsProperty(unittest.TestCase):
         from zeit.content.video.video import RenditionsProperty
         prop = RenditionsProperty(".foo")
 
-        node = lxml.objectify.XML("<rendition url='foo' frame_width='100' />")
+        node = lxml.objectify.XML(
+            "<rendition url='foo' frame_width='100' video_duration='93000'/>")
         rendition = prop._element_factory(node, mock.sentinel.tree)
         self.assertEqual(node.get('url'), rendition.url)
         self.assertEqual(int(node.get('frame_width')), rendition.frame_width)
+        self.assertEqual(
+            int(node.get('video_duration')), rendition.video_duration)
 
     def test_node_factory_should_return_node(self):
         from zeit.content.video.video import RenditionsProperty

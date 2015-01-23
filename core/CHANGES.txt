@@ -4,7 +4,7 @@ zeit.content.video changes
 2.2.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Set video duration as rendition property (ZON-1275).
 
 
 2.2.11 (2015-01-21)
