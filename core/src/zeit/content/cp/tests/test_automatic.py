@@ -58,6 +58,22 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(
             'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
 
+    def test_no_marked_articles_available_leader_block_gets_normal_article(
+            self):
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
+        auto.count = 1
+        auto.automatic = True
+
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = [
+                dict(uniqueId='http://xml.zeit.de/testcontent')]
+            result = auto.values()
+        leader = result[0]
+        self.assertEqual(
+            'http://xml.zeit.de/testcontent', list(leader)[0].uniqueId)
+        self.assertEqual('buttons', leader.layout.id)
+
     def test_renders_xml_with_filled_in_blocks(self):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)

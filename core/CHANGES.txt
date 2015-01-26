@@ -5,13 +5,8 @@ zeit.content.cp changes
 3.0.0.beta3 (unreleased)
 ------------------------
 
-- Nothing changed yet.
-
-
-2.7.2 (2015-01-14)
-------------------
-
-- Bugfix: Update to current ``zeit.edit.sortable.Sortable`` API.
+- If no result is a lead candidate, fill the leader block with a normal result
+  (VIV-436).
 
 
 3.0.0.beta2 (2015-01-08)
@@ -52,6 +47,12 @@ zeit.content.cp changes
 
 - Every area can be configured for automatic contents using solr, not just the
   lead area anymore (VIV-620).
+
+
+2.7.2 (2015-01-14)
+------------------
+
+- Bugfix: Update to current ``zeit.edit.sortable.Sortable`` API.
 
 
 2.7.1 (2014-12-17)
