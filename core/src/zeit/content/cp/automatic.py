@@ -129,8 +129,12 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
                     # may_be_leader might be given to a non-leader block.
                     if block.layout.id == 'leader':
                         id = self._extract_leader(solr_result)
+                        if id is None:
+                            id = self._extract_newest(solr_result)
+                            block.layout = zeit.content.cp.layout.get_layout(
+                                'buttons')
                     else:
-                        id = solr_result.pop(0)['uniqueId']
+                        id = self._extract_newest(solr_result)
                 except IndexError:
                     continue
                 block.insert(0, zeit.cms.interfaces.ICMSContent(id))
@@ -144,7 +148,10 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
             if item.get('lead_candidate'):
                 solr_result.pop(i)
                 return item['uniqueId']
-        raise IndexError()
+        return None
+
+    def _extract_newest(self, solr_result):
+        return solr_result.pop(0)['uniqueId']
 
     def _materialize_filled_values(self):
         order = self.context.keys()

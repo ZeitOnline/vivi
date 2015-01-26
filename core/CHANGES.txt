@@ -5,6 +5,9 @@ zeit.content.cp changes
 2.7.3 (unreleased)
 ------------------
 
+- If no result is a lead candidate, fill the leader block with a normal result
+  (VIV-436).
+
 - Update tests since mock connector now yields trailing slashes for folder ids
   (FRIED-37).
 
