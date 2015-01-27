@@ -60,7 +60,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_no_marked_articles_available_leader_block_gets_normal_article(
             self):
         lead = self.repository['cp']['lead']
-        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
+        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
         auto.count = 1
         auto.automatic = True
 
