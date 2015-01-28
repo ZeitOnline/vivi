@@ -19,15 +19,19 @@ class RenditionsProperty(zeit.cms.content.property.MultiPropertyBase):
     def _element_factory(self, node, tree):
         result = VideoRendition()
         result.url = node.get('url')
-        result.frame_width = int(node.get('frame_width'))
-        result.video_duration = int(node.get('video_duration'))
+        if node.get('frame_width'):
+            result.frame_width = int(node.get('frame_width'))
+        if node.get('video_duration'):
+            result.video_duration = int(node.get('video_duration'))
         return result
 
     def _node_factory(self, entry, tree):
         node = lxml.objectify.E.rendition()
         node.set('url', entry.url)
-        node.set('frame_width', str(entry.frame_width))
-        node.set('video_duration', str(entry.video_duration))
+        if getattr(entry, 'frame_width', None):
+            node.set('frame_width', str(entry.frame_width))
+        if getattr(entry, 'video_duration', None):
+            node.set('video_duration', str(entry.video_duration))
         return node
 
 
