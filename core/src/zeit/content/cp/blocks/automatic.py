@@ -1,7 +1,4 @@
-import copy
 import gocept.lxml.interfaces
-import grokcore.component as grok
-import lxml
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.edit.block
@@ -22,6 +19,7 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     def __init__(self, context, xml):
         super(AutomaticTeaserBlock, self).__init__(context, xml)
         self.entries = []
+        self.temporary_layout = None
         # XXX copy&paste from TeaserBlock
         if self.xml.get('module') == 'auto-teaser':
             self.layout = self.layout
@@ -36,9 +34,19 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     def insert(self, index, content):
         self.entries.insert(index, content)
 
-    # XXX copy&paste from TeaserBlock
+    def __getattr__(self, name):
+        if name in zeit.content.cp.interfaces.ITeaserBlock:
+            return zeit.content.cp.interfaces.ITeaserBlock[name].default
+        raise AttributeError(name)
+
+    def update_topiclinks(self):
+        pass
+
+    # XXX copy&paste&tweak from TeaserBlock
     @property
     def layout(self):
+        if self.temporary_layout:
+            return self.temporary_layout
         default = None
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
                 self):
@@ -52,6 +60,9 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     def layout(self, layout):
         self._p_changed = True
         self.xml.set('module', layout.id)
+
+    def change_layout(self, layout):
+        self.temporary_layout = layout
 
 
 zeit.edit.block.register_element_factory(

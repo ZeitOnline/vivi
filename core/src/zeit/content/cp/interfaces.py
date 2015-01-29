@@ -361,7 +361,10 @@ class ITeaserBlockColumns(IReadTeaserBlockColumns, IWriteTeaserBlockColumns):
 
 
 class IAutomaticTeaserBlock(ITeaserBlock):
-    pass
+
+    def change_layout(layout):
+        """Temporarily change the layout (for the duration of one area.values()
+        evaluation)."""
 
 
 def validate_xml_block(xml):

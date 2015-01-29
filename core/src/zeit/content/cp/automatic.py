@@ -131,8 +131,8 @@ class AutomaticRegion(zeit.cms.content.xmlsupport.Persistent):
                         id = self._extract_leader(solr_result)
                         if id is None:
                             id = self._extract_newest(solr_result)
-                            block.layout = zeit.content.cp.layout.get_layout(
-                                'buttons')
+                            block.change_layout(
+                                zeit.content.cp.layout.get_layout('buttons'))
                     else:
                         id = self._extract_newest(solr_result)
                 except IndexError:
