@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.1.8 (unreleased)
+2.1.8 (2015-01-29)
 ------------------
 
 - Grant ``zeit.Producer`` Auto-CP permissions.
