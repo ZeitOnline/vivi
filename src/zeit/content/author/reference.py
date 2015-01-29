@@ -36,10 +36,17 @@ class AuthorshipXMLReferenceUpdater(
                 reference.xml)))
         # BBB The ``author`` attribute is deprecated in favor of the <author>
         # tags, but XSLT and mobile still use it.
-        node.attrib.pop('author', None)
-        if context.authorships:
-            node.set('author', unicode(';'.join(
-                [x.target.display_name for x in context.authorships])))
+        try:
+            legacy_author = unicode(';'.join(
+                [x.target.display_name for x in context.authorships]))
+            node.attrib.pop('author', None)
+            if context.authorships:
+                node.set('author', legacy_author)
+        except:
+            # We've sometimes seen data errors with Friedbert where authors
+            # don't have a type (and thus no ``display_name``), see VIV-629.
+            if not self.suppress_errors:
+                raise
 
 
 class Reference(zeit.cms.content.reference.Reference):

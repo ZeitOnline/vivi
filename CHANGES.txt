@@ -4,7 +4,7 @@ zeit.content.author changes
 2.2.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow suppressing errors that are due to missing metadata files (VIV-629).
 
 
 2.2.1 (2014-07-17)
