@@ -56,6 +56,11 @@ class XMLTreeDisplayWidget(zope.app.form.browser.widget.DisplayWidget):
         return io.getvalue().decode('UTF-8')
 
 
+# XXX This needs to be much smarter. Users need to be able to input
+# - Special characters (like quotation marks),
+#   outside of tags they need to be quoted, but not inside.
+# - Markup (like <b>tags</b>), they must be stored unquoted and displayed
+#   in the browser properly.
 class XMLSnippetWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
 
     def _toFieldValue(self, input):
