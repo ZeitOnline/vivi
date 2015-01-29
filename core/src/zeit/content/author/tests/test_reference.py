@@ -1,4 +1,7 @@
+from zeit.cms.checkout.interfaces import ICheckoutManager
+import gocept.testing.mock
 import lxml.etree
+import mock
 import zeit.cms.content.interfaces
 import zeit.cms.testing
 import zeit.content.author.author
@@ -86,3 +89,19 @@ class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
             """<reference...
             author="William Shakespeare;Hans Christian Andersen"...""",
             lxml.etree.tostring(reference, pretty_print=True))
+
+    def test_updater_suppress_errors(self):
+        content = ICheckoutManager(self.repository['testcontent']).checkout()
+        content.authorships = (content.authorships.create(self.shakespeare),)
+
+        # This error condition cannot be synthesized easily (would need to make
+        # an Author lose its metadata so it's treated as
+        # PersistentUnknownResource).
+
+        with mock.patch('zeit.content.author.author.Author.display_name',
+                        gocept.testing.mock.Property()) as display_name:
+            display_name.side_effect = AttributeError()
+            with self.assertNothingRaised():
+                updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
+                    content)
+                updater.update(content.xml, suppress_errors=True)
