@@ -1,7 +1,7 @@
 zeit.brightcove changes
 =======================
 
-2.6.9 (unreleased)
+2.6.9 (2015-01-29)
 ------------------
 
 - Also import video duration for each rendition (ZON-1275).
