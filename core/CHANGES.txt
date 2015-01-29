@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.35.1 (unreleased)
+2.35.1 (2015-01-29)
 -------------------
 
 - Disable ``XMLSnippet`` for the time being, the widget is not smart enough.
