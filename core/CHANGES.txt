@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.7.4 (unreleased)
+2.7.4 (2015-01-30)
 ------------------
 
 - Bugfix: if no result is a lead candidate, don't permanently change the leader
