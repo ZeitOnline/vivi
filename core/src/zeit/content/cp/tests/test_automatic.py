@@ -75,6 +75,20 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_no_marked_articles_leader_block_layout_is_changed_virtually(self):
         lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
+        auto.count = 1
+        auto.automatic = True
+
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = [
+                dict(uniqueId='http://xml.zeit.de/testcontent')]
+            result = auto.values()
+        leader = result[0]
+        self.assertEqual('buttons', leader.layout.id)
+        self.assertEqual('leader', lead.values()[0].layout.id)
+
+    def test_renders_xml_with_filled_in_blocks(self):
+        lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
         auto.count = 1
         auto.automatic = True

@@ -55,6 +55,20 @@ zeit.content.cp changes
 
 - Configure available areas via XML. (VIV-633)
 
+
+2.7.4 (2015-01-30)
+------------------
+
+- Bugfix: if no result is a lead candidate, don't permanently change the leader
+  layout (VIV-436).
+
+
+2.7.3 (2015-01-26)
+------------------
+
+- If no result is a lead candidate, fill the leader block with a normal result
+  (VIV-436).
+
 - Update tests since mock connector now yields trailing slashes for folder ids
   (FRIED-37).
 
