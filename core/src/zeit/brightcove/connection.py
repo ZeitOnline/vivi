@@ -17,6 +17,9 @@ RESTRICTED_CHARACTERS = set(xrange(0, 0x1f))
 for a, b in [(0x1, 0x8), (0xb, 0xc), (0xe, 0x1f), (0x7f, 0x84), (0x86, 0x9f)]:
     RESTRICTED_CHARACTERS.update(xrange(a, b + 1))
 
+# see http://timelessrepo.com/json-isnt-a-javascript-subset
+RESTRICTED_CHARACTERS.update(xrange(0x2028, 0x2029 + 1))
+
 RESTRICTED_CHARACTERS_MAP = dict((c, None) for c in RESTRICTED_CHARACTERS)
 
 

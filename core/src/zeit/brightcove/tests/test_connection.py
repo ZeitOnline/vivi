@@ -19,6 +19,9 @@ class ConnectionTest(unittest.TestCase):
         response = conn.parse_json(u'{"föö": "\u0009"}'.encode('utf-8'))
         self.assertEqual('', response[u'föö'])
 
+        response = conn.parse_json(u'{"föö": "\u2028"}'.encode('utf-8'))
+        self.assertEqual('', response[u'föö'])
+
     def test_xml_restricted_characters_are_removed_from_json_data(self):
         conn = zeit.brightcove.connection.APIConnection(
             None, None, None, None, None)
