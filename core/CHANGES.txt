@@ -1,10 +1,10 @@
 CHANGES
 =======
 
-2.5.2 (unreleased)
+2.6.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow configuring repository path for mock connector via product config.
 
 
 2.5.1 (2015-01-15)

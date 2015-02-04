@@ -15,6 +15,7 @@ import uuid
 import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
 import zeit.connector.interfaces
+import zope.app.appsetup.product
 import zope.event
 
 
@@ -284,5 +285,10 @@ class Connector(zeit.connector.filesystem.Connector):
 
 
 def connector_factory():
-    return Connector(pkg_resources.resource_filename(
-        __name__, 'testcontent'))
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.connector')
+    repository_path = (config or {}).get('repository-path')
+    if not repository_path:
+        repository_path = pkg_resources.resource_filename(
+        __name__, 'testcontent')
+    return Connector(repository_path)
