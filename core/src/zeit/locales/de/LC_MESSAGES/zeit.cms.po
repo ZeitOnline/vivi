@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Jan 13 16:31:57 2015\n"
-"PO-Revision-Date: 2015-01-13 16:34+0100\n"
+"PO-Revision-Date: 2015-02-05 15:32+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.4\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:44
@@ -3175,7 +3175,7 @@ msgstr "Geben Sie eine URL ein, auf die das Bild verlinken soll."
 #: zeit/content/image/interfaces.py:92
 #: zeit/content/image/browser/image_view.pt:24
 msgid "Alignment"
-msgstr "Ausrichtiung"
+msgstr "Ausrichtung"
 
 #: zeit/content/infobox/browser/form.py:71
 msgid "Add infobox"
