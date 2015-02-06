@@ -145,7 +145,7 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = Video.find_by_id('1234')
         video.subtitle = u'Foo & Bar'
         cms = video.to_cms()
-        self.assertEqual(u'Foo &amp; Bar', cms.subtitle)
+        self.assertEqual(u'Foo & Bar', cms.subtitle)
 
     def test_too_long_teasertext_should_be_saved(self):
         video = Video.find_by_id('1234')
@@ -247,7 +247,7 @@ class PlaylistTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = Playlist.find_by_id('2345')
         video.title = u'Foo & Bar'
         cms = video.to_cms()
-        self.assertEqual(u'Foo &amp; Bar', cms.title)
+        self.assertEqual(u'Foo & Bar', cms.title)
 
 
 class CheckoutTest(zeit.brightcove.testing.BrightcoveTestCase):
