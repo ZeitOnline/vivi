@@ -50,12 +50,6 @@ class Edit(zeit.cms.browser.form.EditForm):
     )
 
 
-@grok.adapter(zeit.content.video.interfaces.IVideo, name='edit.html')
-@grok.implementer(zeit.cms.browser.interfaces.IDisplayViewName)
-def display_view_name(context):
-    return 'edit.html'
-
-
 class Thumbnail(zeit.cms.browser.view.Base):
 
     @property
