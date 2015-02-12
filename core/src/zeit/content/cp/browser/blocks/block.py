@@ -1,3 +1,4 @@
+import zeit.cms.browser.widget
 import zeit.content.cp.interfaces
 import zeit.edit.browser.view
 import zope.component
