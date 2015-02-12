@@ -1,6 +1,7 @@
 import lxml.etree
 import unittest
 import zeit.content.article.testing
+import zope.schema
 
 
 class RawXMLTest(unittest.TestCase):
@@ -10,6 +11,7 @@ class RawXMLTest(unittest.TestCase):
         import lxml.objectify
         field = IRawXML['xml']
         self.assertRaisesRegexp(
+            zope.schema.ValidationError,
             'The root element must be <raw>',
             lambda: field.validate(lxml.objectify.E.foo()))
         field.validate(lxml.objectify.E.raw())
