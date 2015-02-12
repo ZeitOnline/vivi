@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use readonly permission ``zeit.content.cp.ViewAutomatic`` (VIV-525).
 
 
 3.6.8 (2015-01-12)
