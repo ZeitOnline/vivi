@@ -68,6 +68,15 @@ class EndToEndTestCase(zeit.cms.testing.FunctionalTestCase,
     layer = SOAPLayer
     level = 2
 
+    def setUp(self):
+        super(EndToEndTestCase, self).setUp()
+        service = zope.component.getUtility(
+            zeit.vgwort.interfaces.IMessageService)
+        try:
+            service.call('qualityControl')
+        except:
+            self.skipTest('vgwort test system is down')
+
 
 class PixelService(object):
 
