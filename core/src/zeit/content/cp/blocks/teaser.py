@@ -529,6 +529,8 @@ def rendered_xml_teaserblock(context):
         lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
     # Change automatic teaser into normal one, since we're about to resolve it.
     container.attrib['{http://namespaces.zeit.de/CMS/cp}type'] = 'teaser'
+    # Automatic teaser might have temporarily changed its layout.
+    container.set('module', context.layout.id)
 
     # Render non-content items like topiclinks.
     for child in context.xml.getchildren():

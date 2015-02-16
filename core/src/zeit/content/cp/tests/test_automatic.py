@@ -85,6 +85,23 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
         leader = result[0]
         self.assertEqual('buttons', leader.layout.id)
         self.assertEqual('leader', lead.values()[0].layout.id)
+        self.assertEllipsis('...module="buttons"...', lxml.etree.tostring(
+            zeit.content.cp.interfaces.IRenderedXML(leader),
+            pretty_print=True))
+
+    def test_renders_xml_with_filled_in_blocks(self):
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticRegion(lead)
+        auto.count = 1
+        auto.automatic = True
+
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = [
+                dict(uniqueId='http://xml.zeit.de/testcontent')]
+            result = auto.values()
+        leader = result[0]
+        self.assertEqual('buttons', leader.layout.id)
+        self.assertEqual('leader', lead.values()[0].layout.id)
 
     def test_renders_xml_with_filled_in_blocks(self):
         lead = self.repository['cp']['lead']

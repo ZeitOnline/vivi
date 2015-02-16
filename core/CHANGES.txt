@@ -8,6 +8,8 @@ zeit.content.cp changes
 - Auto-CP: Treat content that is "published with changes" as "published", i.e.
   display it in Auto-CPs.
 
+- Bugfix: Actually render the changed leader layout (VIV-436).
+
 
 2.7.4 (2015-01-30)
 ------------------
