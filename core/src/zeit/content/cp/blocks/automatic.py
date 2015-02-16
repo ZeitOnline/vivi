@@ -1,3 +1,4 @@
+import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import zeit.content.cp.blocks.block
@@ -75,3 +76,14 @@ zeit.edit.block.register_element_factory(
 def cms_content_iter(context):
     for teaser in context:
         yield teaser
+
+
+@grok.adapter(zeit.content.cp.interfaces.IAutomaticTeaserBlock)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml(context):
+    container = zeit.content.cp.blocks.teaser.rendered_xml_teaserblock(context)
+    # Change automatic teaser into normal one
+    container.attrib['{http://namespaces.zeit.de/CMS/cp}type'] = 'teaser'
+    # Make possible change_layout() call take effect.
+    container.set('module', context.layout.id)
+    return container
