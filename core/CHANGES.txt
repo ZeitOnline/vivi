@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-2.7.5 (unreleased)
+2.7.5 (2015-02-16)
 ------------------
 
 - Auto-CP: Treat content that is "published with changes" as "published", i.e.
