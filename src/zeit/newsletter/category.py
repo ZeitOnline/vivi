@@ -183,7 +183,9 @@ class Builder(grok.MultiAdapter):
         groups_above = 0
         for ressort in self.category.ressorts:
             entries = groups.get(ressort)
-            group = self.create_group(ressort)
+            ressort_title = zeit.cms.content.interfaces.ICommonMetadata[
+                'ressort'].source.factory.getTitle(self.category, ressort)
+            group = self.create_group(ressort_title)
             for content in entries:
                 self.create_teaser(group, content)
             groups_above += 1
