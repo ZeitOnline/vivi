@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.3.1 (unreleased)
+2.3.1 (2015-02-16)
 ------------------
 
 - Register default view properly (BUG-86).
