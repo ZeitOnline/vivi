@@ -1,7 +1,7 @@
 zeit.newsletter changes
 =======================
 
-1.3.2 (unreleased)
+1.3.2 (2015-02-16)
 ------------------
 
 - Use title of ressort, not machine-readable version (BUG-147).
