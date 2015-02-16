@@ -142,7 +142,7 @@ class AutomaticRegionTest(zeit.content.cp.testing.FunctionalTestCase):
             search.return_value = []
             auto.values()
             query = search.call_args[0][0]
-            self.assertIn('published:(published)', query)
+            self.assertIn('published:(published*)', query)
             self.assertIn(
                 '(channels:(International*Nahost)'
                 ' OR channels:(Wissen*)'
