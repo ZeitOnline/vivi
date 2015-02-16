@@ -96,7 +96,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
     }
 
     def _build_query(self):
-        query = zeit.find.search.query(published='published')
+        query = zeit.find.search.query(filter_terms=[
+            zeit.solr.query.field_raw('published', 'published*')])
         conditions = []
         for type_, channel, subchannel in self.query:
             if subchannel:
