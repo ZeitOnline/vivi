@@ -29,15 +29,43 @@ def webdavproperties_to_cms_content(context):
     return zeit.cms.interfaces.ICMSContent(context.__parent__, None)
 
 
+class NullTarget(object):
+
+    def start(self, tag, attrib):
+        pass
+
+    def end(self, tag):
+        pass
+
+    def data(self, data):
+        pass
+
+    def comment(self, text):
+        pass
+
+    def close(self):
+        pass
+
+
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLSource)
 @zope.component.adapter(zeit.cms.content.interfaces.IXMLRepresentation)
 def xml_source(context):
     """Serialize an xml tree."""
     # Remove proxy so lxml can serialize
     xml = zope.security.proxy.removeSecurityProxy(context.xml)
-    return lxml.etree.tostring(
+    serialized = lxml.etree.tostring(
         xml.getroottree(), encoding='UTF-8', xml_declaration=True,
         pretty_print=True)
+    # XXX We're seeing memory corruption errors from lxml (BUG-194). This is a
+    # safetybelt, so we at least don't put non-wellformed XML into DAV.
+    null_parser = lxml.etree.XMLParser(target=NullTarget())
+    try:
+        lxml.etree.fromstring(serialized, parser=null_parser)
+    except:
+        logger.error('Serializing %s yielded invalid XML:\n%s',
+                     context.uniqueId, serialized)
+        raise
+    return serialized
 
 
 @zope.interface.implementer(zeit.cms.content.interfaces.IContentSortKey)
