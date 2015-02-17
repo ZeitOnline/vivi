@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.35.2 (unreleased)
+2.36.0 (2015-02-17)
 -------------------
 
 - Add safetybelt so we don't put non-wellformed XML into DAV (BUG-194).
