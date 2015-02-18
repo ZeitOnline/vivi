@@ -171,12 +171,13 @@ class HTTPErrorTest(unittest.TestCase):
             lambda: list(service.order_pixels(1)))
 
 
-class MessageServiceTest(zeit.vgwort.testing.TestCase):
+class MessageServiceTest(zeit.vgwort.testing.EndToEndTestCase):
 
     def setUp(self):
         super(MessageServiceTest, self).setUp()
         # Need a real webservice to load the WSDL.
-        self.service = zeit.vgwort.connection.real_message_service()
+        self.service = zope.component.getUtility(
+            zeit.vgwort.interfaces.IMessageService)
 
     @property
     def repository(self):
