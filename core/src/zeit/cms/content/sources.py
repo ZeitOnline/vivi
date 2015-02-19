@@ -233,10 +233,15 @@ class SerieSource(SimpleContextualXMLSource):
 
 class Product(object):
 
-    def __init__(self, id=None, title=None, vgwortcode=None):
+    def __init__(self, id=None, title=None, vgwortcode=None,
+        href=None, target=None, label=None, show=None):
         self.id = id
         self.title = title
         self.vgwortcode = vgwortcode
+        self.href = href
+        self.target = target
+        self.label = label
+        self.show = show
 
     def __eq__(self, other):
         if not zope.security.proxy.isinstance(other, self.__class__):
@@ -257,7 +262,11 @@ class ProductSource(SimpleContextualXMLSource):
         tree = self._get_tree()
         return [Product(unicode(node.get('id')),
                         unicode(node.text.strip()),
-                        unicode_or_none(node.get('vgwortcode')))
+                        unicode_or_none(node.get('vgwortcode')),
+                        unicode_or_none(node.get('href')),
+                        unicode_or_none(node.get('target')),
+                        unicode_or_none(node.get('label')),
+                        unicode_or_none(node.get('show')))
                 for node in tree.iterchildren('*')]
 
     def getTitle(self, context, value):
