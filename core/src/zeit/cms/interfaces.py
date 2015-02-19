@@ -1,3 +1,4 @@
+# coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import re
 import zope.app.container.interfaces
@@ -88,3 +89,37 @@ class ITypeDeclaration(zope.interface.Interface):
         title=u'Unique identifier for this type')
 
     # XXX add other attributes
+
+
+def normalize_filename(filename):
+    # NOTE: The master version of the algorithm is implemented in JS in
+    # zeit.cms.browser.js:filename.js, keep in sync!
+    f = filename
+    f = f.strip().lower()
+    f = f.replace(u'ä', 'ae')
+    f = f.replace(u'ö', 'oe')
+    f = f.replace(u'ü', 'ue')
+    f = f.replace(u'ß', 'ss')
+
+    # Remove special characters at beginning and end
+    # XXX It's unclear why this doesn't work as a single regexp.
+    f = re.sub('^([^a-z0-9]+)(.*?)$', r'\2', f)
+    f = re.sub('^(.*?)([^a-z0-9]+)$', r'\1', f)
+
+    # Replace special characters, but keep dots for special treatment
+    f = re.sub('[^a-z0-9.]', '-', f)
+    # Save dot of filename extensions
+    f = re.sub(
+        r'^(.*)\.(jpg|jpeg|png|pdf|mp3|swf|rtf|gif|svg|bmp)$', r'\1_\2', f)
+    # Remove all dots
+    f = f.replace('.', '-')
+    # Restore saved dot
+    f = f.replace('_', '.')
+
+    # Collapse multiple consecutive dashes
+    f = re.sub('-+', '-', f)
+
+    # Edge case: Remove special char before the filename extension
+    f = f.replace('-.', '.')
+
+    return f

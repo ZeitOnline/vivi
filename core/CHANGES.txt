@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.36.1 (unreleased)
+2.37.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Re-implement filename normalization algorithm in Python (DEV-567).
 
 
 2.36.0 (2015-02-17)
