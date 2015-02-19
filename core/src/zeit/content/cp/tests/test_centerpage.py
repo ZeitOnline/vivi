@@ -181,7 +181,7 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
             xml_teaser.free_teaser = True
         cp = self.publish(cp)
         self.assertEqual(
-            [xml_teaser.uniqueId,
+            [xml_teaser.original_uniqueId,
              'http://xml.zeit.de/test2',
              'http://xml.zeit.de/testcontent'],
             [x.get('href') for x in cp.xml.feed.getchildren()])
@@ -194,7 +194,7 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         cp = self.repository['cp']
         cp = self.publish(cp)
         self.assertEqual(
-            [xml_teaser.uniqueId,
+            [xml_teaser.original_uniqueId,
              'http://xml.zeit.de/test2',
              'http://xml.zeit.de/testcontent'],
             [x.get('href') for x in cp.xml.feed.getchildren()])

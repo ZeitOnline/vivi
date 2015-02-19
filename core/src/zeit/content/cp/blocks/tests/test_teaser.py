@@ -116,6 +116,21 @@ class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_prefills_read_more_from_referenced_cp(self):
         self.assertEqual('http://www.zeit.de/cp1', self.teaser.read_more_url)
 
+    def test_free_teaser_is_inserted_correctly(self):
+        with zeit.cms.checkout.helper.checked_out(
+                self.repository['cp1']) as cp:
+            block = zope.component.getAdapter(
+                cp['lead'],
+                zeit.edit.interfaces.IElementFactory, name='teaser')()
+            block.insert(0, self.repository['testcontent'])
+            teaser = zope.component.getMultiAdapter(
+                (block, 0), zeit.content.cp.interfaces.IXMLTeaser)
+            teaser.free_teaser = True
+        self.teaser.autopilot = True
+        self.teaser.autopilot = False
+        self.assertEqual('http://xml.zeit.de/testcontent',
+                         self.teaser.xml.block.get('href'))
+
 
 class SuppressImagePositionsTest(zeit.content.cp.testing.FunctionalTestCase):
 
