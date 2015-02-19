@@ -197,6 +197,23 @@ class FakeRenameInfo(grokcore.component.Adapter):
     previous_uniqueIds = ()
 
 
+class XMLTeaserLinkUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
+    """Set the link to the original article.
+
+    XXX Kludgy. We need this since zeit.cms.syndication.feed unilaterally
+    writes both a uniqueId and href attribute; a cleaner solution would be to
+    use something like an IXMLReference adapter there and then have a specific
+    adapter for IXMLTeasers.
+    """
+
+    zope.component.adapts(zeit.content.cp.interfaces.IXMLTeaser)
+
+    def update(self, entry, suppress_errors=False):
+        # We don't override `update_with_context` since we don't want to adapt
+        # to `IXMLTeaser` which would create new teaser objects from articles.
+        entry.set('href', self.context.original_uniqueId)
+
+
 # LEGACY: Old teaser content type
 
 class Teaser(zeit.cms.content.metadata.CommonMetadata):

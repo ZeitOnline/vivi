@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.0.0b6 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Write free teasers in autopilots correctly to XML (BUG-107).
 
 
 3.0.0b5 (2015-02-16)
