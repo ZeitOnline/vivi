@@ -59,6 +59,7 @@ class MockPublishInfo(object):
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
 
     date_first_released = None
+    date_print_published = None
     last_modified_by = u'testuser'
     last_published_by = u'testuser'
 

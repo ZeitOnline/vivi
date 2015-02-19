@@ -4,6 +4,8 @@ zeit.cms changes
 2.37.0 (unreleased)
 -------------------
 
+- Add ``date_print_published`` to ``IPublishInfo`` (ZON-1280).
+
 - Re-implement filename normalization algorithm in Python (DEV-567).
 
 

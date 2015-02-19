@@ -27,6 +27,12 @@ class PublishInfo(object):
         ('date_first_released',),
         writeable=WRITEABLE_LIVE)
 
+    date_print_published = zeit.cms.content.dav.DAVProperty(
+        zeit.cms.workflow.interfaces.IPublishInfo['date_print_published'],
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
+        'print-publish',
+        writeable=WRITEABLE_LIVE)
+
     def __init__(self, context):
         self.context = context
 
