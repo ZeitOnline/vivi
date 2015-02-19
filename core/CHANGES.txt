@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.37.1 (unreleased)
+2.37.1 (2015-02-19)
 -------------------
 
 - Extend product class to include more attributes (ZON-1280).
