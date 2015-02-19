@@ -1,6 +1,6 @@
+from zeit.cms.content.browser.form import CommonMetadataFormBase
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
-import grokcore.component as grok
 import zeit.cms.related.interfaces
 import zeit.cms.workflow.interfaces
 import zeit.content.video.interfaces
@@ -23,7 +23,7 @@ class Edit(zeit.cms.browser.form.EditForm):
         'product', 'ressort', 'keywords', 'serie',
         'dailyNewsletter', 'banner', 'banner_id',
         'breaking_news', 'has_recensions', 'commentsAllowed',
-        'related',
+        'related', 'channels', 'lead_candidate',
         # remaining:
         '__name__',
         'created', 'date_first_released', 'modified', 'expires',
@@ -46,8 +46,22 @@ class Edit(zeit.cms.browser.form.EditForm):
         gocept.form.grouped.Fields(
             _('Teaser elements'),
             ('related',),
-            'wide-widgets full-width'),
+            'wide-widgets'),
     )
+
+    def __init__(self, context, request):
+        super(Edit, self).__init__(context, request)
+
+        if (zeit.cms.checkout.interfaces.ILocalContent.providedBy(
+                self.context) and not self.request.interaction.checkPermission(
+                'zeit.content.cp.EditAutomatic', self.context)):
+            self.form_fields = self.form_fields.omit(
+                'channels', 'lead_candidate')
+        else:
+            self.field_groups = (
+                self.field_groups[:2]
+                + (CommonMetadataFormBase.auto_cp_fields,)
+                + self.field_groups[2:])
 
 
 class Thumbnail(zeit.cms.browser.view.Base):

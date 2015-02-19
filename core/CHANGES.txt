@@ -4,7 +4,7 @@ zeit.content.video changes
 2.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Enable auto-cp fields on video forms (VIV-654).
 
 
 2.3.1 (2015-02-16)
