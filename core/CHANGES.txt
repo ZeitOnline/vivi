@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.37.0 (unreleased)
+2.37.0 (2015-02-19)
 -------------------
 
 - Add ``date_print_published`` to ``IPublishInfo`` (ZON-1280).
