@@ -1,13 +1,46 @@
-<?xml version="1.0"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <products>
-    <product id="ZEI">Die Zeit</product>
-    <product id="ZMLB">Zeit Magazin</product>
+    <product id="ZEDE" title="ZEIT ONLINE">ZEIT ONLINE</product>
+    <product id="ZEI" title="DIE ZEIT" show="issue">DIE ZEIT</product>
+    <product id="leserartikel" href="http://www.zeit.de/leserartikel/index" title="Leserartikel">Leserartikel</product>
+    <product id="ZMLB" href="http://www.zeit.de/zeit-magazin/index" title="ZEITmagazin" show="issue">ZEITmagazin</product>
     <product id="TEST">Test/Development</product>
-    <product id="ZTCS">Zeit Campus</product>
-    <product id="ZTWI">Zeit Wissen</product>
-    <product id="ZTGS">Zeit Geschichte</product>
-    <product id="tdb">Zeit Schweiz</product>
-    <product id="tbd">Zeit Oesterreich</product>
-    <product id="KINZ" vgwortcode="1234abc">Kinderzeit Magazin</product>
-    <product id="ZEDE">Zeit Online</product>
+    <product id="ZTCS" href="http://www.zeit.de/campus/index" title="ZEIT Campus" show="issue">ZEIT Campus</product>
+    <product id="CSRG" href="http://www.zeit.de/campus/index" title="ZEIT CAMPUS Ratgeber" show="issue">ZEIT CAMPUS Ratgeber</product>
+    <product id="ZTWI" href="http://www.zeit.de/wissen/zeit-wissen/index" title="ZEIT Wissen" show="issue">ZEIT Wissen</product>
+    <product id="ZTGS" href="http://www.zeit.de/wissen/zeit-geschichte/index" title="ZEIT Geschichte" show="issue">ZEIT Geschichte</product>
+    <product id="ZECH" label="DIE ZEIT" show="issue">Zeit Schweiz</product>
+    <product id="ZEOE" label="DIE ZEIT" show="issue">Zeit Oesterreich</product>
+    <product id="ZESA" label="DIE ZEIT" show="issue">Zeit im Osten</product>
+    <product id="ZSF">Zeit Studienführer</product>
+    <product id="KINZ">Kinderzeit Magazin</product>
+    <product id="ADV">Advertorial</product>
+    <product id="News">DPA</product>
+    <product id="afp">AFP</product>
+    <product id="dpa-hamburg">DPA Hamburg</product>
+    <product id="ADMIN">Administratives</product>
+    <product id="MMV" href="http://www.michael-mueller-verlag.de" target="_blank" title="Michael Müller Verlag" label="Erschienen im Michael Müller Verlag" show="link">Michael Müller Verlag</product>
+    <product id="TGS" href="http://www.tagesspiegel.de" target="_blank" title="Tagesspiegel" label="Erschienen im Tagesspiegel" show="link">Tagesspiegel</product>
+    <product id="SpeDE" href="http://www.spektrum.de" target="_blank" title="spektrum.de" label="Erschienen bei spektrum.de" show="link">spektrum.de</product>
+    <product id="SdW" href="http://www.spektrum.de" target="_blank" title="Spektrum der Wissenschaft" label="Erschienen in Spektrum der Wissenschaft" show="link">Spektrum der Wissenschaft</product>
+    <product id="SpeD" href="http://www.spektrumdirekt.de" target="_blank" title="spektrumdirekt.de">spektrumdirekt.de</product>
+    <product id="Vice" href="http://www.vice.com/de" target="_blank" title="Vice" label="Erschienen bei Vice" show="link">Vice</product>
+    <product id="GG" href="http://www.gehirn-und-geist.de" target="_blank" title="Gehirn &amp; Geist" label="Erschienen in Gehirn &amp; Geist" show="link">Gehirn &amp; Geist</product>
+    <product id="HaBl" href="http://www.handelsblatt.com" target="_blank" title="Handelsblatt" label="Erschienen im Handelsblatt" show="link">Handelsblatt</product>
+    <product id="CW" href="http://www.christundwelt.de" target="_blank" title="Christ &amp; Welt" label="Erschienen in Christ &amp; Welt" show="link">Christ &amp; Welt</product>
+    <product id="UGC">User Generated Content</product>
+    <product id="NAGEO" href="http://www.nationalgeographic.de" title="National Geographic" label="Erschienen in National Geographic" show="link">National Geographic</product>
+    <product id="GOLEM" href="http://www.golem.de" target="_blank" title="golem.de" label="Erschienen bei golem.de" show="link">golem.de</product>
+    <product id="SID" title="Sport-Informations-Dienst">SID</product>
+    <product id="Reuters" title="Reuters">Reuters</product>
+    <product id="WEKU" href="http://www.weltkunst.de" target="_blank" title="Weltkunst" label="Erschienen in Weltkunst" show="link">Weltkunst</product>
+    <product id="WIWO" href="http://www.wiwo.de" target="_blank" title="WirtschaftsWoche" label="Erschienen in der WirtschaftsWoche" show="link">WirtschaftsWoche</product>
+    <product id="T3N" href="http://www.t3n.de" target="_blank" title="t3n" label="Erschienen bei t3n" show="link">t3n</product>
+    <product id="Effilee" href="http://www.effilee.de" target="_blank" title="Effilee" label="Erschienen in Effilee" show="link">Effilee</product>
+    <product id="Brandeins" href="http://www.brandeins.de" target="_blank" title="Brand eins" label="Erschienen in brand eins" show="link">brand eins</product>
+    <product id="Reportagen" href="http://www.reportagen.com" target="_blank" title="Reportagen">Reportagen</product>
+    <product id="ZEAR" title="DIE ZEIT">DIE ZEIT</product>
+    <product id="Unknown" title="Unbekannt">Unbekannt</product>
+    <product id="BE" href="http://www.boldeconomy.com" target="_blank" title="Bold Economy">Bold Economy</product>
+    <product id="NORR" href="http://www.norrmagazin.de" target="_blank" title="NORR">NORR</product>
 </products>
