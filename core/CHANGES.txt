@@ -65,6 +65,12 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.7.6 (2015-02-20)
+------------------
+
+- Write free teasers in autopilots correctly to XML (BUG-107).
+
+
 2.7.5 (2015-02-16)
 ------------------
 
