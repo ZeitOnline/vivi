@@ -92,7 +92,9 @@ zeit.content.cp.ContainerSorter = gocept.Class.extend({
 });
 
 
-MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+var ident = MochiKit.Signal.connect(
+    window, 'script-loading-finished', function() {
+    MochiKit.Signal.disconnect(ident);
     if (! zeit.cms.in_cp_editor()) {
         return;
     }
@@ -132,7 +134,9 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
                                   to: 0.01});
     };
 
-    MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+    var ident = MochiKit.Signal.connect(
+        window, 'script-loading-finished', function() {
+        MochiKit.Signal.disconnect(ident);
             if (! zeit.cms.in_cp_editor()) {
                 return;
             }
