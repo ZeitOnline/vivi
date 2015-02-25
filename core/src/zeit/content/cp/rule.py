@@ -20,6 +20,11 @@ def region(context):
     return zeit.content.cp.interfaces.IRegion(context).__name__
 
 
+@glob(zope.interface.Interface)
+def region(context):
+    return None
+
+
 @glob(zeit.content.cp.interfaces.ITeaserBlock)
 def layout(context):
     return context.layout.id
