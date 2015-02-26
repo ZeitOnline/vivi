@@ -44,7 +44,7 @@ class ModifiedHandlerTest(unittest.TestCase):
                          content.authors)
 
     def test_authorships_should_not_be_copied_for_other_field_change(
-        self):
+            self):
         from zope.lifecycleevent import ObjectModifiedEvent, Attributes
         from zeit.cms.content.interfaces import ICommonMetadata
         from zeit.content.author.author import update_author_freetext
