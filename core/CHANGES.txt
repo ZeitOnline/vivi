@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.0.0b7 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Allow moving blocks inside and between areas (DEV-53).
 
 
 3.0.0b6 (2015-02-20)

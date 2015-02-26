@@ -56,14 +56,14 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
 });
 
 
-zeit.content.cp.ContainerSorter = gocept.Class.extend({
+zeit.content.cp.ContainerMover = gocept.Class.extend({
 
     construct: function(container_type) {
         var self = this;
-        self.sorters = [];
+        self.movers = [];
         self.container_type = container_type;
         self.selector = '.type-' + container_type;
-        self.__name__ = ('zeit.content.cp.ContainerSorter('
+        self.__name__ = ('zeit.content.cp.ContainerMover('
             + self.container_type + ')');
         new zeit.edit.context.Editor(self);
     },
@@ -71,21 +71,21 @@ zeit.content.cp.ContainerSorter = gocept.Class.extend({
     connect: function() {
         var self = this;
         jQuery(self.selector).each(function() {
-            var sorter = new zeit.edit.sortable.BlockSorter(
+            var mover = new zeit.edit.sortable.BlockMover(
                 this.id, '#' + this.id + ' > div.block-inner');
-            sorter.__name__ = ('zeit.content.cp.BlockSorter('
+            mover.__name__ = ('zeit.content.cp.BlockMover('
                 + self.container_type + ', id=' + this.id + ')');
-            self.sorters.push(sorter);
+            self.movers.push(mover);
         });
     },
 
     disconnect: function() {
         var self = this;
-        while (self.sorters.length) {
-            var sorter = self.sorters.pop();
-            log("Destroying sorter " + sorter.container);
-            sorter.__context__.deactivate();
-            sorter.__context__.destroy();
+        while (self.movers.length) {
+            var mover = self.movers.pop();
+            log("Destroying mover " + mover.container);
+            mover.__context__.deactivate();
+            mover.__context__.destroy();
         }
     }
 
@@ -99,14 +99,14 @@ var ident = MochiKit.Signal.connect(
         return;
     }
 
-    zeit.content.cp.body_sorter = new zeit.edit.sortable.BlockSorter(
+    zeit.content.cp.body_mover = new zeit.edit.sortable.BlockMover(
         'body', '#body > div.block-inner');
-    zeit.content.cp.body_sorter.__name__ = (
-        'zeit.content.cp.ContainerSorter(body)');
+    zeit.content.cp.body_mover.__name__ = (
+        'zeit.content.cp.ContainerMover(body)');
 
-    zeit.content.cp.region_sorter = new zeit.content.cp.ContainerSorter(
+    zeit.content.cp.region_mover = new zeit.content.cp.ContainerMover(
         'region');
-    zeit.content.cp.area_sorter = new zeit.content.cp.ContainerSorter('area');
+    zeit.content.cp.area_mover = new zeit.content.cp.ContainerMover('area');
 });
 
 

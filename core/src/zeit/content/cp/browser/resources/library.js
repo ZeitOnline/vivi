@@ -25,6 +25,15 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     });
 
     zeit.edit.drop.registerHandler({
+        accept: ['editable-module'],
+        activated_by: 'action-cp-module-movable',
+        url_attribute: 'cms:move-block-url',
+        query_arguments: function(draggable) {
+            return {'id': draggable.getAttribute('id')};
+        }
+    });
+
+    zeit.edit.drop.registerHandler({
         accept: ['region-module'],
         activated_by: 'action-cp-region-module-droppable',
         url_attribute: 'cms:create-block-url',

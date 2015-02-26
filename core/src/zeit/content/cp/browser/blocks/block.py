@@ -5,6 +5,14 @@ import zope.component
 import zope.formlib.form
 
 
+class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
+
+    @property
+    def css_class(self):
+        classes = super(ViewletManager, self).css_class
+        return ' '.join(['editable-module', classes])
+
+
 class EditCommon(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(

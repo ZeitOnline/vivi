@@ -132,16 +132,20 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
                 '[@class="module represents-content-object %s-module"]'
                 '[contains(string(.), "%s")]' % (area, text))
 
-    def open_centerpage(self):
+    def create_and_checkout_centerpage(self):
         with zeit.cms.testing.site(self.getRootFolder()):
             with zeit.cms.testing.interaction():
                 repository = zope.component.getUtility(
                     zeit.cms.repository.interfaces.IRepository)
                 repository['cp'] = zeit.content.cp.centerpage.CenterPage()
-                zeit.cms.checkout.interfaces.ICheckoutManager(
+                cp = zeit.cms.checkout.interfaces.ICheckoutManager(
                     repository['cp']).checkout()
         transaction.commit()
+        return cp
 
+    def open_centerpage(self, create_cp=True):
+        if create_cp:
+            self.create_and_checkout_centerpage()
         s = self.selenium
         self.open('/workingcopy/zope.user/cp/@@edit.html')
         s.waitForElementPresent('css=div.landing-zone')

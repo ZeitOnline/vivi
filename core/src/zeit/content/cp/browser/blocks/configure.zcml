@@ -6,6 +6,19 @@
 
   <!-- Block -->
 
+  <configure package="zeit.edit.browser">
+    <browser:viewletManager
+      provides="zeit.edit.interfaces.IContentViewletManager"
+      for="zeit.content.cp.interfaces.IBlock"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      class="zeit.content.cp.browser.blocks.block.ViewletManager"
+      template="layout.block.contents.pt"
+      name="zeit.edit.contents"
+      permission="zope.View"
+      />
+  </configure>
+
   <browser:viewlet
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

@@ -1,6 +1,7 @@
 # coding: utf8
 import lovely.remotetask.interfaces
 import lxml.cssselect
+import transaction
 import zeit.cms.repository.interfaces
 import zeit.content.quiz.quiz
 import zope.component
@@ -353,6 +354,25 @@ class TestSorting(zeit.content.cp.testing.SeleniumTestCase):
         s.verifyAttribute(
             'css=.block.type-teaser + .landing-zone + .block.type-teaser@id',
             block1)
+
+
+class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestMoving, self).setUp()
+        cp = self.create_and_checkout_centerpage()
+        self.teaser = zope.component.getAdapter(
+            cp['lead'], zeit.edit.interfaces.IElementFactory, 'teaser')()
+        transaction.commit()
+        self.open_centerpage(create_cp=False)
+
+    def test_move_block_between_areas(self):
+        s = self.selenium
+        s.dragAndDropToObject(
+            'css=#lead .block.type-teaser .dragger',
+            'css=#informatives .landing-zone.action-cp-module-movable',
+            '10,10')
+        s.waitForElementPresent('css=#informatives .block.type-teaser')
 
 
 class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):

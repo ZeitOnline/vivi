@@ -10,7 +10,6 @@ import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
-import zeit.edit.browser.block
 import zeit.edit.browser.view
 import zope.cachedescriptors.property
 import zope.component
@@ -23,7 +22,7 @@ COLUMN_ID = 'column://'
 
 
 class TeaserBlockViewletManager(
-        zeit.edit.browser.block.BlockViewletManager):
+        zeit.content.cp.browser.blocks.block.ViewletManager):
 
     @property
     def css_class(self):
