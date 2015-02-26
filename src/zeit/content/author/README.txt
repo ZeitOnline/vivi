@@ -11,13 +11,14 @@ Authors
 >>> import zeit.cms.repository.interfaces
 >>> import zope.component
 
+>>> repository = zope.component.getUtility(
+...     zeit.cms.repository.interfaces.IRepository)
 >>> shakespeare = zeit.content.author.author.Author()
 >>> shakespeare.title = 'Sir'
 >>> shakespeare.firstname = 'William'
 >>> shakespeare.lastname = 'Shakespeare'
 >>> shakespeare.vgwortid = 12345
->>> repository = zope.component.getUtility(
-...     zeit.cms.repository.interfaces.IRepository)
+>>> shakespeare.column_teaser_image = repository['2006']['DSC00109_2.JPG']
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
@@ -26,6 +27,9 @@ Authors
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
+  <column_teaser_image ...>
+  ...
+  </column_teaser_image>
   <display_name>William Shakespeare</display_name>
 </author>
 
@@ -41,6 +45,9 @@ takes precedence:
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
+  <column_teaser_image ...>
+  ...
+  </column_teaser_image>
   <display_name>Flub</display_name>
   <entered_display_name>Flub</entered_display_name>
 </author>
@@ -54,6 +61,9 @@ takes precedence:
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
+  <column_teaser_image ...>
+  ...
+  </column_teaser_image>
   <display_name>William Shakespeare</display_name>
   <entered_display_name xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:nil="true"/>
