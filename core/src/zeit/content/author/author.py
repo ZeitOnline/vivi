@@ -3,6 +3,7 @@ from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
 import grokcore
 import zeit.cms.content.interfaces
+import zeit.cms.content.reference
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
@@ -18,6 +19,23 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     zope.interface.implements(zeit.content.author.interfaces.IAuthor,
                               zeit.cms.interfaces.IAsset)
+
+    _image = zeit.cms.content.reference.MultiResource(
+        '.column_teaser_image', 'image')
+
+    @property
+    def column_teaser_image(self):
+        if not self._image:
+            return
+        return self._image[0]
+
+    @column_teaser_image.setter
+    def column_teaser_image(self, value):
+        if value is None:
+            value = ()
+        else:
+            value = (value, )
+        self._image = value
 
     default_template = (
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
@@ -79,7 +97,7 @@ def update_author_freetext(obj, event):
         for description in event.descriptions:
             if (description.interface ==
                 zeit.cms.content.interfaces.ICommonMetadata and
-                'authorships' in description.attributes):
+                    'authorships' in description.attributes):
                 ref_names = [x.target.display_name for x in obj.authorships]
                 obj.authors = ref_names
 
