@@ -4,8 +4,8 @@ import zope.publisher.interfaces
 
 
 class AuthorListRepresentation(
-    grokcore.component.MultiAdapter,
-    zeit.cms.browser.listing.BaseListRepresentation):
+        grokcore.component.MultiAdapter,
+        zeit.cms.browser.listing.BaseListRepresentation):
 
     grokcore.component.adapts(
         zeit.content.author.interfaces.IAuthor,
