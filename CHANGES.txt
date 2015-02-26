@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.2.3 (unreleased)
+2.2.3 (2015-02-26)
 ------------------
 
 - Setup a column teaser image (ZON-1465).
