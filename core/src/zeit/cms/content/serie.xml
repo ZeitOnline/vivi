@@ -1,144 +1,19 @@
-<?xml version="1.0"?>
-<series>
-  <serie>-</serie>
-
-  <serie>News</serie>
-
-  <serie>Bildung &amp; Beruf</serie>
-
-  <serie>anzeigenfrei</serie>
-
-  <serie>arbeit</serie>
-
-  <serie>Autotest</serie>
-
-  <serie>belletristik</serie>
-
-  <serie>berlinale</serie>
-
-  <serie>bildergalerie</serie>
-
-  <serie>Buecher</serie>
-
-  <serie>buecherliste</serie>
-
-  <serie>buch im gespraech</serie>
-
-  <serie>buch-spezial</serie>
-
-  <serie>cebit</serie>
-
-  <serie>cvd</serie>
-
-  <serie>cvd-vorab</serie>
-
-  <serie>cvd-schwerpunkt</serie>
-
-  <serie>cvd-tagesbild</serie>
-
-  <serie>davos</serie>
-
-  <serie>demografie</serie>
-
-  <serie>feuilleton-glosse</serie>
-
-  <serie>film</serie>
-
-  <serie>fingerhaus</serie>
-
-  <serie>finis</serie>
-
-  <serie>fussball</serie>
-
-  <serie>geldspezial</serie>
-
-  <serie>geniessen</serie>
-
-  <serie>gesundheitsfragen</serie>
-
-  <serie>globalisierung</serie>
-
-  <serie>hochschule</serie>
-
-  <serie>interview</serie>
-
-  <serie>kinder-jugendbuch</serie>
-
-  <serie>kriminalroman</serie>
-
-  <serie>kulturbrief</serie>
-
-  <serie>Kunst</serie>
-
-  <serie>kunstmarkt</serie>
-
-  <serie>Lebenshilfe geschichten</serie>
-
-  <serie>Lebenshilfe immobilie</serie>
-
-  <serie>Lebenszeichen</serie>
-
-  <serie>Leseprobe</serie>
-
-  <serie>lieberlesen</serie>
-
-  <serie>literarisches leben</serie>
-
-  <serie>Luchs</serie>
-
-  <serie>Matinee</serie>
-
-  <serie>medica</serie>
-
-  <serie>Momente der Entscheidung</serie>
-
-  <serie>musik</serie>
-  <serie>nachtreisen</serie>
-  <serie>Projekt-Links</serie>
-  <serie>Quiz</serie>
-
-  <serie>Pisa</serie>
-
-  <serie>politisches buch</serie>
-
-  <serie>reden</serie>
-
-  <serie>Roboterfussball</serie>
-
-  <serie>sachbuch</serie>
-
-  <serie>schuelerbibliothek</serie>
-
-  <serie>Schwerpunkte</serie>
-
-  <serie>sgrena</serie>
-
-  <serie>Siebecks Benimm</serie>
-
-  <serie>Siebeck haupttext</serie>
-
-  <serie>Siebeck weinlese</serie>
-
-  <serie>Stillleben mit Buch</serie>
-
-  <serie>stimmts</serie>
-
-  <serie>tacheles</serie>
-
-  <serie>taschenbuch</serie>
-
-  <serie>theater</serie>
-
-  <serie>Traum</serie>
-
-  <serie>Terror</serie>
-
-  <serie>wirtschaftsbrief</serie>
-
-
-  <serie>ZEIT-Liste</serie>
-  <serie>---------</serie>
-  <serie>logo-www.arte.tv</serie>
-  <serie>logo-tvhs</serie>
-
-</series>
+<?xml version='1.0' encoding='UTF-8'?>
+
+<allseries>
+  <series title="Autotest" serienname="Autotest" url="zeitmagazin-autotest"/>
+  <series title="Bachelor Tagebuch" serienname="Bachelor Tagebuch" url="bachelor-tagebuch" encoded="Bachelor%20Tagebuch"/>
+  <series title="Chefsache" serienname="Chefsache" url="chefsache" format-label="Kolumne"/>
+  <series title="City Guide" serienname="City Guide" url="city-guide" encoded="City%20Guide"/>
+  <series title="Das Prinzip 50/50" serienname="Das Prinzip 50/50" url="das-prinzip-50-50" encoded="Das%20Prinzip%2050%2F50"/>
+  <series title="E-Mail aus Davos" serienname="E-Mail aus Davos" url="email-aus-davos" encoded="E-Mail%20aus%20Davos"/>
+  <series title="Faktomat" serienname="Faktomat" url="faktomat"/>
+  <series title="Geschafft!" serienname="Geschafft!" url="geschafft"/>
+  <series title="Hör-Reise" serienname="Hör-Reise" url="hoer-reise" encoded="H%C3%B6r-Reise"/>
+  <series title="Zeitläufte" serienname="Zeitläufte" url="zeitlaeufte" encoded="Zeitl%C3%A4ufte"/>
+  <videoseries>
+    <series title="BR" serienname="BR" url="br" encoded="BR" video="yes"/>
+    <series title="Filmtipp" serienname="Filmtipp" url="filmtipp" encoded="Filmtipp" video="yes"/>
+    <series title="Utopien" serienname="Utopien" url="utopien" encoded="Utopien" video="yes"/>
+  </videoseries>
+</allseries>
