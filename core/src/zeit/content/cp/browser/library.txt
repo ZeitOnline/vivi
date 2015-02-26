@@ -23,10 +23,9 @@ In the informatives area is a landing zone to create a block:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...
- <div class="landing-zone action-content-droppable action-cp-module-droppable"
+ <div class="landing-zone action-content-droppable action-cp-module-droppable..."
       cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
-      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top">
-      ...
+      cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
 
 Create a cpextra block as first block in the informatives. The view returns
 information about the created block:
@@ -57,15 +56,15 @@ it, is rendered too:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...
-<div class="landing-zone action-content-droppable action-cp-module-droppable"
+<div class="landing-zone action-content-droppable action-cp-module-droppable..."
      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
-     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top">
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
 </div>
-  <div ...class="block type-cpextra...id="id-<GUID>">
+  <div ...class="...block type-cpextra...id="id-<GUID>">
     ...
-  <div class="landing-zone action-content-droppable action-cp-module-droppable"
+  <div class="landing-zone action-content-droppable action-cp-module-droppable..."
        cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>">
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"...>
   </div>
   ...
 
@@ -79,17 +78,17 @@ Add an audio block after the just created cpextra block now:
 >>> browser.open(contents_url)
 >>> print browser.contents
 <div...
-<div class="landing-zone action-content-droppable action-cp-module-droppable"
+<div class="landing-zone action-content-droppable action-cp-module-droppable..."
      cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop?order=top"
-     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top">
+     cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@landing-zone-drop-module?order=top"...>
 </div>
-  <div ...class="block type-cpextra...id="id-<GUID>">
+  <div ...class="...block type-cpextra...id="id-<GUID>">
     ...
-  <div class="landing-zone action-content-droppable action-cp-module-droppable"
+  <div class="landing-zone action-content-droppable action-cp-module-droppable..."
        cms:drop-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop?order=insert-after&amp;insert-after=id-<GUID>"
-       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>">
+       cms:create-block-url="http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/landing-zone-drop-module?order=insert-after&amp;insert-after=id-<GUID>"...>
   </div>
-  ...<div...class="block type-audio...
+  ...<div...class="...block type-audio...
 
 
 .. [#setup]
