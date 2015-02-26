@@ -294,6 +294,12 @@ class IProduct(zope.interface.Interface):
     vgwortcode = zope.interface.Attribute('VGWort code, optional')
 
 
+class ISerie(zope.interface.Interface):
+
+    id = zope.interface.Attribute('id')
+    title = zope.interface.Attribute('title')
+
+
 WRITEABLE_ON_CHECKIN = object()
 WRITEABLE_LIVE = object()
 WRITEABLE_ALWAYS = object()

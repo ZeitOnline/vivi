@@ -226,15 +226,59 @@ class SubChannelSource(SubNavigationSource):
         return all_nodes
 
 
+def unicode_or_none(value):
+    if value:
+        return unicode(value)
+
+
+class Serie(object):
+
+    def __init__(self, serienname=None, title=None, url=None, encoded=None,
+                 column=False, video=False):
+        self.serienname = serienname
+        self.title = title
+        self.url = url
+        self.encoded = encoded
+        self.column = column
+        self.video = video
+
+    def __eq__(self, other):
+        if not zope.security.proxy.isinstance(other, self.__class__):
+            return False
+        return self.serienname == other.serienname
+
+
 class SerieSource(SimpleContextualXMLSource):
 
     config_url = 'source-serie'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        values = []
+        for node in tree.iterchildren('*'):
+            # XXX: For compat reasons we need a fallback `serienname`.
+            name = node.get('serienname') or node.text
+            if not name:
+                continue
+            values.append(Serie(unicode(name).strip(),
+                          unicode_or_none(node.get('title')),
+                          unicode_or_none(node.get('url')),
+                          unicode_or_none(node.get('encoded')),
+                          node.get('format-label') == u'Kolumne',
+                          node.get('video') == u'yes'))
+        return values
+
+    def getTitle(self, context, value):
+        return value.serienname
+
+    def getToken(self, context, value):
+        return super(SerieSource, self).getToken(context, value.serienname)
 
 
 class Product(object):
 
     def __init__(self, id=None, title=None, vgwortcode=None,
-        href=None, target=None, label=None, show=None):
+                 href=None, target=None, label=None, show=None):
         self.id = id
         self.title = title
         self.vgwortcode = vgwortcode
@@ -247,11 +291,6 @@ class Product(object):
         if not zope.security.proxy.isinstance(other, self.__class__):
             return False
         return self.id == other.id
-
-
-def unicode_or_none(value):
-    if value:
-        return unicode(value)
 
 
 class ProductSource(SimpleContextualXMLSource):
