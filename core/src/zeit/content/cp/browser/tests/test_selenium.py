@@ -374,6 +374,14 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
             '10,10')
         s.waitForElementPresent('css=#informatives .block.type-teaser')
 
+    def test_move_area_between_regions(self):
+        s = self.selenium
+        s.dragAndDropToObject(
+            'css=#informatives .dragger',
+            'css=#teaser-mosaic .landing-zone.action-cp-region-module-movable',
+            '10,10')
+        s.waitForElementPresent('css=#teaser-mosaic #informatives')
+
 
 class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
 

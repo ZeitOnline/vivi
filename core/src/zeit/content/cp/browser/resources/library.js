@@ -43,6 +43,15 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
         }
     });
 
+    zeit.edit.drop.registerHandler({
+        accept: ['type-area'],
+        activated_by: 'action-cp-region-module-movable',
+        url_attribute: 'cms:move-block-url',
+        query_arguments: function(draggable) {
+            return {'id': draggable.getAttribute('id')};
+        }
+    });
+
 });
 
 }());
