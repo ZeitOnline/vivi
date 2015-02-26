@@ -19,7 +19,8 @@ class BlockViewletManager(
 
     @property
     def css_class(self):
-        classes = ['block', 'type-' + self.context.type]
+        classes = ['block', 'type-' + self.context.type,
+                   'represents-content-object']
         for interface in zope.interface.providedBy(self.context):
             name = '%s.%s' % (interface.__module__, interface.__name__)
             classes.append(name.replace('.', '-'))

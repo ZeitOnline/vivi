@@ -7,9 +7,8 @@ import zope.formlib.form
 import zope.interface
 
 
-class LandingZone(zeit.edit.browser.view.Action):
-    """Landing Zone to drop Content or Modules.
-
+class OrderMixin(object):
+    """
     Order can have the following values:
 
     * integer (position) XXX only used as '0', should use 'top' instead
@@ -22,72 +21,25 @@ class LandingZone(zeit.edit.browser.view.Action):
     element is inserted after the context.
 
     All occurrences of `after-context` should be replaced by `insert-after`.
-
     """
 
     order_from_form = zeit.edit.browser.view.Form('order')
     insert_after = zeit.edit.browser.view.Form('insert-after')
-    block_params = zeit.edit.browser.view.Form(
-        'block_params', json=True, default={})
 
-    def update(self):
+    def validate_order_params(self):
         if self.order_from_form:  # XXX make order non-optional and remove this
             self.order = self.order_from_form
         if not hasattr(self, 'order'):
             raise ValueError('Order must be specified!')
-        self.validate_params()
-        self.create_block()
-        self.undo_description = _(
-            "add '${type}' block", mapping=dict(type=self.block.type))
-        self.initialize_block()
-        self.update_order()
-        self.signal('after-reload', 'added', self.block.__name__)
-        self.signal(
-            None, 'reload',
-            self.create_in.__name__, self.url(self.create_in, '@@contents'))
-
-    def validate_params(self):
-        if not self.block_params:
-            return
-        schema = self.block_factory.provided_interface
-        if schema is None:
-            return  # block not registered via grok, cannot read interface
-
-        errors = []
-        data = zeit.cms.browser.form.AttrDict(**self.block_params)
-        data['__parent__'] = self.create_in
-        try:
-            schema.validateInvariants(data, errors)
-        except zope.interface.Invalid:
-            pass
-
-        errors = [e for e in errors if not isinstance(e, NoInputData)]
-        if errors:
-            raise zope.interface.Invalid(errors)
-
-    @property
-    def block_factory(self):
-        return zope.component.getAdapter(
-            self.create_in, zeit.edit.interfaces.IElementFactory,
-            name=self.block_type)
-
-    def create_block(self):
-        self.block = self.block_factory()
-
-    def initialize_block(self):
-        if not self.block_params:
-            return
-        for key, value in self.block_params.items():
-            setattr(self.block, key, value)
 
     def update_order(self):
-        keys = list(self.create_in)
+        keys = list(self.container)
         keys.remove(self.block.__name__)
         keys = self.add_block_in_order(keys, self.block.__name__)
-        self.create_in.updateOrder(keys)
+        self.container.updateOrder(keys)
 
     @property
-    def create_in(self):
+    def container(self):
         if self.order == 'after-context':
             return self.context.__parent__
         return self.context
@@ -108,3 +60,95 @@ class LandingZone(zeit.edit.browser.view.Action):
         else:
             raise NotImplementedError
         return keys
+
+
+class LandingZone(zeit.edit.browser.view.Action, OrderMixin):
+    """Landing Zone to drop Content or Modules.
+
+    """
+
+    block_params = zeit.edit.browser.view.Form(
+        'block_params', json=True, default={})
+
+    def update(self):
+        self.validate_order_params()
+        self.validate_block_params()
+        self.create_block()
+        self.undo_description = _(
+            "add '${type}' block", mapping=dict(type=self.block.type))
+        self.initialize_block()
+        self.update_order()
+        self.signal('after-reload', 'added', self.block.__name__)
+        self.signal(
+            None, 'reload',
+            self.container.__name__, self.url(self.container, '@@contents'))
+
+    def validate_block_params(self):
+        if not self.block_params:
+            return
+        schema = self.block_factory.provided_interface
+        if schema is None:
+            return  # block not registered via grok, cannot read interface
+
+        errors = []
+        data = zeit.cms.browser.form.AttrDict(**self.block_params)
+        data['__parent__'] = self.container
+        try:
+            schema.validateInvariants(data, errors)
+        except zope.interface.Invalid:
+            pass
+
+        errors = [e for e in errors if not isinstance(e, NoInputData)]
+        if errors:
+            raise zope.interface.Invalid(errors)
+
+    @property
+    def block_factory(self):
+        return zope.component.getAdapter(
+            self.container, zeit.edit.interfaces.IElementFactory,
+            name=self.block_type)
+
+    def create_block(self):
+        self.block = self.block_factory()
+
+    def initialize_block(self):
+        if not self.block_params:
+            return
+        for key, value in self.block_params.items():
+            setattr(self.block, key, value)
+
+
+class LandingZoneMove(zeit.edit.browser.view.Action, OrderMixin):
+
+    block_id = zeit.edit.browser.view.Form('id')
+
+    def update(self):
+        self.validate_order_params()
+        self.move_block()
+        self.undo_description = _(
+            "move '${type}' block", mapping=dict(type=self.block.type))
+        self.update_order()
+        self.signal(
+            None, 'reload', self.old_container.__name__, self.url(
+                self.old_container, '@@contents'))
+        if self.container.__name__ != self.old_container.__name__:
+            self.signal(
+                None, 'reload', self.container.__name__,
+                self.url(self.container, '@@contents'))
+
+    def move_block(self):
+        self.block = self.find_topmost_container(
+            self.context).get_recursive(self.block_id)
+        self.old_container = self.block.__parent__
+        del self.old_container[self.block.__name__]
+        self.context.add(self.block)
+
+    def find_topmost_container(self, element):
+        container = element
+        while True:
+            parent = container.__parent__
+            if zeit.edit.interfaces.IContainer.providedBy(parent):
+                container = parent
+            else:
+                break
+        return container

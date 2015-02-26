@@ -193,3 +193,78 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
         return d;
     }
 });
+
+
+zeit.edit.sortable.Movable = zeit.edit.context.ContentActionBase.extend({
+// This is very similar to Sortable above, except this only registers
+// Draggables; the Droppables are set up with zeit.edit.drop.registerHandler.
+
+    __name__: 'zeit.edit.sortable.Movable',
+
+    NOT_DRAGGABLE: {},
+
+    construct: function(container_id, child_container_selector) {
+        var self = this;
+        self.container_id = container_id;
+        self.child_container_selector = child_container_selector;
+        self.options = zeit.edit.sortable.Sortable.prototype.default_options;
+        arguments.callee.$.construct.call(self);
+    },
+
+    connect: function() {
+        // XXX Copy&paste of the upper half of Sortable.connect().
+        var self = this;
+        var container = $$(self.child_container_selector)[0];
+        var nodes = self.get_movable_nodes();
+        forEach(nodes, function(node) {
+            var handle = self.get_handle(node);
+            if (handle !== self.NOT_DRAGGABLE) {
+                self.dnd_objects.push(
+                    new MochiKit.DragAndDrop.Draggable(node, {
+                        constraint: self.options['constraint'],
+                        handle: handle,
+                        ghosting: false,
+                        revert: true,
+                        scroll: self.options['scroll'],
+                        zindex: 10000
+                }));
+            }
+        });
+    },
+
+    get_handle: function(element) {
+        return null;  // Make the whole element draggable.
+    },
+
+    get_movable_nodes: function() {
+        return [];  // Implement in subclass.
+    }
+
+});
+
+
+zeit.edit.sortable.BlockMover = zeit.edit.sortable.Movable.extend({
+// XXX This is a complete duplicate of BlockSorter, since all these two do
+// is encode the HTML structure of blocks.
+
+    __name__: 'zeit.edit.sortable.BlockMover',
+    context: zeit.edit.context.Editor,
+
+    get_movable_nodes: function() {
+        var self = this;
+        var selector = self.child_container_selector + ' > div.block[id]';
+        return $$(selector);
+    },
+
+    get_handle: function(element) {
+        var self = this;
+        var result = MochiKit.Selector.findChildElements(
+            element, ['> .block-inner > .edit > .dragger']);
+        if (result.length) {
+            return result[0];
+        } else {
+            return self.NOT_DRAGGABLE;
+        }
+    }
+
+});

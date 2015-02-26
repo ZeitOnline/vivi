@@ -4,6 +4,8 @@ Changes
 2.9.0 (unreleased)
 ------------------
 
+- Implement landing zone behaviour for moving elements (DEV-53).
+
 - Add ``IContainer.get_recursive`` and ``create_item`` (DEV-53).
 
 

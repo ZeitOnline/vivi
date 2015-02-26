@@ -55,3 +55,45 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
         self.request.form['block_params'] = json.dumps(None)
         with self.assertNothingRaised():
             self.landing_zone()
+
+
+class LandingZoneMove(zeit.edit.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(LandingZoneMove, self).setUp()
+        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(self.principal)
+        root = zeit.edit.tests.fixture.Container(
+            wc, lxml.objectify.fromstring('<container/>'))
+        root.__name__ = 'root'
+        container_factory = zope.component.getAdapter(
+            root, zeit.edit.interfaces.IElementFactory, 'container')
+
+        self.source = container_factory()
+        self.block = zope.component.getAdapter(
+            self.source, zeit.edit.interfaces.IElementFactory, 'block')()
+        self.target = container_factory()
+
+        self.landing_zone = zeit.edit.browser.landing.LandingZoneMove()
+        self.landing_zone.context = self.target
+        self.landing_zone.request = self.request = \
+            zope.publisher.browser.TestRequest()
+
+    def test_remove_block_from_source_and_add_to_target(self):
+        self.request.form['order'] = 'top'
+        self.request.form['id'] = self.block.__name__
+        self.landing_zone()
+        self.assertEqual(0, len(self.source))
+        self.assertEqual(1, len(self.target))
+        self.assertIn(self.block.__name__, self.target)
+
+    def test_orders_blocks_according_to_parameters(self):
+        self.landing_zone.context = self.source
+        other = zope.component.getAdapter(
+            self.source, zeit.edit.interfaces.IElementFactory, 'block')()
+
+        self.request.form['id'] = self.block.__name__
+        self.request.form['order'] = 'insert-after'
+        self.request.form['insert-after'] = other.__name__
+        self.landing_zone()
+        self.assertEqual(
+            [other.__name__, self.block.__name__], self.source.keys())

@@ -165,6 +165,14 @@
     permission="zeit.EditContent"
     />
 
+  <browser:view
+    for="zeit.edit.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-move"
+    class=".landing.LandingZoneMove"
+    permission="zeit.EditContent"
+    />
+
   <!-- undo -->
 
   <browser:view
