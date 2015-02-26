@@ -97,3 +97,15 @@ class LandingZoneMove(zeit.edit.testing.FunctionalTestCase):
         self.landing_zone()
         self.assertEqual(
             [other.__name__, self.block.__name__], self.source.keys())
+
+    def test_dropping_block_next_to_itself_does_nothing(self):
+        self.landing_zone.context = self.source
+        other = zope.component.getAdapter(
+            self.source, zeit.edit.interfaces.IElementFactory, 'block')()
+
+        self.request.form['id'] = self.block.__name__
+        self.request.form['order'] = 'insert-after'
+        self.request.form['insert-after'] = self.block.__name__
+        self.landing_zone()
+        self.assertEqual(
+            [self.block.__name__, other.__name__], self.source.keys())

@@ -124,6 +124,9 @@ class LandingZoneMove(zeit.edit.browser.view.Action, OrderMixin):
 
     def update(self):
         self.validate_order_params()
+        if (self.order == 'insert-after' and
+            (self.insert_after == self.block_id)):
+            return
         self.move_block()
         self.undo_description = _(
             "move '${type}' block", mapping=dict(type=self.block.type))
