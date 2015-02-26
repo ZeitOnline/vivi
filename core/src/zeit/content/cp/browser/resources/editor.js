@@ -99,8 +99,8 @@ var ident = MochiKit.Signal.connect(
         return;
     }
 
-    zeit.content.cp.body_mover = new zeit.edit.sortable.BlockMover(
-        'body', '#body > div.block-inner');
+    zeit.content.cp.body_mover = new zeit.edit.sortable.BlockSorter(
+        'body', '#body');
     zeit.content.cp.body_mover.__name__ = (
         'zeit.content.cp.ContainerMover(body)');
 
