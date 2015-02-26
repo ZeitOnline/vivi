@@ -107,6 +107,10 @@ class Base(UserDict.DictMixin,
         self.xml.append(zope.proxy.removeAllProxies(item.xml))
         return name
 
+    def create_item(self, type_):
+        return zope.component.getAdapter(
+            self, zeit.edit.interfaces.IElementFactory, name=type_)()
+
     def _generate_block_id(self):
         return 'id-' + str(uuid.uuid4())
 
@@ -128,6 +132,17 @@ class Base(UserDict.DictMixin,
             zope.container.contained.ContainerModifiedEvent(
                 self, zope.lifecycleevent.Attributes(
                     zeit.edit.interfaces.IContainer, *old_order)))
+
+    def get_recursive(self, key, default=None):
+        item = self.get(key, default)
+        if item is not default:
+            return item
+        for child in self.values():
+            if zeit.edit.interfaces.IContainer.providedBy(child):
+                item = child.get_recursive(key, default)
+                if item is not default:
+                    return item
+        return default
 
     def __delitem__(self, key):
         item = self._delete(key)

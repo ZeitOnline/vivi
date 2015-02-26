@@ -58,18 +58,28 @@ class UnknownBlockTest(zeit.edit.testing.FunctionalTestCase):
             container['bar']))
 
 
-class SliceTest(zeit.edit.testing.FunctionalTestCase):
+class ContainerTest(zeit.edit.testing.FunctionalTestCase):
 
-    def test_foo(self):
+    def setUp(self):
+        super(ContainerTest, self).setUp()
         context = mock.Mock()
         zope.interface.alsoProvides(context, IPersistent)
-        container = zeit.edit.tests.fixture.Container(
+        self.container = zeit.edit.tests.fixture.Container(
             context, lxml.objectify.fromstring('<container/>'))
-        block_factory = zope.component.getAdapter(
-            container, zeit.edit.interfaces.IElementFactory, 'block')
-        blocks = [block_factory() for i in range(4)]
+
+    def test_slice(self):
+        blocks = [self.container.create_item('block') for i in range(4)]
         expected = [blocks[0], blocks[1]]
         expected = [x.__name__ for x in expected]
-        actual = [x.__name__ for x in container.slice(
+        actual = [x.__name__ for x in self.container.slice(
             blocks[0].__name__, blocks[1].__name__)]
         self.assertEqual(expected, actual)
+
+    def test_get_recursive_finds_item_in_self(self):
+        block = self.container.create_item('block')
+        self.assertEqual(block, self.container.get_recursive(block.__name__))
+
+    def test_get_recursive_finds_item_in_child_container(self):
+        other = self.container.create_item('container')
+        block = other.create_item('block')
+        self.assertEqual(block, self.container.get_recursive(block.__name__))

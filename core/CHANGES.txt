@@ -1,10 +1,10 @@
 Changes
 =======
 
-2.8.1 (unreleased)
+2.9.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``IContainer.get_recursive`` and ``create_item`` (DEV-53).
 
 
 2.8.0 (2015-01-14)

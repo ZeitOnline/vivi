@@ -61,12 +61,20 @@ class IReadContainer(zeit.cms.content.interfaces.IXMLRepresentation,
     def slice(start, end):
         """Return list of blocks between the names start and end, inclusive."""
 
+    def get_recursive(key, default):
+        """Return item for key. If not found in self, search recursively in
+        IContainers contained in self.
+        """
+
 
 class IWriteContainer(zope.container.interfaces.IOrdered):
     """Modify area."""
 
     def add(item):
         """Add item to container."""
+
+    def create_item(type_):
+        """Create item of given type and add it to the end of the container."""
 
     def __delitem__(key):
         """Remove item."""
