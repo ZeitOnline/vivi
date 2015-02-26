@@ -4,7 +4,7 @@ zeit.cms changes
 2.37.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Expand series source to include more attributes (ZON-1464).
 
 
 2.37.1 (2015-02-19)
