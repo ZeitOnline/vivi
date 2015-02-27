@@ -165,6 +165,27 @@ class SingleReferenceProperty(ReferenceProperty):
             reference.update_metadata()
 
 
+class SingleResource(SingleReferenceProperty):
+
+    def __get__(self, instance, class_):
+        if instance is None:
+            return self
+        reference = super(SingleResource, self).__get__(instance, class_)
+        return reference.target
+
+    def __set__(self, instance, value):
+        if value is not None:
+            reference = super(SingleResource, self).__get__(instance, None)
+            value = reference.create(value)
+        super(SingleResource, self).__set__(instance, value)
+        self.update_metadata(instance)
+
+    def update_metadata(self, instance):
+        reference = super(SingleResource, self).__get__(instance, None)
+        if reference:
+            reference.update_metadata()
+
+
 class MultiResource(ReferenceProperty):
 
     def references(self, instance):

@@ -1,8 +1,10 @@
 zeit.cms changes
 ================
 
-2.37.2 (unreleased)
+2.38.0 (unreleased)
 -------------------
+
+- Introduce ``zeit.cms.content.reference.SingleResource``.
 
 - Gracefully handle unresolveable interfaces for source availability (ZON-1466)
 
