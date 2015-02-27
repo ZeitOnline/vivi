@@ -16,22 +16,8 @@ class ImagesAdapter(zeit.cms.related.related.RelatedBase):
     zope.component.adapts(zeit.cms.content.interfaces.IXMLContent)
     zope.interface.implements(zeit.content.image.interfaces.IImages)
 
-    _images = zeit.cms.content.reference.MultiResource(
+    image = zeit.cms.content.reference.SingleResource(
         '.head.image', 'image')
-
-    @property
-    def image(self):
-        if not self._images:
-            return
-        return self._images[0]
-
-    @image.setter
-    def image(self, value):
-        if value is None:
-            value = ()
-        else:
-            value = (value, )
-        self._images = value
 
 
 class LocalOverride(object):
@@ -150,7 +136,7 @@ def update_image_reference_on_checkin(context, event):
     images = zeit.content.image.interfaces.IImages(context, None)
     if images is None:
         return
-    ImagesAdapter._images.update_metadata(images)
+    ImagesAdapter.image.update_metadata(images)
 
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
