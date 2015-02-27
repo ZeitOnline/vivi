@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Expand series source to include more attributes (ZON-1464).
 
+- Gracefully handle unresolveable interfaces for source availability (ZON-1466)
+
 
 2.37.1 (2015-02-19)
 -------------------
