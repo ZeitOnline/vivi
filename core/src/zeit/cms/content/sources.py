@@ -65,7 +65,10 @@ class XMLSource(
         # they are assigned the default value, which would lead to
         # ConstraintNotSatisfied errors.
         iface = node.get('available', 'zope.interface.Interface')
-        iface = zope.dottedname.resolve.resolve(iface)
+        try:
+            iface = zope.dottedname.resolve.resolve(iface)
+        except ImportError:
+            return False
         return iface.providedBy(context)
 
     def getTitle(self, context, value):

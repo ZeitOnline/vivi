@@ -19,6 +19,18 @@ class ExampleSource(zeit.cms.content.sources.XMLSource):
 """)
 
 
+class UnresolveableSource(zeit.cms.content.sources.XMLSource):
+
+    attribute = 'id'
+
+    def _get_tree(self):
+        return gocept.lxml.objectify.fromstring("""\
+<items>
+  <item id="foo" available="foo.bar.IAintResolveable">Foo</item>
+</items>
+""")
+
+
 class XMLSourceTest(zeit.cms.testing.ZeitCmsTestCase):
 
     def test_values_without_available_attribute_are_returned_for_all_contexts(
@@ -33,6 +45,11 @@ class XMLSourceTest(zeit.cms.testing.ZeitCmsTestCase):
         context = Mock()
         zope.interface.alsoProvides(context, zeit.cms.interfaces.ICMSContent)
         self.assertEqual(['one', 'two'], source.getValues(context))
+
+    def test_unresolveable_interfaces_should_make_item_unavailable(self):
+        source = UnresolveableSource().factory
+        context = Mock()
+        self.assertEqual([], source.getValues(context))
 
 
 class AddableCMSContentTypeSourceTest(zeit.cms.testing.ZeitCmsTestCase):
