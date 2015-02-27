@@ -20,24 +20,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     zope.interface.implements(zeit.content.author.interfaces.IAuthor,
                               zeit.cms.interfaces.IAsset)
 
-    # XXX This is copied from zeit.content.image.imagreference.ImagesAdapter,
-    # we should extract zeit.cms.content.reference.SingleResource instead.
-    _image = zeit.cms.content.reference.MultiResource(
+    column_teaser_image = zeit.cms.content.reference.SingleResource(
         '.column_teaser_image', 'image')
-
-    @property
-    def column_teaser_image(self):
-        if not self._image:
-            return
-        return self._image[0]
-
-    @column_teaser_image.setter
-    def column_teaser_image(self, value):
-        if value is None:
-            value = ()
-        else:
-            value = (value, )
-        self._image = value
 
     default_template = (
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
