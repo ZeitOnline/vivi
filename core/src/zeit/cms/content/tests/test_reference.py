@@ -228,6 +228,43 @@ class MultiResourceTest(
             u'bar', body['references']['reference']['title'])
 
 
+class SingleResourceTest(
+        ReferenceFixture, zeit.cms.testing.ZeitCmsTestCase):
+
+    def setUp(self):
+        super(SingleResourceTest, self).setUp()
+        TestContentType.related = zeit.cms.content.reference.SingleResource(
+            '.body.references.reference', 'test')
+
+    def test_set_and_retrieve_referenced_objects_directly(self):
+        content = self.repository['content']
+        content._p_jar = Mock()  # make _p_changed work
+        content.related = self.repository['target']
+        self.assertTrue(content._p_changed)
+        self.assertIsInstance(content.related, TestContentType)
+        self.assertEqual(
+            'http://xml.zeit.de/target', content.related.uniqueId)
+
+    def test_should_be_updated_on_checkin(self):
+        self.repository['target'].teaserTitle = u'foo'
+
+        content = self.repository['content']
+        with checked_out(content) as co:
+            co.related = self.repository['target']
+
+        with checked_out(self.repository['target']) as co:
+            co.teaserTitle = u'bar'
+        with checked_out(self.repository['content']):
+            pass
+
+        body = self.repository['content'].xml['body']
+        # Since TestContentType (our reference target) implements
+        # ICommonMetadata, its XMLReferenceUpdater will write 'title' (among
+        # others) into the XML.
+        self.assertEqual(
+            u'bar', body['references']['reference']['title'])
+
+
 class ReferenceTraversalBase(object):
 
     def set_reference(self, obj, value):
