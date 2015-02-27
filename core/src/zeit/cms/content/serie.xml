@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 
 <allseries>
+  <series title="-" serienname="-" url="-"/>
   <series title="Autotest" serienname="Autotest" url="zeitmagazin-autotest"/>
   <series title="Bachelor Tagebuch" serienname="Bachelor Tagebuch" url="bachelor-tagebuch" encoded="Bachelor%20Tagebuch"/>
   <series title="Chefsache" serienname="Chefsache" url="chefsache" format-label="Kolumne"/>
