@@ -117,12 +117,18 @@ class TeaserBlockLayoutSource(
             columns = g('columns', 1)
             if columns:
                 columns = int(columns)
-            default = g('default', '').lower() == 'true'
+            default = self._is_default(node, context)
             image_positions = g('image_positions', '').lower() == 'true'
             result.append(BlockLayout(
                 node.get(self.attribute), self._get_title_for(node),
                 g('image_pattern'), areas, columns, default, image_positions))
         return result
+
+    def _is_default(self, node, context):
+        if context is None:
+            return False
+        area = zeit.content.cp.interfaces.IArea(context)
+        return area.width in node.get('default', '')
 
     def _get_title_for(self, node):
         return unicode(node.get('title'))

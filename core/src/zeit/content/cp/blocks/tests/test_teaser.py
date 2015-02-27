@@ -4,7 +4,6 @@ import zeit.cms.checkout.helper
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 import zope.component
-import zope.component
 
 
 class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
