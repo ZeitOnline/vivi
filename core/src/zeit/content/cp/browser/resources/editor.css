@@ -471,3 +471,18 @@ label[for="form.query"] span {
 label[for="form.query"]:after {
   content: "Zeige Artikel, wenn...";
 }
+
+
+/* Display SVGs of Schematic Previews side by side and mark the active area. */
+
+.schematic-preview-tooltip {
+  max-width: 100%;
+}
+
+.cp-area-schematic-preview .area-preview-image {
+  float: left;
+}
+
+.cp-area-schematic-preview .area-preview-image.active svg rect {
+  fill: #e9e9ff !important;
+}

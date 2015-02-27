@@ -1,4 +1,5 @@
 import gocept.form.grouped
+import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
@@ -46,3 +47,23 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
 
     interface = zeit.content.cp.interfaces.IArea
+
+
+class SchematicPreview(object):
+
+    prefix = 'http://xml.zeit.de/data/cp-area-schemas/{}.svg'
+
+    def areas(self):
+        region = zeit.content.cp.interfaces.IRegion(self.context)
+        return region.values()
+
+    def preview(self, area):
+        content = zeit.cms.interfaces.ICMSContent(self.prefix.format(
+            area.width.replace('/', '_')))
+        return content.open().read()
+
+    def css_class(self, area):
+        classes = ['area-preview-image']
+        if area == self.context:
+            classes.append('active')
+        return ' '.join(classes)

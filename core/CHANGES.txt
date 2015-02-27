@@ -5,6 +5,8 @@ zeit.content.cp changes
 3.0.0b7 (unreleased)
 --------------------
 
+- Display tooltip how areas are displayed when using desktop layout. (DEV-597)
+
 - Allow moving blocks inside and between areas (DEV-53).
 
 - Allow moving areas inside and between regions (DEV-53).

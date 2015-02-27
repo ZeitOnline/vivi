@@ -208,6 +208,15 @@
     weight="6"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="schematic-preview"
+    class=".area.SchematicPreview"
+    template="schematic-preview.pt"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.cp.interfaces.IRegion"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

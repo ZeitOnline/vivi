@@ -120,3 +120,47 @@ class AreaBrowserTest(
         b.getLink('Ad-Medium Rectangle').click()
         b.open(edit_url)
         self.assertEllipsis('...<a ... class="mr selected"...', b.contents)
+
+
+class TooltipFixture(object):
+
+    def setUp(self):
+        super(TooltipFixture, self).setUp()
+        with zeit.cms.testing.site(self.getRootFolder()):
+            self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+            self.repository['data'] = zeit.cms.repository.folder.Folder()
+            self.repository['data']['cp-area-schemas'] = \
+                zeit.cms.repository.folder.Folder()
+
+            first = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
+            with first.open('w') as file_:
+                file_.write('1/3')
+            self.repository['data']['cp-area-schemas']['1_3.svg'] = first
+
+            second = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
+            with second.open('w') as file_:
+                file_.write('2/3')
+            self.repository['data']['cp-area-schemas']['2_3.svg'] = second
+
+
+class TooltipBrowserTest(TooltipFixture, zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.cp.testing.layer
+
+    def test_schematic_preview_returns_content_of_matched_files(self):
+        self.browser.open(
+            'http://localhost/++skin++vivi/repository/cp/@@checkout')
+        self.browser.open('informatives/@@schematic-preview')
+        self.assertEllipsis('...2/3...active...1/3...', self.browser.contents)
+
+
+class TooltipSeleniumTest(
+        TooltipFixture,
+        zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_schematic_layout_of_areas_is_shown_in_tooltip(self):
+        self.open('/repository/cp/@@checkout')
+        s = self.selenium
+        s.assertElementNotPresent('css=.schematic-preview-tooltip')
+        s.mouseOver('css=#informatives > .block-inner > .edit-bar')
+        s.waitForElementPresent('css=.schematic-preview-tooltip')

@@ -110,6 +110,29 @@ var ident = MochiKit.Signal.connect(
 });
 
 
+MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+    var $ = jQuery;
+    if (! zeit.cms.in_cp_editor()) {
+        return;
+    }
+    $('#cp-content-inner').tooltip({
+        content: function(callback) {
+            area = $(this).closest('.block')
+            $.get($(area).attr('cms:url') + '/schematic-preview')
+            .done(function (data) {
+               callback(data);
+            })
+            .fail(function (xhr, status, error) {
+                console.exception(error)
+            });
+        },
+        items: '.block.type-area > .block-inner > .edit-bar',
+        show: {delay: 500},
+        tooltipClass: 'schematic-preview-tooltip'
+    })
+});
+
+
 
 (function() {
 
