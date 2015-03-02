@@ -238,6 +238,12 @@ class ICMSContentIterable(zope.interface.Interface):
         pass
 
 
+class ITeaseredContent(zope.interface.common.sequence.IReadSequence):
+    """Returns all content objects in a CenterPage that are referenced
+    by ITeaserBlocks, in the same order they appear in the CenterPage.
+    """
+
+
 class ICPFeed(zope.interface.Interface):
     """Feed section of a CenterPage"""
 

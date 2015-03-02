@@ -163,9 +163,9 @@ class TeaserBlock(
 
     def __iter__(self):
         if self.autopilot:
-            feed = zeit.cms.syndication.interfaces.IReadFeed(
+            teasers = zeit.content.cp.interfaces.ITeaseredContent(
                 self.referenced_cp, [])
-            return iter(list(feed)[:self.AUTOPILOT_ENTRIES])
+            return iter(teasers[:self.AUTOPILOT_ENTRIES])
         else:
             return super(TeaserBlock, self).__iter__()
 
@@ -246,8 +246,8 @@ class TeaserBlock(
             self._autopilot = autopilot
             if self.referenced_cp:
                 for position, content in enumerate(
-                    zeit.cms.syndication.interfaces.IReadFeed(
-                        self.referenced_cp)):
+                        zeit.content.cp.interfaces.ITeaseredContent(
+                            self.referenced_cp)):
                     self.insert(position, content)
                     if position + 1 >= self.AUTOPILOT_ENTRIES:
                         break
@@ -298,22 +298,22 @@ def cms_content_iter(context):
             yield zeit.cms.interfaces.ICMSContent(teaser.original_uniqueId)
 
 
-class CenterpageFeed(zeit.cms.syndication.feed.Feed):
-    """A centerpage can be interpreted as a feed."""
+@grok.adapter(zeit.content.cp.interfaces.ICenterPage)
+@grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
+def extract_teasers(context):
+    result = []
+    for teaser in context['lead'].values():
+        if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(teaser):
+            continue
+        result.extend(list(teaser))
+    return result
 
-    zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
-    zope.interface.implementsOnly(zeit.cms.syndication.interfaces.IReadFeed)
 
-    def __init__(self, context):
-        self.context = context
-
-    @property
-    def xml(self):
-        return self.context.xml
-
-    def iterentries(self):
-        return self.xml.xpath("/centerpage/body/cluster[@area='feature']"
-                              "/region[@area='lead']/container/block[1]")
+# XXX Does anyone actually use this, pulling an IFeed into a CP via autopilot?
+@grok.adapter(zeit.cms.syndication.interfaces.IFeed)
+@grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
+def extract_teasers(context):
+    return list(context)
 
 
 def cp_feed_name(name):
@@ -325,8 +325,8 @@ def cp_feed_name(name):
     zeit.cms.checkout.interfaces.IAfterCheckinEvent)
 def create_cp_channel(context, event):
     feed = zeit.cms.syndication.feed.Feed()
-    cp_feed = zeit.cms.syndication.interfaces.IReadFeed(context)
-    for obj in reversed(list(cp_feed)):
+    teasers = zeit.content.cp.interfaces.ITeaseredContent(context)
+    for obj in reversed(teasers):
         if zeit.cms.interfaces.ICMSContent.providedBy(obj):
             feed.insert(0, obj)
     feed_name = cp_feed_name(context.__name__)
