@@ -36,8 +36,7 @@ class SearchForm(JSONView):
             products=self.products,
             ressorts=self.get_source(metadata_if['ressort'].source,
                                      'ressort', 'ressort_name'),
-            series=self.get_source(metadata_if['serie'].source,
-                                   'serie', 'serie_title'),
+            series=self.series,
             types=self.types,
         )
 
@@ -61,6 +60,15 @@ class SearchForm(JSONView):
                                  'product_id', 'product_name')
         for entry in result:
             entry['product_id'] = entry['product_id'].id
+        return result
+
+    @property
+    def series(self):
+        metadata_if = zeit.cms.content.interfaces.ICommonMetadata
+        result = self.get_source(metadata_if['serie'].source,
+                                 'serie', 'serie_title')
+        for entry in result:
+            entry['serie'] = entry['serie'].serienname
         return result
 
     @property
