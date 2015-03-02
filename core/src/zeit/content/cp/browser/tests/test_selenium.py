@@ -232,6 +232,15 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForCssCount('css=.lightbox li.edit-bar', 2)
         s.assertCssCount('css=.lightbox li.landing-zone', 3)
 
+    def test_edit_box_url_input(self):
+        self.create_teaserlist()
+        s = self.selenium
+        s.click('link=Edit teaser list')
+        s.waitForElementPresent('css=.url-input input')
+        s.type('css=.url-input input', 'http://xml.zeit.de/testcontent\n')
+        s.waitForElementPresent('css=.lightbox li.edit-bar')
+        s.assertCssCount('css=.lightbox li.landing-zone', 2)
+
     def test_toggle_visible(self):
         self.open_centerpage()
         s = self.selenium

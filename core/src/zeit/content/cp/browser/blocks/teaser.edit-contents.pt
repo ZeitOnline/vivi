@@ -51,6 +51,18 @@
     </li>
   </ol>
 
+  <tal:comment condition="nothing">
+    Using the drop url for the input field is a little kludgy, but this way we
+    can reuse the existing event handlers for reloading the lightbox etc. in
+    the simplest way possible.
+  </tal:comment>
+  <div class="url-input">
+    <span tal:omit-tag="python: True" i18n:translate="">or</span> <input
+          type="text" placeholder="Insert link"
+          i18n:attributes="placeholder"
+          tal:attributes="cms:url string:$context_url/@@drop"/>
+  </div>
+
 </div>
 <script language="JavaScript">
   new zeit.content.cp.teaser.Sortable();

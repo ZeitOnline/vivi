@@ -321,6 +321,11 @@ margin-top: 4px;
   cursor: move;
 }
 
+.teaser-list-edit-box .url-input {
+  /* align with li items */
+  padding-left: 1em;
+}
+
 /* XML block */
 
 .xml-block {

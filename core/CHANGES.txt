@@ -19,6 +19,8 @@ zeit.content.cp changes
   (Note: The CP feed ``name.lead`` no longer grows/shrinks according to the
   length of the lead area.)
 
+- Add URL input field to teaser list edit box (DEV-23).
+
 
 3.0.0b6 (2015-02-20)
 --------------------

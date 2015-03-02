@@ -16,6 +16,7 @@ zeit.content.cp.teaser.Sortable = zeit.edit.sortable.Sortable.extend({
         var self = this;
         arguments.callee.$.connect.call(self);
         self.activate_content_droppers();
+        self.activate_url_input();
     },
 
     get_sortable_nodes: function() {
@@ -50,6 +51,19 @@ zeit.content.cp.teaser.Sortable = zeit.edit.sortable.Sortable.extend({
                 new zeit.edit.drop.Droppable(
                     element, element, self.parent));
         });
+    },
+
+    activate_url_input: function() {
+        var self = this;
+        // XXX Can we not hard-code the DOM structure this much here?
+        var input = jQuery('#teaser-list-edit-box-sorter').closest(
+            '.teaser-list-edit-box').find('.url-input input');
+        var url = input.attr('cms:url');
+        self.events.push(MochiKit.Signal.connect(
+            input[0], 'onchange', function() {
+            zeit.edit.makeJSONRequest(
+                url, {'uniqueId': jQuery(this).val()}, self.parent);
+        }));
     }
 
 });
