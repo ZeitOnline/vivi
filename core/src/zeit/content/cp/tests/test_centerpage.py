@@ -220,7 +220,13 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
         t1 = self.create_teaser(cp)
         self.create_teaser(cp)
         t1.insert(0, self.repository['testcontent'])
-        self.assertXML(cp.xml, zeit.content.cp.interfaces.IRenderedXML(cp))
+        original = cp.xml
+        rendered = zeit.content.cp.interfaces.IRenderedXML(cp)
+        # Since the CP feed is updated during rendering, we don't want to
+        # include it in our comparison.
+        original.remove(original.feed)
+        rendered.remove(rendered.feed)
+        self.assertXML(original, rendered)
 
 
 class MoveReferencesTest(zeit.content.cp.testing.FunctionalTestCase):

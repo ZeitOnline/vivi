@@ -302,7 +302,8 @@ def cms_content_iter(context):
 @grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
 def extract_teasers(context):
     result = []
-    for teaser in context['lead'].values():
+    for teaser in zeit.content.cp.interfaces.IAutomaticArea(
+            context['lead']).values():
         if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(teaser):
             continue
         result.extend(list(teaser))

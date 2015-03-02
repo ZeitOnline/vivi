@@ -299,6 +299,11 @@ def update_feed_items(context, event):
         # register it like this and avoid the additional cycle.
         return
     feed = zeit.content.cp.interfaces.ICPFeed(context)
+    feed.items = extract_feed_items(context)
+
+
+def extract_feed_items(context):
+    feed = zeit.content.cp.interfaces.ICPFeed(context)
     items = []
     check_items = []
     for item in feed.items:
@@ -324,7 +329,7 @@ def update_feed_items(context, event):
     while len(items) > max_items:
         del items[-1]
 
-    feed.items = items
+    return items
 
 
 def has_changed(context):
@@ -372,5 +377,21 @@ def rendered_xml(context):
             area='feature'),
         zeit.content.cp.interfaces.IRenderedXML(context['teaser-mosaic']),
     ))
-    root.append(copy.copy(context.xml.feed))
+    root.append(ElementMaker.feed())
+    # We need to insert the feed items into the copied XML tree, so this
+    # operation stays read-only regarding the context CP.
+    feed = zeit.content.cp.interfaces.ICPFeed(CopyXMLHelper(root))
+    feed.items = extract_feed_items(context)
+
     return root
+
+
+class CopyXMLHelper(object):
+    """Mechanical helper to make ICPFeed and its MultiResource work"""
+
+    zope.interface.implements(zeit.content.cp.interfaces.ICenterPage)
+
+    def __init__(self, xml):
+        self.xml = xml
+        self.uniqueId = None
+        self.__parent__ = None

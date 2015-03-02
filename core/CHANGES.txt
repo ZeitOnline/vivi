@@ -13,6 +13,8 @@ zeit.content.cp changes
 
 - Allow moving areas inside and between regions (DEV-53).
 
+- Auto-CP: Provide current feed items in ``IRenderedXML`` (DEV-621).
+
 
 3.0.0b6 (2015-02-20)
 --------------------

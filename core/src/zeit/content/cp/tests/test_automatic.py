@@ -122,6 +122,24 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
     <block...href="http://xml.zeit.de/testcontent"...""",
             lxml.etree.tostring(xml, pretty_print=True))
 
+    def test_rendered_xml_contains_automatic_items_in_cp_feed(self):
+        lead = self.repository['cp']['lead']
+        auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
+        auto.count = 1
+        auto.automatic = True
+
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = [
+                dict(uniqueId='http://xml.zeit.de/testcontent',
+                     lead_candidate=True)]
+            xml = zeit.content.cp.interfaces.IRenderedXML(
+                self.repository['cp'])
+        self.assertEllipsis(
+            """...
+<feed>
+  <reference...href="http://xml.zeit.de/testcontent"...""",
+            lxml.etree.tostring(xml, pretty_print=True))
+
     def test_cms_content_iter_returns_filled_in_blocks(self):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
@@ -208,8 +226,11 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
             'http://xml.zeit.de/normal', list(result[1])[0].uniqueId)
 
     def test_checkin_smoke_test(self):
-        with zeit.cms.checkout.helper.checked_out(self.repository['cp']) as cp:
-            lead = cp['lead']
-            auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
-            auto.count = 1
-            auto.automatic = True
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = []
+            with zeit.cms.checkout.helper.checked_out(
+                    self.repository['cp']) as cp:
+                lead = cp['lead']
+                auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
+                auto.count = 1
+                auto.automatic = True
