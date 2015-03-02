@@ -1,4 +1,3 @@
-
 from zeit.content.cp.i18n import MessageFactory as _
 import copy
 import gocept.lxml.interfaces
@@ -164,8 +163,15 @@ class TeaserBlock(
     def __iter__(self):
         if self.autopilot:
             teasers = zeit.content.cp.interfaces.ITeaseredContent(
-                self.referenced_cp, [])
-            return iter(teasers[:self.AUTOPILOT_ENTRIES])
+                self.referenced_cp, iter([]))
+            result = []
+            for i in range(self.AUTOPILOT_ENTRIES):
+                try:
+                    result.append(teasers.next())
+                except StopIteration:
+                    # We've exhausted the available teasers.
+                    break
+            return iter(result)
         else:
             return super(TeaserBlock, self).__iter__()
 
@@ -301,20 +307,22 @@ def cms_content_iter(context):
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)
 @grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
 def extract_teasers(context):
-    result = []
-    for teaser in zeit.content.cp.interfaces.IAutomaticArea(
-            context['lead']).values():
-        if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(teaser):
-            continue
-        result.extend(list(teaser))
-    return result
+    for region in context.values():
+        for area in region.values():
+            for teaser in zeit.content.cp.interfaces.IAutomaticArea(
+                    area).values():
+                if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(
+                        teaser):
+                    continue
+                for content in list(teaser):
+                    yield content
 
 
 # XXX Does anyone actually use this, pulling an IFeed into a CP via autopilot?
 @grok.adapter(zeit.cms.syndication.interfaces.IFeed)
 @grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
 def extract_teasers(context):
-    return list(context)
+    return iter(context)
 
 
 def cp_feed_name(name):
@@ -327,9 +335,9 @@ def cp_feed_name(name):
 def create_cp_channel(context, event):
     feed = zeit.cms.syndication.feed.Feed()
     teasers = zeit.content.cp.interfaces.ITeaseredContent(context)
-    for obj in reversed(teasers):
+    for i, obj in enumerate(teasers):
         if zeit.cms.interfaces.ICMSContent.providedBy(obj):
-            feed.insert(0, obj)
+            feed.insert(i, obj)
     feed_name = cp_feed_name(context.__name__)
     context.__parent__[feed_name] = feed
 

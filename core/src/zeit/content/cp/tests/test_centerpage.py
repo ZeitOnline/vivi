@@ -118,28 +118,6 @@ class TestCenterPageRSSFeed(zeit.content.cp.testing.FunctionalTestCase):
         expected = ['http://xml.zeit.de/test%s' % i for i in [5, 4, 3, 2]] + [
             'http://xml.zeit.de/testcontent']
         self.assertEqual(expected, [x.get('href') for x in items])
-        # The maximum of 5 is extended when there are more than 5 items in the
-        # lead:
-        with checked_out(cp) as working:
-            for i in range(6, 16):
-                insert_teaser(working, i)
-        cp = self.repository['cp']
-        self.publish(cp)
-        cp = self.repository['cp']
-        items = cp.xml.feed.getchildren()
-        self.assertEquals(15, len(items))
-
-        # When the lead shinks, the feed shinks as well
-        with checked_out(cp) as working:
-            keys = working['lead'].keys()
-            for key in keys:
-                del working['lead'][key]
-        transaction.commit()
-        cp = self.repository['cp']
-        self.publish(cp)
-        cp = self.repository['cp']
-        items = cp.xml.feed.getchildren()
-        self.assertEquals(5, len(items))
 
     def test_teasers_are_not_added_to_feed_when_article_was_added(self):
         cp = self.repository['cp']

@@ -284,6 +284,8 @@ class Feed(zeit.cms.related.related.RelatedBase):
     zope.component.adapts(zeit.content.cp.interfaces.ICenterPage)
     zope.interface.implements(zeit.content.cp.interfaces.ICPFeed)
 
+    # The feed items are ordered chronologically descending,
+    # so the XSLT can just get the first n items to build the actual feed.
     items = zeit.cms.content.reference.MultiResource(
         '.feed.reference', 'related')
 
@@ -325,8 +327,7 @@ def extract_feed_items(context):
 
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.cp')
-    max_items = max(len(teasers), int(config['cp-feed-max-items']))
-    while len(items) > max_items:
+    while len(items) > int(config['cp-feed-max-items']):
         del items[-1]
 
     return items
