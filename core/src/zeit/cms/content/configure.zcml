@@ -116,6 +116,13 @@
       />
   </class>
 
+  <class class=".sources.Serie">
+    <require
+      interface=".interfaces.ISerie"
+      permission="zope.View"
+      />
+  </class>
+
   <!-- XML support -->
   <adapter factory=".xmlsupport.XMLReferenceUpdaterRunner" />
 

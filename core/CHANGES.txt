@@ -4,6 +4,8 @@ zeit.cms changes
 2.38.0 (unreleased)
 -------------------
 
+- Expand series source to include more attributes (ZON-1464).
+
 - Introduce ``zeit.cms.content.reference.SingleResource``.
 
 - Gracefully handle unresolveable interfaces for source availability (ZON-1466)
