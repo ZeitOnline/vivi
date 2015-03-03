@@ -98,7 +98,7 @@ class ICommonMetadata(zope.interface.Interface):
 
     lead_candidate = zope.schema.Bool(
         title=_('Lead candidate'),
-        default=False,
+        default=True,
         required=False)
 
     printRessort = zope.schema.TextLine(

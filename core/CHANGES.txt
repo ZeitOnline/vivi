@@ -8,7 +8,9 @@ zeit.cms changes
 
 - Introduce ``zeit.cms.content.reference.SingleResource``.
 
-- Gracefully handle unresolveable interfaces for source availability (ZON-1466)
+- Gracefully handle unresolveable interfaces for source availability (ZON-1466).
+
+- Change ``lead_candidate`` default to true (DEV-662).
 
 
 2.37.1 (2015-02-19)
