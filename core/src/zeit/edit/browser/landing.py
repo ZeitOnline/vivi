@@ -61,6 +61,11 @@ class OrderMixin(object):
             raise NotImplementedError
         return keys
 
+    def reload(self, container):
+        self.signal(
+            None, 'reload',
+            container.__name__, self.url(container, '@@contents'))
+
 
 class LandingZone(zeit.edit.browser.view.Action, OrderMixin):
     """Landing Zone to drop Content or Modules.
@@ -79,9 +84,7 @@ class LandingZone(zeit.edit.browser.view.Action, OrderMixin):
         self.initialize_block()
         self.update_order()
         self.signal('after-reload', 'added', self.block.__name__)
-        self.signal(
-            None, 'reload',
-            self.container.__name__, self.url(self.container, '@@contents'))
+        self.reload(self.container)
 
     def validate_block_params(self):
         if not self.block_params:
@@ -131,13 +134,9 @@ class LandingZoneMove(zeit.edit.browser.view.Action, OrderMixin):
         self.undo_description = _(
             "move '${type}' block", mapping=dict(type=self.block.type))
         self.update_order()
-        self.signal(
-            None, 'reload', self.old_container.__name__, self.url(
-                self.old_container, '@@contents'))
+        self.reload(self.old_container)
         if self.container.__name__ != self.old_container.__name__:
-            self.signal(
-                None, 'reload', self.container.__name__,
-                self.url(self.container, '@@contents'))
+            self.reload(self.container)
 
     def move_block(self):
         self.block = self.find_topmost_container(
