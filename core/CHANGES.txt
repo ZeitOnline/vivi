@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.10 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make search button styling work for centerpages, too (DEV-23).
 
 
 3.6.9 (2015-02-16)
