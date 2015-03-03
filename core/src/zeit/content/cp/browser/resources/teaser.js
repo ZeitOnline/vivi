@@ -56,13 +56,20 @@ zeit.content.cp.teaser.Sortable = zeit.edit.sortable.Sortable.extend({
     activate_url_input: function() {
         var self = this;
         // XXX Can we not hard-code the DOM structure this much here?
-        var input = jQuery('#teaser-list-edit-box-sorter').closest(
-            '.teaser-list-edit-box').find('.url-input input');
+        var container = jQuery('#teaser-list-edit-box-sorter').closest(
+            '.teaser-list-edit-box');
+        var input = container.find('.url-input input');
         var url = input.attr('cms:url');
         self.events.push(MochiKit.Signal.connect(
             input[0], 'onchange', function() {
             zeit.edit.makeJSONRequest(
                 url, {'uniqueId': jQuery(this).val()}, self.parent);
+        }));
+
+        var search = container.find('.button.configure_search');
+        self.events.push(MochiKit.Signal.connect(
+            search[0], 'onclick', function() {
+            zeit.cms.activate_objectbrowser();
         }));
     }
 

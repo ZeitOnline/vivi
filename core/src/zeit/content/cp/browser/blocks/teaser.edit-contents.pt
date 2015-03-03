@@ -61,6 +61,7 @@
           type="text" placeholder="Insert link"
           i18n:attributes="placeholder"
           tal:attributes="cms:url string:$context_url/@@drop"/>
+    <a class="button configure_search"></a>
   </div>
 
 </div>
