@@ -92,7 +92,7 @@ class LandingZone(zeit.edit.browser.view.Action, OrderMixin):
 
         errors = []
         data = zeit.cms.browser.form.AttrDict(**self.block_params)
-        data['__parent__'] = self.container
+        data['__parent__'] = self.block_factory.context
         try:
             schema.validateInvariants(data, errors)
         except zope.interface.Invalid:
