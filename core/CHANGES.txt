@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-2.3.2 (unreleased)
+2.3.2 (2015-03-03)
 ------------------
 
 - Adapt to zeit.cms series source API changes. (ZON-1464)
