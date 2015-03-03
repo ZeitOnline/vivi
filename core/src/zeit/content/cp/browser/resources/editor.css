@@ -217,6 +217,13 @@
   margin: 1em;
 }
 
+.block.type-teaser .teaser-contents:after {
+  content: ".";
+  clear: both;
+  height: 0px;
+  width: 0px;
+}
+
 .block.type-teaser .teaser {
   font-size: 0.8em;
 }
