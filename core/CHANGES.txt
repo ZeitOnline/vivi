@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.38.0 (unreleased)
+2.38.0 (2015-03-03)
 -------------------
 
 - Expand series source to include more attributes (ZON-1464).
