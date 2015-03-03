@@ -5,7 +5,7 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
         return;
     }
 
-    zeit.edit.library.create('all', context_url, 'Alle');
+    zeit.edit.library.create('all', context_url, 'Module');
     zeit.edit.library.create('area', context_url, 'Flächen', '@@area-factories.json');
 });
 
