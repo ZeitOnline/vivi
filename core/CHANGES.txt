@@ -13,6 +13,8 @@ zeit.content.cp changes
 
 - Allow moving areas inside and between regions (DEV-53).
 
+- Create region with area when area is dragged from sidebar onto body. (DEV-35)
+
 - Auto-CP: Provide current feed items in ``IRenderedXML`` (DEV-621).
 
 - Generalize Autopilots to use all areas, not just the lead area (DEV-75).

@@ -63,6 +63,16 @@
     menu="zeit-context-views" title="Edit metadata"
     />
 
+  <!-- Landing Zones -->
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-module"
+    class=".landing.BodyLandingZone"
+    permission="zeit.EditContent"
+    />
+
   <!-- Editor -->
 
   <class class="zeit.content.cp.centerpage.CenterPage">

@@ -46,14 +46,24 @@ class AreaTest(
 
     name = 'area'
 
-    def make_one(self):
+    def make_one(self, parent_selector='.type-region'):
+        selector = 'css={} .action-cp-region-module-droppable'.format(
+            parent_selector)
+
         module = self.get_module('region', '1/1')
         self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Flächen')
         self.selenium.waitForElementPresent(module)
         self.selenium.dragAndDropToObject(
-            module, 'css=.landing-zone.action-cp-region-module-droppable',
-            '10,10')
+            module, selector, '10,10')
+
+    def test_add_area_in_body_creates_region_with_nested_area(self):
+        s = self.selenium
+        s.assertCssCount('css=.type-region', 2)
+        s.assertCssCount('css=.type-area', 2)
+        self.make_one(parent_selector='#body')
+        s.waitForCssCount('css=.type-region', 3)
+        s.waitForCssCount('css=.type-area', 3)
 
 
 class ElementBrowserTestHelper(object):
