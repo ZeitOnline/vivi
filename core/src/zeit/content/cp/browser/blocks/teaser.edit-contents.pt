@@ -57,10 +57,10 @@
     the simplest way possible.
   </tal:comment>
   <div class="url-input">
-    <span tal:omit-tag="python: True" i18n:translate="">or</span> <input
-          type="text" placeholder="Insert link"
-          i18n:attributes="placeholder"
-          tal:attributes="cms:url string:$context_url/@@drop"/>
+    <input
+       type="text" placeholder="Insert link"
+       i18n:attributes="placeholder"
+       tal:attributes="cms:url string:$context_url/@@drop"/>
     <a class="button configure_search"></a>
   </div>
 
