@@ -4,6 +4,8 @@ zeit.cms changes
 2.38.1 (unreleased)
 -------------------
 
+- Fix security declaration for Serie objects (ZON-1464).
+
 - Fix search button styling (DEV-23).
 
 

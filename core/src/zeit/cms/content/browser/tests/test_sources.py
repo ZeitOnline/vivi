@@ -22,3 +22,11 @@ class SourceSecurityTest(zeit.cms.testing.BrowserTestCase):
         self.assertEllipsis('...Updated on...', b.contents)
         self.assertEqual(
             ['Zeit Campus'], b.getControl('Product id').displayValue)
+
+    def test_serie_works_with_security(self):
+        b = self.browser
+        b.getControl('Serie').displayValue = ['Autotest']
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+        self.assertEqual(
+            ['Autotest'], b.getControl('Serie').displayValue)

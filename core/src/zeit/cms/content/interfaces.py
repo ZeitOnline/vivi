@@ -296,8 +296,13 @@ class IProduct(zope.interface.Interface):
 
 class ISerie(zope.interface.Interface):
 
-    id = zope.interface.Attribute('id')
-    title = zope.interface.Attribute('title')
+    id = zope.interface.Attribute('')
+    title = zope.interface.Attribute('')
+    serienname = zope.interface.Attribute('')
+    url = zope.interface.Attribute('')
+    encoded = zope.interface.Attribute('')
+    column = zope.interface.Attribute('')
+    video = zope.interface.Attribute('')
 
 
 WRITEABLE_ON_CHECKIN = object()
