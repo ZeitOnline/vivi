@@ -89,6 +89,14 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.7.7 (2015-03-04)
+------------------
+
+- Auto-CP: Provide current feed items in ``IRenderedXML`` (DEV-621).
+
+- No longer automatically insert relateds when dropping content (VIV-536).
+
+
 2.7.6 (2015-02-20)
 ------------------
 
