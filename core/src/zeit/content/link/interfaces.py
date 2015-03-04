@@ -36,3 +36,9 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
     keywords = zeit.cms.tagging.interfaces.Keywords(
         required=False,
         default=())
+
+    blog = zope.schema.Choice(
+        title=_("Blog"),
+        source=zeit.content.link.sources.BlogSource(),
+        readonly=True,
+        required=False)

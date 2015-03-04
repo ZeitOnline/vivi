@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 
+  Die hier eingetragenen Daten werden verwendet,
+  um bei Teasern/Links auf Blog-Artikel den Format-Hinweis 
+  &#187;Blog&#171; gefolgt vom Namen des Blogs auszugeben.
+  
+  Einige Hinweise zur Verwendung:
+  
+    url: bitte immer ohne abschlie&#223;enden Slash eintragen. 
+    name: wird genutzt, um den Namen des Blogs am Teaser auszugeben.
+          kann frei vergeben werden und muss nicht mit dem Wordpress-Titel 
+          des Blogs identisch sein
+ -->
+<blogs>
+  <blog url="http://blog.zeit.de/joerglau" name="Jörg Lau"/>
+  <blog url="http://blog.zeit.de/zweitstimme" name="Zweitstimme"/>
+  <blog url="http://blog.zeit.de/herdentrieb" name="Herdentrieb"/>
+  <blog url="http://blog.zeit.de/sport-blog" name="Sport"/>
+  <blog url="http://blog.zeit.de/rezeptor" name="Rezeptor"/>
+  <blog url="http://blog.zeit.de/tontraeger" name="Tonträger"/>
+  <blog url="http://blog.zeit.de/kinderzeit" name="KinderZEIT"/>
+  <blog url="http://blog.zeit.de/zeitansage" name="ZEITansage"/>
+  <blog url="http://blog.zeit.de/zweitstimme" name="Zweitstimme"/>
+  <blog url="http://blog.zeit.de/gruenegeschaefte" name="Grüne Geschäfte"/>
+  <blog url="http://blog.zeit.de/ladurnerulrich" name="Post von unterwegs"/>
+  <blog url="http://blog.zeit.de/stoerungsmelder" name="Störungsmelder"/>
+  <blog url="http://blog.zeit.de/zeit-der-leser" name="ZEIT der Leser"/>
+  <blog url="http://blog.zeit.de/schueler" name="ZEIT für die Schule"/>
+  <blog url="http://blog.zeit.de/zeitmagazin" name="Heiter bis glücklich"/>
+  <blog url="http://blog.zeit.de/open-data" name="Data Blog"/>
+  <blog url="http://blog.zeit.de/netzfilmblog" name="Netzfilmblog"/>
+  <blog url="http://blog.zeit.de/china" name="China"/>
+  <blog url="http://blog.zeit.de/fahrrad" name="Velophil"/>
+  <blog url="http://blog.zeit.de/dev" name="Dev-Blog"/>
+  <blog url="http://blog.zeit.de/radikale-ansichten" name="Radikale Ansichten"/>
+  <blog url="http://blog.zeit.de/nsu-prozess-blog" name="NSU-Prozess"/>
+  <blog url="http://blog.zeit.de/kabul" name="Kabul 2014"/>
+  <blog url="http://blog.zeit.de/mathe" name="Math up your life!"/>
+  <blog url="http://blog.zeit.de/schach" name="Schach"/>
+  <blog url="http://blog.zeit.de/hamburg" name="Speersort 1"/>
+  <blog url="http://blog.zeit.de/hamburg-veranstaltungen" name="Hamburgs Veranstaltungen"/>
+  <blog url="http://blog.zeit.de/recht-subversiv" name="Recht subversiv"/>
+  <blog url="http://blog.zeit.de/stufenlos" name="Stufenlos"/>
+  <blog url="http://blog.zeit.de/teilchen" name="Teilchen"/>
+</blogs>
