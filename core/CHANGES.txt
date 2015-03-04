@@ -4,7 +4,7 @@ zeit.cms changes
 2.38.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix search button styling (DEV-23).
 
 
 2.38.0 (2015-03-03)
