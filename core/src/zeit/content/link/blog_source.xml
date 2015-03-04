@@ -12,6 +12,7 @@
           des Blogs identisch sein
  -->
 <blogs>
+  <blog url="http://gocept.com" name="Testblog"/>
   <blog url="http://blog.zeit.de/joerglau" name="Jörg Lau"/>
   <blog url="http://blog.zeit.de/zweitstimme" name="Zweitstimme"/>
   <blog url="http://blog.zeit.de/herdentrieb" name="Herdentrieb"/>

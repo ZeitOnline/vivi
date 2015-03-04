@@ -28,9 +28,12 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
 
     @property
     def blog(self):
-        sources = zeit.content.link.interfaces.ILink['blog'].source
+        if not self.url:
+            return
+        sources = zeit.content.link.interfaces.ILink['blog'].source(self)
+
         for source in sources:
-            if source.url in self.target:
+            if source.url in self.url:
                 return source
 
 

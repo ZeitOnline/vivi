@@ -4,7 +4,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
 import zeit.cms.content.interfaces
 import zope.schema
-
+import zeit.content.link.sources
 
 class TargetSource(zc.sourcefactory.basic.BasicSourceFactory):
 
