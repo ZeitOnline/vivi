@@ -53,7 +53,7 @@ setup(
         'zeit.content.gallery',
         'zeit.content.portraitbox',
         'zeit.content.video',
-        'zeit.edit>=2.7.0.dev0',
+        'zeit.edit>=2.9.0.dev0',
         'zeit.objectlog>=0.2',
         'zeit.push>=1.7.0.dev0',
         'zeit.wysiwyg>=1.41.0dev',
