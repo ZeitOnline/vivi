@@ -63,6 +63,7 @@ zeit.content.cp.ContainerMover = gocept.Class.extend({
         self.movers = [];
         self.container_type = container_type;
         self.selector = '.type-' + container_type;
+        self.child_selector_extension = ' > div.block-inner';
         self.__name__ = ('zeit.content.cp.ContainerMover('
             + self.container_type + ')');
         new zeit.edit.context.Editor(self);
@@ -72,7 +73,7 @@ zeit.content.cp.ContainerMover = gocept.Class.extend({
         var self = this;
         jQuery(self.selector).each(function() {
             var mover = new zeit.edit.sortable.BlockMover(
-                this.id, '#' + this.id + ' > div.block-inner');
+                this.id, '#' + this.id + self.child_selector_extension);
             mover.__name__ = ('zeit.content.cp.BlockMover('
                 + self.container_type + ', id=' + this.id + ')');
             self.movers.push(mover);
@@ -99,10 +100,9 @@ var ident = MochiKit.Signal.connect(
         return;
     }
 
-    zeit.content.cp.body_mover = new zeit.edit.sortable.BlockSorter(
-        'body', '#body');
-    zeit.content.cp.body_mover.__name__ = (
-        'zeit.content.cp.ContainerMover(body)');
+    zeit.content.cp.body_mover = new zeit.content.cp.ContainerMover('body');
+    zeit.content.cp.body_mover.selector = '#body';
+    zeit.content.cp.body_mover.child_selector_extension = '';
 
     zeit.content.cp.region_mover = new zeit.content.cp.ContainerMover(
         'region');

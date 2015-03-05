@@ -13,6 +13,8 @@ zeit.content.cp changes
 
 - Allow moving areas inside and between regions (DEV-53).
 
+- Allow sorting of regions by moving them inside body. (DEV-35)
+
 - Create region with area when area is dragged from sidebar onto body. (DEV-35)
 
 - Create region with area when area is moved onto body. (DEV-35)

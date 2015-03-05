@@ -298,6 +298,19 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         # inserted area on top, thus created region is first region
         s.assertElementPresent('css=#body > .type-region #informatives')
 
+    def test_move_regions_inside_body_to_change_order(self):
+        path = 'xpath=' + css_path('#body > .type-region') + '[{pos}]@id'
+
+        s = self.selenium
+        s.verifyAttribute(path.format(pos=1), 'feature')
+        s.verifyAttribute(path.format(pos=2), 'teaser-mosaic')
+        s.dragAndDropToObject(
+            'css=#teaser-mosaic .dragger',
+            'css=#body .landing-zone.action-cp-type-region-movable',
+            '10,10')
+        s.waitForAttribute(path.format(pos=1), 'teaser-mosaic')
+        s.waitForAttribute(path.format(pos=2), 'feature')
+
 
 class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
 
