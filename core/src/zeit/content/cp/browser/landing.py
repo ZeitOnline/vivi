@@ -81,6 +81,11 @@ class BodyLandingZoneMove(
 
     """
 
+    def update(self):
+        if self.move_to_same_position:
+            return
+        super(BodyLandingZoneMove, self).update()
+
     @property
     def create_nested_area(self):
         return zeit.content.cp.interfaces.IArea.providedBy(self.block)
