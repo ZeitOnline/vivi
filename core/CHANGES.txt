@@ -8,6 +8,8 @@ Changes
 
 - Add ``IContainer.get_recursive`` and ``create_item`` (DEV-53).
 
+- Shorten wait time until the `busy` overlay is shown (DEV-641).
+
 
 2.8.0 (2015-01-14)
 ------------------

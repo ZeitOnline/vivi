@@ -203,7 +203,7 @@ zeit.edit.BusyIndicator = gocept.Class.extend({
     busy_after_a_while: function(delay) {
         var self = this;
         if (isUndefinedOrNull(delay)) {
-            delay = 1;
+            delay = 0.1;
         }
         self.delayer = MochiKit.Async.callLater(delay, function() {
             self.busy();
