@@ -72,7 +72,9 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 });
 
 (function() {
-MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+var ident = MochiKit.Signal.connect(
+    window, 'script-loading-finished', function() {
+        MochiKit.Signal.disconnect(ident);
         if (! zeit.cms.in_article_editor()) {
             return;
         }
