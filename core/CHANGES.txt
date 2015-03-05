@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.1.0 (unreleased)
+2.1.0 (2015-03-05)
 ------------------
 
 - Configure a source for blogs
