@@ -82,6 +82,11 @@ zeit.edit.drop.Droppable = gocept.Class.extend({
         var url = data_element.getAttribute(handler.url_attribute);
         var query_args = handler.query_arguments(draggable_element);
 
+        // Since MochiKit does not differentiate whether we successfullly
+        // landed on a Droppable or not, we need to make that distinction
+        // ourselves.
+        draggable_element.drag_successful = true;
+
         var d = zeit.edit.makeJSONRequest(url, query_args, self.parent);
         d.addCallback(function(result) {
             MochiKit.Signal.signal(

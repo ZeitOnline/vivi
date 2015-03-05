@@ -1,5 +1,10 @@
 zeit.cms.declare_namespace('zeit.edit.sortable');
 
+var revert_unless_successful = function(draggable_element) {
+    return ! draggable_element.drag_successful;
+};
+
+
 zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
     // General sorting support.
 
@@ -54,7 +59,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
                         constraint: self.options()['constraint'],
                         handle: handle,
                         ghosting: false,
-                        revert: true,
+                        revert: revert_unless_successful,
                         scroll: self.options()['scroll'],
                         //selectclass: 'hover',
                         zindex: 10000
@@ -224,7 +229,7 @@ zeit.edit.sortable.Movable = zeit.edit.context.ContentActionBase.extend({
                         constraint: self.options['constraint'],
                         handle: handle,
                         ghosting: false,
-                        revert: true,
+                        revert: revert_unless_successful,
                         scroll: self.options['scroll'],
                         zindex: 10000
                 }));
