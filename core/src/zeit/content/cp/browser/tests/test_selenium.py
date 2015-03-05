@@ -279,6 +279,20 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
             '10,10')
         s.waitForElementPresent('css=#informatives .block.type-teaser')
 
+    def test_move_block_inside_area_to_change_order(self):
+        selector = css_path('#informatives > .block-inner > .editable-module')
+        path = 'xpath=' + selector + '[{pos}]@id'
+
+        s = self.selenium
+        block1 = s.getAttribute(path.format(pos=1))
+        block2 = s.getAttribute(path.format(pos=2))
+        s.dragAndDropToObject(
+            'css=#{} .dragger'.format(block2),
+            'css=#informatives .landing-zone.action-cp-module-movable',
+            '10,10')
+        s.waitForAttribute(path.format(pos=1), block2)
+        s.waitForAttribute(path.format(pos=2), block1)
+
     def test_move_area_between_regions(self):
         s = self.selenium
         s.dragAndDropToObject(
@@ -297,6 +311,20 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementNotPresent('css=#feature #informatives')
         # inserted area on top, thus created region is first region
         s.assertElementPresent('css=#body > .type-region #informatives')
+
+    def test_move_area_inside_region_to_change_order(self):
+        selector = css_path('#feature > .block-inner > .type-area')
+        path = 'xpath=' + selector + '[{pos}]@id'
+
+        s = self.selenium
+        area1 = s.getAttribute(path.format(pos=1))
+        area2 = s.getAttribute(path.format(pos=2))
+        s.dragAndDropToObject(
+            'css=#{} .dragger'.format(area2),
+            'css=#feature .landing-zone.action-cp-region-module-movable',
+            '10,10')
+        s.waitForAttribute(path.format(pos=1), area2)
+        s.waitForAttribute(path.format(pos=2), area1)
 
     def test_move_regions_inside_body_to_change_order(self):
         path = 'xpath=' + css_path('#body > .type-region') + '[{pos}]@id'
