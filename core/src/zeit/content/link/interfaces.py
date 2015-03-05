@@ -4,7 +4,7 @@ from zeit.cms.i18n import MessageFactory as _
 import zc.sourcefactory.basic
 import zeit.cms.content.interfaces
 import zope.schema
-
+import zeit.content.link.sources
 
 class TargetSource(zc.sourcefactory.basic.BasicSourceFactory):
 
@@ -36,3 +36,9 @@ class ILink(zeit.cms.content.interfaces.ICommonMetadata,
     keywords = zeit.cms.tagging.interfaces.Keywords(
         required=False,
         default=())
+
+    blog = zope.schema.Choice(
+        title=_("Blog"),
+        source=zeit.content.link.sources.BlogSource(),
+        readonly=True,
+        required=False)

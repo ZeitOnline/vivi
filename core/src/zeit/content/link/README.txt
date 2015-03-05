@@ -34,15 +34,23 @@ True
 Now that was pretty boring. Add title, URL and target:
 
 >>> link.title = 'gocept'
->>> link.url = 'http://gocept.com'
 >>> link.target = '_blank'
+>>> link.url = 'http://example.org'
+>>> link.blog
+
+Does the blog source matching work?
+
+>>> link.url = 'http://gocept.com'
+>>> link.blog.name
+u'Testblog'
+
 >>> print lxml.etree.tostring(link.xml, pretty_print=True)
 <link xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <head/>
   <body>
     <title>gocept</title>
-    <url>http://gocept.com</url>
     <target>_blank</target>
+    <url>http://gocept.com</url>
   </body>
 </link>
 

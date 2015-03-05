@@ -26,6 +26,16 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
     target = zeit.cms.content.property.ObjectPathProperty('.body.target')
     nofollow = zeit.cms.content.property.ObjectPathProperty('.body.nofollow')
 
+    @property
+    def blog(self):
+        if not self.url:
+            return
+        source = zeit.content.link.interfaces.ILink['blog'].source(self)
+
+        for blog in source:
+            if blog.url in self.url:
+                return source
+
 
 class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
 

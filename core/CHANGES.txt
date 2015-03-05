@@ -1,10 +1,11 @@
 zeit.content.link changes
 =========================
 
-2.0.5 (unreleased)
+2.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Configure a source for blogs
+- Add a property, which matches the URL with the blog source
 
 
 2.0.4 (2014-12-17)

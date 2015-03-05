@@ -14,7 +14,7 @@ class Base(zeit.push.browser.form.SocialBase):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.link.interfaces.ILink).omit(
-            'xml', 'authors', 'push_news', 'deeplink_url')
+            'xml', 'authors', 'push_news', 'deeplink_url', 'blog')
 
     field_groups = (
         base.field_groups[:4]
