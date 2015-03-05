@@ -34,7 +34,7 @@ class Link(zeit.cms.content.metadata.CommonMetadata):
 
         for blog in source:
             if blog.url in self.url:
-                return source
+                return blog
 
 
 class LinkType(zeit.cms.type.XMLContentTypeDeclaration):
