@@ -115,6 +115,7 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     if (! zeit.cms.in_cp_editor()) {
         return;
     }
+
     $('#cp-content-inner').tooltip({
         content: function(callback) {
             var area = $(this).closest('.block');
@@ -130,6 +131,15 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
         show: {delay: 500},
         tooltipClass: 'schematic-preview-tooltip'
     });
+
+    // Disable Tooltips during drag'n'drop, since the tooltip of a DOM node
+    // will stay open, even if the DOM node is removed (e.g. when moving).
+    MochiKit.Signal.connect(
+        MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
+            $('#cp-content-inner').tooltip('disable'); });
+    MochiKit.Signal.connect(
+        MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
+            $('#cp-content-inner').tooltip('enable'); });
 });
 
 
