@@ -76,8 +76,6 @@ zeit.edit._locked_makeJSONRequest = function(
                     this,
                     extend([target_component, signal.name], signal.args));
             }
-        } else {
-            MochiKit.Signal.signal(target_component, 'reload');
         }
         return result;
     },
