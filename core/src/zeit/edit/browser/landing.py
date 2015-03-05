@@ -127,8 +127,7 @@ class LandingZoneMove(zeit.edit.browser.view.Action, OrderMixin):
 
     def update(self):
         self.validate_order_params()
-        if (self.order == 'insert-after' and
-                (self.insert_after == self.block_id)):
+        if self.move_to_same_position:
             return
         self.move_block()
         self.undo_description = _(
@@ -137,6 +136,11 @@ class LandingZoneMove(zeit.edit.browser.view.Action, OrderMixin):
         self.reload(self.old_container)
         if self.container.__name__ != self.old_container.__name__:
             self.reload(self.container)
+
+    @property
+    def move_to_same_position(self):
+        return (self.order_from_form == 'insert-after'
+                and self.insert_after == self.block_id)
 
     def move_block(self):
         self.block = self.find_topmost_container(
