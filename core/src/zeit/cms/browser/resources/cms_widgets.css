@@ -558,7 +558,9 @@ table.properties textarea {
 }
 
 /* XXX specificity wars require additional selector before `a` */
-body a.button.configure_search {
+body a.button.configure_search,
+/* XXX Even more specificity wars */
+.type-article .article-editor-inner a.button.configure_search {
   padding-left: 2px;
   padding-right: 2px;
   background-position: 9px -55px, 0 0;
