@@ -17,21 +17,11 @@ class RuleTest(zeit.content.cp.testing.FunctionalTestCase):
     def setUp(self):
         super(RuleTest, self).setUp()
         self.cp = zeit.content.cp.centerpage.CenterPage()
-        factory = zope.component.getAdapter(
-            self.cp['lead'], zeit.edit.interfaces.IElementFactory,
-            name='teaser')
-        self.teaser = factory()
+        self.teaser = self.cp['lead'].create_item('teaser')
 
     def test_is_block_in_teasermosaic_should_apply_to_block(self):
-        factory = zope.component.getAdapter(
-            self.cp['teaser-mosaic'],
-            zeit.edit.interfaces.IElementFactory,
-            name='area')
-        bar = factory()
-        factory = zope.component.getAdapter(
-            bar, zeit.edit.interfaces.IElementFactory,
-            name='teaser')
-        teaser = factory()
+        bar = self.cp['teaser-mosaic'].create_item('area')
+        teaser = bar.create_item('teaser')
         r = Rule("""
 applicable(is_block and region == 'teaser-mosaic')
 error_if(True, u'Block in teasermosaic.')
@@ -40,11 +30,7 @@ error_if(True, u'Block in teasermosaic.')
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
 
     def test_is_area_in_teasermosaic_should_apply_to_teaserbar(self):
-        factory = zope.component.getAdapter(
-            self.cp['teaser-mosaic'],
-            zeit.edit.interfaces.IElementFactory,
-            name='area')
-        bar = factory()
+        bar = self.cp['teaser-mosaic'].create_item('area')
         r = Rule("""
 applicable(is_area and region == 'teaser-mosaic' and position)
 error_if(True, u'Area in teasermosaic.')
@@ -53,11 +39,7 @@ error_if(True, u'Area in teasermosaic.')
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
 
     def test_teaserbar_is_no_block(self):
-        factory = zope.component.getAdapter(
-            self.cp['teaser-mosaic'],
-            zeit.edit.interfaces.IElementFactory,
-            name='area')
-        bar = factory()
+        bar = self.cp['teaser-mosaic'].create_item('area')
         r = Rule("""
 applicable(is_block and region == 'teaser-mosaic')
 error_if(True)
@@ -82,11 +64,7 @@ error_if(True)
 applicable(is_block)
 error_unless(content == [])
 """)
-        factory = zope.component.getAdapter(
-            self.cp['informatives'],
-            zeit.edit.interfaces.IElementFactory,
-            name='xml')
-        area = factory()
+        area = self.cp['informatives'].create_item('xml')
         s = r.apply(area, IRuleGlobs(area))
         self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
 
