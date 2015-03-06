@@ -1,7 +1,8 @@
 from __future__ import with_statement
-from zeit.edit.rule import Rule
 from zeit.edit.interfaces import IRuleGlobs
+from zeit.edit.rule import Rule
 import gocept.cache
+import mock
 import pkg_resources
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
@@ -78,6 +79,23 @@ error_if(True)
         self.cp.type = u'homepage'
         s = r.apply(self.teaser, IRuleGlobs(self.teaser))
         self.assertEquals(zeit.edit.rule.ERROR, s.status)
+
+    def test_feature_is_a_region(self):
+        r = Rule("""
+applicable(is_region)
+error_if(True)
+""")
+        s = r.apply(self.cp['feature'], IRuleGlobs(self.cp['feature']))
+        self.assertEquals(zeit.edit.rule.ERROR, s.status)
+
+    def test_area_is_not_a_region(self):
+        area = self.cp['teaser-mosaic'].create_item('area')
+        r = Rule("""
+applicable(is_region)
+error_if(True)
+""")
+        s = r.apply(area, IRuleGlobs(area))
+        self.assertNotEquals(zeit.edit.rule.ERROR, s.status)
 
 
 class RulesManagerTest(zeit.content.cp.testing.FunctionalTestCase):

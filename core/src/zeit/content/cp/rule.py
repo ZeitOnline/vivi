@@ -15,6 +15,16 @@ class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
         return itertools.chain(areas, *[a.values() for a in areas])
 
 
+@glob(zeit.content.cp.interfaces.IRegion)
+def is_region(context):
+    return True
+
+
+@glob(zope.interface.Interface)
+def is_region(context):
+    return False
+
+
 @glob(zeit.content.cp.interfaces.IElement)
 def region(context):
     return zeit.content.cp.interfaces.IRegion(context).__name__
