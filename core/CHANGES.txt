@@ -8,6 +8,8 @@ Changes
 
 - Add ``IContainer.get_recursive`` and ``create_item`` (DEV-53).
 
+- Send ObjectMovedEvent from ``IContainer.add`` if applicable (DEV-53).
+
 - Do nothing when no signal was emitted rather reloading the whole editor.
   (Fixes issues with DEV-35 and DEV-53)
 

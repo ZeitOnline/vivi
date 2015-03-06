@@ -93,8 +93,17 @@ class Base(UserDict.DictMixin,
     def add(self, item):
         name = self._add(item)
         self._p_changed = True
-        zope.event.notify(zope.container.contained.ObjectAddedEvent(
-            item, self, name))
+
+        # Re-implementation of zope.container.contained.containedEvent
+        if item.__parent__ != self:
+            oldparent = item.__parent__
+            item.__parent__ = self
+            event = zope.container.contained.ObjectMovedEvent(
+                item, oldparent, name, self, name)
+        else:
+            event = zope.container.contained.ObjectAddedEvent(
+                item, self, name)
+        zope.event.notify(event)
 
     def _add(self, item):
         name = item.__name__

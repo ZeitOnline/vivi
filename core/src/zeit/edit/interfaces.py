@@ -37,6 +37,10 @@ class IBlock(IElement, zope.container.interfaces.IContained):
 
     """
 
+    # Use a schema field so the security can declare it as writable,
+    # since in ILocation __parent_ is only an Attribute.
+    __parent__ = zope.schema.Object(IElement)
+
 
 class IUnknownBlock(IBlock):
     """A block that is not supported by zeit.cms.

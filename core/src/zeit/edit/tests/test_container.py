@@ -2,10 +2,12 @@ from persistent.interfaces import IPersistent
 import lxml.objectify
 import mock
 import unittest
+import zeit.cms.workingcopy.interfaces
 import zeit.edit.container
 import zeit.edit.testing
 import zeit.edit.tests.fixture
 import zope.interface
+import zope.security.proxy
 
 
 class TestContainer(unittest.TestCase):
@@ -35,6 +37,7 @@ class TestContainer(unittest.TestCase):
         container = self.get_container()
         item = mock.Mock()
         item.__name__ = 'item'
+        item.__parent__ = None
         container.add(item)
         self.assertTrue(container.__parent__._p_changed)
 
@@ -62,10 +65,10 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
 
     def setUp(self):
         super(ContainerTest, self).setUp()
-        context = mock.Mock()
-        zope.interface.alsoProvides(context, IPersistent)
+        self.context = mock.Mock()
+        zope.interface.alsoProvides(self.context, IPersistent)
         self.container = zeit.edit.tests.fixture.Container(
-            context, lxml.objectify.fromstring('<container/>'))
+            self.context, lxml.objectify.fromstring('<container/>'))
 
     def test_slice(self):
         blocks = [self.container.create_item('block') for i in range(4)]
@@ -83,3 +86,29 @@ class ContainerTest(zeit.edit.testing.FunctionalTestCase):
         other = self.container.create_item('container')
         block = other.create_item('block')
         self.assertEqual(block, self.container.get_recursive(block.__name__))
+
+    def test_moving_item_between_containers_sends_event(self):
+        check_move = mock.Mock()
+        self.zca.patch_handler(
+            check_move, (zeit.edit.interfaces.IBlock,
+                         zope.lifecycleevent.IObjectMovedEvent))
+        block = self.container.create_item('block')
+        other = zeit.edit.tests.fixture.Container(
+            self.context, lxml.objectify.fromstring('<container/>'))
+        del self.container[block.__name__]
+        other.add(block)
+        self.assertTrue(check_move.called)
+
+    def test_moved_item_has_new_parent(self):
+        # Annoying mechanics gymnastics to check that security works.
+        wc = zeit.cms.workingcopy.interfaces.IWorkingcopy(None)
+        self.container.__parent__ = wc
+        other = zeit.edit.tests.fixture.Container(
+            wc, lxml.objectify.fromstring('<container/>'))
+        block = self.container.create_item('block')
+        del self.container[block.__name__]
+        wrapped = zope.security.proxy.ProxyFactory(block)
+        other.add(wrapped)
+        # Since we don't retrieve block from other, this actually checks that
+        # __parent__ was changed.
+        self.assertEqual(other, block.__parent__)
