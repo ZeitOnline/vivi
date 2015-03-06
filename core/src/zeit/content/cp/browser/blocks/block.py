@@ -16,7 +16,8 @@ class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
 class EditCommon(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
-        zeit.content.cp.interfaces.IBlock).omit('type', 'xml', '__name__')
+        zeit.content.cp.interfaces.IBlock).omit(
+            'type', 'xml', '__name__', '__parent__')
     form_fields['background_color'].custom_widget = (
         zeit.cms.browser.widget.ColorpickerWidget)
 
