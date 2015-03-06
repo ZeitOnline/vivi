@@ -56,6 +56,21 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
              self.teasers3.__name__])
         self.assertFalse(hasattr(xml, 'layout'))
 
+    def test_moving_teaser_sets_default_layout_for_new_area(self):
+        self.teasers1.layout = zeit.content.cp.layout.get_layout(
+            'leader-two-columns')
+        del self.cp['lead'][self.teasers1.__name__]
+        self.cp['informatives'].add(self.teasers1)
+        self.assertEllipsis('...module="leader"...', lxml.etree.tostring(
+            self.teasers1.xml, pretty_print=True))
+
+    def test_moving_teaser_leaves_layout_alone_if_still_allowed(self):
+        self.teasers1.layout = zeit.content.cp.layout.get_layout('buttons')
+        del self.cp['lead'][self.teasers1.__name__]
+        self.cp['informatives'].add(self.teasers1)
+        self.assertEllipsis('...module="buttons"...', lxml.etree.tostring(
+            self.teasers1.xml, pretty_print=True))
+
 
 class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
 

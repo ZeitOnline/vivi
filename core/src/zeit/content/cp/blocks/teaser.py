@@ -342,6 +342,17 @@ def create_cp_channel(context, event):
     context.__parent__[feed_name] = feed
 
 
+@grok.subscribe(
+    zeit.content.cp.interfaces.IBlock,
+    zope.container.interfaces.IObjectMovedEvent)
+def change_layout_if_not_allowed_in_new_area(context, event):
+    # Getting a default layout can mean that the current layout is not allowed
+    # in this area (can happen when a block was moved between areas). Thus, we
+    # want to change the XML to actually reflect the new default layout.
+    if context.layout.default:
+        context.layout = context.layout
+
+
 @zope.component.adapter(
     zeit.content.cp.interfaces.IBlock,
     zope.container.interfaces.IObjectAddedEvent)
