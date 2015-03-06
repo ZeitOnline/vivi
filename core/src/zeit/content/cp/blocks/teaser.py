@@ -343,7 +343,7 @@ def create_cp_channel(context, event):
 
 
 @grok.subscribe(
-    zeit.content.cp.interfaces.IBlock,
+    zeit.content.cp.interfaces.ITeaserBlock,
     zope.container.interfaces.IObjectMovedEvent)
 def change_layout_if_not_allowed_in_new_area(context, event):
     # Getting a default layout can mean that the current layout is not allowed
