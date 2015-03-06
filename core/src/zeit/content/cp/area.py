@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+import fractions
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml
@@ -112,6 +113,11 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
     @width.setter
     def width(self, value):
         self._width = value
+
+    @property
+    def width_fraction(self):
+        numerator, denominator = [int(x) for x in self.width.split('/')]
+        return fractions.Fraction(numerator, denominator)
 
     @property
     def __name__(self):

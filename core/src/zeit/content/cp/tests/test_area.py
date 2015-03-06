@@ -47,3 +47,21 @@ class TeaserBarBackwardCompatibilityTest(
                 TEASERBAR.format(uuid='FOO')
                 + TEASERBAR.format(uuid='BAR')))))
         self.assertEqual(['FOO', 'BAR'], cp['teaser-mosaic'].keys())
+
+
+class AreaTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def test_width_fraction_can_be_summed_up_to_test_width_of_region(self):
+        cp = zeit.content.cp.centerpage.CenterPage()
+        region = cp.create_item('region')
+        area1 = region.create_item('area')
+        area1.width = '1/2'
+        area2 = region.create_item('area')
+        area2.width = '1/2'
+        area3 = region.create_item('area')
+        area3.width = '1/3'
+        area4 = region.create_item('area')
+        area4.width = '2/3'
+
+        self.assertEqual(
+            2, sum([x.width_fraction for x in region.values()], 0))

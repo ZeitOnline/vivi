@@ -172,6 +172,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_("Width"),
         source=AreaWidthSource())
 
+    width_fraction = zope.interface.Attribute('Width as a fraction.Fraction')
+
     supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
         required=False)

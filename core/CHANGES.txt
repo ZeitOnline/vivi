@@ -27,6 +27,9 @@ zeit.content.cp changes
 
 - Add URL input field to teaser list edit box (DEV-23).
 
+- Areas can now return their width as a Fraction, so they can be summed up for
+  width checks of a region. (DEV-589)
+
 
 3.0.0b6 (2015-02-20)
 --------------------
