@@ -1,5 +1,6 @@
 import zeit.cms.browser.widget
 import zeit.content.cp.interfaces
+import zeit.edit.browser.block
 import zeit.edit.browser.view
 import zope.component
 import zope.formlib.form
