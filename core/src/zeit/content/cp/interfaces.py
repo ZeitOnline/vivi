@@ -1,5 +1,6 @@
 from zeit.content.cp.i18n import MessageFactory as _
 from zeit.content.cp.layout import ITeaserBlockLayout, IAreaLayout
+import fractions
 import urlparse
 import zc.form.field
 import zeit.cms.content.contentsource
@@ -20,6 +21,10 @@ import zope.interface
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.cp'
 TEASER_ID_NAMESPACE = 'http://teaser.vivi.zeit.de/'
+
+
+zope.security.checker.BasicTypes[fractions.Fraction] = (
+    zope.security.checker.NoProxy)
 
 
 class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
