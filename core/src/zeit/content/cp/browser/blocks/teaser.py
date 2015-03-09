@@ -348,7 +348,7 @@ class ToggleBooleanBase(zeit.edit.browser.view.Action):
                 (True if self.to == 'on' else False))
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
-        self.signal_context_reload()
+        self.reload()
 
 
 class ToggleAutopilot(ToggleBooleanBase):
