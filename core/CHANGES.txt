@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.9.0 (unreleased)
+2.9.0 (2015-03-09)
 ------------------
 
 - Implement landing zone behaviour for moving elements (DEV-53).
