@@ -123,6 +123,11 @@ class LandingZoneMove(zeit.edit.browser.view.Action, OrderMixin):
     def update(self):
         self.validate_order_params()
         if self.move_to_same_position:
+            # The editor expects a reload and will stay busy until the it was
+            # send. But since this is a no-op, there will be no reload. Thus we
+            # need to send a reload signal anyway, even though nothing has
+            # changed to disable the busy state.
+            self.reload(self.container)
             return
         self.move_block()
         self.undo_description = _(
