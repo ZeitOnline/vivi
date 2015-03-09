@@ -99,7 +99,7 @@
       permission="zope.View" />
     <require
       set_schema="zeit.content.cp.interfaces.IReadRegion"
-      permission="zope.View" />
+      permission="zeit.EditContent" />
     <require
       interface="zeit.content.cp.interfaces.IWriteRegion"
       permission="zeit.EditContent"
@@ -111,7 +111,7 @@
       permission="zope.View" />
     <require
       set_schema="zeit.content.cp.interfaces.IReadArea"
-      permission="zope.View" />
+      permission="zeit.EditContent" />
     <require
       interface="zeit.content.cp.interfaces.IWriteArea"
       permission="zeit.EditContent"
