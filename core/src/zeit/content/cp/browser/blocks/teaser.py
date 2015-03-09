@@ -264,8 +264,7 @@ class Drop(zeit.edit.browser.view.Action):
         self.context.insert(self.index, content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
-        self.signal(
-            None, 'reload', self.context.__name__, self.url('@@contents'))
+        self.reload()
 
 
 class EditContents(zeit.cms.browser.view.Base):
@@ -329,8 +328,7 @@ class ChangeLayout(zeit.edit.browser.view.Action):
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.signal('before-reload', 'deleted', self.context.__name__)
-        self.signal(
-            None, 'reload', self.context.__name__, self.url('@@contents'))
+        self.reload()
         self.signal('after-reload', 'added', self.context.__name__)
 
 
@@ -388,8 +386,7 @@ class Delete(zeit.edit.browser.view.Action):
         self.context.remove(content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
-        self.signal(
-            None, 'reload', self.context.__name__, self.url('@@contents'))
+        self.reload()
 
 
 class Countings(object):
