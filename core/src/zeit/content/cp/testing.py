@@ -158,7 +158,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         s.click('id=clip-add-folder-submit')
         s.waitForElementPresent('//li[@uniqueid="Clip"]')
         # Open clip
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
     def clip_object(self, match):
@@ -206,7 +206,7 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
         s = self.selenium
         self.open('/')
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
     def create_filled_teaserlist(self):
