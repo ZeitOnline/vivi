@@ -94,7 +94,7 @@ class Action(zeit.cms.browser.view.Base, UndoableMixin):
         if element is None:
             element = self.context
         self.signal(
-            None, 'reload', self.context.__name__, self.url('@@contents'))
+            None, 'reload', element.__name__, self.url(element, '@@contents'))
 
     def signal(self, when, name, *args):
         self.signals.append(dict(
