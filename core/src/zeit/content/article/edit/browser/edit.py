@@ -167,7 +167,8 @@ class EditRawXML(zeit.edit.browser.form.InlineForm):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IRawXML).omit('__name__')
+        zeit.content.article.edit.interfaces.IRawXML).omit(
+            '__name__', '__parent__')
     undo_description = _('edit XML block')
 
     @property
@@ -179,7 +180,8 @@ class EditAudio(zeit.edit.browser.form.InlineForm):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.IAudio).omit('__name__', 'xml')
+        zeit.content.article.edit.interfaces.IAudio).omit(
+            '__name__', '__parent__', 'xml')
     undo_description = _('edit audio block')
 
     @property
@@ -191,7 +193,8 @@ class EditCitation(zeit.edit.browser.form.InlineForm):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.ICitation).omit('__name__', 'xml')
+        zeit.content.article.edit.interfaces.ICitation).omit(
+            '__name__', '__parent__', 'xml')
     undo_description = _('edit citation block')
 
     @property
@@ -203,7 +206,8 @@ class EditLiveblog(zeit.edit.browser.form.InlineForm):
 
     legend = None
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.article.edit.interfaces.ILiveblog).omit('__name__', 'xml')
+        zeit.content.article.edit.interfaces.ILiveblog).omit(
+            '__name__', '__parent__', 'xml')
     undo_description = _('edit liveblog block')
 
     @property

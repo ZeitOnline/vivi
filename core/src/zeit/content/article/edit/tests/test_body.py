@@ -56,6 +56,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
         block = mock.Mock()
         block.xml = lxml.objectify.E.mockblock()
         block.__name__ = 'myblock'
+        block.__parent__ = None
         block.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', 'myblock')
         body.add(block)
         self.assertEqual(['myblock'], body.keys())
@@ -91,6 +92,7 @@ class EditableBodyTest(zeit.content.article.testing.FunctionalTestCase):
             '<foo>Honk</foo><p>I have no division</p><p>Only paras</p>')
         ob = mock.Mock()
         ob.__name__ = None
+        ob.__parent__ = None
         ob.xml = lxml.objectify.E.ob()
         body.add(ob)
         # XXX assertion?!
