@@ -105,6 +105,9 @@ class TeaserBlock(
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
         if self.xml.get('module') == 'teaser':
+            if self.layout is None:
+                raise ValueError(_(
+                    'No default teaser layout defined for this area.'))
             self.layout = self.layout
         assert self.xml.get('module') != 'teaser'
         if 'hide-dupes' not in self.xml.attrib:
