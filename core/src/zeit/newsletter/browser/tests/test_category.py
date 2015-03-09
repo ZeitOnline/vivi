@@ -30,7 +30,7 @@ class AddTest(zeit.newsletter.testing.SeleniumTestCase):
 
         with mock.patch('datetime.datetime', dt):
             s.clickAndWait('sidebar.form.actions.add')
-            s.assertLocation('*/workingcopy/zope.user/29-1/@@edit.html')
+            s.waitForLocation('*/workingcopy/zope.user/29-1/@@edit.html')
 
 
 class CategoryMetadata(zeit.newsletter.testing.BrowserTestCase):
