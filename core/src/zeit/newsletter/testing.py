@@ -88,5 +88,5 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         s.refresh()
         s.waitForElementPresent('//li[@uniqueid="Clip"]')
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
