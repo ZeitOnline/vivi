@@ -41,6 +41,7 @@ class Add(zeit.edit.browser.view.Action):
             self.context, zeit.edit.interfaces.IElementFactory,
             name=self.type)
         created = factory()
+        self.reload()
         self.signal('after-reload', 'added', created.__name__)
 
 
@@ -54,9 +55,7 @@ class Delete(zeit.edit.browser.view.Action):
             mapping=dict(type=self.context[self.key].type))
         del self.context[self.key]
         self.signal('before-reload', 'deleted', self.key)
-        self.signal(
-            None, 'reload', self.context.__name__, self.url(self.context,
-                                                            '@@contents'))
+        self.reload()
 
 
 class View(zeit.cms.browser.view.Base):

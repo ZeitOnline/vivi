@@ -61,11 +61,6 @@ class OrderMixin(object):
             raise NotImplementedError
         return keys
 
-    def reload(self, container):
-        self.signal(
-            None, 'reload',
-            container.__name__, self.url(container, '@@contents'))
-
 
 class LandingZone(zeit.edit.browser.view.Action, OrderMixin):
     """Landing Zone to drop Content or Modules.
