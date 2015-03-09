@@ -32,6 +32,8 @@ zeit.content.cp changes
 
 - Introduce an "is_region" rule to check if the context is a region. (DEV-589)
 
+- Auto-CP: Retrieve the configured number of teasers from solr (DEV-621).
+
 
 3.0.0b6 (2015-02-20)
 --------------------

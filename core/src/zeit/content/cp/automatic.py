@@ -119,7 +119,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             query = self.raw_query if self.raw_query else self._build_query()
             solr_result = list(zeit.find.search.search(
                 query, sort_order='date-first-released desc',
-                additional_result_fields=['lead_candidate']))
+                additional_result_fields=['lead_candidate'],
+                rows=self.count))
             for block in values:
                 if not IAutomaticTeaserBlock.providedBy(block):
                     result.append(block)
