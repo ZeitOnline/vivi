@@ -81,14 +81,10 @@ class BodyLandingZoneMove(
 
     """
 
-    def update(self):
-        if self.move_to_same_position:
-            return
-        super(BodyLandingZoneMove, self).update()
-
     @property
     def create_nested_area(self):
-        return zeit.content.cp.interfaces.IArea.providedBy(self.block)
+        return (hasattr(self, 'block')
+                and zeit.content.cp.interfaces.IArea.providedBy(self.block))
 
     def reload(self, container):
         """Skip reload of container the area came from, since we reload body.
