@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.38.2 (unreleased)
+2.38.2 (2015-03-10)
 -------------------
 
 - Reorganize series source into dictionary structure for performance (BUG-214).
