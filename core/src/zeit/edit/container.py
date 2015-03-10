@@ -7,6 +7,7 @@ import zeit.edit.interfaces
 import zope.container.contained
 import zope.interface
 import zope.proxy
+import zope.security.proxy
 
 
 log = logging.getLogger(__name__)
@@ -126,7 +127,7 @@ class Base(UserDict.DictMixin,
     def updateOrder(self, order):
         old_order = self.keys()
         __traceback_info__ = (order, old_order)
-        if not isinstance(order, (tuple, list)):
+        if not zope.security.proxy.isinstance(order, (tuple, list)):
             raise TypeError('order must be tuple or list, got %s.' %
                             type(order))
         if set(order) != set(old_order):
