@@ -98,6 +98,12 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.7.11 (2015-03-10)
+-------------------
+
+- Fix styling for teaser blocks / floating images (DEV-666).
+
+
 2.7.10 (2015-03-10)
 -------------------
 
