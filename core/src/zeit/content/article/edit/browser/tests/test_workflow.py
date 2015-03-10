@@ -295,4 +295,4 @@ class Objectlog(zeit.content.article.edit.browser.testing.EditorTestCase):
         fold = 'css=#edit-form-status .fold-link'
         s.waitForElementPresent(fold)
         s.click(fold)
-        s.assertText('css=div.objectlog table.objectlog', '*example message*')
+        s.waitForText('css=div.objectlog table.objectlog', '*example message*')
