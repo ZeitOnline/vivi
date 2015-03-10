@@ -19,7 +19,7 @@ class TestTree(zeit.cms.testing.SeleniumTestCase):
         s.waitForElementPresent('//li[@uniqueid="http://xml.zeit.de/online/"]')
 
         # Open `online`
-        s.click('//li[@uniqueid="http://xml.zeit.de/online/"]')
+        s.clickAt('//li[@uniqueid="http://xml.zeit.de/online/"]', '10,10')
         s.waitForElementPresent(
             '//li[@uniqueid="http://xml.zeit.de/online/2007/"]')
 
