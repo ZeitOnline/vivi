@@ -510,3 +510,21 @@ label[for="form.query"]:after {
 .cp-area-schematic-preview .area-preview-image.active svg rect {
   fill: #e9e9ff !important;
 }
+
+
+/* Make Landing Zones less prominent */
+
+.type-centerpage-2009 .landing-zone.droppable-active {
+  background: none;
+  border: 1px solid transparent;
+}
+
+/* XXX Had to copy all rules from zeit.cms:cms.css */
+.type-centerpage-2009 .landing-zone.hover-content {
+  background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
+  border-color: #a6cc17;
+  outline: 4px solid #a6cc17;
+  display: block;
+  visibility: visible;
+  z-index: 1;
+}
