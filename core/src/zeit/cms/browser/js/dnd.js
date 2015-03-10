@@ -64,6 +64,9 @@ MochiKit.Signal.connect(
     }
 
     MochiKit.Signal.signal(window, 'before-content-drag', draggable);
+    var pos = MochiKit.Style.getElementPosition(
+        draggable.element);
+    draggable.delta = [pos.x, pos.y];
 
     var div = $('drag-pane');
     if (div) {
@@ -122,13 +125,32 @@ MochiKit.Signal.connect(
         if (isUndefinedOrNull(drag_pane.source_element)) {
             return;
         }
-        draggable.element = drag_pane.source_element;
+
         MochiKit.DOM.addElementClass(drag_pane, 'finished');
-        MochiKit.Visual.fade(drag_pane, {
-            afterFinish: function() {
-                MochiKit.DOM.removeElement(drag_pane);
-            }
-        });
+
+        // Since MochiKit does not differentiate whether we successfullly
+        // landed on a Droppable or not, we need to make that distinction
+        // ourselves -- all Droppables need to set ``drag_successful``.
+        if (drag_pane.drag_successful) {
+            MochiKit.Visual.fade(drag_pane, {
+                'afterFinish': function() {
+                    MochiKit.DOM.removeElement(drag_pane); }});
+        } else {
+            // XXX copy&paste of firing reverteffect
+            var d = draggable.currentDelta();
+            var top_offset = d[1] - draggable.delta[1];
+            var left_offset = d[0] - draggable.delta[0];
+            // XXX copy&paste of default reverteffect to reuse it.
+            var dur = Math.sqrt(Math.abs(top_offset^2) +
+                                Math.abs(left_offset^2))*0.02;
+            new MochiKit.Visual.Move(drag_pane, {
+                x: -left_offset, y: -top_offset, duration: dur,
+                'afterFinish': function() {
+                    MochiKit.DOM.removeElement(drag_pane);
+            }});
+        }
+
+        draggable.element = drag_pane.source_element;
     }
 );
 

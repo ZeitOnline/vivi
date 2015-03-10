@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.38.3 (unreleased)
+2.39.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Distinguish between sucessful and failed drag&drop operations (DEV-60).
 
 
 2.38.2 (2015-03-10)

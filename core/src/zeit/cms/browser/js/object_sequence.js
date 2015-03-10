@@ -229,6 +229,7 @@ zeit.cms.ObjectSequenceWidget = gocept.Class.extend({
         }
         var unique_id = element.uniqueId;
         if (unique_id) {
+            element.drag_successful = true;
             self.add(unique_id);
         }
     },
@@ -318,6 +319,7 @@ zeit.cms.DropObjectWidget = gocept.Class.extend({
 
     handleDrop: function(element) {
         var self = this;
+        element.drag_successful = true;
         self.set(element.uniqueId);
     },
 

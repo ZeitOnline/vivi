@@ -81,6 +81,7 @@ zeit.cms.Clipboard = Class.extend({
         options['add_to'] = dropped_on;
         log(repr(MochiKit.Base.items(options)));
 
+        element.drag_successful = true;
         var d = doSimpleXMLHttpRequest(this.base_url + url, options);
         d.addCallbacks(
             function(result) {
