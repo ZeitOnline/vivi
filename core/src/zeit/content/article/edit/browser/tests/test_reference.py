@@ -93,7 +93,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
                 self.repository['2006']['DSC00109_2.JPG'], 'my_image')
         self.add_article()
         s = self.selenium
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
     def add_group_to_clipboard(self):
@@ -102,7 +102,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         self.add_to_clipboard(group, 'my_group')
         self.add_article()
         s = self.selenium
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
     def test_image_is_droppable_in_article_text(self):
@@ -240,7 +240,7 @@ class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
         s = self.selenium
         self.open('/')
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
     def setUp(self):
