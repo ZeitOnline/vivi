@@ -16,7 +16,7 @@ class TestClipboard(zeit.cms.testing.SeleniumTestCase):
         s.click('id=clip-add-folder-submit')
         s.waitForElementPresent('link=Clip')
         # Open clip
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
         s.click('jquery=td:contains(testcontent)')
