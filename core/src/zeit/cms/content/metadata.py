@@ -134,9 +134,7 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     def serie(self):
         source = zeit.cms.content.interfaces.ICommonMetadata[
             'serie'].source(self)
-        for value in source:
-            if value.serienname == self._serie:
-                return value
+        return source.factory.values.get(self._serie)
 
     @serie.setter
     def serie(self, value):
