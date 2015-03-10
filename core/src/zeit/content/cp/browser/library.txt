@@ -35,20 +35,20 @@ information about the created block:
 ...              '?block_type=cpextra')
 >>> result = json.loads(browser.contents)
 >>> pprint.pprint(result['signals'])
-[{u'args': [u'id-7ccff7a0-3758-416c-ad30-d0183a2543fd'],
-  u'name': u'added',
-  u'when': u'after-reload'},
- {u'args': [u'informatives',
+[{u'args': [u'informatives',
             u'http://localhost/++skin++cms/workingcopy/zope.user/island/body/feature/informatives/@@contents'],
   u'name': u'reload',
-  u'when': None}]
+  u'when': None},
+ {u'args': [u'id-7ccff7a0-3758-416c-ad30-d0183a2543fd'],
+  u'name': u'added',
+  u'when': u'after-reload'}]
 >>> print browser.headers
 Status: 200 Ok
 Content-Length: ...
 Content-Type: text/json
 ...
 
->>> created_block_id = result['signals'][0]['args'][0]
+>>> created_block_id = result['signals'][1]['args'][0]
 
 The block is contained in the contents. A landing zone to create blocks *after*
 it, is rendered too:
