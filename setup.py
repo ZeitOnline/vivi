@@ -22,7 +22,7 @@ setup(
         'setuptools',
         'zc.iso8601',
         'zc.resourcelibrary',
-        'zeit.cms>=2.15.0.dev0',
+        'zeit.cms>=2.38.0.dev0',
         'zeit.content.image',
         'zope.app.pagetemplate',
         'zope.app.testing',
