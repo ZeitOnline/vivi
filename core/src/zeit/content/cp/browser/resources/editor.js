@@ -110,40 +110,38 @@ var ident = MochiKit.Signal.connect(
 });
 
 
-MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
-    // XXX Feature disabled until we find a tooltip implementation that works.
-    return;
+// XXX Feature disabled until we find a tooltip implementation that works.
+// MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+//     var $ = jQuery;
+//     if (! zeit.cms.in_cp_editor()) {
+//         return;
+//     }
 
-    var $ = jQuery;
-    if (! zeit.cms.in_cp_editor()) {
-        return;
-    }
+//     $('#cp-content-inner').tooltip({
+//         content: function(callback) {
+//             var area = $(this).closest('.block');
+//             $.get($(area).attr('cms:url') + '/schematic-preview')
+//             .done(function (data) {
+//                callback(data);
+//             })
+//             .fail(function (xhr, status, error) {
+//                 console.exception(error);
+//             });
+//         },
+//         items: '.block.type-area > .block-inner > .edit-bar',
+//         show: {delay: 500},
+//         tooltipClass: 'schematic-preview-tooltip'
+//     });
 
-    $('#cp-content-inner').tooltip({
-        content: function(callback) {
-            var area = $(this).closest('.block');
-            $.get($(area).attr('cms:url') + '/schematic-preview')
-            .done(function (data) {
-               callback(data);
-            })
-            .fail(function (xhr, status, error) {
-                console.exception(error);
-            });
-        },
-        items: '.block.type-area > .block-inner > .edit-bar',
-        show: {delay: 500},
-        tooltipClass: 'schematic-preview-tooltip'
-    });
-
-    // Disable Tooltips during drag'n'drop, since the tooltip of a DOM node
-    // will stay open, even if the DOM node is removed (e.g. when moving).
-    MochiKit.Signal.connect(
-        MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
-            $('#cp-content-inner').tooltip('disable'); });
-    MochiKit.Signal.connect(
-        MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
-            $('#cp-content-inner').tooltip('enable'); });
-});
+//     // Disable Tooltips during drag'n'drop, since the tooltip of a DOM node
+//     // will stay open, even if the DOM node is removed (e.g. when moving).
+//     MochiKit.Signal.connect(
+//         MochiKit.DragAndDrop.Draggables, 'start', function(draggable) {
+//             $('#cp-content-inner').tooltip('disable'); });
+//     MochiKit.Signal.connect(
+//         MochiKit.DragAndDrop.Draggables, 'end', function(draggable) {
+//             $('#cp-content-inner').tooltip('enable'); });
+// });
 
 
 
