@@ -172,15 +172,18 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
 
     def create_teaserlist(self):
         self.open_centerpage()
+        self.create_block('teaser', 'informatives')
+
+    def create_block(self, block_type, area_id):
         s = self.selenium
         s.click('link=Struktur')
-        teaser_module = self.get_module('cp', 'List of teasers')
-        s.waitForElementPresent(teaser_module)
+        library_module = 'css=.module[cms\\:block_type=%s]' % block_type
+        s.waitForElementPresent(library_module)
         s.dragAndDropToObject(
-            teaser_module,
-            'css=#informatives .landing-zone.action-cp-module-droppable',
+            library_module,
+            'css=#%s .landing-zone.action-cp-module-droppable' % area_id,
             '10,10')
-        s.waitForElementPresent('css=div.type-teaser')
+        s.waitForElementPresent('css=div.type-%s' % block_type)
 
     def create_content_and_fill_clipboard(self):
         with zeit.cms.testing.site(self.getRootFolder()):
