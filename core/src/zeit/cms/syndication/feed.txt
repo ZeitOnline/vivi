@@ -372,6 +372,7 @@ in it:
 When an object is adaptable to ICommonMetadata the relevant information will be
 included. Setup an article with ICommonMetadata:
 
+>>> from zeit.cms.content.interfaces import ICommonMetadata
 >>> art2 = Article('art2')
 >>> art2.supertitle = u'Frankreich'
 >>> art2.teaserSupertitle = u'Frankreich'
@@ -382,12 +383,11 @@ included. Setup an article with ICommonMetadata:
 >>> art2.volume = 4
 >>> art2.ressort = u'International'
 >>> art2.breadcrumb_title = u'Streik'
->>> art2.serie = 'Serie'
+>>> art2.serie = ICommonMetadata['serie'].source.factory.values['Autotest']
 
 Provide the interface:
 
 >>> import zope.interface
->>> from zeit.cms.content.interfaces import ICommonMetadata
 >>> zope.interface.directlyProvides(art2, ICommonMetadata)
 
 Insert the article to the feed:
@@ -398,7 +398,7 @@ Insert the article to the feed:
   xmlns:py="http://codespeak.net/lxml/objectify/pytype">
   <title>Politik</title>
   <container>
-    <block href="art2" uniqueId="art2" year="2007" issue="4" ressort="International" serie="Serie">
+    <block href="art2" uniqueId="art2" year="2007" issue="4" ressort="International" serie="Autotest">
       <supertitle py:pytype="str">Frankreich</supertitle>
       <title py:pytype="str">Keine Sieger</title>
       <text py:pytype="str">In Frankreich wird massiv gestreikt. Doch den</text>
