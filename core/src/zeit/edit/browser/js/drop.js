@@ -113,6 +113,11 @@ zeit.edit.drop.Droppable = gocept.Class.extend({
 });
 
 
+zeit.edit.drop.revert_unless_successful = function(draggable_element) {
+    return ! draggable_element.drag_successful;
+};
+
+
 zeit.edit.drop.EditorDroppers =
     zeit.edit.context.ContentActionBase.extend({
 

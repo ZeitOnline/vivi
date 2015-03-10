@@ -23,13 +23,14 @@ SplitDirResource('context.js', depends=[
     zeit.cms.browser.resources.base,
     edit_js])
 
-SplitDirResource('sortable.js', depends=[
-    zeit.cms.browser.resources.base,
-    context_js])
 SplitDirResource('drop.js', depends=[
     zeit.cms.browser.resources.base,
     zeit.cms.browser.resources.dnd_js,
     context_js])
+SplitDirResource('sortable.js', depends=[
+    zeit.cms.browser.resources.base,
+    context_js,
+    drop_js])
 
 SplitDirResource('inlineform.js', depends=[
     zeit.cms.browser.resources.base,
@@ -52,6 +53,7 @@ SplitDirResource('library.js', depends=[
     zeit.cms.browser.resources.base,
     zeit.cms.browser.resources.view_js,
     zeit.cms.browser.resources.tab_js,
+    drop_js,
     editor_css,
 ])
 
