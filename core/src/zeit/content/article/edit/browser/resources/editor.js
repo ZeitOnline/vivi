@@ -376,6 +376,7 @@ zeit.content.article.Editable = gocept.Class.extend({
                 activeclass: 'droppable-active',
                 hoverclass: 'hover-content',
                 ondrop: function(element, last_active_element, event) {
+                        element.drag_successful = true;
                         // One could consider the replace a hack.
                         $('input[name=href]', self.link_input).val(
                             element.uniqueId.replace(

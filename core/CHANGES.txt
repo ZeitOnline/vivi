@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use drag&drop sucess/failure API (DEV-60).
 
 
 3.6.10 (2015-03-10)
