@@ -174,3 +174,25 @@ class TooltipSeleniumTest(
         s.assertElementNotPresent('css=.schematic-preview-tooltip')
         s.mouseOver('css=#informatives > .block-inner > .edit-bar')
         s.waitForElementPresent('css=.schematic-preview-tooltip')
+
+
+class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_reloads_overflow_area(self):
+        self.open_centerpage()
+        s = self.selenium
+        s.click('css=#lead .edit-bar .edit-link')
+        # Wait for tab content to load, to be certain that the tabs have been
+        # wired properly.
+        s.waitForElementPresent('css=.layout-chooser')
+        s.click('//a[@href="tab-3"]')
+        s.waitForElementPresent('id=form.block_max')
+        s.type('form.block_max', '1')
+        s.select('form.overflow_into', '1/3 area no title')
+        s.click(r'css=#tab-3 #form\.actions\.apply')
+        s.waitForElementNotPresent('css=a.CloseButton')
+
+        self.create_block('quiz', 'lead')
+        self.create_block('teaser', 'lead')
+
+        s.waitForElementPresent('css=#informatives .block.type-quiz')

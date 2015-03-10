@@ -19,6 +19,12 @@
 }
 
 
+.edit-bar > a.automatic-link,
+.edit-bar > a.overflow-link {
+  display: none;
+}
+
+
 .edit-bar > .edit-teaser-link {
   background-image: url('edit-teaserlist-contents.png');
 }

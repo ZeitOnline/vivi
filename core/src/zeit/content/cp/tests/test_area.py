@@ -65,3 +65,22 @@ class AreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
         self.assertEqual(
             2, sum([x.width_fraction for x in region.values()], 0))
+
+
+class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(OverflowBlocks, self).setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.region = self.cp.create_item('region')
+        self.area1 = self.region.create_item('area')
+        self.area2 = self.region.create_item('area')
+
+    def test_adding_more_than_max_blocks_overflows(self):
+        self.area1.create_item('teaser')
+        self.area1.block_max = 1
+        self.area1.overflow_into = self.area2
+
+        self.area1.create_item('teaser')
+        self.assertEqual(1, len(self.area1))
+        self.assertEqual(1, len(self.area2))

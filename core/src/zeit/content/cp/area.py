@@ -78,6 +78,10 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
         '.', 'teaserText')
     background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'background_color')
+    block_max = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'block_max', zeit.content.cp.interfaces.IArea['block_max'])
+    _overflow_into = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'overflow_into')
 
     type = 'area'
 
@@ -118,6 +122,19 @@ class Area(zeit.edit.container.TypeOnAttributeContainer):
     def width_fraction(self):
         numerator, denominator = [int(x) for x in self.width.split('/')]
         return fractions.Fraction(numerator, denominator)
+
+    @property
+    def overflow_into(self):
+        if self._overflow_into is None:
+            return None
+        return zeit.content.cp.interfaces.ICenterPage(self).get_recursive(
+            self._overflow_into)
+
+    @overflow_into.setter
+    def overflow_into(self, value):
+        if value is None:
+            self._overflow_into = None
+        self._overflow_into = value.__name__
 
     @property
     def __name__(self):
@@ -184,3 +201,22 @@ def rendered_xml(context):
     for block in zeit.content.cp.interfaces.IAutomaticArea(context).values():
         area.append(zeit.content.cp.interfaces.IRenderedXML(block))
     return area
+
+
+@grok.subscribe(
+    zeit.content.cp.interfaces.IBlock,
+    zope.container.interfaces.IObjectAddedEvent)
+def overflow_blocks(context, event):
+    area = context.__parent__
+    if (area.block_max is None
+        or len(area) <= area.block_max
+        or area.overflow_into is None):
+        return
+
+    # Since IContainer.add only appends, the newly added block is at -1,
+    # while the previously last block is at -2.
+    last_block = area.values()[-2]
+    del area[last_block.__name__]
+    area.overflow_into.add(last_block)
+    keys = area.overflow_into.keys()
+    area.overflow_into.updateOrder([keys[-1]] + keys[:-1])

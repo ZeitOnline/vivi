@@ -3,6 +3,7 @@ from zeit.content.cp.layout import ITeaserBlockLayout, IAreaLayout
 import fractions
 import urlparse
 import zc.form.field
+import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
@@ -16,6 +17,7 @@ import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.quiz.source
 import zeit.edit.interfaces
+import zope.i18n
 import zope.interface
 
 
@@ -170,6 +172,30 @@ class AreaWidthSource(zeit.cms.content.sources.XMLSource):
     attribute = 'id'
 
 
+class OtherAreaSource(
+        zc.sourcefactory.contextual.BasicContextualSourceFactory):
+    """All IAreas of this CenterPage, except the current one."""
+
+    def getValues(self, context):
+        cp = zeit.content.cp.interfaces.ICenterPage(context)
+        areas = []
+        for region in cp.values():
+            for area in region.values():
+                if area != context:
+                    areas.append(area)
+        return areas
+
+    def getTitle(self, context, value):
+        # XXX Hard-code language, since we don't have a request here.
+        return zope.i18n.translate(
+            _("${width} area ${title}", mapping=dict(
+                width=value.width, title=value.title or _("no title"))),
+            target_language='de')
+
+    def getToken(self, context, value):
+        return value.__name__
+
+
 class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     # Use a schema field so the security can declare it as writable,
@@ -199,6 +225,14 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_("Teaser text"),
         required=False,
         max_length=170)
+
+    block_max = zope.schema.Int(
+        title=_("Maximum block count"),
+        required=False)
+
+    overflow_into = zope.schema.Choice(
+        title=_("Overflow into"),
+        source=OtherAreaSource())
 
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):

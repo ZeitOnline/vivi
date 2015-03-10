@@ -28,6 +28,13 @@ class EditCommon(zeit.edit.browser.view.EditBox):
             'width', 'supertitle', 'title', 'teaserText')
 
 
+class EditOverflow(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.cp.interfaces.IArea).select(
+            'block_max', 'overflow_into')
+
+
 class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 
     form_fields = zope.formlib.form.FormFields(
