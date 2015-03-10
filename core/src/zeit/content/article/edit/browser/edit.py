@@ -159,7 +159,7 @@ class ReplaceAll(zeit.edit.browser.view.Action):
     def update(self):
         count = zeit.content.article.edit.interfaces.IFindReplace(
             self.context).replace_all(self.find, self.replace)
-        self.signal_context_reload()
+        self.reload()
         self.signal(None, 'after-replace-all', count)
 
 
