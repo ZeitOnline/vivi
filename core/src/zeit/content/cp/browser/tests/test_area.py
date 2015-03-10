@@ -1,5 +1,6 @@
 # coding: utf-8
 import lxml.cssselect
+import unittest
 import z3c.etestbrowser.testing
 import zeit.cms.testing
 import zeit.content.cp.browser.testing
@@ -168,6 +169,7 @@ class TooltipSeleniumTest(
         TooltipFixture,
         zeit.content.cp.testing.SeleniumTestCase):
 
+    @unittest.skip('Feature disabled')
     def test_schematic_layout_of_areas_is_shown_in_tooltip(self):
         self.open('/repository/cp/@@checkout')
         s = self.selenium
