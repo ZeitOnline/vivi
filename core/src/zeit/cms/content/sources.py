@@ -255,21 +255,29 @@ class SerieSource(SimpleContextualXMLSource):
 
     config_url = 'source-serie'
 
-    def getValues(self, context):
+    @property
+    def values(self):
+        if getattr(self, '_values', None):
+            return self._values
         tree = self._get_tree()
-        values = []
+        self._values = {}
         for node in tree.iterchildren('*'):
             # XXX: For compat reasons we need a fallback `serienname`.
             name = node.get('serienname') or node.text
             if not name:
                 continue
-            values.append(Serie(unicode(name).strip(),
-                          unicode_or_none(node.get('title')),
-                          unicode_or_none(node.get('url')),
-                          unicode_or_none(node.get('encoded')),
-                          node.get('format-label') == u'Kolumne',
-                          node.get('video') == u'yes'))
-        return values
+            serienname = unicode(name).strip()
+            self._values[serienname] = Serie(
+                serienname,
+                unicode_or_none(node.get('title')),
+                unicode_or_none(node.get('url')),
+                unicode_or_none(node.get('encoded')),
+                node.get('format-label') == u'Kolumne',
+                node.get('video') == u'yes')
+        return self._values
+
+    def getValues(self, context):
+        return self.values.values()
 
     def getTitle(self, context, value):
         return value.serienname
