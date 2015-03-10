@@ -80,6 +80,7 @@ zeit.cms.ObjectReferenceWidget = gocept.Class.extend({
     },
 
     handleDrop: function(element) {
+        element.drag_successful = true;
         this.selectObject(element.uniqueId);
     },
 
@@ -237,6 +238,7 @@ zeit.cms.ObjectReferenceSequenceWidget = gocept.Class.extend({
     },
 
     handleDrop: function(element) {
+        element.drag_successful = true;
         // On drop we create a new field
         zeit.cms.setCookie(this.widget_id, element.uniqueId);
         var add_button = this.form[this.widget_id + '.add'];
