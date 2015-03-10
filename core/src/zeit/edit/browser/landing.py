@@ -62,7 +62,30 @@ class OrderMixin(object):
         return keys
 
 
-class LandingZone(zeit.edit.browser.view.Action, OrderMixin):
+class ReloadContainerAction(zeit.edit.browser.view.Action):
+
+    def __call__(self):
+        # It seems that each time one accesses a method, the function is bound
+        # again, yielding a different object. Since ZCA cares about object
+        # identity, we need to ensure we use the same object for register and
+        # unregister.
+        trigger_reload = self.trigger_reload
+        try:
+            zope.component.getSiteManager().registerHandler(
+                trigger_reload)
+            return super(ReloadContainerAction, self).__call__()
+        finally:
+            zope.component.getSiteManager().unregisterHandler(
+                trigger_reload)
+
+    @zope.component.adapter(
+        zeit.edit.interfaces.IContainer,
+        zope.container.interfaces.IContainerModifiedEvent)
+    def trigger_reload(self, context, event):
+        self.reload(context)
+
+
+class LandingZone(ReloadContainerAction, OrderMixin):
     """Landing Zone to drop Content or Modules.
 
     """
@@ -79,7 +102,6 @@ class LandingZone(zeit.edit.browser.view.Action, OrderMixin):
         self.initialize_block()
         self.update_order()
         self.signal('after-reload', 'added', self.block.__name__)
-        self.reload(self.container)
 
     def validate_block_params(self):
         if not self.block_params:
@@ -116,7 +138,7 @@ class LandingZone(zeit.edit.browser.view.Action, OrderMixin):
             setattr(self.block, key, value)
 
 
-class LandingZoneMove(zeit.edit.browser.view.Action, OrderMixin):
+class LandingZoneMove(ReloadContainerAction, OrderMixin):
 
     block_id = zeit.edit.browser.view.Form('id')
 
@@ -133,9 +155,6 @@ class LandingZoneMove(zeit.edit.browser.view.Action, OrderMixin):
         self.undo_description = _(
             "move '${type}' block", mapping=dict(type=self.block.type))
         self.update_order()
-        self.reload(self.old_container)
-        if self.container.__name__ != self.old_container.__name__:
-            self.reload(self.container)
 
     @property
     def move_to_same_position(self):
