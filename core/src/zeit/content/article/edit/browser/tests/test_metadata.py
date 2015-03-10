@@ -240,4 +240,4 @@ class FilenameTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         input_filename = 'new-filename.rename_to'
         s.waitForElementPresent(input_filename)
         s.type(input_filename, 'foo bar\t')
-        self.assertEqual('foo-bar', s.getValue(input_filename))
+        s.waitForValue(input_filename, 'foo-bar')
