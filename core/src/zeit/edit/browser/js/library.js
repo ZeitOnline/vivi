@@ -60,24 +60,23 @@ MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'start',
         if (!MochiKit.DOM.hasElementClass(draggable.element, 'module')) {
             return;
         }
+
         // XXX It's unclear which semantics we want here: A generic before-drag
         // event, or specific before-content-drag, before-module-drag etc.?
         // Since there is only one subscriber at the moment, we leave it as is.
         MochiKit.Signal.signal(window, 'before-content-drag', draggable);
-        draggable.element = draggable.element.cloneNode(true);
-        MochiKit.DOM.addElementClass(
-            draggable.element, 'module-drag-pane');
+
+        // XXX This copies most of the mechanics of zeit.cms:dnd.js,
+        // but now we benefit from its drag-end handler that distinguishes
+        // between success/failure.
+        var source_element = draggable.element;
+        var pos = MochiKit.Style.getElementPosition(
+            source_element);
+        draggable.delta = [pos.x, pos.y];
+        draggable.element = source_element.cloneNode(true);
+        draggable.element.source_element = source_element;
         draggable.offset = [-10, -10];
         jQuery('body').append(draggable.element);
 });
-
-MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'end',
-    function(draggable) {
-        if (MochiKit.DOM.hasElementClass(
-            draggable.element, 'module-drag-pane')) {
-            MochiKit.DOM.removeElement(draggable.element);
-        }
-});
-
 
 }());
