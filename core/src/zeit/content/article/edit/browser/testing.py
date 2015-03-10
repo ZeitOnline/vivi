@@ -41,7 +41,7 @@ class EditorHelper(object):
         s = self.selenium
         self.open(add_location)
         s.select('id=add_menu', 'label=Article')
-        s.waitForPageToLoad()
+        s.waitForElementPresent('css=.create-paragraph')
 
     def create(self, contents=None, existing=0):
         s = self.selenium
@@ -99,7 +99,7 @@ class EditorHelper(object):
 
         s = self.selenium
         s.refresh()
-        s.click('//li[@uniqueid="Clip"]')
+        s.clickAt('//li[@uniqueid="Clip"]', '10,10')
         s.waitForElementPresent('//li[@uniqueid="Clip"][@action="collapse"]')
 
 
