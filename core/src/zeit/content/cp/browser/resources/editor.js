@@ -111,6 +111,9 @@ var ident = MochiKit.Signal.connect(
 
 
 MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
+    // XXX Feature disabled until we find a tooltip implementation that works.
+    return;
+
     var $ = jQuery;
     if (! zeit.cms.in_cp_editor()) {
         return;

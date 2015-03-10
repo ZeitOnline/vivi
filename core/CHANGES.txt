@@ -7,8 +7,6 @@ zeit.content.cp changes
 
 - Make it possible to set a default layout for each area width. (DEV-639)
 
-- Display tooltip how areas are displayed when using desktop layout. (DEV-597)
-
 - Allow moving blocks inside and between areas (DEV-53).
 
 - Allow moving areas inside and between regions (DEV-53).
