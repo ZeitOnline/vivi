@@ -285,7 +285,7 @@ class CommonMetadataUpdater(XMLReferenceUpdater):
         if metadata.ressort:
             entry.set('ressort', unicode(metadata.ressort))
         if metadata.serie:
-            entry.set('serie', unicode(metadata.serie))
+            entry.set('serie', unicode(metadata.serie.serienname))
         try:
             type_decl = zeit.cms.interfaces.ITypeDeclaration(self.context)
         except TypeError:

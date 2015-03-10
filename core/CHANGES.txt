@@ -4,7 +4,9 @@ zeit.cms changes
 2.38.2 (unreleased)
 -------------------
 
-- Reorganize series source into dictionary structure (BUG-214).
+- Reorganize series source into dictionary structure for performance (BUG-214).
+
+- Fix serializing Serie objects to XML (ZON-1464).
 
 
 2.38.1 (2015-03-04)
