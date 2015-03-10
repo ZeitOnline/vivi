@@ -100,6 +100,12 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.7.10 (2015-03-10)
+-------------------
+
+- Auto-CP: Make ``count`` field required when ``automatic`` is True (BUG-213).
+
+
 2.7.9 (2015-03-09)
 ------------------
 
