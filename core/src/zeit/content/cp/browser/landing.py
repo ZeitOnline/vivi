@@ -7,6 +7,7 @@ For TeaserBlockLandingZone see: http://cmsdev.zeit.de/content/aufmacher-fläche-
 
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.related.interfaces
+import zeit.content.cp.interfaces
 import zeit.edit.browser.landing
 import zeit.edit.browser.view
 import zeit.edit.interfaces
@@ -33,6 +34,17 @@ class CreateNestedAreaMixin(object):
         keys.remove(self.region.__name__)
         keys = self.add_block_in_order(keys, self.region.__name__)
         self.container.updateOrder(keys)
+
+    def reload(self, container):
+        """Skip reload of the created region, since it is not present yet.
+
+        The reload is triggered since nesting the area inside region creates a
+        IContainerModifiedEvent, which trigger_reload subscribes to.
+
+        """
+        if zeit.content.cp.interfaces.IRegion.providedBy(container):
+            return
+        super(CreateNestedAreaMixin, self).reload(container)
 
     @property
     def region(self):
