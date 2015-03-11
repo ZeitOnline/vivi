@@ -86,13 +86,6 @@ class BodyLandingZoneMove(
         return (hasattr(self, 'block')
                 and zeit.content.cp.interfaces.IArea.providedBy(self.block))
 
-    def reload(self, container):
-        """Skip reload of container the area came from, since we reload body.
-        """
-        if self.create_nested_area and container == self.old_container:
-            return
-        super(BodyLandingZoneMove, self).reload(container)
-
     def move_block(self):
         self.block = self.find_topmost_container(
             self.context).get_recursive(self.block_id)
