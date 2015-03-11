@@ -32,6 +32,9 @@ zeit.content.cp changes
 
 - Implement overflowing blocks from one area to another (DEV-16).
 
+- Mark centerpages with interface to distinguish between master and 2.x branch
+  (DEV-660).
+
 - Auto-CP: Retrieve the configured number of teasers from solr (DEV-621).
 
 
