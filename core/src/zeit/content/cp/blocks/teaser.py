@@ -354,27 +354,21 @@ def change_layout_if_not_allowed_in_new_area(context, event):
     zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
     area = context.__parent__
-    apply_layout(area, zope.container.contained.ContainerModifiedEvent(
-        area, zope.lifecycleevent.Attributes(
-            zeit.edit.interfaces.IContainer, context.__name__)))
+    apply_layout(area, zeit.edit.interfaces.OrderUpdatedEvent(
+        area, context.__name__))
 
 
 @zope.component.adapter(
     zeit.content.cp.interfaces.IArea,
-    zope.container.interfaces.IContainerModifiedEvent)
+    zeit.edit.interfaces.IOrderUpdatedEvent)
 def apply_layout(context, event):
     """Apply the layout for elements in the teaser list.
 
     The first one mustn't be small, all other have to be small.
     """
-    if (not event.descriptions
-        or event.descriptions[0].interface
-        is not zeit.edit.interfaces.IContainer):
-        # not triggered by updateOrder
-        return
     if context.__name__ != 'lead':
         return
-    previously_first = event.descriptions[0].attributes[0]
+    previously_first = event.old_order[0]
 
     cp_type = zeit.content.cp.interfaces.ICenterPage(context).type
     if (cp_type == 'archive-print-volume'
