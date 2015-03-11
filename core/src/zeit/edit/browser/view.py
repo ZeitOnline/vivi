@@ -97,11 +97,10 @@ class Action(zeit.cms.browser.view.Base, UndoableMixin):
             None, 'reload', element.__name__, self.url(element, '@@contents'))
 
     def signal(self, when, name, *args):
-        self.signals.append(dict(
-            args=args,
-            name=name,
-            when=when,
-        ))
+        signal = dict(args=args, name=name, when=when)
+        # Guard to avoid duplicate signals, e.g. reloading the container twice
+        if signal not in self.signals:
+            self.signals.append(signal)
 
     def render(self):
         self.request.response.setHeader('Content-Type', 'text/json')
