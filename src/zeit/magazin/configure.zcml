@@ -82,4 +82,10 @@
     provides=".interfaces.IPortraitboxLongtext"
     />
 
+  <adapter
+    factory=".interfaces.IHamburgContent"
+    for=".interfaces.IHamburgSection"
+    provides="zeit.cms.section.interfaces.ISectionMarker"
+    />
+
 </configure>
