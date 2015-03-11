@@ -204,6 +204,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         # the lock. That means that we can edit again
         s.click('css=#cp-forms a.CloseButton')
         s.waitForElementNotPresent('css=#cp-forms a.CloseButton')
+        s.pause(500)
         s.click(
             '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
             'a[contains(@class, "edit-link")]')
