@@ -150,9 +150,9 @@ XML of an audio/video block
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="audio" module="audio" cp:__name__="id-<GUID>">
+<container cp:type="audio"...>
   <audio audioID="98765" format="large"/>
 </container>
-<container cp:type="video" module="video" cp:__name__="id-<GUID>">
+<container cp:type="video"...>
   <video videoID="pls" player="pls" expires="" format="small"/>
 </container>...

@@ -8,6 +8,7 @@ import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.block
+import zeit.content.cp.browser.editor
 import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zeit.edit.browser.view
@@ -338,20 +339,7 @@ def teaserEditViewName(context):
     return 'edit-teaser.html'
 
 
-class ToggleBooleanBase(zeit.edit.browser.view.Action):
-
-    to = zeit.edit.browser.view.Form('to')
-    attribute = NotImplemented
-
-    def update(self):
-        setattr(self.context, self.attribute,
-                (True if self.to == 'on' else False))
-        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-            self.context))
-        self.reload()
-
-
-class ToggleAutopilot(ToggleBooleanBase):
+class ToggleAutopilot(zeit.content.cp.browser.editor.ToggleBooleanBase):
 
     attribute = 'autopilot'
 
@@ -417,16 +405,3 @@ class Countings(object):
                 return self.countings.detail_url
             except AttributeError:
                 pass
-
-
-class ToggleVisibleMenuItem(zeit.cms.browser.view.Base):
-
-    @property
-    def toggle_url(self):
-        on_off = 'off' if self.context.visible else 'on'
-        return self.url('@@toggle-visible?to=' + on_off)
-
-
-class ToggleVisible(ToggleBooleanBase):
-
-    attribute = 'visible'

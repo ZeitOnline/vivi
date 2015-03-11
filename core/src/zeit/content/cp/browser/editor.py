@@ -1,6 +1,8 @@
 from zeit.content.cp.i18n import MessageFactory as _
+import zeit.cms.browser.view
 import zeit.edit.browser.view
 import zope.interface
+import zope.lifecycleevent
 import zope.security.proxy
 import zope.traversing.browser
 
@@ -40,3 +42,29 @@ class Migrate(object):
         for iface in [self.other_iface, self.current_iface]:
             if iface.providedBy(self.context):
                 return iface.__name__
+
+
+class ToggleBooleanBase(zeit.edit.browser.view.Action):
+
+    to = zeit.edit.browser.view.Form('to')
+    attribute = NotImplemented
+
+    def update(self):
+        setattr(self.context, self.attribute,
+                (True if self.to == 'on' else False))
+        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
+            self.context))
+        self.reload()
+
+
+class ToggleVisibleMenuItem(zeit.cms.browser.view.Base):
+
+    @property
+    def toggle_url(self):
+        on_off = 'off' if self.context.visible else 'on'
+        return self.url('@@toggle-visible?to=' + on_off)
+
+
+class ToggleVisible(ToggleBooleanBase):
+
+    attribute = 'visible'

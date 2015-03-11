@@ -156,24 +156,4 @@
       permission="zope.Public"
       />
 
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="toggle-visible"
-    class=".teaser.ToggleVisibleMenuItem"
-    template="layout.teaser.toggle-visible.pt"
-    permission="zeit.EditContent"
-    weight="10"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="toggle-visible"
-    class=".teaser.ToggleVisible"
-    permission="zeit.EditContent"
-    />
-
 </configure>

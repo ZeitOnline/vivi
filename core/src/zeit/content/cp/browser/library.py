@@ -6,6 +6,7 @@ See http://cmsdev.zeit.de/node/362
 
 """
 
+import lxml.objectify
 import zeit.edit.browser.library
 
 
@@ -13,7 +14,8 @@ class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
 
     @property
     def factory_context(self):
-        return zeit.content.cp.area.Area(None, None)
+        xml = lxml.objectify.XML('<dummy/>')
+        return zeit.content.cp.area.Area(None, xml)
 
     @property
     def library_name(self):
@@ -24,7 +26,8 @@ class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
 
     @property
     def factory_context(self):
-        return zeit.content.cp.area.Region(None, None)
+        xml = lxml.objectify.XML('<dummy/>')
+        return zeit.content.cp.area.Region(None, xml)
 
     @property
     def library_name(self):

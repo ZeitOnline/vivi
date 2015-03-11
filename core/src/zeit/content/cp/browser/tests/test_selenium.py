@@ -255,11 +255,13 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent(
             'css=.block.type-area .block.type-teaser')
 
-        s.assertElementNotPresent('css=.block.type-teaser.block-visible-off')
-        s.click('link=Switch visible')
-        s.waitForElementPresent('css=.block.type-teaser.block-visible-off')
-        s.click('link=Switch visible')
-        s.waitForElementNotPresent('css=.block.type-teaser.block-visible-off')
+        visible_off_marker = 'css=.block.type-teaser.block-visible-off'
+        toggle_visible = 'css=.block.type-teaser .toggle-visible-link'
+        s.assertElementNotPresent(visible_off_marker)
+        s.click(toggle_visible)
+        s.waitForElementPresent(visible_off_marker)
+        s.click(toggle_visible)
+        s.waitForElementNotPresent(visible_off_marker)
 
 
 class TestMoving(zeit.content.cp.testing.SeleniumTestCase):

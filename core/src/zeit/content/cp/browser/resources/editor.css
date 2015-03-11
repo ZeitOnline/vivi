@@ -33,7 +33,7 @@
   background-image: url('eye.png');
 }
 
-.block-visible-off .edit-bar > .toggle-visible-link {
+.block-visible-off > .block-inner > .edit-bar > .toggle-visible-link {
   background-image: url('contrast.png');
 }
 

@@ -12,7 +12,8 @@ class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
     @property
     def css_class(self):
         classes = super(ViewletManager, self).css_class
-        return ' '.join(['editable-area', classes])
+        visible = 'block-visible-off' if not self.context.visible else ''
+        return ' '.join(['editable-area', visible, classes])
 
 
 class EditProperties(zeit.content.cp.browser.blocks.teaser.EditLayout):

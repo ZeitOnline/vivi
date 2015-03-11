@@ -4,13 +4,15 @@ import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml
 import zeit.cms.content.property
+import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.edit.container
 import zope.component
 import zope.interface
 
 
-class Region(zeit.edit.container.Base):
+class Region(zeit.content.cp.blocks.block.VisibleMixin,
+             zeit.edit.container.Base):
 
     zope.interface.implements(zeit.content.cp.interfaces.IRegion)
     zope.component.adapts(
@@ -59,7 +61,8 @@ class RegionFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
-class Area(zeit.edit.container.TypeOnAttributeContainer):
+class Area(zeit.content.cp.blocks.block.VisibleMixin,
+           zeit.edit.container.TypeOnAttributeContainer):
 
     zope.interface.implements(zeit.content.cp.interfaces.IArea)
     zope.component.adapts(

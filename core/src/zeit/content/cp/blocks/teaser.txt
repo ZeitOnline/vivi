@@ -274,8 +274,8 @@ archive-print-volume
 <centerpage ...>
   <head...
   <body>
-    <cluster area="feature">
-      <region area="lead">
+    <cluster area="feature"...>
+      <region area="lead"...>
         <container cp:type="teaser" module="archive-print-volume" .../>
         <container cp:type="teaser" module="archive-print-volume" .../>
         <container cp:type="teaser" module="archive-print-volume" .../>

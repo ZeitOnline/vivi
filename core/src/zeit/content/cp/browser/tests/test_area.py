@@ -30,6 +30,19 @@ class ElementTestHelper(object):
         s.waitForConfirmation(u'Wirklich löschen?')
         s.waitForCssCount('css=.type-{}'.format(self.name), 1)
 
+    def test_toggle_visible(self):
+        self.test_add_element_creates_new_element()
+        s = self.selenium
+        visible_off_marker = 'css=.block.type-{}.block-visible-off'.format(
+            self.name)
+        s.assertElementNotPresent(visible_off_marker)
+        toggle_visible = 'css=.block.type-{} .toggle-visible-link'.format(
+            self.name)
+        s.click(toggle_visible)
+        s.waitForElementPresent(visible_off_marker)
+        s.click(toggle_visible)
+        s.waitForElementNotPresent(visible_off_marker)
+
 
 class RegionTest(
         ElementTestHelper,

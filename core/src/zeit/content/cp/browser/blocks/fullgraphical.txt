@@ -88,8 +88,7 @@ The source of a fullgraphical block does contain the layout decision:
 >>> print browser.getControl('XML Source').value
 <...
 <container cp:type="fullgraphical" module="fullgraphical"
-           cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca"
-           layout="148x84" title="Block title">
+           ...layout="148x84" title="Block title">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...>
     ...
     <title xsi:nil="true"/>
@@ -117,8 +116,7 @@ the fullgraphical block breaking:
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="fullgraphical" module="fullgraphical"
-           cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
+<container cp:type="fullgraphical" module="fullgraphical"...layout="148x84">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...>
     ...
     <title xsi:nil="true"/>
@@ -172,8 +170,7 @@ object in order to catch its metadata updates:
 >>> browser.open('xml_source_edit.html')
 >>> print browser.getControl('XML Source').value
 <...
-<container cp:type="fullgraphical" module="fullgraphical"
-           cp:__name__="id-f1d2e511-a39a-4b7d-9411-5b9f6518afca" layout="148x84">
+<container cp:type="fullgraphical" module="fullgraphical"...layout="148x84">
   <block type="intern" href="http://xml.zeit.de/my_quiz"...>
     ...
     <title py:pytype="str">Teaser title</title>

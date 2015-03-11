@@ -375,7 +375,7 @@ def rendered_xml(context):
         lxml.objectify.E.cluster(
             zeit.content.cp.interfaces.IRenderedXML(context['lead']),
             zeit.content.cp.interfaces.IRenderedXML(context['informatives']),
-            area='feature'),
+            **context.xml.body.cluster.attrib),
         zeit.content.cp.interfaces.IRenderedXML(context['teaser-mosaic']),
     ))
     root.append(ElementMaker.feed())

@@ -20,7 +20,20 @@ def cms_content_iter(context):
     return iter([])
 
 
-class Block(zeit.edit.block.Element):
+class VisibleMixin(object):
+
+    visible = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'visible', zeit.content.cp.interfaces.IElement[
+            'visible'])
+
+    def __init__(self, context, xml):
+        super(VisibleMixin, self).__init__(context, xml)
+        if 'visible' not in self.xml.attrib:
+            self.visible = zeit.content.cp.interfaces.IElement[
+                'visible'].default
+
+
+class Block(VisibleMixin, zeit.edit.block.Element):
 
     title = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'title')

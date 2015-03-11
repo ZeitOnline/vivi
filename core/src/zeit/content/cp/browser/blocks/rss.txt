@@ -191,7 +191,7 @@ XML of a RSS block
 <...
 <container
     cp:type="rss"
-    module="rss"
+    ...
     max_items="2"
     show_supertitle="False"
     time_format="time"

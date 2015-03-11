@@ -31,7 +31,7 @@ You can edit the XML content by clicking the Edit button:
 >>> browser.getLink('Edit block properties', index=2).click()
 >>> xml = browser.getControl(name="form.xml").value
 >>> print xml
-<container...  cp:type="xml" module="xml" cp:__name__="...">
+<container...  cp:type="xml"...>
  <raw>
 <BLANKLINE>
  </raw>

@@ -303,4 +303,25 @@
     permission="zeit.EditContent"
     />
 
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="toggle-visible"
+    class=".editor.ToggleVisibleMenuItem"
+    template="layout.block.toggle-visible.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IElement"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-visible"
+    class=".editor.ToggleVisible"
+    permission="zeit.EditContent"
+    />
+
 </configure>

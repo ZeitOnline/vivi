@@ -35,6 +35,8 @@ zeit.content.cp changes
 - Mark centerpages with interface to distinguish between master and 2.x branch
   (DEV-660).
 
+- Allow toggle visibility for regions and areas (DEV-76).
+
 - Auto-CP: Retrieve the configured number of teasers from solr (DEV-621).
 
 

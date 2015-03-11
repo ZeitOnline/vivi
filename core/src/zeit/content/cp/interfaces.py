@@ -133,6 +133,10 @@ class IBody(zeit.edit.interfaces.IArea):
 class IElement(zeit.edit.interfaces.IElement):
     """generic element, but CP-specific"""
 
+    visible = zope.schema.Bool(
+        title=_('Visible in frontend'),
+        default=True)
+
 
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
 
@@ -147,6 +151,11 @@ class IReadRegion(zeit.edit.interfaces.IReadContainer):
     __name__ = zope.schema.TextLine(
         title=_("Name"),
         required=True)
+
+    # XXX We need to repeat this from IElement for security declarations.
+    visible = zope.schema.Bool(
+        title=_('Visible in frontend'),
+        default=True)
 
 
 class IWriteRegion(zeit.edit.interfaces.IWriteContainer):
@@ -208,6 +217,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     # Use a schema field so the security can declare it as writable,
     # since in ILocation __parent__ is only an Attribute.
     __parent__ = zope.schema.Object(IElement)
+
+    # XXX We need to repeat this from IElement for security declarations.
+    visible = zope.schema.Bool(
+        title=_('Visible in frontend'),
+        default=True)
 
     layout = zope.schema.Choice(
         title=_("Layout"),
@@ -379,10 +393,6 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         title=_('Display image at these positions'),
         value_type=zope.schema.Int(),
         required=False)
-
-    visible = zope.schema.Bool(
-        title=_('Visible in frontend'),
-        default=True)
 
     @zope.interface.invariant
     def autopilot_requires_referenced_cp(self):
