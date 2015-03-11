@@ -139,9 +139,7 @@ class Base(UserDict.DictMixin,
             self._add(objs[key])
         self._p_changed = True
         zope.event.notify(
-            zope.container.contained.ContainerModifiedEvent(
-                self, zope.lifecycleevent.Attributes(
-                    zeit.edit.interfaces.IContainer, *old_order)))
+            zeit.edit.interfaces.OrderUpdatedEvent(self, *old_order))
 
     def get_recursive(self, key, default=None):
         item = self.get(key, default)

@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zope.container.contained
 import zope.container.interfaces
 import zope.interface
 import zope.schema
@@ -167,3 +168,17 @@ def unique_name_invariant(data):
                 _("Given name {name} is not unique inside parent {parent}."
                   .format(name=data.__name__,
                           parent=context.__parent__.__name__)))
+
+
+class IOrderUpdatedEvent(zope.container.interfaces.IContainerModifiedEvent):
+
+    old_order = zope.interface.Attribute('List of keys of the previous order')
+
+
+class OrderUpdatedEvent(zope.container.contained.ContainerModifiedEvent):
+
+    zope.interface.implements(IOrderUpdatedEvent)
+
+    def __init__(self, context, *old_order):
+        super(OrderUpdatedEvent, self).__init__(context)
+        self.old_order = old_order
