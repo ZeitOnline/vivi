@@ -96,6 +96,7 @@ class Base(UserDict.DictMixin,
         self._p_changed = True
 
         # Re-implementation of zope.container.contained.containedEvent
+        # (We cannot reuse it, since we already set __name__ and __parent__)
         if item.__parent__ != self:
             oldparent = item.__parent__
             item.__parent__ = self
@@ -104,7 +105,9 @@ class Base(UserDict.DictMixin,
         else:
             event = zope.container.contained.ObjectAddedEvent(
                 item, self, name)
+
         zope.event.notify(event)
+        zope.container.contained.notifyContainerModified(self)
 
     def _add(self, item):
         name = item.__name__
@@ -155,8 +158,12 @@ class Base(UserDict.DictMixin,
     def __delitem__(self, key):
         item = self._delete(key)
         self._p_changed = True
+
+        # We cannot reuse zope.container.contained.uncontained, since it would
+        # set __name__ and __parent__ to None, which cannot be persisted to XML
         zope.event.notify(
             zope.container.contained.ObjectRemovedEvent(item, self, key))
+        zope.container.contained.notifyContainerModified(self)
 
     def _delete(self, key):
         __traceback_info__ = (key,)
