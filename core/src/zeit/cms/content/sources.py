@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+import collections
 import gocept.cache.method
 import gocept.lxml.objectify
 import logging
@@ -260,7 +261,7 @@ class SerieSource(SimpleContextualXMLSource):
         if getattr(self, '_values', None):
             return self._values
         tree = self._get_tree()
-        self._values = {}
+        self._values = collections.OrderedDict()
         for node in tree.iterchildren('*'):
             # XXX: For compat reasons we need a fallback `serienname`.
             name = node.get('serienname') or node.text
