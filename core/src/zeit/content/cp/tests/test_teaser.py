@@ -163,6 +163,9 @@ class TestResolver(XMLTeaserBase):
         import zeit.connector.interfaces
         import zope.component
         self.teaser.free_teaser = True
+        # ICP2015 is-a ICenterPage, but we need a non-cp content for this test.
+        zope.interface.noLongerProvides(
+            self.cp, zeit.content.cp.interfaces.ICP2015)
         ICheckinManager(self.cp).checkin()
         # Change the type of the CP so we have a valid xml structure but the
         # wrong type
