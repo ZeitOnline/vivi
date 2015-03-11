@@ -86,3 +86,13 @@ class IPortraitboxLongtext(zope.interface.Interface):
     longtext = zc.form.field.HTMLSnippet(
         title=_("long text (ZMO)"),
         required=False)
+
+
+class IHamburgSection(zeit.cms.section.interfaces.ISection):
+    pass
+
+
+class IHamburgContent(
+        zeit.cms.interfaces.ICMSContent,
+        zeit.cms.section.interfaces.ISectionMarker):
+    pass
