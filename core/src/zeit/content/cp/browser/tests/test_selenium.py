@@ -278,6 +278,7 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
             'css=#lead .block.type-teaser .dragger',
             'css=#informatives .landing-zone.action-cp-module-movable',
             '10,10')
+        s.waitForElementNotPresent('css=#lead .block.type-teaser')
         s.waitForElementPresent('css=#informatives .block.type-teaser')
 
     def test_move_block_inside_area_to_change_order(self):
@@ -297,9 +298,10 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
     def test_move_area_between_regions(self):
         s = self.selenium
         s.dragAndDropToObject(
-            'css=#informatives .dragger',
+            'css=#feature #informatives .dragger',
             'css=#teaser-mosaic .landing-zone.action-cp-region-module-movable',
             '10,10')
+        s.waitForElementNotPresent('css=#feature #informatives')
         s.waitForElementPresent('css=#teaser-mosaic #informatives')
 
     def test_move_area_onto_body_creates_region_with_area(self):
