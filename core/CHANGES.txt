@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Distinguish between sucessful and failed drag&drop operations (DEV-60).
 
+- Sort serie values properly (BUG-215).
+
 
 2.38.2 (2015-03-10)
 -------------------
