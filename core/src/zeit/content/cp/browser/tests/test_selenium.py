@@ -331,14 +331,22 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         path = 'xpath=' + css_path('#body > .type-region') + '[{pos}]@id'
 
         s = self.selenium
-        s.verifyAttribute(path.format(pos=1), 'feature')
-        s.verifyAttribute(path.format(pos=2), 'teaser-mosaic')
+        # create new regions since browser view of Jenkins is too small to move
+        # existing regions with areas and blocks inside
+        s.assertCssCount('css=.type-region', 2)
+        s.click('link=*Add region*')
+        s.waitForCssCount('css=.type-region', 3)
+        s.click('link=*Add region*')
+        s.waitForCssCount('css=.type-region', 4)
+
+        region1 = s.getAttribute(path.format(pos=1))
+        region2 = s.getAttribute(path.format(pos=2))
         s.dragAndDropToObject(
-            'css=#teaser-mosaic .dragger',
+            'css=#{} .dragger'.format(region2),
             'css=#body .landing-zone.action-cp-type-region-movable',
             '10,10')
-        s.waitForAttribute(path.format(pos=1), 'teaser-mosaic')
-        s.waitForAttribute(path.format(pos=2), 'feature')
+        s.waitForAttribute(path.format(pos=1), region2)
+        s.waitForAttribute(path.format(pos=2), region1)
 
 
 class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
