@@ -121,6 +121,7 @@ class CheckinSelenium(
         s = self.selenium
         s.waitForElementPresent('id=checkin')
         s.click('id=publish.has_semantic_change')
+        s.pause(500)
         s.waitForElementNotPresent('css=.field.dirty')
         s.waitForElementPresent('id=publish.has_semantic_change')
         s.assertChecked('id=publish.has_semantic_change')
@@ -133,10 +134,12 @@ class CheckinSelenium(
         s = self.selenium
         s.waitForElementPresent('id=checkin')
         s.click('id=publish.has_semantic_change')
+        s.pause(500)
         s.waitForElementNotPresent('css=.field.dirty')
         # click something else to trigger a reload of the checkin form
         s.waitForElementPresent('id=publish.urgent')
         s.click('id=publish.urgent')
+        s.pause(500)
         s.waitForElementNotPresent('css=.field.dirty')
         s.waitForElementPresent('id=publish.has_semantic_change')
         s.waitForChecked('id=publish.has_semantic_change')
