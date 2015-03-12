@@ -51,20 +51,35 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
              self.teasers3.__name__])
         self.assertFalse(hasattr(xml, 'layout'))
 
+class TestDefaultLayout(zeit.content.cp.testing.FunctionalTestCase):
+    """Test that the default layout for a teaser is set if None or invalid.
+
+    Be aware that the teaser is added to informatives, i.e. the logic above for
+    apply_layout will not be triggered (a guard makes sure it only works for
+    the lead area).
+
+    """
+
+    def setUp(self):
+        super(TestDefaultLayout, self).setUp()
+        self.cp = CenterPage()
+        self.lead = self.cp['lead']
+        self.teaser = self.lead.create_item('teaser')
+
     def test_moving_teaser_sets_default_layout_for_new_area(self):
-        self.teasers1.layout = zeit.content.cp.layout.get_layout(
+        self.teaser.layout = zeit.content.cp.layout.get_layout(
             'leader-two-columns')
-        del self.cp['lead'][self.teasers1.__name__]
-        self.cp['informatives'].add(self.teasers1)
+        del self.cp['lead'][self.teaser.__name__]
+        self.cp['informatives'].add(self.teaser)
         self.assertEllipsis('...module="leader"...', lxml.etree.tostring(
-            self.teasers1.xml, pretty_print=True))
+            self.teaser.xml, pretty_print=True))
 
     def test_moving_teaser_leaves_layout_alone_if_still_allowed(self):
-        self.teasers1.layout = zeit.content.cp.layout.get_layout('buttons')
-        del self.cp['lead'][self.teasers1.__name__]
-        self.cp['informatives'].add(self.teasers1)
+        self.teaser.layout = zeit.content.cp.layout.get_layout('buttons')
+        del self.cp['lead'][self.teaser.__name__]
+        self.cp['informatives'].add(self.teaser)
         self.assertEllipsis('...module="buttons"...', lxml.etree.tostring(
-            self.teasers1.xml, pretty_print=True))
+            self.teaser.xml, pretty_print=True))
 
 
 class AutopilotTest(zeit.content.cp.testing.FunctionalTestCase):
