@@ -350,9 +350,10 @@ def change_layout_if_not_allowed_in_new_area(context, event):
 
 
 @zope.component.adapter(
-    zeit.content.cp.interfaces.IBlock,
+    zeit.content.cp.interfaces.ITeaserBlock,
     zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
+    """Set layout for new teasers only."""
     area = context.__parent__
     apply_layout(area, zeit.edit.interfaces.OrderUpdatedEvent(
         area, context.__name__))
