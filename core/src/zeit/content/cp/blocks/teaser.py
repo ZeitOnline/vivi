@@ -379,16 +379,17 @@ def apply_layout(context, event):
         return
 
     buttons = zeit.content.cp.layout.get_layout('buttons')
+
     first = content[0]
     if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(first) and
-            (first.layout == buttons or first.layout is None)):
+            first.layout == buttons):
         first.layout = zeit.content.cp.layout.get_layout('leader')
 
     previously_first = event.old_order[0]
     for elem in content[1:]:
         if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(elem):
             continue
-        if elem.__name__ == previously_first or elem.layout is None:
+        if elem.__name__ == previously_first:
             elem.layout = buttons
 
 
