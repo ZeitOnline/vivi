@@ -1,5 +1,7 @@
+from zeit.content.cp.blocks.teaser import apply_layout_for_added
 from zeit.content.cp.centerpage import CenterPage
 import lxml.etree
+import mock
 import zeit.cms.checkout.helper
 import zeit.content.cp.testing
 import zeit.edit.interfaces
@@ -50,6 +52,43 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
              self.teasers2.__name__,
              self.teasers3.__name__])
         self.assertFalse(hasattr(xml, 'layout'))
+
+
+class TestApplyLayoutForAdded(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(TestApplyLayoutForAdded, self).setUp()
+        self.cp = CenterPage()
+        self.added = mock.Mock()
+        self.zca.patch_handler(
+            self.added, zope.component.registry._getAdapterRequired(
+                apply_layout_for_added, None))
+
+    def test_apply_layout_for_added_is_called_for_new_teaser(self):
+        self.cp['lead'].create_item('teaser')
+        self.assertEqual(1, self.added.call_count)
+
+    def test_apply_layout_for_added_is_not_called_for_non_teaser_blocks(self):
+        self.cp['lead'].create_item('xml')
+        self.assertEqual(0, self.added.call_count)
+
+    def test_apply_layout_for_added_is_not_called_when_changing_containers(
+            self):
+        teaser = self.cp['lead'].create_item('teaser')
+        self.assertEqual(1, self.added.call_count)
+        del self.cp['lead'][teaser.__name__]
+        self.assertEqual(1, self.added.call_count)
+        self.cp['informatives'].add(teaser)
+        self.assertEqual(1, self.added.call_count)
+
+    def test_apply_layout_for_added_is_not_called_for_same_container(self):
+        teaser = self.cp['lead'].create_item('teaser')
+        self.assertEqual(1, self.added.call_count)
+        del self.cp['lead'][teaser.__name__]
+        self.assertEqual(1, self.added.call_count)
+        self.cp['lead'].add(teaser)
+        self.assertEqual(1, self.added.call_count)
+
 
 class TestDefaultLayout(zeit.content.cp.testing.FunctionalTestCase):
     """Test that the default layout for a teaser is set if None or invalid.
