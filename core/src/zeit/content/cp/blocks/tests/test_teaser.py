@@ -66,6 +66,14 @@ class TestDefaultLayout(zeit.content.cp.testing.FunctionalTestCase):
         self.lead = self.cp['lead']
         self.teaser = self.lead.create_item('teaser')
 
+    def test_default_layout_is_set_for_new_teaser(self):
+        area = self.cp['feature'].create_item('area')
+        area.width = '1/2'
+        teaser = area.create_item('teaser')
+        self.assertEllipsis(
+            '...module="two-side-by-side"...', lxml.etree.tostring(
+                teaser.xml, pretty_print=True))
+
     def test_moving_teaser_sets_default_layout_for_new_area(self):
         self.teaser.layout = zeit.content.cp.layout.get_layout(
             'leader-two-columns')
