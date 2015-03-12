@@ -30,6 +30,8 @@
 }
 
 .edit-bar > .toggle-visible-link {
+  float: right;
+  padding-right: 0.5em;
   background-image: url('eye.png');
 }
 

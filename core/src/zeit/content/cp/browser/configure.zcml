@@ -313,7 +313,7 @@
     class=".editor.ToggleVisibleMenuItem"
     template="layout.block.toggle-visible.pt"
     permission="zeit.EditContent"
-    weight="10"
+    weight="100"
     />
 
   <browser:page
