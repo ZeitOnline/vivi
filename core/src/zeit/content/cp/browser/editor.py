@@ -21,13 +21,15 @@ class Editor(object):
         return dict(class_=css_class, messages=validation_messages)
 
 
-class Migrate(object):
+class Migrate(zeit.cms.workingcopy.browser.workingcopy.DeleteFromWorkingcopy):
 
     current_iface = zeit.content.cp.interfaces.ICP2015
     other_iface = zeit.content.cp.interfaces.ICP2009
 
     def __call__(self):
-        if self.request.method == 'POST' and 'migrate' in self.request.form:
+        if self.request.method != 'POST':
+            return super(Migrate, self).__call__()
+        if 'migrate' in self.request.form:
             # alsoProvides does not work with proxies
             context = zope.security.proxy.getObject(self.context)
             zope.interface.alsoProvides(context, self.current_iface)
@@ -35,7 +37,10 @@ class Migrate(object):
             return self.request.response.redirect(
                 zope.traversing.browser.absoluteURL(
                     self.context, self.request))
-        return super(Migrate, self).__call__()
+        elif 'cancel' in self.request.form:
+            self.delete()
+            return self.request.response.redirect(
+                self.next_url(self.context.__parent__))
 
     @property
     def content_type(self):

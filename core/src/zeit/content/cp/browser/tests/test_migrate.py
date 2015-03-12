@@ -38,10 +38,15 @@ class MigrateBrowserTest(zeit.cms.testing.BrowserTestCase):
 
     def test_migrate_changes_interface(self):
         b = self.browser
-        b.handleErrors = False
         b.getControl('Migrate').click()
         b.getLink('Edit', index=1).click()
         with self.assertRaises(LookupError):
             b.getControl('Migrate')
         b.getLink('Checkin').click()
         self.assertTrue(ICP2015.providedBy(self.repository['cp']))
+
+    def test_abort_deletes_workingcopy(self):
+        b = self.browser
+        b.getControl('Cancel').click()
+        self.assertIn('/repository/', b.url)
+        self.assertFalse(ICP2015.providedBy(self.repository['cp']))
