@@ -369,12 +369,11 @@ def apply_layout(context, event):
     """
     if context.__name__ != 'lead':
         return
-    previously_first = event.old_order[0]
 
     cp_type = zeit.content.cp.interfaces.ICenterPage(context).type
-    if (cp_type == 'archive-print-volume'
-        or cp_type == 'archive-print-year'):
+    if (cp_type == 'archive-print-volume' or cp_type == 'archive-print-year'):
         return
+
     content = list(context.values())
     if len(content) == 0:
         return
@@ -382,9 +381,10 @@ def apply_layout(context, event):
     buttons = zeit.content.cp.layout.get_layout('buttons')
     first = content[0]
     if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(first) and
-        (first.layout == buttons or first.layout is None)):
+            (first.layout == buttons or first.layout is None)):
         first.layout = zeit.content.cp.layout.get_layout('leader')
 
+    previously_first = event.old_order[0]
     for elem in content[1:]:
         if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(elem):
             continue
