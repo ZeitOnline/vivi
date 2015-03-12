@@ -352,6 +352,19 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForAttribute(path.format(pos=1), region2)
         s.waitForAttribute(path.format(pos=2), region1)
 
+    def test_move_area_integration_test(self):
+        """Chain several actions to ensure that client side JS does not break.
+
+        We often ran into issues caused by JS errors which cannot be discovered
+        when testing actions one by one, since the first action might succeed
+        and following actions might fail due to the JS error. Thus we need a
+        test that chains several actions.
+
+        """
+        self.test_move_block_between_areas()
+        self.test_move_area_onto_body_creates_region_with_area()
+        self.test_move_block_inside_area_to_change_order()
+
 
 class TestLandingZone(zeit.content.cp.testing.SeleniumTestCase):
 
