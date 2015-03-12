@@ -37,6 +37,9 @@ class Element(zope.container.contained.Contained,
             strip_whitespaces=True)
         return not differences
 
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     @property
     def __name__(self):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
