@@ -150,6 +150,7 @@ class TestDefaultLayout(zeit.content.cp.testing.FunctionalTestCase):
         area = self.cp['feature'].create_item('area')
         area.width = '1/2'
         teaser = area.create_item('teaser')
+        self.assertEqual(teaser.layout.id, 'two-side-by-side')
         self.assertEllipsis(
             '...module="two-side-by-side"...', lxml.etree.tostring(
                 teaser.xml, pretty_print=True))
