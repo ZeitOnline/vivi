@@ -163,14 +163,14 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
 
     def move_block(self):
         self.block = self.find_topmost_container(
-            self.context).get_recursive(self.block_id)
+            self.container).get_recursive(self.block_id)
         self.old_container = self.block.__parent__
 
-        if self.context == self.old_container:
+        if self.container == self.old_container:
             return  # do nothing when block was sorted in same container
 
         del self.old_container[self.block.__name__]
-        self.context.add(self.block)
+        self.container.add(self.block)
 
     def find_topmost_container(self, element):
         container = element
