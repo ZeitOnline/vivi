@@ -1,3 +1,4 @@
+from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
 import fractions
 import gocept.lxml.interfaces
@@ -69,24 +70,23 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IRegion,
         gocept.lxml.interfaces.IObjectified)
 
-    _layout = zeit.cms.content.property.ObjectPathAttributeProperty(
+    _layout = ObjectPathAttributeProperty(
         '.', 'module')
-    supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
+    supertitle = ObjectPathAttributeProperty(
         '.', 'supertitle')
-    title = zeit.cms.content.property.ObjectPathAttributeProperty(
+    title = ObjectPathAttributeProperty(
         '.', 'title')
-    _width = zeit.cms.content.property.ObjectPathAttributeProperty(
+    _width = ObjectPathAttributeProperty(
         '.', 'width')
-    teaserText = zeit.cms.content.property.ObjectPathAttributeProperty(
+    teaserText = ObjectPathAttributeProperty(
         '.', 'teaserText')
-    background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+    background_color = ObjectPathAttributeProperty(
         '.', 'background_color')
-    block_max = zeit.cms.content.property.ObjectPathAttributeProperty(
+    block_max = ObjectPathAttributeProperty(
         '.', 'block_max', zeit.content.cp.interfaces.IArea['block_max'])
-    _overflow_into = zeit.cms.content.property.ObjectPathAttributeProperty(
+    _overflow_into = ObjectPathAttributeProperty(
         '.', 'overflow_into')
-    _apply_teaser_layouts = zeit.cms.content.property.\
-        ObjectPathAttributeProperty(
+    _apply_teaser_layouts = ObjectPathAttributeProperty(
         '.', 'apply_teaser_layouts',
         zeit.content.cp.interfaces.IArea['apply_teaser_layouts_automatically'])
 
