@@ -335,7 +335,17 @@ def create_cp_channel(context, event):
         if zeit.cms.interfaces.ICMSContent.providedBy(obj):
             feed.insert(i, obj)
     feed_name = cp_feed_name(context.__name__)
+    if automatic_enabled(context):
+        feed.xml.set('automatic', 'True')
     context.__parent__[feed_name] = feed
+
+
+def automatic_enabled(centerpage):
+    for region in centerpage.values():
+        for area in region.values():
+            if zeit.content.cp.interfaces.IAutomaticArea(area).automatic:
+                return True
+    return False
 
 
 @grok.subscribe(

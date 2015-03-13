@@ -39,6 +39,8 @@ zeit.content.cp changes
 
 - Auto-CP: Retrieve the configured number of teasers from solr (DEV-621).
 
+- Auto-CP: Mark CP feed ``.lead`` with ``automatic`` attribute (DEV-659).
+
 
 3.0.0b6 (2015-02-20)
 --------------------
