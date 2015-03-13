@@ -108,14 +108,6 @@
   <browser:page
     for="zeit.content.cp.interfaces.IArea"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-teaserlayout"
-    class=".area.EditTeaserLayout"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="change-layout"
     class=".area.ChangeLayout"
     permission="zeit.EditContent"
@@ -200,17 +192,6 @@
     template="layout.block.edit-overflow.pt"
     permission="zeit.EditContent"
     weight="3"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IArea"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="teaserlayout-box"
-    template="layout.block.edit-teaserlayout.pt"
-    permission="zeit.EditContent"
-    weight="4"
     />
 
   <browser:viewlet
