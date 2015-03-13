@@ -27,8 +27,24 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
              self.teasers1.__name__])
         self.assertEqual('leader', self.teasers3.layout.id)
 
+    def test_block_with_custom_layout_has_same_layout_on_sort_to_pos_1(self):
+        self.teasers3.layout = zeit.content.cp.layout.get_layout('large')
+        self.lead.updateOrder(
+            [self.teasers3.__name__,
+             self.teasers2.__name__,
+             self.teasers1.__name__])
+        self.assertEqual('large', self.teasers3.layout.id)
+
     def test_leader_should_become_buttons_on_sort_to_position_n(self):
         self.assertEqual('leader', self.teasers1.layout.id)
+        self.lead.updateOrder(
+            [self.teasers3.__name__,
+             self.teasers2.__name__,
+             self.teasers1.__name__])
+        self.assertEqual('buttons', self.teasers1.layout.id)
+
+    def test_block_with_custom_layout_is_overwritten_on_sort_to_pos_n(self):
+        self.teasers1.layout = zeit.content.cp.layout.get_layout('large')
         self.lead.updateOrder(
             [self.teasers3.__name__,
              self.teasers2.__name__,
@@ -52,6 +68,20 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
              self.teasers2.__name__,
              self.teasers3.__name__])
         self.assertFalse(hasattr(xml, 'layout'))
+
+    def test_layouts_are_unchanged_if_position_1_untouched(self):
+        self.teasers1.layout = zeit.content.cp.layout.get_layout('large')
+        self.teasers2.layout = zeit.content.cp.layout.get_layout('large')
+        self.teasers3.layout = zeit.content.cp.layout.get_layout('large')
+
+        self.lead.updateOrder(
+            [self.teasers1.__name__,
+             self.teasers3.__name__,
+             self.teasers2.__name__])
+
+        self.assertEqual('large', self.teasers1.layout.id)
+        self.assertEqual('large', self.teasers2.layout.id)
+        self.assertEqual('large', self.teasers3.layout.id)
 
 
 class TestApplyLayoutForAdded(zeit.content.cp.testing.FunctionalTestCase):
@@ -88,6 +118,17 @@ class TestApplyLayoutForAdded(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(1, self.added.call_count)
         self.cp['lead'].add(teaser)
         self.assertEqual(1, self.added.call_count)
+
+    def test_new_teaser_list_on_position_1_has_layout_leader(self):
+        lead = self.cp['lead']
+        teaser1 = lead.create_item('teaser')
+        self.assertEqual('leader', teaser1.layout.id)
+
+    def test_new_teaser_list_on_position_n_has_layout_buttons(self):
+        lead = self.cp['lead']
+        lead.create_item('teaser')
+        teaser2 = lead.create_item('teaser')
+        self.assertEqual('buttons', teaser2.layout.id)
 
 
 class TestDefaultLayout(zeit.content.cp.testing.FunctionalTestCase):
