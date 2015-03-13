@@ -51,16 +51,7 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
             'css=#{} + .landing-zone'.format(self.teaser2),
             '10,10')
         self.wait_for_order([self.teaser2, self.teaser1, self.teaser3])
-        self.assert_layout(['leader', 'buttons', 'buttons'])
-
-    def test_moving_teaser_to_first_pos_overwrites_layout_with_leader(self):
-        s = self.selenium
-        s.dragAndDropToObject(
-            'css=#{} .dragger'.format(self.teaser3),
-            'css=#lead .landing-zone',
-            '10,10')
-        self.wait_for_order([self.teaser3, self.teaser1, self.teaser2])
-        self.assert_layout(['leader', 'buttons', 'buttons'])
+        self.assert_layout(['buttons', 'buttons', 'buttons'])
 
     def test_moving_teaser_from_n_to_n_does_not_change_layout(self):
         s = self.selenium

@@ -19,13 +19,13 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
         self.teasers2 = self.lead.create_item('teaser')
         self.teasers3 = self.lead.create_item('teaser')
 
-    def test_block_should_become_leader_on_sort_to_position_1(self):
-        self.assertEqual('buttons', self.teasers3.layout.id)
+    def test_block_should_have_same_layout_on_sort_to_position_1(self):
+        self.teasers3.layout = zeit.content.cp.layout.get_layout('large')
         self.lead.updateOrder(
             [self.teasers3.__name__,
              self.teasers2.__name__,
              self.teasers1.__name__])
-        self.assertEqual('leader', self.teasers3.layout.id)
+        self.assertEqual('large', self.teasers3.layout.id)
 
     def test_block_with_custom_layout_has_same_layout_on_sort_to_pos_1(self):
         self.teasers3.layout = zeit.content.cp.layout.get_layout('large')
@@ -83,13 +83,13 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('large', self.teasers2.layout.id)
         self.assertEqual('large', self.teasers3.layout.id)
 
-    def test_block_should_become_leader_when_buttons_and_position_1(self):
+    def test_block_layout_should_remain_buttons_when_container_is_sorted(self):
         self.teasers1.layout = zeit.content.cp.layout.get_layout('buttons')
         self.lead.updateOrder(
             [self.teasers1.__name__,
              self.teasers2.__name__,
              self.teasers3.__name__])
-        self.assertEqual('leader', self.teasers1.layout.id)
+        self.assertEqual('buttons', self.teasers1.layout.id)
 
 
 class TestApplyLayoutForAdded(zeit.content.cp.testing.FunctionalTestCase):
