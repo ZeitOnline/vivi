@@ -529,7 +529,7 @@ label[for="form.query"]:after {
 /* XXX Had to copy all rules from zeit.cms:cms.css */
 .type-centerpage-2009 .landing-zone.hover-content {
   background: -moz-linear-gradient(center top , #FFF, #F3FFC6) repeat scroll 0 0 transparent;
-  height: 4em;
+  height: 10em;
   border-color: #a6cc17;
   outline: 4px solid #a6cc17;
   display: block;
