@@ -255,6 +255,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_("Overflow into"),
         source=OtherAreaSource())
 
+    apply_teaser_layouts_automatically = zope.interface.Attribute(
+        'Boolean if the layout of teaser lists should be set automatically')
+
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):
     pass

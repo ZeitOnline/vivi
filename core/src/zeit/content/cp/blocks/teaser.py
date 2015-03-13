@@ -355,8 +355,13 @@ def change_layout_if_not_allowed_in_new_area(context, event):
 def apply_layout_for_added(context, event):
     """Set layout for new teasers only."""
     area = context.__parent__
-    apply_layout(area, zeit.edit.interfaces.OrderUpdatedEvent(
-        area, context.__name__))
+    if not area.apply_teaser_layouts_automatically:
+        return
+
+    if area.values().index(context) == 0:
+        context.layout = zeit.content.cp.layout.get_layout('leader')
+    else:
+        context.layout = zeit.content.cp.layout.get_layout('buttons')
 
 
 @zope.component.adapter(
@@ -367,19 +372,11 @@ def apply_layout(context, event):
 
     The first one mustn't be small, all other have to be small.
     """
-    if context.__name__ != 'lead':
-        return
-
-    cp_type = zeit.content.cp.interfaces.ICenterPage(context).type
-    if (cp_type == 'archive-print-volume' or cp_type == 'archive-print-year'):
-        return
-
-    content = list(context.values())
-    if len(content) == 0:
+    if not context.apply_teaser_layouts_automatically:
         return
 
     buttons = zeit.content.cp.layout.get_layout('buttons')
-
+    content = list(context.values())
     first = content[0]
     if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(first) and
             first.layout == buttons):

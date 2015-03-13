@@ -94,6 +94,25 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         return self.xml.get('area') == 'teaser-row-full'
 
     @property
+    def apply_teaser_layouts_automatically(self):
+        """Check if the layout of teaser lists should be set automatically.
+
+        Is used by the event handlers apply_layout_for_added and apply_layout.
+
+        """
+        if self.__name__ != 'lead':
+            return False
+
+        cp_type = zeit.content.cp.interfaces.ICenterPage(self).type
+        if cp_type in ['archive-print-volume', 'archive-print-year']:
+            return False
+
+        if len(list(self.values())) == 0:
+            return False
+
+        return True
+
+    @property
     def layout(self):
         for layout in zeit.content.cp.interfaces.IArea['layout'].source(self):
             if layout.id == self._layout:
