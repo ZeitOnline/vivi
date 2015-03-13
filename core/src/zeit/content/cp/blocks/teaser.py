@@ -371,7 +371,7 @@ def apply_layout_for_added(context, event):
     if area.values().index(context) == 0:
         context.layout = area.first_teaser_layout
     else:
-        context.layout = area.remaining_teaser_layout
+        context.layout = area.default_teaser_layout
 
 
 @grok.subscribe(
@@ -384,7 +384,7 @@ def set_layout_to_default_when_moved_down_from_first_position(context, event):
     previously_first = context[event.old_order[0]]
     if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(previously_first)
             and context.values().index(previously_first)) > 0:
-        previously_first.layout = context.remaining_teaser_layout
+        previously_first.layout = context.default_teaser_layout
 
 
 def make_path_for_unique_id(uniqueId):

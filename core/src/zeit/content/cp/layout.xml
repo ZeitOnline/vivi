@@ -5,7 +5,7 @@
         title="Großer Teaser mit Bild und Teaserliste"
         image_pattern="450x200"
         areas="1/1 1/2 1/3 2/3"
-        default="1/1 1/3 2/3"
+        default="1/1 1/3"
         />
     <layout
         id="leader-two-columns"
@@ -35,6 +35,7 @@
         title="Kleiner Teaser mit kleinem Bild und Teaserliste"
         image_pattern="140x140"
         areas="1/1 1/2 1/3 2/3"
+        default="2/3"
         />
     <layout
         id="two-side-by-side"

@@ -94,8 +94,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IArea['apply_teaser_layouts_automatically'])
     _first_teaser_layout = ObjectPathAttributeProperty(
         '.', 'first_teaser_layout')
-    _remaining_teaser_layout = ObjectPathAttributeProperty(
-        '.', 'remaining_teaser_layout')
 
     type = 'area'
 
@@ -149,21 +147,12 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             self._first_teaser_layout = value.id
 
     @property
-    def remaining_teaser_layout(self):
+    def default_teaser_layout(self):
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
                 self):
-            if layout.id == self._remaining_teaser_layout:
+            if layout.default:
                 return layout
-        if self.__name__ == 'lead':  # BBB
-            return zeit.content.cp.layout.get_layout('buttons')
         return None
-
-    @remaining_teaser_layout.setter
-    def remaining_teaser_layout(self, value):
-        if value is None:
-            self._remaining_teaser_layout = None
-        else:
-            self._remaining_teaser_layout = value.id
 
     @property
     def layout(self):

@@ -265,10 +265,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         source=zeit.content.cp.layout.TeaserBlockLayoutSource(),
         required=False)
 
-    remaining_teaser_layout = zope.schema.Choice(
-        title=_('Remaining teaser layout'),
-        source=zeit.content.cp.layout.TeaserBlockLayoutSource(),
-        required=False)
+    default_teaser_layout = zope.interface.Attribute(
+        'Default layout for teaser lists inside this area')
 
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):
