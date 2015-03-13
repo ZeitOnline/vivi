@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b7 (unreleased)
+3.0.0b7 (2015-03-13)
 --------------------
 
 - Make it possible to set a default layout for each area width. (DEV-639)
