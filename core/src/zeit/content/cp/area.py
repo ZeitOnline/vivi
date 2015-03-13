@@ -85,6 +85,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'block_max', zeit.content.cp.interfaces.IArea['block_max'])
     _overflow_into = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'overflow_into')
+    _apply_teaser_layouts = zeit.cms.content.property.\
+        ObjectPathAttributeProperty(
+        '.', 'apply_teaser_layouts',
+        zeit.content.cp.interfaces.IArea['apply_teaser_layouts_automatically'])
 
     type = 'area'
 
@@ -100,6 +104,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         Is used by the event handlers apply_layout_for_added and apply_layout.
 
         """
+
+        if self._apply_teaser_layouts is not None:
+            return self._apply_teaser_layouts
+
         if self.__name__ != 'lead':
             return False
 
@@ -111,6 +119,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             return False
 
         return True
+
+    @apply_teaser_layouts_automatically.setter
+    def apply_teaser_layouts_automatically(self, value):
+        self._apply_teaser_layouts = value
 
     @property
     def layout(self):

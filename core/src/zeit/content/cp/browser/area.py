@@ -36,6 +36,13 @@ class EditOverflow(zeit.edit.browser.view.EditBox):
             'block_max', 'overflow_into')
 
 
+class EditTeaserLayout(zeit.edit.browser.view.EditBox):
+
+    form_fields = zope.formlib.form.Fields(
+        zeit.content.cp.interfaces.IArea).select(
+            'apply_teaser_layouts_automatically')
+
+
 class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 
     form_fields = zope.formlib.form.FormFields(

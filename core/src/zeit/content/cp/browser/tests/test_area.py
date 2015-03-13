@@ -211,3 +211,27 @@ class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
         self.create_block('teaser', 'lead')
 
         s.waitForElementPresent('css=#informatives .block.type-quiz')
+
+
+@unittest.skip('Selenium browser window is too small to fit all those tabs')
+class ApplyTeaserLayoutSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_apply_teaser_layout_can_be_set(self):
+        self.open_centerpage()
+        s = self.selenium
+        s.click('css=#informatives .edit-bar .edit-link')
+        # Wait for tab content to load, to be certain that the tabs have been
+        # wired properly.
+        s.waitForElementPresent('css=.layout-chooser')
+        s.click('//a[@href="tab-4"]')
+        s.waitForElementPresent('id=form.apply_teaser_layouts_automatically')
+        s.assertNotChecked('id=form.apply_teaser_layouts_automatically')
+        s.click('id=form.apply_teaser_layouts_automatically')
+        s.click(r'css=#tab-4 #form\.actions\.apply')
+        s.waitForElementNotPresent('css=a.CloseButton')
+
+        s.click('css=#informatives .edit-bar .edit-link')
+        s.waitForElementPresent('css=.layout-chooser')
+        s.click('//a[@href="tab-4"]')
+        s.waitForElementPresent('id=form.apply_teaser_layouts_automatically')
+        s.assertChecked('id=form.apply_teaser_layouts_automatically')
