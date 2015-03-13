@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b8 (unreleased)
+3.0.0b8 (2015-03-13)
 --------------------
 
 - Make path to teaser layout preview images configurable.
