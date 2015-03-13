@@ -1,6 +1,8 @@
 from zeit.cms.interfaces import ICMSContent
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
+import lxml.cssselect
 import mock
+import transaction
 import unittest
 import zeit.cms.browser.interfaces
 import zeit.cms.testing
@@ -8,6 +10,74 @@ import zeit.content.cp.browser.testing
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
 import zope.component
+
+
+class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestApplyLayout, self).setUp()
+        xml_selector = lxml.cssselect.CSSSelector(
+            '#lead > .block-inner > .type-teaser').path
+        self.teaser_selector = 'xpath=' + xml_selector + '[{pos}]@id'
+
+        self.cp = self.create_and_checkout_centerpage()
+        self.cp['lead'].create_item('teaser')
+        self.cp['lead'].create_item('teaser')
+        self.cp['lead'].create_item('teaser')
+        transaction.commit()
+        self.open_centerpage(create_cp=False)
+
+        s = self.selenium
+        self.teaser1 = s.getAttribute(self.teaser_selector.format(pos=1))
+        self.teaser2 = s.getAttribute(self.teaser_selector.format(pos=2))
+        self.teaser3 = s.getAttribute(self.teaser_selector.format(pos=3))
+
+    def wait_for_order(self, order):
+        s = self.selenium
+        for i, teaser_id in enumerate(order):
+            s.waitForAttribute(self.teaser_selector.format(pos=i+1), teaser_id)
+
+    def assert_layout(self, layouts):
+        s = self.selenium
+        for index, layout in enumerate(layouts):
+            id_ = s.getAttribute(self.teaser_selector.format(pos=index+1))
+            selector = 'css=#{} > .block-inner > .{}'.format(id_, layout)
+            s.assertCssCount(selector, 1)
+
+    def test_moving_first_teaser_overwrites_layout_leader_with_buttons(self):
+        s = self.selenium
+        s.dragAndDropToObject(
+            'css=#{} .dragger'.format(self.teaser1),
+            'css=#{} + .landing-zone'.format(self.teaser2),
+            '10,10')
+        self.wait_for_order([self.teaser2, self.teaser1, self.teaser3])
+        self.assert_layout(['leader', 'buttons', 'buttons'])
+
+    def test_moving_teaser_to_first_pos_overwrites_layout_with_leader(self):
+        s = self.selenium
+        s.dragAndDropToObject(
+            'css=#{} .dragger'.format(self.teaser3),
+            'css=#lead .landing-zone',
+            '10,10')
+        self.wait_for_order([self.teaser3, self.teaser1, self.teaser2])
+        self.assert_layout(['leader', 'buttons', 'buttons'])
+
+    def test_moving_teaser_from_n_to_n_does_not_change_layout(self):
+        s = self.selenium
+        # set layout of second teaser to 'leader-upright'
+        s.click('css=#{} .edit-link'.format(self.teaser2))
+        s.waitForVisible('css=.lightbox .leader-upright')
+        s.click('css=.lightbox .leader-upright')
+        s.waitForCssCount(
+            'css=#{} > .block-inner > .leader-upright'.format(self.teaser2), 1)
+
+        # drag from 2nd to 3rd pos
+        s.dragAndDropToObject(
+            'css=#{} .dragger'.format(self.teaser2),
+            'css=#{} + .landing-zone'.format(self.teaser3),
+            '10,10')
+        self.wait_for_order([self.teaser1, self.teaser3, self.teaser2])
+        self.assert_layout(['leader', 'buttons', 'leader-upright'])
 
 
 class TestTeaserDisplay(unittest.TestCase):

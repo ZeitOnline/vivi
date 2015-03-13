@@ -83,6 +83,14 @@ class TestApplyLayout(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('large', self.teasers2.layout.id)
         self.assertEqual('large', self.teasers3.layout.id)
 
+    def test_block_should_become_leader_when_buttons_and_position_1(self):
+        self.teasers1.layout = zeit.content.cp.layout.get_layout('buttons')
+        self.lead.updateOrder(
+            [self.teasers1.__name__,
+             self.teasers2.__name__,
+             self.teasers3.__name__])
+        self.assertEqual('leader', self.teasers1.layout.id)
+
 
 class TestApplyLayoutForAdded(zeit.content.cp.testing.FunctionalTestCase):
 
