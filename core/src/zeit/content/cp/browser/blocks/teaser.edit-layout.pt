@@ -9,7 +9,7 @@
         class layout/css_class"
         cms:cp-module="zeit.edit.LoadAndReload">
         <img tal:attributes="src
-             string:${request/getApplicationURL}/repository/data/cp-layouts/${view/layout_prefix}-${layout/token}.png/@@raw" />
+             string:${request/getApplicationURL}/repository/${view/image_path}/${view/layout_prefix}-${layout/token}.png/@@raw" />
         <span i18n:translate="" tal:content="layout/title" />
       </a>
     </div>

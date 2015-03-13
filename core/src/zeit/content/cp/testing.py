@@ -26,6 +26,7 @@ product_config = """
     feed-update-minimum-age 30
     rss-folder rss
     scales-fullgraphical-url file://%s
+    layout-image-path /data/cp-layouts
 </product-config>
 
 <product-config zeit.edit>

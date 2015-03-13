@@ -57,6 +57,12 @@ class EditLayout(object):
     layout_prefix = 'teaser'
 
     @property
+    def image_path(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.cp')
+        return config['layout-image-path']
+
+    @property
     def layouts(self):
         source = self.interface['layout'].source(self.context)
         terms = zope.component.getMultiAdapter(
