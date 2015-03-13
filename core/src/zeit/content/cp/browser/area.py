@@ -40,7 +40,8 @@ class EditTeaserLayout(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IArea).select(
-            'apply_teaser_layouts_automatically')
+            'apply_teaser_layouts_automatically',
+            'first_teaser_layout', 'remaining_teaser_layout')
 
 
 class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):

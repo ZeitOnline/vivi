@@ -359,9 +359,9 @@ def apply_layout_for_added(context, event):
         return
 
     if area.values().index(context) == 0:
-        context.layout = zeit.content.cp.layout.get_layout('leader')
+        context.layout = area.first_teaser_layout
     else:
-        context.layout = zeit.content.cp.layout.get_layout('buttons')
+        context.layout = area.remaining_teaser_layout
 
 
 @zope.component.adapter(
@@ -375,19 +375,18 @@ def apply_layout(context, event):
     if not context.apply_teaser_layouts_automatically:
         return
 
-    buttons = zeit.content.cp.layout.get_layout('buttons')
     content = list(context.values())
     first = content[0]
     if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(first) and
-            first.layout == buttons):
-        first.layout = zeit.content.cp.layout.get_layout('leader')
+            first.layout == context.remaining_teaser_layout):
+        first.layout = context.first_teaser_layout
 
     previously_first = event.old_order[0]
     for elem in content[1:]:
         if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(elem):
             continue
         if elem.__name__ == previously_first:
-            elem.layout = buttons
+            elem.layout = context.remaining_teaser_layout
 
 
 def make_path_for_unique_id(uniqueId):

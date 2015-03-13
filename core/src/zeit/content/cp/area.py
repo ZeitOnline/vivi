@@ -72,23 +72,30 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     _layout = ObjectPathAttributeProperty(
         '.', 'module')
+    _width = ObjectPathAttributeProperty(
+        '.', 'width')
+
     supertitle = ObjectPathAttributeProperty(
         '.', 'supertitle')
     title = ObjectPathAttributeProperty(
         '.', 'title')
-    _width = ObjectPathAttributeProperty(
-        '.', 'width')
     teaserText = ObjectPathAttributeProperty(
         '.', 'teaserText')
     background_color = ObjectPathAttributeProperty(
         '.', 'background_color')
+
     block_max = ObjectPathAttributeProperty(
         '.', 'block_max', zeit.content.cp.interfaces.IArea['block_max'])
     _overflow_into = ObjectPathAttributeProperty(
         '.', 'overflow_into')
+
     _apply_teaser_layouts = ObjectPathAttributeProperty(
         '.', 'apply_teaser_layouts',
         zeit.content.cp.interfaces.IArea['apply_teaser_layouts_automatically'])
+    _first_teaser_layout = ObjectPathAttributeProperty(
+        '.', 'first_teaser_layout')
+    _remaining_teaser_layout = ObjectPathAttributeProperty(
+        '.', 'remaining_teaser_layout')
 
     type = 'area'
 
@@ -123,6 +130,40 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @apply_teaser_layouts_automatically.setter
     def apply_teaser_layouts_automatically(self, value):
         self._apply_teaser_layouts = value
+
+    @property
+    def first_teaser_layout(self):
+        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
+                self):
+            if layout.id == self._first_teaser_layout:
+                return layout
+        if self.__name__ == 'lead':  # BBB
+            return zeit.content.cp.layout.get_layout('leader')
+        return None
+
+    @first_teaser_layout.setter
+    def first_teaser_layout(self, value):
+        if value is None:
+            self._first_teaser_layout = None
+        else:
+            self._first_teaser_layout = value.id
+
+    @property
+    def remaining_teaser_layout(self):
+        for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
+                self):
+            if layout.id == self._remaining_teaser_layout:
+                return layout
+        if self.__name__ == 'lead':  # BBB
+            return zeit.content.cp.layout.get_layout('buttons')
+        return None
+
+    @remaining_teaser_layout.setter
+    def remaining_teaser_layout(self, value):
+        if value is None:
+            self._remaining_teaser_layout = None
+        else:
+            self._remaining_teaser_layout = value.id
 
     @property
     def layout(self):
