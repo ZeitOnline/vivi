@@ -359,7 +359,7 @@ def change_layout_if_not_allowed_in_new_area(context, event):
         context.layout = context.layout
 
 
-@zope.component.adapter(
+@grok.subscribe(
     zeit.content.cp.interfaces.ITeaserBlock,
     zope.container.interfaces.IObjectAddedEvent)
 def apply_layout_for_added(context, event):
@@ -374,7 +374,7 @@ def apply_layout_for_added(context, event):
         context.layout = area.remaining_teaser_layout
 
 
-@zope.component.adapter(
+@grok.subscribe(
     zeit.content.cp.interfaces.IArea,
     zeit.edit.interfaces.IOrderUpdatedEvent)
 def apply_layout(context, event):

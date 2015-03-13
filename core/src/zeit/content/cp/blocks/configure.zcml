@@ -28,12 +28,6 @@
 
   <adapter factory=".teaser.ExcerptDependency" name="zeit.content.cp-excerpt" />
 
-  <subscriber
-    handler=".teaser.apply_layout_for_added" />
-
-  <subscriber
-    handler=".teaser.apply_layout" />
-
   <adapter factory=".teaser.ColumnSpec" trusted="yes" />
   <class class=".teaser.ColumnSpec">
     <require
