@@ -118,6 +118,28 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.9.0 (2015-03-16)
+------------------
+
+- Don't generate ``xinclude`` for autopilots anymore, XSLT resolves them now
+  (DEV-659).
+
+- Mark centerpages with correct interface for this branch, ICP2009.
+
+- Add cancel button to migration warning (DEV-660).
+
+- Update to changed updateOrder event in zeit.edit.
+
+- Auto-CP: Mark CP feed ``.lead`` with ``automatic`` attribute (DEV-659).
+
+
+2.8.0 (2015-03-11)
+------------------
+
+- Mark centerpages with interface to distinguish between master and 2.x branch
+  (DEV-660).
+
+
 2.7.11 (2015-03-10)
 -------------------
 
