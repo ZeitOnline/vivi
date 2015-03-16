@@ -229,20 +229,16 @@ class TeaserBlock(
         # we need to manipulate self.entries, which is only allowed while not
         # on autopilot. Thus we switch the autopilot mode at different times.
         try:
+            # BBB: Remove xinclude if still present
             include = self.xml[
                 '{http://www.w3.org/2003/XInclude}include']
         except AttributeError:
             pass
         else:
             self.xml.remove(include)
+
         if autopilot:
             self.clear()
-            include = zope.component.queryAdapter(
-                self.referenced_cp,
-                zeit.cms.content.interfaces.IXMLReference,
-                name='xi:include')
-            if include is not None:
-                self.xml.append(include)
             self._autopilot = autopilot
         else:
             self._autopilot = autopilot
@@ -387,28 +383,6 @@ def set_layout_to_default_when_moved_down_from_first_position(context, event):
         previously_first.layout = context.default_teaser_layout
 
 
-def make_path_for_unique_id(uniqueId):
-    return uniqueId.replace(
-        zeit.cms.interfaces.ID_NAMESPACE, '/var/cms/work/')
-
-
-def create_xi_include(context, xpath, name_maker=make_path_for_unique_id):
-    include_maker = lxml.objectify.ElementMaker(
-        annotate=False,
-        namespace='http://www.w3.org/2003/XInclude',
-        nsmap={'xi': 'http://www.w3.org/2003/XInclude'},
-    )
-
-    path = name_maker(context.uniqueId)
-
-    include = include_maker.include(
-        include_maker.fallback('Ziel %s nicht erreichbar.' % context.uniqueId),
-        href=path,
-        parse='xml',
-        xpointer='xpointer(%s)' % xpath)
-    return include
-
-
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage, name='excerpt')
 @grok.implementer(zeit.cms.syndication.interfaces.IFeed)
 def feed_excerpt(context):
@@ -432,36 +406,6 @@ class ExcerptDependency(object):
         if cp_feed is None:
             return []
         return [cp_feed]
-
-
-@zope.component.adapter(zeit.content.cp.interfaces.ICenterPage)
-@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
-def cp_xi_include(context):
-    """Reference a CP as xi:include."""
-    include = None
-    cp_feed = zope.component.queryAdapter(
-        context, zeit.cms.syndication.interfaces.IFeed, name='excerpt')
-    if cp_feed is not None:
-        include = zope.component.queryAdapter(
-            cp_feed, zeit.cms.content.interfaces.IXMLReference,
-            name='xi:include')
-    if include is None:
-        include = create_xi_include(
-            context, ("/centerpage/body/cluster[@area='feature']"
-                      "/region[@area='lead']/container/block[1]"))
-    return include
-
-
-@zope.component.adapter(zeit.cms.syndication.feed.Feed)
-@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
-def feed_xi_include(context):
-    """Reference a Feed as xi:include.
-
-    Note that this adapts the Feed class instead of the IFeed interface because
-    the interface does not guarantee any xml structure.
-
-    """
-    return create_xi_include(context, '/channel/container/block')
 
 
 @grok.subscribe(
@@ -490,6 +434,7 @@ def rendered_xml_teaserblock(context):
 
     # Render non-content items like topiclinks.
     for child in context.xml.getchildren():
+        # BBB: xinclude is not generated anymore, but some might still exist.
         if child.tag not in [
                 'block', '{http://www.w3.org/2003/XInclude}include']:
             container.append(copy.copy(child))

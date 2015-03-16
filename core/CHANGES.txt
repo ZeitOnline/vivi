@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.0.0b9 (unreleased)
 --------------------
 
-- Nothing changed yet.
+- Don't generate ``xinclude`` for autopilots anymore, XSLT resolves them now
+  (DEV-659).
 
 
 3.0.0b8 (2015-03-13)

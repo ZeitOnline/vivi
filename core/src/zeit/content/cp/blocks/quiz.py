@@ -1,13 +1,8 @@
-from zeit.content.cp.blocks.teaser import create_xi_include
 from zeit.content.cp.i18n import MessageFactory as _
 import grokcore.component
 import zeit.cms.content.property
-import zeit.cms.content.xmlsupport
-import zeit.cms.content.xmlsupport
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
-import zeit.content.quiz.interfaces
-import zope.component
 import zope.interface
 
 
