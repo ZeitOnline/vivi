@@ -124,7 +124,7 @@ class CheckinSelenium(
         s.pause(500)
         s.waitForElementNotPresent('css=.field.dirty')
         s.waitForElementPresent('id=publish.has_semantic_change')
-        s.assertChecked('id=publish.has_semantic_change')
+        s.waitForChecked('id=publish.has_semantic_change')
         s.clickAndWait('id=checkin')
         self.assertIn('repository', s.getLocation())
         self.assertNotEqual(before, sc.last_semantic_change)
