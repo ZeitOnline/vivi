@@ -289,6 +289,16 @@ class Feed(zeit.cms.related.related.RelatedBase):
     items = zeit.cms.content.reference.MultiResource(
         '.feed.reference', 'related')
 
+    def set_items_and_supress_errors(self, items):
+        # XXX copy&paste from MultiResource.__set__, is there a better way to
+        # do this?
+        prop = type(self).items
+        references = prop.references(self)
+        value = tuple(references.create(x) for x in items)
+        super(zeit.cms.content.reference.MultiResource, prop).__set__(
+            self, value)
+        prop.update_metadata(self, suppress_errors=True)
+
 
 @zope.component.adapter(
     zeit.content.cp.interfaces.ICenterPage,
@@ -382,7 +392,7 @@ def rendered_xml(context):
     # We need to insert the feed items into the copied XML tree, so this
     # operation stays read-only regarding the context CP.
     feed = zeit.content.cp.interfaces.ICPFeed(CopyXMLHelper(root))
-    feed.items = extract_feed_items(context)
+    feed.set_items_and_supress_errors(extract_feed_items(context))
 
     return root
 

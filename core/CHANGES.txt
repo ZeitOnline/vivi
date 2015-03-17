@@ -8,6 +8,9 @@ zeit.content.cp changes
 - Don't generate ``xinclude`` for autopilots anymore, XSLT resolves them now
   (DEV-659).
 
+- Suppress errors when generating CP Feed during rendering XML in Friedbert
+  (VIV-629).
+
 
 3.0.0b8 (2015-03-13)
 --------------------
