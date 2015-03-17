@@ -125,6 +125,13 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.9.1 (2015-03-17)
+------------------
+
+- Suppress errors when generating CP Feed during rendering XML in Friedbert
+  (VIV-629).
+
+
 2.9.0 (2015-03-16)
 ------------------
 
