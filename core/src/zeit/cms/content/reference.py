@@ -90,9 +90,9 @@ class ReferenceProperty(object):
         except AttributeError:
             return []
 
-    def update_metadata(self, instance):
+    def update_metadata(self, instance, suppress_errors=False):
         for reference in self.__get__(instance, None):
-            reference.update_metadata()
+            reference.update_metadata(suppress_errors)
 
     @staticmethod
     def create_reference(source, attribute, target, xml_reference_name):
@@ -159,10 +159,10 @@ class SingleReferenceProperty(ReferenceProperty):
             result = [result]
         return result
 
-    def update_metadata(self, instance):
+    def update_metadata(self, instance, suppress_errors=False):
         reference = self.__get__(instance, None)
         if reference:
-            reference.update_metadata()
+            reference.update_metadata(suppress_errors)
 
 
 class SingleResource(SingleReferenceProperty):
@@ -180,10 +180,10 @@ class SingleResource(SingleReferenceProperty):
         super(SingleResource, self).__set__(instance, value)
         self.update_metadata(instance)
 
-    def update_metadata(self, instance):
+    def update_metadata(self, instance, suppress_errors=False):
         reference = super(SingleResource, self).__get__(instance, None)
         if reference:
-            reference.update_metadata()
+            reference.update_metadata(suppress_errors)
 
 
 class MultiResource(ReferenceProperty):
@@ -206,9 +206,9 @@ class MultiResource(ReferenceProperty):
         super(MultiResource, self).__set__(instance, value)
         self.update_metadata(instance)
 
-    def update_metadata(self, instance):
+    def update_metadata(self, instance, suppress_errors=False):
         for reference in self.references(instance):
-            reference.update_metadata()
+            reference.update_metadata(suppress_errors)
 
 
 @grok.subscribe(
@@ -323,12 +323,12 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
         return ReferenceProperty.create_reference(
             self.__parent__, self.attribute, target, self.xml_reference_name)
 
-    def update_metadata(self):
+    def update_metadata(self, suppress_errors=False):
         if self.target is None:
             return
         self._update_target_unique_id()
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(self.target)
-        updater.update(self.xml)
+        updater.update(self.xml, suppress_errors)
         self._p_changed = True
 
     def _update_target_unique_id(self):
