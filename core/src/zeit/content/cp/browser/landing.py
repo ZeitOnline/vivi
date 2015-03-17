@@ -25,16 +25,6 @@ class CreateNestedAreaMixin(object):
         if self.create_nested_area:
             self.signal('after-reload', 'added', self.region.__name__)
 
-    def update_order(self):
-        if not self.create_nested_area:
-            super(CreateNestedAreaMixin, self).update_order()
-            return
-
-        keys = list(self.container)
-        keys.remove(self.region.__name__)
-        keys = self.add_block_in_order(keys, self.region.__name__)
-        self.container.updateOrder(keys)
-
     def reload(self, container):
         """Skip reload of the created region, since it is not present yet.
 
@@ -53,7 +43,9 @@ class CreateNestedAreaMixin(object):
                 "Should only be called when creating a nested area.")
 
         if not hasattr(self, '_region'):
-            self._region = self.context.create_item('region')
+            # create region at position given by arguments
+            position = self.get_position_from_order(self.container.keys())
+            self._region = self.context.create_item('region', position)
         return self._region
 
 
@@ -75,12 +67,27 @@ class BodyLandingZone(
 
     @property
     def block_factory(self):
+        """Overwrite to use self.region instead of self.container as parent."""
         if not self.create_nested_area:
             return super(BodyLandingZone, self).block_factory
 
         return zope.component.getAdapter(
             self.region, zeit.edit.interfaces.IElementFactory,
             name=self.block_type)
+
+    def create_block(self):
+        """Overwrite to ignore positional arguments.
+
+        The position is only relevant to child of Body, i.e. regions. This
+        logic is handled in the region property. The area is always the only
+        item in region, since the region was just created. Thus any positional
+        arguments are irrelevant.
+
+        """
+        if not self.create_nested_area:
+            super(BodyLandingZone, self).create_block()
+            return
+        self.block = self.block_factory()
 
 
 class BodyLandingZoneMove(
@@ -99,15 +106,23 @@ class BodyLandingZoneMove(
                 and zeit.content.cp.interfaces.IArea.providedBy(self.block))
 
     def move_block(self):
+        """Overwrite to move area into the newly created region.
+
+        Normally the move event would try to insert the area into body, which
+        obviously doesn't work. (The hierarchy is Body > Region > Area).
+
+        """
+        # setup self.block before calling self.create_nested_area
         self.block = self.find_topmost_container(
             self.context).get_recursive(self.block_id)
         self.old_container = self.block.__parent__
-        del self.old_container[self.block.__name__]
 
-        if self.create_nested_area:
-            self.region.add(self.block)
-        else:
-            self.context.add(self.block)
+        if not self.create_nested_area:
+            super(BodyLandingZoneMove, self).move_block()
+            return
+
+        del self.old_container[self.block.__name__]
+        self.region.add(self.block)
 
 
 class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):

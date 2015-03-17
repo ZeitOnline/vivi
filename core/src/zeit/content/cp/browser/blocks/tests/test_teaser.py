@@ -70,6 +70,15 @@ class TestApplyLayout(zeit.content.cp.testing.SeleniumTestCase):
         self.wait_for_order([self.teaser1, self.teaser3, self.teaser2])
         self.assert_layout(['leader', 'buttons', 'leader-upright'])
 
+    def test_creating_teaser_on_first_position_supersedes_old_leader(self):
+        s = self.selenium
+        self.assert_layout(['leader', 'buttons', 'buttons'])
+
+        self.create_block('teaser', 'lead')
+        s.waitForCssCount('css=#lead .type-teaser', 4)
+
+        self.assert_layout(['leader', 'buttons', 'buttons', 'buttons'])
+
 
 class TestTeaserDisplay(unittest.TestCase):
 

@@ -11,6 +11,10 @@ zeit.content.cp changes
 - Suppress errors when generating CP Feed during rendering XML in Friedbert
   (VIV-629).
 
+- Adjust ``BodyLandingZone`` to use new ``insert`` method, which fixes an issue
+  with setting teaser layouts automatically for new blocks in first position,
+  since the position was updated after adding rather before. (DEV-53)
+
 
 3.0.0b8 (2015-03-13)
 --------------------

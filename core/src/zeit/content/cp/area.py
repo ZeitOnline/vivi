@@ -9,6 +9,7 @@ import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
 import zeit.edit.container
 import zope.component
+import zope.container.interfaces
 import zope.interface
 
 
@@ -277,10 +278,6 @@ def overflow_blocks(context, event):
             or area.overflow_into is None):
         return
 
-    # Since IContainer.add only appends, the newly added block is at -1,
-    # while the previously last block is at -2.
-    last_block = area.values()[-2]
+    last_block = area.values()[-1]
     del area[last_block.__name__]
-    area.overflow_into.add(last_block)
-    keys = area.overflow_into.keys()
-    area.overflow_into.updateOrder([keys[-1]] + keys[:-1])
+    area.overflow_into.insert(0, last_block)
