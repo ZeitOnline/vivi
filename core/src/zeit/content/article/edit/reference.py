@@ -65,8 +65,8 @@ class ReferenceFactory(zeit.content.article.edit.block.BlockFactory):
 
     grokcore.component.baseclass()
 
-    def __call__(self):
-        block = super(ReferenceFactory, self).__call__()
+    def __call__(self, position=None):
+        block = super(ReferenceFactory, self).__call__(position)
         block.is_empty = True
         return block
 

@@ -4,7 +4,8 @@ zeit.content.article changes
 3.6.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Adjust ReferenceFactory to new API of ElementFactory, which now accepts a new
+  argument to insert at given position. (DEV-53)
 
 
 3.6.11 (2015-03-13)
