@@ -4,7 +4,7 @@ zeit.content.image changes
 2.2.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add ``suppress_errors`` parameter to ``IReference.update_metadata`` (VIV-629).
 
 
 2.2.6 (2014-12-17)
