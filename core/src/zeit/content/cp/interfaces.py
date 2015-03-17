@@ -286,6 +286,13 @@ class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
 
 class IAutomaticArea(IArea):
+    """Areas that support the AutoCP feature. Or not. (See below.)
+
+    Any Area can be adapted to IAutomaticArea, no matter if it has AutoCP
+    features or not. In case it has not, it will behave normally. Thus adapting
+    to IAutomaticArea is unharmful.
+
+    """
 
     automatic = zope.schema.Bool(title=_('automatic'))
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
