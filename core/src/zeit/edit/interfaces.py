@@ -20,8 +20,8 @@ class IElementFactory(zope.interface.Interface):
     title = zope.schema.TextLine(
         title=_('Block type'))
 
-    def __call__():
-        """Create block."""
+    def __call__(position=None):
+        """Create block at position."""
 
 
 class IElement(zeit.cms.content.interfaces.IXMLRepresentation):
@@ -78,8 +78,16 @@ class IWriteContainer(zope.container.interfaces.IOrdered):
     def add(item):
         """Add item to container."""
 
-    def create_item(type_):
-        """Create item of given type and add it to the end of the container."""
+    def insert(position, item):
+        """Add an item at the given position to the container."""
+
+    def create_item(type_, position=None):
+        """Create item of given type and add it to the end of the container.
+
+        If position is given, the item will be sorted to the correct position
+        afterwards.
+
+        """
 
     def __delitem__(key):
         """Remove item."""

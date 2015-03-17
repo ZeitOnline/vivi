@@ -91,46 +91,93 @@ class Base(UserDict.DictMixin,
                 break
         return result
 
-    def add(self, item):
+    def insert(self, position, item):
+        """Insert item at given position into container.
+
+        We cannot use insert to modify the XML, since the XML has heterogeneous
+        child types. This means that XML childs and container childs can be
+        different! Therefore we have to use append and updateOrder, which only
+        sorts the childs of the container. This is the reason why we use add +
+        updateOrder instead of inserting directly into the correct position of
+        the XML tree.
+
+        Since we used updateOrder we have to send an IOrderUpdatedEvent, but
+        after the item was added / moved. Therefore we suppress the event in
+        updateOrder and create it explicitely at the end. (It's a subclass of
+        IContainerModifiedEvent, thus we can replace the modified event with
+        the updated event.)
+
+        """
         is_new = item.__name__ is None
-        name = self._add(item)
+
+        keys = self.keys()
+        self._add(item)
+        keys_before_sort = self.keys()
+
+        keys.insert(position, item.__name__)
+        self.updateOrder(keys, send_event=False)
         self._p_changed = True
 
-        # Re-implementation of zope.container.contained.containedEvent
-        # (We cannot reuse it, since we already set __name__ and __parent__)
+        event = self._contained_event(item, is_new)
+        if event is not None:
+            zope.event.notify(event)
+            zope.event.notify(
+                zeit.edit.interfaces.OrderUpdatedEvent(
+                    self, *keys_before_sort))
+
+    def add(self, item):
+        is_new = item.__name__ is None
+        self._add(item)
+        self._p_changed = True
+
+        event = self._contained_event(item, is_new)
+        if event is not None:
+            zope.event.notify(event)
+            zope.container.contained.notifyContainerModified(self)
+
+    def _contained_event(self, item, is_new):
+        """Re-implementation of zope.container.contained.containedEvent
+
+        We cannot reuse it, since we already set __name__ and __parent__.
+        Therefore containedEvent would assume that nothing changed and returns
+        no event.
+
+        """
         event = None
         if item.__parent__ != self:
             oldparent = item.__parent__
             item.__parent__ = self
             event = zope.container.contained.ObjectMovedEvent(
-                item, oldparent, name, self, name)
+                item, oldparent, item.__name__, self, item.__name__)
         elif is_new:
             event = zope.container.contained.ObjectAddedEvent(
-                item, self, name)
+                item, self, item.__name__)
 
-        if event is not None:
-            zope.event.notify(event)
-            zope.container.contained.notifyContainerModified(self)
+        return event
 
     def _add(self, item):
+        item.__name__ = self._get_unique_name(item)
+        self.xml.append(zope.proxy.removeAllProxies(item.xml))
+
+        return item.__name__
+
+    def _get_unique_name(self, item):
         name = item.__name__
         if name:
             if name in self:
                 raise zope.container.interfaces.DuplicateIDError(name)
         else:
             name = self._generate_block_id()
-        item.__name__ = name
-        self.xml.append(zope.proxy.removeAllProxies(item.xml))
         return name
 
-    def create_item(self, type_):
+    def create_item(self, type_, position=None):
         return zope.component.getAdapter(
-            self, zeit.edit.interfaces.IElementFactory, name=type_)()
+            self, zeit.edit.interfaces.IElementFactory, name=type_)(position)
 
     def _generate_block_id(self):
         return 'id-' + str(uuid.uuid4())
 
-    def updateOrder(self, order):
+    def updateOrder(self, order, send_event=True):
         old_order = self.keys()
         __traceback_info__ = (order, old_order)
         if not zope.security.proxy.isinstance(order, (tuple, list)):
@@ -143,9 +190,11 @@ class Base(UserDict.DictMixin,
             self._delete(key)
         for key in order:
             self._add(objs[key])
+
         self._p_changed = True
-        zope.event.notify(
-            zeit.edit.interfaces.OrderUpdatedEvent(self, *old_order))
+        if send_event:
+            zope.event.notify(
+                zeit.edit.interfaces.OrderUpdatedEvent(self, *old_order))
 
     def get_recursive(self, key, default=None):
         item = self.get(key, default)

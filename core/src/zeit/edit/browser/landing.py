@@ -32,34 +32,24 @@ class OrderMixin(object):
         if not hasattr(self, 'order'):
             raise ValueError('Order must be specified!')
 
-    def update_order(self):
-        keys = list(self.container)
-        keys.remove(self.block.__name__)
-        keys = self.add_block_in_order(keys, self.block.__name__)
-        self.container.updateOrder(keys)
-
     @property
     def container(self):
         if self.order == 'after-context':
             return self.context.__parent__
         return self.context
 
-    def add_block_in_order(self, keys, new_name):
+    def get_position_from_order(self, keys):
         if isinstance(self.order, int):
-            keys.insert(self.order, new_name)
+            return self.order
         elif self.order == 'top':
-            keys.insert(0, new_name)
+            return 0
         elif self.order == 'bottom':
-            keys.append(new_name)
+            return len(keys)
         elif self.order == 'insert-after':
-            after = keys.index(self.insert_after)
-            keys.insert(after + 1, new_name)
+            return keys.index(self.insert_after) + 1
         elif self.order == 'after-context':
-            after = keys.index(self.context.__name__)
-            keys.insert(after + 1, new_name)
-        else:
-            raise NotImplementedError
-        return keys
+            return keys.index(self.context.__name__) + 1
+        raise NotImplementedError
 
 
 class ReloadContainerAction(zeit.edit.browser.view.Action):
@@ -100,7 +90,6 @@ class LandingZone(ReloadContainerAction, OrderMixin):
         self.undo_description = _(
             "add '${type}' block", mapping=dict(type=self.block.type))
         self.initialize_block()
-        self.update_order()
         self.signal('after-reload', 'added', self.block.__name__)
 
     def validate_block_params(self):
@@ -129,7 +118,8 @@ class LandingZone(ReloadContainerAction, OrderMixin):
             name=self.block_type)
 
     def create_block(self):
-        self.block = self.block_factory()
+        position = self.get_position_from_order(self.container.keys())
+        self.block = self.block_factory(position=position)
 
     def initialize_block(self):
         if not self.block_params:
@@ -154,7 +144,6 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
         self.move_block()
         self.undo_description = _(
             "move '${type}' block", mapping=dict(type=self.block.type))
-        self.update_order()
 
     @property
     def move_to_same_position(self):
@@ -162,15 +151,30 @@ class LandingZoneMove(ReloadContainerAction, OrderMixin):
                 and self.insert_after == self.block_id)
 
     def move_block(self):
+        """Move block to new location.
+
+        If the block was moved inside the same container, i.e. sorted, we need
+        to call updateOrder with an adjusted order of keys. If moved between
+        containers, a simple delete / insert mechanism will do.
+
+        """
         self.block = self.find_topmost_container(
             self.container).get_recursive(self.block_id)
         self.old_container = self.block.__parent__
 
         if self.container == self.old_container:
-            return  # do nothing when block was sorted in same container
+            keys = list(self.container)  # don't use keys due to security proxy
+            keys.remove(self.block.__name__)
 
-        del self.old_container[self.block.__name__]
-        self.container.add(self.block)
+            # get pos after remove, otherwise self.block will distort the pos
+            pos = self.get_position_from_order(keys)
+            keys.insert(pos, self.block.__name__)
+
+            self.container.updateOrder(keys)
+        else:
+            pos = self.get_position_from_order(self.container.keys())
+            del self.old_container[self.block.__name__]
+            self.container.insert(pos, self.block)
 
     def find_topmost_container(self, element):
         container = element

@@ -105,13 +105,17 @@ class ElementFactory(object):
     def get_xml(self):
         raise NotImplementedError('Implemented in subclasses.')
 
-    def __call__(self):
+    def __call__(self, position=None):
         container = self.get_xml()
         content = zope.component.getMultiAdapter(
             (self.context, container),
             zeit.edit.interfaces.IElement,
             name=self.element_type)
-        self.context.add(content)
+
+        if position is not None:
+            self.context.insert(position, content)
+        else:
+            self.context.add(content)
         return content
 
     @property

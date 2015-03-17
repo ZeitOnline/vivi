@@ -4,7 +4,8 @@ Changes
 2.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Implement ``IContainer.insert`` to fix issues with wrong order during
+  ``ObjectAdded`` events. (DEV-53)
 
 
 2.10.0 (2015-03-13)
