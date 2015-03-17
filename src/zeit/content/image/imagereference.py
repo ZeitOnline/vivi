@@ -85,8 +85,8 @@ class ImageReference(zeit.cms.content.reference.Reference):
     alt = LocalOverride('alt')
     caption = LocalOverride('caption')
 
-    def update_metadata(self):
-        super(ImageReference, self).update_metadata()
+    def update_metadata(self, suppress_errors=False):
+        super(ImageReference, self).update_metadata(suppress_errors)
         for name in zope.schema.getFieldNames(
                 zeit.content.image.interfaces.IImageMetadata):
             if hasattr(self, name):
