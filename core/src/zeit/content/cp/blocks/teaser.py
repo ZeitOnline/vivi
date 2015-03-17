@@ -364,7 +364,6 @@ def apply_layout_for_added(context, event):
     if not area.apply_teaser_layouts_automatically:
         return
 
-    if context not in area.values():
     # XXX The overflow_blocks handler also listens to the IObjectAddedEvent and
     # may have removed this item from the container. Since overflow_blocks
     # retrieves the item via a getitem access, it is newly created from the XML
@@ -375,9 +374,10 @@ def apply_layout_for_added(context, event):
     # method in case it has. (Modifying __parent__ of context does not seem
     # like a good idea, hell might break loose. So lets just forget about this
     # possiblity.)
+    if context.__name__ not in area.keys():
         return
 
-    if area.values().index(context) == 0:
+    if area.keys().index(context.__name__) == 0:
         context.layout = area.first_teaser_layout
     else:
         context.layout = area.default_teaser_layout
