@@ -273,8 +273,8 @@ def rendered_xml(context):
 def overflow_blocks(context, event):
     area = context.__parent__
     if (area.block_max is None
-        or len(area) <= area.block_max
-        or area.overflow_into is None):
+            or len(area) <= area.block_max
+            or area.overflow_into is None):
         return
 
     # Since IContainer.add only appends, the newly added block is at -1,
