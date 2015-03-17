@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.40.0 (unreleased)
+2.40.0 (2015-03-17)
 -------------------
 
 - Add ``suppress_errors`` parameter to ``IReference.update_metadata`` (VIV-629).
