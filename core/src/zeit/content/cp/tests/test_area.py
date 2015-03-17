@@ -76,11 +76,36 @@ class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
         self.area1 = self.region.create_item('area')
         self.area2 = self.region.create_item('area')
 
-    def test_adding_more_than_max_blocks_overflows(self):
-        self.area1.create_item('teaser')
         self.area1.block_max = 1
         self.area1.overflow_into = self.area2
 
-        self.area1.create_item('teaser')
-        self.assertEqual(1, len(self.area1))
-        self.assertEqual(1, len(self.area2))
+    def test_adding_more_than_max_blocks_overflows_the_newly_added_block(self):
+        t1 = self.area1.create_item('teaser').__name__
+        t2 = self.area1.create_item('teaser').__name__
+        self.assertEqual([t1], self.area1.keys())
+        self.assertEqual([t2], self.area2.keys())
+
+    def test_blocks_overflow_into_beginning_of_overflow_area(self):
+        t1 = self.area1.create_item('teaser').__name__
+        t2 = self.area1.create_item('teaser').__name__
+        t3 = self.area1.create_item('teaser').__name__
+        self.assertEqual([t1], self.area1.keys())
+        # added t3 last, so should be first in overflow area
+        self.assertEqual([t3, t2], self.area2.keys())
+
+    def test_inserting_blocks_on_top_will_overflow_existing_block(self):
+        t1 = self.area1.create_item('teaser', position=0).__name__
+        t2 = self.area1.create_item('teaser', position=0).__name__
+        t3 = self.area1.create_item('teaser', position=0).__name__
+        # inserted t3 last, so should be the only teaser in area1
+        self.assertEqual([t3], self.area1.keys())
+        self.assertEqual([t2, t1], self.area2.keys())
+
+    def test_apply_layout_for_lead_area_works_with_overflow(self):
+        """Test add and insert(0) when the apply_layout logic is active."""
+        self.area1.__name__ = 'lead'
+        t1 = self.area1.create_item('teaser').__name__
+        t2 = self.area1.create_item('teaser', position=0).__name__
+        t3 = self.area1.create_item('teaser').__name__
+        self.assertEqual([t2], self.area1.keys())
+        self.assertEqual([t3, t1], self.area2.keys())

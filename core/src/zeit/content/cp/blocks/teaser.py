@@ -364,6 +364,13 @@ def apply_layout_for_added(context, event):
     if not area.apply_teaser_layouts_automatically:
         return
 
+    # XXX The overflow_blocks handler listens to the IObjectAddedEvent and may
+    # have removed this item from the container. Subscriptions seem to copy the
+    # object before sending the event, thus when two event handler listen to
+    # the same event changed made by one will not be seen by the other.
+    if context not in area.values():
+        return
+
     if area.values().index(context) == 0:
         context.layout = area.first_teaser_layout
     else:
@@ -373,14 +380,20 @@ def apply_layout_for_added(context, event):
 @grok.subscribe(
     zeit.content.cp.interfaces.IArea,
     zeit.edit.interfaces.IOrderUpdatedEvent)
-def set_layout_to_default_when_moved_down_from_first_position(context, event):
-    if not context.apply_teaser_layouts_automatically:
+def set_layout_to_default_when_moved_down_from_first_position(area, event):
+    if not area.apply_teaser_layouts_automatically:
         return
 
-    previously_first = context[event.old_order[0]]
+    # XXX The overflow_blocks handler listens to the IObjectAddedEvent and may
+    # have removed this item from the container. In that case we have to do
+    # nothing, since checking the layout is handled by the new container.
+    if event.old_order[0] not in area.keys():
+        return
+
+    previously_first = area[event.old_order[0]]
     if (zeit.content.cp.interfaces.ITeaserBlock.providedBy(previously_first)
-            and context.values().index(previously_first)) > 0:
-        previously_first.layout = context.default_teaser_layout
+            and area.values().index(previously_first)) > 0:
+        previously_first.layout = area.default_teaser_layout
 
 
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage, name='excerpt')
