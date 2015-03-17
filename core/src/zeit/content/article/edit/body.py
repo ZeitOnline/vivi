@@ -79,22 +79,19 @@ class EditableBody(zeit.edit.container.Base,
         return xml_node.tag
 
     def _add(self, item):
-        # Add to last division instead of self.xml
-        name = item.__name__
-        if name:
-            if name in self:
-                raise zope.container.interfaces.DuplicateIDError(name)
-        else:
-            name = self._generate_block_id()
-            # may migrate so it is guaranteed that there is a division tag:
-            self.keys()
-        item.__name__ = name
+        """Overwrite to add to last division instead of self.xml"""
+        # may migrate so it is guaranteed that there is a division tag:
+        self.keys()
+        item.__name__ = self._get_unique_name(item)
+
         if zeit.content.article.edit.interfaces.IDivision.providedBy(item):
-            self.xml.append(item.xml)
+            node = self.xml
         else:
-            self.xml.division[:][-1].append(item.xml)
-        self._p_changed = True
-        return name
+            node = self.xml.division[:][-1]
+
+        node.append(zope.proxy.removeAllProxies(item.xml))
+
+        return item.__name__
 
     def _delete(self, key):
         __traceback_info__ = (key,)
