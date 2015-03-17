@@ -434,7 +434,7 @@ class IReference(IXMLRepresentation,
         """If our source has a reference to the given target
         (ICMSContent or uniqueId), return that, else return default."""
 
-    def update_metadata():
+    def update_metadata(suppress_errors=False):
         """Run XMLReferenceUpdater on our XML node."""
 
 
