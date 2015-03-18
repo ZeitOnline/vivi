@@ -136,6 +136,12 @@ The last entry `art1` has dropped out of the feed now:
 >>> list(feed.keys())
 ['art2', 'art3']
 
+If the feed is full, items cannot be added to the end:
+
+>>> feed.insert(2, Article('art1'))
+>>> list(feed.keys())
+['art2', 'art3']
+
 
 Error Cases
 +++++++++++

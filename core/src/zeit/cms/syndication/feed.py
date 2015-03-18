@@ -76,7 +76,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         while self.object_limit and len(self) > self.object_limit:
             last = list(self.keys())[-1]
             self._remove_by_id(last)
-        self.updateMetadata(content)
+        self.updateMetadata(content, skip_missing=True)
         self.restorePinning(pin_map)
         self._p_changed = True
 
@@ -119,7 +119,7 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             if key == content_id:
                 return id + 1
 
-    def updateMetadata(self, content):
+    def updateMetadata(self, content, skip_missing=False):
         possible_ids = set((
             content.uniqueId,) + IRenameInfo(content).previous_uniqueIds)
         for id in possible_ids:
@@ -127,6 +127,8 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
             if entry is not None:
                 break
         else:
+            if skip_missing:
+                return
             raise KeyError(content.uniqueId)
         entry.set('href', content.uniqueId)
         entry.set('uniqueId', content.uniqueId)

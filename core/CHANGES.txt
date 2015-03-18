@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Integrate werkzeug debugger.
 
+- Bugfix: Don't break when adding more entries to an already full Feed.
+
 
 2.40.0 (2015-03-17)
 -------------------
