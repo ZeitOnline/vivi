@@ -53,6 +53,7 @@ setup(
         'setuptools',
         'sprout',
         'transaction',
+        'werkzeug',
         'z3c.conditionalviews>=1.0b2.dev-r91510',
         'z3c.etestbrowser',
         'z3c.flashmessage',

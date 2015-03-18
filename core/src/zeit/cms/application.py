@@ -1,6 +1,7 @@
 import fanstatic
 import os
 import pkg_resources
+import werkzeug.debug
 import zope.app.wsgi.paste
 
 
@@ -13,25 +14,32 @@ MINIFIED = False  # XXX
 
 class Application(object):
 
-    pipeline = [
-        # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets,
-        # thus repoze.vhm needs to come before fanstatic to keep them apart.
-        ('repoze.vhm', 'paste.filter_app_factory', 'vhm_xheaders', {}),
-        ('fanstatic', 'paste.filter_app_factory', 'fanstatic', {
-            'bottom': True,
-            'bundle': BUNDLE,
-            'minified': MINIFIED,
-            'compile': True,
-            'versioning': FANSTATIC_VERSIONING,
-            'versioning_use_md5': True,
-            # Once on startup, not every request
-            'recompute_hashes': False,
-            'publisher_signature': FANSTATIC_PATH,
-        }),
-    ]
+    def __init__(self):
+        self.pipeline = [
+            # fanstatic is confused by the SCRIPT_NAME that repoze.vhm sets, so
+            # repoze.vhm needs to come before fanstatic to keep them apart.
+            ('repoze.vhm', 'paste.filter_app_factory', 'vhm_xheaders', {}),
+            ('fanstatic', 'paste.filter_app_factory', 'fanstatic', {
+                'bottom': True,
+                'bundle': BUNDLE,
+                'minified': MINIFIED,
+                'compile': True,
+                'versioning': FANSTATIC_VERSIONING,
+                'versioning_use_md5': True,
+                # Once on startup, not every request
+                'recompute_hashes': False,
+                'publisher_signature': FANSTATIC_PATH,
+            }),
+        ]
 
-    def __call__(self, global_conf, zope_conf):
-        app = zope.app.wsgi.paste.ZopeApplication({}, zope_conf)
+    def __call__(self, global_conf, **local_conf):
+        debug = zope.app.wsgi.paste.asbool(local_conf.get('debug'))
+        app = zope.app.wsgi.paste.ZopeApplication(
+            global_conf, local_conf['zope_conf'], handle_errors=not debug)
+        if debug:
+            self.pipeline.insert(
+                0, (werkzeug.debug.DebuggedApplication, 'factory', '', {
+                    'evalex': True}))
         return self.setup_pipeline(app, global_conf)
 
     def setup_pipeline(self, app, global_conf=None):

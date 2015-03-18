@@ -1,4 +1,3 @@
-import zeit.cms.browser.resources
 import zope.i18n
 
 
@@ -13,7 +12,6 @@ class ErrorView(object):
             self.request.response.setHeader('Content-Type', 'text/plain')
             return self.message
         else:
-            zeit.cms.browser.resources.error_css.need()
             return super(ErrorView, self).__call__()
 
     @property
