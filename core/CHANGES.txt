@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.10.1 (unreleased)
+2.11.0 (unreleased)
 -------------------
 
 - Implement ``IContainer.insert`` to fix issues with wrong order during
