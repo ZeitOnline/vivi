@@ -54,9 +54,6 @@ SplitDirResource('cms_widgets.css')
 SplitDirResource('object_details.css')
 SplitDirResource('cms.css')
 
-# Only explicitly included by .error.ErrorView.
-error_css = fanstatic.Resource(lib_css, 'error.css', depends=[cms_css])
-
 
 jqueryui_theme = fanstatic.Resource(
     lib_js, 'jquery/jquery-ui-custom-theme/jquery-ui-1.10.4.custom.css',
