@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.6.1 (unreleased)
+2.6.1 (2015-03-19)
 ------------------
 
 - Commit cache sweep one day's worth at a time.
