@@ -4,7 +4,7 @@ CHANGES
 2.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Commit cache sweep one day's worth at a time.
 
 
 2.6.0 (2015-02-04)

@@ -7,6 +7,7 @@ import persistent
 import persistent.mapping
 import tempfile
 import time
+import transaction
 import zc.set
 import zeit.connector.interfaces
 import zope.interface
@@ -149,17 +150,29 @@ class AccessTimes(object):
             self._last_access_time[key] = new_access_time
 
     def sweep(self):
+        start = 0
         timeout = self._get_time_key(time.time() - self.CACHE_TIMEOUT)
-        access_times_to_remove = []
-        for access_time in self._access_time_to_ids.keys(max=timeout):
-            access_times_to_remove.append(access_time)
-            id_set = self._access_time_to_ids[access_time]
-            for id in id_set:
-                log.info('Evicting %s', id)
-                self._last_access_time.pop(id, None)
-                self.remove(id)
-        for access_time in access_times_to_remove:
-            self._access_time_to_ids.pop(access_time, None)
+        while True:
+            try:
+                access_time = iter(self._access_time_to_ids.keys(
+                    min=start, max=timeout)).next()
+                id_set = self._access_time_to_ids[access_time]
+                try:
+                    for id in id_set:
+                        log.info('Evicting %s', id)
+                        self._last_access_time.pop(id, None)
+                        self.remove(id)
+                    self._access_time_to_ids.pop(access_time, None)
+                    start = access_time
+                except:
+                    start = access_time + 1
+                    log.info('Abort %s', access_time, exc_info=True)
+                    transaction.abort()
+                else:
+                    log.info('Commit %s', access_time)
+                    transaction.commit()
+            except StopIteration:
+                break
 
     def _get_time_key(self, time):
         return int(time / self.UPDATE_INTERVAL)
