@@ -4,7 +4,7 @@ zeit.cms changes
 2.40.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Apply timeout to series source caching (BUG-218).
 
 
 2.40.1 (2015-03-20)

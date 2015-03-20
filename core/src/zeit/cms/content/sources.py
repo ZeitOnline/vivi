@@ -258,24 +258,25 @@ class SerieSource(SimpleContextualXMLSource):
 
     @property
     def values(self):
-        if getattr(self, '_values', None):
-            return self._values
-        tree = self._get_tree()
-        self._values = collections.OrderedDict()
-        for node in tree.iterchildren('*'):
+        return self._fill_values()
+
+    @gocept.cache.method.Memoize(600, ignore_self=True)
+    def _fill_values(self):
+        result = collections.OrderedDict()
+        for node in self._get_tree().iterchildren('*'):
             # XXX: For compat reasons we need a fallback `serienname`.
             name = node.get('serienname') or node.text
             if not name:
                 continue
             serienname = unicode(name).strip()
-            self._values[serienname] = Serie(
+            result[serienname] = Serie(
                 serienname,
                 unicode_or_none(node.get('title')),
                 unicode_or_none(node.get('url')),
                 unicode_or_none(node.get('encoded')),
                 node.get('format-label') == u'Kolumne',
                 node.get('video') == u'yes')
-        return self._values
+        return result
 
     def getValues(self, context):
         return self.values.values()
