@@ -251,3 +251,14 @@ class TestContentIter(unittest.TestCase):
                 [((mock.sentinel.block1, ), {}),
                  ((mock.sentinel.block2, ), {})],
                 ci.call_args_list)
+
+
+class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def test_regression_bug_217_copying_actually_copies(self):
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        copier = zope.copypastemove.interfaces.IObjectCopier(
+            self.repository['cp'])
+        copier.copyTo(self.repository['online'])
+        with self.assertNothingRaised():
+            self.repository['cp']

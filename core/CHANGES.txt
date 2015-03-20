@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.0.0b10 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Delegate only actual ``IContainer`` attributes from Centerpage to its Body,
+  otherwise e.g. copy from clipboard is treated as move instead[!] (BUG-217).
 
 
 3.0.0b9 (2015-03-18)
