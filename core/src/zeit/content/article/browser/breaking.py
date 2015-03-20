@@ -43,12 +43,16 @@ class Add(zeit.cms.browser.form.AddForm,
         + zope.formlib.form.FormFields(
             zeit.content.article.edit.interfaces.IBreakingNewsBody)
         + zope.formlib.form.FormFields(
+            zeit.content.article.interfaces.IArticle).select(
+                'commentsAllowed')
+        + zope.formlib.form.FormFields(
             IPushServices)
     )
 
     field_groups = (
         gocept.form.grouped.Fields('', (
             'ressort', 'sub_ressort', 'title', '__name__', 'text',
+            'commentsAllowed',
             'homepage', 'mobile', 'social')),
     )
 
