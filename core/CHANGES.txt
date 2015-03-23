@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Apply timeout to series source caching (BUG-218).
 
+- Hide date_print_published field from form (ZON-1280).
+
 
 2.40.1 (2015-03-20)
 -------------------
