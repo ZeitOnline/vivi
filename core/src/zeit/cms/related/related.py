@@ -40,15 +40,21 @@ def related_from_template(context):
 
 @zope.component.adapter(zeit.cms.interfaces.ICMSContent)
 @zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
-def BasicReference(context):
+def BasicReference(context, suppress_errors=False):
     reference = lxml.objectify.E.reference()
     reference.set('type', 'intern')
     reference.set('href', context.uniqueId)
 
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
-    updater.update(reference)
+    updater.update(reference, suppress_errors)
 
     return reference
+
+
+@zope.component.adapter(zeit.cms.interfaces.ICMSContent)
+@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+def create_related_reference_suppress_errors(context):
+    return BasicReference(context, suppress_errors=True)
 
 
 class RelatedReference(zeit.cms.content.reference.Reference):

@@ -426,7 +426,7 @@ class IReference(IXMLRepresentation,
     attribute = zope.interface.Attribute(
         'Attribute name of reference property on source')
 
-    def create(target):
+    def create(target, suppress_errors=False):
         """Create a new references from our source to the given target
         (either an ICMSContent or a uniqueId)."""
 
