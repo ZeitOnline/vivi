@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.6.13 (unreleased)
+3.6.13 (2015-03-23)
 -------------------
 
 - Add ``commentsAllowed`` field to breaking news form (DEV-86).
