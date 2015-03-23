@@ -95,16 +95,27 @@ class ReferenceProperty(object):
             reference.update_metadata(suppress_errors)
 
     @staticmethod
-    def create_reference(source, attribute, target, xml_reference_name):
-        try:
-            element = zope.component.getAdapter(
-                target, zeit.cms.content.interfaces.IXMLReference,
-                name=xml_reference_name)
-        except zope.component.ComponentLookupError:
-            raise ValueError(
-                ("Could not create XML reference type '%s' for %s "
-                 "(referenced by %s).") % (
-                     xml_reference_name, target.uniqueId, source.uniqueId))
+    def create_reference(
+            source, attribute, target, xml_reference_name,
+            suppress_errors=False):
+        element = None
+        if suppress_errors:
+            try:
+                element = zope.component.getAdapter(
+                    target, zeit.cms.content.interfaces.IXMLReference,
+                    name=xml_reference_name + '_suppress_errors')
+            except zope.component.ComponentLookupError:
+                pass
+        if element is None:
+            try:
+                element = zope.component.getAdapter(
+                    target, zeit.cms.content.interfaces.IXMLReference,
+                    name=xml_reference_name)
+            except zope.component.ComponentLookupError:
+                raise ValueError(
+                    ("Could not create XML reference type '%s' for %s "
+                     "(referenced by %s).") % (
+                         xml_reference_name, target.uniqueId, source.uniqueId))
         reference = zope.component.queryMultiAdapter(
             (source, element), zeit.cms.content.interfaces.IReference,
             name=xml_reference_name)
@@ -234,9 +245,10 @@ class References(tuple):
         self.xml_reference_name = xml_reference_name
         return self
 
-    def create(self, target):
+    def create(self, target, suppress_errors=False):
         return ReferenceProperty.create_reference(
-            self.source, self.attribute, target, self.xml_reference_name)
+            self.source, self.attribute, target, self.xml_reference_name,
+            suppress_errors)
 
     def get(self, target, default=None):
         return ReferenceProperty.find_reference(
@@ -258,9 +270,10 @@ class EmptyReference(object):
         self.attribute = attribute
         self.xml_reference_name = xml_reference_name
 
-    def create(self, target):
+    def create(self, target, suppress_errors=False):
         return ReferenceProperty.create_reference(
-            self.source, self.attribute, target, self.xml_reference_name)
+            self.source, self.attribute, target, self.xml_reference_name,
+            suppress_errors)
 
     def get(self, target, default=None):
         return default
@@ -319,9 +332,10 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
         return ReferenceProperty.find_reference(
             self.__parent__, self.attribute, target, default)
 
-    def create(self, target):
+    def create(self, target, suppress_errors=False):
         return ReferenceProperty.create_reference(
-            self.__parent__, self.attribute, target, self.xml_reference_name)
+            self.__parent__, self.attribute, target, self.xml_reference_name,
+            suppress_errors)
 
     def update_metadata(self, suppress_errors=False):
         if self.target is None:

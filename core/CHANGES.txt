@@ -1,8 +1,10 @@
 zeit.cms changes
 ================
 
-2.40.2 (unreleased)
+2.41.0 (unreleased)
 -------------------
+
+- Add ``suppress_errors`` parameter to ``IReference.create`` (VIV-629).
 
 - Apply timeout to series source caching (BUG-218).
 
