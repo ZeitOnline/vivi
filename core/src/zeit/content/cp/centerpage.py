@@ -300,7 +300,8 @@ class Feed(zeit.cms.related.related.RelatedBase):
         # do this?
         prop = type(self).items
         references = prop.references(self)
-        value = tuple(references.create(x) for x in items)
+        value = tuple(
+            references.create(x, suppress_errors=True) for x in items)
         super(zeit.cms.content.reference.MultiResource, prop).__set__(
             self, value)
         prop.update_metadata(self, suppress_errors=True)
