@@ -690,6 +690,17 @@ a.button.configure_search:hover {
   float: right;
 }
 
+#user-information a:visited,
+#user-information a {
+  color: #ddd;
+}
+
+#user-information a:hover,
+#user-information a:active {
+  background-color: #ddd;
+  color: #fff;
+}
+
 .keyword-widget .not-shown {
     color: #7d7d7d;
 }
