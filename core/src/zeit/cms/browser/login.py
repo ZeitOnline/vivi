@@ -15,7 +15,8 @@ class Login(object):
         zeit.cms.browser.resources.login_css.need()
         if not self.authenticated:
             # Render template with error message
-            return super(Login, self).__call__()
+            result = super(Login, self).__call__()
+            return result
         if self.camefrom:
             return self.request.response.redirect(self.camefrom)
         return self.request.response.redirect(
@@ -33,7 +34,7 @@ class Login(object):
 
     @property
     def submitted(self):
-        return 'SUBMIT' in self.request
+        return self.request.method == 'POST'
 
 
 class Logout(object):

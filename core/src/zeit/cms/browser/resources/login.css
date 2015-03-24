@@ -34,3 +34,9 @@ label {
 .button {
     margin-top: 1em;
 }
+
+.error {
+    background-color: #e67373;
+    color: #fff;
+    padding: 0.3em;
+}

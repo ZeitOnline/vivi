@@ -10,7 +10,14 @@
 </head>
 <body class="login">
   <div id="loginform">
-    <form method="post" action=".">
+
+    <p class="error"
+       tal:condition="view/submitted"
+       i18n:translate="">
+      Login failed.
+    </p>
+
+    <form method="POST" action="">
       <input type="hidden" name="camefrom"
              tal:condition="view/camefrom"
              tal:attributes="value view/camefrom" />
@@ -32,12 +39,6 @@
            i18n:attributes="value" />
       </div>
     </form>
-
-    <p class="error"
-       tal:condition="python: not view.authenticated and view.submitted"
-       i18n:translate="">
-      Login failed.
-    </p>
 
     <script type="text/javascript">
       document.getElementById("login").focus();
