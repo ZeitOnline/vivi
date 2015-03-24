@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='2.41.1.dev0',
+    version='2.42.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -94,6 +94,7 @@ setup(
         'zope.site',
         'zope.testbrowser [zope-functional-testing]',
         'zope.testing>=3.8.0',
+        'zope.traversing',
         'zope.xmlpickle',
         'gocept.httpserverlayer>=1.4.0.dev0',
         'gocept.selenium>=2.2.0.dev0',

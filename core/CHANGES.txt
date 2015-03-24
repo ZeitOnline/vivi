@@ -1,10 +1,50 @@
 zeit.cms changes
 ================
 
-2.41.1 (unreleased)
+2.42.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Switch from basic auth to login form (DEV-7).
+
+
+2.41.0 (2015-03-23)
+-------------------
+
+- Add ``suppress_errors`` parameter to ``IReference.create`` (VIV-629).
+
+- Apply timeout to series source caching (BUG-218).
+
+- Hide date_print_published field from form (ZON-1280).
+
+
+2.40.1 (2015-03-20)
+-------------------
+
+- Integrate werkzeug debugger.
+
+- Bugfix: Don't break when adding more entries to an already full Feed.
+
+
+2.40.0 (2015-03-17)
+-------------------
+
+- Add ``suppress_errors`` parameter to ``IReference.update_metadata`` (VIV-629).
+
+
+2.39.0 (2015-03-13)
+-------------------
+
+- Distinguish between sucessful and failed drag&drop operations (DEV-60).
+
+- Sort serie values properly (BUG-215).
+
+
+2.38.2 (2015-03-10)
+-------------------
+
+- Reorganize series source into dictionary structure for performance (BUG-214).
+
+- Fix serializing Serie objects to XML (ZON-1464).
 
 
 2.41.0 (2015-03-23)
