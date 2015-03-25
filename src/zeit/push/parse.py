@@ -94,8 +94,8 @@ class Connection(object):
             self.push(android_legacy)
 
         if kw.get('skip_ios'):
-            # XXX Skipping iOs is for unittests only, since we cannot push to
-            # ios without a apple certificate.
+            # XXX Skipping iOS is for unittests only, since we cannot push to
+            # iOS without a apple certificate.
             return
 
         # iOS > 20140514.1
