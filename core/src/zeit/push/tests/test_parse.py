@@ -124,6 +124,16 @@ class ParametersTest(zeit.push.testing.TestCase):
             data = push.call_args[0][0]
             self.assertEqual('foo', data['data']['aps']['alert-title'])
 
+    def test_transmits_metadata(self):
+        api = zeit.push.parse.Connection(
+            'any', 'any', 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL,
+                     supertitle='super', teaserText='teaser')
+            payload = push.call_args_list[0][0][0]
+            self.assertEqual('super', payload['data']['headline'])
+            self.assertEqual('teaser', payload['data']['teaser'])
+
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):
 
