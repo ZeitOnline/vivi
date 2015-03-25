@@ -5,6 +5,7 @@ from zeit.push.testing import parse_settings as settings
 import mock
 import pytz
 import unittest
+import urlparse
 import zeit.push.parse
 import zeit.push.testing
 import zope.app.appsetup.product
@@ -64,6 +65,29 @@ class URLRewriteTest(unittest.TestCase):
         self.assertEqual(
             'http://wrapper.zeit.de/blog/foo/bar?feed=articlexml',
             self.rewrite('http://www.zeit.de/blog/foo/bar'))
+
+    def test_adds_tracking_information_as_query_string(self):
+        url = zeit.push.parse.Connection.rewrite_url(
+            'http://www.zeit.de/foo/bar')
+        url = zeit.push.parse.Connection.add_tracking(
+            url, 'nonbreaking', 'android')
+        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
+        self.assertEqual(
+            'fix.int.zonaudev.push.wichtige_news.zeitde.andpush.link.x',
+            qs['wt_zmc'][0])
+        self.assertEqual('zeitde_andpush_link_x', qs['utm_content'][0])
+        self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
+        self.assertEqual('wichtige_news', qs['utm_campaign'][0])
+        self.assertEqual('fix', qs['utm_medium'][0])
+
+    def test_adds_tracking_information_blog(self):
+        url = zeit.push.parse.Connection.rewrite_url(
+            'http://www.zeit.de/blog/foo/bar')
+        url = zeit.push.parse.Connection.add_tracking(
+            url, 'nonbreaking', 'android')
+        qs = urlparse.parse_qs(urlparse.urlparse(url).query)
+        self.assertEqual('articlexml', qs['feed'][0])
+        self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
 
 
 class ParametersTest(zeit.push.testing.TestCase):

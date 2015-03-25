@@ -6,6 +6,7 @@ import json
 import logging
 import pytz
 import requests
+import urllib
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -40,16 +41,15 @@ class Connection(object):
             'zeit.push') or {}
 
         # Determine common payload attributes.
-        url = self.rewrite_url(link)
-        image_url = kw.get('image_url')
-        expiration_time = (datetime.now(pytz.UTC).replace(microsecond=0) +
-                           timedelta(seconds=self.expire_interval)).isoformat()
-
         channel_name = kw.get('channels')
         if isinstance(channel_name, list):
             channels = channel_name
         else:
             channels = config.get(channel_name, '').split(' ')
+        url = self.rewrite_url(link)
+        image_url = kw.get('image_url')
+        expiration_time = (datetime.now(pytz.UTC).replace(microsecond=0) +
+                           timedelta(seconds=self.expire_interval)).isoformat()
 
         if config.get(PARSE_NEWS_CHANNEL) in channels:
             title = kw.get('supertitle', _('ZEIT ONLINE:'))
@@ -72,7 +72,7 @@ class Connection(object):
                 'headline': title,
                 'text': text,
                 'teaser': kw.get('teaserText') or '',
-                'url': url,
+                'url': self.add_tracking(url, channel_name, 'android'),
             }
         }
         if image_url:
@@ -92,7 +92,7 @@ class Connection(object):
                 'data': {
                     'alert': text,
                     'title': title,
-                    'url': url
+                    'url': self.add_tracking(url, channel_name, 'android'),
                 }
             }
             self.push(android_legacy)
@@ -115,7 +115,7 @@ class Connection(object):
                     'alert': text,
                     'alert-title': title,
                     'headline': title.upper(),
-                    'url': url,
+                    'url': self.add_tracking(url, channel_name, 'ios'),
                 }
             }
         }
@@ -137,7 +137,7 @@ class Connection(object):
                     'aps': {
                         'alert': text,
                         'alert-title': title,
-                        'url': url,
+                        'url': self.add_tracking(url, channel_name, 'ios'),
                     }
                 }
             }
@@ -174,6 +174,32 @@ class Connection(object):
         if is_blog:
             url += '?feed=articlexml'
         return url
+
+    @staticmethod
+    def add_tracking(url, channel, device):
+        if channel == PARSE_BREAKING_CHANNEL:
+            channel = 'eilmeldung'
+        else:
+            channel = 'wichtige_news'
+        if device == 'android':
+            device = 'andpush'
+        else:
+            device = 'iospush'
+
+        tracking = {
+            'wt_zmc':
+            'fix.int.zonaudev.push.{channel}.zeitde.{device}.link.x'.format(
+                channel=channel, device=device),
+            'utm_medium': 'fix',
+            'utm_source': 'push_zonaudev_int',
+            'utm_campaign': channel,
+            'utm_content': 'zeitde_{device}_link_x'.format(device=device),
+        }
+        tracking = urllib.urlencode(tracking)
+        if '?' in url:
+            return url + '&' + tracking
+        else:
+            return url + '?' + tracking
 
 
 @zope.interface.implementer(zeit.push.interfaces.IPushNotifier)
