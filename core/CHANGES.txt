@@ -4,7 +4,7 @@ zeit.push changes
 1.7.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add imageUrl and teaserText to parse.com payload (DEV-698).
 
 
 1.7.1 (2014-11-18)

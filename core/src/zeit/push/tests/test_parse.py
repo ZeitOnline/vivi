@@ -129,10 +129,13 @@ class ParametersTest(zeit.push.testing.TestCase):
             'any', 'any', 1)
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL,
-                     supertitle='super', teaserText='teaser')
+                     supertitle='super', teaserText='teaser',
+                     image_url='http://images.zeit.de/example')
             payload = push.call_args_list[0][0][0]
             self.assertEqual('super', payload['data']['headline'])
             self.assertEqual('teaser', payload['data']['teaser'])
+            self.assertEqual(
+                'http://images.zeit.de/example', payload['data']['imageUrl'])
 
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):
