@@ -182,13 +182,18 @@ class Message(zeit.push.message.OneTimeMessage):
 
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
     grok.name('parse')
-    get_text_from = 'title'
 
     @property
     def text(self):
         """Override to read title of article, instead of short text."""
-        push = zeit.cms.content.interfaces.ICommonMetadata(self.context)
-        return getattr(push, self.get_text_from)
+        return self.context.title
+
+    @property
+    def additional_parameters(self):
+        result = {}
+        if self.context.supertitle:
+            result['supertitle'] = self.context.supertitle
+        return result
 
 
 @grok.subscribe(

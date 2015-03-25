@@ -47,6 +47,12 @@ class TestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = ZCML_LAYER
 
+    def setUp(self):
+        super(TestCase, self).setUp()
+        parse = zope.component.getUtility(
+            zeit.push.interfaces.IPushNotifier, name='parse')
+        parse.reset()
+
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(ZCML_LAYER,))
