@@ -70,6 +70,7 @@ class Connection(object):
                 'action': self.PUSH_ACTION_ID,
                 'headline': title,
                 'text': text,
+                'teaser': kw.get('teaserText') or '',
                 'url': url,
             }
         }
@@ -110,6 +111,7 @@ class Connection(object):
                 'aps': {
                     'alert': text,
                     'alert-title': title,
+                    'headline': title.upper(),
                     'url': url,
                 }
             }
@@ -191,8 +193,10 @@ class Message(zeit.push.message.OneTimeMessage):
     @property
     def additional_parameters(self):
         result = {}
-        if self.context.supertitle:
-            result['supertitle'] = self.context.supertitle
+        for name in ['supertitle', 'teaserText']:
+            value = getattr(self.context, name)
+            if value:
+                result[name] = value
         return result
 
 
