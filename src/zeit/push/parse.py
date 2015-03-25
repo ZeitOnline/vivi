@@ -41,6 +41,7 @@ class Connection(object):
 
         # Determine common payload attributes.
         url = self.rewrite_url(link)
+        image_url = kw.get('image_url')
         expiration_time = (datetime.now(pytz.UTC).replace(microsecond=0) +
                            timedelta(seconds=self.expire_interval)).isoformat()
 
@@ -74,6 +75,8 @@ class Connection(object):
                 'url': url,
             }
         }
+        if image_url:
+            android['data']['imageUrl'] = image_url
         if not all(channels):
             del android['where']['channels']
         self.push(android)
@@ -116,6 +119,8 @@ class Connection(object):
                 }
             }
         }
+        if image_url:
+            ios['data']['aps']['imageUrl'] = image_url
         if not all(channels):
             del ios['where']['channels']
         self.push(ios)
@@ -197,7 +202,29 @@ class Message(zeit.push.message.OneTimeMessage):
             value = getattr(self.context, name)
             if value:
                 result[name] = value
+        if self.image:
+            result['image_url'] = self.image.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE, 'http://images.zeit.de/')
         return result
+
+    @property
+    def image(self):
+        images = zeit.content.image.interfaces.IImages(self.context, None)
+        if images is None or images.image is None:
+            return None
+        image = images.image
+        if zeit.content.image.interfaces.IImageGroup.providedBy(image):
+            for name in image:
+                if self._image_pattern in name:
+                    return image[name]
+        else:
+            return image
+
+    @property
+    def _image_pattern(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.push')
+        return config['parse-image-pattern']
 
 
 @grok.subscribe(
