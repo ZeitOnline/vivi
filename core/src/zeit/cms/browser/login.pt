@@ -28,7 +28,7 @@
       </div>
 
       <div class="field">
-        <label for="login" i18n:translate="">Password</label>
+        <label for="password" i18n:translate="">Password</label>
         <input type="password" name="password" id="password"/>
       </div>
 
