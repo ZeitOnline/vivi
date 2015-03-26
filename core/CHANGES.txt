@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.42.0 (unreleased)
+2.42.0 (2015-03-26)
 -------------------
 
 - Switch from basic auth to login form (DEV-7).
