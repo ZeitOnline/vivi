@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Mar 24 17:08:35 2015\n"
-"PO-Revision-Date: 2015-03-24 17:09+0100\n"
+"PO-Revision-Date: 2015-03-26 09:07+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -510,7 +510,7 @@ msgstr "Passwort"
 
 #: zeit/cms/browser/login.pt:30
 msgid "Log in"
-msgstr "Login"
+msgstr "Anmelden"
 
 #: zeit/cms/browser/login.pt:36
 msgid "Login failed."
@@ -577,7 +577,7 @@ msgstr "Entfernen"
 
 #: zeit/cms/browser/userinfo.pt:3
 msgid "Logout"
-msgstr "Logout"
+msgstr "Abmelden"
 
 #. Default: ""
 #: zeit/cms/browser/widget.py:364
