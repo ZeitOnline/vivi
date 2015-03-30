@@ -4,7 +4,7 @@ zeit.push changes
 1.7.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Switch around parse.com metadata (DEV-698).
 
 
 1.7.2 (2015-03-26)
