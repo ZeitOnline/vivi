@@ -139,7 +139,7 @@ class ParametersTest(zeit.push.testing.TestCase):
         self.zca.patch_utility(domain, name='zeit.cms')
         self.catalog = zeit.cms.testing.TestCatalog()
         domain.addCatalog(self.catalog)
-        self.catalog.messages['breaking-news-parse-title'] = 'foo'
+        self.catalog.messages['parse-breaking-title'] = 'foo'
         api = zeit.push.parse.Connection(
             'any', 'any', 1)
         api.LANGUAGE = 'tt'
@@ -153,13 +153,21 @@ class ParametersTest(zeit.push.testing.TestCase):
             'any', 'any', 1)
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL,
-                     supertitle='super', teaserText='teaser',
+                     teaserSupertitle='super', teaserTitle='title',
+                     teaserText='teaser',
                      image_url='http://images.zeit.de/example')
-            payload = push.call_args_list[0][0][0]
-            self.assertEqual('super', payload['data']['headline'])
-            self.assertEqual('teaser', payload['data']['teaser'])
+            android = push.call_args_list[0][0][0]
+            self.assertEqual('title', android['data']['text'])
+            self.assertEqual('teaser', android['data']['teaser'])
             self.assertEqual(
-                'http://images.zeit.de/example', payload['data']['imageUrl'])
+                'http://images.zeit.de/example', android['data']['imageUrl'])
+            ios = push.call_args_list[1][0][0]
+            self.assertEqual('super', ios['data']['aps']['headline'])
+            self.assertEqual('title', ios['data']['aps']['alert-title'])
+            self.assertEqual('teaser', ios['data']['aps']['alert'])
+            self.assertEqual(
+                'http://images.zeit.de/example',
+                ios['data']['aps']['imageUrl'])
 
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):

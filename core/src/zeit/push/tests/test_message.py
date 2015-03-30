@@ -31,7 +31,8 @@ class MessageTest(zeit.push.testing.TestCase):
     def test_parse_reads_metadata_from_content(self):
         content = TestContentType()
         content.title = 'mytext'
-        content.supertitle = 'super'
+        content.teaserSupertitle = 'super'
+        content.teaserTitle = 'title'
         content.teaserText = 'teaser'
         self.repository['foo'] = content
         message = zope.component.getAdapter(
@@ -41,5 +42,6 @@ class MessageTest(zeit.push.testing.TestCase):
             zeit.push.interfaces.IPushNotifier, name='parse')
         self.assertEqual(
             [('mytext', u'http://www.zeit.de/foo', {
-                'supertitle': 'super', 'teaserText': 'teaser'})],
+                'teaserSupertitle': 'super', 'teaserText': 'teaser',
+                'teaserTitle': 'title'})],
             parse.calls)

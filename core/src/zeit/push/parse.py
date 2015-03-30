@@ -48,16 +48,18 @@ class Connection(object):
             channels = config.get(channel_name, '').split(' ')
         url = self.rewrite_url(link)
         image_url = kw.get('image_url')
+        title = text
         expiration_time = (datetime.now(pytz.UTC).replace(microsecond=0) +
                            timedelta(seconds=self.expire_interval)).isoformat()
 
         if config.get(PARSE_NEWS_CHANNEL) in channels:
-            title = kw.get('supertitle', _('ZEIT ONLINE:'))
+            headline = _('parse-news-title')
         else:
-            title = _('breaking-news-parse-title')
+            headline = _('parse-breaking-title')
         # There's no i18n in the mobile app, so we translate to a hard-coded
         # language here.
-        title = zope.i18n.translate(title, target_language=self.LANGUAGE)
+        headline = zope.i18n.translate(
+            headline, target_language=self.LANGUAGE)
 
         # Android >= 1.1
         android = {
@@ -69,9 +71,9 @@ class Connection(object):
             },
             'data': {
                 'action': self.PUSH_ACTION_ID,
-                'headline': title,
-                'text': text,
-                'teaser': kw.get('teaserText') or '',
+                'headline': headline,
+                'text': kw.get('teaserTitle', title),
+                'teaser': kw.get('teaserText', ''),
                 'url': self.add_tracking(url, channel_name, 'android'),
             }
         }
@@ -90,8 +92,8 @@ class Connection(object):
                     'appVersion': {'$lt': self.MIN_ANDROID_VERSION}
                 },
                 'data': {
-                    'alert': text,
-                    'title': title,
+                    'alert': title,
+                    'title': headline,
                     'url': self.add_tracking(url, channel_name, 'android'),
                 }
             }
@@ -112,9 +114,9 @@ class Connection(object):
             },
             'data': {
                 'aps': {
-                    'alert': text,
-                    'alert-title': title,
-                    'headline': title.upper(),
+                    'headline': kw.get('teaserSupertitle', ''),
+                    'alert-title': kw.get('teaserTitle', headline),
+                    'alert': kw.get('teaserText', title),
                     'url': self.add_tracking(url, channel_name, 'ios'),
                 }
             }
@@ -135,8 +137,8 @@ class Connection(object):
                 },
                 'data': {
                     'aps': {
-                        'alert': text,
-                        'alert-title': title,
+                        'alert': title,
+                        'alert-title': headline,
                         'url': self.add_tracking(url, channel_name, 'ios'),
                     }
                 }
@@ -224,7 +226,7 @@ class Message(zeit.push.message.OneTimeMessage):
     @property
     def additional_parameters(self):
         result = {}
-        for name in ['supertitle', 'teaserText']:
+        for name in ['teaserTitle', 'teaserText', 'teaserSupertitle']:
             value = getattr(self.context, name)
             if value:
                 result[name] = value
