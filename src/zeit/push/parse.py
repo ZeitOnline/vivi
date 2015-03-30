@@ -22,10 +22,11 @@ class Connection(object):
 
     base_url = 'https://api.parse.com/1'
 
-    # Channels only work on mobile apps with version greater than or equal to
-    # these (see VIV-466).
-    MIN_ANDROID_VERSION = '1.1'
-    MIN_IOS_VERSION = '20140514.1'
+    # Channels, introduced in VIV-466.
+    ANDROID_CHANNEL_VERSION = '1.1'  # Channels work on versions >= x.
+    IOS_CHANNEL_VERSION = '20140514.1'  # Channels work on versions > x.
+    # ``headline``, introduced in DEV-698.
+    IOS_HEADLINE_VERSION = '20150327.4'  # Headline works on iOS version >= x.
 
     PUSH_ACTION_ID = 'de.zeit.online.PUSH'
 
@@ -61,12 +62,11 @@ class Connection(object):
         headline = zope.i18n.translate(
             headline, target_language=self.LANGUAGE)
 
-        # Android >= 1.1
         android = {
             'expiration_time': expiration_time,
             'where': {
                 'deviceType': 'android',
-                'appVersion': {'$gte': self.MIN_ANDROID_VERSION},
+                'appVersion': {'$gte': self.ANDROID_CHANNEL_VERSION},
                 'channels': {'$in': channels}
             },
             'data': {
@@ -83,13 +83,12 @@ class Connection(object):
             del android['where']['channels']
         self.push(android)
 
-        # Android < 1.1
         if channel_name == PARSE_BREAKING_CHANNEL:
             android_legacy = {
                 'expiration_time': expiration_time,
                 'where': {
                     'deviceType': 'android',
-                    'appVersion': {'$lt': self.MIN_ANDROID_VERSION}
+                    'appVersion': {'$lt': self.ANDROID_CHANNEL_VERSION}
                 },
                 'data': {
                     'alert': title,
@@ -101,15 +100,14 @@ class Connection(object):
 
         if kw.get('skip_ios'):
             # XXX Skipping iOS is for unittests only, since we cannot push to
-            # iOS without a apple certificate.
+            # iOS without an Apple certificate.
             return
 
-        # iOS > 20140514.1
         ios = {
             'expiration_time': expiration_time,
             'where': {
                 'deviceType': 'ios',
-                'appVersion': {'$gt': self.MIN_IOS_VERSION},
+                'appVersion': {'$gte': self.IOS_HEADLINE_VERSION},
                 'channels': {'$in': channels}
             },
             'data': {
@@ -127,13 +125,32 @@ class Connection(object):
             del ios['where']['channels']
         self.push(ios)
 
-        # iOS <= 20140514.1
+        ios_noheadline = {
+            'expiration_time': expiration_time,
+            'where': {
+                'deviceType': 'ios',
+                'appVersion': {'$gt': self.IOS_CHANNEL_VERSION,
+                               '$lt': self.IOS_HEADLINE_VERSION},
+                'channels': {'$in': channels}
+            },
+            'data': {
+                'aps': {
+                    'alert-title': headline,
+                    'alert': title,
+                    'url': self.add_tracking(url, channel_name, 'ios'),
+                }
+            }
+        }
+        if not all(channels):
+            del ios_noheadline['where']['channels']
+        self.push(ios_noheadline)
+
         if channel_name == PARSE_BREAKING_CHANNEL:
             ios_legacy = {
                 'expiration_time': expiration_time,
                 'where': {
                     'deviceType': 'ios',
-                    'appVersion': {'$lte': self.MIN_IOS_VERSION}
+                    'appVersion': {'$lte': self.IOS_CHANNEL_VERSION}
                 },
                 'data': {
                     'aps': {
