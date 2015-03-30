@@ -85,10 +85,11 @@ class GalleryFactory(ReferenceFactory):
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.content.gallery.interfaces.IGallery)
+                            zeit.content.gallery.interfaces.IGallery,
+                            int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def factor_block_from_gallery(body, context):
-    block = GalleryFactory(body)()
+def factor_block_from_gallery(body, context, position):
+    block = GalleryFactory(body)(position)
     block.references = context
     return block
 
@@ -107,10 +108,11 @@ class InfoboxFactory(ReferenceFactory):
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.content.infobox.interfaces.IInfobox)
+                            zeit.content.infobox.interfaces.IInfobox,
+                            int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def factor_block_from_infobox(body, context):
-    block = InfoboxFactory(body)()
+def factor_block_from_infobox(body, context, position):
+    block = InfoboxFactory(body)(position)
     block.references = context
     return block
 
@@ -129,10 +131,11 @@ class TimelineFactory(ReferenceFactory):
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.content.article.edit.interfaces.ITimeline)
+                            zeit.content.article.edit.interfaces.ITimeline,
+                            int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def factor_block_from_timeline(body, context):
-    block = TimelineFactory(body)()
+def factor_block_from_timeline(body, context, position):
+    block = TimelineFactory(body)(position)
     block.references = context
     return block
 
@@ -159,10 +162,11 @@ class PortraitboxFactory(ReferenceFactory):
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.content.portraitbox.interfaces.IPortraitbox)
+                            zeit.content.portraitbox.interfaces.IPortraitbox,
+                            int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def factor_block_from_portraitbox(body, context):
-    block = PortraitboxFactory(body)()
+def factor_block_from_portraitbox(body, context, position):
+    block = PortraitboxFactory(body)(position)
     block.references = context
     return block
 

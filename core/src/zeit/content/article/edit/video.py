@@ -77,10 +77,11 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.content.video.interfaces.IVideoContent)
+                            zeit.content.video.interfaces.IVideoContent,
+                            int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def create_video_block_from_video(body, context):
-    block = Factory(body)()
+def create_video_block_from_video(body, context, position):
+    block = Factory(body)(position)
     block.video = context
     return block
 

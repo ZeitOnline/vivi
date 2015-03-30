@@ -231,7 +231,7 @@ class EmptyMarkerTest(object):
         body = zeit.content.article.edit.body.EditableBody(
             article, article.xml.body)
         block = zope.component.getMultiAdapter(
-            (body, self.create_target()), zeit.edit.interfaces.IElement)
+            (body, self.create_target(), 0), zeit.edit.interfaces.IElement)
         self.assertFalse(block.is_empty)
 
 

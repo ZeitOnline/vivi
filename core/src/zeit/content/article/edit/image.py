@@ -60,20 +60,22 @@ class Factory(zeit.content.article.edit.reference.ReferenceFactory):
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.content.image.interfaces.IImage)
+                            zeit.content.image.interfaces.IImage,
+                            int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def factor_image_block_from_image(body, image):
-    block = Factory(body)()
+def factor_image_block_from_image(body, image, position):
+    block = Factory(body)(position)
     block.references = (block.references.get(image)
                         or block.references.create(image))
     return block
 
 
 @grokcore.component.adapter(zeit.content.article.edit.interfaces.IEditableBody,
-                            zeit.content.image.interfaces.IImageGroup)
+                            zeit.content.image.interfaces.IImageGroup,
+                            int)
 @grokcore.component.implementer(zeit.edit.interfaces.IElement)
-def factor_image_block_from_imagegroup(body, group):
-    return factor_image_block_from_image(body, group)
+def factor_image_block_from_imagegroup(body, group, position):
+    return factor_image_block_from_image(body, group, position)
 
 
 @grokcore.component.subscribe(

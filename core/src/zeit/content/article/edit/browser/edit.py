@@ -96,8 +96,9 @@ class LandingZoneBase(zeit.edit.browser.landing.LandingZone):
             raise ValueError(
                 _('The object "${name}" does not exist.', mapping=dict(
                     name=self.uniqueId)))
+        position = self.get_position_from_order(self.container.keys())
         self.block = zope.component.queryMultiAdapter(
-            (self.container, content),
+            (self.container, content, position),
             zeit.edit.interfaces.IElement)
         if self.block is None:
             raise ValueError(
