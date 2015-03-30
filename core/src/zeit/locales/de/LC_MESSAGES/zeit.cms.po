@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Mar 24 17:08:35 2015\n"
-"PO-Revision-Date: 2015-03-26 09:07+0100\n"
+"POT-Creation-Date: Mon Mar 30 09:24:00 2015\n"
+"PO-Revision-Date: 2015-03-30 09:24+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -500,21 +500,21 @@ msgstr ""
 msgid "An error is occoured"
 msgstr "Ein Fehler ist aufgetreten."
 
-#: zeit/cms/browser/login.pt:19
+#: zeit/cms/browser/login.pt:14
+msgid "Login failed."
+msgstr "Anmeldung fehlgeschlagen. Ungültiger Benutzername/Passwort."
+
+#: zeit/cms/browser/login.pt:26
 msgid "Username"
 msgstr "Benutzername"
 
-#: zeit/cms/browser/login.pt:24
+#: zeit/cms/browser/login.pt:31
 msgid "Password"
 msgstr "Passwort"
 
-#: zeit/cms/browser/login.pt:30
+#: zeit/cms/browser/login.pt:37
 msgid "Log in"
 msgstr "Anmelden"
-
-#: zeit/cms/browser/login.pt:36
-msgid "Login failed."
-msgstr "Anmeldung fehlgeschlagen. Ungültiger Benutzername/Passwort."
 
 #: zeit/cms/browser/main_template.pt:10 zeit/push/banner-retract.pt:29
 msgid "Error"
@@ -3874,12 +3874,12 @@ msgstr "Facebook-Posting"
 msgid "Short push text"
 msgstr "Tweet"
 
-#: zeit/push/parse.py:54
-msgid "ZEIT ONLINE:"
+#: zeit/push/parse.py:55
+msgid "parse-news-title"
 msgstr "ZEIT ONLINE:"
 
-#: zeit/push/parse.py:56
-msgid "breaking-news-parse-title"
+#: zeit/push/parse.py:57
+msgid "parse-breaking-title"
 msgstr "Eilmeldung"
 
 #: zeit/securitypolicy/security.zcml:11
@@ -4169,6 +4169,9 @@ msgstr "Zweites Video"
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:53
 msgid "with info"
 msgstr "mit Info"
+
+#~ msgid "ZEIT ONLINE:"
+#~ msgstr "ZEIT ONLINE:"
 
 #~ msgid "Edit teaser layouts"
 #~ msgstr "Teaser-Layouts"

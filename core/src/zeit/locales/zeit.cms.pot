@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Mar 24 17:08:35 2015\n"
+"POT-Creation-Date: Mon Mar 30 09:24:00 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -540,20 +540,20 @@ msgstr ""
 msgid "An error is occoured"
 msgstr ""
 
-#: zeit/cms/browser/login.pt:19
+#: zeit/cms/browser/login.pt:14
+msgid "Login failed."
+msgstr ""
+
+#: zeit/cms/browser/login.pt:26
 msgid "Username"
 msgstr ""
 
-#: zeit/cms/browser/login.pt:24
+#: zeit/cms/browser/login.pt:31
 msgid "Password"
 msgstr ""
 
-#: zeit/cms/browser/login.pt:30
+#: zeit/cms/browser/login.pt:37
 msgid "Log in"
-msgstr ""
-
-#: zeit/cms/browser/login.pt:36
-msgid "Login failed."
 msgstr ""
 
 #: zeit/cms/browser/main_template.pt:10
@@ -3912,12 +3912,12 @@ msgstr ""
 msgid "Short push text"
 msgstr ""
 
-#: zeit/push/parse.py:54
-msgid "ZEIT ONLINE:"
+#: zeit/push/parse.py:55
+msgid "parse-news-title"
 msgstr ""
 
-#: zeit/push/parse.py:56
-msgid "breaking-news-parse-title"
+#: zeit/push/parse.py:57
+msgid "parse-breaking-title"
 msgstr ""
 
 #: zeit/securitypolicy/security.zcml:11
