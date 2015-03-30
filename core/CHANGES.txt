@@ -4,7 +4,7 @@ zeit.push changes
 1.7.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Restrict changed payload to current iOS app versions (DEV-698).
 
 
 1.7.3 (2015-03-30)
