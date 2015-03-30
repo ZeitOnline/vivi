@@ -76,4 +76,4 @@ class LoginFormTest(zeit.cms.testing.BrowserTestCase,
         self.assertEllipsis('...Login failed...', b.contents)
         # Ensure the message is not always displayed.
         b.open('http://localhost/++skin++vivi/repository')
-        self.assertNotEllipsis('...Login failed...', b.contents)
+        self.assertNotIn('Login failed', b.contents)
