@@ -37,13 +37,13 @@ class ParseTest(unittest.TestCase):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
             api.send('Foo', 'http://b.ar', channels=PARSE_BREAKING_CHANNEL)
-            assert len(push.call_args_list) == 4
+            self.assertEqual(5, len(push.call_args_list))
 
     def test_channel_news_is_pushed_to_all_supporting_app_versions(self):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
             api.send('Foo', 'http://b.ar', channels=PARSE_NEWS_CHANNEL)
-            assert len(push.call_args_list) == 2
+            self.assertEqual(3, len(push.call_args_list))
 
 
 class URLRewriteTest(unittest.TestCase):
