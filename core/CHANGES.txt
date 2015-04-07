@@ -4,7 +4,7 @@ zeit.locales CHANGES
 2.0.35 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Übersetzungen aktualisiert
 
 
 2.0.34 (2015-03-30)
@@ -253,20 +253,20 @@ zeit.locales CHANGES
 +++++++++++++++++++
 
 - zeit.vgwort hinzugefügt
-- Übersetzungen aktualisiert  
+- Übersetzungen aktualisiert
 
 0.19.0 (2010-06-10)
 +++++++++++++++++++
 
 - zeit.content.author hinzugefügt
-- Übersetzungen aktualisiert  
+- Übersetzungen aktualisiert
 
 
 0.18.0 (2010-06-03)
 +++++++++++++++++
 
 - Using versions from the ZTK.
-- Übersetzungen aktualisiert  
+- Übersetzungen aktualisiert
 
 
 0.17 (2010-03-10)

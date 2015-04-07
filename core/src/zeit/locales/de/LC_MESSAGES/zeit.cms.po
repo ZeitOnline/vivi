@@ -15,15 +15,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Mon Mar 30 09:24:00 2015\n"
-"PO-Revision-Date: 2015-03-30 09:24+0100\n"
-"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
+"PO-Revision-Date: 2015-04-07 14:13+0100\n"
+"Last-Translator: Florian Pilz <fp@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.5.4\n"
+"X-Generator: Poedit 1.7.5\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:44
@@ -3876,7 +3876,7 @@ msgstr "Tweet"
 
 #: zeit/push/parse.py:55
 msgid "parse-news-title"
-msgstr "ZEIT ONLINE:"
+msgstr "ZEIT ONLINE"
 
 #: zeit/push/parse.py:57
 msgid "parse-breaking-title"
