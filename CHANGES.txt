@@ -4,7 +4,9 @@ zeit.push changes
 1.7.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Increase minimum iOS version for headline API. (DEV-698)
+
+- Display teaser title in `headline` and headline in `alert-title`. (DEV-698)
 
 
 1.7.4 (2015-03-30)
