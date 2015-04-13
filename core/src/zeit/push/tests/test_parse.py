@@ -92,6 +92,12 @@ class URLRewriteTest(unittest.TestCase):
 
 class ParametersTest(zeit.push.testing.TestCase):
 
+    def create_catalog(self):
+        domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
+        self.zca.patch_utility(domain, name='zeit.cms')
+        self.catalog = zeit.cms.testing.TestCatalog()
+        domain.addCatalog(self.catalog)
+
     def test_sets_expiration_time(self):
         api = zeit.push.parse.Connection(
             'any', 'any', 3600)
@@ -135,10 +141,7 @@ class ParametersTest(zeit.push.testing.TestCase):
             self.assertNotIn('channels', data['where'])
 
     def test_translates_title(self):
-        domain = zope.i18n.translationdomain.TranslationDomain('zeit.cms')
-        self.zca.patch_utility(domain, name='zeit.cms')
-        self.catalog = zeit.cms.testing.TestCatalog()
-        domain.addCatalog(self.catalog)
+        self.create_catalog()
         self.catalog.messages['parse-breaking-title'] = 'foo'
         api = zeit.push.parse.Connection(
             'any', 'any', 1)
@@ -149,8 +152,12 @@ class ParametersTest(zeit.push.testing.TestCase):
             self.assertEqual('foo', data['data']['aps']['alert-title'])
 
     def test_transmits_metadata(self):
+        self.create_catalog()
+        self.catalog.messages['parse-news-title'] = 'ZEIT ONLINE'
+
         api = zeit.push.parse.Connection(
             'any', 'any', 1)
+        api.LANGUAGE = 'tt'
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL,
                      teaserSupertitle='super', teaserTitle='title',
@@ -162,8 +169,8 @@ class ParametersTest(zeit.push.testing.TestCase):
             self.assertEqual(
                 'http://images.zeit.de/example', android['data']['imageUrl'])
             ios = push.call_args_list[1][0][0]
-            self.assertEqual('super', ios['data']['aps']['headline'])
-            self.assertEqual('title', ios['data']['aps']['alert-title'])
+            self.assertEqual('title', ios['data']['aps']['headline'])
+            self.assertEqual('ZEIT ONLINE', ios['data']['aps']['alert-title'])
             self.assertEqual('teaser', ios['data']['aps']['alert'])
             self.assertEqual(
                 'http://images.zeit.de/example',

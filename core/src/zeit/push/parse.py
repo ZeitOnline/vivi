@@ -26,7 +26,7 @@ class Connection(object):
     ANDROID_CHANNEL_VERSION = '1.1'  # Channels work on versions >= x.
     IOS_CHANNEL_VERSION = '20140514.1'  # Channels work on versions > x.
     # ``headline``, introduced in DEV-698.
-    IOS_HEADLINE_VERSION = '20150327.4'  # Headline works on iOS version >= x.
+    IOS_HEADLINE_VERSION = '20150401'  # Headline works on iOS version >= x.
 
     PUSH_ACTION_ID = 'de.zeit.online.PUSH'
 
@@ -112,8 +112,8 @@ class Connection(object):
             },
             'data': {
                 'aps': {
-                    'headline': kw.get('teaserSupertitle', ''),
-                    'alert-title': kw.get('teaserTitle', headline),
+                    'headline': kw.get('teaserTitle', ''),
+                    'alert-title': headline,
                     'alert': kw.get('teaserText', title),
                     'url': self.add_tracking(url, channel_name, 'ios'),
                 }
