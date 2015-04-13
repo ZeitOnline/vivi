@@ -1,3 +1,4 @@
+import zope.error.error
 import zope.i18n
 
 
@@ -29,3 +30,27 @@ class ErrorView(object):
             message = self.context
 
         return '%s: %s' % (self.context.__class__.__name__, message)
+
+
+class ErrorReportingUtility(zope.error.error.RootErrorReportingUtility):
+
+    copy_to_zlog = True
+
+    def raising(self, info, request=None):
+        """Adds the (formatted) traceback to the exception object,
+        so the ErrorView can display it.
+
+        In Python 2, the exception object does not carry the traceback.
+        And since the ErrorView is quite separate from the point where the
+        exception is actually caught, we can't use sys.exc_info() either.
+
+        But luckily, the ordering in ZopePublication.handleException()
+        works out just fine, so we can enrich the exception object here.
+        """
+
+        super(ErrorReportingUtility, self).raising(info, request)
+        exception = info[1]
+        if not isinstance(info[2], basestring):
+            exception.traceback = zope.error.error.getFormattedException(info)
+        else:
+            exception.traceback = zope.error.error.getPrintable(info[2])

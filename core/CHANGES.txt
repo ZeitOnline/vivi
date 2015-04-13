@@ -4,7 +4,7 @@ zeit.cms changes
 2.42.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Display the exception traceback in the error view.
 
 
 2.42.0 (2015-03-26)

@@ -60,16 +60,14 @@ def installRelations():
         zeit.cms.relation.relation.referenced_by, multiple=True)
 
 
-@zope.component.adapter(
-    zope.error.interfaces.IErrorReportingUtility,
-    zope.component.interfaces.IRegistered)
-def configure_error_utility(errUtility, event):
-    # The error utility is installed by zope.app.appsetup. This is a point in
-    # time that works for making our configuration wishes heard.
-    errUtility.copy_to_zlog = True
+def installErrorReportingUtility(root):
+    zope.app.appsetup.bootstrap.addConfigureUtility(
+        root, zope.error.interfaces.IErrorReportingUtility, '',
+        zeit.cms.browser.error.ErrorReportingUtility)
 
 
 def install(root):
+    installErrorReportingUtility(root)
     installLocalUtility(
         root, zeit.cms.repository.repository.repositoryFactory,
         'repository', zeit.cms.repository.interfaces.IRepository)

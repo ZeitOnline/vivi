@@ -10,5 +10,6 @@
       The action you were trying to do could not be finished.
     </div>
     <pre tal:content="view/message"></pre>
+    <pre tal:content="structure context/traceback |nothing"></pre>
   </div>
 </html>
