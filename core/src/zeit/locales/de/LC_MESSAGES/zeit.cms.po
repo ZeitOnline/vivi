@@ -14,16 +14,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Mon Mar 30 09:24:00 2015\n"
-"PO-Revision-Date: 2015-04-07 14:13+0100\n"
-"Last-Translator: Florian Pilz <fp@gocept.com>\n"
+"POT-Creation-Date: Mon Apr 13 12:00:14 2015\n"
+"PO-Revision-Date: 2015-04-13 12:00+0100\n"
+"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:44
@@ -566,9 +566,13 @@ msgstr "Quelltext bearbeiten"
 msgid "View source code"
 msgstr "Quelltext anzeigen"
 
-#: zeit/cms/browser/system-error.pt:8
-msgid "The action you were trying to do could not be finished."
-msgstr "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden."
+#: zeit/cms/browser/system-error.pt:5
+msgid ""
+"A system error occurred. The action you were trying to do could not be "
+"finished."
+msgstr ""
+"Ein Systemfehler ist aufgetreten. Die Aktion, die Sie ausführen wollten, "
+"konnte nicht beendet werden."
 
 #: zeit/cms/browser/tree.pt:19
 #: zeit/content/article/edit/browser/recension-list.pt:19
@@ -1730,23 +1734,23 @@ msgid "last published at ${date} on ${time} by ${by}"
 msgstr "zuletzt veröffentlicht am ${date} um ${time} von ${by}"
 
 #. Default: ""
-#: zeit/content/article/edit/browser/edit.py:104
+#: zeit/content/article/edit/browser/edit.py:105
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr "Kann für \"${name}\" keinen Block anlegen, weil ich nicht weiß welchen"
 
-#: zeit/content/article/edit/browser/edit.py:172
+#: zeit/content/article/edit/browser/edit.py:173
 msgid "edit XML block"
 msgstr "XML bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:185
+#: zeit/content/article/edit/browser/edit.py:186
 msgid "edit audio block"
 msgstr "Audioblock bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:198
+#: zeit/content/article/edit/browser/edit.py:199
 msgid "edit citation block"
 msgstr "Zitat Block bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:211
+#: zeit/content/article/edit/browser/edit.py:212
 msgid "edit liveblog block"
 msgstr "Liveblog-Block bearbeiten"
 
@@ -1754,11 +1758,11 @@ msgstr "Liveblog-Block bearbeiten"
 msgid "auto-save body text"
 msgstr "Artikeltext bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:223
+#: zeit/content/article/edit/browser/edit.py:224
 msgid "edit page break"
 msgstr "Seitenumbruch bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:240
+#: zeit/content/article/edit/browser/edit.py:241
 msgid "edit html block"
 msgstr "HTML-Block bearbeiten"
 
@@ -2151,7 +2155,7 @@ msgstr "Ziehen Sie Bildergalerien hier, um sie zu verknüpfen"
 
 #: zeit/content/article/edit/interfaces.py:240
 #: zeit/content/article/edit/interfaces.py:250
-#: zeit/content/article/edit/reference.py:106
+#: zeit/content/article/edit/reference.py:107
 #: zeit/content/infobox/infobox.py:66 zeit/content/infobox/interfaces.py:34
 #: zeit/wysiwyg/browser/resources/reference/image.pt:33
 msgid "Infobox"
@@ -2177,7 +2181,7 @@ msgid "wide"
 msgstr "breit / groß"
 
 #: zeit/content/article/edit/interfaces.py:270
-#: zeit/content/article/edit/reference.py:158
+#: zeit/content/article/edit/reference.py:161
 #: zeit/content/portraitbox/interfaces.py:35
 #: zeit/content/portraitbox/portraitbox.py:35
 #: zeit/magazin/browser/configure.zcml:56
@@ -2268,7 +2272,7 @@ msgstr "HTML-Block"
 msgid "Raw XML"
 msgstr "Embed Code"
 
-#: zeit/content/article/edit/reference.py:128
+#: zeit/content/article/edit/reference.py:130
 msgid "Timeline"
 msgstr "Zeitstrahl"
 
@@ -3874,11 +3878,11 @@ msgstr "Facebook-Posting"
 msgid "Short push text"
 msgstr "Tweet"
 
-#: zeit/push/parse.py:55
+#: zeit/push/parse.py:59
 msgid "parse-news-title"
 msgstr "ZEIT ONLINE"
 
-#: zeit/push/parse.py:57
+#: zeit/push/parse.py:61
 msgid "parse-breaking-title"
 msgstr "Eilmeldung"
 

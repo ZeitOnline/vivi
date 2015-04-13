@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Mon Mar 30 09:24:00 2015\n"
+"POT-Creation-Date: Mon Apr 13 12:00:14 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -608,8 +608,8 @@ msgstr ""
 msgid "View source code"
 msgstr ""
 
-#: zeit/cms/browser/system-error.pt:8
-msgid "The action you were trying to do could not be finished."
+#: zeit/cms/browser/system-error.pt:5
+msgid "A system error occurred. The action you were trying to do could not be finished."
 msgstr ""
 
 #: zeit/cms/browser/tree.pt:19
@@ -1770,24 +1770,24 @@ msgstr ""
 msgid "last published at ${date} on ${time} by ${by}"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:104
+#: zeit/content/article/edit/browser/edit.py:105
 #. Default: ""
 msgid "Could not create block for \"${name}\", because I don't know which one."
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:172
+#: zeit/content/article/edit/browser/edit.py:173
 msgid "edit XML block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:185
+#: zeit/content/article/edit/browser/edit.py:186
 msgid "edit audio block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:198
+#: zeit/content/article/edit/browser/edit.py:199
 msgid "edit citation block"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:211
+#: zeit/content/article/edit/browser/edit.py:212
 msgid "edit liveblog block"
 msgstr ""
 
@@ -1795,11 +1795,11 @@ msgstr ""
 msgid "auto-save body text"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:223
+#: zeit/content/article/edit/browser/edit.py:224
 msgid "edit page break"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:240
+#: zeit/content/article/edit/browser/edit.py:241
 msgid "edit html block"
 msgstr ""
 
@@ -2204,7 +2204,7 @@ msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:240
 #: zeit/content/article/edit/interfaces.py:250
-#: zeit/content/article/edit/reference.py:106
+#: zeit/content/article/edit/reference.py:107
 #: zeit/content/infobox/infobox.py:66
 #: zeit/content/infobox/interfaces.py:34
 #: zeit/wysiwyg/browser/resources/reference/image.pt:33
@@ -2231,7 +2231,7 @@ msgid "wide"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:270
-#: zeit/content/article/edit/reference.py:158
+#: zeit/content/article/edit/reference.py:161
 #: zeit/content/portraitbox/interfaces.py:35
 #: zeit/content/portraitbox/portraitbox.py:35
 #: zeit/magazin/browser/configure.zcml:56
@@ -2322,7 +2322,7 @@ msgstr ""
 msgid "Raw XML"
 msgstr ""
 
-#: zeit/content/article/edit/reference.py:128
+#: zeit/content/article/edit/reference.py:130
 msgid "Timeline"
 msgstr ""
 
@@ -3912,11 +3912,11 @@ msgstr ""
 msgid "Short push text"
 msgstr ""
 
-#: zeit/push/parse.py:55
+#: zeit/push/parse.py:59
 msgid "parse-news-title"
 msgstr ""
 
-#: zeit/push/parse.py:57
+#: zeit/push/parse.py:61
 msgid "parse-breaking-title"
 msgstr ""
 
