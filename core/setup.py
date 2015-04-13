@@ -36,6 +36,7 @@ setup(
     entry_points={
         'console_scripts': [
             'facebook-access-token = zeit.push.facebook:create_access_token',
+            'parse-payload-doc = zeit.push.parse:print_payload_documentation',
         ],
         'fanstatic.libraries': [
             'zeit_push=zeit.push.browser.resources:lib',

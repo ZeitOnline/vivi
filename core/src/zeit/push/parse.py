@@ -7,6 +7,8 @@ import logging
 import pytz
 import requests
 import urllib
+import zeit.cms.checkout.interfaces
+import zeit.cms.content.interfaces
 import zeit.push.interfaces
 import zeit.push.message
 import zope.app.appsetup.product
@@ -284,3 +286,31 @@ def set_push_news_flag(context, event):
                 and service.get('channels') == PARSE_NEWS_CHANNEL):
             context.push_news = True
             break
+
+
+class PayloadDocumentation(Connection):
+
+    def push(self, data):
+        print json.dumps(data, indent=2, sort_keys=True) + ','
+
+
+def print_payload_documentation():
+    zope.app.appsetup.product.setProductConfiguration('zeit.push', {
+        PARSE_NEWS_CHANNEL: 'News',
+    })
+    conn = PayloadDocumentation(
+        'application_id', 'rest_api_key', expire_interval=9000)
+    params = {
+        'teaserTitle': 'TeaserTitle',
+        'teaserText': 'TeaserText',
+        'teaserSupertitle': 'TeaserSupertitle',
+        'image_url': 'http://images.zeit.de/test/image',
+    }
+    print '[{"//": "*** Eilmeldung ***"},'
+    conn.send('Title', 'http://www.zeit.de/test/artikel',
+              channels=PARSE_BREAKING_CHANNEL, **params)
+    print '\n'
+    print '{"//": "*** Wichtige Nachrichten ***"},'
+    conn.send('Title', 'http://www.zeit.de/test/artikel',
+              channels=PARSE_NEWS_CHANNEL, **params)
+    print ']'
