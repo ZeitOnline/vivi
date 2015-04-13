@@ -787,3 +787,40 @@ li.busy {
 .publish-state.published-with-changes {
     background-position: 7px -1611px;
 }
+
+/* error page */
+
+body.errorview {
+    position: static;
+    background-color: #f1f4f9;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+body.errorview #content {
+    background-image: url("/fanstatic/zeit.cms/layout/vivi_logo_error.png");
+    background-repeat: no-repeat;
+    background-position: -30px 0;
+    padding-top: 90px;
+
+    padding-left: 2em;
+    padding-right: 2em;
+    padding-bottom: 2em;
+    margin-top: 5em;
+    background-color: #fff;
+
+    position: static;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+}
+
+body.errorview textarea {
+    margin-top: 2em;
+    min-height: 500px;
+    color: #888;
+    border-style: none;
+}

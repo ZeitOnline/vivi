@@ -13,7 +13,7 @@
         <link rel="shortcut icon" tal:attributes="href favicon"
           type="image/x-icon" />
       </head>
-      <body>
+      <body class="errorview">
         <div id="content">
         <metal:contentslot define-slot="body">
           content
