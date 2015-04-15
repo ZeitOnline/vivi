@@ -72,7 +72,7 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
              'enabled': data.pop('twitter', False),
              'account': twitterAccountSource(None).MAIN_ACCOUNT}
         ]
-        if data.pop('facebook_magazin'):
+        if data.pop('facebook_magazin', None):
             message_config.append(
                 {'type': 'facebook',
                  'enabled': True,
