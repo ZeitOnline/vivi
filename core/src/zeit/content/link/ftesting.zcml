@@ -12,6 +12,10 @@
   <include package="zeit.content.image" />
   <include package="zeit.content.image.browser" />
 
+  <!-- XXX We don't want to include zeit.push:testing.zcml since that
+       pulls in the real workflow.
+  -->
+  <meta:provides feature="zeit.push.social-form" />
   <include package="zeit.push" />
   <include package="zeit.push" file="mock-webservice.zcml" />
   <include package="zeit.push.browser" />

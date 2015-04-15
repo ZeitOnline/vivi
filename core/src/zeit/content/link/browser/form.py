@@ -4,6 +4,7 @@ import zeit.cms.content.browser.form
 import zeit.content.link.interfaces
 import zeit.content.link.link
 import zeit.push.browser.form
+import zope.app.appsetup.appsetup
 import zope.formlib.form
 
 
@@ -18,10 +19,19 @@ class Base(zeit.push.browser.form.SocialBase):
 
     field_groups = (
         base.field_groups[:4]
-        + (zeit.push.browser.form.SocialBase.social_fields,
-           base.option_fields,
+        + (base.option_fields,
            base.author_fields)
     )
+
+    def __init__(self, *args, **kw):
+        super(Base, self).__init__(*args, **kw)
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.push.social-form'):
+            self.field_groups = (
+                self.field_groups[:4]
+                + (zeit.push.browser.form.SocialBase.social_fields,)
+                + self.field_groups[4:]
+            )
 
 
 class Add(Base, zeit.cms.content.browser.form.CommonMetadataAddForm):
