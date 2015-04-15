@@ -4,7 +4,7 @@ zeit.content.gallery changes
 2.6.15 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Undo 2.6.14, it was a misunderstanding.
 
 
 2.6.14 (2015-04-15)
