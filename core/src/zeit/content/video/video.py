@@ -115,12 +115,5 @@ class Dependencies(grokcore.component.Adapter):
     def get_dependencies(self):
         relations = zope.component.getUtility(
             zeit.cms.relation.interfaces.IRelations)
-        for rel in relations.get_relations(self.context):
-            obj = rel
-            while not isinstance(obj, Repository):
-                if (obj.__name__ == 'test' and
-                        isinstance(obj.__parent__, Repository)):
-                    break
-                obj = obj.__parent__
-            else:
-                yield rel
+        return [x for x in relations.get_relations(self.context)
+                if zeit.content.video.interfaces.IPlaylist.providedBy(x)]
