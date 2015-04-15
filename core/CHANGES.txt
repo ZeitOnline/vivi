@@ -4,6 +4,8 @@ zeit.cms changes
 2.43.0 (unreleased)
 -------------------
 
+- Recognize content_ad as banner position (DEV-724).
+
 - Display the exception traceback in the error view.
 
 

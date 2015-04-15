@@ -334,8 +334,9 @@ class BannerSource(SimpleXMLSource):
 
     def getValues(self):
         tree = self._get_tree()
-        return [int(node.get('paragraph'))
-                for node in tree.xpath('//homepage/page_all')]
+        return [int(node.get('paragraph')) for node
+                in tree.xpath('//homepage/page_all')
+                + tree.xpath('//homepage/content_ad')]
 
 
 class CMSContentTypeSource(zc.sourcefactory.basic.BasicSourceFactory):
