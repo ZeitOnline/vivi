@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.42.1 (unreleased)
+2.43.0 (unreleased)
 -------------------
 
 - Display the exception traceback in the error view.
