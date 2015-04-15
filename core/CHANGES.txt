@@ -1,7 +1,7 @@
 zeit.content.link changes
 =========================
 
-2.1.2 (unreleased)
+2.1.2 (2015-04-15)
 ------------------
 
 - Undo 2.1.1, it was a misunderstanding.
