@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.6.15 (unreleased)
+3.6.15 (2015-04-15)
 -------------------
 
 - Add feature toggle ``zeit.push.social-form`` for social media form fields.
