@@ -370,6 +370,10 @@
     permission="zope.Public"
     />
 
+  <class class=".error.ErrorReportingUtility">
+    <require like_class="zope.error.error.RootErrorReportingUtility" />
+  </class>
+
   <!-- Preview -->
 
   <browser:page
