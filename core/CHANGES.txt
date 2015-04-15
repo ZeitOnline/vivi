@@ -1,6 +1,12 @@
 zeit.content.link changes
 =========================
 
+2.1.3 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.1.2 (2015-04-15)
 ------------------
 
