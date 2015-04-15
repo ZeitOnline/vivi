@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.43.0 (unreleased)
+2.43.0 (2015-04-15)
 -------------------
 
 - Recognize content_ad as banner position (DEV-724).
