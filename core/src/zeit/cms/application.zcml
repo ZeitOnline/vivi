@@ -30,7 +30,7 @@
   <include package="zope.app.content" />
   <include package="zope.publisher" />
 
-  <!-- default menus -->
+  <!-- default menus (zope.app.zcmlfiles:menu.zcml) -->
   <browser:menu
       id="zmi_views"
       title="Views"
@@ -47,6 +47,16 @@
       description="Menu for objects to be added according to
                    containment constraints"
       interface="zope.app.publisher.interfaces.browser.AddMenu"
+      />
+  <browser:menu
+      id="add_component"
+      title="Add"
+      description="Menu of objects to be added to site management folders"
+      />
+  <browser:menu
+      id="add_registration"
+      title="Add Registration"
+      description="Menu of addable configuration objects"
       />
 
   <include package="zope.copypastemove" />
