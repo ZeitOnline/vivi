@@ -7,6 +7,7 @@ import zeit.content.gallery.gallery
 import zeit.content.gallery.interfaces
 import zeit.push.browser.form
 import zeit.wysiwyg.interfaces
+import zope.app.appsetup.appsetup
 import zope.formlib.form
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase
@@ -34,9 +35,18 @@ class GalleryFormBase(zeit.push.browser.form.SocialBase):
         gocept.form.grouped.RemainingFields(
             _("misc."),
             css_class='column-right'),
-        zeit.push.browser.form.SocialBase.social_fields,
         base.option_fields,
     )
+
+    def __init__(self, *args, **kw):
+        super(GalleryFormBase, self).__init__(*args, **kw)
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.push.social-form'):
+            self.field_groups = (
+                self.field_groups[:3]
+                + (zeit.push.browser.form.SocialBase.social_fields,)
+                + self.field_groups[3:]
+            )
 
 
 class AddGallery(GalleryFormBase,
