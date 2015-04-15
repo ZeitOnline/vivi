@@ -55,7 +55,7 @@ setup(
         'zeit.content.video',
         'zeit.edit>=2.11.0.dev0',
         'zeit.objectlog>=0.2',
-        'zeit.push>=1.7.0.dev0',
+        'zeit.push>=1.8.0.dev0',
         'zeit.wysiwyg>=1.41.0dev',
         'zope.app.appsetup',
         'zope.app.component>=3.4.0b3',

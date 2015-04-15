@@ -888,6 +888,7 @@
   <!-- social media -->
 
   <browser:viewlet
+    zcml:condition="have zeit.push.social-form"
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zeit.edit.browser.form.Forms"
@@ -899,6 +900,7 @@
     />
 
   <browser:viewlet
+    zcml:condition="have zeit.push.social-form"
     for="zeit.content.article.interfaces.IArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view=".social.Container"
