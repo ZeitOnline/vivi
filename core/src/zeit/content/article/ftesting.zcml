@@ -31,6 +31,8 @@
   <include package="zeit.content.author" />
   <include package="zeit.content.author.browser" />
 
-  <include package="zeit.push" file="testing.zcml" />
+  <include package="zeit.push" />
+  <include package="zeit.push" file="mock-webservice.zcml" />
+  <include package="zeit.push.browser" />
 
 </configure>
