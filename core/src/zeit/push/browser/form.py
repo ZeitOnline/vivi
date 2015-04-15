@@ -37,20 +37,27 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
 
     def __init__(self, *args, **kw):
         super(SocialBase, self).__init__(*args, **kw)
-        self.form_fields += (
-            self.FormFieldsFactory(
-                zeit.push.interfaces.IPushMessages).select('long_text')
-            + self.FormFieldsFactory(
-                IAccounts).select('facebook', 'facebook_magazin')
-            + self.FormFieldsFactory(
-                zeit.push.interfaces.IPushMessages).select('short_text')
-            + self.FormFieldsFactory(
-                IAccounts).select('twitter', 'twitter_ressort')
-            + self.FormFieldsFactory(IAccounts).select('mobile')
-            + self.FormFieldsFactory(
-                zeit.push.interfaces.IPushMessages).select('enabled'))
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.push.social-form'):
+            self.form_fields += (
+                self.FormFieldsFactory(
+                    zeit.push.interfaces.IPushMessages).select('long_text')
+                + self.FormFieldsFactory(
+                    IAccounts).select('facebook', 'facebook_magazin')
+                + self.FormFieldsFactory(
+                    zeit.push.interfaces.IPushMessages).select('short_text')
+                + self.FormFieldsFactory(
+                    IAccounts).select('twitter', 'twitter_ressort')
+                + self.FormFieldsFactory(IAccounts).select('mobile')
+                + self.FormFieldsFactory(
+                    zeit.push.interfaces.IPushMessages).select('enabled'))
 
     def setUpWidgets(self, *args, **kw):
+        if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.push.social-form'):
+            super(SocialBase, self).setUpWidgets(*args, **kw)
+            return
+
         # Needs to be WRITEABLE_LIVE for zeit.push internals, but
         # should not be writeable through the UI while checked in.
         if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(
