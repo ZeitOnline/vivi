@@ -4,7 +4,8 @@ Changes
 2.11.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add hashing methods to Areas, Regions and TeaserBlocks that utilize their
+  respective uniqueIds (ZON-1541).
 
 
 2.11.0 (2015-03-18)
