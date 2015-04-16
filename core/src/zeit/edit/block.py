@@ -40,6 +40,9 @@ class Element(zope.container.contained.Contained,
     def __ne__(self, other):
         return not self.__eq__(other)
 
+    def __hash__(self):
+        return hash(self.uniqueId)
+
     @property
     def __name__(self):
         return self.xml.get('{http://namespaces.zeit.de/CMS/cp}__name__')
