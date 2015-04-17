@@ -260,7 +260,7 @@ class SerieSource(SimpleContextualXMLSource):
     def values(self):
         return self._fill_values()
 
-    @gocept.cache.method.Memoize(600, ignore_self=True)
+    @gocept.cache.method.Memoize(600)
     def _fill_values(self):
         result = collections.OrderedDict()
         for node in self._get_tree().iterchildren('*'):
