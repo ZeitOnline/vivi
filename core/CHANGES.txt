@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.43.1 (unreleased)
+2.43.1 (2015-04-17)
 -------------------
 
 - Support serie objects for video series, too.
