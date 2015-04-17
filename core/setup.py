@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.video',
-    version='2.3.4.dev0',
+    version='2.4.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -22,7 +22,7 @@ setup(
         'plone.testing',
         'pytz',
         'setuptools',
-        'zeit.cms>=2.31.0.dev0',
+        'zeit.cms>=2.43.1.dev0',
         'zeit.connector',
         'zeit.solr>=2.2.0.dev0',
         'zope.annotation',

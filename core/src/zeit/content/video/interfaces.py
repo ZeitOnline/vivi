@@ -1,6 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
-import zeit.cms.tagging.whitelist
 import zope.schema
 
 
@@ -23,7 +22,7 @@ class IVideoContent(zeit.cms.content.interfaces.ICommonMetadata,
         readonly=True)
 
 
-class SerieSource(zeit.cms.content.sources.SimpleXMLSource):
+class SerieSource(zeit.cms.content.sources.SerieSource):
 
     config_url = 'source-serie'
     product_configuration = 'zeit.content.video'
