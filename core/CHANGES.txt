@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.4.0 (unreleased)
+2.4.0 (2015-04-17)
 ------------------
 
 - Support serie objects for video series, too (ZON-1464).
