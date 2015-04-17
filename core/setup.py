@@ -22,7 +22,7 @@ setup(
         'setuptools',
         'zeit.addcentral',
         'zeit.cms>=2.35.1.dev0',
-        'zeit.content.video>=2.3.dev0',
+        'zeit.content.video>=2.4.0.dev0',
         'zeit.solr>=2.2.0.dev0',
         'zope.cachedescriptors',
         'zope.component',

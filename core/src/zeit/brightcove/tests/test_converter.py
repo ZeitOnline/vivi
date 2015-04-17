@@ -90,6 +90,13 @@ class VideoTest(zeit.brightcove.testing.BrightcoveTestCase):
         video = Video.find_by_id('1234')
         self.assertEquals('http://thumbnailurl', video.thumbnail)
 
+    def test_serie(self):
+        video = Video.find_by_id('1234')
+        self.assertEquals('erde/energie', video.serie.serienname)
+        source = zeit.content.video.interfaces.IVideo['serie'].source(None)
+        video.serie = source.factory.values.get('erde/umwelt')
+        self.assertEquals('erde/umwelt', video.data['customFields']['serie'])
+
 
 class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
 

@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.6.12 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Support serie objects for video series, too (ZON-1464).
 
 
 2.6.11 (2015-03-13)

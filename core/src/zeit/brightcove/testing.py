@@ -10,6 +10,7 @@ import zeit.brightcove.converter
 import zeit.cms.interfaces
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zeit.content.video.testing
 import zeit.solr.testing
 import zeit.workflow.testing
 import zope.component
@@ -25,6 +26,7 @@ VIDEO_1234 = {
         'banner': '1',
         'banner-id': '99887',
         'ignore_for_update': '0',
+        'serie': 'erde/energie',
     },
     'economics': 'AD_SUPPORTED',
     'id': 1234,
@@ -215,6 +217,7 @@ ZCML_LAYER = ZCMLLayer('ftesting.zcml', product_config=(
     zeit.cms.testing.cms_product_config +
     zeit.solr.testing.product_config +
     zeit.workflow.testing.product_config +
+    zeit.content.video.testing.product_config +
     product_config))
 
 
