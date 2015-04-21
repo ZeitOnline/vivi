@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Apr 21 13:26:30 2015\n"
-"PO-Revision-Date: 2015-04-21 13:52+0100\n"
+"PO-Revision-Date: 2015-04-21 14:00+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -3888,7 +3888,7 @@ msgstr "Alternative kurze Headline für App und Watch"
 
 #: zeit/push/browser/form.py:24
 msgid "Enable mobile push"
-msgstr "Pushnachricht über mobile Apps versenden (\"Wichtige Nachrichten\")_"
+msgstr "Pushnachricht über mobile Apps versenden (\"Wichtige Nachrichten\")"
 
 #: zeit/push/interfaces.py:52
 msgid "Last push"
