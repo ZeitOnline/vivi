@@ -1,7 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.cp.interfaces import ITeaserBlock
 import gocept.form.grouped
-import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.view
@@ -20,35 +18,6 @@ import zope.lifecycleevent
 
 
 COLUMN_ID = 'column://'
-
-
-class TeaserBlockViewletManager(
-        zeit.content.cp.browser.blocks.block.ViewletManager):
-
-    @property
-    def css_class(self):
-        classes = super(TeaserBlockViewletManager, self).css_class
-        if self.context.referenced_cp is None:
-            autopilot = 'autopilot-not-possible'
-        elif self.context.autopilot:
-            autopilot = 'autopilot-on'
-        else:
-            autopilot = 'autopilot-off'
-        visible = 'block-visible-off' if not self.context.visible else ''
-        return ' '.join([classes, autopilot, visible])
-
-
-class IFixedList(zope.interface.Interface):
-    pass
-
-
-class IPositions(zope.interface.Interface):
-
-    image_positions = zope.schema.List(
-        title=_('Display image at these positions'),
-        value_type=zope.schema.Bool(default=True),
-        required=False)
-    zope.interface.alsoProvides(image_positions, IFixedList)
 
 
 class EditLayout(object):
@@ -87,22 +56,10 @@ class EditCommon(
         zeit.cms.browser.form.WidgetCSSMixin,
         gocept.form.grouped.EditForm):
 
-    form_fields = (
-        zope.formlib.form.FormFields(
-            zeit.content.cp.interfaces.ITeaserBlock).select(
-            'referenced_cp', 'autopilot', 'hide_dupes', 'display_amount')
-        + zope.formlib.form.FormFields(IPositions)
-        + zeit.content.cp.browser.blocks.block.EditCommon.form_fields)
+    form_fields = zeit.content.cp.browser.blocks.block.EditCommon.form_fields
 
     widget_groups = ()
     field_groups = (
-        gocept.form.grouped.Fields(
-            _('Autopilot'),
-            ('referenced_cp', 'autopilot', 'hide_dupes'),
-            css_class='column-left'),
-        gocept.form.grouped.Fields(
-            _('Parquet'), ('display_amount', 'image_positions'),
-            css_class='column-right'),
         gocept.form.grouped.RemainingFields(_(''), css_class='fullWidth'),
     )
 
@@ -118,40 +75,6 @@ class EditCommon(
     def handle_edit_action(self, action, data):
         self.close = True
         return super(EditCommon, self).handle_edit_action.success(data)
-
-
-class FixedSequenceWidget(zope.formlib.sequencewidget.ListSequenceWidget):
-
-    def _update(self):
-        super(FixedSequenceWidget, self)._update()
-        self.need_add = False
-        self.need_delete = False
-
-
-class TeaserPositions(grok.Adapter):
-
-    grok.context(zeit.content.cp.interfaces.ITeaserBlock)
-    grok.implements(IPositions)
-
-    @property
-    def image_positions(self):
-        if self.context.display_amount:
-            amount = self.context.display_amount
-        else:
-            amount = len(self.context)
-
-        if not self.context.suppress_image_positions:
-            return [True] * amount
-        return [i not in self.context.suppress_image_positions
-                for i in range(amount)]
-
-    @image_positions.setter
-    def image_positions(self, value):
-        positions = []
-        for i, enabled in enumerate(value):
-            if not enabled:
-                positions.append(i)
-        self.context.suppress_image_positions = positions
 
 
 class Display(zeit.cms.browser.view.Base):
@@ -170,11 +93,6 @@ class Display(zeit.cms.browser.view.Base):
         teasers = []
         self.header_image = None
         for i, content in enumerate(self.context):
-
-            if (ITeaserBlock.providedBy(self.context)
-                and self.context.display_amount is not None
-                and i + 1 > self.context.display_amount):
-                break
 
             metadata = zeit.cms.content.interfaces.ICommonMetadata(
                 content, None)
@@ -195,15 +113,8 @@ class Display(zeit.cms.browser.view.Base):
             if i == 0:
                 self.header_image = self.get_image(content)
 
-            image = None
-            if (self.context.layout.image_positions
-                and i not in self.context.suppress_image_positions):
-                # XXX hard-coded small image size, taken from 'buttons'-layout
-                image = self.get_image(content, '148x84')
-
             teasers.append(dict(
                 texts=texts,
-                image=image,
                 uniqueId=content.uniqueId))
 
         columns = zeit.content.cp.interfaces.ITeaserBlockColumns(self.context)
@@ -212,15 +123,6 @@ class Display(zeit.cms.browser.view.Base):
         for amount in columns:
             self.columns.append(teasers[idx:idx + amount])
             idx += amount
-
-        # XXX Users are not prevented from selecting the first position in
-        # image_positions, which probably doesn't matter for XSLT, but
-        # breaks our UI since we then display *two* images for the first
-        # teaser.
-        if self.header_image is not None:
-            for column in self.columns:
-                if column:
-                    column[0]['image'] = None
 
     def _make_text_entry(self, metadata, css_class, name=None):
         if name is None:
@@ -252,11 +154,6 @@ class Display(zeit.cms.browser.view.Base):
         else:
             return self.url(image, '@@raw')
 
-    @property
-    def autopilot_toggle_url(self):
-        on_off = 'off' if self.context.autopilot else 'on'
-        return self.url('@@toggle-autopilot?to=' + on_off)
-
 
 class Drop(zeit.edit.browser.view.Action):
     """Drop a content object on a teaserblock."""
@@ -265,8 +162,6 @@ class Drop(zeit.edit.browser.view.Action):
     index = zeit.edit.browser.view.Form('index', json=True, default=0)
 
     def update(self):
-        if self.context.autopilot:
-            self.context.autopilot = False
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         self.context.insert(self.index, content)
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
@@ -345,17 +240,11 @@ def teaserEditViewName(context):
     return 'edit-teaser.html'
 
 
-class ToggleAutopilot(zeit.content.cp.browser.editor.ToggleBooleanBase):
-
-    attribute = 'autopilot'
-
-
 class UpdateOrder(zeit.edit.browser.view.Action):
 
     keys = zeit.edit.browser.view.Form('keys', json=True)
 
     def update(self):
-        self.context.autopilot = False
         keys = self.keys
         try:
             left = keys.index(COLUMN_ID)

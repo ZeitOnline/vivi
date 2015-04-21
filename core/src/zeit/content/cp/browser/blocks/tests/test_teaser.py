@@ -167,11 +167,9 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
         view.update()
         return view
 
-    def test_layout_without_image_pattern_shows_no_images(self):
+    def test_layout_without_image_pattern_shows_no_header_image(self):
         view = self.view(self.create_teaserblock(layout='short'))
         self.assertEqual(None, view.header_image)
-        self.assertEqual(
-            [None, None, None], [x['image'] for x in view.columns[0]])
 
     def test_layout_with_image_pattern_shows_header_image(self):
         # the header image is rendered above all columns, so it spans columns
@@ -180,37 +178,3 @@ class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw',
             view.header_image)
-        self.assertEqual(
-            [None, None, None], [x['image'] for x in view.columns[0]])
-
-    def test_layout_allows_positions_shows_images_for_each_teaser(self):
-        view = self.view(self.create_teaserblock(layout='parquet-regular'))
-        image = 'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw'
-        self.assertEqual(None, view.header_image)
-        self.assertEqual(
-            [image, image, image], [x['image'] for x in view.columns[0]])
-
-    def test_suppressed_positions_show_now_image(self):
-        block = self.create_teaserblock(layout='parquet-regular')
-        block.suppress_image_positions = [1]
-        view = self.view(block)
-        image = 'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw'
-        self.assertEqual(None, view.header_image)
-        self.assertEqual(
-            [image, None, image], [x['image'] for x in view.columns[0]])
-
-    def test_first_position_is_not_shown_if_headerimage_present(self):
-        view = self.view(self.create_teaserblock(layout='parquet-large'))
-        image = 'http://127.0.0.1/repository/2006/DSC00109_2.JPG/@@raw'
-        self.assertEqual(image, view.header_image)
-        self.assertEqual(
-            [None, image, image], [x['image'] for x in view.columns[0]])
-
-    def test_first_position_does_not_break_multicolumn_layouts(self):
-        block = self.create_teaserblock(
-            layout='leader-two-columns', area='lead')
-        block.remove(list(block)[0])
-        block.remove(list(block)[0])
-        view = self.view(block)
-        self.assertEqual(
-            [None], [x['image'] for x in view.columns[0]])

@@ -44,7 +44,8 @@ class LeadTimeTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_sets_end_on_article_when_no_longer_in_lead(self):
         self.publish(self.repository['cp'])
         with checked_out(self.repository['cp']) as cp:
-            cp['lead'].values()[0].clear()
+            for entry in cp['lead'].values()[0]:
+                cp['lead'].values()[0].remove(entry)
         self.publish(self.repository['cp'])
         leadtime = zeit.content.cp.interfaces.ILeadTime(self.repository['foo'])
         self.assertNotEqual(None, leadtime.end)

@@ -6,19 +6,6 @@
 
   <!-- teaser block -->
 
-  <configure package="zeit.edit.browser">
-  <browser:viewletManager
-    provides="zeit.content.cp.browser.interfaces.IEditorContentViewletManager"
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    class="zeit.content.cp.browser.blocks.teaser.TeaserBlockViewletManager"
-    template="layout.block.contents.pt"
-    name="zeit.edit.contents"
-    permission="zope.View"
-    />
-  </configure>
-
   <browser:viewlet
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -88,17 +75,6 @@
     permission="zeit.EditContent"
     />
 
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="title"
-    template="layout.teaser.autopilot-title.pt"
-    permission="zeit.EditContent"
-    weight="15"
-    />
-
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -116,14 +92,6 @@
     />
 
   <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
-
-  <browser:page
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="toggle-autopilot"
-    class=".teaser.ToggleAutopilot"
-    permission="zeit.EditContent"
-    />
 
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
@@ -146,14 +114,5 @@
     permission="zeit.EditContent"
     weight="150"
     />
-
-  <adapter
-      for=".teaser.IFixedList
-           zope.schema.interfaces.IField
-           zope.publisher.interfaces.browser.IBrowserRequest"
-      provides="zope.formlib.interfaces.ISimpleInputWidget"
-      factory=".teaser.FixedSequenceWidget"
-      permission="zope.Public"
-      />
 
 </configure>

@@ -21,7 +21,6 @@ def create_content(root):
 def test_suite():
     suite = unittest.TestSuite()
     suite.addTest(zeit.content.cp.testing.FunctionalDocFileSuite(
-        'autopilot.txt',
         'av.txt',
         'cpextra.txt',
         'fullgraphical.txt',

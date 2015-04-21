@@ -410,50 +410,11 @@ class IntChoice(zope.schema.Choice):
         return super(IntChoice, self).fromUnicode(value)
 
 
-class AutopilotSource(zeit.cms.content.contentsource.CMSContentSource):
-
-    name = 'autopilot'
-    check_interfaces = (
-        ICenterPage,
-        zeit.cms.syndication.interfaces.IFeed,
-    )
-
-autopilotSource = AutopilotSource()
-
-
 class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
     layout = zope.schema.Choice(
         title=_("Layout"),
         source=zeit.content.cp.layout.TeaserBlockLayoutSource())
-
-    referenced_cp = zope.schema.Choice(
-        title=_('Get teasers from (autopilot)'),
-        source=autopilotSource,
-        required=False)
-
-    autopilot = zope.schema.Bool(
-        title=_('Autopilot active'))
-
-    hide_dupes = zope.schema.Bool(
-        title=_('Hide duplicate teasers'),
-        default=True)
-
-    display_amount = IntChoice(
-        title=_('Amount of teasers to display'),
-        required=False, values=range(1, 6))
-
-    suppress_image_positions = zope.schema.List(
-        title=_('Display image at these positions'),
-        value_type=zope.schema.Int(),
-        required=False)
-
-    @zope.interface.invariant
-    def autopilot_requires_referenced_cp(self):
-        if self.autopilot and not self.referenced_cp:
-            raise zeit.cms.interfaces.ValidationError(
-                _("Cannot activate autopilot without referenced centerpage"))
-        return True
 
 
 class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):

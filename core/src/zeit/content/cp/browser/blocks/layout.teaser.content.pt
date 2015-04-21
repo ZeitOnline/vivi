@@ -12,9 +12,6 @@
     <div class="teaser"
          tal:repeat="teaser teasers">
 
-      <img tal:condition="teaser/image"
-           tal:attributes="src teaser/image" />
-
       <div tal:repeat="item teaser/texts"
            tal:attributes="class item/css_class"
            tal:content="item/content">
