@@ -18,6 +18,10 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         '.', 'automatic',
         zeit.content.cp.interfaces.IAutomaticArea['automatic'])
 
+    automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'automatic_type',
+        zeit.content.cp.interfaces.IAutomaticArea['automatic_type'])
+
     _count = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'count', zeit.content.cp.interfaces.IAutomaticArea['count'])
 
@@ -45,7 +49,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     @automatic.setter
     def automatic(self, value):
-        if self._automatic != 'false' and value == 'false':
+        if self._automatic and not value:
             self._materialize_filled_values()
         self._automatic = value
         self._fill_with_placeholders()
@@ -60,7 +64,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         self._fill_with_placeholders()
 
     def _fill_with_placeholders(self):
-        if self._automatic != 'false':
+        if self._automatic:
             for key in self.context:
                 del self.context[key]
             for i in range(self.count):
@@ -126,14 +130,14 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     def values(self):
         values = self.context.values()
-        if self.automatic == 'false':
+        if not self.automatic:
             return values
 
-        if self.automatic == 'channel':
+        if self.automatic_type == 'channel':
             teasers = self._query_solr(self._build_query())
-        elif self.automatic == 'query':
+        elif self.automatic_type == 'query':
             teasers = self._query_solr(self.raw_query)
-        elif self.automatic == 'centerpage':
+        elif self.automatic_type == 'centerpage':
             teasers = self._query_centerpage()
 
         result = []
@@ -213,7 +217,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 @grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
     wrapped_area = zeit.content.cp.interfaces.IAutomaticArea(context)
-    if wrapped_area.automatic == 'centerpage':
+    if wrapped_area.automatic and wrapped_area.automatic_type == 'centerpage':
         yield wrapped_area.referenced_cp
     for content in zeit.content.cp.centerpage.cms_content_iter(wrapped_area):
         yield content

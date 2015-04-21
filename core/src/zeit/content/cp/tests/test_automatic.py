@@ -19,14 +19,16 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
         self.assertEqual(5, len(lead))
 
     def test_fills_with_placeholders_when_teaser_count_changed(self):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
         self.assertEqual(5, len(lead))
         auto.count = 7
         self.assertEqual(7, len(lead))
@@ -35,7 +37,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = []
             self.assertEqual(0, len(auto.values()))
@@ -49,7 +52,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 2
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [dict(uniqueId='http://xml.zeit.de/normal'),
@@ -65,7 +69,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -79,7 +84,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -96,7 +102,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -114,7 +121,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -132,7 +140,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -161,8 +170,9 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
+        auto.automatic = True
         auto.raw_query = 'raw'
-        auto.automatic = 'query'
+        auto.automatic_type = 'query'
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = []
             auto.values()
@@ -176,7 +186,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             ('Channel', 'International', 'Nahost'),
             ('Channel', 'Wissen', None),
             ('Keyword', 'Berlin', None))
-        auto.automatic = 'channel'
+        auto.automatic = True
+        auto.automatic_type = 'channel'
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = []
             auto.values()
@@ -197,14 +208,15 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
-        auto.automatic = 'query'
+        auto.automatic = True
+        auto.automatic_type = 'query'
         zope.component.getAdapter(
             lead, zeit.edit.interfaces.IElementFactory, name='rss')()
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [dict(uniqueId='http://xml.zeit.de/normal'),
                                    dict(uniqueId='http://xml.zeit.de/leader')]
-            auto.automatic = 'false'
+            auto.automatic = False
 
         result = lead.values()
         self.assertEqual(
@@ -222,7 +234,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
                 lead = cp['lead']
                 auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
                 auto.count = 1
-                auto.automatic = 'query'
+                auto.automatic = True
+                auto.automatic_type = 'query'
 
     def test_channel_has_automatic_attribute(self):
         with mock.patch('zeit.find.search.search') as search:
@@ -232,7 +245,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
                 lead = cp['lead']
                 auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
                 auto.count = 1
-                auto.automatic = 'query'
+                auto.automatic = True
+                auto.automatic_type = 'query'
         self.assertEqual(
             'True', self.repository['cp.lead'].xml.get('automatic'))
 
@@ -260,7 +274,8 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
 
         self.area.referenced_cp = self.repository['cp_with_teaser']
         self.area.count = 3
-        self.area.automatic = 'centerpage'
+        self.area.automatic = True
+        self.area.automatic_type = 'centerpage'
 
     def test_returns_teasers_from_referenced_center_page(self):
         self.assertEqual([
@@ -286,7 +301,7 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_automatic_using_solr_requires_no_referenced_centerpage(self):
         self.area.referenced_cp = None
-        self.area.automatic = 'query'
+        self.area.automatic_type = 'query'
         with self.assertNothingRaised():
             interface = zeit.content.cp.interfaces.IAutomaticArea
             interface.validateInvariants(self.area)

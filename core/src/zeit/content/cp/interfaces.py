@@ -287,7 +287,7 @@ class AutomaticAreaTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     def __init__(self):
         self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
 
-    values = (u'false', u'centerpage', u'channel', u'query')
+    values = (u'centerpage', u'channel', u'query')
 
 
 class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
@@ -304,8 +304,12 @@ class IAutomaticArea(IArea):
 
     """
 
-    automatic = zope.schema.Choice(
+    automatic = zope.schema.Bool(
         title=_('automatic'),
+        default=False)
+
+    automatic_type = zope.schema.Choice(
+        title=_('automatic-area-type'),
         source=AutomaticAreaTypeSource(),
         required=True)
 
@@ -345,7 +349,8 @@ class IAutomaticArea(IArea):
 
     @zope.interface.invariant
     def automatic_from_centerpage_requires_referenced_cp(self):
-        if self.automatic == 'centerpage' and not self.referenced_cp:
+        if (self.automatic and self.automatic_type == 'centerpage'
+                and not self.referenced_cp):
             raise zeit.cms.interfaces.ValidationError(
                 _("Automatic area with teasers from centerpage "
                   "requires as referenced centerpage."))

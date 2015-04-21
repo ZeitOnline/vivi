@@ -40,7 +40,7 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IAutomaticArea).select(
-            'count', 'query', 'raw_query', 'automatic')
+            'count', 'query', 'raw_query', 'automatic', 'automatic_type')
 
     # XXX Kludgy: ``automatic`` must come after ``count``, since setting
     # automatic to True needs to know the teaser count. Thus we order the
