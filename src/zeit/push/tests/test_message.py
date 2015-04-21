@@ -1,6 +1,8 @@
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
+from zeit.cms.workflow.interfaces import IPublish, IPublishInfo
 import zeit.push.interfaces
 import zeit.push.testing
+import zeit.workflow.testing
 import zope.component
 
 
@@ -45,3 +47,18 @@ class MessageTest(zeit.push.testing.TestCase):
                 'teaserSupertitle': 'super', 'teaserText': 'teaser',
                 'teaserTitle': 'title'})],
             parse.calls)
+
+    def publish(self, content):
+        IPublishInfo(content).urgent = True
+        IPublish(content).publish()
+        zeit.workflow.testing.run_publish()
+
+    def test_enabled_flag_is_removed_from_service_after_send(self):
+        content = TestContentType()
+        content.title = 'mytext'
+        self.repository['foo'] = content
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [{'type': 'parse', 'enabled': True}]
+        self.publish(content)
+        self.assertEqual(
+            [{'type': 'parse', 'enabled': False}], push.message_config)

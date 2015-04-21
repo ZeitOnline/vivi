@@ -25,6 +25,15 @@ class Message(grok.Adapter):
         kw.update(self.config)
         kw.update(self.additional_parameters)
         notifier.send(self.text, self.url, **kw)
+        self._disable_message_config()
+
+    def _disable_message_config(self):
+        push = zeit.push.interfaces.IPushMessages(self.context)
+        config = push.message_config[:]
+        for service in config:
+            if service == self.config:
+                service['enabled'] = False
+        push.message_config = config
 
     @property
     def text(self):
@@ -43,19 +52,6 @@ class Message(grok.Adapter):
     @property
     def additional_parameters(self):
         return {}
-
-
-class OneTimeMessage(Message):
-    """A Message that disables its service after it has been sent."""
-
-    def send(self):
-        super(OneTimeMessage, self).send()
-        push = zeit.push.interfaces.IPushMessages(self.context)
-        config = push.message_config[:]
-        for service in config:
-            if service == self.config:
-                service['enabled'] = False
-        push.message_config = config
 
 
 @grok.adapter(zeit.cms.interfaces.ICMSContent)

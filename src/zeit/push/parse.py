@@ -232,7 +232,7 @@ def from_product_config():
         int(config['parse-expire-interval']))
 
 
-class Message(zeit.push.message.OneTimeMessage):
+class Message(zeit.push.message.Message):
 
     grok.context(zeit.cms.content.interfaces.ICommonMetadata)
     grok.name('parse')
@@ -279,10 +279,8 @@ class Message(zeit.push.message.OneTimeMessage):
     zeit.cms.checkout.interfaces.IBeforeCheckinEvent)
 def set_push_news_flag(context, event):
     push = zeit.push.interfaces.IPushMessages(context)
-    if not push.enabled:
-        return
     for service in push.message_config:
-        if (service['type'] == 'parse' and service['enabled']
+        if (service['type'] == 'parse' and service.get('enabled')
                 and service.get('channels') == PARSE_NEWS_CHANNEL):
             context.push_news = True
             break

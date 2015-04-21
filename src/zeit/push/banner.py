@@ -77,19 +77,19 @@ def wrapper_banner():
     return StaticArticlePublisher(config['wrapper-banner-uniqueid'])
 
 
-class HomepageMessage(zeit.push.message.OneTimeMessage):
+class HomepageMessage(zeit.push.message.Message):
 
     grok.name('homepage')
     get_text_from = 'short_text'
 
 
-class LegacyIOSMessage(zeit.push.message.OneTimeMessage):
+class LegacyIOSMessage(zeit.push.message.Message):
 
     grok.name('ios-legacy')
     get_text_from = 'short_text'
 
 
-class WrapperMessage(zeit.push.message.OneTimeMessage):
+class WrapperMessage(zeit.push.message.Message):
 
     grok.name('wrapper')
     get_text_from = 'short_text'
