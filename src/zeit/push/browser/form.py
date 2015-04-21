@@ -6,7 +6,6 @@ import grokcore.component as grok
 import zeit.cms.browser.form
 import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testcontenttype.testcontenttype
-import zope.app.appsetup.product
 import zope.formlib.form
 import zope.interface
 import zope.schema
@@ -76,11 +75,8 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
                  'enabled': True,
                  'account': twitter_ressort})
         if data.pop('mobile', None):
-            product_config = zope.app.appsetup.product.getProductConfiguration(
-                'zeit.push')
             message_config.append({
                 'type': 'parse', 'enabled': True,
-                'title': product_config['parse-title-news'],
                 'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL,
             })
         zeit.push.interfaces.IPushMessages(

@@ -10,9 +10,7 @@ product_config = """\
   facebook-accounts file://{fixtures}/facebook-accounts.xml
   facebook-main-account fb-test
   facebook-magazin-account fb-magazin
-  parse-title-breaking Eilmeldung
   parse-channel-breaking Eilmeldung
-  parse-title-news News
   parse-channel-news News
   parse-image-pattern 184x84
 </product-config>
