@@ -1,5 +1,6 @@
 from zeit.content.cp.i18n import MessageFactory as _
 import zeit.cms.browser.view
+import zeit.cms.workingcopy.browser.workingcopy
 import zeit.edit.browser.view
 import zope.interface
 import zope.lifecycleevent
