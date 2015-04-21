@@ -48,9 +48,6 @@ class IPushMessages(zope.interface.Interface):
 
     """
 
-    enabled = zope.schema.Bool(
-        title=_('Push after next publish?'),
-        required=False, default=False)
     date_last_pushed = zope.schema.Datetime(
         title=_('Last push'), required=False, readonly=True)
 

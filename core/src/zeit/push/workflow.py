@@ -20,7 +20,7 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         zeit.push.interfaces.IPushMessages,
         zeit.workflow.interfaces.WORKFLOW_NS,
-        ('enabled', 'message_config'),
+        ('message_config',),
         writeable=WRITEABLE_ALWAYS, use_default=True)
 
     zeit.cms.content.dav.mapProperties(
@@ -62,9 +62,6 @@ def ignore_push_properties(event):
     zeit.cms.workflow.interfaces.IPublishedEvent)
 def send_push_on_publish(context, event):
     push = zeit.push.interfaces.IPushMessages(context)
-    if not push.enabled:
-        return
-
     for message in push.messages:
         config = {key: value for key, value in message.config.items()
                   if key not in ('type', 'enabled')}
@@ -79,4 +76,3 @@ def send_push_on_publish(context, event):
         zeit.objectlog.interfaces.ILog(context).log(log_msg)
 
     push.date_last_pushed = datetime.now(pytz.UTC)
-    push.enabled = False

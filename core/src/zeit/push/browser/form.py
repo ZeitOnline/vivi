@@ -32,7 +32,7 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         _("Social media"),
         ('long_text', 'facebook', 'facebook_magazin',
          'short_text', 'twitter', 'twitter_ressort',
-         'mobile', 'enabled'),
+         'mobile'),
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
@@ -50,16 +50,8 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
                 'zeit.push.wichtige-nachrichten'):
             self.form_fields += self.FormFieldsFactory(
                 IAccounts).select('mobile')
-        self.form_fields += self.FormFieldsFactory(
-            zeit.push.interfaces.IPushMessages).select('enabled')
 
     def setUpWidgets(self, *args, **kw):
-        # Needs to be WRITEABLE_LIVE for zeit.push internals, but
-        # should not be writeable through the UI while checked in.
-        if not zeit.cms.checkout.interfaces.ILocalContent.providedBy(
-                self.context):
-            self.form_fields['enabled'].for_display = True
-
         super(SocialBase, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
 
