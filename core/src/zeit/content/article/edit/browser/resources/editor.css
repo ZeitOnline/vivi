@@ -1857,15 +1857,18 @@
 /* social media */
 
 .type-article #form-social .field.fieldname-long_text .label,
-.type-article #form-social .field.fieldname-short_text .label {
+.type-article #form-social .field.fieldname-short_text .label,
+.type-article #form-social .field.fieldname-mobile_text .label {
     display: none;
 }
 
-.type-article #social\.short_text {
+.type-article #social\.short_text,
+.type-article #social\.mobile_text {
     width: 100%;
 }
 
-.type-article #form-social .field.fieldname-short_text {
+.type-article #form-social .field.fieldname-short_text,
+.type-article #form-social .field.fieldname-mobile_text {
     margin-top: 0.5em;
 }
 
