@@ -280,6 +280,16 @@ class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
     zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
 
 
+class AutomaticAreaTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+
+    prefix = 'automatic-area-type-{}'
+
+    def __init__(self):
+        self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
+
+    values = (u'false', u'centerpage', u'channel', u'query')
+
+
 class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
 
     values = ['Channel']  # XXX or 'Keyword', see VIV-471
@@ -294,8 +304,21 @@ class IAutomaticArea(IArea):
 
     """
 
-    automatic = zope.schema.Bool(title=_('automatic'))
+    automatic = zope.schema.Choice(
+        title=_('automatic'),
+        source=AutomaticAreaTypeSource(),
+        required=True)
+
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
+
+    referenced_cp = zope.schema.Choice(
+        title=_('Get teasers from CenterPage'),
+        source=centerPageSource,
+        required=False)
+
+    hide_dupes = zope.schema.Bool(
+        title=_('Hide duplicate teasers'),
+        default=True)
 
     query = zope.schema.Tuple(
         title=_('Channel Query'),
@@ -319,6 +342,14 @@ class IAutomaticArea(IArea):
     # XXX really ugly styling hack
     automatic.setTaggedValue('placeholder', ' ')
     raw_query.setTaggedValue('placeholder', ' ')
+
+    @zope.interface.invariant
+    def automatic_from_centerpage_requires_referenced_cp(self):
+        if self.automatic == 'centerpage' and not self.referenced_cp:
+            raise zeit.cms.interfaces.ValidationError(
+                _("Automatic area with teasers from centerpage "
+                  "requires as referenced centerpage."))
+        return True
 
 
 class ICMSContentIterable(zope.interface.Interface):

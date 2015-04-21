@@ -1,31 +1,32 @@
 from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import lxml.etree
 import mock
+import zeit.cms.interfaces
 import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 import zeit.edit.interfaces
 import zope.component
-import zope.interface.verify
+import zope.interface.interfaces
 
 
-class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
+class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
-        super(AutomaticAreaTest, self).setUp()
+        super(AutomaticAreaSolrTest, self).setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
     def test_fills_with_placeholders_when_set_to_automatic(self):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
-        auto.automatic = True
+        auto.automatic = 'query'
         self.assertEqual(5, len(lead))
 
     def test_fills_with_placeholders_when_teaser_count_changed(self):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
-        auto.automatic = True
+        auto.automatic = 'query'
         self.assertEqual(5, len(lead))
         auto.count = 7
         self.assertEqual(7, len(lead))
@@ -34,24 +35,25 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
-        auto.automatic = True
+        auto.automatic = 'query'
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = []
             self.assertEqual(0, len(auto.values()))
 
     def test_only_marked_articles_are_put_into_leader_block(self):
         self.repository['normal'] = TestContentType()
-        self.repository['leader'] = TestContentType()
+        leader = TestContentType()
+        leader.lead_candidate = True
+        self.repository['leader'] = leader
 
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 2
-        auto.automatic = True
+        auto.automatic = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [dict(uniqueId='http://xml.zeit.de/normal'),
-                                   dict(uniqueId='http://xml.zeit.de/leader',
-                                        lead_candidate=True)]
+                                   dict(uniqueId='http://xml.zeit.de/leader')]
             result = auto.values()
         self.assertEqual(
             'http://xml.zeit.de/leader', list(result[0])[0].uniqueId)
@@ -63,7 +65,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = True
+        auto.automatic = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -77,7 +79,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = True
+        auto.automatic = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -94,7 +96,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = True
+        auto.automatic = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -112,7 +114,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = True
+        auto.automatic = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -130,7 +132,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
-        auto.automatic = True
+        auto.automatic = 'query'
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
@@ -160,7 +162,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 1
         auto.raw_query = 'raw'
-        auto.automatic = True
+        auto.automatic = 'query'
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = []
             auto.values()
@@ -174,7 +176,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
             ('Channel', 'International', 'Nahost'),
             ('Channel', 'Wissen', None),
             ('Keyword', 'Berlin', None))
-        auto.automatic = True
+        auto.automatic = 'channel'
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = []
             auto.values()
@@ -188,20 +190,21 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_turning_automatic_off_materializes_filled_in_blocks(self):
         self.repository['normal'] = TestContentType()
-        self.repository['leader'] = TestContentType()
+        leader = TestContentType()
+        leader.lead_candidate = True
+        self.repository['leader'] = leader
 
         lead = self.repository['cp']['lead']
         auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
         auto.count = 5
-        auto.automatic = True
+        auto.automatic = 'query'
         zope.component.getAdapter(
             lead, zeit.edit.interfaces.IElementFactory, name='rss')()
 
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [dict(uniqueId='http://xml.zeit.de/normal'),
-                                   dict(uniqueId='http://xml.zeit.de/leader',
-                                        lead_candidate=True)]
-            auto.automatic = False
+                                   dict(uniqueId='http://xml.zeit.de/leader')]
+            auto.automatic = 'false'
 
         result = lead.values()
         self.assertEqual(
@@ -219,7 +222,7 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
                 lead = cp['lead']
                 auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
                 auto.count = 1
-                auto.automatic = True
+                auto.automatic = 'query'
 
     def test_channel_has_automatic_attribute(self):
         with mock.patch('zeit.find.search.search') as search:
@@ -229,6 +232,61 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
                 lead = cp['lead']
                 auto = zeit.content.cp.interfaces.IAutomaticArea(lead)
                 auto.count = 1
-                auto.automatic = True
+                auto.automatic = 'query'
         self.assertEqual(
             'True', self.repository['cp.lead'].xml.get('automatic'))
+
+
+class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(AutomaticAreaCenterPageTest, self).setUp()
+        self.cp = zeit.content.cp.centerpage.CenterPage()
+        self.area = zeit.content.cp.interfaces.IAutomaticArea(
+            self.cp['feature'].create_item('area'))
+        self.repository['cp'] = self.cp
+
+        cp_with_teaser = zeit.content.cp.centerpage.CenterPage()
+        self.repository['t1'] = TestContentType()
+        self.repository['t2'] = TestContentType()
+        self.repository['t3'] = TestContentType()
+        cp_with_teaser['lead'].create_item('teaser').insert(
+            0, self.repository['t1'])
+        cp_with_teaser['lead'].create_item('teaser').insert(
+            1, self.repository['t2'])
+        cp_with_teaser['lead'].create_item('teaser').insert(
+            2, self.repository['t3'])
+        self.repository['cp_with_teaser'] = cp_with_teaser
+
+        self.area.referenced_cp = self.repository['cp_with_teaser']
+        self.area.count = 3
+        self.area.automatic = 'centerpage'
+
+    def test_returns_teasers_from_referenced_center_page(self):
+        self.assertEqual([
+            'http://xml.zeit.de/t1',
+            'http://xml.zeit.de/t2',
+            'http://xml.zeit.de/t3'],
+            [list(x)[0].uniqueId for x in self.area.values()])
+
+    def test_yields_centerpage_in_addition_to_teaser_when_iterating(self):
+        content = zeit.content.cp.interfaces.ICMSContentIterable(self.cp)
+        self.assertEqual([
+            u'http://xml.zeit.de/cp_with_teaser',
+            u'http://xml.zeit.de/t1',
+            u'http://xml.zeit.de/t2',
+            u'http://xml.zeit.de/t3'],
+            [x.uniqueId for x in content])
+
+    def test_automatic_from_centerpage_requires_referenced_centerpage(self):
+        self.area.referenced_cp = None
+        with self.assertRaises(zeit.cms.interfaces.ValidationError):
+            interface = zeit.content.cp.interfaces.IAutomaticArea
+            interface.validateInvariants(self.area)
+
+    def test_automatic_using_solr_requires_no_referenced_centerpage(self):
+        self.area.referenced_cp = None
+        self.area.automatic = 'query'
+        with self.assertNothingRaised():
+            interface = zeit.content.cp.interfaces.IAutomaticArea
+            interface.validateInvariants(self.area)

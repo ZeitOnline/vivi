@@ -8,6 +8,8 @@ zeit.content.cp changes
 - Suppress second-level errors when generating CP Feed during rendering XML in
   Friedbert (VIV-629).
 
+- Teach AutomaticAreas to retrieve teasers from referenced CP. (DEV-745)
+
 
 3.0.0b10 (2015-03-20)
 ---------------------

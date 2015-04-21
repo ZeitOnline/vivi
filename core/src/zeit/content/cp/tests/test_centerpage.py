@@ -1,11 +1,11 @@
 from xml_compare import xml_compare
 from zeit.cms.checkout.helper import checked_out
+import copy
 import gocept.cache.method
 import lovely.remotetask.interfaces
 import lxml.etree
 import mock
 import pkg_resources
-import transaction
 import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testcontenttype.testcontenttype
@@ -198,12 +198,21 @@ class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
         t1 = self.create_teaser(cp)
         self.create_teaser(cp)
         t1.insert(0, self.repository['testcontent'])
-        original = cp.xml
+
+        # IRenderedXML will traverse the CenterPage and adapt contained objects
+        # to their interface to create the XML. But adapting the objects may
+        # add additional XML attributes, thus we have to run it once to create
+        # all attributes and another time to create the final XML repr.
+        zeit.content.cp.interfaces.IRenderedXML(cp)
         rendered = zeit.content.cp.interfaces.IRenderedXML(cp)
+        # Retrieve original XML after additional attributes were written.
+        original = cp.xml
+
         # Since the CP feed is updated during rendering, we don't want to
         # include it in our comparison.
         original.remove(original.feed)
         rendered.remove(rendered.feed)
+
         self.assertXML(original, rendered)
 
 
