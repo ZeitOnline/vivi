@@ -140,8 +140,6 @@ class Add(zeit.cms.browser.form.AddForm,
         self._checked_out = False
 
         IPublishInfo(self._created_object).urgent = True
-        push = zeit.push.interfaces.IPushMessages(self._created_object)
-        push.enabled = True
 
 
 class Retract(object):

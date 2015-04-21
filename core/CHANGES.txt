@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.17 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove global push ``enabled`` setting (DEV-704).
 
 
 3.6.16 (2015-04-15)
