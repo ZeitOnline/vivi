@@ -57,8 +57,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'parse', 'enabled': True,
-             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL,
-             'title': 'News'}, push.message_config)
+             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
+            push.message_config)
 
         self.open_form()
         self.assertTrue(b.getControl('Enable Twitter').selected)
