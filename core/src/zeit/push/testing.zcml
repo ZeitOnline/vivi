@@ -4,9 +4,6 @@
    i18n_domain="zope"
    >
 
-  <!-- Enable all feature toggles in tests. -->
-  <meta:provides feature="zeit.push.wichtige-nachrichten" />
-
   <include package="zeit.cms" file="ftesting.zcml" />
   <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 

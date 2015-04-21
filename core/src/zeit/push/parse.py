@@ -74,7 +74,7 @@ class Connection(object):
             'data': {
                 'action': self.PUSH_ACTION_ID,
                 'headline': headline,
-                'text': kw.get('teaserTitle', title),
+                'text': kw.get('override_text', kw.get('teaserTitle', title)),
                 'teaser': kw.get('teaserText', ''),
                 'url': self.add_tracking(url, channel_name, 'android'),
             }
@@ -115,7 +115,7 @@ class Connection(object):
             'data': {
                 'aps': {
                     'headline': kw.get('teaserTitle', ''),
-                    'alert-title': headline,
+                    'alert-title': kw.get('override_text', headline),
                     'alert': kw.get('teaserText', title),
                     'url': self.add_tracking(url, channel_name, 'ios'),
                 }
@@ -239,7 +239,6 @@ class Message(zeit.push.message.Message):
 
     @property
     def text(self):
-        """Override to read title of article, instead of short text."""
         return self.context.title
 
     @property

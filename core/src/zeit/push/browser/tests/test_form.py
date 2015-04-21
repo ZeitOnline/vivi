@@ -56,7 +56,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'facebook', 'enabled': True, 'account': 'fb-magazin'},
             push.message_config)
         self.assertIn(
-            {'type': 'parse', 'enabled': True,
+            {'type': 'parse', 'enabled': True, 'override_text': None,
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
 
