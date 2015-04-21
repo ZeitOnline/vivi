@@ -7,6 +7,9 @@ zeit.push changes
 - Remove global ``enabled`` setting, we rely on ``enabled`` setting of
   the individual ``message_config`` entries instead (DEV-704).
 
+- Add optional override field for the parse.com push text, remove feature
+  toggle ``zeit.push.wichtige-nachrichten`` (DEV-704).
+
 
 1.8.1 (2015-04-15)
 ------------------

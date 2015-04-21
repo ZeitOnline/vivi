@@ -20,6 +20,7 @@ class IAccounts(zope.interface.Interface):
         title=_('Additional Twitter'),
         source=twitterAccountSource,
         required=False)
+    mobile_text = zope.schema.TextLine(title=_('Mobile title'), required=False)
     mobile = zope.schema.Bool(title=_('Enable mobile push'))
 
 
@@ -31,7 +32,7 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         _("Social media"),
         ('long_text', 'facebook', 'facebook_magazin',
          'short_text', 'twitter', 'twitter_ressort',
-         'mobile'),
+         'mobile_text', 'mobile'),
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
@@ -44,11 +45,9 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
             + self.FormFieldsFactory(
                 zeit.push.interfaces.IPushMessages).select('short_text')
             + self.FormFieldsFactory(
-                IAccounts).select('twitter', 'twitter_ressort'))
-        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.push.wichtige-nachrichten'):
-            self.form_fields += self.FormFieldsFactory(
-                IAccounts).select('mobile')
+                IAccounts).select('twitter', 'twitter_ressort')
+            + self.FormFieldsFactory(
+                IAccounts).select('mobile_text', 'mobile'))
 
     def setUpWidgets(self, *args, **kw):
         super(SocialBase, self).setUpWidgets(*args, **kw)
@@ -77,6 +76,10 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         if data.pop('mobile', None):
             message_config.append({
                 'type': 'parse', 'enabled': True,
+                # We cannot use the key ``text``, since the first positional
+                # parameter of IPushNotifier.send() is also called text, which
+                # would result in an TypeError.
+                'override_text': data.pop('mobile_text'),
                 'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL,
             })
         zeit.push.interfaces.IPushMessages(
@@ -129,6 +132,18 @@ class Accounts(grok.Adapter):
             service = None
         return service and service['enabled']
 
+    @property
+    def mobile_text(self):
+        for service in self.message_config:
+            if service['type'] != 'parse':
+                continue
+            if service.get(
+                    'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
+                break
+        else:
+            service = None
+        return service and service.get('text')
+
     def _get_service(self, type_, main=True):
         source = {
             'twitter': twitterAccountSource,
@@ -169,6 +184,10 @@ class Accounts(grok.Adapter):
 
     @mobile.setter
     def mobile(self, value):
+        pass
+
+    @mobile_text.setter
+    def mobile_text(self, value):
         pass
 
 

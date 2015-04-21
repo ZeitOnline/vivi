@@ -176,6 +176,18 @@ class ParametersTest(zeit.push.testing.TestCase):
                 'http://images.zeit.de/example',
                 ios['data']['aps']['imageUrl'])
 
+    def test_message_config_may_override_text(self):
+        api = zeit.push.parse.Connection(
+            'any', 'any', 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL,
+                     override_text='mytext', teaserTitle='title',
+                     image_url='http://images.zeit.de/example')
+            android = push.call_args_list[0][0][0]
+            self.assertEqual('mytext', android['data']['text'])
+            ios = push.call_args_list[1][0][0]
+            self.assertEqual('mytext', ios['data']['aps']['alert-title'])
+
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):
 
