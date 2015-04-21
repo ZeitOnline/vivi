@@ -87,7 +87,8 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
 
             parse = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='parse')
-            self.assertEqual('Eilmeldung', parse.calls[0][2]['title'])
+            self.assertEqual(zeit.push.interfaces.PARSE_BREAKING_CHANNEL,
+                             parse.calls[0][2]['channels'])
             facebook = zope.component.getUtility(
                 zeit.push.interfaces.IPushNotifier, name='facebook')
             self.assertEqual(
@@ -112,7 +113,7 @@ class TestAdding(zeit.cms.testing.BrowserTestCase):
             article = ICMSContent('http://xml.zeit.de/online/2007/01/foo')
             push = zeit.push.interfaces.IPushMessages(article)
             self.assertIn(
-                {'type': 'parse', 'enabled': False, 'title': 'Eilmeldung',
+                {'type': 'parse', 'enabled': False,
                  'channels': zeit.push.interfaces.PARSE_BREAKING_CHANNEL},
                 push.message_config)
             self.assertIn(
