@@ -1,11 +1,13 @@
-.field.fieldname-twitter,
-.field.fieldname-facebook,
-.field.fieldname-facebook_magazin {
+.field.fieldname-twitter_enabled,
+.field.fieldname-twitter_ressort_enabled,
+.field.fieldname-facebook_main_enabled,
+.field.fieldname-facebook_magazin_enabled {
     float: left;
 }
 
 .field.fieldname-short_text,
-.field.fieldname-mobile {
+.field.fieldname-twitter_ressort_enabled,
+.field.fieldname-mobile_text {
     clear: left;
 }
 
@@ -15,8 +17,11 @@
      If it's too small, the label inside has no room to float. */
    min-width: 70%;
 
-   margin-left: 2em;
    padding-top: 13px; /* XXX vertical alignment */
+}
+
+.field.fieldname-twitter_ressort .label {
+    display: none;
 }
 
 .field.fieldname-twitter_ressort .widget {
