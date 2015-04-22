@@ -6,6 +6,22 @@
 
   <!-- automatic teaser block -->
 
+  <browser:page
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="change-layout"
+    class=".automatic.ChangeLayout"
+    permission="zeit.EditContent"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-visible"
+    class=".automatic.ToggleVisible"
+    permission="zeit.EditContent"
+    />
+
   <browser:viewlet
     for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -34,7 +50,7 @@
     view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
     name="edit-box"
-    class=".automatic.Empty"
+    template="layout.teaser-automatic.edit-properties.pt"
     permission="zeit.EditContent"
     weight="0"
     />
