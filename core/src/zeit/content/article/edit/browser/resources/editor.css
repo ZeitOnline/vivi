@@ -1872,6 +1872,10 @@
     margin-top: 0.5em;
 }
 
+.type-article #form-social .field.fieldname-twitter_ressort_enabled {
+    margin-right: 0;
+}
+
 .type-article #form-social .field.fieldname-twitter_ressort {
    padding-top: 0.5em; /* XXX revert to default */
 }
