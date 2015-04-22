@@ -39,7 +39,9 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_converts_account_checkboxes_to_message_config(self):
         self.open_form()
         b = self.browser
-        b.getControl('Enable Twitter').selected = True
+        b.getControl('Enable Twitter', index=0).selected = True
+        b.getControl('Enable Twitter Ressort').selected = True
+        b.getControl('Additional Twitter').displayValue = ['Wissen']
         b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Enable Facebook Magazin').selected = True
         b.getControl('Enable mobile push').selected = True
@@ -48,6 +50,10 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertIn(
             {'type': 'twitter', 'enabled': True, 'account': 'twitter-test'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'twitter', 'enabled': True,
+             'account': 'twitter_ressort_wissen'},
             push.message_config)
         self.assertIn(
             {'type': 'facebook', 'enabled': True, 'account': 'fb-test'},
@@ -61,28 +67,35 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
 
         self.open_form()
-        self.assertTrue(b.getControl('Enable Twitter').selected)
+        self.assertTrue(b.getControl('Enable Twitter', index=0).selected)
+        self.assertTrue(b.getControl('Enable Twitter Ressort').selected)
         self.assertTrue(b.getControl('Enable Facebook', index=0).selected)
         self.assertTrue(b.getControl('Enable Facebook Magazin').selected)
         self.assertTrue(b.getControl('Enable mobile push').selected)
 
-        b.getControl('Enable Twitter').selected = False
+        b.getControl('Enable Twitter', index=0).selected = False
+        b.getControl('Enable Twitter Ressort').selected = False
         b.getControl('Enable Facebook', index=0).selected = False
         b.getControl('Enable Facebook Magazin').selected = False
         b.getControl('Enable mobile push').selected = False
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(2, len(push.message_config))
+        self.assertEqual(3, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'twitter', 'enabled': False,
+             'account': 'twitter_ressort_wissen'},
             push.message_config)
         self.assertIn(
             {'type': 'facebook', 'enabled': False, 'account': 'fb-test'},
             push.message_config)
 
         self.open_form()
-        self.assertFalse(b.getControl('Enable Twitter').selected)
+        self.assertFalse(b.getControl('Enable Twitter', index=0).selected)
+        self.assertFalse(b.getControl('Enable Twitter Ressort').selected)
         self.assertFalse(b.getControl('Enable Facebook', index=0).selected)
         self.assertFalse(b.getControl('Enable Facebook Magazin').selected)
         self.assertFalse(b.getControl('Enable mobile push').selected)
@@ -90,6 +103,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_converts_ressorts_to_message_config(self):
         self.open_form()
         b = self.browser
+        b.getControl('Enable Twitter Ressort').selected = True
         b.getControl('Additional Twitter').displayValue = ['Wissen']
         b.getControl('Apply').click()
         article = self.get_article()
@@ -103,6 +117,14 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         self.assertEqual(
             ['Wissen'], b.getControl('Additional Twitter').displayValue)
 
+    def test_ressort_is_required_when_enabled(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Enable Twitter Ressort').selected = True
+        b.getControl('Apply').click()
+        self.assertEllipsis(
+            '...Additional Twitter...Required input is missing...', b.contents)
+
 
 class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
 
@@ -114,8 +136,8 @@ class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
                '/repository/@@zeit.cms.testcontenttype.AddSocial')
         b.getControl('File name').value = 'social'
         b.getControl('Title').value = 'Social content'
-        b.getControl('Ressort').displayValue = ['Deutschland']
-        b.getControl('Enable Twitter').selected = True
+        b.getControl('Ressort', index=0).displayValue = ['Deutschland']
+        b.getControl('Enable Twitter', index=0).selected = True
         b.getControl('Add', index=0).click()
         with zeit.cms.testing.site(self.getRootFolder()):
             content = zeit.cms.interfaces.ICMSContent(

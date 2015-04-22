@@ -10,6 +10,8 @@ zeit.push changes
 - Add optional override field for the parse.com push text, remove feature
   toggle ``zeit.push.wichtige-nachrichten`` (DEV-704).
 
+- Add checkbox for additional Twitter account (DEV-704).
+
 
 1.8.1 (2015-04-15)
 ------------------

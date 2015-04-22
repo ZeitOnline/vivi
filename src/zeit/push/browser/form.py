@@ -13,15 +13,18 @@ import zope.schema
 
 class IAccounts(zope.interface.Interface):
 
-    facebook = zope.schema.Bool(title=_('Enable Facebook'))
-    facebook_magazin = zope.schema.Bool(title=_('Enable Facebook Magazin'))
-    twitter = zope.schema.Bool(title=_('Enable Twitter'))
+    facebook_main_enabled = zope.schema.Bool(title=_('Enable Facebook'))
+    facebook_magazin_enabled = zope.schema.Bool(
+        title=_('Enable Facebook Magazin'))
+    twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
+    twitter_ressort_enabled = zope.schema.Bool(
+        title=_('Enable Twitter Ressort'))
     twitter_ressort = zope.schema.Choice(
         title=_('Additional Twitter'),
         source=twitterAccountSource,
         required=False)
     mobile_text = zope.schema.TextLine(title=_('Mobile title'), required=False)
-    mobile = zope.schema.Bool(title=_('Enable mobile push'))
+    mobile_enabled = zope.schema.Bool(title=_('Enable mobile push'))
 
 
 class SocialBase(zeit.cms.browser.form.CharlimitMixin):
@@ -30,9 +33,10 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
 
     social_fields = gocept.form.grouped.Fields(
         _("Social media"),
-        ('long_text', 'facebook', 'facebook_magazin',
-         'short_text', 'twitter', 'twitter_ressort',
-         'mobile_text', 'mobile'),
+        ('long_text', 'facebook_main_enabled', 'facebook_magazin_enabled',
+         'short_text', 'twitter_main_enabled',
+         'twitter_ressort_enabled', 'twitter_ressort',
+         'mobile_text', 'mobile_enabled'),
         css_class='wide-widgets column-left')
 
     def __init__(self, *args, **kw):
@@ -41,39 +45,44 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
             self.FormFieldsFactory(
                 zeit.push.interfaces.IPushMessages).select('long_text')
             + self.FormFieldsFactory(
-                IAccounts).select('facebook', 'facebook_magazin')
+                IAccounts).select(
+                    'facebook_main_enabled', 'facebook_magazin_enabled')
             + self.FormFieldsFactory(
                 zeit.push.interfaces.IPushMessages).select('short_text')
             + self.FormFieldsFactory(
-                IAccounts).select('twitter', 'twitter_ressort')
+                IAccounts).select(
+                    'twitter_main_enabled',
+                    'twitter_ressort_enabled', 'twitter_ressort')
             + self.FormFieldsFactory(
-                IAccounts).select('mobile_text', 'mobile'))
+                IAccounts).select('mobile_text', 'mobile_enabled'))
 
     def setUpWidgets(self, *args, **kw):
         super(SocialBase, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
+        if self.request.form.get('%s.twitter_ressort_enabled' % self.prefix):
+            field = self.widgets['twitter_ressort'].context
+            cloned = field.bind(field.context)
+            cloned.required = True
+            self.widgets['twitter_ressort'].context = cloned
 
     def applyAccountData(self, object, data):
         message_config = [
             {'type': 'facebook',
-             'enabled': data.pop('facebook', False),
+             'enabled': data.pop('facebook_main_enabled', False),
              'account': facebookAccountSource(None).MAIN_ACCOUNT},
             {'type': 'twitter',
-             'enabled': data.pop('twitter', False),
-             'account': twitterAccountSource(None).MAIN_ACCOUNT}
+             'enabled': data.pop('twitter_main_enabled', False),
+             'account': twitterAccountSource(None).MAIN_ACCOUNT},
+            {'type': 'twitter',
+             'enabled': data.pop('twitter_ressort_enabled', False),
+             'account': data.pop('twitter_ressort', None)}
         ]
-        if data.pop('facebook_magazin', None):
+        if data.pop('facebook_magazin_enabled', None):
             message_config.append(
                 {'type': 'facebook',
                  'enabled': True,
                  'account': facebookAccountSource(None).MAGAZIN_ACCOUNT})
-        twitter_ressort = data.pop('twitter_ressort', None)
-        if twitter_ressort:
-            message_config.append(
-                {'type': 'twitter',
-                 'enabled': True,
-                 'account': twitter_ressort})
-        if data.pop('mobile', None):
+        if data.pop('mobile_enabled', None):
             message_config.append({
                 'type': 'parse', 'enabled': True,
                 # We cannot use the key ``text``, since the first positional
@@ -101,17 +110,17 @@ class Accounts(grok.Adapter):
             self.context).message_config
 
     @property
-    def facebook(self):
+    def facebook_main_enabled(self):
         service = self._get_service('facebook', main=True)
         return service and service['enabled']
 
     @property
-    def facebook_magazin(self):
+    def facebook_magazin_enabled(self):
         service = self._get_service('facebook', main=False)
         return service and service['account']
 
     @property
-    def twitter(self):
+    def twitter_main_enabled(self):
         service = self._get_service('twitter', main=True)
         return service and service['enabled']
 
@@ -121,7 +130,12 @@ class Accounts(grok.Adapter):
         return service and service['account']
 
     @property
-    def mobile(self):
+    def twitter_ressort_enabled(self):
+        service = self._get_service('twitter', main=False)
+        return service and service['enabled']
+
+    @property
+    def mobile_enabled(self):
         for service in self.message_config:
             if service['type'] != 'parse':
                 continue
@@ -154,8 +168,6 @@ class Accounts(grok.Adapter):
             if service['type'] != type_:
                 continue
             account = service.get('account')
-            if not account:  # BBB
-                continue
             is_main = (account == source.MAIN_ACCOUNT)
             if is_main == main:
                 return service
@@ -166,24 +178,28 @@ class Accounts(grok.Adapter):
     # at the moment, but if we introduce individual texts or other
     # configuration, it becomes unfeasible).
 
-    @facebook.setter
-    def facebook(self, value):
+    @facebook_main_enabled.setter
+    def facebook_main_enabled(self, value):
         pass
 
-    @facebook_magazin.setter
-    def facebook_magazin(self, value):
+    @facebook_magazin_enabled.setter
+    def facebook_magazin_enabled(self, value):
         pass
 
-    @twitter.setter
-    def twitter(self, value):
+    @twitter_main_enabled.setter
+    def twitter_main_enabled(self, value):
         pass
 
     @twitter_ressort.setter
     def twitter_ressort(self, value):
         pass
 
-    @mobile.setter
-    def mobile(self, value):
+    @twitter_ressort_enabled.setter
+    def twitter_ressort_enabled(self, value):
+        pass
+
+    @mobile_enabled.setter
+    def mobile_enabled(self, value):
         pass
 
     @mobile_text.setter
