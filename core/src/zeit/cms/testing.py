@@ -342,7 +342,7 @@ gocept.selenium.webdriver.WebdriverSeleneseLayer.tearDown = (
 
 
 class SeleniumTestCase(gocept.selenium.WebdriverSeleneseTestCase,
-                       FunctionalTestCaseCommon):
+                       FunctionalTestCase):
 
     skin = 'cms'
     log_errors = False
