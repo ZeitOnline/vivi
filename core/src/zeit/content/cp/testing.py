@@ -133,12 +133,12 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
                 '[@class="module represents-content-object %s-module"]'
                 '[contains(string(.), "%s")]' % (area, text))
 
-    def create_and_checkout_centerpage(self):
+    def create_and_checkout_centerpage(self, name='cp'):
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
-        repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        repository[name] = zeit.content.cp.centerpage.CenterPage()
         cp = zeit.cms.checkout.interfaces.ICheckoutManager(
-            repository['cp']).checkout()
+            repository[name]).checkout()
         transaction.commit()
         return cp
 
