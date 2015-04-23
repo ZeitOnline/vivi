@@ -10,13 +10,11 @@ class ImageDetails(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.content.image.testing.WEBDRIVER_LAYER
 
     def test_clicking_button_shows_details_pane(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                image = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/2006/DSC00109_2.JPG')
-                with zeit.cms.checkout.helper.checked_out(image) as co:
-                    meta = zeit.content.image.interfaces.IImageMetadata(co)
-                    meta.caption = 'foo'
+        image = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/2006/DSC00109_2.JPG')
+        with zeit.cms.checkout.helper.checked_out(image) as co:
+            meta = zeit.content.image.interfaces.IImageMetadata(co)
+            meta.caption = 'foo'
 
         s = self.selenium
         self.open('/repository/2006/DSC00109_2.JPG/@@wrap?view=object-details')
