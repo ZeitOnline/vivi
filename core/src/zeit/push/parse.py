@@ -137,7 +137,7 @@ class Connection(object):
             },
             'data': {
                 'aps': {
-                    'alert-title': headline,
+                    'alert-title': kw.get('override_text', headline),
                     'alert': title,
                     'url': self.add_tracking(url, channel_name, 'ios'),
                 }
