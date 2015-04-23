@@ -295,6 +295,19 @@ class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ['Channel']  # XXX or 'Keyword', see VIV-471
 
 
+def automatic_area_can_read_teasers_automatically(data):
+    if data.automatic_type == 'centerpage' and data.referenced_cp:
+        return True
+
+    if data.automatic_type == 'channel' and data.query:
+        return True
+
+    if data.automatic_type == 'query' and data.raw_query:
+        return True
+
+    return False
+
+
 class IAutomaticArea(IArea):
     """Areas that support the AutoCP feature. Or not. (See below.)
 
@@ -348,12 +361,22 @@ class IAutomaticArea(IArea):
     raw_query.setTaggedValue('placeholder', ' ')
 
     @zope.interface.invariant
-    def automatic_from_centerpage_requires_referenced_cp(self):
-        if (self.automatic and self.automatic_type == 'centerpage'
-                and not self.referenced_cp):
-            raise zeit.cms.interfaces.ValidationError(
-                _("Automatic area with teasers from centerpage "
-                  "requires as referenced centerpage."))
+    def automatic_area_has_required_arguments(data):
+        if (data.automatic
+                and not automatic_area_can_read_teasers_automatically(data)):
+            if data.automatic_type == 'centerpage':
+                error_message = _(
+                    'Automatic area with teaser from centerpage '
+                    'requires a referenced centerpage.')
+            if data.automatic_type == 'channel':
+                error_message = _(
+                    'Automatic area with teaser from solr channel '
+                    'requires a channel query.')
+            if data.automatic_type == 'query':
+                error_message = _(
+                    'Automatic area with teaser from solr query '
+                    'requires a raw query.')
+            raise zeit.cms.interfaces.ValidationError(error_message)
         return True
 
 

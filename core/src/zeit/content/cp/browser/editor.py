@@ -55,20 +55,35 @@ class ToggleBooleanBase(zeit.edit.browser.view.Action):
     to = zeit.edit.browser.view.Form('to')
     attribute = NotImplemented
 
+    @property
+    def target(self):
+        return self.context
+
     def update(self):
-        setattr(self.context, self.attribute,
+        setattr(self.target, self.attribute,
                 (True if self.to == 'on' else False))
         zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
             self.context))
         self.reload()
 
 
-class ToggleVisibleMenuItem(zeit.cms.browser.view.Base):
+class ToggleMenuItem(zeit.cms.browser.view.Base):
+
+    attribute = NotImplemented
+
+    @property
+    def target(self):
+        return self.context
 
     @property
     def toggle_url(self):
-        on_off = 'off' if self.context.visible else 'on'
-        return self.url('@@toggle-visible?to=' + on_off)
+        on_off = 'off' if getattr(self.target, self.attribute) else 'on'
+        return self.url('@@toggle-{}?to={}'.format(self.attribute, on_off))
+
+
+class ToggleVisibleMenuItem(ToggleMenuItem):
+
+    attribute = 'visible'
 
 
 class ToggleVisible(ToggleBooleanBase):

@@ -1,4 +1,6 @@
 import lxml.etree
+import transaction
+import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.content.cp.testing
 import zope.testbrowser.testing
@@ -64,3 +66,59 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
 <region...count="3" automatic="True" automatic_type="centerpage"...>...
 <referenced_cp>http://xml.zeit.de/cp</referenced_cp>...""",
                     lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
+
+
+class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
+
+    def setUp(self):
+        super(TestAutomaticArea, self).setUp()
+        teaser = self.create_content('t1', 'Teaser Title')
+        cp_with_teaser = self.create_and_checkout_centerpage(
+            'cp_with_teaser', contents=[teaser])
+        zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
+
+        self.cp = self.create_and_checkout_centerpage('cp')
+        transaction.commit()
+        self.open_centerpage(create_cp=False)
+
+    def test_toggle_automatic_area_switch(self):
+        sel = self.selenium
+        # At the beginning two unconfigured areas are present
+        sel.assertCssCount('css=.block-automatic-off', 0)
+        sel.assertCssCount('css=.block-automatic-on', 0)
+        sel.assertCssCount('css=.block-automatic-not-possible', 2)
+        sel.assertCssCount('css=.type-teaser', 0)
+        sel.assertCssCount('css=.type-auto-teaser', 0)
+
+        # Configure first area, so it can be filled automatically
+        sel.click('css=.block.type-area .edit-link')
+        sel.waitForElementPresent('css=.lightbox')
+        sel.click('//a[@href="tab-2"]')
+        sel.waitForElementPresent('id=form.automatic_type')
+        sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
+        sel.type('id=form.referenced_cp', 'http://xml.zeit.de/cp_with_teaser')
+        sel.type('id=form.count', 1)
+        sel.click(r'css=#tab-2 #form\.actions\.apply')
+
+        # One area is inconfigured, the other could load content automatically
+        sel.waitForCssCount('css=.block-automatic-off', 1)
+        sel.assertCssCount('css=.block-automatic-on', 0)
+        sel.assertCssCount('css=.block-automatic-not-possible', 1)
+        sel.assertCssCount('css=.type-teaser', 0)
+        sel.assertCssCount('css=.type-auto-teaser', 0)
+
+        # Enable automatic mode, creates automatic teaser block
+        sel.click('css=.toggle-automatic-link')
+        sel.waitForCssCount('css=.block-automatic-off', 0)
+        sel.assertCssCount('css=.block-automatic-on', 1)
+        sel.assertCssCount('css=.block-automatic-not-possible', 1)
+        sel.assertCssCount('css=.type-teaser', 0)
+        sel.assertCssCount('css=.type-auto-teaser', 1)
+
+        # Disable automatic mode, materializes automatic teaser block
+        sel.click('css=.toggle-automatic-link')
+        sel.waitForCssCount('css=.block-automatic-off', 1)
+        sel.assertCssCount('css=.block-automatic-on', 0)
+        sel.assertCssCount('css=.block-automatic-not-possible', 1)
+        sel.assertCssCount('css=.type-teaser', 1)
+        sel.assertCssCount('css=.type-auto-teaser', 0)

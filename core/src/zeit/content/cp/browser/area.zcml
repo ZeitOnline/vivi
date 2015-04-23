@@ -113,13 +113,33 @@
     permission="zeit.EditContent"
     />
 
+  <browser:page
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="toggle-automatic"
+    class=".automatic.ToggleAutomatic"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IArea"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager=".interfaces.IEditBarViewletManager"
+    name="toggle-automatic"
+    class=".automatic.ToggleAutomaticMenuItem"
+    template="layout.area.toggle-automatic.pt"
+    permission="zeit.EditContent"
+    weight="120"
+    />
+
   <configure package="zeit.edit.browser">
     <browser:viewletManager
       provides="zeit.edit.interfaces.IContentViewletManager"
       for="zeit.content.cp.interfaces.IArea"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
-      class="zeit.content.cp.browser.area.ViewletManager"
+      class="zeit.content.cp.browser.area.AreaViewletManager"
       template="layout.block.contents.pt"
       name="zeit.edit.contents"
       permission="zope.View"

@@ -11,6 +11,26 @@
 }
 
 
+/* Automatic Area */
+.edit-bar > .toggle-automatic-link {
+  float: right;
+  padding-right: 4.5em;
+  background-size: contain;
+}
+
+.block-automatic-on > .block-inner > .edit-bar > .toggle-automatic-link {
+  background-image: url('autopilot-on.png');
+}
+
+.block-automatic-off > .block-inner > .edit-bar > .toggle-automatic-link {
+  background-image: url('autopilot-off.png');
+}
+
+.block-automatic-not-possible > .block-inner > .edit-bar > .toggle-automatic-link {
+  display: none;
+}
+
+
 /* When there is no "other" edit, we show the common. */
 .edit-bar > a.common-link:first-child {
   background-image: url('page.png');

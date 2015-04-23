@@ -302,6 +302,7 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_automatic_using_solr_requires_no_referenced_centerpage(self):
         self.area.referenced_cp = None
         self.area.automatic_type = 'query'
+        self.area.raw_query = 'foo'
         with self.assertNothingRaised():
             interface = zeit.content.cp.interfaces.IAutomaticArea
             interface.validateInvariants(self.area)

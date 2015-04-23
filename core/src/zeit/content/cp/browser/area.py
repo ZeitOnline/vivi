@@ -1,3 +1,4 @@
+from zeit.content.cp.interfaces import IAutomaticArea
 import gocept.form.grouped
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.teaser
@@ -14,6 +15,25 @@ class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
         classes = super(ViewletManager, self).css_class
         visible = 'block-visible-off' if not self.context.visible else ''
         return ' '.join(['editable-area', visible, classes])
+
+
+class AreaViewletManager(ViewletManager):
+
+    @property
+    def css_class(self):
+        classes = super(AreaViewletManager, self).css_class
+
+        area = IAutomaticArea(self.context)
+        if not zeit.content.cp.interfaces.\
+                automatic_area_can_read_teasers_automatically(area):
+            automatic = 'block-automatic-not-possible'
+        else:
+            if area.automatic:
+                automatic = 'block-automatic-on'
+            else:
+                automatic = 'block-automatic-off'
+
+        return ' '.join(['editable-area', automatic, classes])
 
 
 class EditProperties(zeit.content.cp.browser.blocks.teaser.EditLayout):
