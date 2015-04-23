@@ -21,10 +21,8 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
     def prepare_content(self, id='http://xml.zeit.de/testcontent'):
         from zeit.workflow.interfaces import IContentWorkflow
         import zeit.cms.interfaces
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                content = zeit.cms.interfaces.ICMSContent(id)
-                IContentWorkflow(content).urgent = True
+        content = zeit.cms.interfaces.ICMSContent(id)
+        IContentWorkflow(content).urgent = True
 
     def test_action_should_be_available(self):
         self.selenium.assertElementPresent('link=Publish')
@@ -73,10 +71,9 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
         self.repository['other'] = TestContentType()
         self.prepare_content('http://xml.zeit.de/other')
         self.prepare_content('http://xml.zeit.de/testcontent')
-        with zeit.cms.testing.interaction():
-            IPublish(self.repository['other']).publish()
-            IPublish(self.repository['testcontent']).publish()
-            transaction.commit()
+        IPublish(self.repository['other']).publish()
+        IPublish(self.repository['testcontent']).publish()
+        transaction.commit()
         self.open('/repository')
         s = self.selenium
         s.click('xpath=//*[contains(text(), "testcontent")]')
