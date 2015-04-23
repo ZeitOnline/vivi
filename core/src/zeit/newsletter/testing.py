@@ -66,23 +66,22 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         transaction.commit()
 
     def create_content_and_fill_clipboard(self):
-        # XXX copy&paste from zeit.content.cp.testing
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction() as principal:
-                repository = zope.component.getUtility(
-                    zeit.cms.repository.interfaces.IRepository)
-                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
-                clipboard.addClip('Clip')
-                clip = clipboard['Clip']
-                for i in range(1, 4):
-                    content = (zeit.cms.testcontenttype.testcontenttype.
-                               TestContentType())
-                    content.teaserTitle = content.shortTeaserTitle = (
-                        u'c%s teaser' % i)
-                    name = 'c%s' % i
-                    repository[name] = content
-                    clipboard.addContent(
-                        clip, repository[name], name, insert=True)
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        principal = (zope.security.management.getInteraction()
+                     .participations[0].principal)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+        clipboard.addClip('Clip')
+        clip = clipboard['Clip']
+        for i in range(1, 4):
+            content = (zeit.cms.testcontenttype.testcontenttype.
+                       TestContentType())
+            content.teaserTitle = content.shortTeaserTitle = (
+                u'c%s teaser' % i)
+            name = 'c%s' % i
+            repository[name] = content
+            clipboard.addContent(
+                clip, repository[name], name, insert=True)
         transaction.commit()
 
         s = self.selenium
