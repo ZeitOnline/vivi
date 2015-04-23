@@ -117,7 +117,7 @@ class Accounts(grok.Adapter):
     @property
     def facebook_magazin_enabled(self):
         service = self._get_service('facebook', main=False)
-        return service and service['account']
+        return service and service['enabled']
 
     @property
     def twitter_main_enabled(self):
