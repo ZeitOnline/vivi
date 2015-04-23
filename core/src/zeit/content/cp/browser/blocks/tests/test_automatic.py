@@ -1,4 +1,3 @@
-from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import transaction
 import zeit.cms.checkout.interfaces
 import zeit.content.cp.centerpage
@@ -11,13 +10,10 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
     def setUp(self):
         super(TestAutomaticTeaserBlock, self).setUp()
         self.auto_teaser_title = 'Teaser Title Foo'
-        teaser = TestContentType()
-        teaser.teaserTitle = self.auto_teaser_title
-        self.repository['t1'] = teaser
+        teaser = self.create_content('t1', self.auto_teaser_title)
 
-        cp_with_teaser = self.create_and_checkout_centerpage('cp_with_teaser')
-        cp_with_teaser['lead'].create_item('teaser').insert(
-            0, self.repository['t1'])
+        cp_with_teaser = self.create_and_checkout_centerpage(
+            'cp_with_teaser', contents=[teaser])
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
 
         self.cp = self.create_and_checkout_centerpage('cp')

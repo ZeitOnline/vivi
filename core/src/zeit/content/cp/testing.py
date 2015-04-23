@@ -8,6 +8,7 @@ import pkg_resources
 import re
 import time
 import transaction
+import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
 import zeit.workflow.testing
 import zope.testing.doctest
@@ -106,6 +107,24 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     layer = layer
 
+    def create_content(self, name, title):
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        content.teaserTitle = title
+        self.repository[name] = content
+        return content
+
+    def create_and_checkout_centerpage(self, name='cp', contents=[]):
+        transaction.abort()
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        repository[name] = zeit.content.cp.centerpage.CenterPage()
+        cp = zeit.cms.checkout.interfaces.ICheckoutManager(
+            repository[name]).checkout()
+        for content in contents:
+            cp['lead'].create_item('teaser').append(content)
+        transaction.commit()
+        return cp
+
 
 WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(layer,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
@@ -116,7 +135,7 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
-class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
+class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
 
     layer = WEBDRIVER_LAYER
     skin = 'vivi'
@@ -132,16 +151,6 @@ class SeleniumTestCase(zeit.cms.testing.SeleniumTestCase):
         return ('xpath=//div'
                 '[@class="module represents-content-object %s-module"]'
                 '[contains(string(.), "%s")]' % (area, text))
-
-    def create_and_checkout_centerpage(self, name='cp'):
-        transaction.abort()
-        repository = zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
-        repository[name] = zeit.content.cp.centerpage.CenterPage()
-        cp = zeit.cms.checkout.interfaces.ICheckoutManager(
-            repository[name]).checkout()
-        transaction.commit()
-        return cp
 
     def open_centerpage(self, create_cp=True):
         if create_cp:
