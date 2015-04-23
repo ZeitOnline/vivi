@@ -66,33 +66,27 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
             self.widgets['twitter_ressort'].context = cloned
 
     def applyAccountData(self, object, data):
-        message_config = [
+        zeit.push.interfaces.IPushMessages(object).message_config = [
             {'type': 'facebook',
              'enabled': data.pop('facebook_main_enabled', False),
              'account': facebookAccountSource(None).MAIN_ACCOUNT},
+            {'type': 'facebook',
+             'enabled': data.pop('facebook_magazin_enabled', False),
+             'account': facebookAccountSource(None).MAGAZIN_ACCOUNT},
             {'type': 'twitter',
              'enabled': data.pop('twitter_main_enabled', False),
              'account': twitterAccountSource(None).MAIN_ACCOUNT},
             {'type': 'twitter',
              'enabled': data.pop('twitter_ressort_enabled', False),
-             'account': data.pop('twitter_ressort', None)}
+             'account': data.pop('twitter_ressort', None)},
+            {'type': 'parse',
+             'enabled': data.pop('mobile_enabled', False),
+             # We cannot use the key ``text``, since the first positional
+             # parameter of IPushNotifier.send() is also called text, which
+             # would result in an TypeError.
+             'override_text': data.pop('mobile_text', None),
+             'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
         ]
-        if data.pop('facebook_magazin_enabled', None):
-            message_config.append(
-                {'type': 'facebook',
-                 'enabled': True,
-                 'account': facebookAccountSource(None).MAGAZIN_ACCOUNT})
-        if data.pop('mobile_enabled', None):
-            message_config.append({
-                'type': 'parse', 'enabled': True,
-                # We cannot use the key ``text``, since the first positional
-                # parameter of IPushNotifier.send() is also called text, which
-                # would result in an TypeError.
-                'override_text': data.pop('mobile_text'),
-                'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL,
-            })
-        zeit.push.interfaces.IPushMessages(
-            object).message_config = message_config
 
 
 class Accounts(grok.Adapter):

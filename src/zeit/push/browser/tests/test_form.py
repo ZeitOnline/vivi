@@ -28,13 +28,21 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_stores_IPushMessage_fields(self):
         self.open_form()
         b = self.browser
-        # b.getControl('Long push text').value = 'longtext'
+        b.getControl('Long push text').value = 'longtext'
         b.getControl('Short push text').value = 'shorttext'
+        b.getControl('Mobile title').value = 'mobile'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        # self.assertEqual('longtext', push.long_text)
+        self.assertEqual('longtext', push.long_text)
         self.assertEqual('shorttext', push.short_text)
+        for service in push.message_config:
+            if service['type'] != 'parse':
+                continue
+            self.assertEqual('mobile', service['override_text'])
+            break
+        else:
+            self.fail('parse message_config is missing')
 
     def test_converts_account_checkboxes_to_message_config(self):
         self.open_form()
@@ -81,7 +89,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
-        self.assertEqual(3, len(push.message_config))
+        self.assertEqual(5, len(push.message_config))
         self.assertIn(
             {'type': 'twitter', 'enabled': False, 'account': 'twitter-test'},
             push.message_config)
@@ -91,6 +99,13 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             push.message_config)
         self.assertIn(
             {'type': 'facebook', 'enabled': False, 'account': 'fb-test'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'facebook', 'enabled': False, 'account': 'fb-magazin'},
+            push.message_config)
+        self.assertIn(
+            {'type': 'parse', 'enabled': False, 'override_text': None,
+             'channels': 'parse-channel-news'},
             push.message_config)
 
         self.open_form()
