@@ -30,19 +30,11 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b = self.browser
         b.getControl('Long push text').value = 'longtext'
         b.getControl('Short push text').value = 'shorttext'
-        b.getControl('Mobile title').value = 'mobile'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
         self.assertEqual('longtext', push.long_text)
         self.assertEqual('shorttext', push.short_text)
-        for service in push.message_config:
-            if service['type'] != 'parse':
-                continue
-            self.assertEqual('mobile', service['override_text'])
-            break
-        else:
-            self.fail('parse message_config is missing')
 
     def test_converts_account_checkboxes_to_message_config(self):
         self.open_form()
@@ -139,6 +131,23 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Apply').click()
         self.assertEllipsis(
             '...Additional Twitter...Required input is missing...', b.contents)
+
+    def test_stores_mobile_override_text(self):
+        self.open_form()
+        b = self.browser
+        b.getControl('Mobile title').value = 'mobile'
+        b.getControl('Apply').click()
+        article = self.get_article()
+        push = zeit.push.interfaces.IPushMessages(article)
+        for service in push.message_config:
+            if service['type'] != 'parse':
+                continue
+            self.assertEqual('mobile', service['override_text'])
+            break
+        else:
+            self.fail('parse message_config is missing')
+        self.open_form()
+        self.assertEqual('mobile', b.getControl('Mobile title').value)
 
 
 class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
