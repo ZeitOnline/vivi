@@ -27,8 +27,8 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
     def test_smoke_form_submit_stores_values(self):
         self.open_form()
         b = self.browser
-        self.assertFalse(b.getControl('Enable Twitter').selected)
-        b.getControl('Enable Twitter').selected = True
+        self.assertFalse(b.getControl('Enable Twitter', index=0).selected)
+        b.getControl('Enable Twitter', index=0).selected = True
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
