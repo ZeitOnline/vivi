@@ -161,7 +161,7 @@ class ParametersTest(zeit.push.testing.TestCase):
         with mock.patch.object(api, 'push') as push:
             api.send('foo', 'any', channels=PARSE_NEWS_CHANNEL,
                      teaserSupertitle='super', teaserTitle='title',
-                     teaserText='teaser',
+                     teaserText='teaser', override_text=None,
                      image_url='http://images.zeit.de/example')
             android = push.call_args_list[0][0][0]
             self.assertEqual('title', android['data']['text'])
