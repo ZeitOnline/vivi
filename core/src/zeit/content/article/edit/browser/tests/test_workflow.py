@@ -286,12 +286,10 @@ class Objectlog(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_objectlog_is_wrapped(self):
         # this is a sanity check that the views are wired up correctly
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                article = zeit.cms.interfaces.ICMSContent(
-                    'http://xml.zeit.de/online/2007/01/Somalia')
-                zeit.objectlog.interfaces.ILog(article).log('example message')
-                transaction.commit()
+        article = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/online/2007/01/Somalia')
+        zeit.objectlog.interfaces.ILog(article).log('example message')
+        transaction.commit()
         self.open(
             '/++skin++vivi/repository/online/2007/01/Somalia/')
         s = self.selenium

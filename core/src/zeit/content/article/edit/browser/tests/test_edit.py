@@ -298,29 +298,27 @@ class TestEditingMultipleParagraphs(
         from zeit.content.article.interfaces import IArticle
         from zeit.content.article.edit.interfaces import IEditableBody
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            wl = zope.component.getUtility(
-                zeit.cms.tagging.interfaces.IWhitelist)
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
-                with checked_out(self.repository['article']) as co:
-                    zeit.cms.browser.form.apply_default_values(
-                        co, IArticle)
-                    co.year = 2010
-                    co.ressort = u'International'
-                    co.title = 'foo'
-                    co.keywords = (
-                        wl['testtag'], wl['testtag2'], wl['testtag3'],)
-                    body = IEditableBody(co)
-                    p_factory = zope.component.getAdapter(
-                        body, IElementFactory, 'p')
-                    img_factory = zope.component.getAdapter(
-                        body, IElementFactory, 'image')
-                    paragraph = p_factory()
-                    paragraph.text = 'foo'
-                    img_factory()
-                    paragraph = p_factory()
-                    paragraph.text = 'bar'
+        wl = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        self.repository['article'] = Article()
+        with checked_out(self.repository['article']) as co:
+            zeit.cms.browser.form.apply_default_values(
+                co, IArticle)
+            co.year = 2010
+            co.ressort = u'International'
+            co.title = 'foo'
+            co.keywords = (
+                wl['testtag'], wl['testtag2'], wl['testtag3'],)
+            body = IEditableBody(co)
+            p_factory = zope.component.getAdapter(
+                body, IElementFactory, 'p')
+            img_factory = zope.component.getAdapter(
+                body, IElementFactory, 'image')
+            paragraph = p_factory()
+            paragraph.text = 'foo'
+            img_factory()
+            paragraph = p_factory()
+            paragraph.text = 'bar'
         self.open('/repository/article/@@checkout')
 
     def test_arrow_up_moves_across_non_text_block_and_places_cursor_at_end(
@@ -797,32 +795,33 @@ class TestDummyAd(zeit.content.article.edit.browser.testing.EditorTestCase):
         from zeit.edit.interfaces import IElementFactory
         from zope.testbrowser.testing import Browser
         import json
+
+        zope.security.management.endInteraction()
         browser = Browser()
         browser.addHeader('Authorization', 'Basic user:userpw')
         browser.open(
             'http://localhost:8080/++skin++vivi/@@banner-rules')
         self.rules = json.loads(browser.contents)
+        zeit.cms.testing.create_interaction()
 
-        with zeit.cms.testing.site(self.getRootFolder()):
-            wl = zope.component.getUtility(
-                zeit.cms.tagging.interfaces.IWhitelist)
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
-                with checked_out(self.repository['article']) as co:
-                    zeit.cms.browser.form.apply_default_values(
-                        co, IArticle)
-                    co.year = 2010
-                    co.ressort = u'International'
-                    co.title = 'foo'
-                    co.keywords = (
-                        wl['testtag'], wl['testtag2'], wl['testtag3'],)
-                    body = IEditableBody(co)
-                    p_factory = zope.component.getAdapter(
-                        body, IElementFactory, 'p')
-                    paragraph = p_factory()
-                    paragraph.text = 'foo'
-                    paragraph = p_factory()
-                    paragraph.text = 'bar'
+        wl = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        self.repository['article'] = Article()
+        with checked_out(self.repository['article']) as co:
+            zeit.cms.browser.form.apply_default_values(
+                co, IArticle)
+            co.year = 2010
+            co.ressort = u'International'
+            co.title = 'foo'
+            co.keywords = (
+                wl['testtag'], wl['testtag2'], wl['testtag3'],)
+            body = IEditableBody(co)
+            p_factory = zope.component.getAdapter(
+                body, IElementFactory, 'p')
+            paragraph = p_factory()
+            paragraph.text = 'foo'
+            paragraph = p_factory()
+            paragraph.text = 'bar'
         self.open('/repository/article/@@checkout')
 
     def test_dummy_ad_should_be_rendered_on_banner_rules(self):

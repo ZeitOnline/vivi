@@ -160,29 +160,26 @@ class RetractBannerTest(
 
     def setUp(self):
         super(RetractBannerTest, self).setUp()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            # Set up dummy banner articles.
-            for name in ['homepage', 'ios-legacy', 'wrapper']:
-                content = zeit.content.article.testing.create_article()
-                IBreakingNewsBody(content).text = '<a href="http://xml.zeit.de/online/2007/01/Somalia"/>'
-                self.repository[name] = content
-                notifier = zope.component.getUtility(
-                    zeit.push.interfaces.IPushNotifier, name=name)
-                notifier.uniqueId = content.uniqueId
+        # Set up dummy banner articles.
+        for name in ['homepage', 'ios-legacy', 'wrapper']:
+            content = zeit.content.article.testing.create_article()
+            IBreakingNewsBody(content).text = '<a href="http://xml.zeit.de/online/2007/01/Somalia"/>'
+            self.repository[name] = content
+            notifier = zope.component.getUtility(
+                zeit.push.interfaces.IPushNotifier, name=name)
+            notifier.uniqueId = content.uniqueId
 
             # Publish homepage banner so the retract button is shown.
-            with zeit.cms.testing.interaction():
-                IPublishInfo(self.repository['homepage']).urgent = True
-                IPublish(self.repository['homepage']).publish()
-                zeit.workflow.testing.run_publish()
+            IPublishInfo(self.repository['homepage']).urgent = True
+            IPublish(self.repository['homepage']).publish()
+            zeit.workflow.testing.run_publish()
 
             # Make Somalia breaking news, so the retract section is shown.
             article = ICMSContent(
                 'http://xml.zeit.de/online/2007/01/Somalia')
-            with zeit.cms.testing.interaction():
-                with zeit.cms.checkout.helper.checked_out(article) as co:
-                    zeit.content.article.interfaces.IBreakingNews(
-                        co).is_breaking = True
+            with zeit.cms.checkout.helper.checked_out(article) as co:
+                zeit.content.article.interfaces.IBreakingNews(
+                    co).is_breaking = True
 
         self.start_tasks()
 

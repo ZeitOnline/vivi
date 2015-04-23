@@ -137,20 +137,20 @@ class FindReplaceTest(
     def test_finding_text_works_accross_non_text_blocks(self):
         s = self.selenium
         self.add_article()
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                co = list(IWorkingcopy(None).values())[0]
-                body = IEditableBody(co)
-                p_factory = zope.component.getAdapter(
-                    body, IElementFactory, 'p')
-                img_factory = zope.component.getAdapter(
-                    body, IElementFactory, 'image')
-                paragraph = p_factory()
-                paragraph.text = 'foo bar baz'
-                img_factory()
-                paragraph = p_factory()
-                paragraph.text = 'foo baz'
-                transaction.commit()
+        transaction.abort()
+        co = list(IWorkingcopy(None).values())[0]
+        body = IEditableBody(co)
+        p_factory = zope.component.getAdapter(
+            body, IElementFactory, 'p')
+        img_factory = zope.component.getAdapter(
+            body, IElementFactory, 'image')
+        paragraph = p_factory()
+        paragraph.text = 'foo bar baz'
+        img_factory()
+        paragraph = p_factory()
+        paragraph.text = 'foo baz'
+        transaction.commit()
+
         s.refresh()
         para = 'css=.block.type-p .editable p'
         s.waitForElementPresent(para)
@@ -305,29 +305,27 @@ class FindReplaceTest(
     def test_saves_if_replacing_ends_in_subsequent_editable(self):
         from zeit.content.article.article import Article
         from zeit.content.article.interfaces import IArticle
-        with zeit.cms.testing.site(self.getRootFolder()):
-            wl = zope.component.getUtility(
-                zeit.cms.tagging.interfaces.IWhitelist)
-            with zeit.cms.testing.interaction():
-                self.repository['article'] = Article()
-                with checked_out(self.repository['article']) as co:
-                    zeit.cms.browser.form.apply_default_values(
-                        co, IArticle)
-                    co.year = 2010
-                    co.ressort = u'International'
-                    co.title = 'foo'
-                    co.keywords = (
-                        wl['testtag'], wl['testtag2'], wl['testtag3'],)
-                    body = IEditableBody(co)
-                    p_factory = zope.component.getAdapter(
-                        body, IElementFactory, 'p')
-                    img_factory = zope.component.getAdapter(
-                        body, IElementFactory, 'image')
-                    paragraph = p_factory()
-                    paragraph.text = 'foobar'
-                    img_factory()
-                    paragraph = p_factory()
-                    paragraph.text = 'foobaz'
+        wl = zope.component.getUtility(
+            zeit.cms.tagging.interfaces.IWhitelist)
+        self.repository['article'] = Article()
+        with checked_out(self.repository['article']) as co:
+            zeit.cms.browser.form.apply_default_values(
+                co, IArticle)
+            co.year = 2010
+            co.ressort = u'International'
+            co.title = 'foo'
+            co.keywords = (
+                wl['testtag'], wl['testtag2'], wl['testtag3'],)
+            body = IEditableBody(co)
+            p_factory = zope.component.getAdapter(
+                body, IElementFactory, 'p')
+            img_factory = zope.component.getAdapter(
+                body, IElementFactory, 'image')
+            paragraph = p_factory()
+            paragraph.text = 'foobar'
+            img_factory()
+            paragraph = p_factory()
+            paragraph.text = 'foobaz'
         self.open('/repository/article/@@checkout')
 
         s = self.selenium

@@ -4,6 +4,7 @@ import unittest
 import zeit.cms.checkout.interfaces
 import zeit.cms.testing
 import zeit.content.article.edit.browser.testing
+import zope.security.management
 
 
 class ImageForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
@@ -79,12 +80,12 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.assertElementPresent('css=.block.type-image .add_view.button')
 
     def add_to_clipboard(self, obj, name):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction() as principal:
-                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
-                clipboard.addClip('Clip')
-                clip = clipboard['Clip']
-                clipboard.addContent(clip, obj, name, insert=True)
+        principal = (zope.security.management.getInteraction()
+                     .participations[0].principal)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+        clipboard.addClip('Clip')
+        clip = clipboard['Clip']
+        clipboard.addContent(clip, obj, name, insert=True)
         transaction.commit()
 
     def add_image_to_clipboard(self):
@@ -224,18 +225,18 @@ class VideoForm(zeit.content.article.edit.browser.testing.BrowserTestCase):
 class VideoEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def create_content_and_fill_clipboard(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction() as principal:
-                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
-                clipboard.addClip('Clip')
-                clip = clipboard['Clip']
-                for i in range(4):
-                    video = zeit.content.video.video.Video()
-                    video.supertitle = u'MyVideo_%s' % i
-                    name = 'my_video_%s' % i
-                    self.repository[name] = video
-                    clipboard.addContent(
-                        clip, self.repository[name], name, insert=True)
+        principal = (zope.security.management.getInteraction()
+                     .participations[0].principal)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+        clipboard.addClip('Clip')
+        clip = clipboard['Clip']
+        for i in range(4):
+            video = zeit.content.video.video.Video()
+            video.supertitle = u'MyVideo_%s' % i
+            name = 'my_video_%s' % i
+            self.repository[name] = video
+            clipboard.addContent(
+                clip, self.repository[name], name, insert=True)
         transaction.commit()
 
         s = self.selenium

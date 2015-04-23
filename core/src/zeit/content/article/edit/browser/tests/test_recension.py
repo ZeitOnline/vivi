@@ -9,20 +9,18 @@ import zeit.content.article.testing
 class RecensionTest(zeit.content.article.testing.SeleniumTestCase):
 
     def create_recension(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                with zeit.cms.checkout.helper.checked_out(
-                    zeit.cms.interfaces.ICMSContent(
-                        'http://xml.zeit.de/online/2007/01/Somalia')) as co:
-                    recension = zeit.content.article.recension.BookRecension()
-                    recension.authors = ['William Shakespeare']
-                    recension.title = 'Hamlet'
-                    recension.publisher = 'Suhrkamp'
-                    recension.location = 'Berlin'
-                    recension.category = 'Belletristik'
-                    container = IBookRecensionContainer(co)
-                    container.append(recension)
-                    transaction.commit()
+        with zeit.cms.checkout.helper.checked_out(
+            zeit.cms.interfaces.ICMSContent(
+                'http://xml.zeit.de/online/2007/01/Somalia')) as co:
+            recension = zeit.content.article.recension.BookRecension()
+            recension.authors = ['William Shakespeare']
+            recension.title = 'Hamlet'
+            recension.publisher = 'Suhrkamp'
+            recension.location = 'Berlin'
+            recension.category = 'Belletristik'
+            container = IBookRecensionContainer(co)
+            container.append(recension)
+            transaction.commit()
 
         s = self.selenium
         s.setTimeout(3600000)

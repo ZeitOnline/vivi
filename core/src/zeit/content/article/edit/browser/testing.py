@@ -2,6 +2,7 @@ import transaction
 import zeit.cms.clipboard.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
+import zope.security.management
 
 
 class BrowserTestCase(zeit.cms.testing.BrowserTestCase):
@@ -87,14 +88,15 @@ class EditorHelper(object):
         return s.getAttribute('css={0}@id'.format(block_sel))
 
     def add_testcontent_to_clipboard(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction() as principal:
-                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
-                clipboard.addClip('Clip')
-                clip = clipboard['Clip']
-                clipboard.addContent(
-                    clip, self.repository['testcontent'],
-                    'testcontent', insert=True)
+        transaction.abort()
+        principal = (zope.security.management.getInteraction()
+                     .participations[0].principal)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+        clipboard.addClip('Clip')
+        clip = clipboard['Clip']
+        clipboard.addContent(
+            clip, self.repository['testcontent'],
+            'testcontent', insert=True)
         transaction.commit()
 
         s = self.selenium

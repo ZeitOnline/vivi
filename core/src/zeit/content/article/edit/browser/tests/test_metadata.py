@@ -5,6 +5,7 @@ import unittest
 import zeit.cms.tagging.testing
 import zeit.content.article.edit.browser.testing
 import zeit.content.author.author
+import zope.security.management
 
 
 class HeadTest(zeit.content.article.edit.browser.testing.EditorTestCase):
@@ -177,11 +178,11 @@ class MetadataTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 class HeaderTest(zeit.content.article.edit.browser.testing.EditorTestCase):
 
     def test_icon_in_header_is_draggable_to_clipboard(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction() as principal:
-                clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
-                clipboard.addClip('Clip')
-                transaction.commit()
+        principal = (zope.security.management.getInteraction()
+                     .participations[0].principal)
+        clipboard = zeit.cms.clipboard.interfaces.IClipboard(principal)
+        clipboard.addClip('Clip')
+        transaction.commit()
 
         self.open('/repository/online/2007/01/Somalia')
         s = self.selenium
@@ -205,13 +206,11 @@ class AuthorLocationTest(
         shakespeare = zeit.content.author.author.Author()
         shakespeare.firstname = 'William'
         shakespeare.lastname = 'Shakespeare'
-        with zeit.cms.testing.site(self.getRootFolder()):
-            with zeit.cms.testing.interaction():
-                self.repository['shakespeare'] = shakespeare
-                with checked_out(ICMSContent(
-                        'http://xml.zeit.de/online/2007/01/Somalia')) as co:
-                    co.authorships = [co.authorships.create(
-                        self.repository['shakespeare'])]
+        self.repository['shakespeare'] = shakespeare
+        with checked_out(ICMSContent(
+                'http://xml.zeit.de/online/2007/01/Somalia')) as co:
+            co.authorships = [co.authorships.create(
+                self.repository['shakespeare'])]
 
     def test_entering_location_via_autocomplete(self):
         self.open('/repository/online/2007/01/Somalia/@@checkout')
