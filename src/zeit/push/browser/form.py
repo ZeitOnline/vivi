@@ -150,7 +150,7 @@ class Accounts(grok.Adapter):
                 break
         else:
             service = None
-        return service and service.get('text')
+        return service and service.get('override_text')
 
     def _get_service(self, type_, main=True):
         source = {
