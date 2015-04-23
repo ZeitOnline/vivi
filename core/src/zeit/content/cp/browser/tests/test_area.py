@@ -211,3 +211,18 @@ class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
         self.create_block('teaser', 'lead')
 
         s.waitForElementPresent('css=#informatives .block.type-quiz')
+
+
+class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
+
+    def test_drop_configured_region_creates_nested_areas(self):
+        self.open_centerpage()
+        s = self.selenium
+        s.click(u'link=Struktur')
+        s.click(u'link=Regionen')
+        module = self.get_module('body', 'Halb/halb')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module, 'css=.action-cp-body-module-droppable', '10,10')
+        s.waitForCssCount('css=.type-region', 3)
+        s.assertText('css=.type-area .width', '1/2')

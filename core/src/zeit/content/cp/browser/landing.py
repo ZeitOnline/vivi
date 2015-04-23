@@ -49,13 +49,28 @@ class CreateNestedAreaMixin(object):
         return self._region
 
 
-class BodyLandingZone(
+class BodyLandingZoneRegion(zeit.edit.browser.landing.LandingZone):
+    """LandingZone to create a Region (potentially with areas inside it).
+
+    """
+
+    block_type = zeit.edit.browser.view.Form('block_type')
+
+    def update(self):
+        self.areas = self.block_params.pop('areas', [])
+        super(BodyLandingZoneRegion, self).update()
+
+    def initialize_block(self):
+        super(BodyLandingZoneRegion, self).initialize_block()
+        for config in self.areas:
+            area = self.block.create_item('area')
+            area.width = config['width']
+
+
+class BodyLandingZoneArea(
         CreateNestedAreaMixin,
         zeit.edit.browser.landing.LandingZone):
-    """LandingZone to create a Region when the link 'Add region' is clicked.
-
-    Can also create a region with an area inside, when an area is dropped onto
-    this LandingZone.
+    """LandingZone that creates a Region when an Area is dropped.
 
     """
 
@@ -69,7 +84,7 @@ class BodyLandingZone(
     def block_factory(self):
         """Overwrite to use self.region instead of self.container as parent."""
         if not self.create_nested_area:
-            return super(BodyLandingZone, self).block_factory
+            return super(BodyLandingZoneArea, self).block_factory
 
         return zope.component.getAdapter(
             self.region, zeit.edit.interfaces.IElementFactory,
@@ -85,7 +100,7 @@ class BodyLandingZone(
 
         """
         if not self.create_nested_area:
-            super(BodyLandingZone, self).create_block()
+            super(BodyLandingZoneArea, self).create_block()
             return
         self.block = self.block_factory()
 

@@ -6,7 +6,10 @@ MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
     }
 
     zeit.edit.library.create('all', context_url, 'Module');
-    zeit.edit.library.create('area', context_url, 'Flächen', '@@area-factories.json');
+    zeit.edit.library.create(
+        'region', context_url, 'Regionen', '@@region-factories.json');
+    zeit.edit.library.create(
+        'area', context_url, 'Flächen', '@@area-factories.json');
 });
 
 
@@ -49,6 +52,16 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
         url_attribute: 'cms:move-block-url',
         query_arguments: function(draggable) {
             return {'id': draggable.getAttribute('id')};
+        }
+    });
+
+    zeit.edit.drop.registerHandler({
+        accept: ['body-module'],
+        activated_by: 'action-cp-body-module-droppable',
+        url_attribute: 'cms:create-region-url',
+        query_arguments: function(draggable) {
+            return {'block_type': draggable.getAttribute('cms:block_type'),
+                    'block_params': draggable.getAttribute('cms:block_params')};
         }
     });
 

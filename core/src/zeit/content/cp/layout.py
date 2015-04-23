@@ -46,6 +46,18 @@ class BlockLayout(object):
             other, BlockLayout) and self.id == other.id
 
 
+class RegionConfig(object):
+
+    def __init__(self, id, title, areas):
+        self.id = id
+        self.title = title
+        self.areas = areas
+
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, RegionConfig) and self.id == other.id
+
+
 class AreaLayout(object):
 
     zope.interface.implements(IAreaLayout)
@@ -156,6 +168,31 @@ class AreaLayoutSource(
         return result
 
 AREA_LAYOUTS = AreaLayoutSource()
+
+
+class RegionConfigSource(
+        LayoutSourceBase, zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'region-config-source'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        result = []
+        for node in tree.iterchildren('*'):
+            if not self.isAvailable(node, context):
+                continue
+            result.append(RegionConfig(
+                node.get('id'),
+                self._get_title_for(node),
+                [{'width': x.get('width')} for x in node.iterchildren('area')]
+            ))
+        return result
+
+    def _get_title_for(self, node):
+        return unicode(node.get('title'))
+
+REGION_CONFIGS = RegionConfigSource()
 
 
 class AreaConfigSource(

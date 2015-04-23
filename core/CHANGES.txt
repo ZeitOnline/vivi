@@ -7,6 +7,8 @@ zeit.content.cp changes
 
 - Teach AutomaticAreas to retrieve teasers from referenced CP. (DEV-745)
 
+- Add draggable library elements for preconfigured regions (DEV-746).
+
 
 3.0.0b12 (2015-04-22)
 ---------------------

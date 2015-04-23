@@ -69,7 +69,15 @@
     for="zeit.content.cp.interfaces.IBody"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="landing-zone-drop-module"
-    class=".landing.BodyLandingZone"
+    class=".landing.BodyLandingZoneRegion"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.IBody"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="landing-zone-drop-area"
+    class=".landing.BodyLandingZoneArea"
     permission="zeit.EditContent"
     />
 
@@ -172,6 +180,14 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="block-factories.json"
     class=".library.CPBlockFactories"
+    permission="zeit.EditContent"
+    />
+
+  <browser:view
+    for="zeit.content.cp.interfaces.ICenterPage"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="region-factories.json"
+    class=".library.CPRegionFactories"
     permission="zeit.EditContent"
     />
 

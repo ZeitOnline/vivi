@@ -1,0 +1,13 @@
+<regions>
+  <region id="lead" title="Aufmacherbereich">
+    <area width="2/3"/>
+    <area width="1/3"/>
+  </region>
+  <region id="half" title="Halb/halb">
+    <area width="1/2"/>
+    <area width="1/2"/>
+  </region>
+  <region id="parquet" title="Parkettzeile">
+    <area width="1/1"/>
+  </region>
+</regions>
