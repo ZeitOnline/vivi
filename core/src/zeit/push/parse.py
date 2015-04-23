@@ -52,6 +52,7 @@ class Connection(object):
         url = self.rewrite_url(link)
         image_url = kw.get('image_url')
         title = text
+        override_text = kw.get('override_text')
         expiration_time = (datetime.now(pytz.UTC).replace(microsecond=0) +
                            timedelta(seconds=self.expire_interval)).isoformat()
 
@@ -74,7 +75,7 @@ class Connection(object):
             'data': {
                 'action': self.PUSH_ACTION_ID,
                 'headline': headline,
-                'text': kw.get('override_text', kw.get('teaserTitle', title)),
+                'text': override_text or kw.get('teaserTitle', title),
                 'teaser': kw.get('teaserText', ''),
                 'url': self.add_tracking(url, channel_name, 'android'),
             }
@@ -115,7 +116,7 @@ class Connection(object):
             'data': {
                 'aps': {
                     'headline': kw.get('teaserTitle', ''),
-                    'alert-title': kw.get('override_text', headline),
+                    'alert-title': override_text or headline,
                     'alert': kw.get('teaserText', title),
                     'url': self.add_tracking(url, channel_name, 'ios'),
                 }
@@ -137,7 +138,7 @@ class Connection(object):
             },
             'data': {
                 'aps': {
-                    'alert-title': kw.get('override_text', headline),
+                    'alert-title': override_text or headline,
                     'alert': title,
                     'url': self.add_tracking(url, channel_name, 'ios'),
                 }
