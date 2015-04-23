@@ -140,11 +140,6 @@
   width: 74%;
 }
 
-.autopilot-title {
-  margin-left: 1em;
-  font-weight: bold;
-}
-
 /* dragger */
 
 .dragger {
@@ -163,38 +158,6 @@
 
 
 /* Teaser block */
-
-.autopilot-chooser {
-  bottom: 1.2em;
-  cursor: pointer;
-  display: block;
-  height: 1em;
-  margin-bottom: 0.8em;
-  padding: 0.3em;
-  position: absolute;
-  right: 1em;
-  width: 6em;
-}
-
-.autopilot-on > * {
-  background-color: #d7ffda;
-}
-
-.autopilot-off > * {
-  background-color: #fff1d3;
-}
-
-.autopilot-not-possible .autopilot-chooser {
-  display: none;
-}
-
-.autopilot-on .autopilot-chooser {
-  background: url('autopilot-on.png') no-repeat right;
-}
-
-.autopilot-off .autopilot-chooser {
-  background: url('autopilot-off.png') no-repeat right;
-}
 
 .block.block-visible-off > * {
   background-color: #cccccc;

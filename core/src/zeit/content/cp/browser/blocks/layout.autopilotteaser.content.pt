@@ -1,5 +1,0 @@
-<a class="autopilot-chooser"
-   cms:cp-module="zeit.edit.LoadAndReload">
-  <span class="action-title">Switch autopilot</span>
-</a>
-

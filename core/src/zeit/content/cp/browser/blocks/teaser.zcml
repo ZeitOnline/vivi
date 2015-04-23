@@ -18,18 +18,6 @@
     weight="0"
     />
 
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.ITeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditorContentViewletManager"
-    name="autopilot"
-    class=".teaser.Display"
-    template="layout.autopilotteaser.content.pt"
-    permission="zeit.EditContent"
-    weight="-10"
-    />
-
   <browser:page
     for="zeit.content.cp.interfaces.ITeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
