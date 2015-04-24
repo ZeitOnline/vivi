@@ -495,6 +495,10 @@ label[for="form.query"]:after {
   content: "Zeige Artikel, wenn...";
 }
 
+.type-centerpage-2009 .fieldname-raw_query textarea {
+  width: 95%;  /* XXX unclear why 100% produces more than 100% width. */
+}
+
 
 /* Display SVGs of Schematic Previews side by side and mark the active area. */
 
