@@ -527,14 +527,20 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
         return conf
 
 
-def CheckboxWidget(context, request):
-    widget = zope.app.form.browser.CheckBoxWidget(context, request)
-    widget.reversed = True
-    return widget
+class CheckBoxWidget(zope.formlib.boolwidgets.CheckBoxWidget):
+
+    def __init__(self, context, request):
+        super(CheckBoxWidget, self).__init__(context, request)
+        self.reversed = True
+
+    def __call__(self):
+        result = super(CheckBoxWidget, self).__call__()
+        result += '\n<span class="checkbox"></span>'
+        return result
 
 
 def CheckboxDisplayWidget(context, request):
-    widget = CheckboxWidget(context, request)
+    widget = CheckBoxWidget(context, request)
     widget.extra = 'disabled="disabled"'
     return widget
 

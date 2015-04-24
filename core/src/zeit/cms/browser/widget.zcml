@@ -206,7 +206,7 @@
       for="zope.schema.interfaces.IBool
            .interfaces.ICMSLayer"
       provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
-      factory=".widget.CheckboxWidget"
+      factory=".widget.CheckBoxWidget"
       permission="zope.Public"
       />
 

@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.44.1 (unreleased)
+2.45.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Allow using custom images for checkboxes (DEV-745).
 
 
 2.44.0 (2015-04-23)

@@ -341,6 +341,11 @@ $(document).bind('fragment-ready', function(event) {
       event.__target).parent().addClass('checkboxdisabled');
     $('input:checked.checkboxType[disabled="disabled"]',
      event.__target).parent().addClass('checkboxchecked');
+
+    $('input.checkboxType + span.checkbox', event.__target).on(
+        'click', function() {
+            $(this).siblings('input.checkboxType').click();
+    });
 });
 
 
