@@ -165,11 +165,7 @@
     />
   <grant
     role="zeit.Producer"
-    permission="zeit.content.cp.CreateArea"
-    />
-  <grant
-    role="zeit.Producer"
-    permission="zeit.content.cp.MoveArea"
+    permission="zeit.content.cp.EditArea"
     />
 
 
