@@ -237,4 +237,14 @@
       />
   </class>
 
+  <permission
+    id="zeit.content.cp.CreateArea"
+    title="Create Area by dragging from Sidebar"
+    />
+
+  <permission
+    id="zeit.content.cp.MoveArea"
+    title="Move Areas using LandingZones"
+    />
+
 </configure>

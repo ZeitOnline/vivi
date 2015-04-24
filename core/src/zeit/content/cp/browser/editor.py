@@ -1,6 +1,8 @@
 from zeit.content.cp.i18n import MessageFactory as _
+from zope.browserpage import ViewPageTemplateFile
 import zeit.cms.browser.view
 import zeit.cms.workingcopy.browser.workingcopy
+import zeit.edit.browser.editor
 import zeit.edit.browser.view
 import zope.interface
 import zope.lifecycleevent
@@ -8,9 +10,18 @@ import zope.security.proxy
 import zope.traversing.browser
 
 
-class Editor(object):
+class Editor(zeit.edit.browser.editor.Editor):
 
-    title = _('Edit centerpage')
+    render = ViewPageTemplateFile('editor.pt')
+
+    @property
+    def form_css_class(self):
+        if not self.has_permission('zeit.content.cp.CreateArea'):
+            return 'create-area-forbidden'
+
+    def has_permission(self, permission):
+        return self.request.interaction.checkPermission(
+            permission, self.context)
 
     def validate(self, area):
         validation_class, validation_messages = (

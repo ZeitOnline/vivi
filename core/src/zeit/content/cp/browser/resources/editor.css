@@ -10,6 +10,11 @@
     margin: 0.5em;
 }
 
+/* Area */
+.create-area-forbidden #area-tab {
+  display: none;
+}
+
 
 /* Automatic Area */
 .edit-bar > .toggle-automatic-link {
@@ -87,6 +92,10 @@
   top: -0.1em;
   width: 6em;
   z-index: 3;
+}
+
+.type-centerpage-2009 .edit-bar {
+  height: 20px;
 }
 
 .edit-bar.column-separator {

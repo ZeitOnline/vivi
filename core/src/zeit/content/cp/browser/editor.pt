@@ -1,0 +1,6 @@
+<div id="cp-content">
+  <div id="cp-content-inner">
+  </div>
+</div>
+<div id="cp-forms" tal:attributes="class view/form_css_class">
+</div>

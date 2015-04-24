@@ -280,6 +280,17 @@
 
   <configure package="zeit.edit.browser">
     <browser:viewlet
+      for="zeit.content.cp.interfaces.IArea"
+      layer="zeit.cms.browser.interfaces.ICMSLayer"
+      view="zope.interface.Interface"
+      manager="zeit.edit.interfaces.IEditBarViewletManager"
+      name="drag"
+      template="layout.block.drag.pt"
+      permission="zeit.content.cp.MoveArea"
+      weight="1000"
+      />
+
+    <browser:viewlet
       for="zeit.content.cp.interfaces.IElement"
       layer="zeit.cms.browser.interfaces.ICMSLayer"
       view="zope.interface.Interface"
