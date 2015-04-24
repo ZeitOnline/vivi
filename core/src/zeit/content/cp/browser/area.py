@@ -1,3 +1,4 @@
+from zeit.cms.i18n import MessageFactory as _
 from zeit.content.cp.interfaces import IAutomaticArea
 import gocept.form.grouped
 import zeit.cms.interfaces
@@ -63,12 +64,19 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
             'count', 'query', 'raw_query', 'automatic',
             'automatic_type', 'referenced_cp', 'hide_dupes')
 
-    # XXX Kludgy: ``automatic`` must come after ``count``, since setting
-    # automatic to True needs to know the teaser count. Thus we order the
-    # form_fields accordingly, and alter the display order using field_groups.
-    field_groups = (gocept.form.grouped.Fields(
-        '', ('automatic', 'count', 'automatic_type', 'referenced_cp',
-             'hide_dupes', 'query', 'raw_query')),)
+    field_groups = (
+        # XXX Kludgy: ``automatic`` must come after ``count``, since setting
+        # automatic to True needs to know the teaser count. Thus, we order the
+        # form_fields accordingly, and alter the _display_ order here.
+        gocept.form.grouped.Fields(
+            '', ('automatic_type', 'automatic', 'count', 'hide_dupes')),
+        gocept.form.grouped.Fields(
+            _('automatic-area-type-centerpage'), ('referenced_cp',)),
+        gocept.form.grouped.Fields(
+            _('automatic-area-type-channel'), ('query',)),
+        gocept.form.grouped.Fields(
+            _('automatic-area-type-query'), ('raw_query',)),
+    )
 
     template = zope.browserpage.ViewPageTemplateFile(
         'blocks/teaser.edit-common.pt')

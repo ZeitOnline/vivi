@@ -10,7 +10,8 @@ var FIELDS = {
 var show_matching_field = function(container, current_type) {
     $(['referenced_cp', 'query', 'raw_query']).each(function(i, field) {
         var method = field == FIELDS[current_type] ? 'show' : 'hide';
-        $('.fieldname-' + field, container)[method]();
+        var target = $('.fieldname-' + field, container).closest('fieldset');
+        target[method]();
     });
 };
 
