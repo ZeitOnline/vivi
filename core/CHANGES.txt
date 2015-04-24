@@ -5,7 +5,8 @@ zeit.securitypolicy changes
 2.1.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Grant ``zeit.Producer`` permissions to create an move zeit.content.cp.IArea.
+  (DEV-746)
 
 
 2.1.8 (2015-01-29)
