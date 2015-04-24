@@ -161,6 +161,16 @@
 }
 
 
+#lightbox\.form .form-status {
+  margin-left: 10px;
+  margin-top: 1em;
+}
+
+#lightbox\.form .summary {
+  font-weight: bold;
+}
+
+
 /* Block layout */
 
 .block > .block-inner {
