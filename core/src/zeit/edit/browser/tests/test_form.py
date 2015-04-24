@@ -127,7 +127,8 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
 
     def setUp(self):
         super(InlineFormAutoSaveTest, self).setUp()
-        zope.configuration.xmlconfig.string("""\
+        with zeit.cms.testing.site(None):
+            zope.configuration.xmlconfig.string("""\
 <?xml version="1.0" encoding="UTF-8" ?>
 <configure
   package="zeit.edit.browser.tests"
@@ -181,11 +182,12 @@ class InlineFormAutoSaveTest(zeit.edit.testing.SeleniumTestCase):
     def tearDown(self):
         # XXX plone.testing.zca.pushGlobalRegistry() doesn't work,
         # the view is not found.
-        zope.component.getSiteManager().unregisterAdapter(
-            required=(zeit.cms.content.interfaces.ICommonMetadata,
-                      zeit.cms.browser.interfaces.ICMSLayer),
-            provided=zope.interface.Interface,
-            name='autosave-edit')
+        with zeit.cms.testing.site(None):
+            zope.component.getSiteManager().unregisterAdapter(
+                required=(zeit.cms.content.interfaces.ICommonMetadata,
+                          zeit.cms.browser.interfaces.ICMSLayer),
+                provided=zope.interface.Interface,
+                name='autosave-edit')
         super(InlineFormAutoSaveTest, self).tearDown()
 
     def test_submits_form_on_focusout(self):
