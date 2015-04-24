@@ -485,12 +485,16 @@ margin-top: 4px;
     color: black;
 }
 
+/* XXX center these vertically with manual margin-top */
 .type-centerpage-2009 .fieldname-count label {
-  margin-top: 2px; /* XXX center vertically */
+  margin-top: 2px;
   margin-left: 4em;
 }
+.type-centerpage-2009 .fieldname-count .error {
+  margin-top: 2px;
+}
 .type-centerpage-2009 .fieldname-count input {
-  margin-top: -1px; /* XXX center vertically */
+  margin-top: -1px;
 }
 
 .type-centerpage-2009 .fieldname-automatic .widget,
