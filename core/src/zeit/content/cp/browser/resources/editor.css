@@ -447,6 +447,21 @@ margin-top: 4px;
   float: left;
 }
 
+.type-centerpage-2009 .fieldname-automatic input[type=checkbox] {
+  display: none;
+}
+
+.type-centerpage-2009 .fieldname-automatic input[type=checkbox] + .checkbox {
+  background-image: url('autopilot-off.png');
+  background-repeat: no-repeat;
+  padding-left: 73px;
+  padding-bottom: 18px;
+}
+
+.type-centerpage-2009 .fieldname-automatic input[type=checkbox]:checked + .checkbox {
+  background-image: url('autopilot-on.png');
+}
+
 .type-centerpage-2009 .fieldname-automatic_type {
   clear: left;
 }
