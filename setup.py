@@ -22,6 +22,7 @@ setup(
         'zeit.calendar',
         'zeit.cms>=2.43.0.dev0',
         'zeit.content.article',
+        'zeit.content.cp >= 2.10.0.dev0',
         'zeit.content.image>=2.0.0.dev0',
         'zeit.content.link',
         'zeit.content.quiz',
