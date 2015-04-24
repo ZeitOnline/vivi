@@ -216,7 +216,8 @@
   margin: 1em;
 }
 
-.block.type-teaser > .block-inner {
+.block.type-teaser > .block-inner,
+.block.type-auto-teaser > .block-inner {
   overflow: hidden;
 }
 
