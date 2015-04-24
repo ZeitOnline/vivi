@@ -306,17 +306,6 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementNotPresent('css=#feature #informatives')
         s.waitForElementPresent('css=#teaser-mosaic #informatives')
 
-    def test_move_area_onto_body_creates_region_with_area(self):
-        s = self.selenium
-        s.assertElementPresent('css=#feature #informatives')
-        s.dragAndDropToObject(
-            'css=#feature #informatives .dragger',
-            'css=#body .landing-zone.action-cp-region-module-movable',
-            '10,10')
-        s.waitForElementNotPresent('css=#feature #informatives')
-        # inserted area on top, thus created region is first region
-        s.assertElementPresent('css=#body > .type-region #informatives')
-
     def test_move_area_inside_region_to_change_order(self):
         selector = css_path('#feature > .block-inner > .type-area')
         path = 'xpath=' + selector + '[{pos}]@id'
@@ -369,7 +358,6 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
 
         """
         self.test_move_block_between_areas()
-        self.test_move_area_onto_body_creates_region_with_area()
         self.test_move_block_inside_area_to_change_order()
 
 

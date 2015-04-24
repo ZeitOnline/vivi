@@ -77,14 +77,6 @@ class AreaTest(
         self.selenium.dragAndDropToObject(
             module, selector, '10,10')
 
-    def test_add_area_in_body_creates_region_with_nested_area(self):
-        s = self.selenium
-        s.assertCssCount('css=.type-region', 2)
-        s.assertCssCount('css=.type-area', 2)
-        self.make_one(parent_selector='#body')
-        s.waitForCssCount('css=.type-region', 3)
-        s.waitForCssCount('css=.type-area', 3)
-
 
 class ElementBrowserTestHelper(object):
 

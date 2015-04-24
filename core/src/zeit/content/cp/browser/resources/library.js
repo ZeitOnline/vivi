@@ -58,7 +58,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
     zeit.edit.drop.registerHandler({
         accept: ['body-module'],
         activated_by: 'action-cp-body-module-droppable',
-        url_attribute: 'cms:create-region-url',
+        url_attribute: 'cms:create-block-url',
         query_arguments: function(draggable) {
             return {'block_type': draggable.getAttribute('cms:block_type'),
                     'block_params': draggable.getAttribute('cms:block_params')};
