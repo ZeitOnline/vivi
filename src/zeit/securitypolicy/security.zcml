@@ -163,6 +163,14 @@
     role="zeit.Producer"
     permission="zeit.content.cp.EditAutomatic"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.CreateArea"
+    />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.MoveArea"
+    />
 
 
   <!-- CvD grants -->
