@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Apr 24 13:29:09 2015\n"
-"PO-Revision-Date: 2015-04-24 13:31+0100\n"
+"PO-Revision-Date: 2015-04-24 13:34+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -367,16 +367,15 @@ msgstr ""
 
 #: zeit/cms/application.zcml:51
 msgid "Menu of objects to be added to site management folders"
-msgstr ""
+msgstr "Menu of objects to be added to site management folders"
 
 #: zeit/cms/application.zcml:56
-#, fuzzy
 msgid "Add Registration"
-msgstr "Registrations"
+msgstr "Registrierung hinzufügen"
 
 #: zeit/cms/application.zcml:56
 msgid "Menu of addable configuration objects"
-msgstr ""
+msgstr "Menu of addable configuration objects"
 
 #: zeit/cms/asset/browser/form.py:16 zeit/cms/asset/interfaces.py:26
 #: zeit/content/article/edit/browser/form.py:179
