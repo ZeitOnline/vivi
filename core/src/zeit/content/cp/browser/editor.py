@@ -16,7 +16,7 @@ class Editor(zeit.edit.browser.editor.Editor):
 
     @property
     def form_css_class(self):
-        if not self.has_permission('zeit.content.cp.CreateArea'):
+        if not self.has_permission('zeit.content.cp.EditArea'):
             return 'create-area-forbidden'
 
     def has_permission(self, permission):

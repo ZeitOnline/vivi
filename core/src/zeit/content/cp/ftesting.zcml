@@ -31,11 +31,7 @@
   <!-- Allow test user to create and move areas -->
   <grant
     principal="zope.Authenticated"
-    permission="zeit.content.cp.CreateArea"
-    />
-  <grant
-    principal="zope.Authenticated"
-    permission="zeit.content.cp.MoveArea"
+    permission="zeit.content.cp.EditArea"
     />
 
 </configure>

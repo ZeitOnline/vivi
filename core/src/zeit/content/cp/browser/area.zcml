@@ -286,7 +286,7 @@
       manager="zeit.edit.interfaces.IEditBarViewletManager"
       name="drag"
       template="layout.block.drag.pt"
-      permission="zeit.content.cp.MoveArea"
+      permission="zeit.content.cp.EditArea"
       weight="1000"
       />
 
