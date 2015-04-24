@@ -40,6 +40,11 @@ Resource('teaser.js', depends=[
 ])
 
 
+Resource('area.js', depends=[
+    zeit.cms.browser.resources.base,
+])
+
+
 class RawCSS(object):
 
     def __call__(self):

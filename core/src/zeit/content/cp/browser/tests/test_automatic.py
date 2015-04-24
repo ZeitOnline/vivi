@@ -122,3 +122,23 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.assertCssCount('css=.block-automatic-not-possible', 1)
         sel.assertCssCount('css=.type-teaser', 1)
         sel.assertCssCount('css=.type-auto-teaser', 0)
+
+    def test_form_shows_widgets_according_to_type(self):
+        sel = self.selenium
+        sel.click('css=.block.type-area .edit-link')
+        sel.click('//a[@href="tab-2"]')
+        sel.waitForElementPresent('id=form.automatic_type')
+
+        sel.assertNotVisible('css=.fieldname-referenced_cp')
+        sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
+        sel.assertVisible('css=.fieldname-referenced_cp')
+
+    def test_clicking_on_image_toggles_checkbox(self):
+        sel = self.selenium
+        sel.click('css=.block.type-area .edit-link')
+        sel.click('//a[@href="tab-2"]')
+        sel.waitForElementPresent('id=form.automatic_type')
+
+        sel.assertNotChecked('id=form.automatic')
+        sel.click('css=.fieldname-automatic .checkbox')
+        sel.assertChecked('id=form.automatic')

@@ -287,6 +287,10 @@ class AutomaticAreaTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     def __init__(self):
         self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
 
+    def getToken(self, value):
+        # JS needs to use these values, don't MD5 them.
+        return value
+
     values = (u'centerpage', u'channel', u'query')
 
 
