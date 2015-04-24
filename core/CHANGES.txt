@@ -12,6 +12,10 @@ zeit.cms changes
 
 - Internal: set site and create interaction in setup of selenium tests, too.
 
+- Add append method to Feed. (DEV-745)
+
+- Add id to TabViews, so they can be manipulated using CSS. (DEV-746)
+
 
 2.43.1 (2015-04-17)
 -------------------

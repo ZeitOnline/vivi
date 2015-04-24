@@ -67,7 +67,7 @@ zeit.cms.Tab = gocept.Class.extend({
         var self = this;
         self.tabs = parent;
         self.tab_element = self.tabs.tabs_element.appendChild(
-            LI({},
+            LI({id: self.id + '-tab'},
                 A({href: self.id}, self.title)));
         self.container = self.tabs.container.appendChild(
             DIV({id: self.id, 'class': 'tab-content'}));
