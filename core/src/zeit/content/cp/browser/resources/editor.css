@@ -443,7 +443,12 @@ margin-top: 4px;
   opacity: 0.4;
 }
 
-.type-centerpage-2009 .fieldname-automatic, .type-centerpage-2009 .fieldname-count {
+.type-centerpage-2009 .fieldname-automatic_type {
+    margin-bottom: 1em;
+}
+
+.type-centerpage-2009 .fieldname-automatic,
+.type-centerpage-2009 .fieldname-count {
   float: left;
 }
 
@@ -462,7 +467,7 @@ margin-top: 4px;
   background-image: url('autopilot-on.png');
 }
 
-.type-centerpage-2009 .fieldname-automatic_type {
+.type-centerpage-2009 .fieldname-hide_dupes {
   clear: left;
 }
 
@@ -476,11 +481,21 @@ margin-top: 4px;
 }
 
 .type-centerpage-2009 .fieldname-count label {
-  margin-top: 9px; /* XXX center vertically */
+  margin-top: 2px; /* XXX center vertically */
   margin-left: 4em;
 }
-.location-repository.type-centerpage-2009 .fieldname-count .widget {
-  margin-top: 7px; /* XXX center vertically */
+.type-centerpage-2009 .fieldname-count input {
+  margin-top: -1px; /* XXX center vertically */
+}
+
+.type-centerpage-2009 .fieldname-automatic .widget,
+.type-centerpage-2009 .fieldname-count .widget {
+  margin-bottom: 0;
+}
+.type-centerpage-2009 .fieldname-automatic,
+.type-centerpage-2009 .fieldname-count,
+.type-centerpage-2009 .fieldname-hide_dupes {
+  padding: 0;
 }
 
 .type-centerpage-2009 .fieldname-query .combinationFieldWidget tr {
