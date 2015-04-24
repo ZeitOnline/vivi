@@ -108,6 +108,14 @@ zeit.edit.TabbedLightBoxForm = zeit.edit.LightBoxForm.extend({
             }
             i = i + 1;
         });
+    },
+
+    replace_content: function(result) {
+        // Don't replace the whole lightbox with the form result, but only the
+        // <form>. This works because self.form is updated on each tab load.
+        var self = this;
+        self.form.innerHTML = result.responseText;
+        return result;
     }
 
 });
