@@ -139,6 +139,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             teasers = self._query_solr(self.raw_query)
         elif self.automatic_type == 'centerpage':
             teasers = self._query_centerpage()
+        else:
+            return values
 
         result = []
         for block in values:
