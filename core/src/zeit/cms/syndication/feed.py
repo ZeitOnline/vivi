@@ -80,6 +80,9 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
         self.restorePinning(pin_map)
         self._p_changed = True
 
+    def append(self, content):
+        self.insert(len(list(self.keys())), content)
+
     def remove(self, content):
         if not isinstance(zope.proxy.removeAllProxies(content), FakeEntry):
             content = zeit.cms.interfaces.ICMSContent(content)
