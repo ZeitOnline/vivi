@@ -386,7 +386,8 @@ class ObjectWidgetMyDetails(zeit.cms.browser.view.Base):
 
 
 def setup_mydetails():
-    zope.configuration.xmlconfig.string("""\
+    with zeit.cms.testing.site(None):
+        zope.configuration.xmlconfig.string("""\
 <?xml version="1.0" encoding="UTF-8" ?>
 <configure
   package="zeit.cms.browser.tests"
@@ -407,11 +408,12 @@ def setup_mydetails():
 
 
 def teardown_mydetails():
-    zope.component.getSiteManager().unregisterAdapter(
-        required=(zeit.cms.interfaces.ICMSContent,
-                  zeit.cms.browser.interfaces.ICMSLayer),
-        provided=zope.interface.Interface,
-        name='mydetails')
+    with zeit.cms.testing.site(None):
+        zope.component.getSiteManager().unregisterAdapter(
+            required=(zeit.cms.interfaces.ICMSContent,
+                      zeit.cms.browser.interfaces.ICMSLayer),
+            provided=zope.interface.Interface,
+            name='mydetails')
 
 
 class ObjectWidgetDetailViews(zeit.cms.testing.SeleniumTestCase):
