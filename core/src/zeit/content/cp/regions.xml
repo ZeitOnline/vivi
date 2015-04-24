@@ -1,4 +1,6 @@
 <regions>
+  <region id="empty" title="Leer">
+  </region>
   <region id="lead" title="Aufmacherbereich">
     <area width="2/3"/>
     <area width="1/3"/>

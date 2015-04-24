@@ -51,7 +51,13 @@ class RegionTest(
     name = 'region'
 
     def make_one(self):
-        self.selenium.click('link=*Add region*')
+        selector = 'css=.action-cp-body-module-droppable'
+        module = self.get_module('body', 'Leer')
+        self.selenium.click(u'link=Struktur')
+        self.selenium.click(u'link=Regionen')
+        self.selenium.waitForElementPresent(module)
+        self.selenium.dragAndDropToObject(
+            module, selector, '10,10')
 
 
 class AreaTest(
@@ -119,7 +125,8 @@ class RegionBrowserTest(
 
     def make_one(self):
         self.browser.open(self.content_url)
-        self.browser.getLink('Add region').click()
+        self.browser.open(
+            'body/@@landing-zone-drop-module?block_type=region&order=top')
 
 
 class AreaBrowserTest(

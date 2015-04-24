@@ -338,9 +338,16 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         # create new regions since browser view of Jenkins is too small to move
         # existing regions with areas and blocks inside
         s.assertCssCount('css=.type-region', 2)
-        s.click('link=*Add region*')
+        selector = 'css=.action-cp-body-module-droppable'
+        module = self.get_module('body', 'Leer')
+        self.selenium.click(u'link=Struktur')
+        self.selenium.click(u'link=Regionen')
+        self.selenium.waitForElementPresent(module)
+        self.selenium.dragAndDropToObject(
+            module, selector, '10,10')
         s.waitForCssCount('css=.type-region', 3)
-        s.click('link=*Add region*')
+        self.selenium.dragAndDropToObject(
+            module, selector, '10,10')
         s.waitForCssCount('css=.type-region', 4)
 
         region1 = s.getAttribute(path.format(pos=1))
