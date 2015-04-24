@@ -274,7 +274,7 @@
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="delete"
     template="layout.area.delete.pt"
-    permission="zeit.EditContent"
+    permission="zeit.content.cp.EditArea"
     weight="10"
     />
 
