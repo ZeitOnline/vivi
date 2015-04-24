@@ -18,15 +18,14 @@
 
   <include package="zeit.content.video" />
 
-  <!-- Allow test user to edit properties of automtic areas -->
+  <!-- Allow test user to edit properties of automatic areas -->
   <grant
-   principal="zope.Authenticated"
-   permission="zeit.content.cp.ViewAutomatic"
-
-   />
- <grant
-   principal="zope.Authenticated"
-   permission="zeit.content.cp.EditAutomatic"
-   />
+    principal="zope.Authenticated"
+    permission="zeit.content.cp.ViewAutomatic"
+    />
+  <grant
+    principal="zope.Authenticated"
+    permission="zeit.content.cp.EditAutomatic"
+    />
 
 </configure>
