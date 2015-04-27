@@ -260,17 +260,12 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
             self.cp['feature'].create_item('area'))
         self.repository['cp'] = self.cp
 
-        cp_with_teaser = zeit.content.cp.centerpage.CenterPage()
-        self.repository['t1'] = TestContentType()
-        self.repository['t2'] = TestContentType()
-        self.repository['t3'] = TestContentType()
-        cp_with_teaser['lead'].create_item('teaser').insert(
-            0, self.repository['t1'])
-        cp_with_teaser['lead'].create_item('teaser').insert(
-            1, self.repository['t2'])
-        cp_with_teaser['lead'].create_item('teaser').insert(
-            2, self.repository['t3'])
-        self.repository['cp_with_teaser'] = cp_with_teaser
+        t1 = self.create_content('t1', 't1')
+        t2 = self.create_content('t2', 't2')
+        t3 = self.create_content('t3', 't3')
+        cp_with_teaser = self.create_and_checkout_centerpage(
+            name='cp_with_teaser', contents=[t1, t2, t3])
+        zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
 
         self.area.referenced_cp = self.repository['cp_with_teaser']
         self.area.count = 3
