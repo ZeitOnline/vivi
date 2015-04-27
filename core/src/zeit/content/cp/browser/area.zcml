@@ -241,8 +241,8 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
-    name="width"
-    template="layout.area.width.pt"
+    name="kind"
+    template="layout.area.kind.pt"
     permission="zeit.EditContent"
     weight="6"
     />

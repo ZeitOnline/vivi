@@ -28,7 +28,7 @@ class BodyLandingZone(zeit.edit.browser.landing.LandingZone):
         super(BodyLandingZone, self).initialize_block()
         for config in self.areas:
             area = self.block.create_item('area')
-            area.width = config['width']
+            area.kind = config['kind']
 
 
 class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):

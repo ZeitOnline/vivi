@@ -70,7 +70,7 @@
   width: auto;
 }
 
-.edit-bar > .title, .edit-bar > .width {
+.edit-bar > .title, .edit-bar > .kind {
   float: left;
   font-size: inherit;
   font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;

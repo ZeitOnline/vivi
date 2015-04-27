@@ -185,10 +185,10 @@ def hex_literal(value):
         return True
 
 
-class AreaWidthSource(zeit.cms.content.sources.XMLSource):
+class AreaKindSource(zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
-    config_url = 'area-width-source'
+    config_url = 'area-kind-source'
     attribute = 'id'
 
 
@@ -208,8 +208,8 @@ class OtherAreaSource(
     def getTitle(self, context, value):
         # XXX Hard-code language, since we don't have a request here.
         return zope.i18n.translate(
-            _("${width} area ${title}", mapping=dict(
-                width=value.width, title=value.title or _("no title"))),
+            _("${kind} area ${title}", mapping=dict(
+                kind=value.kind, title=value.title or _("no title"))),
             target_language='de')
 
     def getToken(self, context, value):
@@ -232,11 +232,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         source=zeit.content.cp.layout.AreaLayoutSource(),
         default=zeit.content.cp.layout.DEFAULT_AREA_LAYOUT)
 
-    width = zope.schema.Choice(
-        title=_("Width"),
-        source=AreaWidthSource())
-
-    width_fraction = zope.interface.Attribute('Width as a fraction.Fraction')
+    kind = zope.schema.Choice(
+        title=_("Kind"),
+        source=AreaKindSource())
 
     supertitle = zope.schema.TextLine(
         title=_("Supertitle"),

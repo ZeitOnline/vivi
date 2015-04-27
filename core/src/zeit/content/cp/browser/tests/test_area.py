@@ -70,7 +70,7 @@ class AreaTest(
         selector = 'css={} .action-cp-region-module-droppable'.format(
             parent_selector)
 
-        module = self.get_module('region', '1/1')
+        module = self.get_module('region', 'single')
         self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Flächen')
         self.selenium.waitForElementPresent(module)
@@ -157,13 +157,13 @@ class TooltipFixture(object):
 
             first = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
             with first.open('w') as file_:
-                file_.write('1/3')
-            self.repository['data']['cp-area-schemas']['1_3.svg'] = first
+                file_.write('minor')
+            self.repository['data']['cp-area-schemas']['minor.svg'] = first
 
             second = zeit.cms.repository.file.LocalFile(mimeType='text/plain')
             with second.open('w') as file_:
-                file_.write('2/3')
-            self.repository['data']['cp-area-schemas']['2_3.svg'] = second
+                file_.write('major')
+            self.repository['data']['cp-area-schemas']['major.svg'] = second
 
 
 class TooltipBrowserTest(TooltipFixture, zeit.cms.testing.BrowserTestCase):
@@ -174,7 +174,7 @@ class TooltipBrowserTest(TooltipFixture, zeit.cms.testing.BrowserTestCase):
         self.browser.open(
             'http://localhost/++skin++vivi/repository/cp/@@checkout')
         self.browser.open('informatives/@@schematic-preview')
-        self.assertEllipsis('...2/3...active...1/3...', self.browser.contents)
+        self.assertEllipsis('...major...active...minor...', self.browser.contents)
 
 
 class TooltipSeleniumTest(
@@ -202,7 +202,7 @@ class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
         s.click('//a[@href="tab-3"]')
         s.waitForElementPresent('id=form.block_max')
         s.type('form.block_max', '1')
-        s.select('form.overflow_into', '1/3 area no title')
+        s.select('form.overflow_into', 'minor area no title')
         s.click(r'css=#tab-3 #form\.actions\.apply')
         s.waitForElementNotPresent('css=a.CloseButton')
 
@@ -219,9 +219,9 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
         s.click(u'link=Struktur')
         s.click(u'link=Regionen')
-        module = self.get_module('body', 'Halb/halb')
+        module = self.get_module('body', 'Duo')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module, 'css=.action-cp-body-module-droppable', '10,10')
         s.waitForCssCount('css=.type-region', 3)
-        s.assertText('css=.type-area .width', '1/2')
+        s.assertText('css=.type-area .kind', 'duo')

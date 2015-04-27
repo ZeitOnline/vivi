@@ -39,7 +39,7 @@ class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
             'type': 'area',
             'title': area_config.title,
             'library_name': self.library_name,
-            'params': {'width': area_config.width}
+            'params': {'kind': area_config.kind}
         } for area_config in zeit.content.cp.layout.AREA_CONFIGS(self.context)]
 
 

@@ -96,8 +96,8 @@ class SchematicPreview(object):
         return region.values()
 
     def preview(self, area):
-        content = zeit.cms.interfaces.ICMSContent(self.prefix.format(
-            area.width.replace('/', '_')))
+        content = zeit.cms.interfaces.ICMSContent(
+            self.prefix.format(area.kind))
         return content.open().read()
 
     def css_class(self, area):

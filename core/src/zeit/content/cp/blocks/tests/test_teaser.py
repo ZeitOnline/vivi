@@ -156,7 +156,7 @@ class TestDefaultLayout(zeit.content.cp.testing.FunctionalTestCase):
 
     def test_default_layout_is_set_for_new_teaser(self):
         area = self.cp['feature'].create_item('area')
-        area.width = '1/2'
+        area.kind = 'duo'
         teaser = area.create_item('teaser')
         self.assertEqual(teaser.layout.id, 'two-side-by-side')
         self.assertEllipsis(

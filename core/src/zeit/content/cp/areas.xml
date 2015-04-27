@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <areas>
-    <area id="area-1/1" width="1/1">1/1</area>
-    <area id="area-1/2" width="1/2">1/2</area>
-    <area id="area-1/3" width="1/3">1/3</area>
+    <area id="area-single" kind="single">single</area>
+    <area id="area-duo" kind="duo">duo</area>
+    <area id="area-minor" kind="minor">minor</area>
 </areas>

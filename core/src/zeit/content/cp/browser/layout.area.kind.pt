@@ -1,0 +1,1 @@
+<span class="kind" tal:content="context/kind" />

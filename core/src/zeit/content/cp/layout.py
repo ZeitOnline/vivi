@@ -16,7 +16,7 @@ class ITeaserBlockLayout(zope.interface.Interface):
         max=2,
         default=1)
     areas = zope.schema.Set(
-        title=u'Widths of areas where this layout is allowed')
+        title=u'Kinds of areas where this layout is allowed')
     default = zope.schema.Bool(
         title=u"True if this is the default for an area")
 
@@ -73,10 +73,10 @@ class AreaLayout(object):
 
 class AreaConfig(object):
 
-    def __init__(self, id, title, width):
+    def __init__(self, id, title, kind):
         self.id = id
         self.title = title
-        self.width = width
+        self.kind = kind
 
     def __eq__(self, other):
         return zope.security.proxy.isinstance(
@@ -135,7 +135,7 @@ class TeaserBlockLayoutSource(
         if context is None:
             return False
         area = zeit.content.cp.interfaces.IArea(context)
-        return area.width in node.get('default', '')
+        return area.kind in node.get('default', '')
 
     def _get_title_for(self, node):
         return unicode(node.get('title'))
@@ -144,7 +144,7 @@ class TeaserBlockLayoutSource(
         if context is None:
             return True
         area = zeit.content.cp.interfaces.IArea(context)
-        return area.width in value.areas
+        return area.kind in value.areas
 
 TEASERBLOCK_LAYOUTS = TeaserBlockLayoutSource()
 
@@ -185,7 +185,7 @@ class RegionConfigSource(
             result.append(RegionConfig(
                 node.get('id'),
                 self._get_title_for(node),
-                [{'width': x.get('width')} for x in node.iterchildren('area')]
+                [{'kind': x.get('kind')} for x in node.iterchildren('area')]
             ))
         return result
 
@@ -210,7 +210,7 @@ class AreaConfigSource(
             result.append(AreaConfig(
                 node.get('id'),
                 self._get_title_for(node),
-                node.get('width')))
+                node.get('kind')))
         return result
 
 AREA_CONFIGS = AreaConfigSource()

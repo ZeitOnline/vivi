@@ -1,15 +1,15 @@
 <regions>
   <region id="empty" title="Leer">
   </region>
-  <region id="lead" title="Aufmacherbereich">
-    <area width="2/3"/>
-    <area width="1/3"/>
+  <region id="multi" title="Multi">
+    <area kind="major"/>
+    <area kind="minor"/>
   </region>
-  <region id="half" title="Halb/halb">
-    <area width="1/2"/>
-    <area width="1/2"/>
+  <region id="duo" title="Duo">
+    <area kind="duo"/>
+    <area kind="duo"/>
   </region>
-  <region id="parquet" title="Parkettzeile">
-    <area width="1/1"/>
+  <region id="solo" title="Solo">
+    <area kind="single"/>
   </region>
 </regions>

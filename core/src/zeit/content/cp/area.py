@@ -73,8 +73,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     _layout = ObjectPathAttributeProperty(
         '.', 'module')
-    _width = ObjectPathAttributeProperty(
-        '.', 'width')
+    _kind = ObjectPathAttributeProperty(
+        '.', 'kind')
 
     supertitle = ObjectPathAttributeProperty(
         '.', 'supertitle')
@@ -167,26 +167,21 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self._layout = value.id
 
     @property
-    def width(self):
+    def kind(self):
         # XXX since we hard code the default values for backward compatibility,
-        # this also makes it mandatory to have according rules in the width
+        # this also makes it mandatory to have according rules in the kind
         # source definition
         if self.is_teaserbar:
-            return '1/1'
+            return 'single'
         if self.__name__ == 'informatives':
-            return '1/3'
+            return 'minor'
         if self.__name__ == 'lead':
-            return '2/3'
-        return self._width or '1/1'
+            return 'major'
+        return self._kind or 'single'
 
-    @width.setter
-    def width(self, value):
-        self._width = value
-
-    @property
-    def width_fraction(self):
-        numerator, denominator = [int(x) for x in self.width.split('/')]
-        return fractions.Fraction(numerator, denominator)
+    @kind.setter
+    def kind(self, value):
+        self._kind = value
 
     @property
     def overflow_into(self):
