@@ -23,7 +23,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.open('contents')
         b.getLink('Edit block automatic').click()
         b.getControl('Amount of teasers').value = '5'
-        b.getControl('automatic', index=0).selected = True
+        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
+        b.getControl(name='form.automatic').displayValue = ['automatic']
         b.getControl('automatic-area-type', index=0).displayValue = ['query']
         b.getControl('Raw query').value = 'foo'
         b.getControl('Apply').click()
@@ -50,7 +51,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.open('contents')
         b.getLink('Edit block automatic').click()
         b.getControl('Amount of teasers').value = '3'
-        b.getControl('automatic', index=0).selected = True
+        # XXX Why does zope.testbrowser not recognize this as a Checkbox?
+        b.getControl(name='form.automatic').displayValue = ['automatic']
         b.getControl('automatic-area-type', index=0).displayValue = [
             'centerpage']
         b.getControl(name='form.referenced_cp').value = 'http://xml.zeit.de/cp'
