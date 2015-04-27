@@ -49,6 +49,11 @@
 }
 
 
+.edit-bar > a.automatic-link {
+  display: none;
+}
+
+
 .edit-bar > .edit-teaser-link {
   background-image: url('edit-teaserlist-contents.png');
 }
