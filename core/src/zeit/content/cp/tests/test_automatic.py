@@ -301,3 +301,70 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         with self.assertNothingRaised():
             interface = zeit.content.cp.interfaces.IAutomaticArea
             interface.validateInvariants(self.area)
+
+
+class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(HideDupesTest, self).setUp()
+
+        t1 = self.create_content('t1', 't1')
+        t2 = self.create_content('t2', 't2')
+        t3 = self.create_content('t3', 't3')
+        cp_with_teaser = self.create_and_checkout_centerpage(
+            name='cp_with_teaser', contents=[t1, t2, t3])
+        zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
+
+        self.cp = self.create_and_checkout_centerpage()
+        self.area = self.create_automatic_area(self.cp)
+        self.area.referenced_cp = self.repository['cp_with_teaser']
+
+    def create_automatic_area(self, cp, count=3, type='centerpage'):
+        area = zeit.content.cp.interfaces.IAutomaticArea(
+            cp['feature'].create_item('area'))
+        area.count = count
+        area.automatic_type = type
+        area.automatic = True
+        return area
+
+    def test_manual_teaser_already_above_current_area_is_not_shown_again(self):
+        self.cp['feature']['lead'].create_item('teaser').append(
+            self.repository['t1'])
+        self.assertEqual([
+            'http://xml.zeit.de/t2',
+            'http://xml.zeit.de/t3'
+        ], [list(x)[0].uniqueId for x in self.area.values()])
+
+    def test_skipping_duplicate_teaser_retrieves_next_query_result(self):
+        self.cp['feature']['lead'].create_item('teaser').append(
+            self.repository['t1'])
+        self.area.count = 1
+        self.assertEqual('http://xml.zeit.de/t2',
+                         list(self.area.values()[0])[0].uniqueId)
+
+    def test_hide_dupes_is_False_then_duplicates_are_not_skipped(self):
+        self.cp['feature']['lead'].create_item('teaser').append(
+            self.repository['t1'])
+        self.area.hide_dupes = False
+        self.assertEqual('http://xml.zeit.de/t1',
+                         list(self.area.values()[0])[0].uniqueId)
+
+    def test_already_rendered_area_results_are_cached(self):
+        a2 = self.create_automatic_area(self.cp)
+        a2.referenced_cp = self.repository['cp_with_teaser']
+        a3 = self.create_automatic_area(self.cp)
+        a3.referenced_cp = self.repository['cp_with_teaser']
+
+        self.call_count = {}
+        real_values = zeit.content.cp.automatic.AutomaticArea.values
+
+        def values_with_count(area):
+            self.call_count.setdefault(area.context, 0)
+            self.call_count[area.context] += 1
+            return real_values(area)
+
+        with mock.patch('zeit.content.cp.automatic.AutomaticArea.values',
+                        values_with_count):
+            a2.values()
+            a3.values()
+        self.assertEqual(1, self.call_count[self.area.context])

@@ -132,16 +132,21 @@ def cms_content_iter(context):
 
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)
 @grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
-def extract_teasers(context):
+def extract_teasers_from_cp(context):
     for region in context.values():
         for area in region.values():
-            for teaser in zeit.content.cp.interfaces.IAutomaticArea(
-                    area).values():
-                if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(
-                        teaser):
-                    continue
-                for content in list(teaser):
-                    yield content
+            for teaser in zeit.content.cp.interfaces.ITeaseredContent(area):
+                yield teaser
+
+
+@grok.adapter(zeit.content.cp.interfaces.IArea)
+@grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
+def extract_teasers_from_area(context):
+    for teaser in zeit.content.cp.interfaces.IAutomaticArea(context).values():
+        if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(teaser):
+            continue
+        for content in list(teaser):
+            yield content
 
 
 # XXX Does anyone actually use this, pulling an IFeed into a CP via autopilot?

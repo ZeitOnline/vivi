@@ -108,6 +108,10 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
     def updateMetadata(content):
         """Update the metadata of the given content object."""
 
+    def is_teaser_present_above(current_area, content):
+        """Returns true if the given content object is contained in a
+        ITeaserBlock module above the given area."""
+
 
 class ICP2009(ICenterPage):
     """Marker interfaces for CPs edited by the old 2.x CP-Editor branch."""

@@ -34,6 +34,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
     raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.raw_query', zeit.content.cp.interfaces.IAutomaticArea['raw_query'])
 
+    MINIMUM_COUNT_TO_REPLACE_DUPLICATES = 5
+
     def __init__(self, context):
         self.context = context
         self.xml = self.context.xml
@@ -69,6 +71,10 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 del self.context[key]
             for i in range(self.count):
                 self.placeholder_factory()
+
+    @property
+    def count_to_replace_duplicates(self):
+        return max(self.MINIMUM_COUNT_TO_REPLACE_DUPLICATES, 2 * self.count)
 
     @property
     def placeholder_factory(self):
@@ -147,19 +153,19 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             if not IAutomaticTeaserBlock.providedBy(block):
                 result.append(block)
                 continue
-            try:
-                # This assumes that the *first* block always has layout
-                # 'leader', since otherwise the first result that
-                # may_be_leader might be given to a non-leader block.
-                if block.layout.id == 'leader':
-                    teaser = self._extract_leader(teasers)
-                    if teaser is None:
-                        teaser = self._extract_newest(teasers)
-                        block.change_layout(
-                            zeit.content.cp.layout.get_layout('buttons'))
-                else:
+            # This assumes that the *first* block always has layout
+            # 'leader', since otherwise the first result that
+            # may_be_leader might be given to a non-leader block.
+            if block.layout.id == 'leader':
+                teaser = self._extract_newest(
+                    teasers, predicate=lambda x: x.lead_candidate)
+                if teaser is None:
                     teaser = self._extract_newest(teasers)
-            except IndexError:
+                    block.change_layout(
+                        zeit.content.cp.layout.get_layout('buttons'))
+            else:
+                teaser = self._extract_newest(teasers)
+            if teaser is None:
                 continue
             block.insert(0, teaser)
             result.append(block)
@@ -169,13 +175,14 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
     def _query_solr(self, query):
         return [zeit.cms.interfaces.ICMSContent(x['uniqueId'])
                 for x in zeit.find.search.search(
-                query, sort_order='date-first-released desc', rows=self.count)]
+                query, sort_order='date-first-released desc',
+                rows=self.count_to_replace_duplicates)]
 
     def _query_centerpage(self):
         teasers = zeit.content.cp.interfaces.ITeaseredContent(
             self.referenced_cp, iter([]))
         result = []
-        for i in range(self.count):
+        for i in range(self.count_to_replace_duplicates):
             try:
                 result.append(teasers.next())
             except StopIteration:
@@ -183,15 +190,23 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 break
         return result
 
-    def _extract_leader(self, solr_result):
+    def _extract_newest(self, solr_result, predicate=lambda x: True):
+        """Remove the first object from solr_result for which predicate returns
+        True; thus, the default predicate means: no filtering.
+        """
+        result = None
+        pop = []
         for i, item in enumerate(solr_result):
-            if item.lead_candidate:
-                solr_result.pop(i)
-                return item
-        return None
-
-    def _extract_newest(self, solr_result):
-        return solr_result.pop(0)
+            if predicate(item):
+                pop.append(item)
+                if self.hide_dupes and zeit.content.cp.interfaces.ICenterPage(
+                        self).is_teaser_present_above(self.context, item):
+                    continue
+                result = item
+                break
+        for item in pop:
+            solr_result.remove(item)
+        return result
 
     def _materialize_filled_values(self):
         order = self.context.keys()

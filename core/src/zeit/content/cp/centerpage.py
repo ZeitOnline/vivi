@@ -4,6 +4,7 @@ from zeit.connector.search import SearchVar
 from zeit.content.cp.interfaces import TEASER_ID_NAMESPACE
 import collections
 import copy
+import gocept.cache.property
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import itertools
@@ -189,6 +190,24 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
     def type(self, value):
         self._type_xml = value
         self._type_dav = value
+
+    _area_teasered_content = gocept.cache.property.TransactionBoundCache(
+        '_v_area_teasered_content', dict)
+
+    def is_teaser_present_above(self, current_area, content):
+        return content in self._teasered_content_above(current_area)
+
+    def _teasered_content_above(self, current_area):
+        seen = set()
+        for region in self.body.values():
+            for area in region.values():
+                if area == current_area:
+                    return seen
+                if area not in self._area_teasered_content:
+                    self._area_teasered_content[area] = set(
+                        zeit.content.cp.interfaces.ITeaseredContent(area))
+                seen.update(self._area_teasered_content[area])
+        return seen
 
 
 class CenterPageType(zeit.cms.type.XMLContentTypeDeclaration):

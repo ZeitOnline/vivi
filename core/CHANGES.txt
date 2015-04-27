@@ -9,6 +9,8 @@ zeit.content.cp changes
 
 - Add draggable library elements for preconfigured regions (DEV-746).
 
+- Prevent display of duplicate teasers in automatic regions (DEV-652).
+
 
 3.0.0b12 (2015-04-22)
 ---------------------
