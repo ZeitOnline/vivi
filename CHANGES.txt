@@ -4,7 +4,7 @@ zeit.push changes
 1.9.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Adapt parse.com payload for iOS apps (DEV-698).
 
 
 1.9.0 (2015-04-23)

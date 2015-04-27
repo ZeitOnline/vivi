@@ -115,9 +115,10 @@ class Connection(object):
             },
             'data': {
                 'aps': {
-                    'headline': kw.get('teaserTitle', ''),
-                    'alert-title': override_text or headline,
-                    'alert': kw.get('teaserText', title),
+                    'headline': kw.get('teaserSupertitle', ''),
+                    'alert-title': headline,
+                    'alert': override_text or kw.get('teaserTitle', title),
+                    'teaser': kw.get('teaserText', ''),
                     'url': self.add_tracking(url, channel_name, 'ios'),
                 }
             }
@@ -138,8 +139,8 @@ class Connection(object):
             },
             'data': {
                 'aps': {
-                    'alert-title': override_text or headline,
-                    'alert': title,
+                    'alert-title': headline,
+                    'alert': override_text or kw.get('teaserTitle', title),
                     'url': self.add_tracking(url, channel_name, 'ios'),
                 }
             }

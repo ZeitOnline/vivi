@@ -169,9 +169,10 @@ class ParametersTest(zeit.push.testing.TestCase):
             self.assertEqual(
                 'http://images.zeit.de/example', android['data']['imageUrl'])
             ios = push.call_args_list[1][0][0]
-            self.assertEqual('title', ios['data']['aps']['headline'])
+            self.assertEqual('super', ios['data']['aps']['headline'])
             self.assertEqual('ZEIT ONLINE', ios['data']['aps']['alert-title'])
-            self.assertEqual('teaser', ios['data']['aps']['alert'])
+            self.assertEqual('title', ios['data']['aps']['alert'])
+            self.assertEqual('teaser', ios['data']['aps']['teaser'])
             self.assertEqual(
                 'http://images.zeit.de/example',
                 ios['data']['aps']['imageUrl'])
@@ -186,7 +187,7 @@ class ParametersTest(zeit.push.testing.TestCase):
             android = push.call_args_list[0][0][0]
             self.assertEqual('mytext', android['data']['text'])
             ios = push.call_args_list[1][0][0]
-            self.assertEqual('mytext', ios['data']['aps']['alert-title'])
+            self.assertEqual('mytext', ios['data']['aps']['alert'])
 
 
 class PushNewsFlagTest(zeit.push.testing.TestCase):
