@@ -4,6 +4,8 @@ zeit.push changes
 1.9.1 (unreleased)
 ------------------
 
+- Make ``mobile_text`` required when ``mobile_enabled`` is set (DEV-704).
+
 - Adapt parse.com payload for iOS apps (DEV-698).
 
 

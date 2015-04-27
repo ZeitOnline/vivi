@@ -45,6 +45,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Enable Facebook', index=0).selected = True
         b.getControl('Enable Facebook Magazin').selected = True
         b.getControl('Enable mobile push').selected = True
+        b.getControl('Mobile title').value = 'mobile'
         b.getControl('Apply').click()
         article = self.get_article()
         push = zeit.push.interfaces.IPushMessages(article)
@@ -62,7 +63,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'facebook', 'enabled': True, 'account': 'fb-magazin'},
             push.message_config)
         self.assertIn(
-            {'type': 'parse', 'enabled': True, 'override_text': None,
+            {'type': 'parse', 'enabled': True, 'override_text': 'mobile',
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
             push.message_config)
 
@@ -96,7 +97,7 @@ class SocialFormTest(zeit.cms.testing.BrowserTestCase):
             {'type': 'facebook', 'enabled': False, 'account': 'fb-magazin'},
             push.message_config)
         self.assertIn(
-            {'type': 'parse', 'enabled': False, 'override_text': None,
+            {'type': 'parse', 'enabled': False, 'override_text': 'mobile',
              'channels': 'parse-channel-news'},
             push.message_config)
 

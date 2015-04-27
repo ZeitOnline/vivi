@@ -60,10 +60,15 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         super(SocialBase, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
         if self.request.form.get('%s.twitter_ressort_enabled' % self.prefix):
-            field = self.widgets['twitter_ressort'].context
-            cloned = field.bind(field.context)
-            cloned.required = True
-            self.widgets['twitter_ressort'].context = cloned
+            self._set_widget_required('twitter_ressort')
+        if self.request.form.get('%s.mobile_enabled' % self.prefix):
+            self._set_widget_required('mobile_text')
+
+    def _set_widget_required(self, name):
+        field = self.widgets[name].context
+        cloned = field.bind(field.context)
+        cloned.required = True
+        self.widgets[name].context = cloned
 
     def applyAccountData(self, object, data):
         zeit.push.interfaces.IPushMessages(object).message_config = [
