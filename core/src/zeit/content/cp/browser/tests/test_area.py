@@ -188,12 +188,12 @@ class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
         s.click('css=#lead .edit-bar .edit-link')
         # Wait for tab content to load, to be certain that the tabs have been
         # wired properly.
-        s.waitForElementPresent('css=.layout-chooser')
-        s.click('//a[@href="tab-3"]')
+        s.waitForElementPresent('css=.lightbox')
+        s.click('//a[@href="tab-2"]')
         s.waitForElementPresent('id=form.block_max')
         s.type('form.block_max', '1')
         s.select('form.overflow_into', 'minor area no title')
-        s.click(r'css=#tab-3 #form\.actions\.apply')
+        s.click(r'css=#tab-2 #form\.actions\.apply')
         s.waitForElementNotPresent('css=a.CloseButton')
 
         self.create_block('quiz', 'lead')

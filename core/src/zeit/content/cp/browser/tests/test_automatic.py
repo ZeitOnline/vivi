@@ -95,12 +95,11 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         # Configure first area, so it can be filled automatically
         sel.click('css=.block.type-area .edit-link')
         sel.waitForElementPresent('css=.lightbox')
-        sel.click('//a[@href="tab-2"]')
         sel.waitForElementPresent('id=form.automatic_type')
         sel.select('id=form.automatic_type', 'automatic-area-type-centerpage')
         sel.type('id=form.referenced_cp', 'http://xml.zeit.de/cp_with_teaser')
         sel.type('id=form.count', 1)
-        sel.click(r'css=#tab-2 #form\.actions\.apply')
+        sel.click(r'css=#tab-0 #form\.actions\.apply')
 
         # One area is inconfigured, the other could load content automatically
         sel.waitForCssCount('css=.block-automatic-off', 1)
@@ -128,7 +127,6 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
     def test_form_shows_widgets_according_to_type(self):
         sel = self.selenium
         sel.click('css=.block.type-area .edit-link')
-        sel.click('//a[@href="tab-2"]')
         sel.waitForElementPresent('id=form.automatic_type')
 
         sel.assertNotVisible('css=.fieldname-referenced_cp')
@@ -138,7 +136,6 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
     def test_clicking_on_image_toggles_checkbox(self):
         sel = self.selenium
         sel.click('css=.block.type-area .edit-link')
-        sel.click('//a[@href="tab-2"]')
         sel.waitForElementPresent('id=form.automatic_type')
 
         sel.assertNotChecked('id=form.automatic')
