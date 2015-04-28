@@ -65,7 +65,7 @@ Visit the syndication page again:
   <tbody>
     <tr>
       <td>
-        <input ... />
+        <input ... />...
       </td>
       <td>
         ...lock-open...
@@ -110,7 +110,7 @@ in the feed:
   <tbody>
     <tr>
       <td>
-        <input ... />
+        <input ... />...
       </td>
       <td>
         ...lock-open...
@@ -165,7 +165,7 @@ Locking information is also be displayed in the syndication manager:
   ...
     <tr>
       <td>
-        <input .../>
+        <input .../>...
       </td>
       <td>
         ...lock-closed-mylock...
@@ -619,7 +619,7 @@ The 'Politik' Feed is currently a syndication target:
 <tbody>
   <tr>
     <td>
-      <input ...  />
+      <input ...  />...
     </td>
     <td>
         ...lock-closed-mylock...
