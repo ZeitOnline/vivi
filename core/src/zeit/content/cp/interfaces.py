@@ -142,6 +142,13 @@ class IElement(zeit.edit.interfaces.IElement):
         default=True)
 
 
+class RegionKindSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'region-kind-source'
+    attribute = 'id'
+
+
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
 
     # Use a schema field so the security can declare it as writable,
@@ -160,6 +167,10 @@ class IReadRegion(zeit.edit.interfaces.IReadContainer):
     visible = zope.schema.Bool(
         title=_('Visible in frontend'),
         default=True)
+
+    kind = zope.schema.Choice(
+        title=_("Kind"),
+        source=RegionKindSource())
 
 
 class IWriteRegion(zeit.edit.interfaces.IWriteContainer):

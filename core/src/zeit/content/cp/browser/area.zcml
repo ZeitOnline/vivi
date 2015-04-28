@@ -110,6 +110,17 @@
     weight="10"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IRegion"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="kind"
+    template="layout.area.kind.pt"
+    permission="zeit.EditContent"
+    weight="6"
+    />
+
   <!-- Area -->
 
   <browser:page

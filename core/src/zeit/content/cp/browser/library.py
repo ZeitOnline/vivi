@@ -60,6 +60,9 @@ class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
             'type': 'region',
             'title': region_config.title,
             'library_name': self.library_name,
-            'params': {'areas': region_config.areas},
+            'params': {
+                'kind': region_config.kind,
+                'areas': region_config.areas,
+            },
         } for region_config in zeit.content.cp.layout.REGION_CONFIGS(
             self.context)]

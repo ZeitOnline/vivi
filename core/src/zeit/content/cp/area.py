@@ -27,6 +27,8 @@ class Region(zeit.content.cp.blocks.block.VisibleMixin,
 
     type = 'region'
 
+    kind = ObjectPathAttributeProperty('.', 'kind')
+
     title = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'title')
 
     @property

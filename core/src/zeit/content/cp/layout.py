@@ -48,9 +48,10 @@ class BlockLayout(object):
 
 class RegionConfig(object):
 
-    def __init__(self, id, title, areas):
+    def __init__(self, id, title, kind, areas):
         self.id = id
         self.title = title
+        self.kind = kind
         self.areas = areas
 
     def __eq__(self, other):
@@ -185,6 +186,7 @@ class RegionConfigSource(
             result.append(RegionConfig(
                 node.get('id'),
                 self._get_title_for(node),
+                node.get('kind'),
                 [{'kind': x.get('kind')} for x in node.iterchildren('area')]
             ))
         return result

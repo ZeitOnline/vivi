@@ -13,6 +13,8 @@ zeit.content.cp changes
 
 - Replace `width` of Areas with `kind`. (DEV-746)
 
+- Add `kind` property to Regions. (DEV-746)
+
 
 3.0.0b12 (2015-04-22)
 ---------------------
