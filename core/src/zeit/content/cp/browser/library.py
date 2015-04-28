@@ -35,7 +35,6 @@ class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
 
     def get_adapters(self):
         return [{
-            'name': area_config.id,
             'type': 'area',
             'title': area_config.title,
             'library_name': self.library_name,
@@ -56,7 +55,6 @@ class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
 
     def get_adapters(self):
         return [{
-            'name': region_config.id,
             'type': 'region',
             'title': region_config.title,
             'library_name': self.library_name,

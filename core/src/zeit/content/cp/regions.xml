@@ -1,15 +1,15 @@
 <regions>
-  <region id="region-empty" kind="empty" title="Leer">
+  <region kind="empty" title="Leer">
   </region>
-  <region id="region-multi" kind="multi" title="Multi">
+  <region kind="multi" title="Multi">
     <area kind="major"/>
     <area kind="minor"/>
   </region>
-  <region id="region-duo" kind="duo" title="Duo">
+  <region kind="duo" title="Duo">
     <area kind="duo"/>
     <area kind="duo"/>
   </region>
-  <region id="region-solo" kind="solo" title="Solo">
+  <region kind="solo" title="Solo">
     <area kind="single"/>
   </region>
 </regions>
