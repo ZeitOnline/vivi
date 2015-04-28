@@ -43,7 +43,15 @@ class LandingZone(zeit.edit.testing.FunctionalTestCase):
             self.landing_zone()
         self.assertEqual('Order must be specified!', e.exception.message)
 
-    def test_json_params_are_used_for_validation_before_creation(self):
+    def test_json_params_validate_schema_fields_before_creation(self):
+        self.request.form['order'] = 'top'
+        self.request.form['block_params'] = json.dumps({
+            "example_amount": "nonnumeric"})
+        with self.assertRaises(zope.interface.Invalid) as e:
+            self.landing_zone()
+        self.assertIn("WrongType(u'nonnumeric'", str(e.exception))
+
+    def test_json_params_validate_invariants_before_creation(self):
         self.request.form['order'] = 'top'
         self.request.form['block_params'] = json.dumps({"__name__": ""})
         with self.assertRaises(zope.interface.Invalid) as e:

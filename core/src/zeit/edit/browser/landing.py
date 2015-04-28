@@ -102,12 +102,18 @@ class LandingZone(ReloadContainerAction, OrderMixin):
         errors = []
         data = zeit.cms.browser.form.AttrDict(**self.block_params)
         data['__parent__'] = self.block_factory.context
+        for key, value in data.items():
+            field = schema[key]
+            try:
+                field.validate(value)
+            except zope.schema.interfaces.ValidationError, e:
+                errors.append(e)
         try:
             schema.validateInvariants(data, errors)
         except zope.interface.Invalid:
             pass
 
-        errors = [e for e in errors if not isinstance(e, NoInputData)]
+        errors.append([x for x in errors if not isinstance(x, NoInputData)])
         if errors:
             raise zope.interface.Invalid(errors)
 

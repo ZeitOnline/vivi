@@ -4,6 +4,7 @@ import zeit.cms.interfaces
 import zeit.edit.container
 import zeit.edit.interfaces
 import zope.interface
+import zope.schema
 
 
 class IContainer(zeit.edit.interfaces.IArea,
@@ -12,6 +13,8 @@ class IContainer(zeit.edit.interfaces.IArea,
 
 
 class IBlock(zeit.edit.interfaces.IBlock):
+
+    example_amount = zope.schema.Int()
 
     @zope.interface.invariant
     def check_name_is_not_empty(data):
