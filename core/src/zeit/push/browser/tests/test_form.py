@@ -163,7 +163,7 @@ class SocialAddFormTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('Title').value = 'Social content'
         b.getControl('Ressort', index=0).displayValue = ['Deutschland']
         b.getControl('Enable Twitter', index=0).selected = True
-        b.getControl('Add', index=0).click()
+        b.getControl(name='form.actions.add').click()
         with zeit.cms.testing.site(self.getRootFolder()):
             content = zeit.cms.interfaces.ICMSContent(
                 'http://xml.zeit.de/social')
