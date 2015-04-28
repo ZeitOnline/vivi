@@ -166,12 +166,7 @@
   <!-- Layout -->
   <class class=".layout.BlockLayout">
     <require
-      interface=".interfaces.ITeaserBlockLayout"
-      permission="zope.View" />
-  </class>
-  <class class=".layout.AreaLayout">
-    <require
-      interface=".interfaces.IAreaLayout"
+      interface=".layout.ITeaserBlockLayout"
       permission="zope.View" />
   </class>
 

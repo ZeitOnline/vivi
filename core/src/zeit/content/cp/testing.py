@@ -20,7 +20,6 @@ product_config = """
     block-layout-source file://{fixtures}/layout.xml
     area-config-source file://{fixtures}/areas.xml
     region-config-source file://{fixtures}/regions.xml
-    bar-layout-source file://{fixtures}/bar-layout.xml
     cp-extra-url file://{fixtures}/cpextra.xml
     cp-feed-max-items 200
     cp-types-url file://{fixtures}/cp-types.xml

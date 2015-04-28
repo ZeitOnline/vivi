@@ -1,9 +1,0 @@
-<layouts>
-  <!-- the default value is hard-coded in zeit.content.cp.layout -->
-  <!-- <layout id="normal">Ressort Teaser mit Teaserliste</layout> -->
-
-  <layout id="mr" blocks="2">Ad-Medium Rectangle</layout>
-  <layout id="dmr" blocks="1">Double Ad-Medium Rectangle</layout>
-  <layout id="parquet">Parkett (Teaser untereinander)</layout>
-  <layout id="parquet-break">Parkett-Unterbrecherleiste</layout>
-</layouts>

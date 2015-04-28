@@ -1,5 +1,4 @@
 from zeit.content.cp.i18n import MessageFactory as _
-from zeit.content.cp.layout import ITeaserBlockLayout, IAreaLayout
 import fractions
 import urlparse
 import zc.form.field
