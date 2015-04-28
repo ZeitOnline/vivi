@@ -1,7 +1,5 @@
 import transaction
 import zeit.cms.checkout.interfaces
-import zeit.content.cp.centerpage
-import zeit.content.cp.interfaces
 import zeit.content.cp.testing
 
 
@@ -17,8 +15,7 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         zeit.cms.checkout.interfaces.ICheckinManager(cp_with_teaser).checkin()
 
         self.cp = self.create_and_checkout_centerpage('cp')
-        self.area = zeit.content.cp.interfaces.IAutomaticArea(
-            self.cp['feature'].create_item('area'))
+        self.area = self.cp['feature'].create_item('area')
         self.area.referenced_cp = self.repository['cp_with_teaser']
         self.area.count = 1
         self.area.automatic = True

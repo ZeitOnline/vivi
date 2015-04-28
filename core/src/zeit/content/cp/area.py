@@ -1,8 +1,10 @@
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.cp.interfaces import IAutomaticTeaserBlock
 import gocept.lxml.interfaces
 import grokcore.component as grok
-import lxml
+import lxml.etree
+import lxml.objectify
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
@@ -71,6 +73,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IRegion,
         gocept.lxml.interfaces.IObjectified)
 
+    type = 'area'
+
     _kind = ObjectPathAttributeProperty(
         '.', 'kind')
 
@@ -94,7 +98,33 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _first_teaser_layout = ObjectPathAttributeProperty(
         '.', 'first_teaser_layout')
 
-    type = 'area'
+    _automatic = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'automatic',
+        zeit.content.cp.interfaces.IArea['automatic'])
+
+    automatic_type = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'automatic_type',
+        zeit.content.cp.interfaces.IArea['automatic_type'])
+
+    _count = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'count', zeit.content.cp.interfaces.IArea['count'])
+
+    referenced_cp = zeit.cms.content.property.SingleResource('.referenced_cp')
+
+    hide_dupes = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'hide-dupes', zeit.content.cp.interfaces.IArea[
+            'hide_dupes'])
+
+    raw_query = zeit.cms.content.property.ObjectPathProperty(
+        '.raw_query', zeit.content.cp.interfaces.IArea['raw_query'])
+
+    MINIMUM_COUNT_TO_REPLACE_DUPLICATES = 5
+
+    def __init__(self, context, xml):
+        super(Area, self).__init__(context, xml)
+        if 'hide-dupes' not in self.xml.attrib:
+            self.hide_dupes = zeit.content.cp.interfaces.IArea[
+                'hide_dupes'].default
 
     @property
     def is_teaserbar(self):
@@ -198,6 +228,94 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
             self.xml.set('area', name)
 
+    @property
+    def automatic(self):
+        return self._automatic
+
+    @automatic.setter
+    def automatic(self, value):
+        if self._automatic and not value:
+            self._materialize_filled_values()
+        self._automatic = value
+        self._fill_with_placeholders()
+
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, value):
+        self._count = value
+        self._fill_with_placeholders()
+
+    def _fill_with_placeholders(self):
+        if self._automatic:
+            for key in self:
+                del self[key]
+            for i in range(self.count):
+                self.placeholder_factory()
+
+    def _materialize_filled_values(self):
+        order = self.keys()
+        teaser_factory = zope.component.getAdapter(
+            self, zeit.edit.interfaces.IElementFactory, name='teaser')
+        for old in zeit.content.cp.interfaces.IRenderedArea(self).values():
+            if not IAutomaticTeaserBlock.providedBy(old):
+                continue
+            items = reversed(list(old))
+            new = teaser_factory()
+            for content in items:
+                new.insert(0, content)
+            new.__name__ = old.__name__
+            del self[old.__name__]
+        # Preserve non-auto blocks.
+        self.updateOrder(order)
+
+        # Remove unfilled auto blocks.
+        for block in list(self.values()):
+            if IAutomaticTeaserBlock.providedBy(block):
+                del self[block.__name__]
+
+    @property
+    def count_to_replace_duplicates(self):
+        return max(self.MINIMUM_COUNT_TO_REPLACE_DUPLICATES, 2 * self.count)
+
+    @property
+    def placeholder_factory(self):
+        return zope.component.getAdapter(
+            self, zeit.edit.interfaces.IElementFactory,
+            name='auto-teaser')
+
+    @property
+    def query(self):
+        if not hasattr(self.xml, 'query'):
+            return ()
+
+        result = []
+        for condition in self.xml.query.getchildren():
+            channel = unicode(condition)
+            subchannel = None
+            if ' ' in channel:
+                channel, subchannel = channel.split(' ')
+            result.append((condition.get('type'), channel, subchannel))
+        return tuple(result)
+
+    @query.setter
+    def query(self, value):
+        try:
+            self.xml.remove(self.xml.query)
+        except AttributeError:
+            pass
+
+        if not value:
+            return
+
+        E = lxml.objectify.E
+        self.xml.append(E.query(*[E.condition(
+            '%s %s' % (channel, subchannel) if subchannel else channel,
+            type=type_)
+            for type_, channel, subchannel in value]))
+
 
 class AreaFactory(zeit.edit.block.ElementFactory):
 
@@ -229,6 +347,16 @@ def region_to_area(context):
     return None
 
 
+@grok.adapter(zeit.content.cp.interfaces.IArea)
+@grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
+def cms_content_iter(context):
+    if context.automatic and context.automatic_type == 'centerpage':
+        yield context.referenced_cp
+    for content in zeit.content.cp.centerpage.cms_content_iter(
+            zeit.content.cp.interfaces.IRenderedArea(context)):
+        yield content
+
+
 @grok.adapter(zeit.content.cp.interfaces.IRegion)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml_mosaic(context):
@@ -243,9 +371,7 @@ def rendered_xml_mosaic(context):
 def rendered_xml(context):
     area = getattr(lxml.objectify.E, context.xml.tag)(**context.xml.attrib)
     area.attrib.pop('automatic', None)
-    # XXX This API is non-obvious: IAutomaticArea also works for areas
-    # that are not or can never be automatic.
-    for block in zeit.content.cp.interfaces.IAutomaticArea(context).values():
+    for block in zeit.content.cp.interfaces.IRenderedArea(context).values():
         area.append(zeit.content.cp.interfaces.IRenderedXML(block))
     return area
 

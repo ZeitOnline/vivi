@@ -227,6 +227,38 @@ class OtherAreaSource(
         return value.__name__
 
 
+class AutomaticTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+
+    prefix = 'automatic-area-type-{}'
+
+    def __init__(self):
+        self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
+
+    def getToken(self, value):
+        # JS needs to use these values, don't MD5 them.
+        return value
+
+    values = (u'centerpage', u'channel', u'query')
+
+
+class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
+
+    values = ['Channel']  # XXX or 'Keyword', see VIV-471
+
+
+def automatic_area_can_read_teasers_automatically(data):
+    if data.automatic_type == 'centerpage' and data.referenced_cp:
+        return True
+
+    if data.automatic_type == 'channel' and data.query:
+        return True
+
+    if data.automatic_type == 'query' and data.raw_query:
+        return True
+
+    return False
+
+
 class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     # Use a schema field so the security can declare it as writable,
@@ -276,66 +308,13 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     default_teaser_layout = zope.interface.Attribute(
         'Default layout for teaser lists inside this area')
 
-
-class IWriteArea(zeit.edit.interfaces.IWriteContainer):
-    pass
-
-
-# Must split read / write for security declarations for IArea.
-class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
-    """An area contains blocks."""
-
-    zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
-
-
-class AutomaticAreaTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    prefix = 'automatic-area-type-{}'
-
-    def __init__(self):
-        self.titles = dict((x, _(self.prefix.format(x))) for x in self.values)
-
-    def getToken(self, value):
-        # JS needs to use these values, don't MD5 them.
-        return value
-
-    values = (u'centerpage', u'channel', u'query')
-
-
-class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
-
-    values = ['Channel']  # XXX or 'Keyword', see VIV-471
-
-
-def automatic_area_can_read_teasers_automatically(data):
-    if data.automatic_type == 'centerpage' and data.referenced_cp:
-        return True
-
-    if data.automatic_type == 'channel' and data.query:
-        return True
-
-    if data.automatic_type == 'query' and data.raw_query:
-        return True
-
-    return False
-
-
-class IAutomaticArea(IArea):
-    """Areas that support the AutoCP feature. Or not. (See below.)
-
-    Any Area can be adapted to IAutomaticArea, no matter if it has AutoCP
-    features or not. In case it has not, it will behave normally. Thus adapting
-    to IAutomaticArea is unharmful.
-
-    """
-
     automatic = zope.schema.Bool(
         title=_('automatic'),
         default=False)
 
     automatic_type = zope.schema.Choice(
         title=_('automatic-area-type'),
-        source=AutomaticAreaTypeSource(),
+        source=AutomaticTypeSource(),
         required=True)
 
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
@@ -373,7 +352,7 @@ class IAutomaticArea(IArea):
     raw_query.setTaggedValue('placeholder', ' ')
 
     @zope.interface.invariant
-    def automatic_area_has_required_arguments(data):
+    def automatic_type_required_arguments(data):
         if (data.automatic
                 and not automatic_area_can_read_teasers_automatically(data)):
             if data.automatic_type == 'centerpage':
@@ -390,6 +369,22 @@ class IAutomaticArea(IArea):
                     'requires a raw query.')
             raise zeit.cms.interfaces.ValidationError(error_message)
         return True
+
+
+class IWriteArea(zeit.edit.interfaces.IWriteContainer):
+    pass
+
+
+# Must split read / write for security declarations for IArea.
+class IArea(IReadArea, IWriteArea, zeit.edit.interfaces.IArea, IElement):
+    """An area contains blocks."""
+
+    zope.interface.invariant(zeit.edit.interfaces.unique_name_invariant)
+
+
+class IRenderedArea(IArea):
+    """Overrides values() to evaluate any automatic settings.
+    """
 
 
 class ICMSContentIterable(zope.interface.Interface):

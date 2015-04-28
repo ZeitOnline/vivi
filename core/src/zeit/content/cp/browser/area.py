@@ -1,5 +1,4 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.cp.interfaces import IAutomaticArea
 import gocept.form.grouped
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.teaser
@@ -24,12 +23,11 @@ class AreaViewletManager(ViewletManager):
     def css_class(self):
         classes = super(AreaViewletManager, self).css_class
 
-        area = IAutomaticArea(self.context)
         if not zeit.content.cp.interfaces.\
-                automatic_area_can_read_teasers_automatically(area):
+                automatic_area_can_read_teasers_automatically(self.context):
             automatic = 'block-automatic-not-possible'
         else:
-            if area.automatic:
+            if self.context.automatic:
                 automatic = 'block-automatic-on'
             else:
                 automatic = 'block-automatic-off'
@@ -54,7 +52,7 @@ class EditOverflow(zeit.edit.browser.view.EditBox):
 class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 
     form_fields = zope.formlib.form.FormFields(
-        zeit.content.cp.interfaces.IAutomaticArea).select(
+        zeit.content.cp.interfaces.IArea).select(
             'count', 'query', 'raw_query', 'automatic',
             'automatic_type', 'referenced_cp', 'hide_dupes')
 

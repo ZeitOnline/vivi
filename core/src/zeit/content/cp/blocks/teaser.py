@@ -142,7 +142,7 @@ def extract_teasers_from_cp(context):
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)
 def extract_teasers_from_area(context):
-    for teaser in zeit.content.cp.interfaces.IAutomaticArea(context).values():
+    for teaser in zeit.content.cp.interfaces.IRenderedArea(context).values():
         if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(teaser):
             continue
         for content in list(teaser):
@@ -178,7 +178,7 @@ def create_cp_channel(context, event):
 def automatic_enabled(centerpage):
     for region in centerpage.values():
         for area in region.values():
-            if zeit.content.cp.interfaces.IAutomaticArea(area).automatic:
+            if area.automatic:
                 return True
     return False
 

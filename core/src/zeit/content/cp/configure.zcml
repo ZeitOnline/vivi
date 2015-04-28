@@ -201,11 +201,11 @@
 
   <class class=".automatic.AutomaticArea">
     <require
-      interface="zeit.content.cp.interfaces.IAutomaticArea"
+      interface="zeit.content.cp.interfaces.IRenderedArea"
       permission="zope.View"
       />
     <require
-      set_schema="zeit.content.cp.interfaces.IAutomaticArea"
+      set_schema="zeit.content.cp.interfaces.IRenderedArea"
       permission="zeit.content.cp.EditAutomatic"
       />
   </class>
