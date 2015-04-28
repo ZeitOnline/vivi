@@ -9,6 +9,8 @@ Changes
 
 - Display form errors correctly in TabbedLightboxForm (don't lose the tabs).
 
+- Remove code which deduplicated modules in the sidebar. (DEV-746)
+
 
 2.11.0 (2015-03-18)
 -------------------
