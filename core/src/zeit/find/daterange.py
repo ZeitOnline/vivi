@@ -16,6 +16,12 @@ def yesterday_range():
     return start, end
 
 
+def one_day_range():
+    end = datetime.now()
+    start = end - timedelta(days=1)
+    return start, end
+
+
 def seven_day_range():
     end = datetime.now()
     start = end - timedelta(days=7)
