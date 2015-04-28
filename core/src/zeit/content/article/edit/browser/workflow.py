@@ -53,7 +53,7 @@ class Publish(zeit.edit.browser.form.InlineForm):
                 'has_semantic_change')
 
         for name in ['edited', 'corrected', 'seo_optimized']:
-            fields[name].custom_widget = zeit.cms.browser.widget.CheckboxWidget
+            fields[name].custom_widget = zeit.cms.browser.widget.CheckBoxWidget
         return fields
 
     def setUpWidgets(self, *args, **kw):
