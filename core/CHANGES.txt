@@ -7,12 +7,16 @@ zeit.content.cp changes
 
 - Teach AutomaticAreas to retrieve teasers from referenced CP. (DEV-745)
 
-- Add draggable library elements for preconfigured regions (DEV-746).
-
 - Prevent display of duplicate teasers in automatic regions (DEV-652).
+
+- Add draggable library elements for preconfigured regions (DEV-746).
+  * New config file: ``/data/cp-regions.xml``, for ``zeit.content.cp:
+    region-config-source``
 
 - Replace `width` of Areas with `kind`, add `kind` property to Regions, remove
   `layout` property from Areas (DEV-746).
+  * Config file removed: ``/data/cp-area-widths.xml``, was ``zeit.content.cp:
+    area-config-source``
 
 - Rename ``IAutomaticArea`` to ``IRenderedArea``, move properties to ``IArea``.
 
