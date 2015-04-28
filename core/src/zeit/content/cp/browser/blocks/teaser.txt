@@ -212,13 +212,13 @@ The layout can be selected at the edit box:
 
 >>> zeit.content.cp.centerpage._test_helper_cp_changed = False
 >>> browser.open(contents_url)
->>> browser.getLink('Edit block properties', index=1).click()
+>>> browser.getLink('Edit block properties', index=0).click()
 >>> browser.getLink('Großer Teaser mit Bild und Teaserliste').click()
 
 It is marked in the edit box now:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit block properties', index=1).click()
+>>> browser.getLink('Edit block properties', index=0).click()
 >>> print browser.contents
 <div...
 <a...class="leader selected"...>...Großer Teaser mit Bild und Teaserliste...
@@ -261,7 +261,7 @@ The 450x200 image is used now:
 When we change the layout to "Kleiner Teaser" the image will not be used any
 more:
 
->>> browser.getLink('Edit block properties', index=1).click()
+>>> browser.getLink('Edit block properties', index=0).click()
 >>> browser.getLink('Kleiner Teaser').click()
 >>> browser.open(contents_url)
 >>> print browser.contents
@@ -280,7 +280,7 @@ When the image is not an image group, it will be just used:
 ...         with zeit.cms.checkout.helper.checked_out(test_content) as co:
 ...             zeit.content.image.interfaces.IImages(co).image = (
 ...                 group['obama-clinton-120x120.jpg'])
->>> browser.getLink('Edit block properties', index=1).click()
+>>> browser.getLink('Edit block properties', index=0).click()
 >>> browser.getLink('Großer Teaser').click()
 >>> browser.open(contents_url)
 >>> print browser.contents

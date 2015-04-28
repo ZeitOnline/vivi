@@ -238,11 +238,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_('Visible in frontend'),
         default=True)
 
-    layout = zope.schema.Choice(
-        title=_("Layout"),
-        source=zeit.content.cp.layout.AreaLayoutSource(),
-        default=zeit.content.cp.layout.DEFAULT_AREA_LAYOUT)
-
     kind = zope.schema.Choice(
         title=_("Kind"),
         source=AreaKindSource())

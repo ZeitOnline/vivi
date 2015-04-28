@@ -37,12 +37,6 @@ class AreaViewletManager(ViewletManager):
         return ' '.join(['editable-area', automatic, classes])
 
 
-class EditProperties(zeit.content.cp.browser.blocks.teaser.EditLayout):
-
-    interface = zeit.content.cp.interfaces.IArea
-    layout_prefix = 'teaserbar'  # XXX should be area
-
-
 class EditCommon(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(

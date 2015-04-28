@@ -1,6 +1,5 @@
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
-import fractions
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml
@@ -72,8 +71,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         zeit.content.cp.interfaces.IRegion,
         gocept.lxml.interfaces.IObjectified)
 
-    _layout = ObjectPathAttributeProperty(
-        '.', 'module')
     _kind = ObjectPathAttributeProperty(
         '.', 'kind')
 
@@ -155,17 +152,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             if layout.default:
                 return layout
         return None
-
-    @property
-    def layout(self):
-        for layout in zeit.content.cp.interfaces.IArea['layout'].source(self):
-            if layout.id == self._layout:
-                return layout
-        return zeit.content.cp.interfaces.IArea['layout'].default
-
-    @layout.setter
-    def layout(self, value):
-        self._layout = value.id
 
     @property
     def kind(self):

@@ -134,16 +134,6 @@ class AreaBrowserTest(
         self.browser.open(
             'feature/@@landing-zone-drop-module?block_type=area&order=top')
 
-    def test_can_set_layout_for_area(self):
-        b = self.browser
-        edit_url = (
-            'http://localhost/++skin++cms/workingcopy/zope.user/island/'
-            'body/feature/{}/edit-properties'.format('lead'))
-        b.open(edit_url)
-        b.getLink('Ad-Medium Rectangle').click()
-        b.open(edit_url)
-        self.assertEllipsis('...<a ... class="mr selected"...', b.contents)
-
 
 class TooltipFixture(object):
 

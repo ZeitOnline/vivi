@@ -25,14 +25,14 @@ Add a quiz to the repository:[#functional]_
 Edit the quiz block and reference the newly added quiz:
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit block properties', index=2).click()
+>>> browser.getLink('Edit block properties', index=0).click()
 >>> browser.getControl('Quiz').value = 'http://xml.zeit.de/my_quiz'
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
 <...self.close();...
 
 >>> browser.open(contents_url)
->>> browser.getLink('Edit block properties', index=2).click()
+>>> browser.getLink('Edit block properties', index=0).click()
 >>> browser.getControl('Quiz').value
 'http://xml.zeit.de/my_quiz'
 
