@@ -35,11 +35,13 @@ class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
 
     def get_adapters(self):
         return [{
+            'name': 'area-%s' % i,
             'type': 'area',
             'title': area_config.title,
             'library_name': self.library_name,
             'params': {'kind': area_config.kind}
-        } for area_config in zeit.content.cp.layout.AREA_CONFIGS(self.context)]
+        } for i, area_config in enumerate(
+            zeit.content.cp.layout.AREA_CONFIGS(self.context))]
 
 
 class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
@@ -55,6 +57,7 @@ class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
 
     def get_adapters(self):
         return [{
+            'name': 'region-%s' % i,
             'type': 'region',
             'title': region_config.title,
             'library_name': self.library_name,
@@ -62,5 +65,5 @@ class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
                 'kind': region_config.kind,
                 'areas': region_config.areas,
             },
-        } for region_config in zeit.content.cp.layout.REGION_CONFIGS(
-            self.context)]
+        } for i, region_config in enumerate(
+            zeit.content.cp.layout.REGION_CONFIGS(self.context))]
