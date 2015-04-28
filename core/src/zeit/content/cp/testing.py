@@ -18,9 +18,7 @@ import zope.testing.renormalizing
 product_config = """
 <product-config zeit.content.cp>
     block-layout-source file://%s
-    area-kind-source file://%s
     area-config-source file://%s
-    region-kind-source file://%s
     region-config-source file://%s
     bar-layout-source file://%s
     cp-extra-url file://%s
@@ -37,9 +35,7 @@ product_config = """
 </product-config>
 """ % (
     pkg_resources.resource_filename(__name__, 'layout.xml'),
-    pkg_resources.resource_filename(__name__, 'area-kinds.xml'),
     pkg_resources.resource_filename(__name__, 'areas.xml'),
-    pkg_resources.resource_filename(__name__, 'region-kinds.xml'),
     pkg_resources.resource_filename(__name__, 'regions.xml'),
     pkg_resources.resource_filename(__name__, 'bar-layout.xml'),
     pkg_resources.resource_filename(__name__, 'cpextra.xml'),

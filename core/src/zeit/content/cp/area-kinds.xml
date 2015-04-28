@@ -1,7 +1,0 @@
-<?xml version="1.0"?>
-<kinds>
-    <kind id="single">single</kind>
-    <kind id="duo">duo</kind>
-    <kind id="minor">minor</kind>
-    <kind id="major">major</kind>
-</kinds>

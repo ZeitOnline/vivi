@@ -142,13 +142,6 @@ class IElement(zeit.edit.interfaces.IElement):
         default=True)
 
 
-class RegionKindSource(zeit.cms.content.sources.XMLSource):
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'region-kind-source'
-    attribute = 'id'
-
-
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
 
     # Use a schema field so the security can declare it as writable,
@@ -168,9 +161,8 @@ class IReadRegion(zeit.edit.interfaces.IReadContainer):
         title=_('Visible in frontend'),
         default=True)
 
-    kind = zope.schema.Choice(
-        title=_("Kind"),
-        source=RegionKindSource())
+    kind = zope.schema.TextLine(
+        title=_("Kind"))
 
 
 class IWriteRegion(zeit.edit.interfaces.IWriteContainer):
@@ -194,13 +186,6 @@ def hex_literal(value):
         raise zeit.cms.interfaces.ValidationError(_("Invalid hex literal"))
     else:
         return True
-
-
-class AreaKindSource(zeit.cms.content.sources.XMLSource):
-
-    product_configuration = 'zeit.content.cp'
-    config_url = 'area-kind-source'
-    attribute = 'id'
 
 
 class OtherAreaSource(
@@ -270,9 +255,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_('Visible in frontend'),
         default=True)
 
-    kind = zope.schema.Choice(
-        title=_("Kind"),
-        source=AreaKindSource())
+    kind = zope.schema.TextLine(
+        title=_("Kind"))
 
     supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
