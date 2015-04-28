@@ -81,6 +81,10 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
     template = zope.browserpage.ViewPageTemplateFile(
         'blocks/teaser.edit-common.pt')
 
+    def setUpWidgets(self, *args, **kw):
+        super(EditAutomatic, self).setUpWidgets(*args, **kw)
+        self.widgets['automatic'].reversed = False
+
 
 class ChangeLayout(zeit.content.cp.browser.blocks.teaser.ChangeLayout):
 
