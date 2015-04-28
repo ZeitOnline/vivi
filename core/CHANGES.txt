@@ -11,11 +11,8 @@ zeit.content.cp changes
 
 - Prevent display of duplicate teasers in automatic regions (DEV-652).
 
-- Replace `width` of Areas with `kind`. (DEV-746)
-
-- Add `kind` property to Regions. (DEV-746)
-
-- Remove `layout` property from Areas (DEV-746).
+- Replace `width` of Areas with `kind`, add `kind` property to Regions, remove
+  `layout` property from Areas (DEV-746).
 
 
 3.0.0b12 (2015-04-22)
