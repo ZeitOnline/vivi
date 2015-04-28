@@ -17,33 +17,23 @@ import zope.testing.renormalizing
 
 product_config = """
 <product-config zeit.content.cp>
-    block-layout-source file://%s
-    area-config-source file://%s
-    region-config-source file://%s
-    bar-layout-source file://%s
-    cp-extra-url file://%s
+    block-layout-source file://{fixtures}/layout.xml
+    area-config-source file://{fixtures}/areas.xml
+    region-config-source file://{fixtures}/regions.xml
+    bar-layout-source file://{fixtures}/bar-layout.xml
+    cp-extra-url file://{fixtures}/cpextra.xml
     cp-feed-max-items 200
-    cp-types-url file://%s
+    cp-types-url file://{fixtures}/cp-types.xml
     feed-update-minimum-age 30
     rss-folder rss
-    scales-fullgraphical-url file://%s
+    scales-fullgraphical-url file://{fixtures}/scales-fullgraphical.xml
     layout-image-path /data/cp-layouts
 </product-config>
 
 <product-config zeit.edit>
-    rules-url file://%s
+    rules-url file://{fixtures}/tests/fixtures/example_rules.py
 </product-config>
-""" % (
-    pkg_resources.resource_filename(__name__, 'layout.xml'),
-    pkg_resources.resource_filename(__name__, 'areas.xml'),
-    pkg_resources.resource_filename(__name__, 'regions.xml'),
-    pkg_resources.resource_filename(__name__, 'bar-layout.xml'),
-    pkg_resources.resource_filename(__name__, 'cpextra.xml'),
-    pkg_resources.resource_filename(__name__, 'cp-types.xml'),
-    pkg_resources.resource_filename(__name__, 'scales-fullgraphical.xml'),
-    pkg_resources.resource_filename(
-        'zeit.content.cp.tests.fixtures', 'example_rules.py'),
-)
+""".format(fixtures=pkg_resources.resource_filename(__name__, '.'))
 
 
 layer = zeit.cms.testing.ZCMLLayer(
