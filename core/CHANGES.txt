@@ -154,6 +154,36 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.10.0 (2015-04-28)
+-------------------
+
+- Backport permission to edit IArea, which is used by zeit.securitypolicy,
+  but has no meaning on the 2.x branch. (DEV-746)
+
+- Forward-compatibility: Don't assume every CP has a lead, informatives and
+  teaser-mosaic area.
+
+
+2.9.4 (2015-03-23)
+------------------
+
+- Suppress second-level errors when generating CP Feed during rendering XML in
+  Friedbert (VIV-629).
+
+
+2.9.3 (2015-03-20)
+------------------
+
+- Don't generate ``xinclude`` for autopilots anymore, XSLT resolves them now
+  (DEV-659).
+
+
+2.9.2 (2015-03-17)
+------------------
+
+- Generate ``xinclude`` again, XSLT is not ready yet (DEV-659).
+
+
 2.9.1 (2015-03-17)
 ------------------
 
