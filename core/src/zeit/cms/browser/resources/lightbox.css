@@ -263,3 +263,8 @@
     right: 0;
     bottom: 0;
 }
+
+
+.lightbox #actionsView {
+  background-color: transparent;
+}
