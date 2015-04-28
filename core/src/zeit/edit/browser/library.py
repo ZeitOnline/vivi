@@ -19,22 +19,25 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         return dict(factories=self.list_block_types())
 
     def list_block_types(self):
-        types = []
+        types = {}
         for item in self.get_adapters():
-            image = 'module-%s.png' % item['type']
-            if not self.resource_exists(image):
-                image = 'module-default-image.png'
-            image = self.resource_url(image)
-            types.append(dict(
-                css='module represents-content-object {}-module'.format(
-                    item['library_name']),
-                image=image,
-                title=zope.i18n.translate(
-                    item['title'], context=self.request),
-                type=item['type'],
-                params=json.dumps(item['params']),
-            ))
-        return sorted(types, key=lambda r: r['title'])
+            if item['name'] not in types:
+                image = 'module-%s.png' % item['name']
+                if not self.resource_exists(image):
+                    image = 'module-default-image.png'
+                image = self.resource_url(image)
+                types[item['name']] = dict(
+                    css=['module', 'represents-content-object'],
+                    image=image,
+                    title=zope.i18n.translate(
+                        item['title'], context=self.request),
+                    type=item['type'],
+                    params=json.dumps(item['params']),
+                )
+            types[item['name']]['css'].append(item['library_name'] + '-module')
+        for type_ in types.values():
+            type_['css'] = ' '.join(type_['css'])
+        return sorted(types.values(), key=lambda r: r['title'])
 
     def get_adapters(self):
         context = self.factory_context
@@ -43,6 +46,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         adapters = zope.component.getAdapters(
             (context,), zeit.edit.interfaces.IElementFactory)
         return [{
+            'name': name,
             'type': name,
             'title': adapter.title,
             'library_name': self.library_name,
