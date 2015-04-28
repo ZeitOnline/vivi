@@ -27,8 +27,7 @@ class Region(zeit.content.cp.blocks.block.VisibleMixin,
 
     type = 'region'
 
-    title = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'title')
+    title = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'title')
 
     @property
     def __name__(self):
