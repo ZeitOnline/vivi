@@ -268,13 +268,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     def _materialize_filled_values(self):
         order = self.keys()
-        teaser_factory = zope.component.getAdapter(
-            self, zeit.edit.interfaces.IElementFactory, name='teaser')
         for old in zeit.content.cp.interfaces.IRenderedArea(self).values():
             if not IAutomaticTeaserBlock.providedBy(old):
                 continue
             items = reversed(list(old))
-            new = teaser_factory()
+            new = self.create_item('teaser')
             for content in items:
                 new.insert(0, content)
             new.__name__ = old.__name__
