@@ -4,7 +4,7 @@ zeit.locales CHANGES
 2.0.38 (unreleased)
 +++++++++++++++++++
 
-- Nothing changed yet.
+- Restore zeit.content.cp-2.x translations.
 
 
 2.0.37 (2015-04-28)

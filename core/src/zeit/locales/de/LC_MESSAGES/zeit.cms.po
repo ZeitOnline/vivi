@@ -15,15 +15,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Apr 24 13:29:09 2015\n"
-"PO-Revision-Date: 2015-04-28 11:01+0100\n"
-"Last-Translator: Florian Pilz <fp@gocept.com>\n"
+"PO-Revision-Date: 2015-04-29 08:07+0100\n"
+"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:44
@@ -4197,91 +4197,79 @@ msgstr "Zweites Video"
 msgid "with info"
 msgstr "mit Info"
 
-#~ msgid "+ Add region"
-#~ msgstr "+ Region hinzufügen"
+msgid "Autopilot"
+msgstr "Autopilot"
 
-#~ msgid "Autopilot"
-#~ msgstr "Autopilot"
+msgid "Parquet"
+msgstr "Parkett"
 
-#~ msgid "Parquet"
-#~ msgstr "Parkett"
+msgid "Display image at these positions"
+msgstr "Bild anzeigen bei"
 
-#~ msgid "Display image at these positions"
-#~ msgstr "Bild anzeigen bei"
+msgid "Get teasers from (autopilot)"
+msgstr "Autopilot-Teaser beziehen von"
 
-#~ msgid "Get teasers from (autopilot)"
-#~ msgstr "Autopilot-Teaser beziehen von"
+msgid "Autopilot active"
+msgstr "Autopilot aktiviert"
 
-#~ msgid "Autopilot active"
-#~ msgstr "Autopilot aktiviert"
+msgid "Amount of teasers to display"
+msgstr "Anzahl Teaser"
 
-#~ msgid "Amount of teasers to display"
-#~ msgstr "Anzahl Teaser"
+msgid "Cannot activate autopilot without referenced centerpage"
+msgstr ""
+"Der Autopilot kann nicht aktiviert werden, wenn kein anderes Objekt "
+"referenziert wurde."
 
-#~ msgid "Cannot activate autopilot without referenced centerpage"
-#~ msgstr ""
-#~ "Der Autopilot kann nicht aktiviert werden, wenn kein anderes Objekt "
-#~ "referenziert wurde."
+msgid "Edit teaser layouts"
+msgstr "Teaser-Layouts"
 
-#~ msgid "Push after next publish?"
-#~ msgstr "Bei Veröffentlichung automatisch posten"
+msgid "Remaining teaser layout"
+msgstr "Layout weitere Teaser"
 
-#~ msgid "ZEIT ONLINE:"
-#~ msgstr "ZEIT ONLINE:"
+msgid "Cannot enable automatic without count"
+msgstr "Anzahl Teaser erforderlich für automatische Bestückung"
 
-#~ msgid "Edit teaser layouts"
-#~ msgstr "Teaser-Layouts"
+msgid "or"
+msgstr "oder"
 
-#~ msgid "Remaining teaser layout"
-#~ msgstr "Layout weitere Teaser"
+msgid "Automatic contents"
+msgstr "Automatische Bestückung"
 
-#~ msgid "Cannot enable automatic without count"
-#~ msgstr "Anzahl Teaser erforderlich für automatische Bestückung"
+msgid "Publisher URL"
+msgstr "Verlags-URL"
 
-#~ msgid "or"
-#~ msgstr "oder"
+msgid "Supertitle URL"
+msgstr "Spitzmarken-URL"
 
-#~ msgid "Automatic contents"
-#~ msgstr "Automatische Bestückung"
+msgid "Create teaser group"
+msgstr "Teasergruppe anlegen"
 
-#~ msgid "+ Add area"
-#~ msgstr "+ Fläche hinzufügen"
+msgid "Display teaser group"
+msgstr "Teasergruppe anzeigen"
 
-#~ msgid "Publisher URL"
-#~ msgstr "Verlags-URL"
+msgid "Save teasers as group"
+msgstr "Teaser als Teasergruppe speichern"
 
-#~ msgid "Supertitle URL"
-#~ msgstr "Spitzmarken-URL"
+msgid "Name of teaser group"
+msgstr "Name der Teasergruppe"
 
-#~ msgid "Create teaser group"
-#~ msgstr "Teasergruppe anlegen"
+msgid "Linked teasers"
+msgstr "Verlinkte Teaser"
 
-#~ msgid "Display teaser group"
-#~ msgstr "Teasergruppe anzeigen"
+msgid "Automatically remove"
+msgstr "Automatisch löschen (nach 7 Tagen)?"
 
-#~ msgid "Save teasers as group"
-#~ msgstr "Teaser als Teasergruppe speichern"
+msgid "Teasergroup"
+msgstr "Teasergruppe"
 
-#~ msgid "Name of teaser group"
-#~ msgstr "Name der Teasergruppe"
+msgid "Common"
+msgstr "Allgemein"
 
-#~ msgid "Linked teasers"
-#~ msgstr "Verlinkte Teaser"
+msgid "No changes"
+msgstr "Keine Änderungen"
 
-#~ msgid "Automatically remove"
-#~ msgstr "Automatisch löschen (nach 7 Tagen)?"
+msgid "+ Add block"
+msgstr "+ Block hinzufügen"
 
-#~ msgid "Teasergroup"
-#~ msgstr "Teasergruppe"
-
-#~ msgid "Common"
-#~ msgstr "Allgemein"
-
-#~ msgid "No changes"
-#~ msgstr "Keine Änderungen"
-
-#~ msgid "+ Add block"
-#~ msgstr "+ Block hinzufügen"
-
-#~ msgid "Landing Zone"
-#~ msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
+msgid "Landing Zone"
+msgstr "Ziehen Sie Inhalte hierher um einen neuen Block zu erzeugen."
