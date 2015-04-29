@@ -109,6 +109,13 @@ var ident = MochiKit.Signal.connect(
     zeit.content.cp.area_mover = new zeit.content.cp.ContainerMover('area');
 });
 
+jQuery(document).bind('fragment-ready', function(event) {
+    if (! zeit.cms.in_cp_editor()) {
+        return;
+    }
+    zeit.cms.configure_channel_dropdowns('form.', 'query', '01', '02');
+    zeit.cms.style_dropdowns(event.target);
+});
 
 // XXX Feature disabled until we find a tooltip implementation that works.
 // MochiKit.Signal.connect(window, 'cp-editor-loaded', function() {
