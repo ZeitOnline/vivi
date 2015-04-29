@@ -362,10 +362,8 @@ zeit.find.Relateds = zeit.find.Component.extend({
         forEach(results, function(entry) {
             var related_url = jsontemplate.get_node_lookup(data, entry)(
                 'related_url');
-            var related_links = MochiKit.Selector.findChildElements(
-                entry, ['.related_links'])[0];
-            var related_info = MochiKit.Selector.findChildElements(
-                entry, ['.related_info'])[0];
+            var related_links = jQuery('.related_links', entry)[0];
+            var related_info = jQuery('.related_info', entry)[0];
             self.events.push(
                 MochiKit.Signal.connect(related_links, 'onclick', function() {
                     self.toggle(related_links, related_info, related_url);
@@ -433,8 +431,7 @@ zeit.find.ToggleFavorited = zeit.find.Component.extend({
         forEach(results, function(entry) {
             var favorite_url = jsontemplate.get_node_lookup(data, entry)(
                 'favorite_url');
-            var toggle_favorited = MochiKit.Selector.findChildElements(
-                entry, ['.toggle_favorited'])[0];
+            var toggle_favorited = jQuery('.toggle_favorited', entry)[0];
             self.events.push(MochiKit.Signal.connect(
                 toggle_favorited, 'onclick', function(e) {
                     self.toggle(toggle_favorited, favorite_url);
@@ -568,8 +565,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
 
             var start_date = lookup('start_date');
             var end_date = lookup('end_date');
-            var date_filter = MochiKit.Selector.findChildElements(
-                entry, ['.date_filter'])[0];
+            var date_filter = jQuery('.date_filter', entry)[0];
             self.events.push(MochiKit.Signal.connect(
                 date_filter, 'onclick', function(e) {
                     from_field.value = start_date;
@@ -578,8 +574,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                 }));
 
             var volume_year = lookup('volume_year');
-            var volume_year_filter = MochiKit.Selector.findChildElements(
-                entry, ['.volume_year_filter'])[0];
+            var volume_year_filter = jQuery('.volume_year_filter', entry)[0];
             self.events.push(MochiKit.Signal.connect(
                 volume_year_filter, 'onclick', function(e) {
                     volume_year_field.value = volume_year;
@@ -587,17 +582,14 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                 }));
 
             var topic = lookup('topic');
-            var topic_filter = MochiKit.Selector.findChildElements(
-                entry, ['.topic_filter'])[0];
+            var topic_filter = jQuery('.topic_filter', entry)[0];
             self.events.push(MochiKit.Signal.connect(
                 topic_filter, 'onclick', function(e) {
                     topic_field.value = topic;
                     MochiKit.Signal.signal(window, 'zeit.find.update-search');
                 }));
 
-            var author_filters = MochiKit.Selector.findChildElements(
-                entry, ['.author_filter']);
-            forEach(author_filters, function(author_filter) {
+            jQuery('.author_filter', entry).each(function(i, author_filter) {
                 var author_lookup = jsontemplate.get_node_lookup(
                     data, author_filter);
                 var author = author_lookup('@');
@@ -608,9 +600,7 @@ zeit.find.ResultsFilters = zeit.find.Component.extend({
                 }));
             });
 
-            var click_range = MochiKit.Selector.findChildElements(
-                entry, ['.range']);
-            forEach(click_range, function(range) {
+            jQuery('.range', entry).each(function(i, range) {
                 self.events.push(MochiKit.Signal.connect(
                     range, 'onclick', function(e) {
                     if (range.getAttribute('href') == '#') {
