@@ -291,6 +291,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             # Copy block properties (including __name__ and __parent__)
             for name in self.TEASERBLOCK_FIELDS:
                 setattr(new, name, getattr(old, name))
+            # This deletes only the first occurrence, i.e. the old block.
             del self[old.__name__]
         # Preserve non-auto blocks.
         self.updateOrder(order)
