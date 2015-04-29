@@ -6,6 +6,8 @@ zeit.find changes
 
 - Add date range for one day, as required by zeit.web (ZON-1667).
 
+- Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
+
 
 2.4.0 (2015-03-09)
 ------------------

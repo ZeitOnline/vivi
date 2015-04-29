@@ -236,9 +236,10 @@ zeit.find.Search = zeit.find.BaseView.extend({
             } else if (element.nodeName == 'INPUT') {
                 if (element.type == 'checkbox') {
                     if (element.checked) {
-                        var label  = $$('label[for="' + element.id + '"]');
+                        var label  = jQuery(
+                            'label[for="' + element.id + '"]')[0];
                         if (label.length != 1) {
-                            return
+                            return;
                         }
                         value = element.value;
                         title = label[0].textContent;
