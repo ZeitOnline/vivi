@@ -4,7 +4,7 @@ zeit.wysiwyg changes
 2.0.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
 
 
 2.0.3 (2014-03-10)
