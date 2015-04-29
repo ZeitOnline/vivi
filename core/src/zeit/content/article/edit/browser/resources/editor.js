@@ -115,8 +115,7 @@ zeit.content.article.Editable = gocept.Class.extend({
             self.autosave_timer = window.setInterval(
                 MochiKit.Base.bind(self.autosave, self),
                 self.autosave_interval*1000);
-            self.initial_paragraph = MochiKit.Selector.findChildElements(
-                block, ['.editable > *'])[0];
+            self.initial_paragraph = jQuery('.editable > *', block)[0];
             if (window.getSelection().rangeCount) {
                 var range = window.getSelection().getRangeAt(0);
                 self.initial_selection_node = range.startContainer;
@@ -317,8 +316,7 @@ zeit.content.article.Editable = gocept.Class.extend({
         var editable = MochiKit.DOM.getFirstElementByTagAndClassName(
             null, 'editable', paragraphs[0]);
         forEach(paragraphs.slice(1), function(paragraph) {
-            forEach(MochiKit.Selector.findChildElements(
-                paragraph, ['.editable > *']), function(p) {
+            jQuery('.editable > *', paragraph).each(function(i, p) {
                 editable.appendChild(p);
             });
             jQuery(paragraph).next('.landing-zone').remove();
