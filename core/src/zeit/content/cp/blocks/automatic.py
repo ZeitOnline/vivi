@@ -1,4 +1,3 @@
-import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import zeit.content.cp.blocks.block
