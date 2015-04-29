@@ -2,7 +2,7 @@
 
     zeit.cms.declare_namespace('zeit.cms.logging');
 
-    zeit.cms.logging.CONSOLE_LEVEL = 'DEBUG';
+    zeit.cms.logging.CONSOLE_LEVEL = 'ERROR';
     zeit.cms.logging.XHR_LEVEL = 'ERROR';
 
     /* Disable default logger */

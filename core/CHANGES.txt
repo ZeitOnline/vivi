@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
 
+- Disable JS debug logging to console by default.
+
 
 2.45.0 (2015-04-28)
 -------------------
