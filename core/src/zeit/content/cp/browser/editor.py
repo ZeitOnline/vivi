@@ -14,6 +14,14 @@ class Editor(zeit.edit.browser.editor.Editor):
 
     render = ViewPageTemplateFile('editor.pt')
 
+    def __call__(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.cp')
+        zeit.content.cp.browser.resources.RemoteURLResource(
+            zeit.content.cp.browser.resources.lib,
+            '/repository' + config['layout-css-path']).need()
+        return super(Editor, self).__call__()
+
     @property
     def form_css_class(self):
         if not self.has_permission('zeit.content.cp.EditArea'):

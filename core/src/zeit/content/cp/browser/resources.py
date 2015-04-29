@@ -72,6 +72,6 @@ class RemoteURLResource(fanstatic.core.Renderable, fanstatic.core.Dependable):
     def compile(self):
         pass
 
-layout_css = RemoteURLResource(
-    lib, '/repository/data/cp-layouts/layouts.css')
-zeit.cms.browser.resources.register(layout_css)
+    def need(self, slots=None):
+        needed = fanstatic.core.get_needed()
+        needed.need(self, slots)
