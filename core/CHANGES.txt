@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.19 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
 
 
 3.6.18 (2015-04-28)

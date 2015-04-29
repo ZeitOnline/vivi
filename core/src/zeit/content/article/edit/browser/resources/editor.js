@@ -79,9 +79,8 @@ var ident = MochiKit.Signal.connect(
             return;
         }
 
-        forEach($$('#cp-content .action-block-sorter'), function(element) {
-            element.body_sorter =
-                new zeit.edit.sortable.BlockSorter(element.id);
+        jQuery('#cp-content .action-block-sorter').each(function(i, element) {
+            element.body_sorter = new zeit.edit.sortable.BlockSorter(element.id);
         });
 });
 }());
