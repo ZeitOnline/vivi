@@ -30,7 +30,7 @@ zeit.content.cp changes
 - Rename ``IAutomaticArea`` to ``IRenderedArea``, move properties to ``IArea``.
 
 
-3.0.0b12 (2015-04-22)
+3.0.0b11 (2015-04-22)
 ---------------------
 
 - Suppress second-level errors when generating CP Feed during rendering XML in
