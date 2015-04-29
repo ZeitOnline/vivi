@@ -127,7 +127,7 @@ zeit.wysiwyg.ImageDialog = zeit.wysiwyg.ReferenceDialog.extend({
         }
 
         MochiKit.Signal.connect(
-            $$('input[name="selectArticleImage"]')[0], 'onclick',
+            jQuery('input[name="selectArticleImage"]')[0], 'onclick',
             self, self.load_article_image);
 
     },
