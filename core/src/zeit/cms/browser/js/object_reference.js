@@ -214,9 +214,8 @@ zeit.cms.ObjectReferenceSequenceWidget = gocept.Class.extend({
         self.parent_component = parent_component;
         self.form = MochiKit.DOM.getFirstParentByTagAndClassName(
             self.element, 'form');
-        var droppable_element = MochiKit.Selector.findChildElements(
-            self.element,
-            ['> table.sequencewidget > tbody > tr:last-child'])[0];
+        var droppable_element = jQuery(
+            '> table.sequencewidget > tbody > tr:last-child', self.element)[0];
         self.droppable = new zeit.cms.ContentDroppable(droppable_element, {
             accept: ['content-drag-pane', 'uniqueId'],
             activeclass: 'droppable-active',

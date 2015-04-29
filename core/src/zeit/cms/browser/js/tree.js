@@ -95,8 +95,8 @@ Tree.prototype = {
         var unique_id = id_base + selectable_path + '/';
         var element = null;
         while(isNull(element) && unique_id != id_base) {
-            var elements = MochiKit.Selector.findChildElements(
-                self.contentElement, ['li[uniqueId="' + unique_id + '"]']);
+            var elements = jQuery(
+                'li[uniqueId="' + unique_id + '"]', self.contentElement);
             if (elements.length) {
                 element = elements[0];
             }
