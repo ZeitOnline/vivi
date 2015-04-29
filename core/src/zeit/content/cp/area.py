@@ -80,7 +80,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     supertitle = ObjectPathAttributeProperty(
         '.', 'supertitle')
-    title = ObjectPathAttributeProperty(
+    _title = ObjectPathAttributeProperty(
         '.', 'title')
     teaserText = ObjectPathAttributeProperty(
         '.', 'teaserText')
@@ -125,6 +125,17 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if 'hide-dupes' not in self.xml.attrib:
             self.hide_dupes = zeit.content.cp.interfaces.IArea[
                 'hide_dupes'].default
+
+    @property
+    def title(self):
+        if self._title:
+            return self._title
+        if self.referenced_cp is not None:
+            return self.referenced_cp.title
+
+    @title.setter
+    def title(self, value):
+        self._title = value
 
     @property
     def is_teaserbar(self):

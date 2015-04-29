@@ -248,7 +248,7 @@
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="title"
-    template="layout.area.title.pt"
+    template="layout.element.title.pt"
     permission="zeit.EditContent"
     weight="5"
     />
