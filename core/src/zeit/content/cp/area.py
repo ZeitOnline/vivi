@@ -271,10 +271,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         for old in zeit.content.cp.interfaces.IRenderedArea(self).values():
             if not IAutomaticTeaserBlock.providedBy(old):
                 continue
-            items = reversed(list(old))
+            items = list(old)
             new = self.create_item('teaser')
             for content in items:
-                new.insert(0, content)
+                new.append(content)
             new.__name__ = old.__name__
             del self[old.__name__]
         # Preserve non-auto blocks.
