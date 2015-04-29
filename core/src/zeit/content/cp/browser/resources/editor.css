@@ -521,6 +521,10 @@ margin-top: 4px;
   padding: 0;
 }
 
+.type-centerpage-2009 .fieldname-count {
+  margin-top: 12px;
+}
+
 .type-centerpage-2009 .fieldname-query .combinationFieldWidget tr {
     display: inline-block;
 }
