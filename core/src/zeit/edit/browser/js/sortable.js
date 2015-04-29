@@ -44,7 +44,7 @@ zeit.edit.sortable.Sortable = zeit.edit.context.ContentActionBase.extend({
 
     connect: function() {
         var self = this;
-        var container = $$(self.child_container_selector)[0];
+        var container = jQuery(self.child_container_selector)[0];
 
         var nodes = self.get_sortable_nodes();
         forEach(nodes, function(node) {
@@ -160,7 +160,7 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
     get_sortable_nodes: function() {
         var self = this;
         var selector = self.child_container_selector + ' > div.block[id]';
-        return $$(selector);
+        return jQuery(selector).toArray();
     },
 
     get_handle: function(element) {
@@ -215,7 +215,7 @@ zeit.edit.sortable.Movable = zeit.edit.context.ContentActionBase.extend({
     connect: function() {
         // XXX Copy&paste of the upper half of Sortable.connect().
         var self = this;
-        var container = $$(self.child_container_selector)[0];
+        var container = jQuery(self.child_container_selector)[0];
         var nodes = self.get_movable_nodes();
         forEach(nodes, function(node) {
             var handle = self.get_handle(node);
@@ -254,7 +254,7 @@ zeit.edit.sortable.BlockMover = zeit.edit.sortable.Movable.extend({
     get_movable_nodes: function() {
         var self = this;
         var selector = self.child_container_selector + ' > div.block[id]';
-        return $$(selector);
+        return jQuery(selector).toArray();
     },
 
     get_handle: function(element) {
