@@ -21,8 +21,7 @@ zeit.content.cp.teaser.Sortable = zeit.edit.sortable.Sortable.extend({
 
     get_sortable_nodes: function() {
         var self = this;
-        return MochiKit.Selector.findChildElements(
-            $(self.container), ['li.edit-bar']);
+        return jQuery('li.edit-bar', $(self.container)).toArray();
     },
 
     serialize: function() {
@@ -43,10 +42,8 @@ zeit.content.cp.teaser.Sortable = zeit.edit.sortable.Sortable.extend({
 
     activate_content_droppers: function() {
         var self = this;
-        var elements = MochiKit.Selector.findChildElements(
-            $(self.container),
-            ['li.action-content-droppable']);
-        forEach(elements, function(element) {
+        jQuery('li.action-content-droppable', $(self.container)).each(
+            function(i, element) {
             self.dnd_objects.push(
                 new zeit.edit.drop.Droppable(
                     element, element, self.parent));
@@ -134,8 +131,7 @@ zeit.content.cp.teaser.Drag = zeit.edit.context.ContentActionBase.extend({
             if (isNull(text)) {
                 return;
             }
-            var image = MochiKit.Selector.findChildElements(
-                teaser, ['.teaser-contents > img']);
+            var image = jQuery('.teaser-contents > img', teaser);
             if (image.length) {
                 image = image[0];
             } else {
