@@ -35,6 +35,11 @@
   display: none;
 }
 
+.type-area.block-automatic-on > .block-inner {
+  background-color: #D7FFDA;
+}
+
+
 
 /* When there is no "other" edit, we show the common. */
 .edit-bar > a.common-link:first-child {
