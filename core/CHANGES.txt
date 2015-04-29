@@ -5,6 +5,7 @@ zeit.locales CHANGES
 +++++++++++++++++++
 
 - Restore zeit.content.cp-2.x translations.
+- Übersetzungen aktualisiert
 
 
 2.0.37 (2015-04-28)
