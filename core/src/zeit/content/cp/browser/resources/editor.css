@@ -225,7 +225,7 @@
 
 /* Teaser visualisations */
 
-.block.type-teaser .teaser-contents {
+.type-centerpage-2009 .block .teaser-contents {
   min-height: 5em;
   margin: 1em;
 }
@@ -235,25 +235,25 @@
   overflow: hidden;
 }
 
-.block.type-teaser .teaser {
+.type-centerpage-2009 .block .teaser {
   font-size: 0.8em;
 }
 
-.block.type-teaser .teaser-contents > img {
+.type-centerpage-2009 .block .teaser-contents > img {
   display: block;
 }
 
-.block.type-teaser .teaser > .supertitle {
+.type-centerpage-2009 .block .teaser > .supertitle {
   color: #990000;
   font-size: 0.9em;
   font-weight: bold;
   text-transform: uppercase;
 }
-.block.type-teaser .teaser > .teaserTitle {
+.type-centerpage-2009 .block .teaser > .teaserTitle {
   display: inline;
   font-weight: normal;
 }
-.block.type-teaser .teaser > .teaserText {
+.type-centerpage-2009 .block .teaser > .teaserText {
   display: none;
 }
 
