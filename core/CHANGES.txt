@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b11 (unreleased)
+3.0.0b12 (2015-04-29)
 ---------------------
 
 - Teach AutomaticAreas to retrieve teasers from referenced CP. (DEV-745)
