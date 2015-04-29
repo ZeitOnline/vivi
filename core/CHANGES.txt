@@ -9,6 +9,9 @@ zeit.content.cp changes
 
 - Prevent display of duplicate teasers in automatic regions (DEV-652).
 
+- Preserve teaser module properties when changing ``automatic`` setting
+  (DEV-745).
+
 - Add draggable library elements for preconfigured regions (DEV-746).
   * New config file: ``/data/cp-regions.xml``, for ``zeit.content.cp:
     region-config-source``

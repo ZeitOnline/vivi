@@ -91,3 +91,47 @@ class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
         t3 = self.area1.create_item('teaser').__name__
         self.assertEqual([t2], self.area1.keys())
         self.assertEqual([t3, t1], self.area2.keys())
+
+
+class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(AutomaticAreaTest, self).setUp()
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+
+    def test_fills_with_placeholders_when_set_to_automatic(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 5
+        lead.automatic = True
+        lead.automatic_type = 'query'
+        self.assertEqual(5, len(lead))
+
+    def test_fills_with_placeholders_when_teaser_count_changed(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 5
+        lead.automatic = True
+        lead.automatic_type = 'query'
+        self.assertEqual(5, len(lead))
+        lead.count = 7
+        self.assertEqual(7, len(lead))
+
+    def test_enabling_automatic_preserves_layout(self):
+        lead = self.repository['cp']['lead']
+        teaser = lead.create_item('teaser')
+        teaser.read_more = 'foo'
+        teaser.layout = zeit.content.cp.layout.get_layout('two-side-by-side')
+        lead.count = 1
+        lead.automatic = True
+        self.assertEqual(None, lead.values()[0].read_more)
+        self.assertEqual('two-side-by-side', lead.values()[0].layout.id)
+
+    def test_disabling_automatic_preserves_all_teaser_fields(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        auto = lead.values()[0]
+        auto.read_more = 'foo'
+        auto.layout = zeit.content.cp.layout.get_layout('two-side-by-side')
+        lead.automatic = False
+        self.assertEqual('foo', lead.values()[0].read_more)
+        self.assertEqual('two-side-by-side', lead.values()[0].layout.id)

@@ -1,6 +1,6 @@
 from zeit.cms.content.property import ObjectPathAttributeProperty
 from zeit.cms.i18n import MessageFactory as _
-from zeit.content.cp.interfaces import IAutomaticTeaserBlock
+from zeit.content.cp.interfaces import IAutomaticTeaserBlock, ITeaserBlock
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.etree
@@ -261,10 +261,22 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     def _fill_with_placeholders(self):
         if self._automatic:
+            layouts = []
             for key in self:
+                block = self[key]
+                if ITeaserBlock.providedBy(block):
+                    layouts.append(block.layout)
                 del self[key]
             for i in range(self.count):
-                self.create_item('auto-teaser')
+                block = self.create_item('auto-teaser')
+                # self.count might be greater than the number of manual teasers
+                if layouts:
+                    block.layout = layouts.pop(0)
+
+    TEASERBLOCK_FIELDS = (
+        set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
+        - set(zeit.cms.content.interfaces.IXMLRepresentation)
+    )
 
     def _materialize_filled_values(self):
         order = self.keys()
@@ -273,9 +285,12 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 continue
             items = list(old)
             new = self.create_item('teaser')
+            # Copy teaser contents.
             for content in items:
                 new.append(content)
-            new.__name__ = old.__name__
+            # Copy block properties (including __name__ and __parent__)
+            for name in self.TEASERBLOCK_FIELDS:
+                setattr(new, name, getattr(old, name))
             del self[old.__name__]
         # Preserve non-auto blocks.
         self.updateOrder(order)

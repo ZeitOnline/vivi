@@ -15,22 +15,6 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
         super(AutomaticAreaSolrTest, self).setUp()
         self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
 
-    def test_fills_with_placeholders_when_set_to_automatic(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 5
-        lead.automatic = True
-        lead.automatic_type = 'query'
-        self.assertEqual(5, len(lead))
-
-    def test_fills_with_placeholders_when_teaser_count_changed(self):
-        lead = self.repository['cp']['lead']
-        lead.count = 5
-        lead.automatic = True
-        lead.automatic_type = 'query'
-        self.assertEqual(5, len(lead))
-        lead.count = 7
-        self.assertEqual(7, len(lead))
-
     def tests_values_contain_only_blocks_with_content(self):
         lead = self.repository['cp']['lead']
         lead.count = 5
