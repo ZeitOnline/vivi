@@ -253,7 +253,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             for key in self:
                 del self[key]
             for i in range(self.count):
-                self.placeholder_factory()
+                self.create_item('auto-teaser')
 
     def _materialize_filled_values(self):
         order = self.keys()
@@ -279,12 +279,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @property
     def count_to_replace_duplicates(self):
         return max(self.MINIMUM_COUNT_TO_REPLACE_DUPLICATES, 2 * self.count)
-
-    @property
-    def placeholder_factory(self):
-        return zope.component.getAdapter(
-            self, zeit.edit.interfaces.IElementFactory,
-            name='auto-teaser')
 
     @property
     def query(self):
