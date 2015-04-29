@@ -165,8 +165,7 @@ zeit.edit.sortable.BlockSorter = zeit.edit.sortable.Sortable.extend({
 
     get_handle: function(element) {
         var self = this;
-        var result = MochiKit.Selector.findChildElements(
-            element, ['> .block-inner > .edit > .dragger']);
+        var result = jQuery('> .block-inner > .edit > .dragger', element);
         if (result.length) {
             return result[0];
         } else {
@@ -259,8 +258,7 @@ zeit.edit.sortable.BlockMover = zeit.edit.sortable.Movable.extend({
 
     get_handle: function(element) {
         var self = this;
-        var result = MochiKit.Selector.findChildElements(
-            element, ['> .block-inner > .edit > .dragger']);
+        var result = jQuery('> .block-inner > .edit > .dragger', element);
         if (result.length) {
             return result[0];
         } else {

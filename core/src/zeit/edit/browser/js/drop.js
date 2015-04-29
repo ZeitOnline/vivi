@@ -129,11 +129,9 @@ zeit.edit.drop.EditorDroppers =
         var selectors = MochiKit.Base.map(
             function(h) {
                 return '.' + h.activated_by;
-            }, zeit.edit.drop.handlers);
+            }, zeit.edit.drop.handlers).join(',');
 
-        var elements = MochiKit.Selector.findChildElements(
-            self.editor.content, selectors);
-        forEach(elements, function(element) {
+        jQuery(selectors, self.editor.content).each(function(i, element) {
             var droppable_element = self.get_droppable_element_for(element);
             self.dnd_objects.push(
                 new zeit.edit.drop.Droppable(
