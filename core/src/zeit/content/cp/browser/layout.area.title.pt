@@ -1,0 +1,1 @@
+<span class="title" tal:content="python: context.title or (context.referenced_cp is not None and context.referenced_cp.title or '')" />
