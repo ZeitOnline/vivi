@@ -260,7 +260,9 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.referenced_cp = None
         with self.assertRaises(zeit.cms.interfaces.ValidationError):
             interface = zeit.content.cp.interfaces.IArea
-            interface.validateInvariants(self.area)
+            with mock.patch('zeit.find.search.search') as search:
+                search.return_value = []
+                interface.validateInvariants(self.area)
 
     def test_automatic_using_solr_requires_no_referenced_centerpage(self):
         self.area.referenced_cp = None
@@ -268,7 +270,9 @@ class AutomaticAreaCenterPageTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area.raw_query = 'foo'
         with self.assertNothingRaised():
             interface = zeit.content.cp.interfaces.IArea
-            interface.validateInvariants(self.area)
+            with mock.patch('zeit.find.search.search') as search:
+                search.return_value = []
+                interface.validateInvariants(self.area)
 
 
 class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):

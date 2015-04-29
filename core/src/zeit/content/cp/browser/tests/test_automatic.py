@@ -1,4 +1,5 @@
 import lxml.etree
+import mock
 import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
@@ -27,7 +28,9 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl(name='form.automatic').displayValue = ['automatic']
         b.getControl('automatic-area-type', index=0).displayValue = ['query']
         b.getControl('Raw query').value = 'foo'
-        b.getControl('Apply').click()
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = []
+            b.getControl('Apply').click()
         self.assertEllipsis('...Updated on...', b.contents)
 
         with zeit.cms.testing.site(self.getRootFolder()):
