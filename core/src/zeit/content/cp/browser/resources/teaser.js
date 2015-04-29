@@ -127,7 +127,7 @@ zeit.content.cp.teaser.Drag = zeit.edit.context.ContentActionBase.extend({
 
     connect: function() {
         var self = this;
-        forEach($$('div.block.type-teaser'), function(teaser) {
+        jQuery('div.block.type-teaser').each(function(i, teaser) {
             var text =
                 MochiKit.DOM.getFirstElementByTagAndClassName(
                     'div', 'teaser', teaser);
