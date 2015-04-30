@@ -9,7 +9,7 @@ MochiKit.DragAndDrop.Droppables._drop_id = 0;
 MochiKit.DragAndDrop.Droppables.register = function(drop) {
     this.drops.push(drop);
     this._drop_id += 1;
-    this._drops[this._drop_ids] = drop;
+    this._drops[this._drop_id] = drop;
     drop._id = this._drop_id;
 };
 
@@ -52,7 +52,7 @@ MochiKit.DragAndDrop.Draggables.register = function(draggable) {
     }
     this.drags.push(draggable);
     this._drag_id += 1;
-    this._drags[this._drag_ids] = draggable;
+    this._drags[this._drag_id] = draggable;
     draggable._id = this._drag_id;
 };
 
