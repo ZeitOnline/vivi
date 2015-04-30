@@ -37,15 +37,21 @@ MochiKit.Base.update(zeit.cms.ContentDroppable.prototype,
                      MochiKit.DragAndDrop.Droppable.prototype);
 MochiKit.Base.update(zeit.cms.ContentDroppable.prototype, {
     isAccepted: function(element) {
-        if (!(MochiKit.DOM.hasElementClass(element, 'represents-content-object') ||
-              MochiKit.DOM.hasElementClass(element, 'content-drag-pane'))
-             ) {
+        element = jQuery(element);
+        if (!(element.hasClass('represents-content-object') ||
+              element.hasClass('content-drag-pane'))) {
             return false;
         }
-        return ((!this.options.accept) || MochiKit.Iter.some(
-            this.options.accept, function (c) {
-                return MochiKit.DOM.hasElementClass(element, c);
-            }));
+        if (!this.options.accept) {
+            return true;
+        }
+        for (var i = 0; i < this.options.accept.length; i++) {
+            cls = this.options.accept[i];
+            if (element.hasClass(cls)) {
+                return true;
+            }
+        }
+        return false;
     }
 });
 
