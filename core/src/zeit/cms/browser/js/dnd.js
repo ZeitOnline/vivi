@@ -46,7 +46,7 @@ MochiKit.Base.update(zeit.cms.ContentDroppable.prototype, {
             return true;
         }
         for (var i = 0; i < this.options.accept.length; i++) {
-            cls = this.options.accept[i];
+            var cls = this.options.accept[i];
             if (element.hasClass(cls)) {
                 return true;
             }
