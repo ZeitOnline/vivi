@@ -29,6 +29,9 @@ class Element(zope.container.contained.Contained,
     def __eq__(self, other):
         if not zeit.edit.interfaces.IElement.providedBy(other):
             return False
+        if self.__name__ and other.__name__:
+            return self.__name__ == other.__name__
+
         differences = []
         self_xml = zope.security.proxy.getObject(self.xml)
         other_xml = zope.security.proxy.getObject(other.xml)

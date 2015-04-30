@@ -6,6 +6,9 @@ Changes
 
 - Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
 
+- Implement shortcut in IElement.__eq__, use __name__ if present and use
+  XML comparison only as a fallback.
+
 
 2.11.1 (2015-04-28)
 -------------------
