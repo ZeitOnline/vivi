@@ -21,7 +21,7 @@ zeit.content.cp.teaser.Sortable = zeit.edit.sortable.Sortable.extend({
 
     get_sortable_nodes: function() {
         var self = this;
-        return jQuery('li.edit-bar', $(self.container)).toArray();
+        return jQuery('#' + self.container_id + ' li.edit-bar').toArray();
     },
 
     serialize: function() {
@@ -42,7 +42,7 @@ zeit.content.cp.teaser.Sortable = zeit.edit.sortable.Sortable.extend({
 
     activate_content_droppers: function() {
         var self = this;
-        jQuery('li.action-content-droppable', $(self.container)).each(
+        jQuery('#' + self.container_id + ' li.action-content-droppable').each(
             function(i, element) {
             self.dnd_objects.push(
                 new zeit.edit.drop.Droppable(
