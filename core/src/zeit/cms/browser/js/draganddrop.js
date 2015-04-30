@@ -27,7 +27,7 @@ MochiKit.DragAndDrop.Droppables.remove = function(element) {
     var keys = Object.keys(this._drops);
     var remove = [];
     for (var i = 0; i < keys.length; i++) {
-        if (d.element != element) {
+        if (this._drops[keys[i]].element == element) {
             remove.push(keys[i]);
         }
     }
