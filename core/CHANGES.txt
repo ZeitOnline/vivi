@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Disable JS debug logging to console by default.
 
+- Overwrite parts of MochiKit Droppables / Draggables to improve performance.
+
 
 2.45.0 (2015-04-28)
 -------------------
