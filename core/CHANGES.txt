@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
 
+- Make ``browser.testing.create_block`` more resilient against timing issues.
+
 
 3.6.18 (2015-04-28)
 -------------------

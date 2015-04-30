@@ -78,10 +78,11 @@ class EditorHelper(object):
         s.click('link=Struktur')
         s.waitForElementPresent('css=#article-modules .module')
         block_sel = '.block.type-{0}'.format(block)
+        count = s.getCssCount('css={0}'.format(block_sel))
         s.dragAndDropToObject(
             'css=#article-modules .module[cms\\:block_type={0}]'.format(block),
             'css=#editable-body > .landing-zone', '10,10')
-        s.waitForElementPresent('css={0}'.format(block_sel))
+        s.waitForCssCount('css={0}'.format(block_sel), count + 1)
         if wait_for_inline:
             s.waitForElementPresent(
                 'css={0} form.inline-form.wired'.format(block_sel))

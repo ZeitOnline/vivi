@@ -21,7 +21,7 @@ setup(
         'gocept.lxml>=0.2.1',
         'gocept.mochikit>=1.3.2',
         'gocept.pagelet',
-        'gocept.selenium>=2.2.0',
+        'gocept.selenium>=2.4.0',
         'grokcore.component>=2.2',
         'iso8601>=0.1.2',
         'lovely.remotetask',
