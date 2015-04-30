@@ -88,8 +88,9 @@ register(datetime_widget_js)
 
 SplitDirResource('namespace.js')
 SplitDirResource('logging.js', depends=[namespace_js, mochikit, jquery])
+SplitDirResource('draganddrop.js', depends=[mochikit])
 SplitDirResource('base.js', depends=[
-    namespace_js, mochikit, jquery, jqueryui, select2_de])
+    namespace_js, draganddrop_js, mochikit, jquery, jqueryui, select2_de])
 
 base = Group([
     namespace_js, logging_js, base_js,
