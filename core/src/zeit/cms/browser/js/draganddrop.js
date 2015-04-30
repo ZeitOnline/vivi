@@ -24,16 +24,16 @@ MochiKit.DragAndDrop.Droppables.unregister = function(drop) {
 
 MochiKit.DragAndDrop.Droppables.remove = function(element) {
     element = MochiKit.DOM.getElement(element);
+    var remove_keys = [];
     var keys = Object.keys(this._drops);
-    var remove = [];
     for (var i = 0; i < keys.length; i++) {
         if (this._drops[keys[i]].element == element) {
-            remove.push(keys[i]);
+            remove_keys.push(keys[i]);
         }
     }
 
-    for (i = 0; i < remove.length; i++) {
-        this.unregister(remove[i]);
+    for (i = 0; i < remove_keys.length; i++) {
+        this.unregister(this._drops[remove_keys[i]]);
     }
 };
 
