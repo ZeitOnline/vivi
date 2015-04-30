@@ -105,7 +105,7 @@ def create_access_token(argv=None):
     login_url = 'https://www.facebook.com/dialog/oauth?' + urllib.urlencode({
         'client_id': options.app_id,
         'redirect_uri': options.redirect_uri,
-        'scope': 'manage_pages,publish_actions',
+        'scope': 'manage_pages,publish_pages',
     })
     print u'Bitte bei Facebook anmelden und dann diese URL öffnen:\n%s' % (
         login_url)
