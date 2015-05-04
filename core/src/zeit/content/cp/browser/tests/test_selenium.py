@@ -585,17 +585,6 @@ class TestTeaserDragging(zeit.content.cp.testing.SeleniumTestCase):
         s.dragAndDropToObject(
             'css=.teaser-list > .teaser',
             '//li[@uniqueid="Clip"]')
-        # We cannot use waitForText, since the DOM element changes in-between
-        # but Selenium retrieves the element once and only checks the value
-        # repeatedly, thus leading to an error that DOM is no longer attached.
-        for i in range(10):
-            try:
-                s.assertText('//li[@uniqueid="Clip"]', '*c1-2*')
-                break
-            except:
-                s.pause(100)
-                continue
-        s.assertText('//li[@uniqueid="Clip"]', '*c1-2*')
-
+        s.waitForText('//li[@uniqueid="Clip"]', '*c1-2*')
         # Verify text still in the drag source:
         s.verifyText('css=.teaser-list > .teaser', '*c1 teaser*')
