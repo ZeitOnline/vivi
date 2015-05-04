@@ -3,4 +3,5 @@
     <area kind="single">single</area>
     <area kind="duo">duo</area>
     <area kind="minor">minor</area>
+    <area kind="major">major</area>
 </areas>
