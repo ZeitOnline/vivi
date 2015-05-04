@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.11.2 (unreleased)
+2.11.2 (2015-05-04)
 -------------------
 
 - Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
