@@ -1,0 +1,22 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:browser="http://namespaces.zope.org/browser"
+  i18n_domain="zope">
+
+  <browser:page
+    name="metadata.html"
+    for="..interfaces.IDynamicFolder"
+    class=".folder.DisplayForm"
+    permission="zope.View"
+    menu="zeit-context-views" title="View metadata"
+    />
+
+  <browser:page
+    name="edit.html"
+    for="..interfaces.IDynamicFolder"
+    class=".folder.EditForm"
+    permission="zeit.EditContent"
+    menu="zeit-context-views" title="Edit metadata"
+    />
+
+</configure>

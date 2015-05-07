@@ -1,9 +1,32 @@
 # coding: utf8
+from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.repository.interfaces
+import zope.schema
 
 
 DAV_NAMESPACE = 'http://namespaces.zeit.de/CMS/zeit.content.dynamicfolder'
 
 
-class IDynamicFolder(zeit.cms.repository.interfaces.IFolder):
-    pass
+class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
+    """Interface for the Content-Type DynamicFolder.
+
+    Does not specify that it is a container, since it is only a container
+    inside the respository, but not when checked out.
+
+    """
+
+    config_file_id = zope.schema.TextLine(
+        title=_(u'The uniqueId of the XML config file.'),
+        required=True)
+
+
+class IRepositoryDynamicFolder(
+        IDynamicFolder,
+        zeit.cms.repository.interfaces.IFolder):
+    """DynamicFolder is a container inside the repository."""
+
+
+class ILocalDynamicFolder(
+        IDynamicFolder,
+        zeit.cms.workingcopy.interfaces.ILocalContent):
+    """DynamicFolder is a simple object, i.e. no folder, when checked out."""

@@ -15,9 +15,14 @@ setup(
     license='BSD',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
-        'zeit.cms',
-        'zope.interface',
+        'grokcore.component',
         'setuptools',
+        'zeit.cms',
+        'zeit.connector',
+        'zope.container',
+        'zope.interface',
+        'zope.schema',
+        'zope.security',
     ],
     entry_points={
     },
