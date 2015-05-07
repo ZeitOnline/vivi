@@ -15,6 +15,9 @@ setup(
     license='BSD',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
+        'zeit.cms',
+        'zope.interface',
+        'setuptools',
     ],
     entry_points={
     },
