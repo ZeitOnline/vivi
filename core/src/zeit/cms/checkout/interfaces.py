@@ -92,7 +92,7 @@ class ILocalContent(zope.interface.Interface):
 
 
 class IRepositoryContent(zope.interface.Interface):
-    """Content stored in a repostitory.
+    """Content stored in a repository.
 
     Adapter to place content into the (proper) repository. Adapting content to
     IRepositoryContent returns a new objects *and* places it into the proper
