@@ -8,6 +8,19 @@
 
   <grok:grok package="." />
 
+  <class class=".folder.VirtualContent">
+    <require
+      interface=".interfaces.IVirtualContent"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IVirtualContent"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+  <adapter factory=".folder.VirtualContentListRepresentation" />
+
   <class class=".folder.RepositoryDynamicFolder">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require like_class="zeit.cms.repository.folder.Folder" />
