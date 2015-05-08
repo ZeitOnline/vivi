@@ -204,7 +204,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         # this also makes it mandatory to have according rules in the kind
         # source definition
         if self.is_teaserbar:
-            return 'single'
+            return 'parquet'
         if self.__name__ == 'informatives':
             return 'minor'
         if self.__name__ == 'lead':
