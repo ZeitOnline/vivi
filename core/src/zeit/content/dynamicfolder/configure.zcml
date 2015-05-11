@@ -3,23 +3,7 @@
   xmlns:grok="http://namespaces.zope.org/grok"
   i18n_domain="zeit.cms">
 
-  <!-- include zeit.edit early to make sure the grokkers are grokked. -->
-  <include package="zeit.edit" />
-
   <grok:grok package="." />
-
-  <class class=".folder.VirtualContent">
-    <require
-      interface=".interfaces.IVirtualContent"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IVirtualContent"
-      permission="zeit.EditContent"
-      />
-  </class>
-
-  <adapter factory=".folder.VirtualContentListRepresentation" />
 
   <class class=".folder.RepositoryDynamicFolder">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />

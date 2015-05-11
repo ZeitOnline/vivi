@@ -1,5 +1,7 @@
+# coding: utf-8
 import unittest
 import zeit.cms.testcontenttype.testcontenttype
+import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.testing
 
 
@@ -18,10 +20,14 @@ class TestContainerMethodsRespectVirtualChildren(
             'http://xml.zeit.de/dynamicfolder/xanten', xanten.uniqueId)
 
     def test_folder_keys_contains_children_defined_in_xml_config(self):
-        self.assertEqual(['xanten', 'xinjiang'], list(self.folder.keys()))
+        self.assertEqual(
+            ['xaernten', 'xanten', 'xinjiang'],
+            sorted(list(iter(self.folder))))
 
     def test_folder_iter_contains_children_defined_in_xml_config(self):
-        self.assertEqual(['xanten', 'xinjiang'], list(iter(self.folder)))
+        self.assertEqual(
+            ['xaernten', 'xanten', 'xinjiang'],
+            sorted(list(iter(self.folder))))
 
     def test_folder_getitem_returns_child_with_basic_info_set(self):
         child = self.folder['xanten']
@@ -32,17 +38,23 @@ class TestContainerMethodsRespectVirtualChildren(
         self.assert_xanten_has_basic_info_set(child)
 
     def test_folder_values_returns_childs_with_basic_info_set(self):
-        children = list(self.folder.values())
-        self.assert_xanten_has_basic_info_set(children[0])
+        for child in self.folder.values():
+            if child.__name__ == 'xanten':
+                self.assert_xanten_has_basic_info_set(child)
+                break
+        else:
+            self.fail('Entry xanten not found.')
 
     def test_folder_len_counts_children_defined_in_xml_config(self):
-        self.assertEqual(2, len(self.folder))
+        self.assertEqual(3, len(self.folder))
 
     def test_folder_items_returns_childs_with_basic_info_set(self):
-        items = list(self.folder.items())
-        key, value = items[0]
-        self.assertEqual('xanten', key)
-        self.assert_xanten_has_basic_info_set(value)
+        for key, value in self.folder.items():
+            if key == 'xanten':
+                self.assert_xanten_has_basic_info_set(value)
+                break
+        else:
+            self.fail('Entry xanten not found.')
 
     def test_folder_contains_children_defined_in_xml_config(self):
         self.assertIn('xanten', self.folder)
@@ -72,8 +84,8 @@ class TestDynamicFolder(
     def test_folder_can_also_contain_normal_content(self):
         self.folder['foo'] = (
             zeit.cms.testcontenttype.testcontenttype.TestContentType())
-        self.assertEqual(3, len(self.folder))
-        self.assertEqual(['foo', 'xanten', 'xinjiang'], list(self.folder))
+        self.assertIn('foo', self.folder)
+        self.assertIn('xanten', self.folder)
 
     @unittest.expectedFailure
     def test_deleting_manual_content_reveals_virtual_content_again(self):
@@ -85,3 +97,12 @@ class TestDynamicFolder(
 
         del self.folder['xanten']
         self.assertEqual('Xanten', self.folder['xanten'].title)
+
+    def test_fills_in_template_placeholders_from_config_entries(self):
+        cp = self.folder['xanten']
+        self.assertTrue(zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
+        self.assertEqual('Xanten', cp.title)
+
+    def test_template_handles_umlauts_correctly(self):
+        cp = self.folder['xaernten']
+        self.assertEqual(u'Xärnten', cp.title)

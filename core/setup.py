@@ -16,10 +16,12 @@ setup(
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
         'grokcore.component',
+        'jinja2',
         'plone.testing',
         'setuptools',
         'zeit.cms',
         'zeit.connector',
+        'zeit.content.cp',
         'zope.container',
         'zope.interface',
         'zope.schema',

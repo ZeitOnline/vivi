@@ -1,13 +1,12 @@
 # coding: utf8
+from StringIO import StringIO
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
+import jinja2
 import lxml.ElementInclude
-import lxml.etree
+import lxml.objectify
 import persistent
-import zeit.cms.browser.interfaces
-import zeit.cms.browser.listing
 import zeit.cms.content.dav
-import zeit.cms.content.sources
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
@@ -50,86 +49,6 @@ class DynamicFolderBase(object):
         ('config_file',))
 
 
-class VirtualContent(object):
-    """Represents content objects that are created on-the-fly.
-
-    DynamicFolder displays content that is not present on the DAV, but defined
-    via XML. To display those objects, they are created on-the-fly using this
-    class.
-
-    The content is virtual, since it will not be persisted on the DAV.
-
-    Uses the same default values as defined in the schema of ICommonMetadata.
-
-    """
-
-    zope.interface.implements(
-        zeit.content.dynamicfolder.interfaces.IVirtualContent)
-
-    __name__ = None
-    uniqueId = None
-    year = None
-    volume = None
-    page = None
-    ressort = None
-    sub_ressort = None
-    channels = []
-    lead_candidate = True
-    printRessort = u'n/a'
-    authorships = []
-    authors = []
-    keywords = []
-    serie = None
-    copyrights = None
-    supertitle = None
-    byline = None
-    title = None
-    subtitle = None
-    teaserTitle = None
-    teaserText = None
-    teaserSupertitle = None
-    vg_wort_id = None
-    dailyNewsletter = True
-    commentsAllowed = True
-    commentSectionEnable = True
-    banner = True
-    banner_id = None
-    product = zeit.cms.content.sources.Product(u'ZEDE')
-    product_text = None
-    foldable = True
-    minimal_header = False
-    color_scheme = u'Redaktion'
-    countings = True
-    is_content = True
-    breaking_news = False
-    push_news = False
-    in_rankings = True
-    cap_title = None
-    mobile_alternative = None
-    deeplink_url = None
-    breadcrumb_title = None
-    rebrush_website_content = False
-
-
-class VirtualContentListRepresentation(
-        zeit.cms.browser.listing.CommonListRepresentation):
-    """Wraps virtual content to display some attributes in the container view.
-
-    Since VirtualContent implements ICommonMetadata, we can reuse
-    CommonListRepresentation here.
-
-    """
-
-    zope.interface.implements(zeit.cms.browser.interfaces.IListRepresentation)
-    zope.component.adapts(
-        zeit.content.dynamicfolder.interfaces.IVirtualContent,
-        zeit.cms.browser.interfaces.ICMSLayer)
-
-    def _dc_date_helper(self, attribute):
-        """Overwrite, since the virtual content does not implement the DC."""
-        return None
-
-
 class RepositoryDynamicFolder(
         DynamicFolderBase,
         zeit.cms.repository.folder.Folder):
@@ -137,13 +56,6 @@ class RepositoryDynamicFolder(
 
     zope.interface.implements(
         zeit.content.dynamicfolder.interfaces.IRepositoryDynamicFolder)
-
-    def create_virtual_content(self, key):
-        content = VirtualContent()
-        content.__name__ = key
-        content.title = self.virtual_content[key]
-        content.uniqueId = '/'.join(x.strip('/') for x in [self.uniqueId, key])
-        return content
 
     def __getitem__(self, key):
         """Overwrite to return VirtualContent object for virtual content.
@@ -158,25 +70,55 @@ class RepositoryDynamicFolder(
         try:
             content = self.repository.getUncontainedContent(unique_id)
         except KeyError:
-            content = self.create_virtual_content(key)
+            content = self._create_virtual_content(key)
         zope.interface.alsoProvides(
             content, zeit.cms.repository.interfaces.IRepositoryContent)
         return zope.container.contained.contained(
             content, self, content.__name__)
 
     @zope.cachedescriptors.property.Lazy
-    def virtual_content(self):
+    def cp_template(self):
+        template_file = self.config.head.cp_template.text
+        return jinja2.Template(
+            zeit.connector.interfaces.IResource(
+                zeit.cms.interfaces.ICMSContent(template_file)).data.read())
+
+    def _create_virtual_content(self, key):
+        resource = zeit.connector.resource.Resource(
+            id=self._get_id_for_name(key),
+            name=key,
+            # XXX Make type configurable (<attribute> in the cp_template?).
+            type='centerpage-2009',
+            data=StringIO(self.cp_template.render(
+                **self.virtual_content[key]['attrib'])),
+            # XXX Convert <attribute>s of cp_template to DAV properties?
+            properties={},
+        )
+        content = zeit.cms.interfaces.ICMSContent(resource)
+        # Setting __name__ is normally done by
+        # zeit.cms.repository.Repository._get_uncontained_copy().
+        content.__name__ = resource.__name__
+        zope.interface.alsoProvides(
+            content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
+        return content
+
+    @zope.cachedescriptors.property.Lazy
+    def config(self):
         """Read virtual content from XML files and return as dict."""
         config = lxml.objectify.fromstring(zeit.connector.interfaces.IResource(
             self.config_file).data.read())
         lxml.ElementInclude.include(config, unique_id_loader)
+        return config
 
+    @zope.cachedescriptors.property.Lazy
+    def virtual_content(self):
+        """Read virtual content from XML files and return as dict."""
         contents = {}
-        for child in config.find('body').getchildren():
+        for child in self.config.body.getchildren():
             for letter in child.getchildren():
                 for tag in letter.getchildren():
                     key = tag.get('url_value')
-                    contents[key] = tag.get('lexical_value')
+                    contents[key] = {'attrib': tag.attrib, 'text': tag.text}
         return contents
 
     @property
