@@ -32,7 +32,7 @@ class PersistentUnknownResource(UnknownResource,
     """An unknown resource that is also persistent.
 
     We create a new class for this to be backward compatible. Just adding
-    persistent.Persisten above will yield an error:
+    persistent.Persistent above will yield an error:
 
         TypeError: ('object.__new__(UnknownResource) is not safe,
             use persistent.Persistent.__new__()',
