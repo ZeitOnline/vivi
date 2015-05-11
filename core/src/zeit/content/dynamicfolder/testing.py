@@ -1,4 +1,5 @@
 from zeit.cms.repository.unknown import PersistentUnknownResource
+import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -40,6 +41,7 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
     def create_dynamic_folder(self):
         folder = zeit.content.dynamicfolder.folder.RepositoryDynamicFolder()
-        folder.config_file_id = 'http://xml.zeit.de/data/config.xml'
+        folder.config_file = zeit.cms.interfaces.ICMSContent(
+            'http://xml.zeit.de/data/config.xml')
         self.repository['dynamicfolder'] = folder
         return folder

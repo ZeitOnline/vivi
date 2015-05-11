@@ -46,7 +46,7 @@ class DynamicFolderBase(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.dynamicfolder.interfaces.IDynamicFolder,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('config_file_id',))
+        ('config_file',))
 
 
 class VirtualContent(object):
@@ -166,8 +166,7 @@ class RepositoryDynamicFolder(
     @zope.cachedescriptors.property.Lazy
     def virtual_content(self):
         """Read virtual content from XML files and return as dict."""
-        config_file = zeit.cms.interfaces.ICMSContent(self.config_file_id)
-        config = lxml.etree.fromstring(config_file.data)
+        config = lxml.etree.fromstring(self.config_file.data)
         lxml.ElementInclude.include(config, unique_id_loader)
 
         contents = {}

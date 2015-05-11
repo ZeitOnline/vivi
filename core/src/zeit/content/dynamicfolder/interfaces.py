@@ -28,9 +28,9 @@ class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
 
     """
 
-    config_file_id = zope.schema.TextLine(
+    config_file = zope.schema.Choice(
         title=_(u'The uniqueId of the XML config file.'),
-        required=True)
+        source=zeit.cms.content.contentsource.cmsContentSource)
 
 
 class IRepositoryDynamicFolder(
