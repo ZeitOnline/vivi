@@ -29,7 +29,8 @@ class DynamicLayer(plone.testing.Layer):
                 </body>
             </config>
             """)
-            folder['children.xml'] = PersistentUnknownResource(data=u"""
+            folder['children.xml'] = PersistentUnknownResource(data=u"""\
+<?xml version="1.0" encoding="ISO-8859-1"?>
             <weighted-tags>
                 <letter id="x" Location_count="2">
                     <tag url_value="xanten" lexical_value="Xanten" />

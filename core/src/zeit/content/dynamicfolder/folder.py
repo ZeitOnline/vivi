@@ -27,9 +27,10 @@ def unique_id_loader(href, parse, encoding=None):
     return the DAV content.
 
     """
-    data = zeit.cms.interfaces.ICMSContent(href).data
+    data = zeit.connector.interfaces.IResource(
+        zeit.cms.interfaces.ICMSContent(href)).data.read()
     if parse == "xml":
-        return lxml.etree.fromstring(data.encode('utf-8'))
+        return lxml.objectify.fromstring(data)
     return data
 
 
@@ -166,7 +167,8 @@ class RepositoryDynamicFolder(
     @zope.cachedescriptors.property.Lazy
     def virtual_content(self):
         """Read virtual content from XML files and return as dict."""
-        config = lxml.etree.fromstring(self.config_file.data)
+        config = lxml.objectify.fromstring(zeit.connector.interfaces.IResource(
+            self.config_file).data.read())
         lxml.ElementInclude.include(config, unique_id_loader)
 
         contents = {}
