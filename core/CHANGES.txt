@@ -7,6 +7,8 @@ zeit.content.cp changes
 
 - Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
 
+- Preserve ZMO compat, add new kind descriptors (ZON-1710).
+
 
 3.0.0b12 (2015-04-29)
 ---------------------

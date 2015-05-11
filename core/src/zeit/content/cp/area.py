@@ -8,6 +8,7 @@ import lxml.objectify
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
+import zeit.content.cp.layout
 import zeit.edit.container
 import zope.component
 import zope.container.interfaces
@@ -77,6 +78,9 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     _kind = ObjectPathAttributeProperty(
         '.', 'kind')
+
+    _layout = ObjectPathAttributeProperty(
+        '.', 'module')
 
     supertitle = ObjectPathAttributeProperty(
         '.', 'supertitle')
@@ -200,7 +204,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         # this also makes it mandatory to have according rules in the kind
         # source definition
         if self.is_teaserbar:
-            return 'single'
+            return 'parquet'
         if self.__name__ == 'informatives':
             return 'minor'
         if self.__name__ == 'lead':
@@ -210,6 +214,15 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @kind.setter
     def kind(self, value):
         self._kind = value
+
+    @property
+    def layout(self):
+        # XXX Needed for compat reasons in zeit.web.magazin
+        return zeit.content.cp.layout.BlockLayout(self._layout, '', None, [])
+
+    @layout.setter
+    def layout(self, value):
+        raise NotImplementedError()
 
     @property
     def overflow_into(self):
