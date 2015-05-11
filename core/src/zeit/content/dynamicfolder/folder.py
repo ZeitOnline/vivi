@@ -33,6 +33,16 @@ def unique_id_loader(href, parse, encoding=None):
     return data
 
 
+class VirtualProperties(grok.Adapter, dict):
+    """Properties for virtual content. Actually returns no properties."""
+
+    grok.context(zeit.content.dynamicfolder.interfaces.IVirtualContent)
+    grok.implements(zeit.connector.interfaces.IWebDAVProperties)
+
+    def __repr__(self):
+        return object.__repr__(self)
+
+
 class DynamicFolderBase(object):
     """Base class for the dynamic folder that holds all attributes.
 
@@ -71,6 +81,7 @@ class RepositoryDynamicFolder(
             content = self.repository.getUncontainedContent(unique_id)
         except KeyError:
             content = self._create_virtual_content(key)
+            self.repository.uncontained_content[unique_id] = content
         zope.interface.alsoProvides(
             content, zeit.cms.repository.interfaces.IRepositoryContent)
         return zope.container.contained.contained(

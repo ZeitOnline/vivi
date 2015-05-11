@@ -59,7 +59,6 @@ class TestContainerMethodsRespectVirtualChildren(
     def test_folder_contains_children_defined_in_xml_config(self):
         self.assertIn('xanten', self.folder)
 
-    @unittest.expectedFailure
     def test_setting_content_at_key_of_virtual_child_overwrites_it(self):
         content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
         content.title = 'FOO'
@@ -87,7 +86,6 @@ class TestDynamicFolder(
         self.assertIn('foo', self.folder)
         self.assertIn('xanten', self.folder)
 
-    @unittest.expectedFailure
     def test_deleting_manual_content_reveals_virtual_content_again(self):
         content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
         content.title = 'FOO'

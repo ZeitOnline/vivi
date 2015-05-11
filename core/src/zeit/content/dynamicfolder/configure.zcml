@@ -5,6 +5,17 @@
 
   <grok:grok package="." />
 
+  <class class=".folder.VirtualProperties">
+    <require
+      interface="zeit.connector.interfaces.IWebDAVReadProperties"
+      permission="zope.View"
+      />
+    <require
+      interface="zeit.connector.interfaces.IWebDAVWriteProperties"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".folder.RepositoryDynamicFolder">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require like_class="zeit.cms.repository.folder.Folder" />
