@@ -52,7 +52,7 @@ class RegionTest(
 
     def make_one(self):
         selector = 'css=.action-cp-body-module-droppable'
-        module = self.get_module('body', 'Leer')
+        module = self.get_module('body', 'Empty')
         self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Regionen')
         self.selenium.waitForElementPresent(module)
@@ -70,7 +70,7 @@ class AreaTest(
         selector = 'css={} .action-cp-region-module-droppable'.format(
             parent_selector)
 
-        module = self.get_module('region', 'single')
+        module = self.get_module('region', 'solo')
         self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Flächen')
         self.selenium.waitForElementPresent(module)
