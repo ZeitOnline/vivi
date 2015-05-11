@@ -209,7 +209,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             return 'minor'
         if self.__name__ == 'lead':
             return 'major'
-        return self._kind or 'single'
+        return self._kind or 'solo'
 
     @kind.setter
     def kind(self, value):
