@@ -9,8 +9,7 @@ class TestContainerMethodsRespectVirtualChildren(
 
     def setUp(self):
         super(TestContainerMethodsRespectVirtualChildren, self).setUp()
-        self.create_xml_config()
-        self.folder = self.create_dynamic_folder()
+        self.folder = self.repository['dynamicfolder']
 
     def assert_xanten_has_basic_info_set(self, xanten):
         self.assertEqual('xanten', xanten.__name__)
@@ -68,8 +67,7 @@ class TestDynamicFolder(
 
     def setUp(self):
         super(TestDynamicFolder, self).setUp()
-        self.create_xml_config()
-        self.folder = self.create_dynamic_folder()
+        self.folder = self.repository['dynamicfolder']
 
     def test_folder_can_also_contain_normal_content(self):
         self.folder['foo'] = (
