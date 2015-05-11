@@ -328,7 +328,7 @@ class TestMoving(zeit.content.cp.testing.SeleniumTestCase):
         # existing regions with areas and blocks inside
         s.assertCssCount('css=.type-region', 2)
         selector = 'css=.action-cp-body-module-droppable'
-        module = self.get_module('body', 'Leer')
+        module = self.get_module('body', 'Empty')
         self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Regionen')
         self.selenium.waitForElementPresent(module)
