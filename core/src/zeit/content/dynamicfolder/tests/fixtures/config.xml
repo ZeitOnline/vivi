@@ -1,8 +1,11 @@
-<config xmlns:xi="http://www.w3.org/2001/XInclude">
+<config>
   <head>
     <cp_template>http://xml.zeit.de/data/template.xml</cp_template>
   </head>
   <body>
-    <xi:include href="http://xml.zeit.de/data/tags.xml"/>
+    <include
+      href="http://xml.zeit.de/data/tags.xml"
+      xpointer="//tag[@type='Location']"
+      />
   </body>
 </config>

@@ -3,7 +3,6 @@ from StringIO import StringIO
 from zeit.cms.i18n import MessageFactory as _
 import grokcore.component as grok
 import jinja2
-import lxml.ElementInclude
 import lxml.objectify
 import persistent
 import zeit.cms.content.dav
@@ -15,22 +14,6 @@ import zeit.content.dynamicfolder.interfaces
 import zope.cachedescriptors.property
 import zope.container.contained
 import zope.interface
-
-
-def unique_id_loader(href, parse, encoding=None):
-    """Resolves uniqueIds during XIncludes.
-
-    When performing XInclude via lxml.ElementInclude.include, the href
-    attribute is normally resolved as a URL. Since we reference data on the
-    DAV, we need to resolve the href attribute using ICMSContent, which will
-    return the DAV content.
-
-    """
-    data = zeit.connector.interfaces.IResource(
-        zeit.cms.interfaces.ICMSContent(href)).data.read()
-    if parse == "xml":
-        return lxml.objectify.fromstring(data)
-    return data
 
 
 class VirtualProperties(grok.Adapter, dict):
@@ -115,21 +98,45 @@ class RepositoryDynamicFolder(
 
     @zope.cachedescriptors.property.Lazy
     def config(self):
-        """Read virtual content from XML files and return as dict."""
+        """Read virtual content from XML files and return as dict.
+
+        Supports the following include syntax:
+          <include
+            href="http://xml.zeit.de/path/to/file"
+            xpointer="//some_xpath[@expression='goes here']"
+            />
+
+        We'd love to use xi:include for this, but lxml.ElementInclude (which
+        allows overriding URL resolution) does not support xpointer, sigh.
+
+        """
         config = lxml.objectify.fromstring(zeit.connector.interfaces.IResource(
             self.config_file).data.read())
-        lxml.ElementInclude.include(config, unique_id_loader)
+        for include in config.xpath('//include'):
+            parent = include.getparent()
+            index = parent.index(include)
+            parent.remove(include)
+            for i, node in enumerate(self._resolve_include(include)):
+                parent.insert(index + i, node)
         return config
+
+    @staticmethod
+    def _resolve_include(include):
+        data = zeit.connector.interfaces.IResource(
+            zeit.cms.interfaces.ICMSContent(include.get('href'))).data.read()
+        document = lxml.objectify.fromstring(data)
+        if include.get('xpointer'):
+            return document.xpath(include.get('xpointer'))
+        else:
+            return [document]
 
     @zope.cachedescriptors.property.Lazy
     def virtual_content(self):
         """Read virtual content from XML files and return as dict."""
         contents = {}
-        for child in self.config.body.getchildren():
-            for letter in child.getchildren():
-                for tag in letter.getchildren():
-                    key = tag.get('url_value')
-                    contents[key] = {'attrib': tag.attrib, 'text': tag.text}
+        for entry in self.config.body.getchildren():
+            key = entry.get('url_value')
+            contents[key] = {'attrib': entry.attrib, 'text': entry.text}
         return contents
 
     @property

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <weighted-tags>
-  <letter id="x" Location_count="2">
-    <tag url_value="xanten" lexical_value="Xanten" />
-    <tag url_value="xinjiang" lexical_value="Xinjiang" />
-    <tag url_value="xaernten" lexical_value="Xärnten" />
+  <letter id="x" Location_count="3" Person_count="1">
+    <tag type="Location" url_value="xanten" lexical_value="Xanten" />
+    <tag type="Location" url_value="xinjiang" lexical_value="Xinjiang" />
+    <tag type="Location" url_value="xaernten" lexical_value="Xärnten" />
+    <tag type="Person" url_value="claudio-abbado" lexical_value="Abbado,Claudio" />
   </letter>
 </weighted-tags>
