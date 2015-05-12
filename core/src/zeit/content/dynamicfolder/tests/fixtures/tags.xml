@@ -3,7 +3,7 @@
   <letter id="x" Location_count="3" Person_count="1">
     <tag type="Location" url_value="xanten" lexical_value="Xanten" />
     <tag type="Location" url_value="xinjiang" lexical_value="Xinjiang" />
-    <tag type="Location" url_value="xaernten" lexical_value="Xärnten" />
+    <tag type="Location" url_value="xaernten" lexical_value="Xärnten &amp; mehr" />
     <tag type="Person" url_value="claudio-abbado" lexical_value="Abbado,Claudio" />
   </letter>
 </weighted-tags>

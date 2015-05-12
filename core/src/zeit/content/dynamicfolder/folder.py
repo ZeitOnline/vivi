@@ -75,7 +75,8 @@ class RepositoryDynamicFolder(
         template_file = self.config.head.cp_template.text
         return jinja2.Template(
             zeit.connector.interfaces.IResource(
-                zeit.cms.interfaces.ICMSContent(template_file)).data.read())
+                zeit.cms.interfaces.ICMSContent(template_file)).data.read(),
+            autoescape=True, extensions=['jinja2.ext.autoescape'])
 
     def _create_virtual_content(self, key):
         resource = zeit.connector.resource.Resource(

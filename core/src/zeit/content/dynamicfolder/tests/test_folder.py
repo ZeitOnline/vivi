@@ -101,6 +101,6 @@ class TestDynamicFolder(
         self.assertTrue(zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
         self.assertEqual('Xanten', cp.title)
 
-    def test_template_handles_umlauts_correctly(self):
+    def test_template_handles_umlauts_and_xml_special_chars(self):
         cp = self.folder['xaernten']
-        self.assertEqual(u'Xärnten', cp.title)
+        self.assertEqual(u'Xärnten & mehr', cp.title)
