@@ -134,8 +134,9 @@ class RepositoryDynamicFolder(
     def virtual_content(self):
         """Read virtual content from XML files and return as dict."""
         contents = {}
+        key_getter = self.config.body.get('key', 'text()')
         for entry in self.config.body.getchildren():
-            key = entry.get('url_value')
+            key = unicode(entry.xpath(key_getter)[0])
             contents[key] = {'attrib': entry.attrib, 'text': entry.text}
         return contents
 

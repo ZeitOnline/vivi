@@ -2,7 +2,7 @@
   <head>
     <cp_template>http://xml.zeit.de/data/template.xml</cp_template>
   </head>
-  <body>
+  <body key="@url_value">
     <include
       href="http://xml.zeit.de/data/tags.xml"
       xpointer="//tag[@type='Location']"
