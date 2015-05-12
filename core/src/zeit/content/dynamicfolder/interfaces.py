@@ -29,7 +29,7 @@ class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
     """
 
     config_file = zope.schema.Choice(
-        title=_(u'The uniqueId of the XML config file.'),
+        title=_(u'Configuration file'),
         source=zeit.cms.content.contentsource.cmsContentSource)
 
 

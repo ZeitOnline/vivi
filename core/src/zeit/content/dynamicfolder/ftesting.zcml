@@ -5,6 +5,7 @@
    >
 
   <include package="zeit.cms" file="ftesting.zcml" />
+  <includeOverrides package="zeit.workflow" file="ftesting.zcml" />
 
   <include package="zeit.content.cp" />
 
