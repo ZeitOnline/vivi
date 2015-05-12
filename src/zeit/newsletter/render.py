@@ -21,9 +21,11 @@ class Renderer(object):
         )
 
     def get_format(self, content, format):
-        return urllib2.urlopen(
-            self.url(
-                content, format=format), timeout=60).read().decode('utf-8')
+        url = self.url(content, format=format)
+        try:
+            return urllib2.urlopen(url, timeout=60).read().decode('utf-8')
+        except Exception, e:
+            raise RuntimeError('Failed to load %r: %s' % (url, e))
 
     def url(self, content, **params):
         if not params:
