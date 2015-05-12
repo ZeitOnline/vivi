@@ -1,0 +1,20 @@
+<centerpage xmlns:cp="http://namespaces.zeit.de/CMS/cp" type="centerpage">
+  <head>
+  </head>
+  <body>
+    <title>{{lexical_value}}</title>
+    <cluster area="feature" kind="solo" visible="True">
+      <region area="lead" kind="single"
+              count="2" automatic="True" automatic_type="query"
+              visible="True" hide-dupes="True">
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-1"/>
+        <container cp:type="auto-teaser" module="buttons"
+                   visible="True" cp:__name__="id-2"/>
+        <raw_query>
+          published:"published" AND keywords: {{url_value}}
+        </raw_query>
+      </region>
+    </cluster>
+  </body>
+</centerpage>

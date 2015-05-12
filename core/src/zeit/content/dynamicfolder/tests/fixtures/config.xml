@@ -1,0 +1,8 @@
+<config xmlns:xi="http://www.w3.org/2001/XInclude">
+  <head>
+    <cp_template>http://xml.zeit.de/data/template.xml</cp_template>
+  </head>
+  <body>
+    <xi:include href="http://xml.zeit.de/data/tags.xml"/>
+  </body>
+</config>
