@@ -62,7 +62,9 @@ class RepositoryDynamicFolder(
         __traceback_info__ = (key, unique_id)
         try:
             content = self.repository.getUncontainedContent(unique_id)
-        except KeyError:
+        except KeyError as error:
+            if key not in self.virtual_content:
+                raise error
             content = self._create_virtual_content(key)
             self.repository.uncontained_content[unique_id] = content
         zope.interface.alsoProvides(
