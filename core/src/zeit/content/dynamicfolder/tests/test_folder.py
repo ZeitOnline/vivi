@@ -67,6 +67,12 @@ class TestContainerMethodsRespectVirtualChildren(
         self.folder['xanten'] = content
         self.assertEqual('FOO', self.folder['xanten'].title)
 
+    def test_delete_materialized_content_goes_back_to_virtual(self):
+        content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
+        self.folder['xanten'] = content
+        del self.folder['xanten']
+        self.assertIn('xanten', self.folder)
+
     def test_checkin_virtual_content_materializes_it(self):
         # Fill cached values, since they must not interfere with ZODB/pickling.
         self.folder.cp_template
@@ -78,7 +84,6 @@ class TestContainerMethodsRespectVirtualChildren(
                 co.title = 'foo'
             self.assertEqual('foo', self.folder['xanten'].title)
 
-    @unittest.expectedFailure
     def test_delete_on_virtual_child_does_nothing(self):
         del self.folder['xanten']
         self.assertIn('xanten', self.folder)

@@ -1,6 +1,7 @@
 # coding: utf8
 from StringIO import StringIO
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.dynamicfolder.interfaces import IVirtualContent
 import copy
 import grokcore.component as grok
 import jinja2
@@ -74,6 +75,12 @@ class RepositoryDynamicFolder(
             content, zeit.cms.repository.interfaces.IRepositoryContent)
         return zope.container.contained.contained(
             content, self, content.__name__)
+
+    def __delitem__(self, key):
+        value = self.get(key)
+        if value is not None and IVirtualContent.providedBy(value):
+            return
+        super(RepositoryDynamicFolder, self).__delitem__(key)
 
     @property
     def cp_template(self):
