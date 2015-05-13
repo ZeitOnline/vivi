@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.20 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Save form when removing channel entries (BUG-254).
 
 
 3.6.19 (2015-05-04)

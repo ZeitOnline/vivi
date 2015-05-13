@@ -564,3 +564,16 @@ class ChannelSelector(zeit.edit.browser.form.InlineForm):
     zeit.cms.configure_channel_dropdowns("%s.", "channels", "00", "01");
 </script>""" % (self.prefix,)
         return result
+
+    # Generate an action name just like the SequenceWidget remove button.
+    @zope.formlib.form.action('remove', prefix='channels')
+    def submit_on_remove(self, action, data):
+        """Trigger a save each time the remove button is pressed,
+        since there is no other event for the inline form to do that."""
+        super(ChannelSelector, self).handle_edit_action.success(data)
+
+    @zope.formlib.form.action(
+        _('Apply'), condition=zope.formlib.form.haveInputWidgets)
+    def handle_edit_action(self, action, data):
+        """Once you override one action, you lose *all* inherited ones."""
+        super(ChannelSelector, self).handle_edit_action.success(data)

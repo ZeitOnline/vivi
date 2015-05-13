@@ -5,6 +5,7 @@ from zeit.content.article.interfaces import ICDSWorkflow
 from zeit.workflow.interfaces import IContentWorkflow
 import datetime
 import pytz
+import unittest
 import zeit.cms.interfaces
 import zeit.cms.testing
 import zeit.content.article.testing
@@ -184,3 +185,30 @@ class FilenameTest(zeit.cms.testing.BrowserTestCase):
         b.getControl('New file name').value = 'Somalia'
         b.getControl('Apply').click()
         self.assertEllipsis('..."Somalia" already exists...', b.contents)
+
+
+@unittest.skip('Channels need special permission, and selenium breaks when'
+               ' trying to change HTTP Basic auth')
+class ChannelSelector(
+        zeit.content.article.edit.browser.testing.EditorTestCase):
+
+    def setUp(self):
+        super(ChannelSelector, self).setUp()
+        self.open('/repository/online/2007/01/Somalia/@@checkout')
+        s = self.selenium
+        s.waitForElementPresent('css=#edit-form-channel .fold-link')
+        s.click('css=#edit-form-channel .fold-link')
+
+    def test_removing_channel_triggers_save(self):
+        # XXX This test never ran (permissions), so it's probably a bit sci-fi.
+        s = self.selenium
+        s.click('css=input[@name="channel-selector.channels.add"]')
+        s.waitForElementPresent('css=#edit-form-channel select')
+        s.select('css=#edit-form-channel select', 'Deutschland')
+        s.type('css=#edit-form-channel select', '\t')  # Trigger blur for form.
+        s.click('css=input[@name="channel-selector.channels.remove"]')
+        s.waitForElementNotPresent('css=#edit-form-channel select')
+        s.refresh()
+        s.waitForElementPresent(
+            'css=input[@name="channel-selector.channels.add"]')
+        s.assertElementNotPresent('css=#edit-form-channel select')
