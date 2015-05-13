@@ -1,4 +1,6 @@
 # coding: utf-8
+from zeit.cms.checkout.helper import checked_out
+import mock
 import unittest
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
@@ -64,6 +66,17 @@ class TestContainerMethodsRespectVirtualChildren(
         content.title = 'FOO'
         self.folder['xanten'] = content
         self.assertEqual('FOO', self.folder['xanten'].title)
+
+    def test_checkin_virtual_content_materializes_it(self):
+        # Fill cached values, since they must not interfere with ZODB/pickling.
+        self.folder.cp_template
+        self.folder.virtual_content
+
+        self.assertEqual('Xanten', self.folder['xanten'].title)
+        with mock.patch('zeit.find.search.search'):
+            with checked_out(self.folder['xanten']) as co:
+                co.title = 'foo'
+            self.assertEqual('foo', self.folder['xanten'].title)
 
     @unittest.expectedFailure
     def test_delete_on_virtual_child_does_nothing(self):

@@ -1,6 +1,7 @@
 # coding: utf8
 from StringIO import StringIO
 from zeit.cms.i18n import MessageFactory as _
+import copy
 import grokcore.component as grok
 import jinja2
 import lxml.objectify
@@ -11,9 +12,10 @@ import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
 import zeit.content.dynamicfolder.interfaces
-import zope.cachedescriptors.property
+import zope.app.locking.interfaces
 import zope.container.contained
 import zope.interface
+import zope.security.proxy
 
 
 class VirtualProperties(grok.Adapter, dict):
@@ -26,7 +28,8 @@ class VirtualProperties(grok.Adapter, dict):
         return object.__repr__(self)
 
 
-class DynamicFolderBase(object):
+class DynamicFolderBase(persistent.Persistent,
+                        zope.container.contained.Contained):
     """Base class for the dynamic folder that holds all attributes.
 
     A base class is used to differentiate between repository and workingcopy.
@@ -72,13 +75,16 @@ class RepositoryDynamicFolder(
         return zope.container.contained.contained(
             content, self, content.__name__)
 
-    @zope.cachedescriptors.property.Lazy
+    @property
     def cp_template(self):
-        template_file = self.config.head.cp_template.text
-        return jinja2.Template(
-            zeit.connector.interfaces.IResource(
-                zeit.cms.interfaces.ICMSContent(template_file)).data.read(),
-            autoescape=True, extensions=['jinja2.ext.autoescape'])
+        if not hasattr(self, '_v_cp_template'):
+            template_file = self.config.head.cp_template.text
+            self._v_cp_template = jinja2.Template(
+                zeit.connector.interfaces.IResource(
+                    zeit.cms.interfaces.ICMSContent(
+                        template_file)).data.read(),
+                autoescape=True, extensions=['jinja2.ext.autoescape'])
+        return self._v_cp_template
 
     def _create_virtual_content(self, key):
         resource = zeit.connector.resource.Resource(
@@ -102,7 +108,7 @@ class RepositoryDynamicFolder(
             content, zeit.content.cp.interfaces.ICP2015)
         return content
 
-    @zope.cachedescriptors.property.Lazy
+    @property
     def config(self):
         """Read virtual content from XML files and return as dict.
 
@@ -119,15 +125,18 @@ class RepositoryDynamicFolder(
         if not self.config_file:
             return None
 
-        config = lxml.objectify.fromstring(zeit.connector.interfaces.IResource(
-            self.config_file).data.read())
-        for include in config.xpath('//include'):
-            parent = include.getparent()
-            index = parent.index(include)
-            parent.remove(include)
-            for i, node in enumerate(self._resolve_include(include)):
-                parent.insert(index + i, node)
-        return config
+        if not hasattr(self, '_v_config'):
+            config = lxml.objectify.fromstring(
+                zeit.connector.interfaces.IResource(
+                self.config_file).data.read())
+            for include in config.xpath('//include'):
+                parent = include.getparent()
+                index = parent.index(include)
+                parent.remove(include)
+                for i, node in enumerate(self._resolve_include(include)):
+                    parent.insert(index + i, node)
+            self._v_config = config
+        return self._v_config
 
     @staticmethod
     def _resolve_include(include):
@@ -139,18 +148,21 @@ class RepositoryDynamicFolder(
         else:
             return [document]
 
-    @zope.cachedescriptors.property.Lazy
+    @property
     def virtual_content(self):
         """Read virtual content from XML files and return as dict."""
         if self.config is None:
             return {}
 
-        contents = {}
-        key_getter = self.config.body.get('key', 'text()')
-        for entry in self.config.body.getchildren():
-            key = unicode(entry.xpath(key_getter)[0])
-            contents[key] = {'attrib': entry.attrib, 'text': entry.text}
-        return contents
+        if not hasattr(self, '_v_virtual_content'):
+            contents = {}
+            key_getter = self.config.body.get('key', 'text()')
+            for entry in self.config.body.getchildren():
+                key = unicode(entry.xpath(key_getter)[0])
+                contents[key] = {'attrib': entry.attrib, 'text': entry.text}
+            self._v_virtual_content = contents
+
+        return self._v_virtual_content
 
     @property
     def _local_unique_map(self):
@@ -170,10 +182,7 @@ class RepositoryDynamicFolder(
         return result
 
 
-class LocalDynamicFolder(
-        DynamicFolderBase,
-        persistent.Persistent,
-        zope.container.contained.Contained):
+class LocalDynamicFolder(DynamicFolderBase):
     """Inside the workingcopy the folder only holds attributes, no children."""
 
     zope.interface.implements(
@@ -200,3 +209,27 @@ def local_dynamic_folder_factory(context):
         zeit.connector.interfaces.IWebDAVReadProperties(
             zope.security.proxy.getObject(context)))
     return local
+
+
+@grok.adapter(zeit.content.dynamicfolder.interfaces.IVirtualContent)
+@grok.implementer(zeit.cms.checkout.interfaces.ILocalContent)
+def virtual_local_content(context):
+    # We cannot use IRepository.getCopyOf() to produce a copy of
+    # IVirtualContent, so we need to do it ourselves.
+    # Note: Our return value must not be security-wrapped (with getCopyOf()
+    # that works out automatically).
+    content = copy.copy(zope.security.proxy.getObject(context))
+    zope.interface.alsoProvides(
+        content, zeit.cms.workingcopy.interfaces.ILocalContent)
+    zope.interface.noLongerProvides(
+        content, zeit.cms.repository.interfaces.IRepositoryContent)
+    return content
+
+
+@grok.adapter(zeit.content.dynamicfolder.interfaces.IVirtualContent)
+@grok.implementer(zope.app.locking.interfaces.ILockable)
+def virtual_lockable(context):
+    # Locking works on actual DAV objects, so we'd have to do a complete
+    # re-implementation for virtual content. Since that's probably not worth
+    # the effort, we simply make IVirtualContent not lockable.
+    return None
