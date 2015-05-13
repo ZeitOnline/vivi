@@ -80,6 +80,10 @@ class TestDynamicFolder(
         super(TestDynamicFolder, self).setUp()
         self.folder = self.repository['dynamicfolder']
 
+    def test_getitem_for_key_with_no_virtual_child_raises_KeyError(self):
+        with self.assertRaises(KeyError):
+            self.folder['Buxtehude']
+
     def test_folder_can_also_contain_normal_content(self):
         self.folder['foo'] = (
             zeit.cms.testcontenttype.testcontenttype.TestContentType())
