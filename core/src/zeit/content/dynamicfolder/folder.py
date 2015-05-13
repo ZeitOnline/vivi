@@ -114,6 +114,9 @@ class RepositoryDynamicFolder(
         allows overriding URL resolution) does not support xpointer, sigh.
 
         """
+        if not self.config_file:
+            return None
+
         config = lxml.objectify.fromstring(zeit.connector.interfaces.IResource(
             self.config_file).data.read())
         for include in config.xpath('//include'):
@@ -137,6 +140,9 @@ class RepositoryDynamicFolder(
     @zope.cachedescriptors.property.Lazy
     def virtual_content(self):
         """Read virtual content from XML files and return as dict."""
+        if self.config is None:
+            return {}
+
         contents = {}
         key_getter = self.config.body.get('key', 'text()')
         for entry in self.config.body.getchildren():

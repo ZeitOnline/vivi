@@ -80,6 +80,11 @@ class TestDynamicFolder(
         super(TestDynamicFolder, self).setUp()
         self.folder = self.repository['dynamicfolder']
 
+    def test_unconfigured_folder_does_not_break_due_to_missing_config(self):
+        from ..folder import RepositoryDynamicFolder
+        self.repository['folder'] = RepositoryDynamicFolder()
+        self.assertEqual([], self.repository['folder'].items())
+
     def test_getitem_for_key_with_no_virtual_child_raises_KeyError(self):
         with self.assertRaises(KeyError):
             self.folder['Buxtehude']
