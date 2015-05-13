@@ -95,6 +95,9 @@ class RepositoryDynamicFolder(
         content.__name__ = resource.__name__
         zope.interface.alsoProvides(
             content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
+        # XXX Make type configurable (by using virtual DAV properties).
+        zope.interface.alsoProvides(
+            content, zeit.content.cp.interfaces.ICP2015)
         return content
 
     @zope.cachedescriptors.property.Lazy
