@@ -72,4 +72,34 @@ MochiKit.DragAndDrop.Draggables.unregister = function(draggable) {
     }
 };
 
+
+// Monkey-patch to deactivate last active droppable only if it is not affected
+// anymore (this allows landing zones to enlarge on hover and stay that way
+// until mouseout, for example).
+
+MochiKit.DragAndDrop.Droppables.show = function (point, element) {
+    if (!this.drops.length) {
+        return;
+    }
+    var affected = [];
+
+    // This is the only changed line, everything else is copy&paste, sigh.
+    if (this.last_active && !this.last_active.isAffected(point, element)) {
+        this.last_active.deactivate();
+    }
+    MochiKit.Iter.forEach(this.drops, function (drop) {
+        if (drop.isAffected(point, element)) {
+            affected.push(drop);
+        }
+    });
+    if (affected.length > 0) {
+        drop = this.findDeepestChild(affected);
+        MochiKit.Position.within(drop.element, point.page.x, point.page.y);
+        drop.options.onhover(element, drop.element,
+            MochiKit.Position.overlap(drop.options.overlap, drop.element));
+        drop.activate();
+    }
+};
+
+
 }());
