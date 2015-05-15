@@ -93,7 +93,7 @@ MochiKit.DragAndDrop.Droppables.show = function (point, element) {
         }
     });
     if (affected.length > 0) {
-        drop = this.findDeepestChild(affected);
+        var drop = this.findDeepestChild(affected);
         MochiKit.Position.within(drop.element, point.page.x, point.page.y);
         drop.options.onhover(element, drop.element,
             MochiKit.Position.overlap(drop.options.overlap, drop.element));
