@@ -12,7 +12,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="metadata_preview"
     class=".image.MetadataPreviewHTML"
-    template="metadata.pt" 
+    template="metadata.pt"
     permission="zope.View"
     />
 
@@ -77,22 +77,22 @@
     for="zeit.content.image.interfaces.IImage"
     permission="zope.View"
     class=".image.MetadataPreview"
-    /> 
+    />
 
   <browser:page
     name="preview"
     for="zeit.content.image.interfaces.IImage"
     permission="zope.View"
     class=".image.Preview"
-    /> 
-  
+    />
+
   <browser:page
     name="thumbnail"
     for="zeit.content.image.interfaces.IImage"
     permission="zope.View"
     class=".image.Thumbnail"
-    /> 
-  
+    />
+
 
 
   <!-- Menus -->
@@ -205,7 +205,7 @@
     permission="zope.View"
     menu="zeit-context-views" title="View metadata"
     />
-  
+
   <browser:page
     for="..interfaces.IRepositoryImageGroup"
     name="zeit.content.image.Add"
@@ -213,7 +213,7 @@
     class=".imagegroup.AddImage"
     menu="zeit-add-menu" title="Image"
     />
- 
+
   <browser:page
     name="edit.html"
     for="..interfaces.ILocalImageGroup"
@@ -221,7 +221,7 @@
     permission="zeit.EditContent"
     menu="zeit-context-views" title="Edit metadata"
     />
-  
+
   <browser:page
     name="metadata_preview"
     for="..interfaces.IImageGroup"
@@ -235,7 +235,7 @@
     for="zeit.content.image.interfaces.IImageGroup"
     permission="zope.View"
     class=".imagegroup.ThumbnailLarge"
-    /> 
+    />
 
   <browser:page
     name="drag-pane.html"
@@ -252,7 +252,7 @@
     class=".imagegroup.Thumbnail"
     permission="zope.View"
     />
-  
+
   <browser:page
     for="..interfaces.IImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
