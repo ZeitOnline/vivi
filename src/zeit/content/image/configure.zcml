@@ -161,8 +161,6 @@
     name="zeit.content.image"
     />
 
-  <adapter factory=".masterimage.group_to_master" />
-
   <class class=".imagereference.ImageReference">
     <require
       interface=".interfaces.IImageReference"

@@ -261,6 +261,16 @@
     permission="zope.View"
     />
 
+  <gocept:pagelet
+    for="zeit.content.image.interfaces.ILocalImageGroup"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="variant.html"
+    class=".variant.Variant"
+    template="image-variants.pt"
+    menu="zeit-context-views" title="Variants"
+    permission="zeit.EditContent"
+    />
+
 
   <!-- copyright setter -->
   <!-- XXX the permission is bad. -->

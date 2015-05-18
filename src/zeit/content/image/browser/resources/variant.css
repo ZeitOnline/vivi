@@ -1,0 +1,38 @@
+#variant-content {
+    bottom: 1em;
+    left: -0.8em;
+    position: absolute;
+    right: 34.4%;
+    top: 0;
+}
+
+#variant-content > div {
+    position: relative;
+}
+
+#variant-preview {
+    bottom: 1em;
+    left: 66%;
+    position: absolute;
+    overflow: auto;
+    right: 0;
+    top: 0;
+}
+
+img.preview {
+    max-width: 100%;
+}
+
+img.master {
+    width: 100%;
+}
+
+.circle {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    background-color: red;
+}
