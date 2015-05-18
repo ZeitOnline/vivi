@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.45.2 (unreleased)
+2.45.2 (2015-05-18)
 -------------------
 
 - Tweak MochiKit DragAndDrop to allow landing zones to enlarge on hover.
