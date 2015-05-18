@@ -4,7 +4,7 @@
 
   <grok:grok package="." />
 
-  <utility 
+  <utility
     name="zeit.content.image"
     provides="zope.app.generations.interfaces.ISchemaManager"
     component=".generation.manager"
@@ -69,7 +69,7 @@
       set_schema=".interfaces.ILocalImageGroup"
       permission="zeit.EditContent" />
   </class>
-  
+
   <adapter factory=".imagegroup.local_image_group_factory" />
 
   <!-- metadata -->
@@ -88,12 +88,12 @@
     />
 
   <adapter
-    factory=".metadata.ImageMetadata" 
+    factory=".metadata.ImageMetadata"
     for=".interfaces.IImageGroup"
     />
 
   <adapter
-    factory=".metadata.ImageMetadata" 
+    factory=".metadata.ImageMetadata"
     for=".interfaces.ILocalImageGroup"
     />
 
