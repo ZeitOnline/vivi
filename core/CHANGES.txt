@@ -2,7 +2,7 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-1.0.0 (unreleased)
+1.0.0 (2015-05-18)
 ------------------
 
 - Initial release.
