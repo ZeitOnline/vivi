@@ -60,11 +60,11 @@ class IAuthor(zope.interface.Interface):
     external = zope.schema.Bool(
         title=_(u'External?'))
 
-    column_teaser_image = zope.schema.Choice(
-        title=_('Image for a column teaser'),
-        description=_("Drag an image group here"),
+    image_group = zope.schema.Choice(
+        title=_('Image group'),
+        description=_('Drag an image group here'),
         required=False,
-        source=zeit.content.image.interfaces.bareImageSource)
+        source=zeit.content.image.interfaces.imageGroupSource)
 
 
 class IAuthorReference(zeit.cms.content.interfaces.IReference):

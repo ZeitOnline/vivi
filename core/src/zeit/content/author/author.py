@@ -20,8 +20,8 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     zope.interface.implements(zeit.content.author.interfaces.IAuthor,
                               zeit.cms.interfaces.IAsset)
 
-    column_teaser_image = zeit.cms.content.reference.SingleResource(
-        '.column_teaser_image', 'image')
+    image_group = zeit.cms.content.reference.SingleResource(
+        '.image_group', 'image')
 
     default_template = (
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
