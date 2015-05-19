@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.2.4 (unreleased)
+2.3.0 (unreleased)
 ------------------
 
 - Upgrade column teaser image to a generic image group (ZON-1569).
