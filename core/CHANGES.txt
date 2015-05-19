@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b13 (unreleased)
+3.0.0b13 (2015-05-19)
 ---------------------
 
 - Replace MochiKit $$ with jQuery, which is *much* faster in Firefox.
