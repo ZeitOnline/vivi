@@ -51,6 +51,16 @@
     />
 
 
+  <!-- JSON Views -->
+
+  <browser:page
+    name="variants"
+    for="..interfaces.IImageGroup"
+    class=".variant.VariantList"
+    permission="zope.View"
+    />
+
+
   <!-- Image data to the browser -->
 
   <browser:page

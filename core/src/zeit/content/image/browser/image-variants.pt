@@ -1,19 +1,10 @@
 <div id="variant-content">
-  <div>
-    <img class="master" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-    <div class="circle"></div>
+  <div id="variant-inner">
   </div>
 </div>
 
 <div id='variant-preview'>
-  <img class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img style="max-width: 50%" class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img style="max-width: 70%" class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img style="max-width: 30%" class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
-  <img class="preview" tal:attributes="src string:${view/image/@@absolute_url}/@@raw"/>
 </div>
+
+<script type="text/javascript" tal:content="string:window.master_image_url = '${view/image/@@absolute_url}/@@raw'">
+</script>
