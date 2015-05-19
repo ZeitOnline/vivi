@@ -22,6 +22,7 @@ setup(
         'gocept.httpserverlayer',
         'gocept.selenium',
         'grokcore.component',
+        'js.backbone',
         'lxml',
         'persistent',
         'pytz',
