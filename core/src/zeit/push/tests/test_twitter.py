@@ -1,10 +1,13 @@
+# coding: utf-8
+import gocept.testing.assertion
 import time
 import tweepy
 import zeit.push.testing
 import zeit.push.twitter
 
 
-class TwitterTest(zeit.push.testing.TestCase):
+class TwitterTest(zeit.push.testing.TestCase,
+                  gocept.testing.assertion.String):
 
     level = 2
 
@@ -38,11 +41,15 @@ class TwitterTest(zeit.push.testing.TestCase):
         twitter = zeit.push.twitter.Connection(
             self.api_key, self.api_secret)
         twitter.send(
-            'zeit.push.tests.twitter %s' % self.nugget, 'http://example.com',
+            u'zeit.push.tests.ümläut.twitter %s' % self.nugget,
+            'http://example.com',
             account='twitter-test')
 
         for status in self.api.home_timeline():
             if self.nugget in status.text:
+                self.assertStartsWith(
+                    u'zeit.push.tests.ümläut.twitter %s' % self.nugget,
+                    status.text)
                 break
         else:
             self.fail('Tweet was not posted')
