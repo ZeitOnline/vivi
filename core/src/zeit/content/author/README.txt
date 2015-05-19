@@ -18,7 +18,7 @@ Authors
 >>> shakespeare.firstname = 'William'
 >>> shakespeare.lastname = 'Shakespeare'
 >>> shakespeare.vgwortid = 12345
->>> shakespeare.column_teaser_image = repository['2006']['DSC00109_2.JPG']
+>>> shakespeare.image_group = repository['2007']['03']['group']
 >>> repository['shakespeare'] = shakespeare
 >>> shakespeare = repository['shakespeare']
 >>> print lxml.etree.tostring(shakespeare.xml, pretty_print=True)
@@ -27,9 +27,9 @@ Authors
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
-  <column_teaser_image ...>
+  <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
   ...
-  </column_teaser_image>
+  </image_group>
   <display_name>William Shakespeare</display_name>
 </author>
 
@@ -45,9 +45,9 @@ takes precedence:
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
-  <column_teaser_image ...>
+  <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
   ...
-  </column_teaser_image>
+  </image_group>
   <display_name>Flub</display_name>
   <entered_display_name>Flub</entered_display_name>
 </author>
@@ -61,9 +61,9 @@ takes precedence:
   <firstname>William</firstname>
   <lastname>Shakespeare</lastname>
   <vgwortid>12345</vgwortid>
-  <column_teaser_image ...>
+  <image_group ... base-id="http://xml.zeit.de/2007/03/group/" ...>
   ...
-  </column_teaser_image>
+  </image_group>
   <display_name>William Shakespeare</display_name>
   <entered_display_name xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:nil="true"/>
