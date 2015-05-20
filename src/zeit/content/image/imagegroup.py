@@ -22,7 +22,22 @@ class ImageGroupBase(object):
     zeit.cms.content.dav.mapProperties(
         zeit.content.image.interfaces.IImageGroup,
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        ('master_image', ))
+        ('master_image',))
+
+    _variants = zeit.cms.content.dav.DAVProperty(
+        zeit.content.image.interfaces.IImageGroup['variants'],
+        zeit.content.image.interfaces.IMAGE_NAMESPACE,
+        'variants')
+
+    @property
+    def variants(self):
+        if self._variants is None:
+            return {}
+        return self._variants
+
+    @variants.setter
+    def variants(self, value):
+        self._variants = value
 
 
 class ImageGroup(ImageGroupBase,

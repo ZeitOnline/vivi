@@ -11,8 +11,16 @@ import zeit.content.image.imagegroup
 import zope.component
 
 
+product_config = """
+<product-config zeit.content.image>
+    variant-source file://{fixtures}/tests/fixtures/variants.xml
+</product-config>
+""".format(fixtures=pkg_resources.resource_filename(__name__, '.'))
+
+
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
-    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
+    'ftesting.zcml',
+    product_config=product_config + zeit.cms.testing.cms_product_config)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
