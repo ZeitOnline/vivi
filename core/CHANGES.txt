@@ -5,7 +5,10 @@ zeit.content.cp changes
 3.0.0b14 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Add bw-compat for existing Auto-CPs which do not yet have a
+  ``automatic_type`` setting that was introduced in 3.0.0b12, so that they
+  still work in production (if raw query is present, that is used, else the
+  configured channels).
 
 
 3.0.0b13 (2015-05-19)
