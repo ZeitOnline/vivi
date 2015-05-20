@@ -29,6 +29,7 @@ setup(
         'setuptools',
         'transaction',
         'z3c.conditionalviews',
+        'z3c.traverser',
         'zc.form',
         'zc.sourcefactory',
         'zc.table',

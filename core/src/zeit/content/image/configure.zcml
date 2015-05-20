@@ -57,6 +57,39 @@
       permission="zeit.EditContent" />
   </class>
 
+  <adapter
+    factory="z3c.traverser.traverser.PluggableTraverser"
+    for=".interfaces.IImageGroup
+         zeit.cms.browser.interfaces.ICMSLayer"
+    />
+  <subscriber
+    factory="zeit.edit.body.PublishTraverser"
+    for=".interfaces.IImageGroup
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="z3c.traverser.interfaces.ITraverserPlugin"
+    />
+
+  <class class=".variant.Variants">
+    <require
+      interface=".interfaces.IVariants"
+      permission="zope.View" />
+  </class>
+  <adapter
+      for=".interfaces.IVariants
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.publisher.interfaces.browser.IBrowserPublisher"
+      factory="zope.container.traversal.ItemTraverser"
+      permission="zope.Public"
+      />
+
+  <class class=".variant.Variant">
+    <require
+      interface=".interfaces.IVariant"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IVariant"
+      permission="zope.View" />
+  </class>
 
   <adapter factory=".imagegroup.XMLReference" name="image" />
 

@@ -1,0 +1,9 @@
+<variants>
+  <variant name="default">
+  </variant>
+  <variant name="cinema" ratio="16:9">
+    <!-- XXX later: sizes -->
+  </variant>
+  <variant name="square" ratio="1:1">
+  </variant>
+</variants>

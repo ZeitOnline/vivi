@@ -54,9 +54,16 @@
   <!-- JSON Views -->
 
   <browser:page
-    name="variants"
-    for="..interfaces.IImageGroup"
+    for="..interfaces.IVariants"
+    name="index.html"
     class=".variant.VariantList"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IVariant"
+    name="index.html"
+    class=".variant.VariantDetail"
     permission="zope.View"
     />
 
@@ -275,7 +282,6 @@
     for="zeit.content.image.interfaces.ILocalImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="variant.html"
-    class=".variant.Variant"
     template="image-variants.pt"
     menu="zeit-context-views" title="Variants"
     permission="zeit.EditContent"

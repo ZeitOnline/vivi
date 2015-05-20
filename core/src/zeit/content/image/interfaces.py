@@ -153,6 +153,9 @@ class IImageGroup(zeit.cms.interfaces.IAsset,
         source=MasterImageSource(),
         required=False)
 
+    variants = zope.schema.Dict(
+        title=_('Setting for variants'))
+
 
 class IRepositoryImageGroup(IImageGroup,
                             zeit.cms.repository.interfaces.ICollection):
@@ -167,6 +170,14 @@ class ILocalImageGroup(IImageGroup,
 
     The local version only holds the metadata, therefore it is not a container.
     """
+
+
+class IVariants(zope.interface.common.mapping.IEnumerableMapping):
+    """Object-oriented access to IImageGroup.variants."""
+
+
+class IVariant(zope.interface.Interface):
+    pass
 
 
 class IImageSource(zeit.cms.content.interfaces.ICMSContentSource):
