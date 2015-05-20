@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b14 (unreleased)
+3.0.0b14 (2015-05-20)
 ---------------------
 
 - Add bw-compat for existing Auto-CPs which do not yet have a
