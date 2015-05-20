@@ -26,6 +26,7 @@ setup(
         'lxml',
         'persistent',
         'pytz',
+        'requests',
         'setuptools',
         'transaction',
         'z3c.conditionalviews',
