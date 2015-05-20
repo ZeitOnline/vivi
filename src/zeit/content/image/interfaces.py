@@ -177,7 +177,11 @@ class IVariants(zope.interface.common.mapping.IEnumerableMapping):
 
 
 class IVariant(zope.interface.Interface):
-    pass
+
+    id = zope.schema.TextLine()
+    focus_x = zope.schema.Float()
+    focus_y = zope.schema.Float()
+    url = zope.schema.URI()
 
 
 class IImageSource(zeit.cms.content.interfaces.ICMSContentSource):

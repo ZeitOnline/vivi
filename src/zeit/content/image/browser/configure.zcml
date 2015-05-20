@@ -64,6 +64,14 @@
     for="..interfaces.IVariant"
     name="index.html"
     class=".variant.VariantDetail"
+    attribute="GET"
+    permission="zope.View"
+    />
+  <browser:page
+    for="..interfaces.IVariant"
+    name="PUT"
+    class=".variant.VariantDetail"
+    attribute="PUT"
     permission="zope.View"
     />
 
