@@ -5,9 +5,6 @@
   xmlns:meta="http://namespaces.zope.org/meta"
   xmlns:z3c="http://namespaces.zope.org/z3c">
 
-  <!-- for development purposes -->
-  <!-- <meta:provides feature="unpack-js" /> -->
-
   <utility
       component="z3c.conditionalviews.ConditionalHTTPRequest"
       provides="zope.app.publication.interfaces.IHTTPRequestFactory"
