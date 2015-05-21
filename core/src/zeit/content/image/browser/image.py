@@ -116,13 +116,6 @@ class Scaled(object):
         else:
             image = image.thumbnail(self.width, self.height, self.filter)
             image.__name__ = self.__name__
-
-            def cleanup(commited, image):
-                # Releasing the last reference triggers the weakref cleanup of
-                # ZODB.blob.Blob, since this local_data Blob never was part of
-                # a ZODB connection, which will delete the temporary file.
-                image.local_data = None
-            transaction.get().addAfterCommitHook(cleanup, [image])
         image_view = zope.component.getMultiAdapter(
             (image, self.request), name='raw')
         return image_view
@@ -169,13 +162,6 @@ class Random(object):
         transform = zeit.content.image.interfaces.ITransform(self.context)
         image = transform._construct_image(image)
         image.__name__ = self.__name__
-
-        def cleanup(commited, image):
-            # Releasing the last reference triggers the weakref cleanup of
-            # ZODB.blob.Blob, since this local_data Blob never was part of
-            # a ZODB connection, which will delete the temporary file.
-            image.local_data = None
-        transaction.get().addAfterCommitHook(cleanup, [image])
         image_view = zope.component.getMultiAdapter(
             (image, self.request), name='raw')
         return image_view
