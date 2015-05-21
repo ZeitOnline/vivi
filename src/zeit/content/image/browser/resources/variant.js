@@ -31,7 +31,13 @@
 
         render: function() {
             var self = this,
-                content = $('<img class="preview" src="' + self.model.get('url') + '"/>');
+                content = $('<img class="preview"/>');
+
+            content.on('load', function() {
+                self.trigger('render');
+            });
+
+            content.attr('src', self.model.get('url'));
             self.$el.replaceWith(content);
             self.setElement(content);
 
@@ -79,6 +85,17 @@
         initialize: function() {
             var self = this;
             self.model = new zeit.content.image.Variant({id: 'default'});
+            self.model_view = new zeit.content.image.browser.Variant(
+                {model: self.model}
+            );
+
+            self.model_view.on('render', function() {
+                self.trigger('render');
+            });
+        },
+
+        prepare: function () {
+            var self = this;
             self.model.fetch().done(function() {
                 self.render();
             });
@@ -86,8 +103,8 @@
 
         render: function() {
             var self = this;
-            var view = new zeit.content.image.browser.Variant({model: self.model});
-            self.$el.append(view.render().el);
+
+            self.$el.append(self.model_view.render().el);
             self.image = self.$('img');
 
             self.circle = $('<div class="focuspoint"><div class="circle"></div></div>');
@@ -114,7 +131,8 @@
 
         new zeit.content.image.browser.VariantList();
         zeit.content.image.VARIANTS.fetch({reset: true}).done(function() {
-            new zeit.content.image.browser.VariantEditor();
+            var view = new zeit.content.image.browser.VariantEditor();
+            view.prepare();
         });
 
     });

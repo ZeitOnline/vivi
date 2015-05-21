@@ -1,4 +1,5 @@
 from zeit.content.image.testing import create_image_group_with_master_image
+import gocept.jasmine.jasmine
 import json
 import requests
 import transaction
@@ -44,3 +45,17 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
                      data=json.dumps({'focus_x': 0.1, 'focus_y': 0.1}))
         transaction.abort()
         self.assertEqual(0.1, self.group.variants['square']['focus_x'])
+
+
+class VariantApp(gocept.jasmine.jasmine.TestApp):
+
+    def need_resources(self):
+        zeit.content.image.browser.resources.test_variant_js.need()
+
+
+class VariantJasmineTestCase(gocept.jasmine.jasmine.TestCase):
+
+    layer = gocept.jasmine.jasmine.get_layer(VariantApp())
+
+    def test_all_jasmine_unit_tests_run_successfully(self):
+        self.run_jasmine()
