@@ -1,4 +1,5 @@
 import PIL.Image
+import transaction
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
 import zeit.content.image.interfaces
@@ -52,6 +53,14 @@ class ImageTransform(object):
         if image_times.modified:
             thumb_times = zope.dublincore.interfaces.IDCTimes(image)
             thumb_times.modified = image_times.modified
+
+        def cleanup(commited, image):
+            # Releasing the last reference triggers the weakref cleanup of
+            # ZODB.blob.Blob, since this local_data Blob never was part of
+            # a ZODB connection, which will delete the temporary file.
+            image.local_data = None
+        transaction.get().addAfterCommitHook(cleanup, [image])
+
         return image
 
 
