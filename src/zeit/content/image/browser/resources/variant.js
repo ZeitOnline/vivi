@@ -1,7 +1,9 @@
-/*global zeit,Backbone,window,document,jQuery*/
-(function($) {
+/*global zeit,Backbone,window,document*/
+"use strict";
 
-    "use strict";
+(function() {
+    var $ = window.jQuery;
+    var _ = window.Underscore;
 
     zeit.cms.declare_namespace('zeit.content.image');
     zeit.cms.declare_namespace('zeit.content.image.browser');
@@ -29,9 +31,12 @@
 
     zeit.content.image.browser.Variant = Backbone.View.extend({
 
+        img_css_class: 'preview',
+
         render: function() {
-            var self = this,
-                content = $('<img class="preview"/>');
+            var self = this;
+            var content = $(_.template('<img class="{{css}}"/>')({
+                    css: self.img_css_class}));
 
             content.on('load', function() {
                 self.trigger('render');
@@ -88,6 +93,7 @@
             self.model_view = new zeit.content.image.browser.Variant(
                 {model: self.model}
             );
+            self.model_view.img_css_class = 'editor';
 
             self.model_view.on('render', function() {
                 self.trigger('render');
@@ -137,4 +143,4 @@
 
     });
 
-})(jQuery);
+})();

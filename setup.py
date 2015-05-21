@@ -35,7 +35,7 @@ setup(
         'zc.form',
         'zc.sourcefactory',
         'zc.table',
-        'zeit.cms>=2.44.0.dev0',
+        'zeit.cms>=2.46.0.dev0',
         'zeit.connector>=2.4.0.dev0',
         'zeit.edit>=2.1.7.dev0',
         'zeit.imp>=0.15.0.dev0',
