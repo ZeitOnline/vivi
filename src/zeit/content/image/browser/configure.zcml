@@ -55,6 +55,7 @@
 
   <browser:page
     for="..interfaces.IVariants"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="index.html"
     class=".variant.VariantList"
     permission="zope.View"
@@ -62,13 +63,16 @@
 
   <browser:page
     for="..interfaces.IVariant"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="index.html"
     class=".variant.VariantDetail"
     attribute="GET"
     permission="zope.View"
     />
+
   <browser:page
     for="..interfaces.IVariant"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="PUT"
     class=".variant.VariantDetail"
     attribute="PUT"
