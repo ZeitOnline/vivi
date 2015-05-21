@@ -20,6 +20,7 @@ setup(
         'gocept.async',
         'gocept.form',
         'gocept.httpserverlayer',
+        'gocept.jasmine',
         'gocept.selenium',
         'grokcore.component',
         'js.backbone',
@@ -59,6 +60,7 @@ setup(
     entry_points={
         'fanstatic.libraries': [
             'zeit_content_image=zeit.content.image.browser.resources:lib',
+            'zeit_content_image_test=zeit.content.image.browser.resources:test_lib',
         ],
     },
 )
