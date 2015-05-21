@@ -22,6 +22,7 @@
 
 img.preview {
     max-width: 100%;
+    display: block;
 }
 
 img.editor {
