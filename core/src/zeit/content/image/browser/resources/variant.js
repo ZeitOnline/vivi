@@ -72,6 +72,10 @@
 
         el: '#variant-inner',
 
+        events: {
+            "dragstop .focuspoint": "save"
+        },
+
         initialize: function() {
             var self = this;
             self.model = new zeit.content.image.Variant({id: 'default'});
@@ -84,8 +88,21 @@
             var self = this;
             var view = new zeit.content.image.browser.Variant({model: self.model});
             self.$el.append(view.render().el);
-            self.$el.append('<div class="circle"></div>');
-            self.$el.find('div.circle').draggable();
+            self.image = self.$('img');
+
+            self.circle = $('<div class="focuspoint"><div class="circle"></div></div>');
+            self.circle.css('top', self.model.get('focus_y') * 100 + '%');
+            self.circle.css('left', self.model.get('focus_x') * 100 + '%');
+
+            self.$el.append(self.circle);
+            self.circle.draggable();
+        },
+
+        save: function() {
+            var self = this;
+            var focus_x = ((self.circle.position().left) / self.image.width());
+            var focus_y = ((self.circle.position().top) / self.image.height());
+            self.model.save({"focus_x": focus_x, "focus_y": focus_y});
         }
     });
 
