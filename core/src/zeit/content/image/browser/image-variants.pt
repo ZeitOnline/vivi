@@ -5,6 +5,3 @@
 
 <div id='variant-preview'>
 </div>
-
-<script type="text/javascript" tal:content="string:window.master_image_url = '${view/image/@@absolute_url}/@@raw'">
-</script>
