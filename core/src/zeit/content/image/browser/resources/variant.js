@@ -1,7 +1,7 @@
 /*global zeit,Backbone,window,document*/
-"use strict";
-
 (function() {
+    "use strict";
+
     var $ = window.jQuery;
     var _ = window.Underscore;
 
