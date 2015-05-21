@@ -122,6 +122,13 @@
     class=".image.Thumbnail"
     />
 
+  <browser:page
+    name="random"
+    for="zeit.content.image.interfaces.IImage"
+    permission="zope.View"
+    class=".image.Random"
+    />
+
 
 
   <!-- Menus -->

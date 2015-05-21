@@ -12,7 +12,17 @@
     /* MODELS */
 
     zeit.content.image.Variant = Backbone.Model.extend({
-        urlRoot: window.context_url + '/variants'
+        urlRoot: window.context_url + '/variants',
+
+        make_url: function() {
+            var self = this,
+                url = self.get('url');
+            return url + '?nocache=' + self._random_int(0, 100000);
+        },
+
+        _random_int: function(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        }
     });
 
 
@@ -33,6 +43,10 @@
 
         img_css_class: 'preview',
 
+        initialize: function(options) {
+            this.index = options.index;
+        },
+
         render: function() {
             var self = this;
             var content = $(_.template('<img class="{{css}}"/>')({
@@ -42,7 +56,8 @@
                 self.trigger('render');
             });
 
-            content.attr('src', self.model.get('url'));
+            content.attr('src', self.model.make_url());
+            content.attr('width', 25 * self.index + 'px');
             self.$el.replaceWith(content);
             self.setElement(content);
 
@@ -56,6 +71,10 @@
             }
 
             return self;
+        },
+
+        update_image: function() {
+            this.$el.attr('src', this.model.make_url());
         }
     });
 
@@ -66,13 +85,26 @@
 
         initialize: function() {
             this.listenTo(zeit.content.image.VARIANTS, 'reset', this.reset);
+            this.listenTo(zeit.content.image.VARIANTS, 'reload', this.reload);
+            this.model_views = [];
         },
 
         reset: function() {
             var self = this;
+            self.$el.empty();
             $(zeit.content.image.VARIANTS.models).each(function(index, variant) {
-                var view = new zeit.content.image.browser.Variant({model: variant});
+                var view = new zeit.content.image.browser.Variant(
+                    {model: variant, index: index}
+                );
+                self.model_views.push(view);
                 self.$el.append(view.render().el);
+            });
+        },
+
+        reload: function() {
+            var self = this;
+            $(self.model_views).each(function(index, view) {
+                view.update_image();
             });
         }
 
@@ -126,6 +158,7 @@
             var focus_x = ((self.circle.position().left) / self.image.width());
             var focus_y = ((self.circle.position().top) / self.image.height());
             self.model.save({"focus_x": focus_x, "focus_y": focus_y});
+            zeit.content.image.VARIANTS.trigger('reload');
         }
     });
 

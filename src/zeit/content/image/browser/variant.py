@@ -8,13 +8,15 @@ class VariantList(zeit.cms.browser.view.Base):
 
     def __call__(self):
         return json.dumps([
-            serialize_variant(x, self.url) for x in self.context.values()])
+            serialize_variant(x, self.url, 'random')
+            for x in self.context.values()])
 
 
 class VariantDetail(zeit.cms.browser.view.Base):
 
     def GET(self):
-        return json.dumps(serialize_variant(self.context, self.url))
+        return json.dumps(serialize_variant(
+            self.context, self.url, 'raw'))
 
     def PUT(self):
         body = json.loads(self.request.bodyStream.read(
@@ -27,11 +29,11 @@ class VariantDetail(zeit.cms.browser.view.Base):
         group.variants = data
 
 
-def serialize_variant(variant, make_url):
+def serialize_variant(variant, make_url, view_name):
     data = zope.security.proxy.getObject(variant).__dict__.copy()
     data.pop('__parent__')
     data['url'] = make_url(zeit.content.image.interfaces.IMasterImage(
-        zeit.content.image.interfaces.IImageGroup(variant)), 'raw')
+        zeit.content.image.interfaces.IImageGroup(variant)), view_name)
     return data
 
 
