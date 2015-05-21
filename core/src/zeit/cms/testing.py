@@ -594,6 +594,7 @@ class JSLintTestCase(gocept.jslint.TestCase):
         'SPAN', 'LABEL',
         'isNull', 'isUndefined', 'isUndefinedOrNull',
         'Uri',
+        '_',  # js.underscore
     )
 
     ignore = (
