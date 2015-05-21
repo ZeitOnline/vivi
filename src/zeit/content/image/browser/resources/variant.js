@@ -9,7 +9,9 @@
 
     /* MODELS */
 
-    zeit.content.image.Variant = Backbone.Model.extend({});
+    zeit.content.image.Variant = Backbone.Model.extend({
+        urlRoot: window.context_url + '/variants'
+    });
 
 
     zeit.content.image.VariantList = Backbone.Collection.extend({
@@ -70,6 +72,14 @@
 
         el: '#variant-inner',
 
+        initialize: function() {
+            var self = this;
+            self.model = new zeit.content.image.Variant({id: 'default'});
+            self.model.fetch().done(function() {
+                self.render();
+            });
+        },
+
         render: function() {
             var self = this;
             var view = new zeit.content.image.browser.Variant({model: self.model});
@@ -86,12 +96,10 @@
         }
 
         new zeit.content.image.browser.VariantList();
-        zeit.content.image.VARIANTS.fetch({reset: true});
+        zeit.content.image.VARIANTS.fetch({reset: true}).done(function() {
+            new zeit.content.image.browser.VariantEditor();
+        });
 
-        var view = new zeit.content.image.browser.VariantEditor(
-            {model: new zeit.content.image.Variant(
-                {url: window.master_image_url, css: 'master'})});
-        view.render();
     });
 
 })(jQuery);
