@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.cms',
-    version='2.45.3.dev0',
+    version='2.46.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -39,6 +39,7 @@ setup(
         'js.jqueryui',
         'js.mochikit',
         'js.select2',
+        'js.underscore',
         'js.vanderlee_colorpicker',
         'lovely.remotetask>=0.5',
         'lxml>=2.0.2',

@@ -42,6 +42,14 @@ zeit.cms.resolveDottedName = function(name) {
 };
 
 
+
+window.Underscore = _.noConflict();
+window.Underscore.templateSettings = {
+  evaluate: /\{%(.+?)%\}/g,
+  interpolate: /\{\{(.+?)\}\}/g
+};
+
+
 zeit.cms.ScrollStateRestorer = gocept.Class.extend({
 
     construct: function(content_element) {

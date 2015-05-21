@@ -2,6 +2,7 @@ from fanstatic import Library, Group
 from js.jquery import jquery
 from js.mochikit import mochikit
 from js.select2 import select2_de
+from js.underscore import underscore
 from js.vanderlee_colorpicker import colorpicker
 import fanstatic
 import js.jqueryui
@@ -90,7 +91,8 @@ SplitDirResource('namespace.js')
 SplitDirResource('logging.js', depends=[namespace_js, mochikit, jquery])
 SplitDirResource('draganddrop.js', depends=[mochikit])
 SplitDirResource('base.js', depends=[
-    namespace_js, draganddrop_js, mochikit, jquery, jqueryui, select2_de])
+    namespace_js, draganddrop_js, mochikit, jquery, jqueryui, underscore,
+    select2_de])
 
 base = Group([
     namespace_js, logging_js, base_js,
