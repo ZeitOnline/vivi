@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
+import grokcore.component as grok
 import lxml.objectify
 import persistent
 import zeit.cms.content.dav
@@ -90,8 +91,8 @@ class LocalImageGroup(ImageGroupBase,
     zope.interface.implements(zeit.content.image.interfaces.ILocalImageGroup)
 
 
-@zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
-@zope.interface.implementer(zeit.content.image.interfaces.ILocalImageGroup)
+@grok.adapter(zeit.content.image.interfaces.IImageGroup)
+@grok.implementer(zeit.content.image.interfaces.ILocalImageGroup)
 def local_image_group_factory(context):
     lig = LocalImageGroup()
     lig.uniqueId = context.uniqueId
@@ -102,8 +103,8 @@ def local_image_group_factory(context):
     return lig
 
 
-@zope.component.adapter(zeit.content.image.interfaces.IImageGroup)
-@zope.interface.implementer(zeit.cms.content.interfaces.IXMLReference)
+@grok.adapter(zeit.content.image.interfaces.IImageGroup, name='image')
+@grok.implementer(zeit.cms.content.interfaces.IXMLReference)
 def XMLReference(context):
     image = lxml.objectify.E.image()
     image.set('base-id', context.uniqueId)
