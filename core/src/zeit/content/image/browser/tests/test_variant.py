@@ -56,6 +56,7 @@ class VariantApp(gocept.jasmine.jasmine.TestApp):
 class VariantJasmineTestCase(gocept.jasmine.jasmine.TestCase):
 
     layer = gocept.jasmine.jasmine.get_layer(VariantApp())
+    level = 2
 
     def test_all_jasmine_unit_tests_run_successfully(self):
         self.run_jasmine()
