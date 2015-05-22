@@ -151,7 +151,8 @@ class MasterImageSource(
             yield name
 
 
-class IImageGroup(zeit.cms.interfaces.IAsset,
+class IImageGroup(zeit.cms.repository.interfaces.ICollection,
+                  zeit.cms.interfaces.IAsset,
                   zeit.cms.repository.interfaces.IDAVContent):
     """An image group groups images with the same motif together."""
 
@@ -164,8 +165,7 @@ class IImageGroup(zeit.cms.interfaces.IAsset,
         title=_('Setting for variants'))
 
 
-class IRepositoryImageGroup(IImageGroup,
-                            zeit.cms.repository.interfaces.ICollection):
+class IRepositoryImageGroup(IImageGroup):
     """An image group in the repository.  It contains images.
 
     """

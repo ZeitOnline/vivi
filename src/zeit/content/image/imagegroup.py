@@ -8,11 +8,11 @@ import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
-import zeit.connector.resource
 import zeit.content.image.interfaces
 import zope.app.container.contained
 import zope.component
 import zope.interface
+import zope.location.interfaces
 import zope.security.proxy
 
 
@@ -40,14 +40,12 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
-    def __getitem__(self, key):
-        if key in self:
-            return super(ImageGroupBase, self).__getitem__(key)
+    def get_variant(self, key):
         variant = zeit.content.image.interfaces.IVariants(self).get(key)
-        if variant is not None:
-            return zeit.content.image.interfaces.ITransform(
-                zeit.content.image.interfaces.IMasterImage(self)).crop(variant)
-        raise KeyError(key)
+        if variant is None:
+            raise KeyError(key)
+        return zeit.content.image.interfaces.ITransform(
+            zeit.content.image.interfaces.IMasterImage(self)).crop(variant)
 
 
 class ImageGroup(ImageGroupBase,
@@ -57,7 +55,10 @@ class ImageGroup(ImageGroupBase,
         zeit.content.image.interfaces.IRepositoryImageGroup)
 
     def __getitem__(self, key):
-        item = super(ImageGroup, self).__getitem__(key)
+        try:
+            item = super(ImageGroup, self).__getitem__(key)
+        except KeyError:
+            item = self.get_variant(key)
         if key == self.master_image:
             zope.interface.alsoProvides(
                 item, zeit.content.image.interfaces.IMasterImage)
@@ -90,6 +91,12 @@ class LocalImageGroup(ImageGroupBase,
 
     zope.interface.implements(zeit.content.image.interfaces.ILocalImageGroup)
 
+    def __getitem__(self, key):
+        repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
+        if key in repository:
+            return repository[key]
+        return self.get_variant(key)
+
 
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.ILocalImageGroup)
@@ -101,6 +108,21 @@ def local_image_group_factory(context):
         zeit.connector.interfaces.IWebDAVReadProperties(
             zope.security.proxy.removeSecurityProxy(context)))
     return lig
+
+
+@grok.adapter(zeit.content.image.interfaces.ILocalImageGroup)
+@grok.implementer(zeit.content.image.interfaces.IRepositoryImageGroup)
+def find_repository_group(context):
+    return zeit.cms.interfaces.ICMSContent(context.uniqueId)
+
+
+class LocalSublocations(grok.Adapter):
+
+    grok.context(zeit.content.image.interfaces.ILocalImageGroup)
+    grok.implements(zope.location.interfaces.ISublocations)
+
+    def sublocations(self):
+        return []
 
 
 @grok.adapter(zeit.content.image.interfaces.IImageGroup, name='image')
