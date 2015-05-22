@@ -13,6 +13,14 @@ adapted to IMasterImage to get the master image:
 >>> zeit.content.image.interfaces.IMasterImage.providedBy(image)
 True
 
+This also works for checked-out groups:
+
+>>> with zeit.cms.checkout.helper.checked_out(group) as co:
+...     image = zeit.content.image.interfaces.IMasterImage(co)
+...     zeit.content.image.interfaces.IMasterImage.providedBy(image)
+True
+
+
 An image group w/o master image obiously cannot be adapted to IMasterImage:
 
 >>> group = zeit.content.image.testing.create_image_group()
@@ -27,3 +35,4 @@ TypeError: ('Could not adapt',
 
 >>> import zeit.cms.testing
 >>> zeit.cms.testing.set_site()
+>>> ignored = zeit.cms.testing.create_interaction()
