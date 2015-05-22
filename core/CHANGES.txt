@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.6.13 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Log raw http API results for debugging (BUG-231).
 
 
 2.6.12 (2015-04-17)

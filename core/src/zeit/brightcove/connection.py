@@ -44,13 +44,13 @@ class APIConnection(object):
         params['token'] = self.write_token
         data = dict(method=command, params=params)
         post_data = urllib.urlencode(dict(json=json.dumps(data)))
-        log.info("Posting %s", command)
-        log.debug("Posting %s(%s)", command, data)
+        log.info("POST %s", command)
+        log.debug("POST %s(%s)", command, data)
         request = urllib2.urlopen(
             self.write_url, post_data, timeout=self.timeout)
         response = self.parse_json(request.read())
         __traceback_info__ = (response, )
-        log.debug("response info %s", response)
+        log.debug("POST response %s", response)
         error = response.get('error')
         if error:
             raise RuntimeError(error)
@@ -63,9 +63,10 @@ class APIConnection(object):
             command=command,
             token=self.read_token,
             **kwargs)))
-        log.info("Requesting %s", url)
+        log.info("GET %s", url)
         request = urllib2.urlopen(url, timeout=self.timeout)
         response = self.parse_json(request.read())
+        log.debug('GET response %s', response)
         __traceback_info__ = (url, response)
         error = response.get('error')
         if error:
