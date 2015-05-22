@@ -191,8 +191,6 @@ class Converter(object):
     def __init__(self, data, connection=None):
         if data is not None:
             self.data = data
-            if 'customFields' in self.data:
-                self.data['customFields'] = self.data['customFields']
 
     @cachedproperty
     def uniqueId(self):
