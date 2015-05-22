@@ -40,6 +40,10 @@ class Variant(object):
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
+        if kw.get('ratio'):
+            self.ratio_str = self.ratio
+            self.xratio, self.yratio = self.ratio.split(':')
+            self.ratio = float(self.xratio) / float(self.yratio)
 
     @property
     def is_default(self):

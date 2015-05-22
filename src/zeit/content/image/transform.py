@@ -45,10 +45,23 @@ class ImageTransform(object):
         return self._construct_image(image)
 
     def crop(self, variant):
+        target_width, target_height = self._fit_variant_to_image(variant)
         dx = random.randint(0, 200)
         dy = random.randint(0, 200)
-        image = self._crop(self.image, dx, dy, dx + 300, dy + 300)
+        image = self._crop(
+            self.image, dx, dy, dx + target_width, dy + target_height)
         return self._construct_image(image)
+
+    def _fit_variant_to_image(self, variant):
+        orig_width, orig_height = self.image.size
+        original_ratio = float(orig_width) / float(orig_height)
+        if variant.ratio > original_ratio:
+            target_width = orig_width
+            target_height = int(orig_width / variant.ratio)
+        else:
+            target_width = int(orig_height * variant.ratio)
+            target_height = orig_height
+        return target_width, target_height
 
     def _crop(self, pil_image, x1, y1, x2, y2):
         pil_image = pil_image.crop((x1, y1, x2, y2))
