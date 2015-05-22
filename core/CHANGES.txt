@@ -4,7 +4,7 @@ CHANGES
 2.6.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Allow dynamic-collection folder types in the filesystem connector (ZON-1613)
 
 
 2.6.1 (2015-03-19)

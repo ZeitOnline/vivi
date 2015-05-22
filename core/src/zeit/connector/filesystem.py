@@ -101,7 +101,7 @@ class Connector(object):
             type = self.getResourceType(id)
             properties[
                 zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
-        if type in ['collection', 'image-group']:
+        if type in ['collection', 'dynamic-collection', 'image-group']:
             data = StringIO.StringIO()
         else:
             data = self._get_file(id)
