@@ -7,8 +7,8 @@ import zope.security.proxy
 class VariantList(zeit.cms.browser.view.Base):
 
     def __call__(self):
-        base_url = self.url(zeit.cms.interfaces.ICMSContent(
-            zeit.content.image.interfaces.IImageGroup(self.context).uniqueId))
+        base_url = self.url(zeit.content.image.interfaces.IImageGroup(
+            self.context))
         return json.dumps(
             [serialize_variant(x, base_url) for x in self.context.values()
              if not x.is_default])

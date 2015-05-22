@@ -51,6 +51,7 @@ setup(
         'zope.file',
         'zope.formlib',
         'zope.interface',
+        'zope.location',
         'zope.publisher',
         'zope.schema',
         'zope.security',

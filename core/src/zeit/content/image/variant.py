@@ -23,8 +23,6 @@ class Variants(grok.Adapter, UserDict.DictMixin):
         else:
             variant = VARIANT_SOURCE.factory.find(self.context, key)
             self._copy_missing_fields(self.default_variant, variant)
-        if variant is None:
-            raise KeyError(key)
         variant.__parent__ = self
         return variant
 
@@ -99,7 +97,7 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
         for value in self.getValues(context):
             if value.id == id:
                 return value
-        return None
+        raise KeyError(id)
 
 VARIANT_SOURCE = VariantSource()
 
