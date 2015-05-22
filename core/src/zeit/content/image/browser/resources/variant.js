@@ -153,8 +153,10 @@
             var self = this;
             var focus_x = ((self.circle.position().left) / self.image.width());
             var focus_y = ((self.circle.position().top) / self.image.height());
-            self.model.save({"focus_x": focus_x, "focus_y": focus_y});
-            zeit.content.image.VARIANTS.trigger('reload');
+            self.model.save(
+                {"focus_x": focus_x, "focus_y": focus_y}).then(function() {
+                zeit.content.image.VARIANTS.trigger('reload');
+            });
         }
     });
 
