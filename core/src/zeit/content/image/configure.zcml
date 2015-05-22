@@ -91,8 +91,6 @@
       permission="zope.View" />
   </class>
 
-  <adapter factory=".imagegroup.XMLReference" name="image" />
-
   <class class=".imagegroup.LocalImageGroup">
     <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
     <require
@@ -102,8 +100,6 @@
       set_schema=".interfaces.ILocalImageGroup"
       permission="zeit.EditContent" />
   </class>
-
-  <adapter factory=".imagegroup.local_image_group_factory" />
 
   <!-- metadata -->
 
