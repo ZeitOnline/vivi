@@ -1,5 +1,4 @@
 import PIL.Image
-import random
 import transaction
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
