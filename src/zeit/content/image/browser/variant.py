@@ -7,16 +7,24 @@ import zope.security.proxy
 class VariantList(zeit.cms.browser.view.Base):
 
     def __call__(self):
+        base_url = self.url(zeit.cms.interfaces.ICMSContent(
+            zeit.content.image.interfaces.IImageGroup(self.context).uniqueId))
         return json.dumps([
-            serialize_variant(x, self.url, 'random')
-            for x in self.context.values()])
+            serialize_variant(x, base_url) for x in self.context.values()])
 
 
 class VariantDetail(zeit.cms.browser.view.Base):
 
     def GET(self):
-        return json.dumps(serialize_variant(
-            self.context, self.url, 'raw'))
+        base_url = self.url(zeit.content.image.interfaces.IImageGroup(
+            self.context))
+        data = serialize_variant(self.context, base_url)
+        if self.context.id == 'default':
+            data['url'] = self.url(
+                zeit.content.image.interfaces.IMasterImage(
+                    zeit.content.image.interfaces.IImageGroup(self.context)),
+                'raw')
+        return json.dumps(data)
 
     def PUT(self):
         body = json.loads(self.request.bodyStream.read(
@@ -29,11 +37,10 @@ class VariantDetail(zeit.cms.browser.view.Base):
         group.variants = data
 
 
-def serialize_variant(variant, make_url, view_name):
+def serialize_variant(variant, base_url):
     data = zope.security.proxy.getObject(variant).__dict__.copy()
     data.pop('__parent__')
-    data['url'] = make_url(zeit.content.image.interfaces.IMasterImage(
-        zeit.content.image.interfaces.IImageGroup(variant)), view_name)
+    data['url'] = '%s/%s/raw' % (base_url, variant.id)
     return data
 
 

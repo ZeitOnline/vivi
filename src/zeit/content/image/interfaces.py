@@ -125,6 +125,13 @@ class ITransform(zope.interface.Interface):
 
         """
 
+    def crop(variant):
+        """Create a cropped version of the image, using the confiugration
+        information (focus point, zoom, etc.) of the given IVariant.
+
+        returns IImage object.
+        """
+
 
 class IPersistentThumbnail(IImage):
     """Persistent thumbnail version of an image."""

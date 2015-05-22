@@ -138,35 +138,6 @@ class Thumbnail(Scaled):
     width = height = 100
 
 
-class Random(object):
-    """Temporary non-production ready view for Variant prototype.
-
-    Please remove as soon as possible. :P
-
-    """
-
-    filter = PIL.Image.ANTIALIAS
-
-    def __call__(self):
-        return self.scaled()
-
-    def tag(self):
-        return get_img_tag(self.scaled.context, self.request)
-
-    @cachedproperty
-    def scaled(self):
-        dx = random.randint(0, 200)
-        dy = random.randint(0, 200)
-        image = zeit.imp.interfaces.ICropper(self.context).crop(
-            500, 500, dx, dy, dx + 300, dy + 300)
-        transform = zeit.content.image.interfaces.ITransform(self.context)
-        image = transform._construct_image(image)
-        image.__name__ = self.__name__
-        image_view = zope.component.getMultiAdapter(
-            (image, self.request), name='raw')
-        return image_view
-
-
 class ImageListRepresentation(
     zeit.cms.browser.listing.BaseListRepresentation):
     """Adapter for listing article content resources"""
