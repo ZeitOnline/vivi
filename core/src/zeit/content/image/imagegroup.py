@@ -10,7 +10,6 @@ import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.content.image.interfaces
 import zope.app.container.contained
-import zope.component
 import zope.interface
 import zope.location.interfaces
 import zope.security.proxy
@@ -97,6 +96,14 @@ class LocalImageGroup(ImageGroupBase,
             return repository[key]
         return self.get_variant(key)
 
+    # XXX Inheriting from UserDict.DictMixin would be much more sensible,
+    # but that breaks browser/copyright.txt for reasons unknown. :-(
+    def get(self, key, default=None):
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
 
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.ILocalImageGroup)
@@ -150,3 +157,10 @@ def XMLReference(context):
     updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(context)
     updater.update(image)
     return image
+
+
+@grok.adapter(zeit.content.image.interfaces.IImageGroup)
+@grok.implementer(zeit.content.image.interfaces.IMasterImage)
+def find_master_image(context):
+    if context.master_image:
+        return context.get(context.master_image)
