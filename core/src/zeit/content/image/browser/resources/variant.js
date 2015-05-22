@@ -17,11 +17,7 @@
         make_url: function() {
             var self = this,
                 url = self.get('url');
-            return url + '?nocache=' + self._random_int(0, 100000);
-        },
-
-        _random_int: function(min, max) {
-            return Math.floor(Math.random() * (max - min)) + min;
+            return url + '?nocache=' + new Date().getTime();
         }
     });
 
