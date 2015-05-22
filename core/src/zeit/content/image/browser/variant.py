@@ -9,8 +9,9 @@ class VariantList(zeit.cms.browser.view.Base):
     def __call__(self):
         base_url = self.url(zeit.cms.interfaces.ICMSContent(
             zeit.content.image.interfaces.IImageGroup(self.context).uniqueId))
-        return json.dumps([
-            serialize_variant(x, base_url) for x in self.context.values()])
+        return json.dumps(
+            [serialize_variant(x, base_url) for x in self.context.values()
+             if not x.is_default])
 
 
 class VariantDetail(zeit.cms.browser.view.Base):
@@ -19,7 +20,7 @@ class VariantDetail(zeit.cms.browser.view.Base):
         base_url = self.url(zeit.content.image.interfaces.IImageGroup(
             self.context))
         data = serialize_variant(self.context, base_url)
-        if self.context.id == 'default':
+        if self.context.is_default:
             data['url'] = self.url(
                 zeit.content.image.interfaces.IMasterImage(
                     zeit.content.image.interfaces.IImageGroup(self.context)),
