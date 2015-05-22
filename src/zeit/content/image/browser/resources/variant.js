@@ -53,7 +53,7 @@
             });
 
             content.attr('src', self.model.make_url());
-            content.attr('width', 25 * (self.index + 2) + 'px');
+            content.attr('width', 75 * (self.index + 2) + 'px');
             self.$el.replaceWith(content);
             self.setElement(content);
 
