@@ -36,8 +36,14 @@ class Variant(object):
 
     grok.implements(zeit.content.image.interfaces.IVariant)
 
+    DEFAULT_NAME = 'default'
+
     def __init__(self, **kw):
         self.__dict__.update(kw)
+
+    @property
+    def is_default(self):
+        return self.id == self.DEFAULT_NAME
 
 
 class VariantSource(zeit.cms.content.sources.XMLSource):

@@ -186,6 +186,7 @@ class IVariants(zope.interface.common.mapping.IEnumerableMapping):
 class IVariant(zope.interface.Interface):
 
     id = zope.schema.TextLine()
+    is_default = zope.schema.Bool()
     focus_x = zope.schema.Float()
     focus_y = zope.schema.Float()
     url = zope.schema.URI()
