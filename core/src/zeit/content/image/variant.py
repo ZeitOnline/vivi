@@ -3,6 +3,7 @@ import grokcore.component as grok
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
 import zeit.edit.body
+import zope.schema
 
 
 class Variants(grok.Adapter, UserDict.DictMixin):
@@ -17,12 +18,23 @@ class Variants(grok.Adapter, UserDict.DictMixin):
     def __getitem__(self, key):
         if key in self.context.variants:
             variant = Variant(id=key, **self.context.variants[key])
+            config = VARIANT_SOURCE.factory.find(self.context, key)
+            self._copy_missing_fields(config, variant)
         else:
             variant = VARIANT_SOURCE.factory.find(self.context, key)
+            self._copy_missing_fields(self.default_variant, variant)
         if variant is None:
             raise KeyError(key)
         variant.__parent__ = self
         return variant
+
+    def _copy_missing_fields(self, source, target):
+        for key in zope.schema.getFieldNames(
+                zeit.content.image.interfaces.IVariant):
+            if hasattr(target, key):
+                continue
+            if hasattr(source, key):
+                setattr(target, key, getattr(source, key))
 
     def keys(self):
         keys = [x.id for x in VARIANT_SOURCE(self.context)]
@@ -30,6 +42,18 @@ class Variants(grok.Adapter, UserDict.DictMixin):
             if key not in keys:
                 keys.append(key)
         return keys
+
+    @property
+    def default_variant(self):
+        if Variant.DEFAULT_NAME in self.context.variants:
+            default = self[Variant.DEFAULT_NAME]
+        else:
+            default = VARIANT_SOURCE.factory.find(
+                self.context, Variant.DEFAULT_NAME)
+            # XXX Is this really the right place to set default values?
+            default.focus_x = 0.5
+            default.focus_y = 0.5
+        return default
 
 
 class Variant(object):
