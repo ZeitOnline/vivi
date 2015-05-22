@@ -1,4 +1,5 @@
 import PIL.Image
+import random
 import transaction
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
@@ -42,6 +43,20 @@ class ImageTransform(object):
 
         image = self.image.resize((width, height), filter)
         return self._construct_image(image)
+
+    def crop(self, variant):
+        dx = random.randint(0, 200)
+        dy = random.randint(0, 200)
+        image = self._crop(self.image, dx, dy, dx + 300, dy + 300)
+        return self._construct_image(image)
+
+    def _crop(self, pil_image, x1, y1, x2, y2):
+        pil_image = pil_image.crop((x1, y1, x2, y2))
+        # XXX This is a rather crude heuristic.
+        mode = 'RGBA' if self.context.format == 'PNG' else 'RGB'
+        if pil_image.mode != mode:
+            pil_image = pil_image.convert(mode)
+        return pil_image
 
     def _construct_image(self, pil_image):
         image = zeit.content.image.image.LocalImage()

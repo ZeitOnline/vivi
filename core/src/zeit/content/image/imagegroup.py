@@ -39,6 +39,15 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
+    def __getitem__(self, key):
+        if key in self:
+            return super(ImageGroupBase, self).__getitem__(key)
+        variant = zeit.content.image.interfaces.IVariants(self).get(key)
+        if variant is not None:
+            return zeit.content.image.interfaces.ITransform(
+                zeit.content.image.interfaces.IMasterImage(self)).crop(variant)
+        raise KeyError(key)
+
 
 class ImageGroup(ImageGroupBase,
                  zeit.cms.repository.repository.Container):
