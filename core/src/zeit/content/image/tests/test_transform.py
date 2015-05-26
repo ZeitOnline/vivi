@@ -67,7 +67,7 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
             'xx        xxxxxx',
             'xx        xxxxxx',
         )
-        variant = Variant(focus_x=0.5, focus_y=0.5, ratio='1:1')
+        variant = Variant(focus_x=0.5, focus_y=0.5, zoom=1, ratio='1:1')
         image = transform.crop(variant)
         self.assertEqual((8, 8), image.getImageSize())
 
@@ -82,7 +82,8 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
             'xx        xxxxxx',
             'xx        xxxxxx',
         )
-        variant = Variant(focus_x=5.0 / 16, focus_y=3.0 / 8, ratio='1:1')
+        variant = Variant(
+            focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=1, ratio='1:1')
         image = transform.crop(variant)
         self.assertImage([
             '        ',
@@ -93,4 +94,26 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
             '        ',
             '        ',
             '        ',
+        ], image)
+
+    def test_image_is_scaled_according_to_given_zoom(
+            self):
+        transform = self._transform(
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+            'xx  x     xxxxxx',
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+        )
+        variant = Variant(
+            focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=0.5, ratio='1:1')
+        image = transform.crop(variant)
+        self.assertImage([
+            '    ',
+            ' x  ',
+            '    ',
+            '    ',
         ], image)

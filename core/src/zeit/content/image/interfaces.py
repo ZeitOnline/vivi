@@ -189,6 +189,7 @@ class IVariant(zope.interface.Interface):
     is_default = zope.schema.Bool()
     focus_x = zope.schema.Float()
     focus_y = zope.schema.Float()
+    zoom = zope.schema.Float()
     ratio = zope.schema.Float()
     ratio_str = zope.schema.TextLine()
     url = zope.schema.URI()

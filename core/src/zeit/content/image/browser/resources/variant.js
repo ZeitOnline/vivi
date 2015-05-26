@@ -147,6 +147,17 @@
 
             self.$el.append(self.circle);
             self.circle.draggable();
+
+            $('#slider').slider({
+                min: 1,
+                max: 100,
+                value: self.model.get('zoom') * 100,
+                change: function(event, ui) {
+                    self.model.save({"zoom": ui.value / 100}).done(function() {
+                        zeit.content.image.VARIANTS.trigger('reload');
+                    });
+                }
+            });
         },
 
         save: function() {

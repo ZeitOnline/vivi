@@ -12,6 +12,23 @@
     width: 100%;
 }
 
+#slider {
+    width: 100%;
+    background-image: url("slider-bar.gif");
+    background-repeat: repeat-x;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+#slider .ui-slider-handle {
+    background-image: url("slider-handle.gif");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
 #variant-preview {
     bottom: 1em;
     left: 66%;

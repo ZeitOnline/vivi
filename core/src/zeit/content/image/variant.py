@@ -51,6 +51,7 @@ class Variants(grok.Adapter, UserDict.DictMixin):
             # XXX Is this really the right place to set default values?
             default.focus_x = 0.5
             default.focus_y = 0.5
+            default.zoom = 1
         return default
 
 
