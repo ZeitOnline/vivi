@@ -95,6 +95,8 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
             if 'name' in attributes:
                 attributes['id'] = attributes['name']
                 del attributes['name']
+            if 'zoom' in attributes:
+                attributes['zoom'] = float(attributes['zoom'])
 
             if node.countchildren() == 0:
                 result.append(Variant(**attributes))
