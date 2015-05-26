@@ -9,6 +9,7 @@
 #variant-inner {
     position: relative;
     display: inline-block;
+    width: 100%;
 }
 
 #variant-preview {
