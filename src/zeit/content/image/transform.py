@@ -45,6 +45,8 @@ class ImageTransform(object):
 
     def crop(self, variant):
         width, height = self._fit_variant_to_image(variant)
+        width = int(width * variant.zoom)
+        height = int(height * variant.zoom)
         x, y = self._determine_crop_position(variant, width, height)
         image = self._crop(self.image, x, y, x + width, y + height)
         return self._construct_image(image)
