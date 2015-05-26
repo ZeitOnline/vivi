@@ -19,19 +19,25 @@ class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
     def test_access_variants_dict_entries_as_objects(self):
         with checked_out(self.group) as co:
             co.variants = {
-                'square': {'focus_x': 0.1, 'focus_y': 0.1}
+                'square': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.3}
             }
             variant = IVariants(co)['square']
             self.assertEqual(0.1, variant.focus_x)
+            self.assertEqual(0.1, variant.focus_y)
+            self.assertEqual(0.3, variant.zoom)
 
     def test_variant_without_settings_returns_default_settings(self):
         with checked_out(self.group) as co:
             co.variants = {
-                'default': {'focus_x': 0.1, 'focus_y': 0.1}
+                'default': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.5}
             }
             variant = IVariants(co)['square']
             self.assertEqual(0.1, variant.focus_x)
+            self.assertEqual(0.1, variant.focus_y)
+            self.assertEqual(0.5, variant.zoom)
 
     def test_variant_without_settings_without_default_returns_config(self):
         variant = IVariants(self.group)['square']
         self.assertEqual(0.5, variant.focus_x)
+        self.assertEqual(0.5, variant.focus_y)
+        self.assertEqual(1, variant.zoom)
