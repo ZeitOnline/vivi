@@ -16,5 +16,5 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
 
     def test_getitem_creates_image_from_variant_if_no_dav_content(self):
-        image = self.group['cinema']
+        image = self.group['square']
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
