@@ -16,7 +16,7 @@ class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
     def test_variants_provides_mapping_interface(self):
         zope.interface.verify.verifyObject(IVariants, IVariants(self.group))
 
-    def test_acess_variants_dict_entries_as_objects(self):
+    def test_access_variants_dict_entries_as_objects(self):
         with checked_out(self.group) as co:
             co.variants = {
                 'square': {'focus_x': 0.1, 'focus_y': 0.1}
