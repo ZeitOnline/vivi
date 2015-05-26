@@ -87,11 +87,26 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
     def getValues(self, context):
         tree = self._get_tree()
         result = []
-        for node in tree.iterchildren('*'):
+        for node in tree.getchildren():
             if not self.isAvailable(node, context):
                 continue
-            result.append(Variant(
-                id=node.get('name'), ratio=node.get('ratio')))
+
+            attributes = dict(node.attrib)
+            if 'name' in attributes:
+                attributes['id'] = attributes['name']
+                del attributes['name']
+
+            if node.countchildren() == 0:
+                result.append(Variant(**attributes))
+
+            for size in node.getchildren():
+                size_attr = attributes.copy()
+                size_attr.update(size.attrib)
+                if 'name' in size_attr:
+                    size_attr['id'] = '{}-{}'.format(
+                        size_attr['id'], size_attr['name'])
+                    del size_attr['name']
+                result.append(Variant(**size_attr))
         return result
 
     def find(self, context, id):

@@ -2,8 +2,10 @@
   <variant name="default">
   </variant>
   <variant name="cinema" ratio="16:9">
-    <!-- XXX later: sizes -->
+    <size name="small" max-size="320x180" />
+    <size name="large" />
   </variant>
   <variant name="square" ratio="1:1">
+    <!-- no size given, i.e. create one variant from node -->
   </variant>
 </variants>

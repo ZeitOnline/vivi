@@ -32,7 +32,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
 
     def test_list_variants_excludes_default(self):
         r = self.request('get', '/workingcopy/zope.user/group/variants')
-        self.assertEqual(['cinema', 'square'],
+        self.assertEqual(['cinema-small', 'cinema-large', 'square'],
                          [x['id'] for x in r.json()])
 
     def test_get_variant(self):
