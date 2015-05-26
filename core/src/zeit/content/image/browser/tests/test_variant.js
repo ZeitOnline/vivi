@@ -5,11 +5,16 @@
 
     describe("Focuspoint Test", function () {
         beforeEach(function() {
+            var self = this,
+                flag = false;
+
+            // Create temporary DOM
             this.container = $('<div id="variant-inner" style="width: 220px"/>');
             this.slider = $('<div id="slider"/>');
             $('body').append(this.container);
             $('body').append(this.slider);
 
+            // Mock AJAX calls to return hard coded response
             spyOn($, 'ajax').andCallFake(function (options) {
                 var d = $.Deferred(),
                     response = {
@@ -22,6 +27,20 @@
                 options.success(response);
                 return d.promise();
             });
+
+            // Setup Editor and wait that it was rendered
+            self.view = new zeit.content.image.browser.VariantEditor();
+
+            runs(function() {
+                self.view.on('render', function() {
+                    flag = true;
+                });
+                self.view.prepare();
+            });
+
+            waitsFor(function () {
+                return flag;
+            }, "VariantEditor did not render", 500);
         });
 
         afterEach(function () {
@@ -30,85 +49,31 @@
         });
 
         it("should display circle relative to given focus point", function () {
-            var flag = false,
-                view = new zeit.content.image.browser.VariantEditor();
-
+            var self = this;
             runs(function() {
-                view.on('render', function() {
-                    flag = true;
-                });
-                view.prepare();
-            });
-
-            waitsFor(function () {
-                return flag;
-            }, "Image did not render", 500);
-
-            runs(function() {
-                expect(view.circle.position()).toEqual({left: 110, top: 62});
+                expect(self.view.circle.position()).toEqual({left: 110, top: 62});
             });
         });
 
         it("should save focus point after drag", function () {
-            var flag = false,
-                view = new zeit.content.image.browser.VariantEditor();
-
-            runs(function() {
-                view.on('render', function() {
-                    flag = true;
-                });
-                view.prepare();
-            });
-
-            waitsFor(function () {
-                return flag;
-            }, "Image did not render", 500);
-
+            var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
-                view.circle.css('left', '55px');
-                view.circle.css('top', '31px');
-                view.circle.trigger('dragstop');
+                self.view.circle.css('left', '55px');
+                self.view.circle.css('top', '31px');
+                self.view.circle.trigger('dragstop');
                 expect(spy).toHaveBeenCalledWith(
                     {"focus_x": 0.25, "focus_y": 0.25});
             });
         });
 
         it("should display stored zoom value on load", function() {
-            var flag = false,
-                view = new zeit.content.image.browser.VariantEditor();
-
-            runs(function() {
-                view.on('render', function() {
-                    flag = true;
-                });
-                view.prepare();
-            });
-
-            waitsFor(function () {
-                return flag;
-            }, "Editor did not render", 500);
-
             runs(function() {
                 expect($('#slider').slider('value')).toEqual(30);
             });
         });
 
         it("should store zoom value on change", function() {
-            var flag = false,
-                view = new zeit.content.image.browser.VariantEditor();
-
-            runs(function() {
-                view.on('render', function() {
-                    flag = true;
-                });
-                view.prepare();
-            });
-
-            waitsFor(function () {
-                return flag;
-            }, "Image did not render", 500);
-
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
                 $('#slider').slider('value', 60);
