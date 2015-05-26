@@ -65,6 +65,7 @@ class VideoRendition():
     zope.interface.implements(zeit.content.video.interfaces.IVideoRendition)
     frame_width = 0
     url = None
+    video_duration = 0
 
 
 class VideoType(zeit.cms.type.XMLContentTypeDeclaration):

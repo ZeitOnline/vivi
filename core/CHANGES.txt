@@ -4,7 +4,7 @@ zeit.content.video changes
 2.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add a duration attribute to video renditions (ZON-1566).
 
 
 2.4.0 (2015-04-17)
