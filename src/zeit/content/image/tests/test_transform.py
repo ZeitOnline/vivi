@@ -11,6 +11,19 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.image.testing.ZCML_LAYER
 
+    def setUp(self):
+        super(CropTest, self).setUp()
+        self.transform = self._transform(
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+            'xx  x     xxxxxx',
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+            'xx        xxxxxx',
+        )
+
     def create_image(self, pil_image):
         image = zeit.content.image.image.LocalImage()
         image.mimeType = 'image/png'
@@ -57,34 +70,13 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(pixels, actual, message)
 
     def test_fits_larger_side_of_mask_to_image_size(self):
-        transform = self._transform(
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx  x     xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-        )
         variant = Variant(focus_x=0.5, focus_y=0.5, zoom=1, ratio='1:1')
-        image = transform.crop(variant)
+        image = self.transform.crop(variant)
         self.assertEqual((8, 8), image.getImageSize())
 
     def test_focus_point_after_crop_has_same_relative_position_as_before(self):
-        transform = self._transform(
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx  x     xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-        )
         variant = Variant(
             focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=1, ratio='1:1')
-        image = transform.crop(variant)
         self.assertImage([
             '        ',
             '        ',
@@ -94,26 +86,14 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
             '        ',
             '        ',
             '        ',
-        ], image)
+        ], self.transform.crop(variant))
 
-    def test_image_is_scaled_according_to_given_zoom(
-            self):
-        transform = self._transform(
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx  x     xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-            'xx        xxxxxx',
-        )
+    def test_zoom_scales_image_and_respects_focus_point(self):
         variant = Variant(
             focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=0.5, ratio='1:1')
-        image = transform.crop(variant)
         self.assertImage([
             '    ',
             ' x  ',
             '    ',
             '    ',
-        ], image)
+        ], self.transform.crop(variant))
