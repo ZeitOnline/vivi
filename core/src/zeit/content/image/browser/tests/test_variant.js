@@ -61,7 +61,7 @@
             }, "Image did not render", 500);
 
             runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "save");
+                var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
                 view.circle.css('left', '55px');
                 view.circle.css('top', '31px');
                 view.circle.trigger('dragstop');
