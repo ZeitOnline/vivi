@@ -5,7 +5,7 @@
 
     describe("Focuspoint Test", function () {
         beforeEach(function() {
-            this.container = $('<div id="variant-inner"/>');
+            this.container = $('<div id="variant-inner" style="width: 220px"/>');
             $('body').append(this.container);
 
             spyOn($, 'ajax').andCallFake(function (options) {
