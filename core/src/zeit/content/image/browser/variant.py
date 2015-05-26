@@ -47,6 +47,6 @@ def serialize_variant(variant, base_url):
 
 def deserialize_variant(data):
     result = {}
-    for name in ['focus_x', 'focus_y']:
+    for name in ['focus_x', 'focus_y', 'zoom']:
         result[name] = data[name]
     return result

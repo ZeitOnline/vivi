@@ -41,8 +41,9 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(0.5, variant['focus_x'])
 
     def test_put_variant_stores_values(self):
-        self.request('put', '/workingcopy/zope.user/group/variants/square',
-                     data=json.dumps({'focus_x': 0.1, 'focus_y': 0.1}))
+        self.request(
+            'put', '/workingcopy/zope.user/group/variants/square',
+            data=json.dumps({'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 1.0}))
         transaction.abort()
         self.assertEqual(0.1, self.group.variants['square']['focus_x'])
 
