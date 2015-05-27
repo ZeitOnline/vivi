@@ -66,6 +66,10 @@
                 self.$el.width(size[0]);
             }
 
+            self.$el.on('click', function() {
+                self.model.trigger('switch-focus', self.model);
+            });
+
             return self;
         },
 
@@ -117,20 +121,29 @@
 
         initialize: function() {
             var self = this;
-            self.model = new zeit.content.image.Variant({id: 'default'});
+            self.default_model = new zeit.content.image.Variant(
+                {id: 'default'}
+            );
+            self.current_model = self.default_model;
             self.model_view = new zeit.content.image.browser.Variant(
-                {model: self.model}
+                {model: self.current_model}
             );
             self.model_view.img_css_class = 'editor';
 
             self.model_view.on('render', function() {
                 self.trigger('render');
             });
+
+            self.listenTo(zeit.content.image.VARIANTS, 'switch-focus', self.switch_focus);
+
+            $('#reset').on('click', function() {
+                self.switch_focus(self.default_model);
+            });
         },
 
         prepare: function () {
             var self = this;
-            self.model.fetch().done(function() {
+            self.default_model.fetch().done(function() {
                 self.render();
             });
         },
@@ -142,20 +155,20 @@
             self.image = self.$('img');
 
             self.circle = $('<div class="focuspoint"><div class="circle"></div></div>');
-            self.circle.css('top', self.model.get('focus_y') * 100 + '%');
-            self.circle.css('left', self.model.get('focus_x') * 100 + '%');
-
             self.$el.append(self.circle);
             self.circle.draggable();
 
             $('#slider').slider({
                 min: 1,
                 max: 100,
-                value: self.model.get('zoom') * 100,
-                change: function(event, ui) {
-                    self.save();
-                }
+                value: self.current_model.get('zoom') * 100
             });
+
+            $('#slider').on('slidestop', function() {
+                self.save();
+            });
+
+            self.update();
         },
 
         save: function() {
@@ -163,11 +176,24 @@
             var focus_x = ((self.circle.position().left) / self.image.width());
             var focus_y = ((self.circle.position().top) / self.image.height());
             var zoom = $('#slider').slider("value") / 100;
-            self.model.save(
+            self.current_model.save(
                 {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
             ).done(function() {
                 zeit.content.image.VARIANTS.trigger('reload');
             });
+        },
+
+        update: function() {
+            var self = this;
+            self.circle.css('top', self.current_model.get('focus_y') * 100 + '%');
+            self.circle.css('left', self.current_model.get('focus_x') * 100 + '%');
+            $('#slider').slider("value", self.current_model.get('zoom') * 100);
+        },
+
+        switch_focus: function(model) {
+            var self = this;
+            self.current_model = model;
+            self.update();
         }
     });
 
