@@ -4,8 +4,10 @@ import json
 import requests
 import transaction
 import zeit.cms.checkout.interfaces
+import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.testing
+import zope.component
 
 
 class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
@@ -46,6 +48,50 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
             data=json.dumps({'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 1.0}))
         transaction.abort()
         self.assertEqual(0.1, self.group.variants['square']['focus_x'])
+
+
+class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
+
+    layer = zeit.content.image.testing.WEBDRIVER_LAYER
+
+    def test_integration(self):
+        """Open Image group and change settings of master and a variant."""
+        s = self.selenium
+        self.open('/repository/2007/03/group/@@checkout')
+        s.click('link=Variants')
+
+        # change default
+        s.dragAndDrop('css=.ui-slider-handle', '-50,0')
+        s.dragAndDrop('css=.focuspoint', '50,50')
+        s.waitForCssCount('css=.saved', 1)
+        s.waitForCssCount('css=.saved', 0)
+
+        # switch to first preview, i.e. cinema-small
+        s.click('css=img.preview')
+        s.waitForCssCount('css=.switched', 1)
+        s.waitForCssCount('css=.switched', 0)
+
+        # change settings for cinema-small
+        s.dragAndDrop('css=.ui-slider-handle', '-50,0')
+        s.dragAndDrop('css=.focuspoint', '50,50')
+        s.waitForCssCount('css=.saved', 1)
+        s.waitForCssCount('css=.saved', 0)
+
+        self.open('/workingcopy/zope.user/group/@@checkin')
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        variants = repository['2007']['03']['group'].variants
+        self.assertEqual(['cinema-small', 'default'], sorted(variants.keys()))
+        # Compare Zoom values: cinema-small < default < 1 (default setting)
+        self.assertLess(variants['default']['zoom'], 1)
+        self.assertLess(
+            variants['cinema-small']['zoom'],
+            variants['default']['zoom'])
+        # Compare Focus Point: cinema-small > default > 0.5 (default setting)
+        self.assertGreater(variants['default']['focus_x'], 0.5)
+        self.assertGreater(
+            variants['cinema-small']['focus_x'],
+            variants['default']['focus_x'])
 
 
 class VariantApp(gocept.jasmine.jasmine.TestApp):
