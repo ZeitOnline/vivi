@@ -59,3 +59,11 @@ img.editor {
 .focuspoint {
     position: absolute;
 }
+
+.preview.active {
+    border: 3px solid red;
+}
+
+#reset {
+    padding-left: 0.8em;
+}

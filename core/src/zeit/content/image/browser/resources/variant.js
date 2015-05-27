@@ -67,7 +67,7 @@
             }
 
             self.$el.on('click', function() {
-                self.model.trigger('switch-focus', self.model);
+                self.model.trigger('switch-focus', self.model, self);
             });
 
             return self;
@@ -137,7 +137,10 @@
             self.listenTo(zeit.content.image.VARIANTS, 'switch-focus', self.switch_focus);
 
             $('#reset').on('click', function() {
-                self.switch_focus(self.default_model);
+                self.switch_focus(
+                    self.default_model,
+                    new zeit.content.image.browser.Variant(self.default_model)
+                );
             });
         },
 
@@ -190,8 +193,11 @@
             $('#slider').slider("value", self.current_model.get('zoom') * 100);
         },
 
-        switch_focus: function(model) {
+        switch_focus: function(model, view) {
             var self = this;
+            self.model_view.$el.removeClass('active');
+            self.model_view = view;
+            self.model_view.$el.addClass('active');
             self.current_model = model;
             self.update();
         }
