@@ -52,15 +52,6 @@
             self.$el.replaceWith(content);
             self.setElement(content);
 
-            if (self.model.has('css')) {
-                self.$el.removeClass('preview');
-                self.$el.addClass(self.model.get('css'));
-            }
-
-            if (self.model.has('width')) {
-                self.$el.width(self.model.get('width'));
-            }
-
             if (self.model.has('max-size')) {
                 var size = self.model.get('max-size').split('x');
                 self.$el.width(size[0]);
