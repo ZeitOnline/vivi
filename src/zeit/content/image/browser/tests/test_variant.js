@@ -77,6 +77,7 @@
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
                 $('#slider').slider('value', 60);
+                $('#slider').trigger('slidestop');
                 expect(spy).toHaveBeenCalledWith(
                     {"focus_x": 0.5, "focus_y": 0.5, "zoom": 0.6});
             });
