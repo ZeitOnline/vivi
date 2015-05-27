@@ -63,7 +63,7 @@
                 self.view.circle.css('top', '31px');
                 self.view.circle.trigger('dragstop');
                 expect(spy).toHaveBeenCalledWith(
-                    {"focus_x": 0.25, "focus_y": 0.25});
+                    {"focus_x": 0.25, "focus_y": 0.25, "zoom": 0.3});
             });
         });
 
@@ -77,7 +77,8 @@
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
                 $('#slider').slider('value', 60);
-                expect(spy).toHaveBeenCalledWith({zoom: 0.6});
+                expect(spy).toHaveBeenCalledWith(
+                    {"focus_x": 0.5, "focus_y": 0.5, "zoom": 0.6});
             });
         });
     });
