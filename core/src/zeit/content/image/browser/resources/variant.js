@@ -39,10 +39,6 @@
 
         img_css_class: 'preview',
 
-        initialize: function(options) {
-            this.index = options.index;
-        },
-
         render: function() {
             var self = this;
             var content = $(_.template('<img class="{{css}}"/>')({
@@ -53,7 +49,6 @@
             });
 
             content.attr('src', self.model.make_url());
-            content.attr('width', 75 * (self.index + 2) + 'px');
             self.$el.replaceWith(content);
             self.setElement(content);
 
@@ -64,6 +59,11 @@
 
             if (self.model.has('width')) {
                 self.$el.width(self.model.get('width'));
+            }
+
+            if (self.model.has('max-size')) {
+                var size = self.model.get('max-size').split('x');
+                self.$el.width(size[0]);
             }
 
             return self;
@@ -90,7 +90,7 @@
             self.$el.empty();
             $(zeit.content.image.VARIANTS.models).each(function(index, variant) {
                 var view = new zeit.content.image.browser.Variant(
-                    {model: variant, index: index}
+                    {model: variant}
                 );
                 self.model_views.push(view);
                 self.$el.append(view.render().el);
