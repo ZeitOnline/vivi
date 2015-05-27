@@ -35,37 +35,73 @@
 
     /* VIEWS */
 
-    zeit.content.image.browser.Variant = Backbone.View.extend({
-
-        img_css_class: 'preview',
+    var AbstractVariant = Backbone.View.extend({
 
         render: function() {
             var self = this;
-            var content = $(_.template('<img class="{{css}}"/>')({
-                    css: self.img_css_class}));
+            self.image = self.create_image();
 
-            content.on('load', function() {
-                self.trigger('render');
-            });
-
-            content.attr('src', self.model.make_url());
-            self.$el.replaceWith(content);
-            self.setElement(content);
-
-            if (self.model.has('max-size')) {
-                var size = self.model.get('max-size').split('x');
-                self.$el.width(size[0]);
-            }
-
-            self.$el.on('click', function() {
-                self.model.trigger('switch-focus', self.model, self);
-            });
+            // Replace default DIV element with img as rewire events.
+            self.$el.replaceWith(self.image);
+            self.setElement(self.image);
 
             return self;
         },
 
+        create_image: function() {
+            var self = this,
+                image = $('<img/>');
+
+            // Event handler so Jasmine tests can wait for the image to load.
+            image.on('load', function() {
+                self.trigger('render');
+            });
+
+            // Set src attribute after event registration
+            image.attr('src', self.model.make_url());
+
+            return image;
+        }
+    });
+
+    zeit.content.image.browser.PreviewVariant = AbstractVariant.extend({
+
+        create_image: function() {
+            var self = this,
+                image = AbstractVariant.prototype.create_image.apply(this);
+
+            image.addClass('preview');
+
+            // Set max-width defined in config as width to display smaller
+            // sizes of a variant as big as allowed.
+            if (self.model.has('max-size')) {
+                var size = self.model.get('max-size').split('x');
+                image.width(size[0]);
+            }
+
+            // Notify world that image was clicked to make the model active.
+            image.on('click', function() {
+                self.model.trigger('switch-focus', self.model, self);
+            });
+
+            return image;
+        },
+
         update_image: function() {
             this.$el.attr('src', this.model.make_url());
+        }
+    });
+
+
+    zeit.content.image.browser.EditableVariant = AbstractVariant.extend({
+
+        create_image: function() {
+            var self = this,
+                image = AbstractVariant.prototype.create_image.apply(this);
+
+            image.addClass('editor');
+
+            return image;
         }
     });
 
@@ -81,10 +117,11 @@
         },
 
         reset: function() {
+            // Render all models. Used for initial load.
             var self = this;
             self.$el.empty();
             zeit.content.image.VARIANTS.each(function(variant) {
-                var view = new zeit.content.image.browser.Variant(
+                var view = new zeit.content.image.browser.PreviewVariant(
                     {model: variant}
                 );
                 self.model_views.push(view);
@@ -93,6 +130,7 @@
         },
 
         reload: function() {
+            // Only update src attribute of images.
             var self = this;
             $(self.model_views).each(function(index, view) {
                 view.update_image();
@@ -116,7 +154,7 @@
                 {id: 'default'}
             );
             self.current_model = self.default_model;
-            self.model_view = new zeit.content.image.browser.Variant(
+            self.model_view = new zeit.content.image.browser.EditableVariant(
                 {model: self.current_model}
             );
             self.model_view.img_css_class = 'editor';
@@ -130,7 +168,7 @@
             $('#reset').on('click', function() {
                 self.switch_focus(
                     self.default_model,
-                    new zeit.content.image.browser.Variant(self.default_model)
+                    new zeit.content.image.browser.EditableVariant(self.default_model)
                 );
             });
         },
