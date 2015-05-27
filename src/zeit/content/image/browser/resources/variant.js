@@ -88,7 +88,7 @@
         reset: function() {
             var self = this;
             self.$el.empty();
-            $(zeit.content.image.VARIANTS.models).each(function(index, variant) {
+            zeit.content.image.VARIANTS.each(function(variant) {
                 var view = new zeit.content.image.browser.Variant(
                     {model: variant}
                 );
