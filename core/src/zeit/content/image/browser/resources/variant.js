@@ -183,6 +183,7 @@
                 {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
             ).done(function() {
                 zeit.content.image.VARIANTS.trigger('reload');
+                self.notify_status("saved");
             });
         },
 
@@ -201,7 +202,17 @@
             self.current_model = model;
             self.current_model.fetch().done(function() {
                 self.update();
+                self.notify_status("switched");
             });
+        },
+
+        notify_status: function(status) {
+            // Used for Selenium tests
+            var self = this;
+            self.$el.addClass(status);
+            window.setTimeout(function () {
+                self.$el.removeClass(status);
+            }, 1000);
         }
     });
 
