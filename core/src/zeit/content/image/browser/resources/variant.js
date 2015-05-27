@@ -199,7 +199,9 @@
             self.model_view = view;
             self.model_view.$el.addClass('active');
             self.current_model = model;
-            self.update();
+            self.current_model.fetch().done(function() {
+                self.update();
+            });
         }
     });
 
