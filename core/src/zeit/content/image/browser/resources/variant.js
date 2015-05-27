@@ -153,9 +153,7 @@
                 max: 100,
                 value: self.model.get('zoom') * 100,
                 change: function(event, ui) {
-                    self.model.save({"zoom": ui.value / 100}).done(function() {
-                        zeit.content.image.VARIANTS.trigger('reload');
-                    });
+                    self.save();
                 }
             });
         },
@@ -164,8 +162,9 @@
             var self = this;
             var focus_x = ((self.circle.position().left) / self.image.width());
             var focus_y = ((self.circle.position().top) / self.image.height());
+            var zoom = $('#slider').slider("value") / 100;
             self.model.save(
-                {"focus_x": focus_x, "focus_y": focus_y}
+                {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
             ).done(function() {
                 zeit.content.image.VARIANTS.trigger('reload');
             });
