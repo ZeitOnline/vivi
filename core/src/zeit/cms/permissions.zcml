@@ -104,5 +104,14 @@
     title="Delete centerpages"
     />
 
+  <permission
+    id="zeit.content.cp.ViewAutomatic"
+    title="View automatic CP fields"
+    />
+  <zeit:edit-permission
+    id="zeit.content.cp.EditAutomatic"
+    title="Edit automatic CPs"
+    />
+
 </configure>
 
