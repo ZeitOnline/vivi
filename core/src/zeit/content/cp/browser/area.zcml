@@ -165,7 +165,7 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="edit-overflow"
     class=".area.EditOverflow"
-    permission="zeit.EditContent"
+    permission="zeit.content.cp.EditOverflow"
     />
 
   <browser:page
@@ -238,7 +238,7 @@
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="overflow-box"
     template="layout.block.edit-overflow.pt"
-    permission="zeit.EditContent"
+    permission="zeit.content.cp.EditOverflow"
     weight="3"
     />
 
