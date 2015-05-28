@@ -39,7 +39,7 @@
   <adapter factory=".contentuuid.properties" />
   <adapter factory=".contentuuid.SimpleUUID" />
   <adapter factory=".contentuuid.uuid_to_content" />
-  
+
 
   <!-- Templates -->
   <class class=".template.TemplateManagerContainer">

@@ -2,17 +2,17 @@
   xmlns="http://namespaces.zope.org/zope"
   xmlns:zeit="http://namespaces.zeit.de/CMS/zcml"
   i18n_domain="zeit.cms">
-  
+
   <permission
     id="zeit.RenameContent"
     title="Rename content"
     />
-  
+
   <permission
     id="zeit.RenameFolder"
     title="Rename folders"
     />
-  
+
   <permission
     id="zeit.CopyContent"
     title="Copy content"
@@ -47,7 +47,7 @@
     id="zeit.Checkout"
     title="Checkout content"
     />
-  
+
   <permission
     id="zeit.Checkin"
     title="Checkin content"
@@ -57,7 +57,7 @@
     id="zeit.cms.repository.ViewNavigationTree"
     title="View repository navigation tree"
     />
-  
+
   <permission
     id="zeit.cms.Syndicate"
     title="Syndicate content"
