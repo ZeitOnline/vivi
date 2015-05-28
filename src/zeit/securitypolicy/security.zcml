@@ -167,6 +167,10 @@
     role="zeit.Producer"
     permission="zeit.content.cp.EditArea"
     />
+  <grant
+    role="zeit.Producer"
+    permission="zeit.content.cp.EditOverflow"
+    />
 
 
   <!-- CvD grants -->
