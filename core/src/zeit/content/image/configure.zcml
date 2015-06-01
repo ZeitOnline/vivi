@@ -57,6 +57,12 @@
       permission="zeit.EditContent" />
   </class>
 
+  <adapter factory="zeit.edit.rule.ValidatingWorkflow"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    for=".interfaces.IImageGroup"
+    trusted="yes"
+    />
+
   <adapter
     factory="z3c.traverser.traverser.PluggableTraverser"
     for=".interfaces.IImageGroup
