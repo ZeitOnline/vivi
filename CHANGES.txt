@@ -6,6 +6,9 @@ zeit.content.image changes
 
 - Introduce new cropping UI with focus points (DEV-779).
 
+- Add validation rules for ImageGroup to check on publish that important
+  image sizes were created. (DEV-790).
+
 
 2.2.7 (2015-03-17)
 ------------------
