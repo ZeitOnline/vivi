@@ -11,6 +11,8 @@ class CenterPageValidator(zeit.edit.rule.RecursiveValidator):
 
     @property
     def children(self):
+        # WARNING: Does not include modules, only regions and areas.
+        # Therefore rules for modules aren't executed.
         areas = self.context.values()
         return itertools.chain(areas, *[a.values() for a in areas])
 
