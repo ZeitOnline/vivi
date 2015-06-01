@@ -31,23 +31,25 @@ WEBDRIVER_LAYER = gocept.selenium.WebdriverSeleneseLayer(
     name='WebdriverSeleneseLayer', bases=(WD_LAYER,))
 
 
+def create_local_image(filename):
+    image = zeit.content.image.image.LocalImage(mimeType='image/jpeg')
+    fh = image.open('w')
+    file_name = pkg_resources.resource_filename(
+        __name__, 'browser/testdata/%s' % filename)
+    fh.write(open(file_name, 'rb').read())
+    fh.close()
+    return image
+
+
 def create_image_group():
     repository = zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
-    group = zeit.content.image.imagegroup.ImageGroup()
-    repository['image-group'] = group
+    repository['image-group'] = zeit.content.image.imagegroup.ImageGroup()
     group = repository['image-group']
     for filename in ('new-hampshire-450x200.jpg',
                      'new-hampshire-artikel.jpg',
                      'obama-clinton-120x120.jpg'):
-        image = zeit.content.image.image.LocalImage()
-        image.mimeType = 'image/jpeg'
-        fh = image.open('w')
-        file_name = pkg_resources.resource_filename(
-            __name__, 'browser/testdata/%s' % filename)
-        fh.write(open(file_name, 'rb').read())
-        fh.close()
-        group[filename] = image
+        group[filename] = create_local_image(filename)
     return group
 
 
