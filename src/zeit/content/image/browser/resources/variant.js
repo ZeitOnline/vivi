@@ -278,7 +278,7 @@
             self.$el.addClass(status);
             window.setTimeout(function () {
                 self.$el.removeClass(status);
-            }, 1000);
+            }, 2000);
         }
     });
 
