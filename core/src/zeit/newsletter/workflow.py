@@ -7,7 +7,7 @@ import zeit.workflow.interfaces
 import zope.session.interfaces
 
 
-class Workflow(zeit.edit.rule.ValidatingWorkflow,
+class Workflow(zeit.workflow.timebased.TimeBasedWorkflow,
                grok.Adapter):
 
     grok.context(zeit.newsletter.interfaces.INewsletter)
