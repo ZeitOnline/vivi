@@ -36,6 +36,7 @@ setup(
         'zeit.content.video',
         'zeit.edit >= 2.11.0.dev0',
         'zeit.find >= 2.4.0.dev0',
+        'zeit.workflow',
         'zope.app.appsetup',
         'zope.app.generations',
         'zope.app.pagetemplate',
