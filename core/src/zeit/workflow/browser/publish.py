@@ -1,4 +1,5 @@
 from zeit.cms.repository.interfaces import IRepositoryContent
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import lovely.remotetask.interfaces
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
@@ -15,10 +16,37 @@ class PublishMenuItem(zeit.cms.browser.menu.LightboxActionMenuItem):
 
 
 class Publish(object):
+    """View for 1-Click-Publishing. Optionally displays validation info."""
+
+    @cachedproperty
+    def publish_info(self):
+        return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+
+    @cachedproperty
+    def validation_info(self):
+        """Avoid execution of validation twice by reusing publish_info.
+
+        IPublishInfo and IPublishValidationInfo are implemented by the same
+        object, thus calling the adapter IPublishValidationInfo will not
+        calculate the validations twice, since the Workflow already implements
+        the interface.
+
+        """
+        return zeit.cms.workflow.interfaces.IPublishValidationInfo(
+            self.publish_info, None)
+
+    def validation_status(self):
+        if self.validation_info is None:
+            return None
+        return self.validation_info.status
+
+    def validation_messages(self):
+        if self.validation_info is None:
+            return None
+        return set(self.validation_info.messages)
 
     def can_publish(self):
-        info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        return info.can_publish()
+        return self.publish_info.can_publish()
 
 
 class FlashPublishErrors(zeit.cms.browser.view.Base):

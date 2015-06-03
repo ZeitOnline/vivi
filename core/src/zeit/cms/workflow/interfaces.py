@@ -73,6 +73,24 @@ class IPublishInfo(zope.interface.Interface):
         """
 
 
+class IPublishValidationInfo(IPublishInfo):
+    """Special IPublishInfo that holds validation info, e.g. error message.
+
+    Fields are copied from zeit.edit.interfaces.IValidator. We cannot use
+    inheritance, since zeit.edit depends on zeit.cms, not the other way around.
+
+    This interface is used to display additional information in case there was
+    a warning or an error during 1-Click-Publishing.
+
+    """
+
+    status = zope.schema.TextLine(
+        title=u"Validation status: {None, warning, error}")
+
+    messages = zope.schema.List(
+        title=u"List of warning and error messages.")
+
+
 class IPublicationStatus(zope.interface.Interface):
 
     published = zope.schema.Choice(

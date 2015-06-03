@@ -128,3 +128,16 @@ class TestRetract(zeit.cms.testing.SeleniumTestCase,
         s.waitForElementNotPresent('css=li.busy[action=retract]')
         s.waitForPageToLoad()
         self.assertFalse(self.publish_info.published)
+
+
+class TestPublishValidationMessages(
+        zeit.workflow.testing.FakeValidatingWorkflowMixin,
+        zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.workflow.testing.LAYER
+
+    def test_publish_with_validation_error_displays_message(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/testcontent'
+               '/@@publish.html')
+        self.assertEllipsis('...Fake Validation Error Message...', b.contents)

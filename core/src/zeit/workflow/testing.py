@@ -7,8 +7,12 @@ import os
 import plone.testing
 import sys
 import threading
+import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
+import zeit.workflow.publishinfo
 import zope.component
+import zope.interface
 
 
 product_config = """
@@ -115,3 +119,45 @@ def run_publish(priorities=(PRIORITY_DEFAULT,)):
         tasks.process()
     logging.root.removeHandler(handler)
     logging.root.setLevel(oldlevel)
+
+
+class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
+    """Workflow with validations like zeit.edit.rule.ValidatingWorkflow.
+
+    Will always return that validations failed due to an error with message.
+
+    We cannot use the Workflow from zeit.edit, since zeit.edit depends on
+    zeit.cms. Therefore we use a fake workflow here, to test the abstract
+    mechanism to display validation errors during publish.
+
+    """
+
+    zope.interface.implements(
+        zeit.cms.workflow.interfaces.IPublishValidationInfo)
+
+    status = 'error'
+    messages = ['Fake Validation Error Message']
+
+    def can_publish(self):
+        return False
+
+
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
+@zope.interface.implementer(
+    zeit.cms.workflow.interfaces.IPublishValidationInfo)
+def fake_validating_workflow_for_testcontent(context):
+    return FakeValidatingWorkflow(context)
+
+
+class FakeValidatingWorkflowMixin(object):
+    """Mixin to register and unregister FakeValidatingWorkflow."""
+
+    def setUp(self):
+        super(FakeValidatingWorkflowMixin, self).setUp()
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.registerAdapter(fake_validating_workflow_for_testcontent)
+
+    def tearDown(self):
+        super(FakeValidatingWorkflowMixin, self).tearDown()
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.unregisterAdapter(fake_validating_workflow_for_testcontent)

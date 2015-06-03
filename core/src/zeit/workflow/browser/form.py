@@ -1,5 +1,5 @@
-
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import IPublishValidationInfo
 import gocept.form.action
 import gocept.form.grouped
 import zeit.cms.browser.form
@@ -36,6 +36,13 @@ class WorkflowActions(object):
                 _('scheduled-for-immediate-publishing',
                   default=u"${id} has been scheduled for publishing.",
                   mapping=mapping))
+        elif IPublishValidationInfo.providedBy(self.info):
+            validation = IPublishValidationInfo(self.info)
+            self.send_message(
+                _('publish-validation-messages-header'),
+                type=validation.status)
+            for message in set(validation.messages):
+                self.send_message(message, type=validation.status)
         else:
             self.send_message(self.get_error_message(mapping), type='error')
 

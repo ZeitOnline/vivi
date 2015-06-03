@@ -22,3 +22,17 @@ class WorkflowFormTest(zeit.cms.testing.BrowserTestCase):
     #            '/@@workflow.html')
     #     b.getControl('Save state and publish now').click()
     #     self.assertEllipsis('...Publication scheduled...', b.contents)
+
+
+class ValidatingWorkflowFormTest(
+        zeit.workflow.testing.FakeValidatingWorkflowMixin,
+        zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.workflow.testing.LAYER
+
+    def test_publish_with_validation_error_displays_message(self):
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/testcontent'
+               '/@@workflow.html')
+        b.getControl('Save state and publish now').click()
+        self.assertEllipsis('...Fake Validation Error Message...', b.contents)
