@@ -1,20 +1,17 @@
 
-import zope.component
-import zope.dublincore.interfaces
-import zope.interface
-import zope.formlib.form
-
+from zeit.cms.i18n import MessageFactory as _
 import gocept.form.action
 import gocept.form.grouped
-
-import zeit.objectlog.interfaces
-
 import zeit.cms.browser.form
 import zeit.cms.browser.interfaces
 import zeit.cms.workflow.interfaces
-import zeit.workflow.interfaces
+import zeit.objectlog.interfaces
 import zeit.workflow.browser.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zeit.workflow.interfaces
+import zope.component
+import zope.dublincore.interfaces
+import zope.formlib.form
+import zope.interface
 
 
 def is_published(form, action):
