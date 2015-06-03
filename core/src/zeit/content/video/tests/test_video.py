@@ -41,7 +41,7 @@ class TestReference(zeit.content.video.testing.TestCase):
         video = factory.next()
         for key, value in kw.items():
             setattr(video, key, value)
-        video = factory.next() # video is now in repository['video']
+        video = factory.next()  # video is now in repository['video']
 
     def update(self, node):
         updater = zeit.cms.content.interfaces.IXMLReferenceUpdater(
@@ -95,10 +95,12 @@ class TestRenditionsProperty(unittest.TestCase):
         rendition = mock.Mock()
         rendition.url = 'foo'
         rendition.frame_width = 100
+        rendition.video_duration = 920
         node = prop._node_factory(rendition, mock.sentinel.tree)
         self.assertEqual('rendition', node.tag)
         self.assertEqual('foo', node.get('url'))
         self.assertEqual(100, int(node.get('frame_width')))
+        self.assertEqual(920, int(node.get('video_duration')))
 
     def test_video_should_store_renditions(self):
         from zeit.content.video.video import Video
@@ -108,21 +110,24 @@ class TestRenditionsProperty(unittest.TestCase):
         rendition = VideoRendition()
         rendition.url = 'foo'
         rendition.frame_width = 100
+        rendition.video_duration = 910
         rendition2 = VideoRendition()
         rendition2.url = 'baa'
         rendition2.frame_width = 200
+        rendition2.video_duration = 920
         video.renditions = (rendition, rendition2)
 
         xmlstr = lxml.etree.tostring(
             video.xml.head.renditions, pretty_print=True)
-        self.assertEqual('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100"/>\n  <rendition url="baa" frame_width="200"/>\n</renditions>\n', xmlstr)
+        self.assertEqual('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100" video_duration="910"/>\n  <rendition url="baa" frame_width="200" video_duration="920"/>\n</renditions>\n', xmlstr)
 
     def test_video_should_load_renditions(self):
         from zeit.content.video.video import Video
 
-        node = lxml.objectify.XML('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100"/>\n  <rendition url="baa" frame_width="200"/>\n</renditions>\n')
+        node = lxml.objectify.XML('<renditions xmlns:py="http://codespeak.net/lxml/objectify/pytype" xmlns:xi="http://www.w3.org/2001/XInclude" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">\n  <rendition url="foo" frame_width="100" video_duration="910"/>\n  <rendition url="baa" frame_width="200"  video_duration="920"/>\n</renditions>\n')
 
         video = Video()
         video.xml.head.renditions = node
         self.assertEqual('foo', video.renditions[0].url)
         self.assertEqual(100, video.renditions[0].frame_width)
+        self.assertEqual(910, video.renditions[0].video_duration)
