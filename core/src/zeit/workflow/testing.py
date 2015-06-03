@@ -86,7 +86,7 @@ class RemoteTaskHelper(object):
         self.tasks = []
         with zeit.cms.testing.site(self.getRootFolder()):
             for name, task in zope.component.getUtilitiesFor(
-                lovely.remotetask.interfaces.ITaskService):
+                    lovely.remotetask.interfaces.ITaskService):
                 task.startProcessing()
                 self.tasks.append(task)
 
