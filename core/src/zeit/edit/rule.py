@@ -1,5 +1,6 @@
 from datetime import datetime
 from zeit.workflow.interfaces import ITimeBasedPublishing
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import ZODB.POSException
 import gocept.cache.method
 import grokcore.component
@@ -221,9 +222,22 @@ class RecursiveValidator(object):
 
 class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
 
+    zope.interface.implements(zeit.edit.interfaces.IValidatingWorkflow)
+
+    @cachedproperty
+    def validator(self):
+        return zeit.edit.interfaces.IValidator(self.context)
+
+    @property
+    def status(self):
+        return self.validator.status
+
+    @property
+    def messages(self):
+        return self.validator.messages
+
     def can_publish(self):
-        validator = zeit.edit.interfaces.IValidator(self.context)
-        if validator.status == ERROR:
+        if self.status == ERROR:
             return False
         return True
 

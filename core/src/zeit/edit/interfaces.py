@@ -1,6 +1,8 @@
 from zeit.cms.i18n import MessageFactory as _
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.workflow.interfaces
 import zope.container.contained
 import zope.container.interfaces
 import zope.interface
@@ -128,6 +130,17 @@ class IValidator(zope.interface.Interface):
 
     messages = zope.schema.List(
         title=u"List of error messages.")
+
+
+class IValidatingWorkflow(
+        zeit.cms.workflow.interfaces.IPublishValidationInfo,
+        zeit.workflow.interfaces.ITimeBasedPublishing):
+    """Workflow with validations.
+
+    Provides additional information about validations (status, messages) as
+    defined in IPublishValidationInfo.
+
+    """
 
 
 class IRulesManager(zope.interface.Interface):

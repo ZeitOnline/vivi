@@ -5,6 +5,11 @@ import pytz
 import unittest
 import zeit.edit.testing
 import zope.interface
+import zeit.cms.testcontenttype.interfaces
+import zeit.cms.workflow.interfaces
+import zeit.edit.rule
+import zeit.edit.interfaces
+import zope.component
 
 
 class RuleTest(unittest.TestCase):
@@ -266,3 +271,49 @@ class RecursiveValidatorTest(unittest.TestCase):
 
         validator = RecursiveValidator([mock.Mock(), mock.Mock()])
         self.assertEqual(ERROR, validator.status)
+
+
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
+@zope.interface.implementer(
+    zeit.cms.workflow.interfaces.IPublishValidationInfo)
+def validating_workflow_for_testcontent(context):
+    return zeit.edit.rule.ValidatingWorkflow(context)
+
+
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
+@zope.interface.implementer(zeit.edit.interfaces.IValidator)
+def validator_for_testcontent(context):
+    validator = mock.Mock(
+        status=zeit.edit.rule.ERROR, messages=['Mock Validator Error Message'])
+    return validator
+
+
+class ValidatingWorkflowTest(unittest.TestCase):
+
+    def setUp(self):
+        super(ValidatingWorkflowTest, self).setUp()
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.registerAdapter(validating_workflow_for_testcontent)
+        gsm.registerAdapter(validator_for_testcontent)
+
+    def tearDown(self):
+        super(ValidatingWorkflowTest, self).tearDown()
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.unregisterAdapter(validating_workflow_for_testcontent)
+        gsm.unregisterAdapter(validator_for_testcontent)
+
+    def test_validating_workflow_cannot_publish_when_validation_failed(self):
+        workflow = zeit.cms.workflow.interfaces.IPublishValidationInfo(
+            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+        self.assertEqual(False, workflow.can_publish())
+
+    def test_validating_workflow_forwards_validation_info_to_publish_view(
+            self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        import zeit.workflow.browser.publish
+
+        view = zeit.workflow.browser.publish.Publish()
+        view.context = TestContentType()
+        self.assertEqual(zeit.edit.rule.ERROR, view.validation_status())
+        self.assertEqual(
+            ['Mock Validator Error Message'], list(view.validation_messages()))

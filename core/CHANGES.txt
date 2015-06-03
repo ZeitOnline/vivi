@@ -4,7 +4,8 @@ Changes
 2.11.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Extend ValidatingWorkflow to forward validation errors to the Publish view
+  that displays those errors to the user. (DEV-22)
 
 
 2.11.2 (2015-05-04)

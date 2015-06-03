@@ -11,11 +11,11 @@
   <class class=".rule.ValidatingWorkflow">
     <require
       permission="zope.View"
-      interface="zeit.workflow.interfaces.ITimeBasedPublishing"
+      interface=".interfaces.IValidatingWorkflow"
       />
     <require
       permission="zeit.workflow.Publish"
-      set_schema="zeit.workflow.interfaces.ITimeBasedPublishing"
+      set_schema=".interfaces.IValidatingWorkflow"
       />
   </class>
 
