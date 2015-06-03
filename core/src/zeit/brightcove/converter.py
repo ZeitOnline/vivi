@@ -307,6 +307,19 @@ class Video(Converter):
             rs.append(vr)
         return tuple(rs)
 
+    @renditions.setter
+    def renditions(self, value):
+        rs = []
+        if not value:
+            value = ()
+        for rendition in value:
+            vr = dict(
+                url=rendition.url,
+                frameWidth=rendition.frame_width,
+                videoDuration=rendition.video_duration)
+            rs.append(vr)
+        self.data.setdefault('renditions', tuple(rs))
+
     @property
     def related(self):
         result = []
