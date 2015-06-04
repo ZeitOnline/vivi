@@ -59,6 +59,7 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
         s = self.selenium
         self.open('/repository/2007/03/group/@@checkout')
         s.click('link=Variants')
+        s.waitForCssCount('css=#variant-content', 1)  # wait for tab to load
 
         # change default
         s.dragAndDrop('css=.ui-slider-handle', '-50,0')
