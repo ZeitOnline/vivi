@@ -64,7 +64,7 @@
     name="zeit.content.cp.centerpage"
     />
   <adapter factory="zeit.edit.rule.ValidatingWorkflow"
-    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    provides="zeit.cms.workflow.interfaces.IPublishValidationInfo"
     for=".interfaces.ICenterPage"
     trusted="yes"
     />
@@ -183,7 +183,7 @@
   </class>
 
   <adapter factory="zeit.edit.rule.ValidatingWorkflow"
-    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    provides="zeit.cms.workflow.interfaces.IPublishValidationInfo"
     for=".interfaces.IFeed"
     trusted="yes"
     />
