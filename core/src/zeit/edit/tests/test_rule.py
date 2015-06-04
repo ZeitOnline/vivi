@@ -314,6 +314,6 @@ class ValidatingWorkflowTest(unittest.TestCase):
 
         view = zeit.workflow.browser.publish.Publish()
         view.context = TestContentType()
-        self.assertEqual(zeit.edit.rule.ERROR, view.validation_status())
+        self.assertEqual(zeit.edit.rule.ERROR, view.validation_status)
         self.assertEqual(
-            ['Mock Validator Error Message'], list(view.validation_messages()))
+            ['Mock Validator Error Message'], list(view.validation_messages))
