@@ -32,8 +32,10 @@ zeit.cms.MessageView = zeit.cms.View.extend({
         var messages = $('messages');
         var errors = MochiKit.DOM.getElementsByTagAndClassName(
             'li', 'error', messages);
+        var warnings = MochiKit.DOM.getElementsByTagAndClassName(
+            'li', 'warning', messages);
         var timeout = 0.5;
-        if (errors.length > 0) {
+        if (errors.length > 0 || warnings.length > 0) {
             timeout = 5;
         }
 

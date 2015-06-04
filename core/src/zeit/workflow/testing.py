@@ -124,7 +124,7 @@ def run_publish(priorities=(PRIORITY_DEFAULT,)):
 class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """Workflow with validations like zeit.edit.rule.ValidatingWorkflow.
 
-    Will always return that validations failed due to an error with message.
+    Just returns the data fed into __init__ as validation info.
 
     We cannot use the Workflow from zeit.edit, since zeit.edit depends on
     zeit.cms. Therefore we use a fake workflow here, to test the abstract
@@ -135,18 +135,30 @@ class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     zope.interface.implements(
         zeit.cms.workflow.interfaces.IPublishValidationInfo)
 
-    status = 'error'
-    messages = ['Fake Validation Error Message']
+    def __init__(self, context, status, message, can_publish):
+        self.context = context
+        self.status = status
+        self.messages = [message]
+        self._can_publish = can_publish
 
     def can_publish(self):
-        return False
+        return self._can_publish
 
 
 @zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
 @zope.interface.implementer(
     zeit.cms.workflow.interfaces.IPublishValidationInfo)
-def fake_validating_workflow_for_testcontent(context):
-    return FakeValidatingWorkflow(context)
+def workflow_with_error_for_testcontent(context):
+    return FakeValidatingWorkflow(
+        context, 'error', 'Fake Validation Error Message', False)
+
+
+@zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
+@zope.interface.implementer(
+    zeit.cms.workflow.interfaces.IPublishValidationInfo)
+def workflow_with_warning_for_testcontent(context):
+    return FakeValidatingWorkflow(
+        context, 'warning', 'Fake Validation Warning Message', True)
 
 
 class FakeValidatingWorkflowMixin(object):
@@ -154,10 +166,21 @@ class FakeValidatingWorkflowMixin(object):
 
     def setUp(self):
         super(FakeValidatingWorkflowMixin, self).setUp()
-        gsm = zope.component.getGlobalSiteManager()
-        gsm.registerAdapter(fake_validating_workflow_for_testcontent)
+        self.registered_adapters = []
 
     def tearDown(self):
         super(FakeValidatingWorkflowMixin, self).tearDown()
         gsm = zope.component.getGlobalSiteManager()
-        gsm.unregisterAdapter(fake_validating_workflow_for_testcontent)
+        for adapter in self.registered_adapters:
+            gsm.unregisterAdapter(adapter)
+
+    def register_workflow_with_error(self):
+        self._register_workflow(workflow_with_error_for_testcontent)
+
+    def register_workflow_with_warning(self):
+        self._register_workflow(workflow_with_warning_for_testcontent)
+
+    def _register_workflow(self, workflow):
+        gsm = zope.component.getGlobalSiteManager()
+        gsm.registerAdapter(workflow)
+        self.registered_adapters.append(workflow)

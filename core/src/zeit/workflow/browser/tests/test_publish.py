@@ -137,7 +137,18 @@ class TestPublishValidationMessages(
     layer = zeit.workflow.testing.LAYER
 
     def test_publish_with_validation_error_displays_message(self):
+        self.register_workflow_with_error()
+
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/testcontent'
                '/@@publish.html')
-        self.assertEllipsis('...Fake Validation Error Message...', b.contents)
+        self.assertEllipsis('...Cannot publish...', b.contents)
+        self.assertEllipsis('...Validation Error Message...', b.contents)
+
+    def test_publish_with_validation_warning_displays_message(self):
+        self.register_workflow_with_warning()
+
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/testcontent'
+               '/@@publish.html')
+        self.assertEllipsis('...Validation Warning Message...', b.contents)

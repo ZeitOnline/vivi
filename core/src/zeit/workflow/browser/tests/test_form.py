@@ -31,8 +31,21 @@ class ValidatingWorkflowFormTest(
     layer = zeit.workflow.testing.LAYER
 
     def test_publish_with_validation_error_displays_message(self):
+        self.register_workflow_with_error()
+
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/testcontent'
                '/@@workflow.html')
         b.getControl('Save state and publish now').click()
-        self.assertEllipsis('...Fake Validation Error Message...', b.contents)
+        self.assertEllipsis('...publish-preconditions-not-met...', b.contents)
+        self.assertEllipsis('...Validation Error Message...', b.contents)
+
+    def test_publish_with_validation_warning_displays_message(self):
+        self.register_workflow_with_warning()
+
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/testcontent'
+               '/@@workflow.html')
+        b.getControl('Save state and publish now').click()
+        self.assertEllipsis('...scheduled for publishing...', b.contents)
+        self.assertEllipsis('...Validation Warning Message...', b.contents)

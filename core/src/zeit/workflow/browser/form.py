@@ -36,16 +36,12 @@ class WorkflowActions(object):
                 _('scheduled-for-immediate-publishing',
                   default=u"${id} has been scheduled for publishing.",
                   mapping=mapping))
-        elif IPublishValidationInfo.providedBy(self.info):
-            validation = IPublishValidationInfo(self.info)
-            self.send_message(self.get_error_message(mapping), type='error')
-            self.send_message(
-                _('publish-validation-messages-header'),
-                type=validation.status)
-            for message in set(validation.messages):
-                self.send_message(message, type=validation.status)
         else:
             self.send_message(self.get_error_message(mapping), type='error')
+
+        validation = IPublishValidationInfo(self.info, None)
+        if validation is not None and validation.status is not None:
+            self.send_validation_messages()
 
     def do_retract(self):
         mapping = dict(
@@ -59,6 +55,14 @@ class WorkflowActions(object):
 
     def get_error_message(self, mapping):
         return _('publish-preconditions-not-met', mapping=mapping)
+
+    def send_validation_messages(self):
+        validation = IPublishValidationInfo(self.info)
+        self.send_message(
+            _('publish-validation-messages-header'),
+            type=validation.status)
+        for message in set(validation.messages):
+            self.send_message(message, type=validation.status)
 
     @property
     def publish(self):

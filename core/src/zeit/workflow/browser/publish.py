@@ -35,18 +35,24 @@ class Publish(object):
         return zeit.cms.workflow.interfaces.IPublishValidationInfo(
             self.publish_info, None)
 
+    @property
     def validation_status(self):
         if self.validation_info is None:
             return None
         return self.validation_info.status
 
+    @property
     def validation_messages(self):
         if self.validation_info is None:
             return None
         return set(self.validation_info.messages)
 
     def can_publish(self):
-        return self.publish_info.can_publish()
+        if not self.publish_info.can_publish():
+            return False
+        if self.validation_status is not None:
+            return False
+        return True
 
 
 class FlashPublishErrors(zeit.cms.browser.view.Base):
