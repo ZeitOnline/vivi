@@ -1,7 +1,35 @@
 import mock
 import zeit.cms.testing
-import zeit.content.cp
+import zeit.content.cp.browser.testing
+import zeit.content.cp.testing
+import zeit.edit.interfaces
+import zeit.edit.rule
+import zope.component
 import zope.testbrowser.testing
+
+
+class PublishTest(zeit.cms.testing.BrowserTestCase):
+    """Integration test for zeit.workflow.browser.publish.Publish.
+
+    Checks that adapter to use ValidatingWorkflow was set up correctly.
+
+    """
+
+    layer = zeit.content.cp.testing.layer
+
+    def test_validation_errors_are_displayed_during_publish(self):
+        from zeit.content.cp.centerpage import CenterPage
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                self.repository['centerpage'] = CenterPage()
+
+        rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
+        rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
+        with mock.patch.object(zeit.edit.rule.RulesManager, 'rules', rules):
+            b = self.browser
+            b.open('http://localhost/++skin++vivi/repository'
+                   '/centerpage/@@publish.html')
+        self.assertEllipsis('...Custom Error...', b.contents)
 
 
 class PermissionsTest(zeit.cms.testing.BrowserTestCase):
