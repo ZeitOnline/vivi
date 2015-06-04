@@ -38,6 +38,7 @@ class WorkflowActions(object):
                   mapping=mapping))
         elif IPublishValidationInfo.providedBy(self.info):
             validation = IPublishValidationInfo(self.info)
+            self.send_message(self.get_error_message(mapping), type='error')
             self.send_message(
                 _('publish-validation-messages-header'),
                 type=validation.status)
