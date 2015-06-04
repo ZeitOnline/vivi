@@ -9,6 +9,8 @@ zeit.content.image changes
 - Add validation rules for ImageGroup to check on publish that important
   image sizes were created. (DEV-790).
 
+- Update workflow adapter to display validation errors on publish (DEV-22).
+
 
 2.2.7 (2015-03-17)
 ------------------
