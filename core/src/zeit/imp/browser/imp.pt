@@ -102,7 +102,7 @@
 
     <a href="#"
        id="imp-content-zoom-toggle"
-       i18n:translate="">± Zoom image area</a>
+       i18n:translate="">&plusmn; Zoom image area</a>
 
   </div>
 
