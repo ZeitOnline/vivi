@@ -36,7 +36,7 @@ zeit.cms.MessageView = zeit.cms.View.extend({
             'li', 'warning', messages);
         var timeout = 0.5;
         if (errors.length > 0 || warnings.length > 0) {
-            timeout = 5;
+            timeout = 10;
         }
 
         self.fade = MochiKit.Async.callLater(timeout, function() {
