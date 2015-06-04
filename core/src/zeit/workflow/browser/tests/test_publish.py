@@ -4,8 +4,10 @@ import zeit.workflow.testing
 import zope.component.hooks
 
 
-class TestPublish(zeit.cms.testing.SeleniumTestCase,
-                  zeit.workflow.testing.RemoteTaskHelper):
+class TestPublish(
+        zeit.workflow.testing.FakeValidatingWorkflowMixin,
+        zeit.cms.testing.SeleniumTestCase,
+        zeit.workflow.testing.RemoteTaskHelper):
 
     layer = zeit.workflow.testing.SELENIUM_LAYER
 
@@ -46,6 +48,19 @@ class TestPublish(zeit.cms.testing.SeleniumTestCase,
         s.waitForElementPresent('css=ol#worklist')
         s.waitForElementPresent('css=li.busy[action=publish]')
         s.waitForElementNotPresent('css=li.busy[action=publish]')
+        s.waitForPageToLoad()
+
+    def test_publish_with_warnings_are_displayed_but_offer_force_publish(self):
+        # Even though validation warnings should be displayed, the user should
+        # be able to publish despite those warnings
+        self.register_workflow_with_warning()
+        s = self.selenium
+        s.click('link=Publish')
+        s.waitForElementPresent('css=#publish\.errors')
+        s.assertTextPresent('Validation Warning')
+        s.click('link=Publish anyway')
+        s.waitForElementPresent('css=ol#worklist')
+        s.assertTextPresent('Publishing')
         s.waitForPageToLoad()
 
     def test_error_during_publish_should_be_messaged(self):
@@ -151,4 +166,21 @@ class TestPublishValidationMessages(
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository/testcontent'
                '/@@publish.html')
+        self.assertEllipsis('...Cannot publish...', b.contents)
         self.assertEllipsis('...Validation Warning Message...', b.contents)
+
+    def test_publish_with_warnings_should_offer_force_publish(self):
+        self.register_workflow_with_warning()
+
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/testcontent'
+               '/@@publish.html')
+        self.assertEllipsis('...Publish anyway...', b.contents)
+
+    def test_publish_with_errors_should_not_offer_force_publish(self):
+        self.register_workflow_with_error()
+
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository/testcontent'
+               '/@@publish.html')
+        self.assertNotIn('Publish anyway', b.contents)

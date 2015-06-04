@@ -47,12 +47,26 @@ class Publish(object):
             return None
         return set(self.validation_info.messages)
 
+    @property
+    def has_validation_error(self):
+        return self.validation_status == 'error'
+
     def can_publish(self):
+        """Allow publish when validation warnings are present.
+
+        a) When no validation issue is present, allow publishing.
+        b) If validation *errors* are present, publishing is denied.
+        c) If validation *warnings* are present,
+           publishing is allowed when the force argument is given.
+
+        """
         if not self.publish_info.can_publish():
             return False
-        if self.validation_status is not None:
+        if self.validation_status is None:
+            return True
+        if self.has_validation_error:
             return False
-        return True
+        return 'force' in self.request.form
 
 
 class FlashPublishErrors(zeit.cms.browser.view.Base):

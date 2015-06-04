@@ -8,6 +8,8 @@ zeit.cms changes
 
 - Display validation errors in Lightbox / Popup during publish. (DEV-22)
 
+- Allow user to publish even though validation *warnings* are present. (DEV-22)
+
 
 2.45.2 (2015-05-18)
 -------------------
