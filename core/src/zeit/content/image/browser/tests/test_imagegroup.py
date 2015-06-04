@@ -1,5 +1,9 @@
+import mock
 import zeit.cms.testing
 import zeit.content.image.testing
+import zeit.edit.interfaces
+import zeit.edit.rule
+import zope.component
 
 
 class ImageGroupGhostTest(zeit.cms.testing.BrowserTestCase):
@@ -24,3 +28,22 @@ class ImageGroupGhostTest(zeit.cms.testing.BrowserTestCase):
             with zeit.cms.testing.interaction():
                 wc = zeit.cms.checkout.interfaces.IWorkingcopy(None)
                 self.assertEqual(1, len(wc))
+
+
+class ImageGroupPublishTest(zeit.cms.testing.BrowserTestCase):
+    """Integration test for zeit.workflow.browser.publish.Publish.
+
+    Checks that adapter to use ValidatingWorkflow was set up correctly.
+
+    """
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_validation_errors_are_displayed_during_publish(self):
+        rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
+        rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
+        with mock.patch.object(zeit.edit.rule.RulesManager, 'rules', rules):
+            b = self.browser
+            b.open('http://localhost/++skin++vivi/repository/2007/03/group'
+                   '/@@publish.html')
+        self.assertEllipsis('...Custom Error...', b.contents)
