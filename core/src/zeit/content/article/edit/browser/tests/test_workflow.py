@@ -1,10 +1,15 @@
 from zeit.workflow.interfaces import IContentWorkflow
 import datetime
+import mock
 import transaction
 import unittest
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
+import zeit.edit.interfaces
+import zeit.edit.rule
+import zope.component
 
 
 class Checkin(zeit.cms.testing.BrowserTestCase):
@@ -259,6 +264,25 @@ class Publish(zeit.cms.testing.BrowserTestCase):
         b.open('@@edit.form.publish?show_form=1')
         self.assertFalse(b.getControl('Corrected').disabled)
         self.assertFalse(b.getControl('Edited').disabled)
+
+    def test_validation_errors_are_displayed_during_publish(self):
+        # Create article with divisions, otherwise the recursive validator has
+        # no children to validate
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                article = zeit.content.article.testing.create_article()
+                editor = zeit.content.article.edit.interfaces.IEditableBody(
+                    article)
+                editor.create_item('image')
+                self.repository['article_with_division'] = article
+
+        rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
+        rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
+        with mock.patch.object(zeit.edit.rule.RulesManager, 'rules', rules):
+            b = self.browser
+            b.open('http://localhost/++skin++vivi/repository/'
+                   'article_with_division/@@publish.html')
+        self.assertEllipsis('...Custom Error...', b.contents)
 
 
 class Delete(zeit.cms.testing.BrowserTestCase):

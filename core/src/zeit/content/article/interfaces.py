@@ -2,9 +2,11 @@ from zeit.content.article.i18n import MessageFactory as _
 import zeit.cms.content.contentsource
 import zeit.cms.content.interfaces
 import zeit.cms.section.interfaces
+import zeit.cms.workflow.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.source
 import zeit.content.cp.interfaces
+import zeit.workflow.interfaces
 import zope.schema
 
 ARTICLE_NS = 'http://namespaces.zeit.de/CMS/Article'
@@ -190,6 +192,17 @@ class IAggregatedComments(zope.interface.Interface):
 
 class ITagesspiegelArticle(zope.interface.Interface):
     """Marker for articles imported from Tagesspiegel."""
+
+
+class IArticleWorkflow(
+        zeit.cms.workflow.interfaces.IPublishValidationInfo,
+        zeit.workflow.interfaces.IContentWorkflow):
+    """Workflow for articles.
+
+    Provides additional information about validations (status, messages) as
+    defined in IPublishValidationInfo.
+
+    """
 
 
 class ICDSWorkflow(zope.interface.Interface):

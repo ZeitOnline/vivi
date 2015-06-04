@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import StringIO
 import grokcore.component as grok
 import lxml.etree
@@ -254,12 +255,24 @@ class SearchableText(grok.Adapter):
 class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
 
     zope.component.adapts(zeit.content.article.interfaces.IArticle)
+    zope.interface.implements(zeit.content.article.interfaces.IArticleWorkflow)
+
+    @cachedproperty
+    def validator(self):
+        return zeit.edit.interfaces.IValidator(self.context)
+
+    @property
+    def status(self):
+        return self.validator.status
+
+    @property
+    def messages(self):
+        return self.validator.messages
 
     def can_publish(self):
         if not super(ArticleWorkflow, self).can_publish():
             return False
-        validator = zeit.edit.interfaces.IValidator(self.context)
-        if validator.status == zeit.edit.rule.ERROR:
+        if self.status == zeit.edit.rule.ERROR:
             return False
         return True
 

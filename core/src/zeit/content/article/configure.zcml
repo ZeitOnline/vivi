@@ -45,13 +45,20 @@
   <subscriber handler=".article.disallowCommentsIfCommentsAreNotShown" />
 
   <class class=".article.ArticleWorkflow">
-    <require like_class="zeit.workflow.workflow.ContentWorkflow" />
+    <require
+      permission="zope.View"
+      interface=".interfaces.IArticleWorkflow"
+      />
+    <require
+      permission="zeit.workflow.Publish"
+      set_schema=".interfaces.IArticleWorkflow"
+      />
   </class>
 
   <adapter
     factory=".article.ArticleWorkflow"
     for=".interfaces.IArticle"
-    provides="zeit.cms.workflow.interfaces.IPublishInfo"
+    provides="zeit.cms.workflow.interfaces.IPublishValidationInfo"
     trusted="yes"
     />
 

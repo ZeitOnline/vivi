@@ -16,6 +16,12 @@
 <div id="publish.errors">
   <tal:block tal:condition="not: view/can_publish">
     <p i18n:translate="">Cannot publish since validation rules are violated.</p>
+    <tal:block tal:condition="view/validation_messages">
+      <p i18n:translate="publish-validation-messages-header">The following validation rules did fail:</p>
+      <ul>
+        <li tal:repeat="message view/validation_messages" tal:content="message">Error Message</li>
+      </ul>
+    </tal:block>
   </tal:block>
 </div>
 </div>

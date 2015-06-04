@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.21 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Display validation errors in Lightbox / Popup during publish. (DEV-22)
 
 
 3.6.20 (2015-05-18)
