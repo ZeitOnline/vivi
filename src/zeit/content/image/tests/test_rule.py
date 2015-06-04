@@ -1,13 +1,12 @@
 from zeit.content.image.testing import create_local_image
 from zeit.edit.interfaces import IRuleGlobs
 from zeit.edit.rule import Rule
-import lxml.objectify
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.imagegroup
 import zeit.content.image.testing
 import zeit.edit.tests.fixture
-import zope.component
+
 
 class RuleTest(zeit.cms.testing.FunctionalTestCase):
 
