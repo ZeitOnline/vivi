@@ -499,7 +499,7 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         super(TestOneClickPublish, self).setUp()
         with zeit.cms.testing.site(self.getRootFolder()):
             for name, task in zope.component.getUtilitiesFor(
-                lovely.remotetask.interfaces.ITaskService):
+                    lovely.remotetask.interfaces.ITaskService):
                 task.startProcessing()
         self.create_content_and_fill_clipboard()
 
@@ -507,7 +507,7 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         import threading
         with zeit.cms.testing.site(self.getRootFolder()):
             for name, task in zope.component.getUtilitiesFor(
-                lovely.remotetask.interfaces.ITaskService):
+                    lovely.remotetask.interfaces.ITaskService):
                 thread_name = task._threadName()
                 task.stopProcessing()
                 for thread in threading.enumerate():
