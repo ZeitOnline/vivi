@@ -115,6 +115,21 @@
     factory=".av.AudioBlock"
     />
 
+  <!-- Playlist block -->
+  <class class=".playlist.PlaylistBlock">
+    <require
+      interface="..interfaces.IPlaylistBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IPlaylistBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="zeit.edit.interfaces.IElement"
+    name="playlist"
+    factory=".playlist.PlaylistBlock"
+    />
+
   <!-- Quiz block -->
   <class class=".quiz.QuizBlock">
     <require

@@ -9,6 +9,8 @@ zeit.content.cp changes
 
 - Update workflow and template to display validation errors on publish (DEV-22)
 
+- Add new module `playlist` to hold a playlist for the video bar. (DEV-300)
+
 
 3.0.0b14 (2015-05-20)
 ---------------------

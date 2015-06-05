@@ -16,6 +16,7 @@ import zeit.content.cp.layout
 import zeit.content.cp.source
 import zeit.content.image.interfaces
 import zeit.content.quiz.source
+import zeit.content.video.interfaces
 import zeit.edit.interfaces
 import zope.i18n
 import zope.interface
@@ -539,6 +540,14 @@ class IVideoBlock(IAVBlock):
         title=_('Player'),
         source=zeit.content.cp.blocks.avsource.PlayerSource(),
         default='vid')
+
+
+class IPlaylistBlock(IBlock):
+    """A block which contains the link to a video playlist."""
+
+    referenced_playlist = zope.schema.Choice(
+        title=_("Playlist"),
+        source=zeit.content.video.interfaces.PlaylistSource())
 
 
 def valid_feed_url(uri):
