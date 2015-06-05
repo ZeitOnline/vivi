@@ -99,6 +99,12 @@ class IPlaylist(IVideoContent):
             source=VideoSource()))
 
 
+class PlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
+
+    name = 'playlist'
+    check_interfaces = (IPlaylist,)
+
+
 class VideoOrPlaylistSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'video-or-playlist'
