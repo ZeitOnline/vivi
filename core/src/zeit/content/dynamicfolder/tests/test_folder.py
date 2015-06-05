@@ -1,6 +1,5 @@
 # coding: utf-8
 from zeit.cms.checkout.helper import checked_out
-import jinja2
 import mock
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
