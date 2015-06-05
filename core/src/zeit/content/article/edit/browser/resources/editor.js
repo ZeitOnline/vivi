@@ -64,7 +64,7 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
 
     zeit.edit.drop.registerContentHandler({
         accept: ['type-image',
-                 'type-gallery', 'type-video',
+                 'type-gallery', 'type-video', 'type-playlist',
                  'type-infobox', 'type-portraitbox'],
         activated_by: 'action-article-body-content-droppable'
     });
