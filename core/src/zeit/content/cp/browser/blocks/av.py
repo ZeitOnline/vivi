@@ -1,4 +1,4 @@
-
+from zeit.content.cp.i18n import MessageFactory as _
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.block
 import zeit.content.cp.interfaces
@@ -30,9 +30,9 @@ class DropVideo(zeit.edit.browser.view.Action):
     def update(self):
         content = zeit.cms.interfaces.ICMSContent(self.uniqueId)
         if not zeit.content.video.interfaces.IVideoContent.providedBy(
-            content):
-            raise ValueError(
-                "Only videos and playlists can be dropped on a video block.")
+                content):
+            raise ValueError(_(
+                "Only videos and playlists can be dropped on a video block."))
         # There is the assumption that the __name__ is unique for all videos
         # and playlists. This is true for the current brightcove implementation
         # but might change at some point (unlikely though).
