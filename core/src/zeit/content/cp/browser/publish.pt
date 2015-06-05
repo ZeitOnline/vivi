@@ -22,16 +22,17 @@
       <ul>
         <li tal:repeat="message view/validation_messages" tal:content="message">Error Message</li>
       </ul>
-      <a id="publish"
-         class="button"
-         i18n:translate=""
+      <form action="#">
+        <input onclick="javascript:zeit.cms.current_lightbox.close()" type="submit" value="Abbrechen">
+      </form>
+      <p><a i18n:translate=""
          tal:condition="not: view/has_validation_error"
          tal:attributes="href string:
            javascript:
              zeit.cms.current_lightbox.close();;
              zeit.cms.lightbox_form('${request/getURL}?force=true')">
         Publish anyway
-      </a>
+      </a></p>
     </tal:block>
   </tal:block>
 </div>
