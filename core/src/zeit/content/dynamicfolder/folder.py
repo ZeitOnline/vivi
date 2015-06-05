@@ -135,7 +135,7 @@ class RepositoryDynamicFolder(
         if not hasattr(self, '_v_config'):
             config = lxml.objectify.fromstring(
                 zeit.connector.interfaces.IResource(
-                self.config_file).data.read())
+                    self.config_file).data.read())
             for include in config.xpath('//include'):
                 parent = include.getparent()
                 index = parent.index(include)
