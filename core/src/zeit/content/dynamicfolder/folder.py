@@ -100,7 +100,7 @@ class RepositoryDynamicFolder(
             # XXX Make type configurable (<attribute> in the cp_template?).
             type='centerpage-2009',
             data=StringIO(self.cp_template.render(
-                **self.virtual_content[key]['attrib'])),
+                **self.virtual_content[key])),
             # XXX Convert <attribute>s of cp_template to DAV properties?
             properties={},
         )
@@ -166,7 +166,8 @@ class RepositoryDynamicFolder(
             key_getter = self.config.body.get('key', 'text()')
             for entry in self.config.body.getchildren():
                 key = unicode(entry.xpath(key_getter)[0])
-                contents[key] = {'attrib': entry.attrib, 'text': entry.text}
+                contents[key] = dict(entry.attrib)  # copy
+                contents[key].update({'text': entry.text})
             self._v_virtual_content = contents
 
         return self._v_virtual_content

@@ -1,5 +1,6 @@
 # coding: utf-8
 from zeit.cms.checkout.helper import checked_out
+import jinja2
 import mock
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
@@ -130,3 +131,13 @@ class TestDynamicFolder(
     def test_template_handles_umlauts_and_xml_special_chars(self):
         cp = self.folder['xaernten']
         self.assertEqual(u'Xärnten & mehr', cp.title)
+
+    def test_text_of_tags_can_be_used_in_template(self):
+        # Remove all virtual childs that have been cached
+        self.repository.uncontained_content = {}
+
+        with mock.patch('jinja2.Template.render') as render:
+            self.folder['xinjiang']  # load files and renders template
+            self.assertEqual(1, render.call_count)
+            self.assertIn(
+                ('text', 'Text Xinjiang'), render.call_args[1].items())

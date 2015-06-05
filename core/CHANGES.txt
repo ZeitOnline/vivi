@@ -5,7 +5,7 @@ zeit.content.dynamicfolder changes
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make text of content nodes available in template via the key `text`.
 
 
 1.0.0 (2015-05-18)
