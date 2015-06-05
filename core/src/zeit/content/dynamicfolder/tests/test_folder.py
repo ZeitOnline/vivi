@@ -1,7 +1,6 @@
 # coding: utf-8
 from zeit.cms.checkout.helper import checked_out
 import mock
-import unittest
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.testing
@@ -73,17 +72,6 @@ class TestContainerMethodsRespectVirtualChildren(
         del self.folder['xanten']
         self.assertIn('xanten', self.folder)
 
-    def test_checkin_virtual_content_materializes_it(self):
-        # Fill cached values, since they must not interfere with ZODB/pickling.
-        self.folder.cp_template
-        self.folder.virtual_content
-
-        self.assertEqual('Xanten', self.folder['xanten'].title)
-        with mock.patch('zeit.find.search.search'):
-            with checked_out(self.folder['xanten']) as co:
-                co.title = 'foo'
-            self.assertEqual('foo', self.folder['xanten'].title)
-
     def test_delete_on_virtual_child_does_nothing(self):
         del self.folder['xanten']
         self.assertIn('xanten', self.folder)
@@ -97,6 +85,17 @@ class TestDynamicFolder(
     def setUp(self):
         super(TestDynamicFolder, self).setUp()
         self.folder = self.repository['dynamicfolder']
+
+    def test_checkin_virtual_content_materializes_it(self):
+        # Fill cached values, since they must not interfere with ZODB/pickling.
+        self.folder.cp_template
+        self.folder.virtual_content
+
+        self.assertEqual('Xanten', self.folder['xanten'].title)
+        with mock.patch('zeit.find.search.search'):
+            with checked_out(self.folder['xanten']) as co:
+                co.title = 'foo'
+            self.assertEqual('foo', self.folder['xanten'].title)
 
     def test_unconfigured_folder_does_not_break_due_to_missing_config(self):
         from ..folder import RepositoryDynamicFolder
