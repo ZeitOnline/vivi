@@ -3,6 +3,7 @@ import grokcore.component
 import zeit.cms.content.property
 import zeit.content.cp.blocks.block
 import zeit.content.cp.interfaces
+import zeit.edit.block
 import zope.interface
 
 
