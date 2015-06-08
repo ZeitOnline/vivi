@@ -3,6 +3,7 @@ from zope.cachedescriptors.property import Lazy as cachedproperty
 import lovely.remotetask.interfaces
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
+import zope.browserpage
 import zope.component
 
 
@@ -50,6 +51,9 @@ class Publish(object):
     @property
     def has_validation_error(self):
         return self.validation_status == 'error'
+
+    def render_validation_messages(self):
+        return zope.browserpage.ViewPageTemplateFile('publish-errors.pt')(self)
 
     def can_publish(self):
         """Allow publish when validation warnings are present.
