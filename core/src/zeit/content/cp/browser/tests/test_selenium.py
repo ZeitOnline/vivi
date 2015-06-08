@@ -399,7 +399,7 @@ class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
     def create_videoblock(self):
         s = self.selenium
         s.click('link=Struktur')
-        module = self.get_module('cp', 'Video')
+        module = self.get_module('cp', 'Videoblock')
         s.waitForElementPresent(module)
         s.dragAndDropToObject(
             module,
