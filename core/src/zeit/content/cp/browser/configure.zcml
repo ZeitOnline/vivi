@@ -212,15 +212,6 @@
     permission="zeit.EditContent"
     />
 
-  <browser:page
-    for="zeit.content.cp.interfaces.ICenterPage"
-    layer="zeit.cms.browser.interfaces.IRepositoryLayer"
-    name="publish.html"
-    class="zeit.workflow.browser.publish.Publish"
-    template="publish.pt"
-    permission="zeit.workflow.Publish"
-    />
-
   <!-- /1-click publishing -->
 
   <!-- restrict permissions for retract and delete
