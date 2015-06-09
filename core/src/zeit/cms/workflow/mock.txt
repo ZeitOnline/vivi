@@ -53,15 +53,17 @@ True
 
 We can set explicitly if we can publish:
 
+>>> from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+>>> from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 >>> info.can_publish()
-False
->>> info.set_can_publish(True)
+'can-publish-error'
+>>> info.set_can_publish(CAN_PUBLISH_SUCCESS)
 >>> info.can_publish()
-True
+'can-publish-success'
 
-`publish()` raises an exception if can_publish returns False:
+`publish()` raises an exception if can_publish returns CAN_PUBLISH_ERROR:
 
->>> info.set_can_publish(False)
+>>> info.set_can_publish(CAN_PUBLISH_ERROR)
 >>> workflow.publish()
 Traceback (most recent call last):
     ...
@@ -70,7 +72,7 @@ PublishingError: Cannot publish.
 
 It spits out a message otherwise:
 
->>> info.set_can_publish(True)
+>>> info.set_can_publish(CAN_PUBLISH_SUCCESS)
 >>> workflow.publish()
 <zeit.cms.workflow.interfaces.BeforePublishEvent object at 0x...>
     http://xml.zeit.de/testcontent

@@ -1,5 +1,8 @@
 from zeit.cms.repository.interfaces import IRepositoryContent
 from zope.cachedescriptors.property import Lazy as cachedproperty
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 import lovely.remotetask.interfaces
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
@@ -23,54 +26,25 @@ class Publish(object):
     def publish_info(self):
         return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
 
-    @cachedproperty
-    def validation_info(self):
-        """Avoid execution of validation twice by reusing publish_info.
-
-        IPublishInfo and IPublishValidationInfo are implemented by the same
-        object, thus calling the adapter IPublishValidationInfo will not
-        calculate the validations twice, since the Workflow already implements
-        the interface.
-
-        """
-        return zeit.cms.workflow.interfaces.IPublishValidationInfo(
-            self.publish_info, None)
+    @property
+    def can_override_publish_errors(self):
+        return self.publish_info.can_publish() == CAN_PUBLISH_WARNING
 
     @property
-    def validation_status(self):
-        if self.validation_info is None:
-            return None
-        return self.validation_info.status
+    def error_messages(self):
+        return self.publish_info.error_messages
 
-    @property
-    def validation_messages(self):
-        if self.validation_info is None:
-            return None
-        return set(self.validation_info.messages)
-
-    @property
-    def has_validation_error(self):
-        return self.validation_status == 'error'
-
-    def render_validation_messages(self):
+    def render_error_messages(self):
         return zope.browserpage.ViewPageTemplateFile('publish-errors.pt')(self)
 
     def can_publish(self):
-        """Allow publish when validation warnings are present.
-
-        a) When no validation issue is present, allow publishing.
-        b) If validation *errors* are present, publishing is denied.
-        c) If validation *warnings* are present,
-           publishing is allowed when the force argument is given.
-
-        """
-        if not self.publish_info.can_publish():
-            return False
-        if self.validation_status is None:
+        """Allow publish when validation warnings are present."""
+        result = self.publish_info.can_publish()
+        if result == CAN_PUBLISH_SUCCESS:
             return True
-        if self.has_validation_error:
+        if result == CAN_PUBLISH_ERROR:
             return False
-        return 'force' in self.request.form
+        return 'force' in self.request.form  # Override CAN_PUBLISH_WARNING
 
 
 class FlashPublishErrors(zeit.cms.browser.view.Base):

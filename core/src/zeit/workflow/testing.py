@@ -1,3 +1,5 @@
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import gocept.httpserverlayer.wsgi
 import gocept.selenium
@@ -133,12 +135,11 @@ class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
     """
 
     zope.interface.implements(
-        zeit.cms.workflow.interfaces.IPublishValidationInfo)
+        zeit.cms.workflow.interfaces.IPublishInfo)
 
-    def __init__(self, context, status, message, can_publish):
+    def __init__(self, context, message, can_publish):
         self.context = context
-        self.status = status
-        self.messages = [message]
+        self.error_messages = [message]
         self._can_publish = can_publish
 
     def can_publish(self):
@@ -146,19 +147,17 @@ class FakeValidatingWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
 
 @zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
-@zope.interface.implementer(
-    zeit.cms.workflow.interfaces.IPublishValidationInfo)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def workflow_with_error_for_testcontent(context):
     return FakeValidatingWorkflow(
-        context, 'error', 'Fake Validation Error Message', False)
+        context, 'Fake Validation Error Message', CAN_PUBLISH_ERROR)
 
 
 @zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
-@zope.interface.implementer(
-    zeit.cms.workflow.interfaces.IPublishValidationInfo)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def workflow_with_warning_for_testcontent(context):
     return FakeValidatingWorkflow(
-        context, 'warning', 'Fake Validation Warning Message', True)
+        context, 'Fake Validation Warning Message', CAN_PUBLISH_WARNING)
 
 
 class FakeValidatingWorkflowMixin(object):

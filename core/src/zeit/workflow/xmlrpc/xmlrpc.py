@@ -10,7 +10,11 @@ class Publish(zope.app.publisher.xmlrpc.XMLRPCView):
     def can_publish(self, unique_id):
         info = zeit.cms.workflow.interfaces.IPublishInfo(
             self.repository.getContent(unique_id))
-        return info.can_publish()
+        can_publish = info.can_publish()
+
+        if can_publish == zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS:
+            return True
+        return False
 
     def publish(self, unique_id):
         if not self.can_publish(unique_id):

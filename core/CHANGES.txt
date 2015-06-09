@@ -4,11 +4,11 @@ zeit.cms changes
 2.46.0 (unreleased)
 -------------------
 
-- Configure js.underscore.
-
 - Display validation errors in Lightbox / Popup during publish. (DEV-22)
 
 - Allow user to publish even though validation *warnings* are present. (DEV-22)
+
+- Configure js.underscore.
 
 
 2.45.2 (2015-05-18)

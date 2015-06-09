@@ -41,10 +41,12 @@ class ContentWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
 
     def can_publish(self):
         if self.urgent:
-            return True
+            return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
         if self.edited and self.corrected:
-            return True
-        return False
+            return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
+        self.error_messages = (
+            _('publish-preconditions-urgent', mapping=self._error_mapping),)
+        return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
 
 
 @zope.component.adapter(

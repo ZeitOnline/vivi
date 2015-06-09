@@ -1,15 +1,14 @@
+from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 import zc.table.column
 import zc.table.table
-import zope.cachedescriptors.property
-import zope.component
-import zope.traversing.browser.absoluteurl
-
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.listing
 import zeit.cms.browser.view
 import zeit.cms.syndication.interfaces
 import zeit.cms.workflow.interfaces
-from zeit.cms.i18n import MessageFactory as _
+import zope.cachedescriptors.property
+import zope.component
 
 
 class Manager(zeit.cms.browser.view.Base):
@@ -56,7 +55,7 @@ class Manager(zeit.cms.browser.view.Base):
                 id=target.uniqueId,
                 name=target.__name__)
             info = zeit.cms.workflow.interfaces.IPublishInfo(target)
-            if info.can_publish():
+            if info.can_publish() == CAN_PUBLISH_SUCCESS:
                 publish = zeit.cms.workflow.interfaces.IPublish(target)
                 publish.publish()
                 self.send_message(_('scheduled-for-publishing',

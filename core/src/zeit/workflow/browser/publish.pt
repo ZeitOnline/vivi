@@ -14,5 +14,5 @@
 </script>
 </tal:block>
 
-<div tal:replace="structure view/render_validation_messages"></div>
+<div tal:replace="structure view/render_error_messages"></div>
 </div>

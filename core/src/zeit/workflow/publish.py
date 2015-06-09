@@ -1,6 +1,9 @@
 
 from __future__ import with_statement
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import ZODB.POSException
 import datetime
@@ -94,7 +97,7 @@ class Publish(object):
     def publish(self, priority=PRIORITY_DEFAULT, async=True):
         """Publish object."""
         info = zeit.cms.workflow.interfaces.IPublishInfo(self.context)
-        if not info.can_publish():
+        if info.can_publish() == CAN_PUBLISH_ERROR:
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Publish pre-conditions not satisifed.")
 
@@ -378,7 +381,7 @@ class PublishTask(PublishRetractTask):
 
     def run(self, obj, info):
         logger.info('Publishing %s' % obj.uniqueId)
-        if not info.can_publish():
+        if info.can_publish() == CAN_PUBLISH_ERROR:
             logger.error("Could not publish %s" % obj.uniqueId)
             self.log(
                 obj, _("Could not publish because conditions not satisifed."))

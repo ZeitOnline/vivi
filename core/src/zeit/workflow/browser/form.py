@@ -1,5 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
-from zeit.cms.workflow.interfaces import IPublishValidationInfo
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import gocept.form.action
 import gocept.form.grouped
 import zeit.cms.browser.form
@@ -27,50 +29,44 @@ def workflow_form_factory(context, request):
 class WorkflowActions(object):
 
     def do_publish(self):
-        mapping = dict(
-            name=self.context.__name__,
-            id=self.context.uniqueId)
-        if self.info.can_publish():
+        if self.info.can_publish() == CAN_PUBLISH_SUCCESS:
             self.publish.publish()
             self.send_message(
                 _('scheduled-for-immediate-publishing',
                   default=u"${id} has been scheduled for publishing.",
-                  mapping=mapping))
+                  mapping=self._error_mapping))
         else:
-            self.send_message(self.get_error_message(mapping), type='error')
-
-        validation = IPublishValidationInfo(self.info, None)
-        if validation is not None and validation.status is not None:
             self.send_validation_messages()
 
     def do_retract(self):
-        mapping = dict(
-            name=self.context.__name__,
-            id=self.context.uniqueId)
         self.publish.retract()
         self.send_message(
             _('scheduled-for-immediate-retracting',
               default=u"${id} has been scheduled for retracting.",
-              mapping=mapping))
-
-    def get_error_message(self, mapping):
-        return _('publish-preconditions-not-met', mapping=mapping)
+              mapping=self._error_mapping))
 
     def send_validation_messages(self):
-        validation = IPublishValidationInfo(self.info)
         self.send_message(
-            _('publish-validation-messages-header'),
-            type=validation.status)
-        for message in set(validation.messages):
-            self.send_message(message, type=validation.status)
+            _('publish-preconditions-not-met',
+              default=u"${id} cannot be published.",
+              mapping=self._error_mapping), type='error')
+        for message in self.info.error_messages:
+            self.send_message(message, type='error')
 
     @property
     def publish(self):
         return zeit.cms.workflow.interfaces.IPublish(self.context)
 
-    @property
+    @cachedproperty
     def info(self):
         return zeit.cms.workflow.interfaces.IPublishInfo(self.context)
+
+    @property
+    def _error_mapping(self):
+        return {
+            'name': self.context.__name__,
+            'id': self.context.uniqueId,
+        }
 
 
 class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
@@ -130,7 +126,8 @@ class ContentWorkflow(WorkflowForm):
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange).omit(
-                'has_semantic_change', 'date_print_published') +
+                'has_semantic_change', 'date_print_published',
+                'error_messages') +
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))
@@ -161,7 +158,8 @@ class AssetWorkflow(WorkflowForm):
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange).omit(
-                'has_semantic_change', 'date_print_published'))
+                'has_semantic_change', 'date_print_published',
+                'error_messages'))
 
 
 class NoWorkflow(zeit.cms.browser.form.EditForm):

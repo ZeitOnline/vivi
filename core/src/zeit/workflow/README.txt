@@ -47,33 +47,33 @@ The states are as follows (initially None)
 Currently the object cannot be published:
 
 >>> workflow.can_publish()
-False
+'can-publish-error'
 
 Let's now switch one state after the other and see if we can
 publish[#needsinteraction]_:
 
 >>> workflow.edited = True
 >>> workflow.can_publish()
-False
+'can-publish-error'
 >>> workflow.corrected = True
 >>> workflow.can_publish()
-True
+'can-publish-success'
 
 Let's try this with not necessary, too:
 
 
 >>> workflow.edited = zeit.workflow.interfaces.NotNecessary
 >>> workflow.can_publish()
-True
+'can-publish-success'
 >>> workflow.corrected = zeit.workflow.interfaces.NotNecessary
 >>> workflow.can_publish()
-True
+'can-publish-success'
 >>> workflow.refined = zeit.workflow.interfaces.NotNecessary
 >>> workflow.can_publish()
-True
+'can-publish-success'
 >>> workflow.images_added = zeit.workflow.interfaces.NotNecessary
 >>> workflow.can_publish()
-True
+'can-publish-success'
 
 
 Release period
@@ -90,10 +90,10 @@ necessary.
 
 >>> workflow.edited = False
 >>> workflow.can_publish()
-False
+'can-publish-error'
 >>> workflow.urgent = True
 >>> workflow.can_publish()
-True
+'can-publish-success'
 
 
 Publishing
@@ -104,7 +104,7 @@ exception:
 
 >>> workflow.urgent = False
 >>> workflow.can_publish()
-False
+'can-publish-error'
 >>> publish.publish()
 Traceback (most recent call last):
     ...
@@ -197,7 +197,7 @@ http://xml.zeit.de/online/2007/01/Somalia
      Retracting scheduled
 http://xml.zeit.de/online/2007/01/Somalia
      Retracted
-     
+
 
 Time based publish / retract
 ============================
@@ -209,12 +209,12 @@ which will be executed at the given time.
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(studivz)
 >>> not not workflow.published
 False
->>> 
+>>>
 >>> workflow.release_period
 (None, None)
 >>> workflow.urgent = True
 >>> workflow.can_publish()
-True
+'can-publish-success'
 >>> import datetime
 >>> import pytz
 >>> publish_on = (
@@ -418,7 +418,7 @@ Make UnknownResources an asset to test the workflow:
 >>> workflow
 <zeit.workflow.asset.AssetWorkflow object at 0x...>
 >>> workflow.can_publish()
-True
+'can-publish-success'
 >>> not not workflow.published
 False
 
@@ -455,7 +455,7 @@ though is that they're not publishable at all:
 >>> workflow
 <zeit.workflow.publishinfo.NotPublishablePublishInfo object at 0x...>
 >>> workflow.can_publish()
-False
+'can-publish-error'
 
 Let's pretend a folder was editoral content:
 
@@ -683,7 +683,7 @@ http://xml.zeit.de/2006/DSC00109_2.JPG
      Publication scheduled
 http://xml.zeit.de/2006/DSC00109_2.JPG
      Error during publish/retract: ConflictError: database conflict error
->>> task.run_count 
+>>> task.run_count
 3
 
 Reset the folder implements:
@@ -743,7 +743,7 @@ Currently neither the article nor the image is published:
 False
 >>> workflow.urgent = True
 >>> workflow.can_publish()
-True
+'can-publish-success'
 >>> feed_workflow = zeit.workflow.interfaces.IAssetWorkflow(feed)
 >>> not not feed_workflow.published
 False
@@ -784,7 +784,7 @@ http://xml.zeit.de/politik.feed
     ...     print type(event).__name__
     ...     print '    Object:', event.object.uniqueId
     ...     print '    Master:', event.master.uniqueId
-    
+
     >>> gsm.registerHandler(pr_handler,
     ...     (zeit.cms.workflow.interfaces.IWithMasterObjectEvent,))
 

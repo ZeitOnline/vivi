@@ -33,6 +33,8 @@ class PublishInfo(object):
         'print-publish',
         writeable=WRITEABLE_LIVE)
 
+    error_messages = ()
+
     def __init__(self, context):
         self.context = context
 
@@ -48,11 +50,24 @@ class PublishInfo(object):
     def can_publish(self):
         raise NotImplementedError()
 
+    @property
+    def _error_mapping(self):
+        return {
+            'name': self.context.__name__,
+            'id': self.context.uniqueId,
+        }
+
 
 class NotPublishablePublishInfo(PublishInfo):
 
     def can_publish(self):
-        return False
+        return zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR
+
+    @property
+    def error_messages(self):
+        return (
+            _('publish-preconditions-not-met', mapping=self._error_mapping),
+        )
 
 
 @zope.component.adapter(PublishInfo)

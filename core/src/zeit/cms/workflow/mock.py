@@ -1,4 +1,5 @@
-
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
@@ -21,8 +22,9 @@ class MockPublish(object):
         self.context = context
 
     def publish(self, priority=PRIORITY_DEFAULT, async=True):
-        if not zeit.cms.workflow.interfaces.IPublishInfo(
-            self.context).can_publish():
+        can_publish = zeit.cms.workflow.interfaces.IPublishInfo(
+            self.context).can_publish()
+        if can_publish != CAN_PUBLISH_SUCCESS:
             raise zeit.cms.workflow.interfaces.PublishingError(
                 "Cannot publish.")
         zope.event.notify(
@@ -58,6 +60,7 @@ class MockPublishInfo(object):
     zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(zeit.cms.workflow.interfaces.IPublishInfo)
 
+    error_messages = ()
     date_first_released = None
     date_print_published = None
     last_modified_by = u'testuser'
@@ -91,7 +94,9 @@ class MockPublishInfo(object):
         _publish_times_semantic[self.context.uniqueId] = value
 
     def can_publish(self):
-        return _can_publish.get(self.context.uniqueId, False)
+        return _can_publish.get(
+            self.context.uniqueId,
+            zeit.cms.workflow.interfaces.CAN_PUBLISH_ERROR)
 
     # Test support
 

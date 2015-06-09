@@ -13,4 +13,4 @@ class AssetWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
     zope.component.adapts(zeit.cms.interfaces.IAsset)
 
     def can_publish(self):
-        return True
+        return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
