@@ -2,7 +2,7 @@ Gallery Workflow
 ================
 
 The when a gallery is published the referenced image folder is published with
-it automatically[#functional]_[#needsinteraction]_. 
+it automatically[#functional]_[#needsinteraction]_.
 
 Create a gallery, an image folder, an image and associate the folder with the
 gallery:
@@ -43,7 +43,7 @@ When we publish the gallery now, the image is also published[#loghandler]_:
 
 >>> gallery_info.urgent = True
 >>> gallery_info.can_publish()
-True
+'can-publish-success'
 >>> publish = zeit.cms.workflow.interfaces.IPublish(gallery)
 >>> tid = publish.publish()
 >>> tasks.process()
