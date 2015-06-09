@@ -21,7 +21,7 @@ class Workflow(zeit.workflow.timebased.TimeBasedWorkflow,
         use_default=True, writeable=WRITEABLE_LIVE)
 
     def can_publish(self):
-        return True
+        return zeit.cms.workflow.interfaces.CAN_PUBLISH_SUCCESS
 
 
 @grok.subscribe(

@@ -24,7 +24,7 @@ setup(
         'setuptools',
         'zeit.addcentral',
         'zeit.edit >= 2.7.0.dev0',
-        'zeit.cms >= 2.44.0.dev',
+        'zeit.cms >= 2.46.0.dev',
         'zeit.content.image',
         'zeit.content.video',
         'zeit.connector',
