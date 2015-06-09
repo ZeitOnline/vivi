@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.1.10 (unreleased)
+2.1.10 (2015-06-09)
 -------------------
 
 - Grant ``zeit.Producer`` permissions to edit Article-Flow (DEV-759).
