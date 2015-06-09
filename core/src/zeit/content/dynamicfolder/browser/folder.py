@@ -11,8 +11,7 @@ class FormBase(object):
 
 
 class DisplayForm(FormBase, zeit.cms.browser.form.DisplayForm):
-
-    title = _('DynamicFolder metadata')
+    pass
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
