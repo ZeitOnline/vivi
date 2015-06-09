@@ -14,16 +14,16 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Jun  5 13:44:14 2015\n"
-"PO-Revision-Date: 2015-06-05 13:47+0100\n"
-"Last-Translator: Florian Pilz <fp@gocept.com>\n"
+"POT-Creation-Date: Tue Jun  9 13:03:57 2015\n"
+"PO-Revision-Date: 2015-06-09 13:05+0100\n"
+"Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.7.5\n"
+"X-Generator: Poedit 1.5.4\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:44
@@ -57,11 +57,11 @@ msgstr "Id"
 #: zeit/cms/browser/listing.py:266 zeit/cms/content/browser/template.py:43
 #: zeit/cms/content/interfaces.py:152 zeit/cms/content/interfaces.py:476
 #: zeit/cms/syndication/browser/feed.py:154
-#: zeit/cms/syndication/browser/manager.py:95
+#: zeit/cms/syndication/browser/manager.py:94
 #: zeit/cms/syndication/interfaces.py:48
 #: zeit/content/article/edit/interfaces.py:121
 #: zeit/content/article/interfaces.py:128
-#: zeit/content/article/interfaces.py:221 zeit/content/author/interfaces.py:31
+#: zeit/content/article/interfaces.py:210 zeit/content/author/interfaces.py:31
 #: zeit/content/cp/interfaces.py:153 zeit/content/cp/interfaces.py:277
 #: zeit/content/cp/interfaces.py:410 zeit/content/gallery/interfaces.py:93
 #: zeit/content/infobox/interfaces.py:17 zeit/content/quiz/interfaces.py:64
@@ -133,22 +133,22 @@ msgid "Complete event"
 msgstr "Termin erledigen"
 
 #: zeit/calendar/browser/calendar_macros.pt:42
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
-#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
-#: zeit/cms/browser/action-menu-item.pt:2
-#: zeit/cms/browser/action-menu-item.pt:11
-#: zeit/cms/browser/context-views-menu-item.pt:5
-#: zeit/cms/browser/globalmenuitem.pt:5 zeit/cms/browser/lightbox.pt:2
+#: zeit/cms/browser/sourceedit.pt:16 zeit/cms/browser/sourceedit.pt:39
+#: zeit/cms/browser/menu-context-views.pt:8
 #: zeit/cms/browser/main_template.pt:46 zeit/cms/browser/main_template.pt:179
 #: zeit/cms/browser/main_template.pt:202 zeit/cms/browser/main_template.pt:220
+#: zeit/cms/browser/context-views-menu-item.pt:5
+#: zeit/cms/browser/globalmenuitem.pt:5
 #: zeit/cms/browser/menu-context-actions.pt:8
 #: zeit/cms/browser/menu-context-actions.pt:16
-#: zeit/cms/browser/menu-context-views.pt:8 zeit/cms/browser/sourceedit.pt:16
-#: zeit/cms/browser/sourceedit.pt:39
-#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
-#: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:2
+#: zeit/cms/browser/action-menu-item-with-lightbox.pt:8
+#: zeit/cms/browser/lightbox.pt:2 zeit/cms/browser/action-menu-item.pt:2
+#: zeit/cms/browser/action-menu-item.pt:11
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:5
 #: zeit/content/cp/browser/blocks/xml.edit-contents.pt:22
+#: zeit/content/cp/browser/blocks/layout.teaser.countings.pt:1
+#: zeit/content/cp/browser/blocks/teaser.edit-layout.pt:13
 #: zeit/edit/browser/inlineform.pt:16 zeit/edit/browser/inlineform.pt:38
 #: zeit/edit/browser/view.editbox-action.pt:1
 #: zeit/workflow/browser/workflow-preview.pt:5
@@ -1529,11 +1529,11 @@ msgstr ""
 "Bevor Sie dieses Objekt syndizieren können, müssen Sie  einen Channel als "
 "Syndizierungsziel wählen. Öffnen Sie dazu einen Channel."
 
-#: zeit/cms/syndication/browser/manager.py:101
+#: zeit/cms/syndication/browser/manager.py:100
 msgid "Position"
 msgstr "Position"
 
-#: zeit/cms/syndication/browser/manager.py:108
+#: zeit/cms/syndication/browser/manager.py:107
 #: zeit/cms/workingcopy/browser/configure.zcml:69
 #: zeit/cms/browser/configure.zcml:379
 #: zeit/cms/browser/object-details-body.pt:19
@@ -1542,7 +1542,7 @@ msgid "Preview"
 msgstr "Vorschau"
 
 #. Default: ""
-#: zeit/cms/syndication/browser/manager.py:42
+#: zeit/cms/syndication/browser/manager.py:41
 msgid ""
 "Could not syndicate because \"${name}\" could not be locked or checked out."
 msgstr ""
@@ -1550,21 +1550,21 @@ msgstr ""
 "werden konnte."
 
 #. Default: ""
-#: zeit/cms/syndication/browser/manager.py:48
+#: zeit/cms/syndication/browser/manager.py:47
 msgid "\"${name}\" has been syndicated to ${targets}"
 msgstr "»${name}« wurde nach »${targets}« syndiziert."
 
 #. Default: ""
-#: zeit/cms/syndication/browser/manager.py:62
+#: zeit/cms/syndication/browser/manager.py:61
 msgid "scheduled-for-publishing"
 msgstr "»${id}« wird veröffentlicht."
 
 #. Default: ""
-#: zeit/cms/syndication/browser/manager.py:65
+#: zeit/cms/syndication/browser/manager.py:64
 msgid "Could not publish \"${name}\"."
 msgstr "»${name}« konnte nicht veröffentlicht werden."
 
-#: zeit/cms/syndication/browser/manager.py:98
+#: zeit/cms/syndication/browser/manager.py:97
 msgid "Path"
 msgstr "Pfad"
 
@@ -1617,8 +1617,8 @@ msgid "Keywords"
 msgstr "Schlagworte"
 
 #: zeit/cms/workflow/browser/indicator.py:12
-#: zeit/cms/workflow/interfaces.py:37 zeit/workflow/publish.py:428
-#: zeit/workflow/publishinfo.py:43
+#: zeit/cms/workflow/interfaces.py:42 zeit/workflow/publish.py:431
+#: zeit/workflow/publishinfo.py:45
 msgid "Published"
 msgstr "Veröffentlicht"
 
@@ -1630,39 +1630,39 @@ msgstr "Nicht veröffentlicht"
 msgid "Published but has changes"
 msgstr "Veröffentlicht, hat aber Änderungen"
 
-#: zeit/cms/workflow/interfaces.py:17
+#: zeit/cms/workflow/interfaces.py:22
 msgid "Last modified by"
 msgstr "Zuletzt geändert von"
 
-#: zeit/cms/workflow/interfaces.py:23
+#: zeit/cms/workflow/interfaces.py:28
 msgid "Date last modified"
 msgstr "Zuletzt geändert am"
 
-#: zeit/cms/workflow/interfaces.py:28
+#: zeit/cms/workflow/interfaces.py:33
 msgid "Date last checked out"
 msgstr "Beginn der Bearbeitung"
 
-#: zeit/cms/workflow/interfaces.py:42
+#: zeit/cms/workflow/interfaces.py:47
 msgid "Date last published"
 msgstr "Zuletzt veröffentlicht am"
 
-#: zeit/cms/workflow/interfaces.py:48
+#: zeit/cms/workflow/interfaces.py:53
 msgid "Last published with semantic change"
 msgstr "Letzte inhaltliche Änderung"
 
-#: zeit/cms/workflow/interfaces.py:54
+#: zeit/cms/workflow/interfaces.py:59
 msgid "Date first released"
 msgstr "Zuerst veröffentlicht am"
 
-#: zeit/cms/workflow/interfaces.py:59
+#: zeit/cms/workflow/interfaces.py:64
 msgid "Date of print publication"
 msgstr "Veröffentlicht (Print)"
 
-#: zeit/cms/workflow/interfaces.py:64
+#: zeit/cms/workflow/interfaces.py:69
 msgid "Last published by"
 msgstr "Letzte Veröffentlichnung von"
 
-#: zeit/cms/workflow/interfaces.py:97
+#: zeit/cms/workflow/interfaces.py:88
 msgid "Publication state"
 msgstr "Veröffentlichungszustand"
 
@@ -1693,7 +1693,7 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Cancel workingcopy"
 msgstr "Bearbeitung abbrechen"
 
-#: zeit/content/article/article.py:153
+#: zeit/content/article/article.py:156
 #: zeit/content/article/edit/browser/form.py:62
 #: zeit/content/article/browser/configure.zcml:79
 msgid "Article"
@@ -1834,8 +1834,8 @@ msgstr "Relateds bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:245
 #: zeit/content/cp/browser/workflow.py:31
-#: zeit/newsletter/browser/workflow.py:19 zeit/workflow/browser/form.py:113
-#: zeit/workflow/browser/form.py:147 zeit/workflow/browser/form.py:177
+#: zeit/newsletter/browser/workflow.py:19 zeit/workflow/browser/form.py:114
+#: zeit/workflow/browser/form.py:149 zeit/workflow/browser/form.py:180
 msgid "Status"
 msgstr "Status"
 
@@ -2006,7 +2006,6 @@ msgid "edit video block"
 msgstr "Video-Modul bearbeiten"
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:18
-#: zeit/content/cp/browser/publish.pt:19
 msgid "Cannot publish since validation rules are violated."
 msgstr ""
 "Die CenterPage kann nicht veröffentlicht werden, weil die Validierungsregeln "
@@ -2014,13 +2013,11 @@ msgstr ""
 
 #. Default: "The following validation rules did fail:"
 #: zeit/content/article/edit/browser/save-and-publish.pt:20
-#: zeit/content/cp/browser/publish.pt:21 zeit/workflow/browser/form.py:62
-#: zeit/workflow/browser/publish.pt:21
 msgid "publish-validation-messages-header"
 msgstr "Die folgenden Validierungsregeln wurden verletzt:"
 
 #: zeit/content/article/edit/browser/save-and-publish.pt:24
-#: zeit/content/cp/browser/publish.pt:25 zeit/workflow/browser/publish.pt:25
+#: zeit/workflow/browser/publish-errors.pt:11
 msgid "Publish anyway"
 msgstr "Trotzdem Veröffentlichen"
 
@@ -2084,7 +2081,7 @@ msgid "edit workflow time"
 msgstr "Workflow-Daten bearbeiten"
 
 #: zeit/content/article/edit/browser/workflow.py:33
-#: zeit/workflow/browser/form.py:80 zeit/workflow/browser/menu.py:10
+#: zeit/workflow/browser/form.py:81 zeit/workflow/browser/menu.py:10
 msgid "Workflow"
 msgstr "Workflowstatus"
 
@@ -2121,9 +2118,9 @@ msgstr "Bild"
 #: zeit/content/article/interfaces.py:44 zeit/content/article/interfaces.py:60
 #: zeit/content/cp/interfaces.py:446 zeit/content/cp/interfaces.py:712
 #: zeit/content/gallery/interfaces.py:103
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
-#: zeit/wysiwyg/browser/resources/reference/image.pt:26
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:24
+#: zeit/wysiwyg/browser/resources/reference/image.pt:26
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:39
 msgid "Layout"
 msgstr "Layout"
 
@@ -2194,15 +2191,15 @@ msgstr "Ziehen Sie Infoboxen hierher, um sie zu verknüpfen"
 
 #: zeit/content/article/edit/interfaces.py:263
 #: zeit/content/article/edit/interfaces.py:317
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 msgid "short"
 msgstr "kurz / klein"
 
 #: zeit/content/article/edit/interfaces.py:264
 #: zeit/content/article/edit/interfaces.py:318
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 msgid "wide"
 msgstr "breit / groß"
 
@@ -2247,11 +2244,11 @@ msgid "Attribution"
 msgstr "Zitatgeber"
 
 #: zeit/content/article/edit/interfaces.py:332
-#: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
-#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
-#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:17
 #: zeit/wysiwyg/browser/resources/reference/timeline.pt:17
+#: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
+#: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
+#: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 msgid "URL"
 msgstr "URL"
 
@@ -2348,15 +2345,15 @@ msgstr "Kommentare zusammenfassen"
 msgid "aggregate-comments-description"
 msgstr "Wählen Sie das Objekt von dem die Kommentare verwendet werden sollen."
 
-#: zeit/content/article/interfaces.py:212
+#: zeit/content/article/interfaces.py:201
 msgid "Export to Tagesspiegel"
 msgstr "Zum Tagesspiegel exportieren"
 
-#: zeit/content/article/interfaces.py:225
+#: zeit/content/article/interfaces.py:214
 msgid "Breaking news article"
 msgstr "Eilmeldungsartikel"
 
-#: zeit/content/article/interfaces.py:237
+#: zeit/content/article/interfaces.py:226
 #: zeit/content/article/browser/configure.zcml:94
 msgid "Add breaking news"
 msgstr "Eilmeldung"
@@ -2695,31 +2692,31 @@ msgid "Apply only for this page"
 msgstr "Als freien Teaser speichern"
 
 #: zeit/content/cp/browser/workflow.py:37
-#: zeit/newsletter/browser/workflow.py:25 zeit/workflow/browser/form.py:121
-#: zeit/workflow/browser/form.py:152
+#: zeit/newsletter/browser/workflow.py:25 zeit/workflow/browser/form.py:122
+#: zeit/workflow/browser/form.py:154
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: zeit/content/cp/browser/workflow.py:39
-#: zeit/newsletter/browser/workflow.py:27 zeit/workflow/browser/form.py:123
-#: zeit/workflow/browser/form.py:154 zeit/workflow/browser/form.py:181
+#: zeit/newsletter/browser/workflow.py:27 zeit/workflow/browser/form.py:124
+#: zeit/workflow/browser/form.py:156 zeit/workflow/browser/form.py:184
 msgid "Log"
 msgstr "Log"
 
-#: zeit/content/cp/browser/workflow.py:54
-#: zeit/newsletter/browser/workflow.py:76 zeit/workflow/browser/form.py:82
+#: zeit/content/cp/browser/workflow.py:55
+#: zeit/newsletter/browser/workflow.py:77 zeit/workflow/browser/form.py:83
 msgid "Save state only"
 msgstr "Nur Status speichern"
 
-#: zeit/content/cp/browser/workflow.py:60 zeit/workflow/browser/form.py:87
+#: zeit/content/cp/browser/workflow.py:61 zeit/workflow/browser/form.py:88
 msgid "Save state and publish now"
 msgstr "Status speichern und sofort veröffentlichen"
 
-#: zeit/content/cp/browser/workflow.py:67 zeit/workflow/browser/form.py:94
+#: zeit/content/cp/browser/workflow.py:68 zeit/workflow/browser/form.py:95
 msgid "Save state and retract now"
 msgstr "Status speichern und sofort zurückziehen"
 
-#: zeit/content/cp/browser/workflow.py:69 zeit/workflow/browser/form.py:96
+#: zeit/content/cp/browser/workflow.py:70 zeit/workflow/browser/form.py:97
 msgid ""
 "Really retract? This will remove the object from all channels it is "
 "syndicated in and make it unavailable to the public!"
@@ -2728,7 +2725,7 @@ msgstr ""
 "sowie der Öffentlichkeit unzugänglich machen."
 
 #. Default: ""
-#: zeit/content/cp/browser/workflow.py:78
+#: zeit/content/cp/browser/workflow.py:79 zeit/edit/rule.py:236
 msgid "Could not publish ${id} since it has validation errors."
 msgstr ""
 "${id} hat Validierungsfehler und  kann daher nicht veröffentlicht werden."
@@ -3057,8 +3054,8 @@ msgid "Image sub text"
 msgstr "Bildunterschrift"
 
 #: zeit/content/gallery/browser/details.pt:9
-#: zeit/content/image/browser/image-details.pt:14
 #: zeit/content/image/browser/reference-details.pt:14
+#: zeit/content/image/browser/image-details.pt:14
 #: zeit/content/video/browser/object-details-body.pt:8
 msgid "edit"
 msgstr "bearbeiten"
@@ -3625,7 +3622,7 @@ msgid "There was an error rendering ${name}: ${exc_type} ${exc_msg}"
 msgstr "Fehler beim Laden von ${name}: ${exc_type} ${exc_msg}"
 
 #. Default: ""
-#: zeit/edit/interfaces.py:189
+#: zeit/edit/interfaces.py:178
 msgid "Given name {name} is not unique inside parent {parent}."
 msgstr "Der Name {name} ist nicht eindeutig in {parent}."
 
@@ -3744,11 +3741,11 @@ msgstr "Ressort hinzufügen"
 msgid "edit group title"
 msgstr "Ressort-Titel bearbeiten"
 
-#: zeit/newsletter/browser/workflow.py:68
+#: zeit/newsletter/browser/workflow.py:69
 msgid "Send emails and publish now"
 msgstr "Veröffentlichen und E-Mail senden"
 
-#: zeit/newsletter/browser/workflow.py:82
+#: zeit/newsletter/browser/workflow.py:83
 msgid "Test email"
 msgstr "Test-E-Mail senden"
 
@@ -4068,22 +4065,23 @@ msgid "Error message that occured while reporting"
 msgstr "Fehler bei der Meldung"
 
 #. Default: "${id} has been scheduled for publishing."
-#: zeit/workflow/browser/form.py:36
+#: zeit/workflow/browser/form.py:35
 msgid "scheduled-for-immediate-publishing"
 msgstr "»${id}« wird veröffentlicht."
 
 #. Default: "${id} has been scheduled for retracting."
-#: zeit/workflow/browser/form.py:52
+#: zeit/workflow/browser/form.py:44
 msgid "scheduled-for-immediate-retracting"
 msgstr "»${id}« wird zurückgezogen."
 
 #. Default: ""
-#: zeit/workflow/browser/form.py:57 zeit/workflow/browser/publish.pt:19
+#: zeit/workflow/browser/form.py:55 zeit/workflow/publishinfo.py:69
+#: zeit/workflow/browser/publish-errors.pt:3
 msgid "publish-preconditions-not-met"
 msgstr ""
 "»${name}« konnte nicht veröffentlicht werden. Die Bedingungen für die "
-"Veröffentlichung sind nicht erfüllt. Prüfen Sie die Status und/oder das "
-"»Eilig«-Feld. Ihre Status-Änderungen wurden gespeichert."
+"Veröffentlichung sind nicht erfüllt. Ihre Status-Änderungen wurden "
+"gespeichert."
 
 #. Default: ""
 #: zeit/workflow/browser/indicator.py:41
@@ -4140,31 +4138,31 @@ msgstr ""
 "Bei Eilmeldungen oder am Wochenende auswählen um veröffentlichen zu können "
 "ohne die anderen Status setzen zu müssen."
 
-#: zeit/workflow/publish.py:103
+#: zeit/workflow/publish.py:106
 msgid "Publication scheduled"
 msgstr "wird veröffentlicht"
 
-#: zeit/workflow/publish.py:115
+#: zeit/workflow/publish.py:118
 msgid "Retracting scheduled"
 msgstr "Wird zurückgezogen"
 
-#: zeit/workflow/publish.py:166
+#: zeit/workflow/publish.py:169
 msgid "A publish/retract job is already active. Aborting"
 msgstr ""
 "Abgebrochen: Veröffentlichen oder Zurückziehen für dieses Objekt bereits "
 "aktiv."
 
 #. Default: ""
-#: zeit/workflow/publish.py:186
+#: zeit/workflow/publish.py:189
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr "Fehler beim Veröffentlichen/Zurückziehen: ${exc}: ${message}"
 
-#: zeit/workflow/publish.py:384
+#: zeit/workflow/publish.py:387
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 "Konnte nicht veröffentlicht werden, weil Bedingungen nicht erfüllt sind."
 
-#: zeit/workflow/publish.py:455
+#: zeit/workflow/publish.py:458
 msgid "Retracted"
 msgstr "Zurückgezogen"
 
@@ -4201,7 +4199,12 @@ msgid "scheduled-for-retracting-on"
 msgstr "Automatisch zurückziehen am ${date} (job #${job})"
 
 #. Default: ""
-#: zeit/workflow/workflow.py:62
+#: zeit/workflow/workflow.py:48
+msgid "publish-preconditions-urgent"
+msgstr "Prüfen Sie die Status und/oder das »Eilig«-Feld."
+
+#. Default: ""
+#: zeit/workflow/workflow.py:64
 msgid "${name}: ${new_value}"
 msgstr "${name}: ${new_value}"
 
