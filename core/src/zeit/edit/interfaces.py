@@ -132,17 +132,6 @@ class IValidator(zope.interface.Interface):
         title=u"List of error messages.")
 
 
-class IValidatingWorkflow(
-        zeit.cms.workflow.interfaces.IPublishValidationInfo,
-        zeit.workflow.interfaces.ITimeBasedPublishing):
-    """Workflow with validations.
-
-    Provides additional information about validations (status, messages) as
-    defined in IPublishValidationInfo.
-
-    """
-
-
 class IRulesManager(zope.interface.Interface):
     """Collects all validation rules."""
 

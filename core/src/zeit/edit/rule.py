@@ -1,4 +1,8 @@
 from datetime import datetime
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
+from zeit.content.cp.i18n import MessageFactory as _
 from zeit.workflow.interfaces import ITimeBasedPublishing
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import ZODB.POSException
@@ -222,24 +226,21 @@ class RecursiveValidator(object):
 
 class ValidatingWorkflow(zeit.workflow.timebased.TimeBasedWorkflow):
 
-    zope.interface.implements(zeit.edit.interfaces.IValidatingWorkflow)
-
     @cachedproperty
     def validator(self):
         return zeit.edit.interfaces.IValidator(self.context)
 
-    @property
-    def status(self):
-        return self.validator.status
-
-    @property
-    def messages(self):
-        return self.validator.messages
-
     def can_publish(self):
-        if self.status == ERROR:
-            return False
-        return True
+        if self.validator.status == ERROR:
+            self.error_messages = (
+                _('Could not publish ${id} since it has validation errors.',
+                  mapping=self._error_mapping),) + tuple(
+                      self.validator.messages)
+            return CAN_PUBLISH_ERROR
+        if self.validator.status == WARNING:
+            self.error_messages = self.validator.messages
+            return CAN_PUBLISH_WARNING
+        return CAN_PUBLISH_SUCCESS
 
 
 @glob(zeit.edit.interfaces.IElement)

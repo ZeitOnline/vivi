@@ -1,4 +1,5 @@
 from datetime import datetime, timedelta
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 import StringIO
 import mock
 import pytz
@@ -274,8 +275,7 @@ class RecursiveValidatorTest(unittest.TestCase):
 
 
 @zope.component.adapter(zeit.cms.testcontenttype.interfaces.ITestContentType)
-@zope.interface.implementer(
-    zeit.cms.workflow.interfaces.IPublishValidationInfo)
+@zope.interface.implementer(zeit.cms.workflow.interfaces.IPublishInfo)
 def validating_workflow_for_testcontent(context):
     return zeit.edit.rule.ValidatingWorkflow(context)
 
@@ -303,17 +303,16 @@ class ValidatingWorkflowTest(unittest.TestCase):
         gsm.unregisterAdapter(validator_for_testcontent)
 
     def test_validating_workflow_cannot_publish_when_validation_failed(self):
-        workflow = zeit.cms.workflow.interfaces.IPublishValidationInfo(
+        workflow = zeit.cms.workflow.interfaces.IPublishInfo(
             zeit.cms.testcontenttype.testcontenttype.TestContentType())
-        self.assertEqual(False, workflow.can_publish())
+        self.assertEqual(CAN_PUBLISH_ERROR, workflow.can_publish())
 
-    def test_validating_workflow_forwards_validation_info_to_publish_view(
+    def test_validating_workflow_provides_error_messages_for_publish_info(
             self):
         from zeit.cms.testcontenttype.testcontenttype import TestContentType
         import zeit.workflow.browser.publish
 
         view = zeit.workflow.browser.publish.Publish()
         view.context = TestContentType()
-        self.assertEqual(zeit.edit.rule.ERROR, view.validation_status)
         self.assertEqual(
-            ['Mock Validator Error Message'], list(view.validation_messages))
+            ['Mock Validator Error Message'], list(view.error_messages))
