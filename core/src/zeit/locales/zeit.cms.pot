@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Jun  9 13:03:57 2015\n"
+"POT-Creation-Date: Tue Jun  9 13:27:02 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1872,9 +1872,9 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:245
 #: zeit/content/cp/browser/workflow.py:31
 #: zeit/newsletter/browser/workflow.py:19
-#: zeit/workflow/browser/form.py:114
-#: zeit/workflow/browser/form.py:149
-#: zeit/workflow/browser/form.py:180
+#: zeit/workflow/browser/form.py:109
+#: zeit/workflow/browser/form.py:144
+#: zeit/workflow/browser/form.py:175
 msgid "Status"
 msgstr ""
 
@@ -2122,7 +2122,7 @@ msgid "edit workflow time"
 msgstr ""
 
 #: zeit/content/article/edit/browser/workflow.py:33
-#: zeit/workflow/browser/form.py:81
+#: zeit/workflow/browser/form.py:76
 #: zeit/workflow/browser/menu.py:10
 msgid "Workflow"
 msgstr ""
@@ -2627,7 +2627,7 @@ msgid "View metadata"
 msgstr ""
 
 #: zeit/content/cp/browser/configure.zcml:57
-#: zeit/content/dynamicfolder/browser/folder.py:20
+#: zeit/content/dynamicfolder/browser/folder.py:19
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/image/browser/configure.zcml:245
 #: zeit/content/link/browser/configure.zcml:17
@@ -2729,37 +2729,37 @@ msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:37
 #: zeit/newsletter/browser/workflow.py:25
-#: zeit/workflow/browser/form.py:122
-#: zeit/workflow/browser/form.py:154
+#: zeit/workflow/browser/form.py:117
+#: zeit/workflow/browser/form.py:149
 msgid "Settings"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:39
 #: zeit/newsletter/browser/workflow.py:27
-#: zeit/workflow/browser/form.py:124
-#: zeit/workflow/browser/form.py:156
-#: zeit/workflow/browser/form.py:184
+#: zeit/workflow/browser/form.py:119
+#: zeit/workflow/browser/form.py:151
+#: zeit/workflow/browser/form.py:179
 msgid "Log"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:55
 #: zeit/newsletter/browser/workflow.py:77
-#: zeit/workflow/browser/form.py:83
+#: zeit/workflow/browser/form.py:78
 msgid "Save state only"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:61
-#: zeit/workflow/browser/form.py:88
+#: zeit/workflow/browser/form.py:83
 msgid "Save state and publish now"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:68
-#: zeit/workflow/browser/form.py:95
+#: zeit/workflow/browser/form.py:90
 msgid "Save state and retract now"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:70
-#: zeit/workflow/browser/form.py:97
+#: zeit/workflow/browser/form.py:92
 msgid "Really retract? This will remove the object from all channels it is syndicated in and make it unavailable to the public!"
 msgstr ""
 
@@ -3064,10 +3064,6 @@ msgstr ""
 #: zeit/content/cp/teaser.py:184
 #. Default: ""
 msgid "\"${name}\" is referenced by a free teaser in \"${teaser}\""
-msgstr ""
-
-#: zeit/content/dynamicfolder/browser/folder.py:15
-msgid "DynamicFolder metadata"
 msgstr ""
 
 #: zeit/content/dynamicfolder/folder.py:206
@@ -4109,7 +4105,7 @@ msgstr ""
 msgid "scheduled-for-immediate-retracting"
 msgstr ""
 
-#: zeit/workflow/browser/form.py:55
+#: zeit/workflow/browser/form.py:50
 #: zeit/workflow/publishinfo.py:69
 #: zeit/workflow/browser/publish-errors.pt:3
 #. Default: ""

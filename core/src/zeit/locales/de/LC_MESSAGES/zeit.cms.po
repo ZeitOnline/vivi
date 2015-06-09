@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Jun  9 13:03:57 2015\n"
-"PO-Revision-Date: 2015-06-09 13:05+0100\n"
+"POT-Creation-Date: Tue Jun  9 13:27:02 2015\n"
+"PO-Revision-Date: 2015-06-09 13:27+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1834,8 +1834,8 @@ msgstr "Relateds bearbeiten"
 
 #: zeit/content/article/edit/browser/form.py:245
 #: zeit/content/cp/browser/workflow.py:31
-#: zeit/newsletter/browser/workflow.py:19 zeit/workflow/browser/form.py:114
-#: zeit/workflow/browser/form.py:149 zeit/workflow/browser/form.py:180
+#: zeit/newsletter/browser/workflow.py:19 zeit/workflow/browser/form.py:109
+#: zeit/workflow/browser/form.py:144 zeit/workflow/browser/form.py:175
 msgid "Status"
 msgstr "Status"
 
@@ -2081,7 +2081,7 @@ msgid "edit workflow time"
 msgstr "Workflow-Daten bearbeiten"
 
 #: zeit/content/article/edit/browser/workflow.py:33
-#: zeit/workflow/browser/form.py:81 zeit/workflow/browser/menu.py:10
+#: zeit/workflow/browser/form.py:76 zeit/workflow/browser/menu.py:10
 msgid "Workflow"
 msgstr "Workflowstatus"
 
@@ -2585,7 +2585,7 @@ msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
 #: zeit/content/cp/browser/configure.zcml:57
-#: zeit/content/dynamicfolder/browser/folder.py:20
+#: zeit/content/dynamicfolder/browser/folder.py:19
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/image/browser/configure.zcml:245
 #: zeit/content/link/browser/configure.zcml:17
@@ -2692,31 +2692,31 @@ msgid "Apply only for this page"
 msgstr "Als freien Teaser speichern"
 
 #: zeit/content/cp/browser/workflow.py:37
-#: zeit/newsletter/browser/workflow.py:25 zeit/workflow/browser/form.py:122
-#: zeit/workflow/browser/form.py:154
+#: zeit/newsletter/browser/workflow.py:25 zeit/workflow/browser/form.py:117
+#: zeit/workflow/browser/form.py:149
 msgid "Settings"
 msgstr "Einstellungen"
 
 #: zeit/content/cp/browser/workflow.py:39
-#: zeit/newsletter/browser/workflow.py:27 zeit/workflow/browser/form.py:124
-#: zeit/workflow/browser/form.py:156 zeit/workflow/browser/form.py:184
+#: zeit/newsletter/browser/workflow.py:27 zeit/workflow/browser/form.py:119
+#: zeit/workflow/browser/form.py:151 zeit/workflow/browser/form.py:179
 msgid "Log"
 msgstr "Log"
 
 #: zeit/content/cp/browser/workflow.py:55
-#: zeit/newsletter/browser/workflow.py:77 zeit/workflow/browser/form.py:83
+#: zeit/newsletter/browser/workflow.py:77 zeit/workflow/browser/form.py:78
 msgid "Save state only"
 msgstr "Nur Status speichern"
 
-#: zeit/content/cp/browser/workflow.py:61 zeit/workflow/browser/form.py:88
+#: zeit/content/cp/browser/workflow.py:61 zeit/workflow/browser/form.py:83
 msgid "Save state and publish now"
 msgstr "Status speichern und sofort veröffentlichen"
 
-#: zeit/content/cp/browser/workflow.py:68 zeit/workflow/browser/form.py:95
+#: zeit/content/cp/browser/workflow.py:68 zeit/workflow/browser/form.py:90
 msgid "Save state and retract now"
 msgstr "Status speichern und sofort zurückziehen"
 
-#: zeit/content/cp/browser/workflow.py:70 zeit/workflow/browser/form.py:97
+#: zeit/content/cp/browser/workflow.py:70 zeit/workflow/browser/form.py:92
 msgid ""
 "Really retract? This will remove the object from all channels it is "
 "syndicated in and make it unavailable to the public!"
@@ -3024,17 +3024,13 @@ msgstr ""
 "Achtung: »${name}« wird von dem Teaser »${teaser}« referenziert. Inhaltliche "
 "Änderungen sollten auch im Teaser nachgepflegt werden."
 
-#: zeit/content/dynamicfolder/browser/folder.py:15
-msgid "DynamicFolder metadata"
-msgstr ""
-
 #: zeit/content/dynamicfolder/folder.py:206
 msgid "Dynamic Folder"
-msgstr ""
+msgstr "Dynamischer Ordner"
 
 #: zeit/content/dynamicfolder/interfaces.py:32
 msgid "Configuration file"
-msgstr ""
+msgstr "Konfigurationsdatei"
 
 #: zeit/content/gallery/browser/configure.zcml:176
 #: zeit/imp/browser/configure.zcml:7
@@ -4075,7 +4071,7 @@ msgid "scheduled-for-immediate-retracting"
 msgstr "»${id}« wird zurückgezogen."
 
 #. Default: ""
-#: zeit/workflow/browser/form.py:55 zeit/workflow/publishinfo.py:69
+#: zeit/workflow/browser/form.py:50 zeit/workflow/publishinfo.py:69
 #: zeit/workflow/browser/publish-errors.pt:3
 msgid "publish-preconditions-not-met"
 msgstr ""
