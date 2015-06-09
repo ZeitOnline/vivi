@@ -107,7 +107,7 @@ This failed because only `edited` was set to 'yes':
 
 >>> print browser.contents
 <?xml ...
-        <li class="error">publish-preconditions-not-met</li>
+        <li class="error">publish-preconditions-urgent</li>
     ...
 
 Use the urgent flag to override:
