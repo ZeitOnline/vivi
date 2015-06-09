@@ -824,3 +824,14 @@ body.errorview textarea {
     color: #888;
     border-style: none;
 }
+
+/* publish lightbox */
+
+.lightbox .publish > div {
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.lightbox .publish a {
+  text-decoration:underline;
+}

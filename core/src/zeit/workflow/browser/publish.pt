@@ -1,4 +1,4 @@
-<div i18n:domain="zeit.cms"> <!-- lightbox -->
+<div class="publish" i18n:domain="zeit.cms"> <!-- lightbox -->
 <h1 i18n:translate="">Publish</h1>
 
 <tal:block condition="view/can_publish">
