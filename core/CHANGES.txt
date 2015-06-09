@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.6.21 (unreleased)
+3.6.21 (2015-06-09)
 -------------------
 
 - Display validation errors in Lightbox / Popup during publish. (DEV-22)
