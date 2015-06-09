@@ -39,6 +39,8 @@ def reset_publishinfo_on_copy(context, event):
     info = zope.security.proxy.getObject(info)
     for name, field in zope.schema.getFields(
             zeit.cms.workflow.interfaces.IPublishInfo).items():
+        if name == 'error_messages':
+            continue
         current = getattr(info, name)
         if current != field.default:
             setattr(info, name, field.default)
