@@ -4,7 +4,7 @@ zeit.content.rawxml changes
 0.4.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Register RawXML as a CMS content type.
 
 
 0.4.2 (2014-12-17)

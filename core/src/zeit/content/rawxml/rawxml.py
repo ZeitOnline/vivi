@@ -1,3 +1,4 @@
+from zeit.cms.i18n import MessageFactory as _
 import copy
 import zeit.cms.content.dav
 import zeit.cms.content.xmlsupport
@@ -24,8 +25,9 @@ class RawXMLType(zeit.cms.type.XMLContentTypeDeclaration):
 
     factory = RawXML
     interface = zeit.content.rawxml.interfaces.IRawXML
+    title = _('Raw XML')
     type = 'rawxml'
-    register_as_type = False
+    addform = zeit.cms.type.SKIP_ADD
 
 
 class RawXMLMetadataUpdater(zeit.cms.content.xmlsupport.XMLReferenceUpdater):
