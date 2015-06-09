@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.46.0 (unreleased)
+2.46.0 (2015-06-09)
 -------------------
 
 - Display validation errors in Lightbox / Popup during publish. (DEV-22)
