@@ -188,6 +188,18 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.10.2 (2015-06-09)
+-------------------
+
+- Update workflow and template to display validation errors on publish. (DEV-22)
+
+
+2.10.1 (2015-04-30)
+-------------------
+
+- Bugfix in forward-compatibility code.
+
+
 2.10.0 (2015-04-28)
 -------------------
 
