@@ -6,8 +6,6 @@ zeit.content.article changes
 
 - Display validation errors in Lightbox / Popup during publish. (DEV-22)
 
-- Make it possible to drag content to `type-playlist` modules. (DEV-300)
-
 
 3.6.20 (2015-05-18)
 -------------------
