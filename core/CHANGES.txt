@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.2.8 (unreleased)
+2.3.0 (2015-06-09)
 ------------------
 
 - Introduce new cropping UI with focus points (feature toggle
