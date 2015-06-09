@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b15 (unreleased)
+3.0.0b15 (2015-06-09)
 ---------------------
 
 - Restrict access to Article Flow by introducing new permission. (DEV-759)
