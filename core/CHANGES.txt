@@ -1,7 +1,7 @@
 zeit.imp changes
 ================
 
-0.17.1 (unreleased)
+0.17.1 (2015-06-09)
 +++++++++++++++++++
 
 - Remove unicode symbol from i18n string, so it can be translated.
