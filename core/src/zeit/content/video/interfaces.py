@@ -83,7 +83,7 @@ class IVideo(IVideoContent):
 class VideoSource(zeit.cms.content.contentsource.CMSContentSource):
 
     name = 'video'
-    check_interfaces = IVideo
+    check_interfaces = (IVideo,)
 
 
 class IPlaylist(IVideoContent):
