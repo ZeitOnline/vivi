@@ -1,8 +1,8 @@
 zeit.brightcove changes
 =======================
 
-2.7 (unreleased)
--------------------
+2.7.0 (2015-06-09)
+------------------
 
 - Make video rendition duration attribute settable (ZON-1566).
 
