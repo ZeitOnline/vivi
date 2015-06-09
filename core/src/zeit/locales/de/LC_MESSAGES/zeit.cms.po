@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Tue Jun  9 13:27:02 2015\n"
-"PO-Revision-Date: 2015-06-09 13:27+0100\n"
+"PO-Revision-Date: 2015-06-09 13:30+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2740,7 +2740,7 @@ msgstr "Fläche bearbeiten"
 
 #: zeit/content/cp/configure.zcml:240
 msgid "Edit Article Flow"
-msgstr ""
+msgstr "Artikelflow benutzen"
 
 #: zeit/content/cp/interfaces.py:142 zeit/content/cp/interfaces.py:162
 #: zeit/content/cp/interfaces.py:266
@@ -3173,7 +3173,7 @@ msgstr "Einzelbild"
 
 #: zeit/content/image/browser/configure.zcml:292
 msgid "Variants"
-msgstr ""
+msgstr "Zuschnitte"
 
 #: zeit/content/image/browser/copyright.pt:5
 msgid "Set copyright for all images in ${object-unique-id}"
@@ -3288,7 +3288,7 @@ msgstr "Bildergruppe"
 
 #: zeit/content/image/interfaces.py:165
 msgid "Setting for variants"
-msgstr ""
+msgstr "Einstellungen"
 
 #: zeit/content/image/interfaces.py:250
 msgid "Objects using this image"
@@ -3569,7 +3569,7 @@ msgstr "Framebreite"
 
 #: zeit/content/video/interfaces.py:41
 msgid "Duration of the rendition"
-msgstr ""
+msgstr "Spieldauer"
 
 #: zeit/content/video/interfaces.py:67
 msgid "Renditions of the Video"
