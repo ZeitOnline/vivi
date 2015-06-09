@@ -1,4 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 from zope.cachedescriptors.property import Lazy as cachedproperty
 import StringIO
 import grokcore.component as grok
@@ -255,26 +258,13 @@ class SearchableText(grok.Adapter):
 class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
 
     zope.component.adapts(zeit.content.article.interfaces.IArticle)
-    zope.interface.implements(zeit.content.article.interfaces.IArticleWorkflow)
-
-    @cachedproperty
-    def validator(self):
-        return zeit.edit.interfaces.IValidator(self.context)
-
-    @property
-    def status(self):
-        return self.validator.status
-
-    @property
-    def messages(self):
-        return self.validator.messages
 
     def can_publish(self):
-        if not super(ArticleWorkflow, self).can_publish():
-            return False
-        if self.status == zeit.edit.rule.ERROR:
-            return False
-        return True
+        result = super(ArticleWorkflow, self).can_publish()
+        if result == CAN_PUBLISH_ERROR:
+            return CAN_PUBLISH_ERROR
+        validator = zeit.edit.rule.ValidatingWorkflow(self.context)
+        return validator.can_publish()
 
 
 @grok.subscribe(

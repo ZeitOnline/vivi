@@ -194,17 +194,6 @@ class ITagesspiegelArticle(zope.interface.Interface):
     """Marker for articles imported from Tagesspiegel."""
 
 
-class IArticleWorkflow(
-        zeit.cms.workflow.interfaces.IPublishValidationInfo,
-        zeit.workflow.interfaces.IContentWorkflow):
-    """Workflow for articles.
-
-    Provides additional information about validations (status, messages) as
-    defined in IPublishValidationInfo.
-
-    """
-
-
 class ICDSWorkflow(zope.interface.Interface):
     """Special workflow "extension" for CDS."""
 

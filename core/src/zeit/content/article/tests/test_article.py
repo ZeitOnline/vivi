@@ -1,4 +1,6 @@
 # coding: utf8
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
+from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 import lxml.etree
 import mock
 import zeit.cms.checkout.helper
@@ -42,19 +44,19 @@ class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_not_urgent_cannot_publish(self):
         self.assertFalse(self.info.urgent)
-        self.assertFalse(self.info.can_publish())
+        self.assertEqual(CAN_PUBLISH_ERROR, self.info.can_publish())
         self.assertFalse(self.validator.called)
 
     def test_validation_passes_can_publish(self):
         self.info.urgent = True
         self.validator().status = None
-        self.assertTrue(self.info.can_publish())
+        self.assertEqual(CAN_PUBLISH_SUCCESS, self.info.can_publish())
         self.validator.assert_called_with(self.article)
 
     def test_validation_fails_cannot_publish(self):
         self.info.urgent = True
         self.validator().status = zeit.edit.rule.ERROR
-        self.assertFalse(self.info.can_publish())
+        self.assertEqual(CAN_PUBLISH_ERROR, self.info.can_publish())
         self.validator.assert_called_with(self.article)
 
 

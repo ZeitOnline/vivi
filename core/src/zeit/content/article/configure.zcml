@@ -47,18 +47,18 @@
   <class class=".article.ArticleWorkflow">
     <require
       permission="zope.View"
-      interface=".interfaces.IArticleWorkflow"
+      interface="zeit.workflow.interfaces.IContentWorkflow"
       />
     <require
       permission="zeit.workflow.Publish"
-      set_schema=".interfaces.IArticleWorkflow"
+      set_schema="zeit.workflow.interfaces.IContentWorkflow"
       />
   </class>
 
   <adapter
     factory=".article.ArticleWorkflow"
     for=".interfaces.IArticle"
-    provides="zeit.cms.workflow.interfaces.IPublishValidationInfo"
+    provides="zeit.cms.workflow.interfaces.IPublishInfo"
     trusted="yes"
     />
 
