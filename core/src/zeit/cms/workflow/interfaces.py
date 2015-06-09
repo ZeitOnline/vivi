@@ -72,6 +72,7 @@ class IPublishInfo(zope.interface.Interface):
 
     error_messages = zope.schema.List(
         title=u"List of warning and error messages.",
+        readonly=True,
         value_type=zope.schema.TextLine())
 
     def can_publish():
