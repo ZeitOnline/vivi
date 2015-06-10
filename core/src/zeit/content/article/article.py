@@ -264,7 +264,9 @@ class ArticleWorkflow(zeit.workflow.workflow.ContentWorkflow):
         if result == CAN_PUBLISH_ERROR:
             return CAN_PUBLISH_ERROR
         validator = zeit.edit.rule.ValidatingWorkflow(self.context)
-        return validator.can_publish()
+        result = validator.can_publish()
+        self.error_messages = validator.error_messages
+        return result
 
 
 @grok.subscribe(

@@ -5,6 +5,7 @@ import transaction
 import unittest
 import zeit.cms.tagging.testing
 import zeit.cms.testing
+import zeit.cms.workflow.interfaces
 import zeit.content.article.edit.interfaces
 import zeit.content.article.testing
 import zeit.edit.interfaces
@@ -275,6 +276,8 @@ class Publish(zeit.cms.testing.BrowserTestCase):
                     article)
                 editor.create_item('image')
                 self.repository['article_with_division'] = article
+                zeit.cms.workflow.interfaces.IPublishInfo(
+                    self.repository['article_with_division']).urgent = True
 
         rm = zope.component.getUtility(zeit.edit.interfaces.IRulesManager)
         rules = [rm.create_rule(['error_if(True, "Custom Error")'], 0)]
