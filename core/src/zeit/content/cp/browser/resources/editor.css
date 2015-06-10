@@ -75,8 +75,7 @@
   width: auto;
 }
 
-.edit-bar > .title,
-.edit-bar > .kind {
+.edit-bar > .title {
   float: left;
   font-size: inherit;
   font-family: "Lucida Grande", "Lucida Sans Unicode", sans-serif;
@@ -85,10 +84,6 @@
 
 .edit-bar > .title {
   font-weight: bold;
-}
-
-.edit-bar > .kind {
-  color: #888;
 }
 
 .edit-bar > .rss-refresh-link {
