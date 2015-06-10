@@ -64,7 +64,14 @@
     <a class="button configure_search"></a>
   </div>
 
+  <button class="close-lightbox" i18n:translate="">Apply</button>
 </div>
 <script language="JavaScript">
+(function($) {
   new zeit.content.cp.teaser.Sortable();
+
+  $(self.container).find('.close-lightbox').on('click', function() {
+    self.close();
+  });
+}(jQuery))
 </script>
