@@ -10,6 +10,7 @@ import time
 import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.cms.testing
+import zeit.content.image.testing
 import zeit.workflow.testing
 import zope.testing.doctest
 import zope.testing.renormalizing
@@ -38,8 +39,10 @@ product_config = """
 
 layer = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=zeit.cms.testing.cms_product_config + product_config +
-    zeit.workflow.testing.product_config)
+    product_config=zeit.cms.testing.cms_product_config
+    + zeit.workflow.testing.product_config
+    + zeit.content.image.testing.product_config
+    + product_config)
 
 
 class RequestHandler(gocept.httpserverlayer.custom.RequestHandler,
