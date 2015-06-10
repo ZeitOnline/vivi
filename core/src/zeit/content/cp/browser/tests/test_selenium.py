@@ -531,7 +531,7 @@ class TestOneClickPublish(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent('css=div.lightbox')
         s.waitForElementPresent('publish.errors')
         s.assertTextPresent(
-            'Cannot publish since validation rules are violated.')
+            'Cannot publish since preconditions for publishing are not met.')
 
     def test_editor_should_be_reloaded_after_publishing(self):
         s = self.selenium
