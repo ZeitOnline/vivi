@@ -4,7 +4,7 @@ zeit.content.image changes
 2.3.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Properly locate generated variants (DEV-782).
 
 
 2.3.0 (2015-06-09)
