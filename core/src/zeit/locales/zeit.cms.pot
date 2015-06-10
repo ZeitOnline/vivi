@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Tue Jun  9 13:27:02 2015\n"
+"POT-Creation-Date: Wed Jun 10 11:03:19 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -482,7 +482,7 @@ msgstr ""
 #: zeit/cms/content/browser/template.zcml:41
 #: zeit/content/article/edit/browser/recension-list.pt:29
 #: zeit/content/gallery/browser/configure.zcml:140
-#: zeit/content/image/browser/configure.zcml:128
+#: zeit/content/image/browser/configure.zcml:129
 #: zeit/content/quiz/browser/configure.zcml:90
 #: zeit/content/quiz/browser/configure.zcml:108
 #: zeit/content/rawxml/browser/configure.zcml:15
@@ -497,8 +497,8 @@ msgstr ""
 #: zeit/cms/repository/browser/file.zcml:24
 #: zeit/content/article/browser/menu.py:25
 #: zeit/content/author/browser/form.py:38
-#: zeit/content/image/browser/configure.zcml:26
-#: zeit/content/image/browser/configure.zcml:215
+#: zeit/content/image/browser/configure.zcml:27
+#: zeit/content/image/browser/configure.zcml:216
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:24
 msgid "View"
@@ -1656,7 +1656,7 @@ msgstr ""
 
 #: zeit/cms/workflow/browser/indicator.py:12
 #: zeit/cms/workflow/interfaces.py:42
-#: zeit/workflow/publish.py:431
+#: zeit/workflow/publish.py:434
 #: zeit/workflow/publishinfo.py:45
 msgid "Published"
 msgstr ""
@@ -1701,7 +1701,7 @@ msgstr ""
 msgid "Last published by"
 msgstr ""
 
-#: zeit/cms/workflow/interfaces.py:88
+#: zeit/cms/workflow/interfaces.py:89
 msgid "Publication state"
 msgstr ""
 
@@ -2148,7 +2148,7 @@ msgstr ""
 #: zeit/content/image/browser/imagegroup.py:114
 #: zeit/content/image/image.py:95
 #: zeit/content/image/interfaces.py:241
-#: zeit/content/image/browser/configure.zcml:237
+#: zeit/content/image/browser/configure.zcml:238
 #: zeit/content/portraitbox/interfaces.py:18
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -2340,6 +2340,7 @@ msgstr ""
 
 #: zeit/content/article/edit/rawxml.py:20
 #: zeit/content/rawxml/browser/form.py:15
+#: zeit/content/rawxml/rawxml.py:28
 #: zeit/content/rawxml/browser/configure.zcml:6
 msgid "Raw XML"
 msgstr ""
@@ -2496,7 +2497,7 @@ msgstr ""
 
 #: zeit/content/author/interfaces.py:64
 #: zeit/content/image/browser/imagegroup.py:100
-#: zeit/content/image/browser/configure.zcml:207
+#: zeit/content/image/browser/configure.zcml:208
 msgid "Image group"
 msgstr ""
 
@@ -2620,7 +2621,7 @@ msgstr ""
 
 #: zeit/content/cp/browser/configure.zcml:41
 #: zeit/content/gallery/browser/configure.zcml:56
-#: zeit/content/image/browser/configure.zcml:229
+#: zeit/content/image/browser/configure.zcml:230
 #: zeit/content/link/browser/configure.zcml:32
 #: zeit/content/quiz/browser/configure.zcml:55
 msgid "View metadata"
@@ -2629,7 +2630,7 @@ msgstr ""
 #: zeit/content/cp/browser/configure.zcml:57
 #: zeit/content/dynamicfolder/browser/folder.py:19
 #: zeit/content/gallery/browser/configure.zcml:39
-#: zeit/content/image/browser/configure.zcml:245
+#: zeit/content/image/browser/configure.zcml:246
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/quiz/browser/configure.zcml:38
 #: zeit/magazin/browser/configure.zcml:65
@@ -3081,7 +3082,7 @@ msgstr ""
 
 #: zeit/content/gallery/browser/configure.zcml:89
 #: zeit/content/image/browser/imagebrowser.py:7
-#: zeit/content/image/browser/configure.zcml:169
+#: zeit/content/image/browser/configure.zcml:170
 msgid "Images"
 msgstr ""
 
@@ -3207,12 +3208,8 @@ msgstr ""
 msgid "Hidden"
 msgstr ""
 
-#: zeit/content/image/browser/configure.zcml:158
+#: zeit/content/image/browser/configure.zcml:159
 msgid "Image (single)"
-msgstr ""
-
-#: zeit/content/image/browser/configure.zcml:292
-msgid "Variants"
 msgstr ""
 
 #: zeit/content/image/browser/copyright.pt:5
@@ -3341,7 +3338,7 @@ msgid "Copyright"
 msgstr ""
 
 #: zeit/content/image/interfaces.py:65
-#: zeit/content/link/link.py:44
+#: zeit/content/link/link.py:43
 #: zeit/content/link/browser/configure.zcml:8
 msgid "Link"
 msgstr ""
@@ -4107,7 +4104,6 @@ msgstr ""
 
 #: zeit/workflow/browser/form.py:50
 #: zeit/workflow/publishinfo.py:69
-#: zeit/workflow/browser/publish-errors.pt:3
 #. Default: ""
 msgid "publish-preconditions-not-met"
 msgstr ""
@@ -4115,6 +4111,11 @@ msgstr ""
 #: zeit/workflow/browser/indicator.py:41
 #. Default: ""
 msgid "${title}: ${state}"
+msgstr ""
+
+#: zeit/workflow/browser/publish-errors.pt:3
+#. Default: "Cannot publish since preconditions for publishing are not met. ${name}"
+msgid "publish-preconditions-not-met-lightbox"
 msgstr ""
 
 #: zeit/workflow/interfaces.py:37
@@ -4167,20 +4168,20 @@ msgstr ""
 msgid "Retracting scheduled"
 msgstr ""
 
-#: zeit/workflow/publish.py:169
+#: zeit/workflow/publish.py:172
 msgid "A publish/retract job is already active. Aborting"
 msgstr ""
 
-#: zeit/workflow/publish.py:189
+#: zeit/workflow/publish.py:192
 #. Default: ""
 msgid "Error during publish/retract: ${exc}: ${message}"
 msgstr ""
 
-#: zeit/workflow/publish.py:387
+#: zeit/workflow/publish.py:390
 msgid "Could not publish because conditions not satisifed."
 msgstr ""
 
-#: zeit/workflow/publish.py:458
+#: zeit/workflow/publish.py:461
 msgid "Retracted"
 msgstr ""
 
