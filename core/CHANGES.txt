@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.46.1 (unreleased)
+2.46.1 (2015-06-10)
 -------------------
 
 - Make taskprocessor queue name for publishing configurable (DEV-816).
