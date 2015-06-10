@@ -56,6 +56,7 @@ class WorkflowTest(zeit.content.article.testing.FunctionalTestCase):
     def test_validation_fails_cannot_publish(self):
         self.info.urgent = True
         self.validator().status = zeit.edit.rule.ERROR
+        self.validator().messages = []
         self.assertEqual(CAN_PUBLISH_ERROR, self.info.can_publish())
         self.validator.assert_called_with(self.article)
 
