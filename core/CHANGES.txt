@@ -4,7 +4,7 @@ zeit.cms changes
 2.46.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Style error messages more prominently (DEV-22).
 
 
 2.46.1 (2015-06-10)

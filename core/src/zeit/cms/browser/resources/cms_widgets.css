@@ -626,7 +626,7 @@ a.button.configure_search:hover {
 .haveMessages.staticErrorText {
   background-color: #ffffff;
   padding: 0.5em 1em;
-  color: black;
+  color: red;
   cursor: pointer;
 }
 
