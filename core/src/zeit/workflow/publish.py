@@ -124,8 +124,11 @@ class Publish(object):
             task.run_sync(self.context)
 
     def tasks(self, priority):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        queue = config['task-queue-%s' % priority]
         return zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, priority)
+            lovely.remotetask.interfaces.ITaskService, name=queue)
 
     def log(self, obj, msg):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)

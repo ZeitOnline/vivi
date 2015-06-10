@@ -25,6 +25,9 @@ product_config = """
     publish-script true
     retract-script true
     dependency-publish-limit 100
+
+    task-queue-default general
+    task-queue-lowprio lowprio
 </product-config>
 """
 
@@ -116,8 +119,11 @@ def run_publish(priorities=(PRIORITY_DEFAULT,)):
     if isinstance(priorities, str):
         priorities = [priorities]
     for priority in priorities:
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        queue = config['task-queue-%s' % priority]
         tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, priority)
+            lovely.remotetask.interfaces.ITaskService, name=queue)
         tasks.process()
     logging.root.removeHandler(handler)
     logging.root.setLevel(oldlevel)

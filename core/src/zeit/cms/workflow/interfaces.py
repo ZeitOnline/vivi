@@ -92,7 +92,7 @@ class IPublicationStatus(zope.interface.Interface):
         values=('published', 'not-published', 'published-with-changes'))
 
 
-PRIORITY_DEFAULT = 'general'
+PRIORITY_DEFAULT = 'default'
 PRIORITY_LOW = 'lowprio'
 
 
