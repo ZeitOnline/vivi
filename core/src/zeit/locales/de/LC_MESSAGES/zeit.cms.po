@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Wed Jun 10 11:03:19 2015\n"
-"PO-Revision-Date: 2015-06-10 11:05+0100\n"
+"PO-Revision-Date: 2015-06-10 15:00+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2499,7 +2499,7 @@ msgstr "RSS-Block"
 
 #: zeit/content/cp/blocks/teaser.py:121
 msgid "List of teasers"
-msgstr "Teaserliste"
+msgstr "Teaser"
 
 #: zeit/content/cp/blocks/teaser.py:93
 msgid "No default teaser layout defined for this area."
@@ -2549,7 +2549,7 @@ msgstr "Rw: ${today}/${lifetime}"
 
 #: zeit/content/cp/browser/blocks/layout.teaser.edit-contents.pt:1
 msgid "Edit teaser list"
-msgstr "Teaser-Liste bearbeiten"
+msgstr "Teaser bearbeiten"
 
 #: zeit/content/cp/browser/blocks/playlist.py:27
 msgid "Only playlists can be dropped on a playlist block."
