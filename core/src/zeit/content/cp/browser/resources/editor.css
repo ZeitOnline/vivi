@@ -43,7 +43,7 @@
 
 /* When there is no "other" edit, we show the common. */
 .edit-bar > a.common-link:first-child {
-  background-image: url('page.png');
+  background-image: url('/fanstatic/zeit.edit/edit.png');
   display: block;
   padding-right: 0.5em;
 }
