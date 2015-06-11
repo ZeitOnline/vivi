@@ -97,6 +97,18 @@ class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
         self.area1.overflow_into = None
         self.assertEqual(None, self.area1.overflow_into)
 
+    def test_overflow_works_across_multiple_areas(self):
+        self.area3 = self.region.create_item('area')
+        self.area2.block_max = 1
+        self.area2.overflow_into = self.area3
+        t1 = self.area1.create_item('teaser').__name__
+        t2 = self.area1.create_item('teaser').__name__
+        t3 = self.area1.create_item('teaser').__name__
+        self.assertEqual([t1], self.area1.keys())
+        # added t3 last, so should be first in overflow area
+        self.assertEqual([t3], self.area2.keys())
+        self.assertEqual([t2], self.area3.keys())
+
 
 class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 

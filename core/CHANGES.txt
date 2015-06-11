@@ -5,6 +5,8 @@ zeit.content.cp changes
 3.0.0b16 (unreleased)
 ---------------------
 
+- Make overflow work across multiple areas (DEV-759).
+
 - Retrieve images for teaser modules using the new variant API (DEV-782).
 
 

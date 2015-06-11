@@ -422,3 +422,4 @@ def overflow_blocks(context, event):
     last_block = area.values()[-1]
     del area[last_block.__name__]
     area.overflow_into.insert(0, last_block)
+    overflow_blocks(last_block, None)
