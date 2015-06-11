@@ -715,7 +715,6 @@ li.busy {
   outline: 4px solid #a6cc17;
   display: block;
   visibility: visible;
-  z-index: 1;
 }
 
 .landing-zone.hover-content.visible {
