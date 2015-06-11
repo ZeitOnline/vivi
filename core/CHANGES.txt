@@ -4,7 +4,7 @@ zeit.brightcove changes
 2.7.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Undo erroneous 2.7.0: rendition information is read-only (ZON-1566).
 
 
 2.7.0 (2015-06-09)

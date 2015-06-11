@@ -183,31 +183,15 @@ class VideoConverterTest(zeit.brightcove.testing.BrightcoveTestCase):
             ['http://xml.zeit.de/online/2007/01/Somalia'],
             [x.uniqueId for x in related.related])
 
-    def test_renditions_should_be_converted_to_brightcove(self):
-        rendition = zeit.content.video.video.VideoRendition()
-        rendition.url = 'http://example.org/my_rendition'
-        rendition.frame_width = 720
-        rendition.video_duration = 68000
-        cmsobj = zeit.content.video.video.Video()
-        cmsobj.renditions = (rendition,)
-        video = Video.from_cms(cmsobj)
-
-        self.assertEqual(
-            'http://example.org/my_rendition', video.renditions[0].url)
-
-        self.assertEqual(720, video.renditions[0].frame_width)
-
-        self.assertEqual(68000, video.renditions[0].video_duration)
-
     def test_renditions_should_be_converted_to_cms(self):
         video = Video.find_by_id('1234')
         video.data['renditions'] = [{
-            'url': 'http://example.org/my_rendition',
+            'url': 'http:example.org/my_rendition',
             'frameWidth': 400,
             'videoDuration': 93000}]
         cmsobj = video.to_cms()
         self.assertEqual(
-            'http://example.org/my_rendition', cmsobj.renditions[0].url)
+            'http:example.org/my_rendition', cmsobj.renditions[0].url)
 
         self.assertEqual(400, cmsobj.renditions[0].frame_width)
 
