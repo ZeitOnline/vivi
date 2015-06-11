@@ -587,5 +587,4 @@ label[for="form.query"]:after {
   outline: 4px solid #a6cc17;
   display: block;
   visibility: visible;
-  z-index: 1;
 }
