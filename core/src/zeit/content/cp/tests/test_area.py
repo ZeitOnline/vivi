@@ -93,6 +93,10 @@ class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual([t2], self.area1.keys())
         self.assertEqual([t3, t1], self.area2.keys())
 
+    def test_setting_overflow_into_none_is_allowed(self):
+        self.area1.overflow_into = None
+        self.assertEqual(None, self.area1.overflow_into)
+
 
 class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 

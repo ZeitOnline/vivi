@@ -288,7 +288,8 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     overflow_into = zope.schema.Choice(
         title=_("Overflow into"),
-        source=OtherAreaSource())
+        source=OtherAreaSource(),
+        required=False)
 
     apply_teaser_layouts_automatically = zope.schema.Bool(
         title=_('Apply teaser layouts automatically?'),

@@ -235,7 +235,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def overflow_into(self, value):
         if value is None:
             self._overflow_into = None
-        self._overflow_into = value.__name__
+        else:
+            self._overflow_into = value.__name__
 
     @property
     def __name__(self):
