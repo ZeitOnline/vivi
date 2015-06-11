@@ -3,6 +3,7 @@ import mock
 import zeit.content.cp.area
 import zeit.content.cp.centerpage
 import zeit.content.cp.testing
+import zope.lifecycleevent
 
 
 CENTERPAGE = """
@@ -135,6 +136,17 @@ class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
     def test_sorting_areas_removes_overflow_if_ordered_wrong(self):
         self.region.updateOrder([self.area2.__name__, self.area1.__name__])
         self.assertEqual(None, self.area1.overflow_into)
+
+    def test_reducing_block_max_overflows_excessive_blocks(self):
+        self.area1.block_max = 2
+        t1 = self.area1.create_item('teaser').__name__
+        t2 = self.area1.create_item('teaser').__name__
+        self.area1.block_max = 1
+        zope.lifecycleevent.modified(
+            self.area1, zope.lifecycleevent.Attributes(
+                zeit.content.cp.interfaces.IArea, 'block_max'))
+        self.assertEqual([t1], self.area1.keys())
+        self.assertEqual([t2], self.area2.keys())
 
 
 class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):

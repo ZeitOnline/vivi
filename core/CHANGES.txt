@@ -9,6 +9,8 @@ zeit.content.cp changes
 
 - Remove overflow after drag&drop when order doesn't match anymore (DEV-759).
 
+- Overflow excessive blocks when changing block_max (DEV-687).
+
 - Retrieve images for teaser modules using the new variant API (DEV-782).
 
 

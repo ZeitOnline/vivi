@@ -457,3 +457,15 @@ def maybe_remove_overflow(context, event):
 def maybe_remove_overflow_after_sort(context, event):
     for area in context.values():
         area.overflow_into = area.overflow_into
+
+
+@grok.subscribe(
+    zeit.content.cp.interfaces.IArea,
+    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+def overflow_excessive_blocks(context, event):
+    for description in event.descriptions:
+        if description.interface is zeit.content.cp.interfaces.IArea:
+            if 'block_max' in description.attributes:
+                while len(context) > context.block_max:
+                    last_block = context.values()[-1]
+                    overflow_blocks(last_block, None)
