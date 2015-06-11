@@ -215,18 +215,24 @@ class WorkflowEndToEnd(
     def test_publish_shows_lightbox(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia/')
-        s.waitForElementPresent('id=publish')
+        s.waitForElementPresent('id=publish.urgent')
+        s.click('id=publish.urgent')
+        s.pause(500)
+        s.waitForElementNotPresent('css=.field.dirty')
         s.click('id=publish')
-        s.waitForElementPresent('css=.lightbox')
+        s.waitForElementPresent('css=ol#worklist')
         # lightbox content is covered by zeit.workflow, see there for detailed
         # tests
 
     def test_save_and_publish_shows_lightbox(self):
         s = self.selenium
         self.open('/repository/online/2007/01/Somalia/@@checkout')
-        s.waitForElementPresent('id=checkin-publish')
+        s.waitForElementPresent('id=publish.urgent')
+        s.click('id=publish.urgent')
+        s.pause(500)
+        s.waitForElementNotPresent('css=.field.dirty')
         s.click('id=checkin-publish')
-        s.waitForElementPresent('css=.lightbox')
+        s.waitForElementPresent('css=ol#worklist')
 
     def test_delete_shows_lightbox(self):
         s = self.selenium
