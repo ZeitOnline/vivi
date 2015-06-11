@@ -1,4 +1,3 @@
-import z3c.flashmessage.interfaces
 import zeit.cms.browser
 import zeit.cms.browser.interfaces
 import zeit.cms.browser.resources
@@ -14,11 +13,6 @@ import zope.security.proxy
 class StandardMacros(zope.app.basicskin.standardmacros.StandardMacros):
 
     macro_pages = ('main_template',)
-
-    def messages(self):
-        receiver = zope.component.getUtility(
-            z3c.flashmessage.interfaces.IMessageReceiver)
-        return list(receiver.receive())
 
     @property
     def context_title(self):

@@ -4,7 +4,7 @@ zeit.cms changes
 2.46.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Mark message notifier red only when error messages are present (DEV-22).
 
 
 2.46.2 (2015-06-10)
