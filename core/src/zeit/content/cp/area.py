@@ -236,7 +236,12 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if value is None:
             self._overflow_into = None
         else:
-            self._overflow_into = value.__name__
+            candidates = zeit.content.cp.interfaces.IArea[
+                'overflow_into'].source(self)
+            if value not in candidates:
+                self._overflow_into = None
+            else:
+                self._overflow_into = value.__name__
 
     @property
     def __name__(self):
@@ -423,3 +428,32 @@ def overflow_blocks(context, event):
     del area[last_block.__name__]
     area.overflow_into.insert(0, last_block)
     overflow_blocks(last_block, None)
+
+
+@grok.subscribe(
+    zeit.content.cp.interfaces.IArea,
+    zope.container.interfaces.IObjectMovedEvent)
+def maybe_remove_overflow(context, event):
+    # We only want add or move, but not remove.
+    if zope.lifecycleevent.IObjectRemovedEvent.providedBy(event):
+        return
+
+    # Check overflow from context.
+    context.overflow_into = context.overflow_into
+
+    # Check overflow to context.
+    cp = zeit.content.cp.interfaces.ICenterPage(context)
+    # Looking at *all* areas may include some that cannot have been affected
+    # by this move, but determining those is more trouble than it's worth.
+    for region in cp.values():
+        for area in region.values():
+            if area.overflow_into == context:
+                area.overflow_into = area.overflow_into
+
+
+@grok.subscribe(
+    zeit.content.cp.interfaces.IRegion,
+    zeit.edit.interfaces.IOrderUpdatedEvent)
+def maybe_remove_overflow_after_sort(context, event):
+    for area in context.values():
+        area.overflow_into = area.overflow_into

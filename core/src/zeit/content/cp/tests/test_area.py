@@ -109,6 +109,33 @@ class OverflowBlocks(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual([t3], self.area2.keys())
         self.assertEqual([t2], self.area3.keys())
 
+    def test_moving_area_below_target_removes_overflow(self):
+        region2 = self.cp.create_item('region')
+        del self.region[self.area1.__name__]
+        region2.add(self.area1)
+        self.assertEqual(None, self.area1.overflow_into)
+
+    def test_moving_target_above_area_removes_overflow(self):
+        region2 = self.cp.create_item('region')
+        del self.region[self.area2.__name__]
+        region2.add(self.area2)
+
+        del region2[self.area2.__name__]
+        self.region.insert(0, self.area2)
+        self.assertEqual(None, self.area1.overflow_into)
+
+    def test_moving_areas_with_proper_order_keeps_overflow(self):
+        region2 = self.cp.create_item('region')
+        del self.region[self.area2.__name__]
+        region2.insert(0, self.area2)
+        del self.region[self.area1.__name__]
+        region2.insert(0, self.area1)
+        self.assertNotEqual(None, self.area1.overflow_into)
+
+    def test_sorting_areas_removes_overflow_if_ordered_wrong(self):
+        self.region.updateOrder([self.area2.__name__, self.area1.__name__])
+        self.assertEqual(None, self.area1.overflow_into)
+
 
 class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
