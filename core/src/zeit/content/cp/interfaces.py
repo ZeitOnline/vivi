@@ -189,16 +189,20 @@ def hex_literal(value):
         return True
 
 
-class OtherAreaSource(
+class BelowAreaSource(
         zc.sourcefactory.contextual.BasicContextualSourceFactory):
-    """All IAreas of this CenterPage, except the current one."""
+    """All IAreas of this CenterPage below the current one."""
 
     def getValues(self, context):
         cp = zeit.content.cp.interfaces.ICenterPage(context)
         areas = []
+        below = False
         for region in cp.values():
             for area in region.values():
-                if area != context:
+                if area == context:
+                    below = True
+                    continue
+                if below:
                     areas.append(area)
         return areas
 
@@ -288,7 +292,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     overflow_into = zope.schema.Choice(
         title=_("Overflow into"),
-        source=OtherAreaSource(),
+        source=BelowAreaSource(),
         required=False)
 
     apply_teaser_layouts_automatically = zope.schema.Bool(
