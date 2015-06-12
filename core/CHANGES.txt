@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.46.4 (unreleased)
+2.47.0 (unreleased)
 -------------------
 
 - Use default values for both comment metadata properties (BUG-272).
