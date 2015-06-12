@@ -74,8 +74,8 @@
 
             // Set max-width defined in config as width to display smaller
             // sizes of a variant as big as allowed.
-            if (self.model.has('max-size')) {
-                var size = self.model.get('max-size').split('x');
+            if (self.model.has('max_size')) {
+                var size = self.model.get('max_size').split('x');
                 image.width(size[0]);
             }
 
