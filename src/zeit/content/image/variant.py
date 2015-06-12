@@ -1,4 +1,5 @@
 import UserDict
+import copy
 import grokcore.component as grok
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
@@ -53,12 +54,19 @@ class Variants(grok.Adapter, UserDict.DictMixin):
 
 class Variant(object):
 
-    grok.implements(zeit.content.image.interfaces.IVariant)
-
     DEFAULT_NAME = 'default'
+    interface = zeit.content.image.interfaces.IVariant
+
+    grok.implements(interface)
 
     def __init__(self, **kw):
-        self.__dict__.update(kw)
+        """Set attributes that are part of the Schema and convert their type"""
+        fields = zope.schema.getFields(self.interface)
+        for key, value in kw.items():
+            if key not in fields:
+                continue  # ignore attributes that aren't part of the schema
+            value = fields[key].fromUnicode(unicode(value))
+            setattr(self, key, value)
 
     @property
     def ratio(self):
@@ -88,17 +96,14 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
             if not self.isAvailable(node, context):
                 continue
 
-            attributes = self._get_allowed_attributes(node.attrib)
-
             if node.countchildren() == 0:
                 # If there are no children, create a Variant from parent node
-                result.append(Variant(**attributes))
+                result.append(Variant(**node.attrib))
 
             for size in node.getchildren():
                 # Create Variant for each given size
-                size_attributes = self._get_allowed_attributes(size.attrib)
                 result.append(Variant(**self._merge_attributes(
-                    attributes, size_attributes)))
+                    node.attrib, size.attrib)))
         return result
 
     def find(self, context, id):
@@ -106,16 +111,6 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
             if value.id == id:
                 return value
         raise KeyError(id)
-
-    def _get_allowed_attributes(self, attributes):
-        """Filter attributes by those allowed on IVariant and convert type."""
-        result = {}
-        fields = zope.schema.getFields(zeit.content.image.interfaces.IVariant)
-        for key, value in attributes.items():
-            if key not in fields:
-                continue  # ignore invalid attributes
-            result[key] = fields[key].fromUnicode(unicode(value))
-        return result
 
     def _merge_attributes(self, parent_attr, child_attr):
         """Merge attributes from parent with those from child.
@@ -126,7 +121,7 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
         hierarchy.
 
         """
-        result = parent_attr.copy()
+        result = copy.copy(parent_attr)
         result.update(child_attr)
 
         if 'id' in parent_attr and 'id' in child_attr:
