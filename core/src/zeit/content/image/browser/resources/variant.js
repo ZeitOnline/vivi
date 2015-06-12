@@ -183,42 +183,12 @@
         render: function() {
             var self = this;
 
-            var update_border = function() {
-                var w = self.image.width(),
-                    h = self.image.height(),
-                    zoom = $('#slider').slider("value") / 100,
-                    focus_x = ((self.circle.position().left) / self.image.width()),
-                    focus_y = ((self.circle.position().top) / self.image.height()),
-                    square_size = Math.min(w, h);
-
-                self.square.css('width', square_size * zoom);
-                self.square.css('height', square_size * zoom);
-                self.square.css('left', (w - square_size * zoom) * focus_x);
-                self.square.css('top', (h - square_size * zoom) * focus_y);
-
-                var ratio = w / h,
-                    target_w, target_h;
-                if (ratio > 16/9) {
-                    target_w = w;
-                    target_h = w * 9 / 16;
-                } else {
-                    target_w = h * 16 / 9;
-                    target_h = h;
-                }
-                self.cinema.css('width', target_w * zoom);
-                self.cinema.css('height', target_h * zoom);
-                self.cinema.css('left', (w - target_w * zoom) * focus_x);
-                self.cinema.css('top', (h - target_h * zoom) * focus_y);
-            };
-
             self.$el.append(self.model_view.render().el);
             self.image = self.$('img');
 
             self.circle = $('<div class="focuspoint"><div class="circle"></div></div>');
-            self.circle.css('z-index', 100);
             self.$el.append(self.circle);
             self.circle.draggable();
-            self.circle.on("drag", update_border);
 
             $('#slider').slider({
                 min: 1,
@@ -229,15 +199,8 @@
             $('#slider').on('slidestop', function() {
                 self.save();
             });
-            $("#slider").on("slide", update_border);
-
-            self.square = $('<div style="position: absolute; border: 2px solid red; padding-left: 0.8em; left: 0; top: 0;"></div>');
-            self.cinema = $('<div style="position: absolute; border: 2px solid blue; padding-left: 0.8em; left: 0; top: 0;"></div>');
-            self.$el.append(self.square);
-            self.$el.append(self.cinema);
 
             self.update();
-            update_border();
         },
 
         save: function() {
