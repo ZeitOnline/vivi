@@ -4,7 +4,7 @@ zeit.cms changes
 2.46.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use default values for both comment metadata properties (BUG-272).
 
 
 2.46.3 (2015-06-11)
