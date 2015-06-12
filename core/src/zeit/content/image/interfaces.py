@@ -199,8 +199,8 @@ class IVariant(zope.interface.Interface):
 
     ratio = zope.interface.Attribute(
         'Float representation of ratio')
-    url = zope.interface.Attribute(
-        'Image URL which is used to render previews of the Variant')
+    relative_image_path = zope.interface.Attribute(
+        'Image path relative to the ImageGroup the Variant lives in')
     is_default = zope.interface.Attribute(
         'Bool whether this Variant represents the default configuration')
 

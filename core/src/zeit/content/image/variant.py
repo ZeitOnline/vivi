@@ -77,6 +77,13 @@ class Variant(object):
     def is_default(self):
         return self.id == self.DEFAULT_NAME
 
+    @property
+    def relative_image_path(self):
+        if self.is_default:
+            return zeit.content.image.interfaces.IMasterImage(
+                zeit.content.image.interfaces.IImageGroup(self)).__name__
+        return self.id
+
 
 class VariantSource(zeit.cms.content.sources.XMLSource):
 
