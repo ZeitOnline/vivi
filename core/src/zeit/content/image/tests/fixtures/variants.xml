@@ -1,5 +1,5 @@
 <variants>
-  <variant name="default">
+  <variant name="default" focus_x="0.5" focus_y="0.5" zoom="1">
   </variant>
   <variant name="cinema" ratio="16:9">
     <size name="small" max-size="320x180" />

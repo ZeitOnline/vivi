@@ -48,10 +48,6 @@ class Variants(grok.Adapter, UserDict.DictMixin):
         else:
             default = VARIANT_SOURCE.factory.find(
                 self.context, Variant.DEFAULT_NAME)
-            # XXX Is this really the right place to set default values?
-            default.focus_x = 0.5
-            default.focus_y = 0.5
-            default.zoom = 1
         return default
 
 
@@ -95,6 +91,10 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
             if 'name' in attributes:
                 attributes['id'] = attributes['name']
                 del attributes['name']
+            if 'focus_x' in attributes:
+                attributes['focus_x'] = float(attributes['focus_x'])
+            if 'focus_y' in attributes:
+                attributes['focus_y'] = float(attributes['focus_y'])
             if 'zoom' in attributes:
                 attributes['zoom'] = float(attributes['zoom'])
 
