@@ -50,6 +50,9 @@ class XMLContentBase(XMLRepresentationBase,
         other_key = (other.uniqueId, other.__name__)
         return cmp(self_key, other_key)
 
+    def __hash__(self):
+        return hash((self.uniqueId, self.__name__))
+
 _default_marker = object()
 
 
