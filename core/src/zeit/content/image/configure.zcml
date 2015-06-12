@@ -94,7 +94,7 @@
       permission="zope.View" />
     <require
       set_schema=".interfaces.IVariant"
-      permission="zope.View" />
+      permission="zeit.EditContent" />
   </class>
 
   <class class=".imagegroup.LocalImageGroup">
