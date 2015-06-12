@@ -1,11 +1,11 @@
 <variants>
-  <variant name="default" focus_x="0.5" focus_y="0.5" zoom="1">
+  <variant id="default" focus_x="0.5" focus_y="0.5" zoom="1">
   </variant>
-  <variant name="cinema" ratio="16:9">
-    <size name="small" max-size="320x180" />
-    <size name="large" />
+  <variant id="cinema" aspect_ratio="16:9">
+    <size id="small" max_size="320x180" />
+    <size id="large" />
   </variant>
-  <variant name="square" ratio="1:1">
+  <variant id="square" aspect_ratio="1:1">
     <!-- no size given, i.e. create one variant from node -->
   </variant>
 </variants>

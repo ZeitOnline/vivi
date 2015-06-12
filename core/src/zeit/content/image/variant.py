@@ -59,10 +59,11 @@ class Variant(object):
 
     def __init__(self, **kw):
         self.__dict__.update(kw)
-        if kw.get('ratio'):
-            self.ratio_str = self.ratio
-            self.xratio, self.yratio = self.ratio.split(':')
-            self.ratio = float(self.xratio) / float(self.yratio)
+
+    @property
+    def ratio(self):
+        xratio, yratio = self.aspect_ratio.split(':')
+        return float(xratio) / float(yratio)
 
     @property
     def is_default(self):
@@ -87,28 +88,17 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
             if not self.isAvailable(node, context):
                 continue
 
-            attributes = dict(node.attrib)
-            if 'name' in attributes:
-                attributes['id'] = attributes['name']
-                del attributes['name']
-            if 'focus_x' in attributes:
-                attributes['focus_x'] = float(attributes['focus_x'])
-            if 'focus_y' in attributes:
-                attributes['focus_y'] = float(attributes['focus_y'])
-            if 'zoom' in attributes:
-                attributes['zoom'] = float(attributes['zoom'])
+            attributes = self._get_allowed_attributes(node.attrib)
 
             if node.countchildren() == 0:
+                # If there are no children, create a Variant from parent node
                 result.append(Variant(**attributes))
 
             for size in node.getchildren():
-                size_attr = attributes.copy()
-                size_attr.update(size.attrib)
-                if 'name' in size_attr:
-                    size_attr['id'] = '{}-{}'.format(
-                        size_attr['id'], size_attr['name'])
-                    del size_attr['name']
-                result.append(Variant(**size_attr))
+                # Create Variant for each given size
+                size_attributes = self._get_allowed_attributes(size.attrib)
+                result.append(Variant(**self._merge_attributes(
+                    attributes, size_attributes)))
         return result
 
     def find(self, context, id):
@@ -116,6 +106,34 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
             if value.id == id:
                 return value
         raise KeyError(id)
+
+    def _get_allowed_attributes(self, attributes):
+        """Filter attributes by those allowed on IVariant and convert type."""
+        result = {}
+        fields = zope.schema.getFields(zeit.content.image.interfaces.IVariant)
+        for key, value in attributes.items():
+            if key not in fields:
+                continue  # ignore invalid attributes
+            result[key] = fields[key].fromUnicode(unicode(value))
+        return result
+
+    def _merge_attributes(self, parent_attr, child_attr):
+        """Merge attributes from parent with those from child.
+
+        Attributes from child are more specific and therefore may overwrite
+        attributes from parent. Create the child `id` via concatenation, since
+        it should be unique among variants and respects the parent / child
+        hierarchy.
+
+        """
+        result = parent_attr.copy()
+        result.update(child_attr)
+
+        if 'id' in parent_attr and 'id' in child_attr:
+            result['id'] = '{}-{}'.format(parent_attr['id'], child_attr['id'])
+
+        return result
+
 
 VARIANT_SOURCE = VariantSource()
 

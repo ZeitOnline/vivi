@@ -185,14 +185,24 @@ class IVariants(zope.interface.common.mapping.IEnumerableMapping):
 
 class IVariant(zope.interface.Interface):
 
-    id = zope.schema.TextLine()
-    is_default = zope.schema.Bool()
-    focus_x = zope.schema.Float()
-    focus_y = zope.schema.Float()
-    zoom = zope.schema.Float()
-    ratio = zope.schema.Float()
-    ratio_str = zope.schema.TextLine()
-    url = zope.schema.URI()
+    id = zope.schema.TextLine(description=u'Unique Variant name')
+    focus_x = zope.schema.Float(
+        description=u'Position of the focus point relative to image width')
+    focus_y = zope.schema.Float(
+        description=u'Position of the focus point relative to image height')
+    zoom = zope.schema.Float(
+        description=u'Zoom factor used, i.e. 1 for no zoom')
+    aspect_ratio = zope.schema.TextLine(
+        description=u"String representation of ratio as X:Y, e.g. 16:9")
+    max_size = zope.schema.TextLine(
+        description=u"Maximum width / height of this Variant, e.g. 160x90")
+
+    ratio = zope.interface.Attribute(
+        'Float representation of ratio')
+    url = zope.interface.Attribute(
+        'Image URL which is used to render previews of the Variant')
+    is_default = zope.interface.Attribute(
+        'Bool whether this Variant represents the default configuration')
 
 
 class IImageSource(zeit.cms.content.interfaces.ICMSContentSource):
