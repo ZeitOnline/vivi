@@ -50,8 +50,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         if not self.automatic:
             return values
 
-        self._v_retrieved_teasers = 0
-        teasers = self._retrieve_teasers()
+        self._v_retrieved_content = 0
+        content = self._retrieve_content()
         result = []
         for block in values:
             if not IAutomaticTeaserBlock.providedBy(block):
@@ -62,13 +62,13 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             # may_be_leader might be given to a non-leader block.
             if block.layout.id == 'leader':
                 teaser = self._extract_newest(
-                    teasers, predicate=lambda x: x.lead_candidate)
+                    content, predicate=lambda x: x.lead_candidate)
                 if teaser is None:
-                    teaser = self._extract_newest(teasers)
+                    teaser = self._extract_newest(content)
                     block.change_layout(
                         zeit.content.cp.layout.get_layout('buttons'))
             else:
-                teaser = self._extract_newest(teasers)
+                teaser = self._extract_newest(content)
             if teaser is None:
                 continue
             block.insert(0, teaser)
@@ -76,51 +76,51 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
         return result
 
-    def _retrieve_teasers(self):
+    def _retrieve_content(self):
         if self.automatic_type == 'channel':
-            teasers = self._query_solr(self._build_query())
+            content = self._query_solr(self._build_query())
         elif self.automatic_type == 'query':
-            teasers = self._query_solr(self.raw_query)
+            content = self._query_solr(self.raw_query)
         elif self.automatic_type == 'centerpage':
-            teasers = self._query_centerpage()
+            content = self._query_centerpage()
         else:
             # BBB
             if self.raw_query:
-                teasers = self._query_solr(self.raw_query)
+                content = self._query_solr(self.raw_query)
             else:
-                teasers = self._query_solr(self._build_query())
-        self._v_retrieved_teasers += len(teasers)
-        return teasers
+                content = self._query_solr(self._build_query())
+        self._v_retrieved_content += len(content)
+        return content
 
     def _query_solr(self, query):
         return [zeit.cms.interfaces.ICMSContent(x['uniqueId'])
                 for x in zeit.find.search.search(
                 query, sort_order='date-first-released desc',
-                start=self._v_retrieved_teasers,
+                start=self._v_retrieved_content,
                 rows=self.count_to_replace_duplicates)]
 
     def _query_centerpage(self):
-        teasers = zeit.content.cp.interfaces.ITeaseredContent(
+        teasered = zeit.content.cp.interfaces.ITeaseredContent(
             self.referenced_cp, iter([]))
         result = []
         for i in range(
-                self._v_retrieved_teasers + self.count_to_replace_duplicates):
+                self._v_retrieved_content + self.count_to_replace_duplicates):
             try:
-                teaser = teasers.next()
+                content = teasered.next()
             except StopIteration:
-                # We've exhausted the available teasers.
+                # We've exhausted the available content.
                 break
-            if i >= self._v_retrieved_teasers:
-                result.append(teaser)
+            if i >= self._v_retrieved_content:
+                result.append(content)
         return result
 
-    def _extract_newest(self, solr_result, predicate=lambda x: True):
-        """Remove the first object from solr_result for which predicate returns
-        True; thus, the default predicate means: no filtering.
+    def _extract_newest(self, content, predicate=lambda x: True):
+        """Remove the first object from the content list for which predicate
+        returns True; thus, the default predicate means: no filtering.
         """
         result = None
         pop = []
-        for i, item in enumerate(solr_result):
+        for i, item in enumerate(content):
             if predicate(item):
                 pop.append(item)
                 if self.hide_dupes and zeit.content.cp.interfaces.ICenterPage(
@@ -129,12 +129,12 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 result = item
                 break
         for item in pop:
-            solr_result.remove(item)
-        if result is None and not solr_result:
-            # We've exhausted all available teasers due to duplicates, so we
+            content.remove(item)
+        if result is None and not content:
+            # We've exhausted all available content due to duplicates, so we
             # need to retrieve some more.
-            teasers = self._retrieve_teasers()
-            if teasers:
-                solr_result[:] = teasers
-                return self._extract_newest(solr_result, predicate)
+            more_content = self._retrieve_content()
+            if more_content:
+                content[:] = more_content
+                return self._extract_newest(content, predicate)
         return result
