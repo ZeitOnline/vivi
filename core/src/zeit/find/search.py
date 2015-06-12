@@ -5,7 +5,8 @@ import zeit.solr.interfaces
 import zope.component
 
 
-def search(q, sort_order=None, additional_result_fields=None, rows=50):
+def search(q, sort_order=None, additional_result_fields=None, rows=50,
+           **kw):
     """Search solr according to query.
 
     q - the lucene query
@@ -54,7 +55,7 @@ def search(q, sort_order=None, additional_result_fields=None, rows=50):
 
     conn = zope.component.getUtility(zeit.solr.interfaces.ISolr)
     return conn.search(q, sort=sort_order, fl=' '.join(result_fields),
-                       rows=rows)
+                       rows=rows, **kw)
 
 
 def counts(q):

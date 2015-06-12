@@ -1,10 +1,11 @@
 zeit.find changes
 =================
 
-2.5.1 (unreleased)
+2.6.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Pass additional keyword parameters to ``zeit.find.search.search`` through to
+  pysolr.
 
 
 2.5.0 (2015-05-04)
