@@ -213,6 +213,7 @@
             self.current_model.save(
                 {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
             ).done(function() {
+                self.update();  // overwrite absolute positioning of focuspoint
                 zeit.content.image.VARIANTS.trigger('reload');
                 self.notify_status("saved");
             });
