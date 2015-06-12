@@ -50,6 +50,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         if not self.automatic:
             return values
 
+        self._v_retrieved_teasers = 0
         teasers = self._retrieve_teasers()
         result = []
         for block in values:
@@ -88,24 +89,29 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 teasers = self._query_solr(self.raw_query)
             else:
                 teasers = self._query_solr(self._build_query())
+        self._v_retrieved_teasers += len(teasers)
         return teasers
 
     def _query_solr(self, query):
         return [zeit.cms.interfaces.ICMSContent(x['uniqueId'])
                 for x in zeit.find.search.search(
                 query, sort_order='date-first-released desc',
+                start=self._v_retrieved_teasers,
                 rows=self.count_to_replace_duplicates)]
 
     def _query_centerpage(self):
         teasers = zeit.content.cp.interfaces.ITeaseredContent(
             self.referenced_cp, iter([]))
         result = []
-        for i in range(self.count_to_replace_duplicates):
+        for i in range(
+                self._v_retrieved_teasers + self.count_to_replace_duplicates):
             try:
-                result.append(teasers.next())
+                teaser = teasers.next()
             except StopIteration:
                 # We've exhausted the available teasers.
                 break
+            if i >= self._v_retrieved_teasers:
+                result.append(teaser)
         return result
 
     def _extract_newest(self, solr_result, predicate=lambda x: True):
@@ -124,4 +130,11 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 break
         for item in pop:
             solr_result.remove(item)
+        if result is None and not solr_result:
+            # We've exhausted all available teasers due to duplicates, so we
+            # need to retrieve some more.
+            teasers = self._retrieve_teasers()
+            if teasers:
+                solr_result[:] = teasers
+                return self._extract_newest(solr_result, predicate)
         return result

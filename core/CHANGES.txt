@@ -11,6 +11,8 @@ zeit.content.cp changes
 
 - Overflow excessive blocks when changing block_max (DEV-687).
 
+- Retrieve more teasers on demand when skipping some due to duplicates (DEV-804)
+
 - Retrieve images for teaser modules using the new variant API (DEV-782).
 
 

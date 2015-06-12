@@ -341,3 +341,44 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             IRenderedArea(a2).values()
             IRenderedArea(a3).values()
         self.assertEqual(1, self.call_count[self.area])
+
+    def test_queries_additional_teasers_if_too_many_duplicates(self):
+        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+        # Restrict default query amount to 2 -- which are already duplicated.
+        self.area.MINIMUM_COUNT_TO_REPLACE_DUPLICATES = 0
+        self.area.count = 1
+        self.assertEqual(
+            'http://xml.zeit.de/t3',
+            list(IRenderedArea(self.area).values()[0])[0].uniqueId)
+
+    def test_no_infloop_when_teasers_are_exhausted(self):
+        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+        lead.append(self.repository['t3'])
+        self.area.count = 1
+        self.assertEqual([], IRenderedArea(self.area).values())
+
+    def test_queries_additional_teasers_passes_offset_to_solr(self):
+        self.area.automatic_type = 'query'
+
+        lead = self.cp['feature']['lead'].create_item('teaser')
+        lead.append(self.repository['t1'])
+        lead.append(self.repository['t2'])
+
+        # Restrict default query amount to 2 -- which are already duplicated.
+        self.area.MINIMUM_COUNT_TO_REPLACE_DUPLICATES = 0
+        self.area.count = 1
+        with mock.patch('zeit.find.search.search') as search:
+            return_values = [
+                [dict(uniqueId='http://xml.zeit.de/t1'),
+                 dict(uniqueId='http://xml.zeit.de/t2')],
+                [dict(uniqueId='http://xml.zeit.de/t3')]
+            ]
+            search.side_effect = lambda *args, **kw: return_values.pop(0)
+            self.assertEqual(
+                'http://xml.zeit.de/t3',
+                list(IRenderedArea(self.area).values()[0])[0].uniqueId)
+            self.assertEqual(2, search.call_args[1]['start'])
