@@ -188,7 +188,9 @@
 
             self.circle = $('<div class="focuspoint"><div class="circle"></div></div>');
             self.$el.append(self.circle);
-            self.circle.draggable();
+            self.circle.draggable({
+                containment: self.$el
+            });
 
             $('#slider').slider({
                 min: 1,
