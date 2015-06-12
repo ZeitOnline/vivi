@@ -129,6 +129,12 @@ class TestXMLTeaser(XMLTeaserBase):
         self.assertEqual(
             'http://xml.zeit.de/testcontent', xml.block.get('href'))
 
+    def test_free_teaser_implements_eq_and_hash_via_uniqueId(self):
+        teaser = zope.component.getMultiAdapter(
+            (self.block, 0), zeit.content.cp.interfaces.IXMLTeaser)
+        self.assertEqual(self.teaser, teaser)
+        self.assertIn(teaser, set([self.teaser]))
+
 
 class TestResolver(XMLTeaserBase):
 

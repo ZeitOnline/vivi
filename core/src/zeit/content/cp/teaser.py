@@ -63,6 +63,14 @@ class XMLTeaser(zope.container.contained.Contained,
                 return field.default
         raise AttributeError(key)
 
+    def __eq__(self, other):
+        if not zeit.cms.interfaces.ICMSContent.providedBy(other):
+            return False
+        return self.uniqueId == other.uniqueId
+
+    def __hash__(self):
+        return hash(self.uniqueId)
+
     # When free_teaser is True, this is a http://teaser.vivi.zeit.de/ id.
     # When free_teaser is False this just points to the referenced article.
     @property

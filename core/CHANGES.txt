@@ -13,6 +13,8 @@ zeit.content.cp changes
 
 - Retrieve more teasers on demand when skipping some due to duplicates (DEV-804)
 
+- Fix duplicate detection for free teasers.
+
 - Retrieve images for teaser modules using the new variant API (DEV-782).
 
 
