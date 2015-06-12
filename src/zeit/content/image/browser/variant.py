@@ -20,11 +20,6 @@ class VariantDetail(zeit.cms.browser.view.Base):
         base_url = self.url(zeit.content.image.interfaces.IImageGroup(
             self.context))
         data = serialize_variant(self.context, base_url)
-        if self.context.is_default:
-            data['url'] = self.url(
-                zeit.content.image.interfaces.IMasterImage(
-                    zeit.content.image.interfaces.IImageGroup(self.context)),
-                'raw')
         return json.dumps(data)
 
     def PUT(self):
@@ -41,7 +36,7 @@ class VariantDetail(zeit.cms.browser.view.Base):
 def serialize_variant(variant, base_url):
     data = zope.security.proxy.getObject(variant).__dict__.copy()
     data.pop('__parent__')
-    data['url'] = '%s/%s/raw' % (base_url, variant.id)
+    data['url'] = '%s/%s/raw' % (base_url, variant.relative_image_path)
     return data
 
 
