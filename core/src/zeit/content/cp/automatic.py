@@ -50,19 +50,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         if not self.automatic:
             return values
 
-        if self.automatic_type == 'channel':
-            teasers = self._query_solr(self._build_query())
-        elif self.automatic_type == 'query':
-            teasers = self._query_solr(self.raw_query)
-        elif self.automatic_type == 'centerpage':
-            teasers = self._query_centerpage()
-        else:
-            # BBB
-            if self.raw_query:
-                teasers = self._query_solr(self.raw_query)
-            else:
-                teasers = self._query_solr(self._build_query())
-
+        teasers = self._retrieve_teasers()
         result = []
         for block in values:
             if not IAutomaticTeaserBlock.providedBy(block):
@@ -86,6 +74,21 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             result.append(block)
 
         return result
+
+    def _retrieve_teasers(self):
+        if self.automatic_type == 'channel':
+            teasers = self._query_solr(self._build_query())
+        elif self.automatic_type == 'query':
+            teasers = self._query_solr(self.raw_query)
+        elif self.automatic_type == 'centerpage':
+            teasers = self._query_centerpage()
+        else:
+            # BBB
+            if self.raw_query:
+                teasers = self._query_solr(self.raw_query)
+            else:
+                teasers = self._query_solr(self._build_query())
+        return teasers
 
     def _query_solr(self, query):
         return [zeit.cms.interfaces.ICMSContent(x['uniqueId'])
