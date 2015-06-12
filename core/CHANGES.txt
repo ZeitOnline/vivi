@@ -15,6 +15,9 @@ zeit.content.cp changes
 
 - Fix duplicate detection for free teasers.
 
+- Support both ``leader`` and ``zon-large`` for displaying lead_candidate
+  content in automatic areas.
+
 - Retrieve images for teaser modules using the new variant API (DEV-782).
 
 

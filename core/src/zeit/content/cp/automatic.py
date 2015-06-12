@@ -57,10 +57,10 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             if not IAutomaticTeaserBlock.providedBy(block):
                 result.append(block)
                 continue
-            # This assumes that the *first* block always has layout
-            # 'leader', since otherwise the first result that
-            # may_be_leader might be given to a non-leader block.
-            if block.layout.id == 'leader':
+            # This assumes that the *first* block always has a leader layout,
+            # since otherwise the first result that may_be_leader might be
+            # given to a non-leader block.
+            if block.layout.id in ['leader', 'zon-large']:
                 teaser = self._extract_newest(
                     content, predicate=lambda x: x.lead_candidate)
                 if teaser is None:
