@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.3.1 (unreleased)
+2.4.0 (unreleased)
 ------------------
 
 - Properly locate generated variants (DEV-782).

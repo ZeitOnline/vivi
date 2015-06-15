@@ -41,7 +41,12 @@ class ImageGroupBase(object):
         self._variants = value
 
     def create_variant_image(self, key):
-        variant = zeit.content.image.interfaces.IVariants(self).get(key)
+        variants = zeit.content.image.interfaces.IVariants(self)
+        if '__' in key:
+            variant = variants.get_by_size(key)
+        else:
+            variant = variants.get_by_name(key)
+
         if variant is None:
             raise KeyError(key)
 
@@ -58,13 +63,14 @@ class ImageGroupBase(object):
         image.__parent__ = self
         return image
 
-    def variant_url(self, name, width, height):
+    def variant_url(self, name, width=None, height=None):
         path = urlparse.urlparse(self.uniqueId).path
         if path.endswith('/'):
             path = path[:-1]
+        if width is None or height is None:
+            return '{path}/{name}'.format(path=path, name=name)
         return '{path}/{name}__{width}x{height}'.format(
-            path=path,
-            name=name, width=width, height=height)
+            path=path, name=name, width=width, height=height)
 
 
 class ImageGroup(ImageGroupBase,
@@ -82,9 +88,8 @@ class ImageGroup(ImageGroupBase,
         * /imagegroup/zon-large__200x200
 
         Virtual Image:
-        * /imagegroup/zon-large  # TODO
+        * /imagegroup/zon-large
         * /imagegroup/zon-large__200x200
-        * /imagegroup/zon-large-small  # only for previews in imagecutter
 
         JSON API:
         * /imagegroup/variants/zon-large
