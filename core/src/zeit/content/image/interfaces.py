@@ -186,6 +186,7 @@ class IVariants(zope.interface.common.mapping.IEnumerableMapping):
 class IVariant(zope.interface.Interface):
 
     id = zope.schema.TextLine(description=u'Unique Variant name')
+    name = zope.schema.TextLine(description=u'Grouping of Variant sizes')
     focus_x = zope.schema.Float(
         description=u'Position of the focus point relative to image width')
     focus_y = zope.schema.Float(
