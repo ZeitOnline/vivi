@@ -33,3 +33,9 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
     def test_variant_url_returns_path(self):
         self.assertEqual('/group/square__200x200', self.group.variant_url(
             'square', 200, 200))
+
+    def test_dav_content_with_same_name_is_preferred(self):
+        self.assertEqual((1536, 1536), self.group['square'].getImageSize())
+        self.group['square'] = zeit.content.image.testing.create_local_image(
+            'new-hampshire-450x200.jpg')
+        self.assertEqual((450, 200), self.group['square'].getImageSize())
