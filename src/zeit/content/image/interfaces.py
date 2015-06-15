@@ -164,6 +164,15 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
     variants = zope.schema.Dict(
         title=_('Setting for variants'))
 
+    def variant_url(name, width, height):
+        """Return an URL path to the variant with the given name that matches
+        the width/height requirements most closely.
+
+        This is only the path so clients can prepend the proper hostname etc.,
+        so e.g. vivi can generate URLs that point to its own repository as well
+        as to www.zeit.de, for example.
+        """
+
 
 class IRepositoryImageGroup(IImageGroup):
     """An image group in the repository.  It contains images.
