@@ -21,6 +21,15 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(self.group, image.__parent__)
         self.assertEqual('square', image.__name__)
 
+    def test_getitem_raises_keyerror_if_variant_does_not_exist(self):
+        with self.assertRaises(KeyError):
+            self.group['nonexistent']
+
+    def test_getitem_raises_keyerror_if_no_master_image(self):
+        group = zeit.content.image.testing.create_image_group()
+        with self.assertRaises(KeyError):
+            group['square']
+
     def test_variant_url_returns_path(self):
         self.assertEqual('/group/square__200x200', self.group.variant_url(
             'square', 200, 200))
