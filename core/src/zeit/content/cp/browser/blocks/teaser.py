@@ -148,14 +148,10 @@ class Display(zeit.cms.browser.view.Base):
             return
         image = images.image
         if zeit.content.image.interfaces.IImageGroup.providedBy(image):
-            try:
-                return self.url(image[image_pattern], '@@raw')
-            except KeyError:
-                # XXX This bw-compat for materialized variants should move to
-                # ImageGroup.
-                for name in image:
-                    if image_pattern in name:
-                        return self.url(image[name], '@@raw')
+            repository = zope.component.getUtility(
+                zeit.cms.repository.interfaces.IRepository)
+            return '%s%s/@@raw' % (
+                self.url(repository), image.variant_url(image_pattern))
         else:
             return self.url(image, '@@raw')
 
