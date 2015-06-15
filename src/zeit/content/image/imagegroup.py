@@ -40,13 +40,16 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
-    def get_variant(self, key):
+    def create_variant_image(self, key):
         variant = zeit.content.image.interfaces.IVariants(self).get(key)
         if variant is None:
             raise KeyError(key)
         master = zeit.content.image.interfaces.IMasterImage(self, None)
         if master is None:
             raise KeyError(key)
+        repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
+        if variant.name in repository:
+            return repository[variant.name]
         image = zeit.content.image.interfaces.ITransform(master).crop(variant)
         image.__name__ = key
         image.__parent__ = self
@@ -68,10 +71,26 @@ class ImageGroup(ImageGroupBase,
         zeit.content.image.interfaces.IRepositoryImageGroup)
 
     def __getitem__(self, key):
+        """The following URLs may render images:
+
+        Image is present on disk:
+        * /imagegroup/imagegroup-540x304.jpg
+        * /imagegroup/zon-large
+        * /imagegroup/zon-large__200x200
+
+        Virtual Image:
+        * /imagegroup/zon-large  # TODO
+        * /imagegroup/zon-large__200x200
+        * /imagegroup/zon-large-small  # only for previews in imagecutter
+
+        JSON API:
+        * /imagegroup/variants/zon-large
+
+        """
         try:
             item = super(ImageGroup, self).__getitem__(key)
         except KeyError:
-            item = self.get_variant(key)
+            item = self.create_variant_image(key)
         if key == self.master_image:
             zope.interface.alsoProvides(
                 item, zeit.content.image.interfaces.IMasterImage)
@@ -108,7 +127,7 @@ class LocalImageGroup(ImageGroupBase,
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         if key in repository:
             return repository[key]
-        return self.get_variant(key)
+        return self.create_variant_image(key)
 
     # XXX Inheriting from UserDict.DictMixin would be much more sensible,
     # but that breaks browser/copyright.txt for reasons unknown. :-(
