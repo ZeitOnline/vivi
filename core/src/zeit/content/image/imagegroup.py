@@ -3,6 +3,7 @@ import StringIO
 import grokcore.component as grok
 import lxml.objectify
 import persistent
+import urlparse
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -48,6 +49,14 @@ class ImageGroupBase(object):
         image.__name__ = key
         image.__parent__ = self
         return image
+
+    def variant_url(self, name, width, height):
+        path = urlparse.urlparse(self.uniqueId).path
+        if path.endswith('/'):
+            path = path[:-1]
+        return '{path}/{name}__{width}x{height}'.format(
+            path=path,
+            name=name, width=width, height=height)
 
 
 class ImageGroup(ImageGroupBase,

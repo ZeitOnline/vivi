@@ -20,3 +20,7 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
         self.assertEqual(self.group, image.__parent__)
         self.assertEqual('square', image.__name__)
+
+    def test_variant_url_returns_path(self):
+        self.assertEqual('/group/square__200x200', self.group.variant_url(
+            'square', 200, 200))
