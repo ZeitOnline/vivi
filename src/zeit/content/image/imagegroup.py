@@ -44,12 +44,15 @@ class ImageGroupBase(object):
         variant = zeit.content.image.interfaces.IVariants(self).get(key)
         if variant is None:
             raise KeyError(key)
+
         master = zeit.content.image.interfaces.IMasterImage(self, None)
         if master is None:
             raise KeyError(key)
+
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         if variant.name in repository:
             return repository[variant.name]
+
         image = zeit.content.image.interfaces.ITransform(master).crop(variant)
         image.__name__ = key
         image.__parent__ = self
