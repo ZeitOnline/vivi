@@ -18,11 +18,19 @@ class Variants(grok.Adapter, UserDict.DictMixin):
         self.__parent__ = context
 
     def __getitem__(self, key):
-        if '__' in key:
-            return self.get_by_size(key)
-        return self.get_by_id(key)
+        """Retrieve Variant for JSON Requests"""
+        if key in self.context.variants:
+            variant = Variant(id=key, **self.context.variants[key])
+            config = VARIANT_SOURCE.factory.find(self.context, key)
+            self._copy_missing_fields(config, variant)
+        else:
+            variant = VARIANT_SOURCE.factory.find(self.context, key)
+            self._copy_missing_fields(self.default_variant, variant)
+        variant.__parent__ = self
+        return variant
 
-    def get_by_size(self, key):
+    def get_by_size(self, key):  # XXX Move to ImageGroup
+        """Used by ImageGroup to create Image from Variant"""
         name, size = key.split('__')
         sizes = self.get_all_by_name(name)
         width, height = [int(x) for x in size.split('x')]
@@ -31,21 +39,16 @@ class Variants(grok.Adapter, UserDict.DictMixin):
                 return size
         raise KeyError(key)
 
-    def get_all_by_name(self, name):
+    def get_all_by_name(self, name):  # XXX Move to ImageGroup
+        """Used by ImageGroup to create Image from Variant"""
         result = [v for v in self.values() if name == v.name]
         result.sort(key=lambda x: (x.max_width, x.max_height))
         return result
 
-    def get_by_id(self, id):
-        if id in self.context.variants:
-            variant = Variant(id=id, **self.context.variants[id])
-            config = VARIANT_SOURCE.factory.find(self.context, id)
-            self._copy_missing_fields(config, variant)
-        else:
-            variant = VARIANT_SOURCE.factory.find(self.context, id)
-            self._copy_missing_fields(self.default_variant, variant)
-        variant.__parent__ = self
-        return variant
+    def get_by_name(self, name):  # XXX Move to ImageGroup
+        """Used by ImageGroup to create Image from Variant"""
+        return self.get_by_size('{name}__{max}x{max}'.format(
+            name=name, max=sys.maxint))
 
     def _copy_missing_fields(self, source, target):
         for key in zope.schema.getFieldNames(
@@ -118,7 +121,9 @@ class Variant(object):
         if self.is_default:
             return zeit.content.image.interfaces.IMasterImage(
                 zeit.content.image.interfaces.IImageGroup(self)).__name__
-        return self.id
+        if self.max_size is None:
+            return self.name
+        return '{}__{}'.format(self.name, self.max_size)
 
 
 class VariantSource(zeit.cms.content.sources.XMLSource):
