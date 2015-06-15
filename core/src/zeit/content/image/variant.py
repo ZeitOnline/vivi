@@ -103,13 +103,14 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
             if not self.isAvailable(node, context):
                 continue
 
-            if node.countchildren() == 0:
+            sizes = list(node.iterchildren('size'))
+            if not sizes:
                 # If there are no children, create a Variant from parent node
                 attributes = dict(node.attrib)
                 attributes['id'] = attributes['name']
                 result.append(Variant(**attributes))
 
-            for size in node.getchildren():
+            for size in sizes:
                 # Create Variant for each given size
                 result.append(Variant(**self._merge_attributes(
                     node.attrib, size.attrib)))
