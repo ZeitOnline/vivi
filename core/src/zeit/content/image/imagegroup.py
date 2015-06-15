@@ -44,8 +44,10 @@ class ImageGroupBase(object):
         variant = zeit.content.image.interfaces.IVariants(self).get(key)
         if variant is None:
             raise KeyError(key)
-        image = zeit.content.image.interfaces.ITransform(
-            zeit.content.image.interfaces.IMasterImage(self)).crop(variant)
+        master = zeit.content.image.interfaces.IMasterImage(self, None)
+        if master is None:
+            raise KeyError(key)
+        image = zeit.content.image.interfaces.ITransform(master).crop(variant)
         image.__name__ = key
         image.__parent__ = self
         return image
