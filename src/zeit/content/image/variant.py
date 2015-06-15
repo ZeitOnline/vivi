@@ -1,6 +1,7 @@
 import UserDict
 import copy
 import grokcore.component as grok
+import sys
 import zeit.cms.content.sources
 import zeit.content.image.interfaces
 import zeit.edit.body
@@ -17,12 +18,31 @@ class Variants(grok.Adapter, UserDict.DictMixin):
         self.__parent__ = context
 
     def __getitem__(self, key):
-        if key in self.context.variants:
-            variant = Variant(id=key, **self.context.variants[key])
-            config = VARIANT_SOURCE.factory.find(self.context, key)
+        if '__' in key:
+            return self.get_by_size(key)
+        return self.get_by_id(key)
+
+    def get_by_size(self, key):
+        name, size = key.split('__')
+        sizes = self.get_all_by_name(name)
+        width, height = [int(x) for x in size.split('x')]
+        for size in sizes:
+            if width <= size.max_width and height <= size.max_height:
+                return size
+        raise KeyError(key)
+
+    def get_all_by_name(self, name):
+        result = [v for v in self.values() if name == v.name]
+        result.sort(key=lambda x: (x.max_width, x.max_height))
+        return result
+
+    def get_by_id(self, id):
+        if id in self.context.variants:
+            variant = Variant(id=id, **self.context.variants[id])
+            config = VARIANT_SOURCE.factory.find(self.context, id)
             self._copy_missing_fields(config, variant)
         else:
-            variant = VARIANT_SOURCE.factory.find(self.context, key)
+            variant = VARIANT_SOURCE.factory.find(self.context, id)
             self._copy_missing_fields(self.default_variant, variant)
         variant.__parent__ = self
         return variant
@@ -59,6 +79,8 @@ class Variant(object):
 
     grok.implements(interface)
 
+    max_size = None
+
     def __init__(self, **kw):
         """Set attributes that are part of the Schema and convert their type"""
         fields = zope.schema.getFields(self.interface)
@@ -72,6 +94,20 @@ class Variant(object):
     def ratio(self):
         xratio, yratio = self.aspect_ratio.split(':')
         return float(xratio) / float(yratio)
+
+    @property
+    def max_width(self):
+        if self.max_size is None:
+            return sys.maxint
+        width, height = self.max_size.split('x')
+        return int(width)
+
+    @property
+    def max_height(self):
+        if self.max_size is None:
+            return sys.maxint
+        width, height = self.max_size.split('x')
+        return int(height)
 
     @property
     def is_default(self):

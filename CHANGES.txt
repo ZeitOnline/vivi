@@ -9,6 +9,9 @@ zeit.content.image changes
 - Read attributes for ``z.c.image.variant.Variant`` from XML using it's schema
   rather relying on manual type conversion. (DEV-786)
 
+- Access size of a Variant by giving name and size in URL,
+  e.g. 'cinema-100x200'. (DEV-782)
+
 
 2.3.0 (2015-06-09)
 ------------------
