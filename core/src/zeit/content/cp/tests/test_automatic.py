@@ -185,8 +185,12 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             lead, zeit.edit.interfaces.IElementFactory, name='rss')()
 
         with mock.patch('zeit.find.search.search') as search:
-            search.return_value = [dict(uniqueId='http://xml.zeit.de/normal'),
-                                   dict(uniqueId='http://xml.zeit.de/leader')]
+            return_values = [
+                [dict(uniqueId='http://xml.zeit.de/normal'),
+                 dict(uniqueId='http://xml.zeit.de/leader')],
+                [], [], []
+            ]
+            search.side_effect = lambda *args, **kw: return_values.pop(0)
             lead.automatic = False
 
         result = lead.values()
