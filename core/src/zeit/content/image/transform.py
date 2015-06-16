@@ -45,12 +45,12 @@ class ImageTransform(object):
 
     def create_variant_image(self, variant, size=None):
         source_width, source_height = self.image.size
-        source_width = int(source_width * variant.zoom)
-        source_height = int(source_height * variant.zoom)
+        zoomed_width = int(source_width * variant.zoom)
+        zoomed_height = int(source_height * variant.zoom)
         target_width, target_height = self._fit_ratio_to_image(
-            (source_width, source_height), variant.ratio)
+            zoomed_width, zoomed_height, variant.ratio)
         x, y = self._determine_crop_position(
-            self.image.size,
+            source_width, source_height,
             variant.focus_x, variant.focus_y, target_width, target_height)
         image = self._crop(
             self.image, x, y, x + target_width, y + target_height)
@@ -58,10 +58,9 @@ class ImageTransform(object):
             image = image.resize(size, PIL.Image.ANTIALIAS)
         return self._construct_image(image)
 
-    def _fit_ratio_to_image(self, source_size, target_ratio):
+    def _fit_ratio_to_image(self, source_width, source_height, target_ratio):
         """Calculate the biggest (width, height) inside the source that adheres
         to target ratio"""
-        source_width, source_height = source_size
         original_ratio = float(source_width) / float(source_height)
         if target_ratio > original_ratio:
             width = source_width
@@ -72,8 +71,10 @@ class ImageTransform(object):
         return width, height
 
     def _determine_crop_position(
-            self, source_size, focus_x, focus_y, target_width, target_height):
-        source_width, source_height = source_size
+            self,
+            source_width, source_height,
+            focus_x, focus_y,
+            target_width, target_height):
         x = int(source_width * focus_x - target_width * focus_x)
         y = int(source_height * focus_y - target_height * focus_y)
         return x, y
