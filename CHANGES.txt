@@ -4,13 +4,17 @@ zeit.content.image changes
 2.4.0 (unreleased)
 ------------------
 
-- Properly locate generated variants (DEV-782).
-
 - Read attributes for ``z.c.image.variant.Variant`` from XML using it's schema
   rather relying on manual type conversion. (DEV-786)
 
 - Access size of a Variant by giving name and size in URL,
-  e.g. 'cinema-100x200', introduce ``variant_url`` method. (DEV-782)
+  e.g. 'cinema__100x200', introduce ``variant_url`` method. (DEV-782)
+
+- Properly locate generated variants (DEV-782).
+
+- Resize (and reposition if target size has a different ratio than the variant)
+  the generated variant image according to the target size parameter in the URL
+  (DEV-796).
 
 
 2.3.0 (2015-06-09)

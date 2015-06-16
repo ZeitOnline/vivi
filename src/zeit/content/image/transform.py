@@ -47,15 +47,24 @@ class ImageTransform(object):
         source_width, source_height = self.image.size
         zoomed_width = int(source_width * variant.zoom)
         zoomed_height = int(source_height * variant.zoom)
+
         target_width, target_height = self._fit_ratio_to_image(
             zoomed_width, zoomed_height, variant.ratio)
+        if size is not None:
+            w, h = size
+            target_ratio = float(w) / float(h)
+            target_width, target_height = self._fit_ratio_to_image(
+                target_width, target_height, target_ratio)
+
         x, y = self._determine_crop_position(
             source_width, source_height,
             variant.focus_x, variant.focus_y, target_width, target_height)
         image = self._crop(
             self.image, x, y, x + target_width, y + target_height)
+
         if size is not None:
             image = image.resize(size, PIL.Image.ANTIALIAS)
+
         return self._construct_image(image)
 
     def _fit_ratio_to_image(self, source_width, source_height, target_ratio):
