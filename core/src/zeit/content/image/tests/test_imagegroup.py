@@ -23,6 +23,14 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(self.group, image.__parent__)
         self.assertEqual('square', image.__name__)
 
+    def test_getitem_uses_mapping_for_legacy_names(self):
+        image = self.group['master-image-540x304.jpg']
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
+
+    def test_getitem_raises_keyerror_for_invalid_legacy_names(self):
+        with self.assertRaises(KeyError):
+            self.group['master-image-111x222.jpg']
+
     def test_getitem_raises_keyerror_if_variant_does_not_exist(self):
         with self.assertRaises(KeyError):
             self.group['nonexistent']
