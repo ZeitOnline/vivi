@@ -52,9 +52,9 @@ class ImageTransform(object):
             zoomed_width, zoomed_height, variant.ratio)
         if size is not None:
             w, h = size
-            target_ratio = float(w) / float(h)
+            override_ratio = float(w) / float(h)
             target_width, target_height = self._fit_ratio_to_image(
-                target_width, target_height, target_ratio)
+                target_width, target_height, override_ratio)
 
         x, y = self._determine_crop_position(
             source_width, source_height,
