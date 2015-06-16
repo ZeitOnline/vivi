@@ -4,6 +4,7 @@ import grokcore.component as grok
 import lxml.objectify
 import persistent
 import urlparse
+import z3c.traverser.interfaces
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -40,7 +41,7 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
-    def create_variant_image(self, key):
+    def create_variant_image(self, key, source=None):
         variants = zeit.content.image.interfaces.IVariants(self)
         if '__' in key:
             variant = variants.get_by_size(key)
@@ -52,8 +53,9 @@ class ImageGroupBase(object):
         if variant is None:
             raise KeyError(key)
 
-        master = zeit.content.image.interfaces.IMasterImage(self, None)
-        if master is None:
+        if source is None:
+            source = zeit.content.image.interfaces.IMasterImage(self, None)
+        if source is None:
             raise KeyError(key)
 
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
@@ -61,15 +63,17 @@ class ImageGroupBase(object):
             return repository[variant.name]
 
         image = zeit.content.image.interfaces.ITransform(
-            master).create_variant_image(variant, size=size)
+            source).create_variant_image(variant, size=size)
         image.__name__ = key
         image.__parent__ = self
         return image
 
-    def variant_url(self, name, width=None, height=None):
+    def variant_url(self, name, width=None, height=None, thumbnail=False):
         path = urlparse.urlparse(self.uniqueId).path
         if path.endswith('/'):
             path = path[:-1]
+        if thumbnail:
+            name = 'thumbnail/%s' % name
         if width is None or height is None:
             return '{path}/{name}'.format(path=path, name=name)
         return '{path}/{name}__{width}x{height}'.format(
@@ -148,6 +152,13 @@ class LocalImageGroup(ImageGroupBase,
         except KeyError:
             return default
 
+    def __contains__(self, key):
+        return self.get(key) is not None
+
+    def __setitem__(self, key, value):
+        repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
+        repository[key] = value
+
 
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.ILocalImageGroup)
@@ -208,3 +219,51 @@ def XMLReference(context):
 def find_master_image(context):
     if context.master_image:
         return context.get(context.master_image)
+
+
+class ThumbnailTraverser(object):
+
+    zope.interface.implements(z3c.traverser.interfaces.IPluggableTraverser)
+
+    def __init__(self, context, request):
+        self.context = context
+        self.request = request
+
+    def publishTraverse(self, request, name):
+        if name != 'thumbnail':
+            raise zope.publisher.interfaces.NotFound(
+                self.context, name, request)
+        return zeit.content.image.interfaces.IThumbnails(self.context)
+
+
+class Thumbnails(grok.Adapter):
+
+    grok.context(zeit.content.image.interfaces.IImageGroup)
+    grok.implements(zeit.content.image.interfaces.IThumbnails)
+
+    SOURCE_IMAGE_PREFIX = 'thumbnail-source-'
+
+    def __getitem__(self, key):
+        if self.master_image is None:
+            raise KeyError(key)
+        return self.context.create_variant_image(
+            key, source=self.source_image)
+
+    @property
+    def source_image_name(self):
+        return '%s-%s' % (self.SOURCE_IMAGE_PREFIX, self.master_image.__name__)
+
+    @property
+    def source_image(self):
+        if self.source_image_name not in self.context:
+            self._create_source_image()
+        return self.context[self.source_image_name]
+
+    def _create_source_image(self):
+        image = zeit.content.image.interfaces.ITransform(
+            self.master_image).resize(width=1000)
+        self.context[self.source_image_name] = image
+
+    @property
+    def master_image(self):
+        return zeit.content.image.interfaces.IMasterImage(self.context, None)

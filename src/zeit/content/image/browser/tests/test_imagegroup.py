@@ -1,3 +1,4 @@
+from zeit.content.image.testing import create_image_group_with_master_image
 import mock
 import zeit.cms.testing
 import zeit.content.image.testing
@@ -47,3 +48,17 @@ class ImageGroupPublishTest(zeit.cms.testing.BrowserTestCase):
             b.open('http://localhost/++skin++vivi/repository/2007/03/group'
                    '/@@publish.html')
         self.assertEllipsis('...Custom Error...', b.contents)
+
+
+class ImageGroupBrowserTest(zeit.cms.testing.BrowserTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def test_traversing_thumbnail_yields_images(self):
+        with zeit.cms.testing.site(self.getRootFolder()):
+            with zeit.cms.testing.interaction():
+                create_image_group_with_master_image()
+        b = self.browser
+        b.open('http://localhost/++skin++vivi/repository'
+               '/group/thumbnail/square/@@raw')
+        self.assertEqual('image/jpeg', b.headers['Content-Type'])
