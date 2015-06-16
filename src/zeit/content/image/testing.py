@@ -13,9 +13,10 @@ import zope.component
 
 product_config = """
 <product-config zeit.content.image>
-    variant-source file://{fixtures}/tests/fixtures/variants.xml
+    variant-source file://{here}/tests/fixtures/variants.xml
+    legacy-variant-source file://{here}/tests/fixtures/legacy-variants.xml
 </product-config>
-""".format(fixtures=pkg_resources.resource_filename(__name__, '.'))
+""".format(here=pkg_resources.resource_filename(__name__, '.'))
 
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(

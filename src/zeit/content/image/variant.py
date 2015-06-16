@@ -47,8 +47,14 @@ class Variants(grok.Adapter, UserDict.DictMixin):
 
     def get_by_name(self, name):  # XXX Move to ImageGroup
         """Used by ImageGroup to create Image from Variant"""
-        return self.get_by_size('{name}__{max}x{max}'.format(
-            name=name, max=sys.maxint))
+        try:
+            return self.get_by_size('{name}__{max}x{max}'.format(
+                name=name, max=sys.maxint))
+        except KeyError:
+            for mapping in LEGACY_VARIANT_SOURCE(self):
+                if mapping['old'] in name:
+                    return self.get_by_name(mapping['new'])
+            return None
 
     def _copy_missing_fields(self, source, target):
         for key in zope.schema.getFieldNames(
@@ -182,7 +188,6 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
 
         return result
 
-
 VARIANT_SOURCE = VariantSource()
 
 
@@ -203,3 +208,18 @@ def imagegroup_for_variants(context):
 @grok.implementer(zeit.content.image.interfaces.IImageGroup)
 def imagegroup_for_variant(context):
     return zeit.content.image.interfaces.IImageGroup(context.__parent__)
+
+
+class LegacyVariantSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.image'
+    config_url = 'legacy-variant-source'
+
+    def getValues(self, context):
+        tree = self._get_tree()
+        result = []
+        for node in tree.getchildren():
+            result.append({'old': node.get('old'), 'new': node.get('new')})
+        return result
+
+LEGACY_VARIANT_SOURCE = LegacyVariantSource()
