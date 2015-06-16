@@ -241,7 +241,7 @@ class Thumbnails(grok.Adapter):
     grok.context(zeit.content.image.interfaces.IImageGroup)
     grok.implements(zeit.content.image.interfaces.IThumbnails)
 
-    SOURCE_IMAGE_PREFIX = 'thumbnail-source-'
+    SOURCE_IMAGE_PREFIX = 'thumbnail-source'
 
     def __getitem__(self, key):
         if self.master_image is None:
@@ -267,3 +267,24 @@ class Thumbnails(grok.Adapter):
     @property
     def master_image(self):
         return zeit.content.image.interfaces.IMasterImage(self.context, None)
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImageGroup,
+    zope.lifecycleevent.IObjectAddedEvent)
+def create_thumbnail_source_on_add(context, event):
+    thumbnails = zeit.content.image.interfaces.IThumbnails(context)
+    if thumbnails.master_image:
+        thumbnails.source_image
+
+
+@grok.subscribe(
+    zeit.content.image.interfaces.IImageGroup,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def create_thumbnail_source_on_modified(context, event):
+    for description in event.descriptions:
+        if description.interface is zeit.content.image.interfaces.IImageGroup:
+            if 'master_image' in description.attributes:
+                thumbnails = zeit.content.image.interfaces.IThumbnails(context)
+                if thumbnails.master_image:
+                    thumbnails.source_image
