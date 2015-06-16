@@ -38,8 +38,8 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('/group/square', self.group.variant_url('square'))
 
     def test_returns_image_for_variant_with_size(self):
-        self.assertEqual(  # XXX TODO scale down to given size
-            (1536, 1536), self.group['square__200x200'].getImageSize())
+        self.assertEqual(
+            (200, 200), self.group['square__200x200'].getImageSize())
 
     def test_dav_content_with_same_name_is_preferred(self):
         self.assertEqual((1536, 1536), self.group['square'].getImageSize())
