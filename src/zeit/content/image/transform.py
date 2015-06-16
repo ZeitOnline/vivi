@@ -44,13 +44,16 @@ class ImageTransform(object):
         return self._construct_image(image)
 
     def create_variant_image(self, variant, size=None):
-        width, height = self._fit_ratio_to_image(
-            self.image.size, variant.ratio)
-        width = int(width * variant.zoom)
-        height = int(height * variant.zoom)
+        source_width, source_height = self.image.size
+        source_width = int(source_width * variant.zoom)
+        source_height = int(source_height * variant.zoom)
+        target_width, target_height = self._fit_ratio_to_image(
+            (source_width, source_height), variant.ratio)
         x, y = self._determine_crop_position(
-            self.image.size, variant.focus_x, variant.focus_y, width, height)
-        image = self._crop(self.image, x, y, x + width, y + height)
+            self.image.size,
+            variant.focus_x, variant.focus_y, target_width, target_height)
+        image = self._crop(
+            self.image, x, y, x + target_width, y + target_height)
         if size is not None:
             image = image.resize(size, PIL.Image.ANTIALIAS)
         return self._construct_image(image)
