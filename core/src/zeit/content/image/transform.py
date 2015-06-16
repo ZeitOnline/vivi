@@ -57,8 +57,7 @@ class ImageTransform(object):
                 target_width, target_height, override_ratio)
 
         x, y = self._determine_crop_position(
-            source_width, source_height,
-            variant.focus_x, variant.focus_y, target_width, target_height)
+            variant, target_width, target_height)
         image = self._crop(
             self.image, x, y, x + target_width, y + target_height)
 
@@ -79,13 +78,10 @@ class ImageTransform(object):
             height = source_height
         return width, height
 
-    def _determine_crop_position(
-            self,
-            source_width, source_height,
-            focus_x, focus_y,
-            target_width, target_height):
-        x = int(source_width * focus_x - target_width * focus_x)
-        y = int(source_height * focus_y - target_height * focus_y)
+    def _determine_crop_position(self, variant, target_width, target_height):
+        width, height = self.image.size
+        x = int(width * variant.focus_x - target_width * variant.focus_x)
+        y = int(height * variant.focus_y - target_height * variant.focus_y)
         return x, y
 
     def _crop(self, pil_image, x1, y1, x2, y2):
