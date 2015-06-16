@@ -44,8 +44,10 @@ class ImageGroupBase(object):
         variants = zeit.content.image.interfaces.IVariants(self)
         if '__' in key:
             variant = variants.get_by_size(key)
+            size = [int(x) for x in key.split('__')[1].split('x')]
         else:
             variant = variants.get_by_name(key)
+            size = None
 
         if variant is None:
             raise KeyError(key)
@@ -58,7 +60,8 @@ class ImageGroupBase(object):
         if variant.name in repository:
             return repository[variant.name]
 
-        image = zeit.content.image.interfaces.ITransform(master).crop(variant)
+        image = zeit.content.image.interfaces.ITransform(
+            master).create_variant_image(variant, size=size)
         image.__name__ = key
         image.__parent__ = self
         return image

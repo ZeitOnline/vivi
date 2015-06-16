@@ -125,9 +125,12 @@ class ITransform(zope.interface.Interface):
 
         """
 
-    def crop(variant):
-        """Create a cropped version of the image, using the confiugration
+    def create_variant_image(variant, size=None):
+        """Create a cropped version of the image, using the configuration
         information (focus point, zoom, etc.) of the given IVariant.
+
+        A tuple `size` can be given to resize the resulting image to a certain
+        size.
 
         returns IImage object.
         """

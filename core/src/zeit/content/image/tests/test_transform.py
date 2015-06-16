@@ -7,12 +7,12 @@ import zeit.content.image.interfaces
 import zeit.content.image.testing
 
 
-class CropTest(zeit.cms.testing.FunctionalTestCase):
+class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
 
     layer = zeit.content.image.testing.ZCML_LAYER
 
     def setUp(self):
-        super(CropTest, self).setUp()
+        super(CreateVariantImageTest, self).setUp()
         self.transform = self._transform(
             'xx        xxxxxx',
             'xx        xxxxxx',
@@ -71,7 +71,7 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
 
     def test_fits_larger_side_of_mask_to_image_size(self):
         variant = Variant(focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
-        image = self.transform.crop(variant)
+        image = self.transform.create_variant_image(variant)
         self.assertEqual((8, 8), image.getImageSize())
 
     def test_focus_point_after_crop_has_same_relative_position_as_before(self):
@@ -86,7 +86,7 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
             '        ',
             '        ',
             '        ',
-        ], self.transform.crop(variant))
+        ], self.transform.create_variant_image(variant))
 
     def test_zoom_scales_image_and_respects_focus_point(self):
         variant = Variant(
@@ -96,4 +96,4 @@ class CropTest(zeit.cms.testing.FunctionalTestCase):
             ' x  ',
             '    ',
             '    ',
-        ], self.transform.crop(variant))
+        ], self.transform.create_variant_image(variant))
