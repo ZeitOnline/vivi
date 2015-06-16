@@ -97,3 +97,11 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
             '    ',
             '    ',
         ], self.transform.create_variant_image(variant))
+
+    def test_target_size_repositions_result_inside_variant_ratio(self):
+        variant = Variant(
+            focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=1, aspect_ratio='8:1')
+        self.assertImage([
+            '  x     ',
+            '        ',
+        ], self.transform.create_variant_image(variant, (8, 2)))
