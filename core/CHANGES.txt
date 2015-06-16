@@ -16,6 +16,9 @@ zeit.content.image changes
   the generated variant image according to the target size parameter in the URL
   (DEV-796).
 
+- Generate thumbnail images (for variants editor, cp editor etc.) from a
+  smaller image instead of the master image for better performance (DEV-797).
+
 
 2.3.0 (2015-06-09)
 ------------------

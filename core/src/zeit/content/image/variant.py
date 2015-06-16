@@ -119,11 +119,12 @@ class Variant(object):
     @property
     def relative_image_path(self):
         if self.is_default:
-            return zeit.content.image.interfaces.IMasterImage(
-                zeit.content.image.interfaces.IImageGroup(self)).__name__
+            thumbnails = zeit.content.image.interfaces.IThumbnails(
+                zeit.content.image.interfaces.IImageGroup(self))
+            return thumbnails.source_image.__name__
         if self.max_size is None:
-            return self.name
-        return '{}__{}'.format(self.name, self.max_size)
+            return 'thumbnail/%s' % self.name
+        return 'thumbnail/{}__{}'.format(self.name, self.max_size)
 
 
 class VariantSource(zeit.cms.content.sources.XMLSource):

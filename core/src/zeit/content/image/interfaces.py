@@ -167,13 +167,18 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
     variants = zope.schema.Dict(
         title=_('Setting for variants'))
 
-    def variant_url(name, width, height):
+    def variant_url(name, width=None, height=None, thumbnail=False):
         """Return an URL path to the variant with the given name that matches
         the width/height requirements most closely.
 
         This is only the path so clients can prepend the proper hostname etc.,
         so e.g. vivi can generate URLs that point to its own repository as well
         as to www.zeit.de, for example.
+        """
+
+    def create_variant_image(key, source=None):
+        """For internal use: dynamically create a cropped version of the source
+        image, according to the settings of the variant determined by key.
         """
 
 
@@ -222,7 +227,7 @@ class IVariant(zope.interface.Interface):
         'Bool whether this Variant represents the default configuration')
 
 
-class IImageSource(zeit.cms.content.interfaces.ICMSContentSource):
+class IImageSource(zope.interface.common.mapping.IEnumerableMapping):
     """A source for images."""
 
 
@@ -259,6 +264,12 @@ class ImageGroupSource(zeit.cms.content.contentsource.CMSContentSource):
         return super(ImageGroupSource, self).__contains__(value)
 
 imageGroupSource = ImageGroupSource()
+
+
+class IThumbnails(zope.container.interfaces.IReadContainer):
+    """Traverser to access smaller images via /thumbnails"""
+
+    source_image = zope.schema.Choice(source=bareImageSource)
 
 
 class IImages(zope.interface.Interface):

@@ -46,3 +46,8 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.group['square'] = zeit.content.image.testing.create_local_image(
             'new-hampshire-450x200.jpg')
         self.assertEqual((450, 200), self.group['square'].getImageSize())
+
+    def test_thumbnails_create_variants_from_smaller_master_image(self):
+        self.assertEqual((1536, 1536), self.group['square'].getImageSize())
+        thumbnails = zeit.content.image.interfaces.IThumbnails(self.group)
+        self.assertEqual((750, 750), thumbnails['square'].getImageSize())
