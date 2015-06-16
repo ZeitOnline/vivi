@@ -44,30 +44,35 @@ class ImageTransform(object):
         return self._construct_image(image)
 
     def create_variant_image(self, variant, size=None):
-        width, height = self._fit_variant_to_image(variant)
+        width, height = self._fit_ratio_to_image(
+            self.image.size, variant.ratio)
         width = int(width * variant.zoom)
         height = int(height * variant.zoom)
-        x, y = self._determine_crop_position(variant, width, height)
+        x, y = self._determine_crop_position(
+            self.image.size, variant.focus_x, variant.focus_y, width, height)
         image = self._crop(self.image, x, y, x + width, y + height)
         if size is not None:
             image = image.resize(size, PIL.Image.ANTIALIAS)
         return self._construct_image(image)
 
-    def _fit_variant_to_image(self, variant):
-        orig_width, orig_height = self.image.size
-        original_ratio = float(orig_width) / float(orig_height)
-        if variant.ratio > original_ratio:
-            width = orig_width
-            height = int(orig_width / variant.ratio)
+    def _fit_ratio_to_image(self, source_size, target_ratio):
+        """Calculate the biggest (width, height) inside the source that adheres
+        to target ratio"""
+        source_width, source_height = source_size
+        original_ratio = float(source_width) / float(source_height)
+        if target_ratio > original_ratio:
+            width = source_width
+            height = int(source_width / target_ratio)
         else:
-            width = int(orig_height * variant.ratio)
-            height = orig_height
+            width = int(source_height * target_ratio)
+            height = source_height
         return width, height
 
-    def _determine_crop_position(self, variant, width, height):
-        orig_width, orig_height = self.image.size
-        x = int(orig_width * variant.focus_x - width * variant.focus_x)
-        y = int(orig_height * variant.focus_y - height * variant.focus_y)
+    def _determine_crop_position(
+            self, source_size, focus_x, focus_y, target_width, target_height):
+        source_width, source_height = source_size
+        x = int(source_width * focus_x - target_width * focus_x)
+        y = int(source_height * focus_y - target_height * focus_y)
         return x, y
 
     def _crop(self, pil_image, x1, y1, x2, y2):
