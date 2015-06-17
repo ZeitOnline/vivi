@@ -21,8 +21,6 @@ class EditCommon(zeit.edit.browser.view.EditBox):
         zeit.content.cp.interfaces.IBlock).omit(
             'type', 'xml', '__name__', '__parent__',
             'visible')
-    form_fields['background_color'].custom_widget = (
-        zeit.cms.browser.widget.ColorpickerWidget)
 
 
 class SwitchType(object):

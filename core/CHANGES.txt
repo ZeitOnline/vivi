@@ -15,7 +15,7 @@ zeit.content.cp changes
 
 - Fix duplicate detection for free teasers.
 
-- Add read_more and read_more_url fields to IArea (DEV-824).
+- Add read_more and read_more_url fields to IArea, remove from IBlock (DEV-824).
 
 - Support both ``leader`` and ``zon-large`` for displaying lead_candidate
   content in automatic areas.
