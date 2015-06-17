@@ -3,6 +3,7 @@ import zeit.cms.testing
 import zeit.content.image.testing
 import zope.event
 import zope.lifecycleevent
+import zope.traversing.api
 
 
 class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
@@ -73,3 +74,36 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
             self.group, zope.lifecycleevent.Attributes(
                 zeit.content.image.interfaces.IImageGroup, 'master_image')))
         self.assertIn('thumbnail-source-master-image.jpg', self.group)
+
+
+class SpoofProtectionTest(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(SpoofProtectionTest, self).setUp()
+        self.group = create_image_group_with_master_image()
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.image')
+        config['variant-secret'] = 'secret'
+
+    def test_no_signature_raises_keyerror(self):
+        with self.assertRaises(KeyError):
+            self.group['square']
+        with self.assertRaises(KeyError):
+            self.group['square__200x200']
+
+    def test_invalid_signature_raises_keyerror(self):
+        with self.assertRaises(KeyError):
+            self.group['square__invalid']
+        with self.assertRaises(KeyError):
+            self.group['square__200x200__invalid']
+
+    def test_valid_signature_returns_image(self):
+        path = self.group.variant_url('square')
+        image = zope.traversing.api.traverse(self.repository, path[1:])
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
+
+        path = self.group.variant_url('square', 200, 200)
+        image = zope.traversing.api.traverse(self.repository, path[1:])
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))

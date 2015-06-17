@@ -1,6 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
 import grokcore.component as grok
+import hashlib
 import lxml.objectify
 import persistent
 import urlparse
@@ -43,6 +44,7 @@ class ImageGroupBase(object):
 
     def create_variant_image(self, key, source=None):
         variants = zeit.content.image.interfaces.IVariants(self)
+        key = self._verify_signature(key)
         if '__' in key:
             variant = variants.get_by_size(key)
             size = [int(x) for x in key.split('__')[1].split('x')]
@@ -68,6 +70,26 @@ class ImageGroupBase(object):
         image.__parent__ = self
         return image
 
+    def _verify_signature(self, key):
+        if not self._variant_secret:
+            return key
+        try:
+            parts = key.split('__')
+            if len(parts) == 2:
+                name, signature = parts
+                width = height = None
+                stripped = name
+            elif len(parts) == 3:
+                name, size, signature = parts
+                width, height = size.split('x')
+                stripped = '{name}__{size}'.format(name=name, size=size)
+            if verify_signature(
+                    name, width, height, self._variant_secret, signature):
+                return stripped
+        except:
+            pass
+        raise KeyError(key)
+
     def variant_url(self, name, width=None, height=None, thumbnail=False):
         path = urlparse.urlparse(self.uniqueId).path
         if path.endswith('/'):
@@ -75,9 +97,29 @@ class ImageGroupBase(object):
         if thumbnail:
             name = 'thumbnail/%s' % name
         if width is None or height is None:
-            return '{path}/{name}'.format(path=path, name=name)
-        return '{path}/{name}__{width}x{height}'.format(
-            path=path, name=name, width=width, height=height)
+            url = '{path}/{name}'.format(path=path, name=name)
+        else:
+            url = '{path}/{name}__{width}x{height}'.format(
+                path=path, name=name, width=width, height=height)
+        if self._variant_secret:
+            url += '__{signature}'.format(signature=compute_signature(
+                name, width, height, self._variant_secret))
+        return url
+
+    @property
+    def _variant_secret(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.image')
+        return config.get('variant-secret')
+
+
+def compute_signature(name, width, height, secret):
+    return hashlib.sha1(':'.join(
+        [str(x) for x in [name, width, height, secret]])).hexdigest()
+
+
+def verify_signature(name, width, height, secret, signature):
+    return signature == compute_signature(name, width, height, secret)
 
 
 class ImageGroup(ImageGroupBase,
