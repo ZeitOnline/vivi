@@ -174,6 +174,13 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
         This is only the path so clients can prepend the proper hostname etc.,
         so e.g. vivi can generate URLs that point to its own repository as well
         as to www.zeit.de, for example.
+
+        If thumbnail is True, return a path for an image that was generated
+        by a downsampled version instead of the full master image.
+
+        If a `variant-secret` is configured in the zeit.content.image product
+        config, adds a signed hash of width and height to the URL, to prevent
+        URL spoofing.
         """
 
     def create_variant_image(key, source=None):
