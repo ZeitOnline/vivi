@@ -9,6 +9,7 @@ import zeit.cms.tagging.testing
 import zeit.cms.testing
 import zeit.connector.interfaces
 import zeit.content.article.testing
+import zeit.content.image.testing
 import zeit.imp.tests
 import zope.component
 import zope.component.hooks
@@ -20,6 +21,7 @@ ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     product_config=(
         zeit.cms.testing.cms_product_config +
         zeit.content.article.testing.product_config +
+        zeit.content.image.testing.product_config +
         zeit.imp.tests.product_config +
         zeit.brightcove.testing.product_config))
 
