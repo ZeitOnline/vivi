@@ -88,8 +88,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'title')
     teaserText = ObjectPathAttributeProperty(
         '.', 'teaserText')
-    background_color = ObjectPathAttributeProperty(
-        '.', 'background_color')
 
     block_max = ObjectPathAttributeProperty(
         '.', 'block_max', zeit.content.cp.interfaces.IArea['block_max'])
