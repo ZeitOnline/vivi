@@ -286,6 +286,14 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         required=False,
         max_length=170)
 
+    read_more = zope.schema.TextLine(
+        title=_("Read more"),
+        required=False)
+
+    read_more_url = zope.schema.TextLine(
+        title=_("Read more URL"),
+        required=False)
+
     block_max = zope.schema.Int(
         title=_("Maximum block count"),
         required=False)

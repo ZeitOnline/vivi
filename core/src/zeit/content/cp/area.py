@@ -89,6 +89,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     teaserText = ObjectPathAttributeProperty(
         '.', 'teaserText')
 
+    read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'read_more')
+    read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'read_more_url')
+
     block_max = ObjectPathAttributeProperty(
         '.', 'block_max', zeit.content.cp.interfaces.IArea['block_max'])
     _overflow_into = ObjectPathAttributeProperty(
