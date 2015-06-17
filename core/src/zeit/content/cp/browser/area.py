@@ -39,8 +39,7 @@ class EditCommon(zeit.edit.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IArea).select(
-            'supertitle', 'title', 'teaserText',
-            'read_more', 'read_more_url')
+            'supertitle', 'title', 'read_more', 'read_more_url')
 
 
 class EditOverflow(zeit.edit.browser.view.EditBox):

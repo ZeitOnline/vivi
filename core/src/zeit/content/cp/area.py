@@ -86,8 +86,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'supertitle')
     _title = ObjectPathAttributeProperty(
         '.', 'title')
-    teaserText = ObjectPathAttributeProperty(
-        '.', 'teaserText')
 
     read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more')
