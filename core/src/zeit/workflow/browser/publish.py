@@ -1,8 +1,9 @@
 from zeit.cms.repository.interfaces import IRepositoryContent
-from zope.cachedescriptors.property import Lazy as cachedproperty
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import lovely.remotetask.interfaces
 import zeit.cms.browser.menu
 import zeit.cms.workflow.interfaces
@@ -51,8 +52,11 @@ class FlashPublishErrors(zeit.cms.browser.view.Base):
 
     def __call__(self, job):
         job = int(job)
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
         tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, name='general')
+            lovely.remotetask.interfaces.ITaskService, name=queue)
         if tasks.getStatus(job) != lovely.remotetask.interfaces.COMPLETED:
             return
         error = tasks.getResult(job)

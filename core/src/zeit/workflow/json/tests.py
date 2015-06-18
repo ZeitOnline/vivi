@@ -1,3 +1,4 @@
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import json
 import lovely.remotetask.interfaces
 import transaction
@@ -32,8 +33,11 @@ class JSONTestCase(zeit.cms.testing.FunctionalTestCase):
         transaction.commit()
 
     def process(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
         tasks = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, 'general')
+            lovely.remotetask.interfaces.ITaskService, name=queue)
         zeit.cms.testing.create_interaction()
         tasks.process()
 

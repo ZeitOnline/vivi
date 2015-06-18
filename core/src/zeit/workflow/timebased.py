@@ -1,5 +1,6 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE, WRITEABLE_ALWAYS
 from zeit.cms.i18n import MessageFactory as _
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import datetime
 import lovely.remotetask.interfaces
 import pytz
@@ -114,8 +115,11 @@ class TimeBasedWorkflow(zeit.workflow.publishinfo.PublishInfo):
 
     @property
     def tasks(self):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
         return zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, 'general')
+            lovely.remotetask.interfaces.ITaskService, name=queue)
 
     def log(self, message):
         log = zope.component.getUtility(zeit.objectlog.interfaces.IObjectLog)

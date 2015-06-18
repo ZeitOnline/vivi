@@ -1,3 +1,4 @@
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import json
 import lovely.remotetask.interfaces
 import zope.component
@@ -6,8 +7,11 @@ import zope.component
 class Status(object):
 
     def __init__(self, context, request):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.workflow')
+        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
         self.context = zope.component.getUtility(
-            lovely.remotetask.interfaces.ITaskService, 'general')
+            lovely.remotetask.interfaces.ITaskService, name=queue)
         self.request = request
 
     def getStatus(self, job):
