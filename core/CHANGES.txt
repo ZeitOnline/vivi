@@ -17,6 +17,8 @@ zeit.content.cp changes
 
 - Add read_more and read_more_url fields to IArea, remove from IBlock (DEV-824).
 
+- Prefill IArea.supertitle from referenced_cp if present (DEV-824).
+
 - Support both ``leader`` and ``zon-large`` for displaying lead_candidate
   content in automatic areas.
 

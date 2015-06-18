@@ -82,7 +82,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _layout = ObjectPathAttributeProperty(
         '.', 'module')
 
-    supertitle = ObjectPathAttributeProperty(
+    _supertitle = ObjectPathAttributeProperty(
         '.', 'supertitle')
     _title = ObjectPathAttributeProperty(
         '.', 'title')
@@ -130,6 +130,17 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if 'hide-dupes' not in self.xml.attrib:
             self.hide_dupes = zeit.content.cp.interfaces.IArea[
                 'hide_dupes'].default
+
+    @property
+    def supertitle(self):
+        if self._supertitle:
+            return self._supertitle
+        if self.referenced_cp is not None:
+            return self.referenced_cp.supertitle
+
+    @supertitle.setter
+    def supertitle(self, value):
+        self._supertitle = value
 
     @property
     def title(self):
