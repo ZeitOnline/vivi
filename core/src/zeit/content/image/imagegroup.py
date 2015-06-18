@@ -30,7 +30,8 @@ class ImageGroupBase(object):
     _variants = zeit.cms.content.dav.DAVProperty(
         zeit.content.image.interfaces.IImageGroup['variants'],
         zeit.content.image.interfaces.IMAGE_NAMESPACE,
-        'variants')
+        'variants',
+        writeable=zeit.cms.content.interfaces.WRITEABLE_LIVE)
 
     @property
     def variants(self):
@@ -280,7 +281,7 @@ class ThumbnailTraverser(object):
 
 class Thumbnails(grok.Adapter):
 
-    grok.context(zeit.content.image.interfaces.IImageGroup)
+    grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
     grok.implements(zeit.content.image.interfaces.IThumbnails)
 
     SOURCE_IMAGE_PREFIX = 'thumbnail-source'
@@ -303,8 +304,12 @@ class Thumbnails(grok.Adapter):
         if self.master_image.getImageSize()[0] <= self.THUMBNAIL_WIDTH:
             return self.master_image
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
-        if (zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
-            self.context) and lockable is not None and not lockable.locked()):
+        # XXX 1. mod_dav does not allow LOCK of a member in a locked collection
+        # even though the WebDAV spec reads as if that should be possible.
+        # 2. zeit.connector has some kind of bug where it loses the property
+        # cache of the collection upon that error, so it thinks the collection
+        # is empty from then on out (only refresh-cache helps).
+        if lockable is not None and not lockable.locked():
             return self._create_source_image()
         else:
             return self.master_image

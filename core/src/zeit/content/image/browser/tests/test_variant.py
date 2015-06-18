@@ -3,7 +3,6 @@ import gocept.jasmine.jasmine
 import json
 import requests
 import transaction
-import zeit.cms.checkout.interfaces
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.testing
@@ -16,9 +15,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
 
     def setUp(self):
         super(VariantJsonAPI, self).setUp()
-        group = create_image_group_with_master_image()
-        self.group = zeit.cms.checkout.interfaces.ICheckoutManager(
-            group).checkout()
+        self.group = create_image_group_with_master_image()
         self.group.variants = {
             'square': {'focus_x': 0.5, 'focus_y': 0.5}
         }
@@ -33,18 +30,18 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
         return response
 
     def test_list_variants_excludes_default(self):
-        r = self.request('get', '/workingcopy/zope.user/group/variants')
+        r = self.request('get', '/repository/group/variants')
         self.assertEqual(['cinema-small', 'cinema-large', 'square'],
                          [x['id'] for x in r.json()])
 
     def test_get_variant(self):
-        r = self.request('get', '/workingcopy/zope.user/group/variants/square')
+        r = self.request('get', '/repository/group/variants/square')
         variant = r.json()
         self.assertEqual(0.5, variant['focus_x'])
 
     def test_put_variant_stores_values(self):
         self.request(
-            'put', '/workingcopy/zope.user/group/variants/square',
+            'put', '/repository/group/variants/square',
             data=json.dumps({'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 1.0}))
         transaction.abort()
         self.assertEqual(0.1, self.group.variants['square']['focus_x'])
@@ -53,11 +50,12 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
 class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
 
     layer = zeit.content.image.testing.WEBDRIVER_LAYER
+    window_width = 1400  # The "Variants" tab needs to fit in and be clickable.
 
     def test_integration(self):
         """Open Image group and change settings of master and a variant."""
         s = self.selenium
-        self.open('/repository/2007/03/group/@@checkout')
+        self.open('/repository/2007/03/group')
         s.click('link=Variants')
         s.waitForCssCount('css=#variant-content', 1)  # wait for tab to load
 
@@ -78,7 +76,6 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
         s.waitForCssCount('css=.saved', 1)
         s.waitForCssCount('css=.saved', 0)
 
-        self.open('/workingcopy/zope.user/group/@@checkin')
         repository = zope.component.getUtility(
             zeit.cms.repository.interfaces.IRepository)
         variants = repository['2007']['03']['group'].variants
