@@ -418,13 +418,13 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
         title=_("Title"),
         required=False)
 
+    # BBB needed by zeit.web for legacy/zmo content only
     read_more = zope.schema.TextLine(
         title=_("Read more"),
         required=False)
     read_more_url = zope.schema.TextLine(
         title=_("Read more URL"),
         required=False)
-
     background_color = zope.schema.TextLine(
         title=_("Background color (ZMO only)"),
         required=False,
