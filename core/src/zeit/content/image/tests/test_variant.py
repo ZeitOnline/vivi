@@ -48,13 +48,13 @@ class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
         variant = IVariants(self.group).get_by_size('cinema__9999x9999')
         self.assertEqual('cinema-large', variant.id)
 
-    def test_raises_key_error_for_invalid_name(self):
-        with self.assertRaises(KeyError):
-            IVariants(self.group).get_by_size('foobarbaz__9999x9999')
+    def test_invalid_name_returns_none(self):
+        self.assertEqual(
+            None, IVariants(self.group).get_by_size('foobarbaz__9999x9999'))
 
-    def test_raises_key_error_if_no_size_matches(self):
+    def test_no_size_matches_returns_none(self):
         from zeit.content.image.variant import Variants, Variant
         with mock.patch.object(Variants, 'values', return_value=[
                 Variant(name='foo', id='small', max_size='100x100')]):
-            with self.assertRaises(KeyError):
-                IVariants(self.group).get_by_size('foo__9999x9999')
+            self.assertEqual(
+                None, IVariants(self.group).get_by_size('foo__9999x9999'))

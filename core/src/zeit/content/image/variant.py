@@ -32,12 +32,12 @@ class Variants(grok.Adapter, UserDict.DictMixin):
     def get_by_size(self, key):  # XXX Move to ImageGroup
         """Used by ImageGroup to create Image from Variant"""
         name, size = key.split('__')
-        sizes = self.get_all_by_name(name)
+        candidates = self.get_all_by_name(name)
         width, height = [int(x) for x in size.split('x')]
-        for size in sizes:
-            if width <= size.max_width and height <= size.max_height:
-                return size
-        raise KeyError(key)
+        for variant in candidates:
+            if width <= variant.max_width and height <= variant.max_height:
+                return variant
+        return None
 
     def get_all_by_name(self, name):  # XXX Move to ImageGroup
         """Used by ImageGroup to create Image from Variant"""
@@ -47,14 +47,14 @@ class Variants(grok.Adapter, UserDict.DictMixin):
 
     def get_by_name(self, name):  # XXX Move to ImageGroup
         """Used by ImageGroup to create Image from Variant"""
-        try:
-            return self.get_by_size('{name}__{max}x{max}'.format(
-                name=name, max=sys.maxint))
-        except KeyError:
-            for mapping in LEGACY_VARIANT_SOURCE(self):
-                if mapping['old'] in name:
-                    return self.get_by_name(mapping['new'])
-            return None
+        variant = self.get_by_size('{name}__{max}x{max}'.format(
+            name=name, max=sys.maxint))
+        if variant is not None:
+            return variant
+        for mapping in LEGACY_VARIANT_SOURCE(self):
+            if mapping['old'] in name:
+                return self.get_by_name(mapping['new'])
+        return None
 
     def _copy_missing_fields(self, source, target):
         for key in zope.schema.getFieldNames(
