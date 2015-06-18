@@ -284,6 +284,7 @@ class Thumbnails(grok.Adapter):
     grok.implements(zeit.content.image.interfaces.IThumbnails)
 
     SOURCE_IMAGE_PREFIX = 'thumbnail-source'
+    THUMBNAIL_WIDTH = 1000
 
     def __getitem__(self, key):
         if self.master_image is None:
@@ -299,6 +300,8 @@ class Thumbnails(grok.Adapter):
     def source_image(self):
         if self.source_image_name in self.context:
             return self.context[self.source_image_name]
+        if self.master_image.getImageSize()[0] <= self.THUMBNAIL_WIDTH:
+            return self.master_image
         lockable = zope.app.locking.interfaces.ILockable(self.context, None)
         if (zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
             self.context) and lockable is not None and not lockable.locked()):
@@ -308,7 +311,7 @@ class Thumbnails(grok.Adapter):
 
     def _create_source_image(self):
         image = zeit.content.image.interfaces.ITransform(
-            self.master_image).resize(width=1000)
+            self.master_image).resize(width=self.THUMBNAIL_WIDTH)
         self.context[self.source_image_name] = image
         return self.context[self.source_image_name]
 
