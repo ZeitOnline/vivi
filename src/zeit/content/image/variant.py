@@ -193,7 +193,7 @@ VARIANT_SOURCE = VariantSource()
 
 class VariantsTraverser(zeit.edit.body.Traverser):
 
-    grok.context(zeit.content.image.interfaces.IImageGroup)
+    grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
     body_name = 'variants'
     body_interface = zeit.content.image.interfaces.IVariants
 

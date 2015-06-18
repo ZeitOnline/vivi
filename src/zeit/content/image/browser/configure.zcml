@@ -292,12 +292,12 @@
 
   <gocept:pagelet
     zcml:condition="have zeit.content.image.variants"
-    for="zeit.content.image.interfaces.ILocalImageGroup"
+    for="zeit.content.image.interfaces.IRepositoryImageGroup"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="variant.html"
     template="image-variants.pt"
     menu="zeit-context-views" title="Variants"
-    permission="zeit.EditContent"
+    permission="zope.View"
     />
 
 
