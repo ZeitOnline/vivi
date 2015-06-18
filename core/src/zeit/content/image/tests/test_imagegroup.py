@@ -1,8 +1,6 @@
 from zeit.content.image.testing import create_image_group_with_master_image
 import zeit.cms.testing
 import zeit.content.image.testing
-import zope.event
-import zope.lifecycleevent
 import zope.traversing.api
 
 
@@ -64,15 +62,6 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual((750, 750), thumbnails['square'].getImageSize())
 
     def test_thumbnail_source_is_created_on_add(self):
-        self.assertNotIn('thumbnail-source-master-image.jpg', self.group)
-        zope.event.notify(zope.lifecycleevent.ObjectAddedEvent(self.group))
-        self.assertIn('thumbnail-source-master-image.jpg', self.group)
-
-    def test_thumbnail_source_is_created_on_modified(self):
-        self.assertNotIn('thumbnail-source-master-image.jpg', self.group)
-        zope.event.notify(zope.lifecycleevent.ObjectModifiedEvent(
-            self.group, zope.lifecycleevent.Attributes(
-                zeit.content.image.interfaces.IImageGroup, 'master_image')))
         self.assertIn('thumbnail-source-master-image.jpg', self.group)
 
 
