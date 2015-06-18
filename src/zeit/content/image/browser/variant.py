@@ -47,3 +47,13 @@ class VariantDetail(
         data = zope.security.proxy.getObject(group.variants)
         data[self.context.id] = self.deserialize_variant(body)
         group.variants = data
+
+
+class Editor(object):
+
+    def __call__(self):
+        # Force generating thumbnail source if does not exist yet, so not each
+        # variant preview tries to do it simultaneously later on (which only
+        # leads to conflicts).
+        zeit.content.image.interfaces.IThumbnails(self.context).source_image
+        return super(Editor, self).__call__()
