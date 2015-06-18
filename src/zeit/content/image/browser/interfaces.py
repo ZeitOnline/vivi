@@ -1,6 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
-import zope.component
 import zope.interface
 import zope.schema
 
@@ -50,5 +49,5 @@ class IMasterImageUploadSchema(zope.interface.Interface):
         zope.interface.Interface,
         title=_('Upload master image'),
         description=_('upload-master-image-description'),
-        required=False,
+        required=True,
         constraint=is_image)

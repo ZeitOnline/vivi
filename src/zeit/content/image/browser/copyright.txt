@@ -13,6 +13,15 @@ Add an image group because one object is boring:
 >>> browser.getControl("File name").value = 'agroup'
 >>> browser.getControl('Image title').value = 'Group'
 
+>>> def set_file_data(name):
+...     import os.path
+...     test_file = os.path.join(
+...         os.path.dirname(__file__), 'testdata', name)
+...     test_data = file(test_file, 'rb')
+...     file_control = browser.getControl(name='form.blob')
+...     file_control.add_file(test_data, 'image/jpeg', name)
+>>> set_file_data('new-hampshire-artikel.jpg')
+
 Set a copyright which will be overwritten by the bulk change:
 
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
