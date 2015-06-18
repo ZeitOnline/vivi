@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.47.1 (unreleased)
+2.47.1 (2015-06-18)
 -------------------
 
 - Point several taskprocessor views to the configured queue instead of
