@@ -1,5 +1,6 @@
 from zeit.content.image.testing import create_image_group_with_master_image
 import mock
+import pkg_resources
 import zeit.cms.testing
 import zeit.content.image.testing
 import zeit.edit.interfaces
@@ -23,6 +24,11 @@ class ImageGroupGhostTest(zeit.cms.testing.BrowserTestCase):
             'ZEIT ONLINE')
         b.getControl(name='form.copyrights.0..combination_01').value = (
             'http://www.zeit.de/')
+        b.getControl(name='form.blob').add_file(
+            pkg_resources.resource_stream(
+                'zeit.content.image.browser',
+                'testdata/new-hampshire-artikel.jpg'),
+            'image/jpeg', 'new-hampshire-artikel.jpg')
         b.getControl(name='form.actions.add').click()
 
         with zeit.cms.testing.site(self.getRootFolder()):

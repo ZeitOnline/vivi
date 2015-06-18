@@ -161,8 +161,7 @@ class IImageGroup(zeit.cms.repository.interfaces.ICollection,
 
     master_image = zope.schema.Choice(
         title=_('Master image'),
-        source=MasterImageSource(),
-        required=False)
+        source=MasterImageSource())
 
     variants = zope.schema.Dict(
         title=_('Setting for variants'))

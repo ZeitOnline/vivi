@@ -340,12 +340,20 @@ Lets create an image group:
 
 [#no-references]_
 
+>>> def set_file_data(name):
+...     test_file = os.path.join(
+...         os.path.dirname(__file__), 'testdata', name)
+...     test_data = file(test_file, 'rb')
+...     file_control = browser.getControl(name='form.blob')
+...     file_control.add_file(test_data, 'image/jpeg', name)
+
 >>> browser.getControl("File name").value = 'new-hampshire'
 >>> browser.getControl('Image title').value = 'New Hampshire'
 >>> browser.getControl(name='form.copyrights.0..combination_00').value = (
 ...     'ZEIT ONLINE')
 >>> browser.getControl(name='form.copyrights.0..combination_01').value = (
 ...     'http://www.zeit.de/')
+>>> set_file_data('opernball.jpg')
 >>> browser.getControl(name='form.actions.add').click()
 
 Image groups are not checked out by default, because adding new images will be
@@ -356,14 +364,6 @@ done directly in the repository:
 'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
 >>> print browser.title.strip()
 New Hampshire – Image group
-
-Image groups don't have a thumbnail when there are no images in it:
-
->>> browser.open('@@thumbnail')
-Traceback (most recent call last):
-    ...
-HTTPError: HTTP Error 404: Not Found
->>> browser.open(hampshire_url)
 
 Create a few images in the group:
 
@@ -384,13 +384,6 @@ Traceback (most recent call last):
 LookupError: label 'Volume'...
 
 Set the file data:
-
->>> def set_file_data(name):
-...     test_file = os.path.join(
-...         os.path.dirname(__file__), 'testdata', name)
-...     test_data = file(test_file, 'rb')
-...     file_control = browser.getControl(name='form.blob')
-...     file_control.add_file(test_data, 'image/jpeg', name)
 
 >>> set_file_data('new-hampshire-artikel.jpg')
 >>> browser.getControl('Add').click()
@@ -469,6 +462,7 @@ Let's have a look at the index:
       <span class="SearchableText"></span><span class="URL">http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg</span><span class="uniqueId">http://xml.zeit.de/2006/new-hampshire/obama-clinton-120x120.jpg</span>
     </td>
   </tr>
+  ...
   </tbody>
 </table>
 ...
@@ -601,6 +595,7 @@ The image group has a special drag pane which shows all the images:
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-450x200.jpg/thumbnail" alt="" height="44" width="100" border="0" />
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/new-hampshire-artikel.jpg/thumbnail" alt="" height="59" width="100" border="0" />
   <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/obama-clinton-120x120.jpg/thumbnail" alt="" height="100" width="100" border="0" />
+  <img src="http://localhost/++skin++cms/repository/2006/new-hampshire/opernball.jpg/thumbnail" alt="" height="100" width="74" border="0" />
   <div class="Text">New Hampshire</div>
   <div class="UniqueId">http://xml.zeit.de/2006/new-hampshire/</div>
 
