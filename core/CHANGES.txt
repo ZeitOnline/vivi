@@ -1,7 +1,7 @@
 zeit.find changes
 =================
 
-2.6.0 (unreleased)
+2.6.0 (2015-06-18)
 ------------------
 
 - Pass additional keyword parameters to ``zeit.find.search.search`` through to
