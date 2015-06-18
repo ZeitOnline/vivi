@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.3.1 (unreleased)
+2.3.1 (2015-06-18)
 ------------------
 
 - Don't break display of old authors without ``display_name`` (BUG-265).
