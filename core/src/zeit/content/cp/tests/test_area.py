@@ -174,9 +174,11 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
     def test_enabling_automatic_preserves_layout(self):
         lead = self.repository['cp']['lead']
         teaser = lead.create_item('teaser')
+        teaser.read_more = 'foo'
         teaser.layout = zeit.content.cp.layout.get_layout('two-side-by-side')
         lead.count = 1
         lead.automatic = True
+        self.assertEqual(None, lead.values()[0].read_more)
         self.assertEqual('two-side-by-side', lead.values()[0].layout.id)
 
     def test_disabling_automatic_preserves_all_teaser_fields(self):
@@ -184,9 +186,11 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.count = 1
         lead.automatic = True
         auto = lead.values()[0]
+        auto.read_more = 'foo'
         auto.layout = zeit.content.cp.layout.get_layout('two-side-by-side')
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = [
                 dict(uniqueId='http://xml.zeit.de/testcontent')]
             lead.automatic = False
+        self.assertEqual('foo', lead.values()[0].read_more)
         self.assertEqual('two-side-by-side', lead.values()[0].layout.id)

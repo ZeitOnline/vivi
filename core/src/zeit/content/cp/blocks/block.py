@@ -48,6 +48,14 @@ class Block(VisibleMixin, zeit.edit.block.Element):
     supertitle_url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle_url')
 
+    read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'read_more')
+    read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'read_more_url')
+
+    background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'background_color')
+
 
 @grok.adapter(zeit.content.cp.interfaces.IBlock)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)

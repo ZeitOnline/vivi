@@ -418,6 +418,18 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
         title=_("Title"),
         required=False)
 
+    read_more = zope.schema.TextLine(
+        title=_("Read more"),
+        required=False)
+    read_more_url = zope.schema.TextLine(
+        title=_("Read more URL"),
+        required=False)
+
+    background_color = zope.schema.TextLine(
+        title=_("Background color (ZMO only)"),
+        required=False,
+        max_length=6, constraint=hex_literal)
+
 #
 # Teaser block (aka teaser list)
 #

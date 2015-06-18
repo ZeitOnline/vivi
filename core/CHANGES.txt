@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.0.0b17 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Put read_more and background_color back on IBlock, legacy content still needs
+  it (DEV-822).
 
 
 3.0.0b16 (2015-06-18)
@@ -21,7 +22,7 @@ zeit.content.cp changes
 
 - Fix duplicate detection for free teasers.
 
-- Add read_more and read_more_url fields to IArea, remove from IBlock (DEV-824).
+- Add read_more and read_more_url fields to IArea (DEV-824).
 
 - Prefill IArea.supertitle from referenced_cp if present (DEV-824).
 
