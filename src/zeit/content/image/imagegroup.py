@@ -297,14 +297,20 @@ class Thumbnails(grok.Adapter):
 
     @property
     def source_image(self):
-        if self.source_image_name not in self.context:
-            self._create_source_image()
-        return self.context[self.source_image_name]
+        if self.source_image_name in self.context:
+            return self.context[self.source_image_name]
+        lockable = zope.app.locking.interfaces.ILockable(self.context, None)
+        if (zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            self.context) and lockable is not None and not lockable.locked()):
+            return self._create_source_image()
+        else:
+            return self.master_image
 
     def _create_source_image(self):
         image = zeit.content.image.interfaces.ITransform(
             self.master_image).resize(width=1000)
         self.context[self.source_image_name] = image
+        return self.context[self.source_image_name]
 
     @property
     def master_image(self):
@@ -312,21 +318,15 @@ class Thumbnails(grok.Adapter):
 
 
 @grok.subscribe(
-    zeit.content.image.interfaces.IImageGroup,
+    zeit.content.image.interfaces.IImage,
     zope.lifecycleevent.IObjectAddedEvent)
 def create_thumbnail_source_on_add(context, event):
-    thumbnails = zeit.content.image.interfaces.IThumbnails(context)
+    group = context.__parent__
+    if not zeit.content.image.interfaces.IRepositoryImageGroup.providedBy(
+            group):
+        return
+    if group.master_image != context.__name__:
+        return
+    thumbnails = zeit.content.image.interfaces.IThumbnails(group)
     if thumbnails.master_image:
         thumbnails.source_image
-
-
-@grok.subscribe(
-    zeit.content.image.interfaces.IImageGroup,
-    zope.lifecycleevent.IObjectModifiedEvent)
-def create_thumbnail_source_on_modified(context, event):
-    for description in event.descriptions:
-        if description.interface is zeit.content.image.interfaces.IImageGroup:
-            if 'master_image' in description.attributes:
-                thumbnails = zeit.content.image.interfaces.IThumbnails(context)
-                if thumbnails.master_image:
-                    thumbnails.source_image
