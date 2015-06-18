@@ -17,8 +17,11 @@ class AuthorListRepresentation(
 
     @property
     def title(self):
-        return self.context.display_name
+        try:
+            return self.context.display_name
+        except:
+            return u'%s %s' % (self.context.firstname, self.context.lastname)
 
     @property
     def searchableText(self):
-        return self.context.display_name
+        return self.title
