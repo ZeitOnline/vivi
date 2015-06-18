@@ -8,6 +8,7 @@ import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.image
 import zeit.content.image.imagegroup
+import zeit.workflow.testing
 import zope.component
 
 
@@ -21,7 +22,9 @@ product_config = """
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
-    product_config=product_config + zeit.cms.testing.cms_product_config)
+    product_config=product_config
+    + zeit.cms.testing.cms_product_config
+    + zeit.workflow.testing.product_config)
 WSGI_LAYER = zeit.cms.testing.WSGILayer(
     name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
