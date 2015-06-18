@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b16 (unreleased)
+3.0.0b16 (2015-06-18)
 ---------------------
 
 - Make overflow work across multiple areas (DEV-759).
