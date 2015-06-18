@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b17 (unreleased)
+3.0.0b17 (2015-06-18)
 ---------------------
 
 - Put read_more and background_color back on IBlock, legacy content still needs
