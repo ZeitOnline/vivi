@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.4.0 (unreleased)
+2.4.0 (2015-06-18)
 ------------------
 
 - Access size of a Variant by giving name and size in URL, e.g.
