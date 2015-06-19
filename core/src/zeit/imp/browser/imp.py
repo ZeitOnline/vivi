@@ -66,4 +66,7 @@ class ImageBar(zeit.cms.browser.view.Base):
                 continue
             if zeit.content.image.interfaces.IMasterImage.providedBy(obj):
                 continue
+            if obj.__name__.startswith(
+                zeit.content.image.imagegroup.Thumbnails.SOURCE_IMAGE_PREFIX):
+                continue
             yield obj

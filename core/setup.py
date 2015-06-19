@@ -19,7 +19,7 @@ setup(
         'gocept.selenium>=0.6',
         'setuptools',
         'zeit.cms>=2.15.0.dev0',
-        'zeit.content.image>=2.2.0.dev0',
+        'zeit.content.image>=2.4.0.dev0',
     ],
     entry_points={
         'fanstatic.libraries': [

@@ -197,8 +197,7 @@ class TestCrop(zeit.cms.testing.FunctionalTestCase):
         image = zeit.imp.interfaces.IStorer(self.group).store(
             'foo', self.crop.pil_image)
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
-        self.assertEquals(['group-foo.jpg', 'master-image.jpg'],
-                          self.group.keys())
+        self.assertIn('group-foo.jpg', self.group)
 
     def test_border_applied_after_filters(self):
         # The border must be applied after the filters. To verify this we
