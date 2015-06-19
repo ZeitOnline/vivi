@@ -1,4 +1,5 @@
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
+from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import datetime
 import gocept.filestore
 import gocept.runner
@@ -157,8 +158,11 @@ def import_file(path):
     zeit.content.article.interfaces.ICDSWorkflow(article).export_cds = False
 
     # Create removal job
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.workflow')
+    queue = config['task-queue-%s' % PRIORITY_DEFAULT]
     tasks = zope.component.getUtility(
-        lovely.remotetask.interfaces.ITaskService, 'general')
+        lovely.remotetask.interfaces.ITaskService, name=queue)
     # Compute delete timeout which is > DELETE_TIMEOUT but in the night
     now = datetime.datetime.now(pytz.UTC)
     remove_at = now + DELETE_TIMEOUT + datetime.timedelta(days=1)
