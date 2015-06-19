@@ -224,6 +224,24 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.10.5 (2015-06-19)
+-------------------
+
+- Require bw compat for old imagegroup names (DEV-783).
+
+
+2.10.4 (2015-06-18)
+-------------------
+
+- Retrieve images for teaser modules using the new variant API (DEV-782).
+
+
+2.10.3 (2015-06-09)
+-------------------
+
+- Back-port permission EditOverflow, even though that's a no-op here. (DEV-759)
+
+
 2.10.2 (2015-06-09)
 -------------------
 
