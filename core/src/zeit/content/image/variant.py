@@ -151,7 +151,7 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
     def getValues(self, context):
         tree = self._get_tree()
         result = []
-        for node in tree.getchildren():
+        for node in tree.iterchildren('*'):
             if not self.isAvailable(node, context):
                 continue
 
@@ -222,7 +222,7 @@ class LegacyVariantSource(zeit.cms.content.sources.XMLSource):
     def getValues(self, context):
         tree = self._get_tree()
         result = []
-        for node in tree.getchildren():
+        for node in tree.iterchildren('*'):
             result.append({'old': node.get('old'), 'new': node.get('new')})
         return result
 
