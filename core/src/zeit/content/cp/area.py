@@ -66,6 +66,31 @@ class RegionFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
+class DefaultToReferencedCP(object):
+
+    def __init__(self, local_attribute):
+        self.local_attribute = local_attribute
+
+    def __get__(self, instance, class_):
+        if instance is None:
+            return self
+        name = self.__name__(instance)
+        local = getattr(instance, self.local_attribute, None)
+        if local:
+            return local
+        if instance.referenced_cp is not None:
+            return getattr(instance.referenced_cp, name)
+
+    def __set__(self, instance, value):
+        setattr(instance, self.local_attribute, value)
+
+    def __name__(self, instance):
+        class_ = type(instance)
+        for name in dir(class_):
+            if getattr(class_, name, None) is self:
+                return name
+
+
 class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
 
@@ -84,8 +109,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     _supertitle = ObjectPathAttributeProperty(
         '.', 'supertitle')
+    supertitle = DefaultToReferencedCP('_supertitle')
     _title = ObjectPathAttributeProperty(
         '.', 'title')
+    title = DefaultToReferencedCP('_title')
 
     read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more')
@@ -130,28 +157,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if 'hide-dupes' not in self.xml.attrib:
             self.hide_dupes = zeit.content.cp.interfaces.IArea[
                 'hide_dupes'].default
-
-    @property
-    def supertitle(self):
-        if self._supertitle:
-            return self._supertitle
-        if self.referenced_cp is not None:
-            return self.referenced_cp.supertitle
-
-    @supertitle.setter
-    def supertitle(self, value):
-        self._supertitle = value
-
-    @property
-    def title(self):
-        if self._title:
-            return self._title
-        if self.referenced_cp is not None:
-            return self.referenced_cp.title
-
-    @title.setter
-    def title(self, value):
-        self._title = value
 
     @property
     def is_teaserbar(self):

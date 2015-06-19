@@ -194,3 +194,24 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
             lead.automatic = False
         self.assertEqual('foo', lead.values()[0].read_more)
         self.assertEqual('two-side-by-side', lead.values()[0].layout.id)
+
+
+class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(AreaDelegateTest, self).setUp()
+        self.repository['cp'] = zeit.content.cp.centerpage.CenterPage()
+        self.area = self.repository['cp']['feature'].create_item('area')
+        other = zeit.content.cp.centerpage.CenterPage()
+        other.title = 'referenced'
+        self.repository['other'] = other
+        self.area.referenced_cp = self.repository['other']
+
+    def test_returns_delegated_attribute_from_referenced_cp(self):
+        self.assertEqual('referenced', self.area.title)
+
+    def test_local_value_takes_precendence(self):
+        self.area.title = 'local'
+        self.assertEqual('local', self.area.title)
+        self.area.title = None
+        self.assertEqual('referenced', self.area.title)
