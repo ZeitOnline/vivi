@@ -64,6 +64,12 @@ class ImageGroupBase(object):
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
         if variant.name in repository:
             return repository[variant.name]
+        # BBB Legacy ImageGroups still should return their materialized
+        # variants (for CP editor).
+        if variant.legacy_name:
+            for name in repository:
+                if variant.legacy_name in name:
+                    return repository[name]
 
         image = zeit.content.image.interfaces.ITransform(
             source).create_variant_image(variant, size=size)
@@ -143,6 +149,16 @@ class ImageGroup(ImageGroupBase,
 
         JSON API:
         * /imagegroup/variants/zon-large
+
+        BBB compatibility:
+        * Asking a new image group (without on-disk variants) for an old name
+          (e.g. imagegroup-540x304.jpg, XSLT does this): maps old to new name
+          via legacy-variant-source settings.
+        * Asking an old image group for a new name: uses default focus point
+          to generate the new variant.
+          XXX Should we map to old on-disk variants instead?
+        * Asking an old image group for an old name with the new syntax
+          (CP editor does this): returns on-disk image.
 
         """
         try:

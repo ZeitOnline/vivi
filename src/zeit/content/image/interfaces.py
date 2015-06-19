@@ -232,6 +232,9 @@ class IVariant(zope.interface.Interface):
     is_default = zope.interface.Attribute(
         'Bool whether this Variant represents the default configuration')
 
+    legacy_name = zope.interface.Attribute(
+        'If applicable, the legacy name this Variant was mapped from')
+
 
 class IImageSource(zope.interface.common.mapping.IEnumerableMapping):
     """A source for images."""

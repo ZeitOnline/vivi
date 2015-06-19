@@ -1,4 +1,5 @@
 from zeit.content.image.testing import create_image_group_with_master_image
+from zeit.content.image.testing import create_local_image
 import zeit.cms.testing
 import zeit.content.image.testing
 import zope.traversing.api
@@ -25,10 +26,18 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
     def test_getitem_uses_mapping_for_legacy_names(self):
         image = self.group['master-image-540x304.jpg']
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
+        self.assertEqual((1536, 1536), image.getImageSize())
 
     def test_getitem_raises_keyerror_for_invalid_legacy_names(self):
         with self.assertRaises(KeyError):
             self.group['master-image-111x222.jpg']
+
+    def test_getitem_returns_materialized_files_for_new_syntax(self):
+        self.group['master-image-540x304.jpg'] = create_local_image(
+            'obama-clinton-120x120.jpg')
+        image = self.group['540x304']
+        self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
+        self.assertEqual((120, 120), image.getImageSize())
 
     def test_getitem_raises_keyerror_if_variant_does_not_exist(self):
         with self.assertRaises(KeyError):
