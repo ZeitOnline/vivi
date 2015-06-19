@@ -18,6 +18,7 @@ group[#browser]_:
 ...     'http://www.zeit.de/')
 >>> browser.handleErrors = False
 >>> browser.getControl(name='form.actions.add').click()
+>>> browser.open('@@view.html')
 >>> print browser.title.strip()
 opernball – Image group
 

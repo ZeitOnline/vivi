@@ -7,6 +7,8 @@ zeit.content.image changes
 - Add bw-compat for CP editor: return old on-disk variants for new syntax
   (DEV-783).
 
+- Go to edit UI after adding an image group (DEV-798).
+
 
 2.4.0 (2015-06-18)
 ------------------

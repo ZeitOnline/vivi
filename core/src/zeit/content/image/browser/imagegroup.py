@@ -9,6 +9,7 @@ import zeit.content.image.image
 import zeit.content.image.imagegroup
 import zeit.content.image.interfaces
 import zeit.ghost.ghost
+import zope.app.appsetup.appsetup
 import zope.formlib.form
 import zope.publisher.interfaces
 
@@ -65,6 +66,14 @@ class AddForm(FormBase,
             self.form_fields.omit('__name__'), data)
         image.__name__ = name
         return image
+
+    @property
+    def next_view(self):
+        if zope.app.appsetup.appsetup.getConfigContext().hasFeature(
+                'zeit.content.image.variants'):
+            return 'variant.html'
+        else:
+            return 'imp.html'
 
 
 class EditForm(FormBase, zeit.cms.browser.form.EditForm):
