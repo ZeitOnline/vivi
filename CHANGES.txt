@@ -9,6 +9,8 @@ zeit.content.image changes
 
 - Go to edit UI after adding an image group (DEV-798).
 
+- Add `IImage.ratio`.
+
 
 2.4.0 (2015-06-18)
 ------------------
