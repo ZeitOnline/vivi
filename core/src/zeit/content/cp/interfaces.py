@@ -289,6 +289,12 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         title=_("Read more URL"),
         required=False)
 
+    image = zope.schema.Choice(
+        title=_('Image'),
+        description=_("Drag an image group here"),
+        required=False,
+        source=zeit.content.image.interfaces.imageGroupSource)
+
     block_max = zope.schema.Int(
         title=_("Maximum block count"),
         required=False)

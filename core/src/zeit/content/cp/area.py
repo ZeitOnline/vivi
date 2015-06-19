@@ -119,6 +119,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more_url')
 
+    _image = zeit.cms.content.property.SingleResource('.image')
+
     block_max = ObjectPathAttributeProperty(
         '.', 'block_max', zeit.content.cp.interfaces.IArea['block_max'])
     _overflow_into = ObjectPathAttributeProperty(
@@ -171,6 +173,21 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @read_more_url.setter
     def read_more_url(self, value):
         self._read_more_url = value
+
+    @property
+    def image(self):
+        if self._image:
+            return self._image
+        if self.referenced_cp is not None:
+            images = zeit.content.image.interfaces.IImages(
+                self.referenced_cp, None)
+            if images is None:
+                return None
+            return images.image
+
+    @image.setter
+    def image(self, value):
+        self._image = value
 
     @property
     def is_teaserbar(self):

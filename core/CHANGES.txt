@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.0.0b18 (unreleased)
 ---------------------
 
-- Prefill IArea.read_more_url from referenced_cp if present (DEV-824).
+- Prefill IArea.read_more_url from referenced_cp if present, add image field
+  (DEV-824).
 
 
 3.0.0b17 (2015-06-18)
