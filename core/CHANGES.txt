@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.23 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Styling for z.c.image Variant UI (DEV-798).
 
 
 3.6.22 (2015-06-11)

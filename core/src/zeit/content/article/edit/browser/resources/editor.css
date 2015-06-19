@@ -1812,6 +1812,7 @@
 .type-article .editable-area input.button,
 /* XXX This does not belong here, but we have no overarching styling concept. */
 .lightbox a.button,
+#variant-content a.button,
 .type-centerpage-2009 a.button {
   -moz-border-radius:3px;
   -moz-box-shadow:0px 0px 0px rgb(0, 0, 0);
