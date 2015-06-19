@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.5.0 (unreleased)
+2.5.0 (2015-06-19)
 ------------------
 
 - Add bw-compat for CP editor: return old on-disk variants for new syntax
