@@ -376,6 +376,24 @@ class TestMove(zeit.connector.testing.ConnectorTest):
             res.id, 'http://xml.zeit.de/%s/bar' % self.layer.testfolder)
         self.connector['http://xml.zeit.de/%s/bar' % self.layer.testfolder]
 
+    def test_move_collection_moves_all_members(self):
+        coll = zeit.connector.resource.Resource(
+            'http://xml.zeit.de/%s/foo' % self.layer.testfolder,
+            'foo', 'collection', StringIO.StringIO(''))
+        self.connector.add(coll)
+        res = self.get_resource('foo/one', 'body')
+        self.connector.add(res)
+        res = self.get_resource('foo/two', 'body')
+        self.connector.add(res)
+        self.assertEqual(['one', 'two'], sorted([
+            x[0] for x in self.connector.listCollection(
+                'http://xml.zeit.de/%s/foo' % self.layer.testfolder)]))
+        self.connector.move(
+            coll.id, 'http://xml.zeit.de/%s/bar' % self.layer.testfolder)
+        self.assertEqual(['one', 'two'], sorted([
+            x[0] for x in self.connector.listCollection(
+                'http://xml.zeit.de/%s/bar' % self.layer.testfolder)]))
+
 
 class TestSearch(zeit.connector.testing.ConnectorTest):
 

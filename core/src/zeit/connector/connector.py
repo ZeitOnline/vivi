@@ -327,8 +327,8 @@ class Connector(object):
             for name, child_id in self.listCollection(old_id):
                 self._copy_or_move(method_name, exception,
                                    child_id, urlparse.urljoin(new_id, name))
-                if method_name == 'move':
-                    del self[old_id]
+            if method_name == 'move':
+                del self[old_id]
         else:
             token = self._get_my_locktoken(old_id)
             response = method(old_loc, new_loc, locktoken=token)
