@@ -359,6 +359,7 @@ Lets create an image group:
 Image groups are not checked out by default, because adding new images will be
 done directly in the repository:
 
+>>> browser.open('@@view.html')
 >>> hampshire_url = browser.url
 >>> hampshire_url
 'http://localhost/++skin++cms/repository/2006/new-hampshire/@@view.html'
