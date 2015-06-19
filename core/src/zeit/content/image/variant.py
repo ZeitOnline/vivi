@@ -51,9 +51,12 @@ class Variants(grok.Adapter, UserDict.DictMixin):
             name=name, max=sys.maxint))
         if variant is not None:
             return variant
+        # BBB New ImageGroups must respond to the legacy names (for XSLT).
         for mapping in LEGACY_VARIANT_SOURCE(self):
             if mapping['old'] in name:
-                return self.get_by_name(mapping['new'])
+                variant = self.get_by_name(mapping['new'])
+                variant.legacy_name = mapping['old']
+                return variant
         return None
 
     def _copy_missing_fields(self, source, target):
@@ -89,6 +92,7 @@ class Variant(object):
     grok.implements(interface)
 
     max_size = None
+    legacy_name = None
 
     def __init__(self, **kw):
         """Set attributes that are part of the Schema and convert their type"""
