@@ -108,6 +108,8 @@ class IImage(zeit.cms.interfaces.IAsset,
     format = zope.interface.Attribute(
         'Our mimeType formatted as a PIL-compatible format (e.g. JPEG, PNG)')
 
+    ratio = zope.interface.Attribute('width/height')
+
 
 class ITransform(zope.interface.Interface):
 

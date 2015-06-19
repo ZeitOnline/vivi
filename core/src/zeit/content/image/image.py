@@ -36,6 +36,14 @@ class BaseImage(object):
         return PIL.Image.open(self.open()).size
 
     @property
+    def ratio(self):
+        try:
+            width, height = self.getImageSize()
+            return float(width) / float(height)
+        except:
+            return None
+
+    @property
     def format(self):
         subtype = self.mimeType.split('/')[-1]
         return subtype.upper()
