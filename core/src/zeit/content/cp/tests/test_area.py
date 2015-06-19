@@ -215,3 +215,6 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('local', self.area.title)
         self.area.title = None
         self.assertEqual('referenced', self.area.title)
+
+    def test_read_more_url_is_generated_from_cp(self):
+        self.assertEqual('http://www.zeit.de/other', self.area.read_more_url)

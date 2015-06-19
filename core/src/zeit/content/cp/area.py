@@ -116,7 +116,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more')
-    read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
+    _read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more_url')
 
     block_max = ObjectPathAttributeProperty(
@@ -157,6 +157,20 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if 'hide-dupes' not in self.xml.attrib:
             self.hide_dupes = zeit.content.cp.interfaces.IArea[
                 'hide_dupes'].default
+
+    @property
+    def read_more_url(self):
+        if self._read_more_url:
+            return self._read_more_url
+        if self.referenced_cp is not None:
+            return self.referenced_cp.uniqueId.replace(
+                zeit.cms.interfaces.ID_NAMESPACE,
+                # XXX Hard-coding seems wrong (e.g. what about staging).
+                'http://www.zeit.de/')
+
+    @read_more_url.setter
+    def read_more_url(self, value):
+        self._read_more_url = value
 
     @property
     def is_teaserbar(self):
