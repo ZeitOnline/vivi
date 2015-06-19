@@ -1,6 +1,5 @@
 #variant-content {
     bottom: 1em;
-    left: -0.8em;
     position: absolute;
     right: 34.4%;
     top: 0;
@@ -62,8 +61,4 @@ img.editor {
 
 .preview.active {
     border: 3px solid red;
-}
-
-#reset {
-    padding-left: 0.8em;
 }
