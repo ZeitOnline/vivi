@@ -87,7 +87,7 @@ class ICommonMetadata(zope.interface.Interface):
         value_type=zc.form.field.Combination(
             (zope.schema.Choice(
                 title=_('Channel'),
-                source=zeit.cms.content.sources.NavigationSource()),
+                source=zeit.cms.content.sources.ChannelSource()),
              zope.schema.Choice(
                  title=_('Subchannel'),
                  source=zeit.cms.content.sources.SubChannelSource(),

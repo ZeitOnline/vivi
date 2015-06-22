@@ -214,6 +214,16 @@ class SubNavigationSource(MasterSlaveSource):
         return unicode(node['title'])
 
 
+class ChannelSource(XMLSource):
+
+    config_url = 'source-channels'
+    attribute = 'name'
+    title_xpath = '/ressorts/ressort'
+
+    def _get_title_for(self, node):
+        return unicode(node['title'])
+
+
 class SubChannelSource(SubNavigationSource):
 
     def _get_master_nodes(self, context):

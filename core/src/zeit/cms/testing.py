@@ -187,6 +187,7 @@ cms_product_config = string.Template("""\
   source-products file://${base}/content/products.xml
   source-badges file://${base}/asset/badges.xml
   source-banners file://${base}/content/banners.xml
+  source-channels file://${base}/content/navigation.xml
 
   preview-prefix http://localhost/preview-prefix
   live-prefix http://localhost/live-prefix
