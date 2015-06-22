@@ -35,6 +35,8 @@ zeit.cms.TableSorter = gocept.Class.extend({
                         tbody.appendChild(element);
                     }
                     self.dropped(element);
+                    // XXX This was not necessary until FF38.
+                    MochiKit.Style.undoPositioned(element);
                 },
                 hoverclass: 'tablesort-hover'
             });

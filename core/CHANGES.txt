@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Use separate config file for channels (DEV-634).
 
+- Fix table sorting JS in FF38 (BUG-276).
+
 
 2.47.1 (2015-06-18)
 -------------------
