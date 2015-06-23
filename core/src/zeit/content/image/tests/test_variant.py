@@ -32,6 +32,14 @@ class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
         variant = IVariants(self.group)['square']
         self.assertEqual('1:1', variant.aspect_ratio)
 
+    def test_variant_with_settings_gets_missing_values_from_default_variant(
+            self):  # this is important for new default values in the future
+        self.group.variants = {
+            'square': {'focus_x': 0.1, 'focus_y': 0.1}
+        }
+        variant = IVariants(self.group)['square']
+        self.assertEqual(1, variant.zoom)
+
     def test_variant_without_settings_returns_default_settings(self):
         self.group.variants = {
             'default': {'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 0.5}
