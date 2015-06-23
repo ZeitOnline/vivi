@@ -231,6 +231,12 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.10.6 (2015-06-23)
+-------------------
+
+- Use separate config file for channels (DEV-634).
+
+
 2.10.5 (2015-06-19)
 -------------------
 
