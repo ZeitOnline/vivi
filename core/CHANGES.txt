@@ -4,7 +4,8 @@ zeit.content.image changes
 2.5.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Change name of thumbnail traverser so it does not conflict with the
+  ``thumbnail`` view used by zeit.find.
 
 
 2.5.0 (2015-06-19)
