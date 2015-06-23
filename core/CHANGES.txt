@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.6.3 (unreleased)
+2.6.3 (2015-06-23)
 ------------------
 
 - Fix bug in moving collections: move all members before deleting the source
