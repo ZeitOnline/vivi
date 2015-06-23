@@ -93,6 +93,7 @@ class Variant(object):
 
     max_size = None
     legacy_name = None
+    aspect_ratio = None
 
     def __init__(self, **kw):
         """Set attributes that are part of the Schema and convert their type"""
@@ -105,6 +106,9 @@ class Variant(object):
 
     @property
     def ratio(self):
+        if self.aspect_ratio is None:
+            return None
+
         xratio, yratio = self.aspect_ratio.split(':')
         return float(xratio) / float(yratio)
 

@@ -5,6 +5,7 @@ import requests
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+import zeit.content.image.interfaces
 import zeit.content.image.testing
 import zope.component
 
@@ -34,17 +35,38 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(['cinema-small', 'cinema-large', 'square'],
                          [x['id'] for x in r.json()])
 
-    def test_get_variant(self):
+    def test_get_variant_contains_all_fields_defined_on_interface_and_url(
+            self):
         r = self.request('get', '/repository/group/variants/square')
         variant = r.json()
         self.assertEqual(0.5, variant['focus_x'])
+        self.assertEqual(0.5, variant['focus_y'])
+        self.assertEqual(
+            sorted(['url'] + list(zeit.content.image.interfaces.IVariant)),
+            sorted(variant.keys()))
 
-    def test_put_variant_stores_values(self):
+    def test_put_variant_stores_focuspoint_and_zoom_only(self):
+        # All other attributes are transient or come from XML
+        fields = zope.schema.getFields(zeit.content.image.interfaces.IVariant)
+        data = {}
+        for key in fields.keys():
+            data[key] = None
+
+        self.request(
+            'put', '/repository/group/variants/square', data=json.dumps(data))
+        transaction.abort()
+        self.assertEqual(
+            ['focus_x', 'focus_y', 'zoom'],
+            sorted(self.group.variants['square'].keys()))
+
+    def test_put_variant_stores_value_of_focuspoint_and_zoom(self):
         self.request(
             'put', '/repository/group/variants/square',
-            data=json.dumps({'focus_x': 0.1, 'focus_y': 0.1, 'zoom': 1.0}))
+            data=json.dumps({'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 1.0}))
         transaction.abort()
         self.assertEqual(0.1, self.group.variants['square']['focus_x'])
+        self.assertEqual(0.2, self.group.variants['square']['focus_y'])
+        self.assertEqual(1.0, self.group.variants['square']['zoom'])
 
 
 class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
