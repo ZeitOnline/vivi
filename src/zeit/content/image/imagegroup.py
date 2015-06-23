@@ -102,7 +102,7 @@ class ImageGroupBase(object):
         if path.endswith('/'):
             path = path[:-1]
         if thumbnail:
-            name = 'thumbnail/%s' % name
+            name = '%s/%s' % (Thumbnails.NAME, name)
         if width is None or height is None:
             url = '{path}/{name}'.format(path=path, name=name)
         else:
@@ -289,7 +289,7 @@ class ThumbnailTraverser(object):
         self.request = request
 
     def publishTraverse(self, request, name):
-        if name != 'thumbnail':
+        if name != Thumbnails.NAME:
             raise zope.publisher.interfaces.NotFound(
                 self.context, name, request)
         return zeit.content.image.interfaces.IThumbnails(self.context)
@@ -300,6 +300,7 @@ class Thumbnails(grok.Adapter):
     grok.context(zeit.content.image.interfaces.IRepositoryImageGroup)
     grok.implements(zeit.content.image.interfaces.IThumbnails)
 
+    NAME = 'thumbnails'
     SOURCE_IMAGE_PREFIX = 'thumbnail-source'
     THUMBNAIL_WIDTH = 1000
 

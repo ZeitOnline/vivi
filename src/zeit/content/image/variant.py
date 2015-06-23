@@ -146,8 +146,11 @@ class Variant(object):
                 zeit.content.image.interfaces.IImageGroup(self))
             return thumbnails.source_image.__name__
         if self.max_size is None:
-            return 'thumbnail/%s' % self.name
-        return 'thumbnail/{}__{}'.format(self.name, self.max_size)
+            return '%s/%s' % (
+                zeit.content.image.imagegroup.Thumbnails.NAME, self.name)
+        return '{}/{}__{}'.format(
+            zeit.content.image.imagegroup.Thumbnails.NAME,
+            self.name, self.max_size)
 
 
 class VariantSource(zeit.cms.content.sources.XMLSource):
