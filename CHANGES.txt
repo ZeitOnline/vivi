@@ -4,7 +4,7 @@ zeit.content.image changes
 2.5.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Set zoom and focuspoint of Variant sizes using a rectangular UI. (DEV-827)
 
 
 2.5.1 (2015-06-23)

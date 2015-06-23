@@ -101,6 +101,11 @@
 
             image.addClass('editor');
 
+            image.cropper({
+                aspectRatio: self.model.get('ratio'),
+                zoomable: false
+            });
+
             return image;
         }
     });
@@ -168,7 +173,9 @@
             $('#reset').on('click', function() {
                 self.switch_focus(
                     self.default_model,
-                    new zeit.content.image.browser.EditableVariant(self.default_model)
+                    new zeit.content.image.browser.EditableVariant(
+                        {model: self.default_model}
+                    )
                 );
             });
         },
@@ -182,48 +189,103 @@
 
         render: function() {
             var self = this;
-
             self.$el.append(self.model_view.render().el);
-            self.image = self.$('img');
-
-            self.circle = $('<div class="focuspoint"><div class="circle"></div></div>');
-            self.$el.append(self.circle);
-            self.circle.draggable({
-                containment: self.$el
+            self.cropper_info = self.$('img');
+            self.cropper_info.on('built.cropper', function() {
+                var image = self.$('.cropper-canvas > img').get(0);
+                self.width = image.naturalWidth;
+                self.height = image.naturalHeight;
+                self.ratio = self.width / self.height;
+                self.update();
             });
-
-            $('#slider').slider({
-                min: 1,
-                max: 100,
-                value: self.current_model.get('zoom') * 100
-            });
-
-            $('#slider').on('slidestop', function() {
+            self.cropper_info.on('dragend.cropper', function() {
                 self.save();
             });
-
-            self.update();
         },
 
         save: function() {
-            var self = this;
-            var focus_x = ((self.circle.position().left) / self.image.width());
-            var focus_y = ((self.circle.position().top) / self.image.height());
-            var zoom = $('#slider').slider("value") / 100;
+            var self = this,
+                data = self.cropper_info.cropper('getData'),
+                zoom,
+                focus_x,
+                focus_y;
+
+            zoom = Math.max(
+                data.width / self.width,
+                data.height / self.height
+            );
+
+            // guard against rounding issues
+            if (zoom > 1) {
+                zoom = 1;
+            }
+
+            // rectangle uses full width, i.e. it does not matter where the
+            // focus point is; use 1/2 as default since calculation would fail
+            if (self.width - data.width <= 0) {
+                focus_x = 1 / 2;
+            } else {
+                focus_x = data.x / (self.width - data.width);
+            }
+
+            if (focus_x > 1) {
+                focus_x = 1;
+            }
+
+            // rectangle uses full height, i.e. it does not matter where the
+            // focus point is; use 1/3 as default since calculation would fail
+            if (self.height - data.height <= 0) {
+                focus_y = 1 / 3;
+            } else {
+                focus_y = data.y / (self.height - data.height);
+            }
+
+            if (focus_y > 1) {
+                focus_y = 1;
+            }
+
             self.current_model.save(
                 {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
             ).done(function() {
-                self.update();  // overwrite absolute positioning of focuspoint
+                self.update();
                 zeit.content.image.VARIANTS.trigger('reload');
                 self.notify_status("saved");
             });
         },
 
         update: function() {
-            var self = this;
-            self.circle.css('top', self.current_model.get('focus_y') * 100 + '%');
-            self.circle.css('left', self.current_model.get('focus_x') * 100 + '%');
-            $('#slider').slider("value", self.current_model.get('zoom') * 100);
+            var self = this,
+                ratio = self.current_model.get('ratio'),
+                zoom = self.current_model.get('zoom'),
+                focus_x = self.current_model.get('focus_x'),
+                focus_y = self.current_model.get('focus_y'),
+                width = self.width,
+                height = self.height;
+
+            // adjust width / height according to their ratio,
+            // e.g. square has ratio 1, thus width = height
+            if (ratio > self.ratio) {
+                height = width / ratio;
+            } else {
+                width = height * ratio;
+            }
+
+            // incorporate zoom to have final width / height of rectangle
+            height = height * zoom;
+            width = width * zoom;
+
+            self.cropper_info.cropper(
+                'setAspectRatio',
+                self.current_model.get('ratio')
+            );
+
+            self.cropper_info.cropper('setData', {
+                x: focus_x * (self.width - width),
+                y: focus_y * (self.height - height),
+                width: width,
+                height: height,
+                rotate: 0
+            });
         },
 
         switch_focus: function(model, view) {
