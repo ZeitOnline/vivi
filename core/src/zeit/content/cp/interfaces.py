@@ -345,7 +345,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
                 source=QueryTypeSource(), default='Channel'),
              zope.schema.Choice(
                 title=_('Channel equals'),
-                source=zeit.cms.content.sources.NavigationSource()),
+                source=zeit.cms.content.sources.ChannelSource()),
              zope.schema.Choice(
                  title=_('Subchannel'),
                  source=zeit.cms.content.sources.SubChannelSource(),
