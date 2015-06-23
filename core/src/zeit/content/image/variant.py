@@ -106,6 +106,12 @@ class Variant(object):
 
     @property
     def ratio(self):
+        if self.is_default:
+            image = zeit.content.image.interfaces.IMasterImage(
+                zeit.content.image.interfaces.IImageGroup(self))
+            xratio, yratio = image.getImageSize()
+            return float(xratio) / float(yratio)
+
         if self.aspect_ratio is None:
             return None
 
