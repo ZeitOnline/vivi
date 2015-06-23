@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.47.3 (unreleased)
+2.48.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Revert using default values for both comment metadata properties (BUG-272).
 
 
 2.47.2 (2015-06-23)

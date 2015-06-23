@@ -82,13 +82,11 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 
     commentsAllowed = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['commentsAllowed'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments',
-        use_default=True)
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'comments')
 
     commentSectionEnable = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['commentSectionEnable'],
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread',
-        use_default=True)
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'show_commentthread')
 
     dailyNewsletter = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ICommonMetadata['dailyNewsletter'],
