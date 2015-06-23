@@ -66,5 +66,5 @@ class ImageGroupBrowserTest(zeit.cms.testing.BrowserTestCase):
                 create_image_group_with_master_image()
         b = self.browser
         b.open('http://localhost/++skin++vivi/repository'
-               '/group/thumbnail/square/@@raw')
+               '/group/thumbnails/square/@@raw')
         self.assertEqual('image/jpeg', b.headers['Content-Type'])
