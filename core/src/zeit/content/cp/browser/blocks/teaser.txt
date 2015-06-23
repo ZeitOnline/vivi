@@ -252,7 +252,7 @@ The 450x200 image is used now:
 >>> print browser.contents
 <div ...
        class="teaser-contents action-content-droppable leader">
-  <img src="http://localhost/++skin++cms/repository/image-group/thumbnail/450x200/@@raw" />
+  <img src="http://localhost/++skin++cms/repository/image-group/thumbnails/450x200/@@raw" />
   <div class="teaser-list">
     <div class="teaser">
       <div class="supertitle"></div>
