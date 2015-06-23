@@ -1,7 +1,7 @@
 zeit.push changes
 =================
 
-1.9.2 (unreleased)
+1.9.2 (2015-06-23)
 ------------------
 
 - Add web-based UI for generating a Facebook access token (DEV-767).
