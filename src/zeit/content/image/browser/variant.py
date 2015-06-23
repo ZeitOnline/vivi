@@ -7,10 +7,14 @@ import zope.security.proxy
 class VariantSerializeMixin(object):
 
     def serialize_variant(self, variant):
+        data = {}
+        for field in zeit.content.image.interfaces.IVariant:
+            data[field] = getattr(variant, field, None)
+
         base_url = self.url(zeit.content.image.interfaces.IImageGroup(variant))
-        data = zope.security.proxy.getObject(variant).__dict__.copy()
-        data.pop('__parent__')
-        data['url'] = '%s/%s/raw' % (base_url, variant.relative_image_path)
+        image_url = '%s/%s/raw' % (base_url, variant.relative_image_path)
+        data['url'] = image_url
+
         return data
 
     def deserialize_variant(self, data):
