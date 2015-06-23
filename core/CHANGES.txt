@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.6.23 (unreleased)
+3.6.23 (2015-06-23)
 -------------------
 
 - Styling for z.c.image Variant UI (DEV-798).
