@@ -70,13 +70,14 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(pixels, actual, message)
 
     def test_fits_larger_side_of_mask_to_image_size(self):
-        variant = Variant(focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
+        variant = Variant(
+            id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='1:1')
         image = self.transform.create_variant_image(variant)
         self.assertEqual((8, 8), image.getImageSize())
 
     def test_focus_point_after_crop_has_same_relative_position_as_before(self):
-        variant = Variant(
-            focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=1, aspect_ratio='1:1')
+        variant = Variant(id='square', focus_x=5.0 / 16, focus_y=3.0 / 8,
+                          zoom=1, aspect_ratio='1:1')
         self.assertImage([
             '        ',
             '        ',
@@ -89,8 +90,8 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
         ], self.transform.create_variant_image(variant))
 
     def test_zoom_scales_image_and_respects_focus_point(self):
-        variant = Variant(
-            focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=0.5, aspect_ratio='1:1')
+        variant = Variant(id='square', focus_x=5.0 / 16, focus_y=3.0 / 8,
+                          zoom=0.5, aspect_ratio='1:1')
         self.assertImage([
             '    ',
             ' x  ',
@@ -99,8 +100,8 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
         ], self.transform.create_variant_image(variant))
 
     def test_target_size_repositions_result_inside_variant_ratio(self):
-        variant = Variant(
-            focus_x=5.0 / 16, focus_y=3.0 / 8, zoom=1, aspect_ratio='8:1')
+        variant = Variant(id='wide', focus_x=5.0 / 16, focus_y=3.0 / 8,
+                          zoom=1, aspect_ratio='8:1')
         self.assertImage([
             '  x     ',
             '        ',
