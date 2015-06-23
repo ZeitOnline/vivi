@@ -63,7 +63,7 @@ server:
 And a thumbnail is also scaled on the server:
 
 >>> image.open('http://localhost/++skin++cms/repository/'
-...            '2006/DSC00109_2.JPG/@@thumbnail')
+...            '2006/DSC00109_2.JPG/thumbnail')
 >>> image.headers['content-type']
 'image/jpeg'
 
