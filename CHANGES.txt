@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.5.1 (unreleased)
+2.5.1 (2015-06-23)
 ------------------
 
 - Change name of thumbnail traverser so it does not conflict with the
