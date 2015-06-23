@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.47.2 (unreleased)
+2.47.2 (2015-06-23)
 -------------------
 
 - Use separate config file for channels (DEV-634).
