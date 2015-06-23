@@ -62,7 +62,7 @@ class Variants(grok.Adapter, UserDict.DictMixin):
     def _copy_missing_fields(self, source, target):
         for key in zope.schema.getFieldNames(
                 zeit.content.image.interfaces.IVariant):
-            if hasattr(target, key):
+            if hasattr(target, key) and getattr(target, key) is not None:
                 continue
             if hasattr(source, key):
                 setattr(target, key, getattr(source, key))
