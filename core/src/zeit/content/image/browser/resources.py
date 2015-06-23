@@ -6,9 +6,11 @@ import zeit.cms.browser.resources
 
 lib = Library('zeit.content.image', 'resources')
 Resource('drag-images.js', depends=[zeit.cms.browser.resources.base])
-Resource('variant.css')
+Resource('cropper.js')
+Resource('cropper.css')
+Resource('variant.css', depends=[cropper_css])
 Resource('variant.js', depends=[
-    variant_css, zeit.cms.browser.resources.base, backbone])
+    cropper_js, variant_css, zeit.cms.browser.resources.base, backbone])
 
 test_lib = fanstatic.Library('zeit.content.image.test', 'tests')
 test_variant_js = fanstatic.Resource(

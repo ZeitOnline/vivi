@@ -1,7 +1,8 @@
 #variant-content {
     bottom: 1em;
     position: absolute;
-    right: 34.4%;
+    right: 35%;
+    width: 65%;
     top: 0;
 }
 
@@ -44,6 +45,7 @@ img.preview {
 
 img.editor {
     width: 100%;
+    visibility: hidden;
 }
 
 .circle {
