@@ -25,7 +25,10 @@ class Variants(grok.Adapter, UserDict.DictMixin):
             self._copy_missing_fields(config, variant)
         else:
             variant = VARIANT_SOURCE.factory.find(self.context, key)
+
+        if not variant.is_default:
             self._copy_missing_fields(self.default_variant, variant)
+
         variant.__parent__ = self
         return variant
 
