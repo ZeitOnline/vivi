@@ -82,16 +82,20 @@ class TokenService(grokcore.component.GlobalUtility):
     grokcore.component.implements(ITokenService)
 
     def __init__(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.vgwort')
-        if config:
-            self.tokens = xmlrpclib.ServerProxy(config['claim-token-url'])
-        else:
+        if not self.config:
             log.warning(
                 'No configuration found. Could not set up token service.')
 
+    @property
+    def config(self):
+        return zope.app.appsetup.product.getProductConfiguration('zeit.vgwort')
+
+    # Make mutable by tests.
+    ServerProxy = xmlrpclib.ServerProxy
+
     def claim_token(self):
-        return self.tokens.claim()
+        tokens = self.ServerProxy(self.config['claim-token-url'])
+        return tokens.claim()
 
 
 class Token(zeit.cms.content.dav.DAVPropertiesAdapter):
