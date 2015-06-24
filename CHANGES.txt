@@ -4,7 +4,8 @@ zeit.vgwort changes
 2.2.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make claiming tokens thread-safe (xmlrpclib.ServerProxy isn't, so don't
+  instantiate it globally).
 
 
 2.2.3 (2014-06-05)
