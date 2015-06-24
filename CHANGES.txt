@@ -1,7 +1,7 @@
 zeit.vgwort changes
 ===================
 
-2.2.4 (unreleased)
+2.2.4 (2015-06-24)
 ------------------
 
 - Make claiming tokens thread-safe (xmlrpclib.ServerProxy isn't, so don't
