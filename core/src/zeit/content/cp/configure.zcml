@@ -201,7 +201,7 @@
       />
     <require
       set_schema="zeit.content.cp.interfaces.IRenderedArea"
-      permission="zeit.content.cp.EditAutomatic"
+      permission="zeit.EditContent"
       />
   </class>
 
