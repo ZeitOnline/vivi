@@ -51,7 +51,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
         fields = zope.schema.getFields(zeit.content.image.interfaces.IVariant)
         data = {}
         for key in fields.keys():
-            data[key] = None
+            data[key] = 1
 
         self.request(
             'put', '/repository/group/variants/square', data=json.dumps(data))
@@ -65,9 +65,29 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
             'put', '/repository/group/variants/square',
             data=json.dumps({'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 1.0}))
         transaction.abort()
-        self.assertEqual(0.1, self.group.variants['square']['focus_x'])
-        self.assertEqual(0.2, self.group.variants['square']['focus_y'])
-        self.assertEqual(1.0, self.group.variants['square']['zoom'])
+        self.assertEqual(
+            {'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 1.0},
+            self.group.variants['square'])
+
+    def test_put_variant_returns_error_if_focuspoint_was_set_to_None(self):
+        # Setting focuspoint to None would break Image generation
+        with self.assertRaises(ValueError):
+            self.request(
+                'put', '/repository/group/variants/square',
+                data=json.dumps({'focus_x': None, 'focus_y': None}))
+        transaction.abort()
+        self.assertEqual(
+            {'focus_x': 0.5, 'focus_y': 0.5}, self.group.variants['square'])
+
+    def test_put_variant_returns_error_if_zoom_was_set_to_None(self):
+        # Setting zoom to None would break Image generation
+        with self.assertRaises(ValueError):
+            self.request(
+                'put', '/repository/group/variants/square',
+                data=json.dumps({'zoom': None}))
+        transaction.abort()
+        self.assertEqual(
+            {'focus_x': 0.5, 'focus_y': 0.5}, self.group.variants['square'])
 
 
 class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
