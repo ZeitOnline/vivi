@@ -15,8 +15,8 @@ setup(
     license='BSD',
     namespace_packages=['zeit', 'zeit.content'],
     install_requires=[
-        'ZODB',
         'Pillow',
+        'ZODB',
         'gocept.async',
         'gocept.form',
         'gocept.httpserverlayer',
@@ -24,6 +24,7 @@ setup(
         'gocept.selenium',
         'grokcore.component',
         'js.backbone',
+        'js.cropper',
         'lxml',
         'persistent',
         'pytz',
