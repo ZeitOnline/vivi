@@ -157,14 +157,6 @@
     />
   <grant
     role="zeit.Producer"
-    permission="zeit.content.cp.ViewAutomatic"
-    />
-  <grant
-    role="zeit.Producer"
-    permission="zeit.content.cp.EditAutomatic"
-    />
-  <grant
-    role="zeit.Producer"
     permission="zeit.content.cp.EditArea"
     />
   <grant
@@ -195,16 +187,6 @@
   <grant
     role="zeit.SEO"
     permission="zeit.seo.Edit"
-    />
-
-  <!-- Betatester grants -->
-  <grant
-    role="zeit.Betatester"
-    permission="zeit.content.cp.ViewAutomatic"
-    />
-  <grant
-    role="zeit.Betatester"
-    permission="zeit.content.cp.EditAutomatic"
     />
 
 </configure>
