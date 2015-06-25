@@ -1,4 +1,3 @@
-
 from zeit.cms.asset.browser.form import AssetBase  # Legacy
 from zeit.cms.i18n import MessageFactory as _
 import copy
@@ -62,6 +61,7 @@ class CommonMetadataFormBase(object):
         gocept.form.grouped.RemainingFields(
             _("misc."),
             css_class='column-right'),
+        auto_cp_fields,
         author_fields,
         option_fields,
     )
@@ -72,28 +72,6 @@ class CommonMetadataFormBase(object):
 
     def __init__(self, context, request):
         super(CommonMetadataFormBase, self).__init__(context, request)
-
-        omit_auto_cp = False
-        if not zope.app.appsetup.appsetup.getConfigContext().hasFeature(
-                'zeit.content.cp.automatic'):
-            omit_auto_cp = True
-        elif (zeit.cms.checkout.interfaces.ILocalContent.providedBy(
-                self.context) and not self.request.interaction.checkPermission(
-                    'zeit.content.cp.EditAutomatic', self.context)):
-            # XXX It would be cleaner if we declaratively required the
-            # permission for just the auto-cp fields, instead of this
-            # imperative dance, but since they are part of ICommonMetadata,
-            # that's not easily possible.
-            omit_auto_cp = True
-        if omit_auto_cp:
-            self.form_fields = self.form_fields.omit(
-                'channels', 'lead_candidate')
-        else:
-            self.field_groups = (
-                self.field_groups[:3]
-                + (self.auto_cp_fields,)
-                + self.field_groups[3:])
-
         if not self.for_display:
             # Change the widgets of the teaser fields
             change_field_names = ('teaserText',)

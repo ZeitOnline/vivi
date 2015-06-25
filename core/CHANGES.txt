@@ -1,10 +1,11 @@
 zeit.cms changes
 ================
 
-2.48.1 (unreleased)
+2.49.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove feature toggle ``zeit.content.cp.automatic`` and permission
+  ``zeit.content.cp.View/EditAutomatic`` (DEV-832).
 
 
 2.48.0 (2015-06-23)
