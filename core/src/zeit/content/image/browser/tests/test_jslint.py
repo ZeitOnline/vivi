@@ -5,4 +5,3 @@ class JSLintTest(zeit.cms.testing.JSLintTestCase):
 
     include = ('zeit.content.image.browser:resources',
                'zeit.content.image.browser:tests')
-    exclude = ('cropper.js',)
