@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.5.1 (unreleased)
+2.5.1 (2015-06-25)
 ------------------
 
 - Remove feature toggle ``zeit.content.cp.automatic`` (DEV-832).
