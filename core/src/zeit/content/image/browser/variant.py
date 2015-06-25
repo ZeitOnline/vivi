@@ -20,6 +20,10 @@ class VariantSerializeMixin(object):
     def deserialize_variant(self, data):
         result = {}
         for name in ['focus_x', 'focus_y', 'zoom']:
+            if data[name] is None:
+                raise ValueError(
+                    "Neither focuspoint nor zoom should ever be set to None, "
+                    "since image creation would break.")
             result[name] = data[name]
         return result
 
