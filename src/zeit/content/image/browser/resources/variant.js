@@ -18,6 +18,85 @@
             var self = this,
                 url = self.escape('url');
             return url + '?nocache=' + new Date().getTime();
+        },
+
+        /* Calculate FP and Zoom from offeset and dimension of Cropping UI. */
+        update_from_cropper: function(cropbox, image) {
+            var self = this,
+                zoom,
+                focus_x,
+                focus_y,
+                image_width = image.naturalWidth,
+                image_height = image.naturalHeight;
+
+            zoom = Math.max(
+                cropbox.width / image_width,
+                cropbox.height / image_height
+            );
+
+            // rectangle uses full width, i.e. it does not matter where the
+            // focus point is; use 1/2 as default since calculation would fail
+            // (also check > due to rounding issues of js.cropper)
+            if (cropbox.width >= image_width) {
+                focus_x = 1 / 2;
+            } else {
+                focus_x = cropbox.x / (image_width - cropbox.width);
+            }
+
+            // rectangle uses full height, i.e. it does not matter where the
+            // focus point is; use 1/3 as default since calculation would fail
+            // (also check > due to rounding issues of js.cropper)
+            if (cropbox.height >= image_height) {
+                focus_y = 1 / 3;
+            } else {
+                focus_y = cropbox.y / (image_height - cropbox.height);
+            }
+
+            // guard against rounding issues
+            if (zoom > 1) { zoom = 1; }
+            if (focus_x > 1) { focus_x = 1; }
+            if (focus_y > 1) { focus_y = 1; }
+
+            return self.save(
+                {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
+            );
+        },
+
+        /* Calculate offset and dimension of Cropping UI using FP and Zoom. */
+        calc_cropper_placement: function(image) {
+            var self = this,
+                offset_x,
+                offset_y,
+                width,
+                height,
+                image_width = image.naturalWidth,
+                image_height = image.naturalHeight,
+                image_ratio = image_width / image_height;
+
+            // adjust width / height according to their ratio,
+            // e.g. square has ratio 1, thus width = height
+            if (self.get('ratio') > image_ratio) {
+                height = image_width / self.get('ratio');
+                width = image_width;
+            } else {
+                width = image_height * self.get('ratio');
+                height = image_height;
+            }
+
+            // incorporate zoom to have final width / height of rectangle
+            height = height * self.get('zoom');
+            width = width * self.get('zoom');
+
+            offset_x = self.get('focus_x') * (image_width - width);
+            offset_y = self.get('focus_y') * (image_height - height);
+
+            return {
+                x: offset_x,
+                y: offset_y,
+                width: width,
+                height: height,
+                rotate: 0
+            };
         }
     });
 
@@ -193,63 +272,24 @@
 
         render: function() {
             var self = this;
+
             self.$el.append(self.model_view.render().el);
-            self.cropper_info = self.$('img');
-            self.cropper_info.on('built.cropper', function() {
-                var image = self.$('.cropper-canvas > img').get(0);
-                self.width = image.naturalWidth;
-                self.height = image.naturalHeight;
-                self.ratio = self.width / self.height;
+
+            self.image = self.$('img');
+            self.image.on('built.cropper', function() {
                 self.update();
             });
-            self.cropper_info.on('dragend.cropper', function() {
+            self.image.on('dragend.cropper', function() {
                 self.save();
             });
         },
 
         save: function() {
-            var self = this,
-                data = self.cropper_info.cropper('getData'),
-                zoom,
-                focus_x,
-                focus_y;
+            var self = this;
 
-            zoom = Math.max(
-                data.width / self.width,
-                data.height / self.height
-            );
-
-            // guard against rounding issues
-            if (zoom > 1) {
-                zoom = 1;
-            }
-
-            // rectangle uses full width, i.e. it does not matter where the
-            // focus point is; use 1/2 as default since calculation would fail
-            if (self.width - data.width <= 0) {
-                focus_x = 1 / 2;
-            } else {
-                focus_x = data.x / (self.width - data.width);
-            }
-
-            if (focus_x > 1) {
-                focus_x = 1;
-            }
-
-            // rectangle uses full height, i.e. it does not matter where the
-            // focus point is; use 1/3 as default since calculation would fail
-            if (self.height - data.height <= 0) {
-                focus_y = 1 / 3;
-            } else {
-                focus_y = data.y / (self.height - data.height);
-            }
-
-            if (focus_y > 1) {
-                focus_y = 1;
-            }
-
-            self.current_model.save(
-                {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
+            self.current_model.update_from_cropper(
+                self.image.cropper('getData'),
+                self.image.cropper('getImageData')
             ).done(function() {
                 self.update();
                 zeit.content.image.VARIANTS.trigger('reload');
@@ -258,40 +298,21 @@
         },
 
         update: function() {
-            var self = this,
-                ratio = self.current_model.get('ratio'),
-                zoom = self.current_model.get('zoom'),
-                focus_x = self.current_model.get('focus_x'),
-                focus_y = self.current_model.get('focus_y'),
-                width = self.width,
-                height = self.height;
+            var self = this;
 
-            // adjust width / height according to their ratio,
-            // e.g. square has ratio 1, thus width = height
-            if (ratio > self.ratio) {
-                height = width / ratio;
-            } else {
-                width = height * ratio;
-            }
+            self.image.cropper('crop');
 
-            // incorporate zoom to have final width / height of rectangle
-            height = height * zoom;
-            width = width * zoom;
-
-            self.cropper_info.cropper('crop');
-
-            self.cropper_info.cropper(
+            self.image.cropper(
                 'setAspectRatio',
                 self.current_model.get('ratio')
             );
 
-            self.cropper_info.cropper('setData', {
-                x: focus_x * (self.width - width),
-                y: focus_y * (self.height - height),
-                width: width,
-                height: height,
-                rotate: 0
-            });
+            self.image.cropper(
+                'setData',
+                self.current_model.calc_cropper_placement(
+                    self.image.cropper('getImageData')
+                )
+            );
         },
 
         switch_focus: function(model, view) {
