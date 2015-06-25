@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.24 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove feature toggle ``zeit.content.cp.automatic`` (DEV-832).
 
 
 3.6.23 (2015-06-23)
