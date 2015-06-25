@@ -64,3 +64,11 @@ img.editor {
 .preview.active {
     border: 3px solid red;
 }
+
+/* Cropper has a default background image, which is shown when the *image* is
+   moved rather the crop box. However we only allow to move the box. Sadly, the
+   Canvas is slightly smaller than the Container, thus the background is
+   visible as a "border". So we need to remove it ourselves. */
+.cropper-bg {
+    background-image: none !important;
+}
