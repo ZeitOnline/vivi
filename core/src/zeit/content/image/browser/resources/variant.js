@@ -16,7 +16,7 @@
 
         make_url: function() {
             var self = this,
-                url = self.get('url');
+                url = self.escape('url');
             return url + '?nocache=' + new Date().getTime();
         }
     });
@@ -75,7 +75,7 @@
             // Set max-width defined in config as width to display smaller
             // sizes of a variant as big as allowed.
             if (self.model.has('max_size')) {
-                var size = self.model.get('max_size').split('x');
+                var size = self.model.escape('max_size').split('x');
                 image.width(size[0]);
             }
 
