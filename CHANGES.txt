@@ -5,7 +5,7 @@ zeit.securitypolicy changes
 2.1.11 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove permission ``zeit.content.cp.View/EditAutomatic`` (DEV-832).
 
 
 2.1.10 (2015-06-09)
