@@ -103,7 +103,11 @@
 
             image.cropper({
                 aspectRatio: self.model.get('ratio'),
-                zoomable: false
+                zoomable: false,
+                autoCrop: false,
+                rotatable: false,
+                movable: false,
+                doubleClickToggle: false
             });
 
             return image;
@@ -273,6 +277,8 @@
             // incorporate zoom to have final width / height of rectangle
             height = height * zoom;
             width = width * zoom;
+
+            self.cropper_info.cropper('crop');
 
             self.cropper_info.cropper(
                 'setAspectRatio',
