@@ -10,9 +10,7 @@
 
             // Create temporary DOM
             this.container = $('<div id="variant-inner" style="width: 220px"/>');
-            this.slider = $('<div id="slider"/>');
             $('body').append(this.container);
-            $('body').append(this.slider);
 
             // Mock AJAX calls to return hard coded response
             spyOn($, 'ajax').andCallFake(function (options) {
@@ -46,7 +44,6 @@
 
         afterEach(function () {
             this.container.remove();
-            this.slider.remove();
         });
 
         it("should display circle relative to given focus point", function () {
@@ -64,23 +61,27 @@
                 self.view.circle.css('top', '31px');
                 self.view.circle.trigger('dragstop');
                 expect(spy).toHaveBeenCalledWith(
-                    {"focus_x": 0.25, "focus_y": 0.25, "zoom": 0.3});
+                    {"focus_x": 0.25, "focus_y": 0.25, "zoom": 0.3}
+                );
             });
         });
 
         it("should display stored zoom value on load", function() {
+            var self = this;
             runs(function() {
-                expect($('#slider').slider('value')).toEqual(30);
+                expect(self.view.slider.slider('value')).toEqual(30);
             });
         });
 
         it("should store zoom value on change", function() {
+            var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
-                $('#slider').slider('value', 60);
-                $('#slider').trigger('slidestop');
+                self.view.slider.slider('value', 60);
+                self.view.slider.trigger('slidestop');
                 expect(spy).toHaveBeenCalledWith(
-                    {"focus_x": 0.5, "focus_y": 0.5, "zoom": 0.6});
+                    {"focus_x": 0.5, "focus_y": 0.5, "zoom": 0.6}
+                );
             });
         });
     });
