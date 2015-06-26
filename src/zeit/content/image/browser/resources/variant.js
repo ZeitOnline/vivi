@@ -23,7 +23,7 @@
         },
 
         /* Calculate FP and Zoom from offeset and dimension of Cropping UI. */
-        update_from_cropper: function(cropbox, image) {
+        update_from_rectangle: function(cropbox, image) {
             var self = this,
                 zoom,
                 focus_x,
@@ -65,7 +65,7 @@
         },
 
         /* Calculate offset and dimension of Cropping UI using FP and Zoom. */
-        calc_cropper_placement: function(image) {
+        calc_rectangle_placement: function(image) {
             var self = this,
                 offset_x,
                 offset_y,
@@ -294,7 +294,7 @@
             });
         },
 
-        initialize_cropper: function() {
+        initialize_rectangle: function() {
             var self = this;
             self.image.cropper({
                 aspectRatio: self.current_model.get('ratio'),
@@ -336,7 +336,7 @@
 
         save_using_rectangle: function() {
             var self = this;
-            return self.current_model.update_from_cropper(
+            return self.current_model.update_from_rectangle(
                 self.image.cropper('getData'),
                 self.image.cropper('getImageData')
             );
@@ -370,7 +370,7 @@
 
             self.image.cropper(
                 'setData',
-                self.current_model.calc_cropper_placement(
+                self.current_model.calc_rectangle_placement(
                     self.image.cropper('getImageData')
                 )
             );
@@ -381,7 +381,7 @@
             self.image.cropper('destroy');  // no-op if it doesn't exist
             if (!model.get('is_default')) {
                 $('#slider').hide();
-                self.initialize_cropper();
+                self.initialize_rectangle();
             } else {
                 $('#slider').show();
             }
