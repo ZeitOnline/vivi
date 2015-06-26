@@ -186,15 +186,6 @@
 
             image.addClass('editor');
 
-            image.cropper({
-                aspectRatio: self.model.get('ratio'),
-                zoomable: false,
-                autoCrop: false,
-                rotatable: false,
-                movable: false,
-                doubleClickToggle: false
-            });
-
             return image;
         }
     });
@@ -281,24 +272,81 @@
             var self = this;
             self.$el.append(self.model_view.render().el);
             self.image = self.$('img');
+
+            // Focuspoint and Zoom to edit the main Variant
+            self.circle = $('<div class="focuspoint"><div class="circle"></div></div>');
+            self.$el.append(self.circle);
+            self.circle.draggable({
+                containment: self.$el
+            });
+
+            $('#slider').slider({
+                min: 1,
+                max: 100,
+                value: self.current_model.get('zoom') * 100
+            });
+            $('#slider').on('slidestop', function() {
+                self.save();
+            });
+
+            self.update();
         },
 
         save: function() {
-            var self = this;
+            var self = this,
+                promise;
 
-            self.current_model.update_from_cropper(
-                self.image.cropper('getData'),
-                self.image.cropper('getImageData')
-            ).done(function() {
+            if (self.current_model.get('is_default')) {
+                promise = self.save_using_focuspoint();
+            } else {
+                promise = self.save_using_rectangle();
+            }
+
+            promise.done(function() {
                 self.update();
                 zeit.content.image.VARIANTS.trigger('reload');
                 self.notify_status("saved");
             });
         },
 
+        save_using_focuspoint: function() {
+            var self = this,
+                focus_x = self.circle.position().left / self.image.width(),
+                focus_y = self.circle.position().top / self.image.height(),
+                zoom = $('#slider').slider("value") / 100;
+
+            return self.current_model.save(
+                {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
+            );
+        },
+
+        save_using_rectangle: function() {
+            var self = this;
+            return self.current_model.update_from_cropper(
+                self.image.cropper('getData'),
+                self.image.cropper('getImageData')
+            );
+        },
+
         update: function() {
             var self = this;
 
+            if (self.current_model.get('is_default')) {
+                self.update_focuspoint();
+            } else {
+                self.update_rectangle();
+            }
+        },
+
+        update_focuspoint: function() {
+            var self = this;
+            self.circle.css('top', self.current_model.get('focus_y') * 100 + '%');
+            self.circle.css('left', self.current_model.get('focus_x') * 100 + '%');
+            $('#slider').slider("value", self.current_model.get('zoom') * 100);
+        },
+
+        update_rectangle: function() {
+            var self = this;
             self.image.cropper('crop');
 
             self.image.cropper(
@@ -316,6 +364,14 @@
 
         switch_focus: function(model, view) {
             var self = this;
+            self.image.cropper('destroy');  // no-op if it doesn't exist
+            if (!model.get('is_default')) {
+                $('#slider').hide();
+                self.initialize_cropper();
+            } else {
+                $('#slider').show();
+            }
+
             self.model_view.$el.removeClass('active');
             self.model_view = view;
             self.model_view.$el.addClass('active');
@@ -323,6 +379,18 @@
             self.current_model.fetch().done(function() {
                 self.update();
                 self.notify_status("switched");
+            });
+        },
+
+        initialize_cropper: function() {
+            var self = this;
+            self.image.cropper({
+                aspectRatio: self.current_model.get('ratio'),
+                zoomable: false,
+                autoCrop: false,
+                rotatable: false,
+                movable: false,
+                doubleClickToggle: false
             });
         },
 
