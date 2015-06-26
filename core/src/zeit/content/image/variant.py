@@ -32,36 +32,6 @@ class Variants(grok.Adapter, UserDict.DictMixin):
         variant.__parent__ = self
         return variant
 
-    def get_by_size(self, key):  # XXX Move to ImageGroup
-        """Used by ImageGroup to create Image from Variant"""
-        name, size = key.split('__')
-        candidates = self.get_all_by_name(name)
-        width, height = [int(x) for x in size.split('x')]
-        for variant in candidates:
-            if width <= variant.max_width and height <= variant.max_height:
-                return variant
-        return None
-
-    def get_all_by_name(self, name):  # XXX Move to ImageGroup
-        """Used by ImageGroup to create Image from Variant"""
-        result = [v for v in self.values() if name == v.name]
-        result.sort(key=lambda x: (x.max_width, x.max_height))
-        return result
-
-    def get_by_name(self, name):  # XXX Move to ImageGroup
-        """Used by ImageGroup to create Image from Variant"""
-        variant = self.get_by_size('{name}__{max}x{max}'.format(
-            name=name, max=sys.maxint))
-        if variant is not None:
-            return variant
-        # BBB New ImageGroups must respond to the legacy names (for XSLT).
-        for mapping in LEGACY_VARIANT_SOURCE(self):
-            if mapping['old'] in name:
-                variant = self.get_by_name(mapping['new'])
-                variant.legacy_name = mapping['old']
-                return variant
-        return None
-
     def _copy_missing_fields(self, source, target):
         for key in zope.schema.getFieldNames(
                 zeit.content.image.interfaces.IVariant):

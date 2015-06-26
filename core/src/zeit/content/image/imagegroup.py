@@ -12,10 +12,12 @@ import zeit.cms.interfaces
 import zeit.cms.repository.repository
 import zeit.cms.type
 import zeit.content.image.interfaces
+import zeit.content.image.variant
 import zope.app.container.contained
 import zope.interface
 import zope.location.interfaces
 import zope.security.proxy
+import sys
 
 
 class ImageGroupBase(object):
@@ -44,13 +46,12 @@ class ImageGroupBase(object):
         self._variants = value
 
     def create_variant_image(self, key, source=None):
-        variants = zeit.content.image.interfaces.IVariants(self)
         key = self._verify_signature(key)
         if '__' in key:
-            variant = variants.get_by_size(key)
+            variant = self.get_by_size(key)
             size = [int(x) for x in key.split('__')[1].split('x')]
         else:
-            variant = variants.get_by_name(key)
+            variant = self.get_by_name(key)
             size = None
 
         if variant is None:
@@ -118,6 +119,37 @@ class ImageGroupBase(object):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.content.image')
         return config.get('variant-secret')
+
+    def get_by_size(self, key):
+        """Used by ImageGroup to create Image from Variant"""
+        name, size = key.split('__')
+        candidates = self.get_all_by_name(name)
+        width, height = [int(x) for x in size.split('x')]
+        for variant in candidates:
+            if width <= variant.max_width and height <= variant.max_height:
+                return variant
+        return None
+
+    def get_all_by_name(self, name):
+        """Used by ImageGroup to create Image from Variant"""
+        variants = zeit.content.image.interfaces.IVariants(self)
+        result = [v for v in variants.values() if name == v.name]
+        result.sort(key=lambda x: (x.max_width, x.max_height))
+        return result
+
+    def get_by_name(self, name):
+        """Used by ImageGroup to create Image from Variant"""
+        variant = self.get_by_size('{name}__{max}x{max}'.format(
+            name=name, max=sys.maxint))
+        if variant is not None:
+            return variant
+        # BBB New ImageGroups must respond to the legacy names (for XSLT).
+        for mapping in zeit.content.image.variant.LEGACY_VARIANT_SOURCE(self):
+            if mapping['old'] in name:
+                variant = self.get_by_name(mapping['new'])
+                variant.legacy_name = mapping['old']
+                return variant
+        return None
 
 
 def compute_signature(name, width, height, secret):
