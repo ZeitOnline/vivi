@@ -239,6 +239,8 @@
         el: '#variant-inner',
 
         events: {
+            "built.cropper img.editor": "update",
+            "dragend.cropper img.editor": "save",
             "dragstop .focuspoint": "save"
         },
 
@@ -278,16 +280,8 @@
 
         render: function() {
             var self = this;
-
             self.$el.append(self.model_view.render().el);
-
             self.image = self.$('img');
-            self.image.on('built.cropper', function() {
-                self.update();
-            });
-            self.image.on('dragend.cropper', function() {
-                self.save();
-            });
         },
 
         save: function() {
