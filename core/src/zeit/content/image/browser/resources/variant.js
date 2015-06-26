@@ -233,7 +233,7 @@
             "built.cropper img.editor": "update",
             "dragend.cropper img.editor": "save",
             "dragstop .focuspoint": "save",
-            "slidestop .slider": "save"
+            "slidestop .zoom-bar": "save"
         },
 
         initialize: function() {
@@ -277,11 +277,11 @@
                     $('<div class="focuspoint"></div>').append(
                         $('<div class="circle"></div>')
                     )
-                ).append(self.image).add('<div class="slider"></div>')
+                ).append(self.image).add('<div class="zoom-bar"></div>')
             );
 
-            self.circle = self.$('.focuspoint');
-            self.slider = self.$('.slider');
+            self.focuspoint = self.$('.focuspoint');
+            self.zoom_bar = self.$('.zoom-bar');
 
             self.initialize_focuspoint();
             self.update();
@@ -289,11 +289,11 @@
 
         initialize_focuspoint: function() {
             var self = this;
-            self.circle.draggable({
+            self.focuspoint.draggable({
                 containment: self.$('.image-container')
             });
 
-            self.slider.slider({
+            self.zoom_bar.slider({
                 min: 1,
                 max: 100,
                 value: self.current_model.get('zoom') * 100
@@ -331,9 +331,9 @@
 
         save_using_focuspoint: function() {
             var self = this,
-                focus_x = self.circle.position().left / self.image.width(),
-                focus_y = self.circle.position().top / self.image.height(),
-                zoom = self.slider.slider("value") / 100;
+                focus_x = self.focuspoint.position().left / self.image.width(),
+                focus_y = self.focuspoint.position().top / self.image.height(),
+                zoom = self.zoom_bar.slider("value") / 100;
 
             return self.current_model.save(
                 {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
@@ -360,9 +360,9 @@
 
         update_focuspoint: function() {
             var self = this;
-            self.circle.css('top', self.current_model.get('focus_y') * 100 + '%');
-            self.circle.css('left', self.current_model.get('focus_x') * 100 + '%');
-            self.slider.slider("value", self.current_model.get('zoom') * 100);
+            self.focuspoint.css('top', self.current_model.get('focus_y') * 100 + '%');
+            self.focuspoint.css('left', self.current_model.get('focus_x') * 100 + '%');
+            self.zoom_bar.slider("value", self.current_model.get('zoom') * 100);
         },
 
         update_rectangle: function() {
@@ -386,10 +386,10 @@
             var self = this;
             self.image.cropper('destroy');  // no-op if it doesn't exist
             if (!model.get('is_default')) {
-                self.slider.hide();
+                self.zoom_bar.hide();
                 self.initialize_rectangle();
             } else {
-                self.slider.show();
+                self.zoom_bar.show();
             }
 
             self.model_view.$el.removeClass('active');

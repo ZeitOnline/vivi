@@ -12,7 +12,7 @@
     width: 100%;
 }
 
-.slider {
+.zoom-bar {
     width: 100%;
     background-image: url("slider-bar.gif");
     background-repeat: repeat-x;
@@ -21,7 +21,7 @@
     cursor: pointer;
 }
 
-.slider .ui-slider-handle {
+.zoom-bar .ui-slider-handle {
     background-image: url("slider-handle.gif");
     background-repeat: no-repeat;
     background-color: transparent;

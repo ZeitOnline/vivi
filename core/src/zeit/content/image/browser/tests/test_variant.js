@@ -49,7 +49,7 @@
         it("should display circle relative to given focus point", function () {
             var self = this;
             runs(function() {
-                expect(self.view.circle.position()).toEqual({left: 110, top: 62});
+                expect(self.view.focuspoint.position()).toEqual({left: 110, top: 62});
             });
         });
 
@@ -57,9 +57,9 @@
             var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
-                self.view.circle.css('left', '55px');
-                self.view.circle.css('top', '31px');
-                self.view.circle.trigger('dragstop');
+                self.view.focuspoint.css('left', '55px');
+                self.view.focuspoint.css('top', '31px');
+                self.view.focuspoint.trigger('dragstop');
                 expect(spy).toHaveBeenCalledWith(
                     {"focus_x": 0.25, "focus_y": 0.25, "zoom": 0.3}
                 );
@@ -69,7 +69,7 @@
         it("should display stored zoom value on load", function() {
             var self = this;
             runs(function() {
-                expect(self.view.slider.slider('value')).toEqual(30);
+                expect(self.view.zoom_bar.slider('value')).toEqual(30);
             });
         });
 
@@ -77,8 +77,8 @@
             var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
-                self.view.slider.slider('value', 60);
-                self.view.slider.trigger('slidestop');
+                self.view.zoom_bar.slider('value', 60);
+                self.view.zoom_bar.trigger('slidestop');
                 expect(spy).toHaveBeenCalledWith(
                     {"focus_x": 0.5, "focus_y": 0.5, "zoom": 0.6}
                 );
