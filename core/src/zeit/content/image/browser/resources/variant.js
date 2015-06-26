@@ -272,8 +272,12 @@
             var self = this;
             self.$el.append(self.model_view.render().el);
             self.image = self.$('img');
+            self.initialize_focuspoint();
+            self.update();
+        },
 
-            // Focuspoint and Zoom to edit the main Variant
+        initialize_focuspoint: function() {
+            var self = this;
             self.circle = $('<div class="focuspoint"><div class="circle"></div></div>');
             self.$el.append(self.circle);
             self.circle.draggable({
@@ -288,8 +292,18 @@
             $('#slider').on('slidestop', function() {
                 self.save();
             });
+        },
 
-            self.update();
+        initialize_cropper: function() {
+            var self = this;
+            self.image.cropper({
+                aspectRatio: self.current_model.get('ratio'),
+                zoomable: false,
+                autoCrop: false,
+                rotatable: false,
+                movable: false,
+                doubleClickToggle: false
+            });
         },
 
         save: function() {
@@ -379,18 +393,6 @@
             self.current_model.fetch().done(function() {
                 self.update();
                 self.notify_status("switched");
-            });
-        },
-
-        initialize_cropper: function() {
-            var self = this;
-            self.image.cropper({
-                aspectRatio: self.current_model.get('ratio'),
-                zoomable: false,
-                autoCrop: false,
-                rotatable: false,
-                movable: false,
-                doubleClickToggle: false
             });
         },
 
