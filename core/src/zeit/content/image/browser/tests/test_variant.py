@@ -95,7 +95,6 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
     layer = zeit.content.image.testing.WEBDRIVER_LAYER
     window_width = 1400  # The "Variants" tab needs to fit in and be clickable.
 
-    @unittest.skip("Does not work with new UI, but old UI will be back soon")
     def test_integration(self):
         """Open Image group and change settings of master and a variant."""
         s = self.selenium
@@ -115,8 +114,7 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
         s.waitForCssCount('css=.switched', 0)
 
         # change settings for cinema-small
-        s.dragAndDrop('css=.ui-slider-handle', '-50,0')
-        s.dragAndDrop('css=.focuspoint', '50,50')
+        s.dragAndDrop('css=.cropper-point.point-nw', '50,50')
         s.waitForCssCount('css=.saved', 1)
         s.waitForCssCount('css=.saved', 0)
 
@@ -147,6 +145,5 @@ class VariantJasmineTestCase(gocept.jasmine.jasmine.TestCase):
     layer = gocept.jasmine.jasmine.get_layer(VariantApp())
     level = 2
 
-    @unittest.skip("Does not work with new UI, but old UI will be back soon")
     def test_all_jasmine_unit_tests_run_successfully(self):
         self.run_jasmine()

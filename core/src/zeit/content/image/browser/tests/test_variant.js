@@ -21,6 +21,7 @@
                         focus_x: 0.5,
                         focus_y: 0.5,
                         zoom: 0.3,
+                        is_default: true,
                         url: '/fanstatic/zeit.content.image.test/master_image.jpg'
                     };
                 d.resolve(response);
