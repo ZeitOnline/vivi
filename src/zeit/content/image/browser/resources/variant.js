@@ -253,7 +253,6 @@
             self.model_view = new zeit.content.image.browser.EditableVariant(
                 {model: self.current_model}
             );
-            self.model_view.img_css_class = 'editor';
 
             self.model_view.on('render', function() {
                 self.trigger('render');
