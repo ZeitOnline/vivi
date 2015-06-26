@@ -75,22 +75,23 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertIn('thumbnail-source-master-image.jpg', self.group)
 
     def test_can_access_small_variant_via_name_and_size(self):
-        variant = self.group.get_by_size('cinema__200x100')
+        variant = self.group.get_variant_by_size('cinema__200x100')
         self.assertEqual('cinema-small', variant.id)
 
     def test_defaults_to_variant_without_size_limitation_if_size_too_big(self):
-        variant = self.group.get_by_size('cinema__9999x9999')
+        variant = self.group.get_variant_by_size('cinema__9999x9999')
         self.assertEqual('cinema-large', variant.id)
 
     def test_invalid_name_returns_none(self):
         self.assertEqual(
-            None, self.group.get_by_size('foobarbaz__9999x9999'))
+            None, self.group.get_variant_by_size('foobarbaz__9999x9999'))
 
     def test_no_size_matches_returns_none(self):
         from zeit.content.image.variant import Variants, Variant
         with mock.patch.object(Variants, 'values', return_value=[
                 Variant(name='foo', id='small', max_size='100x100')]):
-            self.assertEqual(None, self.group.get_by_size('foo__9999x9999'))
+            self.assertEqual(
+                None, self.group.get_variant_by_size('foo__9999x9999'))
 
 
 class SpoofProtectionTest(zeit.cms.testing.FunctionalTestCase):

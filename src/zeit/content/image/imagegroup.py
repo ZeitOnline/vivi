@@ -45,17 +45,22 @@ class ImageGroupBase(object):
     def variants(self, value):
         self._variants = value
 
-    def create_variant_image(self, key, source=None):
-        key = self._verify_signature(key)
-        if '__' in key:
-            variant = self.get_by_size(key)
-            size = [int(x) for x in key.split('__')[1].split('x')]
-        else:
-            variant = self.get_by_name(key)
-            size = None
+    @property
+    def _variant_secret(self):
+        """Secret for Spoof Protection."""
+        config = zope.app.appsetup.product.getProductConfiguration(
+            'zeit.content.image')
+        return config.get('variant-secret')
 
-        if variant is None:
-            raise KeyError(key)
+    def create_variant_image(self, key, source=None):
+        """Retrieve Variant and create an image according to options in URL.
+
+        See ImageGroup.__getitem__ for allowed URLs.
+
+        """
+        key = self._verify_signature(key)
+        size = self.get_variant_size(key)
+        variant = self.get_variant_by_key(key)
 
         if source is None:
             source = zeit.content.image.interfaces.IMasterImage(self, None)
@@ -78,7 +83,86 @@ class ImageGroupBase(object):
         image.__parent__ = self
         return image
 
+    def get_variant_size(self, key):
+        """Keys look like `square_20x20`. Retrieve size as [20,20] or None"""
+        if '__' in key:
+            return [int(x) for x in key.split('__')[1].split('x')]
+        else:
+            return None
+
+    def get_variant_by_key(self, key):
+        """Retrieve Variant by using as much information as given in key."""
+        if '__' in key:
+            variant = self.get_variant_by_size(key)
+        else:
+            variant = self.get_variant_by_name(key)
+
+        if variant is None:
+            raise KeyError(key)
+
+        return variant
+
+    def get_variant_by_name(self, name):
+        """Select the biggest Variant among those with the given name.
+
+        The biggest Variant is the one that has no max-limit given or the
+        biggest max-limit, if all Variants have a max-limit set.
+
+        """
+        variant = self.get_variant_by_size('{name}__{max}x{max}'.format(
+            name=name, max=sys.maxint))
+        if variant is not None:
+            return variant
+        # BBB New ImageGroups must respond to the legacy names (for XSLT).
+        for mapping in zeit.content.image.variant.LEGACY_VARIANT_SOURCE(self):
+            if mapping['old'] in name:
+                variant = self.get_variant_by_name(mapping['new'])
+                variant.legacy_name = mapping['old']
+                return variant
+        return None
+
+    def get_variant_by_size(self, key):
+        """Select the Variant that has a matching name and matching size.
+
+        The size does not need to be an exact fit. This method will try to find
+        a Variant whose max-size is as small as possible, but bigger or equal
+        than the size given in the key.
+
+        """
+        name, size = key.split('__')
+        candidates = self.get_all_variants_with_name(name)
+        width, height = [int(x) for x in size.split('x')]
+        for variant in candidates:
+            if width <= variant.max_width and height <= variant.max_height:
+                return variant
+        return None
+
+    def get_all_variants_with_name(self, name):
+        """Return all Variants with a matching name, ordered by size."""
+        variants = zeit.content.image.interfaces.IVariants(self)
+        result = [v for v in variants.values() if name == v.name]
+        result.sort(key=lambda x: (x.max_width, x.max_height))
+        return result
+
+    def variant_url(self, name, width=None, height=None, thumbnail=False):
+        """Helper method to create URLs to Variant images."""
+        path = urlparse.urlparse(self.uniqueId).path
+        if path.endswith('/'):
+            path = path[:-1]
+        if thumbnail:
+            name = '%s/%s' % (Thumbnails.NAME, name)
+        if width is None or height is None:
+            url = '{path}/{name}'.format(path=path, name=name)
+        else:
+            url = '{path}/{name}__{width}x{height}'.format(
+                path=path, name=name, width=width, height=height)
+        if self._variant_secret:
+            url += '__{signature}'.format(signature=compute_signature(
+                name, width, height, self._variant_secret))
+        return url
+
     def _verify_signature(self, key):
+        """Verification for Spoof Protection."""
         if not self._variant_secret:
             return key
         try:
@@ -97,59 +181,6 @@ class ImageGroupBase(object):
         except:
             pass
         raise KeyError(key)
-
-    def variant_url(self, name, width=None, height=None, thumbnail=False):
-        path = urlparse.urlparse(self.uniqueId).path
-        if path.endswith('/'):
-            path = path[:-1]
-        if thumbnail:
-            name = '%s/%s' % (Thumbnails.NAME, name)
-        if width is None or height is None:
-            url = '{path}/{name}'.format(path=path, name=name)
-        else:
-            url = '{path}/{name}__{width}x{height}'.format(
-                path=path, name=name, width=width, height=height)
-        if self._variant_secret:
-            url += '__{signature}'.format(signature=compute_signature(
-                name, width, height, self._variant_secret))
-        return url
-
-    @property
-    def _variant_secret(self):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            'zeit.content.image')
-        return config.get('variant-secret')
-
-    def get_by_size(self, key):
-        """Used by ImageGroup to create Image from Variant"""
-        name, size = key.split('__')
-        candidates = self.get_all_by_name(name)
-        width, height = [int(x) for x in size.split('x')]
-        for variant in candidates:
-            if width <= variant.max_width and height <= variant.max_height:
-                return variant
-        return None
-
-    def get_all_by_name(self, name):
-        """Used by ImageGroup to create Image from Variant"""
-        variants = zeit.content.image.interfaces.IVariants(self)
-        result = [v for v in variants.values() if name == v.name]
-        result.sort(key=lambda x: (x.max_width, x.max_height))
-        return result
-
-    def get_by_name(self, name):
-        """Used by ImageGroup to create Image from Variant"""
-        variant = self.get_by_size('{name}__{max}x{max}'.format(
-            name=name, max=sys.maxint))
-        if variant is not None:
-            return variant
-        # BBB New ImageGroups must respond to the legacy names (for XSLT).
-        for mapping in zeit.content.image.variant.LEGACY_VARIANT_SOURCE(self):
-            if mapping['old'] in name:
-                variant = self.get_by_name(mapping['new'])
-                variant.legacy_name = mapping['old']
-                return variant
-        return None
 
 
 def compute_signature(name, width, height, secret):
