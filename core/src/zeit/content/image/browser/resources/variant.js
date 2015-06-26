@@ -250,7 +250,11 @@
                 self.trigger('render');
             });
 
-            self.listenTo(zeit.content.image.VARIANTS, 'switch-focus', self.switch_focus);
+            self.listenTo(
+                zeit.content.image.VARIANTS,
+                'switch-focus',
+                self.switch_focus
+            );
 
             $('#reset').on('click', function() {
                 self.switch_focus(
@@ -360,9 +364,18 @@
 
         update_focuspoint: function() {
             var self = this;
-            self.focuspoint.css('top', self.current_model.get('focus_y') * 100 + '%');
-            self.focuspoint.css('left', self.current_model.get('focus_x') * 100 + '%');
-            self.zoom_bar.slider("value", self.current_model.get('zoom') * 100);
+            self.focuspoint.css(
+                'top',
+                self.current_model.get('focus_y') * 100 + '%'
+            );
+            self.focuspoint.css(
+                'left',
+                self.current_model.get('focus_x') * 100 + '%'
+            );
+            self.zoom_bar.slider(
+                "value",
+                self.current_model.get('zoom') * 100
+            );
         },
 
         update_rectangle: function() {
