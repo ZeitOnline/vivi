@@ -9,7 +9,9 @@
     zeit.cms.declare_namespace('zeit.content.image.browser');
 
 
-    /* MODELS */
+    /* ===================================================================== */
+    /* ============================= MODELS ================================ */
+    /* ===================================================================== */
 
     zeit.content.image.Variant = Backbone.Model.extend({
         urlRoot: window.context_url + '/variants',
@@ -112,7 +114,9 @@
     zeit.content.image.VARIANTS = new zeit.content.image.VariantList();
 
 
-    /* VIEWS */
+    /* ===================================================================== */
+    /* ============================== VIEWS ================================ */
+    /* ===================================================================== */
 
     var AbstractVariant = Backbone.View.extend({
 
@@ -143,6 +147,7 @@
         }
     });
 
+    /* PreviewVariant is used by VariantList only. */
     zeit.content.image.browser.PreviewVariant = AbstractVariant.extend({
 
         create_image: function() {
@@ -172,6 +177,7 @@
     });
 
 
+    /* EditableVariant is used by VariantEditor only. */
     zeit.content.image.browser.EditableVariant = AbstractVariant.extend({
 
         create_image: function() {
