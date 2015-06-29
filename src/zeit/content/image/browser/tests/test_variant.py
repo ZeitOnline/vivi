@@ -102,6 +102,9 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
         s.click('link=Variants')
         s.waitForCssCount('css=#variant-content', 1)  # wait for tab to load
 
+        # test that descriptive name is displayed near image
+        s.assertTextPresent('Vollbreit (L)')
+
         # change default
         s.dragAndDrop('css=.ui-slider-handle', '-50,0')
         s.dragAndDrop('css=.focuspoint', '50,50')
