@@ -124,7 +124,7 @@
             var self = this;
             self.image = self.create_image();
 
-            // Replace default DIV element with img as rewire events.
+            // Replace default DIV element with img and rewire events.
             self.$el.replaceWith(self.image);
             self.setElement(self.image);
 
