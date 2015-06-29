@@ -218,7 +218,7 @@
         initialize: function() {
             this.listenTo(zeit.content.image.VARIANTS, 'reset', this.reset);
             this.listenTo(zeit.content.image.VARIANTS, 'reload', this.reload);
-            this.model_views = [];
+            this.model_views = {};
         },
 
         reset: function() {
@@ -229,15 +229,22 @@
                 var view = new zeit.content.image.browser.PreviewVariant(
                     {model: variant}
                 );
-                self.model_views.push(view);
+                self.model_views[variant.id] = view;
                 self.$el.append(view.render().el);
             });
         },
 
-        reload: function() {
+        reload: function(variant) {
             // Only update src attribute of images.
             var self = this;
-            $(self.model_views).each(function(index, view) {
+
+            if (!variant.get('is_default')) {
+                // only update the variant that was changed
+                self.model_views[variant.id].update_image();
+                return;
+            }
+
+            $.each(self.model_views, function(id, view) {
                 view.update_image();
             });
         }
@@ -348,7 +355,10 @@
 
             promise.done(function() {
                 self.update();
-                zeit.content.image.VARIANTS.trigger('reload');
+                zeit.content.image.VARIANTS.trigger(
+                    'reload',
+                    self.current_model
+                );
                 self.notify_status("saved");
             });
         },
