@@ -6,6 +6,9 @@
     top: 0;
 }
 
+/* Do not add border, padding or margin to child elements nor set box-sizing to
+   border-box, since any of those changes will screw up the calculation of the
+   focuspoint. */
 #variant-inner > .image-container {
     position: relative;
     display: inline-block;
@@ -45,6 +48,8 @@
 img.preview {
     max-width: 100%;
     display: block;
+    box-sizing: border-box;
+    border: 1px solid black;
 }
 
 img.editor {
@@ -65,7 +70,7 @@ img.editor {
 }
 
 .preview-container.active > .preview {
-    border: 3px solid red;
+    border: 1px solid red;
 }
 
 /* Cropper has a default background image, which is shown when the *image* is
