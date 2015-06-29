@@ -120,17 +120,6 @@
 
     var AbstractVariant = Backbone.View.extend({
 
-        render: function() {
-            var self = this;
-            self.image = self.create_image();
-
-            // Replace default DIV element with img and rewire events.
-            self.$el.replaceWith(self.image);
-            self.setElement(self.image);
-
-            return self;
-        },
-
         create_image: function() {
             var self = this,
                 image = $('<img/>');
@@ -149,6 +138,26 @@
 
     /* PreviewVariant is used by VariantList only. */
     zeit.content.image.browser.PreviewVariant = AbstractVariant.extend({
+
+        render: function() {
+            var self = this,
+                name,
+                image = self.create_image();
+
+            if (self.model.has('display_name')) {
+                name = self.model.escape('display_name');
+            } else {
+                name = self.model.escape('id');
+            }
+
+            self.$el.addClass('preview-container');
+            self.$el.append(
+                $('<span class="preview-title">' + name + '</span>')
+            );
+            self.$el.append(image);
+
+            return self;
+        },
 
         create_image: function() {
             var self = this,
@@ -172,13 +181,24 @@
         },
 
         update_image: function() {
-            this.$el.attr('src', this.model.make_url());
+            this.$('img').attr('src', this.model.make_url());
         }
     });
 
 
     /* EditableVariant is used by VariantEditor only. */
     zeit.content.image.browser.EditableVariant = AbstractVariant.extend({
+
+        render: function() {
+            var self = this,
+                image = self.create_image();
+
+            // Replace default DIV element with img and rewire events.
+            self.$el.replaceWith(image);
+            self.setElement(image);
+
+            return self;
+        },
 
         create_image: function() {
             var self = this,
