@@ -18,6 +18,9 @@ var show_matching_field = function(container, current_type) {
 
 $(document).bind('fragment-ready', function(event) {
     var type_select = $('.fieldname-automatic_type select', event.__target);
+    if (! type_select.length) {
+        return;
+    }
     show_matching_field(event.__target, type_select.val());
     type_select.on(
         'change', function() {
