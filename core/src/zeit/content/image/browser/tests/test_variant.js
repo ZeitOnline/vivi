@@ -69,7 +69,9 @@
         it("should display stored zoom value on load", function() {
             var self = this;
             runs(function() {
-                expect(self.view.zoom_bar.slider('value')).toEqual(30);
+                // Since we want to inverse the default zoom-bar behaviour of
+                // jqueryui, we also must expect the inverse value, i.e. 100-X
+                expect(self.view.zoom_bar.slider('value')).toEqual(100 - 30);
             });
         });
 
@@ -77,7 +79,9 @@
             var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
-                self.view.zoom_bar.slider('value', 60);
+                // Since we want to inverse the default zoom-bar behaviour of
+                // jqueryui, we also must set the inverse value, i.e. 100-X
+                self.view.zoom_bar.slider('value', 100 - 60);
                 self.view.zoom_bar.trigger('slidestop');
                 expect(spy).toHaveBeenCalledWith(
                     {"focus_x": 0.5, "focus_y": 0.5, "zoom": 0.6}

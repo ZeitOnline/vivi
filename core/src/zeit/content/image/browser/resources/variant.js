@@ -325,9 +325,10 @@
             });
 
             self.zoom_bar.slider({
-                min: 1,
-                max: 100,
-                value: self.current_model.get('zoom') * 100,
+                step: 5,
+                min: 0,
+                max: 75,
+                value: 100 - self.current_model.get('zoom') * 100,
                 orientation: 'vertical'
             });
         },
@@ -368,7 +369,7 @@
             var self = this,
                 focus_x = self.focuspoint.position().left / self.image.width(),
                 focus_y = self.focuspoint.position().top / self.image.height(),
-                zoom = self.zoom_bar.slider("value") / 100;
+                zoom = (100 - self.zoom_bar.slider("value")) / 100;
 
             return self.current_model.save(
                 {"focus_x": focus_x, "focus_y": focus_y, "zoom": zoom}
@@ -405,7 +406,7 @@
             );
             self.zoom_bar.slider(
                 "value",
-                self.current_model.get('zoom') * 100
+                100 - self.current_model.get('zoom') * 100
             );
         },
 
