@@ -2,7 +2,6 @@ from __future__ import print_function
 from zeit.cms.content.interfaces import WRITEABLE_LIVE
 import ZODB.POSException
 import datetime
-import gocept.async
 import gocept.runner
 import grokcore.component
 import logging
@@ -11,6 +10,7 @@ import pytz
 import sys
 import tempfile
 import zc.lockfile
+import zeit.cms.async
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -84,7 +84,7 @@ def report_new_documents():
         lock.close()
 
 
-@gocept.async.function(u'events')
+@zeit.cms.async.function()
 def async_report(context):
     report(context)
 
