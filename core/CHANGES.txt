@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.49.1 (unreleased)
+2.50.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make taskprocessor queue name for async functions configurable (DEV-816).
 
 
 2.49.0 (2015-06-25)

@@ -198,6 +198,8 @@ cms_product_config = string.Template("""\
   whitelist-url file://${base}/tagging/tests/whitelist.xml
   keyword-configuration file://${base}/tagging/tests/keywords_config.xml
   breadcrumbs-use-common-metadata true
+
+  task-queue-async events
 </product-config>
 """).substitute(
     base=pkg_resources.resource_filename(__name__, ''))

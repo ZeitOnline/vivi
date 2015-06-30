@@ -7,7 +7,8 @@ import zope.component
 import zope.interface
 
 
-ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml')
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
+    'ftesting.zcml', product_config=zeit.cms.testing.cms_product_config)
 
 
 class SectionLayer(plone.testing.Layer):

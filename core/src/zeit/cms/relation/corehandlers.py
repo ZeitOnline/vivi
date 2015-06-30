@@ -25,7 +25,7 @@ def update_referencing_objects_handler(context, event):
         update_referencing_objects(context)
 
 
-@gocept.async.function('events')
+@zeit.cms.async.function()
 def update_referencing_objects(context):
     relations = zope.component.getUtility(
         zeit.cms.relation.interfaces.IRelations)
