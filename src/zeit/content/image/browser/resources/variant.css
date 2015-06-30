@@ -57,12 +57,11 @@ img.editor {
 }
 
 .circle {
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    margin-top: -25px;
-    margin-left: -25px;
-    background-color: red;
+    width: 75px;
+    height: 75px;
+    margin-top: -37.5px;
+    margin-left: -37.5px;
+    background-image: url("crosshair.png");
 }
 
 .focuspoint {
