@@ -327,7 +327,8 @@
             self.zoom_bar.slider({
                 min: 1,
                 max: 100,
-                value: self.current_model.get('zoom') * 100
+                value: self.current_model.get('zoom') * 100,
+                orientation: 'vertical'
             });
         },
 

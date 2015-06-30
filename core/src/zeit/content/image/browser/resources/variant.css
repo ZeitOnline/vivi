@@ -6,19 +6,33 @@
     top: 0;
 }
 
-/* Do not add border, padding or margin to child elements nor set box-sizing to
-   border-box, since any of those changes will screw up the calculation of the
-   focuspoint. */
-#variant-inner > .image-container {
-    position: relative;
-    display: inline-block;
-    width: 100%;
+/* Container leaves 15px padding to fit in zoom bar, which has width of 15px */
+#variant-inner {
+    padding-right: 15px;
 }
 
-.zoom-bar {
+/* WARNING: Do not add border, padding or margin to child elements nor set
+   box-sizing to border-box, since any of those changes will screw up the
+   calculation of the focuspoint. */
+#variant-inner > .image-container {
     width: 100%;
+    float: left;
+    position: relative;
+}
+
+/* To float zoom bar aside image-container, we define it with effective width
+   of 0px = 15px (width) + -15px (margin-right). Thus it can always fit beside
+   another content. Since parent leaves padding of 15px, this is where the zoom
+   bar fits in. */
+.zoom-bar {
+    margin-top: 100px;
+    margin-right: -15px;
+    width: 15px;
+    height: 300px;
+    float: right;
+
     background-image: url("slider-bar.gif");
-    background-repeat: repeat-x;
+    background-repeat: repeat-y;
     background-color: transparent;
     border: none;
     cursor: pointer;
@@ -30,6 +44,7 @@
     background-color: transparent;
     border: none;
     cursor: pointer;
+    left: 0;
 }
 
 #variant-preview {
