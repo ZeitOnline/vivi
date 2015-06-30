@@ -1,7 +1,11 @@
 import gocept.async
+import logging
 import martian
 import sys
 import zope.app.appsetup.product
+
+
+log = logging.getLogger(__name__)
 
 
 def function(queue=None):
@@ -30,7 +34,11 @@ class GlobalAsyncFunctionsGrokker(martian.GlobalGrokker):
         for func, queue in functions:
             if queue is None:
                 cfg = zope.app.appsetup.product.getProductConfiguration(
-                    'zeit.cms')
-                queue = cfg['task-queue-async']
+                    'zeit.cms') or {}
+                queue = cfg.get('task-queue-async', '')
+                if not queue:
+                    # Should only happen for i18nextract.
+                    log.warning(
+                        'Missing product config zeit.cms:task-queue-async')
             setattr(module, func.__name__, gocept.async.function(queue)(func))
         return True
