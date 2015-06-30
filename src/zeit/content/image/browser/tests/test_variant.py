@@ -106,7 +106,7 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
         s.assertTextPresent('Vollbreit (L)')
 
         # change default
-        s.dragAndDrop('css=.ui-slider-handle', '-50,0')
+        s.dragAndDrop('css=.ui-slider-handle', '0,50')
         s.dragAndDrop('css=.focuspoint', '50,50')
         s.waitForCssCount('css=.saved', 1)
         s.waitForCssCount('css=.saved', 0)
