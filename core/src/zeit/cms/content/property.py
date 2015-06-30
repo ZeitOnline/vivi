@@ -1,4 +1,3 @@
-import grokcore.component as grok
 import lxml.etree
 import lxml.objectify
 import sys
@@ -12,19 +11,23 @@ import zope.schema.interfaces
 class ObjectPathProperty(object):
     """Property which is stored in an XML tree."""
 
-    def __init__(self, path, field=None):
+    def __init__(self, path, field=None, use_default=False):
         if path is None:
             # This is the root itself.
             self.path = None
         else:
             self.path = lxml.objectify.ObjectPath(path)
         self.field = field
+        self.use_default = use_default
 
     def __get__(self, instance, class_):
         node = self.getNode(instance)
         if node is None:
             if self.field:
-                return self.field.missing_value
+                if self.use_default:
+                    return self.field.default
+                else:
+                    return self.field.missing_value
             else:
                 return None
         if zope.schema.interfaces.IFromUnicode.providedBy(self.field):

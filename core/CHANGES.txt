@@ -1,11 +1,13 @@
 zeit.cms changes
 ================
 
-2.50.1 (unreleased)
+2.51.0 (unreleased)
 -------------------
 
 - Set default channel to ressort for all content types, not just articles
   (DEV-833).
+
+- Add ``use_default`` parameter to ObjectPathProperty.
 
 
 2.50.0 (2015-06-30)

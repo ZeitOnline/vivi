@@ -97,6 +97,15 @@ validation:
 >>> prop.__get__(content, None)
 1234
 
+We can also get the field's default value instead of the mssing value when the
+XML is empty:
+
+>>> prop = ObjectPathProperty(
+...     '.b', zope.schema.TextLine(default=u'foo'), use_default=True)
+>>> content.xml.b = None
+>>> prop.__get__(content, None)
+u'foo'
+
 
 Arbitrary Element as `xml`
 --------------------------
