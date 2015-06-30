@@ -4,7 +4,8 @@ zeit.cms changes
 2.50.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Set default channel to ressort for all content types, not just articles
+  (DEV-833).
 
 
 2.50.0 (2015-06-30)

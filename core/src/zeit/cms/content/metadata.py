@@ -1,3 +1,4 @@
+import grokcore.component as grok
 import zeit.cms.content.dav
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
@@ -156,3 +157,26 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     def channels(self, value):
         self._channels = tuple(' '.join([x for x in channel if x])
                                for channel in value)
+
+
+@grok.subscribe(
+    zeit.cms.content.interfaces.ICommonMetadata,
+    zope.lifecycleevent.IObjectModifiedEvent)
+def set_default_channel_to_ressort(context, event):
+    relevant_change = False
+    for description in event.descriptions:
+        if (description.interface is not
+                zeit.cms.content.interfaces.ICommonMetadata):
+            continue
+        if ('ressort' in description.attributes or
+            'sub_ressort' in description.attributes):
+            relevant_change = True
+            break
+    if not relevant_change:
+        return
+    if not context.ressort:
+        return
+    channel = (context.ressort, context.sub_ressort)
+    if channel in context.channels:
+        return
+    context.channels += (channel,)
