@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.25 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Setting default channel has moved to zeit.cms (DEV-833).
 
 
 3.6.24 (2015-06-25)

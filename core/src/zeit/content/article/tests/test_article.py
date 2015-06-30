@@ -177,28 +177,3 @@ class ArticleXMLReferenceUpdate(
         self.assertIn(
             'genre="nachricht"',
             lxml.etree.tostring(reference, pretty_print=True))
-
-
-class ChannelCopying(
-        zeit.content.article.testing.FunctionalTestCase):
-
-    def test_channels_already_set_does_not_change_anything(self):
-        self.repository['article'] = self.get_article()
-        with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
-            co.channels = (('International', None),)
-            co.ressort = u'Deutschland'
-            zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.content.interfaces.ICommonMetadata, 'ressort'))
-            self.assertEqual((('International', None),), co.channels)
-
-    def test_no_channels_copies_ressort_to_channel_on_change(self):
-        self.repository['article'] = self.get_article()
-        with zeit.cms.checkout.helper.checked_out(
-            self.repository['article']) as co:
-            co.ressort = u'Deutschland'
-            zope.lifecycleevent.modified(
-                co, zope.lifecycleevent.Attributes(
-                    zeit.cms.content.interfaces.ICommonMetadata, 'ressort'))
-            self.assertEqual((('Deutschland', None),), co.channels)
