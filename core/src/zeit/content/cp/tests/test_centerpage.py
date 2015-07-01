@@ -1,3 +1,4 @@
+# coding: utf-8
 from xml_compare import xml_compare
 from zeit.cms.checkout.helper import checked_out
 import copy
@@ -271,3 +272,11 @@ class CenterpageTest(zeit.content.cp.testing.FunctionalTestCase):
         copier.copyTo(self.repository['online'])
         with self.assertNothingRaised():
             self.repository['cp']
+
+    def test_handles_unicode_uniqueIds(self):
+        content = self.repository[u'ümläut'] = (
+            zeit.cms.testcontenttype.testcontenttype.TestContentType())
+        cp = zeit.content.cp.centerpage.CenterPage()
+        cp['lead'].create_item('teaser').append(content)
+        with self.assertNothingRaised():
+            cp.updateMetadata(content)
