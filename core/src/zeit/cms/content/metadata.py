@@ -179,4 +179,4 @@ def set_default_channel_to_ressort(context, event):
     channel = (context.ressort, context.sub_ressort)
     if channel in context.channels:
         return
-    context.channels += (channel,)
+    context.channels = context.channels + (channel,)
