@@ -14,6 +14,7 @@ zeit.cms changes
 -------------------
 
 - Make taskprocessor queue name for async functions configurable (DEV-816).
+  * Requires product config ``zeit.cms:task-queue-async``.
 
 
 2.49.0 (2015-06-25)
