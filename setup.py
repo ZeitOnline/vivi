@@ -18,7 +18,7 @@ setup(
         'gocept.form',
         'setuptools',
         'z3c.etestbrowser',
-        'zeit.cms>1.4',
+        'zeit.cms>=2.51.0.dev0',
         'zeit.connector',
         'zope.app.testing',
         'zope.component',
