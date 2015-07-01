@@ -149,8 +149,15 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         '.', 'hide-dupes', zeit.content.cp.interfaces.IArea[
             'hide_dupes'])
 
+    query_order = zeit.cms.content.property.ObjectPathProperty(
+        '.query_order', zeit.content.cp.interfaces.IArea['query_order'],
+        use_default=True)
+
     raw_query = zeit.cms.content.property.ObjectPathProperty(
         '.raw_query', zeit.content.cp.interfaces.IArea['raw_query'])
+    raw_order = zeit.cms.content.property.ObjectPathProperty(
+        '.raw_order', zeit.content.cp.interfaces.IArea['raw_order'],
+        use_default=True)
 
     MINIMUM_COUNT_TO_REPLACE_DUPLICATES = 5
 

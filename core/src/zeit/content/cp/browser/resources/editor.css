@@ -555,6 +555,9 @@ label[for="form.query"]:after {
 .type-centerpage-2009 .fieldname-raw_query textarea {
   width: 95%;  /* XXX unclear why 100% produces more than 100% width. */
 }
+.type-centerpage-2009 .fieldname-raw_order input {
+  width: 95%;
+}
 
 
 /* Display SVGs of Schematic Previews side by side and mark the active area. */

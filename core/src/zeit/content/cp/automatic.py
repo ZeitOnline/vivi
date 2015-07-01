@@ -78,24 +78,30 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     def _retrieve_content(self):
         if self.automatic_type == 'channel':
-            content = self._query_solr(self._build_query())
+            content = self._query_solr(
+                self._build_query(), self.query_order)
         elif self.automatic_type == 'query':
-            content = self._query_solr(self.raw_query)
+            content = self._query_solr(
+                self.raw_query, self.raw_order)
         elif self.automatic_type == 'centerpage':
             content = self._query_centerpage()
         else:
             # BBB
             if self.raw_query:
-                content = self._query_solr(self.raw_query)
+                content = self._query_solr(
+                    self.raw_query,
+                    zeit.content.cp.interfaces.IArea['raw_order'].default)
             else:
-                content = self._query_solr(self._build_query())
+                content = self._query_solr(
+                    self._build_query(),
+                    zeit.content.cp.interfaces.IArea['raw_order'].default)
         self._v_retrieved_content += len(content)
         return content
 
-    def _query_solr(self, query):
+    def _query_solr(self, query, sort_order):
         return [zeit.cms.interfaces.ICMSContent(x['uniqueId'])
                 for x in zeit.find.search.search(
-                query, sort_order='date-first-released desc',
+                query, sort_order=sort_order,
                 start=self._v_retrieved_content,
                 rows=self.count_to_replace_duplicates)]
 

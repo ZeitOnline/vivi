@@ -53,8 +53,8 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IArea).select(
-            'count', 'query', 'raw_query', 'automatic',
-            'automatic_type', 'referenced_cp', 'hide_dupes')
+            'count', 'query', 'query_order', 'raw_query', 'raw_order',
+            'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes')
 
     field_groups = (
         # XXX Kludgy: ``automatic`` must come after ``count``, since setting
@@ -65,9 +65,9 @@ class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
         gocept.form.grouped.Fields(
             _('automatic-area-type-centerpage'), ('referenced_cp',)),
         gocept.form.grouped.Fields(
-            _('automatic-area-type-channel'), ('query',)),
+            _('automatic-area-type-channel'), ('query', 'query_order')),
         gocept.form.grouped.Fields(
-            _('automatic-area-type-query'), ('raw_query',)),
+            _('automatic-area-type-query'), ('raw_query', 'raw_order')),
     )
 
     template = zope.browserpage.ViewPageTemplateFile(

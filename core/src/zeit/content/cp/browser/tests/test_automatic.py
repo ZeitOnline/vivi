@@ -28,6 +28,7 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
         b.getControl(name='form.automatic').displayValue = ['automatic']
         b.getControl('automatic-area-type', index=0).displayValue = ['query']
         b.getControl('Raw query').value = 'foo'
+        b.getControl('Sort order', index=1).value = 'bar'
         with mock.patch('zeit.find.search.search') as search:
             search.return_value = []
             b.getControl('Apply').click()
@@ -40,7 +41,8 @@ class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
                 self.assertEllipsis(
                     """\
 <region...count="5" automatic="True" automatic_type="query"...>...
-<raw_query>foo</raw_query>...""",
+<raw_query>foo</raw_query>...
+<raw_order>bar</raw_order>...""",
                     lxml.etree.tostring(cp['lead'].xml, pretty_print=True))
 
     def test_stores_centerpage_properties_in_xml(self):
