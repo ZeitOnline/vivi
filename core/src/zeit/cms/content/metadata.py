@@ -165,8 +165,9 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
 def set_default_channel_to_ressort(context, event):
     relevant_change = False
     for description in event.descriptions:
-        if (description.interface is not
-                zeit.cms.content.interfaces.ICommonMetadata):
+        if (not issubclass(
+                description.interface,
+                zeit.cms.content.interfaces.ICommonMetadata)):
             continue
         if ('ressort' in description.attributes or
             'sub_ressort' in description.attributes):

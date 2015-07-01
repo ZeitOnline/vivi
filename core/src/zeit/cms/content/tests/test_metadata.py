@@ -1,5 +1,5 @@
 from zeit.cms.checkout.helper import checked_out
-import zeit.cms.content.interfaces
+import zeit.cms.testcontenttype.interfaces
 import zeit.cms.testing
 import zope.lifecycleevent
 
@@ -11,7 +11,8 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             co.ressort = u'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
-                    zeit.cms.content.interfaces.ICommonMetadata, 'ressort'))
+                    zeit.cms.testcontenttype.interfaces.ITestContentType,
+                    'ressort'))
             self.assertEqual((('Deutschland', None),), co.channels)
 
     def test_merges_with_existing_channels(self):
@@ -20,7 +21,8 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             co.ressort = u'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
-                    zeit.cms.content.interfaces.ICommonMetadata, 'ressort'))
+                    zeit.cms.testcontenttype.interfaces.ITestContentType,
+                    'ressort'))
             self.assertEqual((('International', None),
                               ('Deutschland', None)), co.channels)
 
@@ -30,5 +32,6 @@ class ChannelCopying(zeit.cms.testing.ZeitCmsTestCase):
             co.ressort = u'Deutschland'
             zope.lifecycleevent.modified(
                 co, zope.lifecycleevent.Attributes(
-                    zeit.cms.content.interfaces.ICommonMetadata, 'ressort'))
+                    zeit.cms.testcontenttype.interfaces.ITestContentType,
+                    'ressort'))
             self.assertEqual((('Deutschland', None),), co.channels)
