@@ -18,6 +18,7 @@
     width: 100%;
     float: left;
     position: relative;
+    margin-bottom: 0.5em;
 }
 
 /* Define default display value for input, so jQuery toggle will set the
@@ -74,8 +75,12 @@ img.preview {
     cursor: pointer;
 }
 
+/* display=block is required to calculate the focuspoint right, since image is
+   an inline element and would be placed at the baseline of text, which leaves
+   ~2px below the image, which leads to miscalculations of the focuspoint */
 img.editor {
     width: 100%;
+    display: block;
 }
 
 .circle {
