@@ -463,12 +463,11 @@
             return;
         }
 
-        new zeit.content.image.browser.VariantList();
-        zeit.content.image.VARIANTS.fetch({reset: true}).done(function() {
-            var view = new zeit.content.image.browser.VariantEditor();
-            view.prepare();
-        });
+        var view = new zeit.content.image.browser.VariantEditor();
+        view.prepare();
 
+        new zeit.content.image.browser.VariantList();
+        zeit.content.image.VARIANTS.fetch({reset: true});
     });
 
 })();
