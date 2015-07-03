@@ -89,6 +89,14 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             {'focus_x': 0.5, 'focus_y': 0.5}, self.group.variants['square'])
 
+    def test_delete_removes_variant_config_from_group(self):
+        self.request('delete', '/repository/group/variants/square')
+        self.assertEqual({}, self.group.variants)
+
+    def test_delete_for_variant_without_config_succeeds_anyway(self):
+        with self.assertNothingRaised():
+            self.request('delete', '/repository/group/variants/cinema-small')
+
 
 class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
 

@@ -56,6 +56,16 @@ class VariantDetail(
         data[self.context.id] = self.deserialize_variant(body)
         group.variants = data
 
+    def DELETE(self):
+        group = zeit.content.image.interfaces.IImageGroup(self.context)
+        if self.context.id not in group.variants:
+            return
+        # dicts are not allowed to be changed by security, but since we'll
+        # overwrite the dict completely anyway we don't care.
+        data = zope.security.proxy.getObject(group.variants)
+        del data[self.context.id]
+        group.variants = data
+
 
 class Editor(object):
 
