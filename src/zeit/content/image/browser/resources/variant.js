@@ -106,7 +106,20 @@
     zeit.content.image.VariantList = Backbone.Collection.extend({
 
         model: zeit.content.image.Variant,
-        url: window.context_url + '/variants'
+        url: window.context_url + '/variants',
+
+        // Copy onModelEvent from Backbone and remove the removal of models,
+        // since when we send DELETE model to server, we just mean to reset it,
+        // i.e. we still need to keep it to update the preview image
+        _onModelEvent: function(event, model, collection, options) {
+            if ((event === 'add' || event === 'remove') && collection !== this) return;
+            // if (event === 'destroy') this.remove(model, options);
+            if (model && event === 'change:' + model.idAttribute) {
+                delete this._byId[model.previous(model.idAttribute)];
+                if (model.id != null) this._byId[model.id] = model;
+            }
+            this.trigger.apply(this, arguments);
+        }
 
     });
 
@@ -282,15 +295,6 @@
                 'switch-focus',
                 self.switch_focus
             );
-
-            $('#reset').on('click', function() {
-                self.switch_focus(
-                    self.default_model,
-                    new zeit.content.image.browser.EditableVariant(
-                        {model: self.default_model}
-                    )
-                );
-            });
         },
 
         prepare: function () {
@@ -303,6 +307,8 @@
         render: function() {
             var self = this;
             self.image = self.model_view.render().$el;
+
+            // create DOM to display the image and image controls
             self.$el.append(
                 $('<div class="image-container"></div>').append(
                     $('<div class="focuspoint"></div>').append(
@@ -311,11 +317,91 @@
                 ).append(self.image).add('<div class="zoom-bar"></div>')
             );
 
+            // create DOM for all buttons
+            self.reset_all_button = $(
+                '<input type="submit" class="button" '
+                    + 'value="Alle Formate zurücksetzen" />');
+            self.reset_current_button = $(
+                '<input type="submit" class="button" value="Verwerfen" />');
+            self.save_current_button = $(
+                '<input type="submit" class="button" value="Speichern" />');
+
+            // add buttons to DOM node
+            self.$el.append([
+                self.reset_all_button,
+                self.reset_current_button,
+                self.save_current_button
+            ]);
+
+            // bind DOM elements to variables for later use
             self.focuspoint = self.$('.focuspoint');
             self.zoom_bar = self.$('.zoom-bar');
 
+            // init draggging / zooming
             self.initialize_focuspoint();
+            self.initialize_buttons();
+
+            // set focuspoint and zoom to saved values
             self.update();
+        },
+
+        // Use recursive method to reset all variant configs, since parallel
+        // DELETE requests can interfere, thus ending in a `last DELETE wins`
+        // scenario. (This is caused by the server, since we replace the
+        // variants dict there rather modifying it due to security issues.)
+        reset_all_variants: function(variants) {
+            var self = this, variant;
+            // after all DELETE calls were processed by the server we need to
+            // update all images
+            if (variants.length == 0) {
+                zeit.content.image.VARIANTS.trigger(
+                    'reload', self.default_model);
+                self.notify_status("reset_all");
+                return;
+            }
+
+            // let the server process the first variant of the array
+            // completely, before processing the next by calling this method
+            // recursively
+            variant = variants.shift();
+            variant.destroy({wait: true}).done(function() {
+                self.reset_all_variants(variants);
+            });
+        },
+
+        initialize_buttons: function() {
+            var self = this;
+
+            // hide buttons for editing a single format on startup
+            self.reset_current_button.hide();
+            self.save_current_button.hide();
+
+            self.reset_all_button.on('click', function() {
+                self.reset_all_variants(zeit.content.image.VARIANTS.clone());
+            });
+
+            self.reset_current_button.on('click', function() {
+                self.current_model.destroy({wait: true}).done(function() {
+                    zeit.content.image.VARIANTS.trigger(
+                        'reload', self.current_model);
+                });
+                self.notify_status("reset_single");
+                self.switch_focus(
+                    self.default_model,
+                    new zeit.content.image.browser.EditableVariant(
+                        {model: self.default_model}
+                    )
+                );
+            });
+
+            self.save_current_button.on('click', function() {
+                self.switch_focus(
+                    self.default_model,
+                    new zeit.content.image.browser.EditableVariant(
+                        {model: self.default_model}
+                    )
+                );
+            });
         },
 
         initialize_focuspoint: function() {
@@ -432,9 +518,20 @@
             self.image.cropper('destroy');  // no-op if it doesn't exist
             if (!model.get('is_default')) {
                 self.zoom_bar.hide();
+                self.focuspoint.hide();
+                self.reset_all_button.hide();
+
+                self.reset_current_button.show();
+                self.save_current_button.show();
+
                 self.initialize_rectangle();
             } else {
                 self.zoom_bar.show();
+                self.focuspoint.show();
+                self.reset_all_button.show();
+
+                self.reset_current_button.hide();
+                self.save_current_button.hide();
             }
 
             self.model_view.$el.removeClass('active');
