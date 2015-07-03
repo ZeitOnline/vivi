@@ -144,6 +144,15 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
             variants['cinema-small']['focus_x'],
             variants['default']['focus_x'])
 
+        s.click('css=input[value=Verwerfen]')
+        s.waitForCssCount('css=.reset_single', 1)
+        s.waitForCssCount('css=.reset_single', 0)
+
+        repository = zope.component.getUtility(
+            zeit.cms.repository.interfaces.IRepository)
+        variants = repository['2007']['03']['group'].variants
+        self.assertEqual(['default'], sorted(variants.keys()))
+
 
 class VariantApp(gocept.jasmine.jasmine.TestApp):
 

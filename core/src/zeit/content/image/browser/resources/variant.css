@@ -20,6 +20,12 @@
     position: relative;
 }
 
+/* Define default display value for input, so jQuery toggle will set the
+   initial value again rather setting display=block. */
+#variant-inner > input {
+    display: inline;
+}
+
 /* To float zoom bar aside image-container, we define it with effective width
    of 0px = 15px (width) + -15px (margin-right). Thus it can always fit beside
    another content. Since parent leaves padding of 15px, this is where the zoom

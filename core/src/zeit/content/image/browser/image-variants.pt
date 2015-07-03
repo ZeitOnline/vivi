@@ -3,15 +3,6 @@
 <div id="variant-content">
   <div id="variant-inner">
   </div>
-  <a id="reset" href="#">Reset</a>
-
-  <p>
-  <a class="button"
-     id="publish"
-     cms:cp-module="zeit.edit.LightBoxForm"
-     tal:attributes="href string:${context/@@absolute_url}/@@publish.html"
-     i18n:translate="publish-now">Publish</a>
-  </p>
 </div>
 
 <div id="variant-preview">
