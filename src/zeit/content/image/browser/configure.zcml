@@ -80,6 +80,15 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="..interfaces.IVariant"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="DELETE"
+    class=".variant.VariantDetail"
+    attribute="DELETE"
+    permission="zope.View"
+    />
+
 
   <!-- Image data to the browser -->
 
