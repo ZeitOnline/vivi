@@ -243,6 +243,14 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.10.8 (2015-07-06)
+-------------------
+
+- Make sort order of automatic areas configurable (DEV-836).
+
+- Handle unicode uniqueIds.
+
+
 2.10.7 (2015-06-25)
 -------------------
 
