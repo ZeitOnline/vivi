@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.51.1 (unreleased)
+2.51.1 (2015-07-06)
 -------------------
 
 - Parametrize queue name in monitoring view.
