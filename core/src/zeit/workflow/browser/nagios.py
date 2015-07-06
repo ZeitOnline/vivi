@@ -5,10 +5,11 @@ import zope.component
 
 class TaskQueueLength(object):
 
-    def __call__(self):
+    def __call__(self, queue=None):
         config = zope.app.appsetup.product.getProductConfiguration(
             'zeit.workflow')
-        queue = config['task-queue-%s' % PRIORITY_DEFAULT]
+        if not queue:
+            queue = config['task-queue-%s' % PRIORITY_DEFAULT]
         tasks = zope.component.getUtility(
             lovely.remotetask.interfaces.ITaskService, name=queue)
         # note: hasJobsWaiting() also schedules any pending cronjobs,

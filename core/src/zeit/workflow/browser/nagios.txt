@@ -19,3 +19,7 @@
 >>> browser.open('http://localhost/@@zeit.workflow.task_queue_length')
 >>> print browser.contents
 1
+
+>>> browser.open('http://localhost/@@zeit.workflow.task_queue_length?queue=lowprio')
+>>> print browser.contents
+0
