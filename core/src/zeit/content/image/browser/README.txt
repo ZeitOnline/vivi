@@ -616,7 +616,7 @@ Image groups also have a thumbnail:
 >>> browser.open('@@thumbnail')
 >>> print browser.headers
 Status: 200 Ok
-Content-Length: 2429
+Content-Length: 2420
 Content-Type: image/jpeg
 Last-Modified: ...
 >>> browser.contents[:16]
