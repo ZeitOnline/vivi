@@ -50,6 +50,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         if not self.automatic:
             return values
 
+        self._v_try_to_retrieve_content = True
         self._v_retrieved_content = 0
         content = self._retrieve_content()
         result = []
@@ -77,6 +78,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         return result
 
     def _retrieve_content(self):
+        if not self._v_try_to_retrieve_content:
+            return []
         if self.automatic_type == 'channel':
             content = self._query_solr(
                 self._build_query(), self.query_order)
@@ -95,7 +98,12 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 content = self._query_solr(
                     self._build_query(),
                     zeit.content.cp.interfaces.IArea['raw_order'].default)
+        seen = self._v_retrieved_content
         self._v_retrieved_content += len(content)
+        if self._v_retrieved_content > seen:
+            self._v_try_to_retrieve_content = True
+        else:
+            self._v_try_to_retrieve_content = False
         return content
 
     def _query_solr(self, query, sort_order):

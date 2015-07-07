@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.0.0b22 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Don't keep on trying to retrieve additional teasers when there simply are no
+  more (BUG-287).
 
 
 3.0.0b21 (2015-07-06)

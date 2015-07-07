@@ -434,3 +434,16 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
                 'http://xml.zeit.de/t3',
                 list(IRenderedArea(self.area).values()[0])[0].uniqueId)
             self.assertEqual(2, search.call_args[1]['start'])
+
+    def test_tries_retrieving_additional_teasers_once_when_exhausted(self):
+        self.area.automatic_type = 'query'
+        self.area.count = 5
+        with mock.patch('zeit.find.search.search') as search:
+            return_values = [
+                [dict(uniqueId='http://xml.zeit.de/t1'),
+                 dict(uniqueId='http://xml.zeit.de/t2')],
+                []
+            ]
+            search.side_effect = lambda *args, **kw: return_values.pop(0)
+            IRenderedArea(self.area).values()
+            self.assertEqual(2, search.call_count)
