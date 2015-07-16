@@ -281,12 +281,13 @@ def rendered_xml_teaserblock(context):
 
     # Render content.
     for entry in context:
-        container.append(zeit.content.cp.interfaces.IRenderedXML(entry))
+        container.append(zope.component.getAdapter(
+            entry, zeit.content.cp.interfaces.IRenderedXML, name="content"))
 
     return container
 
 
-@grok.adapter(zeit.cms.interfaces.ICMSContent)
+@grok.adapter(zeit.cms.interfaces.ICMSContent, name="content")
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml_cmscontent(context):
     block = lxml.objectify.E.block(
@@ -296,7 +297,7 @@ def rendered_xml_cmscontent(context):
     return block
 
 
-@grok.adapter(zeit.content.cp.interfaces.IXMLTeaser)
+@grok.adapter(zeit.content.cp.interfaces.IXMLTeaser, name="content")
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml_free_teaser(context):
     block = rendered_xml_cmscontent(context)

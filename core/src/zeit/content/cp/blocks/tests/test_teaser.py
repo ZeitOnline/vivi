@@ -1,6 +1,7 @@
 from zeit.content.cp.blocks.teaser import apply_layout_for_added
 from zeit.content.cp.centerpage import CenterPage
 import lxml.etree
+import lxml.objectify
 import mock
 import zeit.cms.checkout.helper
 import zeit.content.cp.testing
@@ -177,3 +178,23 @@ class TestDefaultLayout(zeit.content.cp.testing.FunctionalTestCase):
         self.cp['informatives'].add(self.teaser)
         self.assertEllipsis('...module="buttons"...', lxml.etree.tostring(
             self.teaser.xml, pretty_print=True))
+
+
+class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(RenderedXMLTest, self).setUp()
+        self.repository['other'] = CenterPage()
+        self.cp = CenterPage()
+        self.lead = self.cp['lead']
+        self.teaser = self.lead.create_item('teaser')
+        self.teaser.insert(0, self.repository['other'])
+
+    def test_uses_separate_function_for_rendering_content(self):
+        cp_render = mock.Mock()
+        cp_render.return_value = lxml.objectify.XML('<centerpage/>')
+        self.zca.patch_adapter(
+            cp_render, (zeit.content.cp.interfaces.ICenterPage,),
+            zeit.content.cp.interfaces.IRenderedXML)
+        zeit.content.cp.interfaces.IRenderedXML(self.teaser)
+        self.assertFalse(cp_render.called)
