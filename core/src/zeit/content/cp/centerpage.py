@@ -398,13 +398,14 @@ class SiteControlTopicPages(grok.GlobalUtility):
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
     # XXX This method duplicates the XML structure from cp-template.xml
-    ElementMaker = lxml.objectify.ElementMaker(nsmap=collections.OrderedDict((
+    nsmap = collections.OrderedDict((
         ('cp', 'http://namespaces.zeit.de/CMS/cp'),
         ('py', 'http://codespeak.net/lxml/objectify/pytype'),
         ('xi', 'http://www.w3.org/2001/XInclude'),
         ('xsd', 'http://www.w3.org/2001/XMLSchema'),
         ('xsi', 'http://www.w3.org/2001/XMLSchema-instance'),
-    )))
+    ))
+    ElementMaker = lxml.objectify.ElementMaker(nsmap=nsmap)
     root = getattr(ElementMaker, context.xml.tag)(**context.xml.attrib)
     root.append(copy.copy(context.xml.head))
     root.append(lxml.objectify.E.body(
@@ -414,24 +415,27 @@ def rendered_xml(context):
             **context.xml.body.cluster.attrib),
         zeit.content.cp.interfaces.IRenderedXML(context['teaser-mosaic']),
     ))
-    root.append(ElementMaker.feed())
-    # We need to insert the feed items into the copied XML tree, so this
-    # operation stays read-only regarding the context CP.
-    feed = zeit.content.cp.interfaces.ICPFeed(CopyXMLHelper(root))
-    feed.set_items_and_supress_errors(extract_feed_items(context))
+
+    # Performance optimization: Since automatic CPs are populated with (sorted)
+    # queries, there is not much point in trying to preserve a "historical
+    # ordering" (i.e. when each article first appeared on the CP). Thus we can
+    # simply copy the XML references of the teaser blocks into the feed,
+    # instead of running the automatic queries *again*.
+    feed = ElementMaker.feed()
+    root.append(feed)
+    config = zope.app.appsetup.product.getProductConfiguration(
+        'zeit.content.cp')
+    for i, teaser in enumerate(root.xpath(
+            '//container[@cp:type="teaser"]/block', namespaces=nsmap)):
+        if i > config['cp-feed-max-items']:
+            break
+        item = copy.copy(teaser)
+        item.tag = 'reference'
+        item.set('type', 'intern')
+        del item.attrib['uniqueId']
+        feed.append(item)
 
     return root
-
-
-class CopyXMLHelper(object):
-    """Mechanical helper to make ICPFeed and its MultiResource work"""
-
-    zope.interface.implements(zeit.content.cp.interfaces.ICenterPage)
-
-    def __init__(self, xml):
-        self.xml = xml
-        self.uniqueId = None
-        self.__parent__ = None
 
 
 @grok.subscribe(
