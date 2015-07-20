@@ -143,6 +143,10 @@ class IElement(zeit.edit.interfaces.IElement):
         title=_('Visible in frontend'),
         default=True)
 
+    visible_mobile = zope.schema.Bool(
+        title=_('Visible on mobile'),
+        default=True)
+
 
 class IReadRegion(zeit.edit.interfaces.IReadContainer):
 
@@ -158,9 +162,12 @@ class IReadRegion(zeit.edit.interfaces.IReadContainer):
         title=_("Name"),
         required=True)
 
-    # XXX We need to repeat this from IElement for security declarations.
+    # XXX We need to repeat these from IElement for security declarations.
     visible = zope.schema.Bool(
         title=_('Visible in frontend'),
+        default=True)
+    visible_mobile = zope.schema.Bool(
+        title=_('Visible on mobile'),
         default=True)
 
     kind = zope.schema.TextLine(
@@ -311,6 +318,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         description=_("Drag an image group here"),
         required=False,
         source=zeit.content.image.interfaces.imageGroupSource)
+
+    # XXX We need to repeat this from IElement for security declarations.
+    visible_mobile = zope.schema.Bool(
+        title=_('Visible on mobile'),
+        default=True)
 
     block_max = zope.schema.Int(
         title=_("Maximum block count"),
