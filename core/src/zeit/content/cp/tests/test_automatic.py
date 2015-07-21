@@ -24,6 +24,21 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             search.return_value = []
             self.assertEqual(0, len(IRenderedArea(lead).values()))
 
+    def tests_ignores_items_with_errors(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 2
+        lead.automatic = True
+        lead.automatic_type = 'query'
+
+        with mock.patch('zeit.find.search.search') as search:
+            return_values = [
+                [dict(uniqueId='http://xml.zeit.de/notfound'),
+                 dict(uniqueId='http://xml.zeit.de/testcontent')],
+                []
+            ]
+            search.side_effect = lambda *args, **kw: return_values.pop(0)
+            self.assertEqual(1, len(IRenderedArea(lead).values()))
+
     def test_only_marked_articles_are_put_into_leader_block(self):
         self.repository['normal'] = TestContentType()
         leader = TestContentType()

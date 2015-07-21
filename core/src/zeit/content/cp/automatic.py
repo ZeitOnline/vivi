@@ -107,11 +107,15 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         return content
 
     def _query_solr(self, query, sort_order):
-        return [zeit.cms.interfaces.ICMSContent(x['uniqueId'])
-                for x in zeit.find.search.search(
+        result = []
+        for item in zeit.find.search.search(
                 query, sort_order=sort_order,
                 start=self._v_retrieved_content,
-                rows=self.count_to_replace_duplicates)]
+                rows=self.count_to_replace_duplicates):
+            content = zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
+            if content is not None:
+                result.append(content)
+        return result
 
     def _query_centerpage(self):
         teasered = zeit.content.cp.interfaces.ITeaseredContent(
