@@ -12,6 +12,9 @@ zeit.content.cp changes
 
 - Add ``supertitle`` to ``IBlock``.
 
+- New module type ``headerimage``, ``zeit.content.cp.interfaces.IHeaderImage``
+  with property ``image`` (DEV-846).
+
 
 3.0.0b23 (2015-07-20)
 ---------------------

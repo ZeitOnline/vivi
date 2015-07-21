@@ -190,4 +190,19 @@
     factory=".frame.FrameBlock"
     />
 
+  <!-- Headerimage block -->
+  <class class=".headerimage.HeaderImageBlock">
+    <require
+      interface="..interfaces.IHeaderImageBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IHeaderImageBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="zeit.edit.interfaces.IElement"
+    name="headerimage"
+    factory=".headerimage.HeaderImageBlock"
+    />
+
 </configure>

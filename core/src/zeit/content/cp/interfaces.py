@@ -795,3 +795,12 @@ class IFrameBlock(IBlock):
     url = zope.schema.URI(
         title=_("URL to include (http://...)"),
         constraint=valid_feed_url)
+
+
+class IHeaderImageBlock(IBlock):
+
+    image = zope.schema.Choice(
+        title=_('Image'),
+        description=_("Drag an image group here"),
+        required=False,
+        source=zeit.content.image.interfaces.imageGroupSource)
