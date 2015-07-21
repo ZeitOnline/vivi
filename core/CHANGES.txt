@@ -7,6 +7,8 @@ zeit.content.cp changes
 
 - Add ``visible_mobile`` field to R/A/M (DEV-845).
 
+- New module ``frame`` (DEV-848).
+
 
 3.0.0b23 (2015-07-20)
 ---------------------

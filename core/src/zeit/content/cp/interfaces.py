@@ -785,3 +785,10 @@ class ILeadTimeWorklist(zope.interface.Interface):
 
 class IRenderedXML(zope.interface.Interface):
     """Recursively converts a CenterPage to an lxml tree."""
+
+
+class IFrameBlock(IBlock):
+
+    url = zope.schema.URI(
+        title=_("URL to include (http://...)"),
+        constraint=valid_feed_url)
