@@ -42,6 +42,8 @@ class VisibleMixin(object):
 
 class Block(VisibleMixin, zeit.edit.block.Element):
 
+    supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'supertitle')
     title = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'title')
 

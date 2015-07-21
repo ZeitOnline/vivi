@@ -10,6 +10,8 @@ zeit.content.cp changes
 - New module type ``frame``, ``zeit.content.cp.interfaces.IFrame`` with
   property ``url`` (DEV-848).
 
+- Add ``supertitle`` to ``IBlock``.
+
 
 3.0.0b23 (2015-07-20)
 ---------------------

@@ -458,6 +458,9 @@ class ICPFeed(zope.interface.Interface):
 
 class IBlock(IElement, zeit.edit.interfaces.IBlock):
 
+    supertitle = zope.schema.TextLine(
+        title=_("Supertitle"),
+        required=False)
     title = zope.schema.TextLine(
         title=_("Title"),
         required=False)
