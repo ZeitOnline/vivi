@@ -1,0 +1,1 @@
+<div i18n:domain="zeit.cms" tal:content="structure context/text"/>

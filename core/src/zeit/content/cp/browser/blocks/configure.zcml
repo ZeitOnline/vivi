@@ -80,5 +80,6 @@
   <include file="fullgraphical.zcml" />
   <include file="frame.zcml" />
   <include file="headerimage.zcml" />
+  <include file="markup.zcml" />
 
 </configure>

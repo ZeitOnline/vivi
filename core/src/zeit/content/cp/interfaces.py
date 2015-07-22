@@ -6,6 +6,7 @@ import urlparse
 import zc.form.field
 import zc.sourcefactory.contextual
 import zeit.cms.content.contentsource
+import zeit.cms.content.field
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
 import zeit.cms.interfaces
@@ -804,3 +805,11 @@ class IHeaderImageBlock(IBlock):
         description=_("Drag an image group here"),
         required=False,
         source=zeit.content.image.interfaces.imageGroupSource)
+
+
+class IMarkupBlock(IBlock):
+
+    text = zope.schema.Text(
+        title=_('Contents'),
+        description=_('Use Markdown'),
+        required=False)

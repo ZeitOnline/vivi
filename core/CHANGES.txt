@@ -12,8 +12,12 @@ zeit.content.cp changes
 
 - Add ``supertitle`` to ``IBlock``.
 
-- New module type ``headerimage``, ``zeit.content.cp.interfaces.IHeaderImage``
-  with property ``image`` (DEV-846).
+- New module type ``headerimage``,
+  ``zeit.content.cp.interfaces.IHeaderImageBlock`` with property ``image``
+  (DEV-846).
+
+- New module type ``markup``, ``zeit.content.cp.interfaces.IMarkupBlock``
+  with property ``text``, uses Markdown for editing (DEV-847).
 
 - Ignore content that cannot be found for automatic/solr queries.
 

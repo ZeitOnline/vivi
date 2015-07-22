@@ -205,4 +205,19 @@
     factory=".headerimage.HeaderImageBlock"
     />
 
+  <!-- Markup block -->
+  <class class=".markup.MarkupBlock">
+    <require
+      interface="..interfaces.IMarkupBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.IMarkupBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="zeit.edit.interfaces.IElement"
+    name="markup"
+    factory=".markup.MarkupBlock"
+    />
+
 </configure>
