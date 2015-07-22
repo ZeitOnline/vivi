@@ -622,3 +622,22 @@ def empty_toFieldValue(self, input):
     return orig_toFieldValue(self, input)
 orig_toFieldValue = zope.formlib.itemswidgets.MultiDataHelper._toFieldValue
 zope.formlib.itemswidgets.MultiDataHelper._toFieldValue = empty_toFieldValue
+
+
+class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
+
+    def _toFieldValue(self, value):
+        value = super(MarkdownWidget, self)._toFieldValue(
+            value)
+        try:
+            return pypandoc.convert(value, to='html', format='markdown')
+        except OSError:
+            return value
+
+    def _toFormValue(self, value):
+        value = super(MarkdownWidget, self)._toFormValue(
+            value)
+        try:
+            return pypandoc.convert(value, to='markdown', format='html')
+        except OSError:
+            return value
