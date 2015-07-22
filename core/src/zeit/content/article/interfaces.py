@@ -52,7 +52,7 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
 
     main_image = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
-        description=_("Drag an image here"),
+        description=_("Drag an image group here"),
         source=zeit.content.image.interfaces.imageSource,
         required=False)
 

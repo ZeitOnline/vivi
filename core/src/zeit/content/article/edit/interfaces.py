@@ -207,10 +207,8 @@ class IImage(IReference, ILayoutable):
 
     references = zeit.cms.content.interfaces.ReferenceField(
         title=_("Image"),
-        description=_("Drag an image here"),
-        # XXX Imprecise, since the first image block (which is usually accessed
-        # as IArticle.main_image) references an IImageGroup.
-        source=zeit.content.image.interfaces.bareImageSource,
+        description=_("Drag an image group here"),
+        source=zeit.content.image.interfaces.imageSource,
         required=False)
 
     set_manually = zope.schema.Bool(

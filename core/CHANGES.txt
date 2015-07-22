@@ -4,7 +4,7 @@ zeit.content.article changes
 3.6.26 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Allow image groups as well as images in article body (DEV-822).
 
 
 3.6.25 (2015-07-06)
