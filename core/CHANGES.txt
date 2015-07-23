@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b24 (unreleased)
+3.0.0b24 (2015-07-23)
 ---------------------
 
 - Add ``visible_mobile`` field to R/A/M (DEV-845).
