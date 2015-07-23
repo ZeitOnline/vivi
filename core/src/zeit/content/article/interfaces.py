@@ -64,6 +64,16 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
     main_image_block = zope.interface.Attribute(
         u'First block of the body if it is present and is an image block')
 
+    template = zope.schema.Choice(
+        title=_("Template"),
+        source=zeit.content.article.source.ArticleTemplateSource(),
+        required=False)
+
+    header_layout = zope.schema.Choice(
+        title=_("Header layout"),
+        source=zeit.content.article.source.ArticleHeaderSource(),
+        required=False)
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""

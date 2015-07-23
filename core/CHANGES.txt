@@ -1,10 +1,16 @@
 zeit.content.article changes
 ============================
 
-3.6.26 (unreleased)
+3.7.0 (unreleased)
 -------------------
 
-- Allow image groups as well as images in article body (DEV-822).
+- Allow image groups as well as images in article body (DEV-882).
+
+- Move ``template`` and ``layout`` settings to ``IArticle`` from
+  ``zeit.magazin.interfaces.ITemplateSettings`` (DEV-801).
+  * Product config moved from ``zeit.magazin:article-template-url``
+    to ``zeit.content.article:template-url``.
+  * Requires ZEO update due to new fields on ``Article``.
 
 
 3.6.25 (2015-07-06)

@@ -20,21 +20,14 @@ product_config = """
 <product-config zeit.content.article>
     cds-import-valid-path $$ressort/$$year/$$volume
     cds-import-invalid-path cds/invalid/$$year/$$volume
-    book-recension-categories file://%s
-    genre-url file://%s
-    image-layout-source file://%s
-    video-layout-source file://%s
-    htmlblock-layout-source file://%s
+    book-recension-categories file://{base}/tests/recension_categories.xml
+    genre-url file://{base}/tests/article-genres.xml
+    image-layout-source file://{base}/edit/tests/image-layouts.xml
+    video-layout-source file://{base}/edit/tests/video-layouts.xml
+    htmlblock-layout-source file://{base}/edit/tests/htmlblock-layouts.xml
+    template-source file://{base}/edit/tests/templates.xml
 </product-config>
-""" % (
-    pkg_resources.resource_filename(
-        __name__, '/tests/recension_categories.xml'),
-    pkg_resources.resource_filename(__name__, '/tests/article-genres.xml'),
-    pkg_resources.resource_filename(__name__, '/edit/tests/image-layouts.xml'),
-    pkg_resources.resource_filename(__name__, '/edit/tests/video-layouts.xml'),
-    pkg_resources.resource_filename(
-        __name__, '/edit/tests/htmlblock-layouts.xml'),
-)
+""".format(base=pkg_resources.resource_filename(__name__, ''))
 
 
 checker = zope.testing.renormalizing.RENormalizing([
