@@ -2,10 +2,11 @@ zeit.magazin changes
 ====================
 
 
-1.2.1 (unreleased)
+1.3.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Move ``template`` and ``layout`` settings to
+  ``zeit.content.article.IArticle`` (DEV-801).
 
 
 1.2.0 (2015-03-11)

@@ -39,17 +39,6 @@
     name="portraitbox"
     />
 
-  <class class=".article.TemplateSettings">
-    <require
-      interface=".interfaces.IArticleTemplateSettings"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".interfaces.IArticleTemplateSettings"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <adapter
     factory=".article.NextRead"
     provides=".interfaces.INextRead"

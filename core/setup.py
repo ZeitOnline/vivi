@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.magazin',
-    version='1.2.1.dev0',
+    version='1.3.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -23,7 +23,7 @@ setup(
         'setuptools',
         'zc.form',
         'zeit.cms>=2.20.0.dev0',
-        'zeit.content.article>=3.5.0.dev0',
+        'zeit.content.article>=3.7.0.dev0',
         'zeit.content.portraitbox',
         'zeit.edit',
         'zope.interface',
