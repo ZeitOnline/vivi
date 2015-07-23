@@ -8,33 +8,6 @@
   <browser:viewlet
     for="..interfaces.IZMOArticle"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zeit.content.article.edit.browser.form.OptionFormGroup"
-    manager="zeit.edit.interfaces.IContentViewletManager"
-    name="edit.form.options-zmo"
-    class="zeit.edit.browser.form.FormLoader"
-    permission="zope.View"
-    weight="35"
-    />
-
-  <browser:page
-    for="..interfaces.IZMOArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit.form.options-zmo"
-    class=".article.EditTemplate"
-    permission="zope.View"
-    />
-
-  <browser:page
-    for="*"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="zeit.magazin.update_articletemplate.json"
-    class=".article.TemplateUpdater"
-    permission="zope.View"
-    />
-
-  <browser:viewlet
-    for="..interfaces.IZMOArticle"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zeit.content.article.edit.browser.form.InternalLinksForms"
     manager="zeit.edit.interfaces.IContentViewletManager"
     name="edit.form.nextread"

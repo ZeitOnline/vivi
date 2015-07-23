@@ -6,16 +6,6 @@ import zeit.magazin.interfaces
 import zope.interface
 
 
-class TemplateSettings(zeit.cms.content.dav.DAVPropertiesAdapter):
-
-    grok.implements(zeit.magazin.interfaces.IArticleTemplateSettings)
-
-    zeit.cms.content.dav.mapProperties(
-        zeit.magazin.interfaces.IArticleTemplateSettings,
-        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        ('template', 'header_layout'))
-
-
 class NextRead(zeit.cms.related.related.RelatedBase):
 
     zope.interface.implements(zeit.magazin.interfaces.INextRead)

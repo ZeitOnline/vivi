@@ -18,7 +18,6 @@ cms_product_config = zeit.cms.testing.cms_product_config.replace(
 
 product_config = """\
 <product-config zeit.magazin>
-  article-template-source file://{base}/tests/article-templates.xml
 </product-config>
 """.format(base=pkg_resources.resource_filename(__name__, ''))
 

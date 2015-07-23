@@ -45,19 +45,6 @@ class IZMOPortraitbox(
     pass
 
 
-class IArticleTemplateSettings(zope.interface.Interface):
-
-    template = zope.schema.Choice(
-        title=_("Template"),
-        source=zeit.magazin.sources.ArticleTemplateSource(),
-        required=False)
-
-    header_layout = zope.schema.Choice(
-        title=_("Header layout"),
-        source=zeit.magazin.sources.ArticleHeaderSource(),
-        required=False)
-
-
 class INextRead(zope.interface.Interface):
 
     nextread = zope.schema.Tuple(
