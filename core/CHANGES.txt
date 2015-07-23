@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.52.0 (unreleased)
+2.52.0 (2015-07-23)
 -------------------
 
 - Add MarkdownWidget (DEV-847).
