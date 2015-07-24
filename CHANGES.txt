@@ -4,7 +4,7 @@ zeit.content.image changes
 2.5.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Ignore invalid image size specifications. (ZON-1586)
 
 
 2.5.2 (2015-07-06)

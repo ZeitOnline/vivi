@@ -82,9 +82,13 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         variant = self.group.get_variant_by_size('cinema__9999x9999')
         self.assertEqual('cinema-large', variant.id)
 
-    def test_invalid_name_returns_none(self):
+    def test_invalid_names_should_return_none(self):
         self.assertEqual(
             None, self.group.get_variant_by_size('foobarbaz__9999x9999'))
+        self.assertEqual(
+            None, self.group.get_variant_by_size('cinema__200xfoo'))
+        self.assertEqual(
+            None, self.group.get_variant_by_size('cinema__800x'))
 
     def test_no_size_matches_returns_none(self):
         from zeit.content.image.variant import Variants, Variant
