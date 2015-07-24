@@ -84,10 +84,10 @@ class ImageGroupBase(object):
         return image
 
     def get_variant_size(self, key):
-        """Keys look like `square_20x20`. Retrieve size as [20,20] or None"""
-        if '__' in key:
+        """Keys look like `square__20x20`. Retrieve size as [20, 20] or None"""
+        try:
             return [int(x) for x in key.split('__')[1].split('x')]
-        else:
+        except (IndexError, ValueError):
             return None
 
     def get_variant_by_key(self, key):
@@ -129,11 +129,13 @@ class ImageGroupBase(object):
         than the size given in the key.
 
         """
-        name, size = key.split('__')
+        name = key.split('__')[0]
         candidates = self.get_all_variants_with_name(name)
-        width, height = [int(x) for x in size.split('x')]
+        size = self.get_variant_size(key)
+        if not size:
+            return None
         for variant in candidates:
-            if width <= variant.max_width and height <= variant.max_height:
+            if size[0] <= variant.max_width and size[1] <= variant.max_height:
                 return variant
         return None
 
