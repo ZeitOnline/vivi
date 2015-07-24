@@ -29,7 +29,7 @@ Edit the quiz block and reference the newly added quiz:
 >>> browser.getControl('Quiz').value = 'http://xml.zeit.de/my_quiz'
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
-<...self.close();...
+<...Updated on...
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit block properties', index=0).click()

@@ -1,7 +1,7 @@
 import zeit.cms.browser.widget
+import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
-import zeit.edit.browser.view
 import zope.component
 import zope.formlib.form
 
@@ -15,7 +15,7 @@ class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
         return ' '.join(['editable-module', visible, classes])
 
 
-class EditCommon(zeit.edit.browser.view.EditBox):
+class EditCommon(zeit.content.cp.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IBlock).select(

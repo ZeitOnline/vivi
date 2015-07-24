@@ -71,11 +71,6 @@ class EditCommon(
     def form(self):
         return ''  # our template uses the grouped-form macros instead
 
-    @zope.formlib.form.action(_('Apply'))
-    def handle_edit_action(self, action, data):
-        self.close = True
-        return super(EditCommon, self).handle_edit_action.success(data)
-
 
 class Display(zeit.cms.browser.view.Base):
 

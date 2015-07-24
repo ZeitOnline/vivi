@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.0.0b25 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Don't close popups when clicking "save" button (DEV-108).
 
 
 3.0.0b24 (2015-07-23)

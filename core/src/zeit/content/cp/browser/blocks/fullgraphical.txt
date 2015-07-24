@@ -60,7 +60,7 @@ a title to the teaser block:
 >>> browser.getControl('Apply').click()
 
 >>> print browser.contents
-<...self.close();...
+<...Updated on...
 
 Since we referenced an image as opposed to an image group, the choice of
 layout does not reflect in the image URL used for displaying the block: XXX
@@ -110,7 +110,7 @@ the fullgraphical block breaking:
 >>> browser.getControl('Apply').click()
 
 >>> print browser.contents
-<...self.close();...
+<...Updated on...
 
 >>> browser.open(contents_url)
 >>> browser.open('xml_source_edit.html')

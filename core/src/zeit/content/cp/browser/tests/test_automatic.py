@@ -105,6 +105,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.type('id=form.referenced_cp', 'http://xml.zeit.de/cp_with_teaser')
         sel.type('id=form.count', 1)
         sel.click(r'css=#tab-0 #form\.actions\.apply')
+        sel.click('css=a.CloseButton')
 
         # One area is inconfigured, the other could load content automatically
         sel.waitForCssCount('css=.block-automatic-off', 1)

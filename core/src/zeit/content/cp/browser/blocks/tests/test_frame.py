@@ -42,7 +42,7 @@ class TestFrame(zeit.cms.testing.BrowserTestCase):
         zeit.content.cp.centerpage._test_helper_cp_changed = False
         b.getControl('Apply').click()
         self.assertTrue(zeit.content.cp.centerpage._test_helper_cp_changed)
-        self.assertEllipsis('...self.close();...', b.contents)
+        self.assertEllipsis('...Updated on...', b.contents)
 
         b.open(self.content_url)
         self.assertEllipsis('...http://example.com/foo...', b.contents)

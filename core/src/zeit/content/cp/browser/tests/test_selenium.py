@@ -37,6 +37,8 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         apply_button = r'css=#tab-1 #form\.actions\.apply'
         s.waitForElementPresent(apply_button)
         s.click(apply_button)
+        s.waitForElementPresent('css=a.CloseButton')
+        s.click('css=a.CloseButton')
         s.waitForElementNotPresent('css=.lightbox')
 
         s.assertCssCount('css=#informatives .block a.delete-link', 3)
@@ -67,6 +69,8 @@ class TestGenericEditing(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForElementPresent('id=form.title')
         s.type('form.title', 'FooTitle')
         s.click('//div[@id="tab-1"]//input[@id="form.actions.apply"]')
+        s.waitForElementPresent('css=a.CloseButton')
+        s.click('css=a.CloseButton')
         s.waitForElementNotPresent('css=a.CloseButton')
 
         s.click('xpath=(//a[contains(@class, "edit-link")])[3]')
@@ -406,7 +410,7 @@ class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
             'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent('css=div.type-video')
 
-    def test_lightbox_should_close_after_editing(self):
+    def test_lightbox_should_stay_open_after_editing(self):
         self.open_centerpage()
         self.create_videoblock()
         s = self.selenium
@@ -420,12 +424,8 @@ class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.click('//input[@value="1W"]')
         s.select('form.format', 'small')
         s.click('form.actions.apply')
-        s.waitForElementNotPresent('css=.lightbox')
-
-        s.click('css=div.block.type-video > * > div.edit > a.edit-link')
-        s.waitForElementPresent('id=lightbox.form')
-        s.click('form.actions.apply')
-        s.waitForElementNotPresent('css=.lightbox')
+        s.pause(300)
+        s.assertElementPresent('css=.lightbox')
 
 
 class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
@@ -459,6 +459,7 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.pause(100)
         s.type('css=input.object-reference', 'http://xml.zeit.de/my_quiz')
         s.click('form.actions.apply')
+        s.click('css=a.CloseButton')
         s.waitForElementNotPresent('css=.lightbox')
 
         s.click('css=div.type-quiz > * > div.edit > a.edit-link')
@@ -466,6 +467,7 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForValue('css=input.object-reference',
                        'http://xml.zeit.de/my_quiz')
         s.click('form.actions.apply')
+        s.click('css=a.CloseButton')
         s.waitForElementNotPresent('css=.lightbox')
 
 

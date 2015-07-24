@@ -51,7 +51,7 @@ Set a valid URL:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> print browser.contents
-<...self.close();...
+<...Updated on...
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit block properties', index=0).click()
@@ -79,7 +79,7 @@ Change to another URL:
 >>> zeit.content.cp.centerpage._test_helper_cp_changed
 True
 >>> print browser.contents
-<...self.close();...
+<...Updated on...
 
 >>> browser.open(contents_url)
 >>> print browser.contents

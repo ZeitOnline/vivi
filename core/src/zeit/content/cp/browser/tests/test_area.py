@@ -194,6 +194,7 @@ class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
         s.type('form.block_max', '1')
         s.select('form.overflow_into', 'minor area no title')
         s.click(r'css=#tab-2 #form\.actions\.apply')
+        s.click('css=a.CloseButton')
         s.waitForElementNotPresent('css=a.CloseButton')
 
         self.create_block('quiz', 'lead')

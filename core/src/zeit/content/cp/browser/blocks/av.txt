@@ -44,7 +44,7 @@ Editing the block
 >>> browser.getControl('Player').displayValue = ['Playlist']
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
-<...self.close();...
+<...Updated on...
 
 >>> browser.open(contents_url)
 >>> browser.getLink('Edit block properties', index=0).click()
@@ -140,7 +140,7 @@ An empty value for the expireation date means no expiration:
 >>> browser.getControl('Expiration date').value = ''
 >>> browser.getControl('Apply').click()
 >>> print browser.contents
-<...self.close();...
+<...Updated on...
 
 
 XML of an audio/video block

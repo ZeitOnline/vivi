@@ -2,9 +2,9 @@ from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.teaser
+import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
-import zeit.edit.browser.view
 import zope.formlib.form
 
 
@@ -35,7 +35,7 @@ class AreaViewletManager(ViewletManager):
         return ' '.join(['editable-area', automatic, classes])
 
 
-class EditCommon(zeit.edit.browser.view.EditBox):
+class EditCommon(zeit.content.cp.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IArea).select(
@@ -43,7 +43,7 @@ class EditCommon(zeit.edit.browser.view.EditBox):
             'visible_mobile')
 
 
-class EditOverflow(zeit.edit.browser.view.EditBox):
+class EditOverflow(zeit.content.cp.browser.view.EditBox):
 
     form_fields = zope.formlib.form.Fields(
         zeit.content.cp.interfaces.IArea).select(
