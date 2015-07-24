@@ -220,13 +220,13 @@ class SeleniumTestCase(FunctionalTestCase, zeit.cms.testing.SeleniumTestCase):
         self.create_teaserlist()
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c3"]',
-            'css=div.type-teaser')
+            'css=div.type-teaser', '10,10')
         s.waitForTextPresent('c3 teaser')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c2"]',
-            'css=div.type-teaser')
+            'css=div.type-teaser', '10,10')
         s.waitForTextPresent('c2 teaser')
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/c1"]',
-            'css=div.type-teaser')
+            'css=div.type-teaser', '10,10')
         s.waitForTextPresent('c1 teaser')
