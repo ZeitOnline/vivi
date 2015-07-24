@@ -1,6 +1,7 @@
 import lxml.objectify
 import unittest
 import zeit.cms.content.interfaces
+import zeit.cms.content.sources
 import zeit.content.video.testing
 
 
@@ -26,6 +27,13 @@ class TestVideo(zeit.content.video.testing.TestCase):
         with zeit.cms.testing.interaction('zope.mgr'):
             proxied = ProxyFactory(video)
             self.assertEqual('vid', proxied.id_prefix)
+
+    def test_videos_use_their_own_serie_source(self):
+        factory = zeit.content.video.testing.video_factory(self)
+        video = factory.next()
+        video.serie = zeit.cms.content.sources.Serie('VIDEO')
+        video = factory.next()  # in repository
+        self.assertEqual('VIDEO', video.serie.serienname)
 
 
 class TestReference(zeit.content.video.testing.TestCase):

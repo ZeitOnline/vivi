@@ -60,6 +60,24 @@ class Video(zeit.cms.content.metadata.CommonMetadata):
 
     renditions = RenditionsProperty('.head.renditions.rendition')
 
+    # XXX ``serie`` is copy&paste from CommonMetadata since we need to change
+    # the source (thus the interface), and once we override the property
+    # getter, we don't seem to be able to access the setter in the superclass
+    # anymore.
+
+    @property
+    def serie(self):
+        source = zeit.content.video.interfaces.IVideo['serie'].source(self)
+        return source.factory.values.get(self._serie)
+
+    @serie.setter
+    def serie(self, value):
+        if value is not None:
+            if self._serie != value.serienname:
+                self._serie = value.serienname
+        else:
+            self._serie = None
+
 
 class VideoRendition():
     zope.interface.implements(zeit.content.video.interfaces.IVideoRendition)
