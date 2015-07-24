@@ -1,7 +1,7 @@
 zeit.content.video changes
 ==========================
 
-2.5.2 (unreleased)
+2.5.2 (2015-07-24)
 ------------------
 
 - Use proper serie source for videos (ZON-1464).
