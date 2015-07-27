@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b25 (unreleased)
+3.0.0b25 (2015-07-27)
 ---------------------
 
 - Duplicate detection now also takes into account manual teasers below the
