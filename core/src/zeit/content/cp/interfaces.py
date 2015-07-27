@@ -113,7 +113,13 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
 
     def is_teaser_present_above(current_area, content):
         """Returns true if the given content object is contained in a
-        ITeaserBlock module above the given area."""
+        ITeaserBlock module above the given area (IRenderedArea or manual)."""
+
+    def is_teaser_manual_below(current_area, content):
+        """Returns true if the given content object is contained in a
+        ITeaserBlock module above the given area (IRenderedArea is *not*
+        executed).
+        """
 
 
 class ICP2009(ICenterPage):

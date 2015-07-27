@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.0.0b26 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Fix security declaration (DEV-850).
 
 
 3.0.0b25 (2015-07-27)
