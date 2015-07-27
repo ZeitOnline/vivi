@@ -194,7 +194,9 @@ class Connector(object):
         try:
             return file(filename, 'rb')
         except IOError:
-            raise KeyError("The resource '%s' does not exist." % id)
+            message = "The resource '%s' does not exist." % id
+            log.warning(message)
+            raise KeyError(message)
 
     def _get_metadata_file(self, id):
         filename = self._absolute_path(self._path(id)) + '.meta'

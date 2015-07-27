@@ -231,7 +231,9 @@ class Connector(object):
             content_type = self._get_resource_properties(id).get(
                 ('getcontenttype', 'DAV:'))
         except zeit.connector.dav.interfaces.DAVNotFoundError:
-            raise KeyError("The resource %r does not exist." % unicode(id))
+            message = "The resource %r does not exist." % unicode(id)
+            logger.warning(message)
+            raise KeyError(message)
         return zeit.connector.resource.CachedResource(
             unicode(id), self._id_splitlast(id)[1].rstrip('/'),
             self._get_resource_type(id),
