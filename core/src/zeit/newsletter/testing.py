@@ -5,6 +5,7 @@ import plone.testing
 import transaction
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
+import zeit.content.video.testing
 import zeit.workflow.testing
 import zope.app.appsetup.product
 import zope.component
@@ -19,6 +20,7 @@ product_config = """\
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer('ftesting.zcml', product_config=(
     zeit.cms.testing.cms_product_config
     + zeit.workflow.testing.product_config
+    + zeit.content.video.testing.product_config
     + product_config))
 
 
