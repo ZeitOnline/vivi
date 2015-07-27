@@ -149,6 +149,14 @@ def extract_teasers_from_area(context):
             yield content
 
 
+def extract_manual_teasers(context):
+    for teaser in context.values():
+        if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(teaser):
+            continue
+        for content in list(teaser):
+            yield content
+
+
 # XXX Does anyone actually use this, pulling an IFeed into a CP via autopilot?
 @grok.adapter(zeit.cms.syndication.interfaces.IFeed)
 @grok.implementer(zeit.content.cp.interfaces.ITeaseredContent)

@@ -138,11 +138,13 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         """
         result = None
         pop = []
+        cp = zeit.content.cp.interfaces.ICenterPage(self)
         for i, item in enumerate(content):
             if predicate(item):
                 pop.append(item)
-                if self.hide_dupes and zeit.content.cp.interfaces.ICenterPage(
-                        self).is_teaser_present_above(self.context, item):
+                if self.hide_dupes and (
+                        cp.is_teaser_present_above(self.context, item)
+                        or cp.is_teaser_manual_below(self.context, item)):
                     continue
                 result = item
                 break

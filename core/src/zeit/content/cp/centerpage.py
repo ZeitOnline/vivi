@@ -22,6 +22,7 @@ import zeit.cms.sitecontrol.interfaces
 import zeit.cms.type
 import zeit.cms.workflow.interfaces
 import zeit.connector.interfaces
+import zeit.content.cp.blocks.teaser
 import zeit.content.cp.interfaces
 import zeit.edit.body
 import zeit.edit.container
@@ -207,6 +208,31 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
                     self._area_teasered_content[area] = set(
                         zeit.content.cp.interfaces.ITeaseredContent(area))
                 seen.update(self._area_teasered_content[area])
+        return seen
+
+    _area_manual_content = gocept.cache.property.TransactionBoundCache(
+        '_v_area_manual_content', dict)
+
+    def is_teaser_manual_below(self, current_area, content):
+        return content in self._manual_content_below(current_area)
+
+    def _manual_content_below(self, current_area):
+        seen = set()
+        below = False
+        for region in self.body.values():
+            for area in region.values():
+                if not below:
+                    if area == current_area:
+                        below = True
+                    continue
+                if area not in self._area_manual_content:
+                    # Probably not worth a separate adapter (like
+                    # ITeaseredContent), since the use case is pretty
+                    # specialised.
+                    self._area_manual_content[area] = set(
+                        zeit.content.cp.blocks.teaser.extract_manual_teasers(
+                            area))
+                seen.update(self._area_manual_content[area])
         return seen
 
 

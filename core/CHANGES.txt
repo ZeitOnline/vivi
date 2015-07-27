@@ -5,6 +5,9 @@ zeit.content.cp changes
 3.0.0b25 (unreleased)
 ---------------------
 
+- Duplicate detection now also takes into account manual teasers below the
+  current area (DEV-850).
+
 - Don't close popups when clicking "save" button (DEV-108).
 
 

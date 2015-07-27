@@ -373,6 +373,14 @@ class HideDupesTest(zeit.content.cp.testing.FunctionalTestCase):
             'http://xml.zeit.de/t3'
         ], [list(x)[0].uniqueId for x in IRenderedArea(self.area).values()])
 
+    def test_manual_teaser_already_below_current_area_is_not_shown_again(self):
+        self.cp['feature'].create_item('area').create_item('teaser').append(
+            self.repository['t1'])
+        self.assertEqual([
+            'http://xml.zeit.de/t2',
+            'http://xml.zeit.de/t3'
+        ], [list(x)[0].uniqueId for x in IRenderedArea(self.area).values()])
+
     def test_skipping_duplicate_teaser_retrieves_next_query_result(self):
         self.cp['feature']['lead'].create_item('teaser').append(
             self.repository['t1'])
