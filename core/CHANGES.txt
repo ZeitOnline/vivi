@@ -4,7 +4,8 @@ CHANGES
 2.6.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Undo not found logging, since we cannot differentiate between existence
+  checking and actual resolving, this spams the logs for no benefit.
 
 
 2.6.4 (2015-07-27)
