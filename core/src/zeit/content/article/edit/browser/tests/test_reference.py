@@ -126,7 +126,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 1)
         s.dragAndDropToObject(
             '//li[@uniqueid="Clip/my_group"]',
-            'css=.action-article-body-content-droppable')
+            'css=.action-article-body-content-droppable', '10,10')
         s.waitForCssCount('css=.block.type-image form.inline-form.wired', 2)
 
     def test_changing_image_in_teaser_updates_lead_teaser(self):
