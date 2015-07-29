@@ -85,6 +85,9 @@ class IWriteFeed(zope.interface.Interface):
     def insert(position, content):
         """Add `content` to self at position `position`."""
 
+    def append(content):
+        """Add `content` to self at end."""
+
     def remove(content):
         """Remove `content` from feed.
 
