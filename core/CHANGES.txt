@@ -4,7 +4,8 @@ zeit.cms changes
 2.52.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Manually commit workingcopy preview upload to make it visible for zeit.web
+  (DEV-855).
 
 
 2.52.0 (2015-07-23)

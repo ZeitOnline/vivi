@@ -1,10 +1,9 @@
+import transaction
 import urllib2
 import zeit.cms.browser.preview
 import zeit.cms.interfaces
-import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
-import zope.app.appsetup.product
 import zope.cachedescriptors.property
 import zope.component
 
@@ -42,6 +41,10 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
 
         temp_id = self.get_temp_id(self.context.__name__)
         target_folder[temp_id] = content
+        # Our normal commit happens *after* the request to the preview, and
+        # relying on the DAV invalidations to get the changes into the ZODB so
+        # they are visible for zeit.web is too timing-sensitive to be reliable.
+        transaction.commit()
         return content
 
     def get_temp_id(self, name):
