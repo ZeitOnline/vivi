@@ -53,3 +53,10 @@ class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(0.5, variant.focus_x)
         self.assertEqual(0.5, variant.focus_y)
         self.assertEqual(1, variant.zoom)
+
+    def test_variant_should_be_comparable_by_their_respective_ids(self):
+        group1 = zeit.content.image.testing.create_image_group()
+        variant1 = IVariants(group1)['square']
+        group2 = zeit.content.image.testing.create_image_group()
+        variant2 = IVariants(group2)['square']
+        self.assertEqual(variant1, variant2)
