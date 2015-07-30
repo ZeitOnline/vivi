@@ -342,8 +342,15 @@ def XMLReference(context):
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.IMasterImage)
 def find_master_image(context):
-    if context.master_image:
-        return context.get(context.master_image)
+    if context.master_image in context:
+        return context[context.master_image]
+    master_image = None
+    for image in context.values():
+        if zeit.content.image.interfaces.IImage.providedBy(
+                image) and image.size > getattr(master_image, 'size', 0):
+            master_image = image
+            break
+    return master_image
 
 
 class ThumbnailTraverser(object):
