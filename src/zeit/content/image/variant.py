@@ -77,6 +77,12 @@ class Variant(object):
             value = fields[key].fromUnicode(unicode(value))
             setattr(self, key, value)
 
+    def __cmp__(self, other):
+        if zeit.content.image.interfaces.IVariant.providedBy(other) and (
+                self.id == other.id):
+            return 0
+        return super(Variant, self).__cmp__(other)
+
     @property
     def ratio(self):
         if self.is_default:
