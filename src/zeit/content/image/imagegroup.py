@@ -77,6 +77,9 @@ class ImageGroupBase(object):
                 if variant.legacy_name in name:
                     return repository[name]
 
+        if not size and variant.max_width < sys.maxint > variant.max_height:
+            size = [variant.max_width, variant.max_height]
+
         image = zeit.content.image.interfaces.ITransform(
             source).create_variant_image(variant, size=size)
         image.__name__ = key
