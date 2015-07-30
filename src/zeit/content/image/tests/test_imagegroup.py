@@ -44,11 +44,6 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         with self.assertRaises(KeyError):
             self.group['nonexistent']
 
-    def test_getitem_raises_keyerror_if_no_master_image(self):
-        group = zeit.content.image.testing.create_image_group()
-        with self.assertRaises(KeyError):
-            group['square']
-
     def test_variant_url_returns_path_with_size_if_given(self):
         self.assertEqual('/group/square__200x200', self.group.variant_url(
             'square', 200, 200))

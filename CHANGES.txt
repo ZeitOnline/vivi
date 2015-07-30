@@ -1,10 +1,14 @@
 zeit.content.image changes
 ==========================
 
-2.5.3 (unreleased)
+2.6.0 (unreleased)
 ------------------
 
 - Ignore invalid image size specifications. (ZON-1586)
+
+- Adjust variants and groups to friedbert's needs, e.g. limit default sizes
+    to largest max_size, always produce a master_image, configure pillow
+    encoder settings. (ZON-1586)
 
 
 2.5.2 (2015-07-06)

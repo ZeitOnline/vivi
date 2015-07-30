@@ -95,8 +95,14 @@ class ImageTransform(object):
     def _construct_image(self, pil_image):
         image = zeit.content.image.image.LocalImage()
         image.mimeType = self.context.mimeType
-        pil_image.save(image.open('w'), self.image.format)
-
+        # XXX Maybe encoder setting should be made configurable.
+        if self.context.format == 'JPG':
+            options = {'progessive': True, 'quality': 85, 'optimize': True}
+        elif self.context.format == 'PNG':
+            options = {'optimize': True}
+        else:
+            options = {}
+        pil_image.save(image.open('w'), self.image.format, **options)
         image.__parent__ = self.context
         image_times = zope.dublincore.interfaces.IDCTimes(self.context)
         if image_times.modified:

@@ -21,15 +21,11 @@ This also works for checked-out groups:
 True
 
 
-An image group w/o master image obiously cannot be adapted to IMasterImage:
+An image group w/o master image should promote its largest image to master:
 
 >>> group = zeit.content.image.testing.create_image_group()
 >>> zeit.content.image.interfaces.IMasterImage(group)
-Traceback (most recent call last):
-    ...
-TypeError: ('Could not adapt',
-    <zeit.content.image.imagegroup.ImageGroup object at 0x...>,
-    <InterfaceClass zeit.content.image.interfaces.IMasterImage>)
+<zeit.content.image.image.RepositoryImage object at 0x...>
 
 .. [#functional]
 

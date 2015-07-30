@@ -77,6 +77,9 @@ class ImageGroupBase(object):
                 if variant.legacy_name in name:
                     return repository[name]
 
+        if not size and variant.max_width < sys.maxint > variant.max_height:
+            size = [variant.max_width, variant.max_height]
+
         image = zeit.content.image.interfaces.ITransform(
             source).create_variant_image(variant, size=size)
         image.__name__ = key
@@ -109,9 +112,7 @@ class ImageGroupBase(object):
         biggest max-limit, if all Variants have a max-limit set.
 
         """
-        variant = self.get_variant_by_size('{name}__{max}x{max}'.format(
-            name=name, max=sys.maxint))
-        if variant is not None:
+        for variant in self.get_all_variants_with_name(name, reverse=True):
             return variant
         # BBB New ImageGroups must respond to the legacy names (for XSLT).
         for mapping in zeit.content.image.variant.LEGACY_VARIANT_SOURCE(self):
@@ -139,11 +140,11 @@ class ImageGroupBase(object):
                 return variant
         return None
 
-    def get_all_variants_with_name(self, name):
+    def get_all_variants_with_name(self, name, reverse=False):
         """Return all Variants with a matching name, ordered by size."""
         variants = zeit.content.image.interfaces.IVariants(self)
         result = [v for v in variants.values() if name == v.name]
-        result.sort(key=lambda x: (x.max_width, x.max_height))
+        result.sort(key=lambda x: (x.max_width, x.max_height), reverse=reverse)
         return result
 
     def variant_url(self, name, width=None, height=None, thumbnail=False):
@@ -341,8 +342,15 @@ def XMLReference(context):
 @grok.adapter(zeit.content.image.interfaces.IImageGroup)
 @grok.implementer(zeit.content.image.interfaces.IMasterImage)
 def find_master_image(context):
-    if context.master_image:
-        return context.get(context.master_image)
+    if context.master_image in context:
+        return context[context.master_image]
+    master_image = None
+    for image in context.values():
+        if zeit.content.image.interfaces.IImage.providedBy(
+                image) and image.size > getattr(master_image, 'size', 0):
+            master_image = image
+            break
+    return master_image
 
 
 class ThumbnailTraverser(object):
