@@ -112,9 +112,7 @@ class ImageGroupBase(object):
         biggest max-limit, if all Variants have a max-limit set.
 
         """
-        variant = self.get_variant_by_size('{name}__{max}x{max}'.format(
-            name=name, max=sys.maxint))
-        if variant is not None:
+        for variant in self.get_all_variants_with_name(name, reverse=True):
             return variant
         # BBB New ImageGroups must respond to the legacy names (for XSLT).
         for mapping in zeit.content.image.variant.LEGACY_VARIANT_SOURCE(self):
@@ -142,11 +140,11 @@ class ImageGroupBase(object):
                 return variant
         return None
 
-    def get_all_variants_with_name(self, name):
+    def get_all_variants_with_name(self, name, reverse=False):
         """Return all Variants with a matching name, ordered by size."""
         variants = zeit.content.image.interfaces.IVariants(self)
         result = [v for v in variants.values() if name == v.name]
-        result.sort(key=lambda x: (x.max_width, x.max_height))
+        result.sort(key=lambda x: (x.max_width, x.max_height), reverse=reverse)
         return result
 
     def variant_url(self, name, width=None, height=None, thumbnail=False):
