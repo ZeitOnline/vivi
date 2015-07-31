@@ -228,11 +228,11 @@
     class=".imagegroup.View"
     template="imagegroup_view.pt"
     permission="zope.View"
-    menu="zeit-context-views" title="View"
+    menu="zeit-context-views" title="File list"
     />
 
   <browser:defaultView
-    name="view.html"
+    name="variant.html"
     for="..interfaces.IRepositoryImageGroup"
     />
 
@@ -241,7 +241,7 @@
     for="..interfaces.IRepositoryImageGroup"
     class=".imagegroup.DisplayForm"
     permission="zope.View"
-    menu="zeit-context-views" title="View metadata"
+    menu="zeit-context-views" title="Metadata"
     />
 
   <browser:page
@@ -257,7 +257,7 @@
     for="..interfaces.ILocalImageGroup"
     class=".imagegroup.EditForm"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Edit metadata"
+    menu="zeit-context-views" title="Metadata"
     />
 
   <browser:page
