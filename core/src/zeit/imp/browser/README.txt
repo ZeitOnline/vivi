@@ -90,23 +90,6 @@ The image manipulation view is on an imagegroup containing a master image:
   ...
 
 
-When there is no master image we get an error page telling us what to do:
-
-
->>> browser.open('http://localhost/++skin++cms/repository/image-group')
->>> browser.getLink('Transform').click()
->>> print browser.contents
-<!DOCTYPE...
-     ...There is no master image...
-     
-
-It is possible to check out the group from here directly:
-
->>> browser.getLink('Checkout').click()
->>> browser.getControl('Master image').displayValue
-['(nothing selected)']
-
-
 .. [#setup]
 
     >>> import zope.testbrowser.testing
