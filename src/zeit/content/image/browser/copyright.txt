@@ -95,7 +95,7 @@ Let's see if that's correct:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/2006/agroup')
->>> browser.getLink('View metadata').click()
+>>> browser.getLink('Metadata').click()
 >>> print browser.contents
 <?xml ...
 ...gocept...

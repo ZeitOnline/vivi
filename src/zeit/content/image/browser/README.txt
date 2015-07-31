@@ -396,6 +396,7 @@ After adding the image we're back at the image group:
 
 So we can directly add the next image:
 
+>>> browser.getLink('File list').click()
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image']
 >>> browser.open(menu.value[0])
@@ -404,14 +405,16 @@ So we can directly add the next image:
 
 And another one:
 
+>>> browser.getLink('File list').click()
 >>> menu = browser.getControl(name='add_menu')
 >>> menu.displayValue = ['Image']
 >>> browser.open(menu.value[0])
 >>> set_file_data('obama-clinton-120x120.jpg')
 >>> browser.getControl('Add').click()
 
-Let's have a look at the index:
+Let's have a look at the file list:
 
+>>> browser.getLink('File list').click()
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
@@ -500,7 +503,7 @@ LinkNotFoundError
 
 But an edit tab:
 
->>> browser.getLink('Edit metadata').click()
+>>> browser.getLink('Metadata').click()
 >>> print browser.title.strip()
 New Hampshire – Edit image group
 
@@ -524,7 +527,7 @@ Checkin again:
 
 Check the metadata view, to verify we have actually changed the alt text:
 
->>> browser.getLink('View metadata').click()
+>>> browser.getLink('Metadata').click()
 >>> print browser.contents
 <?xml version="1.0"?>
 <!DOCTYPE html ...
@@ -569,6 +572,7 @@ than an image in the image group:
 >>> transaction.commit()
 
 >>> browser.open('http://localhost/++skin++cms/repository/2006/new-hampshire')
+>>> browser.getLink('File list').click()
 >>> print browser.contents
 <?xml ...
     <td>
