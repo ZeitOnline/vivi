@@ -4,7 +4,7 @@ Changes
 2.12.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Support save without close in TabbedLightboxForm (DEV-108).
 
 
 2.12.0 (2015-06-09)

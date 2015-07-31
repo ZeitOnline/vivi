@@ -116,7 +116,14 @@ zeit.edit.TabbedLightBoxForm = zeit.edit.LightBoxForm.extend({
         var self = this;
         self.form.innerHTML = result.responseText;
         return result;
+    },
+
+    find_form_tag: function() {
+        // Use the value that was set by the tab load event (see self.reload)
+        var self = this;
+        return self.form;
     }
+
 
 });
 
