@@ -1,8 +1,8 @@
 #variant-content {
     bottom: 1em;
     position: absolute;
-    right: 35%;
-    width: 65%;
+    right: 42%;
+    width: 58%;
     top: 0;
 }
 
@@ -32,9 +32,9 @@
    another content. Since parent leaves padding of 15px, this is where the zoom
    bar fits in. */
 .zoom-bar {
-    margin-top: 100px;
-    margin-right: -15px;
-    width: 15px;
+    margin-top: 2%;
+    margin-right: -20px;
+    width: 8px;
     height: 300px;
     float: right;
 
@@ -56,7 +56,7 @@
 
 #variant-preview {
     bottom: 1em;
-    left: 66%;
+    left: 61%;
     position: absolute;
     overflow: auto;
     right: 0;
@@ -64,7 +64,7 @@
 }
 
 .preview-container {
-    padding-bottom: 0.5em;
+    padding-bottom: 1.5em;
 }
 
 img.preview {
@@ -73,6 +73,10 @@ img.preview {
     box-sizing: border-box;
     border: 1px solid black;
     cursor: pointer;
+}
+
+.preview-title {
+    margin-left: 0.5em;
 }
 
 /* display=block is required to calculate the focuspoint right, since image is
@@ -96,7 +100,20 @@ img.editor {
 }
 
 .preview-container.active > .preview {
-    border: 1px solid red;
+    border: solid 6px rgba(130, 190, 255, 0.7);
+}
+
+.preview-container.active > .preview-title {
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.preview-container:not(.active) > .preview {
+    border: solid 1px rgba(0, 0, 0, 0.5);
+}
+
+.preview-container:not(.active) > .preview, .preview-container:not(.active) > .preview-title {
+    opacity: 0.5;
 }
 
 /* Cropper has a default background image, which is shown when the *image* is
