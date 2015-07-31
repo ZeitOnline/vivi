@@ -4,7 +4,7 @@ zeit.content.image changes
 2.6.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Variants UI Styling updates by jpfn.
 
 
 2.6.0 (2015-07-30)
