@@ -4,7 +4,7 @@ zeit.content.image changes
 2.6.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Set uniqueId on variant-generated images.
 
 
 2.6.2 (2015-08-03)

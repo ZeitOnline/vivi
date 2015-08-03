@@ -84,6 +84,7 @@ class ImageGroupBase(object):
             source).create_variant_image(variant, size=size)
         image.__name__ = key
         image.__parent__ = self
+        image.uniqueId = u'%s%s' % (self.uniqueId, key)
         return image
 
     def get_variant_size(self, key):
