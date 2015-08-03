@@ -118,6 +118,8 @@ class ImageGroupBase(object):
         for mapping in zeit.content.image.variant.LEGACY_VARIANT_SOURCE(self):
             if mapping['old'] in name:
                 variant = self.get_variant_by_name(mapping['new'])
+                if variant is None:
+                    continue
                 variant.legacy_name = mapping['old']
                 return variant
         return None

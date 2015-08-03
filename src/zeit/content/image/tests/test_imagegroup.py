@@ -29,9 +29,13 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
         self.assertEqual((1536, 1536), image.getImageSize())
 
-    def test_getitem_raises_keyerror_for_invalid_legacy_names(self):
+    def test_getitem_raises_keyerror_for_unmapped_legacy_names(self):
         with self.assertRaises(KeyError):
             self.group['master-image-111x222.jpg']
+
+    def test_getitem_raises_keyerror_for_wrongly_mapped_legacy_names(self):
+        with self.assertRaises(KeyError):
+            self.group['master-image-148x84.jpg']
 
     def test_getitem_returns_materialized_files_for_new_syntax(self):
         self.group['master-image-540x304.jpg'] = create_local_image(
