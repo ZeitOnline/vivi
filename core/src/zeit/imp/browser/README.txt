@@ -78,7 +78,7 @@ Image manipulation view
 
 The image manipulation view is on an imagegroup containing a master image:
 
->>> browser.open('http://localhost/++skin++cms/repository/group')
+>>> browser.open('http://localhost/++skin++cms/repository/group/@@view.html')
 >>> browser.getLink('Transform').click()
 >>> print browser.contents
 <?xml ...
