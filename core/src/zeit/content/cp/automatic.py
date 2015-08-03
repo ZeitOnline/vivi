@@ -1,8 +1,12 @@
 from zeit.content.cp.interfaces import IAutomaticTeaserBlock
+import logging
 import zeit.content.cp.interfaces
 import zeit.find.search
 import zope.component
 import zope.interface
+
+
+log = logging.getLogger(__name__)
 
 
 class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
@@ -108,13 +112,18 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
 
     def _query_solr(self, query, sort_order):
         result = []
-        for item in zeit.find.search.search(
-                query, sort_order=sort_order,
-                start=self._v_retrieved_content,
-                rows=self.count_to_replace_duplicates):
-            content = zeit.cms.interfaces.ICMSContent(item['uniqueId'], None)
-            if content is not None:
-                result.append(content)
+        try:
+            for item in zeit.find.search.search(
+                    query, sort_order=sort_order,
+                    start=self._v_retrieved_content,
+                    rows=self.count_to_replace_duplicates):
+                content = zeit.cms.interfaces.ICMSContent(
+                    item['uniqueId'], None)
+                if content is not None:
+                    result.append(content)
+        except:
+            log.warning('Error during solr query %r for %s',
+                        query, self.uniqueId, exc_info=True)
         return result
 
     def _query_centerpage(self):

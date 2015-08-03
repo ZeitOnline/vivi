@@ -1,7 +1,6 @@
 from zeit.content.cp.i18n import MessageFactory as _
 import collections
 import fractions
-import pysolr
 import urlparse
 import zc.form.field
 import zc.sourcefactory.contextual
@@ -280,16 +279,6 @@ def automatic_area_can_read_teasers_automatically(data):
     return False
 
 
-class SolrQueryField(zope.schema.Text):
-
-    def _validate(self, value):
-        super(SolrQueryField, self)._validate(value)
-        try:
-            zeit.find.search.search(value, rows=1)
-        except pysolr.SolrError:
-            raise zeit.cms.interfaces.ValidationError(_('Invalid solr query'))
-
-
 class IReadArea(zeit.edit.interfaces.IReadContainer):
 
     # Use a schema field so the security can declare it as writable,
@@ -395,7 +384,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         default=u'last-semantic-change desc',
         required=True)
 
-    raw_query = SolrQueryField(title=_('Raw query'), required=False)
+    raw_query = zope.schema.Text(title=_('Raw query'), required=False)
     raw_order = zope.schema.TextLine(
         title=_('Sort order'),
         default=u'date-first-released desc',

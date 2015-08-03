@@ -234,6 +234,16 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             IRenderedArea(lead).values()
             self.assertEqual('order', search.call_args[1]['sort_order'])
 
+    def test_returns_no_content_on_solr_error(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        lead.raw_query = 'raw'
+        lead.automatic_type = 'query'
+        with mock.patch('zeit.find.search.search') as search:
+            search.side_effect = RuntimeError('provoked')
+            self.assertEqual(0, len(IRenderedArea(lead).values()))
+
     def test_turning_automatic_off_materializes_filled_in_blocks(self):
         self.repository['normal'] = TestContentType()
         leader = TestContentType()

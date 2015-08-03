@@ -1,11 +1,15 @@
 from zeit.cms.i18n import MessageFactory as _
 import gocept.form.grouped
+import pysolr
 import zeit.cms.interfaces
 import zeit.content.cp.browser.blocks.teaser
 import zeit.content.cp.browser.view
 import zeit.content.cp.interfaces
 import zeit.edit.browser.block
+import zeit.find.search
 import zope.formlib.form
+import zope.formlib.interfaces
+import zope.formlib.widgets
 
 
 class ViewletManager(zeit.edit.browser.block.BlockViewletManager):
@@ -50,12 +54,25 @@ class EditOverflow(zeit.content.cp.browser.view.EditBox):
             'block_max', 'overflow_into')
 
 
+class SolrQueryWidget(zope.formlib.widgets.TextAreaWidget):
+
+    def _toFieldValue(self, value):
+        value = super(SolrQueryWidget, self)._toFieldValue(value)
+        try:
+            zeit.find.search.search(value, rows=1)
+        except pysolr.SolrError:
+            raise zope.formlib.interfaces.ConversionError(
+                _('Invalid solr query'), value)
+        return value
+
+
 class EditAutomatic(zeit.content.cp.browser.blocks.teaser.EditCommon):
 
     form_fields = zope.formlib.form.FormFields(
         zeit.content.cp.interfaces.IArea).select(
             'count', 'query', 'query_order', 'raw_query', 'raw_order',
             'automatic', 'automatic_type', 'referenced_cp', 'hide_dupes')
+    form_fields['raw_query'].custom_widget = SolrQueryWidget
 
     field_groups = (
         # XXX Kludgy: ``automatic`` must come after ``count``, since setting
