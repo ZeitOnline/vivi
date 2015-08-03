@@ -1,6 +1,12 @@
 zeit.content.image changes
 ==========================
 
+2.7.1 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 2.7.0 (2015-08-03)
 ------------------
 
