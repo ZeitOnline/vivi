@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.0b27 (unreleased)
+3.0.0b27 (2015-08-03)
 ---------------------
 
 - Handle errors raised by solr.
