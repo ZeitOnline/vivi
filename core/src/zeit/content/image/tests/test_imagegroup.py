@@ -23,6 +23,7 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
         self.assertEqual(self.group, image.__parent__)
         self.assertEqual('square', image.__name__)
+        self.assertEqual('http://xml.zeit.de/group/square', image.uniqueId)
 
     def test_getitem_uses_mapping_for_legacy_names(self):
         image = self.group['master-image-540x304.jpg']
