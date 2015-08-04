@@ -75,6 +75,14 @@ class Element(zope.container.contained.Contained,
                 name = self.__parent__.index(self)
             return '%s/%s' % (parent, name)
 
+    def __repr__(self):
+        try:
+            uniqueId = self.uniqueId.encode('ascii', 'replace')
+        except:
+            uniqueId = ''
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__, uniqueId)
+
 
 @grok.adapter(
     basestring, name='http://block.vivi.zeit.de/')
