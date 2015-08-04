@@ -21,21 +21,21 @@ True
 
 >>> c_2007 = repository['online']['2007']
 >>> c_2007
-<zeit.cms.repository.folder.Folder object at 0x...>
+<zeit.cms.repository.folder.Folder...>
 >>> c_2007.keys()
 [u'01', u'02']
 >>> from pprint import pprint
 >>> pprint(list(c_2007.values()))
-[<zeit.cms.repository.folder.Folder object at 0x...>,
- <zeit.cms.repository.folder.Folder object at 0x...>]
+[<zeit.cms.repository.folder.Folder...>,
+ <zeit.cms.repository.folder.Folder...>]
 >>> len(c_2007)
 2
 >>> pprint(list(c_2007.items()))
-[(u'01', <zeit.cms.repository.folder.Folder object at 0x...>),
- (u'02', <zeit.cms.repository.folder.Folder object at 0x...>)]
+[(u'01', <zeit.cms.repository.folder.Folder...>),
+ (u'02', <zeit.cms.repository.folder.Folder...>)]
 
 >>> repository.get('2006')
-<zeit.cms.repository.folder.Folder object at 0x...>
+<zeit.cms.repository.folder.Folder...>
 >>> print repository.get('2005')
 None
 >>> repository.get('2005', 'default')
@@ -78,7 +78,7 @@ Getting the object /online/2007/01/lebenslagen-01:
 >>> content = repository['online']['2007']['01']['lebenslagen-01']
 Constructing http://xml.zeit.de/online/2007/01/lebenslagen-01
 >>> content
-<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource...>
 
 
 The content object provides IRepositoryContent since it was read from the 
@@ -116,7 +116,7 @@ properties:
 >>> import zeit.connector.interfaces
 >>> properties = zeit.connector.interfaces.IWebDAVReadProperties(content)
 >>> properties
-<zeit.cms.content.liveproperty.LiveProperties object at 0x...>
+<zeit.cms.content.liveproperty.LiveProperties...>
 >>> pprint(dict(properties))
 {('DailyNL', 'http://namespaces.zeit.de/CMS/document'): 'no',
  ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
@@ -128,9 +128,9 @@ are still there:
 
 >>> resource = zeit.connector.interfaces.IResource(content)
 >>> resource
-<zeit.connector.resource.Resource object at 0x...>
+<zeit.connector.resource.Resource...>
 >>> resource.properties
-<zeit.connector.resource.WebDAVProperties object at 0x...>
+<zeit.connector.resource.WebDAVProperties...>
 >>> pprint(dict(resource.properties))
 {('DailyNL', 'http://namespaces.zeit.de/CMS/document'): 'no',
  ('author', 'http://namespaces.zeit.de/CMS/document'): ' Thomas Luther',
@@ -185,10 +185,10 @@ Adding sends an event. Register an event handler for IBeforeObjectAddedEvent
 After adding it to the repository, it has a unique id:
 
 >>> repository['i_am_new'] = content
-Before add: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
-ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+Before add: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Old: None None
-    New: <zeit.cms.repository.repository.Repository object at 0x...> i_am_new
+    New: <zeit.cms.repository.repository.Repository...> i_am_new
 >>> content.uniqueId
 u'http://xml.zeit.de/i_am_new'
 
@@ -196,7 +196,7 @@ Since it does have an id we can get it back from the repository:
 
 >>> new_content = repository.getUncontainedContent(content.uniqueId)
 >>> new_content
-<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource...>
 >>> new_content.data
 u"I'm a shiny new object."
 
@@ -205,7 +205,7 @@ Adding it again will store it again on the DAV (i.e. overwrite). An
 IObjectAddedEvent is *not* sent:
 
 >>> repository['i_am_new'] = new_content
-Before add: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+Before add: <zeit.cms.repository.unknown.PersistentUnknownResource...>
 
 >>> site_manager.unregisterHandler(
 ...         before_added,
@@ -222,9 +222,9 @@ Objects can be renamed in a container using IContainerItemRenamer:
 >>> import zope.copypastemove.interfaces
 >>> renamer = zope.copypastemove.interfaces.IContainerItemRenamer(repository)
 >>> renamer.renameItem('i_am_new', 'i_am_not_so_new_anymore')
-ObjectMovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3b3f970>
-    Old: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_new
-    New: <zeit.cms.repository.repository.Repository object at 0x36e0e30> i_am_not_so_new_anymore
+ObjectMovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Old: <zeit.cms.repository.repository.Repository...> i_am_new
+    New: <zeit.cms.repository.repository.Repository...> i_am_not_so_new_anymore
 u'i_am_not_so_new_anymore'
 
 >>> 'i_am_new' in repository
@@ -267,8 +267,8 @@ __delitem__:
 >>> 'i_am_new' in repository
 True
 >>> del repository['i_am_new']
-BeforeObjectRemovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
-    Old: <zeit.cms.repository.repository.Repository object at 0x...> i_am_new
+BeforeObjectRemovedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Old: <zeit.cms.repository.repository.Repository...> i_am_new
     New: None None
 Deleting http://xml.zeit.de/i_am_new
 >>> 'i_am_new' in repository
@@ -320,9 +320,9 @@ u'01'
 When copying againer, we'll get another name:
 
 >>> copier.copyTo(repository['online'])
-ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+ObjectAddedEvent <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Old: None None
-    New: <zeit.cms.repository.folder.Folder object at 0x...> 01-2
+    New: <zeit.cms.repository.folder.Folder...> 01-2
 ...
 u'01-2'
 
@@ -351,9 +351,9 @@ from the unique id:
 >>> content = repository.getContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
 >>> content
-<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource...>
 >>> content.__parent__
-<zeit.cms.repository.folder.Folder object at 0x...>
+<zeit.cms.repository.folder.Folder...>
 >>> content.__parent__.__name__
 u'01'
 
@@ -361,7 +361,7 @@ An even easier way is adapting to ICMSContent:
 
 >>> zeit.cms.interfaces.ICMSContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
-<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource...>
 
 
 A TypeError is raised if anything but a string is passed:

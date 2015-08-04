@@ -7,7 +7,7 @@ Feeds contain an ordered list of documents:
 >>> from zeit.cms.syndication.feed import Feed
 >>> feed = Feed()
 >>> feed
-<zeit.cms.syndication.feed.Feed object at 0x...>
+<zeit.cms.syndication.feed.Feed...>
 >>> import zope.interface.verify
 >>> import zeit.cms.syndication.interfaces
 >>> zope.interface.verify.verifyObject(
@@ -97,9 +97,9 @@ Let's also add an object from the repository:
 >>> list(feed.keys())
 ['http://xml.zeit.de/testcontent', 'art3', 'art1']
 >>> list(feed)
-[<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>,
- <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
- <zeit.cms.syndication.feed.FakeEntry object at 0x...>]
+[<zeit.cms.testcontenttype.testcontenttype.TestContentType...>,
+ <zeit.cms.syndication.feed.FakeEntry...>,
+ <zeit.cms.syndication.feed.FakeEntry...>]
 
 
 When we remove the testcontent from the repository the testcontent in the feed
@@ -107,9 +107,9 @@ will also become a fake entry:
 
 >>> del repository['testcontent']
 >>> list(feed)
-[<zeit.cms.syndication.feed.FakeEntry object at 0x...>,
- <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
- <zeit.cms.syndication.feed.FakeEntry object at 0x...>]
+[<zeit.cms.syndication.feed.FakeEntry...>,
+ <zeit.cms.syndication.feed.FakeEntry...>,
+ <zeit.cms.syndication.feed.FakeEntry...>]
 
 Remove the testcontent from the feed:
 
@@ -163,7 +163,7 @@ It is also not possible to add objects which are not ICMSConent:
 >>> feed.insert(0, object())
 Traceback (most recent call last):
     ...
-TypeError: ('Could not adapt', <object object at 0x...>, <InterfaceClass zeit.cms.interfaces.ICMSContent>)
+TypeError: ('Could not adapt', <object...>, <InterfaceClass zeit.cms.interfaces.ICMSContent>)
 
 
 Trying to remove an object which is not in the feed raises a ValueError:
@@ -193,7 +193,7 @@ Feeds are cms content. So we also need to create them from resources:
 ...     </channel>'''))
 >>> feed = FeedType().content(resource)
 >>> feed 
-<zeit.cms.syndication.feed.Feed object at 0x...>
+<zeit.cms.syndication.feed.Feed...>
 >>> list(feed.keys())
 ['/2006/siemens']
 
@@ -206,7 +206,7 @@ The metadata object is used to modify metadata of syndicated objects:
 >>> feed.insert(0, Article('first'))
 >>> metadata = feed.getMetadata(Article('first'))
 >>> metadata
-<zeit.cms.syndication.feed.Entry object at 0x...>
+<zeit.cms.syndication.feed.Entry...>
 >>> metadata.pinned
 False
 >>> metadata.hidden

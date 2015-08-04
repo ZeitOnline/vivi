@@ -83,7 +83,7 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
 >>> list(workingcopy.keys())
 [u'4schanzentournee-abgesang']
 >>> list(workingcopy.values())
-[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...]
+[<zeit.cms.repository.unknown.PersistentUnknownResource...4schanzentournee-abgesang>]
 
 The resource is locked in DAV for about an hour:
 
@@ -199,11 +199,11 @@ False
 >>> checked_out = manager.checkout()
 Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> lockable.locked()
 True 
@@ -223,11 +223,11 @@ interfere with the user. The system usually checks out content as "temporary".
 >>> checked_out = manager.checkout(temporary=True)
 Event: <zeit.cms.checkout.interfaces.BeforeCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 
 The workingcopy is still empty:
@@ -261,13 +261,13 @@ True
 >>> manager.checkin()
 Event: <zeit.cms.checkout.interfaces.BeforeCheckinEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 Event: <zeit.cms.checkout.interfaces.AfterCheckinEvent object at 0x...>
     Principal: zope.user
-    Content: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
-<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource...>
 
 
 Locking race condition
@@ -337,7 +337,7 @@ ConflictError: There was a conflict while adding ${name}
 Checking in is possible with ignored conflicts:
 
 >>> ICheckinManager(checked_out).checkin(ignore_conflicts=True)
-<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource...4schanzentournee-abgesang>
 
 
 

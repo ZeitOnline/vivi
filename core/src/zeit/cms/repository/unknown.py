@@ -26,6 +26,11 @@ class UnknownResource(zope.app.container.contained.Contained):
         self.data = data
         self.type = type_info
 
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__,
+            self.uniqueId or '(unknown)')
+
 
 class PersistentUnknownResource(UnknownResource,
                                 persistent.Persistent):

@@ -33,7 +33,7 @@ The workingcopy can be adapted to `IMySyndicationTargets` [#create-feeds]_:
 >>> from zeit.cms.syndication.interfaces import IMySyndicationTargets
 >>> bobs_syndication_targets = IMySyndicationTargets(bobs_workingcopy)
 >>> bobs_syndication_targets
-<zeit.cms.syndication.mytargets.MySyndicationTargets object at 0x...>
+<zeit.cms.syndication.mytargets.MySyndicationTargets...>
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
 ...     IMySyndicationTargets, bobs_syndication_targets)
@@ -43,16 +43,16 @@ The syndication target object has an attribute `targets`, which initially is
 filled with a default:
 
 >>> bobs_syndication_targets.targets
-<BTrees.OIBTree.OITreeSet object at 0x...>
+<BTrees.OIBTree.OITreeSet...>
 >>> len(bobs_syndication_targets.targets)
 2
 >>> list(bobs_syndication_targets.targets)
-[<zeit.cms.content.keyreference.CMSContentKeyReference object at 0x...>,
- <zeit.cms.content.keyreference.CMSContentKeyReference object at 0x...>]
+[<zeit.cms.content.keyreference.CMSContentKeyReference...>,
+ <zeit.cms.content.keyreference.CMSContentKeyReference...>]
 >>> default_targets = list(bobs_syndication_targets)
 >>> default_targets
-[<zeit.cms.syndication.feed.Feed object at 0x...>,
- <zeit.cms.syndication.feed.Feed object at 0x...>]
+[<zeit.cms.syndication.feed.Feed...>,
+ <zeit.cms.syndication.feed.Feed...>]
 
 We have two feeds in the demo system, get them:
 
@@ -82,7 +82,7 @@ syndication manager:
 >>> from zeit.cms.syndication.interfaces import ISyndicationManager
 >>> manager = ISyndicationManager(content)
 >>> manager
-<zeit.cms.syndication.manager.SyndicationManager object at 0x...>
+<zeit.cms.syndication.manager.SyndicationManager...>
 
 Syndication of the object is possible:
 
@@ -94,7 +94,7 @@ have added politk.feed to bob's targets above, so we have one target here:
 
 >>> targets = manager.targets
 >>> targets
-[<zeit.cms.syndication.feed.Feed object at 0x...>]
+[<zeit.cms.syndication.feed.Feed...>]
 >>> len(targets)
 1
 
@@ -108,12 +108,12 @@ Take the first target. It is empty so far:
 When we syndicate to that target the `content` object is listed:
 
 >>> manager.syndicate([target])
-Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent object at 0x...>
+Event: <zeit.cms.syndication.interfaces.ContentSyndicatedEvent...>
      Target: http://xml.zeit.de/politik.feed
      Content: http://xml.zeit.de/testcontent
 >>> target = repository['politik.feed']
 >>> list(target)
-[<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
+[<zeit.cms.testcontenttype.testcontenttype.TestContentType...>]
 >>> list(target)[0].uniqueId == content.uniqueId
 True
 
@@ -188,7 +188,7 @@ Checkout content, change a teaser and check back in:
 ...     content).checkout()
 >>> checked_out.teaserTitle = u'nice Teaser Title'
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
-<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+<zeit.cms.testcontenttype.testcontenttype.TestContentType...>
 >>> import gocept.async.tests
 >>> gocept.async.tests.process('events')
 
@@ -222,7 +222,7 @@ updated:
 ...     content).checkout()
 >>> checked_out.teaserTitle = u'nice other Teaser Title'
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
-<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+<zeit.cms.testcontenttype.testcontenttype.TestContentType...>
 
 The feed was not updated:
 
@@ -244,7 +244,7 @@ Check the feed back in:
 
 >>> zeit.cms.checkout.interfaces.ICheckinManager(
 ...     checked_out_channel).checkin()
-<zeit.cms.syndication.feed.Feed object at 0x...>
+<zeit.cms.syndication.feed.Feed...>
 
 
 When the automatic update is forbidden by the user, the feed is not update
@@ -256,7 +256,7 @@ automatically. Forbid the automatic update:
 >>> checked_out.automaticMetadataUpdateDisabled = frozenset([
 ...     repository['politik.feed']])
 >>> zeit.cms.checkout.interfaces.ICheckinManager(checked_out).checkin()
-<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+<zeit.cms.testcontenttype.testcontenttype.TestContentType...>
 
 The feed has not changed this time:
 

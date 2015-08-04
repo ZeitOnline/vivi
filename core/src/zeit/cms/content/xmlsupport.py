@@ -53,6 +53,11 @@ class XMLContentBase(XMLRepresentationBase,
     def __hash__(self):
         return hash((self.uniqueId, self.__name__))
 
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__,
+            self.uniqueId or '(unknown)')
+
 _default_marker = object()
 
 

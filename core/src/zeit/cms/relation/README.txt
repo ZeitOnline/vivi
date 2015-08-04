@@ -45,7 +45,7 @@ We could ask for b's relations:
 >>> len(res)
 1
 >>> res
-[<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>]
+[<zeit.cms.testcontenttype.testcontenttype.TestContentType...>]
 >>> res[0].uniqueId
 u'http://xml.zeit.de/a'
 

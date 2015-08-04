@@ -138,7 +138,7 @@ Since the foobar view doesn't actually exist we'll get an error:
 Traceback (most recent call last):
     ...
 NotFound:
-    Object: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>,
+    Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
     name: u'@@foobar.html'
 
 Clean up the adpater:
@@ -172,7 +172,7 @@ an error because the foobar view still doesn't exist:
 Traceback (most recent call last):
     ...
 NotFound:
-    Object: <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>,
+    Object: <zeit.cms.repository.unknown.PersistentUnknownResource...>,
     name: u'@@foobar.html'
 
 Clean up the adapter:

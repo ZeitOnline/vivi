@@ -125,6 +125,11 @@ class Container(zope.container.contained.Contained):
         del self.connector[id]
         self._local_unique_map_data.clear()
 
+    def __repr__(self):
+        return '<%s.%s %s>' % (
+            self.__class__.__module__, self.__class__.__name__,
+            self.uniqueId or '(unknown)')
+
     # Internal helper methods and properties:
 
     @property

@@ -12,13 +12,13 @@ Aktivitäten[#functional]_.
 >>> import zeit.workflow.interfaces
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(somalia)
 >>> workflow
-<zeit.workflow.workflow.ContentWorkflow object at 0x...>
+<zeit.workflow.workflow.ContentWorkflow...>
 
 Make sure adapting to IPublishInfo yields the same:
 
 >>> import zeit.cms.workflow.interfaces
 >>> zeit.cms.workflow.interfaces.IPublishInfo(somalia)
-<zeit.workflow.workflow.ContentWorkflow object at 0x...>
+<zeit.workflow.workflow.ContentWorkflow...>
 
 >>> import zope.interface.verify
 >>> zope.interface.verify.verifyObject(
@@ -26,7 +26,7 @@ Make sure adapting to IPublishInfo yields the same:
 True
 >>> publish = zeit.cms.workflow.interfaces.IPublish(somalia)
 >>> publish
-<zeit.workflow.publish.Publish object at 0x...>
+<zeit.workflow.publish.Publish...>
 
 
 Activities / States
@@ -347,7 +347,7 @@ xml.
 >>> import zeit.workflow.interfaces
 >>> article = repository['testcontent']
 >>> article
-<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x...>
+<zeit.cms.testcontenttype.testcontenttype.TestContentType...>
 >>> workflow = zeit.workflow.interfaces.IContentWorkflow(article)
 >>> workflow.date_first_released is None
 True
@@ -416,7 +416,7 @@ Make UnknownResources an asset to test the workflow:
 
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
 >>> workflow
-<zeit.workflow.asset.AssetWorkflow object at 0x...>
+<zeit.workflow.asset.AssetWorkflow...>
 >>> workflow.can_publish()
 'can-publish-success'
 >>> not not workflow.published
@@ -453,7 +453,7 @@ though is that they're not publishable at all:
 >>> container = repository['online']['2007']['01']
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(container)
 >>> workflow
-<zeit.workflow.publishinfo.NotPublishablePublishInfo object at 0x...>
+<zeit.workflow.publishinfo.NotPublishablePublishInfo...>
 >>> workflow.can_publish()
 'can-publish-error'
 
@@ -729,7 +729,7 @@ all the named adapters:
 >>> deps = zeit.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
 >>> deps
-[<zeit.cms.syndication.feed.Feed object at 0x...>]
+[<zeit.cms.syndication.feed.Feed...>]
 >>> len(deps)
 1
 >>> deps[0].uniqueId
@@ -896,8 +896,8 @@ Let somalia also depend on the /2007 folder:
 
 >>> zeit.workflow.interfaces.IPublicationDependencies(
 ...     somalia).get_dependencies()
-[<zeit.cms.repository.folder.Folder object at 0x...>,
- <zeit.cms.syndication.feed.Feed object at 0x...>]
+[<zeit.cms.repository.folder.Folder...>,
+ <zeit.cms.syndication.feed.Feed...>]
 
 2007 is not published:
 

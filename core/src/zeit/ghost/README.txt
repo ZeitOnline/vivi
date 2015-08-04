@@ -45,7 +45,7 @@ Get the ghost from the workingcopy:
 
 >>> ghost = workingcopy['4schanzentournee-abgesang']
 >>> ghost
-<zeit.cms.clipboard.entry.Entry object at 0x...>
+<zeit.cms.clipboard.entry.Entry...>
 
 When we check out the content object again, the ghost is replaced by the
 checked out object:
@@ -69,7 +69,7 @@ When we do a temporary checkout no ghost will be added to the workingcopy:
 >>> checked_out = manager.checkout(temporary=True)
 >>> manager = ICheckinManager(checked_out)
 >>> manager.checkin()
-<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>
+<zeit.cms.repository.unknown.PersistentUnknownResource...>
 >>> list(workingcopy.keys())
 [u'4schanzentournee-abgesang-2']
 

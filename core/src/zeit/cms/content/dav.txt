@@ -225,7 +225,7 @@ source[#functional]_:
 >>> converter = zeit.cms.content.interfaces.IDAVPropertyConverter(field)
 >>> folder = converter.fromProperty(u'http://xml.zeit.de/online')
 >>> folder
-<zeit.cms.repository.folder.Folder object at 0x...>
+<zeit.cms.repository.folder.Folder...>
 >>> folder.uniqueId
 u'http://xml.zeit.de/online/'
 

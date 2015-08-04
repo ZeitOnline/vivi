@@ -28,7 +28,7 @@ Let's get it from the repository:
 
 >>> channel = repository.getContent(resource.id)
 >>> channel
-<zeit.cms.syndication.oldchannel.BodyContainer object at 0x...>
+<zeit.cms.syndication.oldchannel.BodyContainer...>
 >>> len(channel)
 33
 >>> import pprint
@@ -72,8 +72,8 @@ Let's get it from the repository:
 >>> len(contents)
 33
 >>> contents
-[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x...>,
- <zeit.cms.syndication.feed.FakeEntry object at 0x...>,
+[<zeit.cms.repository.unknown.PersistentUnknownResource...>,
+ <zeit.cms.syndication.feed.FakeEntry...>,
  ...]
 
 The fake entries represent urls which do not point to the CMS:
