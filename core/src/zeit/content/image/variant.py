@@ -1,4 +1,5 @@
 import UserDict
+import collections
 import copy
 import grokcore.component as grok
 import sys
@@ -141,8 +142,11 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
         return value.id
 
     def getValues(self, context):
+        return self.values(context).values()
+
+    def values(self, context):
         tree = self._get_tree()
-        result = []
+        result = collections.OrderedDict()
         for node in tree.iterchildren('*'):
             if not self.isAvailable(node, context):
                 continue
@@ -152,19 +156,18 @@ class VariantSource(zeit.cms.content.sources.XMLSource):
                 # If there are no children, create a Variant from parent node
                 attributes = dict(node.attrib)
                 attributes['id'] = attributes['name']
-                result.append(Variant(**attributes))
+                variant = Variant(**attributes)
+                result[variant.id] = variant
 
             for size in sizes:
                 # Create Variant for each given size
-                result.append(Variant(**self._merge_attributes(
-                    node.attrib, size.attrib)))
+                variant = Variant(**self._merge_attributes(
+                    node.attrib, size.attrib))
+                result[variant.id] = variant
         return result
 
     def find(self, context, id):
-        for value in self.getValues(context):
-            if value.id == id:
-                return value
-        raise KeyError(id)
+        return self.values(context)[id]
 
     def _merge_attributes(self, parent_attr, child_attr):
         """Merge attributes from parent with those from child.
