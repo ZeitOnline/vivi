@@ -48,7 +48,7 @@ We can of course get the object back:
 
 >>> new_content = repository['raw']
 >>> new_content
-<zeit.content.rawxml.rawxml.RawXML object at 0x...>
+<zeit.content.rawxml.rawxml.RawXML...>
 
 All the data is still there:
 
