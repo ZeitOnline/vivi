@@ -8,7 +8,7 @@ NEWS = open(os.path.join(here, 'CHANGES.txt')).read()
 
 setup(
     name='zeit.edit',
-    version='2.12.2.dev0',
+    version='2.12.2',
     description="Vivi Editor",
     long_description=README + '\n\n' + NEWS,
     keywords='',
