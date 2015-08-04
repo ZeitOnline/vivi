@@ -232,6 +232,12 @@
     />
 
   <browser:defaultView
+    zcml:condition="not-have zeit.content.image.variants"
+    name="view.html"
+    for="..interfaces.IRepositoryImageGroup"
+    />
+  <browser:defaultView
+    zcml:condition="have zeit.content.image.variants"
     name="variant.html"
     for="..interfaces.IRepositoryImageGroup"
     />
