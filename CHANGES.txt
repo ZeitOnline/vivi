@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.7.1 (unreleased)
+2.7.1 (2015-08-04)
 ------------------
 
 - Only change default tab to new editor if the feature toggle is present.
