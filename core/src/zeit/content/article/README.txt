@@ -27,7 +27,7 @@ Articles consist of an XMLdocument. Most properties map to XML-Elements:
 ... """)
 >>> article = Article(article_xml)
 >>> article
-<zeit.content.article.article.Article object at 0x...>
+<zeit.content.article.article.Article...>
 
 The article property is mapped to the XML:
 
@@ -232,7 +232,7 @@ article:
 ...                     article_xml)
 >>> article = ArticleType().content(resource)
 >>> article
-<zeit.content.article.article.Article object at 0x...>
+<zeit.content.article.article.Article...>
 >>> article.title
 u'Jahr der \xdcberraschungen'
 >>> print article.year
@@ -276,7 +276,7 @@ Get an image from the repository and attach it[#needsinteraction]_:
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> image = repository['2006']['DSC00109_2.JPG']
 >>> image
-<zeit.content.image.image.RepositoryImage object at 0x...>
+<zeit.content.image.image.RepositoryImage...>
 >>> checked_out = zeit.cms.checkout.interfaces.ICheckoutManager(
 ...     image).checkout()
 >>> image_metadata = zeit.content.image.interfaces.IImageMetadata(checked_out)
@@ -288,7 +288,7 @@ Get an image from the repository and attach it[#needsinteraction]_:
 It's now stored on the article:
 
 >>> images.image
-<zeit.content.image.image.RepositoryImage object at 0x...>
+<zeit.content.image.image.RepositoryImage...>
 
 And the image is referenced in the XML structure:
 
@@ -313,7 +313,7 @@ combining the comments:
 
 >>> comments = zeit.content.article.interfaces.IAggregatedComments(article)
 >>> comments
-<zeit.content.article.comment.AggregatedComments object at 0x...>
+<zeit.content.article.comment.AggregatedComments...>
 >>> comments.comment_id = repository.getContent(
 ...     'http://xml.zeit.de/online/2007/01/Somalia')
 
@@ -324,7 +324,7 @@ This is stored in a webdav property:
 >>> properties[('comment-id', 'http://namespaces.zeit.de/CMS/document')]
 u'http://xml.zeit.de/online/2007/01/Somalia'
 >>> comments.comment_id
-<zeit.content.article.article.Article object at 0x...>
+<zeit.content.article.article.Article...>
 >>> comments.comment_id.title
 u'R\xfcckkehr der Warlords'
 

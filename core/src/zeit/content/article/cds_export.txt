@@ -32,7 +32,7 @@ publication:
 ...     zeit.cms.repository.interfaces.IRepository)
 >>> content = repository['online']['2007']['01']['Somalia']
 >>> content
-<zeit.content.article.article.Article object at 0x...>
+<zeit.content.article.article.Article...>
 
 export_cds flag not set
 -----------------------
