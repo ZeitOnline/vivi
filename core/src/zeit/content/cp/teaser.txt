@@ -37,4 +37,4 @@ Create a teaser object from the article and look at its image:
 
 >>> images = zeit.content.image.interfaces.IImages(teaser)
 >>> images.image
-<zeit.content.image.imagegroup.ImageGroup object at 0x...>
+<zeit.content.image.imagegroup.ImageGroup...>

@@ -15,7 +15,7 @@ Create a cp extra block:
 ...     lead, zeit.edit.interfaces.IElementFactory, name='cpextra')
 >>> cpextra = factory()
 >>> cpextra
-<zeit.content.cp.blocks.cpextra.CPExtraBlock object at 0x...>
+<zeit.content.cp.blocks.cpextra.CPExtraBlock...>
 
 Initialy the block is empty and has no module assinged:
 

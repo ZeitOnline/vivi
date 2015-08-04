@@ -6,7 +6,7 @@ Centerpage
 >>> import zeit.content.cp.centerpage
 >>> cp = zeit.content.cp.centerpage.CenterPage()
 >>> cp
-<zeit.content.cp.centerpage.CenterPage object at 0x...>
+<zeit.content.cp.centerpage.CenterPage...>
 >>> cp.type = u'homepage'
 >>> cp.type
 u'homepage'
@@ -44,10 +44,10 @@ KeyError: 'ugc-bar'
 The centerpage is reachable via ``__parent__`` or by adapting to it:
 
 >>> cp['feature'].__parent__
-<zeit.content.cp.centerpage.Body object at 0x...>
+<zeit.content.cp.centerpage.Body...>
 >>> import zeit.content.cp.interfaces
 >>> zeit.content.cp.interfaces.ICenterPage(cp['feature'])
-<zeit.content.cp.centerpage.CenterPage object at 0x...>
+<zeit.content.cp.centerpage.CenterPage...>
 
 [#modified-handler]_
 
@@ -127,7 +127,7 @@ Teaser block
 u'List of teasers'
 >>> block = factory()
 >>> block
-<zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>
+<zeit.content.cp.blocks.teaser.TeaserBlock...>
 >>> block.type
 'teaser'
 
@@ -142,24 +142,24 @@ After calling the factory a corresponding XML node has been created:
 Modules are accessible via __getitem__ [#invalid-raises-error]_:
 
 >>> informatives[block.__name__]
-<zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>
+<zeit.content.cp.blocks.teaser.TeaserBlock...>
 
 The area can also be iterated:
 
 >>> list(informatives.itervalues())
-[<zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>]
+[<zeit.content.cp.blocks.teaser.TeaserBlock...>]
 >>> informatives.values()
-[<zeit.content.cp.blocks.teaser.TeaserBlock object at 0x...>]
+[<zeit.content.cp.blocks.teaser.TeaserBlock...>]
 
 It is possible to get the center page from the block by adapting to ICenterPage:
 
 >>> zeit.content.cp.interfaces.ICenterPage(block)
-<zeit.content.cp.centerpage.CenterPage object at 0x...>
+<zeit.content.cp.centerpage.CenterPage...>
 
 The ``__parent__`` of a block is the area:
 
 >>> block.__parent__
-<zeit.content.cp.area.Area object at 0x...>
+<zeit.content.cp.area.Area...>
 
 
 Areas support ordering of their contents via the ``updateOrder`` method:
@@ -324,9 +324,9 @@ Topic page
 ...     zeit.cms.sitecontrol.interfaces.ISitesProvider, name='topicpage')
 >>> import pprint
 >>> pprint.pprint(list(topic_provider))
-[<zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a4a2f0>,
- <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a4adf0>,
- <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3a5f4b0>]
+[<zeit.cms.repository.unknown.PersistentUnknownResource...>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource...>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource...>]
 
 
 .. [#needsinteraction]

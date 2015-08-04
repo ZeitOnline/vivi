@@ -35,9 +35,9 @@ Some setup to fill a centerpage:
 Now we can iterate over the centerpage and we get all contents in a flat list.
 
 >>> list(zeit.content.cp.interfaces.ICMSContentIterable(cp))
-[<zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x38a86b0>,
- <zeit.cms.repository.unknown.PersistentUnknownResource object at 0x3bcd630>,
- <zeit.cms.testcontenttype.testcontenttype.TestContentType object at 0x38a86b0>]
+[<zeit.cms.testcontenttype.testcontenttype.TestContentType...>,
+ <zeit.cms.repository.unknown.PersistentUnknownResource...>,
+ <zeit.cms.testcontenttype.testcontenttype.TestContentType...>]
 
 
 .. [#functional]
