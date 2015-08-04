@@ -472,3 +472,22 @@ def mark_cp_on_checkout(context, event):
         or zeit.content.cp.interfaces.ICP2015.providedBy(context)):
         return
     zope.interface.alsoProvides(context, zeit.content.cp.interfaces.ICP2015)
+
+
+@grok.subscribe(
+    zeit.content.cp.interfaces.ICenterPage,
+    zeit.cms.checkout.interfaces.IBeforeCheckoutEvent)
+def prevent_mismatched_checkout(context, event):
+    if not event.publishing:
+        return  # Normal checkout is taken care of by .browser.editor.Migrate.
+    other_iface = zeit.content.cp.interfaces.ICP2009
+    current_iface = zeit.content.cp.interfaces.ICP2015
+    if other_iface.providedBy(context):
+        raise zeit.cms.checkout.interfaces.CheckinCheckoutError(
+            context.uniqueId, _(
+                'The centerpage ${uniqueId} is of type ${content_type},'
+                ' but this vivi handles ${current_type}.', mapping={
+                    'uniqueId': context.uniqueId,
+                    'content_type': other_iface.__name__,
+                    'current_type': current_iface.__name__,
+                }))
