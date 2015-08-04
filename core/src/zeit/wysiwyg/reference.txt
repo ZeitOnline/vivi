@@ -99,7 +99,7 @@ Images
 >>> article = TestContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> zeit.wysiwyg.interfaces.IHTMLContent(article).references
-[<zeit.content.image.image.RepositoryImage object at 0x...>]
+[<zeit.content.image.image.RepositoryImage...>]
 
 An invalid ID is ignored:
 
@@ -141,7 +141,7 @@ Galleries
 >>> article = zeit.cms.testcontenttype.testcontenttype.TestContentType(
 ...     xml_source=StringIO.StringIO(source))
 >>> zeit.wysiwyg.interfaces.IHTMLContent(article).references
-[<zeit.content.gallery.gallery.Gallery object at 0x...>]
+[<zeit.content.gallery.gallery.Gallery...>]
 
 
 Empty galleries should not break references:
