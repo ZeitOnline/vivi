@@ -379,7 +379,7 @@ image folder doesn't exist:
 
 >>> gallery = repository['online']['2007']['01']['island']
 >>> gallery
-<zeit.content.gallery.gallery.Gallery object at 0x...>
+<zeit.content.gallery.gallery.Gallery...>
 >>> get_location(gallery)
 u'http://xml.zeit.de/online/2007/01/'
 

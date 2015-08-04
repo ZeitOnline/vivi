@@ -23,7 +23,7 @@ Adapting `content` to IGalleryReference enables us to reference gallery:
 >>> import zeit.content.gallery.interfaces
 >>> gref = zeit.content.gallery.interfaces.IGalleryReference(content)
 >>> gref
-<zeit.content.gallery.reference.GalleryReference object at 0x...>
+<zeit.content.gallery.reference.GalleryReference...>
 
 Assign the gallery:
 
@@ -51,7 +51,7 @@ yields the container the object is in:
 ...      zeit.content.gallery.interfaces.IGalleryReference['gallery'].source),
 ...     zeit.cms.browser.interfaces.IDefaultBrowsingLocation)
 >>> loc
-<zeit.cms.repository.folder.Folder object at 0x...>
+<zeit.cms.repository.folder.Folder...>
 >>> loc.uniqueId
 u'http://xml.zeit.de/online/'
 
@@ -64,7 +64,7 @@ The gallery source is a utility:
 'zeit.content.gallery'
 >>> zope.component.getUtility( 
 ...     zeit.cms.content.interfaces.ICMSContentSource, name)
-<zeit.content.gallery.interfaces.GallerySource object at 0x...>
+<zeit.content.gallery.interfaces.GallerySource...>
 
 
 An xml reference to content also indicates the gallery:
