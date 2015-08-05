@@ -4,7 +4,7 @@ zeit.cms changes
 2.53.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Log when cycling objects to update metadata.
 
 
 2.53.0 (2015-08-04)

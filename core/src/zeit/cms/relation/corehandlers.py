@@ -1,9 +1,13 @@
 import gocept.async
+import logging
 import zeit.cms.checkout.helper
 import zeit.cms.checkout.interfaces
 import zeit.cms.interfaces
 import zeit.cms.relation.interfaces
 import zope.component
+
+
+log = logging.getLogger(__name__)
 
 
 @zope.component.adapter(
@@ -31,6 +35,8 @@ def update_referencing_objects(context):
         zeit.cms.relation.interfaces.IRelations)
     relating_objects = relations.get_relations(context)
     for related_object in list(relating_objects):
+        log.info('Cycling %s to update referenced metadata',
+                 related_object.uniqueId)
         # the actual work is done by IBeforeCheckin-handlers
         zeit.cms.checkout.helper.with_checked_out(
             related_object, lambda x: True)
