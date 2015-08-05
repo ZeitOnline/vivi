@@ -318,6 +318,18 @@ zeit.content.cp changes
 - Configure available areas via XML. (VIV-633)
 
 
+2.10.10 (2015-08-05)
+--------------------
+
+- Prevent any automated checkout of wrong cp type (2009/2015).
+
+
+2.10.9 (2015-08-04)
+-------------------
+
+- Prevent checkout of wrong cp type (2009/2015) during publish.
+
+
 2.10.8 (2015-07-06)
 -------------------
 
