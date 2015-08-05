@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.53.2 (unreleased)
+2.53.2 (2015-08-05)
 -------------------
 
 - Make workingcopy preview commit configurable, since it leads to taskprocessor
