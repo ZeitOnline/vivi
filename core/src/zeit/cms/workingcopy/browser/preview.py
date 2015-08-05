@@ -41,10 +41,16 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
 
         temp_id = self.get_temp_id(self.context.__name__)
         target_folder[temp_id] = content
-        # Our normal commit happens *after* the request to the preview, and
-        # relying on the DAV invalidations to get the changes into the ZODB so
-        # they are visible for zeit.web is too timing-sensitive to be reliable.
-        transaction.commit()
+
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        if config['workingcopy-preview-commit'] == 'True':
+            # Our normal commit happens *after* the request to the preview, and
+            # relying on the DAV invalidations to get the changes into the ZODB
+            # so they are visible for zeit.web is too timing-sensitive to be
+            # reliable.
+            # XXX Committing early seems to cause ConflictErrors with the async
+            # task processor, so we make it configurable until we know why.
+            transaction.commit()
         return content
 
     def get_temp_id(self, name):

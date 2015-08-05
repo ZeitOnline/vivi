@@ -4,7 +4,8 @@ zeit.cms changes
 2.53.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Make workingcopy preview commit configurable, since it leads to taskprocessor
+  conflict errors for unknown reasons (DEV-855).
 
 
 2.53.1 (2015-08-05)
