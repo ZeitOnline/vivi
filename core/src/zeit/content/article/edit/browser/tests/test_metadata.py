@@ -222,6 +222,7 @@ class AuthorLocationTest(
         s.waitForElementPresent(location_input)
         self.add_by_autocomplete('Paris', location_input)
 
+        s.pause(500)  # Workflow area is reloaded on each InlineForm submit.
         s.clickAndWait('id=checkin')
         location_display = 'css=.object-details.type-author .widget'
         s.waitForElementPresent(location_display)
