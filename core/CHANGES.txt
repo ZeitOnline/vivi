@@ -4,7 +4,7 @@ zeit.cms changes
 2.53.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Let FakeEntry implement ICommonMetadata with all attributes set to None.
 
 
 2.53.2 (2015-08-05)

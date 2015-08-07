@@ -1,9 +1,13 @@
 from zeit.cms.checkout.helper import checked_out
 import gocept.async.tests
 import lxml.etree
+import lxml.objectify
 import mock
+import zeit.cms.content.interfaces
+import zeit.cms.syndication.feed
 import zeit.cms.testing
 import zope.copypastemove.interfaces
+import zope.interface.verify
 
 
 class MoveReferencesTest(zeit.cms.testing.ZeitCmsTestCase):
@@ -24,3 +28,19 @@ class MoveReferencesTest(zeit.cms.testing.ZeitCmsTestCase):
         self.assertIn(
             'http://xml.zeit.de/changed',
             lxml.etree.tostring(feed.xml, pretty_print=True))
+
+
+class FakeEntryTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def test_fake_entry_object_should_conform_to_ICommonMetadata(self):
+        fake_entry = zeit.cms.syndication.feed.FakeEntry(
+            lxml.objectify.E.entry(), 'foo')
+        iface = zeit.cms.content.interfaces.ICommonMetadata
+        self.assertTrue(zope.interface.verify.verifyObject(iface, fake_entry))
+
+    def test_fake_entry_should_have_uniqueId_and_title_attributes(self):
+        uniqueId = 'http://xml.zeit.de/fake'
+        entry = lxml.objectify.XML('<entry><title>fake</title></entry>')
+        fake_entry = zeit.cms.syndication.feed.FakeEntry(uniqueId, entry)
+        self.assertEqual(fake_entry.uniqueId, uniqueId)
+        self.assertEqual(fake_entry.title, 'fake')

@@ -280,7 +280,12 @@ class Entry(object):
 class FakeEntry(object):
     """Entry which does not reference an object in the CMS."""
 
+    zope.interface.implements(
+        zeit.cms.content.interfaces.ICommonMetadata)
+
     def __init__(self, id, entry):
+        for field in zeit.cms.content.interfaces.ICommonMetadata:
+            setattr(self, field, None)
         self.uniqueId = id
         self.title = unicode(entry.find('title'))
 
