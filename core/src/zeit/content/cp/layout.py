@@ -1,3 +1,5 @@
+import collections
+import zc.sourcefactory.source
 import zeit.cms.content.sources
 import zope.interface
 import zope.security.proxy
@@ -88,9 +90,17 @@ class TeaserBlockLayoutSource(
     config_url = 'block-layout-source'
     attribute = 'id'
 
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        def find(self, id):
+            return self.factory.find(self.context, id)
+
     def getValues(self, context):
+        return self._values(context).values()
+
+    def _values(self, context):
         tree = self._get_tree()
-        result = []
+        result = collections.OrderedDict()
         for node in tree.iterchildren('*'):
             if not self.isAvailable(node, context):
                 continue
@@ -101,10 +111,17 @@ class TeaserBlockLayoutSource(
             if columns:
                 columns = int(columns)
             default = self._is_default(node, context)
-            result.append(BlockLayout(
-                node.get(self.attribute), self._get_title_for(node),
-                g('image_pattern'), areas, columns, default))
+            id = node.get(self.attribute)
+            result[id] = BlockLayout(
+                id, self._get_title_for(node),
+                g('image_pattern'), areas, columns, default)
         return result
+
+    def find(self, context, id):
+        value = self._values(context).get(id)
+        if not value or not self.filterValue(context, value):
+            return None
+        return value
 
     def _is_default(self, node, context):
         if context is None:
@@ -172,6 +189,4 @@ AREA_CONFIGS = AreaConfigSource()
 
 
 def get_layout(id):
-    for layout in list(TEASERBLOCK_LAYOUTS(None)):
-        if layout.id == id:
-            return layout
+    return TEASERBLOCK_LAYOUTS(None).find(id)
