@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.0.0b30 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Optimize: Cache areas for duplicate detection instead of parsing them again
+  and again (ZON-2043).
 
 
 3.0.0b29 (2015-08-05)

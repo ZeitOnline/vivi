@@ -192,6 +192,15 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         self._type_xml = value
         self._type_dav = value
 
+    _cached_areas = gocept.cache.property.TransactionBoundCache(
+        '_v_cached_areas', collections.OrderedDict)
+
+    def _fill_area_cache(self):
+        if not self._cached_areas:
+            for region in self.body.values():
+                for area in region.values():
+                    self._cached_areas[area.__name__] = area
+
     _area_teasered_content = gocept.cache.property.TransactionBoundCache(
         '_v_area_teasered_content', dict)
 
@@ -199,15 +208,15 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         return content in self._teasered_content_above(current_area)
 
     def _teasered_content_above(self, current_area):
+        self._fill_area_cache()
         seen = set()
-        for region in self.body.values():
-            for area in region.values():
-                if area == current_area:
-                    return seen
-                if area not in self._area_teasered_content:
-                    self._area_teasered_content[area] = set(
-                        zeit.content.cp.interfaces.ITeaseredContent(area))
-                seen.update(self._area_teasered_content[area])
+        for area in self._cached_areas.values():
+            if area == current_area:
+                return seen
+            if area not in self._area_teasered_content:
+                self._area_teasered_content[area] = set(
+                    zeit.content.cp.interfaces.ITeaseredContent(area))
+            seen.update(self._area_teasered_content[area])
         return seen
 
     _area_manual_content = gocept.cache.property.TransactionBoundCache(
@@ -217,22 +226,22 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         return content in self._manual_content_below(current_area)
 
     def _manual_content_below(self, current_area):
+        self._fill_area_cache()
         seen = set()
         below = False
-        for region in self.body.values():
-            for area in region.values():
-                if not below:
-                    if area == current_area:
-                        below = True
-                    continue
-                if area not in self._area_manual_content:
-                    # Probably not worth a separate adapter (like
-                    # ITeaseredContent), since the use case is pretty
-                    # specialised.
-                    self._area_manual_content[area] = set(
-                        zeit.content.cp.blocks.teaser.extract_manual_teasers(
-                            area))
-                seen.update(self._area_manual_content[area])
+        for area in self._cached_areas.values():
+            if not below:
+                if area == current_area:
+                    below = True
+                continue
+            if area not in self._area_manual_content:
+                # Probably not worth a separate adapter (like
+                # ITeaseredContent), since the use case is pretty
+                # specialised.
+                self._area_manual_content[area] = set(
+                    zeit.content.cp.blocks.teaser.extract_manual_teasers(
+                        area))
+            seen.update(self._area_manual_content[area])
         return seen
 
 
