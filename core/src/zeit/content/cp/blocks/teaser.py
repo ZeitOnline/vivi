@@ -110,7 +110,7 @@ class TeaserBlock(
         if layout:
             return layout
         for layout in source:
-            if layout.default:
+            if layout.is_default(self):
                 default = layout
         return default
 
@@ -201,7 +201,7 @@ def change_layout_if_not_allowed_in_new_area(context, event):
     # Getting a default layout can mean that the current layout is not allowed
     # in this area (can happen when a block was moved between areas). Thus, we
     # want to change the XML to actually reflect the new default layout.
-    if context.layout.default:
+    if context.layout.is_default(context):
         context.layout = context.layout
 
 

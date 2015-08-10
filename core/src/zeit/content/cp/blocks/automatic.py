@@ -56,7 +56,7 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         if layout:
             return layout
         for layout in source:
-            if layout.default:
+            if layout.is_default(self):
                 default = layout
         return default
 

@@ -1,4 +1,5 @@
 import collections
+import gocept.cache.method
 import zc.sourcefactory.source
 import zeit.cms.content.sources
 import zope.interface
@@ -28,17 +29,22 @@ class BlockLayout(object):
     zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
-                 areas=None, columns=1, default=False):
+                 areas=None, columns=1, default=False, available=None):
         self.id = id
         self.title = title
         self.image_pattern = image_pattern
         self.areas = frozenset(areas)
         self.columns = columns
-        self.default = default
+        self.default_in_areas = default
+        self.available_iface = None
 
     def __eq__(self, other):
         return zope.security.proxy.isinstance(
             other, BlockLayout) and self.id == other.id
+
+    def is_default(self, block):
+        area = zeit.content.cp.interfaces.IArea(block)
+        return area.kind in self.default_in_areas
 
 
 class RegionConfig(object):
@@ -95,39 +101,48 @@ class TeaserBlockLayoutSource(
         def find(self, id):
             return self.factory.find(self.context, id)
 
-    def getValues(self, context):
-        return self._values(context).values()
+    def isAvailable(self, value, context):
+        # Avoid circular import
+        from zeit.content.cp.interfaces import ICenterPage
+        context = ICenterPage(context, None)
+        if context is None:
+            return True
+        if not value.available_iface:
+            return True
+        return value.available_iface.providedBy(context)
 
-    def _values(self, context):
+    def getValues(self, context):
+        return [x for x in self._values().values()
+                if self.isAvailable(x, context)]
+
+    @gocept.cache.method.Memoize(600, ignore_self=True)
+    def _values(self):
         tree = self._get_tree()
         result = collections.OrderedDict()
         for node in tree.iterchildren('*'):
-            if not self.isAvailable(node, context):
-                continue
             g = node.get
             areas = g('areas')
             areas = areas.split()
             columns = g('columns', 1)
             if columns:
                 columns = int(columns)
-            default = self._is_default(node, context)
+            iface = node.get('available', 'zope.interface.Interface')
+            try:
+                iface = zope.dottedname.resolve.resolve(iface)
+            except ImportError:
+                iface = None
             id = node.get(self.attribute)
             result[id] = BlockLayout(
                 id, self._get_title_for(node),
-                g('image_pattern'), areas, columns, default)
+                g('image_pattern'), areas, columns, g('default', ''), iface)
         return result
 
     def find(self, context, id):
-        value = self._values(context).get(id)
-        if not value or not self.filterValue(context, value):
+        value = self._values().get(id)
+        if (not value or not self.isAvailable(value, context)
+            or not self.filterValue(context, value)):
             return None
         return value
-
-    def _is_default(self, node, context):
-        if context is None:
-            return False
-        area = zeit.content.cp.interfaces.IArea(context)
-        return area.kind in node.get('default', '')
 
     def _get_title_for(self, node):
         return unicode(node.get('title'))

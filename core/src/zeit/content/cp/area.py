@@ -249,7 +249,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     def default_teaser_layout(self):
         for layout in zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
                 self):
-            if layout.default:
+            if layout.is_default(self):
                 return layout
         return None
 
