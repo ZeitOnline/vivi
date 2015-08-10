@@ -4,7 +4,7 @@ Changes
 2.12.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use better repr for containers, too.
 
 
 2.12.3 (2015-08-04)

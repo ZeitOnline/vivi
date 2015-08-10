@@ -224,7 +224,7 @@ class Base(UserDict.DictMixin,
         return item
 
     def __repr__(self):
-        return object.__repr__(self)
+        return zeit.edit.block.Element.__repr__(self)
 
 
 class TypeOnAttributeContainer(Base):
