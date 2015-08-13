@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.0.0b31 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Don't have TeaserBlock inherit from a content type, just its behaviour.
 
 
 3.0.0b30 (2015-08-10)

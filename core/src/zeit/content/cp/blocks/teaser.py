@@ -3,7 +3,6 @@ import copy
 import gocept.lxml.interfaces
 import grokcore.component as grok
 import lxml.objectify
-import sys
 import zeit.cms.content.property
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
@@ -14,11 +13,8 @@ import zeit.content.cp.interfaces
 import zeit.edit.interfaces
 import zeit.workflow.interfaces
 import zope.component
-import zope.container.contained
 import zope.container.interfaces
-import zope.copypastemove.interfaces
 import zope.interface
-import zope.lifecycleevent
 import zope.schema
 
 
@@ -73,9 +69,7 @@ class ColumnSpec(zeit.cms.content.xmlsupport.Persistent):
 
 class TeaserBlock(
         zeit.content.cp.blocks.block.Block,
-        zeit.cms.syndication.feed.Feed):
-
-    # TeaserBlock reuses Feed for its "list of IElement" behaviour
+        zeit.cms.syndication.feed.ContentList):
 
     zope.interface.implementsOnly(
         zeit.content.cp.interfaces.ITeaserBlock,
