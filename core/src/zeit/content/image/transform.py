@@ -97,7 +97,7 @@ class ImageTransform(object):
         image.mimeType = self.context.mimeType
         # XXX Maybe encoder setting should be made configurable.
         if self.context.format.upper() in ('JPG', 'JPEG'):
-            options = {'progessive': True, 'quality': 85, 'optimize': True}
+            options = {'progressive': True, 'quality': 85, 'optimize': True}
         elif self.context.format.upper() in ('PNG',):
             options = {'optimize': True}
         else:
