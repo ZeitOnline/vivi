@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.6.5 (unreleased)
+2.6.5 (2015-08-13)
 ------------------
 
 - Generalize treatment of folder content-types in filesystem connector,
