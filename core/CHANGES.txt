@@ -4,7 +4,7 @@ zeit.cms changes
 2.54.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use separate config file for subchannels, too (DEV-634).
 
 
 2.54.0 (2015-08-13)

@@ -224,7 +224,19 @@ class ChannelSource(XMLSource):
         return unicode(node['title'])
 
 
-class SubChannelSource(SubNavigationSource):
+class SubChannelSource(MasterSlaveSource):
+
+    config_url = ChannelSource.config_url
+    attribute = ChannelSource.attribute
+    slave_tag = 'subnavigation'
+    master_node_xpath = '/ressorts/ressort'
+    master_value_key = 'ressort'
+
+    @property
+    def master_value_iface(self):
+        # prevent circular import
+        import zeit.cms.content.interfaces
+        return zeit.cms.content.interfaces.ICommonMetadata
 
     def _get_master_nodes(self, context):
         if type(context).__name__ == 'Fake':
@@ -238,6 +250,9 @@ class SubChannelSource(SubNavigationSource):
         tree = self._get_tree()
         all_nodes = tree.xpath(self.master_node_xpath)
         return all_nodes
+
+    def _get_title_for(self, node):
+        return unicode(node['title'])
 
 
 def unicode_or_none(value):
