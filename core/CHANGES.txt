@@ -1,10 +1,13 @@
 zeit.cms changes
 ================
 
-2.53.3 (unreleased)
+2.54.0 (unreleased)
 -------------------
 
 - Let FakeEntry implement ICommonMetadata with all attributes set to None.
+
+- Extract "list of content" behaviour from Feed content type into separate
+  class.
 
 
 2.53.2 (2015-08-05)

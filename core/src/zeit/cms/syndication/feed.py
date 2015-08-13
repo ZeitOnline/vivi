@@ -19,7 +19,7 @@ import zope.proxy
 log = logging.getLogger(__name__)
 
 
-class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
+class ContentList(object):
     """A feed contains a list of references to ICMSContent objects.
 
     These are stored as <block> tags, with the ``uniqueId`` attribute pointing
@@ -31,34 +31,13 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
     ``uniqueId``.
     """
 
-    zope.interface.implements(
-        zeit.cms.syndication.interfaces.IFeed,
-        zeit.cms.interfaces.IAsset)
-
-    title = zeit.cms.content.property.ObjectPathProperty('.title')
     object_limit = zeit.cms.content.property.ObjectPathProperty(
         '.object_limit')
 
-    default_template = u"""\
-        <channel
-          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-          xmlns:py="http://codespeak.net/lxml/objectify/pytype">
-          <title/>
-          <container/>
-        </channel>
-    """
-
     def __init__(self, *args, **kwargs):
-        super(Feed, self).__init__(*args, **kwargs)
+        super(ContentList, self).__init__(*args, **kwargs)
         if not self.object_limit:
             self.object_limit = 50
-
-    @property
-    def xml_source(self):
-        """return source of feed."""
-        # BBB deprecated
-        return lxml.etree.tostring(self.xml, pretty_print=True)
 
     def keys(self):
         for entry in self.iterentries():
@@ -194,6 +173,30 @@ class Feed(zeit.cms.content.xmlsupport.XMLContentBase):
                 break
         else:
             raise ValueError("'%s' not in feed." % unique_id)
+
+
+class Feed(ContentList, zeit.cms.content.xmlsupport.XMLContentBase):
+
+    zope.interface.implements(
+        zeit.cms.syndication.interfaces.IFeed,
+        zeit.cms.interfaces.IAsset)
+
+    title = zeit.cms.content.property.ObjectPathProperty('.title')
+
+    default_template = u"""\
+        <channel
+          xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xmlns:py="http://codespeak.net/lxml/objectify/pytype">
+          <title/>
+          <container/>
+        </channel>
+    """
+
+    @property
+    def xml_source(self):
+        # BBB deprecated
+        return lxml.etree.tostring(self.xml, pretty_print=True)
 
 
 class FeedType(zeit.cms.type.XMLContentTypeDeclaration):
