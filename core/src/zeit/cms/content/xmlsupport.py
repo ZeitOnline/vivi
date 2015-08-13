@@ -65,7 +65,7 @@ class Persistent(object):
     """Helper to indicate changes for object modified xml trees."""
 
     def __setattr__(self, key, value):
-        if not key.startswith('_p_'):
+        if not (key.startswith('_p_') or key.startswith('_v_')):
             self._p_changed = True
         super(Persistent, self).__setattr__(key, value)
 

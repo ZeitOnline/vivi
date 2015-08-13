@@ -9,6 +9,9 @@ zeit.cms changes
 - Extract "list of content" behaviour from Feed content type into separate
   class.
 
+- Ignore attributes starting with _v_ in xmlsupport.Persistent, so we
+  better conform to the zodb.Persistent behaviour.
+
 
 2.53.2 (2015-08-05)
 -------------------
