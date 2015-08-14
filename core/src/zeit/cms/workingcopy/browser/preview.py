@@ -25,7 +25,9 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         url = zope.component.getMultiAdapter(
             (preview_context, self.preview_type),
             zeit.cms.browser.interfaces.IPreviewURL)
-        url = '%s?%s' % (url, self.request.environment['QUERY_STRING'])
+        querystring = self.request.environment['QUERY_STRING']
+        if querystring:
+            url = '%s?%s' % (url, querystring)
         return url
 
     def get_preview_object(self):

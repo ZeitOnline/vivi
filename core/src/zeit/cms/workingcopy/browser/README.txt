@@ -285,12 +285,12 @@ Clean up:
     >>> preview_dir = os.path.join(tempdir, 'online', '2007', '01')
     >>> os.makedirs(preview_dir)
 
-    >>> name = os.path.join(preview_dir, 'preview-zope.user-Somalia?')
+    >>> name = os.path.join(preview_dir, 'preview-zope.user-Somalia')
     >>> open(name, 'w').write(
     ...     'The quick brown fox jumps over the lazy dog.')
 
     Create another file:
-    >>> foo_name = name + 'foo=bar'
+    >>> foo_name = name + '?foo=bar'
     >>> file(foo_name, 'w').write(
     ...     'The quick brown foo jumps over the lazy bar.')
 
