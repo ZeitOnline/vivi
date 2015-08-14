@@ -1,5 +1,5 @@
-import transaction
 import urllib2
+import urlparse
 import zeit.cms.browser.preview
 import zeit.cms.interfaces
 import zeit.connector.interfaces
@@ -9,13 +9,27 @@ import zope.component
 class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
     """Preview for workingcopy versions of content objects.
 
-    Uploads the workingcopy version of an object to the repository, retrieves
-    the html and returns it.
+    This supports two modes of operation:
+
+    1. Upload the workingcopy version of an object to the repository, retrieve
+    the html and return it (proxying the result).
+    2. Give the workingcopy URL to the preview service (for those who can
+    traverse it directly) and redirect to it as for the repository preview.
 
     """
 
     def __call__(self):
-        preview_obj = self.get_preview_object()
+        url = self.get_preview_url_for(self.context)
+        if self.should_upload(url):
+            return self.proxied_preview()
+        else:
+            return self.redirect(self.workingcopy_url(url), trusted=True)
+
+    def should_upload(self, url):
+        return 'friedbert' not in url  # XXX Really kludgy heuristics
+
+    def proxied_preview(self):
+        preview_obj = self.temporary_checkin()
         url = self.get_preview_url_for(preview_obj)
         preview_request = urllib2.urlopen(url)
         del preview_obj.__parent__[preview_obj.__name__]
@@ -30,8 +44,7 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
             url = '%s?%s' % (url, querystring)
         return url
 
-    def get_preview_object(self):
-        # create a copy and remove unique id
+    def temporary_checkin(self):
         content = zeit.cms.interfaces.ICMSContent(
             zeit.connector.interfaces.IResource(self.context))
         content.uniqueId = None
@@ -42,17 +55,20 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
         temp_id = self.get_temp_id(self.context.__name__)
         target_folder[temp_id] = content
 
-        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
-        if config['workingcopy-preview-commit'] == 'True':
-            # Our normal commit happens *after* the request to the preview, and
-            # relying on the DAV invalidations to get the changes into the ZODB
-            # so they are visible for zeit.web is too timing-sensitive to be
-            # reliable.
-            # XXX Committing early seems to cause ConflictErrors with the async
-            # task processor, so we make it configurable until we know why.
-            transaction.commit()
         return content
 
     def get_temp_id(self, name):
         return 'preview-%s-%s' % (
             self.request.principal.id, name)
+
+    def workingcopy_url(self, url):
+        repository_path = urlparse.urlparse(self.context.uniqueId).path
+        fullpath = self.url(self.context)
+        workingcopy = self.url(zope.component.getUtility(
+            zeit.cms.workingcopy.interfaces.IWorkingcopyLocation))
+        workingcopy_path = fullpath.replace(workingcopy, '')
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        workingcopy_path = config[
+            'friebert-wc-preview-prefix'] + workingcopy_path
+        url = url.replace(repository_path, workingcopy_path)
+        return url

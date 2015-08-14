@@ -4,7 +4,8 @@ zeit.cms changes
 2.54.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Workingcopy previews done via Friedbert now traverse the workingcopy directly
+  instead of a temporary DAV upload (DEV-908).
 
 
 2.54.1 (2015-08-13)
