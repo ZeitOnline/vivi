@@ -2,9 +2,7 @@ import transaction
 import urllib2
 import zeit.cms.browser.preview
 import zeit.cms.interfaces
-import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
-import zope.cachedescriptors.property
 import zope.component
 
 
@@ -36,7 +34,7 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
             zeit.connector.interfaces.IResource(self.context))
         content.uniqueId = None
 
-        target_folder = self.repository.getContent(
+        target_folder = zeit.cms.interfaces.ICMSContent(
             self.context.uniqueId).__parent__
 
         temp_id = self.get_temp_id(self.context.__name__)
@@ -56,8 +54,3 @@ class WorkingcopyPreview(zeit.cms.browser.preview.Preview):
     def get_temp_id(self, name):
         return 'preview-%s-%s' % (
             self.request.principal.id, name)
-
-    @zope.cachedescriptors.property.Lazy
-    def repository(self):
-        return zope.component.getUtility(
-            zeit.cms.repository.interfaces.IRepository)
