@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.54.2 (unreleased)
+2.54.2 (2015-08-14)
 -------------------
 
 - Workingcopy previews done via Friedbert now traverse the workingcopy directly
