@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.7.2 (unreleased)
+2.7.2 (2015-08-14)
 ------------------
 
 - Enable progressive jpeg encoding (ZON-2019).
