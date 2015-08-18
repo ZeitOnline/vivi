@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.0.1 (unreleased)
+3.0.1 (2015-08-18)
 ------------------
 
 - Fix bug in `isAvailable` treatment for teaser layouts.
