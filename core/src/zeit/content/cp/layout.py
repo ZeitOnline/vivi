@@ -36,7 +36,7 @@ class BlockLayout(object):
         self.areas = frozenset(areas)
         self.columns = columns
         self.default_in_areas = default
-        self.available_iface = None
+        self.available_iface = available
 
     def __eq__(self, other):
         return zope.security.proxy.isinstance(
@@ -107,8 +107,8 @@ class TeaserBlockLayoutSource(
         context = ICenterPage(context, None)
         if context is None:
             return True
-        if not value.available_iface:
-            return True
+        if value.available_iface is None:
+            return False
         return value.available_iface.providedBy(context)
 
     def getValues(self, context):

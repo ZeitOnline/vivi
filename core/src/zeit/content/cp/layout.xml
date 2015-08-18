@@ -77,4 +77,10 @@
         image_pattern="540x304"
         areas="solo duo minor major"
         />
+    <layout
+        id="friedbert-only"
+        title="Parkett großer Aufmacher"
+        areas="solo duo minor major"
+        available="zeit.web.core.interfaces.IInternalUse"
+        />
 </layouts>

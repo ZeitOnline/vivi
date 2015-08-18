@@ -180,6 +180,22 @@ class TestDefaultLayout(zeit.content.cp.testing.FunctionalTestCase):
             self.teaser.xml, pretty_print=True))
 
 
+class LayoutAvailableTest(zeit.content.cp.testing.FunctionalTestCase):
+
+    def setUp(self):
+        super(LayoutAvailableTest, self).setUp()
+        self.cp = CenterPage()
+        self.teaser = self.cp['lead'].create_item('teaser')
+
+    def test_available_with_unresolveable_iface_returns_false(self):
+        # Ensure teaser layouts exhibit the same behaviour as
+        # zeit.cms.content.source.
+        source = zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
+            self.teaser)
+        layouts = [x.id for x in source]
+        self.assertNotIn('friedbert-only', layouts)
+
+
 class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):
 
     def setUp(self):
