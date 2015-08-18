@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.0.0b32 (unreleased)
 ---------------------
 
-- Nothing changed yet.
+- Prevent manual checkout of wrong cp type (DEV-911).
 
 
 3.0.0b31 (2015-08-13)

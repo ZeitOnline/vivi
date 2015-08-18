@@ -49,18 +49,9 @@ class Migrate(zeit.cms.workingcopy.browser.workingcopy.DeleteFromWorkingcopy):
     def __call__(self):
         if self.request.method != 'POST':
             return super(Migrate, self).__call__()
-        if 'migrate' in self.request.form:
-            # alsoProvides does not work with proxies
-            context = zope.security.proxy.getObject(self.context)
-            zope.interface.alsoProvides(context, self.current_iface)
-            zope.interface.noLongerProvides(context, self.other_iface)
-            return self.request.response.redirect(
-                zope.traversing.browser.absoluteURL(
-                    self.context, self.request))
-        elif 'cancel' in self.request.form:
-            self.delete()
-            return self.request.response.redirect(
-                self.next_url(self.context.__parent__))
+        self.delete()
+        return self.request.response.redirect(
+            self.next_url(self.context.__parent__))
 
     @property
     def content_type(self):

@@ -58,16 +58,7 @@ class MigrateBrowserTest(zeit.cms.testing.BrowserTestCase):
 
     def test_old_cp_show_warning_instead_of_editor(self):
         b = self.browser
-        self.assertEllipsis('...Attention...change the type...', b.contents)
-
-    def test_migrate_changes_interface(self):
-        b = self.browser
-        b.getControl('Migrate').click()
-        b.getLink('Edit', index=1).click()
-        with self.assertRaises(LookupError):
-            b.getControl('Migrate')
-        b.getLink('Checkin').click()
-        self.assertTrue(ICP2015.providedBy(self.repository['cp']))
+        self.assertEllipsis('...Attention...', b.contents)
 
     def test_abort_deletes_workingcopy(self):
         b = self.browser

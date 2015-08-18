@@ -4,18 +4,12 @@
 <p i18n:translate="">
   The centerpage <span i18n:name="uniqueId" tal:content="context/uniqueId"/>
   is of type <span i18n:name="content_type" tal:content="view/content_type"/>,
-  but this editor produces
+  but this vivi handles
   <span i18n:name="current_type" tal:content="view/current_iface/__name__"/>.
-  Do you want to change the type?
-</p>
-
-<p i18n:translate="">
-Warning: this action cannot be undone.
 </p>
 
 <p>
 <form method="POST" tal:attributes="action request/URL">
-<input type="submit" name="migrate" value="Migrate" i18n:attributes="value"/>
 <input type="submit" name="cancel" value="Cancel" i18n:attributes="value"/>
 </form>
 </p>
