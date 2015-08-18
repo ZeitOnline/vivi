@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.54.3 (unreleased)
+2.54.3 (2015-08-18)
 -------------------
 
 - Include CSS in error page.
