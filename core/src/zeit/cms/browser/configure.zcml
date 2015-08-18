@@ -396,16 +396,6 @@
     menu="zeit-context-actions-external" title="Live"
     />
 
-  <browser:page
-    zcml:condition="have zeit.cms.browser.development-preview"
-    for="zeit.cms.interfaces.ICMSContent"
-    layer=".interfaces.ICMSLayer"
-    name="show_development-preview"
-    class=".preview.DevelopmentPreview"
-    permission="zope.View"
-    menu="zeit-context-actions-external" title="Development"
-    />
-
   <adapter factory=".preview.preview_url" />
 
   <adapter

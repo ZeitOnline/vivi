@@ -55,8 +55,3 @@ class Preview(PreviewBase):
 class Live(PreviewBase):
 
     preview_type = 'live'
-
-
-class DevelopmentPreview(PreviewBase):
-
-    preview_type = 'development-preview'

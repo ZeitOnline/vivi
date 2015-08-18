@@ -90,11 +90,10 @@ Toggling again will expand the sidebar again:
 Preview
 =======
 
-There are three preview or live view links. The "preview" shows the document as
-it is stored in the repository with the current live templates. The live
-preview shows the version on zeit.de and the development preview can be used
-for trying out new templates. The preview actions are only shown on repository
-content.
+There are several preview or live view links. The "preview" shows the document
+as it is stored in the repository with the current live templates. The live
+preview shows the version on zeit.de. The preview actions are only shown on
+repository content.
 
 
 Make sure the menu entries are there and the targets are _blank:
@@ -110,10 +109,6 @@ Make sure the menu entries are there and the targets are _blank:
    <li class="live ">
      <a href=".../online/2007/01/Somalia/@@show_live" target="_blank"
         rel="..." title="Live">...
-   </li>
-   <li class="development ">
-     <a href=".../online/2007/01/Somalia/@@show_development-preview"
-        target="_blank" rel="..." title="Development">...
    </li>
    ...
 
@@ -134,14 +129,6 @@ Check the live site:
 HTTP Error 303: See Other
 http://localhost/live-prefix/online/2007/01/Somalia
 
-
-Check the development preview:
-
->>> browser.open(
-...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
->>> zeit.cms.testing.click_wo_redirect(browser, 'Development')
-HTTP Error 303: See Other
-http://localhost/development-preview-prefix/online/2007/01/Somalia
 
 Query arguments are passed to the server:
 
@@ -178,9 +165,9 @@ The preview is on the container now:
 
 >>> browser.open(
 ...     'http://localhost/++skin++cms/repository/online/2007/01/Somalia' )
->>> zeit.cms.testing.click_wo_redirect(browser, 'Development')
+>>> zeit.cms.testing.click_wo_redirect(browser, 'Preview')
 HTTP Error 303: See Other
-http://localhost/development-preview-prefix/online/2007/01/
+http://localhost/preview-prefix/online/2007/01/
 
 
 Clean up:

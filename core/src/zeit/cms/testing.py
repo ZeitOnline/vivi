@@ -191,7 +191,6 @@ cms_product_config = string.Template("""\
 
   preview-prefix http://localhost/preview-prefix
   live-prefix http://localhost/live-prefix
-  development-preview-prefix http://localhost/development-preview-prefix
   friebert-wc-preview-prefix /wcpreview
 
   suggest-keyword-email-address none@testing
