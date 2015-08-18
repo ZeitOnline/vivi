@@ -429,18 +429,20 @@ class SiteControlTopicPages(grok.GlobalUtility):
         return (obj for obj in result if obj is not None)
 
 
+NSMAP = collections.OrderedDict((
+    ('cp', 'http://namespaces.zeit.de/CMS/cp'),
+    ('py', 'http://codespeak.net/lxml/objectify/pytype'),
+    ('xi', 'http://www.w3.org/2001/XInclude'),
+    ('xsd', 'http://www.w3.org/2001/XMLSchema'),
+    ('xsi', 'http://www.w3.org/2001/XMLSchema-instance'),
+))
+ElementMaker = lxml.objectify.ElementMaker(nsmap=NSMAP)
+
+
 @grok.adapter(zeit.content.cp.interfaces.ICenterPage)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
 def rendered_xml(context):
     # XXX This method duplicates the XML structure from cp-template.xml
-    nsmap = collections.OrderedDict((
-        ('cp', 'http://namespaces.zeit.de/CMS/cp'),
-        ('py', 'http://codespeak.net/lxml/objectify/pytype'),
-        ('xi', 'http://www.w3.org/2001/XInclude'),
-        ('xsd', 'http://www.w3.org/2001/XMLSchema'),
-        ('xsi', 'http://www.w3.org/2001/XMLSchema-instance'),
-    ))
-    ElementMaker = lxml.objectify.ElementMaker(nsmap=nsmap)
     root = getattr(ElementMaker, context.xml.tag)(**context.xml.attrib)
     root.append(copy.copy(context.xml.head))
     root.append(lxml.objectify.E.body(
@@ -450,7 +452,11 @@ def rendered_xml(context):
             **context.xml.body.cluster.attrib),
         zeit.content.cp.interfaces.IRenderedXML(context['teaser-mosaic']),
     ))
+    _render_feed(root)
+    return root
 
+
+def _render_feed(root):
     # Performance optimization: Since automatic CPs are populated with (sorted)
     # queries, there is not much point in trying to preserve a "historical
     # ordering" (i.e. when each article first appeared on the CP). Thus we can
@@ -461,7 +467,7 @@ def rendered_xml(context):
     config = zope.app.appsetup.product.getProductConfiguration(
         'zeit.content.cp')
     for i, teaser in enumerate(root.xpath(
-            '//container[@cp:type="teaser"]/block', namespaces=nsmap)):
+            '//container[@cp:type="teaser"]/block', namespaces=NSMAP)):
         if i > config['cp-feed-max-items']:
             break
         item = copy.copy(teaser)
@@ -470,6 +476,18 @@ def rendered_xml(context):
         del item.attrib['uniqueId']
         feed.append(item)
 
+
+@grok.adapter(zeit.content.cp.interfaces.ICP2015)
+@grok.implementer(zeit.content.cp.interfaces.IRenderedXML)
+def rendered_xml(context):
+    root = getattr(ElementMaker, context.xml.tag)(
+        **context.xml.attrib)
+    root.append(copy.copy(context.xml.head))
+    body = lxml.objectify.E.body()
+    root.append(body)
+    for region in context.body.values():
+        body.append(zeit.content.cp.interfaces.IRenderedXML(region))
+    _render_feed(root)
     return root
 
 
