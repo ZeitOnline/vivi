@@ -12,6 +12,7 @@
           type="image/x-icon" />
         <link rel="shortcut icon" tal:attributes="href favicon"
           type="image/x-icon" />
+        <tal:replace content="context/@@standard_macros/require_resources"/>
       </head>
       <body class="errorview">
         <div id="content">
