@@ -200,6 +200,9 @@ class AreaConfigSource(
                 node.get('kind')))
         return result
 
+    def _get_title_for(self, node):
+        return unicode(node.get('title'))
+
 AREA_CONFIGS = AreaConfigSource()
 
 
