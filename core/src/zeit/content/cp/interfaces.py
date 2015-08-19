@@ -844,3 +844,9 @@ class IMarkupBlock(IBlock):
         title=_('Contents'),
         description=_('Use Markdown'),
         required=False)
+
+
+class ICardstackBlock(IBlock):
+
+    card_id = zope.schema.TextLine(
+        title=_('Cardstack id'))

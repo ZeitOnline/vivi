@@ -1,0 +1,5 @@
+<div class="cpextra-title" i18n:domain="zeit.cms" i18n:translate="">
+  Cardstack block
+</div>
+<div class="cpextra-title" tal:content="context/card_id">
+</div>

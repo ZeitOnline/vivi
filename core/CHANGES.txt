@@ -9,6 +9,9 @@ zeit.content.cp changes
 
 - Add ``text_color`` and ``opacity`` to TeaserBlock (DEV-893).
 
+- New module type ``cardstack``, ``zeit.content.cp.interfaces.ICardstackBlock``
+  with property ``card_id`` (DEV-892).
+
 
 3.0.1 (2015-08-18)
 ------------------

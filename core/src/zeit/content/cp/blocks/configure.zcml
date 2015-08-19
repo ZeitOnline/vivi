@@ -220,4 +220,19 @@
     factory=".markup.MarkupBlock"
     />
 
+  <!-- Cardstack block -->
+  <class class=".cardstack.CardstackBlock">
+    <require
+      interface="..interfaces.ICardstackBlock"
+      permission="zope.View" />
+    <require
+      set_schema="..interfaces.ICardstackBlock"
+      permission="zeit.EditContent"/>
+  </class>
+  <adapter
+    provides="zeit.edit.interfaces.IElement"
+    name="cardstack"
+    factory=".cardstack.CardstackBlock"
+    />
+
 </configure>
