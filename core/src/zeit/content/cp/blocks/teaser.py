@@ -83,6 +83,12 @@ class TeaserBlock(
     force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
             'force_mobile_image'])
+    text_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'text_color', zeit.content.cp.interfaces.ITeaserBlock[
+            'text_color'])
+    opacity = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'opacity', zeit.content.cp.interfaces.ITeaserBlock[
+            'opacity'])
 
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)

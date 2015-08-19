@@ -250,7 +250,18 @@ class QueryTypeSource(zeit.cms.content.sources.SimpleFixedValueSource):
     values = ['Channel']  # XXX or 'Keyword', see VIV-471
 
 
-class QuerySortOrderSource(zc.sourcefactory.basic.BasicSourceFactory):
+class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
+
+    values = collections.OrderedDict()
+
+    def getValues(self):
+        return self.values.keys()
+
+    def getTitle(self, value):
+        return self.values.get(value, value)
+
+
+class QuerySortOrderSource(SimpleDictSource):
 
     values = collections.OrderedDict((
         ('last-semantic-change desc',
@@ -258,12 +269,6 @@ class QuerySortOrderSource(zc.sourcefactory.basic.BasicSourceFactory):
         ('date-first-released desc',
          _('query-sort-order-first-released')),
     ))
-
-    def getValues(self):
-        return self.values.keys()
-
-    def getTitle(self, value):
-        return self.values.get(value, value)
 
 
 def automatic_area_can_read_teasers_automatically(data):
@@ -491,6 +496,25 @@ class IntChoice(zope.schema.Choice):
         return super(IntChoice, self).fromUnicode(value)
 
 
+class TextColorSource(SimpleDictSource):
+
+    values = collections.OrderedDict((
+        ('dark', _('Dark (white text)')),
+        ('light', _('Light (black text)')),
+    ))
+
+
+class OpacitySource(SimpleDictSource):
+
+    values = collections.OrderedDict((
+        ('1', _('1 (very weak)')),
+        ('2', _('2')),
+        ('3', _('3')),
+        ('4', _('4')),
+        ('5', _('5 (very strong)')),
+    ))
+
+
 class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
     layout = zope.schema.Choice(
@@ -500,6 +524,14 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
     force_mobile_image = zope.schema.Bool(
         title=_('Force image on mobile'),
         default=False)
+
+    text_color = zope.schema.Choice(
+        title=_('Overlay color'),
+        required=False, source=TextColorSource())
+
+    opacity = zope.schema.Choice(
+        title=_('Overlay opacity'),
+        required=False, source=OpacitySource())
 
 
 class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):

@@ -60,7 +60,7 @@ class EditCommon(
         zeit.content.cp.browser.blocks.block.EditCommon.form_fields
         + zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ITeaserBlock).select(
-                'force_mobile_image')
+                'force_mobile_image', 'text_color', 'opacity')
     )
     widget_groups = ()
     field_groups = (
