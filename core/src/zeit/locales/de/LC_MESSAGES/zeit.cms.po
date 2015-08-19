@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Aug 19 15:28:20 2015\n"
-"PO-Revision-Date: 2015-08-19 15:31+0100\n"
+"POT-Creation-Date: Wed Aug 19 16:32:39 2015\n"
+"PO-Revision-Date: 2015-08-19 16:34+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1826,11 +1826,15 @@ msgstr "Liveblog-Block bearbeiten"
 msgid "auto-save body text"
 msgstr "Artikeltext bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:224
+#: zeit/content/article/edit/browser/edit.py:225
+msgid "edit cardstack block"
+msgstr "Kartenstapel-Block bearbeiten"
+
+#: zeit/content/article/edit/browser/edit.py:237
 msgid "edit page break"
 msgstr "Seitenumbruch bearbeiten"
 
-#: zeit/content/article/edit/browser/edit.py:241
+#: zeit/content/article/edit/browser/edit.py:254
 msgid "edit html block"
 msgstr "HTML-Block bearbeiten"
 
@@ -2127,6 +2131,10 @@ msgstr "Workflowstatus"
 msgid "edit workflow status"
 msgstr "Workflow-Status bearbeiten"
 
+#: zeit/content/article/edit/cardstack.py:22
+msgid "Cardstack"
+msgstr "Kartenstapel"
+
 #: zeit/content/article/edit/citation.py:35
 #: zeit/content/article/edit/interfaces.py:324
 msgid "Citation"
@@ -2290,10 +2298,14 @@ msgid "Liveblog id"
 msgstr "Liveblog-ID"
 
 #: zeit/content/article/edit/interfaces.py:360
+msgid "Cardstack id"
+msgstr "ID"
+
+#: zeit/content/article/edit/interfaces.py:366
 msgid "Article body"
 msgstr "Artikeltext"
 
-#: zeit/content/article/edit/interfaces.py:361
+#: zeit/content/article/edit/interfaces.py:367
 msgid "breaking-news-more-shortly"
 msgstr "Mehr in Kürze hier auf ZEIT ONLINE"
 

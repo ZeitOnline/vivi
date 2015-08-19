@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Aug 19 15:28:20 2015\n"
+"POT-Creation-Date: Wed Aug 19 16:32:39 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -1868,11 +1868,15 @@ msgstr ""
 msgid "auto-save body text"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:224
+#: zeit/content/article/edit/browser/edit.py:225
+msgid "edit cardstack block"
+msgstr ""
+
+#: zeit/content/article/edit/browser/edit.py:237
 msgid "edit page break"
 msgstr ""
 
-#: zeit/content/article/edit/browser/edit.py:241
+#: zeit/content/article/edit/browser/edit.py:254
 msgid "edit html block"
 msgstr ""
 
@@ -2176,6 +2180,10 @@ msgstr ""
 msgid "edit workflow status"
 msgstr ""
 
+#: zeit/content/article/edit/cardstack.py:22
+msgid "Cardstack"
+msgstr ""
+
 #: zeit/content/article/edit/citation.py:35
 #: zeit/content/article/edit/interfaces.py:324
 msgid "Citation"
@@ -2344,10 +2352,14 @@ msgid "Liveblog id"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:360
+msgid "Cardstack id"
+msgstr ""
+
+#: zeit/content/article/edit/interfaces.py:366
 msgid "Article body"
 msgstr ""
 
-#: zeit/content/article/edit/interfaces.py:361
+#: zeit/content/article/edit/interfaces.py:367
 msgid "breaking-news-more-shortly"
 msgstr ""
 
