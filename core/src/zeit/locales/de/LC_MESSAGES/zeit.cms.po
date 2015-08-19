@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Tue Aug 18 11:53:02 2015\n"
-"PO-Revision-Date: 2015-08-18 11:54+0100\n"
+"POT-Creation-Date: Wed Aug 19 14:05:18 2015\n"
+"PO-Revision-Date: 2015-08-19 14:08+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -59,6 +59,7 @@ msgstr "Id"
 #: zeit/cms/syndication/browser/feed.py:154
 #: zeit/cms/syndication/browser/manager.py:94
 #: zeit/cms/syndication/interfaces.py:48
+#: zeit/content/advertisement/interfaces.py:25
 #: zeit/content/article/edit/interfaces.py:121
 #: zeit/content/article/interfaces.py:138
 #: zeit/content/article/interfaces.py:220 zeit/content/author/interfaces.py:31
@@ -72,6 +73,7 @@ msgid "Title"
 msgstr "Titel"
 
 #: zeit/brightcove/interfaces.py:33 zeit/cms/content/interfaces.py:170
+#: zeit/content/advertisement/interfaces.py:29
 #: zeit/content/video/browser/object-details-body.pt:28
 msgid "Teaser text"
 msgstr "Teaser (Centerpage)"
@@ -435,7 +437,7 @@ msgstr "Hinzufügen…"
 
 #: zeit/cms/browser/form.py:287
 #: zeit/content/article/edit/browser/workflow.pt:4
-#: zeit/content/cp/browser/migrate.pt:19
+#: zeit/content/cp/browser/migrate.pt:13
 #: zeit/content/quiz/browser/answer.py:55
 #: zeit/content/quiz/browser/question.py:52
 msgid "Cancel"
@@ -762,7 +764,9 @@ msgstr ""
 "Wählen Sie den Eintrag aus Ihrer Zwischenablage den Sie nach »${paste-into-"
 "id}« kopieren möchten."
 
-#: zeit/cms/content/browser/form.py:28 zeit/content/video/browser/video.py:38
+#: zeit/cms/content/browser/form.py:28
+#: zeit/content/advertisement/browser/form.py:32
+#: zeit/content/video/browser/video.py:38
 msgid "Navigation"
 msgstr "Navigation"
 
@@ -772,8 +776,9 @@ msgstr "Navigation"
 msgid "Head"
 msgstr "Kopf"
 
-#: zeit/cms/content/browser/form.py:36 zeit/content/cp/browser/form.py:29
-#: zeit/content/gallery/browser/form.py:25
+#: zeit/cms/content/browser/form.py:36
+#: zeit/content/advertisement/browser/form.py:18
+#: zeit/content/cp/browser/form.py:29 zeit/content/gallery/browser/form.py:25
 #: zeit/content/image/browser/form.py:20
 #: zeit/content/infobox/browser/form.py:24
 #: zeit/content/infobox/browser/form.py:79
@@ -1687,6 +1692,61 @@ msgstr "Keine Dokumente in Bearbeitung"
 msgid "Cancel workingcopy"
 msgstr "Bearbeitung abbrechen"
 
+#: zeit/content/advertisement/advertisement.py:47
+#: zeit/content/advertisement/interfaces.py:12
+msgid "Publisher advertisement"
+msgstr "Anzeige"
+
+#: zeit/content/advertisement/browser/form.py:24
+msgid "Add publisher advertisement"
+msgstr "Verlagsangebot hinzufügen"
+
+#: zeit/content/advertisement/interfaces.py:11
+msgid "Publisher offering"
+msgstr "Verlagsangebot"
+
+#: zeit/content/advertisement/interfaces.py:33
+msgid "Button text"
+msgstr "Text Button"
+
+#: zeit/content/advertisement/interfaces.py:37
+msgid "Button color"
+msgstr "Farbe Button"
+
+#: zeit/content/advertisement/interfaces.py:41
+#: zeit/content/article/edit/image.py:59
+#: zeit/content/article/edit/interfaces.py:209
+#: zeit/content/article/interfaces.py:54 zeit/content/cp/interfaces.py:90
+#: zeit/content/cp/interfaces.py:313 zeit/content/cp/interfaces.py:758
+#: zeit/content/cp/interfaces.py:799
+#: zeit/content/image/browser/imagegroup.py:123
+#: zeit/content/image/image.py:103 zeit/content/image/interfaces.py:291
+#: zeit/content/image/browser/configure.zcml:253
+#: zeit/content/portraitbox/interfaces.py:18
+#: zeit/wysiwyg/browser/resources/reference/image.pt:17
+msgid "Image"
+msgstr "Bild"
+
+#: zeit/content/advertisement/interfaces.py:42
+#: zeit/content/article/edit/interfaces.py:210
+#: zeit/content/article/interfaces.py:55 zeit/content/author/interfaces.py:65
+#: zeit/content/cp/interfaces.py:314 zeit/content/cp/interfaces.py:800
+#: zeit/content/image/interfaces.py:292
+msgid "Drag an image group here"
+msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
+
+#: zeit/content/advertisement/interfaces.py:47
+#: zeit/content/cp/interfaces.py:297 zeit/content/cp/interfaces.py:458
+#: zeit/content/infobox/interfaces.py:11
+#: zeit/content/video/browser/object-details-body.pt:20
+msgid "Supertitle"
+msgstr "Spitzmarke"
+
+#: zeit/content/advertisement/interfaces.py:51
+#: zeit/content/link/interfaces.py:24
+msgid "Link address"
+msgstr "Link-Adresse (URL)"
+
 #: zeit/content/article/article.py:157
 #: zeit/content/article/edit/browser/form.py:62
 #: zeit/content/article/browser/configure.zcml:79
@@ -2076,19 +2136,6 @@ msgstr "Zitat"
 msgid "Division"
 msgstr "Seitenumbruch"
 
-#: zeit/content/article/edit/image.py:59
-#: zeit/content/article/edit/interfaces.py:209
-#: zeit/content/article/interfaces.py:54 zeit/content/cp/interfaces.py:90
-#: zeit/content/cp/interfaces.py:313 zeit/content/cp/interfaces.py:758
-#: zeit/content/cp/interfaces.py:799
-#: zeit/content/image/browser/imagegroup.py:123
-#: zeit/content/image/image.py:103 zeit/content/image/interfaces.py:291
-#: zeit/content/image/browser/configure.zcml:253
-#: zeit/content/portraitbox/interfaces.py:18
-#: zeit/wysiwyg/browser/resources/reference/image.pt:17
-msgid "Image"
-msgstr "Bild"
-
 #: zeit/content/article/edit/interfaces.py:117
 #: zeit/content/article/edit/interfaces.py:169
 #: zeit/content/article/edit/interfaces.py:220
@@ -2134,13 +2181,6 @@ msgstr "Ist Block ohne Referenzobjekt? (für XSLT)"
 #: zeit/content/article/edit/interfaces.py:186
 msgid "Referenced object."
 msgstr "Referenziertes Objekt"
-
-#: zeit/content/article/edit/interfaces.py:210
-#: zeit/content/article/interfaces.py:55 zeit/content/author/interfaces.py:65
-#: zeit/content/cp/interfaces.py:314 zeit/content/cp/interfaces.py:800
-#: zeit/content/image/interfaces.py:292
-msgid "Drag an image group here"
-msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
 
 #: zeit/content/article/edit/interfaces.py:215
 msgid "Edited"
@@ -2643,27 +2683,9 @@ msgstr "Darstellung"
 msgid "Switch visible"
 msgstr "Sichtbarkeit umschalten"
 
-#: zeit/content/cp/browser/migrate.pt:12
-msgid "Warning: this action cannot be undone."
-msgstr "Warnung: Diese Aktion kann nicht rückgängig gemacht werden."
-
-#: zeit/content/cp/browser/migrate.pt:18
-msgid "Migrate"
-msgstr "Layout wechseln"
-
 #: zeit/content/cp/browser/migrate.pt:2
 msgid "Attention"
 msgstr "Achtung"
-
-#: zeit/content/cp/browser/migrate.pt:8
-msgid ""
-"The centerpage ${uniqueId} is of type ${content_type}, but this editor "
-"produces ${current_type}. Do you want to change the type?"
-msgstr ""
-"Diese Seite (${uniqueId}) hat das Layout ${content_type}, das in diesem "
-"System nicht verarbeitet werden kann. Wollen Sie auf das Layout "
-"${current_type} wechseln? (Einige Funktionen können nicht mehr verfügbar "
-"sein.)"
 
 #: zeit/content/cp/browser/publish.pt:8
 msgid "Checking out"
@@ -2733,7 +2755,7 @@ msgid "Centerpage 2009"
 msgstr "Center-Page 2009"
 
 #. Default: ""
-#: zeit/content/cp/centerpage.py:494
+#: zeit/content/cp/centerpage.py:514 zeit/content/cp/browser/migrate.pt:8
 msgid ""
 "The centerpage ${uniqueId} is of type ${content_type}, but this vivi handles "
 "${current_type}."
@@ -2783,12 +2805,6 @@ msgstr "Letzte Aktualisierung"
 #: zeit/content/cp/interfaces.py:259
 msgid "query-sort-order-first-released"
 msgstr "Erstveröffentlichung"
-
-#: zeit/content/cp/interfaces.py:297 zeit/content/cp/interfaces.py:458
-#: zeit/content/infobox/interfaces.py:11
-#: zeit/content/video/browser/object-details-body.pt:20
-msgid "Supertitle"
-msgstr "Spitzmarke"
 
 #: zeit/content/cp/interfaces.py:305 zeit/content/cp/interfaces.py:466
 msgid "Read more"
@@ -3397,10 +3413,6 @@ msgstr "Metadaten"
 #: zeit/content/link/interfaces.py:11
 msgid "New window"
 msgstr "Neues Fenster"
-
-#: zeit/content/link/interfaces.py:24
-msgid "Link address"
-msgstr "Link-Adresse (URL)"
 
 #: zeit/content/link/interfaces.py:27
 msgid "Target"
