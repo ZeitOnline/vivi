@@ -80,6 +80,10 @@ class TeaserBlock(
         zeit.content.cp.interfaces.IArea,
         gocept.lxml.interfaces.IObjectified)
 
+    force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
+            'force_mobile_image'])
+
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
         if self.xml.get('module') == 'teaser':

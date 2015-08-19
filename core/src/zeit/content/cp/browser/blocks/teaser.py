@@ -56,8 +56,12 @@ class EditCommon(
         zeit.cms.browser.form.WidgetCSSMixin,
         gocept.form.grouped.EditForm):
 
-    form_fields = zeit.content.cp.browser.blocks.block.EditCommon.form_fields
-
+    form_fields = (
+        zeit.content.cp.browser.blocks.block.EditCommon.form_fields
+        + zope.formlib.form.FormFields(
+            zeit.content.cp.interfaces.ITeaserBlock).select(
+                'force_mobile_image')
+    )
     widget_groups = ()
     field_groups = (
         gocept.form.grouped.RemainingFields(_(''), css_class='fullWidth'),
