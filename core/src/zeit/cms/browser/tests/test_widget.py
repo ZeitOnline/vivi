@@ -1017,3 +1017,26 @@ class ConvertingRestructuredTextWidgetTest(
         with mock.patch.dict(os.environ, {'PATH': ''}):
             self.assertEqual(
                 '<strong>foo</strong>', self.widget._getFormValue())
+
+
+@unittest.skipUnless(
+    os.path.exists('/usr/bin/pandoc'), 'pandoc not available')
+class MarkdownWidgetTest(zeit.cms.testing.ZeitCmsTestCase):
+
+    def setUp(self):
+        super(MarkdownWidgetTest, self).setUp()
+        from zeit.cms.browser.widget import MarkdownWidget
+        self.request = zope.publisher.browser.TestRequest(
+            skin=zeit.cms.browser.interfaces.ICMSSkin)
+        field = zope.schema.Text()
+        field.__name__ = 'foo'
+        self.widget = MarkdownWidget(field, self.request)
+
+    def test_converts_input_to_html(self):
+        self.request.form[self.widget.name] = u'**umläut**'
+        self.assertEqual(
+            u'<p><strong>umläut</strong></p>\n', self.widget.getInputValue())
+
+    def test_converts_to_markdown_for_rendering(self):
+        self.widget.setRenderedValue(u'<strong>umläut</strong>')
+        self.assertEqual(u'**umläut**\n', self.widget._getFormValue())
