@@ -21,7 +21,7 @@ setup(
         'mock',
         'plone.testing',
         'setuptools',
-        'zeit.cms',
+        'zeit.cms >= 2.55.0.dev0',
         'zeit.content.image',
         'zope.component',
         'zope.formlib',
