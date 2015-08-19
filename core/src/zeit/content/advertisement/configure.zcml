@@ -1,0 +1,20 @@
+<configure
+  xmlns="http://namespaces.zope.org/zope"
+  xmlns:grok="http://namespaces.zope.org/grok">
+
+  <grok:grok package="." />
+
+  <class class=".advertisement.Advertisement">
+    <implements interface="zope.annotation.interfaces.IAttributeAnnotatable" />
+    <implements interface="zeit.cms.content.interfaces.IDAVPropertiesInXML "/>
+    <require
+      interface=".interfaces.IAdvertisement"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAdvertisement"
+      permission="zeit.EditContent"
+      />
+  </class>
+
+</configure>
