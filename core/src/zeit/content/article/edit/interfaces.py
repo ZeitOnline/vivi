@@ -354,6 +354,12 @@ class ILiveblog(zeit.edit.interfaces.IBlock):
         title=_('Liveblog id'))
 
 
+class ICardstack(zeit.edit.interfaces.IBlock):
+
+    card_id = zope.schema.TextLine(
+        title=_('Cardstack id'))
+
+
 class IBreakingNewsBody(zope.interface.Interface):
 
     text = zope.schema.Text(

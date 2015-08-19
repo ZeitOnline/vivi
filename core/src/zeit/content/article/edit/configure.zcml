@@ -208,6 +208,17 @@
       />
   </class>
 
+  <class class=".cardstack.Cardstack">
+    <require
+      interface=".interfaces.ICardstack"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.ICardstack"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".body.BreakingNewsBody">
     <require
       interface=".interfaces.IBreakingNewsBody"

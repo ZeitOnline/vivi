@@ -351,6 +351,27 @@
     weight="10"
     />
 
+  <!-- cardstack -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.ICardstack"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-cardstack"
+    class=".edit.EditCardstack"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.ICardstack"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-cardstack"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
   <!-- division -->
 
   <browser:viewlet
