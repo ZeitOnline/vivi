@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Aug 19 16:32:39 2015\n"
-"PO-Revision-Date: 2015-08-19 16:34+0100\n"
+"POT-Creation-Date: Wed Aug 19 16:42:34 2015\n"
+"PO-Revision-Date: 2015-08-19 16:43+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2132,7 +2132,9 @@ msgid "edit workflow status"
 msgstr "Workflow-Status bearbeiten"
 
 #: zeit/content/article/edit/cardstack.py:22
-msgid "Cardstack"
+#: zeit/content/cp/blocks/cardstack.py:20
+#: zeit/content/cp/browser/blocks/layout.cardstack.content.pt:1
+msgid "Cardstack block"
 msgstr "Kartenstapel"
 
 #: zeit/content/article/edit/citation.py:35
@@ -2298,6 +2300,7 @@ msgid "Liveblog id"
 msgstr "Liveblog-ID"
 
 #: zeit/content/article/edit/interfaces.py:360
+#: zeit/content/cp/interfaces.py:852
 msgid "Cardstack id"
 msgstr "ID"
 

@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Aug 19 16:32:39 2015\n"
+"POT-Creation-Date: Wed Aug 19 16:42:34 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -2181,7 +2181,9 @@ msgid "edit workflow status"
 msgstr ""
 
 #: zeit/content/article/edit/cardstack.py:22
-msgid "Cardstack"
+#: zeit/content/cp/blocks/cardstack.py:20
+#: zeit/content/cp/browser/blocks/layout.cardstack.content.pt:1
+msgid "Cardstack block"
 msgstr ""
 
 #: zeit/content/article/edit/citation.py:35
@@ -2352,6 +2354,7 @@ msgid "Liveblog id"
 msgstr ""
 
 #: zeit/content/article/edit/interfaces.py:360
+#: zeit/content/cp/interfaces.py:852
 msgid "Cardstack id"
 msgstr ""
 
