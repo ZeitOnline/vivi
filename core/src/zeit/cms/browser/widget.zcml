@@ -238,4 +238,22 @@
     permission="zope.Public"
     />
 
+  <!-- colorpicker -->
+
+  <adapter
+      for="zeit.cms.content.field.Color
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.browser.interfaces.ISimpleInputWidget"
+      factory=".widget.ColorpickerWidget"
+      permission="zope.Public"
+      />
+
+  <adapter
+      for="zeit.cms.content.field.Color
+           .interfaces.ICMSLayer"
+      provides="zope.app.form.interfaces.IDisplayWidget"
+      factory="zope.formlib.widgets.DisplayWidget"
+      permission="zope.Public"
+      />
+
 </configure>

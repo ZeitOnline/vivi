@@ -1,10 +1,10 @@
 zeit.cms changes
 ================
 
-2.54.4 (unreleased)
+2.55.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add field to register colorpicker widget on.
 
 
 2.54.3 (2015-08-18)

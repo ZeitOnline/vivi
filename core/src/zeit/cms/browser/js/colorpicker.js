@@ -3,9 +3,8 @@
 
 (function($) {
 
-$(document).bind('fragment-ready', function(event) {
-
-    $('.colorpicker-widget', event.__target).each(function(i, elem) {
+zeit.cms.enable_colorpicker = function(container) {
+    $('.colorpicker-widget', container).each(function(i, elem) {
         $(elem).colorpicker({
             parts: ['map', 'bar', 'swatches', 'hex', 'footer'],
             layout: {
@@ -16,7 +15,14 @@ $(document).bind('fragment-ready', function(event) {
             }
         });
     });
+};
 
+$(document).bind('fragment-ready', function(event) {
+    zeit.cms.enable_colorpicker(event.__target);
+});
+
+$(document).ready(function() {
+    zeit.cms.enable_colorpicker(document);
 });
 
 }(jQuery));

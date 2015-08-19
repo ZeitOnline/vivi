@@ -117,3 +117,8 @@ class XMLSnippet(zope.schema.Text):
             value = self.subset.filteredParse(value, dom.firstChild)
             value = u''.join(node.toxml() for node in value.childNodes)
         return value
+
+
+class Color(zope.schema.TextLine):
+    pass
+
