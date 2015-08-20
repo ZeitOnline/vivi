@@ -187,13 +187,25 @@ class LayoutAvailableTest(zeit.content.cp.testing.FunctionalTestCase):
         self.cp = CenterPage()
         self.teaser = self.cp['lead'].create_item('teaser')
 
+    def get_layouts(self):
+        source = zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
+            self.teaser)
+        return [x.id for x in source]
+
     def test_available_with_unresolveable_iface_returns_false(self):
         # Ensure teaser layouts exhibit the same behaviour as
         # zeit.cms.content.source.
-        source = zeit.content.cp.interfaces.ITeaserBlock['layout'].source(
-            self.teaser)
-        layouts = [x.id for x in source]
-        self.assertNotIn('friedbert-only', layouts)
+        self.assertNotIn('friedbert-only', self.get_layouts())
+
+    def test_posititive_type_selector(self):
+        self.assertNotIn('ressort-only', self.get_layouts())
+        self.cp.type = u'ressort'
+        self.assertIn('ressort-only', self.get_layouts())
+
+    def test_negative_type_selector(self):
+        self.assertIn('not-ressort', self.get_layouts())
+        self.cp.type = u'ressort'
+        self.assertNotIn('not-ressort', self.get_layouts())
 
 
 class RenderedXMLTest(zeit.content.cp.testing.FunctionalTestCase):

@@ -83,4 +83,16 @@
         areas="solo duo minor major"
         available="zeit.web.core.interfaces.IInternalUse"
         />
+    <layout
+        id="ressort-only"
+        title="Parkett großer Aufmacher"
+        areas="solo duo minor major"
+        types="ressort"
+        />
+    <layout
+        id="not-ressort"
+        title="Parkett großer Aufmacher"
+        areas="solo duo minor major"
+        types="!ressort"
+        />
 </layouts>

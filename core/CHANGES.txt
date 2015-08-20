@@ -12,6 +12,8 @@ zeit.content.cp changes
 - New module type ``cardstack``, ``zeit.content.cp.interfaces.ICardstackBlock``
   with property ``card_id`` (DEV-892).
 
+- Allow disabling/enabling teaser layouts using the CP type (DEV-884).
+
 
 3.0.1 (2015-08-18)
 ------------------

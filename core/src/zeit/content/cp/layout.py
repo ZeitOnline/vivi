@@ -22,6 +22,8 @@ class ITeaserBlockLayout(zope.interface.Interface):
         title=u'Kinds of areas where this layout is allowed')
     default_in_areas = zope.schema.Bool(
         title=u'Kinds of areas where this layout is the default')
+    types = zope.schema.Set(
+        title=u'Types of CP where this layout is allowed')
 
 
 class BlockLayout(object):
@@ -29,7 +31,8 @@ class BlockLayout(object):
     zope.interface.implements(ITeaserBlockLayout)
 
     def __init__(self, id, title, image_pattern=None,
-                 areas=None, columns=1, default=False, available=None):
+                 areas=None, columns=1, default=False, available=None,
+                 types=None):
         self.id = id
         self.title = title
         self.image_pattern = image_pattern
@@ -37,6 +40,7 @@ class BlockLayout(object):
         self.columns = columns
         self.default_in_areas = default
         self.available_iface = available
+        self.types = types.split(' ') if types else None
 
     def __eq__(self, other):
         return zope.security.proxy.isinstance(
@@ -52,12 +56,28 @@ class BlockLayout(object):
         cp = ICenterPage(context, None)
         if cp is None:
             return True
-        return self.is_allowed_iface(cp)
+        return self.is_allowed_iface(cp) and self.is_allowed_type(cp)
 
     def is_allowed_iface(self, cp):
         if self.available_iface is None:
             return False
         return self.available_iface.providedBy(cp)
+
+    def is_allowed_type(self, cp):
+        if not self.types:
+            return True
+        negative_present = False
+        match = False
+        for typ in self.types:
+            if typ.startswith('!'):
+                negative_present = True
+                typ = typ.replace('!', '', 1)
+            if cp.type == typ:
+                match = True
+        if negative_present:
+            return not match
+        else:
+            return match
 
 
 class RegionConfig(object):
@@ -140,7 +160,8 @@ class TeaserBlockLayoutSource(
             id = node.get(self.attribute)
             result[id] = BlockLayout(
                 id, self._get_title_for(node),
-                g('image_pattern'), areas, columns, g('default', ''), iface)
+                g('image_pattern'), areas, columns, g('default', ''), iface,
+                g('types', None))
         return result
 
     def find(self, context, id):
