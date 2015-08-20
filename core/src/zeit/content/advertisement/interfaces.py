@@ -27,7 +27,7 @@ class IAdvertisement(zeit.cms.content.interfaces.IXMLContent):
         missing_value=u'')
 
     text = zope.schema.Text(
-        title=_("Teaser text"),
+        title=_("Advertisement teaser"),
         required=False)
 
     button_text = zope.schema.TextLine(
@@ -45,7 +45,7 @@ class IAdvertisement(zeit.cms.content.interfaces.IXMLContent):
         source=zeit.content.image.interfaces.imageGroupSource)
 
     supertitle = zope.schema.Choice(
-        title=_('Supertitle'),
+        title=_('Advertisement supertitle'),
         required=False,
         source=SupertitleSource())
 
