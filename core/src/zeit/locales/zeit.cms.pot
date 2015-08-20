@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Aug 19 16:42:34 2015\n"
+"POT-Creation-Date: Thu Aug 20 09:08:15 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -83,7 +83,6 @@ msgstr ""
 
 #: zeit/brightcove/interfaces.py:33
 #: zeit/cms/content/interfaces.py:170
-#: zeit/content/advertisement/interfaces.py:30
 #: zeit/content/video/browser/object-details-body.pt:28
 msgid "Teaser text"
 msgstr ""
@@ -1741,6 +1740,10 @@ msgstr ""
 msgid "Publisher offering"
 msgstr ""
 
+#: zeit/content/advertisement/interfaces.py:30
+msgid "Advertisement teaser"
+msgstr ""
+
 #: zeit/content/advertisement/interfaces.py:34
 msgid "Button text"
 msgstr ""
@@ -1777,11 +1780,7 @@ msgid "Drag an image group here"
 msgstr ""
 
 #: zeit/content/advertisement/interfaces.py:48
-#: zeit/content/cp/interfaces.py:302
-#: zeit/content/cp/interfaces.py:463
-#: zeit/content/infobox/interfaces.py:11
-#: zeit/content/video/browser/object-details-body.pt:20
-msgid "Supertitle"
+msgid "Advertisement supertitle"
 msgstr ""
 
 #: zeit/content/advertisement/interfaces.py:52
@@ -2869,6 +2868,13 @@ msgstr ""
 
 #: zeit/content/cp/interfaces.py:270
 msgid "query-sort-order-first-released"
+msgstr ""
+
+#: zeit/content/cp/interfaces.py:302
+#: zeit/content/cp/interfaces.py:463
+#: zeit/content/infobox/interfaces.py:11
+#: zeit/content/video/browser/object-details-body.pt:20
+msgid "Supertitle"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:310

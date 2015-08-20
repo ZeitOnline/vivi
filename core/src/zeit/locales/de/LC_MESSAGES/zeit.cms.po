@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Aug 19 16:42:34 2015\n"
-"PO-Revision-Date: 2015-08-19 16:43+0100\n"
+"POT-Creation-Date: Thu Aug 20 09:08:15 2015\n"
+"PO-Revision-Date: 2015-08-20 09:09+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -73,7 +73,6 @@ msgid "Title"
 msgstr "Titel"
 
 #: zeit/brightcove/interfaces.py:33 zeit/cms/content/interfaces.py:170
-#: zeit/content/advertisement/interfaces.py:30
 #: zeit/content/video/browser/object-details-body.pt:28
 msgid "Teaser text"
 msgstr "Teaser (Centerpage)"
@@ -1695,7 +1694,7 @@ msgstr "Bearbeitung abbrechen"
 #: zeit/content/advertisement/advertisement.py:47
 #: zeit/content/advertisement/interfaces.py:13
 msgid "Publisher advertisement"
-msgstr "Anzeige"
+msgstr "Verlagsangebot/Anzeige"
 
 #: zeit/content/advertisement/browser/form.py:24
 msgid "Add publisher advertisement"
@@ -1704,6 +1703,10 @@ msgstr "Verlagsangebot hinzufügen"
 #: zeit/content/advertisement/interfaces.py:12
 msgid "Publisher offering"
 msgstr "Verlagsangebot"
+
+#: zeit/content/advertisement/interfaces.py:30
+msgid "Advertisement teaser"
+msgstr "Teaser"
 
 #: zeit/content/advertisement/interfaces.py:34
 msgid "Button text"
@@ -1736,11 +1739,8 @@ msgid "Drag an image group here"
 msgstr "Ziehen Sie Bilder hierher, um sie zu verknüpfen"
 
 #: zeit/content/advertisement/interfaces.py:48
-#: zeit/content/cp/interfaces.py:302 zeit/content/cp/interfaces.py:463
-#: zeit/content/infobox/interfaces.py:11
-#: zeit/content/video/browser/object-details-body.pt:20
-msgid "Supertitle"
-msgstr "Spitzmarke"
+msgid "Advertisement supertitle"
+msgstr "Auszeichnung"
 
 #: zeit/content/advertisement/interfaces.py:52
 #: zeit/content/link/interfaces.py:24
@@ -2820,6 +2820,12 @@ msgstr "Letzte Aktualisierung"
 #: zeit/content/cp/interfaces.py:270
 msgid "query-sort-order-first-released"
 msgstr "Erstveröffentlichung"
+
+#: zeit/content/cp/interfaces.py:302 zeit/content/cp/interfaces.py:463
+#: zeit/content/infobox/interfaces.py:11
+#: zeit/content/video/browser/object-details-body.pt:20
+msgid "Supertitle"
+msgstr "Spitzmarke"
 
 #: zeit/content/cp/interfaces.py:310 zeit/content/cp/interfaces.py:471
 msgid "Read more"
