@@ -99,6 +99,13 @@ class TeaserBlock(
             self.layout = self.layout
         assert self.xml.get('module') != 'teaser'
 
+        if 'text_color' not in self.xml.attrib:
+            self.text_color = zeit.content.cp.interfaces.ITeaserBlock[
+                'text_color'].default
+        if 'opacity' not in self.xml.attrib:
+            self.opacity = zeit.content.cp.interfaces.ITeaserBlock[
+                'opacity'].default
+
     @property
     def entries(self):
         # overriden so that super.insert() and updateOrder() work
