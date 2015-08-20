@@ -20,8 +20,8 @@ class ITeaserBlockLayout(zope.interface.Interface):
         default=1)
     areas = zope.schema.Set(
         title=u'Kinds of areas where this layout is allowed')
-    default = zope.schema.Bool(
-        title=u"True if this is the default for an area")
+    default_in_areas = zope.schema.Bool(
+        title=u'Kinds of areas where this layout is the default')
 
 
 class BlockLayout(object):
