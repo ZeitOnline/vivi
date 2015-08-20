@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Add block for referencing a "card stack" (DEV-892).
 
+- Add form for ``tldr`` fields (DEV-883).
+
 
 3.7.0 (2015-07-24)
 ------------------
