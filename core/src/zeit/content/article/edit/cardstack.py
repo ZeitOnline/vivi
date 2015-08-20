@@ -19,4 +19,4 @@ class Cardstack(zeit.edit.block.SimpleElement):
 class Factory(zeit.content.article.edit.block.BlockFactory):
 
     produces = Cardstack
-    title = _('Cardstack')
+    title = _('Cardstack block')
