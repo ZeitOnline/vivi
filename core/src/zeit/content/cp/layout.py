@@ -46,6 +46,19 @@ class BlockLayout(object):
         area = zeit.content.cp.interfaces.IArea(block)
         return area.kind in self.default_in_areas
 
+    def is_allowed(self, context):
+        # Avoid circular import
+        from zeit.content.cp.interfaces import ICenterPage
+        cp = ICenterPage(context, None)
+        if cp is None:
+            return True
+        return self.is_allowed_iface(cp)
+
+    def is_allowed_iface(self, cp):
+        if self.available_iface is None:
+            return False
+        return self.available_iface.providedBy(cp)
+
 
 class RegionConfig(object):
 
@@ -102,14 +115,7 @@ class TeaserBlockLayoutSource(
             return self.factory.find(self.context, id)
 
     def isAvailable(self, value, context):
-        # Avoid circular import
-        from zeit.content.cp.interfaces import ICenterPage
-        context = ICenterPage(context, None)
-        if context is None:
-            return True
-        if value.available_iface is None:
-            return False
-        return value.available_iface.providedBy(context)
+        return value.is_allowed(context)
 
     def getValues(self, context):
         return [x for x in self._values().values()
