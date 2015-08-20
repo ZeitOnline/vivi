@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Add field to register colorpicker widget on.
 
+- Add CSS classes to datetime widget buttons.
+
 
 2.54.3 (2015-08-18)
 -------------------

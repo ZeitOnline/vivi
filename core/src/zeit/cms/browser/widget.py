@@ -483,7 +483,7 @@ class ReferenceWidget(DropObjectWidget):
 
 
 DATETIME_WIDGET_ADDITIONAL = """\
-<input type="button" value="%(label)s"
+<input type="button" value="%(label)s" class="%(css_class)s"
     onclick="javascript:var date = new Date();
         %(increase)s;
         $('%(field)s').value = date.print('%%Y-%%m-%%d %%H:%%M:%%S');
@@ -493,7 +493,7 @@ DATETIME_WIDGET_ADDITIONAL = """\
         " />
 """
 DATETIME_WIDGET_INFTY = u"""\
-<input type="button" value="∞"
+<input type="button" value="∞" class="infinity"
     onclick="javascript:$('%(field)s').value = '';
         $('%(field)s').focus();
         MochiKit.Signal.signal(
@@ -510,10 +510,12 @@ class DatetimeWidget(zc.datetimewidget.datetimewidget.DatetimeWidget):
         week = DATETIME_WIDGET_ADDITIONAL % dict(
             field=self.name,
             label="1W",
+            css_class="week",
             increase="date.setDate(date.getDate() + 7)")
         month = DATETIME_WIDGET_ADDITIONAL % dict(
             field=self.name,
             label="1M",
+            css_class="month",
             increase="date.setMonth(date.getMonth() + 1)")
         infty = DATETIME_WIDGET_INFTY % dict(
             field=self.name)
