@@ -4,6 +4,8 @@ zeit.cms changes
 2.55.0 (unreleased)
 -------------------
 
+- Add ``tldr`` fields for storystreams (DEV-883, DEV-885).
+
 - Add field to register colorpicker widget on.
 
 - Add CSS classes to datetime widget buttons.

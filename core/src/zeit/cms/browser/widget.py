@@ -643,3 +643,9 @@ class MarkdownWidget(zope.formlib.textwidgets.TextAreaWidget):
             return pypandoc.convert(value, to='markdown', format='html')
         except OSError:
             return value
+
+
+def TupleSequenceWidget(field, source, request):
+    ignored = None
+    return zope.formlib.sequencewidget.TupleSequenceWidget(
+        field, ignored, request)

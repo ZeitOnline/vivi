@@ -256,4 +256,13 @@
       permission="zope.Public"
       />
 
+  <adapter
+      for="zope.schema.interfaces.ITuple
+           zope.schema.interfaces.IIterableSource
+           zope.publisher.interfaces.browser.IBrowserRequest"
+      provides="zope.formlib.interfaces.ISimpleInputWidget"
+      factory=".widget.TupleSequenceWidget"
+      permission="zope.Public"
+      />
+
 </configure>

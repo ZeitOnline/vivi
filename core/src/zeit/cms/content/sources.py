@@ -255,6 +255,12 @@ class SubChannelSource(MasterSlaveSource):
         return unicode(node['title'])
 
 
+class StorystreamSource(XMLSource):
+
+    config_url = 'source-storystreams'
+    attribute = 'name'
+
+
 def unicode_or_none(value):
     if value:
         return unicode(value)

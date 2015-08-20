@@ -285,6 +285,32 @@ class ICommonMetadata(zope.interface.Interface):
         required=False,
         default=False)
 
+    tldr_title = zope.schema.TextLine(
+        title=_("tldr title"),
+        required=False,
+        max_length=70)
+
+    tldr_text = zope.schema.Text(
+        title=_("tldr text"),
+        required=False,
+        max_length=70)
+
+    tldr_milestone = zope.schema.Bool(
+        title=_("tldr milestone"),
+        required=False,
+        default=True)
+
+    tldr_date = zope.schema.Datetime(
+        title=_("tldr date"),
+        required=False)
+
+    storystreams = zope.schema.Tuple(
+        title=_("Storystreams"),
+        value_type=zope.schema.Choice(
+            source=zeit.cms.content.sources.StorystreamSource()),
+        default=(),
+        required=False)
+
 
 class IProduct(zope.interface.Interface):
     """A publication product"""

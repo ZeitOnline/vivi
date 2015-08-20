@@ -41,6 +41,11 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'lead_candidate',
             'push_news',
             'rebrush_website_content',
+
+            'tldr_title',
+            'tldr_text',
+            'tldr_milestone',
+            'tldr_date',
         ))
 
     authors = zeit.cms.content.dav.DAVProperty(
@@ -157,6 +162,21 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
     def channels(self, value):
         self._channels = tuple(' '.join([x for x in channel if x])
                                for channel in value)
+
+    _storystreams = zeit.cms.content.dav.DAVProperty(
+        zope.schema.Tuple(value_type=zope.schema.TextLine()),
+        zeit.cms.interfaces.DOCUMENT_SCHEMA_NS, 'storystreams')
+
+    @property
+    def storystreams(self):
+        if self._storystreams:
+            return self._storystreams
+        else:
+            return ()
+
+    @storystreams.setter
+    def storystreams(self, value):
+        self._storystreams = tuple(x for x in value)
 
 
 @grok.subscribe(
