@@ -7,6 +7,7 @@ import zope.interface
 class AddForm(zeit.content.cp.browser.form.AddForm):
 
     title = _("Add storystream")
+    form_fields = zeit.content.cp.browser.form.AddForm.form_fields.omit('type')
 
     def create(self, data):
         obj = super(AddForm, self).create(data)
