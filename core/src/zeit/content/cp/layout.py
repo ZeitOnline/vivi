@@ -6,39 +6,9 @@ import zope.interface
 import zope.security.proxy
 
 
-class ITeaserBlockLayout(zope.interface.Interface):
-    """Layout of a teaser block."""
+class AllowedMixin(object):
 
-    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
-    title = zope.schema.TextLine(title=u'Human readable title.')
-    image_pattern = zope.schema.ASCIILine(
-        title=u'A match for the image to use in this layout.')
-    columns = zope.schema.Int(
-        title=u'Columns',
-        min=1,
-        max=2,
-        default=1)
-    areas = zope.schema.Set(
-        title=u'Kinds of areas where this layout is allowed')
-    default_in_areas = zope.schema.Bool(
-        title=u'Kinds of areas where this layout is the default')
-    types = zope.schema.Set(
-        title=u'Types of CP where this layout is allowed')
-
-
-class BlockLayout(object):
-
-    zope.interface.implements(ITeaserBlockLayout)
-
-    def __init__(self, id, title, image_pattern=None,
-                 areas=None, columns=1, default=False, available=None,
-                 types=None):
-        self.id = id
-        self.title = title
-        self.image_pattern = image_pattern
-        self.areas = frozenset(areas)
-        self.columns = columns
-        self.default_in_areas = default
+    def __init__(self, available, types):
         if available is None:
             available = 'zope.interface.Interface'
         try:
@@ -47,14 +17,6 @@ class BlockLayout(object):
             available = None
         self.available_iface = available
         self.types = types.split(' ') if types else None
-
-    def __eq__(self, other):
-        return zope.security.proxy.isinstance(
-            other, BlockLayout) and self.id == other.id
-
-    def is_default(self, block):
-        area = zeit.content.cp.interfaces.IArea(block)
-        return area.kind in self.default_in_areas
 
     def is_allowed(self, context):
         # Avoid circular import
@@ -84,6 +46,50 @@ class BlockLayout(object):
             return not match
         else:
             return match
+
+
+class ITeaserBlockLayout(zope.interface.Interface):
+    """Layout of a teaser block."""
+
+    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
+    title = zope.schema.TextLine(title=u'Human readable title.')
+    image_pattern = zope.schema.ASCIILine(
+        title=u'A match for the image to use in this layout.')
+    columns = zope.schema.Int(
+        title=u'Columns',
+        min=1,
+        max=2,
+        default=1)
+    areas = zope.schema.Set(
+        title=u'Kinds of areas where this layout is allowed')
+    default_in_areas = zope.schema.Bool(
+        title=u'Kinds of areas where this layout is the default')
+    types = zope.schema.Set(
+        title=u'Types of CP where this layout is allowed')
+
+
+class BlockLayout(AllowedMixin):
+
+    zope.interface.implements(ITeaserBlockLayout)
+
+    def __init__(self, id, title, image_pattern=None,
+                 areas=None, columns=1, default=False, available=None,
+                 types=None):
+        super(BlockLayout, self).__init__(available, types)
+        self.id = id
+        self.title = title
+        self.image_pattern = image_pattern
+        self.areas = frozenset(areas)
+        self.columns = columns
+        self.default_in_areas = default
+
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, BlockLayout) and self.id == other.id
+
+    def is_default(self, block):
+        area = zeit.content.cp.interfaces.IArea(block)
+        return area.kind in self.default_in_areas
 
 
 class RegionConfig(object):
