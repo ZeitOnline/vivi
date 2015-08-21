@@ -38,6 +38,10 @@ class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
         } for i, area_config in enumerate(
             zeit.content.cp.layout.AREA_CONFIGS(self.context))]
 
+    def sort_block_types(self, items):
+        # Use order defined by the source.
+        return items
+
 
 class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
 
@@ -57,3 +61,7 @@ class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
             },
         } for i, region_config in enumerate(
             zeit.content.cp.layout.REGION_CONFIGS(self.context))]
+
+    def sort_block_types(self, items):
+        # Use order defined by the source.
+        return items

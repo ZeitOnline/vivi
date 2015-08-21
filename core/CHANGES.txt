@@ -21,6 +21,8 @@ zeit.content.cp changes
 
 - Reorder library tabs (DEV-853).
 
+- Order r/a/m library according to their config files (DEV-853).
+
 
 3.0.1 (2015-08-18)
 ------------------
