@@ -539,7 +539,7 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
         source=TextColorSource(),
         default='dark')
 
-    opacity = zope.schema.Choice(
+    overlay_level = zope.schema.Choice(
         title=_('Overlay opacity'),
         source=OpacitySource(),
         default='3')

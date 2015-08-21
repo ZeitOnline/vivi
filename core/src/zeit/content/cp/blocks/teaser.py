@@ -86,9 +86,9 @@ class TeaserBlock(
     text_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'text_color', zeit.content.cp.interfaces.ITeaserBlock[
             'text_color'])
-    opacity = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'opacity', zeit.content.cp.interfaces.ITeaserBlock[
-            'opacity'])
+    overlay_level = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'overlay_level', zeit.content.cp.interfaces.ITeaserBlock[
+            'overlay_level'])
 
     def __init__(self, context, xml):
         super(TeaserBlock, self).__init__(context, xml)
@@ -102,9 +102,9 @@ class TeaserBlock(
         if 'text_color' not in self.xml.attrib:
             self.text_color = zeit.content.cp.interfaces.ITeaserBlock[
                 'text_color'].default
-        if 'opacity' not in self.xml.attrib:
-            self.opacity = zeit.content.cp.interfaces.ITeaserBlock[
-                'opacity'].default
+        if 'overlay_level' not in self.xml.attrib:
+            self.overlay_level = zeit.content.cp.interfaces.ITeaserBlock[
+                'overlay_level'].default
 
     @property
     def entries(self):

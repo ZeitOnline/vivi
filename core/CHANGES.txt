@@ -7,7 +7,7 @@ zeit.content.cp changes
 
 - Add ``force_mobile_image`` field to TeaserBlock (DEV-894).
 
-- Add ``text_color`` and ``opacity`` to TeaserBlock (DEV-893).
+- Add ``text_color`` and ``overlay_level`` to TeaserBlock (DEV-893).
 
 - New module type ``cardstack``, ``zeit.content.cp.interfaces.ICardstackBlock``
   with property ``card_id`` (DEV-892).
