@@ -111,7 +111,7 @@ class RegionBrowserTest(
         ElementBrowserTestHelper,
         zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     name = 'region'
 
@@ -125,7 +125,7 @@ class AreaBrowserTest(
         ElementBrowserTestHelper,
         zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     name = 'area'
 
@@ -158,7 +158,7 @@ class TooltipFixture(object):
 
 class TooltipBrowserTest(TooltipFixture, zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def test_schematic_preview_returns_content_of_matched_files(self):
         self.browser.open(

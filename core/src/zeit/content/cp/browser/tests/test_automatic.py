@@ -9,7 +9,7 @@ import zope.testbrowser.testing
 
 class AutomaticEditForm(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def setUp(self):
         super(AutomaticEditForm, self).setUp()

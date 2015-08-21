@@ -5,7 +5,7 @@ import zeit.content.cp.testing
 
 class TeaserEditForm(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def test_supertitle_is_stored_on_free_teaser(self):
         b = self.browser

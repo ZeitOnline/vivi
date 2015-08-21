@@ -15,7 +15,7 @@ class PublishTest(zeit.cms.testing.BrowserTestCase):
 
     """
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def test_validation_errors_are_displayed_during_publish(self):
         from zeit.content.cp.centerpage import CenterPage
@@ -34,7 +34,7 @@ class PublishTest(zeit.cms.testing.BrowserTestCase):
 
 class PermissionsTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def setUp(self):
         super(PermissionsTest, self).setUp()

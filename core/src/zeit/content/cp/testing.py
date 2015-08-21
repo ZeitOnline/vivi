@@ -37,7 +37,7 @@ product_config = """
 """.format(fixtures=pkg_resources.resource_filename(__name__, '.'))
 
 
-layer = zeit.cms.testing.ZCMLLayer(
+ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',
     product_config=zeit.cms.testing.cms_product_config
     + zeit.workflow.testing.product_config
@@ -72,7 +72,8 @@ class RequestHandler(gocept.httpserverlayer.custom.RequestHandler,
 
 
 FEED_SERVER_LAYER = gocept.httpserverlayer.custom.Layer(
-    RequestHandler, name='FeedServerLayer', module=__name__, bases=(layer,))
+    RequestHandler, name='FeedServerLayer', module=__name__,
+    bases=(ZCML_LAYER,))
 
 
 checker = zope.testing.renormalizing.RENormalizing([
@@ -90,7 +91,7 @@ checker.transformers[0:0] = zeit.cms.testing.checker.transformers
 
 def FunctionalDocFileSuite(*args, **kw):
     kw.setdefault('checker', checker)
-    kw.setdefault('layer', layer)
+    kw.setdefault('layer', ZCML_LAYER)
     kw.setdefault('globs', dict(with_statement=__future__.with_statement))
     kw['package'] = zope.testing.doctest._normalize_module(kw.get('package'))
     return zeit.cms.testing.FunctionalDocFileSuite(*args, **kw)
@@ -98,7 +99,7 @@ def FunctionalDocFileSuite(*args, **kw):
 
 class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
 
-    layer = layer
+    layer = ZCML_LAYER
 
     def create_content(self, name, title):
         content = zeit.cms.testcontenttype.testcontenttype.TestContentType()
@@ -119,7 +120,8 @@ class FunctionalTestCase(zeit.cms.testing.FunctionalTestCase):
         return cp
 
 
-WSGI_LAYER = zeit.cms.testing.WSGILayer(name='WSGILayer', bases=(layer,))
+WSGI_LAYER = zeit.cms.testing.WSGILayer(
+    name='WSGILayer', bases=(ZCML_LAYER,))
 HTTP_LAYER = gocept.httpserverlayer.wsgi.Layer(
     name='HTTPLayer', bases=(WSGI_LAYER,))
 WD_LAYER = gocept.selenium.WebdriverLayer(

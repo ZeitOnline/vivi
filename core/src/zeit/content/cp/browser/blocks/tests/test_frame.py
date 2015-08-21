@@ -5,7 +5,7 @@ import zeit.content.cp.centerpage
 
 class TestFrame(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def setUp(self):
         super(TestFrame, self).setUp()

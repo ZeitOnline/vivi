@@ -106,7 +106,7 @@ class TestTeaserDisplay(unittest.TestCase):
 
 class CommonEditTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def test_values_are_saved(self):
         b = self.browser
@@ -129,7 +129,7 @@ class CommonEditTest(zeit.cms.testing.BrowserTestCase):
 
 class DisplayImagePositionsTest(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.content.cp.testing.layer
+    layer = zeit.content.cp.testing.ZCML_LAYER
 
     def setUp(self):
         super(DisplayImagePositionsTest, self).setUp()
