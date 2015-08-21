@@ -196,7 +196,7 @@
 
 /* Teaser block */
 
-.block.block-visible-off > * {
+.block.block-visible-off .block-inner {
   background-color: #cccccc;
 }
 
