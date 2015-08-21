@@ -597,6 +597,7 @@ class Tldr(zeit.edit.browser.form.InlineForm,
     def setUpWidgets(self, *args, **kw):
         super(Tldr, self).setUpWidgets(*args, **kw)
         self.set_charlimit('tldr_title')
+        self.set_charlimit('tldr_text')
 
     # Generate an action name just like the SequenceWidget remove button.
     @zope.formlib.form.action('remove', prefix='storystreams')
