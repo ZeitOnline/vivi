@@ -39,6 +39,12 @@ class BlockLayout(object):
         self.areas = frozenset(areas)
         self.columns = columns
         self.default_in_areas = default
+        if available is None:
+            available = 'zope.interface.Interface'
+        try:
+            available = zope.dottedname.resolve.resolve(available)
+        except ImportError:
+            available = None
         self.available_iface = available
         self.types = types.split(' ') if types else None
 
@@ -152,16 +158,11 @@ class TeaserBlockLayoutSource(
             columns = g('columns', 1)
             if columns:
                 columns = int(columns)
-            iface = node.get('available', 'zope.interface.Interface')
-            try:
-                iface = zope.dottedname.resolve.resolve(iface)
-            except ImportError:
-                iface = None
             id = node.get(self.attribute)
             result[id] = BlockLayout(
                 id, self._get_title_for(node),
-                g('image_pattern'), areas, columns, g('default', ''), iface,
-                g('types', None))
+                g('image_pattern'), areas, columns, g('default', ''),
+                node.get('available', None), g('types', None))
         return result
 
     def find(self, context, id):
