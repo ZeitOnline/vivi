@@ -6,6 +6,8 @@ Changes
 
 - Make library tabs accessible as ``zeit.edit.library.tabs`` (DEV-853).
 
+- Make sorting of library adapters overridable (DEV-853).
+
 - Use better repr for containers, too.
 
 

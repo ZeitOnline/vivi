@@ -1,3 +1,4 @@
+import collections
 import fanstatic
 import json
 import os.path
@@ -19,7 +20,7 @@ class BlockFactories(zeit.cms.browser.view.JSON):
         return dict(factories=self.list_block_types())
 
     def list_block_types(self):
-        types = {}
+        types = collections.OrderedDict()
         for item in self.get_adapters():
             if item['name'] not in types:
                 image = 'module-%s.png' % item['name']
@@ -37,7 +38,10 @@ class BlockFactories(zeit.cms.browser.view.JSON):
             types[item['name']]['css'].append(item['library_name'] + '-module')
         for type_ in types.values():
             type_['css'] = ' '.join(type_['css'])
-        return sorted(types.values(), key=lambda r: r['title'])
+        return self.sort_block_types(types.values())
+
+    def sort_block_types(self, items):
+        return sorted(items, key=lambda r: r['title'])
 
     def get_adapters(self):
         context = self.factory_context
