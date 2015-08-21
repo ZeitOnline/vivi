@@ -8,7 +8,9 @@ import zope.security.proxy
 
 class AllowedMixin(object):
 
-    def __init__(self, available, types):
+    def __init__(self, id, available, types):
+        self.id = id
+
         if available is None:
             available = 'zope.interface.Interface'
         try:
@@ -16,6 +18,7 @@ class AllowedMixin(object):
         except ImportError:
             available = None
         self.available_iface = available
+
         self.types = types.split(' ') if types else None
 
     def is_allowed(self, context):
@@ -79,8 +82,7 @@ class BlockLayout(AllowedMixin):
     def __init__(self, id, title, image_pattern=None,
                  areas=None, columns=1, default=False, available=None,
                  types=None):
-        super(BlockLayout, self).__init__(available, types)
-        self.id = id
+        super(BlockLayout, self).__init__(id, available, types)
         self.title = title
         self.image_pattern = image_pattern
         self.areas = frozenset(areas)
@@ -95,8 +97,7 @@ class BlockLayout(AllowedMixin):
 class RegionConfig(AllowedMixin):
 
     def __init__(self, id, title, kind, areas, available, types):
-        super(RegionConfig, self).__init__(available, types)
-        self.id = id
+        super(RegionConfig, self).__init__(id, available, types)
         self.title = title
         self.kind = kind
         self.areas = areas
@@ -105,8 +106,7 @@ class RegionConfig(AllowedMixin):
 class AreaConfig(AllowedMixin):
 
     def __init__(self, id, title, kind, available, types):
-        super(AreaConfig, self).__init__(available, types)
-        self.id = id
+        super(AreaConfig, self).__init__(id, available, types)
         self.title = title
         self.kind = kind
 
