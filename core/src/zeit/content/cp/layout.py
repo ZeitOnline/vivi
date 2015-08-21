@@ -134,6 +134,9 @@ class ObjectSource(object):
         return [x for x in self._values().values()
                 if self.isAvailable(x, context)]
 
+    def _get_title_for(self, node):
+        return unicode(node.get('title'))
+
 
 class TeaserBlockLayoutSource(
         ObjectSource, zeit.cms.content.sources.XMLSource):
@@ -172,9 +175,6 @@ class TeaserBlockLayoutSource(
             return None
         return value
 
-    def _get_title_for(self, node):
-        return unicode(node.get('title'))
-
     def filterValue(self, context, value):
         if context is None:
             return True
@@ -205,9 +205,6 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             )
         return result
 
-    def _get_title_for(self, node):
-        return unicode(node.get('title'))
-
 REGION_CONFIGS = RegionConfigSource()
 
 
@@ -229,8 +226,6 @@ class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             )
         return result
 
-    def _get_title_for(self, node):
-        return unicode(node.get('title'))
 
 AREA_CONFIGS = AreaConfigSource()
 
