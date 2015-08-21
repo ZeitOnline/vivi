@@ -1,0 +1,15 @@
+<modules>
+  <module id="audio" title="Audioblock"/>
+  <module id="cardstack" title="Kartenstapel"/>
+  <module id="cpextra" title="CPExtra"/>
+  <module id="frame" title="iframe"/>
+  <module id="fullgraphical" title="Vollgraphischer Block"/>
+  <module id="headerimage" title="Headerbild"/>
+  <module id="markup" title="HTML-Block"/>
+  <module id="playlist" title="Video-Riegel"/>
+  <module id="quiz" title="Quiz-Block"/>
+  <module id="rss" title="RSS-Block"/>
+  <module id="teaser" title="Teaser"/>
+  <module id="video" title="Video"/>
+  <module id="xml" title="Rohes XML"/>
+</modules>

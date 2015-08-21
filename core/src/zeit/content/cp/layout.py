@@ -111,6 +111,13 @@ class AreaConfig(AllowedMixin):
         self.kind = kind
 
 
+class ModuleConfig(AllowedMixin):
+
+    def __init__(self, id, title, available, types):
+        super(ModuleConfig, self).__init__(id, available, types)
+        self.title = title
+
+
 class ObjectSource(object):
 
     def getTitle(self, context, value):
@@ -176,6 +183,10 @@ class TeaserBlockLayoutSource(
 TEASERBLOCK_LAYOUTS = TeaserBlockLayoutSource()
 
 
+def get_layout(id):
+    return TEASERBLOCK_LAYOUTS(None).find(id)
+
+
 class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
@@ -218,9 +229,24 @@ class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
             )
         return result
 
-
 AREA_CONFIGS = AreaConfigSource()
 
 
-def get_layout(id):
-    return TEASERBLOCK_LAYOUTS(None).find(id)
+class ModuleConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.content.cp'
+    config_url = 'module-config-source'
+
+    @gocept.cache.method.Memoize(600, ignore_self=True)
+    def _values(self):
+        tree = self._get_tree()
+        result = collections.OrderedDict()
+        for node in tree.iterchildren('*'):
+            id = node.get('id')
+            result[id] = ModuleConfig(
+                id, self._get_title_for(node),
+                node.get('available', None), node.get('types', None),
+            )
+        return result
+
+MODULE_CONFIGS = ModuleConfigSource()

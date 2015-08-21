@@ -6,20 +6,28 @@ See http://cmsdev.zeit.de/node/362
 
 """
 
-import lxml.objectify
 import zeit.edit.browser.library
 
 
 class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
 
     @property
-    def factory_context(self):
-        xml = lxml.objectify.XML('<dummy/>')
-        return zeit.content.cp.area.Area(None, xml)
-
-    @property
     def library_name(self):
         return 'cp'
+
+    def get_adapters(self):
+        return [{
+            'name': module.id,
+            'type': module.id,
+            'title': module.title,
+            'library_name': self.library_name,
+            'params': {}
+        } for i, module in enumerate(
+            zeit.content.cp.layout.MODULE_CONFIGS(self.context))]
+
+    def sort_block_types(self, items):
+        # Use order defined by the source.
+        return items
 
 
 class CPAreaFactories(zeit.edit.browser.library.BlockFactories):

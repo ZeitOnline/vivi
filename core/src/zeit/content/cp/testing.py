@@ -19,8 +19,9 @@ import zope.testing.renormalizing
 product_config = """
 <product-config zeit.content.cp>
     block-layout-source file://{fixtures}/layout.xml
-    area-config-source file://{fixtures}/areas.xml
     region-config-source file://{fixtures}/regions.xml
+    area-config-source file://{fixtures}/areas.xml
+    module-config-source file://{fixtures}/blocks.xml
     cp-extra-url file://{fixtures}/cpextra.xml
     cp-feed-max-items 200
     cp-types-url file://{fixtures}/cp-types.xml
