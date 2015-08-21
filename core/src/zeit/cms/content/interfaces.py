@@ -293,7 +293,7 @@ class ICommonMetadata(zope.interface.Interface):
     tldr_text = zope.schema.Text(
         title=_("tldr text"),
         required=False,
-        max_length=70)
+        max_length=450)
 
     tldr_milestone = zope.schema.Bool(
         title=_("tldr milestone"),
