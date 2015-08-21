@@ -28,15 +28,13 @@ zeit.edit.library.create_for_element = function(element_id, title) {
     zeit.edit.library.create(library_id, url, title);
 };
 
-var tabs;
-
 zeit.edit.library.create = function(library_id, url, title, view_name) {
     if (!view_name) {
         view_name = '@@block-factories.json';
     }
     url = url + '/' + view_name;
     var view = new zeit.cms.JSONView(url, library_id);
-    tabs.add(new zeit.cms.ViewTab(library_id, title, view, {
+    zeit.edit.library.tabs.add(new zeit.cms.ViewTab(library_id, title, view, {
         render_on_activate: true}));
     var draggables = [];
 
@@ -52,7 +50,7 @@ zeit.edit.library.create = function(library_id, url, title, view_name) {
 // Internal functions
 
 MochiKit.Signal.connect(window, 'cp-editor-initialized', function() {
-    tabs = new zeit.cms.Tabs('cp-library');
+    zeit.edit.library.tabs = new zeit.cms.Tabs('cp-library');
 });
 
 MochiKit.Signal.connect(MochiKit.DragAndDrop.Draggables, 'start',

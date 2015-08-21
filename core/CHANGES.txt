@@ -1,8 +1,10 @@
 Changes
 =======
 
-2.12.4 (unreleased)
+2.13.0 (unreleased)
 -------------------
+
+- Make library tabs accessible as ``zeit.edit.library.tabs`` (DEV-853).
 
 - Use better repr for containers, too.
 
