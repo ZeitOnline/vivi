@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Fri Aug 21 11:16:18 2015\n"
+"POT-Creation-Date: Fri Aug 21 13:43:20 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -265,7 +265,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/reference.py:41
 #: zeit/content/article/edit/browser/social.py:24
 #: zeit/content/cp/browser/view.py:8
-#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:67
+#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
 #: zeit/content/gallery/browser/form.py:62
 #: zeit/content/image/browser/form.py:64
 #: zeit/content/link/browser/form.py:45
@@ -813,7 +813,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:36
 #: zeit/content/advertisement/browser/form.py:18
-#: zeit/content/cp/browser/form.py:29
+#: zeit/content/cp/browser/form.py:30
 #: zeit/content/gallery/browser/form.py:25
 #: zeit/content/image/browser/form.py:20
 #: zeit/content/infobox/browser/form.py:24
@@ -843,7 +843,7 @@ msgstr ""
 #: zeit/cms/content/browser/form.py:62
 #: zeit/content/article/browser/form.py:34
 #: zeit/content/article/edit/browser/recension.py:64
-#: zeit/content/cp/browser/form.py:48
+#: zeit/content/cp/browser/form.py:49
 #: zeit/content/gallery/browser/form.py:35
 msgid "misc."
 msgstr ""
@@ -1392,7 +1392,7 @@ msgstr ""
 #: zeit/cms/content/browser/template.zcml:58
 #: zeit/cms/repository/browser/delete.pt:28
 #: zeit/content/article/edit/browser/workflow.pt:52
-#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:31
+#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:22
 #: zeit/content/quiz/browser/quiz.py:90
 msgid "Delete"
 msgstr ""
@@ -2687,18 +2687,14 @@ msgid "Only playlists can be dropped on a playlist block."
 msgstr ""
 
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:14
-msgid "Edit in place"
-msgstr ""
-
-#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:23
 msgid "Open in new window"
 msgstr ""
 
-#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:46
+#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:37
 msgid "To add content drop it here."
 msgstr ""
 
-#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:60
+#: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:51
 msgid "Insert link"
 msgstr ""
 
@@ -2731,25 +2727,20 @@ msgstr ""
 msgid "CenterPage"
 msgstr ""
 
-#: zeit/content/cp/browser/form.py:39
+#: zeit/content/cp/browser/form.py:40
 msgid "OG Metadata"
 msgstr ""
 
-#: zeit/content/cp/browser/form.py:58
+#: zeit/content/cp/browser/form.py:59
 msgid "Add centerpage"
 msgstr ""
 
-#: zeit/content/cp/browser/form.py:68
+#: zeit/content/cp/browser/form.py:69
 msgid "Edit centerpage"
 msgstr ""
 
-#: zeit/content/cp/browser/form.py:74
+#: zeit/content/cp/browser/form.py:75
 msgid "View centerpage metadata"
-msgstr ""
-
-#: zeit/content/cp/browser/form.py:79
-#: zeit/content/cp/interfaces.py:138
-msgid "Add storystream"
 msgstr ""
 
 #: zeit/content/cp/browser/layout.area.delete.pt:1
@@ -2790,24 +2781,17 @@ msgstr ""
 msgid "Checking out"
 msgstr ""
 
-#: zeit/content/cp/browser/teaser.edit.pt:4
-msgid "Edit Teaser"
+#: zeit/content/cp/browser/storystream.py:9
+#: zeit/content/cp/interfaces.py:138
+msgid "Add storystream"
 msgstr ""
 
-#: zeit/content/cp/browser/teaser.py:105
+#: zeit/content/cp/browser/teaser.py:59
 msgid "Edit teaser"
 msgstr ""
 
-#: zeit/content/cp/browser/teaser.py:111
+#: zeit/content/cp/browser/teaser.py:65
 msgid "View teaser"
-msgstr ""
-
-#: zeit/content/cp/browser/teaser.py:57
-msgid "Apply for article"
-msgstr ""
-
-#: zeit/content/cp/browser/teaser.py:67
-msgid "Apply only for this page"
 msgstr ""
 
 #: zeit/content/cp/browser/workflow.py:37
@@ -3019,23 +3003,23 @@ msgid "Light (black text)"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:519
-msgid "1 (very weak)"
+msgid "opacity-1"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:520
-msgid "2"
+msgid "opacity-2"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:521
-msgid "3"
+msgid "opacity-3"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:522
-msgid "4"
+msgid "opacity-4"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:523
-msgid "5 (very strong)"
+msgid "opacity-5"
 msgstr ""
 
 #: zeit/content/cp/interfaces.py:534
