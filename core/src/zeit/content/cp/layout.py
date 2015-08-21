@@ -47,6 +47,10 @@ class AllowedMixin(object):
         else:
             return match
 
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, self.__class__) and self.id == other.id
+
 
 class ITeaserBlockLayout(zope.interface.Interface):
     """Layout of a teaser block."""
@@ -83,10 +87,6 @@ class BlockLayout(AllowedMixin):
         self.columns = columns
         self.default_in_areas = default
 
-    def __eq__(self, other):
-        return zope.security.proxy.isinstance(
-            other, BlockLayout) and self.id == other.id
-
     def is_default(self, block):
         area = zeit.content.cp.interfaces.IArea(block)
         return area.kind in self.default_in_areas
@@ -101,10 +101,6 @@ class RegionConfig(AllowedMixin):
         self.kind = kind
         self.areas = areas
 
-    def __eq__(self, other):
-        return zope.security.proxy.isinstance(
-            other, RegionConfig) and self.id == other.id
-
 
 class AreaConfig(AllowedMixin):
 
@@ -113,10 +109,6 @@ class AreaConfig(AllowedMixin):
         self.id = id
         self.title = title
         self.kind = kind
-
-    def __eq__(self, other):
-        return zope.security.proxy.isinstance(
-            other, AreaConfig) and self.id == other.id
 
 
 class ObjectSource(object):
