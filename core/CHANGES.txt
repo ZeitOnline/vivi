@@ -12,6 +12,8 @@ zeit.content.cp changes
 - New module type ``cardstack``, ``zeit.content.cp.interfaces.ICardstackBlock``
   with property ``card_id`` (DEV-892).
 
+- New add menu entry ``Storystream`` (DEV-884).
+
 - Allow disabling/enabling teaser layouts using the CP type (DEV-884).
 
 

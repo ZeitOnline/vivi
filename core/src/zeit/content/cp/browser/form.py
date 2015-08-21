@@ -4,6 +4,7 @@ import zeit.cms.content.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
 import zeit.content.cp.centerpage
+import zeit.content.cp.interfaces
 import zope.formlib.form
 
 base = zeit.cms.content.browser.form.CommonMetadataFormBase

@@ -242,4 +242,8 @@
     title="Edit Article Flow"
     />
 
+  <interface
+    interface=".interfaces.IStoryStream"
+    type="zeit.cms.content.interfaces.IAddableContent"
+    />
 </configure>
