@@ -516,11 +516,11 @@ class TextColorSource(SimpleDictSource):
 class OpacitySource(SimpleDictSource):
 
     values = collections.OrderedDict((
-        ('1', _('1 (very weak)')),
-        ('2', _('2')),
-        ('3', _('3')),
-        ('4', _('4')),
-        ('5', _('5 (very strong)')),
+        ('1', _('opacity-1')),
+        ('2', _('opacity-2')),
+        ('3', _('opacity-3')),
+        ('4', _('opacity-4')),
+        ('5', _('opacity-5')),
     ))
 
 
