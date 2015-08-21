@@ -88,35 +88,6 @@ zeit.content.cp.teaser.TeaserListDeleteEntry = gocept.Class.extend({
 });
 
 
-zeit.content.cp.teaser.TeaserEditBox = zeit.edit.LightBoxForm.extend({
-
-    __name__: 'zeit.content.cp.teaser.TeaserEditBox',
-
-    clean: false,
-
-    on_close: function() {
-        var self = this;
-        var super_ = arguments.callee.$.on_close;
-        if (self.clean) {
-            super_.call(self);
-        } else {
-            var d = self.remove_checked_out();
-            d.addBoth(function(result_or_error) {
-                super_.call(self);
-                return result_or_error;
-            });
-        }
-        zeit.cms.messages.render();
-    },
-
-    remove_checked_out: function() {
-        var self = this;
-        return MochiKit.Async.doSimpleXMLHttpRequest(self.cleanup_url);
-    }
-
-});
-
-
 zeit.content.cp.teaser.Drag = zeit.edit.context.ContentActionBase.extend({
 
     __name__: 'zeit.content.cp.teaser.Drag',

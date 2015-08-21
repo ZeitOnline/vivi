@@ -16,6 +16,9 @@ zeit.content.cp changes
 
 - Allow disabling/enabling teaser layouts using the CP type (DEV-884).
 
+- Remove UI for in-place teaser editing, but keep the free teaser classes and
+  handling for bw-compat (DEV-852).
+
 
 3.0.1 (2015-08-18)
 ------------------

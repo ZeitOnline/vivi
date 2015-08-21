@@ -33,52 +33,6 @@ class ItemTraverser(object):
         return teaser
 
 
-class EditTeaser(zope.formlib.form.SubPageEditForm):
-
-    template = zope.app.pagetemplate.ViewPageTemplateFile(
-        'teaser.edit.pt')
-
-    form_fields = zope.formlib.form.FormFields(
-        zeit.cms.content.interfaces.ICommonMetadata).select(
-            'teaserSupertitle', 'teaserTitle', 'teaserText')
-    close = False
-
-    def __call__(self, *args, **kw):
-        return super(EditTeaser, self).__call__(*args, **kw)
-
-    @property
-    def form(self):
-        return super(EditTeaser, self).template
-
-    def _is_not_teaser(self, action):
-        return not self.context.free_teaser
-
-    @zope.formlib.form.action(
-        _('Apply for article'), name='apply_in_article',
-        condition=_is_not_teaser)
-    def apply_in_article(self, action, data):
-        content = zeit.cms.interfaces.ICMSContent(self.context.uniqueId)
-        with zeit.cms.checkout.helper.checked_out(content) as co:
-            # XXX This fails (and co will be None) if the user has the original
-            # article checked out already (VIV-403)
-            self._apply(co, data)
-
-    @zope.formlib.form.action(
-        _('Apply only for this page'), name='apply_locally')
-    def apply_locally(self, action, data):
-        self._apply(self.context, data)
-        self.context.free_teaser = True
-
-    def _apply(self, context, data):
-        self.adapters = {}
-        changed = zope.formlib.form.applyChanges(
-            context, self.form_fields, data, self.adapters)
-        if changed:
-            zope.event.notify(
-                zope.lifecycleevent.ObjectModifiedEvent(context))
-            self.close = True
-
-
 class ListRepresentation(
     zeit.cms.content.browser.commonmetadata.CommonMetadataListRepresentation):
 

@@ -123,14 +123,6 @@
   <!-- teaser items -->
 
   <browser:page
-    for="..teaser.XMLTeaser"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    name="edit-teaser.html"
-    class=".teaser.EditTeaser"
-    permission="zeit.EditContent"
-    />
-
-  <browser:page
     for="..interfaces.ITeaser"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"

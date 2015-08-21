@@ -11,15 +11,6 @@
           tal:attributes="
           class teaser/css_class;
           cms:uniqueId teaser/uniqueId">
-        <a class="edit-link"
-           tal:condition="teaser/editable"
-           tal:attributes="href string:$context_url/++item++${repeat/teaser/index}/@@edit-teaser.html"
-           title="Edit in place"
-           cms:cp-module="zeit.content.cp.teaser.TeaserEditBox"
-           cms:lightbox-in="cp-forms"
-           i18n:attributes="title">
-          <span class="action-title">Edit inline</span>
-        </a>
         <a class="edit-object-link"
            tal:condition="teaser/viewable"
            tal:attributes="href string:${teaser/url}/@@view.html"
