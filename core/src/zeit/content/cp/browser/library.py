@@ -25,11 +25,6 @@ class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
 class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
 
     @property
-    def factory_context(self):
-        xml = lxml.objectify.XML('<dummy/>')
-        return zeit.content.cp.area.Region(None, xml)
-
-    @property
     def library_name(self):
         return 'region'
 
@@ -45,11 +40,6 @@ class CPAreaFactories(zeit.edit.browser.library.BlockFactories):
 
 
 class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
-
-    @property
-    def factory_context(self):
-        xml = lxml.objectify.XML('<dummy/>')
-        return zeit.content.cp.centerpage.Body(None, xml)
 
     @property
     def library_name(self):
