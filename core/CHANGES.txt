@@ -19,6 +19,8 @@ zeit.content.cp changes
 - Remove UI for in-place teaser editing, but keep the free teaser classes and
   handling for bw-compat (DEV-852).
 
+- Reorder library tabs (DEV-853).
+
 
 3.0.1 (2015-08-18)
 ------------------
