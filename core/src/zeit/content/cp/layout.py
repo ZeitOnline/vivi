@@ -92,9 +92,10 @@ class BlockLayout(AllowedMixin):
         return area.kind in self.default_in_areas
 
 
-class RegionConfig(object):
+class RegionConfig(AllowedMixin):
 
-    def __init__(self, id, title, kind, areas):
+    def __init__(self, id, title, kind, areas, available, types):
+        super(RegionConfig, self).__init__(available, types)
         self.id = id
         self.title = title
         self.kind = kind
@@ -105,9 +106,10 @@ class RegionConfig(object):
             other, RegionConfig) and self.id == other.id
 
 
-class AreaConfig(object):
+class AreaConfig(AllowedMixin):
 
-    def __init__(self, id, title, kind):
+    def __init__(self, id, title, kind, available, types):
+        super(AreaConfig, self).__init__(available, types)
         self.id = id
         self.title = title
         self.kind = kind
@@ -117,7 +119,7 @@ class AreaConfig(object):
             other, AreaConfig) and self.id == other.id
 
 
-class LayoutSourceBase(object):
+class ObjectSource(object):
 
     def getTitle(self, context, value):
         return value.title
@@ -125,17 +127,16 @@ class LayoutSourceBase(object):
     def getToken(self, context, value):
         return value.id
 
-    def isAvailable(self, node, context):
-        # Avoid circular import
-        from zeit.content.cp.interfaces import ICenterPage
-        context = ICenterPage(context, None)
-        if context is None:
-            return True
-        return super(LayoutSourceBase, self).isAvailable(node, context)
+    def isAvailable(self, value, context):
+        return value.is_allowed(context)
+
+    def getValues(self, context):
+        return [x for x in self._values().values()
+                if self.isAvailable(x, context)]
 
 
 class TeaserBlockLayoutSource(
-        LayoutSourceBase, zeit.cms.content.sources.XMLSource):
+        ObjectSource, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'block-layout-source'
@@ -145,13 +146,6 @@ class TeaserBlockLayoutSource(
 
         def find(self, id):
             return self.factory.find(self.context, id)
-
-    def isAvailable(self, value, context):
-        return value.is_allowed(context)
-
-    def getValues(self, context):
-        return [x for x in self._values().values()
-                if self.isAvailable(x, context)]
 
     @gocept.cache.method.Memoize(600, ignore_self=True)
     def _values(self):
@@ -168,7 +162,7 @@ class TeaserBlockLayoutSource(
             result[id] = BlockLayout(
                 id, self._get_title_for(node),
                 g('image_pattern'), areas, columns, g('default', ''),
-                node.get('available', None), g('types', None))
+                g('available', None), g('types', None))
         return result
 
     def find(self, context, id):
@@ -190,24 +184,25 @@ class TeaserBlockLayoutSource(
 TEASERBLOCK_LAYOUTS = TeaserBlockLayoutSource()
 
 
-class RegionConfigSource(
-        LayoutSourceBase, zeit.cms.content.sources.XMLSource):
+class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'region-config-source'
 
-    def getValues(self, context):
+    @gocept.cache.method.Memoize(600, ignore_self=True)
+    def _values(self):
         tree = self._get_tree()
-        result = []
-        for node in tree.iterchildren('*'):
-            if not self.isAvailable(node, context):
-                continue
-            result.append(RegionConfig(
-                node.get('id'),
-                self._get_title_for(node),
+        result = collections.OrderedDict()
+        for i, node in enumerate(tree.iterchildren('*')):
+            # XXX id doesn't make much sense for regions, we're just doing it
+            # to fulfill the _values() mechanics.
+            id = '%s-%s' % (i, node.get('kind'))
+            result[id] = RegionConfig(
+                id, self._get_title_for(node),
                 node.get('kind'),
-                [{'kind': x.get('kind')} for x in node.iterchildren('area')]
-            ))
+                [{'kind': x.get('kind')} for x in node.iterchildren('area')],
+                node.get('available', None), node.get('types', None),
+            )
         return result
 
     def _get_title_for(self, node):
@@ -216,22 +211,22 @@ class RegionConfigSource(
 REGION_CONFIGS = RegionConfigSource()
 
 
-class AreaConfigSource(
-        LayoutSourceBase, zeit.cms.content.sources.XMLSource):
+class AreaConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.cp'
     config_url = 'area-config-source'
 
-    def getValues(self, context):
+    @gocept.cache.method.Memoize(600, ignore_self=True)
+    def _values(self):
         tree = self._get_tree()
-        result = []
+        result = collections.OrderedDict()
         for node in tree.iterchildren('*'):
-            if not self.isAvailable(node, context):
-                continue
-            result.append(AreaConfig(
-                node.get('id'),
-                self._get_title_for(node),
-                node.get('kind')))
+            id = node.get('kind')
+            result[id] = AreaConfig(
+                id, self._get_title_for(node),
+                node.get('kind'),
+                node.get('available', None), node.get('types', None),
+            )
         return result
 
     def _get_title_for(self, node):
