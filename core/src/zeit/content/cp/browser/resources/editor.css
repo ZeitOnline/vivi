@@ -242,7 +242,7 @@
   color: #990000;
   font-size: 0.9em;
   font-weight: bold;
-  text-transform: uppercase;
+  text-transform: none;
 }
 .type-centerpage-2009 .block .teaser > .teaserTitle {
   display: inline;
