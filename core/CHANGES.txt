@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.1.0 (unreleased)
+3.1.0 (2015-08-24)
 ------------------
 
 - Add ``force_mobile_image`` field to TeaserBlock (DEV-894).
