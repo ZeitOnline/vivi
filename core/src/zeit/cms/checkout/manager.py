@@ -195,16 +195,12 @@ class CheckoutManager(object):
 
 @grok.subscribe(
     zeit.cms.interfaces.ICMSContent,
-    zope.lifecycleevent.IObjectRemovedEvent)
+    zeit.cms.checkout.interfaces.IAfterDeleteEvent)
 def unlockOnWorkingcopyDelete(context, event):
     """When the user deletes content from the working copy we see if this user
     has it locked. If so unlock it.
 
     """
-    if not zeit.cms.checkout.interfaces.IWorkingcopy.providedBy(
-        event.oldParent):
-        return
-    # Get content from repository
     content = zeit.cms.interfaces.ICMSContent(context.uniqueId, None)
     lockable = zope.app.locking.interfaces.ILockable(content, None)
     if lockable is not None and lockable.ownLock():

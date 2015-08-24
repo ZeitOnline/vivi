@@ -206,9 +206,17 @@ Event: <zeit.cms.checkout.interfaces.AfterCheckoutEvent object at 0x...>
     Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
     Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> lockable.locked()
-True 
->>> working_copy = checked_out.__parent__
->>> del working_copy[checked_out.__name__]
+True
+>>> manager = ICheckinManager(checked_out)
+>>> manager.delete()
+Event: <zeit.cms.checkout.interfaces.BeforeDeleteEvent object at 0x...>
+    Principal: zope.user
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
+Event: <zeit.cms.checkout.interfaces.AfterDeleteEvent object at 0x...>
+    Principal: zope.user
+    Content: <zeit.cms.repository.unknown.PersistentUnknownResource...>
+    Workingcopy: <zeit.cms.workingcopy.workingcopy.Workingcopy object at 0x...>
 >>> lockable.locked()
 False
 
