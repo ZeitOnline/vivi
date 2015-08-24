@@ -56,6 +56,7 @@ class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
     def setUpWidgets(self, *args, **kw):
         super(CommonMetadataFormBase, self).setUpWidgets(*args, **kw)
         self.set_charlimit('teaserText')
+        self.set_charlimit('tldr_text')
 
 
 class CommonMetadataAddForm(CommonMetadataFormBase,
