@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.55.0 (unreleased)
+2.55.0 (2015-08-24)
 -------------------
 
 - Add ``tldr`` fields for storystreams (DEV-883, DEV-885).
