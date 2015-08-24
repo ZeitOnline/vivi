@@ -1,28 +1,13 @@
 from zeit.cms.asset.browser.form import AssetBase  # Legacy
 from zeit.cms.i18n import MessageFactory as _
-import copy
 import gocept.form.grouped
 import zeit.cms.browser.form
 import zeit.cms.content.interfaces
 import zeit.cms.settings.interfaces
-import zope.app.appsetup.appsetup
-import zope.app.form.browser.textwidgets
+import zope.formlib.form
 
 
-class ShowLimitInputWidget(zope.app.form.browser.textwidgets.TextAreaWidget):
-
-    def __call__(self):
-        max_length = self.context.max_length
-        result = [
-            '<div class="show-input-limit" maxlength="%s"></div>' % max_length,
-            super(ShowLimitInputWidget, self).__call__(),
-            ('<script type="text/javascript">new zeit.cms.InputValidation('
-             '"%s");</script>') % self.name]
-
-        return ''.join(result)
-
-
-class CommonMetadataFormBase(object):
+class CommonMetadataFormBase(zeit.cms.browser.form.CharlimitMixin):
 
     navigation_fields = gocept.form.grouped.Fields(
         _("Navigation"),
@@ -68,21 +53,9 @@ class CommonMetadataFormBase(object):
     form_fields = zope.formlib.form.FormFields(
         zeit.cms.content.interfaces.ICommonMetadata).omit('push_news')
 
-    for_display = False
-
-    def __init__(self, context, request):
-        super(CommonMetadataFormBase, self).__init__(context, request)
-        if not self.for_display:
-            # Change the widgets of the teaser fields
-            change_field_names = ('teaserText',)
-            form_fields = self.form_fields.omit(*change_field_names)
-            changed_fields = []
-            for field in change_field_names:
-                field = copy.copy(self.form_fields[field])
-                field.custom_widget = ShowLimitInputWidget
-                changed_fields.append(field)
-            self.form_fields = form_fields + zope.formlib.form.FormFields(
-                *changed_fields)
+    def setUpWidgets(self, *args, **kw):
+        super(CommonMetadataFormBase, self).setUpWidgets(*args, **kw)
+        self.set_charlimit('teaserText')
 
 
 class CommonMetadataAddForm(CommonMetadataFormBase,
@@ -108,5 +81,3 @@ class CommonMetadataEditForm(CommonMetadataFormBase,
 class CommonMetadataDisplayForm(CommonMetadataFormBase,
                                 zeit.cms.browser.form.DisplayForm):
     """Display form which contains the common metadata."""
-
-    for_display = True  # omit custom widget w/ js-validation
