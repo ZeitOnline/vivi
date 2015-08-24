@@ -298,7 +298,7 @@ class ICommonMetadata(zope.interface.Interface):
     tldr_milestone = zope.schema.Bool(
         title=_("tldr milestone"),
         required=False,
-        default=True)
+        default=False)
 
     tldr_date = zope.schema.Datetime(
         title=_("tldr date"),
