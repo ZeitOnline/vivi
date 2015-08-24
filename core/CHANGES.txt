@@ -6,9 +6,6 @@ zeit.cms changes
 
 - Add ``tldr`` fields for storystreams (DEV-883, DEV-885).
 
-- Don't prematurely unlock during cycle() while publishing, hold lock until the
-  actual unlock() at the end (BUG-308).
-
 Internal:
 
 - Add field to register colorpicker widget on.
@@ -16,6 +13,13 @@ Internal:
 - Add CSS classes to datetime widget buttons.
 
 - Add parameter ``show_parent`` to ``zeit.cms.Tabs.activate`` (DEV-853).
+
+
+2.54.4 (2015-08-24)
+-------------------
+
+- Don't prematurely unlock during cycle() while publishing, hold lock until the
+  actual unlock() at the end (BUG-308).
 
 
 2.54.3 (2015-08-18)
