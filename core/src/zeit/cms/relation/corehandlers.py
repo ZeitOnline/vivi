@@ -35,8 +35,9 @@ def update_referencing_objects(context):
         zeit.cms.relation.interfaces.IRelations)
     relating_objects = relations.get_relations(context)
     for related_object in list(relating_objects):
-        log.info('Cycling %s to update referenced metadata',
-                 related_object.uniqueId)
+        log.info(
+            'Cycling %s to update referenced metadata (after checkin of %s)',
+            related_object.uniqueId, context.uniqueId)
         # the actual work is done by IBeforeCheckin-handlers
         zeit.cms.checkout.helper.with_checked_out(
             related_object, lambda x: True)
