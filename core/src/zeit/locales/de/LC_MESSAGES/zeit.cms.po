@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Fri Aug 21 13:43:20 2015\n"
-"PO-Revision-Date: 2015-08-21 13:44+0100\n"
+"PO-Revision-Date: 2015-08-24 16:24+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -1028,7 +1028,7 @@ msgstr "Milestone"
 
 #: zeit/cms/content/interfaces.py:304
 msgid "tldr date"
-msgstr "tl;dr-Datum"
+msgstr "tatsächliches Ereignisdatum"
 
 #: zeit/cms/content/interfaces.py:308
 msgid "Storystreams"
