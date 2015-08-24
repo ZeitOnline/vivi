@@ -173,47 +173,6 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForOrdered(li('c1', True), li('c2'))
         s.verifyOrdered(li('c2', True), li('c3'))
 
-    def test_inplace_teaser_editing_with_save(self):
-        s = self.selenium
-        self.create_filled_teaserlist()
-
-        s.click('link=Edit teaser list')
-        s.waitForElementPresent('css=div.teaser-list-edit-box')
-
-        s.click(
-            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
-            'a[contains(@class, "edit-link")]')
-        s.waitForElementPresent('id=form.teaserTitle')
-
-        # Changing the value and submitting the form will reload the teaser
-        # list light box. The text will be in there then.
-        s.type('id=form.teaserTitle', 'A nice new teaser')
-        s.click('//form[contains(@action, "edit-teaser.html")]'
-                '//input[@id="form.actions.apply_in_article"]')
-        s.waitForTextPresent('A nice new teaser')
-
-    def test_inplace_teaser_editing_with_abort(self):
-        s = self.selenium
-        self.create_filled_teaserlist()
-
-        s.click('link=Edit teaser list')
-        s.waitForElementPresent('css=div.teaser-list-edit-box')
-
-        s.click(
-            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
-            'a[contains(@class, "edit-link")]')
-        s.waitForElementPresent('id=form.teaserTitle')
-
-        # Closing the lightbox will remove the checked out object, thus remove
-        # the lock. That means that we can edit again
-        s.click('css=#cp-forms a.CloseButton')
-        s.waitForElementNotPresent('css=#cp-forms a.CloseButton')
-        s.pause(500)
-        s.click(
-            '//div[@class="lightbox"]//li[contains(string(.), "c2 teaser")]/'
-            'a[contains(@class, "edit-link")]')
-        s.waitForElementPresent('id=form.teaserTitle')
-
     def test_edit_box_drop_of_content(self):
         self.create_content_and_fill_clipboard()
         self.create_teaserlist()
