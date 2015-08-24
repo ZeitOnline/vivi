@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.13.0 (unreleased)
+2.13.0 (2015-08-24)
 -------------------
 
 - Make library tabs accessible as ``zeit.edit.library.tabs`` (DEV-853).
