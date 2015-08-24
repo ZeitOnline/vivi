@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.7.1 (unreleased)
+3.8.0 (2015-08-24)
 ------------------
 
 - Add block for referencing a "card stack" (DEV-892).
