@@ -155,7 +155,9 @@ class CheckoutManager(object):
                     msg = _('Checked in')
                 zeit.objectlog.interfaces.ILog(added).log(msg)
         lockable = zope.app.locking.interfaces.ILockable(added, None)
-        if lockable is not None:
+        # Since publishing starts and ends with its own lock()/unlock(), it
+        # would be premature to already unlock during the cycle() step.
+        if lockable is not None and not publishing:
             try:
                 lockable.unlock()
             except zope.app.locking.interfaces.LockingError:

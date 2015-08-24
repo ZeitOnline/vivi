@@ -108,6 +108,15 @@ class ManagerTest(zeit.cms.testing.ZeitCmsTestCase):
                 zeit.cms.checkout.interfaces.IAfterDeleteEvent.providedBy(
                     after[0][0]))
 
+    def test_checkin_does_not_unlock_while_publishing(self):
+        manager = ICheckoutManager(self.repository['testcontent'])
+        checked_out = manager.checkout()
+        manager = ICheckinManager(checked_out)
+        manager.checkin(publishing=True)
+        lockable = zope.app.locking.interfaces.ILockable(
+            self.repository['testcontent'])
+        self.assertTrue(lockable.locked())
+
 
 class ValidateCheckinTest(zeit.cms.testing.ZeitCmsTestCase):
 
