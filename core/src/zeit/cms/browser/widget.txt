@@ -250,7 +250,7 @@ in one month:
   showsTime: true
 });
 </script>
-<input type="button" value="1W"
+<input type="button" value="1W" class="week"
     onclick="javascript:var date = new Date();
         date.setDate(date.getDate() + 7);
         $('field.').value = date.print('%Y-%m-%d %H:%M:%S');
@@ -258,7 +258,7 @@ in one month:
         MochiKit.Signal.signal(
             'field.', 'onchange', {target: $('field.')});
           " />
-<input type="button" value="1M"
+<input type="button" value="1M" class="month"
     onclick="javascript:var date = new Date();
         date.setMonth(date.getMonth() + 1);
         $('field.').value = date.print('%Y-%m-%d %H:%M:%S');
@@ -266,7 +266,7 @@ in one month:
         MochiKit.Signal.signal(
             'field.', 'onchange', {target: $('field.')});
         " />
-<input type="button" value="∞"
+<input type="button" value="∞" class="infinity"
     onclick="javascript:$('field.').value = '';
         $('field.').focus();
         MochiKit.Signal.signal(
