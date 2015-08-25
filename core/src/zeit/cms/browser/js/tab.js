@@ -39,6 +39,9 @@ zeit.cms.Tabs = gocept.Class.extend({
 
     activate: function(id, show_parent) {
         var self = this;
+        if (isUndefined(show_parent)) {
+            show_parent = true;
+        }
         forEach(self.tabs, function(tab) {
             if (tab.id == id) {
                 tab.activate();

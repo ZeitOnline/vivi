@@ -4,7 +4,7 @@ zeit.cms changes
 2.55.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Preserve API compatiblity of ``zeit.cms.Tabs.activate``.
 
 
 2.55.0 (2015-08-24)
