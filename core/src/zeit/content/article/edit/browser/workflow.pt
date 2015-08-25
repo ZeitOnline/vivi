@@ -25,7 +25,7 @@
                      ' disabled' if not view.can_checkin else '');
                      cms:cp-module python:'zeit.cms.follow_with_lock'
                         if view.can_checkin else None;"
-         i18n:translate="">Checkin (correction)</a>
+         i18n:translate="">Checkin</a>
 
       <a class="button"
          id="checkin-publish"
@@ -45,7 +45,7 @@
                      ' disabled' if not view.can_checkin else '');
                      cms:cp-module python:'zeit.edit.LightBoxForm'
                         if view.can_checkin else None;"
-         i18n:translate="">Checkin (correction) and publish</a>
+         i18n:translate="">Checkin and publish</a>
 
   </tal:block>
 

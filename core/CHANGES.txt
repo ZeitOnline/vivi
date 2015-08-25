@@ -4,7 +4,7 @@ zeit.content.article changes
 3.8.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Unify checkin/correction wording (DEV-834).
 
 
 3.8.0 (2015-08-24)
