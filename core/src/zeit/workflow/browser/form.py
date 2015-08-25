@@ -108,8 +108,11 @@ class ContentWorkflow(WorkflowForm):
         gocept.form.grouped.Fields(
             _("Status"),
             ('last_modified_by', 'date_last_modified', 'last_semantic_change',
+             'date_last_checkout',
              'created',
-             'published', 'date_last_published', 'date_first_released',
+             'published',
+             'date_last_published', 'last_published_by',
+             'date_first_released',
              'edited', 'corrected', 'refined',
              'images_added', 'seo_optimized'),
             css_class='column-left'),
@@ -126,7 +129,9 @@ class ContentWorkflow(WorkflowForm):
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange).omit(
-                'date_print_published', 'error_messages') +
+                'date_print_published',
+                'date_last_published_semantic',
+                'error_messages') +
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))
