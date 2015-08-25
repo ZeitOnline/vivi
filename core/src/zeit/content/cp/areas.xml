@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <areas>
-    <area kind="solo">solo</area>
-    <area kind="duo">duo</area>
-    <area kind="trio">trio</area>
-    <area kind="major">major</area>
-    <area kind="minor">minor</area>
-    <area kind="parquet">parquet</area>
-    <area kind="ranking">ranking</area>
+    <area kind="solo" title="solo" />
+    <area kind="duo" title="duo" />
+    <area kind="trio" title="trio" />
+    <area kind="major" title="major" />
+    <area kind="minor" title="minor" />
+    <area kind="parquet" title="parquet" />
+    <area kind="ranking" title="ranking" />
 </areas>
