@@ -77,3 +77,10 @@ class IAuthorReference(zeit.cms.content.interfaces.IReference):
         title=_('Location'),
         source=zeit.cms.tagging.source.locationSource,
         required=False)
+
+
+class IAuthorBioReference(zeit.cms.content.interfaces.IReference):
+
+    biography = zope.schema.Text(
+        title=_('Biography'),
+        required=False)

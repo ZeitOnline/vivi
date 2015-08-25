@@ -48,5 +48,14 @@
       permission="zeit.EditContent" />
   </class>
 
+  <class class=".reference.BioReference">
+    <require
+      interface=".interfaces.IAuthorBioReference"
+      permission="zope.View" />
+    <require
+      set_schema=".interfaces.IAuthorBioReference"
+      permission="zeit.EditContent" />
+  </class>
+
 </configure>
 

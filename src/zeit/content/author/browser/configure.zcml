@@ -78,4 +78,28 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="..interfaces.IAuthorBioReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-heading"
+    class=".reference.ReferenceDetailsHeading"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IAuthorBioReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="object-details-body"
+    template="bio-reference-details.pt"
+    permission="zope.View"
+    />
+
+  <browser:page
+    for="..interfaces.IAuthorBioReference"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit.html"
+    class=".reference.Edit"
+    permission="zope.View"
+    />
+
 </configure>
