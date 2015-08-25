@@ -25,16 +25,16 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         u'</author>')
 
     for name in [
-        'title',
+        'display_name',
+        'email',
+        'entered_display_name',
+        'external',
         'firstname',
         'lastname',
-        'email',
-        'vgwortid',
-        'vgwortcode',
-        'display_name',
-        'entered_display_name',
         'status',
-        'external',
+        'title',
+        'vgwortcode',
+        'vgwortid',
     ]:
         locals()[name] = ObjectPathProperty('.%s' % name, IAuthor[name])
 
