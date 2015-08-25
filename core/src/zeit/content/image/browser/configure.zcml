@@ -222,14 +222,16 @@
     menu="zeit-add-menu" title="Image group"
     />
 
+  <configure package="zeit.cms.repository.browser">
   <browser:page
     name="view.html"
-    for="..interfaces.IRepositoryImageGroup"
-    class=".imagegroup.View"
-    template="imagegroup_view.pt"
+    for="zeit.content.image.interfaces.IRepositoryImageGroup"
+    class="zeit.content.image.browser.imagegroup.View"
+    template="content_listing.pt"
     permission="zope.View"
     menu="zeit-context-views" title="File list"
     />
+  </configure>
 
   <browser:defaultView
     zcml:condition="not-have zeit.content.image.variants"
