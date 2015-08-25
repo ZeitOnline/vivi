@@ -66,6 +66,10 @@ class IAuthor(zope.interface.Interface):
         required=False,
         source=zeit.content.image.interfaces.imageGroupSource)
 
+    biography = zope.schema.Text(
+        title=_('Biography'),
+        required=False)
+
 
 class IAuthorReference(zeit.cms.content.interfaces.IReference):
 
