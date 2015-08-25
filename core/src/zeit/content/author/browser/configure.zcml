@@ -22,14 +22,14 @@
 
   <browser:page
     name="edit.html"
-    for="zeit.content.author.interfaces.IAuthor"
+    for="..interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.EditForm"
     permission="zeit.EditContent"
     />
 
   <browser:menuItem
-    for="zeit.content.author.interfaces.IAuthor"
+    for="..interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     menu="zeit-context-views"
     title="Edit"
@@ -40,21 +40,21 @@
 
   <browser:page
     name="view.html"
-    for="zeit.content.author.interfaces.IAuthor"
+    for="..interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     class=".form.DisplayForm"
     permission="zope.View"
     />
 
   <browser:defaultView
-    for="zeit.content.author.interfaces.IAuthor"
+    for="..interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="view.html"
     />
 
 
   <browser:icon
-    for="zeit.content.author.interfaces.IAuthor"
+    for="..interfaces.IAuthor"
     layer="zeit.cms.browser.interfaces.ICMSStyles"
     name="zmi_icon"
     width="16"
@@ -63,7 +63,7 @@
     />
 
   <browser:page
-    for="zeit.content.author.interfaces.IAuthorReference"
+    for="..interfaces.IAuthorReference"
     name="object-details"
     template="reference-details.pt"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
@@ -71,7 +71,7 @@
     />
 
   <browser:page
-    for="zeit.content.author.interfaces.IAuthorReference"
+    for="..interfaces.IAuthorReference"
     name="edit.html"
     class=".form.EditReference"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
