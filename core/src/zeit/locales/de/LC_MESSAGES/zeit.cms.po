@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Fri Aug 21 13:43:20 2015\n"
-"PO-Revision-Date: 2015-08-24 16:24+0100\n"
+"POT-Creation-Date: Tue Aug 25 10:34:05 2015\n"
+"PO-Revision-Date: 2015-08-25 10:39+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -486,6 +486,7 @@ msgstr "Autor"
 #: zeit/cms/browser/listing.py:270 zeit/cms/interfaces.py:54
 #: zeit/cms/repository/browser/file.py:37
 #: zeit/cms/repository/browser/file_details.pt:2
+#: zeit/content/dynamicfolder/browser/folder.py:29
 #: zeit/content/image/browser/imagegroup.py:115
 #: zeit/content/image/browser/interfaces.py:27
 msgid "File name"
@@ -665,11 +666,6 @@ msgstr "»${name}« ist in Bearbeitung."
 msgid "Checkin ^I"
 msgstr "Einchecken ^I"
 
-#: zeit/cms/checkout/browser/manager.py:252
-#: zeit/content/article/edit/browser/workflow.pt:20
-msgid "Checkin (correction)"
-msgstr "Einchecken (Korrektur)"
-
 #. Default: ""
 #: zeit/cms/checkout/browser/manager.py:36
 msgid "\"${name}\" was already checked out."
@@ -764,19 +760,19 @@ msgstr ""
 "Wählen Sie den Eintrag aus Ihrer Zwischenablage den Sie nach »${paste-into-"
 "id}« kopieren möchten."
 
-#: zeit/cms/content/browser/form.py:28
+#: zeit/cms/content/browser/form.py:13
 #: zeit/content/advertisement/browser/form.py:32
 #: zeit/content/video/browser/video.py:38
 msgid "Navigation"
 msgstr "Navigation"
 
-#: zeit/cms/content/browser/form.py:32 zeit/content/infobox/browser/form.py:28
+#: zeit/cms/content/browser/form.py:17 zeit/content/infobox/browser/form.py:28
 #: zeit/content/portraitbox/browser/form.py:20
 #: zeit/magazin/browser/portraitbox.py:24
 msgid "Head"
 msgstr "Kopf"
 
-#: zeit/cms/content/browser/form.py:36
+#: zeit/cms/content/browser/form.py:21
 #: zeit/content/advertisement/browser/form.py:18
 #: zeit/content/cp/browser/form.py:30 zeit/content/gallery/browser/form.py:25
 #: zeit/content/image/browser/form.py:20
@@ -786,23 +782,23 @@ msgstr "Kopf"
 msgid "Texts"
 msgstr "Texte"
 
-#: zeit/cms/content/browser/form.py:41 zeit/content/article/browser/form.py:37
+#: zeit/cms/content/browser/form.py:26 zeit/content/article/browser/form.py:37
 #: zeit/content/article/edit/browser/form.py:461
 #: zeit/content/video/browser/video.py:42
 msgid "Options"
 msgstr "Optionen"
 
-#: zeit/cms/content/browser/form.py:49 zeit/cms/content/interfaces.py:113
+#: zeit/cms/content/browser/form.py:34 zeit/cms/content/interfaces.py:113
 #: zeit/content/article/interfaces.py:132
 msgid "Authors"
 msgstr "Autoren"
 
-#: zeit/cms/content/browser/form.py:53
+#: zeit/cms/content/browser/form.py:38
 #: zeit/content/article/edit/browser/form.py:541
 msgid "Run in channel"
 msgstr "Automatisch platzieren"
 
-#: zeit/cms/content/browser/form.py:62 zeit/content/article/browser/form.py:34
+#: zeit/cms/content/browser/form.py:47 zeit/content/article/browser/form.py:34
 #: zeit/content/article/edit/browser/recension.py:64
 #: zeit/content/cp/browser/form.py:49 zeit/content/gallery/browser/form.py:35
 msgid "misc."
@@ -1437,8 +1433,8 @@ msgstr "Öffnen"
 
 #: zeit/cms/syndication/browser/configure.zcml:42
 #: zeit/content/article/edit/browser/form.py:287
-#: zeit/content/image/browser/configure.zcml:245
-#: zeit/content/image/browser/configure.zcml:261
+#: zeit/content/image/browser/configure.zcml:247
+#: zeit/content/image/browser/configure.zcml:263
 #: zeit/newsletter/browser/form.py:10 zeit/newsletter/browser/form.py:15
 msgid "Metadata"
 msgstr "Metadaten"
@@ -1745,7 +1741,7 @@ msgstr "Farbe Button"
 #: zeit/content/cp/interfaces.py:846
 #: zeit/content/image/browser/imagegroup.py:123
 #: zeit/content/image/image.py:103 zeit/content/image/interfaces.py:291
-#: zeit/content/image/browser/configure.zcml:253
+#: zeit/content/image/browser/configure.zcml:255
 #: zeit/content/portraitbox/interfaces.py:18
 #: zeit/wysiwyg/browser/resources/reference/image.pt:17
 msgid "Image"
@@ -2120,13 +2116,17 @@ msgstr "Social Media bearbeiten"
 msgid "Current timestamp:"
 msgstr "Sichtbares Datum des Artikels:  "
 
+#: zeit/content/article/edit/browser/workflow.pt:20
+msgid "Checkin"
+msgstr "Einchecken"
+
 #: zeit/content/article/edit/browser/workflow.pt:30
 msgid "Save and publish"
 msgstr "Einchecken & sofort Veröffentlichen"
 
 #: zeit/content/article/edit/browser/workflow.pt:40
-msgid "Checkin (correction) and publish"
-msgstr "Einchecken (Korrektur) & sofort Veröffentlichen"
+msgid "Checkin and publish"
+msgstr "Einchecken & sofort Veröffentlichen"
 
 #: zeit/content/article/edit/browser/workflow.pt:61
 msgid "Save state"
@@ -2668,7 +2668,7 @@ msgid "View metadata"
 msgstr "Metadaten anzeigen"
 
 #: zeit/content/cp/browser/configure.zcml:66
-#: zeit/content/dynamicfolder/browser/folder.py:19
+#: zeit/content/dynamicfolder/browser/folder.py:20
 #: zeit/content/gallery/browser/configure.zcml:39
 #: zeit/content/link/browser/configure.zcml:17
 #: zeit/content/quiz/browser/configure.zcml:38
@@ -3299,7 +3299,7 @@ msgstr "Versteckt"
 msgid "Image (single)"
 msgstr "Einzelbild"
 
-#: zeit/content/image/browser/configure.zcml:225
+#: zeit/content/image/browser/configure.zcml:226
 msgid "File list"
 msgstr "Dateiliste"
 
