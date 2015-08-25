@@ -35,8 +35,7 @@ Gallery – Overview
 There is a javascript action:
 
 >>> print browser.contents
-<...
-          <li>
+<...<li>
   <a href="#" title="Upload images to gallery">
     <span id="image-upload"></span>
   </a>
