@@ -20,9 +20,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     zope.interface.implements(zeit.content.author.interfaces.IAuthor,
                               zeit.cms.interfaces.IAsset)
 
-    image_group = zeit.cms.content.reference.SingleResource(
-        '.image_group', 'image')
-
     default_template = (
         u'<author xmlns:py="http://codespeak.net/lxml/objectify/pytype">'
         u'</author>')
@@ -43,6 +40,9 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
 
     community_profile = zeit.cms.content.property.ObjectPathProperty(
         '.communityprofile')
+
+    image_group = zeit.cms.content.reference.SingleResource(
+        '.image_group', 'image')
 
     @property
     def exists(self):
