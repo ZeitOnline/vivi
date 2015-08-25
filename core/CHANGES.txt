@@ -4,7 +4,7 @@ zeit.content.author changes
 2.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add property ``biography`` (DEV-913).
 
 
 2.3.1 (2015-06-18)

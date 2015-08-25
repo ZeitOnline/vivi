@@ -25,6 +25,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         u'</author>')
 
     for name in [
+        'biography',
         'display_name',
         'email',
         'entered_display_name',
