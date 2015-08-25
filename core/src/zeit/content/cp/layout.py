@@ -74,6 +74,9 @@ class ITeaserBlockLayout(zope.interface.Interface):
     types = zope.schema.Set(
         title=u'Types of CP where this layout is allowed')
 
+    def is_default(block):
+        """True if this layout is the default for the given block's area."""
+
 
 class BlockLayout(AllowedMixin):
 
