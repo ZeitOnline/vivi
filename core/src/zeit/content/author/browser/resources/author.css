@@ -1,4 +1,5 @@
-.object-details.type-author label {
+.object-details.type-author label,
+.object-details.type-authorbio label {
     display: none;
 }
 
@@ -18,4 +19,13 @@
 
 .object-details.type-author > strong {
     width: 120px;
+}
+
+.object-details.type-authorbio .goto-object.object-link {
+    float: none;
+}
+
+.object-details.type-authorbio fieldset {
+    padding: 0;
+    margin-left: 0;
 }
