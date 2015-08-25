@@ -19,4 +19,15 @@
     menu="zeit-context-views" title="Edit metadata"
     />
 
+  <configure package="zeit.cms.repository.browser">
+  <browser:page
+    name="view.html"
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder"
+    class="zeit.content.dynamicfolder.browser.folder.View"
+    template="content_listing.pt"
+    permission="zope.View"
+    menu="zeit-context-views" title="View"
+    />
+  </configure>
+
 </configure>

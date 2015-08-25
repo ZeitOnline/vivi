@@ -5,7 +5,8 @@ zeit.content.dynamicfolder changes
 1.0.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Use simplified folder view that does not instantiate all child objects
+  (performance optimization).
 
 
 1.0.1 (2015-06-09)
