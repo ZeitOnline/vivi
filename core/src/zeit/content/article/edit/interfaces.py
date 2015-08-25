@@ -279,15 +279,10 @@ class IPortraitbox(IReference, ILayoutable):
         default=u'short')
 
 
-class ValidationError(zope.schema.ValidationError):
-
-    def doc(self):
-        return self.args[0]
-
-
 def validate_rawxml(xml):
     if xml.tag != 'raw':
-        raise ValidationError(_("The root element must be <raw>."))
+        raise zeit.cms.interfaces.ValidationError(
+            _("The root element must be <raw>."))
     return True
 
 
