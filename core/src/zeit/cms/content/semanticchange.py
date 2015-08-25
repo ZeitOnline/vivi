@@ -1,3 +1,4 @@
+from zeit.cms.content.interfaces import WRITEABLE_ALWAYS
 import datetime
 import grokcore.component
 import pytz
@@ -17,11 +18,20 @@ class SemanticChange(zeit.cms.content.dav.DAVPropertiesAdapter):
     last_semantic_change = zeit.cms.content.dav.DAVProperty(
         zeit.cms.content.interfaces.ISemanticChange['last_semantic_change'],
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
-        'last-semantic-change')
+        'last-semantic-change', writeable=WRITEABLE_ALWAYS)
 
     @property
     def has_semantic_change(self):
-        return NotImplemented
+        return False
+
+    @has_semantic_change.setter
+    def has_semantic_change(self, value):
+        if value:
+            self.update()
+
+    def update(self):
+        dc = zope.dublincore.interfaces.IDCTimes(self.context)
+        self.last_semantic_change = dc.modified
 
 
 hsc_field = zeit.cms.content.interfaces.ISemanticChange['has_semantic_change']

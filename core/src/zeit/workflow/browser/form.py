@@ -126,8 +126,7 @@ class ContentWorkflow(WorkflowForm):
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange).omit(
-                'has_semantic_change', 'date_print_published',
-                'error_messages') +
+                'date_print_published', 'error_messages') +
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))

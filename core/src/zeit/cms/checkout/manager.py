@@ -128,9 +128,7 @@ class CheckoutManager(object):
         if semantic_change is None:
             semantic_change = sc.has_semantic_change
         if semantic_change:
-            dc = zope.dublincore.interfaces.IDCTimes(self.context)
-            sc = zope.security.proxy.removeSecurityProxy(sc)
-            sc.last_semantic_change = dc.modified
+            sc.update()
         if event:
             zope.event.notify(
                 zeit.cms.checkout.interfaces.BeforeCheckinEvent(

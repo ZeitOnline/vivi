@@ -4,7 +4,8 @@ zeit.cms changes
 2.56.0 (unreleased)
 -------------------
 
-- Change checkin menu button to not update last semantic change (DEV-834).
+- Change checkin menu button to not update last semantic change,
+  add checkbox to update semantic change to workflow form (DEV-834).
 
 
 2.55.1 (2015-08-25)
