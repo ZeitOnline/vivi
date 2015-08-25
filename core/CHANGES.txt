@@ -6,6 +6,8 @@ zeit.content.article changes
 
 - Unify checkin/correction wording (DEV-834).
 
+- Add author block (DEV-913).
+
 
 3.8.0 (2015-08-24)
 ------------------

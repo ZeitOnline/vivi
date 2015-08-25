@@ -1,4 +1,5 @@
 from zeit.cms.i18n import MessageFactory as _
+from zeit.content.author.interfaces import IAuthor
 from zeit.content.gallery.interfaces import IGallery
 from zeit.content.image.interfaces import IImageGroup
 import zeit.content.article.edit.interfaces
@@ -83,3 +84,13 @@ class EditVideo(EditBase):
     interface = zeit.content.article.edit.interfaces.IVideo
     fields = ('video', 'video_2', 'layout')
     undo_description = _('edit video block')
+
+
+class EditAuthor(EditBase):
+
+    interface = zeit.content.article.edit.interfaces.IAuthor
+    undo_description = _('edit author block')
+
+    def setUpWidgets(self, *args, **kw):
+        super(EditAuthor, self).setUpWidgets(*args, **kw)
+        self.widgets['references'].add_type = IAuthor

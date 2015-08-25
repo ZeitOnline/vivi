@@ -164,6 +164,17 @@
       />
   </class>
 
+  <class class=".author.Author">
+    <require
+      interface=".interfaces.IAuthor"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAuthor"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".rawxml.RawXML">
     <require
       interface=".interfaces.IRawXML"

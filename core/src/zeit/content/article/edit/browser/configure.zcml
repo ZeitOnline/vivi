@@ -269,6 +269,23 @@
     permission="zope.View"
     />
 
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-author"
+    class=".reference.EditAuthor"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IAuthor"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-author"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    />
+
   <!-- rawxml -->
 
   <browser:viewlet
@@ -434,6 +451,10 @@
   </class>
 
   <class class="..video.Video">
+    <implements interface="zeit.edit.interfaces.IFoldable" />
+  </class>
+
+  <class class="..author.Author">
     <implements interface="zeit.edit.interfaces.IFoldable" />
   </class>
 

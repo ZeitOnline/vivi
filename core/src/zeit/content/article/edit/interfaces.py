@@ -279,6 +279,15 @@ class IPortraitbox(IReference, ILayoutable):
         default=u'short')
 
 
+class IAuthor(IReference):
+
+    references = zeit.cms.content.interfaces.ReferenceField(
+        title=_("Author"),
+        description=_("Drag an author here"),
+        source=zeit.cms.content.interfaces.authorSource,
+        required=False)
+
+
 def validate_rawxml(xml):
     if xml.tag != 'raw':
         raise zeit.cms.interfaces.ValidationError(
