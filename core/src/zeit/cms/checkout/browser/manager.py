@@ -246,14 +246,7 @@ class CheckinMenuItem(MenuItem):
         manager = zeit.cms.checkout.interfaces.ICheckinManager(self.context)
         return manager.canCheckin
 
-
-class NonSemanticChangeCheckinMenuItem(CheckinMenuItem):
-
-    title = _('Checkin (correction)')
-    accesskey = None
-    rel = 'zeit.cms.follow_with_lock'
-
     @property
     def action(self):
-        action = super(NonSemanticChangeCheckinMenuItem, self).action
+        action = super(CheckinMenuItem, self).action
         return action + '&semantic_change='
