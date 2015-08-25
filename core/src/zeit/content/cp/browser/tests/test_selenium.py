@@ -210,7 +210,7 @@ class TestTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
         s = self.selenium
 
         s.click('link=Struktur')
-        teaser_module = self.get_module('cp', 'List of teasers')
+        teaser_module = self.get_module('cp', 'Teaser')
         s.waitForElementPresent(teaser_module)
         s.dragAndDropToObject(
             teaser_module,

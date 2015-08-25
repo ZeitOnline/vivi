@@ -10,6 +10,6 @@
   <module id="quiz" title="Quiz-Block"/>
   <module id="rss" title="RSS-Block"/>
   <module id="teaser" title="Teaser"/>
-  <module id="video" title="Video"/>
+  <module id="video" title="Videoblock"/>
   <module id="xml" title="Rohes XML"/>
 </modules>
