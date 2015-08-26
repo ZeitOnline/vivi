@@ -86,7 +86,7 @@ class Variant(object):
 
     @property
     def ratio(self):
-        if self.is_default:
+        if self.is_default or self.aspect_ratio == 'original':
             image = zeit.content.image.interfaces.IMasterImage(
                 zeit.content.image.interfaces.IImageGroup(self))
             xratio, yratio = image.getImageSize()
