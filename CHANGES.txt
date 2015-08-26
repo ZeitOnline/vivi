@@ -6,6 +6,8 @@ zeit.content.image changes
 
 - Support ``aspect_ration="original"`` in variant configuration (DEV-923).
 
+- Handle missing dublincore times (ZON-2062).
+
 
 2.7.2 (2015-08-14)
 ------------------
