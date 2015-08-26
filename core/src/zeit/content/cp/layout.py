@@ -3,22 +3,12 @@ import gocept.cache.method
 import zc.sourcefactory.source
 import zeit.cms.content.sources
 import zope.interface
-import zope.security.proxy
 
 
-class AllowedMixin(object):
+class AllowedMixin(zeit.cms.content.sources.AllowedBase):
 
-    def __init__(self, id, available, types):
-        self.id = id
-
-        if available is None:
-            available = 'zope.interface.Interface'
-        try:
-            available = zope.dottedname.resolve.resolve(available)
-        except ImportError:
-            available = None
-        self.available_iface = available
-
+    def __init__(self, id, title, available, types):
+        super(AllowedMixin, self).__init__(id, title, available)
         self.types = types.split(' ') if types else None
 
     def is_allowed(self, context):
@@ -30,9 +20,7 @@ class AllowedMixin(object):
         return self.is_allowed_iface(cp) and self.is_allowed_type(cp)
 
     def is_allowed_iface(self, cp):
-        if self.available_iface is None:
-            return False
-        return self.available_iface.providedBy(cp)
+        return super(AllowedMixin, self).is_allowed(cp)
 
     def is_allowed_type(self, cp):
         if not self.types:
@@ -49,10 +37,6 @@ class AllowedMixin(object):
             return not match
         else:
             return match
-
-    def __eq__(self, other):
-        return zope.security.proxy.isinstance(
-            other, self.__class__) and self.id == other.id
 
 
 class ITeaserBlockLayout(zope.interface.Interface):
@@ -85,8 +69,7 @@ class BlockLayout(AllowedMixin):
     def __init__(self, id, title, image_pattern=None,
                  areas=None, columns=1, default=False, available=None,
                  types=None):
-        super(BlockLayout, self).__init__(id, available, types)
-        self.title = title
+        super(BlockLayout, self).__init__(id, title, available, types)
         self.image_pattern = image_pattern
         self.areas = frozenset(areas)
         self.columns = columns
@@ -100,8 +83,7 @@ class BlockLayout(AllowedMixin):
 class RegionConfig(AllowedMixin):
 
     def __init__(self, id, title, kind, areas, available, types):
-        super(RegionConfig, self).__init__(id, available, types)
-        self.title = title
+        super(RegionConfig, self).__init__(id, title, available, types)
         self.kind = kind
         self.areas = areas
 
@@ -109,32 +91,17 @@ class RegionConfig(AllowedMixin):
 class AreaConfig(AllowedMixin):
 
     def __init__(self, id, title, kind, available, types):
-        super(AreaConfig, self).__init__(id, available, types)
-        self.title = title
+        super(AreaConfig, self).__init__(id, title, available, types)
         self.kind = kind
 
 
 class ModuleConfig(AllowedMixin):
 
     def __init__(self, id, title, available, types):
-        super(ModuleConfig, self).__init__(id, available, types)
-        self.title = title
+        super(ModuleConfig, self).__init__(id, title, available, types)
 
 
-class ObjectSource(object):
-
-    def getTitle(self, context, value):
-        return value.title
-
-    def getToken(self, context, value):
-        return value.id
-
-    def isAvailable(self, value, context):
-        return value.is_allowed(context)
-
-    def getValues(self, context):
-        return [x for x in self._values().values()
-                if self.isAvailable(x, context)]
+class ObjectSource(zeit.cms.content.sources.ObjectSource):
 
     def _get_title_for(self, node):
         return unicode(node.get('title'))
@@ -146,11 +113,6 @@ class TeaserBlockLayoutSource(
     product_configuration = 'zeit.content.cp'
     config_url = 'block-layout-source'
     attribute = 'id'
-
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        def find(self, id):
-            return self.factory.find(self.context, id)
 
     @gocept.cache.method.Memoize(600, ignore_self=True)
     def _values(self):
@@ -169,13 +131,6 @@ class TeaserBlockLayoutSource(
                 g('image_pattern'), areas, columns, g('default', ''),
                 g('available', None), g('types', None))
         return result
-
-    def find(self, context, id):
-        value = self._values().get(id)
-        if (not value or not self.isAvailable(value, context)
-            or not self.filterValue(context, value)):
-            return None
-        return value
 
     def filterValue(self, context, value):
         if context is None:
