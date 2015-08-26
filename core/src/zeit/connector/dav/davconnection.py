@@ -21,6 +21,8 @@ class DAVConnection(zeit.connector.dav.davbase.DAVConnection):
             zeit.connector.dav.interfaces.DAVRedirectError,
         httplib.NOT_FOUND:
             zeit.connector.dav.interfaces.DAVNotFoundError,
+        httplib.BAD_REQUEST:
+            zeit.connector.dav.interfaces.DAVBadRequestError
     }
 
     def lock(self, url, owner=None, depth=0, timeout=None, headers={}):

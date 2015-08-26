@@ -31,6 +31,11 @@ class DAVNotFoundError(DAVError):
     """
 
 
+class DAVBadRequestError(DAVError):
+    """Exception raised if the dav server received a malformed request.
+    """
+
+
 class DAVLockedError(DAVError):
     """Raised when modifying or locking a locked resource."""
 
