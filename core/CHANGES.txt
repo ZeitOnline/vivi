@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.1.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Update ITeaserBlockLayout interface, needed for security declaration (DEV-925).
 
 
 3.1.0 (2015-08-24)
