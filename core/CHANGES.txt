@@ -7,6 +7,8 @@ zeit.cms changes
 - Change checkin menu button to not update last semantic change,
   add checkbox to update semantic change to workflow form (DEV-834).
 
+- Add helper classes ObjectSource and AllowedMixin.
+
 
 2.55.1 (2015-08-25)
 -------------------

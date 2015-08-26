@@ -433,3 +433,58 @@ def collect_caches(event):
 
 
 zope.testing.cleanup.addCleanUp(gocept.cache.method.clear)
+
+
+class ObjectSource(object):
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        def find(self, id):
+            return self.factory.find(self.context, id)
+
+    def _values(self):
+        raise NotImplementedError()
+
+    def getTitle(self, context, value):
+        return value.title
+
+    def getToken(self, context, value):
+        return value.id
+
+    def isAvailable(self, value, context):
+        return value.is_allowed(context)
+
+    def getValues(self, context):
+        return [x for x in self._values().values()
+                if self.isAvailable(x, context)]
+
+    def find(self, context, id):
+        value = self._values().get(id)
+        if (not value or not self.isAvailable(value, context)
+            or not self.filterValue(context, value)):
+            return None
+        return value
+
+
+class AllowedBase(object):
+
+    def __init__(self, id, title, available):
+        self.id = id
+        self.title = title
+
+        if available is None:
+            available = 'zope.interface.Interface'
+        try:
+            available = zope.dottedname.resolve.resolve(available)
+        except ImportError:
+            available = None
+        self.available_iface = available
+
+    def is_allowed(self, context):
+        if self.available_iface is None:
+            return False
+        return self.available_iface.providedBy(context)
+
+    def __eq__(self, other):
+        return zope.security.proxy.isinstance(
+            other, self.__class__) and self.id == other.id
