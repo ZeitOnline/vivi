@@ -104,8 +104,8 @@ class ImageTransform(object):
             options = {}
         pil_image.save(image.open('w'), self.image.format, **options)
         image.__parent__ = self.context
-        image_times = zope.dublincore.interfaces.IDCTimes(self.context)
-        if image_times.modified:
+        image_times = zope.dublincore.interfaces.IDCTimes(self.context, None)
+        if image_times and image_times.modified:
             thumb_times = zope.dublincore.interfaces.IDCTimes(image)
             thumb_times.modified = image_times.modified
 
