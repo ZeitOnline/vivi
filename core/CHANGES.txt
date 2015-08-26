@@ -4,7 +4,7 @@ zeit.content.image changes
 2.7.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Support ``aspect_ration="original"`` in variant configuration (DEV-923).
 
 
 2.7.2 (2015-08-14)
