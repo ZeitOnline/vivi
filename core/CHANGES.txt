@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.56.0 (unreleased)
+2.56.0 (2015-08-27)
 -------------------
 
 - Change checkin menu button to not update last semantic change,
