@@ -4,7 +4,8 @@ zeit.cms changes
 2.56.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use named pipes for subprocess.Popen calling the publish script to prevent
+  hanging.
 
 
 2.56.0 (2015-08-27)
