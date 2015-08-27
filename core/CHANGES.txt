@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.56.1 (unreleased)
+2.56.1 (2015-08-27)
 -------------------
 
 - Use named pipes for subprocess.Popen calling the publish script to prevent
