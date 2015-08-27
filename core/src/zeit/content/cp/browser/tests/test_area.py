@@ -201,3 +201,26 @@ class OverflowSeleniumTest(zeit.content.cp.testing.SeleniumTestCase):
         self.create_block('teaser', 'lead')
 
         s.waitForElementPresent('css=#informatives .block.type-quiz')
+
+
+class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
+
+    def make_one(self):
+        s = self.selenium
+        s.click(u'link=Struktur')
+        s.click(u'link=Regionen')
+        module = self.get_module('body', 'Duo')
+        s.waitForElementPresent(module)
+        s.dragAndDropToObject(
+            module, 'css=.action-cp-body-module-droppable', '10,10')
+        s.waitForCssCount('css=.type-region', 3)
+
+    def test_drop_configured_region_creates_nested_areas(self):
+        self.open_centerpage()
+        self.make_one()
+        self.selenium.assertText('css=.type-area .kind', 'duo')
+
+    def test_creating_configured_region_sets_kind_on_region(self):
+        self.open_centerpage()
+        self.make_one()
+        self.selenium.assertText('css=.type-region .kind', 'duo')

@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.1.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Display kind for region/area again (DEV-807).
 
 
 3.1.1 (2015-08-26)
