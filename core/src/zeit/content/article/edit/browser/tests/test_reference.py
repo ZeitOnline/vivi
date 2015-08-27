@@ -59,7 +59,7 @@ class ImageEditTest(zeit.content.article.edit.browser.testing.EditorTestCase):
         select = 'css=.block.type-image:nth-child(3) form.wired select'
         s.waitForElementPresent(select)
         self.assertEqual(
-            ['(nothing selected)', 'small', 'large', 'upright'],
+            ['(nothing selected)', 'small', 'large', 'upright', 'Stamp'],
             s.getSelectOptions(select))
         s.select(select, 'label=small')
         s.type(select, '\t')
