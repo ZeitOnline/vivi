@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.3.2 (unreleased)
+2.4.0 (2015-08-27)
 ------------------
 
 - Add property ``biography`` and reference for overriding it (DEV-913).
