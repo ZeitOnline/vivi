@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.9.0 (unreleased)
+3.9.0 (2015-08-27)
 ------------------
 
 - Unify checkin/correction wording (DEV-834).
