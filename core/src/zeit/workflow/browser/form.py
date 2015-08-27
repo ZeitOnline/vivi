@@ -75,6 +75,21 @@ class WorkflowForm(zeit.cms.browser.form.EditForm, WorkflowActions):
 
     title = _("Workflow")
 
+    modified_fields = (
+        'last_modified_by', 'date_last_modified', 'last_semantic_change',
+        'date_last_checkout',
+        'created',
+        'published',
+        'date_last_published', 'last_published_by',
+        'date_first_released'
+    )
+
+    omit_fields = (
+        'date_print_published',
+        'date_last_published_semantic',
+        'error_messages'
+    )
+
     @zope.formlib.form.action(_('Save state only'),
                               name='save')
     def handle_save_state(self, action, data):
@@ -107,14 +122,9 @@ class ContentWorkflow(WorkflowForm):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Status"),
-            ('last_modified_by', 'date_last_modified', 'last_semantic_change',
-             'date_last_checkout',
-             'created',
-             'published',
-             'date_last_published', 'last_published_by',
-             'date_first_released',
-             'edited', 'corrected', 'refined',
-             'images_added', 'seo_optimized'),
+            WorkflowForm.modified_fields + (
+                'edited', 'corrected', 'refined',
+                'images_added', 'seo_optimized'),
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("Settings"), css_class='column-right'),
@@ -129,9 +139,7 @@ class ContentWorkflow(WorkflowForm):
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange).omit(
-                'date_print_published',
-                'date_last_published_semantic',
-                'error_messages') +
+                *WorkflowForm.omit_fields) +
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))
@@ -146,8 +154,7 @@ class AssetWorkflow(WorkflowForm):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Status"),
-            ('last_modified_by', 'date_last_modified', 'last_semantic_change',
-             'published', 'date_last_published', 'date_first_released'),
+            WorkflowForm.modified_fields,
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("Settings"), css_class='column-right'),
@@ -162,8 +169,7 @@ class AssetWorkflow(WorkflowForm):
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange).omit(
-                'has_semantic_change', 'date_print_published',
-                'error_messages'))
+                *WorkflowForm.omit_fields))
 
 
 class NoWorkflow(zeit.cms.browser.form.EditForm):
