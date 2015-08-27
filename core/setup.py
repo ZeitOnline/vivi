@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zeit.content.article',
-    version='3.8.1.dev0',
+    version='3.9.0.dev0',
     author='gocept, Zeit Online',
     author_email='zon-backend@zeit.de',
     url='http://www.zeit.de/',
@@ -44,7 +44,7 @@ setup(
         'zc.sourcefactory',
         'zc.table',
         'zdaemon',
-        'zeit.cms>=2.55.0.dev0',
+        'zeit.cms>=2.56.0.dev0',
         'zeit.connector>=2.3.1.dev0',
         'zeit.content.author',
         'zeit.content.cp>=0.33.0',

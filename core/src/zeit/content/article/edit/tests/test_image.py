@@ -7,20 +7,21 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
 
     def test_image_can_be_set(self):
         from zeit.content.article.edit.image import Image
+        from zeit.content.article.edit.interfaces import imageLayoutSource
         import lxml.objectify
         import zeit.cms.interfaces
         tree = lxml.objectify.E.tree(
             lxml.objectify.E.image())
         image = Image(None, tree.image)
         image.__name__ = u'myname'
-        image.layout = u'large'
+        image.layout = imageLayoutSource(None).find('large')
         image_uid = 'http://xml.zeit.de/2006/DSC00109_2.JPG'
         image.references = image.references.create(
             zeit.cms.interfaces.ICMSContent(image_uid))
         self.assertEqual(image_uid, image.references.target.uniqueId)
         self.assertEqual(image_uid, image.xml.get('src'))
         self.assertEqual(u'myname', image.__name__)
-        self.assertEqual(u'large', image.layout)
+        self.assertEqual(u'large', image.layout.id)
         self.assertEllipsis("""\
 <image ... src="{image_uid}" ... is_empty="False">
   <bu xsi:nil="true"/>
@@ -276,6 +277,19 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             image.references = image.references.create(
                 ICMSContent('http://xml.zeit.de/2006/DSC00109_2.JPG'))
             yield image
+
+    def test_layout_source_returns_objects(self):
+        from zeit.content.article.edit.interfaces import imageLayoutSource
+        layout = imageLayoutSource(None).find('stamp')
+        self.assertEqual('stamp', layout.id)
+        self.assertEqual('Stamp', layout.title)
+        self.assertEqual('square', layout.variant)
+
+    def test_layout_available_walks_up_to_article(self):
+        from zeit.content.article.edit.interfaces import imageLayoutSource
+        with self.image() as image:
+            layouts = [x.id for x in imageLayoutSource(image)]
+        self.assertNotIn('zmo-only', layouts)
 
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):

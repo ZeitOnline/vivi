@@ -37,8 +37,8 @@ class Image(zeit.content.article.edit.reference.Reference):
 
     references = ImageReferenceProperty('.', 'image')
 
-    layout = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'layout', zeit.content.article.edit.interfaces.IImage['layout'])
+    _layout = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'layout')
 
     # XXX this is a stopgap to fix #11730. The proper solution involves
     # a real Reference object, see #10686.
@@ -51,6 +51,17 @@ class Image(zeit.content.article.edit.reference.Reference):
         if self.layout is None:
             self.layout = zeit.content.article.edit.interfaces.IImage[
                 'layout'].default
+
+    @property
+    def layout(self):
+        source = zeit.content.article.edit.interfaces.IImage['layout'].source(
+            self)
+        return source.find(self._layout)
+
+    @layout.setter
+    def layout(self, layout):
+        self._p_changed = True
+        self._layout = layout.id
 
 
 class Factory(zeit.content.article.edit.reference.ReferenceFactory):

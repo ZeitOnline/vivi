@@ -4,4 +4,6 @@
   <!-- default value must not use available -->
   <layout id="large">large</layout>
   <layout id="upright" available="zeit.cms.section.interfaces.IZONContent">upright</layout>
+  <layout id="stamp" variant_name="square">Stamp</layout>
+  <layout id="zmo-only" available="zeit.magazin.interfaces.IZMOContent">zmo</layout>
 </image-layouts>

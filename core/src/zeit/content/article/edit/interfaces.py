@@ -1,5 +1,6 @@
 from zeit.content.article.i18n import MessageFactory as _
 import collections
+import gocept.cache.method
 import zc.sourcefactory.basic
 import zeit.cms.content.field
 import zeit.content.gallery.interfaces
@@ -192,15 +193,45 @@ class IReference(zeit.edit.interfaces.IBlock):
         default=True)
 
 
-class MainImageLayoutSource(zeit.cms.content.sources.XMLSource):
+class IImageLayout(zope.interface.Interface):
+
+    id = zope.schema.ASCIILine(title=u'Id used in xml to identify layout')
+    title = zope.schema.TextLine(title=u'Human readable title.')
+    variant = zope.schema.TextLine(
+        title=u'Which variant to use with this layout.')
+
+
+class ImageLayout(zeit.cms.content.sources.AllowedBase):
+
+    def __init__(self, id, title, available=None, variant=None):
+        super(ImageLayout, self).__init__(id, title, available)
+        self.variant = variant
+
+    def is_allowed(self, context):
+        article = zeit.content.article.interfaces.IArticle(context, None)
+        return super(ImageLayout, self).is_allowed(article)
+
+
+class ImageLayoutSource(
+        zeit.cms.content.sources.ObjectSource,
+        zeit.cms.content.sources.XMLSource):
 
     product_configuration = 'zeit.content.article'
     config_url = 'image-layout-source'
     attribute = 'id'
 
+    @gocept.cache.method.Memoize(600, ignore_self=True)
+    def _values(self):
+        tree = self._get_tree()
+        result = collections.OrderedDict()
+        for node in tree.iterchildren('*'):
+            id = node.get(self.attribute)
+            result[id] = ImageLayout(
+                id, self._get_title_for(node), node.get('available', None),
+                node.get('variant_name', None))
+        return result
 
-class ImageLayoutSource(BodyAwareXMLSource, MainImageLayoutSource):
-    pass
+imageLayoutSource = ImageLayoutSource()
 
 
 class IImage(IReference, ILayoutable):
@@ -218,8 +249,8 @@ class IImage(IReference, ILayoutable):
 
     layout = zope.schema.Choice(
         title=_('Layout'),
-        source=ImageLayoutSource(),
-        default=u'large',
+        source=imageLayoutSource,
+        default=ImageLayout('large', _('image-layout-large')),
         required=False)
 
 

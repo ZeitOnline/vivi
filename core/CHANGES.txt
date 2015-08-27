@@ -1,12 +1,15 @@
 zeit.content.article changes
 ============================
 
-3.8.1 (unreleased)
+3.9.0 (unreleased)
 ------------------
 
 - Unify checkin/correction wording (DEV-834).
 
 - Add author block (DEV-913).
+
+- Change ``z.c.article.edit.interfaces.IImage.layout`` to use an object,
+  which has a ``image_variant`` property (DEV-923).
 
 
 3.8.0 (2015-08-24)

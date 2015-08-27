@@ -109,6 +109,13 @@
       />
   </class>
 
+  <class class=".interfaces.ImageLayout">
+    <require
+      interface=".interfaces.IImageLayout"
+      permission="zope.View"
+      />
+  </class>
+
   <class class=".video.Video">
     <require
       interface=".interfaces.IVideo"
