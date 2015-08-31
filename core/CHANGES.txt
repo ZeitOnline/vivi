@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add field `is_advertorial` to Cardstack. (DEV-892)
 
 
 3.1.2 (2015-08-27)
