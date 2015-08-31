@@ -1782,6 +1782,13 @@
 
 /* checkbox */
 
+.type-article #edit-form-teaser .inline-form.wired .fieldtype-checkbox .field,
+.type-article #edit-form-teaser .inline-form.wired .fieldtype-checkbox .widget,
+.type-article #edit-form-article-content .inline-form.wired .fieldtype-checkbox .field,
+.type-article #edit-form-article-content .inline-form.wired .fieldtype-checkbox .widget {
+    width: auto;
+}
+
 .type-article #edit-form-filename .inline-form .fieldtype-checkbox .widget,
 .type-article #edit-form-misc .inline-form .fieldtype-checkbox .widget,
 .type-article #edit-form-metadata .inline-form .fieldtype-checkbox .widget,
