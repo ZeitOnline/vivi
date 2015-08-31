@@ -393,6 +393,9 @@ class ICardstack(zeit.edit.interfaces.IBlock):
 
     card_id = zope.schema.TextLine(
         title=_('Cardstack id'))
+    is_advertorial = zope.schema.Bool(
+        title=_('Advertorial?'),
+        default=False)
 
 
 class IBreakingNewsBody(zope.interface.Interface):
