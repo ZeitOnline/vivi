@@ -207,6 +207,20 @@ class ImageLayout(zeit.cms.content.sources.AllowedBase):
         super(ImageLayout, self).__init__(id, title, available)
         self.variant = variant
 
+    def __eq__(self, other):
+        """Compare equality using the ID of the layouts.
+
+        Allow direct comparison to a string for backward compatibility, thus
+        ImageLayout('foo', 'Foo') == 'foo' will evaluate to true. (Required to
+        keep `zeit.web.magazin` up and running.)
+
+        """
+        other_id = other.id if IImageLayout.providedBy(other) else other
+        return self.id == other_id
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
     def is_allowed(self, context):
         article = zeit.content.article.interfaces.IArticle(context, None)
         return super(ImageLayout, self).is_allowed(article)

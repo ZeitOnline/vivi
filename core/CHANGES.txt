@@ -6,6 +6,9 @@ zeit.content.article changes
 
 - Add field `is_advertorial` to Cardstack. (DEV-892)
 
+- Allow comparison of ``z.c.article.edit.interfaces.IImage.layout`` to a string
+  for backward compatibility with ``zeit.web``. (DEV-923)
+
 
 3.9.0 (2015-08-27)
 ------------------
