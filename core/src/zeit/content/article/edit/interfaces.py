@@ -215,8 +215,9 @@ class ImageLayout(zeit.cms.content.sources.AllowedBase):
         keep `zeit.web.magazin` up and running.)
 
         """
-        other_id = other.id if IImageLayout.providedBy(other) else other
-        return self.id == other_id
+        if isinstance(other, basestring):
+            return self.id == other
+        return super(ImageLayout, self).__eq__(other)
 
     def __ne__(self, other):
         return not self.__eq__(other)
