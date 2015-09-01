@@ -291,6 +291,23 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
             layouts = [x.id for x in imageLayoutSource(image)]
         self.assertNotIn('zmo-only', layouts)
 
+    def test_layouts_are_compared_using_their_id(self):
+        from zeit.content.article.edit.interfaces import ImageLayout
+        layout = ImageLayout('foo', 'Foo')
+        other = ImageLayout('foo', 'Ninja')
+        self.assertEqual(layout, other)
+
+    def test_layout_can_be_compared_to_string(self):
+        from zeit.content.article.edit.interfaces import ImageLayout
+        layout = ImageLayout('foo', 'Foo')
+        self.assertEqual(layout, 'foo')
+        self.assertNotEqual(layout, 'bar')
+
+    def test_alyout_can_be_compared_to_None(self):
+        from zeit.content.article.edit.interfaces import ImageLayout
+        layout = ImageLayout('foo', 'Foo')
+        self.assertNotEqual(layout, None)
+
 
 class TestFactory(zeit.content.article.testing.FunctionalTestCase):
 
