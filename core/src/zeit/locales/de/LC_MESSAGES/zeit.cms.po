@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2015-08-31 14:37+0200\n"
-"PO-Revision-Date: 2015-08-31 14:59+0200\n"
+"POT-Creation-Date: 2015-09-01 09:45+0200\n"
+"PO-Revision-Date: 2015-09-01 09:47+0200\n"
 "Last-Translator: Florian Pilz <fp@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -476,7 +476,7 @@ msgid "There are no objects in this folder."
 msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:262 zeit/cms/syndication/browser/feed.py:150
-#: zeit/content/article/edit/interfaces.py:316
+#: zeit/content/article/edit/interfaces.py:331
 #: zeit/content/article/interfaces.py:136 zeit/content/author/author.py:61
 msgid "Author"
 msgstr "Autor"
@@ -621,23 +621,19 @@ msgstr "Konflikt-Version"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:23
 msgid "Checkin correction anyway"
-msgstr "Trotzdem einchecken (Korrektur)"
-
-#: zeit/cms/checkout/browser/checkin-conflict-error.pt:26
-msgid "Checkin anyway"
 msgstr "Trotzdem einchecken"
 
-#: zeit/cms/checkout/browser/checkin-conflict-error.pt:28
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:26
 msgid "Delete workingcopy"
 msgstr "Bearbeitung abbrechen"
+
+#: zeit/cms/checkout/browser/checkin-conflict-error.pt:28
+msgid "Cancel checkin"
+msgstr "Zurück zum Artikel"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:3
 msgid "Conflict Error"
 msgstr "Konflikt"
-
-#: zeit/cms/checkout/browser/checkin-conflict-error.pt:30
-msgid "Cancel checkin"
-msgstr "Zurück zum Artikel"
 
 #: zeit/cms/checkout/browser/checkin-conflict-error.pt:7
 msgid "There was an error while checking in your version of ${name}."
@@ -1731,7 +1727,7 @@ msgstr "Farbe Button"
 
 #: zeit/content/advertisement/interfaces.py:42
 #: zeit/content/article/edit/image.py:70
-#: zeit/content/article/edit/interfaces.py:240
+#: zeit/content/article/edit/interfaces.py:255
 #: zeit/content/article/interfaces.py:54 zeit/content/cp/interfaces.py:90
 #: zeit/content/cp/interfaces.py:327 zeit/content/cp/interfaces.py:805
 #: zeit/content/cp/interfaces.py:846
@@ -1744,7 +1740,7 @@ msgid "Image"
 msgstr "Bild"
 
 #: zeit/content/advertisement/interfaces.py:43
-#: zeit/content/article/edit/interfaces.py:241
+#: zeit/content/article/edit/interfaces.py:256
 #: zeit/content/article/interfaces.py:55 zeit/content/author/interfaces.py:65
 #: zeit/content/cp/interfaces.py:328 zeit/content/cp/interfaces.py:847
 #: zeit/content/image/interfaces.py:292
@@ -2171,7 +2167,7 @@ msgid "Cardstack block"
 msgstr "Kartenstapel"
 
 #: zeit/content/article/edit/citation.py:35
-#: zeit/content/article/edit/interfaces.py:359
+#: zeit/content/article/edit/interfaces.py:374
 msgid "Citation"
 msgstr "Zitat"
 
@@ -2181,9 +2177,9 @@ msgstr "Seitenumbruch"
 
 #: zeit/content/article/edit/interfaces.py:118
 #: zeit/content/article/edit/interfaces.py:170
-#: zeit/content/article/edit/interfaces.py:251
-#: zeit/content/article/edit/interfaces.py:307
-#: zeit/content/article/edit/interfaces.py:381
+#: zeit/content/article/edit/interfaces.py:266
+#: zeit/content/article/edit/interfaces.py:322
+#: zeit/content/article/edit/interfaces.py:396
 #: zeit/content/article/interfaces.py:44 zeit/content/article/interfaces.py:60
 #: zeit/content/cp/interfaces.py:530 zeit/content/cp/interfaces.py:810
 #: zeit/content/gallery/interfaces.py:103
@@ -2224,52 +2220,52 @@ msgstr "Ist Block ohne Referenzobjekt? (für XSLT)"
 msgid "Referenced object."
 msgstr "Referenziertes Objekt"
 
-#: zeit/content/article/edit/interfaces.py:246
+#: zeit/content/article/edit/interfaces.py:261
 msgid "Edited"
 msgstr "redigiert"
 
-#: zeit/content/article/edit/interfaces.py:253
+#: zeit/content/article/edit/interfaces.py:268
 msgid "image-layout-large"
 msgstr "Großes Layout"
 
-#: zeit/content/article/edit/interfaces.py:261
+#: zeit/content/article/edit/interfaces.py:276
 #: zeit/content/article/edit/reference.py:84
 #: zeit/content/gallery/gallery.py:267
 #: zeit/content/gallery/browser/configure.zcml:71
 msgid "Gallery"
 msgstr "Bildergalerie"
 
-#: zeit/content/article/edit/interfaces.py:262
+#: zeit/content/article/edit/interfaces.py:277
 msgid "Drag an image gallery here"
 msgstr "Ziehen Sie Bildergalerien hier, um sie zu verknüpfen"
 
-#: zeit/content/article/edit/interfaces.py:271
-#: zeit/content/article/edit/interfaces.py:281
+#: zeit/content/article/edit/interfaces.py:286
+#: zeit/content/article/edit/interfaces.py:296
 #: zeit/content/article/edit/reference.py:107
 #: zeit/content/infobox/infobox.py:66 zeit/content/infobox/interfaces.py:34
 msgid "Infobox"
 msgstr "Infobox"
 
-#: zeit/content/article/edit/interfaces.py:272
-#: zeit/content/article/edit/interfaces.py:282
+#: zeit/content/article/edit/interfaces.py:287
+#: zeit/content/article/edit/interfaces.py:297
 msgid "Drag an infobox here"
 msgstr "Ziehen Sie Infoboxen hierher, um sie zu verknüpfen"
 
-#: zeit/content/article/edit/interfaces.py:292
-#: zeit/content/article/edit/interfaces.py:350
+#: zeit/content/article/edit/interfaces.py:307
+#: zeit/content/article/edit/interfaces.py:365
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:44
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:29
 msgid "short"
 msgstr "kurz / klein"
 
-#: zeit/content/article/edit/interfaces.py:293
-#: zeit/content/article/edit/interfaces.py:351
+#: zeit/content/article/edit/interfaces.py:308
+#: zeit/content/article/edit/interfaces.py:366
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:45
 #: zeit/wysiwyg/browser/resources/reference/portraitbox.pt:30
 msgid "wide"
 msgstr "breit / groß"
 
-#: zeit/content/article/edit/interfaces.py:301
+#: zeit/content/article/edit/interfaces.py:316
 #: zeit/content/article/edit/reference.py:161
 #: zeit/content/portraitbox/interfaces.py:35
 #: zeit/content/portraitbox/portraitbox.py:35
@@ -2277,43 +2273,43 @@ msgstr "breit / groß"
 msgid "Portraitbox"
 msgstr "Porträtbox"
 
-#: zeit/content/article/edit/interfaces.py:302
+#: zeit/content/article/edit/interfaces.py:317
 msgid "Drag a portraitbox here"
 msgstr "Ziehen Sie Porträtboxen hierher, um sie zu verknüpfen"
 
-#: zeit/content/article/edit/interfaces.py:317
+#: zeit/content/article/edit/interfaces.py:332
 msgid "Drag an author here"
 msgstr "Ziehen Sie Autoren hierher, um sie zu verknüpfen"
 
-#: zeit/content/article/edit/interfaces.py:325
+#: zeit/content/article/edit/interfaces.py:340
 msgid "The root element must be <raw>."
 msgstr "Der Wurzelkonten muss ein <raw> Element sein."
 
-#: zeit/content/article/edit/interfaces.py:332
+#: zeit/content/article/edit/interfaces.py:347
 msgid "XML source"
 msgstr "XML-Quelltext"
 
-#: zeit/content/article/edit/interfaces.py:340
+#: zeit/content/article/edit/interfaces.py:355
 #: zeit/content/video/interfaces.py:120
 msgid "Audio id"
 msgstr "Audio-Id"
 
-#: zeit/content/article/edit/interfaces.py:343
+#: zeit/content/article/edit/interfaces.py:358
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:40
 msgid "Expires"
 msgstr "Ablaufdatum"
 
-#: zeit/content/article/edit/interfaces.py:352
+#: zeit/content/article/edit/interfaces.py:367
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:46
 #: zeit/wysiwyg/browser/resources/video/dialog.pt:55
 msgid "double"
 msgstr "doppelt"
 
-#: zeit/content/article/edit/interfaces.py:362
+#: zeit/content/article/edit/interfaces.py:377
 msgid "Attribution"
 msgstr "Zitatgeber"
 
-#: zeit/content/article/edit/interfaces.py:365
+#: zeit/content/article/edit/interfaces.py:380
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:23
 #: zeit/wysiwyg/browser/resources/reference/gallery.pt:17
 #: zeit/wysiwyg/browser/resources/reference/infobox.pt:17
@@ -2322,38 +2318,38 @@ msgstr "Zitatgeber"
 msgid "URL"
 msgstr "URL"
 
-#: zeit/content/article/edit/interfaces.py:369
+#: zeit/content/article/edit/interfaces.py:384
 msgid "Citation 2"
 msgstr "Zitat 2"
 
-#: zeit/content/article/edit/interfaces.py:373
+#: zeit/content/article/edit/interfaces.py:388
 msgid "Attribution 2"
 msgstr "Zuordnung 2"
 
-#: zeit/content/article/edit/interfaces.py:377
+#: zeit/content/article/edit/interfaces.py:392
 #: zeit/wysiwyg/browser/resources/citation/dialog.pt:35
 msgid "URL 2"
 msgstr "URL 2"
 
-#: zeit/content/article/edit/interfaces.py:389
+#: zeit/content/article/edit/interfaces.py:404
 msgid "Liveblog id"
 msgstr "Liveblog-ID"
 
-#: zeit/content/article/edit/interfaces.py:395
+#: zeit/content/article/edit/interfaces.py:410
 #: zeit/content/cp/interfaces.py:863
 msgid "Cardstack id"
 msgstr "ID"
 
-#: zeit/content/article/edit/interfaces.py:397
+#: zeit/content/article/edit/interfaces.py:412
 #: zeit/content/cp/interfaces.py:865
 msgid "Advertorial?"
 msgstr "Advertorial?"
 
-#: zeit/content/article/edit/interfaces.py:404
+#: zeit/content/article/edit/interfaces.py:419
 msgid "Article body"
 msgstr "Artikeltext"
 
-#: zeit/content/article/edit/interfaces.py:405
+#: zeit/content/article/edit/interfaces.py:420
 msgid "breaking-news-more-shortly"
 msgstr "Mehr in Kürze hier auf ZEIT ONLINE"
 
