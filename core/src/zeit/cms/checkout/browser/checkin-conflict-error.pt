@@ -23,8 +23,6 @@
     <input type="submit" name="checkin-correction"
            value="Checkin correction anyway"
            i18n:attributes="value" />
-    <input type="submit" name="checkin" value="Checkin anyway"
-           i18n:attributes="value" />
     <input type="submit" name="delete" value="Delete workingcopy"
            i18n:attributes="value" />
     <input type="submit" name="cancel" value="Cancel checkin"

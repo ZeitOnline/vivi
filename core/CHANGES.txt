@@ -4,7 +4,8 @@ zeit.cms changes
 2.56.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove button for checkin with semantic change when displaying a checkin
+  conflict error. (DEV-927)
 
 
 2.56.1 (2015-08-27)
