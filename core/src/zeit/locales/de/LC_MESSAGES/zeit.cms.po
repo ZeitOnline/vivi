@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: 2015-09-01 09:45+0200\n"
-"PO-Revision-Date: 2015-09-01 09:47+0200\n"
+"PO-Revision-Date: 2015-09-01 15:16+0200\n"
 "Last-Translator: Florian Pilz <fp@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -692,11 +692,11 @@ msgstr "Unbekannter Fehler"
 
 #: zeit/cms/checkout/manager.py:151
 msgid "Checked in with semantic change"
-msgstr "Einchecken"
+msgstr "Einchecken (Datum / Uhrzeit aktualisiert)"
 
 #: zeit/cms/checkout/manager.py:153
 msgid "Checked in"
-msgstr "Einchecken (Korrektur)"
+msgstr "Einchecken"
 
 #. Default: ""
 #: zeit/cms/checkout/manager.py:45
