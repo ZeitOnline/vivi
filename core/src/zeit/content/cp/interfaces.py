@@ -188,6 +188,9 @@ class IReadRegion(zeit.edit.interfaces.IReadContainer):
     kind = zope.schema.TextLine(
         title=_("Kind"))
 
+    kind_title = zope.schema.TextLine(
+        title=_("Kind Title"))
+
 
 class IWriteRegion(zeit.edit.interfaces.IWriteContainer):
     pass
@@ -305,7 +308,11 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         default=True)
 
     kind = zope.schema.TextLine(
-        title=_("Kind"))
+        title=_("Kind"),
+        description=_("Used internally for rendering on Friedbert"))
+
+    kind_title = zope.interface.Attribute(
+        "Translation of kind to a human friendly information")
 
     supertitle = zope.schema.TextLine(
         title=_("Supertitle"),
@@ -474,6 +481,8 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
     title = zope.schema.TextLine(
         title=_("Title"),
         required=False)
+    type_title = zope.interface.Attribute(
+        "Translation of type to a human friendly information")
 
     # BBB needed by zeit.web for legacy/zmo content only
     read_more = zope.schema.TextLine(

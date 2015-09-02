@@ -22,6 +22,12 @@ class ElementTestHelper(object):
         self.make_one()
         s.waitForCssCount('css=.type-{}'.format(self.name), 3)
 
+    def test_add_element_creates_element_of_given_kind(self):
+        s = self.selenium
+        locator = 'css=.type-{} .kind'.format(self.name)
+        self.make_one(kind='Duo')
+        s.waitForText(locator, 'Duo')
+
     def test_delete_element_removes_element(self):
         s = self.selenium
         s.assertCssCount('css=.type-{}'.format(self.name), 2)
@@ -50,9 +56,9 @@ class RegionTest(
 
     name = 'region'
 
-    def make_one(self):
+    def make_one(self, kind='Empty'):
         selector = 'css=.action-cp-body-module-droppable'
-        module = self.get_module('body', 'Empty')
+        module = self.get_module('body', kind)
         self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Regionen')
         self.selenium.waitForElementPresent(module)
@@ -66,11 +72,11 @@ class AreaTest(
 
     name = 'area'
 
-    def make_one(self, parent_selector='.type-region'):
+    def make_one(self, parent_selector='.type-region', kind='Solo'):
         selector = 'css={} .action-cp-region-module-droppable'.format(
             parent_selector)
 
-        module = self.get_module('region', 'Solo')
+        module = self.get_module('region', kind)
         self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Flächen')
         self.selenium.waitForElementPresent(module)
@@ -225,4 +231,4 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
     def test_creating_configured_region_sets_kind_on_region(self):
         self.open_centerpage()
         self.make_one()
-        self.selenium.assertText('css=.type-region .kind', 'duo')
+        self.selenium.assertText('css=.type-region .kind', 'Duo')

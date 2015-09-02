@@ -35,6 +35,17 @@
     for="zeit.content.cp.interfaces.IBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="type"
+    template="layout.block.type.pt"
+    permission="zeit.EditContent"
+    weight="6"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
     name="edit-box"
     template="../layout.block.edit-properties.pt"

@@ -30,6 +30,7 @@ class Region(zeit.content.cp.blocks.block.VisibleMixin,
     type = 'region'
 
     kind = ObjectPathAttributeProperty('.', 'kind')
+    kind_title = ObjectPathAttributeProperty('.', 'kind_title')
 
     title = zeit.cms.content.property.ObjectPathAttributeProperty('.', 'title')
 
@@ -269,6 +270,13 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @kind.setter
     def kind(self, value):
         self._kind = value
+
+    @property
+    def kind_title(self):
+        """Retrieve title for this kind of Area from XML config."""
+        area_config = zeit.content.cp.layout.AREA_CONFIGS(None).find(self.kind)
+        if area_config:
+            return area_config.title
 
     @property
     def layout(self):

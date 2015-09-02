@@ -65,6 +65,14 @@ class Block(VisibleMixin, zeit.edit.block.Element):
     background_color = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'background_color')
 
+    @property
+    def type_title(self):
+        """Retrieve title for this block type from XML config."""
+        module_config = zeit.content.cp.layout.MODULE_CONFIGS(None).find(
+            self.type)
+        if module_config:
+            return module_config.title
+
 
 @grok.adapter(zeit.content.cp.interfaces.IBlock)
 @grok.implementer(zeit.content.cp.interfaces.IRenderedXML)

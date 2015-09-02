@@ -65,6 +65,7 @@ class CPRegionFactories(zeit.edit.browser.library.BlockFactories):
             'library_name': self.library_name,
             'params': {
                 'kind': region_config.kind,
+                'kind_title': region_config.title,
                 'areas': region_config.areas,
             },
         } for i, region_config in enumerate(
