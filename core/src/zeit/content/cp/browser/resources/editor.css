@@ -56,6 +56,7 @@
 
 .edit-bar > .edit-teaser-link {
   background-image: url('edit-teaserlist-contents.png');
+  margin-right: 0.5em;
 }
 
 .edit-bar > .toggle-visible-link {
@@ -93,6 +94,7 @@
 
 .edit-bar > .rss-refresh-link {
   background-image: url('reload.png');
+  margin-right: 0.5em;
 }
 
 .edit-bar > .delete-link > .confirm-delete {
