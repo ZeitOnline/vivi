@@ -155,8 +155,9 @@ class RegionConfigSource(ObjectSource, zeit.cms.content.sources.XMLSource):
         tree = self._get_tree()
         result = collections.OrderedDict()
         for i, node in enumerate(tree.iterchildren('*')):
-            # XXX id doesn't make much sense for regions, we're just doing it
-            # to fulfill the _values() mechanics.
+            # Using kind as ID is not unique, since regions of the same kind
+            # can contain different areas and might have different titles.
+            # Therefore we need to prefix the kind to make it unique.
             id = '%s-%s' % (i, node.get('kind'))
             result[id] = RegionConfig(
                 id, self._get_title_for(node),
