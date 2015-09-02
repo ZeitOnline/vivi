@@ -1,3 +1,0 @@
-<tal:comment tal:condition="nothing">
-  This block is not editable.
-</tal:comment>
