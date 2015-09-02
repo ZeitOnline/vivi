@@ -216,9 +216,11 @@ class ConfiguredRegionTest(zeit.content.cp.testing.SeleniumTestCase):
         s.waitForCssCount('css=.type-region', 3)
 
     def test_drop_configured_region_creates_nested_areas(self):
+        s = self.selenium
         self.open_centerpage()
+        count = s.getCssCount('css=.type-region')
         self.make_one()
-        self.selenium.assertText('css=.type-area .kind', 'duo')
+        s.waitForCssCount('css=.type-region', count + 1)
 
     def test_creating_configured_region_sets_kind_on_region(self):
         self.open_centerpage()
