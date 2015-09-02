@@ -36,6 +36,17 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
+    name="title"
+    template="../layout.element.title.pt"
+    permission="zeit.EditContent"
+    weight="5"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="type"
     template="layout.block.type.pt"
     permission="zeit.EditContent"
