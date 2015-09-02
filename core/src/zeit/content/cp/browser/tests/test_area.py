@@ -70,7 +70,7 @@ class AreaTest(
         selector = 'css={} .action-cp-region-module-droppable'.format(
             parent_selector)
 
-        module = self.get_module('region', 'solo')
+        module = self.get_module('region', 'Solo')
         self.selenium.click(u'link=Struktur')
         self.selenium.click(u'link=Flächen')
         self.selenium.waitForElementPresent(module)
