@@ -7,6 +7,9 @@ zeit.content.cp changes
 
 - Add field `is_advertorial` to Cardstack. (DEV-892)
 
+- Display title of the kind rather kind itself, so the information is more user
+  friendly. (DEV-933)
+
 
 3.1.2 (2015-08-27)
 ------------------
