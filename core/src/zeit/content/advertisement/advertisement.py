@@ -34,7 +34,7 @@ class Advertisement(zeit.cms.content.xmlsupport.XMLContentBase):
         '.body.button_color',
         zeit.content.advertisement.interfaces.IAdvertisement['button_color'])
     image = zeit.cms.content.reference.SingleResource(
-        '.image', 'image')
+        '.head.image', 'image')
     url = zeit.cms.content.property.ObjectPathProperty(
         '.body.url',
         zeit.content.advertisement.interfaces.IAdvertisement['url'])

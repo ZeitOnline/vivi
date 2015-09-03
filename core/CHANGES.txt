@@ -5,7 +5,8 @@ zeit.content.advertisement changes
 1.0.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make it possible to retrieve the image of the ad via
+  ``z.c.image.interfaces.IImages`` (DEV-907)
 
 
 1.0.0 (2015-08-24)
