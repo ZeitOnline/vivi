@@ -78,8 +78,8 @@ class LocationSource(
     def getValues(self, context):
         xml = self._get_tree()
         return [
-            unicode(node).strip() for node in xml.iterchildren('tag')
-            if node.get('entity_type') == 'Location']
+            unicode(node).strip() for node in xml.xpath('//tag')
+            if node.get('type') == 'Location']
 
     def getTitle(self, context, value):
         return value

@@ -47,7 +47,7 @@ class TestWhitelist(zope.testing.cleanup.CleanUp,
         with mock.patch('gocept.lxml.objectify.fromfile') as fromfile:
             fromfile().iterchildren.return_value = []
             wl._load()
-        fromfile().iterchildren.assert_called_with('tag')
+        fromfile().xpath.assert_called_with('//tag')
 
     def test_load_should_create_tag_for_tag_nodes(self):
         wl = self.whitelist()

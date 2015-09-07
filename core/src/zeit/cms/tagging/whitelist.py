@@ -45,10 +45,10 @@ class Whitelist(UserDict.UserDict,
     def _load(self):
         tags = {}
         tags_xml = gocept.lxml.objectify.fromfile(self._fetch())
-        for tag_node in tags_xml.iterchildren('tag'):
+        for tag_node in tags_xml.xpath('//tag'):
             tag = zeit.cms.tagging.tag.Tag(
                 tag_node.get('uuid'), unicode(tag_node).strip(),
-                entity_type=tag_node.get('entity_type'),
+                entity_type=tag_node.get('type'),
                 url_value=tag_node.get('url_value'))
             tags[tag.code] = tag
         log.info('Keywords loaded.')
