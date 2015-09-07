@@ -22,12 +22,12 @@ class TestContainerMethodsRespectVirtualChildren(
 
     def test_folder_keys_contains_children_defined_in_xml_config(self):
         self.assertEqual(
-            ['xaernten', 'xanten', 'xinjiang'],
+            [u'art-déco', 'xaernten', 'xanten', 'xinjiang'],
             sorted(list(iter(self.folder))))
 
     def test_folder_iter_contains_children_defined_in_xml_config(self):
         self.assertEqual(
-            ['xaernten', 'xanten', 'xinjiang'],
+            [u'art-déco', 'xaernten', 'xanten', 'xinjiang'],
             sorted(list(iter(self.folder))))
 
     def test_folder_getitem_returns_child_with_basic_info_set(self):
@@ -47,7 +47,7 @@ class TestContainerMethodsRespectVirtualChildren(
             self.fail('Entry xanten not found.')
 
     def test_folder_len_counts_children_defined_in_xml_config(self):
-        self.assertEqual(3, len(self.folder))
+        self.assertEqual(4, len(self.folder))
 
     def test_folder_items_returns_childs_with_basic_info_set(self):
         for key, value in self.folder.items():

@@ -5,5 +5,6 @@
     <tag type="Location" url_value="xinjiang" lexical_value="Xinjiang">Text Xinjiang</tag>
     <tag type="Location" url_value="xaernten" lexical_value="Xärnten &amp; mehr" />
     <tag type="Person" url_value="claudio-abbado" lexical_value="Abbado,Claudio" />
+    <tag type="Location" url_value="art-d%C3%A9co" lexical_value="Art" />
   </letter>
 </weighted-tags>

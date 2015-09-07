@@ -7,6 +7,7 @@ import grokcore.component as grok
 import jinja2
 import lxml.objectify
 import persistent
+import urllib
 import zeit.cms.content.dav
 import zeit.cms.interfaces
 import zeit.cms.repository.folder
@@ -165,7 +166,8 @@ class RepositoryDynamicFolder(
             contents = {}
             key_getter = self.config.body.get('key', 'text()')
             for entry in self.config.body.getchildren():
-                key = unicode(entry.xpath(key_getter)[0])
+                key = urllib.unquote(
+                    entry.xpath(key_getter)[0]).decode('utf-8')
                 contents[key] = dict(entry.attrib)  # copy
                 contents[key].update({'text': entry.text})
             self._v_virtual_content = contents
