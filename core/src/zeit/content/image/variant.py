@@ -42,11 +42,7 @@ class Variants(grok.Adapter, UserDict.DictMixin):
                 setattr(target, key, getattr(source, key))
 
     def keys(self):
-        keys = [x.id for x in VARIANT_SOURCE(self.context)]
-        for key in self.context.variants.keys():
-            if key not in keys:
-                keys.append(key)
-        return keys
+        return [x.id for x in VARIANT_SOURCE(self.context)]
 
     @property
     def default_variant(self):

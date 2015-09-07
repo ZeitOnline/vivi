@@ -36,6 +36,13 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(['cinema-small', 'cinema-large', 'square'],
                          [x['id'] for x in r.json()])
 
+    def test_list_variants_ignores_keys_that_are_only_stored_in_config_dict(
+            self):
+        self.group.variants = {'foobarbaz': {'focus_x': 0.1, 'focus_y': 0.1}}
+        transaction.commit()
+        r = self.request('get', '/repository/group/variants')
+        self.assertNotIn('foobarbaz', [x['id'] for x in r.json()])
+
     def test_get_variant_contains_all_fields_defined_on_interface_and_url(
             self):
         r = self.request('get', '/repository/group/variants/square')
