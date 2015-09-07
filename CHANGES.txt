@@ -4,7 +4,8 @@ zeit.content.image changes
 2.8.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Avoid ``KeyError`` for Variants that are no longer valid, i.e. those that are
+  missing from the XML config and are only present in the DAVProperty (DEV-910)
 
 
 2.8.0 (2015-08-27)
