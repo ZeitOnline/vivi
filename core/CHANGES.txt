@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.57.0 (unreleased)
+2.57.0 (2015-09-07)
 -------------------
 
 - Update to changed whitelist XML format so we can use one unified XML file
