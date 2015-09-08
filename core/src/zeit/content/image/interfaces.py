@@ -223,6 +223,8 @@ class IVariant(zope.interface.Interface):
         description=u"String representation of ratio as X:Y, e.g. 16:9")
     max_size = zope.schema.TextLine(
         description=u"Maximum width / height of this Variant, e.g. 160x90")
+    fallback_size = zope.schema.TextLine(
+        description=u"Fallback width / height, e.g. 1200x514")
 
     ratio = zope.interface.Attribute(
         'Float representation of ratio')
@@ -230,6 +232,10 @@ class IVariant(zope.interface.Interface):
         'Shorthand to access width of max_size')
     max_height = zope.interface.Attribute(
         'Shorthand to access height of max_size')
+    fallback_width = zope.interface.Attribute(
+        'Shorthand to access width of fallback_size')
+    fallback_height = zope.interface.Attribute(
+        'Shorthand to access height of fallback_size')
     relative_image_path = zope.interface.Attribute(
         'Image path relative to the ImageGroup the Variant lives in')
     is_default = zope.interface.Attribute(

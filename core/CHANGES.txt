@@ -1,8 +1,11 @@
 zeit.content.image changes
 ==========================
 
-2.8.1 (unreleased)
+2.9.0 (unreleased)
 ------------------
+
+- Add ``fallback_size`` setting for variants, also available as
+  ``fallback_width`` and ``fallback_height`` (ZON-2145).
 
 - Avoid ``KeyError`` for Variants that are no longer valid, i.e. those that are
   missing from the XML config and are only present in the DAVProperty (DEV-910)

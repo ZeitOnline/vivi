@@ -62,6 +62,7 @@ class Variant(object):
     grok.implements(interface)
 
     max_size = None
+    fallback_size = None
     legacy_name = None
     aspect_ratio = None
 
@@ -106,6 +107,20 @@ class Variant(object):
         if self.max_size is None:
             return sys.maxint
         width, height = self.max_size.split('x')
+        return int(height)
+
+    @property
+    def fallback_width(self):
+        if self.fallback_size is None:
+            return None
+        width, height = self.fallback_size.split('x')
+        return int(width)
+
+    @property
+    def fallback_height(self):
+        if self.fallback_size is None:
+            return None
+        width, height = self.fallback_size.split('x')
         return int(height)
 
     @property
