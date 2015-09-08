@@ -42,8 +42,7 @@
   <class class=".feed.FakeEntry">
     <require interface="zeit.cms.interfaces.ICMSContent"
       permission="zope.View" />
-    <require
-      attributes="title"
+    <require interface="zeit.cms.content.interfaces.ICommonMetadata"
       permission="zope.View" />
   </class>
 
