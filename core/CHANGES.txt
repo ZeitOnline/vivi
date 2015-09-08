@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.57.1 (unreleased)
+2.57.1 (2015-09-08)
 -------------------
 
 - Fix security declaration for feed FakeEntry.
