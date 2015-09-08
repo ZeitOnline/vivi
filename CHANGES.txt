@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.9.0 (unreleased)
+2.9.0 (2015-09-08)
 ------------------
 
 - Add ``fallback_size`` setting for variants, also available as
