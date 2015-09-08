@@ -60,3 +60,10 @@ class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
         group2 = zeit.content.image.testing.create_image_group()
         variant2 = IVariants(group2)['square']
         self.assertEqual(variant1, variant2)
+
+    def test_source_should_parse_additional_settings(self):
+        variant = IVariants(self.group)['cinema-small']
+        self.assertEqual(1600, variant.fallback_width)
+        self.assertEqual(900, variant.fallback_height)
+        self.assertEqual(320, variant.max_width)
+        self.assertEqual(180, variant.max_height)
