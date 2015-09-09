@@ -1,4 +1,5 @@
 from zeit.content.image.interfaces import IVariants
+import sys
 import zeit.cms.testing
 import zeit.content.image.testing
 import zope.interface.verify
@@ -60,3 +61,60 @@ class VariantTraversal(zeit.cms.testing.FunctionalTestCase):
         group2 = zeit.content.image.testing.create_image_group()
         variant2 = IVariants(group2)['square']
         self.assertEqual(variant1, variant2)
+
+
+class VariantProperties(zeit.cms.testing.FunctionalTestCase):
+
+    layer = zeit.content.image.testing.ZCML_LAYER
+
+    def setUp(self):
+        super(VariantProperties, self).setUp()
+        self.group = (
+            zeit.content.image.testing.create_image_group_with_master_image())
+        self.variants = IVariants(self.group)
+
+    def test_ratio_is_float_representation_of_aspect_ratio(self):
+        self.assertEqual('1:1', self.variants['square'].aspect_ratio)
+        self.assertEqual(1, self.variants['square'].ratio)
+        self.assertEqual('16:9', self.variants['cinema-small'].aspect_ratio)
+        self.assertEqual(16.0 / 9.0, self.variants['cinema-small'].ratio)
+
+    def test_default_uses_ratio_from_original_image(self):
+        self.assertEqual(None, self.variants['default'].aspect_ratio)
+        self.assertEqual(4.0 / 3.0, self.variants['default'].ratio)
+
+    def test_setting_aspect_ratio_to_original_will_use_ratio_from_master_image(
+            self):
+        self.group.variants = {'square': {'aspect_ratio': 'original'}}
+        self.assertEqual('original', self.variants['square'].aspect_ratio)
+        self.assertEqual(4.0 / 3.0, self.variants['square'].ratio)
+
+    def test_max_width_retrieves_value_from_max_size(self):
+        self.assertEqual(sys.maxint, self.variants['square'].max_width)
+        self.group.variants = {'square': {'max_size': '100x200'}}
+        self.assertEqual(100, self.variants['square'].max_width)
+
+    def test_max_height_retrieves_value_from_max_size(self):
+        self.assertEqual(sys.maxint, self.variants['square'].max_height)
+        self.group.variants = {'square': {'max_size': '100x200'}}
+        self.assertEqual(200, self.variants['square'].max_height)
+
+    def test_default_is_recognized_as_default_but_square_is_not(self):
+        self.assertEqual(True, self.variants['default'].is_default)
+        self.assertEqual(False, self.variants['square'].is_default)
+
+    def test_relative_path_of_default_links_to_master_image(self):
+        self.assertEqual(
+            'thumbnail-source-master-image.jpg',
+            self.variants['default'].relative_image_path)
+
+    def test_relative_path_of_other_variants_link_to_thumbnail_of_variant(
+            self):
+        self.assertEqual(
+            'thumbnails/square', self.variants['square'].relative_image_path)
+
+    def test_relative_path_contains_max_size_to_distinguish_variant_sizes(
+            self):
+        self.assertEqual(
+            'thumbnails/cinema__320x180',
+            self.variants['cinema-small'].relative_image_path)
