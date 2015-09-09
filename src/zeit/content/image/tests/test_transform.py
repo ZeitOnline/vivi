@@ -106,3 +106,17 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
             '  x     ',
             '        ',
         ], self.transform.create_variant_image(variant, (8, 2)))
+
+    def test_image_enhancements_are_applied_and_change_image(self):
+        variant = Variant(id='square', focus_x=5.0 / 16, focus_y=3.0 / 8,
+                          zoom=1, aspect_ratio='2:1', brightness=0.0)
+        self.assertImage([
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+        ], self.transform.create_variant_image(variant))

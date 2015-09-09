@@ -1,4 +1,5 @@
 import PIL.Image
+import PIL.ImageEnhance
 import transaction
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
@@ -63,6 +64,11 @@ class ImageTransform(object):
 
         if size is not None:
             image = image.resize(size, PIL.Image.ANTIALIAS)
+
+        # Apply enhancements like brightness
+        if variant.brightness is not None:
+            image = PIL.ImageEnhance.Brightness(image).enhance(
+                variant.brightness)
 
         return self._construct_image(image)
 
