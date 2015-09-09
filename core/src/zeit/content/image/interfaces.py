@@ -223,6 +223,8 @@ class IVariant(zope.interface.Interface):
         description=u"String representation of ratio as X:Y, e.g. 16:9")
     max_size = zope.schema.TextLine(
         description=u"Maximum width / height of this Variant, e.g. 160x90")
+    brightness = zope.schema.Float(
+        description=u'Factor to enhance brightness, 1.0 for original value')
 
     ratio = zope.interface.Attribute(
         'Float representation of ratio')
