@@ -62,6 +62,7 @@ class Variant(object):
     grok.implements(interface)
 
     max_size = None
+    brightness = None
     legacy_name = None
     aspect_ratio = None
 
