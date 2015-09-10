@@ -7,6 +7,9 @@ zeit.content.image changes
 - Avoid ``KeyError`` for Variants that are no longer valid, i.e. those that are
   missing from the XML config and are only present in the DAVProperty (DEV-910)
 
+- Use variant image of `default` configuration as master image in frontend to
+  preview image enhancements while ignoring cropping due to zoom. (DEV-826)
+
 
 2.8.0 (2015-08-27)
 ------------------

@@ -2,6 +2,7 @@ from pprint import pformat
 from zeit.content.image.variant import Variant
 import PIL.Image
 import PIL.ImageDraw
+import pkg_resources
 import zeit.cms.testing
 import zeit.content.image.interfaces
 import zeit.content.image.testing
@@ -108,6 +109,7 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
         ], self.transform.create_variant_image(variant, (8, 2)))
 
     def test_image_enhancements_are_applied_and_change_image(self):
+        # Brightness of 0.0 makes image black
         variant = Variant(id='square', focus_x=5.0 / 16, focus_y=3.0 / 8,
                           zoom=1, aspect_ratio='2:1', brightness=0.0)
         self.assertImage([
@@ -120,3 +122,33 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
             'xxxxxxxxxxxxxxxx',
             'xxxxxxxxxxxxxxxx',
         ], self.transform.create_variant_image(variant))
+
+    def test_image_for_default_ignores_cropping_but_applies_image_enhancements(
+            self):
+        """Apply no cropping to use the default variant image as master in UI.
+        """
+        # Create image group with b/w image that is equal to the image which is
+        # generated during setUp
+        self.group = (
+            zeit.content.image.testing.create_image_group_with_master_image(
+                file_name=pkg_resources.resource_filename(
+                    __name__, 'Black-White.PNG')))
+
+        # Set zoom < 1, which would usually result in cropping,
+        # also set brightness to test image enhancements
+        self.group.variants = {'default': {
+            'focus_x': 1, 'focus_y': 1, 'zoom': 0.5, 'brightness': 0.0}}
+
+        # Result image is not cropped, i.e. still 16x8 in size
+        # and is black due to brightness of 0.0
+        self.variants = zeit.content.image.interfaces.IVariants(self.group)
+        self.assertImage([
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+            'xxxxxxxxxxxxxxxx',
+        ], self.transform.create_variant_image(self.variants['default']))

@@ -103,13 +103,10 @@ class VariantProperties(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(True, self.variants['default'].is_default)
         self.assertEqual(False, self.variants['square'].is_default)
 
-    def test_relative_path_of_default_links_to_master_image(self):
-        self.assertEqual(
-            'thumbnail-source-master-image.jpg',
-            self.variants['default'].relative_image_path)
-
-    def test_relative_path_of_other_variants_link_to_thumbnail_of_variant(
+    def test_relative_path_variants_link_to_thumbnail_of_that_variant(
             self):
+        self.assertEqual(
+            'thumbnails/default', self.variants['default'].relative_image_path)
         self.assertEqual(
             'thumbnails/square', self.variants['square'].relative_image_path)
 
