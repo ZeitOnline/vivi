@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.1.4 (unreleased)
+3.1.4 (2015-09-10)
 ------------------
 
 - Write metadata that auto areas maybe delegate to the referenced CP into XML,
