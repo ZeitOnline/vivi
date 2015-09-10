@@ -45,6 +45,42 @@ class ImageTransform(object):
         return self._construct_image(image)
 
     def create_variant_image(self, variant, size=None):
+        """Create variant image from source image.
+
+        Will crop the image according to the zoom, focus point and size. In
+        addition, the image is scaled down to size (if given) and image
+        enhancements, like brightness, are applied.
+
+        The default variant skips cropping, but still applies image
+        enhancements, so it can be used as a high quality preview of image
+        enhancements in the frontend.
+
+        """
+        if not variant.is_default:
+            image = self._crop_variant_image(variant, size=size)
+        else:
+            # Alpha channel is usually activated when cropping,
+            # so we must do it by hand since we skipped cropping
+            image = self._enable_alpha_channel(self.image)
+
+        # Apply enhancements like brightness
+        if variant.brightness is not None:
+            image = PIL.ImageEnhance.Brightness(image).enhance(
+                variant.brightness)
+
+        return self._construct_image(image)
+
+    def _crop_variant_image(self, variant, size=None):
+        """Crop variant image from source image.
+
+        Determines crop position using zoom, focus point and size constraint.
+
+        The result image will have the exact dimensions that are predefined by
+        the size argument, if provided. Otherwise it depends on the variant
+        ratio and zoom only, giving back the best image quality, i.e. will not
+        scale down.
+
+        """
         source_width, source_height = self.image.size
         zoomed_width = int(source_width * variant.zoom)
         zoomed_height = int(source_height * variant.zoom)
@@ -65,12 +101,7 @@ class ImageTransform(object):
         if size is not None:
             image = image.resize(size, PIL.Image.ANTIALIAS)
 
-        # Apply enhancements like brightness
-        if variant.brightness is not None:
-            image = PIL.ImageEnhance.Brightness(image).enhance(
-                variant.brightness)
-
-        return self._construct_image(image)
+        return image
 
     def _fit_ratio_to_image(self, source_width, source_height, target_ratio):
         """Calculate the biggest (width, height) inside the source that adheres
@@ -92,6 +123,11 @@ class ImageTransform(object):
 
     def _crop(self, pil_image, x1, y1, x2, y2):
         pil_image = pil_image.crop((x1, y1, x2, y2))
+        pil_image = self._enable_alpha_channel(pil_image)
+        return pil_image
+
+    def _enable_alpha_channel(self, pil_image):
+        """Enable alpha channel for PNG images by converting to RGBA."""
         # XXX This is a rather crude heuristic.
         mode = 'RGBA' if self.context.format == 'PNG' else 'RGB'
         if pil_image.mode != mode:
