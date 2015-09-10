@@ -207,16 +207,26 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         other.supertitle = 'supertitle'
         self.repository['other'] = other
         self.area.referenced_cp = self.repository['other']
+        zope.lifecycleevent.modified(
+            self.area, zope.lifecycleevent.Attributes(
+                zeit.content.cp.interfaces.IArea, 'referenced_cp'))
 
-    def test_returns_delegated_attribute_from_referenced_cp(self):
+    def test_attributes_from_referenced_cp_are_copied(self):
         self.assertEqual('referenced', self.area.title)
         self.assertEqual('supertitle', self.area.supertitle)
 
     def test_local_value_takes_precendence(self):
+        self.assertEqual('referenced', self.area.title)
         self.area.title = 'local'
         self.assertEqual('local', self.area.title)
-        self.area.title = None
-        self.assertEqual('referenced', self.area.title)
+
+    def test_local_value_is_not_overwritten(self):
+        self.area.title = 'local'
+        self.assertEqual('local', self.area.title)
+        zope.lifecycleevent.modified(
+            self.area, zope.lifecycleevent.Attributes(
+                zeit.content.cp.interfaces.IArea, 'referenced_cp'))
+        self.assertEqual('local', self.area.title)
 
     def test_read_more_url_is_generated_from_cp(self):
         self.assertEqual('http://www.zeit.de/other', self.area.read_more_url)

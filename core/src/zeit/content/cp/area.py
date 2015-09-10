@@ -67,31 +67,6 @@ class RegionFactory(zeit.edit.block.ElementFactory):
         return getattr(lxml.objectify.E, self.tag_name)()
 
 
-class DefaultToReferencedCP(object):
-
-    def __init__(self, local_attribute):
-        self.local_attribute = local_attribute
-
-    def __get__(self, instance, class_):
-        if instance is None:
-            return self
-        name = self.__name__(instance)
-        local = getattr(instance, self.local_attribute, None)
-        if local:
-            return local
-        if instance.referenced_cp is not None:
-            return getattr(instance.referenced_cp, name)
-
-    def __set__(self, instance, value):
-        setattr(instance, self.local_attribute, value)
-
-    def __name__(self, instance):
-        class_ = type(instance)
-        for name in dir(class_):
-            if getattr(class_, name, None) is self:
-                return name
-
-
 class Area(zeit.content.cp.blocks.block.VisibleMixin,
            zeit.edit.container.TypeOnAttributeContainer):
 
@@ -108,16 +83,14 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     _layout = ObjectPathAttributeProperty(
         '.', 'module')
 
-    _supertitle = ObjectPathAttributeProperty(
+    supertitle = ObjectPathAttributeProperty(
         '.', 'supertitle')
-    supertitle = DefaultToReferencedCP('_supertitle')
-    _title = ObjectPathAttributeProperty(
+    title = ObjectPathAttributeProperty(
         '.', 'title')
-    title = DefaultToReferencedCP('_title')
 
     read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more')
-    _read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
+    read_more_url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more_url')
 
     _image = zeit.cms.content.property.SingleResource('.image')
@@ -167,20 +140,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if 'hide-dupes' not in self.xml.attrib:
             self.hide_dupes = zeit.content.cp.interfaces.IArea[
                 'hide_dupes'].default
-
-    @property
-    def read_more_url(self):
-        if self._read_more_url:
-            return self._read_more_url
-        if self.referenced_cp is not None:
-            return self.referenced_cp.uniqueId.replace(
-                zeit.cms.interfaces.ID_NAMESPACE,
-                # XXX Hard-coding seems wrong (e.g. what about staging).
-                'http://www.zeit.de/')
-
-    @read_more_url.setter
-    def read_more_url(self, value):
-        self._read_more_url = value
 
     @property
     def image(self):
@@ -532,3 +491,26 @@ def overflow_excessive_blocks(context, event):
                 while len(context) > context.block_max:
                     last_block = context.values()[-1]
                     overflow_blocks(last_block, None)
+
+
+@grok.subscribe(
+    zeit.content.cp.interfaces.IArea,
+    zope.lifecycleevent.interfaces.IObjectModifiedEvent)
+def prefill_metadata_from_referenced_cp(context, event):
+    for description in event.descriptions:
+        if description.interface is zeit.content.cp.interfaces.IArea:
+            if 'referenced_cp' not in description.attributes:
+                return
+    if context.referenced_cp is None:
+        return
+
+    for field in ['title', 'supertitle']:
+        if getattr(context, field):
+            continue
+        setattr(context, field, getattr(context.referenced_cp, field))
+
+    if not context.read_more_url:
+        context.read_more_url = context.referenced_cp.uniqueId.replace(
+            zeit.cms.interfaces.ID_NAMESPACE,
+            # XXX Hard-coding seems wrong (e.g. what about staging).
+            'http://www.zeit.de/')

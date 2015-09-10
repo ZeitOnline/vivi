@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.1.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Write metadata that auto areas maybe delegate to the referenced CP into XML,
+  since 7val needs it.
 
 
 3.1.3 (2015-09-02)
