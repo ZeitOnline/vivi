@@ -201,6 +201,7 @@ cms_product_config = string.Template("""\
   breadcrumbs-use-common-metadata true
 
   task-queue-async events
+  sitecontrol-prefer-2015 False
 </product-config>
 """).substitute(
     base=pkg_resources.resource_filename(__name__, ''))

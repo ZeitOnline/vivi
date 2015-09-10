@@ -89,6 +89,34 @@ will be directly addressed:
     ...
 
 
+New centerpages
+===============
+
+If a config flag is set, we prefer `.cp2015` centerpages, if they exist:
+
+>>> repository['deutschland']['index.cp2015'] = (
+...     zeit.cms.testcontenttype.testcontenttype.TestContentType())
+>>> config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+>>> config['sitecontrol-prefer-2015'] = 'True'
+>>> browser.reload()
+>>> print browser.contents
+  <form action="#">
+    <select name="site">
+      <option class="homepage"
+              value="http://localhost/++skin++vivi/repository/index.cp2015">Homepage</option>
+      <option class="ressort"
+              value="http://localhost/++skin++vivi/repository/deutschland/index.cp2015">Deutschland</option>
+      <option class="sub_ressort"
+              value="http://localhost/++skin++vivi/repository/deutschland/datenschutz">Datenschutz</option>
+      <option class="sub_ressort"
+              value="http://localhost/++skin++vivi/repository/deutschland/integration">Integration</option>
+      <option class="ressort"
+              value="http://localhost/++skin++vivi/repository/wirtschaft">Wirtschaft</option>
+    </select>
+    ...
+>>> config['sitecontrol-prefer-2015'] = 'False'
+
+
 Additional sites
 ================
 
@@ -111,6 +139,7 @@ objects to site control.
 Currently the utility doesn't return any result, thus nothing is added to the
 site control:
 
+>>> browser.reload()
 >>> old_content = browser.contents
 >>> browser.reload()
 >>> browser.contents == old_content

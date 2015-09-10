@@ -1,3 +1,4 @@
+from zope.cachedescriptors.property import Lazy as cachedproperty
 import zeit.cms.browser.view
 import zeit.cms.content.interfaces
 import zeit.cms.interfaces
@@ -36,7 +37,9 @@ class SiteControl(zeit.cms.browser.view.Base):
         result = [dict(
             css_class='homepage',
             title=u'Homepage',
-            url=self.url(self.context, 'index'))]
+            url=self.url(
+                self.context,
+                'index.cp2015' if self.prefer_cp2015 else 'index'))]
         for ressort_name in ressort:
             url = self._get_url(ressort_name)
             if not url:
@@ -105,6 +108,13 @@ class SiteControl(zeit.cms.browser.view.Base):
         if obj is not None:
             # We check for containment because this does not load the object,
             # hence is faster.
+            if self.prefer_cp2015 and 'index.cp2015' in obj:
+                return self.url(obj, 'index.cp2015')
             if 'index' in obj:
                 return self.url(obj, 'index')
             return self.url(obj)
+
+    @cachedproperty
+    def prefer_cp2015(self):
+        config = zope.app.appsetup.product.getProductConfiguration('zeit.cms')
+        return (config['sitecontrol-prefer-2015'] == 'True')
