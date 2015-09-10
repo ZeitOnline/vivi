@@ -20,6 +20,9 @@
                         focus_y: 0.5,
                         zoom: 0.3,
                         brightness: 0.5,
+                        contrast: 0.5,
+                        saturation: 0.5,
+                        sharpness: 0.5,
                         is_default: true,
                         url: '/fanstatic/zeit.content.image.test/master_image.jpg'
                     };
@@ -90,6 +93,7 @@
             });
         });
 
+        // ===================== Brightness =====================
         it("should display stored brightness value on load", function() {
             var self = this;
             runs(function() {
@@ -115,6 +119,93 @@
                 self.view.brightness_input.val(100);
                 self.view.brightness_input.trigger('input');
                 expect(spy).toHaveBeenCalledWith("brightness", 1.5);
+            });
+        });
+
+        // ===================== Contrast =====================
+        it("should display stored contrast value on load", function() {
+            var self = this;
+            runs(function() {
+                expect(self.view.contrast_bar.slider('value')).toEqual(-100);
+                expect(self.view.contrast_input.val()).toEqual('-100');
+            });
+        });
+
+        it("should store contrast value when changing slider", function() {
+            var self = this;
+            runs(function() {
+                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                self.view.contrast_bar.slider('value', 100);
+                self.view.contrast_bar.trigger('slidestop');
+                expect(spy).toHaveBeenCalledWith("contrast", 1.5);
+            });
+        });
+
+        it("should store contrast value when changing input field", function() {
+            var self = this;
+            runs(function() {
+                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                self.view.contrast_input.val(100);
+                self.view.contrast_input.trigger('input');
+                expect(spy).toHaveBeenCalledWith("contrast", 1.5);
+            });
+        });
+
+        // ===================== Saturation =====================
+        it("should display stored saturation value on load", function() {
+            var self = this;
+            runs(function() {
+                expect(self.view.saturation_bar.slider('value')).toEqual(-100);
+                expect(self.view.saturation_input.val()).toEqual('-100');
+            });
+        });
+
+        it("should store saturation value when changing slider", function() {
+            var self = this;
+            runs(function() {
+                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                self.view.saturation_bar.slider('value', 100);
+                self.view.saturation_bar.trigger('slidestop');
+                expect(spy).toHaveBeenCalledWith("saturation", 1.5);
+            });
+        });
+
+        it("should store saturation value when changing input field", function() {
+            var self = this;
+            runs(function() {
+                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                self.view.saturation_input.val(100);
+                self.view.saturation_input.trigger('input');
+                expect(spy).toHaveBeenCalledWith("saturation", 1.5);
+            });
+        });
+
+        // ===================== Sharpness =====================
+        it("should display stored sharpness value on load", function() {
+            var self = this;
+            runs(function() {
+                expect(self.view.sharpness_bar.slider('value')).toEqual(-100);
+                expect(self.view.sharpness_input.val()).toEqual('-100');
+            });
+        });
+
+        it("should store sharpness value when changing slider", function() {
+            var self = this;
+            runs(function() {
+                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                self.view.sharpness_bar.slider('value', 100);
+                self.view.sharpness_bar.trigger('slidestop');
+                expect(spy).toHaveBeenCalledWith("sharpness", 1.5);
+            });
+        });
+
+        it("should store sharpness value when changing input field", function() {
+            var self = this;
+            runs(function() {
+                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                self.view.sharpness_input.val(100);
+                self.view.sharpness_input.trigger('input');
+                expect(spy).toHaveBeenCalledWith("sharpness", 1.5);
             });
         });
     });
