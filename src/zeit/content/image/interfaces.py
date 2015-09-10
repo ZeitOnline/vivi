@@ -225,6 +225,12 @@ class IVariant(zope.interface.Interface):
         description=u"Maximum width / height of this Variant, e.g. 160x90")
     brightness = zope.schema.Float(
         description=u'Factor to enhance brightness, 1.0 for original value')
+    contrast = zope.schema.Float(
+        description=u'Factor to enhance contrast, 1.0 for original value')
+    saturation = zope.schema.Float(
+        description=u'Factor to enhance saturation, 1.0 for original value')
+    sharpness = zope.schema.Float(
+        description=u'Factor to enhance sharpness, 1.0 for original value')
     fallback_size = zope.schema.TextLine(
         description=u"Fallback width / height, e.g. 1200x514")
 

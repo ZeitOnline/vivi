@@ -61,11 +61,14 @@ class Variant(object):
 
     grok.implements(interface)
 
-    max_size = None
+    aspect_ratio = None
     brightness = None
+    contrast = None
     fallback_size = None
     legacy_name = None
-    aspect_ratio = None
+    max_size = None
+    saturation = None
+    sharpness = None
 
     def __init__(self, **kw):
         """Set attributes that are part of the Schema and convert their type"""

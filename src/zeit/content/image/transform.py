@@ -67,6 +67,15 @@ class ImageTransform(object):
         if variant.brightness is not None:
             image = PIL.ImageEnhance.Brightness(image).enhance(
                 variant.brightness)
+        if variant.contrast is not None:
+            image = PIL.ImageEnhance.Contrast(image).enhance(
+                variant.contrast)
+        if variant.saturation is not None:
+            image = PIL.ImageEnhance.Color(image).enhance(
+                variant.saturation)
+        if variant.sharpness is not None:
+            image = PIL.ImageEnhance.Sharpness(image).enhance(
+                variant.sharpness)
 
         return self._construct_image(image)
 

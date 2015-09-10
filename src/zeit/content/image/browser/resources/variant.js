@@ -16,20 +16,38 @@
     zeit.content.image.Variant = Backbone.Model.extend({
         urlRoot: window.context_url + '/variants',
 
-        brightness: function(value) {
+        image_enhancement: function(name, new_value) {
             var self = this,
-                brightness = self.get('brightness');
-            if (value !== undefined) {
-                if (!isNaN(value)) {
-                    self.set('brightness', value / 200 + 1);
+                old_value = self.get(name);
+
+            if (new_value !== undefined) {
+                if (!isNaN(new_value)) {
+                    self.set(name, new_value / 200 + 1);
+                    return true;
                 }
-                return;
+                return false;
             }
 
-            if (brightness === null) {
+            if (old_value === null) {
                 return 0;
             }
-            return Math.round((brightness - 1) * 200);
+            return Math.round((old_value - 1) * 200);
+        },
+
+        brightness: function(value) {
+            return this.image_enhancement('brightness', value);
+        },
+
+        contrast: function(value) {
+            return this.image_enhancement('contrast', value);
+        },
+
+        saturation: function(value) {
+            return this.image_enhancement('saturation', value);
+        },
+
+        sharpness: function(value) {
+            return this.image_enhancement('sharpness', value);
         },
 
         make_url: function() {
@@ -296,8 +314,8 @@
             "dragend.cropper img.editor": "save",
             "dragstop .focuspoint": "save",
             "slidestop .zoom-bar": "save",
-            "slidestop .brightness-bar": "save_image_enhancement",
-            "input .filter-brightness-input": "save_image_enhancement"
+            "slidestop .image-enhancement-bar": "save_image_enhancement",
+            "input .image-enhancement-input": "save_image_enhancement"
         },
 
         initialize: function() {
@@ -362,16 +380,17 @@
             self.zoom_bar = self.$('.zoom-bar');
 
             // create input elements for image enhancement
+            // Brightness
             self.$el.append($('\
                 <div class="widget filter" id="filter.brightness">\
                     <label for="filter.brightness.input">\
                         Helligkeit\
                     </label>\
-                    <input type="text" name="filter.brightness" class="filter-brightness-input" value="1" class="filter">\
-                    <div class="brightness-bar"></div>\
+                    <input type="text" name="filter.brightness" class="brightness-input image-enhancement-input" value="1" class="filter">\
+                    <div class="image-enhancement-bar brightness-bar"></div>\
                 </div>'));
 
-            self.brightness_input = self.$('.filter-brightness-input');
+            self.brightness_input = self.$('.brightness-input');
             self.brightness_input.val(self.current_model.brightness());
             self.brightness_bar = self.$('.brightness-bar');
             self.brightness_bar.slider({
@@ -379,6 +398,66 @@
                 min: -100,
                 max: 100,
                 value: self.current_model.brightness()
+            });
+
+            // Contrast
+            self.$el.append($('\
+                <div class="widget filter" id="filter.contrast">\
+                    <label for="filter.contrast.input">\
+                        Kontrast\
+                    </label>\
+                    <input type="text" name="filter.contrast" class="contrast-input image-enhancement-input" value="1" class="filter">\
+                    <div class="image-enhancement-bar contrast-bar"></div>\
+                </div>'));
+
+            self.contrast_input = self.$('.contrast-input');
+            self.contrast_input.val(self.current_model.contrast());
+            self.contrast_bar = self.$('.contrast-bar');
+            self.contrast_bar.slider({
+                step: 1,
+                min: -100,
+                max: 100,
+                value: self.current_model.contrast()
+            });
+
+            // saturation
+            self.$el.append($('\
+                <div class="widget filter" id="filter.saturation">\
+                    <label for="filter.saturation.input">\
+                        Sättigung\
+                    </label>\
+                    <input type="text" name="filter.saturation" class="saturation-input image-enhancement-input" value="1" class="filter">\
+                    <div class="image-enhancement-bar saturation-bar"></div>\
+                </div>'));
+
+            self.saturation_input = self.$('.saturation-input');
+            self.saturation_input.val(self.current_model.saturation());
+            self.saturation_bar = self.$('.saturation-bar');
+            self.saturation_bar.slider({
+                step: 1,
+                min: -100,
+                max: 100,
+                value: self.current_model.saturation()
+            });
+
+            // sharpness
+            self.$el.append($('\
+                <div class="widget filter" id="filter.sharpness">\
+                    <label for="filter.sharpness.input">\
+                        Schärfe\
+                    </label>\
+                    <input type="text" name="filter.sharpness" class="sharpness-input image-enhancement-input" value="1" class="filter">\
+                    <div class="image-enhancement-bar sharpness-bar"></div>\
+                </div>'));
+
+            self.sharpness_input = self.$('.sharpness-input');
+            self.sharpness_input.val(self.current_model.sharpness());
+            self.sharpness_bar = self.$('.sharpness-bar');
+            self.sharpness_bar.slider({
+                step: 1,
+                min: -100,
+                max: 100,
+                value: self.current_model.sharpness()
             });
 
             // init draggging / zooming
@@ -477,8 +556,12 @@
 
         save_image_enhancement: function () {
             var self = this,
-                brightness = self.current_model.brightness();
+                brightness = self.current_model.brightness(),
+                contrast = self.current_model.contrast(),
+                saturation = self.current_model.saturation(),
+                sharpness = self.current_model.sharpness();
 
+            // Brightness
             if (self.brightness_bar.slider("value") !== self.current_model.brightness()) {
                 self.current_model.brightness(self.brightness_bar.slider("value"));
             } else if (parseInt(self.brightness_input.val()) !== self.current_model.brightness()) {
@@ -486,6 +569,39 @@
             }
 
             if (brightness !== self.current_model.brightness()) {
+                self.save();
+            }
+
+            // Contrast
+            if (self.contrast_bar.slider("value") !== self.current_model.contrast()) {
+                self.current_model.contrast(self.contrast_bar.slider("value"));
+            } else if (parseInt(self.contrast_input.val()) !== self.current_model.contrast()) {
+                self.current_model.contrast(parseInt(self.contrast_input.val()));
+            }
+
+            if (contrast !== self.current_model.contrast()) {
+                self.save();
+            }
+
+            // Saturation
+            if (self.saturation_bar.slider("value") !== self.current_model.saturation()) {
+                self.current_model.saturation(self.saturation_bar.slider("value"));
+            } else if (parseInt(self.saturation_input.val()) !== self.current_model.saturation()) {
+                self.current_model.saturation(parseInt(self.saturation_input.val()));
+            }
+
+            if (saturation !== self.current_model.saturation()) {
+                self.save();
+            }
+
+            // Sharpness
+            if (self.sharpness_bar.slider("value") !== self.current_model.sharpness()) {
+                self.current_model.sharpness(self.sharpness_bar.slider("value"));
+            } else if (parseInt(self.sharpness_input.val()) !== self.current_model.sharpness()) {
+                self.current_model.sharpness(parseInt(self.sharpness_input.val()));
+            }
+
+            if (sharpness !== self.current_model.sharpness()) {
                 self.save();
             }
         },
@@ -533,6 +649,15 @@
 
             self.brightness_bar.slider("value", self.current_model.brightness());
             self.brightness_input.val(self.current_model.brightness());
+
+            self.contrast_bar.slider("value", self.current_model.contrast());
+            self.contrast_input.val(self.current_model.contrast());
+
+            self.saturation_bar.slider("value", self.current_model.saturation());
+            self.saturation_input.val(self.current_model.saturation());
+
+            self.sharpness_bar.slider("value", self.current_model.sharpness());
+            self.sharpness_input.val(self.current_model.sharpness());
 
             if (self.current_model.get('is_default')) {
                 self.update_focuspoint();

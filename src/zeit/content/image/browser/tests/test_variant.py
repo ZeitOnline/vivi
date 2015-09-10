@@ -3,7 +3,6 @@ import gocept.jasmine.jasmine
 import json
 import requests
 import transaction
-import unittest
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
 import zeit.content.image.interfaces
@@ -65,19 +64,26 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
             'put', '/repository/group/variants/square', data=json.dumps(data))
         transaction.abort()
         self.assertEqual(
-            ['brightness', 'focus_x', 'focus_y', 'zoom'],
+            sorted(['brightness', 'contrast', 'saturation', 'sharpness',
+                    'focus_x', 'focus_y', 'zoom']),
             sorted(self.group.variants['square'].keys()))
 
     def test_put_variant_stores_value_of_focuspoint_zoom_and_img_enhancements(
             self):
-        data = {'brightness': 0.5, 'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 0.1}
+        data = {
+            'brightness': 0.5,
+            'contrast': 0.5,
+            'saturation': 0.5,
+            'sharpness': 0.5,
+            'focus_x': 0.1,
+            'focus_y': 0.2,
+            'zoom': 0.1
+        }
         self.request(
             'put', '/repository/group/variants/square',
             data=json.dumps(data))
         transaction.abort()
-        self.assertEqual(
-            {'brightness': 0.5, 'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 0.1},
-            self.group.variants['square'])
+        self.assertEqual(data, self.group.variants['square'])
 
     def test_put_variant_returns_error_if_focuspoint_was_set_to_None(self):
         # Setting focuspoint to None would break Image generation
@@ -111,6 +117,9 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
         # Setting it explicitly would cause issues when converting to float.
         data = self.group.variants['square'].copy()
         data['brightness'] = None
+        data['contrast'] = None
+        data['saturation'] = None
+        data['sharpness'] = None
         with self.assertNothingRaised():
             self.request(
                 'put', '/repository/group/variants/square',
