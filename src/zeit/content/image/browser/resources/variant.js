@@ -220,6 +220,10 @@
             image.addClass('editor');
 
             return image;
+        },
+
+        update_image: function() {
+            this.$el.attr('src', this.model.make_url());
         }
     });
 
@@ -247,16 +251,18 @@
             });
         },
 
-        reload: function(variant) {
-            // Only update src attribute of images.
+        reload: function(variant_view) {
+            // Only update src attribute of images to reload them.
             var self = this;
 
-            if (!variant.get('is_default')) {
-                // only update the variant that was changed
-                self.model_views[variant.id].update_image();
+            // Update the variant that was changed, unless it's the default one
+            if (!variant_view.model.get('is_default')) {
+                variant_view.update_image();
                 return;
             }
 
+            // Update master image and all previews
+            variant_view.update_image();
             $.each(self.model_views, function(id, view) {
                 view.update_image();
             });
@@ -355,7 +361,7 @@
             // update all images
             if (variants.length == 0) {
                 zeit.content.image.VARIANTS.trigger(
-                    'reload', self.default_model);
+                    'reload', self.model_view);
                 self.notify_status("reset_all");
                 return;
             }
@@ -383,7 +389,7 @@
             self.reset_current_button.on('click', function() {
                 self.current_model.destroy({wait: true}).done(function() {
                     zeit.content.image.VARIANTS.trigger(
-                        'reload', self.current_model);
+                        'reload', self.model_view);
                 });
                 self.notify_status("reset_single");
                 self.switch_focus(
@@ -444,8 +450,7 @@
             promise.done(function() {
                 self.update();
                 zeit.content.image.VARIANTS.trigger(
-                    'reload',
-                    self.current_model
+                    'reload', self.model_view
                 );
                 self.notify_status("saved");
             });
