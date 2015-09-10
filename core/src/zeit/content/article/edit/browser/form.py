@@ -503,7 +503,8 @@ class OptionsProductManagement(zeit.edit.browser.form.InlineForm):
     prefix = 'options-productmanagement'
     undo_description = _('edit options')
     form_fields = FormFields(ICommonMetadata).select(
-        'cap_title', 'banner_id', 'vg_wort_id')
+        'cap_title', 'banner_id', 'vg_wort_id',
+        'advertisement_title', 'advertisement_text')
 
 
 class OptionsProductManagementB(zeit.edit.browser.form.InlineForm):

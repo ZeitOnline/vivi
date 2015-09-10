@@ -4,7 +4,7 @@ zeit.content.article changes
 3.9.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add form for ``advertisement_title`` and ``advertisement_text`` (ZON-1340)
 
 
 3.9.1 (2015-09-02)
