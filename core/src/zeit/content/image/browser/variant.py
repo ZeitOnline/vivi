@@ -25,6 +25,9 @@ class VariantSerializeMixin(object):
                     "Neither focuspoint nor zoom should ever be set to None, "
                     "since image creation would break.")
             result[name] = data[name]
+        for name in ['brightness']:
+            if data[name] is not None:
+                result[name] = data[name]
         return result
 
 
