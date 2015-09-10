@@ -10,6 +10,8 @@ zeit.content.image changes
 - Use variant image of `default` configuration as master image in frontend to
   preview image enhancements while ignoring cropping due to zoom. (DEV-826)
 
+- Add UI and backend support to adjust brightness of an image. (DEV-826)
+
 
 2.8.0 (2015-08-27)
 ------------------

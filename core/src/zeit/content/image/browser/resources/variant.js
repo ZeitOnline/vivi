@@ -16,6 +16,22 @@
     zeit.content.image.Variant = Backbone.Model.extend({
         urlRoot: window.context_url + '/variants',
 
+        brightness: function(value) {
+            var self = this,
+                brightness = self.get('brightness');
+            if (value !== undefined) {
+                if (!isNaN(value)) {
+                    self.set('brightness', value / 200 + 1);
+                }
+                return;
+            }
+
+            if (brightness === null) {
+                return 0;
+            }
+            return Math.round((brightness - 1) * 200);
+        },
+
         make_url: function() {
             var self = this,
                 url = self.escape('url');
@@ -279,7 +295,9 @@
             "built.cropper img.editor": "update",
             "dragend.cropper img.editor": "save",
             "dragstop .focuspoint": "save",
-            "slidestop .zoom-bar": "save"
+            "slidestop .zoom-bar": "save",
+            "slidestop .brightness-bar": "save_image_enhancement",
+            "input .filter-brightness-input": "save_image_enhancement"
         },
 
         initialize: function() {
@@ -342,6 +360,26 @@
             // bind DOM elements to variables for later use
             self.focuspoint = self.$('.focuspoint');
             self.zoom_bar = self.$('.zoom-bar');
+
+            // create input elements for image enhancement
+            self.$el.append($('\
+                <div class="widget filter" id="filter.brightness">\
+                    <label for="filter.brightness.input">\
+                        Helligkeit\
+                    </label>\
+                    <input type="text" name="filter.brightness" class="filter-brightness-input" value="1" class="filter">\
+                    <div class="brightness-bar"></div>\
+                </div>'));
+
+            self.brightness_input = self.$('.filter-brightness-input');
+            self.brightness_input.val(self.current_model.brightness());
+            self.brightness_bar = self.$('.brightness-bar');
+            self.brightness_bar.slider({
+                step: 1,
+                min: -100,
+                max: 100,
+                value: self.current_model.brightness()
+            });
 
             // init draggging / zooming
             self.initialize_focuspoint();
@@ -437,6 +475,21 @@
             });
         },
 
+        save_image_enhancement: function () {
+            var self = this,
+                brightness = self.current_model.brightness();
+
+            if (self.brightness_bar.slider("value") !== self.current_model.brightness()) {
+                self.current_model.brightness(self.brightness_bar.slider("value"));
+            } else if (parseInt(self.brightness_input.val()) !== self.current_model.brightness()) {
+                self.current_model.brightness(parseInt(self.brightness_input.val()));
+            }
+
+            if (brightness !== self.current_model.brightness()) {
+                self.save();
+            }
+        },
+
         save: function() {
             var self = this,
                 promise;
@@ -477,6 +530,9 @@
 
         update: function() {
             var self = this;
+
+            self.brightness_bar.slider("value", self.current_model.brightness());
+            self.brightness_input.val(self.current_model.brightness());
 
             if (self.current_model.get('is_default')) {
                 self.update_focuspoint();
@@ -550,7 +606,7 @@
         },
 
         notify_status: function(status) {
-            // Used for Selenium tests
+            // Used for Selenium tests, add `status` as class to element for 2s
             var self = this;
             self.$el.addClass(status);
             window.setTimeout(function () {
