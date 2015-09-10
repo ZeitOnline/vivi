@@ -55,7 +55,7 @@
 }
 
 /* Sliders for image enhancements should look like the slider from the old UI*/
-.brightness-bar {
+.image-enhancement-bar {
     background-image: url("slider-bar-horizontal.gif");
     background-repeat: repeat-x;
     background-color: transparent;
@@ -63,7 +63,7 @@
     cursor: pointer;
 }
 
-.brightness-bar .ui-slider-handle {
+.image-enhancement-bar .ui-slider-handle {
     background-image: url("slider-handle-horizontal.gif");
     background-repeat: no-repeat;
     background-color: transparent;
