@@ -175,5 +175,13 @@
             $("input[value='Alle Formate zurücksetzen']").click();
             expect(image.attr('src')).not.toBe(image_url);
         });
+
+        it("should update master image on save", function() {
+            var self = this,
+                image = self.editor_container.find('img.editor'),
+                image_url = image.attr('src');
+            self.view.save();
+            expect(image.attr('src')).not.toBe(image_url);
+        });
     });
 }(jQuery));
