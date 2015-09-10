@@ -54,6 +54,24 @@
     left: 0;
 }
 
+/* Sliders for image enhancements should look like the slider from the old UI*/
+.brightness-bar {
+    background-image: url("slider-bar-horizontal.gif");
+    background-repeat: repeat-x;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.brightness-bar .ui-slider-handle {
+    background-image: url("slider-handle-horizontal.gif");
+    background-repeat: no-repeat;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    top: 0;
+}
+
 #variant-preview {
     bottom: 1em;
     left: 61%;

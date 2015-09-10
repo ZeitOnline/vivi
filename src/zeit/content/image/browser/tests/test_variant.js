@@ -19,6 +19,7 @@
                         focus_x: 0.5,
                         focus_y: 0.5,
                         zoom: 0.3,
+                        brightness: 0.5,
                         is_default: true,
                         url: '/fanstatic/zeit.content.image.test/master_image.jpg'
                     };
@@ -86,6 +87,34 @@
                 expect(spy).toHaveBeenCalledWith(
                     {"focus_x": 0.5, "focus_y": 0.5, "zoom": 0.6}
                 );
+            });
+        });
+
+        it("should display stored brightness value on load", function() {
+            var self = this;
+            runs(function() {
+                expect(self.view.brightness_bar.slider('value')).toEqual(-100);
+                expect(self.view.brightness_input.val()).toEqual('-100');
+            });
+        });
+
+        it("should store brightness value when changing slider", function() {
+            var self = this;
+            runs(function() {
+                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                self.view.brightness_bar.slider('value', 100);
+                self.view.brightness_bar.trigger('slidestop');
+                expect(spy).toHaveBeenCalledWith("brightness", 1.5);
+            });
+        });
+
+        it("should store brightness value when changing input field", function() {
+            var self = this;
+            runs(function() {
+                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                self.view.brightness_input.val(100);
+                self.view.brightness_input.trigger('input');
+                expect(spy).toHaveBeenCalledWith("brightness", 1.5);
             });
         });
     });
@@ -173,6 +202,14 @@
                 image = self.preview_container.find('img.preview'),
                 image_url = image.attr('src');
             $("input[value='Alle Formate zurücksetzen']").click();
+            expect(image.attr('src')).not.toBe(image_url);
+        });
+
+        it("should update master image on save", function() {
+            var self = this,
+                image = self.editor_container.find('img.editor'),
+                image_url = image.attr('src');
+            self.view.save();
             expect(image.attr('src')).not.toBe(image_url);
         });
     });

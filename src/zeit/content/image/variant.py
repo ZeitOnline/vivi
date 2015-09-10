@@ -62,6 +62,7 @@ class Variant(object):
     grok.implements(interface)
 
     max_size = None
+    brightness = None
     fallback_size = None
     legacy_name = None
     aspect_ratio = None
@@ -129,10 +130,6 @@ class Variant(object):
 
     @property
     def relative_image_path(self):
-        if self.is_default:
-            thumbnails = zeit.content.image.interfaces.IThumbnails(
-                zeit.content.image.interfaces.IImageGroup(self))
-            return thumbnails.source_image.__name__
         if self.max_size is None:
             return '%s/%s' % (
                 zeit.content.image.imagegroup.Thumbnails.NAME, self.name)

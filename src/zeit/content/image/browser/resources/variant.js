@@ -16,6 +16,22 @@
     zeit.content.image.Variant = Backbone.Model.extend({
         urlRoot: window.context_url + '/variants',
 
+        brightness: function(value) {
+            var self = this,
+                brightness = self.get('brightness');
+            if (value !== undefined) {
+                if (!isNaN(value)) {
+                    self.set('brightness', value / 200 + 1);
+                }
+                return;
+            }
+
+            if (brightness === null) {
+                return 0;
+            }
+            return Math.round((brightness - 1) * 200);
+        },
+
         make_url: function() {
             var self = this,
                 url = self.escape('url');
@@ -220,6 +236,10 @@
             image.addClass('editor');
 
             return image;
+        },
+
+        update_image: function() {
+            this.$el.attr('src', this.model.make_url());
         }
     });
 
@@ -247,16 +267,18 @@
             });
         },
 
-        reload: function(variant) {
-            // Only update src attribute of images.
+        reload: function(variant_view) {
+            // Only update src attribute of images to reload them.
             var self = this;
 
-            if (!variant.get('is_default')) {
-                // only update the variant that was changed
-                self.model_views[variant.id].update_image();
+            // Update the variant that was changed, unless it's the default one
+            if (!variant_view.model.get('is_default')) {
+                variant_view.update_image();
                 return;
             }
 
+            // Update master image and all previews
+            variant_view.update_image();
             $.each(self.model_views, function(id, view) {
                 view.update_image();
             });
@@ -273,7 +295,9 @@
             "built.cropper img.editor": "update",
             "dragend.cropper img.editor": "save",
             "dragstop .focuspoint": "save",
-            "slidestop .zoom-bar": "save"
+            "slidestop .zoom-bar": "save",
+            "slidestop .brightness-bar": "save_image_enhancement",
+            "input .filter-brightness-input": "save_image_enhancement"
         },
 
         initialize: function() {
@@ -337,6 +361,26 @@
             self.focuspoint = self.$('.focuspoint');
             self.zoom_bar = self.$('.zoom-bar');
 
+            // create input elements for image enhancement
+            self.$el.append($('\
+                <div class="widget filter" id="filter.brightness">\
+                    <label for="filter.brightness.input">\
+                        Helligkeit\
+                    </label>\
+                    <input type="text" name="filter.brightness" class="filter-brightness-input" value="1" class="filter">\
+                    <div class="brightness-bar"></div>\
+                </div>'));
+
+            self.brightness_input = self.$('.filter-brightness-input');
+            self.brightness_input.val(self.current_model.brightness());
+            self.brightness_bar = self.$('.brightness-bar');
+            self.brightness_bar.slider({
+                step: 1,
+                min: -100,
+                max: 100,
+                value: self.current_model.brightness()
+            });
+
             // init draggging / zooming
             self.initialize_focuspoint();
             self.initialize_buttons();
@@ -355,7 +399,7 @@
             // update all images
             if (variants.length == 0) {
                 zeit.content.image.VARIANTS.trigger(
-                    'reload', self.default_model);
+                    'reload', self.model_view);
                 self.notify_status("reset_all");
                 return;
             }
@@ -383,7 +427,7 @@
             self.reset_current_button.on('click', function() {
                 self.current_model.destroy({wait: true}).done(function() {
                     zeit.content.image.VARIANTS.trigger(
-                        'reload', self.current_model);
+                        'reload', self.model_view);
                 });
                 self.notify_status("reset_single");
                 self.switch_focus(
@@ -431,6 +475,21 @@
             });
         },
 
+        save_image_enhancement: function () {
+            var self = this,
+                brightness = self.current_model.brightness();
+
+            if (self.brightness_bar.slider("value") !== self.current_model.brightness()) {
+                self.current_model.brightness(self.brightness_bar.slider("value"));
+            } else if (parseInt(self.brightness_input.val()) !== self.current_model.brightness()) {
+                self.current_model.brightness(parseInt(self.brightness_input.val()));
+            }
+
+            if (brightness !== self.current_model.brightness()) {
+                self.save();
+            }
+        },
+
         save: function() {
             var self = this,
                 promise;
@@ -444,8 +503,7 @@
             promise.done(function() {
                 self.update();
                 zeit.content.image.VARIANTS.trigger(
-                    'reload',
-                    self.current_model
+                    'reload', self.model_view
                 );
                 self.notify_status("saved");
             });
@@ -472,6 +530,9 @@
 
         update: function() {
             var self = this;
+
+            self.brightness_bar.slider("value", self.current_model.brightness());
+            self.brightness_input.val(self.current_model.brightness());
 
             if (self.current_model.get('is_default')) {
                 self.update_focuspoint();
@@ -545,7 +606,7 @@
         },
 
         notify_status: function(status) {
-            // Used for Selenium tests
+            // Used for Selenium tests, add `status` as class to element for 2s
             var self = this;
             self.$el.addClass(status);
             window.setTimeout(function () {

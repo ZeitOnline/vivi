@@ -19,7 +19,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
         super(VariantJsonAPI, self).setUp()
         self.group = create_image_group_with_master_image()
         self.group.variants = {
-            'square': {'focus_x': 0.5, 'focus_y': 0.5}
+            'square': {'focus_x': 0.5, 'focus_y': 0.5, 'zoom': 1.0}
         }
         transaction.commit()
 
@@ -53,7 +53,8 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
             sorted(['url'] + list(zeit.content.image.interfaces.IVariant)),
             sorted(variant.keys()))
 
-    def test_put_variant_stores_focuspoint_and_zoom_only(self):
+    def test_put_variant_stores_focuspoint_zoom_and_image_enhancements_only(
+            self):
         # All other attributes are transient or come from XML
         fields = zope.schema.getFields(zeit.content.image.interfaces.IVariant)
         data = {}
@@ -64,37 +65,60 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
             'put', '/repository/group/variants/square', data=json.dumps(data))
         transaction.abort()
         self.assertEqual(
-            ['focus_x', 'focus_y', 'zoom'],
+            ['brightness', 'focus_x', 'focus_y', 'zoom'],
             sorted(self.group.variants['square'].keys()))
 
-    def test_put_variant_stores_value_of_focuspoint_and_zoom(self):
+    def test_put_variant_stores_value_of_focuspoint_zoom_and_img_enhancements(
+            self):
+        data = {'brightness': 0.5, 'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 0.1}
         self.request(
             'put', '/repository/group/variants/square',
-            data=json.dumps({'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 1.0}))
+            data=json.dumps(data))
         transaction.abort()
         self.assertEqual(
-            {'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 1.0},
+            {'brightness': 0.5, 'focus_x': 0.1, 'focus_y': 0.2, 'zoom': 0.1},
             self.group.variants['square'])
 
     def test_put_variant_returns_error_if_focuspoint_was_set_to_None(self):
         # Setting focuspoint to None would break Image generation
+        data = self.group.variants['square'].copy()
+        data['focus_x'] = data['focus_y'] = None
         with self.assertRaises(ValueError):
             self.request(
                 'put', '/repository/group/variants/square',
-                data=json.dumps({'focus_x': None, 'focus_y': None}))
+                data=json.dumps(data))
         transaction.abort()
         self.assertEqual(
-            {'focus_x': 0.5, 'focus_y': 0.5}, self.group.variants['square'])
+            {'focus_x': 0.5, 'focus_y': 0.5, 'zoom': 1.0},
+            self.group.variants['square'])
 
     def test_put_variant_returns_error_if_zoom_was_set_to_None(self):
         # Setting zoom to None would break Image generation
+        data = self.group.variants['square'].copy()
+        data['zoom'] = None
         with self.assertRaises(ValueError):
             self.request(
                 'put', '/repository/group/variants/square',
-                data=json.dumps({'zoom': None}))
+                data=json.dumps(data))
         transaction.abort()
         self.assertEqual(
-            {'focus_x': 0.5, 'focus_y': 0.5}, self.group.variants['square'])
+            {'focus_x': 0.5, 'focus_y': 0.5, 'zoom': 1.0},
+            self.group.variants['square'])
+
+    def test_put_variant_ignores_None_values_for_image_enhancements(
+            self):
+        # None is the default for image enhancements and means 'is not used'.
+        # Setting it explicitly would cause issues when converting to float.
+        data = self.group.variants['square'].copy()
+        data['brightness'] = None
+        with self.assertNothingRaised():
+            self.request(
+                'put', '/repository/group/variants/square',
+                data=json.dumps(data))
+        transaction.abort()
+        self.assertEqual(
+            {'focus_x': 0.5, 'focus_y': 0.5, 'zoom': 1.0},
+            self.group.variants['square'])
 
     def test_delete_removes_variant_config_from_group(self):
         self.request('delete', '/repository/group/variants/square')
@@ -121,7 +145,7 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
         s.assertTextPresent('Vollbreit (L)')
 
         # change default
-        s.dragAndDrop('css=.ui-slider-handle', '0,-50')
+        s.dragAndDrop('css=.zoom-bar .ui-slider-handle', '0,-50')
         s.dragAndDrop('css=.focuspoint', '50,50')
         s.waitForCssCount('css=.saved', 1)
         s.waitForCssCount('css=.saved', 0)
@@ -151,6 +175,7 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
             variants['cinema-small']['focus_x'],
             variants['default']['focus_x'])
 
+        # Make sure "Verwerfen" deletes config of the cinema-small variant
         s.click('css=input[value=Verwerfen]')
         s.waitForCssCount('css=.reset_single', 1)
         s.waitForCssCount('css=.reset_single', 0)
@@ -159,6 +184,18 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
             zeit.cms.repository.interfaces.IRepository)
         variants = repository['2007']['03']['group'].variants
         self.assertEqual(['default'], sorted(variants.keys()))
+
+        # Slider should change value of image enhancements
+        variants = repository['2007']['03']['group'].variants
+        self.assertNotIn('brightness', variants['default'].keys())
+
+        s.dragAndDrop('css=.brightness-bar .ui-slider-handle', '-50,0')
+        s.waitForCssCount('css=.saved', 1)
+        s.waitForCssCount('css=.saved', 0)
+
+        variants = repository['2007']['03']['group'].variants
+        self.assertIn('brightness', variants['default'].keys())
+        self.assertGreater(1, variants['default']['brightness'])
 
 
 class VariantApp(gocept.jasmine.jasmine.TestApp):
