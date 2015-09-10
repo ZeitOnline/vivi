@@ -145,7 +145,7 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
         s.assertTextPresent('Vollbreit (L)')
 
         # change default
-        s.dragAndDrop('css=.ui-slider-handle', '0,-50')
+        s.dragAndDrop('css=.zoom-bar .ui-slider-handle', '0,-50')
         s.dragAndDrop('css=.focuspoint', '50,50')
         s.waitForCssCount('css=.saved', 1)
         s.waitForCssCount('css=.saved', 0)
@@ -175,6 +175,7 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
             variants['cinema-small']['focus_x'],
             variants['default']['focus_x'])
 
+        # Make sure "Verwerfen" deletes config of the cinema-small variant
         s.click('css=input[value=Verwerfen]')
         s.waitForCssCount('css=.reset_single', 1)
         s.waitForCssCount('css=.reset_single', 0)
@@ -183,6 +184,18 @@ class VariantIntegrationTest(zeit.cms.testing.SeleniumTestCase):
             zeit.cms.repository.interfaces.IRepository)
         variants = repository['2007']['03']['group'].variants
         self.assertEqual(['default'], sorted(variants.keys()))
+
+        # Slider should change value of image enhancements
+        variants = repository['2007']['03']['group'].variants
+        self.assertNotIn('brightness', variants['default'].keys())
+
+        s.dragAndDrop('css=.brightness-bar .ui-slider-handle', '-50,0')
+        s.waitForCssCount('css=.saved', 1)
+        s.waitForCssCount('css=.saved', 0)
+
+        variants = repository['2007']['03']['group'].variants
+        self.assertIn('brightness', variants['default'].keys())
+        self.assertGreater(1, variants['default']['brightness'])
 
 
 class VariantApp(gocept.jasmine.jasmine.TestApp):
