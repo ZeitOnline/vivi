@@ -23,5 +23,5 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
         E = lxml.objectify.E
         raw = getattr(E, self.element_type)()
         raw.set('alldevices', 'true')
-        raw.append(E.div('\n\n', **{'class': 'article__item'}))
+        raw.append(E.div('\n\n', **{'class': 'article__item x-spacing'}))
         return raw
