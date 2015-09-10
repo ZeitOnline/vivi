@@ -20,4 +20,8 @@ class Factory(zeit.content.article.edit.block.BlockFactory):
     title = _('Raw XML')
 
     def get_xml(self):
-        return getattr(lxml.objectify.E, self.element_type)('\n\n')
+        E = lxml.objectify.E
+        raw = getattr(E, self.element_type)()
+        raw.set('alldevices', 'true')
+        raw.append(E.div('\n\n', **{'class': 'article__item'}))
+        return raw
