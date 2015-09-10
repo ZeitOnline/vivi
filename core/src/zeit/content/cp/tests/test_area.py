@@ -204,11 +204,13 @@ class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
         self.area = self.repository['cp']['feature'].create_item('area')
         other = zeit.content.cp.centerpage.CenterPage()
         other.title = 'referenced'
+        other.supertitle = 'supertitle'
         self.repository['other'] = other
         self.area.referenced_cp = self.repository['other']
 
     def test_returns_delegated_attribute_from_referenced_cp(self):
         self.assertEqual('referenced', self.area.title)
+        self.assertEqual('supertitle', self.area.supertitle)
 
     def test_local_value_takes_precendence(self):
         self.area.title = 'local'
