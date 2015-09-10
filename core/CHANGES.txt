@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.58.0 (unreleased)
+2.58.0 (2015-09-10)
 -------------------
 
 - Add fields ``advertisement_title`` and ``advertisement_text`` to
