@@ -22,7 +22,7 @@ class LastSemanticPublish(zeit.cms.testing.ZeitCmsTestCase):
             transaction.commit()
 
         zope.event.notify(
-            zeit.cms.workflow.interfaces.PublishedEvent(content, None))
+            zeit.cms.workflow.interfaces.BeforePublishEvent(content, None))
         published = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertGreater(
             published.date_last_published_semantic, OLD_TIMESTAMP)
@@ -32,6 +32,6 @@ class LastSemanticPublish(zeit.cms.testing.ZeitCmsTestCase):
         with checked_out(content, semantic_change=True, temporary=False):
             transaction.commit()
         zope.event.notify(
-            zeit.cms.workflow.interfaces.PublishedEvent(content, None))
+            zeit.cms.workflow.interfaces.BeforePublishEvent(content, None))
         published = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertNotEqual(None, published.date_last_published_semantic)

@@ -4,6 +4,9 @@ zeit.cms changes
 2.58.1 (unreleased)
 -------------------
 
+- Update date_last_published_semantic before publish, since after publish
+  would mean that the change is not publicly visible.
+
 - Support preferring ``.cp2015`` CPs in sitecontrol (DEV-939).
 
 

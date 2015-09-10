@@ -52,7 +52,7 @@ def update_date_last_checkout(context, event):
 
 @zope.component.adapter(
     zope.interface.Interface,
-    zeit.cms.workflow.interfaces.IPublishedEvent)
+    zeit.cms.workflow.interfaces.IBeforePublishEvent)
 def update_date_last_published_semantic(context, event):
     published = zeit.cms.workflow.interfaces.IPublishInfo(context)
     date_last_published_semantic = (
