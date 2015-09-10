@@ -311,6 +311,14 @@ class ICommonMetadata(zope.interface.Interface):
         default=(),
         required=False)
 
+    advertisement_title = zope.schema.TextLine(
+        title=_("Advertisement title"),
+        required=False)
+
+    advertisement_text = zope.schema.Text(
+        title=_("Advertisement text"),
+        required=False)
+
 
 class IProduct(zope.interface.Interface):
     """A publication product"""

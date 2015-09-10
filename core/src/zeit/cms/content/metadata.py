@@ -46,6 +46,9 @@ class CommonMetadata(zeit.cms.content.xmlsupport.XMLContentBase):
             'tldr_text',
             'tldr_milestone',
             'tldr_date',
+
+            'advertisement_title',
+            'advertisement_text',
         ))
 
     authors = zeit.cms.content.dav.DAVProperty(
