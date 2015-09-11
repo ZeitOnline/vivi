@@ -18,6 +18,8 @@ zeit.content.image changes
 - Automatically switch back to the master image, when the background of the
   variant editor was clicked. (DEV-910)
 
+- Show that the focuspoint can be dragged by changing cursor to grab. (DEV-910)
+
 
 2.9.0 (2015-09-08)
 ------------------
