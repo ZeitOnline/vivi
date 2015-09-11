@@ -516,21 +516,11 @@
                         'reload', self.model_view);
                 });
                 self.notify_status("reset_single");
-                self.switch_focus(
-                    self.default_model,
-                    new zeit.content.image.browser.EditableVariant(
-                        {model: self.default_model}
-                    )
-                );
+                self.switch_to_default();
             });
 
             self.save_current_button.on('click', function() {
-                self.switch_focus(
-                    self.default_model,
-                    new zeit.content.image.browser.EditableVariant(
-                        {model: self.default_model}
-                    )
-                );
+                self.switch_to_default();
             });
         },
 
@@ -708,6 +698,16 @@
             });
         },
 
+        switch_to_default: function() {
+            var self = this;
+            self.switch_focus(
+                self.default_model,
+                new zeit.content.image.browser.EditableVariant(
+                    {model: self.default_model}
+                )
+            );
+        },
+
         notify_status: function(status) {
             // Used for Selenium tests, add `status` as class to element for 2s
             var self = this;
@@ -729,6 +729,17 @@
 
         new zeit.content.image.browser.VariantList();
         zeit.content.image.VARIANTS.fetch({reset: true});
+
+        // Switch to Master image when background of Editor was clicked.
+        $('#content').on('click', function (event) {
+            var id = event.target.id;
+            if (id === 'content'
+                || id === 'variant-inner'
+                || id === 'variant-preview'
+                || $(event.target).hasClass('preview-container')) {
+                view.switch_to_default();
+            }
+        });
     });
 
 })();
