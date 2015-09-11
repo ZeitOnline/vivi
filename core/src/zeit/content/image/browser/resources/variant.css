@@ -138,11 +138,12 @@ img.editor {
     text-transform: uppercase;
 }
 
-.preview-container:not(.active) > .preview {
+/* Only apply transparency if a variant preview was selected */
+.active-selection > .preview-container:not(.active) > .preview {
     border: solid 1px rgba(0, 0, 0, 0.5);
 }
-
-.preview-container:not(.active) > .preview, .preview-container:not(.active) > .preview-title {
+.active-selection > .preview-container:not(.active) > .preview,
+.active-selection > .preview-container:not(.active) > .preview-title {
     opacity: 0.5;
 }
 

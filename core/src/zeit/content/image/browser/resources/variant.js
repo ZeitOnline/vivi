@@ -186,6 +186,12 @@
 
     var AbstractVariant = Backbone.View.extend({
 
+        initialize: function(options) {
+            var self = this;
+            self.model = options.model;
+            self.active = false;
+        },
+
         create_image: function() {
             var self = this,
                 image = $('<img/>');
@@ -199,6 +205,23 @@
             image.attr('src', self.model.make_url());
 
             return image;
+        },
+
+        // Add or remove the `active` class and trigger an event to enable /
+        // disable transparency of other variant previews. Since VariantList
+        // does not listen to the default variant, switching to default will
+        // deactivate transparency for ALL previews.
+        set_active: function(active) {
+            var self = this;
+            if (self.active && !active) {
+                self.$el.removeClass('active');
+                self.trigger('deactivate', self);
+            }
+            if (!self.active && active) {
+                self.$el.addClass('active');
+                self.trigger('activate', self);
+            }
+            self.active = active;
         }
     });
 
@@ -299,6 +322,10 @@
                 var view = new zeit.content.image.browser.PreviewVariant(
                     {model: variant}
                 );
+
+                self.listenTo(view, 'activate', self.activate);
+                self.listenTo(view, 'deactivate', self.deactivate);
+
                 self.model_views[variant.id] = view;
                 self.$el.append(view.render().el);
             });
@@ -319,8 +346,15 @@
             $.each(self.model_views, function(id, view) {
                 view.update_image();
             });
-        }
+        },
 
+        activate: function(variant_view) {
+            this.$el.addClass('active-selection');
+        },
+
+        deactivate: function(variant_view) {
+            this.$el.removeClass('active-selection');
+        }
     });
 
 
@@ -664,9 +698,9 @@
                 self.save_current_button.hide();
             }
 
-            self.model_view.$el.removeClass('active');
+            self.model_view.set_active(false);
             self.model_view = view;
-            self.model_view.$el.addClass('active');
+            self.model_view.set_active(true);
             self.current_model = model;
             self.current_model.fetch().done(function() {
                 self.update();
