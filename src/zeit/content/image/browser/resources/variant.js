@@ -13,12 +13,26 @@
     /* ============================ TEMPLATES ============================== */
     /* ===================================================================== */
 
-    var image_enhancement_template = Handlebars.compile('\
-<div class="widget filter image-enhancement-widget">\
-    <label for="{{name}}-input">{{title}}</label>\
-    <input type="text" name="filter.{{name}}" class="{{name}}-input image-enhancement-input" value="1" class="filter">\
-    <div class="image-enhancement-bar {{name}}-bar"></div>\
-</div>');
+    var button_template = Handlebars.compile(
+        '<input type="submit" class="button" value="{{title}}" />'
+    );
+
+    var image_container_template = Handlebars.compile(
+        '<div class="image-container">\
+            <div class="focuspoint">\
+                <div class="circle"></div>\
+            </div>\
+        </div>\
+        <div class="zoom-bar"></div>'
+    );
+
+    var image_enhancement_template = Handlebars.compile(
+        '<div class="widget filter image-enhancement-widget">\
+            <label for="{{name}}-input">{{title}}</label>\
+            <input type="text" name="filter.{{name}}" class="{{name}}-input image-enhancement-input" value="1" class="filter">\
+            <div class="image-enhancement-bar {{name}}-bar"></div>\
+        </div>'
+    );
 
 
     /* ===================================================================== */
@@ -366,34 +380,29 @@
             var self = this;
             self.image = self.model_view.render().$el;
 
-            // create DOM to display the image and image controls
-            self.$el.append(
-                $('<div class="image-container"></div>').append(
-                    $('<div class="focuspoint"></div>').append(
-                        $('<div class="circle"></div>')
-                    )
-                ).append(self.image).add('<div class="zoom-bar"></div>')
-            );
+            // Create image container with image, focus point and zoom bar
+            self.$el.append($(image_container_template()));
+            self.$('.image-container').append(self.image);
 
-            // create DOM for all buttons
-            self.reset_all_button = $(
-                '<input type="submit" class="button" '
-                    + 'value="Alle Formate zurücksetzen" />');
-            self.reset_current_button = $(
-                '<input type="submit" class="button" value="Verwerfen" />');
-            self.save_current_button = $(
-                '<input type="submit" class="button" value="Speichern" />');
+            self.focuspoint = self.$('.focuspoint');
+            self.zoom_bar = self.$('.zoom-bar');
 
-            // add buttons to DOM node
+            // Add buttons after image container for resetting variants
+            self.reset_all_button = $(button_template(
+                {title: 'Alle Formate zurücksetzen'}
+            ));
+            self.reset_current_button = $(button_template(
+                {title: 'Verwerfen'}
+            ));
+            self.save_current_button = $(button_template(
+                {title: 'Speichern'}
+            ));
+
             self.$el.append([
                 self.reset_all_button,
                 self.reset_current_button,
                 self.save_current_button
             ]);
-
-            // bind DOM elements to variables for later use
-            self.focuspoint = self.$('.focuspoint');
-            self.zoom_bar = self.$('.zoom-bar');
 
             // create input elements for image enhancement
             var blur_on_enter = function (event) {
