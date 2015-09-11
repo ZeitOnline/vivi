@@ -16,6 +16,10 @@
     zeit.content.image.Variant = Backbone.Model.extend({
         urlRoot: window.context_url + '/variants',
 
+        zoom: function() {
+            return 100 - this.get('zoom') * 100;
+        },
+
         image_enhancement: function(name, new_value) {
             var self = this,
                 old_value = self.get(name);
@@ -547,7 +551,7 @@
                 step: 5,
                 min: 0,
                 max: 75,
-                value: 100 - self.current_model.get('zoom') * 100,
+                value: self.current_model.zoom(),
                 orientation: 'vertical'
             });
         },
@@ -686,10 +690,7 @@
                 'left',
                 self.current_model.get('focus_x') * 100 + '%'
             );
-            self.zoom_bar.slider(
-                "value",
-                100 - self.current_model.get('zoom') * 100
-            );
+            self.zoom_bar.slider("value", self.current_model.zoom());
         },
 
         update_rectangle: function() {
