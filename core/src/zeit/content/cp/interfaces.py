@@ -276,6 +276,8 @@ class SimpleDictSource(zc.sourcefactory.basic.BasicSourceFactory):
 class QuerySortOrderSource(SimpleDictSource):
 
     values = collections.OrderedDict((
+        ('date-last-published-semantic desc',
+         _('query-sort-order-last-published-semantic')),
         ('last-semantic-change desc',
          _('query-sort-order-last-semantic-change')),
         ('date-first-released desc',
@@ -402,7 +404,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     query_order = zope.schema.Choice(
         title=_('Sort order'),
         source=QuerySortOrderSource(),
-        default=u'last-semantic-change desc',
+        default=u'date-last-published-semantic desc',
         required=True)
 
     raw_query = zope.schema.Text(title=_('Raw query'), required=False)

@@ -186,7 +186,7 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
                 ' OR keywords:(Berlin*))',
                 query)
 
-    def test_query_order_defaults_to_semantic_change(self):
+    def test_query_order_defaults_to_semantic_publish(self):
         lead = self.repository['cp']['lead']
         lead.count = 1
         lead.query = (('Channel', 'International', 'Nahost'),)
@@ -196,7 +196,8 @@ class AutomaticAreaSolrTest(zeit.content.cp.testing.FunctionalTestCase):
             search.return_value = []
             IRenderedArea(lead).values()
             self.assertEqual(
-                'last-semantic-change desc', search.call_args[1]['sort_order'])
+                'date-last-published-semantic desc',
+                search.call_args[1]['sort_order'])
 
     def test_query_order_can_be_set(self):
         lead = self.repository['cp']['lead']
