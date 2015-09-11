@@ -117,7 +117,7 @@
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
                 self.view.brightness_input.val(100);
-                self.view.brightness_input.trigger('input');
+                self.view.brightness_input.trigger('blur');
                 expect(spy).toHaveBeenCalledWith("brightness", 1.5);
             });
         });
@@ -146,7 +146,7 @@
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
                 self.view.contrast_input.val(100);
-                self.view.contrast_input.trigger('input');
+                self.view.contrast_input.trigger('blur');
                 expect(spy).toHaveBeenCalledWith("contrast", 1.5);
             });
         });
@@ -175,7 +175,7 @@
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
                 self.view.saturation_input.val(100);
-                self.view.saturation_input.trigger('input');
+                self.view.saturation_input.trigger('blur');
                 expect(spy).toHaveBeenCalledWith("saturation", 1.5);
             });
         });
@@ -204,7 +204,7 @@
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
                 self.view.sharpness_input.val(100);
-                self.view.sharpness_input.trigger('input');
+                self.view.sharpness_input.trigger('blur');
                 expect(spy).toHaveBeenCalledWith("sharpness", 1.5);
             });
         });

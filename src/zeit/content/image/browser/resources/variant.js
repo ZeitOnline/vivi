@@ -315,7 +315,7 @@
             "dragstop .focuspoint": "save",
             "slidestop .zoom-bar": "save",
             "slidestop .image-enhancement-bar": "save_image_enhancement",
-            "input .image-enhancement-input": "save_image_enhancement"
+            "blur .image-enhancement-input": "save_image_enhancement"
         },
 
         initialize: function() {
@@ -380,6 +380,12 @@
             self.zoom_bar = self.$('.zoom-bar');
 
             // create input elements for image enhancement
+            var blur_on_enter = function (event) {
+                if (event.which === 13) {
+                    event.target.blur();
+                }
+            };
+
             // Brightness
             self.$el.append($('\
                 <div class="widget filter" id="filter.brightness">\
@@ -391,6 +397,7 @@
                 </div>'));
 
             self.brightness_input = self.$('.brightness-input');
+            self.brightness_input.on('keydown', blur_on_enter);
             self.brightness_input.val(self.current_model.brightness());
             self.brightness_bar = self.$('.brightness-bar');
             self.brightness_bar.slider({
@@ -411,6 +418,7 @@
                 </div>'));
 
             self.contrast_input = self.$('.contrast-input');
+            self.contrast_input.on('keydown', blur_on_enter);
             self.contrast_input.val(self.current_model.contrast());
             self.contrast_bar = self.$('.contrast-bar');
             self.contrast_bar.slider({
@@ -431,6 +439,7 @@
                 </div>'));
 
             self.saturation_input = self.$('.saturation-input');
+            self.saturation_input.on('keydown', blur_on_enter);
             self.saturation_input.val(self.current_model.saturation());
             self.saturation_bar = self.$('.saturation-bar');
             self.saturation_bar.slider({
@@ -451,6 +460,7 @@
                 </div>'));
 
             self.sharpness_input = self.$('.sharpness-input');
+            self.sharpness_input.on('keydown', blur_on_enter);
             self.sharpness_input.val(self.current_model.sharpness());
             self.sharpness_bar = self.$('.sharpness-bar');
             self.sharpness_bar.slider({
