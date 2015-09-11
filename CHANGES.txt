@@ -15,6 +15,9 @@ zeit.content.image changes
 - Increase the size of cropper handles, to make it easier to grab the edge of
   the canvas to resize a variant. (DEV-910)
 
+- Automatically switch back to the master image, when the background of the
+  variant editor was clicked. (DEV-910)
+
 
 2.9.0 (2015-09-08)
 ------------------
