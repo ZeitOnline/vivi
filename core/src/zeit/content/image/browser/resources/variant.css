@@ -57,6 +57,7 @@
 /* Sliders for image enhancements should look like the slider from the old UI*/
 .image-enhancement-widget {
     width: 19em;
+    margin-top: 1em;
 }
 
 /* Make CSS Selector more specific, to override `div.filter > input` */
