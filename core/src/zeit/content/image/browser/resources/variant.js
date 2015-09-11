@@ -401,7 +401,7 @@
                 'brightness': 'Helligkeit',
                 'contrast': 'Kontrast',
                 'saturation': 'Sättigung',
-                'sharpness': 'sharpness'
+                'sharpness': 'Schärfe'
             };
             $.each(self.image_enhancements, function(index, name) {
                 self.$el.append($(image_enhancement_template(
