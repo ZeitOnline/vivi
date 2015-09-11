@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.58.1 (unreleased)
+2.58.1 (2015-09-11)
 -------------------
 
 - Update date_last_published_semantic before publish, since after publish
