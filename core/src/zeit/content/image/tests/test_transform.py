@@ -123,8 +123,7 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
             'xxxxxxxxxxxxxxxx',
         ], self.transform.create_variant_image(variant))
 
-    def test_image_for_default_ignores_cropping_but_applies_image_enhancements(
-            self):
+    def test_image_for_default_ignores_cropping_but_applies_brightness(self):
         """Apply no cropping to use the default variant image as master in UI.
         """
         # Create image group with b/w image that is equal to the image which is
@@ -152,3 +151,22 @@ class CreateVariantImageTest(zeit.cms.testing.FunctionalTestCase):
             'xxxxxxxxxxxxxxxx',
             'xxxxxxxxxxxxxxxx',
         ], self.transform.create_variant_image(self.variants['default']))
+
+    def test_all_image_enhancements_are_applied_to_variant_image(self):
+        from mock import patch
+        import PIL.Image
+
+        variant = Variant(
+            id='square', focus_x=0.5, focus_y=0.5, zoom=1, aspect_ratio='2:1',
+            brightness=0.1, contrast=0.2, saturation=0.3, sharpness=0.4)
+
+        # Prepare side effect to return the image given to Image Enhancement
+        def return_image(degenerated_image, original_image, alpha):
+            return original_image
+
+        with patch.object(PIL.Image, 'blend', wraps=return_image) as blend:
+            self.transform.create_variant_image(variant)
+
+        factors = [list(x)[0][2] for x in blend.call_args_list]
+        self.assertEqual(4, blend.call_count)
+        self.assertEqual([0.1, 0.2, 0.3, 0.4], sorted(factors))
