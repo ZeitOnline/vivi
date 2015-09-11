@@ -3,17 +3,18 @@
 (function ($) {
     "use strict";
 
-    describe("VariantEditor", function () {
-        beforeEach(function() {
-            var self = this,
+    var editor_container,
+        preview_container,
+        setUp = function() {
+            var editor, preview, variant,
                 flag = false;
 
             // Create temporary DOM
-            this.editor_container = $(
+            editor_container = $(
                 '<div id="variant-inner" style="width: 220px"/>');
-            this.preview_container = $('<div id="variant-preview"/>');
-            $('body').append(this.editor_container);
-            $('body').append(this.preview_container);
+            preview_container = $('<div id="variant-preview"/>');
+            $('body').append(editor_container);
+            $('body').append(preview_container);
 
             // Mock AJAX calls to return hard coded response
             spyOn($, 'ajax').andCallFake(function (options) {
@@ -35,28 +36,39 @@
             });
 
             // Setup Editor and wait that it was rendered
-            self.preview = new zeit.content.image.browser.VariantList();
-            self.variant = new zeit.content.image.Variant({'id': 'square'});
-            zeit.content.image.VARIANTS.add(self.variant);
+            preview = new zeit.content.image.browser.VariantList();
+            variant = new zeit.content.image.Variant({'id': 'square'});
+            zeit.content.image.VARIANTS.add(variant);
             zeit.content.image.VARIANTS.trigger('reset');
 
-            self.view = new zeit.content.image.browser.VariantEditor();
+            editor = new zeit.content.image.browser.VariantEditor();
 
             runs(function() {
-                self.view.on('render', function() {
+                editor.on('render', function() {
                     flag = true;
                 });
-                self.view.prepare();
+                editor.prepare();
             });
 
             waitsFor(function () {
                 return flag;
             }, "VariantEditor did not render", 500);
+
+            return {editor: editor, preview: preview, variant: variant};
+        };
+
+    describe("VariantEditor", function () {
+        beforeEach(function() {
+            var self = this,
+                result = setUp();
+            self.view = result.editor;
+            self.preview = result.preview;
+            self.variant = result.variant;
         });
 
         afterEach(function () {
-            this.editor_container.remove();
-            this.preview_container.remove();
+            editor_container.remove();
+            preview_container.remove();
         });
 
         it("should display circle relative to given focus point", function () {
@@ -179,7 +191,7 @@
 
         it("should update images of all variants on reset", function() {
             var self = this,
-                image = self.preview_container.find('img.preview'),
+                image = self.preview.$('img.preview'),
                 image_url = image.attr('src');
             $("input[value='Alle Formate zurücksetzen']").click();
             expect(image.attr('src')).not.toBe(image_url);
@@ -187,7 +199,7 @@
 
         it("should update master image on save", function() {
             var self = this,
-                image = self.editor_container.find('img.editor'),
+                image = self.view.$('img.editor'),
                 image_url = image.attr('src');
             self.view.save();
             expect(image.attr('src')).not.toBe(image_url);
