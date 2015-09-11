@@ -3,14 +3,17 @@
 (function ($) {
     "use strict";
 
-    describe("Focuspoint Test", function () {
+    describe("VariantEditor", function () {
         beforeEach(function() {
             var self = this,
                 flag = false;
 
             // Create temporary DOM
-            this.container = $('<div id="variant-inner" style="width: 220px"/>');
-            $('body').append(this.container);
+            this.editor_container = $(
+                '<div id="variant-inner" style="width: 220px"/>');
+            this.preview_container = $('<div id="variant-preview"/>');
+            $('body').append(this.editor_container);
+            $('body').append(this.preview_container);
 
             // Mock AJAX calls to return hard coded response
             spyOn($, 'ajax').andCallFake(function (options) {
@@ -32,6 +35,11 @@
             });
 
             // Setup Editor and wait that it was rendered
+            self.preview = new zeit.content.image.browser.VariantList();
+            self.variant = new zeit.content.image.Variant({'id': 'square'});
+            zeit.content.image.VARIANTS.add(self.variant);
+            zeit.content.image.VARIANTS.trigger('reset');
+
             self.view = new zeit.content.image.browser.VariantEditor();
 
             runs(function() {
@@ -47,7 +55,8 @@
         });
 
         afterEach(function () {
-            this.container.remove();
+            this.editor_container.remove();
+            this.preview_container.remove();
         });
 
         it("should display circle relative to given focus point", function () {
@@ -137,56 +146,6 @@
                     expect(spy).toHaveBeenCalledWith(name, 1.5);
                 });
             });
-        });
-    });
-
-
-    describe("Button Test", function () {
-        beforeEach(function() {
-            var self = this,
-                flag = false;
-
-            // Create temporary DOM
-            this.editor_container = $(
-                '<div id="variant-inner" style="width: 220px"/>');
-            this.preview_container = $('<div id="variant-preview"/>');
-            $('body').append(this.editor_container);
-            $('body').append(this.preview_container);
-
-            // Mock AJAX calls to return hard coded response
-            spyOn($, 'ajax').andCallFake(function (options) {
-                var d = $.Deferred(), response = {
-                    is_default: true,
-                    url: '/fanstatic/zeit.content.image.test/master_image.jpg'
-                };
-                d.resolve(response);
-                options.success(response);
-                return d.promise();
-            });
-
-            // Setup Editor and wait that it was rendered
-            self.preview = new zeit.content.image.browser.VariantList();
-            self.variant = new zeit.content.image.Variant({'id': 'square'});
-            zeit.content.image.VARIANTS.add(self.variant);
-            zeit.content.image.VARIANTS.trigger('reset');
-
-            self.view = new zeit.content.image.browser.VariantEditor();
-
-            runs(function() {
-                self.view.on('render', function() {
-                    flag = true;
-                });
-                self.view.prepare();
-            });
-
-            waitsFor(function () {
-                return flag;
-            }, "VariantEditor did not render", 500);
-        });
-
-        afterEach(function () {
-            this.editor_container.remove();
-            this.preview_container.remove();
         });
 
         it("should switch back to default variant on save", function() {
