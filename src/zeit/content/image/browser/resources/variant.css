@@ -154,3 +154,49 @@ img.editor {
 .cropper-bg {
     background-image: none !important;
 }
+
+/* Increase the size of the handles of the Cropper canvas. */
+.cropper-point {
+    height: 10px !important;
+    width: 10px !important;
+}
+
+.cropper-point.point-n {
+    top: -5px !important;
+    margin-left: -5px !important;
+}
+
+.cropper-point.point-e {
+    right: -5px !important;
+    margin-top: -5px !important;
+}
+
+.cropper-point.point-s {
+    bottom: -5px !important;
+    margin-left: -5px !important;
+}
+
+.cropper-point.point-w {
+    left: -5px !important;
+    margin-top: -5px !important;
+}
+
+.cropper-point.point-nw {
+    left: -5px !important;
+    top: -5px !important;
+}
+
+.cropper-point.point-ne {
+    right: -5px !important;
+    top: -5px !important;
+}
+
+.cropper-point.point-se {
+    bottom: -5px !important;
+    right: -5px !important;
+}
+
+.cropper-point.point-sw {
+    bottom: -5px !important;
+    left: -5px !important;
+}
