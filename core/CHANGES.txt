@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.1.5 (unreleased)
+3.1.5 (2015-09-11)
 ------------------
 
 - Add new default sort order date-last-published-semantic for automatic areas
