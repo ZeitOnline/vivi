@@ -12,6 +12,9 @@ zeit.content.image changes
 
 - Disable transparency of variant previews when displaying the master (DEV-910)
 
+- Increase the size of cropper handles, to make it easier to grab the edge of
+  the canvas to resize a variant. (DEV-910)
+
 
 2.9.0 (2015-09-08)
 ------------------
