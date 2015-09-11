@@ -93,119 +93,49 @@
             });
         });
 
-        // ===================== Brightness =====================
-        it("should display stored brightness value on load", function() {
+        it("should have 4 different image enhancements", function() {
             var self = this;
             runs(function() {
-                expect(self.view.brightness_bar.slider('value')).toEqual(-100);
-                expect(self.view.brightness_input.val()).toEqual('-100');
+                expect(self.view.image_enhancements.length).toBe(4);
             });
         });
 
-        it("should store brightness value when changing slider", function() {
+        it("should display value of enhancements on load", function() {
+            var self = this;
+            runs(function() {
+                $.each(self.view.image_enhancements, function(i, name) {
+                    var input = self.view[name + '_input'],
+                        bar = self.view[name + '_bar'];
+
+                    expect(input.val()).toEqual('-100');
+                    expect(bar.slider("value")).toEqual(-100);
+                });
+            });
+        });
+
+        it("should store enhancement when changing slider", function() {
             var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                self.view.brightness_bar.slider('value', 100);
-                self.view.brightness_bar.trigger('slidestop');
-                expect(spy).toHaveBeenCalledWith("brightness", 1.5);
+                $.each(self.view.image_enhancements, function(i, name) {
+                    var bar = self.view[name + '_bar'];
+                    bar.slider("value", 100);
+                    bar.trigger("slidestop");
+                    expect(spy).toHaveBeenCalledWith(name, 1.5);
+                });
             });
         });
 
-        it("should store brightness value when changing input field", function() {
+        it("should store enhancement when changing input field", function() {
             var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                self.view.brightness_input.val(100);
-                self.view.brightness_input.trigger('blur');
-                expect(spy).toHaveBeenCalledWith("brightness", 1.5);
-            });
-        });
-
-        // ===================== Contrast =====================
-        it("should display stored contrast value on load", function() {
-            var self = this;
-            runs(function() {
-                expect(self.view.contrast_bar.slider('value')).toEqual(-100);
-                expect(self.view.contrast_input.val()).toEqual('-100');
-            });
-        });
-
-        it("should store contrast value when changing slider", function() {
-            var self = this;
-            runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                self.view.contrast_bar.slider('value', 100);
-                self.view.contrast_bar.trigger('slidestop');
-                expect(spy).toHaveBeenCalledWith("contrast", 1.5);
-            });
-        });
-
-        it("should store contrast value when changing input field", function() {
-            var self = this;
-            runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                self.view.contrast_input.val(100);
-                self.view.contrast_input.trigger('blur');
-                expect(spy).toHaveBeenCalledWith("contrast", 1.5);
-            });
-        });
-
-        // ===================== Saturation =====================
-        it("should display stored saturation value on load", function() {
-            var self = this;
-            runs(function() {
-                expect(self.view.saturation_bar.slider('value')).toEqual(-100);
-                expect(self.view.saturation_input.val()).toEqual('-100');
-            });
-        });
-
-        it("should store saturation value when changing slider", function() {
-            var self = this;
-            runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                self.view.saturation_bar.slider('value', 100);
-                self.view.saturation_bar.trigger('slidestop');
-                expect(spy).toHaveBeenCalledWith("saturation", 1.5);
-            });
-        });
-
-        it("should store saturation value when changing input field", function() {
-            var self = this;
-            runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                self.view.saturation_input.val(100);
-                self.view.saturation_input.trigger('blur');
-                expect(spy).toHaveBeenCalledWith("saturation", 1.5);
-            });
-        });
-
-        // ===================== Sharpness =====================
-        it("should display stored sharpness value on load", function() {
-            var self = this;
-            runs(function() {
-                expect(self.view.sharpness_bar.slider('value')).toEqual(-100);
-                expect(self.view.sharpness_input.val()).toEqual('-100');
-            });
-        });
-
-        it("should store sharpness value when changing slider", function() {
-            var self = this;
-            runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                self.view.sharpness_bar.slider('value', 100);
-                self.view.sharpness_bar.trigger('slidestop');
-                expect(spy).toHaveBeenCalledWith("sharpness", 1.5);
-            });
-        });
-
-        it("should store sharpness value when changing input field", function() {
-            var self = this;
-            runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                self.view.sharpness_input.val(100);
-                self.view.sharpness_input.trigger('blur');
-                expect(spy).toHaveBeenCalledWith("sharpness", 1.5);
+                $.each(self.view.image_enhancements, function(i, name) {
+                    var input_field = self.view[name + '_input'];
+                    input_field.val(100);
+                    input_field.trigger("blur");
+                    expect(spy).toHaveBeenCalledWith(name, 1.5);
+                });
             });
         });
     });
