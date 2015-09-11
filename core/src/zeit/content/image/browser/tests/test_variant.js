@@ -61,7 +61,7 @@
         beforeEach(function() {
             var self = this,
                 result = setUp();
-            self.view = result.editor;
+            self.editor = result.editor;
             self.preview = result.preview;
             self.variant = result.variant;
         });
@@ -74,7 +74,7 @@
         it("should display circle relative to given focus point", function () {
             var self = this;
             runs(function() {
-                expect(self.view.focuspoint.position()).toEqual({left: 110, top: 62});
+                expect(self.editor.focuspoint.position()).toEqual({left: 110, top: 62});
             });
         });
 
@@ -82,9 +82,9 @@
             var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
-                self.view.focuspoint.css('left', '55px');
-                self.view.focuspoint.css('top', '31px');
-                self.view.focuspoint.trigger('dragstop');
+                self.editor.focuspoint.css('left', '55px');
+                self.editor.focuspoint.css('top', '31px');
+                self.editor.focuspoint.trigger('dragstop');
                 expect(spy).toHaveBeenCalledWith(
                     {"focus_x": 0.25, "focus_y": 0.25, "zoom": 0.3}
                 );
@@ -96,7 +96,7 @@
             runs(function() {
                 // Since we want to inverse the default zoom-bar behaviour of
                 // jqueryui, we also must expect the inverse value, i.e. 100-X
-                expect(self.view.zoom_bar.slider('value')).toEqual(100 - 30);
+                expect(self.editor.zoom_bar.slider('value')).toEqual(100 - 30);
             });
         });
 
@@ -106,8 +106,8 @@
                 var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
                 // Since we want to inverse the default zoom-bar behaviour of
                 // jqueryui, we also must set the inverse value, i.e. 100-X
-                self.view.zoom_bar.slider('value', 100 - 60);
-                self.view.zoom_bar.trigger('slidestop');
+                self.editor.zoom_bar.slider('value', 100 - 60);
+                self.editor.zoom_bar.trigger('slidestop');
                 expect(spy).toHaveBeenCalledWith(
                     {"focus_x": 0.5, "focus_y": 0.5, "zoom": 0.6}
                 );
@@ -117,16 +117,16 @@
         it("should have 4 different image enhancements", function() {
             var self = this;
             runs(function() {
-                expect(self.view.image_enhancements.length).toBe(4);
+                expect(self.editor.image_enhancements.length).toBe(4);
             });
         });
 
         it("should display value of enhancements on load", function() {
             var self = this;
             runs(function() {
-                $.each(self.view.image_enhancements, function(i, name) {
-                    var input = self.view[name + '_input'],
-                        bar = self.view[name + '_bar'];
+                $.each(self.editor.image_enhancements, function(i, name) {
+                    var input = self.editor[name + '_input'],
+                        bar = self.editor[name + '_bar'];
 
                     expect(input.val()).toEqual('-100');
                     expect(bar.slider("value")).toEqual(-100);
@@ -138,8 +138,8 @@
             var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                $.each(self.view.image_enhancements, function(i, name) {
-                    var bar = self.view[name + '_bar'];
+                $.each(self.editor.image_enhancements, function(i, name) {
+                    var bar = self.editor[name + '_bar'];
                     bar.slider("value", 100);
                     bar.trigger("slidestop");
                     expect(spy).toHaveBeenCalledWith(name, 1.5);
@@ -151,8 +151,8 @@
             var self = this;
             runs(function() {
                 var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
-                $.each(self.view.image_enhancements, function(i, name) {
-                    var input_field = self.view[name + '_input'];
+                $.each(self.editor.image_enhancements, function(i, name) {
+                    var input_field = self.editor[name + '_input'];
                     input_field.val(100);
                     input_field.trigger("blur");
                     expect(spy).toHaveBeenCalledWith(name, 1.5);
@@ -163,22 +163,22 @@
         it("should switch back to default variant on save", function() {
             var self = this;
             runs(function() {
-                self.view.switch_focus(
+                self.editor.switch_focus(
                     self.variant, self.preview.model_views[self.variant.id]);
-                expect(self.view.current_model.id).toBe('square');
+                expect(self.editor.current_model.id).toBe('square');
                 $('input[value=Speichern]').click();
-                expect(self.view.current_model.id).toBe('default');
+                expect(self.editor.current_model.id).toBe('default');
             });
         });
 
         it("should switch back to default variant on delete", function() {
             var self = this;
             runs(function() {
-                self.view.switch_focus(
+                self.editor.switch_focus(
                     self.variant, self.preview.model_views[self.variant.id]);
-                expect(self.view.current_model.id).toBe('square');
+                expect(self.editor.current_model.id).toBe('square');
                 $('input[value=Verwerfen]').click();
-                expect(self.view.current_model.id).toBe('default');
+                expect(self.editor.current_model.id).toBe('default');
             });
         });
 
@@ -199,9 +199,9 @@
 
         it("should update master image on save", function() {
             var self = this,
-                image = self.view.$('img.editor'),
+                image = self.editor.$('img.editor'),
                 image_url = image.attr('src');
-            self.view.save();
+            self.editor.save();
             expect(image.attr('src')).not.toBe(image_url);
         });
     });
