@@ -412,7 +412,8 @@ Make UnknownResources an asset to test the workflow:
 ...     zeit.cms.repository.unknown.PersistentUnknownResource))
 >>> zope.interface.classImplementsOnly(
 ...     zeit.cms.repository.unknown.PersistentUnknownResource,
-...     zeit.cms.interfaces.IAsset)
+...     zeit.cms.interfaces.IAsset,
+...     zeit.cms.repository.interfaces.IUnknownResource)
 
 >>> workflow = zeit.cms.workflow.interfaces.IPublishInfo(somalia)
 >>> workflow
