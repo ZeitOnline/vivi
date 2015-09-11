@@ -25,6 +25,7 @@ setup(
         'grokcore.component',
         'js.backbone',
         'js.cropper',
+        'js.handlebars',
         'lxml',
         'persistent',
         'pytz',

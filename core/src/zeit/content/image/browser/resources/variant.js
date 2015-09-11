@@ -1,4 +1,4 @@
-/*global zeit,Backbone,window,document*/
+/*global zeit,Backbone,window,document,Handlebars*/
 (function() {
     "use strict";
 
@@ -7,6 +7,18 @@
 
     zeit.cms.declare_namespace('zeit.content.image');
     zeit.cms.declare_namespace('zeit.content.image.browser');
+
+
+    /* ===================================================================== */
+    /* ============================ TEMPLATES ============================== */
+    /* ===================================================================== */
+
+    var image_enhancement_template = Handlebars.compile('\
+<div class="widget filter image-enhancement-widget">\
+    <label for="{{name}}-input">{{title}}</label>\
+    <input type="text" name="filter.{{name}}" class="{{name}}-input image-enhancement-input" value="1" class="filter">\
+    <div class="image-enhancement-bar {{name}}-bar"></div>\
+</div>');
 
 
     /* ===================================================================== */
@@ -391,15 +403,9 @@
             };
 
             // Brightness
-            self.$el.append($('\
-                <div class="widget filter image-enhancement-widget">\
-                    <label for="brightness-input">\
-                        Helligkeit\
-                    </label>\
-                    <input type="text" name="filter.brightness" class="brightness-input image-enhancement-input" value="1" class="filter">\
-                    <div class="image-enhancement-bar brightness-bar"></div>\
-                </div>'));
-
+            self.$el.append($(image_enhancement_template(
+                {title: 'Helligkeit', name: 'brightness'}
+            )));
             self.brightness_input = self.$('.brightness-input');
             self.brightness_input.on('keydown', blur_on_enter);
             self.brightness_input.val(self.current_model.brightness());
@@ -412,15 +418,9 @@
             });
 
             // Contrast
-            self.$el.append($('\
-                <div class="widget filter image-enhancement-widget">\
-                    <label for="contrast-input">\
-                        Kontrast\
-                    </label>\
-                    <input type="text" name="filter.contrast" class="contrast-input image-enhancement-input" value="1" class="filter">\
-                    <div class="image-enhancement-bar contrast-bar"></div>\
-                </div>'));
-
+            self.$el.append($(image_enhancement_template(
+                {title: 'Kontrast', name: 'contrast'}
+            )));
             self.contrast_input = self.$('.contrast-input');
             self.contrast_input.on('keydown', blur_on_enter);
             self.contrast_input.val(self.current_model.contrast());
@@ -432,16 +432,10 @@
                 value: self.current_model.contrast()
             });
 
-            // saturation
-            self.$el.append($('\
-                <div class="widget filter image-enhancement-widget">\
-                    <label for="saturation-input">\
-                        Sättigung\
-                    </label>\
-                    <input type="text" name="filter.saturation" class="saturation-input image-enhancement-input" value="1" class="filter">\
-                    <div class="image-enhancement-bar saturation-bar"></div>\
-                </div>'));
-
+            // Saturation
+            self.$el.append($(image_enhancement_template(
+                {title: 'Sättigung', name: 'saturation'}
+            )));
             self.saturation_input = self.$('.saturation-input');
             self.saturation_input.on('keydown', blur_on_enter);
             self.saturation_input.val(self.current_model.saturation());
@@ -453,16 +447,10 @@
                 value: self.current_model.saturation()
             });
 
-            // sharpness
-            self.$el.append($('\
-                <div class="widget filter image-enhancement-widget">\
-                    <label for="sharpness-input">\
-                        Schärfe\
-                    </label>\
-                    <input type="text" name="filter.sharpness" class="sharpness-input image-enhancement-input" value="1" class="filter">\
-                    <div class="image-enhancement-bar sharpness-bar"></div>\
-                </div>'));
-
+            // Sharpness
+            self.$el.append($(image_enhancement_template(
+                {title: 'Schärfe', name: 'sharpness'}
+            )));
             self.sharpness_input = self.$('.sharpness-input');
             self.sharpness_input.on('keydown', blur_on_enter);
             self.sharpness_input.val(self.current_model.sharpness());
