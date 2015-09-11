@@ -1,7 +1,7 @@
 zeit.content.article changes
 ============================
 
-3.9.3 (unreleased)
+3.9.3 (2015-09-11)
 ------------------
 
 - Prefill raw module with basic markup (DEV-936).
