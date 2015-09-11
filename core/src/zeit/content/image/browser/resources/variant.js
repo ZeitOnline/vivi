@@ -46,6 +46,11 @@
             return 100 - this.get('zoom') * 100;
         },
 
+        // Helper method to handle conversion from model value to display value
+        // and the other way around for all image enhancements, e.g. contrast.
+        // Maps the model value from [0.5, 1.5] to [-100, 100].
+        // When used to set a value, the new value is checked to be a number.
+        // Returns false if setting the new value failed, true otherwise.
         image_enhancement: function(name, new_value) {
             var self = this,
                 old_value = self.get(name);
@@ -62,22 +67,6 @@
                 return 0;
             }
             return Math.round((old_value - 1) * 200);
-        },
-
-        brightness: function(value) {
-            return this.image_enhancement('brightness', value);
-        },
-
-        contrast: function(value) {
-            return this.image_enhancement('contrast', value);
-        },
-
-        saturation: function(value) {
-            return this.image_enhancement('saturation', value);
-        },
-
-        sharpness: function(value) {
-            return this.image_enhancement('sharpness', value);
         },
 
         make_url: function() {
@@ -344,8 +333,8 @@
             "dragend.cropper img.editor": "save",
             "dragstop .focuspoint": "save",
             "slidestop .zoom-bar": "save",
-            "slidestop .image-enhancement-bar": "save_image_enhancement",
-            "blur .image-enhancement-input": "save_image_enhancement"
+            "slidestop .image-enhancement-bar": "save_image_enhancement_bar",
+            "blur .image-enhancement-input": "save_image_enhancement_input"
         },
 
         initialize: function() {
@@ -379,6 +368,9 @@
         render: function() {
             var self = this;
             self.image = self.model_view.render().$el;
+            self.image_enhancements = [
+                'brightness', 'contrast', 'saturation', 'sharpness'
+            ];
 
             // Create image container with image, focus point and zoom bar
             self.$el.append($(image_container_template()));
@@ -404,78 +396,27 @@
                 self.save_current_button
             ]);
 
-            // create input elements for image enhancement
-            var blur_on_enter = function (event) {
-                if (event.which === 13) {
-                    event.target.blur();
-                }
+            // Create input elements for Image Enhancement
+            var image_enhancement_titles = {
+                'brightness': 'Helligkeit',
+                'contrast': 'Kontrast',
+                'saturation': 'Sättigung',
+                'sharpness': 'sharpness'
             };
-
-            // Brightness
-            self.$el.append($(image_enhancement_template(
-                {title: 'Helligkeit', name: 'brightness'}
-            )));
-            self.brightness_input = self.$('.brightness-input');
-            self.brightness_input.on('keydown', blur_on_enter);
-            self.brightness_input.val(self.current_model.brightness());
-            self.brightness_bar = self.$('.brightness-bar');
-            self.brightness_bar.slider({
-                step: 1,
-                min: -100,
-                max: 100,
-                value: self.current_model.brightness()
+            $.each(self.image_enhancements, function(index, name) {
+                self.$el.append($(image_enhancement_template(
+                    {name: name, title: image_enhancement_titles[name]}
+                )));
+                self[name + '_input'] = self.$('.' + name + '-input');
+                self[name + '_bar'] = self.$('.' + name + '-bar');
             });
 
-            // Contrast
-            self.$el.append($(image_enhancement_template(
-                {title: 'Kontrast', name: 'contrast'}
-            )));
-            self.contrast_input = self.$('.contrast-input');
-            self.contrast_input.on('keydown', blur_on_enter);
-            self.contrast_input.val(self.current_model.contrast());
-            self.contrast_bar = self.$('.contrast-bar');
-            self.contrast_bar.slider({
-                step: 1,
-                min: -100,
-                max: 100,
-                value: self.current_model.contrast()
-            });
-
-            // Saturation
-            self.$el.append($(image_enhancement_template(
-                {title: 'Sättigung', name: 'saturation'}
-            )));
-            self.saturation_input = self.$('.saturation-input');
-            self.saturation_input.on('keydown', blur_on_enter);
-            self.saturation_input.val(self.current_model.saturation());
-            self.saturation_bar = self.$('.saturation-bar');
-            self.saturation_bar.slider({
-                step: 1,
-                min: -100,
-                max: 100,
-                value: self.current_model.saturation()
-            });
-
-            // Sharpness
-            self.$el.append($(image_enhancement_template(
-                {title: 'Schärfe', name: 'sharpness'}
-            )));
-            self.sharpness_input = self.$('.sharpness-input');
-            self.sharpness_input.on('keydown', blur_on_enter);
-            self.sharpness_input.val(self.current_model.sharpness());
-            self.sharpness_bar = self.$('.sharpness-bar');
-            self.sharpness_bar.slider({
-                step: 1,
-                min: -100,
-                max: 100,
-                value: self.current_model.sharpness()
-            });
-
-            // init draggging / zooming
+            // Initialization
             self.initialize_focuspoint();
             self.initialize_buttons();
+            self.initialize_image_enhancements();
 
-            // set focuspoint and zoom to saved values
+            // Set all input elements to their current value stored on Variant
             self.update();
         },
 
@@ -500,6 +441,27 @@
             variant = variants.shift();
             variant.destroy({wait: true}).done(function() {
                 self.reset_all_variants(variants);
+            });
+        },
+
+        // Initialize sliders and add an event listener to trigger save when
+        // ENTER was pressed inside an input field
+        initialize_image_enhancements: function() {
+            var self = this,
+                blur_on_enter = function (event) {
+                if (event.which === 13) {
+                    event.target.blur();
+                }
+            };
+
+            $.each(self.image_enhancements, function(index, name) {
+                self[name + '_input'].on('keydown', blur_on_enter);
+                self[name + '_bar'].slider({
+                    step: 1,
+                    min: -100,
+                    max: 100,
+                    value: self.current_model.image_enhancement(name)
+                });
             });
         },
 
@@ -565,56 +527,33 @@
             });
         },
 
-        save_image_enhancement: function () {
-            var self = this,
-                brightness = self.current_model.brightness(),
-                contrast = self.current_model.contrast(),
-                saturation = self.current_model.saturation(),
-                sharpness = self.current_model.sharpness();
+        save_image_enhancement_input: function(event) {
+            this.save_image_enhancement(
+                'input', parseInt($(event.target).val()), event
+            );
+        },
 
-            // Brightness
-            if (self.brightness_bar.slider("value") !== self.current_model.brightness()) {
-                self.current_model.brightness(self.brightness_bar.slider("value"));
-            } else if (parseInt(self.brightness_input.val()) !== self.current_model.brightness()) {
-                self.current_model.brightness(parseInt(self.brightness_input.val()));
-            }
+        save_image_enhancement_bar: function(event) {
+            this.save_image_enhancement(
+                'bar', $(event.target).slider("value"), event
+            );
+        },
 
-            if (brightness !== self.current_model.brightness()) {
-                self.save();
-            }
+        // Called whenever an UI handle for image enhancements was changed.
+        // Find out which input element triggered the function, try to save
+        // it's value and forward the save if the value was valid.
+        save_image_enhancement: function(field, value, event) {
+            var self = this;
 
-            // Contrast
-            if (self.contrast_bar.slider("value") !== self.current_model.contrast()) {
-                self.current_model.contrast(self.contrast_bar.slider("value"));
-            } else if (parseInt(self.contrast_input.val()) !== self.current_model.contrast()) {
-                self.current_model.contrast(parseInt(self.contrast_input.val()));
-            }
-
-            if (contrast !== self.current_model.contrast()) {
-                self.save();
-            }
-
-            // Saturation
-            if (self.saturation_bar.slider("value") !== self.current_model.saturation()) {
-                self.current_model.saturation(self.saturation_bar.slider("value"));
-            } else if (parseInt(self.saturation_input.val()) !== self.current_model.saturation()) {
-                self.current_model.saturation(parseInt(self.saturation_input.val()));
-            }
-
-            if (saturation !== self.current_model.saturation()) {
-                self.save();
-            }
-
-            // Sharpness
-            if (self.sharpness_bar.slider("value") !== self.current_model.sharpness()) {
-                self.current_model.sharpness(self.sharpness_bar.slider("value"));
-            } else if (parseInt(self.sharpness_input.val()) !== self.current_model.sharpness()) {
-                self.current_model.sharpness(parseInt(self.sharpness_input.val()));
-            }
-
-            if (sharpness !== self.current_model.sharpness()) {
-                self.save();
-            }
+            $.each(self.image_enhancements, function(index, name) {
+                // Check if image enhancement `name` triggered the call
+                if ($(event.target).hasClass(name + '-' + field)) {
+                    // Try to set and validate the new value (false if invalid)
+                    if (self.current_model.image_enhancement(name, value)) {
+                        self.save();
+                    }
+                }
+            });
         },
 
         save: function() {
@@ -658,17 +597,14 @@
         update: function() {
             var self = this;
 
-            self.brightness_bar.slider("value", self.current_model.brightness());
-            self.brightness_input.val(self.current_model.brightness());
-
-            self.contrast_bar.slider("value", self.current_model.contrast());
-            self.contrast_input.val(self.current_model.contrast());
-
-            self.saturation_bar.slider("value", self.current_model.saturation());
-            self.saturation_input.val(self.current_model.saturation());
-
-            self.sharpness_bar.slider("value", self.current_model.sharpness());
-            self.sharpness_input.val(self.current_model.sharpness());
+            $.each(self.image_enhancements, function(index, name) {
+                self[name + '_input'].val(
+                    self.current_model.image_enhancement(name)
+                );
+                self[name + '_bar'].slider(
+                    "value", self.current_model.image_enhancement(name)
+                );
+            });
 
             if (self.current_model.get('is_default')) {
                 self.update_focuspoint();
