@@ -10,6 +10,8 @@ zeit.content.image changes
 - Add UI and backend support to adjust variant images regarding their
   brightness, contrast, saturation and sharpness. (DEV-826)
 
+- Disable transparency of variant previews when displaying the master (DEV-910)
+
 
 2.9.0 (2015-09-08)
 ------------------
