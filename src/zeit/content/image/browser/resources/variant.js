@@ -388,8 +388,8 @@
 
             // Brightness
             self.$el.append($('\
-                <div class="widget filter" id="filter.brightness">\
-                    <label for="filter.brightness.input">\
+                <div class="widget filter image-enhancement-widget">\
+                    <label for="brightness-input">\
                         Helligkeit\
                     </label>\
                     <input type="text" name="filter.brightness" class="brightness-input image-enhancement-input" value="1" class="filter">\
@@ -409,8 +409,8 @@
 
             // Contrast
             self.$el.append($('\
-                <div class="widget filter" id="filter.contrast">\
-                    <label for="filter.contrast.input">\
+                <div class="widget filter image-enhancement-widget">\
+                    <label for="contrast-input">\
                         Kontrast\
                     </label>\
                     <input type="text" name="filter.contrast" class="contrast-input image-enhancement-input" value="1" class="filter">\
@@ -430,8 +430,8 @@
 
             // saturation
             self.$el.append($('\
-                <div class="widget filter" id="filter.saturation">\
-                    <label for="filter.saturation.input">\
+                <div class="widget filter image-enhancement-widget">\
+                    <label for="saturation-input">\
                         Sättigung\
                     </label>\
                     <input type="text" name="filter.saturation" class="saturation-input image-enhancement-input" value="1" class="filter">\
@@ -451,8 +451,8 @@
 
             // sharpness
             self.$el.append($('\
-                <div class="widget filter" id="filter.sharpness">\
-                    <label for="filter.sharpness.input">\
+                <div class="widget filter image-enhancement-widget">\
+                    <label for="sharpness-input">\
                         Schärfe\
                     </label>\
                     <input type="text" name="filter.sharpness" class="sharpness-input image-enhancement-input" value="1" class="filter">\

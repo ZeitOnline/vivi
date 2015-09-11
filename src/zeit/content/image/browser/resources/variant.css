@@ -55,6 +55,17 @@
 }
 
 /* Sliders for image enhancements should look like the slider from the old UI*/
+.image-enhancement-widget {
+    width: 19em;
+}
+
+/* Make CSS Selector more specific, to override `div.filter > input` */
+div.filter > input.image-enhancement-input {
+    left: 22em;
+    width: 2.5em;
+    right: auto;
+}
+
 .image-enhancement-bar {
     background-image: url("slider-bar-horizontal.gif");
     background-repeat: repeat-x;
