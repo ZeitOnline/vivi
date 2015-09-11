@@ -7,6 +7,7 @@
         preview_container,
         setUp = function() {
             var editor, preview, variant,
+                url = '/fanstatic/zeit.content.image.test/master_image.jpg',
                 flag = false;
 
             // Create temporary DOM
@@ -28,7 +29,7 @@
                         saturation: 0.5,
                         sharpness: 0.5,
                         is_default: true,
-                        url: '/fanstatic/zeit.content.image.test/master_image.jpg'
+                        url: url
                     };
                 d.resolve(response);
                 options.success(response);
@@ -64,6 +65,14 @@
             self.editor = result.editor;
             self.preview = result.preview;
             self.variant = result.variant;
+
+            // Define shorthand to spy a Backbone method
+            self.spy = function(method_name) {
+                return spyOn(
+                    Backbone.Model.prototype,
+                    method_name
+                ).andCallThrough();
+            };
         });
 
         afterEach(function () {
@@ -74,14 +83,18 @@
         it("should display circle relative to given focus point", function () {
             var self = this;
             runs(function() {
-                expect(self.editor.focuspoint.position()).toEqual({left: 110, top: 62});
+                expect(
+                    self.editor.focuspoint.position()
+                ).toEqual(
+                    {left: 110, top: 62}
+                );
             });
         });
 
         it("should save focus point after drag", function () {
             var self = this;
             runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
+                var spy = self.spy("save");
                 self.editor.focuspoint.css('left', '55px');
                 self.editor.focuspoint.css('top', '31px');
                 self.editor.focuspoint.trigger('dragstop');
@@ -103,7 +116,7 @@
         it("should store zoom value on change", function() {
             var self = this;
             runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "save").andCallThrough();
+                var spy = self.spy("save");
                 // Since we want to inverse the default zoom-bar behaviour of
                 // jqueryui, we also must set the inverse value, i.e. 100-X
                 self.editor.zoom_bar.slider('value', 100 - 60);
@@ -137,7 +150,7 @@
         it("should store enhancement when changing slider", function() {
             var self = this;
             runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                var spy = self.spy("set");
                 $.each(self.editor.image_enhancements, function(i, name) {
                     var bar = self.editor[name + '_bar'];
                     bar.slider("value", 100);
@@ -150,7 +163,7 @@
         it("should store enhancement when changing input field", function() {
             var self = this;
             runs(function() {
-                var spy = spyOn(Backbone.Model.prototype, "set").andCallThrough();
+                var spy = self.spy("set");
                 $.each(self.editor.image_enhancements, function(i, name) {
                     var input_field = self.editor[name + '_input'];
                     input_field.val(100);
@@ -184,7 +197,7 @@
 
         it("should call destroy on every variant on reset", function() {
             var self = this,
-                spy = spyOn(Backbone.Model.prototype, "destroy").andCallThrough();
+                spy = self.spy("destroy");
             $("input[value='Alle Formate zurücksetzen']").click();
             expect(spy.calls.length).toEqual(1);
         });
