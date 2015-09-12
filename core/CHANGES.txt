@@ -1,8 +1,8 @@
 zeit.content.image changes
 ==========================
 
-2.9.1 (unreleased)
-------------------
+2.10.0 (2015-09-12)
+-------------------
 
 - Use variant image of `default` configuration as master image in frontend to
   preview image enhancements while ignoring cropping due to zoom. (DEV-826)
