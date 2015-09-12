@@ -543,6 +543,7 @@ class IReadTeaserBlock(IBlock, zeit.cms.syndication.interfaces.IReadFeed):
 
     force_mobile_image = zope.schema.Bool(
         title=_('Force image on mobile'),
+        required=False,
         default=False)
 
     text_color = zope.schema.Choice(

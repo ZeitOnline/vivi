@@ -5,7 +5,8 @@ zeit.content.cp changes
 3.1.7 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Make force_mobile_image non-required, it breaks materialize_filled_values
+  for some reason.
 
 
 3.1.6 (2015-09-12)
