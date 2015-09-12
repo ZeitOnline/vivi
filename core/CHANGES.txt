@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.1.6 (unreleased)
+3.1.6 (2015-09-12)
 ------------------
 
 - Add TeaserBlock fields (force_image_mobile etc.) to AutoBlock, too.
