@@ -199,13 +199,17 @@ class IImageLayout(zope.interface.Interface):
     title = zope.schema.TextLine(title=u'Human readable title.')
     variant = zope.schema.TextLine(
         title=u'Which variant to use with this layout.')
+    display_mode = zope.schema.TextLine(
+        title=u'Display mode (fullwidth, floating, etc.).')
 
 
 class ImageLayout(zeit.cms.content.sources.AllowedBase):
 
-    def __init__(self, id, title, available=None, variant=None):
+    def __init__(self, id, title, available=None, variant=None,
+                 display_mode=None):
         super(ImageLayout, self).__init__(id, title, available)
         self.variant = variant
+        self.display_mode = display_mode
 
     def __eq__(self, other):
         """Compare equality using the ID of the layouts.
@@ -243,7 +247,7 @@ class ImageLayoutSource(
             id = node.get(self.attribute)
             result[id] = ImageLayout(
                 id, self._get_title_for(node), node.get('available', None),
-                node.get('variant_name', None))
+                node.get('variant_name', None), node.get('display_mode', None))
         return result
 
 imageLayoutSource = ImageLayoutSource()

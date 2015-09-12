@@ -284,6 +284,7 @@ class ImageTest(zeit.content.article.testing.FunctionalTestCase):
         self.assertEqual('stamp', layout.id)
         self.assertEqual('Stamp', layout.title)
         self.assertEqual('square', layout.variant)
+        self.assertEqual('float', layout.display_mode)
 
     def test_layout_available_walks_up_to_article(self):
         from zeit.content.article.edit.interfaces import imageLayoutSource
