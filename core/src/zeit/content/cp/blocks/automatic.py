@@ -17,6 +17,17 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         zeit.content.cp.interfaces.IArea,
         gocept.lxml.interfaces.IObjectified)
 
+    # XXX copy&paste from TeaserBlock
+    force_mobile_image = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'force_mobile_image', zeit.content.cp.interfaces.ITeaserBlock[
+            'force_mobile_image'])
+    text_color = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'text_color', zeit.content.cp.interfaces.ITeaserBlock[
+            'text_color'])
+    overlay_level = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'overlay_level', zeit.content.cp.interfaces.ITeaserBlock[
+            'overlay_level'])
+
     def __init__(self, context, xml):
         super(AutomaticTeaserBlock, self).__init__(context, xml)
         self.entries = []
@@ -25,6 +36,12 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         if self.xml.get('module') == 'auto-teaser':
             self.layout = self.layout
         assert self.xml.get('module') != 'auto-teaser'
+        if 'text_color' not in self.xml.attrib:
+            self.text_color = zeit.content.cp.interfaces.ITeaserBlock[
+                'text_color'].default
+        if 'overlay_level' not in self.xml.attrib:
+            self.overlay_level = zeit.content.cp.interfaces.ITeaserBlock[
+                'overlay_level'].default
 
     def __len__(self):
         return len(self.entries)
