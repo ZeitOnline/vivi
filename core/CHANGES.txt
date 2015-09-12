@@ -1,8 +1,8 @@
 zeit.content.article changes
 ============================
 
-3.10.0 (unreleased)
-------------------
+3.10.0 (2015-09-12)
+-------------------
 
 - Add ``display_mode`` to ``z.c.article.edit.interfaces.IImage.layout``
   (DEV-923).
