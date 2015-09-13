@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.2.0 (unreleased)
+3.2.0 (2015-09-13)
 ------------------
 
 - Introduce helper method ``IArea.select_modules(*interfaces)``.
