@@ -377,9 +377,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             for type_, channel, subchannel in value]))
 
     def select_modules(self, *interfaces):
-        for module in zeit.content.cp.interfaces.IRenderedArea(self).values():
-            if any([x.providedBy(module) for x in interfaces]):
-                yield module
+        return zeit.content.cp.interfaces.IRenderedArea(self).select_modules(
+            *interfaces)
 
 
 class AreaFactory(zeit.edit.block.ElementFactory):

@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.2.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Delegate select_modules first, otherwise subclassing AutomaticArea breaks it.
 
 
 3.2.0 (2015-09-13)

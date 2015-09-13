@@ -167,3 +167,8 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 content[:] = more_content
                 return self._extract_newest(content, predicate)
         return result
+
+    def select_modules(self, *interfaces):
+        for module in self.values():
+            if any([x.providedBy(module) for x in interfaces]):
+                yield module
