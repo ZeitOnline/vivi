@@ -378,9 +378,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     def select_modules(self, *interfaces):
         for module in zeit.content.cp.interfaces.IRenderedArea(self).values():
-            for iface in interfaces:
-                if iface.providedBy(module):
-                    yield module
+            if any([x.providedBy(module) for x in interfaces]):
+                yield module
 
 
 class AreaFactory(zeit.edit.block.ElementFactory):
