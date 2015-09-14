@@ -69,6 +69,19 @@ class ParseTest(unittest.TestCase):
                 'http://app-content.zeit.de/bar',
                 ios['data']['aps']['url'].split('?')[0])
 
+    def test_old_version_links_to_wrapper(self):
+        api = zeit.push.parse.Connection(None, None, 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('', 'http://www.zeit.de/bar', channels=PARSE_NEWS_CHANNEL)
+            android = push.call_args_list[1][0][0]
+            self.assertEqual(
+                'http://wrapper.zeit.de/bar',
+                android['data']['url'].split('?')[0])
+            ios = push.call_args_list[3][0][0]
+            self.assertEqual(
+                'http://wrapper.zeit.de/bar',
+                ios['data']['aps']['url'].split('?')[0])
+
 
 class RewriteWrapperURLTest(unittest.TestCase):
 

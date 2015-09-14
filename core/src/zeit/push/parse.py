@@ -149,7 +149,7 @@ class Connection(object):
         ios_nofriedbert['where']['appVersion'] = {
             '$gte': self.IOS_HEADLINE_VERSION,
             '$lt': self.IOS_FRIEDBERT_VERSION}
-        ios_nofriedbert['data']['url'] = self.add_tracking(
+        ios_nofriedbert['data']['aps']['url'] = self.add_tracking(
             wrapper_url, channel_name, 'ios')
         self.push(ios_nofriedbert)
 
