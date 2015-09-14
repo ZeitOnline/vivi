@@ -4,7 +4,8 @@ zeit.push changes
 1.9.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add new Payloads for Android 1.4 and iOS 20150914 that rewrite links to
+  target Friedbert. (DEV-938)
 
 
 1.9.2 (2015-06-23)

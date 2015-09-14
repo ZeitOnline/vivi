@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 from zeit.cms.i18n import MessageFactory as _
 from zeit.push.interfaces import PARSE_NEWS_CHANNEL, PARSE_BREAKING_CHANNEL
+import copy
 import grokcore.component as grok
 import json
 import logging
@@ -29,6 +30,9 @@ class Connection(object):
     IOS_CHANNEL_VERSION = '20140514.1'  # Channels work on versions > x.
     # ``headline``, introduced in DEV-698.
     IOS_HEADLINE_VERSION = '20150401'  # Headline works on iOS version >= x.
+    # New link address ``app-content.zeit.de``, see DEV-938
+    ANDROID_FRIEDBERT_VERSION = '1.4'  # New links required on versions >= x.
+    IOS_FRIEDBERT_VERSION = '20150914'  # New links required on versions >= x.
 
     PUSH_ACTION_ID = 'de.zeit.online.PUSH'
 
@@ -49,7 +53,8 @@ class Connection(object):
             channels = channel_name
         else:
             channels = config.get(channel_name, '').split(' ')
-        url = self.rewrite_url(link)
+        wrapper_url = self.rewrite_url(link, 'http://wrapper.zeit.de')
+        friedbert_url = self.rewrite_url(link, 'http://app-content.zeit.de')
         image_url = kw.get('image_url')
         title = text
         override_text = kw.get('override_text')
@@ -69,7 +74,7 @@ class Connection(object):
             'expiration_time': expiration_time,
             'where': {
                 'deviceType': 'android',
-                'appVersion': {'$gte': self.ANDROID_CHANNEL_VERSION},
+                'appVersion': {'$gte': self.ANDROID_FRIEDBERT_VERSION},
                 'channels': {'$in': channels}
             },
             'data': {
@@ -77,7 +82,8 @@ class Connection(object):
                 'headline': headline,
                 'text': override_text or kw.get('teaserTitle', title),
                 'teaser': kw.get('teaserText', ''),
-                'url': self.add_tracking(url, channel_name, 'android'),
+                'url': self.add_tracking(
+                    friedbert_url, channel_name, 'android'),
             }
         }
         if image_url:
@@ -85,6 +91,14 @@ class Connection(object):
         if not all(channels):
             del android['where']['channels']
         self.push(android)
+
+        android_nofriedbert = copy.deepcopy(android)
+        android_nofriedbert['where']['appVersion'] = {
+            '$gte': self.ANDROID_CHANNEL_VERSION,
+            '$lt': self.ANDROID_FRIEDBERT_VERSION}
+        android_nofriedbert['data']['url'] = self.add_tracking(
+            wrapper_url, channel_name, 'android')
+        self.push(android_nofriedbert)
 
         if channel_name == PARSE_BREAKING_CHANNEL:
             android_legacy = {
@@ -96,7 +110,8 @@ class Connection(object):
                 'data': {
                     'alert': title,
                     'title': headline,
-                    'url': self.add_tracking(url, channel_name, 'android'),
+                    'url': self.add_tracking(
+                        wrapper_url, channel_name, 'android'),
                 }
             }
             self.push(android_legacy)
@@ -110,7 +125,7 @@ class Connection(object):
             'expiration_time': expiration_time,
             'where': {
                 'deviceType': 'ios',
-                'appVersion': {'$gte': self.IOS_HEADLINE_VERSION},
+                'appVersion': {'$gte': self.IOS_FRIEDBERT_VERSION},
                 'channels': {'$in': channels}
             },
             'data': {
@@ -119,7 +134,8 @@ class Connection(object):
                     'alert-title': headline,
                     'alert': override_text or kw.get('teaserTitle', title),
                     'teaser': kw.get('teaserText', ''),
-                    'url': self.add_tracking(url, channel_name, 'ios'),
+                    'url': self.add_tracking(
+                        friedbert_url, channel_name, 'ios'),
                 }
             }
         }
@@ -128,6 +144,14 @@ class Connection(object):
         if not all(channels):
             del ios['where']['channels']
         self.push(ios)
+
+        ios_nofriedbert = copy.deepcopy(ios)
+        ios_nofriedbert['where']['appVersion'] = {
+            '$gte': self.IOS_HEADLINE_VERSION,
+            '$lt': self.IOS_FRIEDBERT_VERSION}
+        ios_nofriedbert['data']['url'] = self.add_tracking(
+            wrapper_url, channel_name, 'ios')
+        self.push(ios_nofriedbert)
 
         ios_noheadline = {
             'expiration_time': expiration_time,
@@ -141,7 +165,7 @@ class Connection(object):
                 'aps': {
                     'alert-title': headline,
                     'alert': override_text or kw.get('teaserTitle', title),
-                    'url': self.add_tracking(url, channel_name, 'ios'),
+                    'url': self.add_tracking(wrapper_url, channel_name, 'ios'),
                 }
             }
         }
@@ -160,7 +184,8 @@ class Connection(object):
                     'aps': {
                         'alert': title,
                         'alert-title': headline,
-                        'url': self.add_tracking(url, channel_name, 'ios'),
+                        'url': self.add_tracking(
+                            wrapper_url, channel_name, 'ios'),
                     }
                 }
             }
@@ -187,13 +212,12 @@ class Connection(object):
         raise zeit.push.interfaces.TechnicalError(response.text)
 
     @staticmethod
-    def rewrite_url(url):
+    def rewrite_url(url, target_host):
         is_blog = (
             url.startswith('http://blog.zeit.de')
             or url.startswith('http://www.zeit.de/blog/'))
-        url = url.replace('http://www.zeit.de', 'http://wrapper.zeit.de', 1)
-        url = url.replace(
-            'http://blog.zeit.de', 'http://wrapper.zeit.de/blog', 1)
+        url = url.replace('http://www.zeit.de', target_host, 1)
+        url = url.replace('http://blog.zeit.de', target_host + '/blog', 1)
         if is_blog:
             url += '?feed=articlexml'
         return url

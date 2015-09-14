@@ -37,38 +37,62 @@ class ParseTest(unittest.TestCase):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
             api.send('Foo', 'http://b.ar', channels=PARSE_BREAKING_CHANNEL)
-            self.assertEqual(5, len(push.call_args_list))
+            self.assertEqual(7, len(push.call_args_list))
 
     def test_channel_news_is_pushed_to_all_supporting_app_versions(self):
         api = zeit.push.parse.Connection(None, None, 1)
         with mock.patch.object(api, 'push') as push:
             api.send('Foo', 'http://b.ar', channels=PARSE_NEWS_CHANNEL)
-            self.assertEqual(3, len(push.call_args_list))
+            self.assertEqual(5, len(push.call_args_list))
+
+    def test_sends_newest_version_first(self):
+        api = zeit.push.parse.Connection(None, None, 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('Foo', 'http://b.ar', channels=PARSE_NEWS_CHANNEL)
+            self.assertEqual(
+                zeit.push.parse.Connection.ANDROID_FRIEDBERT_VERSION,
+                push.call_args_list[0][0][0]['where']['appVersion']['$gte'])
+            self.assertEqual(
+                zeit.push.parse.Connection.IOS_FRIEDBERT_VERSION,
+                push.call_args_list[2][0][0]['where']['appVersion']['$gte'])
+
+    def test_friedbert_version_links_to_app_content(self):
+        api = zeit.push.parse.Connection(None, None, 1)
+        with mock.patch.object(api, 'push') as push:
+            api.send('', 'http://www.zeit.de/bar', channels=PARSE_NEWS_CHANNEL)
+            self.assertEqual(
+                'http://app-content.zeit.de/bar',
+                push.call_args_list[0][0][0]['data']['url'].split('?')[0])
+            self.assertEqual(
+                'http://app-content.zeit.de/bar',
+                push.call_args_list[0][0][0]['data']['url'].split('?')[0])
 
 
-class URLRewriteTest(unittest.TestCase):
+class RewriteWrapperURLTest(unittest.TestCase):
+
+    target_host = 'http://wrapper.zeit.de'
 
     def rewrite(self, url):
-        return zeit.push.parse.Connection.rewrite_url(url)
+        return zeit.push.parse.Connection.rewrite_url(url, self.target_host)
 
     def test_www_zeit_de_is_replaced_with_wrapper(self):
         self.assertEqual(
-            'http://wrapper.zeit.de/foo/bar',
+            self.target_host + '/foo/bar',
             self.rewrite('http://www.zeit.de/foo/bar'))
 
     def test_blog_zeit_de_is_replaced_with_wrapper_and_appends_query(self):
         self.assertEqual(
-            'http://wrapper.zeit.de/blog/foo/bar?feed=articlexml',
+            self.target_host + '/blog/foo/bar?feed=articlexml',
             self.rewrite('http://blog.zeit.de/foo/bar'))
 
     def test_zeit_de_blog_is_replaced_with_wrapper_and_appends_query(self):
         self.assertEqual(
-            'http://wrapper.zeit.de/blog/foo/bar?feed=articlexml',
+            self.target_host + '/blog/foo/bar?feed=articlexml',
             self.rewrite('http://www.zeit.de/blog/foo/bar'))
 
     def test_adds_tracking_information_as_query_string(self):
         url = zeit.push.parse.Connection.rewrite_url(
-            'http://www.zeit.de/foo/bar')
+            'http://www.zeit.de/foo/bar', self.target_host)
         url = zeit.push.parse.Connection.add_tracking(
             url, 'nonbreaking', 'android')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
@@ -82,12 +106,17 @@ class URLRewriteTest(unittest.TestCase):
 
     def test_adds_tracking_information_blog(self):
         url = zeit.push.parse.Connection.rewrite_url(
-            'http://www.zeit.de/blog/foo/bar')
+            'http://www.zeit.de/blog/foo/bar', self.target_host)
         url = zeit.push.parse.Connection.add_tracking(
             url, 'nonbreaking', 'android')
         qs = urlparse.parse_qs(urlparse.urlparse(url).query)
         self.assertEqual('articlexml', qs['feed'][0])
         self.assertEqual('push_zonaudev_int', qs['utm_source'][0])
+
+
+class RewriteFriedbertURLTest(RewriteWrapperURLTest):
+
+    target_host = 'http://app-content.zeit.de'
 
 
 class ParametersTest(zeit.push.testing.TestCase):
@@ -168,7 +197,7 @@ class ParametersTest(zeit.push.testing.TestCase):
             self.assertEqual('teaser', android['data']['teaser'])
             self.assertEqual(
                 'http://images.zeit.de/example', android['data']['imageUrl'])
-            ios = push.call_args_list[1][0][0]
+            ios = push.call_args_list[2][0][0]
             self.assertEqual('super', ios['data']['aps']['headline'])
             self.assertEqual('ZEIT ONLINE', ios['data']['aps']['alert-title'])
             self.assertEqual('title', ios['data']['aps']['alert'])
@@ -186,7 +215,7 @@ class ParametersTest(zeit.push.testing.TestCase):
                      image_url='http://images.zeit.de/example')
             android = push.call_args_list[0][0][0]
             self.assertEqual('mytext', android['data']['text'])
-            ios = push.call_args_list[1][0][0]
+            ios = push.call_args_list[2][0][0]
             self.assertEqual('mytext', ios['data']['aps']['alert'])
 
 
