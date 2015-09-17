@@ -4,7 +4,7 @@ zeit.content.image changes
 2.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Clean up temporary image blob files on abort as well as commit.
 
 
 2.10.0 (2015-09-12)
