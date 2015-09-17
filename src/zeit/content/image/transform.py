@@ -1,5 +1,7 @@
 import PIL.Image
 import PIL.ImageEnhance
+import os
+import os.path
 import transaction
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
@@ -161,10 +163,9 @@ class ImageTransform(object):
             thumb_times.modified = image_times.modified
 
         def cleanup(commited, image):
-            # Releasing the last reference triggers the weakref cleanup of
-            # ZODB.blob.Blob, since this local_data Blob never was part of
-            # a ZODB connection, which will delete the temporary file.
-            image.local_data = None
+            filename = getattr(image.local_data, '_p_blob_uncommitted', None)
+            if filename and os.path.exists(filename):
+                os.remove(filename)
         transaction.get().addAfterCommitHook(cleanup, [image])
 
         return image
