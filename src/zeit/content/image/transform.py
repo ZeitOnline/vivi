@@ -5,6 +5,7 @@ import os.path
 import transaction
 import zeit.cms.repository.folder
 import zeit.connector.interfaces
+import zeit.connector.zopeconnector
 import zeit.content.image.interfaces
 import zope.app.appsetup.product
 import zope.component
@@ -162,13 +163,46 @@ class ImageTransform(object):
             thumb_times = zope.dublincore.interfaces.IDCTimes(image)
             thumb_times.modified = image_times.modified
 
-        def cleanup(commited, image):
-            filename = getattr(image.local_data, '_p_blob_uncommitted', None)
-            if filename and os.path.exists(filename):
-                os.remove(filename)
-        transaction.get().addAfterCommitHook(cleanup, [image])
-
+        transaction.get().join(CleanBlobfilesDataManager(image))
         return image
+
+
+class CleanBlobfilesDataManager(object):
+
+    zope.interface.implements(transaction.interfaces.IDataManager)
+
+    def __init__(self, image):
+        self.image = image
+
+    def abort(self, trans):
+        self._cleanup()
+
+    def tpc_begin(self, trans):
+        pass
+
+    def commit(self, trans):
+        pass
+
+    def tpc_vote(self, trans):
+        pass
+
+    def tpc_finish(self, trans):
+        self._cleanup()
+
+    def tpc_abort(self, trans):
+        self._cleanup()
+
+    def sortKey(self):
+        return str(id(self))
+
+    def savepoint(self):
+        # This would be a point to flush pending commands.
+        return zeit.connector.zopeconnector.ConnectorSavepoint()
+
+    def _cleanup(self):
+        filename = getattr(self.image.local_data, '_p_blob_uncommitted', None)
+        if filename and os.path.exists(filename):
+            os.remove(filename)
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
