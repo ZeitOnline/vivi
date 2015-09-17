@@ -10,7 +10,7 @@ zeit.content.image changes
 2.10.1 (2015-09-17)
 -------------------
 
-- Clean up temporary image blob files on abort as well as commit.
+- Clean up temporary image blob files on abort as well as commit. (ZON-2237)
 
 
 2.10.0 (2015-09-12)
