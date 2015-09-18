@@ -39,7 +39,7 @@ object:
 
 >>> thumb = transform.thumbnail(100, 100)
 >>> thumb
-<zeit.content.image.image.LocalImage object at 0x...>
+<zeit.content.image.image.TemporaryImage object at 0x...>
 
 Note that the thumbnail method doesn't exactly sacle to the given width/height
 but uses this as a bounding box:
@@ -51,7 +51,7 @@ It is possible to pass the filter for scaling:
 
 >>> import PIL.Image
 >>> transform.thumbnail(100, 100, PIL.Image.NEAREST)
-<zeit.content.image.image.LocalImage object at 0x...>
+<zeit.content.image.image.TemporaryImage object at 0x...>
 
 Simple resize
 +++++++++++++
@@ -84,7 +84,7 @@ It is possible to pass the filter for scaling:
 
 >>> import PIL.Image
 >>> transform.resize(100, 100, PIL.Image.NEAREST)
-<zeit.content.image.image.LocalImage object at 0x...>
+<zeit.content.image.image.TemporaryImage object at 0x...>
 
 
 Persistent Thumbnails
