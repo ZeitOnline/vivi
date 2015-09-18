@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.11.1 (unreleased)
+2.11.1 (2015-09-18)
 -------------------
 
 - Validate sizes in URLs (and ignore zero and negative numbers).
