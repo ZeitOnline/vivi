@@ -60,6 +60,12 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual(
             (200, 200), self.group['square__200x200'].getImageSize())
 
+    def test_ignores_invalid_size(self):
+        self.assertEqual(
+            (1536, 1536), self.group['square__0x200'].getImageSize())
+        self.assertEqual(
+            (1536, 1536), self.group['square__-1x200'].getImageSize())
+
     def test_dav_content_with_same_name_is_preferred(self):
         self.assertEqual((1536, 1536), self.group['square'].getImageSize())
         self.group['square'] = zeit.content.image.testing.create_local_image(

@@ -1,9 +1,11 @@
 from zeit.cms.i18n import MessageFactory as _
 import StringIO
+import collections
 import grokcore.component as grok
 import hashlib
 import lxml.objectify
 import persistent
+import sys
 import urlparse
 import z3c.traverser.interfaces
 import zeit.cms.content.dav
@@ -17,7 +19,10 @@ import zope.app.container.contained
 import zope.interface
 import zope.location.interfaces
 import zope.security.proxy
-import sys
+
+
+# Use an object whose bool() evaluates to False, so it works in conditionals.
+INVALID_SIZE = collections.namedtuple('InvalidSize', [])()
 
 
 class ImageGroupBase(object):
@@ -92,9 +97,12 @@ class ImageGroupBase(object):
     def get_variant_size(self, key):
         """Keys look like `square__20x20`. Retrieve size as [20, 20] or None"""
         try:
-            return [int(x) for x in key.split('__')[1].split('x')]
+            size = [int(x) for x in key.split('__')[1].split('x')]
         except (IndexError, ValueError):
             return None
+        if any([x <= 0 for x in size]):
+            return INVALID_SIZE
+        return size
 
     def get_variant_by_key(self, key):
         """Retrieve Variant by using as much information as given in key."""
@@ -139,8 +147,10 @@ class ImageGroupBase(object):
         name = key.split('__')[0]
         candidates = self.get_all_variants_with_name(name)
         size = self.get_variant_size(key)
-        if not size:
+        if size is None:
             return None
+        if size is INVALID_SIZE:
+            return candidates[-1]
         for variant in candidates:
             if size[0] <= variant.max_width and size[1] <= variant.max_height:
                 return variant

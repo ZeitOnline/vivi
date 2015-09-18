@@ -99,7 +99,7 @@ class ImageTransform(object):
 
         target_width, target_height = self._fit_ratio_to_image(
             zoomed_width, zoomed_height, variant.ratio)
-        if size is not None:
+        if size:
             w, h = size
             override_ratio = float(w) / float(h)
             target_width, target_height = self._fit_ratio_to_image(
@@ -110,7 +110,7 @@ class ImageTransform(object):
         image = self._crop(
             self.image, x, y, x + target_width, y + target_height)
 
-        if size is not None:
+        if size:
             image = image.resize(size, PIL.Image.ANTIALIAS)
 
         return image
