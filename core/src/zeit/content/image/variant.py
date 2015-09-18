@@ -66,6 +66,7 @@ class Variant(object):
     contrast = None
     fallback_size = None
     legacy_name = None
+    legacy_size = None
     max_size = None
     saturation = None
     sharpness = None
@@ -229,7 +230,17 @@ class LegacyVariantSource(zeit.cms.content.sources.XMLSource):
         tree = self._get_tree()
         result = []
         for node in tree.iterchildren('*'):
-            result.append({'old': node.get('old'), 'new': node.get('new')})
+            size = None
+            try:
+                size = [int(x) for x in node.get('size', '').split('x')]
+            except (IndexError, ValueError):
+                pass
+
+            result.append({
+                'old': node.get('old'),
+                'new': node.get('new'),
+                'size': size,
+            })
         return result
 
 LEGACY_VARIANT_SOURCE = LegacyVariantSource()

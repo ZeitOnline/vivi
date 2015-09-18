@@ -59,8 +59,10 @@ class ImageGroupBase(object):
 
         """
         key = self._verify_signature(key)
-        size = self.get_variant_size(key)
         variant = self.get_variant_by_key(key)
+        size = self.get_variant_size(key)
+        if not size and variant.legacy_size:
+            size = variant.legacy_size
 
         if source is None:
             source = zeit.content.image.interfaces.IMasterImage(self, None)
@@ -122,6 +124,7 @@ class ImageGroupBase(object):
                 if variant is None:
                     continue
                 variant.legacy_name = mapping['old']
+                variant.legacy_size = mapping['size']
                 return variant
         return None
 

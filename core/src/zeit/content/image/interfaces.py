@@ -251,6 +251,9 @@ class IVariant(zope.interface.Interface):
 
     legacy_name = zope.interface.Attribute(
         'If applicable, the legacy name this Variant was mapped from')
+    legacy_size = zope.interface.Attribute(
+        'If applicable, a [width, height] setting to use if no size'
+        ' was passed in through the URL')
 
 
 class IImageSource(zope.interface.common.mapping.IEnumerableMapping):
