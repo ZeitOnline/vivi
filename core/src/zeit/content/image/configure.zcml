@@ -38,6 +38,10 @@
       permission="zeit.EditContent" />
   </class>
 
+  <class class=".image.TemporaryImage">
+    <require like_class=".image.LocalImage" />
+  </class>
+
   <class class=".transform.ImageTransform">
     <require
       interface=".interfaces.ITransform"

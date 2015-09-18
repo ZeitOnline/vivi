@@ -4,7 +4,7 @@ zeit.content.image changes
 2.11.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Store transformed images in memory instead of tempfiles.
 
 
 2.11.1 (2015-09-18)

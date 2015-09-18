@@ -147,7 +147,7 @@ class ImageTransform(object):
         return pil_image
 
     def _construct_image(self, pil_image):
-        image = zeit.content.image.image.LocalImage()
+        image = zeit.content.image.image.TemporaryImage()
         image.mimeType = self.context.mimeType
         # XXX Maybe encoder setting should be made configurable.
         if self.context.format.upper() in ('JPG', 'JPEG'):
@@ -162,47 +162,7 @@ class ImageTransform(object):
         if image_times and image_times.modified:
             thumb_times = zope.dublincore.interfaces.IDCTimes(image)
             thumb_times.modified = image_times.modified
-
-        transaction.get().join(CleanBlobfilesDataManager(image))
         return image
-
-
-class CleanBlobfilesDataManager(object):
-
-    zope.interface.implements(transaction.interfaces.IDataManager)
-
-    def __init__(self, image):
-        self.image = image
-
-    def abort(self, trans):
-        self._cleanup()
-
-    def tpc_begin(self, trans):
-        pass
-
-    def commit(self, trans):
-        pass
-
-    def tpc_vote(self, trans):
-        pass
-
-    def tpc_finish(self, trans):
-        self._cleanup()
-
-    def tpc_abort(self, trans):
-        self._cleanup()
-
-    def sortKey(self):
-        return str(id(self))
-
-    def savepoint(self):
-        # This would be a point to flush pending commands.
-        return zeit.connector.zopeconnector.ConnectorSavepoint()
-
-    def _cleanup(self):
-        filename = getattr(self.image.local_data, '_p_blob_uncommitted', None)
-        if filename and os.path.exists(filename):
-            os.remove(filename)
 
 
 @zope.component.adapter(zeit.content.image.interfaces.IImage)
