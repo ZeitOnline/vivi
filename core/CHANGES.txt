@@ -4,7 +4,7 @@ zeit.content.image changes
 2.11.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Validate sizes in URLs (and ignore zero and negative numbers).
 
 
 2.11.0 (2015-09-18)
