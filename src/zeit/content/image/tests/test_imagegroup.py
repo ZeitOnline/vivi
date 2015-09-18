@@ -25,10 +25,10 @@ class ImageGroupTest(zeit.cms.testing.FunctionalTestCase):
         self.assertEqual('square', image.__name__)
         self.assertEqual('http://xml.zeit.de/group/square', image.uniqueId)
 
-    def test_getitem_uses_mapping_for_legacy_names(self):
+    def test_getitem_uses_mapping_for_legacy_names_and_adjusts_size(self):
         image = self.group['master-image-540x304.jpg']
         self.assertTrue(zeit.content.image.interfaces.IImage.providedBy(image))
-        self.assertEqual((1536, 1536), image.getImageSize())
+        self.assertEqual((300, 200), image.getImageSize())
 
     def test_getitem_raises_keyerror_for_unmapped_legacy_names(self):
         with self.assertRaises(KeyError):
