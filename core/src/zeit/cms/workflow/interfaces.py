@@ -12,6 +12,9 @@ CAN_PUBLISH_WARNING = 'can-publish-warning'
 CAN_PUBLISH_SUCCESS = 'can-publish-success'
 
 
+PUBLISHED_FUTURE_SHIFT = 60
+
+
 class PublishingError(Exception):
     """Raised when object publishing fails."""
 

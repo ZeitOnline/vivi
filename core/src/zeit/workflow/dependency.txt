@@ -128,7 +128,7 @@ Even if the related was published:
 
 Cleanup:
 
->>> zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT = old_shift
+>>> zeit.cms.workflow.interfaces.PUBLISHED_FUTURE_SHIFT = old_shift
 
 .. [#functional]
 
@@ -150,8 +150,8 @@ Cleanup:
     
     >>> import zeit.cms.checkout.helper
     >>> import zeit.workflow.publish
-    >>> old_shift = zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT
-    >>> zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT = 0.1
+    >>> old_shift = zeit.cms.workflow.interfaces.PUBLISHED_FUTURE_SHIFT
+    >>> zeit.cms.workflow.interfaces.PUBLISHED_FUTURE_SHIFT = 0.1
 
 .. [#somalia-semantic-change] Somalia needs a semantic change:
 

@@ -36,9 +36,6 @@ logger = logging.getLogger(__name__)
 timer_logger = logging.getLogger('zeit.workflow.timer')
 
 
-PUBLISHED_FUTURE_SHIFT = 60
-
-
 class Timer(threading.local):
 
     def start(self, message):
@@ -419,7 +416,7 @@ class PublishTask(PublishRetractTask):
         # modification after the publication and would be shown as stale in the
         # CMS.
         now = datetime.datetime.now(pytz.UTC) + datetime.timedelta(
-            seconds=PUBLISHED_FUTURE_SHIFT)
+            seconds=zeit.cms.workflow.interfaces.PUBLISHED_FUTURE_SHIFT)
         info.date_last_published = now
         timer.mark('Set date_last_published')
         if not info.date_first_released:

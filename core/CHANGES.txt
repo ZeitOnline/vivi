@@ -4,7 +4,7 @@ zeit.cms changes
 2.58.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Apply PUBLISH_FUTURE_SHIFT to ``date_last_published_semantic``, too.
 
 
 2.58.1 (2015-09-11)
