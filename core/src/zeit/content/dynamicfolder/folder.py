@@ -128,6 +128,8 @@ class RepositoryDynamicFolder(
 
         We'd love to use xi:include for this, but lxml.ElementInclude (which
         allows overriding URL resolution) does not support xpointer, sigh.
+        NOTE: The included nodes are appended at the end of the parent element,
+        not at the position of the <include> node (since that's twice as fast).
 
         """
         if not self.config_file:
@@ -139,10 +141,9 @@ class RepositoryDynamicFolder(
                     self.config_file).data.read())
             for include in config.xpath('//include'):
                 parent = include.getparent()
-                index = parent.index(include)
                 parent.remove(include)
-                for i, node in enumerate(self._resolve_include(include)):
-                    parent.insert(index + i, node)
+                for node in self._resolve_include(include):
+                    parent.append(node)
             self._v_config = config
         return self._v_config
 
