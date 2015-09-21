@@ -271,7 +271,7 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase,
         # Without the very low shift and a wait we at times don't see the
         # published-with-changes state, because last-publish and modification
         # fall into the same second (only one second resolution).
-        with mock.patch('zeit.workflow.publish.PUBLISHED_FUTURE_SHIFT',
+        with mock.patch('zeit.cms.workflow.interfaces.PUBLISHED_FUTURE_SHIFT',
                         new=0.1):
             update_repository(self.getRootFolder())
         transaction.commit()
