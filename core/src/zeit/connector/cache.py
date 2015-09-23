@@ -156,12 +156,27 @@ class AccessTimes(object):
             try:
                 access_time = iter(self._access_time_to_ids.keys(
                     min=start, max=timeout)).next()
-                id_set = self._access_time_to_ids[access_time]
+                id_set = list(self._access_time_to_ids[access_time])
                 try:
-                    for id in id_set:
+                    i = 0
+                    retries = 0
+                    while i < len(id_set):
+                        i += 1
+                        id = id_set[i]
                         log.info('Evicting %s', id)
                         self._last_access_time.pop(id, None)
                         self.remove(id)
+                        if i % 100 == 0:
+                            try:
+                                log.info('Sub-commit')
+                                transaction.commit()
+                            except ZODB.POSException.ConflictError:
+                                if retries == 3:
+                                    raise RuntimeError('Too many retries')
+                                log.info('ConflictError, retrying')
+                                transaction.abort()
+                                retries += 1
+                                i -= 100
                     self._access_time_to_ids.pop(access_time, None)
                     start = access_time
                 except:
