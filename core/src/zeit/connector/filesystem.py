@@ -223,7 +223,7 @@ class Connector(object):
 
         nodes = xml.xpath('//head/attribute')
         for node in nodes:
-            properties[node.get('name'), node.get('ns')] = node.text
+            properties[node.get('name'), node.get('ns')] = node.text or ''
 
         # XXX workaround for zeit.frontend, can probably go away
         # once the filesystem connector is finished.

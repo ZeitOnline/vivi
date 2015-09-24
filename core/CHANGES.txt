@@ -4,7 +4,8 @@ CHANGES
 2.6.8 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Parse empty attribute nodes as empty string in filesystem connector so it
+  behaves like DAV connector.
 
 
 2.6.7 (2015-09-23)

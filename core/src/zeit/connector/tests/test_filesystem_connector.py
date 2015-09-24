@@ -63,3 +63,9 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
         # Since XSLT expects it and the real connector does it like that.
         group = self.connector['http://xml.zeit.de/2007/03/group']
         self.assertEqual('http://xml.zeit.de/2007/03/group/', group.id)
+
+    def test_empty_attribute_node_is_parsed_as_empty_string(self):
+        image = self.connector['http://xml.zeit.de/2006/DSC00109_2.JPG']
+        copyrights = image.properties[
+            ('copyrights', 'http://namespaces.zeit.de/CMS/document')]
+        self.assertEqual(u'', copyrights)
