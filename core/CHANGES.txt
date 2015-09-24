@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.6.8 (unreleased)
+2.6.8 (2015-09-24)
 ------------------
 
 - Parse empty attribute nodes as empty string in filesystem connector so it
