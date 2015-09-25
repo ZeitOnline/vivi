@@ -161,8 +161,8 @@ class AccessTimes(object):
                     i = 0
                     retries = 0
                     while i < len(id_set):
-                        i += 1
                         id = id_set[i]
+                        i += 1
                         log.info('Evicting %s', id)
                         self._last_access_time.pop(id, None)
                         self.remove(id)

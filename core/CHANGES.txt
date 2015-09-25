@@ -4,7 +4,7 @@ CHANGES
 2.6.9 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix off-by-one error in cache sweeper.
 
 
 2.6.8 (2015-09-24)
