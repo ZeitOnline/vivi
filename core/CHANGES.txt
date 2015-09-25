@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.6.9 (unreleased)
+2.6.9 (2015-09-25)
 ------------------
 
 - Fix off-by-one error in cache sweeper.
