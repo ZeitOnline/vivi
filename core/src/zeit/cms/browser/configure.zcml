@@ -47,7 +47,7 @@
     permission="zope.View"
     menu="zeit-context-actions-external"
     />
-  
+
 
   <browser:viewletManager
     name="zeit.cms.context-views"
@@ -55,7 +55,7 @@
     layer=".interfaces.ICMSLayer"
     permission="zope.View"
     />
-  
+
   <browser:viewlet
     name="internal"
     for="*"
@@ -182,14 +182,14 @@
     />
 
 
-  <!-- Skin, Templates and widgets --> 
+  <!-- Skin, Templates and widgets -->
 
   <include file="skin.zcml" />
   <include file="widget.zcml" />
 
   <!-- Zeit form layout -->
 
-  <adapter factory=".sourceedit.form_template" name="sourceedit_form"/> 
+  <adapter factory=".sourceedit.form_template" name="sourceedit_form"/>
 
   <browser:page
     for="*"
@@ -199,7 +199,7 @@
     permission="zope.Public"
     />
 
-  <!-- Sidebar -->  
+  <!-- Sidebar -->
 
   <browser:viewletManager
     name="zeit.cms.Sidebar"
@@ -224,7 +224,7 @@
   <browser:page
     for="zeit.cms.content.interfaces.ITextContent"
     permission="zope.View"
-    template="general_view.pt" 
+    template="general_view.pt"
     name="source.html"
     layer=".interfaces.ICMSLayer"
     />
@@ -234,7 +234,7 @@
     name="text_edit.html"
     class=".sourceedit.TextEditForm"
     permission="zeit.EditContent"
-    menu="zeit-context-views" title="Source" 
+    menu="zeit-context-views" title="Source"
     />
 
   <browser:page
@@ -263,7 +263,7 @@
     permission="zope.View"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
-  
+
   <adapter
     factory=".sourceedit.display_view_name" name="xml_source_edit.html" />
   <adapter
