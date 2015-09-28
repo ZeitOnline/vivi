@@ -101,7 +101,7 @@ class RepositoryDynamicFolder(
             # XXX Make type configurable (<attribute> in the cp_template?).
             type='centerpage-2009',
             data=StringIO(self.cp_template.render(
-                **self.virtual_content[key])),
+                **self.virtual_content[key]).encode('utf-8')),
             # XXX Convert <attribute>s of cp_template to DAV properties?
             properties={},
         )

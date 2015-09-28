@@ -1,6 +1,10 @@
 # coding: utf-8
 from zeit.cms.checkout.helper import checked_out
+from zeit.cms.repository.unknown import PersistentUnknownResource
+from zeit.content.rawxml.rawxml import RawXML
 import mock
+import pkg_resources
+import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.testing
@@ -140,3 +144,22 @@ class TestDynamicFolder(
             self.assertEqual(1, render.call_count)
             self.assertIn(
                 ('text', 'Text Xinjiang'), render.call_args[1].items())
+
+    def test_works_with_raxml_template(self):
+        # These get an xml declaration in their serialization, so we must not
+        # process them as unicode, else lxml complains.
+        transaction.abort()  # Clear Repository child cache
+        self.repository['data']['template.xml'] = RawXML(
+            pkg_resources.resource_stream(__name__, 'fixtures/template.xml'))
+        with self.assertNothingRaised():
+            self.folder['xanten']
+
+    def test_works_with_unknown_type_template(self):
+        # These don't get an xml declaration in their serialization, but
+        # luckily(?) lxml doesn't care if we use unicode or utf-8 in that case.
+        transaction.abort()  # Clear Repository child cache
+        self.repository['data']['template.xml'] = PersistentUnknownResource(
+            data=pkg_resources.resource_string(
+                __name__, 'fixtures/template.xml').decode('latin-1'))
+        with self.assertNothingRaised():
+            self.folder['xanten']

@@ -24,6 +24,7 @@ setup(
         'zeit.cms',
         'zeit.connector',
         'zeit.content.cp',
+        'zeit.content.rawxml',
         'zope.app.locking',
         'zope.component',
         'zope.container',

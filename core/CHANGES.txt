@@ -5,7 +5,7 @@ zeit.content.dynamicfolder changes
 1.0.5 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Handle templates both with vivi content-type ``rawxml`` and without.
 
 
 1.0.4 (2015-09-21)
