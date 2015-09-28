@@ -104,5 +104,10 @@
     title="Delete centerpages"
     />
 
+  <permission
+    id="zeit.cms.admin.View"
+    title="View admin tab"
+    />
+
 </configure>
 

@@ -1,7 +1,5 @@
-
 from zeit.cms.i18n import MessageFactory as _
-import datetime
-import pytz
+from zeit.cms.interfaces import MAX_PUBLISH_DATE
 import zc.form.field
 import zeit.cms.syndication.interfaces
 import zeit.cms.workflow.interfaces
@@ -20,10 +18,6 @@ WORKFLOW_NS = u'http://namespaces.zeit.de/CMS/workflow'
 
 class ScriptError(Exception):
     """Raised when the publish/retract script fails."""
-
-
-# lovely.remotetask stores times as 32 bit leading to an overflow after 2030.
-MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
 
 
 class ITimeBasedPublishing(zeit.cms.workflow.interfaces.IPublishInfo):

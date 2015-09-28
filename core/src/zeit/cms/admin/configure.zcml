@@ -1,2 +1,16 @@
 <configure xmlns="http://namespaces.zope.org/zope">
+
+  <adapter factory=".date_back.wrapped_context" />
+
+  <class class=".date_back.DateBackSemanticPublish">
+    <require
+      interface="zeit.cms.admin.interfaces.IDateBackSemanticPublish"
+      permission="zope.View"
+      />
+    <require
+      set_schema="zeit.cms.admin.interfaces.IDateBackSemanticPublish"
+      permission="zope.View"
+      />
+  </class>
+
 </configure>

@@ -285,6 +285,7 @@
     />
 
   <include package="zc.sourcefactory.browser" />
+  <include package="zeit.cms.admin.browser" />
   <include package="zeit.cms.asset.browser" />
   <include package="zeit.cms.checkout.browser" />
   <include package="zeit.cms.repository.browser" />

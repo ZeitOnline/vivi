@@ -1,5 +1,7 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
+import datetime
+import pytz
 import re
 import zope.app.container.interfaces
 import zope.i18nmessageid
@@ -13,6 +15,9 @@ QPS_SCHEMA_NS = u"http://namespaces.zeit.de/QPS/attributes"
 ID_NAMESPACE = u'http://xml.zeit.de/'
 TEASER_NAMESPACE = u'http://xml.zeit.de/CMS/Teaser'
 PRINT_NAMESPACE = u"http://namespaces.zeit.de/CMS/print"
+
+# lovely.remotetask stores times as 32 bit leading to an overflow after 2030.
+MAX_PUBLISH_DATE = datetime.datetime(2030, 1, 1, tzinfo=pytz.UTC)
 
 # Backward compatibility imports
 from zeit.connector.interfaces import (
