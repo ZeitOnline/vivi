@@ -29,9 +29,7 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
     field_groups = (
         gocept.form.grouped.Fields(
             _("Status"),
-            ('last_modified_by', 'date_last_modified', 'last_semantic_change',
-             'created',
-             'published', 'date_last_published', 'date_first_released'),
+            zeit.workflow.browser.form.WorkflowForm.modified_fields,
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("Settings"), css_class='column-right'),
@@ -46,8 +44,7 @@ class CenterPageWorkflowForm(zeit.workflow.browser.form.WorkflowForm):
             zeit.objectlog.interfaces.ILog,
             zeit.cms.workflow.interfaces.IModified,
             zeit.cms.content.interfaces.ISemanticChange).omit(
-            'has_semantic_change', 'date_print_published',
-            'error_messages') +
+                *zeit.workflow.browser.form.WorkflowForm.omit_fields) +
         zope.formlib.form.FormFields(
             zope.dublincore.interfaces.IDCTimes, for_display=True).select(
                 'created'))
