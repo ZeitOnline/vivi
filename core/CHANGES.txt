@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.2.2 (unreleased)
+3.2.2 (2015-09-28)
 ------------------
 
 - Add checkbox to update semantic change to workflow form (DEV-834).
