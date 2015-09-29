@@ -2,7 +2,7 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-1.1.0 (unreleased)
+1.1.0 (2015-09-29)
 ------------------
 
 - Convert ``head/attribute`` XML nodes of the template into DAV properties.
