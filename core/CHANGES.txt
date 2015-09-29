@@ -2,10 +2,12 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-1.0.6 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Convert ``head/attribute`` XML nodes of the template into DAV properties.
+  (This means we also support arbitrary content types via the meta:type
+  attribute, and arbitrary interfaces via the meta:provides attribute.)
 
 
 1.0.5 (2015-09-28)

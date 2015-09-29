@@ -1,5 +1,21 @@
 <centerpage xmlns:cp="http://namespaces.zeit.de/CMS/cp" type="centerpage">
   <head>
+     <attribute name="ressort" ns="http://namespaces.zeit.de/CMS/document">Deutschland</attribute>
+     <attribute name="provides" ns="http://namespaces.zeit.de/CMS/meta">&lt;pickle&gt;
+ &lt;initialized_object&gt;
+ &lt;klass&gt;
+   &lt;global name=&quot;Provides&quot; module=&quot;zope.interface.declarations&quot;/&gt;
+ &lt;/klass&gt;
+ &lt;arguments&gt;
+   &lt;tuple&gt;
+     &lt;global name=&quot;CenterPage&quot; module=&quot;zeit.content.cp.centerpage&quot;/&gt;
+     &lt;global name=&quot;Interface&quot; module=&quot;zope.interface&quot;/&gt;
+     &lt;global name=&quot;ICP2015&quot; module=&quot;zeit.content.cp.interfaces&quot;/&gt;
+     &lt;global name=&quot;IZONContent&quot; module=&quot;zeit.cms.section.interfaces&quot;/&gt;
+   &lt;/tuple&gt;
+ &lt;/arguments&gt;
+ &lt;/initialized_object&gt;
+ &lt;/pickle&gt;</attribute>
   </head>
   <body>
     <title>{{lexical_value}}</title>

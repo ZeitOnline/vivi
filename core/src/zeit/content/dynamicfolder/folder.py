@@ -13,21 +13,12 @@ import zeit.cms.interfaces
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.connector.interfaces
+import zeit.connector.resource
 import zeit.content.dynamicfolder.interfaces
 import zope.app.locking.interfaces
 import zope.container.contained
 import zope.interface
 import zope.security.proxy
-
-
-class VirtualProperties(grok.Adapter, dict):
-    """Properties for virtual content. Actually returns no properties."""
-
-    grok.context(zeit.content.dynamicfolder.interfaces.IVirtualContent)
-    grok.implements(zeit.connector.interfaces.IWebDAVProperties)
-
-    def __repr__(self):
-        return object.__repr__(self)
 
 
 class DynamicFolderBase(persistent.Persistent,
@@ -95,15 +86,20 @@ class RepositoryDynamicFolder(
         return self._v_cp_template
 
     def _create_virtual_content(self, key):
+        body = self.cp_template.render(
+            **self.virtual_content[key]).encode('utf-8')
+        properties = VirtualProperties.parse(body)
         resource = zeit.connector.resource.Resource(
             id=self._get_id_for_name(key),
             name=key,
-            # XXX Make type configurable (<attribute> in the cp_template?).
-            type='centerpage-2009',
-            data=StringIO(self.cp_template.render(
-                **self.virtual_content[key]).encode('utf-8')),
-            # XXX Convert <attribute>s of cp_template to DAV properties?
-            properties={},
+            type=properties.get(
+                ('type', 'http://namespaces.zeit.de/CMS/meta'),
+                'centerpage-2009'),
+            data=StringIO(body),
+            # Even though virtual content never touches the connector and thus
+            # we have to override the IWebDAVProperties adapter, some parts of
+            # the system use this, e.g. for reconstructing provided interfaces.
+            properties=properties,
         )
         content = zeit.cms.interfaces.ICMSContent(resource)
         # Setting __name__ is normally done by
@@ -111,9 +107,6 @@ class RepositoryDynamicFolder(
         content.__name__ = resource.__name__
         zope.interface.alsoProvides(
             content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
-        # XXX Make type configurable (by using virtual DAV properties).
-        zope.interface.alsoProvides(
-            content, zeit.content.cp.interfaces.ICP2015)
         return content
 
     @property
@@ -244,3 +237,35 @@ def virtual_lockable(context):
     # re-implementation for virtual content. Since that's probably not worth
     # the effort, we simply make IVirtualContent not lockable.
     return None
+
+
+class VirtualProperties(zeit.connector.resource.WebDAVProperties,
+                        grok.Adapter):
+
+    grok.context(zeit.content.dynamicfolder.interfaces.IVirtualContent)
+    grok.provides(zeit.connector.interfaces.IWebDAVProperties)
+
+    def __init__(self, context):
+        super(VirtualProperties, self).__init__()
+        self.context = context
+        self.update(self.parse(context.xml))
+
+    # XXX zeit.cms.content.xmlsupport.PropertyToXMLAttribute violates
+    # the contract by assuming that IWebDAVProperties of IRepositoryContent
+    # also provides zeit.cms.content.liveproperty.LiveProperties methods.
+    def is_writeable_on_checkin(self, name, namespace):
+        return True
+
+    @classmethod
+    def parse(cls, body):
+        properties = {}
+        if isinstance(body, (str, unicode)):
+            try:
+                body = lxml.etree.fromstring(body)
+            except lxml.etree.LxmlError:
+                return properties
+        # See zeit.connector.filesystem.Connector._get_properties
+        attributes = body.xpath('//head/attribute')
+        for attr in attributes:
+            properties[attr.get('name'), attr.get('ns')] = attr.text or ''
+        return properties

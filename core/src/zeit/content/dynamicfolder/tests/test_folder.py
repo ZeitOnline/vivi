@@ -129,6 +129,7 @@ class TestDynamicFolder(
     def test_fills_in_template_placeholders_from_config_entries(self):
         cp = self.folder['xanten']
         self.assertTrue(zeit.content.cp.interfaces.ICenterPage.providedBy(cp))
+        self.assertTrue(zeit.content.cp.interfaces.ICP2015.providedBy(cp))
         self.assertEqual('Xanten', cp.title)
 
     def test_template_handles_umlauts_and_xml_special_chars(self):
@@ -140,6 +141,7 @@ class TestDynamicFolder(
         self.repository.uncontained_content = {}
 
         with mock.patch('jinja2.Template.render') as render:
+            render.return_value = u''
             self.folder['xinjiang']  # load files and renders template
             self.assertEqual(1, render.call_count)
             self.assertIn(
@@ -163,3 +165,6 @@ class TestDynamicFolder(
                 __name__, 'fixtures/template.xml').decode('latin-1'))
         with self.assertNothingRaised():
             self.folder['xanten']
+
+    def test_converts_xml_attribute_nodes_into_dav_properties(self):
+        self.assertEqual('Deutschland', self.folder['xanten'].ressort)
