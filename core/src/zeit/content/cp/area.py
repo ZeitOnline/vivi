@@ -286,7 +286,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     @automatic.setter
     def automatic(self, value):
-        if self._automatic and not value:
+        if self.automatic and not value:
             self._materialize_filled_values()
         self._automatic = value
         self._fill_with_placeholders()
@@ -301,7 +301,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self._fill_with_placeholders()
 
     def _fill_with_placeholders(self):
-        if self._automatic:
+        if self.automatic:
             layouts = []
             for key in self:
                 block = self[key]
