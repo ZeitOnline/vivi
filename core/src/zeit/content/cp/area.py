@@ -277,7 +277,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if name != self.__name__:
             self._p_changed = True
             if self.is_teaserbar:
-                self.xml.set('{http://namespaces.zeit.de/CMS/cp}__name__', name)
+                self.xml.set(
+                    '{http://namespaces.zeit.de/CMS/cp}__name__', name)
             self.xml.set('area', name)
 
     @property
