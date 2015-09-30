@@ -205,6 +205,22 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual(1, len(lead))
         self.assertEqual(manual_teaser, lead.values()[0])
 
+    def test_changing_teaser_count_leaves_manual_content_untouched(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+
+        manual_teaser = lead.create_item('teaser')
+        self.assertEqual(2, len(lead))
+
+        lead.count = 0
+        self.assertEqual(1, len(lead))
+        self.assertEqual(manual_teaser, lead.values()[0])
+
+        lead.count = 2
+        self.assertEqual(3, len(lead))
+        self.assertEqual(manual_teaser, lead.values()[0])
+
 
 class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
 

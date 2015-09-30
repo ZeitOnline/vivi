@@ -299,7 +299,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @count.setter
     def count(self, value):
         self._count = value
-        self._fill_with_placeholders()
+        self.update_autopilot()
 
     def _fill_with_placeholders(self):
         if self.automatic:
@@ -314,6 +314,27 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 # self.count might be greater than the number of manual teasers
                 if layouts:
                     block.layout = layouts.pop(0)
+
+    def update_autopilot(self):
+        """Update number of automatic teasers inside the AutoPilot.
+
+        Does not touch any block that is not an IAutomaticTeaserBlock, so only
+        the number of automatic teasers is configured via the `Area.count`
+        setting. Thus the AutoPilot may contain more than `Area.count` teasers.
+
+        """
+        if not self.automatic:
+            return
+
+        automatic_blocks = [
+            x for x in self.values() if IAutomaticTeaserBlock.providedBy(x)]
+
+        while self.count < len(automatic_blocks):
+            block = automatic_blocks.pop(-1)
+            del self[block.__name__]
+        while self.count > len(automatic_blocks):
+            block = self.create_item('auto-teaser')
+            automatic_blocks.append(block)
 
     TEASERBLOCK_FIELDS = (
         set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
