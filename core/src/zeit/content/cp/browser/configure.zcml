@@ -302,16 +302,6 @@
     class=".resources.RawCSS"
     permission="zope.View" />
 
-  <gocept:pagelet
-    name="edit.html"
-    for="..interfaces.ICP2009"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    class=".editor.Migrate"
-    template="migrate.pt"
-    permission="zeit.EditContent"
-    />
-
-
   <browser:viewlet
     for="zeit.content.cp.interfaces.IElement"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
