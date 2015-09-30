@@ -195,6 +195,16 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertEqual('foo', lead.values()[0].read_more)
         self.assertEqual('two-side-by-side', lead.values()[0].layout.id)
 
+    def test_materializing_autopilot_keeps_manual_content(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 0
+        lead.automatic = True
+        manual_teaser = lead.create_item('teaser')
+
+        lead.automatic = False
+        self.assertEqual(1, len(lead))
+        self.assertEqual(manual_teaser, lead.values()[0])
+
 
 class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
 
