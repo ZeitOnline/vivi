@@ -66,3 +66,14 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
 
         sel.waitForCssCount('css=.block-visible-off', 1)
         sel.assertTextPresent(self.auto_teaser_title)
+
+    def test_adding_block_by_hand_removes_automatic_block_to_keep_count(self):
+        auto_teaser_selector = 'css=#{} .block.type-auto-teaser'.format(
+            self.area.__name__)
+        quiz_selector = 'css=#{} .block.type-quiz'.format(self.area.__name__)
+
+        self.selenium.waitForCssCount(auto_teaser_selector, 1)
+        self.selenium.waitForCssCount(quiz_selector, 0)
+        self.create_block('quiz', self.area.__name__)
+        self.selenium.waitForCssCount(auto_teaser_selector, 0)
+        self.selenium.waitForCssCount(quiz_selector, 1)

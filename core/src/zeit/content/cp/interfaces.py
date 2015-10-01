@@ -441,6 +441,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         the given interfaces.
         """
 
+    def update_autopilot():
+        """Updates number of teaser in AutoPilot, if AutoPilot is enabled"""
+
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):
     pass

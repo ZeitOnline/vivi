@@ -302,18 +302,24 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self.update_autopilot()
 
     def _fill_with_placeholders(self):
-        if self.automatic:
-            layouts = []
-            for key in self:
-                block = self[key]
-                if ITeaserBlock.providedBy(block):
-                    layouts.append(block.layout)
-                del self[key]
-            for i in range(self.count):
-                block = self.create_item('auto-teaser')
-                # self.count might be greater than the number of manual teasers
-                if layouts:
-                    block.layout = layouts.pop(0)
+        """Remove all blocks from the area, add automatic teaser blocks instead
+
+        Copy layout of teaser blocks to automatic teaser block in same position
+
+        To make sure we only have #count automatic teaser blocks, we call
+        update_autopilot in the end, which will add / remove automatic teaser
+        blocks accordingly.
+
+        """
+        if not self.automatic:
+            return
+
+        for block in self.values():
+            auto_block = self.create_item('auto-teaser')
+            if ITeaserBlock.providedBy(block):
+                auto_block.layout = block.layout
+            del self[block.__name__]
+        self.update_autopilot()
 
     def update_autopilot(self):
         """Update number of automatic teasers inside the AutoPilot.
@@ -329,34 +335,55 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         automatic_blocks = [
             x for x in self.values() if IAutomaticTeaserBlock.providedBy(x)]
 
-        while self.count < len(automatic_blocks):
+        while self.count < len(self) and len(automatic_blocks) > 0:
             block = automatic_blocks.pop(-1)
             del self[block.__name__]
-        while self.count > len(automatic_blocks):
-            block = self.create_item('auto-teaser')
-            automatic_blocks.append(block)
+        while self.count > len(self):
+            self.create_item('auto-teaser')
 
     TEASERBLOCK_FIELDS = (
         set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
         - set(zeit.cms.content.interfaces.IXMLRepresentation)
     )
 
+    def copy_teaserlist_attributes(self, old, new):
+        """Copy content and properties from old to new."""
+        # Copy teaser contents.
+        for content in old:
+            new.append(content)
+        # Copy block properties (including __name__ and __parent__)
+        for name in self.TEASERBLOCK_FIELDS:
+            setattr(new, name, getattr(old, name))
+
     def _materialize_filled_values(self):
+        """Replace automatic teaser blocks by teaser blocks with same content.
+
+        Make sure this method only runs when #automatic is enabled, otherwise
+        IRenderedArea will not retrieve results from SOLR / referenced CP.
+
+        Remove automatic teaser blocks and copy their content to a new teaser
+        block. Make sure that the order of blocks does not change. Clean up, by
+        deleting superfluous automatic teaser blocks with no content.
+
+        """
+        if not self.automatic:
+            return
+
         order = self.keys()
         for old in zeit.content.cp.interfaces.IRenderedArea(self).values():
             if not IAutomaticTeaserBlock.providedBy(old):
                 continue
-            items = list(old)
-            new = self.create_item('teaser')
-            # Copy teaser contents.
-            for content in items:
-                new.append(content)
-            # Copy block properties (including __name__ and __parent__)
-            for name in self.TEASERBLOCK_FIELDS:
-                setattr(new, name, getattr(old, name))
-            # This deletes only the first occurrence, i.e. the old block.
+
+            # Delete automatic teaser first, since adding normal teaser will
+            # delete last automatic teaser due to update_autopilot eventhandler
+            # (Deletion doesn't set __name__ or __parent__ to None, so we can
+            # still copy those informations afterwards)
             del self[old.__name__]
-        # Preserve non-auto blocks.
+
+            new = self.create_item('teaser')
+            self.copy_teaserlist_attributes(old, new)
+
+        # Preserve order of non-auto blocks.
         self.updateOrder(order)
 
         # Remove unfilled auto blocks.
@@ -467,7 +494,8 @@ def rendered_xml(context):
     zope.container.interfaces.IObjectAddedEvent)
 def overflow_blocks(context, event):
     area = context.__parent__
-    if (area.block_max is None
+    if (area.automatic
+            or area.block_max is None
             or len(area) <= area.block_max
             or area.overflow_into is None):
         return
@@ -476,6 +504,18 @@ def overflow_blocks(context, event):
     del area[last_block.__name__]
     area.overflow_into.insert(0, last_block)
     overflow_blocks(last_block, None)
+
+
+@grok.subscribe(
+    zeit.content.cp.interfaces.IBlock,
+    zope.container.interfaces.IObjectMovedEvent)
+def update_autopilot(context, event):
+    """Re-render AutoPilot to restrict values of container to Area.count"""
+    if IAutomaticTeaserBlock.providedBy(context):
+        return  # avoid infty loop when adding / deleting auto teaser in update
+
+    area = context.__parent__
+    area.update_autopilot()
 
 
 @grok.subscribe(

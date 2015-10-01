@@ -203,23 +203,65 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
 
         lead.automatic = False
         self.assertEqual(1, len(lead))
-        self.assertEqual(manual_teaser, lead.values()[0])
+        self.assertEqual([manual_teaser], lead.values())
 
-    def test_changing_teaser_count_leaves_manual_content_untouched(self):
+    def test_changing_automatic_count_also_counts_manual_content(self):
         lead = self.repository['cp']['lead']
-        lead.count = 1
+        lead.count = 2
         lead.automatic = True
 
         manual_teaser = lead.create_item('teaser')
         self.assertEqual(2, len(lead))
 
-        lead.count = 0
+        lead.count = 1
         self.assertEqual(1, len(lead))
-        self.assertEqual(manual_teaser, lead.values()[0])
+        self.assertEqual([manual_teaser], lead.values())
 
-        lead.count = 2
+        lead.count = 3
         self.assertEqual(3, len(lead))
         self.assertEqual(manual_teaser, lead.values()[0])
+
+    def test_reducing_automatic_count_does_not_delete_manual_content(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        manual_teaser = lead.create_item('teaser')
+
+        lead.count = 0
+        self.assertEqual(1, len(lead))
+        self.assertEqual([manual_teaser], lead.values())
+
+    def test_autopilot_allows_more_manual_content_than_automatic_count(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.automatic = True
+        teaser1 = lead.create_item('teaser')
+        teaser2 = lead.create_item('teaser')
+        self.assertEqual(2, len(lead))
+        self.assertEqual([teaser1, teaser2], lead.values())
+
+    def test_adding_manual_teaser_automatically_removes_last_auto_teaser(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 2
+        lead.automatic = True
+        auto_teaser1, auto_teaser2 = lead.values()
+        manual_teaser = lead.create_item('teaser')
+        self.assertEqual([auto_teaser1, manual_teaser], lead.values())
+
+    def test_removing_manual_teaser_automatically_adds_auto_teaser(self):
+        from zeit.content.cp.interfaces import IAutomaticTeaserBlock
+
+        lead = self.repository['cp']['lead']
+        lead.count = 2
+        lead.automatic = True
+        manual_teaser1 = lead.create_item('teaser')
+        manual_teaser2 = lead.create_item('teaser')
+        self.assertEqual([manual_teaser1, manual_teaser2], lead.values())
+
+        del lead[manual_teaser1.__name__]
+        self.assertNotIn(manual_teaser1, lead.values())
+        self.assertIn(manual_teaser2, lead.values())
+        self.assertTrue(IAutomaticTeaserBlock.providedBy(lead.values()[-1]))
 
 
 class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
