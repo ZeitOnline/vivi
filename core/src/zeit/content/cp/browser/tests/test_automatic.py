@@ -107,7 +107,7 @@ class TestAutomaticArea(zeit.content.cp.testing.SeleniumTestCase):
         sel.click(r'css=#tab-0 #form\.actions\.apply')
         sel.click('css=a.CloseButton')
 
-        # One area is inconfigured, the other could load content automatically
+        # One area is unconfigured, the other could load content automatically
         sel.waitForCssCount('css=.block-automatic-off', 1)
         sel.assertCssCount('css=.block-automatic-on', 0)
         sel.assertCssCount('css=.block-automatic-not-possible', 1)
