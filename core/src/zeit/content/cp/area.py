@@ -315,10 +315,17 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             return
 
         for block in self.values():
+            if block.survive_autopilot:
+                continue
+
             auto_block = self.create_item('auto-teaser')
             if ITeaserBlock.providedBy(block):
                 auto_block.layout = block.layout
+
+            # Only deletes first occurrence of __name__, i.e. `block`
             del self[block.__name__]
+
+        # Add / remove AutomaticTeaserBlocks as needed to reach #count
         self.update_autopilot()
 
     def update_autopilot(self):

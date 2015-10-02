@@ -263,6 +263,28 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         self.assertIn(manual_teaser2, lead.values())
         self.assertTrue(IAutomaticTeaserBlock.providedBy(lead.values()[-1]))
 
+    def test_enabling_automatic_removes_all_content_without_survive_autopilot(
+            self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        lead.create_item('teaser')
+        lead.automatic = True
+        self.assertEqual(['auto-teaser'], [x.type for x in lead.values()])
+
+    def test_enabling_automatic_keeps_content_with_survive_autopilot(self):
+        lead = self.repository['cp']['lead']
+        lead.count = 1
+        teaser = lead.create_item('teaser')
+        teaser.survive_autopilot = True
+        lead.automatic = True
+        self.assertEqual([teaser], lead.values())
+
+    def test_adding_teaser_from_code_uses_default_for_survive_autopilot(self):
+        lead = self.repository['cp']['lead']
+        teaser = lead.create_item('teaser')
+        # assertFalse accepts None as well, so we use assertEqual explicitly
+        self.assertEqual(False, teaser.survive_autopilot)
+
 
 class AreaDelegateTest(zeit.content.cp.testing.FunctionalTestCase):
 

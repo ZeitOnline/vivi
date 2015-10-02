@@ -493,6 +493,9 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
         required=False)
     type_title = zope.interface.Attribute(
         "Translation of type to a human friendly information")
+    survive_autopilot = zope.schema.Bool(
+        title=_("Keep block when turning AutoPilot on"),
+        default=False)
 
     # BBB needed by zeit.web for legacy/zmo content only
     read_more = zope.schema.TextLine(
