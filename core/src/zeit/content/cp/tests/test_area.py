@@ -296,6 +296,15 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
             ['auto-teaser', 'teaser', 'auto-teaser'],
             [x.type for x in lead.values()])
 
+    def test_enabling_automatic_does_not_break_on_updateOrder(self):
+        """update_autopilot handler might interfere and creates new blocks"""
+        lead = self.repository['cp']['lead']
+        lead.count = 3
+        teaser = lead.create_item('teaser')
+        teaser.survive_autopilot = False
+        lead.automatic = True
+        self.assertEqual(3, len(lead))
+
     def test_disabling_automatic_keeps_order_of_teasers(self):
         from zeit.cms.testcontenttype.testcontenttype import TestContentType
         self.repository['t1'] = TestContentType()

@@ -314,6 +314,9 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if not self.automatic:
             return
 
+        # Add / remove AutomaticTeaserBlocks as needed to reach #count
+        self.update_autopilot()
+
         order = self.keys()
         for block in self.values():
             if block.survive_autopilot:
@@ -330,9 +333,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
         # Preserve order of blocks that are kept when turning AutoPilot on.
         self.updateOrder(order)
-
-        # Add / remove AutomaticTeaserBlocks as needed to reach #count
-        self.update_autopilot()
 
     def update_autopilot(self):
         """Update number of automatic teasers inside the AutoPilot.
