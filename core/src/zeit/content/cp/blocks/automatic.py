@@ -28,6 +28,8 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         '.', 'overlay_level', zeit.content.cp.interfaces.ITeaserBlock[
             'overlay_level'])
 
+    volatile = True  # Override to use default=True
+
     def __init__(self, context, xml):
         super(AutomaticTeaserBlock, self).__init__(context, xml)
         self.entries = []

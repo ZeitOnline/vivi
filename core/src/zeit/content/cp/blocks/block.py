@@ -46,9 +46,9 @@ class Block(VisibleMixin, zeit.edit.block.Element):
         '.', 'supertitle')
     title = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'title')
-    survive_autopilot = zeit.cms.content.property.ObjectPathProperty(
-        '.survive_autopilot',
-        zeit.content.cp.interfaces.IBlock['survive_autopilot'],
+    volatile = zeit.cms.content.property.ObjectPathProperty(
+        '.volatile',
+        zeit.content.cp.interfaces.IBlock['volatile'],
         use_default=True)
 
     publisher = zeit.cms.content.property.ObjectPathAttributeProperty(

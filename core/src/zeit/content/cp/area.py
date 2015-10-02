@@ -319,7 +319,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
         order = self.keys()
         for block in self.values():
-            if block.survive_autopilot:
+            if not block.volatile:
                 continue
 
             auto_block = self.create_item('auto-teaser')

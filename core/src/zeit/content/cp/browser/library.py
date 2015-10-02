@@ -21,7 +21,7 @@ class CPBlockFactories(zeit.edit.browser.library.BlockFactories):
             'type': module.id,
             'title': module.title,
             'library_name': self.library_name,
-            'params': {'survive_autopilot': True}
+            'params': {}
         } for i, module in enumerate(
             zeit.content.cp.layout.MODULE_CONFIGS(self.context))]
 
