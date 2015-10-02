@@ -279,6 +279,43 @@ class AutomaticAreaTest(zeit.content.cp.testing.FunctionalTestCase):
         lead.automatic = True
         self.assertEqual([teaser], lead.values())
 
+    def test_enabling_automatic_keeps_order_of_blocks_that_survive_autopilot(
+            self):
+        lead = self.repository['cp']['lead']
+        lead.count = 3
+
+        teaser1 = lead.create_item('teaser')
+        teaser1.survive_autopilot = False
+        teaser2 = lead.create_item('teaser')
+        teaser2.survive_autopilot = True
+        teaser3 = lead.create_item('teaser')
+        teaser3.survive_autopilot = False
+
+        lead.automatic = True
+        self.assertEqual(
+            ['auto-teaser', 'teaser', 'auto-teaser'],
+            [x.type for x in lead.values()])
+
+    def test_disabling_automatic_keeps_order_of_teasers(self):
+        from zeit.cms.testcontenttype.testcontenttype import TestContentType
+        self.repository['t1'] = TestContentType()
+        self.repository['t2'] = TestContentType()
+
+        lead = self.repository['cp']['lead']
+        lead.count = 2
+        lead.automatic = True
+        teaser = lead.create_item('teaser')
+        teaser.survive_autopilot = True
+        lead.count = 3
+
+        order = lead.keys()
+        with mock.patch('zeit.find.search.search') as search:
+            search.return_value = [
+                dict(uniqueId='http://xml.zeit.de/t1'),
+                dict(uniqueId='http://xml.zeit.de/t2')]
+            lead.automatic = False
+        self.assertEqual(order, lead.keys())
+
     def test_adding_teaser_from_code_uses_default_for_survive_autopilot(self):
         lead = self.repository['cp']['lead']
         teaser = lead.create_item('teaser')

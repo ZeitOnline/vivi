@@ -314,16 +314,22 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if not self.automatic:
             return
 
+        order = self.keys()
         for block in self.values():
             if block.survive_autopilot:
                 continue
 
             auto_block = self.create_item('auto-teaser')
+            auto_block.__name__ = block.__name__  # required to updateOrder
+
             if ITeaserBlock.providedBy(block):
                 auto_block.layout = block.layout
 
             # Only deletes first occurrence of __name__, i.e. `block`
             del self[block.__name__]
+
+        # Preserve order of blocks that are kept when turning AutoPilot on.
+        self.updateOrder(order)
 
         # Add / remove AutomaticTeaserBlocks as needed to reach #count
         self.update_autopilot()
