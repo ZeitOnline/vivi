@@ -45,6 +45,7 @@ class TeaserBlockLandingZone(zeit.edit.browser.landing.LandingZone):
                 _('The object "${name}" does not exist.', mapping=dict(
                     name=self.uniqueId)))
         self.block.insert(0, content)
+        self.block.survive_autopilot = True
         if self.relateds:
             related = zeit.cms.related.interfaces.IRelatedContent(
                 content, None)

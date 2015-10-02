@@ -25,7 +25,8 @@ MochiKit.Signal.connect(window, 'script-loading-finished', function() {
         activated_by: 'action-cp-module-droppable',
         url_attribute: 'cms:create-block-url',
         query_arguments: function(draggable) {
-            return {'block_type': draggable.getAttribute('cms:block_type')};
+            return {'block_type': draggable.getAttribute('cms:block_type'),
+                    'block_params': draggable.getAttribute('cms:block_params')};
         }
     });
 
