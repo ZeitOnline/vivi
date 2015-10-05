@@ -463,7 +463,7 @@ def region_to_area(context):
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
-    if context.automatic and context.automatic_type == 'centerpage':
+    if context.automatic and context.automatic_type == 'centerpage' and context.referenced_cp is not None:
         yield context.referenced_cp
     for content in zeit.content.cp.centerpage.cms_content_iter(
             zeit.content.cp.interfaces.IRenderedArea(context)):
