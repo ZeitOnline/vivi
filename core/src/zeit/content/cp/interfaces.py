@@ -441,6 +441,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         the given interfaces.
         """
 
+    def adjust_auto_blocks_to_count():
+        """Updates number of teaser in AutoPilot, if AutoPilot is enabled"""
+
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):
     pass
@@ -490,6 +493,9 @@ class IBlock(IElement, zeit.edit.interfaces.IBlock):
         required=False)
     type_title = zope.interface.Attribute(
         "Translation of type to a human friendly information")
+    volatile = zope.schema.Bool(
+        title=_("Whether block can be removed by automation, e.g. AutoPilot"),
+        default=False)
 
     # BBB needed by zeit.web for legacy/zmo content only
     read_more = zope.schema.TextLine(

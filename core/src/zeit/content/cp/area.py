@@ -287,10 +287,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
     @automatic.setter
     def automatic(self, value):
-        if self._automatic and not value:
-            self._materialize_filled_values()
+        if self.automatic and not value:
+            self._materialize_auto_blocks()
         self._automatic = value
-        self._fill_with_placeholders()
+        if value:
+            self._create_auto_blocks()
 
     @property
     def count(self):
@@ -299,49 +300,96 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @count.setter
     def count(self, value):
         self._count = value
-        self._fill_with_placeholders()
+        self.adjust_auto_blocks_to_count()
 
-    def _fill_with_placeholders(self):
-        if self._automatic:
-            layouts = []
-            for key in self:
-                block = self[key]
-                if ITeaserBlock.providedBy(block):
-                    layouts.append(block.layout)
-                del self[key]
-            for i in range(self.count):
-                block = self.create_item('auto-teaser')
-                # self.count might be greater than the number of manual teasers
-                if layouts:
-                    block.layout = layouts.pop(0)
+    def adjust_auto_blocks_to_count(self):
+        """Does not touch any block that is not an IAutomaticTeaserBlock, so
+        only the number of _automatic_ teasers is configured via the
+        `Area.count` setting. Thus we may contain more than `Area.count`
+        teasers.
 
-    TEASERBLOCK_FIELDS = (
-        set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
-        - set(zeit.cms.content.interfaces.IXMLRepresentation)
-    )
+        """
+        if not self.automatic:
+            return
 
-    def _materialize_filled_values(self):
+        automatic_blocks = [
+            x for x in self.values() if IAutomaticTeaserBlock.providedBy(x)]
+
+        while self.count < len(self) and len(automatic_blocks) > 0:
+            block = automatic_blocks.pop(-1)
+            del self[block.__name__]
+        while self.count > len(self):
+            self.create_item('auto-teaser')
+
+    def _create_auto_blocks(self):
+        """Add automatic teaser blocks so we have #count of them.
+        We _replace_ previously materialized ones, preserving their #layout
+        (copying it to the auto block at the same position).
+
+        """
+        self.adjust_auto_blocks_to_count()
+
+        order = self.keys()
+        for block in self.values():
+            if not block.volatile:
+                continue
+
+            auto_block = self.create_item('auto-teaser')
+            auto_block.__name__ = block.__name__  # required to updateOrder
+
+            if ITeaserBlock.providedBy(block):
+                auto_block.layout = block.layout
+
+            # Only deletes first occurrence of __name__, i.e. `block`
+            del self[block.__name__]
+
+        # Preserve order of blocks that are kept when turning AutoPilot on.
+        self.updateOrder(order)
+
+    def _materialize_auto_blocks(self):
+        """Replace automatic teaser blocks by teaser blocks with same content
+        and same attributes (e.g. `layout`).
+
+        (Make sure this method only runs when #automatic is enabled, otherwise
+        IRenderedArea will not retrieve results from SOLR / referenced CP.)
+
+        """
         order = self.keys()
         for old in zeit.content.cp.interfaces.IRenderedArea(self).values():
             if not IAutomaticTeaserBlock.providedBy(old):
                 continue
-            items = list(old)
-            new = self.create_item('teaser')
-            # Copy teaser contents.
-            for content in items:
-                new.append(content)
-            # Copy block properties (including __name__ and __parent__)
-            for name in self.TEASERBLOCK_FIELDS:
-                setattr(new, name, getattr(old, name))
-            # This deletes only the first occurrence, i.e. the old block.
+
+            # Delete automatic teaser first, since adding normal teaser will
+            # delete the last automatic teaser via the
+            # `adjust_auto_blocks_to_count` event handler.
+            # (Deleting doesn't remove __name__ or __parent__, so we can still
+            # copy those afterwards)
             del self[old.__name__]
-        # Preserve non-auto blocks.
+
+            new = self.create_item('teaser')
+            self.copy_teaserlist_attributes(old, new)
+
+        # Preserve order of non-auto blocks.
         self.updateOrder(order)
 
         # Remove unfilled auto blocks.
         for block in list(self.values()):
             if IAutomaticTeaserBlock.providedBy(block):
                 del self[block.__name__]
+
+    TEASERBLOCK_FIELDS = (
+        set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
+        - set(zeit.cms.content.interfaces.IXMLRepresentation)
+    )
+
+    def copy_teaserlist_attributes(self, old, new):
+        """Copy content and properties from old to new."""
+        # Copy teaser contents.
+        for content in old:
+            new.append(content)
+        # Copy block properties (including __name__ and __parent__)
+        for name in self.TEASERBLOCK_FIELDS:
+            setattr(new, name, getattr(old, name))
 
     @property
     def count_to_replace_duplicates(self):
@@ -415,7 +463,7 @@ def region_to_area(context):
 @grok.adapter(zeit.content.cp.interfaces.IArea)
 @grok.implementer(zeit.content.cp.interfaces.ICMSContentIterable)
 def cms_content_iter(context):
-    if context.automatic and context.automatic_type == 'centerpage':
+    if context.automatic and context.automatic_type == 'centerpage' and context.referenced_cp is not None:
         yield context.referenced_cp
     for content in zeit.content.cp.centerpage.cms_content_iter(
             zeit.content.cp.interfaces.IRenderedArea(context)):
@@ -446,7 +494,8 @@ def rendered_xml(context):
     zope.container.interfaces.IObjectAddedEvent)
 def overflow_blocks(context, event):
     area = context.__parent__
-    if (area.block_max is None
+    if (area.automatic
+            or area.block_max is None
             or len(area) <= area.block_max
             or area.overflow_into is None):
         return
@@ -455,6 +504,16 @@ def overflow_blocks(context, event):
     del area[last_block.__name__]
     area.overflow_into.insert(0, last_block)
     overflow_blocks(last_block, None)
+
+
+@grok.subscribe(
+    zeit.content.cp.interfaces.IBlock,
+    zope.container.interfaces.IObjectMovedEvent)
+def adjust_auto_blocks_to_count(context, event):
+    if IAutomaticTeaserBlock.providedBy(context):
+        return  # avoid infty loop when adding / deleting auto teaser
+    area = context.__parent__
+    area.adjust_auto_blocks_to_count()
 
 
 @grok.subscribe(
