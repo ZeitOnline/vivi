@@ -299,23 +299,18 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @count.setter
     def count(self, value):
         self._count = value
-        self.update_autopilot()
+        self.adjust_auto_blocks_to_count()
 
     def _fill_with_placeholders(self):
         """Remove all blocks from the area, add automatic teaser blocks instead
 
         Copy layout of teaser blocks to automatic teaser block in same position
 
-        To make sure we only have #count automatic teaser blocks, we call
-        update_autopilot in the end, which will add / remove automatic teaser
-        blocks accordingly.
-
         """
         if not self.automatic:
             return
 
-        # Add / remove AutomaticTeaserBlocks as needed to reach #count
-        self.update_autopilot()
+        self.adjust_auto_blocks_to_count()
 
         order = self.keys()
         for block in self.values():
@@ -334,12 +329,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         # Preserve order of blocks that are kept when turning AutoPilot on.
         self.updateOrder(order)
 
-    def update_autopilot(self):
-        """Update number of automatic teasers inside the AutoPilot.
-
-        Does not touch any block that is not an IAutomaticTeaserBlock, so only
-        the number of automatic teasers is configured via the `Area.count`
-        setting. Thus the AutoPilot may contain more than `Area.count` teasers.
+    def adjust_auto_blocks_to_count(self):
+        """Does not touch any block that is not an IAutomaticTeaserBlock, so
+        only the number of _automatic_ teasers is configured via the
+        `Area.count` setting. Thus we may contain more than `Area.count`
+        teasers.
 
         """
         if not self.automatic:
@@ -388,9 +382,9 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 continue
 
             # Delete automatic teaser first, since adding normal teaser will
-            # delete last automatic teaser due to update_autopilot eventhandler
-            # (Deletion doesn't set __name__ or __parent__ to None, so we can
-            # still copy those informations afterwards)
+            # delete last automatic teaser due to adjust_auto_blocks_to_count
+            # eventhandler (Deletion doesn't set __name__ or __parent__ to
+            # None, so we can still copy those afterwards)
             del self[old.__name__]
 
             new = self.create_item('teaser')
@@ -522,13 +516,11 @@ def overflow_blocks(context, event):
 @grok.subscribe(
     zeit.content.cp.interfaces.IBlock,
     zope.container.interfaces.IObjectMovedEvent)
-def update_autopilot(context, event):
-    """Re-render AutoPilot to restrict values of container to Area.count"""
+def adjust_auto_blocks_to_count(context, event):
     if IAutomaticTeaserBlock.providedBy(context):
-        return  # avoid infty loop when adding / deleting auto teaser in update
-
+        return  # avoid infty loop when adding / deleting auto teaser
     area = context.__parent__
-    area.update_autopilot()
+    area.adjust_auto_blocks_to_count()
 
 
 @grok.subscribe(
