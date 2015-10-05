@@ -258,16 +258,6 @@ Setting None again doens't harm:
 
 
 
-
-
-Let's change words to an invalid value, we'll get the missing value back then:
-
->>> xml_tree['count'].set('words', 'foo')
->>> content.words is None
-True
-
-
-
 Referencing Resources
 =====================
 

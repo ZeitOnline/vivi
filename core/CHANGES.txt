@@ -4,6 +4,9 @@ zeit.cms changes
 2.59.0 (unreleased)
 -------------------
 
+- Add parameter ``use_default_value`` to ``ObjectPathAttributeProperty``,
+  and generally make it behave more like ``ObjectPathProperty``.
+
 - Apply PUBLISH_FUTURE_SHIFT to ``date_last_published_semantic``, too.
 
 
