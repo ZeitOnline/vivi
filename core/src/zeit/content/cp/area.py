@@ -290,7 +290,8 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         if self.automatic and not value:
             self._materialize_filled_values()
         self._automatic = value
-        self._fill_with_placeholders()
+        if value:
+            self._fill_with_placeholders()
 
     @property
     def count(self):
@@ -307,9 +308,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         Copy layout of teaser blocks to automatic teaser block in same position
 
         """
-        if not self.automatic:
-            return
-
         self.adjust_auto_blocks_to_count()
 
         order = self.keys()
@@ -373,9 +371,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         deleting superfluous automatic teaser blocks with no content.
 
         """
-        if not self.automatic:
-            return
-
         order = self.keys()
         for old in zeit.content.cp.interfaces.IRenderedArea(self).values():
             if not IAutomaticTeaserBlock.providedBy(old):
