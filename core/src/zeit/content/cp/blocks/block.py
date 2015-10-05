@@ -46,8 +46,8 @@ class Block(VisibleMixin, zeit.edit.block.Element):
         '.', 'supertitle')
     title = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'title')
-    volatile = zeit.cms.content.property.ObjectPathProperty(
-        '.volatile',
+    volatile = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'volatile',
         zeit.content.cp.interfaces.IBlock['volatile'],
         use_default=True)
 
