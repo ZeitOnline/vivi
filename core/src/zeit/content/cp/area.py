@@ -322,9 +322,9 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             self.create_item('auto-teaser')
 
     def _create_auto_blocks(self):
-        """Remove all blocks from the area, add automatic teaser blocks instead
-
-        Copy layout of teaser blocks to automatic teaser block in same position
+        """Add automatic teaser blocks so we have #count of them.
+        We _replace_ previously materialized ones, preserving their #layout
+        (copying it to the auto block at the same position).
 
         """
         self.adjust_auto_blocks_to_count()
@@ -347,14 +347,11 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self.updateOrder(order)
 
     def _materialize_auto_blocks(self):
-        """Replace automatic teaser blocks by teaser blocks with same content.
+        """Replace automatic teaser blocks by teaser blocks with same content
+        and same attributes (e.g. `layout`).
 
-        Make sure this method only runs when #automatic is enabled, otherwise
-        IRenderedArea will not retrieve results from SOLR / referenced CP.
-
-        Remove automatic teaser blocks and copy their content to a new teaser
-        block. Make sure that the order of blocks does not change. Clean up, by
-        deleting superfluous automatic teaser blocks with no content.
+        (Make sure this method only runs when #automatic is enabled, otherwise
+        IRenderedArea will not retrieve results from SOLR / referenced CP.)
 
         """
         order = self.keys()
@@ -363,9 +360,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
                 continue
 
             # Delete automatic teaser first, since adding normal teaser will
-            # delete last automatic teaser due to adjust_auto_blocks_to_count
-            # eventhandler (Deletion doesn't set __name__ or __parent__ to
-            # None, so we can still copy those afterwards)
+            # delete the last automatic teaser via the
+            # `adjust_auto_blocks_to_count` event handler.
+            # (Deleting doesn't remove __name__ or __parent__, so we can still
+            # copy those afterwards)
             del self[old.__name__]
 
             new = self.create_item('teaser')
