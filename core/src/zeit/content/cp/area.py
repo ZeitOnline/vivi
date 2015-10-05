@@ -288,10 +288,10 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
     @automatic.setter
     def automatic(self, value):
         if self.automatic and not value:
-            self._materialize_filled_values()
+            self._materialize_auto_blocks()
         self._automatic = value
         if value:
-            self._fill_with_placeholders()
+            self._create_auto_blocks()
 
     @property
     def count(self):
@@ -321,7 +321,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         while self.count > len(self):
             self.create_item('auto-teaser')
 
-    def _fill_with_placeholders(self):
+    def _create_auto_blocks(self):
         """Remove all blocks from the area, add automatic teaser blocks instead
 
         Copy layout of teaser blocks to automatic teaser block in same position
@@ -346,7 +346,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         # Preserve order of blocks that are kept when turning AutoPilot on.
         self.updateOrder(order)
 
-    def _materialize_filled_values(self):
+    def _materialize_auto_blocks(self):
         """Replace automatic teaser blocks by teaser blocks with same content.
 
         Make sure this method only runs when #automatic is enabled, otherwise
