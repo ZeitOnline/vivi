@@ -302,6 +302,25 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         self._count = value
         self.adjust_auto_blocks_to_count()
 
+    def adjust_auto_blocks_to_count(self):
+        """Does not touch any block that is not an IAutomaticTeaserBlock, so
+        only the number of _automatic_ teasers is configured via the
+        `Area.count` setting. Thus we may contain more than `Area.count`
+        teasers.
+
+        """
+        if not self.automatic:
+            return
+
+        automatic_blocks = [
+            x for x in self.values() if IAutomaticTeaserBlock.providedBy(x)]
+
+        while self.count < len(self) and len(automatic_blocks) > 0:
+            block = automatic_blocks.pop(-1)
+            del self[block.__name__]
+        while self.count > len(self):
+            self.create_item('auto-teaser')
+
     def _fill_with_placeholders(self):
         """Remove all blocks from the area, add automatic teaser blocks instead
 
@@ -326,39 +345,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
 
         # Preserve order of blocks that are kept when turning AutoPilot on.
         self.updateOrder(order)
-
-    def adjust_auto_blocks_to_count(self):
-        """Does not touch any block that is not an IAutomaticTeaserBlock, so
-        only the number of _automatic_ teasers is configured via the
-        `Area.count` setting. Thus we may contain more than `Area.count`
-        teasers.
-
-        """
-        if not self.automatic:
-            return
-
-        automatic_blocks = [
-            x for x in self.values() if IAutomaticTeaserBlock.providedBy(x)]
-
-        while self.count < len(self) and len(automatic_blocks) > 0:
-            block = automatic_blocks.pop(-1)
-            del self[block.__name__]
-        while self.count > len(self):
-            self.create_item('auto-teaser')
-
-    TEASERBLOCK_FIELDS = (
-        set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
-        - set(zeit.cms.content.interfaces.IXMLRepresentation)
-    )
-
-    def copy_teaserlist_attributes(self, old, new):
-        """Copy content and properties from old to new."""
-        # Copy teaser contents.
-        for content in old:
-            new.append(content)
-        # Copy block properties (including __name__ and __parent__)
-        for name in self.TEASERBLOCK_FIELDS:
-            setattr(new, name, getattr(old, name))
 
     def _materialize_filled_values(self):
         """Replace automatic teaser blocks by teaser blocks with same content.
@@ -392,6 +378,20 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         for block in list(self.values()):
             if IAutomaticTeaserBlock.providedBy(block):
                 del self[block.__name__]
+
+    TEASERBLOCK_FIELDS = (
+        set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
+        - set(zeit.cms.content.interfaces.IXMLRepresentation)
+    )
+
+    def copy_teaserlist_attributes(self, old, new):
+        """Copy content and properties from old to new."""
+        # Copy teaser contents.
+        for content in old:
+            new.append(content)
+        # Copy block properties (including __name__ and __parent__)
+        for name in self.TEASERBLOCK_FIELDS:
+            setattr(new, name, getattr(old, name))
 
     @property
     def count_to_replace_duplicates(self):
