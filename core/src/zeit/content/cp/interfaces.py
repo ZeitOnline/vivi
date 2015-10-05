@@ -444,6 +444,9 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     def adjust_auto_blocks_to_count():
         """Updates number of teaser in AutoPilot, if AutoPilot is enabled"""
 
+    def copy_teaserlist_attributes(old, new):
+        pass
+
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):
     pass
@@ -606,11 +609,26 @@ class ITeaserBlockColumns(IReadTeaserBlockColumns, IWriteTeaserBlockColumns):
     """Column information for a teaser block."""
 
 
-class IAutomaticTeaserBlock(ITeaserBlock):
+class IReadAutomaticTeaserBlock(IReadTeaserBlock):
+    pass
+
+
+class IWriteAutomaticTeaserBlock(IWriteTeaserBlock):
 
     def change_layout(layout):
         """Temporarily change the layout (for the duration of one area.values()
         evaluation)."""
+
+    def materialize():
+        """Convert this block to a normal ITeaserBlock, filled with the
+        current automatic content.
+        """
+
+
+class IAutomaticTeaserBlock(IReadAutomaticTeaserBlock,
+                            IWriteAutomaticTeaserBlock,
+                            ITeaserBlock):
+    pass
 
 
 def validate_xml_block(xml):

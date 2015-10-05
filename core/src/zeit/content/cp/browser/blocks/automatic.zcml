@@ -60,12 +60,30 @@
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     view="zope.interface.Interface"
     manager="..interfaces.IEditBarViewletManager"
+    name="materialize-block"
+    template="layout.teaser-automatic.materialize.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
+  <browser:page
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="materialize"
+    class=".automatic.Materialize"
+    permission="zeit.EditContent"
+    />
+
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
     name="edit-contents"
     class=".automatic.Empty"
     permission="zeit.EditContent"
     weight="5"
     />
-
   <browser:viewlet
     for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
     layer="zeit.cms.browser.interfaces.ICMSLayer"

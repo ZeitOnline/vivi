@@ -70,6 +70,13 @@
 }
 
 
+.edit-bar > .materialize-link {
+  padding-right: 0.5em;
+  background-image: url('pin.png');
+  opacity: 0.5;
+}
+
+
 .edit-bar > .countings-link {
   float: right;
   font-size: 80%;
