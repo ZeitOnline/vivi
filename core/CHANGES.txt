@@ -1,7 +1,7 @@
 Changes
 =======
 
-2.13.1 (unreleased)
+2.13.1 (2015-10-06)
 -------------------
 
 - Don't to dispatch events that happen to the content object (like being added
