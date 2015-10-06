@@ -1,4 +1,5 @@
 import UserDict
+import grokcore.component as grok
 import logging
 import lxml.etree
 import uuid
@@ -6,6 +7,7 @@ import zeit.edit.block
 import zeit.edit.interfaces
 import zope.container.contained
 import zope.interface
+import zope.location.interfaces
 import zope.proxy
 import zope.security.proxy
 
@@ -240,3 +242,15 @@ class TypeOnAttributeContainer(Base):
 
     def _get_element_type(self, xml_node):
         return xml_node.get('{http://namespaces.zeit.de/CMS/cp}type')
+
+
+class Sublocations(grok.Adapter):
+    """We don't want to dispatch events that happen to the content object
+    (like being added to the Workingcopy) to their IElement children.
+    """
+
+    grok.context(zeit.edit.interfaces.IContainer)
+    grok.implements(zope.location.interfaces.ISublocations)
+
+    def sublocations(self):
+        return []

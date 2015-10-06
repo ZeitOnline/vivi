@@ -4,7 +4,8 @@ Changes
 2.13.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Don't to dispatch events that happen to the content object (like being added
+  to the Workingcopy) to their IElement children.
 
 
 2.13.0 (2015-08-24)
