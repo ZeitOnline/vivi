@@ -444,9 +444,6 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
     def adjust_auto_blocks_to_count():
         """Updates number of teaser in AutoPilot, if AutoPilot is enabled"""
 
-    def copy_teaserlist_attributes(old, new):
-        pass
-
 
 class IWriteArea(zeit.edit.interfaces.IWriteContainer):
     pass
