@@ -81,6 +81,8 @@ class TestAutomaticTeaserBlock(zeit.content.cp.testing.SeleniumTestCase):
     def test_pin_icon_converts_to_normal_teaser(self):
         sel = self.selenium
         sel.assertTextPresent(self.auto_teaser_title)
+        sel.assertCssCount('css=.block.type-teaser', 0)
         sel.click('css=.block.type-auto-teaser .materialize-link')
-        sel.waitForCssCount('css=.block.type-auto-teaser .materialize-link', 0)
+        sel.waitForCssCount('css=.block.type-auto-teaser', 0)
         sel.assertTextPresent(self.auto_teaser_title)
+        sel.assertCssCount('css=.block.type-teaser', 1)
