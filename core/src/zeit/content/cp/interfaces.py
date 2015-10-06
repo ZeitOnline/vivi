@@ -576,6 +576,9 @@ class IWriteTeaserBlock(zeit.cms.syndication.interfaces.IWriteFeed):
     def update_topiclinks():
         """Copy topiclinks of the referenced CP into our XML."""
 
+    def update(other):
+        """Copy content and properties from another ITeaserBlock."""
+
 
 class ITeaserBlock(IReadTeaserBlock, IWriteTeaserBlock):
     """A list of teasers."""

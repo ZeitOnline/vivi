@@ -102,7 +102,7 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
         order = area.keys()
         del area[block_id]
         materialized = area.create_item('teaser')
-        area.copy_teaserlist_attributes(auto_filled, materialized)
+        materialized.update(auto_filled)
         area.updateOrder(order)
 
 
