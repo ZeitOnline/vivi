@@ -2,6 +2,7 @@
 import fb
 import gocept.testing.assertion
 import time
+import unittest
 import zeit.push.facebook
 import zeit.push.testing
 
@@ -36,6 +37,7 @@ class FacebookTest(zeit.push.testing.TestCase,
             if 'message' in status and self.nugget in status['message']:
                 self.api.delete(id=status['id'])
 
+    @unittest.skip('Facebook says the content was reported as abusive')
     def test_send_posts_status(self):
         facebook = zeit.push.facebook.Connection()
         facebook.send(
