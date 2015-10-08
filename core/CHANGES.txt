@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.3.1 (unreleased)
+3.3.1 (2015-10-08)
 ------------------
 
 - Be more defensive about accessing content properties in auto areas.
