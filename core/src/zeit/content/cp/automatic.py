@@ -67,7 +67,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             # given to a non-leader block.
             if block.layout.id in ['leader', 'zon-large']:
                 teaser = self._extract_newest(
-                    content, predicate=lambda x: x.lead_candidate)
+                    content, predicate=is_lead_candidate)
                 if teaser is None:
                     teaser = self._extract_newest(content)
                     block.change_layout(
@@ -172,3 +172,10 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         for module in self.values():
             if any([x.providedBy(module) for x in interfaces]):
                 yield module
+
+
+def is_lead_candidate(content):
+    metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
+    if metadata is None:
+        return False
+    return metadata.lead_candidate
