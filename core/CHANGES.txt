@@ -4,7 +4,8 @@ zeit.cms changes
 2.59.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Remove PUBLISHED_FUTURE_SHIFT, instead use a PUBLISH_DURATION_GRACE fudge
+  factor during comparison for "published with changes".
 
 
 2.59.0 (2015-10-05)
