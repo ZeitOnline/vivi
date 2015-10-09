@@ -4,7 +4,7 @@ zeit.cms changes
 2.59.2 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Declare ICMSContent on syndication FakeEntry.
 
 
 2.59.1 (2015-10-09)

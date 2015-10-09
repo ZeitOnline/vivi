@@ -284,6 +284,7 @@ class FakeEntry(object):
     """Entry which does not reference an object in the CMS."""
 
     zope.interface.implements(
+        zeit.cms.interfaces.ICMSContent,
         zeit.cms.content.interfaces.ICommonMetadata)
 
     def __init__(self, id, entry):
