@@ -4,7 +4,8 @@ zeit.cms changes
 2.59.2 (unreleased)
 -------------------
 
-- Declare ICMSContent on syndication FakeEntry.
+- Declare ICMSContent on syndication FakeEntry, conform to
+  XMLReferenceUpdater API.
 
 
 2.59.1 (2015-10-09)

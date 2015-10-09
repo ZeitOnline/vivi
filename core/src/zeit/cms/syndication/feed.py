@@ -299,7 +299,7 @@ class FakeXMLReferenceUpdater(grok.Adapter):
     grok.context(FakeEntry)
     grok.implements(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
-    def update(self, node):
+    def update(self, node, suppress_errors=False):
         pass
 
 
