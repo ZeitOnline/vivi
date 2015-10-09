@@ -271,13 +271,17 @@ class BrightcoveTestCase(zeit.cms.testing.FunctionalTestCase,
         # Without the very low shift and a wait we at times don't see the
         # published-with-changes state, because last-publish and modification
         # fall into the same second (only one second resolution).
-        with mock.patch('zeit.cms.workflow.interfaces.PUBLISHED_FUTURE_SHIFT',
-                        new=0.1):
-            update_repository(self.getRootFolder())
+        self.publish_grace_patch = mock.patch(
+            'zeit.cms.workflow.interfaces.PUBLISH_DURATION_GRACE', new=0.1)
+        self.publish_grace_patch.start()
+        update_repository(self.getRootFolder())
         transaction.commit()
         time.sleep(1)
         # clear changes made by the checkout/checkin-cycle during publishing
         RequestHandler.posts_received[:] = []
+
+    def tearDown(self):
+        self.publish_grace_patch.stop()
 
 
 def FunctionalDocFileSuite(*args, **kw):
