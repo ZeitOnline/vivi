@@ -309,3 +309,9 @@ class FakeRenameInfo(grok.Adapter):
     grok.implements(zeit.cms.redirect.interfaces.IRenameInfo)
 
     previous_uniqueIds = ()
+
+
+class FakeWebDAVProperties(grok.Adapter, dict):
+
+    grok.context(FakeEntry)
+    grok.implements(zeit.connector.interfaces.IWebDAVProperties)
