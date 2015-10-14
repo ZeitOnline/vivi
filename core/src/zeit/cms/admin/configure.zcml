@@ -1,6 +1,6 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".date_back.wrapped_context" />
+  <adapter factory=".date_back.DateBackSemanticPublish" />
 
   <class class=".date_back.DateBackSemanticPublish">
     <require

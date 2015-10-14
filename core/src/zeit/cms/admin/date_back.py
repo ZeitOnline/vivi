@@ -1,5 +1,6 @@
 import zeit.cms.admin.interfaces
 import zeit.cms.content.interfaces
+import zeit.cms.interfaces
 import zeit.cms.workflow.interfaces
 import zope.component
 import zope.interface
@@ -7,6 +8,7 @@ import zope.interface
 
 class DateBackSemanticPublish(object):
 
+    zope.component.adapts(zeit.cms.interfaces.ICMSContent)
     zope.interface.implements(
         zeit.cms.admin.interfaces.IDateBackSemanticPublish)
 
@@ -30,9 +32,3 @@ class DateBackSemanticPublish(object):
 
         publish_info = zeit.cms.workflow.interfaces.IPublishInfo(context)
         publish_info.date_last_published_semantic = datetime
-
-
-@zope.component.adapter(zope.interface.Interface)
-@zope.interface.implementer(zeit.cms.admin.interfaces.IDateBackSemanticPublish)
-def wrapped_context(context):  # TODO maybe better naming
-    return DateBackSemanticPublish(context)
