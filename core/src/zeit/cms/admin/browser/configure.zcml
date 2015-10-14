@@ -9,7 +9,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="admin.html"
-    class=".date_back.View"
+    class=".admin.View"
     permission="zeit.cms.admin.View"
     menu="zeit-context-views" title="Admin Menu"
     />
