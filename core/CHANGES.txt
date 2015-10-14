@@ -6,6 +6,8 @@ zeit.cms changes
 
 - Look up queue names in product config for ``zeit.cms.async.function``.
 
+- Add separate task queue ``solr``.
+
 
 2.59.2 (2015-10-09)
 -------------------
