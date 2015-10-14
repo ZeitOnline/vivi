@@ -1,14 +1,14 @@
 <configure xmlns="http://namespaces.zope.org/zope">
 
-  <adapter factory=".date_back.DateBackSemanticPublish" />
+  <adapter factory=".semantic.AdjustSemanticPublish" />
 
-  <class class=".date_back.DateBackSemanticPublish">
+  <class class=".semantic.AdjustSemanticPublish">
     <require
-      interface="zeit.cms.admin.interfaces.IDateBackSemanticPublish"
+      interface="zeit.cms.admin.interfaces.IAdjustSemanticPublish"
       permission="zeit.cms.admin.EditSemantic"
       />
     <require
-      set_schema="zeit.cms.admin.interfaces.IDateBackSemanticPublish"
+      set_schema="zeit.cms.admin.interfaces.IAdjustSemanticPublish"
       permission="zeit.cms.admin.EditSemantic"
       />
   </class>
