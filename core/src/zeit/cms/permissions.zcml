@@ -109,5 +109,10 @@
     title="View admin tab"
     />
 
+  <permission
+    id="zeit.cms.admin.EditSemantic"
+    title="Edit semantic change and date of last semantic publish"
+    />
+
 </configure>
 

@@ -3,14 +3,13 @@
   <adapter factory=".date_back.wrapped_context" />
 
   <class class=".date_back.DateBackSemanticPublish">
-    <!-- TODO Introduce separate permission for these fields -->
     <require
       interface="zeit.cms.admin.interfaces.IDateBackSemanticPublish"
-      permission="zope.View"
+      permission="zeit.cms.admin.EditSemantic"
       />
     <require
       set_schema="zeit.cms.admin.interfaces.IDateBackSemanticPublish"
-      permission="zope.View"
+      permission="zeit.cms.admin.EditSemantic"
       />
   </class>
 
