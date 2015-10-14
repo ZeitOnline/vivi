@@ -33,7 +33,8 @@ class ObjectPathProperty(object):
         if zope.schema.interfaces.IFromUnicode.providedBy(self.field):
             try:
                 if node.text is not None:
-                    return self.field.fromUnicode(unicode(node.text))
+                    return self.field.bind(instance).fromUnicode(
+                        unicode(node.text))
             except zope.schema.interfaces.ValidationError:
                 # Fall back to not using the field when the validaion fails.
                 pass
@@ -42,7 +43,7 @@ class ObjectPathProperty(object):
         except AttributeError:
             return None
         if isinstance(value, str):
-            # This is save because lxml only uses str for optimisation
+            # This is safe because lxml only uses str for optimisation
             # reasons and unicode when non us-ascii chars are in the str:
             value = unicode(value)
         return value
@@ -121,24 +122,27 @@ class Structure(ObjectPathProperty):
 class ObjectPathAttributeProperty(ObjectPathProperty):
     """Property which is stored in an XML tree."""
 
-    def __init__(self, path, attribute_name, field=None):
-        super(ObjectPathAttributeProperty, self).__init__(path)
+    def __init__(self, path, attribute_name, field=None, use_default=False):
+        super(ObjectPathAttributeProperty, self).__init__(
+            path, field, use_default)
         self.attribute_name = attribute_name
-        self.field = field
 
     def __get__(self, instance, class_):
         value = self.getNode(instance).get(self.attribute_name)
-        if self.field is not None and isinstance(value, basestring):
-            # If we've got a field assigned, let the field convert the value.
-            # But only if it is a string. This is mostly the case, but if the
-            # attribute is missing `value` is none.
-            value = unicode(value)
+        if value is None:
+            if self.field:
+                if self.use_default:
+                    return self.field.default
+                else:
+                    return self.field.missing_value
+            else:
+                return None
+        value = unicode(value)
+        if zope.schema.interfaces.IFromUnicode.providedBy(self.field):
             try:
-                value = self.field.bind(instance).fromUnicode(value)
-            except ValueError:
-                value = self.field.missing_value
-        elif isinstance(value, str):
-            value = unicode(value)
+                return self.field.bind(instance).fromUnicode(value)
+            except zope.schema.interfaces.ValidationError:
+                pass
         return value
 
     def __set__(self, instance, value):

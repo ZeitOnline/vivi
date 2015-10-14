@@ -1,12 +1,9 @@
-
 from __future__ import with_statement
+from datetime import datetime
 from zeit.cms.i18n import MessageFactory as _
 from zeit.cms.workflow.interfaces import CAN_PUBLISH_ERROR
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_SUCCESS
-from zeit.cms.workflow.interfaces import CAN_PUBLISH_WARNING
 from zeit.cms.workflow.interfaces import PRIORITY_DEFAULT
 import ZODB.POSException
-import datetime
 import logging
 import lovely.remotetask.interfaces
 import os.path
@@ -410,17 +407,10 @@ class PublishTask(PublishRetractTask):
 
         info = zeit.cms.workflow.interfaces.IPublishInfo(obj)
         info.published = True
-        # ARGH. This is evil. We need to put the publish time a few seconds
-        # into the future to be *after* the cycle call below. During the cycle
-        # the object will be most likely changed. It therefore would have a
-        # modification after the publication and would be shown as stale in the
-        # CMS.
-        now = datetime.datetime.now(pytz.UTC) + datetime.timedelta(
-            seconds=zeit.cms.workflow.interfaces.PUBLISHED_FUTURE_SHIFT)
-        info.date_last_published = now
+        info.date_last_published = datetime.now(pytz.UTC)
         timer.mark('Set date_last_published')
         if not info.date_first_released:
-            info.date_first_released = now
+            info.date_first_released = info.date_last_published
             timer.mark('Set date_first_releaesd')
 
         new_obj = self.cycle(obj)

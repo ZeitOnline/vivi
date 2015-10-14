@@ -284,6 +284,7 @@ class FakeEntry(object):
     """Entry which does not reference an object in the CMS."""
 
     zope.interface.implements(
+        zeit.cms.interfaces.ICMSContent,
         zeit.cms.content.interfaces.ICommonMetadata)
 
     def __init__(self, id, entry):
@@ -298,7 +299,7 @@ class FakeXMLReferenceUpdater(grok.Adapter):
     grok.context(FakeEntry)
     grok.implements(zeit.cms.content.interfaces.IXMLReferenceUpdater)
 
-    def update(self, node):
+    def update(self, node, suppress_errors=False):
         pass
 
 
@@ -308,3 +309,9 @@ class FakeRenameInfo(grok.Adapter):
     grok.implements(zeit.cms.redirect.interfaces.IRenameInfo)
 
     previous_uniqueIds = ()
+
+
+class FakeWebDAVProperties(grok.Adapter, dict):
+
+    grok.context(FakeEntry)
+    grok.implements(zeit.connector.interfaces.IWebDAVProperties)

@@ -1,8 +1,31 @@
 zeit.cms changes
 ================
 
-2.59.0 (unreleased)
+2.59.3 (unreleased)
 -------------------
+
+- Nothing changed yet.
+
+
+2.59.2 (2015-10-09)
+-------------------
+
+- Declare ICMSContent on syndication FakeEntry, conform to
+  XMLReferenceUpdater API.
+
+
+2.59.1 (2015-10-09)
+-------------------
+
+- Remove PUBLISHED_FUTURE_SHIFT, instead use a PUBLISH_DURATION_GRACE fudge
+  factor during comparison for "published with changes".
+
+
+2.59.0 (2015-10-05)
+-------------------
+
+- Add parameter ``use_default_value`` to ``ObjectPathAttributeProperty``,
+  and generally make it behave more like ``ObjectPathProperty``.
 
 - Apply PUBLISH_FUTURE_SHIFT to ``date_last_published_semantic``, too.
 

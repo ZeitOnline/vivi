@@ -12,7 +12,12 @@ CAN_PUBLISH_WARNING = 'can-publish-warning'
 CAN_PUBLISH_SUCCESS = 'can-publish-success'
 
 
-PUBLISHED_FUTURE_SHIFT = 60
+# During the checkout/checkin cycle() while publishing the object will be most
+# likely changed. It therefore would have a modified timestamp _after_ the
+# publication timestamp and would be shown as "published with changes", so we
+# need to be a little more lenient. (Since we cannot change `modified`, which
+# belongs to the DAV server and cannot be written by clients).
+PUBLISH_DURATION_GRACE = 60
 
 
 class PublishingError(Exception):
