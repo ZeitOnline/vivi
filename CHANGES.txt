@@ -4,7 +4,8 @@ zeit.content.image changes
 2.11.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix syntax error in image view template (only appears when a copyright as
+  ``nofollow`` set).
 
 
 2.11.2 (2015-09-22)
