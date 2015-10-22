@@ -23,8 +23,7 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
     def test_minimal_properties_if_neither_metadata_head_nor_file(self):
         feed = self.connector['http://xml.zeit.de/politik.feed']
         self.assertEqual(
-            [('getlastmodified', 'DAV:'),
-             ('type', 'http://namespaces.zeit.de/CMS/meta')],
+            [('type', 'http://namespaces.zeit.de/CMS/meta')],
             sorted(feed.properties))
 
     def test_nonexistent_uniqueId_raises_KeyError(self):

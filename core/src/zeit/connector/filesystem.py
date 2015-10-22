@@ -31,6 +31,8 @@ class Connector(object):
 
     zope.interface.implements(zeit.connector.interfaces.IConnector)
 
+    _set_lastmodified_property = False
+
     def __init__(self, repository_path):
         self.repository_path = repository_path
 
@@ -207,9 +209,10 @@ class Connector(object):
 
     def _get_properties(self, id):
         properties = {}
-        modified = self._get_lastmodified(id)
-        if modified:
-            properties[('getlastmodified', 'DAV:')] = modified
+        if self._set_lastmodified_property:
+            modified = self._get_lastmodified(id)
+            if modified:
+                properties[('getlastmodified', 'DAV:')] = modified
 
         try:
             data = self._get_metadata_file(id)

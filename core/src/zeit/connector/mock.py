@@ -33,6 +33,7 @@ class Connector(zeit.connector.filesystem.Connector):
     """
 
     _ignore_uuid_checks = False
+    _set_lastmodified_property = True
 
     def __init__(self, repository_path):
         super(Connector, self).__init__(repository_path)
