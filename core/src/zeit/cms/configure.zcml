@@ -80,6 +80,10 @@
     <require like_class="lxml.objectify.ObjectifiedElement" />
   </class>
 
+  <class class="lxml.objectify.IntElement">
+    <require like_class="lxml.objectify.ObjectifiedElement" />
+  </class>
+
   <class class="lxml.objectify.NoneElement">
     <require like_class="lxml.objectify.ObjectifiedElement" />
   </class>
