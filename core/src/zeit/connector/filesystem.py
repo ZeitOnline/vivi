@@ -108,10 +108,9 @@ class Connector(object):
             data = self._get_file(id)
         path = self._path(id)
         name = path[-1] if path else ''
-        content_type = self._get_content_type(id, type)
         return zeit.connector.resource.Resource(
             unicode(id), name, type, data, properties,
-            contentType=content_type)
+            contentType=self._get_content_type(id, type))
 
     def _get_content_type(self, id, type):
         return 'httpd/unix-directory' if type == 'collection' else ''
