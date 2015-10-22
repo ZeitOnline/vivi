@@ -66,7 +66,7 @@ class CachedResource(object):
         self.id = id
         self.__name__ = name
         self.type = type_name
-        self._propterty_getter = property_getter
+        self._property_getter = property_getter
         self._body_getter = body_getter
         self.contentType = content_type
 
@@ -76,4 +76,4 @@ class CachedResource(object):
 
     @property
     def properties(self):
-        return ReadOnlyWebDAVProperties(self._propterty_getter())
+        return ReadOnlyWebDAVProperties(self._property_getter())
