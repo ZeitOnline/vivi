@@ -36,7 +36,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">10</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Deutschland</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">article</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>

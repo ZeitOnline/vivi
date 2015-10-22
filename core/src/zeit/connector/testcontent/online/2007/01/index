@@ -17,7 +17,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="pages"/>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">Archiv</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie"/>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">centerpage</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">centerpage</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">01</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2007</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/workflow" name="status">OK</attribute>

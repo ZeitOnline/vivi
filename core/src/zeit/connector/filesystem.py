@@ -102,15 +102,6 @@ class Connector(object):
         f = self._get_file(id)
         data = f.read(200)
         f.close()
-        if '<article>' in data:
-            # Ok, this is hardcore. But it's not production code, is it.
-            return 'article'
-        if '<channel>' in data:
-            return 'channel'
-        if '<centerpage>' in data:
-            return 'centerpage'
-        if '<testtype>' in data:
-            return 'testcontenttype'
         content_type, width, height = zope.app.file.image.getImageInfo(data)
         if content_type:
             return 'image'

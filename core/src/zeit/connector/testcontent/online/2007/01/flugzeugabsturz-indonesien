@@ -33,7 +33,7 @@
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="paragraphsperpage">6</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="ressort">International</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="serie">-</attribute>
-    <attribute ns="http://namespaces.zeit.de/CMS/document" name="type">article</attribute>
+    <attribute ns="http://namespaces.zeit.de/CMS/meta" name="type">article</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="volume">47</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="year">2006</attribute>
     <attribute ns="http://namespaces.zeit.de/CMS/document" name="DailyNL">no</attribute>
