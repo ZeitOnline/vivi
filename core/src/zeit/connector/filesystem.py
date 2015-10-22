@@ -107,10 +107,7 @@ class Connector(object):
         else:
             data = self._get_file(id)
         path = self._path(id)
-        if path:
-            name = path[-1]
-        else:
-            name = ''
+        name = path[-1] if path else ''
         content_type = self._get_content_type(id, type)
         return zeit.connector.resource.Resource(
             unicode(id), name, type, data, properties,
