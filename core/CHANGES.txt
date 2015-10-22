@@ -6,6 +6,10 @@ CHANGES
 
 - Add transaction-bound caching to filesystem connector.
 
+- Make canonicalizing directory uniqueIds configurable in filesystem connector
+  via product config ``zeit.connector:canonicalize-directories = False``
+  (defaults to True which is the behaviour since 2.4.0).
+
 
 2.6.9 (2015-09-25)
 ------------------

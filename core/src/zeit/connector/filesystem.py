@@ -2,6 +2,7 @@ from cStringIO import StringIO
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
 import ZConfig
+import ast
 import email.utils
 import gocept.cache.property
 import logging
@@ -33,6 +34,7 @@ class Connector(object):
     zope.interface.implements(zeit.connector.interfaces.IConnector)
 
     resource_class = zeit.connector.resource.CachedResource
+    canonicalize_directories = True
 
     _set_lastmodified_property = False
 
@@ -184,9 +186,10 @@ class Connector(object):
             return CannonicalId(id)
         if id.endswith('/'):
             id = id[:-1]
-        path = self._absolute_path(self._path(id))
-        if os.path.isdir(path):
-            return CannonicalId(id + '/')
+        if self.canonicalize_directories:
+            path = self._absolute_path(self._path(id))
+            if os.path.isdir(path):
+                return CannonicalId(id + '/')
         return CannonicalId(id)
 
     def _absolute_path(self, path):
@@ -277,9 +280,13 @@ class Connector(object):
 
 def connector_factory():
     config = zope.app.appsetup.product.getProductConfiguration(
-        'zeit.connector')
-    repository_path = (config or {}).get('repository-path')
+        'zeit.connector') or {}
+    repository_path = config.get('repository-path')
     if not repository_path:
         raise ZConfig.ConfigurationError(
             "Filesystem connector not configured properly.")
-    return Connector(repository_path)
+    connector = Connector(repository_path)
+    canonicalize = config.get('canonicalize-directories', None)
+    if canonicalize is not None:
+        connector.canonicalize_directories = ast.literal_eval(canonicalize)
+    return connector
