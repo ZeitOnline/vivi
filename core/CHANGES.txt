@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.60.1 (unreleased)
+2.60.1 (2015-10-22)
 -------------------
 
 - More complete security declaration for lxml objects.
