@@ -99,7 +99,9 @@ class Connector(object):
         if os.path.isdir(path):
             return 'collection'
 
-        data = self._get_file(id).read(200)
+        f = self._get_file(id)
+        data = f.read(200)
+        f.close()
         if '<article>' in data:
             # Ok, this is hardcore. But it's not production code, is it.
             return 'article'
@@ -133,7 +135,9 @@ class Connector(object):
         except KeyError:
             pass
         try:
-            data = self._get_file(id).read()
+            f = self._get_file(id)
+            data = f.read()
+            f.close()
         except:
             data = ''
         self.body_cache[id] = data
@@ -246,6 +250,7 @@ class Connector(object):
         try:
             data = self._get_metadata_file(id)
             xml = lxml.etree.parse(data)
+            data.close()
         except (ValueError, lxml.etree.LxmlError):
             self.property_cache[id] = properties
             return properties
