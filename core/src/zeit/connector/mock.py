@@ -12,6 +12,7 @@ import random
 import time
 import urlparse
 import uuid
+import zeit.connector.cache
 import zeit.connector.dav.interfaces
 import zeit.connector.filesystem
 import zeit.connector.interfaces
@@ -34,6 +35,11 @@ class Connector(zeit.connector.filesystem.Connector):
 
     _ignore_uuid_checks = False
     _set_lastmodified_property = True
+    resource_class = zeit.connector.resource.WriteableCachedResource
+
+    property_cache = zeit.connector.cache.AlwaysEmptyDict()
+    body_cache = zeit.connector.cache.AlwaysEmptyDict()
+    child_name_cache = zeit.connector.cache.AlwaysEmptyDict()
 
     def __init__(self, repository_path):
         super(Connector, self).__init__(repository_path)

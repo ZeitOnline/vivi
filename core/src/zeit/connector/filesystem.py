@@ -1,8 +1,9 @@
+from cStringIO import StringIO
 from zeit.connector.connector import CannonicalId
 from zeit.connector.dav.interfaces import DAVNotFoundError
-import StringIO
 import ZConfig
 import email.utils
+import gocept.cache.property
 import logging
 import lxml.etree
 import os
@@ -31,29 +32,46 @@ class Connector(object):
 
     zope.interface.implements(zeit.connector.interfaces.IConnector)
 
+    resource_class = zeit.connector.resource.CachedResource
+
     _set_lastmodified_property = False
+
+    property_cache = gocept.cache.property.TransactionBoundCache(
+        '_v_property_cache', dict)
+    body_cache = gocept.cache.property.TransactionBoundCache(
+        '_v_body_cache', dict)
+    child_name_cache = gocept.cache.property.TransactionBoundCache(
+        '_v_child_name_cache', dict)
 
     def __init__(self, repository_path):
         self.repository_path = repository_path
 
     def listCollection(self, id):
-        id = self._get_cannonical_id(id)
         """List the filenames of a collection identified by path. """
+        id = self._get_cannonical_id(id)
         try:
-            self[id]
+            return self.child_name_cache[id]
         except KeyError:
-            # XXX mimic the real behaviour -- real *should* probably raise
-            # KeyError, but doesn't at the moment.
-            raise DAVNotFoundError(404, 'Not Found', id, '')
+            pass
+
         path = self._path(id)
         names = self._get_collection_names(path)
+        if not names:
+            try:
+                self[id]
+            except KeyError:
+                # XXX mimic the real behaviour -- real *should* probably raise
+                # KeyError, but doesn't at the moment.
+                raise DAVNotFoundError(404, 'Not Found', id, '')
+
+        result = []
         for name in sorted(names):
             name = unicode(name)
-            if name.startswith('.'):
-                continue
             id = unicode(
                 self._get_cannonical_id(self._make_id(path + (name, ))))
-            yield (name, id)
+            result.append((name, id))
+        self.child_name_cache[id] = result
+        return result
 
     def _get_collection_names(self, path):
         absolute_path = self._absolute_path(path)
@@ -61,6 +79,8 @@ class Connector(object):
                  if os.path.isdir(absolute_path) else set())
         for x in names.copy():
             if x.endswith('.meta') and x[:-5] in names:
+                names.remove(x)
+            if x.startswith('.'):
                 names.remove(x)
         return names
 
@@ -97,22 +117,27 @@ class Connector(object):
     def __getitem__(self, id):
         id = self._get_cannonical_id(id)
         properties = self._get_properties(id)
-        type = properties.get(
-            zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY)
-        if type is None:
-            type = self.getResourceType(id)
-            properties[
-                zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
-        path = self._absolute_path(self._path(id))
-        if os.path.isdir(path):
-            data = StringIO.StringIO()
-        else:
-            data = self._get_file(id)
+        type = self.getResourceType(id)
+        properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = type
         path = self._path(id)
         name = path[-1] if path else ''
-        return zeit.connector.resource.Resource(
-            unicode(id), name, type, data, properties,
-            contentType=self._get_content_type(id, type))
+        return self.resource_class(
+            unicode(id), name, type,
+            lambda: self._get_properties(id),
+            lambda: self._get_body(id),
+            content_type=self._get_content_type(id, type))
+
+    def _get_body(self, id):
+        try:
+            return StringIO(self.body_cache[id])
+        except KeyError:
+            pass
+        try:
+            data = self._get_file(id).read()
+        except:
+            data = ''
+        self.body_cache[id] = data
+        return StringIO(data)
 
     def _get_content_type(self, id, type):
         return 'httpd/unix-directory' if type == 'collection' else ''
@@ -208,6 +233,10 @@ class Connector(object):
             element for element in path if element))
 
     def _get_properties(self, id):
+        try:
+            return self.property_cache[id]
+        except KeyError:
+            pass
         properties = {}
         if self._set_lastmodified_property:
             modified = self._get_lastmodified(id)
@@ -218,6 +247,7 @@ class Connector(object):
             data = self._get_metadata_file(id)
             xml = lxml.etree.parse(data)
         except (ValueError, lxml.etree.LxmlError):
+            self.property_cache[id] = properties
             return properties
 
         nodes = xml.xpath('//head/attribute')
@@ -237,6 +267,7 @@ class Connector(object):
                 'rankedTags',
                 'http://namespaces.zeit.de/CMS/tagging')] = value
 
+        self.property_cache[id] = properties
         return properties
 
     def _get_lastmodified(self, id):

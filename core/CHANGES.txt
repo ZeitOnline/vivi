@@ -1,10 +1,10 @@
 CHANGES
 =======
 
-2.6.10 (unreleased)
+2.7.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add transaction-bound caching to filesystem connector.
 
 
 2.6.9 (2015-09-25)

@@ -56,8 +56,6 @@ above:
 
 >>> unique_id = entry[1]
 >>> resource = connector[unique_id]
->>> resource
-<zeit.connector.resource.Resource object at 0x...>
 
 >>> unicode(resource.id)
 u'http://xml.zeit.de/online/2007/01/4schanzentournee-abgesang'
@@ -84,8 +82,8 @@ KeyError: u"The resource 'http://xml.zeit.de/foobar' does not exist."
 
 It is also possible to get the root:
 
->>> connector['http://xml.zeit.de/']
-<zeit.connector.resource.Resource object at 0x...>
+>>> connector['http://xml.zeit.de/'].id
+u'http://xml.zeit.de/'
 
 
 Locking and Unlocking

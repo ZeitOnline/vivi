@@ -1,4 +1,5 @@
 import BTrees
+import UserDict
 import ZODB.POSException
 import ZODB.blob
 import cStringIO
@@ -456,3 +457,19 @@ class ChildNameCache(PersistentCache):
     @staticmethod
     def _cache_values_equal(a, b):
         return set(a) == set(b)
+
+
+class AlwaysEmptyDict(UserDict.DictMixin):
+    """Used by mock connector to disable filesystem transaction bound cache."""
+
+    def __getitem__(self, key):
+        raise KeyError(key)
+
+    def __setitem__(self, key, value):
+        pass
+
+    def __delitem__(self, key):
+        pass
+
+    def keys(self):
+        return ()

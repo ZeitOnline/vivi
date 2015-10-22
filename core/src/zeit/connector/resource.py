@@ -77,3 +77,17 @@ class CachedResource(object):
     @property
     def properties(self):
         return ReadOnlyWebDAVProperties(self._property_getter())
+
+
+class WriteableCachedResource(CachedResource):
+    """Used by mock connector"""
+
+    def __init__(self, id, name, type_name, property_getter, body_getter,
+                 content_type):
+        super(WriteableCachedResource, self).__init__(
+            id, name, type_name, property_getter, body_getter, content_type)
+        self._properties = WebDAVProperties(self._property_getter())
+
+    @property
+    def properties(self):
+        return self._properties
