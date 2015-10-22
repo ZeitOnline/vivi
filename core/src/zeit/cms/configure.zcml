@@ -56,12 +56,14 @@
       attributes="
       __getitem__
       countchildren
+      get
       find
       findall
       getparent
       index
       iterchildren
       tag
+      text
       xpath
       "/>
     <require permission="zeit.EditContent"
