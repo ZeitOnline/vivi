@@ -211,11 +211,12 @@ class Connector(object):
     def _get_file(self, id):
         filename = self._absolute_path(self._path(id))
         __traceback_info__ = (id, filename)
-        if os.path.isdir(filename):
-            raise ValueError('The path %r points to a directory.' % filename)
         try:
             return file(filename, 'rb')
         except IOError:
+            if os.path.isdir(filename):
+                raise ValueError(
+                    'The path %r points to a directory.' % filename)
             raise KeyError("The resource '%s' does not exist." % id)
 
     def _get_metadata_file(self, id):
