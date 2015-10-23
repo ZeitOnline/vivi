@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2015-10-23 14:01+0200\n"
-"PO-Revision-Date: 2015-10-23 14:03+0200\n"
+"POT-Creation-Date: 2015-10-23 14:42+0200\n"
+"PO-Revision-Date: 2015-10-23 14:46+0200\n"
 "Last-Translator: Florian Pilz <fp@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -343,7 +343,11 @@ msgstr "↝ vorschlag"
 msgid "^^ mandatory"
 msgstr "⇈ zwingend"
 
-#: zeit/cms/admin/browser/configure.zcml:8
+#: zeit/cms/admin/browser/admin.py:15
+msgid "admin-field-group"
+msgstr "Admin"
+
+#: zeit/cms/admin/browser/configure.zcml:16
 msgid "Admin Menu"
 msgstr "Admin"
 

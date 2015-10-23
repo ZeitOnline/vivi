@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Fri Oct 23 14:00:13 2015\n"
+"POT-Creation-Date: Fri Oct 23 14:42:18 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -378,7 +378,11 @@ msgstr ""
 msgid "^^ mandatory"
 msgstr ""
 
-#: zeit/cms/admin/browser/configure.zcml:8
+#: zeit/cms/admin/browser/admin.py:15
+msgid "admin-field-group"
+msgstr ""
+
+#: zeit/cms/admin/browser/configure.zcml:16
 msgid "Admin Menu"
 msgstr ""
 
