@@ -3,7 +3,7 @@ import zeit.cms.browser.form
 import zope.formlib.form
 
 
-class View(zeit.cms.browser.form.EditForm):
+class EditForm(zeit.cms.browser.form.EditForm):
 
     form_fields = zope.formlib.form.Fields(
         zeit.cms.admin.interfaces.IAdjustSemanticPublish)

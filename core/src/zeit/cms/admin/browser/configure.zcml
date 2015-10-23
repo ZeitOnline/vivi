@@ -9,7 +9,7 @@
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="admin.html"
-    class=".admin.View"
+    class=".admin.EditForm"
     permission="zeit.cms.admin.View"
     />
 
