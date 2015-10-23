@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Oct 14 09:57:42 2015\n"
+"POT-Creation-Date: Fri Oct 23 14:00:13 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -384,10 +384,6 @@ msgstr ""
 
 #: zeit/cms/admin/interfaces.py:18
 msgid "Adjust last published with semantic change"
-msgstr ""
-
-#: zeit/cms/admin/interfaces.py:19
-msgid "adjust-last-publish-semantic-description"
 msgstr ""
 
 #: zeit/cms/application.zcml:34
@@ -3276,7 +3272,7 @@ msgstr ""
 msgid "\"${name}\" is referenced by a free teaser in \"${teaser}\""
 msgstr ""
 
-#: zeit/content/dynamicfolder/folder.py:209
+#: zeit/content/dynamicfolder/folder.py:202
 msgid "Dynamic Folder"
 msgstr ""
 

@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: 2015-10-14 09:59+0200\n"
-"PO-Revision-Date: 2015-10-14 10:11+0200\n"
+"POT-Creation-Date: 2015-10-23 14:01+0200\n"
+"PO-Revision-Date: 2015-10-23 14:03+0200\n"
 "Last-Translator: Florian Pilz <fp@gocept.com>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: zope/app/locales/extract.py\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.6\n"
 
 #: zeit/addcentral/sidebar.py:33 zeit/addcentral/sidebar.pt:10
 #: zeit/cms/browser/form.py:259 zeit/cms/application.zcml:44
@@ -350,12 +350,6 @@ msgstr "Admin"
 #: zeit/cms/admin/interfaces.py:18
 msgid "Adjust last published with semantic change"
 msgstr "Letzte Veröffentlichung mit inhaltlicher Änderung"
-
-#: zeit/cms/admin/interfaces.py:19
-msgid "adjust-last-publish-semantic-description"
-msgstr ""
-"Neues Datum überschreibt Datum der letzten Veröffentlichung mit inhaltlicher "
-"Änderung, sowie das Datum der letzten inhaltlichen Änderung."
 
 #: zeit/cms/application.zcml:34
 msgid "Menu for displaying alternate representations of an object"
@@ -3218,7 +3212,7 @@ msgstr ""
 "Achtung: »${name}« wird von dem Teaser »${teaser}« referenziert. Inhaltliche "
 "Änderungen sollten auch im Teaser nachgepflegt werden."
 
-#: zeit/content/dynamicfolder/folder.py:209
+#: zeit/content/dynamicfolder/folder.py:202
 msgid "Dynamic Folder"
 msgstr "Dynamischer Ordner"
 
