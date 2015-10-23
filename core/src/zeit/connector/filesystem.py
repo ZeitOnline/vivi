@@ -196,12 +196,13 @@ class Connector(object):
 
         if result.endswith('/'):
             result = result[:-1]
+
         if self.canonicalize_directories:
             path = self._absolute_path(self._path(result))
             if os.path.isdir(path):
-                result = CannonicalId(result + '/')
-        else:
-            result = CannonicalId(result)
+                result = result + '/'
+
+        result = CannonicalId(result)
         self.canonical_id_cache[input] = result
         return result
 
