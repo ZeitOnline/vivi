@@ -242,11 +242,21 @@ class Connector(object):
             if modified:
                 properties[('getlastmodified', 'DAV:')] = modified
 
+        metadata_parse_error = False
         try:
             data = self._get_metadata_file(id)
             xml = lxml.etree.parse(data)
             data.close()
-        except (ValueError, lxml.etree.LxmlError):
+        except ValueError:
+            # Performance optimization: We know this error happens only for
+            # directories, so we can determine the resource type here instead
+            # of waiting for getResourceType() doing the isdir check _again_.
+            properties[zeit.connector.interfaces.RESOURCE_TYPE_PROPERTY] = (
+                'collection')
+            metadata_parse_error = True
+        except lxml.etree.LxmlError:
+            metadata_parse_error = True
+        if metadata_parse_error:
             self.property_cache[id] = properties
             return properties
 
