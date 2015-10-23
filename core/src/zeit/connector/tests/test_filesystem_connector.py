@@ -68,3 +68,21 @@ class MetadataTest(zeit.connector.testing.FilesystemConnectorTest):
         copyrights = image.properties[
             ('copyrights', 'http://namespaces.zeit.de/CMS/document')]
         self.assertEqual(u'', copyrights)
+
+
+class CachingTest(zeit.connector.testing.FilesystemConnectorTest):
+
+    def test_caches_properties(self):
+        self.connector['http://xml.zeit.de/testcontent']
+        self.assertIn(
+            'http://xml.zeit.de/testcontent', self.connector.property_cache)
+
+    def test_caches_body(self):
+        self.connector['http://xml.zeit.de/testcontent'].data
+        self.assertIn(
+            'http://xml.zeit.de/testcontent', self.connector.body_cache)
+
+    def test_caches_childnames(self):
+        self.connector.listCollection('http://xml.zeit.de/online/')
+        self.assertIn(
+            'http://xml.zeit.de/online/', self.connector.child_name_cache)

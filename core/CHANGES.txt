@@ -4,7 +4,7 @@ CHANGES
 2.7.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Fix bug in childname cache (used wrong keys to store results).
 
 
 2.7.0 (2015-10-22)
