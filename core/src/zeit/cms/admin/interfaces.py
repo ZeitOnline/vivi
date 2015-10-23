@@ -16,6 +16,5 @@ class IAdjustSemanticPublish(zope.interface.Interface):
 
     adjust_semantic_publish = zope.schema.Datetime(
         title=_('Adjust last published with semantic change'),
-        description=_('adjust-last-publish-semantic-description'),
         required=False,
         max=zeit.cms.interfaces.MAX_PUBLISH_DATE)
