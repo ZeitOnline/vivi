@@ -277,8 +277,9 @@ class Connector(object):
         for node in nodes:
             properties[node.get('name'), node.get('ns')] = node.text or ''
 
-        # XXX workaround for zeit.frontend, can probably go away
-        # once the filesystem connector is finished.
+        # rankedTags are serialized like all other attributes in .meta files,
+        # but in the "fallback to content file" case we need to recognize a
+        # different format:
         tags = xml.xpath('//head/rankedTags')
         if tags:
             value = (
