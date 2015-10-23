@@ -5,13 +5,21 @@
   xmlns:gocept="http://namespaces.gocept.com/zcml"
   i18n_domain="zeit.cms">
 
-  <gocept:pagelet
+  <browser:page
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
     name="admin.html"
     class=".admin.View"
     permission="zeit.cms.admin.View"
+    />
+
+  <browser:menuItem
+    for="zeit.cms.interfaces.ICMSContent"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    action="admin.html"
+    permission="zeit.cms.admin.View"
     menu="zeit-context-views" title="Admin Menu"
+    filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
     />
 
 </configure>
