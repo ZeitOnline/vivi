@@ -44,6 +44,8 @@ class Connector(object):
         '_v_body_cache', dict)
     child_name_cache = gocept.cache.property.TransactionBoundCache(
         '_v_child_name_cache', dict)
+    canonical_id_cache = gocept.cache.property.TransactionBoundCache(
+        '_v_canonical_id_cache', dict)
 
     def __init__(self, repository_path):
         self.repository_path = repository_path
@@ -184,13 +186,24 @@ class Connector(object):
             return id
         if id == ID_NAMESPACE:
             return CannonicalId(id)
-        if id.endswith('/'):
-            id = id[:-1]
+
+        input = id
+        result = id
+        try:
+            return self.canonical_id_cache[input]
+        except KeyError:
+            pass
+
+        if result.endswith('/'):
+            result = result[:-1]
         if self.canonicalize_directories:
-            path = self._absolute_path(self._path(id))
+            path = self._absolute_path(self._path(result))
             if os.path.isdir(path):
-                return CannonicalId(id + '/')
-        return CannonicalId(id)
+                result = CannonicalId(result + '/')
+        else:
+            result = CannonicalId(result)
+        self.canonical_id_cache[input] = result
+        return result
 
     def _absolute_path(self, path):
         if not path:

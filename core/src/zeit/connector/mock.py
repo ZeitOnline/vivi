@@ -40,6 +40,7 @@ class Connector(zeit.connector.filesystem.Connector):
     property_cache = zeit.connector.cache.AlwaysEmptyDict()
     body_cache = zeit.connector.cache.AlwaysEmptyDict()
     child_name_cache = zeit.connector.cache.AlwaysEmptyDict()
+    canonical_id_cache = zeit.connector.cache.AlwaysEmptyDict()
 
     def __init__(self, repository_path):
         super(Connector, self).__init__(repository_path)

@@ -4,7 +4,7 @@ CHANGES
 2.7.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Cache canonical ids (transaction-bound) in filesystem connector.
 
 
 2.7.1 (2015-10-23)
