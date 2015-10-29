@@ -4,7 +4,7 @@ zeit.content.article changes
 3.10.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Simplify editor heading CSS, and make it apply to editor only (DEV-951).
 
 
 3.10.0 (2015-09-12)
