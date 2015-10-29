@@ -62,11 +62,11 @@ class ParseTest(unittest.TestCase):
             api.send('', 'http://www.zeit.de/bar', channels=PARSE_NEWS_CHANNEL)
             android = push.call_args_list[0][0][0]
             self.assertEqual(
-                'http://app-content.zeit.de/bar',
+                'http://www.zeit.de/bar',
                 android['data']['url'].split('?')[0])
             ios = push.call_args_list[2][0][0]
             self.assertEqual(
-                'http://app-content.zeit.de/bar',
+                'http://www.zeit.de/bar',
                 ios['data']['aps']['url'].split('?')[0])
 
     def test_old_version_links_to_wrapper(self):

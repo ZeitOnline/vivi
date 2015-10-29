@@ -30,7 +30,7 @@ class Connection(object):
     IOS_CHANNEL_VERSION = '20140514.1'  # Channels work on versions > x.
     # ``headline``, introduced in DEV-698.
     IOS_HEADLINE_VERSION = '20150401'  # Headline works on iOS version >= x.
-    # New link address ``app-content.zeit.de``, see DEV-938
+    # New link address, introduced in DEV-938.
     ANDROID_FRIEDBERT_VERSION = '1.4'  # New links required on versions >= x.
     IOS_FRIEDBERT_VERSION = '20150914'  # New links required on versions >= x.
 
@@ -54,7 +54,7 @@ class Connection(object):
         else:
             channels = config.get(channel_name, '').split(' ')
         wrapper_url = self.rewrite_url(link, 'http://wrapper.zeit.de')
-        friedbert_url = self.rewrite_url(link, 'http://app-content.zeit.de')
+        friedbert_url = self.rewrite_url(link, 'http://www.zeit.de')
         image_url = kw.get('image_url')
         title = text
         override_text = kw.get('override_text')
