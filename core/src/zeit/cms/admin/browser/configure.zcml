@@ -16,7 +16,7 @@
   <browser:menuItem
     for="zeit.cms.interfaces.ICMSContent"
     layer="zeit.cms.browser.interfaces.ICMSLayer"
-    action="admin.html"
+    action="@@admin.html"
     permission="zeit.cms.admin.View"
     menu="zeit-context-views" title="Admin Menu"
     filter="python:modules['zeit.cms.repository.interfaces'].IRepositoryContent.providedBy(context)"
