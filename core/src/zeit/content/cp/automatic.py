@@ -67,7 +67,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
             # given to a non-leader block.
             if block.layout.id in ['leader', 'zon-large']:
                 teaser = self._extract_newest(
-                    content, predicate=lambda x: x.lead_candidate)
+                    content, predicate=is_lead_candidate)
                 if teaser is None:
                     teaser = self._extract_newest(content)
                     block.change_layout(
@@ -141,7 +141,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
                 result.append(content)
         return result
 
-    def _extract_newest(self, content, predicate=lambda x: True):
+    def _extract_newest(self, content, predicate=None):
         """Remove the first object from the content list for which predicate
         returns True; thus, the default predicate means: no filtering.
         """
@@ -149,7 +149,7 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         pop = []
         cp = zeit.content.cp.interfaces.ICenterPage(self)
         for i, item in enumerate(content):
-            if predicate(item):
+            if predicate is None or predicate(item):
                 pop.append(item)
                 if self.hide_dupes and (
                         cp.is_teaser_present_above(self.context, item)
@@ -172,3 +172,10 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         for module in self.values():
             if any([x.providedBy(module) for x in interfaces]):
                 yield module
+
+
+def is_lead_candidate(content):
+    metadata = zeit.cms.content.interfaces.ICommonMetadata(content, None)
+    if metadata is None:
+        return False
+    return metadata.lead_candidate
