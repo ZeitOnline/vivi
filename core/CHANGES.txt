@@ -1,10 +1,30 @@
 zeit.cms changes
 ================
 
-2.59.3 (unreleased)
+2.60.3 (unreleased)
 -------------------
 
 - Nothing changed yet.
+
+
+2.60.2 (2015-10-22)
+-------------------
+
+- Even more complete security declaration for lxml objects.
+
+
+2.60.1 (2015-10-22)
+-------------------
+
+- More complete security declaration for lxml objects.
+
+
+2.60.0 (2015-10-14)
+-------------------
+
+- Look up queue names in product config for ``zeit.cms.async.function``.
+
+- Add separate task queue ``solr``.
 
 
 2.59.2 (2015-10-09)

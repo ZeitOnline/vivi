@@ -47,9 +47,9 @@ The file has a size:
 We can get the data via the ``open`` method:
 
 >>> f.open()
-<open file ..., mode 'rb' at 0x...>
+<...StringIO...at 0x...>
 >>> f.open('r')
-<open file ..., mode 'rb' at 0x...>
+<...StringIO...at 0x...>
 >>> f.open().read(10)
 '\xff\xd8\xff\xe1\x0c\xdaExif'
 
@@ -92,9 +92,9 @@ True
 We can get the data via the ``open`` method:
 
 >>> local.open()
-<open file ..., mode 'rb' at 0x...>
+<...StringIO...at 0x...>
 >>> local.open('r')
-<open file ..., mode 'rb' at 0x...>
+<...StringIO...at 0x...>
 >>> local.open().read(10)
 '\xff\xd8\xff\xe1\x0c\xdaExif'
 
