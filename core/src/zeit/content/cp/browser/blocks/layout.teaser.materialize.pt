@@ -1,0 +1,8 @@
+<a tal:condition="context/__parent__/automatic"
+   class="materialize-link" title="Dematerialize block"
+   tal:attributes="href string:${context/__parent__/@@absolute_url}/@@delete?key=${context/__name__}"
+   i18n:attributes="title"
+   i18n:domain="zeit.cms"
+   cms:cp-module="zeit.edit.LoadAndReload">
+  <span class="action-title">Dematerialize block</span>
+</a>

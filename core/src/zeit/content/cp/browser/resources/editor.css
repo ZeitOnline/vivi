@@ -73,7 +73,14 @@
 .edit-bar > .materialize-link {
   padding-right: 0.5em;
   background-image: url('pin.png');
+}
+
+.type-auto-teaser .edit-bar > .materialize-link {
   opacity: 0.5;
+}
+
+.edit-bar > .materialize-link:hover {
+  opacity: 1;
 }
 
 

@@ -79,6 +79,17 @@
     permission="zeit.EditContent"
     />
 
+  <browser:viewlet
+    for="zeit.content.cp.interfaces.ITeaserBlock"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="..interfaces.IEditBarViewletManager"
+    name="materialize-block"
+    template="layout.teaser.materialize.pt"
+    permission="zeit.EditContent"
+    weight="10"
+    />
+
   <adapter factory=".teaser.teaserEditViewName" name="cp-editor-lightbox" />
 
   <browser:page
