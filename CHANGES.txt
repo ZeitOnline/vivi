@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.11.3 (unreleased)
+2.11.3 (2015-10-29)
 -------------------
 
 - Fix syntax error in image view template (only appears when a copyright as
