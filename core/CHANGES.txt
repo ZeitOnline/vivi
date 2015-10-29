@@ -4,7 +4,8 @@ zeit.cms changes
 2.60.3 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Add "admin" tab, for now it allows changing the
+  ``date_last_published_semantic`` property (DEV-951).
 
 
 2.60.2 (2015-10-22)

@@ -49,6 +49,7 @@ setup(
         'plone.testing',
         'pypandoc',
         'pytest',
+        'pytz',
         'repoze.vhm',
         'rwproperty>=1.0',
         'setuptools',
