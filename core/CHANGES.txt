@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.60.3 (unreleased)
+2.61.0 (2015-10-29)
 -------------------
 
 - Add "admin" tab, for now it allows changing the
