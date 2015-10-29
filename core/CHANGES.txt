@@ -2,7 +2,7 @@ zeit.securitypolicy changes
 ===========================
 
 
-2.1.12 (unreleased)
+2.1.12 (2015-10-29)
 -------------------
 
 - Add permissions to date back semantic date to role Producer (DEV-951).
