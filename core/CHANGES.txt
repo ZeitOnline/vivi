@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.61.1 (unreleased)
+2.61.1 (2015-10-30)
 -------------------
 
 - Be more defensive about looking up reference targets.
