@@ -17,6 +17,7 @@ setup(
     install_requires=[
         'Pillow',
         'ZODB',
+        'filemagic',
         'gocept.async',
         'gocept.form',
         'gocept.httpserverlayer',

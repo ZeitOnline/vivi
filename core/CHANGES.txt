@@ -4,7 +4,8 @@ zeit.content.image changes
 2.11.5 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use `libmagic` instead of hand-coded zope.app.file heuristics, it supports
+  a wider range of mimetypes (e.g. ico which z.c.cp uses for rss feeds).
 
 
 2.11.4 (2015-10-30)
