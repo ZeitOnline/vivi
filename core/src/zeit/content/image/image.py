@@ -133,14 +133,13 @@ class ImageType(zeit.cms.type.TypeDeclaration):
     title = _('Image')
 
     def content(self, resource):
-        try:
-            pil_image = PIL.Image.open(resource.data)
-        except IOError:
-            return None
-        content_type = resource.contentType
+        head = resource.data.read(200)
+        resource.data.close()
+        file_type, width, height = zope.app.file.image.getImageInfo(head)
+        content_type = resource.contentType or file_type
         if not content_type:
-            content_type = 'image/' + pil_image.format.lower()
-        return RepositoryImage(resource.id, content_type)
+            return None
+        return RepositoryImage(resource.id, file_type)
 
     def resource_body(self, content):
         return zope.security.proxy.removeSecurityProxy(content.open('r'))
