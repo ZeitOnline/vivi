@@ -4,7 +4,7 @@ zeit.cms changes
 2.61.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Be more defensive about looking up reference targets.
 
 
 2.61.0 (2015-10-29)

@@ -326,7 +326,10 @@ class Reference(grok.MultiAdapter, zeit.cms.content.xmlsupport.Persistent):
 
     @property
     def target(self):
-        return zeit.cms.interfaces.ICMSContent(self.target_unique_id, None)
+        try:
+            return zeit.cms.interfaces.ICMSContent(self.target_unique_id)
+        except (TypeError, LookupError):
+            return None
 
     def get(self, target, default=None):
         return ReferenceProperty.find_reference(
