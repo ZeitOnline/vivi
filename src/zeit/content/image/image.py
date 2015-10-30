@@ -2,10 +2,8 @@ from zeit.cms.i18n import MessageFactory as _
 import PIL.Image
 import cStringIO
 import lxml.objectify
-import zeit.cms.connector
-import zeit.cms.content.dav
+import magic
 import zeit.cms.content.interfaces
-import zeit.cms.content.util
 import zeit.cms.interfaces
 import zeit.cms.repository.file
 import zeit.cms.type
@@ -133,11 +131,13 @@ class ImageType(zeit.cms.type.TypeDeclaration):
     title = _('Image')
 
     def content(self, resource):
+        if resource.contentType:
+            return RepositoryImage(resource.id, resource.contentType)
         head = resource.data.read(200)
         resource.data.close()
-        file_type, width, height = zope.app.file.image.getImageInfo(head)
-        content_type = resource.contentType or file_type
-        if not content_type:
+        with magic.Magic(flags=magic.MAGIC_MIME_TYPE) as m:
+            file_type = m.id_buffer(head)
+        if not file_type.startswith('image/'):
             return None
         return RepositoryImage(resource.id, file_type)
 
