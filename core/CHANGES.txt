@@ -1,7 +1,7 @@
 CHANGES
 =======
 
-2.7.3 (unreleased)
+2.7.3 (2015-10-30)
 ------------------
 
 - Change ``search()`` error to a log.warning instead of a NotImplementedError,
