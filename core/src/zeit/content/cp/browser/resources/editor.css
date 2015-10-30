@@ -76,6 +76,10 @@
   opacity: 0.5;
 }
 
+.edit-bar > .materialize-link:hover {
+  opacity: 1;
+}
+
 
 .edit-bar > .countings-link {
   float: right;
