@@ -4,7 +4,8 @@ zeit.content.image changes
 2.11.4 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Use simple heuristic instead of PIL.image.open to determine mime-type
+  (since reading PSD files with PIL has been seen to hang indefinitely).
 
 
 2.11.3 (2015-10-29)
