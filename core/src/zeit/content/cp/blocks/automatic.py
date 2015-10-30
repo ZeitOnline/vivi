@@ -87,6 +87,24 @@ class AutomaticTeaserBlock(zeit.content.cp.blocks.block.Block):
     def change_layout(self, layout):
         self.temporary_layout = layout
 
+    def materialize(self):
+        # Most of this code is quite similar to Area._materialize_auto_blocks,
+        # but not similar enough to be extracted.
+        area = self.__parent__
+
+        block_id = self.__name__
+        rendered = zeit.content.cp.interfaces.IRenderedArea(area)
+        for block in rendered.values():
+            if block.__name__ == block_id:
+                auto_filled = block
+                break
+
+        order = area.keys()
+        del area[block_id]
+        materialized = area.create_item('teaser')
+        materialized.update(auto_filled)
+        area.updateOrder(order)
+
 
 zeit.edit.block.register_element_factory(
     zeit.content.cp.interfaces.IArea, 'auto-teaser')

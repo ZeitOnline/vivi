@@ -367,7 +367,7 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
             del self[old.__name__]
 
             new = self.create_item('teaser')
-            self.copy_teaserlist_attributes(old, new)
+            new.update(old)
 
         # Preserve order of non-auto blocks.
         self.updateOrder(order)
@@ -376,20 +376,6 @@ class Area(zeit.content.cp.blocks.block.VisibleMixin,
         for block in list(self.values()):
             if IAutomaticTeaserBlock.providedBy(block):
                 del self[block.__name__]
-
-    TEASERBLOCK_FIELDS = (
-        set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
-        - set(zeit.cms.content.interfaces.IXMLRepresentation)
-    )
-
-    def copy_teaserlist_attributes(self, old, new):
-        """Copy content and properties from old to new."""
-        # Copy teaser contents.
-        for content in old:
-            new.append(content)
-        # Copy block properties (including __name__ and __parent__)
-        for name in self.TEASERBLOCK_FIELDS:
-            setattr(new, name, getattr(old, name))
 
     @property
     def count_to_replace_duplicates(self):

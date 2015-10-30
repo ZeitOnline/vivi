@@ -230,9 +230,9 @@ class CenterPage(zeit.cms.content.metadata.CommonMetadata):
         seen = set()
         below = False
         for area in self._cached_areas.values():
+            if area == current_area:
+                below = True
             if not below:
-                if area == current_area:
-                    below = True
                 continue
             if area not in self._area_manual_content:
                 # Probably not worth a separate adapter (like

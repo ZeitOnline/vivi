@@ -130,6 +130,21 @@ class TeaserBlock(
         self._p_changed = True
         self.xml.set('module', layout.id)
 
+    TEASERBLOCK_FIELDS = (
+        set(zope.schema.getFieldNames(zeit.content.cp.interfaces.ITeaserBlock))
+        - set(zeit.cms.content.interfaces.IXMLRepresentation)
+    )
+
+    def update(self, other):
+        if not zeit.content.cp.interfaces.ITeaserBlock.providedBy(other):
+            raise ValueError('%r is not an ITeaserBlock' % other)
+        # Copy teaser contents.
+        for content in other:
+            self.append(content)
+        # Copy block properties (including __name__ and __parent__)
+        for name in self.TEASERBLOCK_FIELDS:
+            setattr(self, name, getattr(other, name))
+
 
 zeit.edit.block.register_element_factory(
     zeit.content.cp.interfaces.IArea, 'teaser', _('List of teasers'))

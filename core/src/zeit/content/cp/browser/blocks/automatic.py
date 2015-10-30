@@ -25,3 +25,10 @@ class ToggleVisible(zeit.content.cp.browser.editor.ToggleVisible):
 
     def reload(self):
         super(ToggleVisible, self).reload(self.context.__parent__)
+
+
+class Materialize(zeit.edit.browser.view.Action):
+
+    def update(self):
+        self.context.materialize()
+        self.reload(self.context.__parent__)
