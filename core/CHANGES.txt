@@ -4,7 +4,8 @@ CHANGES
 2.7.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Change ``search()`` error to a log.warning instead of a NotImplementedError,
+  so it does not disturb zeit.web production.
 
 
 2.7.2 (2015-10-23)

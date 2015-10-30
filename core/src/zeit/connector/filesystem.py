@@ -176,7 +176,8 @@ class Connector(object):
         raise NotImplementedError()
 
     def search(self, attributes, expression):
-        raise NotImplementedError()
+        log.warning('NotImplemented search(%s)', expression._render())
+        return ()
 
     # internal helpers
 
