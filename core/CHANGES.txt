@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.11.5 (unreleased)
+2.11.5 (2015-10-30)
 -------------------
 
 - Use `libmagic` instead of hand-coded zope.app.file heuristics, it supports
