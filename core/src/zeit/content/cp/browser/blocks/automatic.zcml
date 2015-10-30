@@ -28,7 +28,7 @@
     view="zope.interface.Interface"
     manager="zeit.edit.interfaces.IEditBarViewletManager"
     name="delete"
-    class=".automatic.Empty"
+    template="layout.teaser-automatic.materialize.pt"
     permission="zeit.EditContent"
     weight="90"
     />
@@ -53,17 +53,6 @@
     template="layout.teaser-automatic.edit-properties.pt"
     permission="zeit.EditContent"
     weight="0"
-    />
-
-  <browser:viewlet
-    for="zeit.content.cp.interfaces.IAutomaticTeaserBlock"
-    layer="zeit.cms.browser.interfaces.ICMSLayer"
-    view="zope.interface.Interface"
-    manager="..interfaces.IEditBarViewletManager"
-    name="materialize-block"
-    template="layout.teaser-automatic.materialize.pt"
-    permission="zeit.EditContent"
-    weight="10"
     />
 
   <browser:page

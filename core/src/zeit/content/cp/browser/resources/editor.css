@@ -71,6 +71,7 @@
 
 
 .edit-bar > .materialize-link {
+  float: right;
   padding-right: 0.5em;
   background-image: url('pin.png');
   opacity: 0.5;
