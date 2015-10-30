@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.11.4 (unreleased)
+2.11.4 (2015-10-30)
 -------------------
 
 - Use simple heuristic instead of PIL.image.open to determine mime-type
