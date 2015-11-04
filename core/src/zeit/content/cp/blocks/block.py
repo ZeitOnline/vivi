@@ -44,8 +44,12 @@ class Block(VisibleMixin, zeit.edit.block.Element):
 
     supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'supertitle')
+    supertitle_url = zeit.cms.content.property.ObjectPathAttributeProperty(
+        '.', 'supertitle_url')
+
     title = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'title')
+
     volatile = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'volatile',
         zeit.content.cp.interfaces.IBlock['volatile'],
@@ -55,11 +59,6 @@ class Block(VisibleMixin, zeit.edit.block.Element):
         '.', 'publisher')
     publisher_url = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'publisher_url')
-
-    supertitle = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'supertitle')
-    supertitle_url = zeit.cms.content.property.ObjectPathAttributeProperty(
-        '.', 'supertitle_url')
 
     read_more = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'read_more')
