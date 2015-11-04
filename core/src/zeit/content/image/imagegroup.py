@@ -64,10 +64,6 @@ class ImageGroupBase(object):
 
         """
         key = self._verify_signature(key)
-        variant = self.get_variant_by_key(key)
-        size = self.get_variant_size(key)
-        if not size and variant.legacy_size:
-            size = variant.legacy_size
 
         if source is None:
             source = zeit.content.image.interfaces.IMasterImage(self, None)
@@ -75,8 +71,15 @@ class ImageGroupBase(object):
             raise KeyError(key)
 
         repository = zeit.content.image.interfaces.IRepositoryImageGroup(self)
+        variant = self.get_variant_by_key(key)
+        size = self.get_variant_size(key)
+        if not size and variant.legacy_size:
+            size = variant.legacy_size
+
+        # Always prefer materialized images with matching name
         if variant.name in repository:
             return repository[variant.name]
+
         # BBB Legacy ImageGroups still should return their materialized
         # variants (for CP editor).
         if variant.legacy_name:
@@ -84,6 +87,8 @@ class ImageGroupBase(object):
                 if variant.legacy_name in name:
                     return repository[name]
 
+        # Set size to max_size if Variant has max_size defined in XML and no
+        # size was given in URL
         if not size and variant.max_width < sys.maxint > variant.max_height:
             size = [variant.max_width, variant.max_height]
 

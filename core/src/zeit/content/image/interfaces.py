@@ -220,7 +220,8 @@ class IVariant(zope.interface.Interface):
     zoom = zope.schema.Float(
         description=u'Zoom factor used, i.e. 1 for no zoom')
     aspect_ratio = zope.schema.TextLine(
-        description=u"String representation of ratio as X:Y, e.g. 16:9")
+        description=u"String representation of ratio as X:Y, e.g. 16:9. "
+                    u"Can be set to 'original', to use width/height of image.")
     max_size = zope.schema.TextLine(
         description=u"Maximum width / height of this Variant, e.g. 160x90")
     brightness = zope.schema.Float(
@@ -232,7 +233,8 @@ class IVariant(zope.interface.Interface):
     sharpness = zope.schema.Float(
         description=u'Factor to enhance sharpness, 1.0 for original value')
     fallback_size = zope.schema.TextLine(
-        description=u"Fallback width / height, e.g. 1200x514")
+        description=u"Fallback width / height, e.g. 1200x514. "
+                    u"Used by Friedbert to limit the size of large variants.")
 
     ratio = zope.interface.Attribute(
         'Float representation of ratio')

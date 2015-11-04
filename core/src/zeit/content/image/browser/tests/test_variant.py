@@ -11,6 +11,12 @@ import zope.component
 
 
 class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
+    """Test JSON API to retrieve all Variants or a single Variant.
+
+    We use the requests library instead of a BrowserTestCase, since
+    zope.testbrowser supports GET and POST, but not PUT and DELETE.
+
+    """
 
     layer = zeit.content.image.testing.HTTP_LAYER
 
