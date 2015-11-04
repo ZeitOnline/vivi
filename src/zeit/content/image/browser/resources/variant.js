@@ -358,6 +358,12 @@
     });
 
 
+    // XXX We need to split this class. Seriously. It is responsible for way
+    // too many things. If possible, extract behaviour to independent view or
+    // at least extract behaviour to separate class and delegate related calls.
+    // For ideas see http://ricostacruz.com/backbone-patterns/#delegate_views
+    // Hint: To reduce number of JSON calls, only use Model.set when delegating
+    // calls and call Model.save once after all delegates have finished.
     zeit.content.image.browser.VariantEditor = Backbone.View.extend({
 
         el: '#variant-inner',

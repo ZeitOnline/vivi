@@ -34,6 +34,24 @@ class Variants(grok.Adapter, UserDict.DictMixin):
         return variant
 
     def _copy_missing_fields(self, source, target):
+        """Copy all values from schema fields from source to target if missing.
+
+        Since only schema fields are copied, zope.interface.Attribute fields
+        are ignored.
+
+        All schema fields must be initialized with a default value, otherwise
+        copying from `source` will fail. Be aware that only `None` is allowed
+        as the default value for attributes, since other values are considered
+        as `target already has a custom value, so do not inherit from source`.
+        To use a default value other than `None`, the default must be defined
+        inside the XML config.
+
+        For example: If we set a default of `zoom = 1.0` on `Variant`, this
+        would apply to new instances of `source` and `target`. But when setting
+        `source.zoom = 0.5` the value will not be copied to `target`, since
+        `target` already has a "custom" zoom value of 1.0.
+
+        """
         for key in zope.schema.getFieldNames(
                 zeit.content.image.interfaces.IVariant):
             if hasattr(target, key) and getattr(target, key) is not None:
@@ -88,6 +106,13 @@ class Variant(object):
 
     @property
     def ratio(self):
+        """Calculate ratio from aspect ratio or use dimension of master image.
+
+        Normally the aspect_ratio is given as '3:4', resulting in a ratio of
+        0.75. However, when aspect_ratio is set to 'original', the ratio will
+        be calculated from the dimensions of the master image.
+
+        """
         if self.is_default or self.aspect_ratio == 'original':
             image = zeit.content.image.interfaces.IMasterImage(
                 zeit.content.image.interfaces.IImageGroup(self))

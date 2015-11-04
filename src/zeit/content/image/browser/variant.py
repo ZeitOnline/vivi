@@ -25,6 +25,11 @@ class VariantSerializeMixin(object):
                     "Neither focuspoint nor zoom should ever be set to None, "
                     "since image creation would break.")
             result[name] = data[name]
+
+        # Ignore None values for image enhancements, rather raising an error,
+        # since Backbone.js always sends ALL model fields. So setting contrast
+        # for the first time will send brightness etc. with a value of `None`,
+        # since this is the default value.
         for name in ['brightness', 'contrast', 'saturation', 'sharpness']:
             if data[name] is not None:
                 result[name] = data[name]
