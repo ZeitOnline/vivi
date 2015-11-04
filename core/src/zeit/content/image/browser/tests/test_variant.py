@@ -43,7 +43,7 @@ class VariantJsonAPI(zeit.cms.testing.FunctionalTestCase):
 
     def test_get_variant_contains_configuration_of_imagegroup_and_xml(self):
         variant = self.request(
-            'get', '/workingcopy/zope.user/group/variants/square').json()
+            'get', '/repository/group/variants/square').json()
         self.assertEqual(0.5, variant['focus_x'])    # from imagegroup
         self.assertEqual(1, variant['zoom'])         # from default variant
         self.assertEqual('square', variant['name'])  # from XML
