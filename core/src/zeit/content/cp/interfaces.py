@@ -374,6 +374,7 @@ class IReadArea(zeit.edit.interfaces.IReadContainer):
         source=AutomaticTypeSource(),
         required=True)
 
+    # XXX Rename to make clear that this setting only applies to AutoPilot.
     count = zope.schema.Int(title=_('Amount of teasers'), default=15)
 
     referenced_cp = zope.schema.Choice(

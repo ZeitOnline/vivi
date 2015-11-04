@@ -55,6 +55,7 @@ class Block(VisibleMixin, zeit.edit.block.Element):
         zeit.content.cp.interfaces.IBlock['volatile'],
         use_default=True)
 
+    # XXX Is this attribute used anywhere? Imho it's dead code.
     publisher = zeit.cms.content.property.ObjectPathAttributeProperty(
         '.', 'publisher')
     publisher_url = zeit.cms.content.property.ObjectPathAttributeProperty(
