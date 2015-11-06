@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.3.3 (unreleased)
+3.3.3 (2015-11-06)
 ------------------
 
 - Be a little lazier with context value retrieval (ZON-2159).
