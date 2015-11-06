@@ -50,15 +50,14 @@ class AutomaticArea(zeit.cms.content.xmlsupport.Persistent):
         return query
 
     def values(self):
-        values = self.context.values()
         if not self.automatic:
-            return values
+            return self.context.values()
 
         self._v_try_to_retrieve_content = True
         self._v_retrieved_content = 0
         content = self._retrieve_content()
         result = []
-        for block in values:
+        for block in self.context.values():
             if not IAutomaticTeaserBlock.providedBy(block):
                 result.append(block)
                 continue
