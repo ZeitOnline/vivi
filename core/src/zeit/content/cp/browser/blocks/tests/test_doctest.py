@@ -24,7 +24,6 @@ def test_suite():
         'av.txt',
         'cpextra.txt',
         'fullgraphical.txt',
-        'quiz.txt',
         'teaser.txt',
         'teaser-countings.txt',
         'teaser-two-column-layout.txt',

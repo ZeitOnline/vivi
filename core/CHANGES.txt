@@ -2,10 +2,11 @@ zeit.content.cp changes
 =======================
 
 
-3.3.4 (unreleased)
+3.4.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Change ``quiz`` block to store just an ID (new-style quizzes), not a
+  reference to an (old-style) quiz content object (ZON-2396).
 
 
 3.3.3 (2015-11-06)

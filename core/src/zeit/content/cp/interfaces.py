@@ -818,9 +818,8 @@ class IXMLTeaser(zeit.cms.interfaces.ICMSContent,
 class IQuizBlock(IBlock):
     """The Quiz block with a reference to a quiz."""
 
-    referenced_quiz = zope.schema.Choice(
-        title=_("Quiz"),
-        source=zeit.content.quiz.source.QuizSource())
+    quiz_id = zope.schema.TextLine(
+        title=_("Quiz id"))
 
 
 class FullgraphicalScaleSource(zeit.cms.content.sources.XMLSource):
