@@ -229,6 +229,19 @@ class EditCardstack(zeit.edit.browser.form.InlineForm):
         return 'cardstack.{0}'.format(self.context.__name__)
 
 
+class EditQuiz(zeit.edit.browser.form.InlineForm):
+
+    legend = None
+    form_fields = zope.formlib.form.FormFields(
+        zeit.content.article.edit.interfaces.IQuiz).omit(
+            '__name__', '__parent__', 'xml')
+    undo_description = _('edit quiz block')
+
+    @property
+    def prefix(self):
+        return 'quiz.{0}'.format(self.context.__name__)
+
+
 class EditDivision(zeit.edit.browser.form.InlineForm):
 
     legend = None

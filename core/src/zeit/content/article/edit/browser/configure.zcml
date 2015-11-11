@@ -389,6 +389,27 @@
     weight="10"
     />
 
+  <!-- quiz -->
+
+  <browser:page
+    for="zeit.content.article.edit.interfaces.IQuiz"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    name="edit-quiz"
+    class=".edit.EditQuiz"
+    permission="zope.View"
+    />
+
+  <browser:viewlet
+    for="zeit.content.article.edit.interfaces.IQuiz"
+    layer="zeit.cms.browser.interfaces.ICMSLayer"
+    view="zope.interface.Interface"
+    manager="zeit.edit.interfaces.IContentViewletManager"
+    name="edit-quiz"
+    class="zeit.edit.browser.form.FormLoader"
+    permission="zope.View"
+    weight="10"
+    />
+
   <!-- division -->
 
   <browser:viewlet

@@ -417,6 +417,15 @@ class ICardstack(zeit.edit.interfaces.IBlock):
         default=False)
 
 
+class IQuiz(zeit.edit.interfaces.IBlock):
+
+    quiz_id = zope.schema.TextLine(
+        title=_('Quiz id'))
+    adreload_enabled = zope.schema.Bool(
+        title=_('Enable adreload'),
+        default=True)
+
+
 class IBreakingNewsBody(zope.interface.Interface):
 
     text = zope.schema.Text(

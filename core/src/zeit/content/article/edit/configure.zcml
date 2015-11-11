@@ -237,6 +237,17 @@
       />
   </class>
 
+  <class class=".quiz.Quiz">
+    <require
+      interface=".interfaces.IQuiz"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IQuiz"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <class class=".body.BreakingNewsBody">
     <require
       interface=".interfaces.IBreakingNewsBody"
