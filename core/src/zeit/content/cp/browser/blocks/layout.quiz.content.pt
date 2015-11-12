@@ -1,4 +1,3 @@
-<div class="block-title" i18n:translate="">Quiz</div>
 <div class="block-item"
      tal:condition="context/quiz_id">
   ID: <span tal:content="context/quiz_id">Id</span>
