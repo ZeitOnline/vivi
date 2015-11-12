@@ -2,7 +2,7 @@ zeit.content.cp changes
 =======================
 
 
-3.4.0 (unreleased)
+3.4.0 (2015-11-12)
 ------------------
 
 - Change ``quiz`` block to store just an ID (new-style quizzes), not a
