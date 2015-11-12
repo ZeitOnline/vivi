@@ -389,7 +389,9 @@ class TestVideoBlock(zeit.content.cp.testing.SeleniumTestCase):
 
 class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
 
-    def create_quizblock(self):
+    def test_add_quiz(self):
+        self.open_centerpage()
+
         s = self.selenium
         s.click('link=Struktur')
         module = self.get_module('cp', 'Quiz')
@@ -398,36 +400,6 @@ class TestQuizBlock(zeit.content.cp.testing.SeleniumTestCase):
             module,
             'css=.landing-zone.action-cp-module-droppable', '10,10')
         s.waitForElementPresent('css=div.type-quiz')
-
-    def add_quiz(self):
-        with zeit.cms.testing.site(self.getRootFolder()):
-            repository = zope.component.getUtility(
-                zeit.cms.repository.interfaces.IRepository)
-            quiz = zeit.content.quiz.quiz.Quiz()
-            repository['my_quiz'] = quiz
-
-    def test_add_quiz(self):
-        self.open_centerpage()
-        self.create_quizblock()
-        self.add_quiz()
-
-        s = self.selenium
-        s.pause(300)
-        s.click('css=div.type-quiz > * > div.edit > a.edit-link')
-        s.waitForElementPresent('id=lightbox.form')
-        s.pause(100)
-        s.type('css=input.object-reference', 'http://xml.zeit.de/my_quiz')
-        s.click('form.actions.apply')
-        s.click('css=a.CloseButton')
-        s.waitForElementNotPresent('css=.lightbox')
-
-        s.click('css=div.type-quiz > * > div.edit > a.edit-link')
-        s.waitForElementPresent('id=lightbox.form')
-        s.waitForValue('css=input.object-reference',
-                       'http://xml.zeit.de/my_quiz')
-        s.click('form.actions.apply')
-        s.click('css=a.CloseButton')
-        s.waitForElementNotPresent('css=.lightbox')
 
 
 class TestXMLBlock(zeit.content.cp.testing.SeleniumTestCase):
