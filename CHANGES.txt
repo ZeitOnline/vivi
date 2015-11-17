@@ -4,7 +4,7 @@ zeit.content.image changes
 2.11.6 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Be more defensive about missing meta files when creating variant images.
 
 
 2.11.5 (2015-10-30)

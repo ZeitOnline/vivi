@@ -92,8 +92,12 @@ class ImageGroupBase(object):
         if not size and variant.max_width < sys.maxint > variant.max_height:
             size = [variant.max_width, variant.max_height]
 
-        image = zeit.content.image.interfaces.ITransform(
-            source).create_variant_image(variant, size=size)
+        # Be defensive about missing meta files, so source could not be
+        # recognized as an image (for zeit.web)
+        transform = zeit.content.image.interfaces.ITransform(source, None)
+        if transform is None:
+            return None
+        image = transform.create_variant_image(variant, size=size)
         image.__name__ = key
         image.__parent__ = self
         image.uniqueId = u'%s%s' % (self.uniqueId, key)
@@ -252,6 +256,8 @@ class ImageGroup(ImageGroupBase,
             item = super(ImageGroup, self).__getitem__(key)
         except KeyError:
             item = self.create_variant_image(key)
+            if item is None:
+                raise KeyError(key)
         if key == self.master_image:
             zope.interface.alsoProvides(
                 item, zeit.content.image.interfaces.IMasterImage)
