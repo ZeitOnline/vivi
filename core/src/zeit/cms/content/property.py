@@ -21,6 +21,8 @@ class ObjectPathProperty(object):
         self.use_default = use_default
 
     def __get__(self, instance, class_):
+        if instance is None:
+            return self
         node = self.getNode(instance)
         if node is None:
             if self.field:
@@ -128,6 +130,8 @@ class ObjectPathAttributeProperty(ObjectPathProperty):
         self.attribute_name = attribute_name
 
     def __get__(self, instance, class_):
+        if instance is None:
+            return self
         value = self.getNode(instance).get(self.attribute_name)
         if value is None:
             if self.field:
@@ -164,6 +168,8 @@ class MultiPropertyBase(object):
         self.sorted = sorted
 
     def __get__(self, instance, class_):
+        if instance is None:
+            return self
         tree = instance.xml
         result = []
         try:
@@ -219,6 +225,8 @@ class SingleResource(ObjectPathProperty):
         self.attributes = attributes
 
     def __get__(self, instance, class_):
+        if instance is None:
+            return self
         node = self.getNode(instance)
         if self.attributes and node is not None:
             for attr in self.attributes:
@@ -268,6 +276,8 @@ class DAVConverterWrapper(object):
         self.field = field
 
     def __get__(self, instance, class_):
+        if instance is None:
+            return self
         value = self.wrapped_property.__get__(instance, class_)
         return self.get_converter(instance).fromProperty(value)
 
