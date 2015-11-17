@@ -1,7 +1,7 @@
 zeit.content.image changes
 ==========================
 
-2.11.6 (unreleased)
+2.11.6 (2015-11-17)
 -------------------
 
 - Be more defensive about missing meta files when creating variant images.
