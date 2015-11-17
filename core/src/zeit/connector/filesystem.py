@@ -82,9 +82,9 @@ class Connector(object):
         names = (set(os.listdir(absolute_path))
                  if os.path.isdir(absolute_path) else set())
         for x in names.copy():
-            if x.endswith('.meta') and x[:-5] in names:
-                names.remove(x)
             if x.startswith('.'):
+                names.remove(x)
+            elif x.endswith('.meta') and x[:-5] in names:
                 names.remove(x)
         return names
 

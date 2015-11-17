@@ -4,7 +4,7 @@ CHANGES
 2.7.4 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Ignore strange filenames like `._foo.jpg.meta` properly.
 
 
 2.7.3 (2015-10-30)
