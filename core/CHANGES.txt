@@ -1,7 +1,7 @@
 zeit.cms changes
 ================
 
-2.62.0 (unreleased)
+2.62.0 (2015-11-17)
 -------------------
 
 - XML property descriptors now return themselves when accessed via the
