@@ -32,6 +32,9 @@ class IDynamicFolder(zeit.cms.repository.interfaces.IDAVContent):
         title=_(u'Configuration file'),
         source=zeit.cms.content.contentsource.cmsContentSource)
 
+    content_template_file = zope.interface.Attribute(
+        'XML template to create virtual content (ICMSContent)')
+
 
 class IRepositoryDynamicFolder(
         IDynamicFolder,

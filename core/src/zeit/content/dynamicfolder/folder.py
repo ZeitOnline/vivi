@@ -77,13 +77,16 @@ class RepositoryDynamicFolder(
     @property
     def content_template(self):
         if not hasattr(self, '_v_content_template'):
-            template_file = self.config.head.cp_template.text
             self._v_content_template = jinja2.Template(
                 zeit.connector.interfaces.IResource(
-                    zeit.cms.interfaces.ICMSContent(
-                        template_file)).data.read(),
+                    self.content_template_file).data.read(),
                 autoescape=True, extensions=['jinja2.ext.autoescape'])
         return self._v_content_template
+
+    @property
+    def content_template_file(self):
+        template_file = self.config.head.cp_template.text
+        return zeit.cms.interfaces.ICMSContent(template_file, None)
 
     def _create_virtual_content(self, key):
         body = self.content_template.render(
