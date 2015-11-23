@@ -168,3 +168,12 @@ class TestDynamicFolder(
 
     def test_converts_xml_attribute_nodes_into_dav_properties(self):
         self.assertEqual('Deutschland', self.folder['xanten'].ressort)
+
+    def assert_published(self, content):
+        info = zeit.cms.workflow.interfaces.IPublishInfo(content)
+        self.assertTrue(info.published)
+
+    def test_publishes_folder_with_config_and_template(self):
+        zeit.cms.workflow.interfaces.IPublish(self.folder).publish()
+        zeit.workflow.testing.run_publish()
+        self.assert_published(self.folder)

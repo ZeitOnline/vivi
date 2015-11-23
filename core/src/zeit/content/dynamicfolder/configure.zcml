@@ -41,4 +41,11 @@
       />
   </class>
 
+  <adapter
+    factory="zeit.workflow.asset.AssetWorkflow"
+    for=".interfaces.IDynamicFolder"
+    provides="zeit.workflow.interfaces.IAssetWorkflow"
+    trusted="yes"
+    />
+
 </configure>
