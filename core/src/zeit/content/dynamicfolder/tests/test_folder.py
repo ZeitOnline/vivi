@@ -91,7 +91,7 @@ class TestDynamicFolder(
 
     def test_checkin_virtual_content_materializes_it(self):
         # Fill cached values, since they must not interfere with ZODB/pickling.
-        self.folder.cp_template
+        self.folder.content_template
         self.folder.virtual_content
 
         self.assertEqual('Xanten', self.folder['xanten'].title)
