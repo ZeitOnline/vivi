@@ -4,7 +4,6 @@ from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.content.rawxml.rawxml import RawXML
 import mock
 import pkg_resources
-import transaction
 import zeit.cms.testcontenttype.testcontenttype
 import zeit.content.cp.interfaces
 import zeit.content.dynamicfolder.testing
@@ -150,7 +149,6 @@ class TestDynamicFolder(
     def test_works_with_raxml_template(self):
         # These get an xml declaration in their serialization, so we must not
         # process them as unicode, else lxml complains.
-        transaction.abort()  # Clear Repository child cache
         self.repository['data']['template.xml'] = RawXML(
             pkg_resources.resource_stream(__name__, 'fixtures/template.xml'))
         with self.assertNothingRaised():
@@ -159,7 +157,6 @@ class TestDynamicFolder(
     def test_works_with_unknown_type_template(self):
         # These don't get an xml declaration in their serialization, but
         # luckily(?) lxml doesn't care if we use unicode or utf-8 in that case.
-        transaction.abort()  # Clear Repository child cache
         self.repository['data']['template.xml'] = PersistentUnknownResource(
             data=pkg_resources.resource_string(
                 __name__, 'fixtures/template.xml').decode('latin-1'))
@@ -174,7 +171,6 @@ class TestDynamicFolder(
         self.assertTrue(info.published, '%s not published' % content.uniqueId)
 
     def test_publishes_folder_with_config_and_template(self):
-        transaction.commit()  # XXX Work around remotetask / zodb weirdness
         zeit.cms.workflow.interfaces.IPublish(self.folder).publish()
         zeit.workflow.testing.run_publish()
         self.assert_published(self.folder)

@@ -3,6 +3,7 @@ from zeit.cms.repository.unknown import PersistentUnknownResource
 from zeit.content.dynamicfolder.folder import RepositoryDynamicFolder
 import pkg_resources
 import plone.testing
+import transaction
 import zeit.cms.repository.folder
 import zeit.cms.repository.interfaces
 import zeit.cms.testing
@@ -37,6 +38,7 @@ class DynamicLayer(plone.testing.Layer):
             dynamic = RepositoryDynamicFolder()
             dynamic.config_file = folder['config.xml']
             repository['dynamicfolder'] = dynamic
+            transaction.commit()
 
 
 DYNAMIC_LAYER = DynamicLayer()
