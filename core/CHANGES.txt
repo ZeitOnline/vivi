@@ -2,7 +2,7 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-1.1.1 (unreleased)
+1.1.1 (2015-11-24)
 ------------------
 
 - Configure a workflow for dynamic folders so they can be published.
