@@ -2,6 +2,12 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
+1.1.2 (unreleased)
+------------------
+
+- Nothing changed yet.
+
+
 1.1.1 (2015-11-24)
 ------------------
 
