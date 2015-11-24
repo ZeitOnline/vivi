@@ -30,4 +30,11 @@
     />
   </configure>
 
+  <adapter
+    for="zeit.content.dynamicfolder.interfaces.IDynamicFolder
+         zeit.cms.browser.interfaces.ICMSLayer"
+    provides="zeit.workflow.browser.interfaces.IWorkflowForm"
+    factory="zeit.workflow.browser.form.AssetWorkflow"
+    />
+
 </configure>
