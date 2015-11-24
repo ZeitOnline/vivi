@@ -2,7 +2,7 @@ zeit.content.dynamicfolder changes
 ==================================
 
 
-1.1.2 (unreleased)
+1.1.2 (2015-11-24)
 ------------------
 
 - Register a workflow form for dynamic folders.
