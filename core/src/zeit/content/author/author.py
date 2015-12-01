@@ -1,10 +1,10 @@
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
-import grokcore
+import grokcore.component as grok
 import zeit.cms.content.interfaces
-import zeit.cms.content.reference
 import zeit.cms.content.property
+import zeit.cms.content.reference
 import zeit.cms.content.xmlsupport
 import zeit.cms.interfaces
 import zeit.cms.repository.interfaces
@@ -65,7 +65,7 @@ class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
     addform = 'zeit.content.author.add_contextfree'
 
 
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.content.author.interfaces.IAuthor,
     zeit.cms.repository.interfaces.IBeforeObjectAddEvent)
 def update_display_name(obj, event):
@@ -79,7 +79,7 @@ def update_display_name(obj, event):
 # zeit.vgwort.report uses the fact that the references to author objects are
 # copied to the freetext 'author' webdav property to filter out which content
 # objects to report.
-@grokcore.component.subscribe(
+@grok.subscribe(
     zeit.cms.content.interfaces.ICommonMetadata,
     zope.lifecycleevent.interfaces.IObjectModifiedEvent)
 def update_author_freetext(obj, event):
@@ -92,13 +92,11 @@ def update_author_freetext(obj, event):
                 obj.authors = ref_names
 
 
-class Dependencies(grokcore.component.Adapter):
+class Dependencies(grok.Adapter):
 
-    grokcore.component.context(
-        zeit.cms.content.interfaces.ICommonMetadata)
-    grokcore.component.name('zeit.content.author')
-    grokcore.component.implements(
-        zeit.workflow.interfaces.IPublicationDependencies)
+    grok.context(zeit.cms.content.interfaces.ICommonMetadata)
+    grok.name('zeit.content.author')
+    grok.implements(zeit.workflow.interfaces.IPublicationDependencies)
 
     def __init__(self, context):
         self.context = context
@@ -107,19 +105,19 @@ class Dependencies(grokcore.component.Adapter):
         return [x.target for x in self.context.authorships]
 
 
-@grokcore.component.adapter(
+@grok.adapter(
     zeit.cms.content.interfaces.ICommonMetadata,
     name='zeit.content.author')
-@grokcore.component.implementer(
+@grok.implementer(
     zeit.cms.relation.interfaces.IReferenceProvider)
 def references(context):
     return [x.target for x in context.authorships]
 
 
-@grokcore.component.adapter(
+@grok.adapter(
     zeit.content.author.interfaces.IAuthor,
     zeit.cms.content.interfaces.IContentAdder)
-@grokcore.component.implementer(zeit.cms.content.interfaces.IAddLocation)
+@grok.implementer(zeit.cms.content.interfaces.IAddLocation)
 def author_location(type_, adder):
     return zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
