@@ -1,5 +1,6 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
+import gocept.form.grouped
 import re
 import transaction
 import zeit.cms.browser.form
@@ -18,6 +19,19 @@ class FormBase(object):
         zeit.content.author.interfaces.IAuthor,
         zeit.cms.interfaces.ICMSContent)
 
+    field_groups = (
+        gocept.form.grouped.Fields(
+            _("Contact"),
+            ('title', 'firstname', 'lastname', 'email'),
+            css_class='column-left'),
+        gocept.form.grouped.RemainingFields(
+            _("misc."), css_class='column-right'),
+        gocept.form.grouped.Fields(
+            _("Biography"),
+            ('biography', 'image_group'),
+            css_class='full-width'),
+    )
+
 
 class AddForm(FormBase,
               zeit.cms.browser.form.AddForm):
@@ -30,12 +44,14 @@ class EditForm(FormBase,
                zeit.cms.browser.form.EditForm):
 
     title = _('Edit author')
+    form_fields = FormBase.form_fields.omit('__name__')
 
 
 class DisplayForm(FormBase,
                   zeit.cms.browser.form.DisplayForm):
 
     title = _('View')
+    form_fields = FormBase.form_fields.omit('__name__')
 
 
 class IDuplicateConfirmation(zope.interface.Interface):
