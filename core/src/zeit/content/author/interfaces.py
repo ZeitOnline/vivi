@@ -53,6 +53,13 @@ class IAuthor(zope.interface.Interface):
     community_profile = zope.schema.TextLine(
         title=_('Community-Profile URL'), required=False)
 
+    twitter = zope.schema.TextLine(
+        title=_('Twitter handle'), required=False)
+    facebook = zope.schema.TextLine(
+        title=_('Facebook handle'), required=False)
+    instagram = zope.schema.TextLine(
+        title=_('Instagram handle'), required=False)
+
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
         source=StatusSource())

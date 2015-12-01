@@ -30,10 +30,13 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'email',
         'entered_display_name',
         'external',
+        'facebook',
         'firstname',
+        'instagram',
         'lastname',
         'status',
         'title',
+        'twitter',
         'vgwortcode',
         'vgwortid',
     ]:
