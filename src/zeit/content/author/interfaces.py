@@ -33,6 +33,9 @@ class IAuthor(zope.interface.Interface):
     title = zope.schema.TextLine(title=_('Title'), required=False)
     firstname = zope.schema.TextLine(title=_('Firstname'))
     lastname = zope.schema.TextLine(title=_('Lastname'))
+    summary = zope.schema.TextLine(
+        title=_('Summary'), required=False,
+        description=_('Author summary description'))
 
     email = zope.schema.TextLine(title=_('Email address'), required=False)
     twitter = zope.schema.TextLine(title=_('Twitter handle'), required=False)

@@ -37,6 +37,7 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
         'instagram',
         'lastname',
         'status',
+        'summary',
         'title',
         'twitter',
         'vgwortcode',

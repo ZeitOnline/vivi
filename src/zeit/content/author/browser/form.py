@@ -47,8 +47,8 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
 
         self.field_groups += (gocept.form.grouped.Fields(
             _("Biography"),
-            ('biography', 'image_group') + tuple(source),
-            css_class='full-width'),)
+            ('summary', 'biography') + tuple(source),
+            css_class='wide-widgets full-width'),)
 
     def setUpWidgets(self, *args, **kw):
         super(FormBase, self).setUpWidgets(*args, **kw)
