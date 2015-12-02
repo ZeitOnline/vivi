@@ -33,13 +33,18 @@ class IAuthor(zope.interface.Interface):
     title = zope.schema.TextLine(title=_('Title'), required=False)
     firstname = zope.schema.TextLine(title=_('Firstname'))
     lastname = zope.schema.TextLine(title=_('Lastname'))
+
     email = zope.schema.TextLine(title=_('Email address'), required=False)
+    twitter = zope.schema.TextLine(title=_('Twitter handle'), required=False)
+    facebook = zope.schema.TextLine(title=_('Facebook handle'), required=False)
+    instagram = zope.schema.TextLine(
+        title=_('Instagram handle'), required=False)
+
     vgwortid = zope.schema.Int(
         title=_('VG-Wort ID'),
         required=False,
         # see messageService.wsdl:cardNumberType
         min=10, max=9999999)
-
     vgwortcode = zope.schema.TextLine(
         title=_('VG-Wort Code'), required=False,
         constraint=valid_vgwortcode)
@@ -54,18 +59,9 @@ class IAuthor(zope.interface.Interface):
 
     community_profile = zope.schema.TextLine(
         title=_('Community-Profile URL'), required=False)
-
-    twitter = zope.schema.TextLine(
-        title=_('Twitter handle'), required=False)
-    facebook = zope.schema.TextLine(
-        title=_('Facebook handle'), required=False)
-    instagram = zope.schema.TextLine(
-        title=_('Instagram handle'), required=False)
-
     status = zope.schema.Choice(
         title=_(u'Redaktionszugehörigkeit'),
         source=StatusSource())
-
     external = zope.schema.Bool(
         title=_(u'External?'))
 
