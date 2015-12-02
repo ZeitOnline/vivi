@@ -11,7 +11,7 @@ import zope.component
 
 class AuthorshipXMLReferenceUpdater(zeit.cms.testing.FunctionalTestCase):
 
-    layer = zeit.content.author.testing.ZCMLLayer
+    layer = zeit.content.author.testing.ZCML_LAYER
 
     def setUp(self):
         super(AuthorshipXMLReferenceUpdater, self).setUp()

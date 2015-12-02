@@ -13,7 +13,7 @@ class PropertyMock(mock.Mock):
 
 class FormTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.author.testing.ZCMLLayer
+    layer = zeit.content.author.testing.ZCML_LAYER
 
     def setUp(self):
         super(FormTest, self).setUp()
