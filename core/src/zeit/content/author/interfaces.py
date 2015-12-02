@@ -1,9 +1,10 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
 import re
+import zc.sourcefactory.source
 import zeit.cms.content.interfaces
-import zeit.content.image.interfaces
 import zeit.cms.content.sources
+import zeit.content.image.interfaces
 import zope.interface
 import zope.schema
 
@@ -27,6 +28,7 @@ def valid_vgwortcode(value):
 
 
 class IAuthor(zope.interface.Interface):
+    """An author writes CMS content."""
 
     title = zope.schema.TextLine(title=_('Title'), required=False)
     firstname = zope.schema.TextLine(title=_('Firstname'))
@@ -74,8 +76,39 @@ class IAuthor(zope.interface.Interface):
         source=zeit.content.image.interfaces.imageGroupSource)
 
     biography = zope.schema.Text(
-        title=_('Biography'),
-        required=False)
+        title=_('Short Biography'), required=False)
+
+    bio_questions = zope.interface.Attribute('Our IBiographyQuestions dict')
+
+
+class IBiographyQuestions(zope.interface.common.mapping.IMapping):
+    """dict that maps a question id -> IQuestion
+
+    Contains values for all question ids configured via BIOGRAPHY_QUESTIONS,
+    their ``.answer`` is None when the author has no data for that question id.
+    """
+
+
+class IQuestion(zope.interface.Interface):
+
+    id = zope.schema.TextLine(readonly=True)
+    title = zope.schema.TextLine(readonly=True)
+    answer = zope.schema.TextLine(readonly=True)
+
+
+class BiographyQuestionSource(zeit.cms.content.sources.XMLSource):
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        def title(self, id):
+            return self.factory.getTitle(self.context, id)
+
+    product_configuration = 'zeit.content.author'
+    config_url = 'biography-questions'
+    attribute = 'id'
+
+
+BIOGRAPHY_QUESTIONS = BiographyQuestionSource()
 
 
 class IAuthorReference(zeit.cms.content.interfaces.IReference):

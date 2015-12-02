@@ -1,5 +1,6 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
+import copy
 import gocept.form.grouped
 import re
 import transaction
@@ -13,11 +14,12 @@ import zope.interface
 import zope.schema
 
 
-class FormBase(object):
+class FormBase(zeit.cms.browser.form.CharlimitMixin):
 
-    form_fields = zope.formlib.form.FormFields(
+    _form_fields = zope.formlib.form.FormFields(
         zeit.content.author.interfaces.IAuthor,
         zeit.cms.interfaces.ICMSContent)
+    omit_fields = []
 
     field_groups = (
         gocept.form.grouped.Fields(
@@ -27,11 +29,32 @@ class FormBase(object):
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("misc."), css_class='column-right'),
-        gocept.form.grouped.Fields(
-            _("Biography"),
-            ('biography', 'image_group'),
-            css_class='full-width'),
     )
+
+    def __init__(self, context, request):
+        super(FormBase, self).__init__(context, request)
+        self.form_fields = self._form_fields.omit(*self.omit_fields)
+
+        source = zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(
+            self.context)
+        for name in source:
+            field = zope.schema.Text(
+                title=source.title(name), required=False, max_length=350)
+            field.__name__ = name
+            field.interface = (
+                zeit.content.author.interfaces.IBiographyQuestions)
+            self.form_fields += zope.formlib.form.FormFields(field)
+
+        self.field_groups += (gocept.form.grouped.Fields(
+            _("Biography"),
+            ('biography', 'image_group') + tuple(source),
+            css_class='full-width'),)
+
+    def setUpWidgets(self, *args, **kw):
+        super(FormBase, self).setUpWidgets(*args, **kw)
+        for field in self.form_fields:
+            if getattr(field.field, 'max_length', None):
+                self.set_charlimit(field.__name__)
 
 
 class AddForm(FormBase,
@@ -45,14 +68,14 @@ class EditForm(FormBase,
                zeit.cms.browser.form.EditForm):
 
     title = _('Edit author')
-    form_fields = FormBase.form_fields.omit('__name__')
+    omit_fields = ['__name__']
 
 
 class DisplayForm(FormBase,
                   zeit.cms.browser.form.DisplayForm):
 
     title = _('View')
-    form_fields = FormBase.form_fields.omit('__name__')
+    omit_fields = ['__name__']
 
 
 class IDuplicateConfirmation(zope.interface.Interface):
@@ -81,7 +104,7 @@ class AddContextfree(zeit.cms.browser.form.AddForm):
     """
 
     title = _('Add author')
-    form_fields = (FormBase.form_fields.omit('__name__')
+    form_fields = (FormBase._form_fields.omit('__name__')
                    + zope.formlib.form.FormFields(IDuplicateConfirmation))
     factory = zeit.content.author.author.Author
     next_view = 'view.html'
