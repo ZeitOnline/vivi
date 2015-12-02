@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Nov 11 16:09:13 2015\n"
-"PO-Revision-Date: 2015-11-11 16:12+0100\n"
+"POT-Creation-Date: Wed Dec  2 11:58:45 2015\n"
+"PO-Revision-Date: 2015-12-02 12:00+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -62,7 +62,7 @@ msgstr "Id"
 #: zeit/content/advertisement/interfaces.py:26
 #: zeit/content/article/edit/interfaces.py:122
 #: zeit/content/article/interfaces.py:138
-#: zeit/content/article/interfaces.py:220 zeit/content/author/interfaces.py:31
+#: zeit/content/article/interfaces.py:220 zeit/content/author/interfaces.py:33
 #: zeit/content/cp/interfaces.py:173 zeit/content/cp/interfaces.py:324
 #: zeit/content/cp/interfaces.py:493 zeit/content/gallery/interfaces.py:93
 #: zeit/content/infobox/interfaces.py:17 zeit/content/quiz/interfaces.py:64
@@ -470,7 +470,7 @@ msgstr "Bearbeiten"
 #: zeit/cms/repository/browser/folder.zcml:16
 #: zeit/cms/repository/browser/file.zcml:24
 #: zeit/content/article/browser/menu.py:25
-#: zeit/content/author/browser/form.py:38
+#: zeit/content/author/browser/form.py:80
 #: zeit/content/image/browser/configure.zcml:27
 #: zeit/content/rawxml/browser/configure.zcml:32
 #: zeit/content/text/browser/configure.zcml:24
@@ -491,7 +491,7 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:262 zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:335
-#: zeit/content/article/interfaces.py:136 zeit/content/author/author.py:61
+#: zeit/content/article/interfaces.py:136 zeit/content/author/author.py:74
 msgid "Author"
 msgstr "Autor"
 
@@ -808,7 +808,8 @@ msgstr "Automatisch platzieren"
 
 #: zeit/cms/content/browser/form.py:47 zeit/content/article/browser/form.py:34
 #: zeit/content/article/edit/browser/recension.py:64
-#: zeit/content/cp/browser/form.py:49 zeit/content/gallery/browser/form.py:35
+#: zeit/content/author/browser/form.py:30 zeit/content/cp/browser/form.py:49
+#: zeit/content/gallery/browser/form.py:35
 msgid "misc."
 msgstr "Sonstiges"
 
@@ -1773,7 +1774,7 @@ msgstr "Bild"
 
 #: zeit/content/advertisement/interfaces.py:43
 #: zeit/content/article/edit/interfaces.py:260
-#: zeit/content/article/interfaces.py:55 zeit/content/author/interfaces.py:65
+#: zeit/content/article/interfaces.py:55 zeit/content/author/interfaces.py:73
 #: zeit/content/cp/interfaces.py:337 zeit/content/cp/interfaces.py:888
 #: zeit/content/image/interfaces.py:311
 msgid "Drag an image group here"
@@ -2509,24 +2510,37 @@ msgstr "Genre"
 msgid "Header layout"
 msgstr "Seitenkopf"
 
-#: zeit/content/author/browser/form.py:103
+#: zeit/content/author/browser/form.py:146
 msgid "There were errors"
 msgstr "Fehler aufgetreten"
 
-#: zeit/content/author/browser/form.py:155
+#: zeit/content/author/browser/form.py:198
 msgid "edit author location"
 msgstr "Autor/Ort bearbeiten"
 
 #: zeit/content/author/browser/form.py:25
+msgid "Contact"
+msgstr "Kontakt"
+
+#: zeit/content/author/browser/form.py:32
+msgid "Author Articles"
+msgstr "Wichtige Artikel"
+
+#: zeit/content/author/browser/form.py:52
+#: zeit/content/author/interfaces.py:132
+msgid "Biography"
+msgstr "Kurzbio"
+
 #: zeit/content/author/browser/form.py:66
+#: zeit/content/author/browser/form.py:109
 msgid "Add author"
 msgstr "Autor hinzufügen"
 
-#: zeit/content/author/browser/form.py:32
+#: zeit/content/author/browser/form.py:73
 msgid "Edit author"
 msgstr "Autor bearbeiten"
 
-#: zeit/content/author/browser/form.py:51
+#: zeit/content/author/browser/form.py:94
 msgid ""
 "An author with the given name already exists. If you'd like to create "
 "another author with the same name anyway, check \"Add duplicate author\" and "
@@ -2540,63 +2554,87 @@ msgstr ""
 msgid "edit author biography"
 msgstr "Autor/Kurzbio bearbeiten"
 
-#: zeit/content/author/interfaces.py:17
+#: zeit/content/author/interfaces.py:124
+msgid "Location"
+msgstr "Ort"
+
+#: zeit/content/author/interfaces.py:18
 msgid "Code contains invalid characters"
 msgstr "Code enthält ungültige Zeichen"
 
-#: zeit/content/author/interfaces.py:32
+#: zeit/content/author/interfaces.py:34
 msgid "Firstname"
 msgstr "Vorname"
 
-#: zeit/content/author/interfaces.py:33
+#: zeit/content/author/interfaces.py:35
 msgid "Lastname"
 msgstr "Nachname"
 
-#: zeit/content/author/interfaces.py:34
+#: zeit/content/author/interfaces.py:37
+msgid "Summary"
+msgstr "Tagline"
+
+#: zeit/content/author/interfaces.py:38
+msgid "Author summary description"
+msgstr "XY ist Redakteur im Ressort Politik von ZEIT ONLINE"
+
+#: zeit/content/author/interfaces.py:40
 msgid "Email address"
 msgstr "E-Mail-Adresse"
 
-#: zeit/content/author/interfaces.py:36
+#: zeit/content/author/interfaces.py:41
+msgid "Twitter handle"
+msgstr "Twitter"
+
+#: zeit/content/author/interfaces.py:42
+msgid "Facebook handle"
+msgstr "Facebook"
+
+#: zeit/content/author/interfaces.py:44
+msgid "Instagram handle"
+msgstr "Instagram"
+
+#: zeit/content/author/interfaces.py:47
 msgid "VG-Wort ID"
 msgstr "VG-Wort-ID (vom Autor zu besorgen)"
 
-#: zeit/content/author/interfaces.py:42
+#: zeit/content/author/interfaces.py:52
 msgid "VG-Wort Code"
 msgstr "VG-Wort-Code (wurde früher verwendet)"
 
-#: zeit/content/author/interfaces.py:49
+#: zeit/content/author/interfaces.py:59
 msgid "Display name"
 msgstr "Pseudonym"
 
-#: zeit/content/author/interfaces.py:51
+#: zeit/content/author/interfaces.py:61
 msgid "Default: 'Firstname Lastname'"
 msgstr "Vorgabe: „Vorname Nachname“"
 
-#: zeit/content/author/interfaces.py:54
+#: zeit/content/author/interfaces.py:64
 msgid "Community-Profile URL"
 msgstr "Community-Profile URL"
 
-#: zeit/content/author/interfaces.py:57
+#: zeit/content/author/interfaces.py:66
 msgid "Redaktionszugehörigkeit"
 msgstr "Redaktionszugehörigkeit"
 
-#: zeit/content/author/interfaces.py:61
+#: zeit/content/author/interfaces.py:69
 msgid "External?"
 msgstr "externer Autor"
 
-#: zeit/content/author/interfaces.py:64
+#: zeit/content/author/interfaces.py:72
 #: zeit/content/image/browser/imagegroup.py:109
 #: zeit/content/image/browser/configure.zcml:217
 msgid "Image group"
 msgstr "Bildergruppe"
 
-#: zeit/content/author/interfaces.py:70 zeit/content/author/interfaces.py:85
-msgid "Biography"
+#: zeit/content/author/interfaces.py:78
+msgid "Short Biography"
 msgstr "Kurzbio"
 
-#: zeit/content/author/interfaces.py:77
-msgid "Location"
-msgstr "Ort"
+#: zeit/content/author/interfaces.py:83
+msgid "Favourite content"
+msgstr "Wichtige Artikel"
 
 #: zeit/content/cp/area.py:424
 msgid "Area"
@@ -3230,7 +3268,7 @@ msgstr ""
 "Achtung: »${name}« wird von dem Teaser »${teaser}« referenziert. Inhaltliche "
 "Änderungen sollten auch im Teaser nachgepflegt werden."
 
-#: zeit/content/dynamicfolder/folder.py:202
+#: zeit/content/dynamicfolder/folder.py:206
 msgid "Dynamic Folder"
 msgstr "Dynamischer Ordner"
 
@@ -3489,7 +3527,7 @@ msgstr ""
 "Die Aktion, die Sie ausführen wollten, konnte nicht beendet werden, weil die "
 "Resource keinen gültigen Inhalt hat."
 
-#: zeit/content/image/imagegroup.py:266
+#: zeit/content/image/imagegroup.py:272
 msgid "Image Group"
 msgstr "Bildergruppe"
 
