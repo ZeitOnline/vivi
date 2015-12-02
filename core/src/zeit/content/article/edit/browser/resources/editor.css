@@ -1905,6 +1905,14 @@
     margin-top: 0.5em;
 }
 
+/* XXX These margins must be larger than normal, maybe due to floats above? */
+.type-article #form-social .field.fieldname-is_instant_article {
+    margin-top: 2.5em;
+}
+.type-article #form-social .field.fieldname-is_amp {
+    margin-top: 1.5em;
+}
+
 .type-article #form-social .field.fieldname-twitter_ressort_enabled {
     margin-right: 0;
 }

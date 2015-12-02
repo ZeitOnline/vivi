@@ -60,7 +60,7 @@ class Article(zeit.cms.content.metadata.CommonMetadata):
         zeit.content.article.interfaces.IArticle,
         zeit.cms.interfaces.DOCUMENT_SCHEMA_NS,
         ('has_recensions', 'artbox_thema', 'layout', 'genre',
-         'template', 'header_layout'))
+         'template', 'header_layout', 'is_instant_article', 'is_amp'))
 
     @property
     def paragraphs(self):

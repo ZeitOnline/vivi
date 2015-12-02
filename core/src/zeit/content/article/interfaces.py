@@ -74,6 +74,16 @@ class IArticleMetadata(zeit.cms.content.interfaces.ICommonMetadata):
         source=zeit.content.article.source.ArticleHeaderSource(),
         required=False)
 
+    is_instant_article = zope.schema.Bool(
+        title=_('Is instant article'),
+        default=False,
+        required=False)
+
+    is_amp = zope.schema.Bool(
+        title=_('Is AMP'),
+        default=False,
+        required=False)
+
 
 class IArticle(IArticleMetadata, zeit.cms.content.interfaces.IXMLContent):
     """Article is the main content type in the Zeit CMS."""

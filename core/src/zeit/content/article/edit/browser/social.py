@@ -1,5 +1,6 @@
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.article.edit.browser.form import FormFields
+import zeit.content.article.interfaces
 import zeit.edit.browser.form
 import zeit.push.browser.form
 import zope.formlib.form
@@ -19,6 +20,12 @@ class Social(zeit.push.browser.form.SocialBase,
 
     FormFieldsFactory = FormFields
     form_fields = FormFieldsFactory()
+
+    def __init__(self, context, request):
+        super(Social, self).__init__(context, request)
+        self.form_fields += self.FormFieldsFactory(
+            zeit.content.article.interfaces.IArticle).select(
+                'is_instant_article', 'is_amp')
 
     @zope.formlib.form.action(
         _('Apply'), condition=zope.formlib.form.haveInputWidgets)
