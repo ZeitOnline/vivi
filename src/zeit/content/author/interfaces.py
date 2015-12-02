@@ -79,6 +79,14 @@ class IAuthor(zope.interface.Interface):
 
     bio_questions = zope.interface.Attribute('Our IBiographyQuestions dict')
 
+    favourite_content = zope.schema.Tuple(
+        title=_('Favourite content'),
+        default=(),
+        max_length=3,
+        required=False,
+        value_type=zope.schema.Choice(
+            source=zeit.cms.related.interfaces.relatableContentSource))
+
 
 class IBiographyQuestions(zope.interface.common.mapping.IMapping):
     """dict that maps a question id -> IQuestion
