@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Dec  2 11:58:45 2015\n"
+"POT-Creation-Date: Wed Dec  2 14:54:19 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -65,8 +65,8 @@ msgstr ""
 #: zeit/cms/syndication/interfaces.py:48
 #: zeit/content/advertisement/interfaces.py:26
 #: zeit/content/article/edit/interfaces.py:122
-#: zeit/content/article/interfaces.py:138
-#: zeit/content/article/interfaces.py:220
+#: zeit/content/article/interfaces.py:148
+#: zeit/content/article/interfaces.py:230
 #: zeit/content/author/interfaces.py:33
 #: zeit/content/cp/interfaces.py:173
 #: zeit/content/cp/interfaces.py:324
@@ -263,7 +263,7 @@ msgstr ""
 #: zeit/content/article/edit/browser/form.py:577
 #: zeit/content/article/edit/browser/form.py:611
 #: zeit/content/article/edit/browser/reference.py:42
-#: zeit/content/article/edit/browser/social.py:24
+#: zeit/content/article/edit/browser/social.py:31
 #: zeit/content/cp/browser/view.py:8
 #: zeit/content/cp/browser/blocks/teaser.edit-contents.pt:58
 #: zeit/content/gallery/browser/form.py:62
@@ -531,7 +531,7 @@ msgstr ""
 #: zeit/cms/browser/listing.py:262
 #: zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:335
-#: zeit/content/article/interfaces.py:136
+#: zeit/content/article/interfaces.py:146
 #: zeit/content/author/author.py:74
 msgid "Author"
 msgstr ""
@@ -835,7 +835,7 @@ msgstr ""
 
 #: zeit/cms/content/browser/form.py:34
 #: zeit/cms/content/interfaces.py:113
-#: zeit/content/article/interfaces.py:132
+#: zeit/content/article/interfaces.py:142
 msgid "Authors"
 msgstr ""
 
@@ -1122,7 +1122,7 @@ msgstr ""
 
 #: zeit/cms/content/interfaces.py:61
 #: zeit/cms/content/interfaces.py:640
-#: zeit/content/article/interfaces.py:173
+#: zeit/content/article/interfaces.py:183
 #: zeit/content/image/interfaces.py:43
 msgid "Year"
 msgstr ""
@@ -2111,7 +2111,7 @@ msgid "Book details"
 msgstr ""
 
 #: zeit/content/article/edit/browser/recension.py:60
-#: zeit/content/article/interfaces.py:165
+#: zeit/content/article/interfaces.py:175
 msgid "Publisher"
 msgstr ""
 
@@ -2124,7 +2124,7 @@ msgid "Edit book information"
 msgstr ""
 
 #: zeit/content/article/edit/browser/recension.py:80
-#: zeit/content/article/interfaces.py:189
+#: zeit/content/article/interfaces.py:199
 msgid "Raw data"
 msgstr ""
 
@@ -2186,12 +2186,12 @@ msgstr ""
 msgid "Reloading"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:10
+#: zeit/content/article/edit/browser/social.py:11
 #: zeit/push/browser/form.py:35
 msgid "Social media"
 msgstr ""
 
-#: zeit/content/article/edit/browser/social.py:18
+#: zeit/content/article/edit/browser/social.py:19
 msgid "edit social media"
 msgstr ""
 
@@ -2481,68 +2481,68 @@ msgstr ""
 msgid "Timeline"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:141
+#: zeit/content/article/interfaces.py:151
 msgid "Info"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:149
+#: zeit/content/article/interfaces.py:159
 msgid "ZEIT category"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:153
+#: zeit/content/article/interfaces.py:163
 msgid "Agelimit"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:157
+#: zeit/content/article/interfaces.py:167
 msgid "Original language"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:161
+#: zeit/content/article/interfaces.py:171
 msgid "Translator"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:169
+#: zeit/content/article/interfaces.py:179
 #. Default: "Location"
 msgid "book-location"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:177
+#: zeit/content/article/interfaces.py:187
 #: zeit/content/cp/interfaces.py:661
 msgid "Media type"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:181
+#: zeit/content/article/interfaces.py:191
 #: zeit/content/article/edit/browser/recension-list.pt:78
 msgid "Pages"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:185
+#: zeit/content/article/interfaces.py:195
 msgid "Price (EUR)"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:197
+#: zeit/content/article/interfaces.py:207
 msgid "Aggregate comments"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:198
+#: zeit/content/article/interfaces.py:208
 msgid "aggregate-comments-description"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:211
+#: zeit/content/article/interfaces.py:221
 msgid "Export to Tagesspiegel"
 msgstr ""
 
-#: zeit/content/article/interfaces.py:224
+#: zeit/content/article/interfaces.py:234
 msgid "Breaking news article"
-msgstr ""
-
-#: zeit/content/article/interfaces.py:236
-#: zeit/content/article/browser/configure.zcml:94
-msgid "Add breaking news"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:24
 msgid "Paragraphsamount"
+msgstr ""
+
+#: zeit/content/article/interfaces.py:246
+#: zeit/content/article/browser/configure.zcml:94
+msgid "Add breaking news"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:25
@@ -2558,12 +2558,20 @@ msgid "First related as box"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:49
-#: zeit/content/article/interfaces.py:145
+#: zeit/content/article/interfaces.py:155
 msgid "Genre"
 msgstr ""
 
 #: zeit/content/article/interfaces.py:73
 msgid "Header layout"
+msgstr ""
+
+#: zeit/content/article/interfaces.py:78
+msgid "Is instant article"
+msgstr ""
+
+#: zeit/content/article/interfaces.py:83
+msgid "Is AMP"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:146
