@@ -1,10 +1,13 @@
 zeit.content.author changes
 ===========================
 
-2.4.1 (unreleased)
+2.5.0 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Add properties ``twitter``, ``facebook``, ``instagram`` and ``bio_questions``
+  (ZON-2461).
+  * New config file: ``/data/author-biography-questions.xml``, for
+    ``zeit.content.author:biography-questions``
 
 
 2.4.0 (2015-08-27)

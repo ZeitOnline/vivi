@@ -1,12 +1,14 @@
+import pkg_resources
 import zeit.cms.testing
 import zeit.workflow.testing
 import zope.testing.doctest
 
 product_config = """
 <product-config zeit.content.author>
-    author-folder /foo/bar/authors
+  author-folder /foo/bar/authors
+  biography-questions file://{fixtures}/tests/biography-questions.xml
 </product-config>
-"""
+""".format(fixtures=pkg_resources.resource_filename(__name__, '.'))
 
 ZCML_LAYER = zeit.cms.testing.ZCMLLayer(
     'ftesting.zcml',

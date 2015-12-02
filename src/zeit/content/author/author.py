@@ -1,7 +1,9 @@
 from zeit.cms.content.property import ObjectPathProperty
 from zeit.cms.i18n import MessageFactory as _
 from zeit.content.author.interfaces import IAuthor
+import UserDict
 import grokcore.component as grok
+import lxml.objectify
 import zeit.cms.content.interfaces
 import zeit.cms.content.property
 import zeit.cms.content.reference
@@ -54,6 +56,10 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
             fulltext='%s %s' % (self.firstname, self.lastname),
             types=('author',))
         return bool(zeit.find.search.search(query).hits)
+
+    @property
+    def bio_questions(self):
+        return zeit.content.author.interfaces.IBiographyQuestions(self)
 
 
 class AuthorType(zeit.cms.type.XMLContentTypeDeclaration):
@@ -121,3 +127,59 @@ def references(context):
 def author_location(type_, adder):
     return zope.component.getUtility(
         zeit.cms.repository.interfaces.IRepository)
+
+
+class BiographyQuestions(
+        grok.Adapter,
+        UserDict.DictMixin,
+        zeit.cms.content.xmlsupport.Persistent):
+
+    grok.context(zeit.content.author.interfaces.IAuthor)
+    grok.implements(zeit.content.author.interfaces.IBiographyQuestions)
+
+    def __init__(self, context):
+        object.__setattr__(self, 'context', context)
+        object.__setattr__(self, 'xml', zope.security.proxy.getObject(
+            context.xml))
+        object.__setattr__(self, '__parent__', context)
+
+    def __getitem__(self, key):
+        node = self.xml.xpath('//question[@id="%s"]' % key)
+        return Question(
+            key, self.title(key), unicode(node[0]) if node else None)
+
+    def __setitem__(self, key, value):
+        node = self.xml.xpath('//question[@id="%s"]' % key)
+        if node:
+            self.xml.remove(node[0])
+        if value:
+            node = lxml.objectify.E.question(value, id=key)
+            lxml.objectify.deannotate(node[0], cleanup_namespaces=True)
+            self.xml.append(node)
+        super(BiographyQuestions, self).__setattr__('_p_changed', True)
+
+    def keys(self):
+        return list(zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(self))
+
+    def title(self, key):
+        return zeit.content.author.interfaces.BIOGRAPHY_QUESTIONS(
+            self).title(key)
+
+    # Attribute-style access to answers is meant only for zope.formlib.
+    # XXX Why does this work without an explicit security declaration?
+
+    def __getattr__(self, key):
+        return self.get(key).answer
+
+    def __setattr__(self, key, value):
+        self[key] = value
+
+
+class Question(object):
+
+    zope.interface.implements(zeit.content.author.interfaces.IQuestion)
+
+    def __init__(self, id, title, answer):
+        self.id = id
+        self.title = title
+        self.answer = answer
