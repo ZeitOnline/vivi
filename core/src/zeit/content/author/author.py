@@ -51,6 +51,9 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     image_group = zeit.cms.content.reference.SingleResource(
         '.image_group', 'image')
 
+    favourite_content = zeit.cms.content.reference.MultiResource(
+        '.favourites.reference', 'related')
+
     @property
     def exists(self):
         query = zeit.find.search.query(

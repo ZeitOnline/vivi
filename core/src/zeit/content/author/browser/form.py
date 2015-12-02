@@ -1,6 +1,5 @@
 # coding: utf8
 from zeit.cms.i18n import MessageFactory as _
-import copy
 import gocept.form.grouped
 import re
 import transaction
@@ -29,6 +28,10 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
             css_class='column-left'),
         gocept.form.grouped.RemainingFields(
             _("misc."), css_class='column-right'),
+        gocept.form.grouped.Fields(
+            _("Author Articles"),
+            ('favourite_content',),
+            css_class='full-width'),
     )
 
     def __init__(self, context, request):
