@@ -2582,10 +2582,6 @@ msgstr "Edit event"
 msgid "Quiz"
 msgstr ""
 
-#: zeit/content/cp/interfaces.py:48
-msgid "Snapshot (HP only)"
-msgstr ""
-
 #: zeit/content/cp/interfaces.py:497
 msgid "Link to"
 msgstr ""

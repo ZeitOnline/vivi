@@ -3061,10 +3061,6 @@ msgstr "Es ist keine valide Query angegeben."
 msgid "Header image"
 msgstr "Header-Bild"
 
-#: zeit/content/cp/interfaces.py:49
-msgid "Snapshot (HP only)"
-msgstr "Momentaufnahme (nur HP)"
-
 #: zeit/content/cp/interfaces.py:498
 msgid "Whether block can be removed by automation, e.g. AutoPilot"
 msgstr ""
