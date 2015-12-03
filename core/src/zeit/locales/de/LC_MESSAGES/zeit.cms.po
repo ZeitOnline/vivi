@@ -14,8 +14,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
-"POT-Creation-Date: Wed Dec  2 14:54:19 2015\n"
-"PO-Revision-Date: 2015-12-02 14:55+0100\n"
+"POT-Creation-Date: Thu Dec  3 13:21:35 2015\n"
+"PO-Revision-Date: 2015-12-03 13:22+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -491,7 +491,7 @@ msgstr "Es gibt keine Objekte in diesem Ordner."
 
 #: zeit/cms/browser/listing.py:262 zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:335
-#: zeit/content/article/interfaces.py:146 zeit/content/author/author.py:74
+#: zeit/content/article/interfaces.py:146 zeit/content/author/author.py:77
 msgid "Author"
 msgstr "Autor"
 
@@ -2531,11 +2531,11 @@ msgid "Contact"
 msgstr "Kontakt"
 
 #: zeit/content/author/browser/form.py:32
-msgid "Author Articles"
-msgstr "Wichtige Artikel"
+msgid "Author Favourites"
+msgstr "Schwerpunkte"
 
 #: zeit/content/author/browser/form.py:52
-#: zeit/content/author/interfaces.py:132
+#: zeit/content/author/interfaces.py:140
 msgid "Biography"
 msgstr "Kurzbio"
 
@@ -2562,7 +2562,7 @@ msgstr ""
 msgid "edit author biography"
 msgstr "Autor/Kurzbio bearbeiten"
 
-#: zeit/content/author/interfaces.py:124
+#: zeit/content/author/interfaces.py:132
 msgid "Location"
 msgstr "Ort"
 
@@ -2643,6 +2643,10 @@ msgstr "Kurzbio"
 #: zeit/content/author/interfaces.py:83
 msgid "Favourite content"
 msgstr "Wichtige Artikel"
+
+#: zeit/content/author/interfaces.py:91
+msgid "Favourite topics"
+msgstr "Schwerpunkte"
 
 #: zeit/content/cp/area.py:424
 msgid "Area"

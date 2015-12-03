@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Wed Dec  2 14:54:19 2015\n"
+"POT-Creation-Date: Thu Dec  3 13:21:35 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -532,7 +532,7 @@ msgstr ""
 #: zeit/cms/syndication/browser/feed.py:150
 #: zeit/content/article/edit/interfaces.py:335
 #: zeit/content/article/interfaces.py:146
-#: zeit/content/author/author.py:74
+#: zeit/content/author/author.py:77
 msgid "Author"
 msgstr ""
 
@@ -2587,11 +2587,11 @@ msgid "Contact"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:32
-msgid "Author Articles"
+msgid "Author Favourites"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:52
-#: zeit/content/author/interfaces.py:132
+#: zeit/content/author/interfaces.py:140
 msgid "Biography"
 msgstr ""
 
@@ -2612,7 +2612,7 @@ msgstr ""
 msgid "edit author biography"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:124
+#: zeit/content/author/interfaces.py:132
 msgid "Location"
 msgstr ""
 
@@ -2692,6 +2692,10 @@ msgstr ""
 
 #: zeit/content/author/interfaces.py:83
 msgid "Favourite content"
+msgstr ""
+
+#: zeit/content/author/interfaces.py:91
+msgid "Favourite topics"
 msgstr ""
 
 #: zeit/content/cp/area.py:424
