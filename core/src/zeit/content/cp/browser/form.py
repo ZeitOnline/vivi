@@ -19,7 +19,7 @@ class FormBase(object):
                 'keywords', 'push_news')
         + zope.formlib.form.FormFields(
             zeit.content.cp.interfaces.ICenterPage).select(
-            'type', 'header_image', 'snapshot', 'topiclink_title',
+            'type', 'header_image', 'topiclink_title',
             'topiclink_label_1', 'topiclink_url_1',
             'topiclink_label_2', 'topiclink_url_2',
             'topiclink_label_3', 'topiclink_url_3',
