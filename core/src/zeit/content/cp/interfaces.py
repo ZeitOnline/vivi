@@ -45,11 +45,6 @@ class ICenterPage(zeit.cms.content.interfaces.ICommonMetadata,
         required=False,
         source=zeit.content.image.interfaces.imageSource)
 
-    snapshot = zope.schema.Choice(
-        title=_('Snapshot (HP only)'),
-        required=False,
-        source=zeit.content.image.interfaces.imageSource)
-
     topiclink_title = zope.schema.TextLine(
         title=_('Name for topiclinks'),
         required=False)

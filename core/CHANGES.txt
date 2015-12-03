@@ -5,7 +5,7 @@ zeit.content.cp changes
 3.4.1 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Deprecate homepage snapshot image (ZON-2429).
 
 
 3.4.0 (2015-11-12)
