@@ -29,9 +29,12 @@ class FormBase(zeit.cms.browser.form.CharlimitMixin):
         gocept.form.grouped.RemainingFields(
             _("misc."), css_class='column-right'),
         gocept.form.grouped.Fields(
-            _("Author Articles"),
-            ('favourite_content',),
-            css_class='full-width'),
+            _("Author Favourites"),
+            ('favourite_content',
+             'topiclink_label_1', 'topiclink_url_1',
+             'topiclink_label_2', 'topiclink_url_2',
+             'topiclink_label_3', 'topiclink_url_3'),
+            css_class='wide-widgets column-left'),
     )
 
     def __init__(self, context, request):
