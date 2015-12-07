@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Development/Unknown\n"
 "POT-Creation-Date: Mon Dec  7 12:32:38 2015\n"
-"PO-Revision-Date: 2015-12-07 12:37+0100\n"
+"PO-Revision-Date: 2015-12-07 12:38+0100\n"
 "Last-Translator: Wolfgang Schnerring <wolfgang.schnerring@zeit.de>\n"
 "Language-Team: \n"
 "Language: de\n"
@@ -2592,7 +2592,7 @@ msgstr "Nachname"
 
 #: zeit/content/author/interfaces.py:37
 msgid "Summary"
-msgstr "Tagline"
+msgstr "Berufsbezeichnung"
 
 #: zeit/content/author/interfaces.py:38
 msgid "Author summary description"
