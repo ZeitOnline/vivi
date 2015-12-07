@@ -1,7 +1,7 @@
 zeit.locales CHANGES
 ====================
 
-2.0.57 (unreleased)
+2.0.57 (2015-12-07)
 +++++++++++++++++++
 
 - Übersetzungen aktualisiert
