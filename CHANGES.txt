@@ -5,7 +5,8 @@ zeit.content.author changes
 ------------------
 
 - Add properties ``twitter``, ``facebook``, ``instagram``, ``summary``,
-  ``favourite_content``, and ``bio_questions`` (ZON-2461).
+  ``favourite_content``, ``topiclink_label_1`` / ``topiclink_url_1`` 1 to 3,
+  and ``bio_questions`` (ZON-2461).
   * New config file: ``/data/author-biography-questions.xml``, for
     ``zeit.content.author:biography-questions``
 

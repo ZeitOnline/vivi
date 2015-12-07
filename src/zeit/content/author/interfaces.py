@@ -87,6 +87,30 @@ class IAuthor(zope.interface.Interface):
         value_type=zope.schema.Choice(
             source=zeit.cms.related.interfaces.relatableContentSource))
 
+    topiclink_label_1 = zope.schema.TextLine(
+        title=_('Label for favourite topic #1'),
+        required=False)
+
+    topiclink_label_2 = zope.schema.TextLine(
+        title=_('Label for favourite topic #2'),
+        required=False)
+
+    topiclink_label_3 = zope.schema.TextLine(
+        title=_('Label for favourite topic #3'),
+        required=False)
+
+    topiclink_url_1 = zope.schema.TextLine(
+        title=_('URL for favourite topic #1'),
+        required=False)
+
+    topiclink_url_2 = zope.schema.TextLine(
+        title=_('URL for favourite topic #2'),
+        required=False)
+
+    topiclink_url_3 = zope.schema.TextLine(
+        title=_('URL for favourite topic #3'),
+        required=False)
+
 
 class IBiographyQuestions(zope.interface.common.mapping.IMapping):
     """dict that maps a question id -> IQuestion
