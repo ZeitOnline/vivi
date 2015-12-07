@@ -1,7 +1,7 @@
 zeit.content.author changes
 ===========================
 
-2.5.0 (unreleased)
+2.5.0 (2015-12-07)
 ------------------
 
 - Add properties ``twitter``, ``facebook``, ``instagram``, ``summary``,
