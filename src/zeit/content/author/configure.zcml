@@ -30,6 +30,15 @@
       permission="zeit.EditContent" />
   </class>
 
+  <class class=".author.BiographyQuestions">
+    <require
+      interface="zope.interface.common.mapping.IEnumerableMapping"
+      permission="zope.View" />
+    <require
+      interface="zope.interface.common.mapping.IWriteMapping"
+      permission="zeit.EditContent" />
+  </class>
+
   <adapter
     factory=".reference.XMLReferenceUpdater"
     name="zeit.content.author"
