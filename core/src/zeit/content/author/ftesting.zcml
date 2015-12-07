@@ -9,8 +9,6 @@
 
   <include package="zeit.content.author" />
   <include package="zeit.content.author.browser" />
-
   <include package="zeit.content.image" file="ftesting.zcml" />
-  <include package="zeit.content.cp" file="ftesting.zcml" />
 
 </configure>

@@ -4,8 +4,6 @@ import re
 import zc.sourcefactory.source
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
-import zeit.cms.related.interfaces
-import zeit.content.cp.interfaces
 import zeit.content.image.interfaces
 import zope.interface
 import zope.schema
@@ -88,14 +86,6 @@ class IAuthor(zope.interface.Interface):
         required=False,
         value_type=zope.schema.Choice(
             source=zeit.cms.related.interfaces.relatableContentSource))
-
-    favourite_topics = zope.schema.Tuple(
-        title=_('Favourite topics'),
-        default=(),
-        max_length=3,
-        required=False,
-        value_type=zope.schema.Choice(
-            source=zeit.content.cp.interfaces.centerPageSource))
 
 
 class IBiographyQuestions(zope.interface.common.mapping.IMapping):
