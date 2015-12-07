@@ -54,9 +54,6 @@ class Author(zeit.cms.content.xmlsupport.XMLContentBase):
     favourite_content = zeit.cms.content.reference.MultiResource(
         '.favourites.reference', 'related')
 
-    favourite_topics = zeit.cms.content.reference.MultiResource(
-        '.topics.reference', 'related')
-
     @property
     def exists(self):
         query = zeit.find.search.query(
