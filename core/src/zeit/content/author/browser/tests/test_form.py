@@ -13,7 +13,7 @@ class PropertyMock(mock.Mock):
 
 class FormTest(zeit.cms.testing.BrowserTestCase):
 
-    layer = zeit.content.author.testing.ZCMLLayer
+    layer = zeit.content.author.testing.ZCML_LAYER
 
     def setUp(self):
         super(FormTest, self).setUp()
@@ -172,3 +172,16 @@ class FormTest(zeit.cms.testing.BrowserTestCase):
         self.add_william()
         self.assertEllipsis(
             '...Code contains invalid characters...', b.contents)
+
+    def test_stores_biography_questions(self):
+        b = self.browser
+        self.open('/repository/online/2007/01')
+        menu = b.getControl(name='add_menu')
+        menu.displayValue = ['Author']
+        b.open(menu.value[0])
+        b.getControl('File name').value = 'william_shakespeare'
+        self.add_william()
+        b.getControl('Das treibt mich an').value = 'answer'
+        b.getControl('Apply').click()
+        self.assertEllipsis('...Updated on...', b.contents)
+        self.assertEqual('answer', b.getControl('Das treibt mich an').value)
