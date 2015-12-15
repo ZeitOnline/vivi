@@ -214,8 +214,7 @@ def local_dynamic_folder_factory(context):
     local.uniqueId = context.uniqueId
     local.__name__ = context.__name__
     zeit.connector.interfaces.IWebDAVWriteProperties(local).update(
-        zeit.connector.interfaces.IWebDAVReadProperties(
-            zope.security.proxy.getObject(context)))
+        zeit.connector.interfaces.IWebDAVReadProperties(context))
     return local
 
 
