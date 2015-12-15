@@ -90,15 +90,10 @@ class TestDynamicFolder(
         self.folder = self.repository['dynamicfolder']
 
     def test_checkin_virtual_content_materializes_it(self):
-        # Fill cached values, since they must not interfere with ZODB/pickling.
-        self.folder.content_template
-        self.folder.virtual_content
-
         self.assertEqual('Xanten', self.folder['xanten'].title)
-        with mock.patch('zeit.find.search.search'):
-            with checked_out(self.folder['xanten']) as co:
-                co.title = 'foo'
-            self.assertEqual('foo', self.folder['xanten'].title)
+        with checked_out(self.folder['xanten']) as co:
+            co.title = 'foo'
+        self.assertEqual('foo', self.folder['xanten'].title)
 
     def test_unconfigured_folder_does_not_break_due_to_missing_config(self):
         from ..folder import RepositoryDynamicFolder
