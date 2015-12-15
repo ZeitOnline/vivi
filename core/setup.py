@@ -25,6 +25,7 @@ setup(
         'zeit.connector',
         'zeit.content.cp',
         'zeit.content.rawxml',
+        'zeit.seo',  # testing only
         'zope.app.locking',
         'zope.component',
         'zope.container',

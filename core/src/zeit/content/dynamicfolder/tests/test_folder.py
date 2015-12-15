@@ -161,6 +161,20 @@ class TestDynamicFolder(
     def test_converts_xml_attribute_nodes_into_dav_properties(self):
         self.assertEqual('Deutschland', self.folder['xanten'].ressort)
 
+    def test_checkout_preserves_dav_properties_from_xml(self):
+        # We need a DAV property that is handled by a separate adapter to see
+        # the effect, since direct DAV properties are directly copied to XML,
+        # so for those it makes no difference if e.g. VirtualProperties were
+        # still used for checked-out IVirtualContent, which they should not be.
+        self.assertEqual('seo-title', zeit.seo.interfaces.ISEO(
+            self.folder['xanten']).html_title)
+        with checked_out(self.folder['xanten']) as co:
+            self.assertEqual(
+                'seo-title', zeit.seo.interfaces.ISEO(co).html_title)
+            zeit.seo.interfaces.ISEO(co).html_title = 'changed'
+        self.assertEqual('changed', zeit.seo.interfaces.ISEO(
+            self.folder['xanten']).html_title)
+
     def assert_published(self, content):
         info = zeit.cms.workflow.interfaces.IPublishInfo(content)
         self.assertTrue(info.published, '%s not published' % content.uniqueId)

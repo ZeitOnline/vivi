@@ -10,6 +10,8 @@
   <include package="zeit.content.cp" />
   <include package="zeit.content.rawxml" />
 
+  <include package="zeit.seo" file="ftesting.zcml" />
+
   <include package="zeit.content.dynamicfolder" />
   <include package="zeit.content.dynamicfolder.browser" />
 

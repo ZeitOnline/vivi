@@ -5,7 +5,8 @@ zeit.content.dynamicfolder changes
 1.1.3 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Correctly combine parsing DAV properties from the XML template and
+  materializing virtual content via checkout (BUG-325).
 
 
 1.1.2 (2015-11-24)

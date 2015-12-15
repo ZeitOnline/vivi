@@ -221,15 +221,25 @@ def local_dynamic_folder_factory(context):
 @grok.adapter(zeit.content.dynamicfolder.interfaces.IVirtualContent)
 @grok.implementer(zeit.cms.checkout.interfaces.ILocalContent)
 def virtual_local_content(context):
-    # We cannot use IRepository.getCopyOf() to produce a copy of
-    # IVirtualContent, so we need to do it ourselves.
-    # Note: Our return value must not be security-wrapped (with getCopyOf()
+    # We cannot use IRepository.getCopyOf() (like
+    # zeit.cms.repository.checkout.default_local_content_adapter does) to
+    # produce a copy of IVirtualContent, so we need to do it ourselves.
+    # (Note: Our return value must not be security-wrapped; with getCopyOf()
     # that works out automatically).
     content = copy.copy(zope.security.proxy.getObject(context))
+    repository_properties = zeit.connector.interfaces.IWebDAVReadProperties(
+        context)
+
     zope.interface.alsoProvides(
         content, zeit.cms.workingcopy.interfaces.ILocalContent)
     zope.interface.noLongerProvides(
         content, zeit.cms.repository.interfaces.IRepositoryContent)
+
+    zope.interface.noLongerProvides(
+        content, zeit.content.dynamicfolder.interfaces.IVirtualContent)
+    new_properties = zeit.connector.interfaces.IWebDAVWriteProperties(content)
+    new_properties.update(repository_properties)
+
     return content
 
 
