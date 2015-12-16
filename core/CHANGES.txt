@@ -4,7 +4,7 @@ zeit.content.article changes
 3.12.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Set instant_article default to true (ZON-2476).
 
 
 3.12.0 (2015-12-02)
