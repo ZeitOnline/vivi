@@ -26,6 +26,7 @@ class PushMessages(zeit.cms.content.dav.DAVPropertiesAdapter):
     zeit.cms.content.dav.mapProperties(
         zeit.push.interfaces.IPushMessages,
         zeit.workflow.interfaces.WORKFLOW_NS,
+        # BBB long_text now in message_config for individual facebook accounts
         ('long_text', 'short_text'))
 
     zeit.cms.content.dav.mapProperties(

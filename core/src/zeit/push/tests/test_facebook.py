@@ -1,10 +1,12 @@
 # coding: utf-8
+from zeit.cms.testcontenttype.testcontenttype import TestContentType
 import fb
 import gocept.testing.assertion
 import time
 import unittest
 import zeit.push.facebook
 import zeit.push.testing
+import zope.component
 
 
 class FacebookTest(zeit.push.testing.TestCase,
@@ -66,3 +68,29 @@ class FacebookAccountsTest(zeit.push.testing.TestCase):
         self.assertEqual(
             ['fb-magazin'],
             list(zeit.push.facebook.facebookAccountSource(None)))
+
+
+class FacebookMessageTest(zeit.push.testing.TestCase):
+
+    def test_uses_facebook_override_text(self):
+        content = TestContentType()
+        self.repository['foo'] = content
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.message_config = [{
+            'type': 'facebook', 'enabled': True, 'account': 'fb-test',
+            'override_text': 'facebook'}]
+        message = zope.component.getAdapter(
+            content, zeit.push.interfaces.IMessage, name='facebook')
+        # XXX This API is a bit unwieldy
+        # (see zeit.push.workflow.PushMessages._create_message)
+        message.config = push.message_config[0]
+        self.assertEqual('facebook', message.text)
+
+    def test_uses_long_text_as_bbb_for_facebook_override_text(self):
+        content = TestContentType()
+        self.repository['foo'] = content
+        push = zeit.push.interfaces.IPushMessages(content)
+        push.long_text = 'facebook'
+        message = zope.component.getAdapter(
+            content, zeit.push.interfaces.IMessage, name='facebook')
+        self.assertEqual('facebook', message.text)
