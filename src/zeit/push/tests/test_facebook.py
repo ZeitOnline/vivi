@@ -5,6 +5,7 @@ import gocept.testing.assertion
 import time
 import unittest
 import zeit.push.facebook
+import zeit.push.interfaces
 import zeit.push.testing
 import zope.component
 
@@ -67,7 +68,7 @@ class FacebookAccountsTest(zeit.push.testing.TestCase):
     def test_main_account_is_excluded_from_source(self):
         self.assertEqual(
             ['fb-magazin'],
-            list(zeit.push.facebook.facebookAccountSource(None)))
+            list(zeit.push.interfaces.facebookAccountSource(None)))
 
 
 class FacebookMessageTest(zeit.push.testing.TestCase):

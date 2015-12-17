@@ -5,17 +5,6 @@
   xmlns:z3c="http://namespaces.zope.org/z3c"
   i18n_domain="zeit.cms">
 
-  <class class=".form.Accounts">
-    <require
-      interface=".form.IAccounts"
-      permission="zope.View"
-      />
-    <require
-      set_schema=".form.IAccounts"
-      permission="zeit.EditContent"
-      />
-  </class>
-
   <!-- for testing only, not used in actual UI -->
   <browser:page
     for="zeit.cms.content.interfaces.ICommonMetadata"

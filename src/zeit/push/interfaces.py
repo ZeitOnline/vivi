@@ -1,4 +1,7 @@
 from zeit.cms.i18n import MessageFactory as _
+import xml.sax.saxutils
+import zc.sourcefactory.source
+import zeit.cms.content.sources
 import zope.interface
 import zope.schema
 
@@ -94,3 +97,106 @@ class IPushURL(zope.interface.Interface):
     provides an extension point for special treatments of certain content
     types, e.g. zeit.content.link objects.
     """
+
+
+class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.push'
+    config_url = 'twitter-accounts'
+    attribute = 'name'
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        @property
+        def MAIN_ACCOUNT(self):
+            return self.factory.main_account()
+
+    @classmethod
+    def main_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            cls.product_configuration)
+        return config['twitter-main-account']
+
+    def isAvailable(self, node, context):
+        return (super(TwitterAccountSource, self).isAvailable(node, context)
+                and node.get('name') != self.main_account())
+
+    def access_token(self, value):
+        tree = self._get_tree()
+        nodes = tree.xpath('%s[@%s= %s]' % (
+                           self.title_xpath,
+                           self.attribute,
+                           xml.sax.saxutils.quoteattr(value)))
+        if not nodes:
+            return (None, None)
+        node = nodes[0]
+        return (node.get('token'), node.get('secret'))
+
+twitterAccountSource = TwitterAccountSource()
+
+
+class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
+
+    product_configuration = 'zeit.push'
+    config_url = 'facebook-accounts'
+    attribute = 'name'
+
+    class source_class(zc.sourcefactory.source.FactoredContextualSource):
+
+        @property
+        def MAIN_ACCOUNT(self):
+            return self.factory.main_account()
+
+        @property
+        def MAGAZIN_ACCOUNT(self):
+            return self.factory.magazin_account()
+
+    @classmethod
+    def main_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            cls.product_configuration)
+        return config['facebook-main-account']
+
+    @classmethod
+    def magazin_account(cls):
+        config = zope.app.appsetup.product.getProductConfiguration(
+            cls.product_configuration)
+        return config['facebook-magazin-account']
+
+    def isAvailable(self, node, context):
+        return (super(FacebookAccountSource, self).isAvailable(node, context)
+                and node.get('name') != self.main_account())
+
+    def access_token(self, value):
+        tree = self._get_tree()
+        nodes = tree.xpath('%s[@%s= %s]' % (
+                           self.title_xpath,
+                           self.attribute,
+                           xml.sax.saxutils.quoteattr(value)))
+        if not nodes:
+            return (None, None)
+        node = nodes[0]
+        return node.get('token')
+
+facebookAccountSource = FacebookAccountSource()
+
+
+class IAccountData(zope.interface.Interface):
+    """Convenicence acess to IPushMessages.message_config entries"""
+
+    facebook_main_enabled = zope.schema.Bool(title=_('Enable Facebook'))
+    facebook_main_text = zope.schema.Text(
+        title=_('Facebook Main Text'), required=False)
+    facebook_magazin_enabled = zope.schema.Bool(
+        title=_('Enable Facebook Magazin'))
+    facebook_magazin_text = zope.schema.Text(
+        title=_('Facebook Magazin Text'), required=False)
+    twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
+    twitter_ressort_enabled = zope.schema.Bool(
+        title=_('Enable Twitter Ressort'))
+    twitter_ressort = zope.schema.Choice(
+        title=_('Additional Twitter'),
+        source=twitterAccountSource,
+        required=False)
+    mobile_text = zope.schema.TextLine(title=_('Mobile title'), required=False)
+    mobile_enabled = zope.schema.Bool(title=_('Enable mobile push'))

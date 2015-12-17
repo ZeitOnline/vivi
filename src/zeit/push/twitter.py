@@ -49,42 +49,6 @@ def from_product_config():
         config['twitter-application-id'], config['twitter-application-secret'])
 
 
-class TwitterAccountSource(zeit.cms.content.sources.XMLSource):
-
-    product_configuration = 'zeit.push'
-    config_url = 'twitter-accounts'
-    attribute = 'name'
-
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        @property
-        def MAIN_ACCOUNT(self):
-            return self.factory.main_account()
-
-    @classmethod
-    def main_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
-        return config['twitter-main-account']
-
-    def isAvailable(self, node, context):
-        return (super(TwitterAccountSource, self).isAvailable(node, context)
-                and node.get('name') != self.main_account())
-
-    def access_token(self, value):
-        tree = self._get_tree()
-        nodes = tree.xpath('%s[@%s= %s]' % (
-                           self.title_xpath,
-                           self.attribute,
-                           xml.sax.saxutils.quoteattr(value)))
-        if not nodes:
-            return (None, None)
-        node = nodes[0]
-        return (node.get('token'), node.get('secret'))
-
-twitterAccountSource = TwitterAccountSource()
-
-
 class Message(zeit.push.message.Message):
 
     grok.name('twitter')
