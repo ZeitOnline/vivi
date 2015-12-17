@@ -86,6 +86,7 @@ class Add(zeit.cms.browser.form.AddForm,
         if data.pop('social', False):
             message_config.append(
                 {'type': 'facebook', 'enabled': True,
+                 'override_text': data['title'],
                  'account': zeit.push.facebook.facebookAccountSource(
                      self.context).MAIN_ACCOUNT})
             message_config.append(
@@ -101,8 +102,7 @@ class Add(zeit.cms.browser.form.AddForm,
         article.volume = settings.default_volume
 
         push = zeit.push.interfaces.IPushMessages(article)
-        push.short_text = article.title
-        push.long_text = article.title
+        push.short_text = data['title']
         push.message_config = message_config
 
         body = IEditableBody(article)
