@@ -14,7 +14,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Meaningless\n"
-"POT-Creation-Date: Mon Dec  7 12:35:37 2015\n"
+"POT-Creation-Date: Thu Dec 17 09:10:47 2015\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Zope 3 Developers <zope-dev@zope.org>\n"
@@ -67,7 +67,7 @@ msgstr ""
 #: zeit/content/article/edit/interfaces.py:122
 #: zeit/content/article/interfaces.py:148
 #: zeit/content/article/interfaces.py:230
-#: zeit/content/author/interfaces.py:33
+#: zeit/content/author/interfaces.py:34
 #: zeit/content/cp/interfaces.py:168
 #: zeit/content/cp/interfaces.py:319
 #: zeit/content/cp/interfaces.py:488
@@ -274,7 +274,7 @@ msgstr ""
 #: zeit/content/quiz/browser/quiz.py:77
 #: zeit/edit/browser/form.py:60
 #: zeit/edit/browser/view.py:138
-#: zeit/push/browser/form.py:231
+#: zeit/push/browser/form.py:266
 msgid "Apply"
 msgstr ""
 
@@ -1814,7 +1814,7 @@ msgstr ""
 #: zeit/content/advertisement/interfaces.py:43
 #: zeit/content/article/edit/interfaces.py:260
 #: zeit/content/article/interfaces.py:55
-#: zeit/content/author/interfaces.py:73
+#: zeit/content/author/interfaces.py:74
 #: zeit/content/cp/interfaces.py:332
 #: zeit/content/cp/interfaces.py:883
 #: zeit/content/image/interfaces.py:311
@@ -2187,7 +2187,7 @@ msgid "Reloading"
 msgstr ""
 
 #: zeit/content/article/edit/browser/social.py:11
-#: zeit/push/browser/form.py:35
+#: zeit/push/browser/form.py:39
 msgid "Social media"
 msgstr ""
 
@@ -2591,7 +2591,7 @@ msgid "Author Favourites"
 msgstr ""
 
 #: zeit/content/author/browser/form.py:55
-#: zeit/content/author/interfaces.py:156
+#: zeit/content/author/interfaces.py:157
 msgid "Biography"
 msgstr ""
 
@@ -2612,110 +2612,110 @@ msgstr ""
 msgid "edit author biography"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:103
+#: zeit/content/author/interfaces.py:100
+msgid "Label for favourite topic #3"
+msgstr ""
+
+#: zeit/content/author/interfaces.py:104
 msgid "URL for favourite topic #1"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:107
+#: zeit/content/author/interfaces.py:108
 msgid "URL for favourite topic #2"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:111
+#: zeit/content/author/interfaces.py:112
 msgid "URL for favourite topic #3"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:148
+#: zeit/content/author/interfaces.py:149
 msgid "Location"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:18
+#: zeit/content/author/interfaces.py:19
 msgid "Code contains invalid characters"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:34
+#: zeit/content/author/interfaces.py:35
 msgid "Firstname"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:35
+#: zeit/content/author/interfaces.py:36
 msgid "Lastname"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:37
+#: zeit/content/author/interfaces.py:38
 msgid "Summary"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:38
+#: zeit/content/author/interfaces.py:39
 msgid "Author summary description"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:40
+#: zeit/content/author/interfaces.py:41
 msgid "Email address"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:41
+#: zeit/content/author/interfaces.py:42
 msgid "Twitter handle"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:42
+#: zeit/content/author/interfaces.py:43
 msgid "Facebook handle"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:44
+#: zeit/content/author/interfaces.py:45
 msgid "Instagram handle"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:47
+#: zeit/content/author/interfaces.py:48
 msgid "VG-Wort ID"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:52
+#: zeit/content/author/interfaces.py:53
 msgid "VG-Wort Code"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:59
+#: zeit/content/author/interfaces.py:60
 msgid "Display name"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:61
+#: zeit/content/author/interfaces.py:62
 msgid "Default: 'Firstname Lastname'"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:64
+#: zeit/content/author/interfaces.py:65
 msgid "Community-Profile URL"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:66
+#: zeit/content/author/interfaces.py:67
 msgid "Redaktionszugeh\303\266rigkeit"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:69
+#: zeit/content/author/interfaces.py:70
 msgid "External?"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:72
+#: zeit/content/author/interfaces.py:73
 #: zeit/content/image/browser/imagegroup.py:109
 #: zeit/content/image/browser/configure.zcml:217
 msgid "Image group"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:78
+#: zeit/content/author/interfaces.py:79
 msgid "Short Biography"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:83
+#: zeit/content/author/interfaces.py:84
 msgid "Favourite content"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:91
+#: zeit/content/author/interfaces.py:92
 msgid "Label for favourite topic #1"
 msgstr ""
 
-#: zeit/content/author/interfaces.py:95
+#: zeit/content/author/interfaces.py:96
 msgid "Label for favourite topic #2"
-msgstr ""
-
-#: zeit/content/author/interfaces.py:99
-msgid "Label for favourite topic #3"
 msgstr ""
 
 #: zeit/content/cp/area.py:424
@@ -4261,26 +4261,34 @@ msgid "Enable Facebook"
 msgstr ""
 
 #: zeit/push/browser/form.py:18
+msgid "Facebook Main Text"
+msgstr ""
+
+#: zeit/push/browser/form.py:20
 msgid "Enable Facebook Magazin"
 msgstr ""
 
-#: zeit/push/browser/form.py:19
-msgid "Enable Twitter"
-msgstr ""
-
-#: zeit/push/browser/form.py:21
-msgid "Enable Twitter Ressort"
+#: zeit/push/browser/form.py:22
+msgid "Facebook Magazin Text"
 msgstr ""
 
 #: zeit/push/browser/form.py:23
-msgid "Additional Twitter"
+msgid "Enable Twitter"
 msgstr ""
 
-#: zeit/push/browser/form.py:26
-msgid "Mobile title"
+#: zeit/push/browser/form.py:25
+msgid "Enable Twitter Ressort"
 msgstr ""
 
 #: zeit/push/browser/form.py:27
+msgid "Additional Twitter"
+msgstr ""
+
+#: zeit/push/browser/form.py:30
+msgid "Mobile title"
+msgstr ""
+
+#: zeit/push/browser/form.py:31
 msgid "Enable mobile push"
 msgstr ""
 
@@ -4288,11 +4296,11 @@ msgstr ""
 msgid "Last push"
 msgstr ""
 
-#: zeit/push/interfaces.py:55
+#: zeit/push/interfaces.py:57
 msgid "Long push text"
 msgstr ""
 
-#: zeit/push/interfaces.py:57
+#: zeit/push/interfaces.py:59
 msgid "Short push text"
 msgstr ""
 
