@@ -20,6 +20,17 @@
       />
   </class>
 
+  <class class=".message.AccountData">
+    <require
+      interface=".interfaces.IAccountData"
+      permission="zope.View"
+      />
+    <require
+      set_schema=".interfaces.IAccountData"
+      permission="zeit.EditContent"
+      />
+  </class>
+
   <browser:page
     for="*"
     name="breaking-banner-retract"

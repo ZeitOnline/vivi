@@ -2,6 +2,7 @@
 import gocept.testing.assertion
 import time
 import tweepy
+import zeit.push.interfaces
 import zeit.push.testing
 import zeit.push.twitter
 
@@ -67,4 +68,4 @@ class TwitterAccountsTest(zeit.push.testing.TestCase):
     def test_main_account_is_excluded_from_source(self):
         self.assertEqual(
             ['twitter_ressort_wissen', 'twitter_ressort_politik'],
-            list(zeit.push.twitter.twitterAccountSource(None)))
+            list(zeit.push.interfaces.twitterAccountSource(None)))

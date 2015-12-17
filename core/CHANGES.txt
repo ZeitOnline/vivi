@@ -7,6 +7,8 @@ zeit.push changes
 - Store facebook texts per account in ``message_config`` instead of combined in
   ``long_text`` (ZON-2397).
 
+- Make ``IAccountData`` helper available in domain, not just browser.
+
 
 1.10.0 (2015-10-30)
 -------------------

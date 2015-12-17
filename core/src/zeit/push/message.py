@@ -58,3 +58,140 @@ class Message(grok.Adapter):
 @grok.implementer(zeit.push.interfaces.IPushURL)
 def default_push_url(context):
     return context.uniqueId
+
+
+class AccountData(grok.Adapter):
+
+    grok.context(zeit.cms.interfaces.ICMSContent)
+    grok.implements(zeit.push.interfaces.IAccountData)
+
+    def __init__(self, context):
+        super(AccountData, self).__init__(context)
+        self.__parent__ = context  # make security work
+
+    @property
+    def message_config(self):
+        return zeit.push.interfaces.IPushMessages(
+            self.context).message_config
+
+    @property
+    def facebook_main_enabled(self):
+        service = self._get_service('facebook', main=True)
+        return service and service['enabled']
+
+    @property
+    def facebook_main_text(self):
+        service = self._get_service('facebook', main=True)
+        result = service and service.get('override_text')
+        if not result:  # BBB
+            push = zeit.push.interfaces.IPushMessages(self.context)
+            result = push.long_text
+        return result
+
+    @property
+    def facebook_magazin_enabled(self):
+        service = self._get_service('facebook', main=False)
+        return service and service['enabled']
+
+    @property
+    def facebook_magazin_text(self):
+        service = self._get_service('facebook', main=False)
+        result = service and service.get('override_text')
+        if not result:  # BBB
+            push = zeit.push.interfaces.IPushMessages(self.context)
+            result = push.long_text
+        return result
+
+    @property
+    def twitter_main_enabled(self):
+        service = self._get_service('twitter', main=True)
+        return service and service['enabled']
+
+    @property
+    def twitter_ressort(self):
+        service = self._get_service('twitter', main=False)
+        return service and service['account']
+
+    @property
+    def twitter_ressort_enabled(self):
+        service = self._get_service('twitter', main=False)
+        return service and service['enabled']
+
+    @property
+    def mobile_enabled(self):
+        for service in self.message_config:
+            if service['type'] != 'parse':
+                continue
+            if service.get(
+                    'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
+                break
+        else:
+            service = None
+        return service and service['enabled']
+
+    @property
+    def mobile_text(self):
+        for service in self.message_config:
+            if service['type'] != 'parse':
+                continue
+            if service.get(
+                    'channels') == zeit.push.interfaces.PARSE_NEWS_CHANNEL:
+                break
+        else:
+            service = None
+        return service and service.get('override_text')
+
+    def _get_service(self, type_, main=True):
+        source = {
+            'twitter': zeit.push.interfaces.twitterAccountSource,
+            'facebook': zeit.push.interfaces.facebookAccountSource,
+        }[type_](None)
+
+        for service in self.message_config:
+            if service['type'] != type_:
+                continue
+            account = service.get('account')
+            is_main = (account == source.MAIN_ACCOUNT)
+            if is_main == main:
+                return service
+        return None
+
+    # Writing happens all services at once in the form, so we don't need to
+    # worry about identifying entries in message_config (which would be quite
+    # cumbersome).
+
+    @facebook_main_enabled.setter
+    def facebook_main_enabled(self, value):
+        pass
+
+    @facebook_main_text.setter
+    def facebook_main_text(self, value):
+        pass
+
+    @facebook_magazin_enabled.setter
+    def facebook_magazin_enabled(self, value):
+        pass
+
+    @facebook_magazin_text.setter
+    def facebook_magazin_text(self, value):
+        pass
+
+    @twitter_main_enabled.setter
+    def twitter_main_enabled(self, value):
+        pass
+
+    @twitter_ressort.setter
+    def twitter_ressort(self, value):
+        pass
+
+    @twitter_ressort_enabled.setter
+    def twitter_ressort_enabled(self, value):
+        pass
+
+    @mobile_enabled.setter
+    def mobile_enabled(self, value):
+        pass
+
+    @mobile_text.setter
+    def mobile_text(self, value):
+        pass

@@ -1,4 +1,5 @@
 # coding: utf-8
+from zeit.push.interfaces import facebookAccountSource
 import argparse
 import fb
 import grokcore.component as grok
@@ -6,9 +7,6 @@ import logging
 import requests
 import urllib
 import urlparse
-import xml.sax.saxutils
-import zc.sourcefactory.source
-import zeit.cms.content.sources
 import zeit.push.interfaces
 import zeit.push.message
 import zope.interface
@@ -32,52 +30,6 @@ class Connection(object):
         if 'error' in result:
             # XXX Don't know how to differentiate technical and semantic errors
             raise zeit.push.interfaces.TechnicalError(str(result['error']))
-
-
-class FacebookAccountSource(zeit.cms.content.sources.XMLSource):
-
-    product_configuration = 'zeit.push'
-    config_url = 'facebook-accounts'
-    attribute = 'name'
-
-    class source_class(zc.sourcefactory.source.FactoredContextualSource):
-
-        @property
-        def MAIN_ACCOUNT(self):
-            return self.factory.main_account()
-
-        @property
-        def MAGAZIN_ACCOUNT(self):
-            return self.factory.magazin_account()
-
-    @classmethod
-    def main_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
-        return config['facebook-main-account']
-
-    @classmethod
-    def magazin_account(cls):
-        config = zope.app.appsetup.product.getProductConfiguration(
-            cls.product_configuration)
-        return config['facebook-magazin-account']
-
-    def isAvailable(self, node, context):
-        return (super(FacebookAccountSource, self).isAvailable(node, context)
-                and node.get('name') != self.main_account())
-
-    def access_token(self, value):
-        tree = self._get_tree()
-        nodes = tree.xpath('%s[@%s= %s]' % (
-                           self.title_xpath,
-                           self.attribute,
-                           xml.sax.saxutils.quoteattr(value)))
-        if not nodes:
-            return (None, None)
-        node = nodes[0]
-        return node.get('token')
-
-facebookAccountSource = FacebookAccountSource()
 
 
 class Message(zeit.push.message.Message):
