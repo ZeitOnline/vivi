@@ -4,6 +4,7 @@ import re
 import zc.sourcefactory.source
 import zeit.cms.content.interfaces
 import zeit.cms.content.sources
+import zeit.cms.related.interfaces
 import zeit.content.image.interfaces
 import zope.interface
 import zope.schema
