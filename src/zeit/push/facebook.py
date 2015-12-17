@@ -83,7 +83,14 @@ facebookAccountSource = FacebookAccountSource()
 class Message(zeit.push.message.Message):
 
     grok.name('facebook')
-    get_text_from = 'long_text'
+
+    @property
+    def text(self):
+        text = self.config.get('override_text')
+        if not text:  # BBB
+            self.get_text_from = 'long_text'
+            text = super(Message, self).text
+        return text
 
 
 def create_access_token(argv=None):

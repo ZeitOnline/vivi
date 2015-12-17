@@ -14,8 +14,12 @@ import zope.schema
 class IAccounts(zope.interface.Interface):
 
     facebook_main_enabled = zope.schema.Bool(title=_('Enable Facebook'))
+    facebook_main_text = zope.schema.Text(
+        title=_('Facebook Main Text'), required=False)
     facebook_magazin_enabled = zope.schema.Bool(
         title=_('Enable Facebook Magazin'))
+    facebook_magazin_text = zope.schema.Text(
+        title=_('Facebook Magazin Text'), required=False)
     twitter_main_enabled = zope.schema.Bool(title=_('Enable Twitter'))
     twitter_ressort_enabled = zope.schema.Bool(
         title=_('Enable Twitter Ressort'))
@@ -33,7 +37,8 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
 
     social_fields = gocept.form.grouped.Fields(
         _("Social media"),
-        ('long_text', 'facebook_main_enabled', 'facebook_magazin_enabled',
+        ('facebook_main_text', 'facebook_main_enabled',
+         'facebook_magazin_text', 'facebook_magazin_enabled',
          'short_text', 'twitter_main_enabled',
          'twitter_ressort_enabled', 'twitter_ressort',
          'mobile_text', 'mobile_enabled'),
@@ -43,10 +48,9 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         super(SocialBase, self).__init__(*args, **kw)
         self.form_fields += (
             self.FormFieldsFactory(
-                zeit.push.interfaces.IPushMessages).select('long_text')
-            + self.FormFieldsFactory(
                 IAccounts).select(
-                    'facebook_main_enabled', 'facebook_magazin_enabled')
+                    'facebook_main_text', 'facebook_main_enabled',
+                    'facebook_magazin_text', 'facebook_magazin_enabled')
             + self.FormFieldsFactory(
                 zeit.push.interfaces.IPushMessages).select('short_text')
             + self.FormFieldsFactory(
@@ -59,6 +63,10 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
     def setUpWidgets(self, *args, **kw):
         super(SocialBase, self).setUpWidgets(*args, **kw)
         self.set_charlimit('short_text')
+        if self.request.form.get('%s.facebook_main_enabled' % self.prefix):
+            self._set_widget_required('facebook_main_text')
+        if self.request.form.get('%s.facebook_magazin_enabled' % self.prefix):
+            self._set_widget_required('facebook_magazin_text')
         if self.request.form.get('%s.twitter_ressort_enabled' % self.prefix):
             self._set_widget_required('twitter_ressort')
         if self.request.form.get('%s.mobile_enabled' % self.prefix):
@@ -71,12 +79,17 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
         self.widgets[name].context = cloned
 
     def applyAccountData(self, object, data):
+        # We cannot use the key ``text``, since the first positional parameter
+        # of IPushNotifier.send() is also called text, which would result in a
+        # TypeError.
         zeit.push.interfaces.IPushMessages(object).message_config = [
             {'type': 'facebook',
              'enabled': data.pop('facebook_main_enabled', False),
+             'override_text': data.pop('facebook_main_text', None),
              'account': facebookAccountSource(None).MAIN_ACCOUNT},
             {'type': 'facebook',
              'enabled': data.pop('facebook_magazin_enabled', False),
+             'override_text': data.pop('facebook_magazin_text', None),
              'account': facebookAccountSource(None).MAGAZIN_ACCOUNT},
             {'type': 'twitter',
              'enabled': data.pop('twitter_main_enabled', False),
@@ -86,9 +99,6 @@ class SocialBase(zeit.cms.browser.form.CharlimitMixin):
              'account': data.pop('twitter_ressort', None)},
             {'type': 'parse',
              'enabled': data.pop('mobile_enabled', False),
-             # We cannot use the key ``text``, since the first positional
-             # parameter of IPushNotifier.send() is also called text, which
-             # would result in an TypeError.
              'override_text': data.pop('mobile_text', None),
              'channels': zeit.push.interfaces.PARSE_NEWS_CHANNEL},
         ]
@@ -114,9 +124,27 @@ class Accounts(grok.Adapter):
         return service and service['enabled']
 
     @property
+    def facebook_main_text(self):
+        service = self._get_service('facebook', main=True)
+        result = service and service.get('override_text')
+        if not result:  # BBB
+            push = zeit.push.interfaces.IPushMessages(self.context)
+            result = push.long_text
+        return result
+
+    @property
     def facebook_magazin_enabled(self):
         service = self._get_service('facebook', main=False)
         return service and service['enabled']
+
+    @property
+    def facebook_magazin_text(self):
+        service = self._get_service('facebook', main=False)
+        result = service and service.get('override_text')
+        if not result:  # BBB
+            push = zeit.push.interfaces.IPushMessages(self.context)
+            result = push.long_text
+        return result
 
     @property
     def twitter_main_enabled(self):
@@ -173,16 +201,23 @@ class Accounts(grok.Adapter):
         return None
 
     # Writing happens all services at once in the form, so we don't need to
-    # worry about identifying entries in message_config (which would be doable
-    # at the moment, but if we introduce individual texts or other
-    # configuration, it becomes unfeasible).
+    # worry about identifying entries in message_config (which would be quite
+    # cumbersome).
 
     @facebook_main_enabled.setter
     def facebook_main_enabled(self, value):
         pass
 
+    @facebook_main_text.setter
+    def facebook_main_text(self, value):
+        pass
+
     @facebook_magazin_enabled.setter
     def facebook_magazin_enabled(self, value):
+        pass
+
+    @facebook_magazin_text.setter
+    def facebook_magazin_text(self, value):
         pass
 
     @twitter_main_enabled.setter

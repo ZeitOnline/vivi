@@ -15,7 +15,7 @@
       permission="zeit.workflow.Publish"
       />
     <require
-      set_attributes="long_text short_text"
+      set_attributes="short_text"
       permission="zeit.EditContent"
       />
   </class>

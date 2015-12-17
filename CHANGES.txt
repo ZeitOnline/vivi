@@ -1,10 +1,11 @@
 zeit.push changes
 =================
 
-1.10.1 (unreleased)
+1.11.0 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Store facebook texts per account in ``message_config`` instead of combined in
+  ``long_text`` (ZON-2397).
 
 
 1.10.0 (2015-10-30)

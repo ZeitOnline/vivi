@@ -51,6 +51,8 @@ class IPushMessages(zope.interface.Interface):
     date_last_pushed = zope.schema.Datetime(
         title=_('Last push'), required=False, readonly=True)
 
+    # BBB deprecated, Facebook texts are now stored per account in
+    # message_config.
     long_text = zope.schema.Text(
         title=_('Long push text'), required=False)
     short_text = zope.schema.TextLine(
@@ -66,12 +68,9 @@ class IPushMessages(zope.interface.Interface):
     """A message configuration is a dict with at least the following keys:
        - type: Kind of service (twitter, facebook, ...). Must correspond
          to the utility name of an IPushNotifier.
-       - enabled: Boolean. This allows keeping the message configuration
-         even when it should not be used at the moment. At the moment we
-         do not store any specific configuration, e.g. the text is always
-         taken from either short_text or long_text, but one could imagine,
-         say, wanting to send different text to different Twitter accounts,
-         so having the ``enabled`` flag is more for future-proofing.
+       - enabled: Boolean. This allows keeping the message configuration even
+         when it should not be used at the moment, e.g. for different text to
+         different accounts.
 
     Any other keys are type-dependent. (A common additional key is ``account``,
     e.g. Twitter and Facebook support posting to different accounts.)
