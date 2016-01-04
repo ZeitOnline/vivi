@@ -1,8 +1,7 @@
+from zeit.push.interfaces import twitterAccountSource
 import grokcore.component as grok
 import logging
 import tweepy
-import xml.sax.saxutils
-import zc.sourcefactory.source
 import zeit.push.interfaces
 import zeit.push.message
 import zope.interface

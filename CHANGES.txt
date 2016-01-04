@@ -4,7 +4,7 @@ zeit.push changes
 1.11.1 (unreleased)
 -------------------
 
-- Nothing changed yet.
+- Fix brown-bag 1.11.0 (missing import).
 
 
 1.11.0 (2015-12-17)
